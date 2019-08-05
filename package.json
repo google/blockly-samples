@@ -1,0 +1,7 @@
+{
+    "name": "blockly-samples",
+    "version": "0.0.1",
+    "description": "Samples for using Blockly",
+    "author": "Blockly Team",
+    "license": "Apache-2.0"
+}

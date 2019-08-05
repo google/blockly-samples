@@ -1,0 +1,11 @@
+{
+    "name": "blockly-node-sample",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "blockly": "2.20190722.0"
+    }
+}
