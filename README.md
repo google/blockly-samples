@@ -16,7 +16,7 @@ Sample projects showing how to integrate Blockly into your project.
 ## Running
 
 In order to run each of the samples, cd into each sample directoy and run: 
-```
+```bash
 npm install
 ```
 
@@ -34,25 +34,25 @@ If you need more flexibility, you'll want to define your imports more carefully:
 
 ### Blockly Core
 
-```
+```js
 import * as Blockly from 'blockly/core';
 ```
 
 ### Blockly build in blocks
-```
+```js
 import 'blockly/blocks';
 ```
 
 ### Blockly Generators
 If your application needs to generate code from the Blockly blocks, you'll want to include a generator.
-```
+```js
 import 'blockly/python';
 ```
 to import the Python generator, you can also import ``blockly/javascript``, ``blockly/php``, ``blockly/dart`` and ``blockly/lua``.
 
 ### Blockly Languages
 
-```
+```js
 import * as Fr from 'blockly/msg/fr';
 Blockly.setLocale(Fr);
 ```
