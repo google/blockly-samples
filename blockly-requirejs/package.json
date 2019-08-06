@@ -6,7 +6,7 @@
         "start": "node_modules/.bin/http-server -c-1 ./ -p 3000"
     },
     "dependencies": {
-        "blockly": "2.20190722.0"
+        "blockly": "^2.20190722.0"
     },
     "devDependencies": {
         "http-server": "^0.11.1"
