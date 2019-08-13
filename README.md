@@ -1,6 +1,3 @@
-### NOTE: THIS REPOSITORY IS IN PROGRESS
-### The Blockly team is working on publishing blockly to npm
-
 # blockly-samples
 
 Sample projects showing how to integrate Blockly into your project.
