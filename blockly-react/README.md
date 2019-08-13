@@ -4,22 +4,23 @@
 
 This sample shows how to load Blockly in a [React](https://reactjs.org/) project.
 
-## Installation
+## Running the sample
+
+### Installation
 
 ```
 npm install
 ```
 
-## Running
+### Running
 
 ```
 npm run start
 ```
 
-## Browse
+### Browse
 
 Open [http://localhost:3000/](http://localhost:3000/)
-
 
 ## Community projects
 
