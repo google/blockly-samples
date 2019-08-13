@@ -1,6 +1,6 @@
 [Home](../README.md)
 
-# blockly-webpack-sample
+# blockly-webpack-sample [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 This sample shows how to load Blockly with [Webpack](https://webpack.js.org/) using ``ES6 Modules``.
 

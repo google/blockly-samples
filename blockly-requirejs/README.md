@@ -1,6 +1,6 @@
 [Home](../README.md)
 
-# blockly-requirejs-sample
+# blockly-requirejs-sample [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 This sample shows how to load Blockly with [RequireJS](https://requirejs.org/) using ``AMD``.
 

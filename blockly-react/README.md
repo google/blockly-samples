@@ -1,6 +1,6 @@
 [Home](../README.md)
 
-# blockly-react-sample
+# blockly-react-sample [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 This sample shows how to load Blockly in a [React](https://reactjs.org/) project.
 

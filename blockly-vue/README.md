@@ -1,6 +1,6 @@
 [Home](../README.md)
 
-# blockly-vue-sample
+# blockly-vue-sample [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 This sample shows how to load Blockly in a [Vue](https://vuejs.org/) project.
 
