@@ -1,4 +1,4 @@
-# blockly-samples  [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# blockly-samples [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 Sample projects showing how to integrate Blockly into your project.
 - [``blockly-requirejs-sample``](blockly-requirejs/README.md): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
