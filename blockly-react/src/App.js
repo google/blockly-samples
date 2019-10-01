@@ -27,6 +27,7 @@ import './App.css';
 import logo from './logo.svg';
 
 import BlocklyComponent, { Block, Value, Field, Shadow } from './Blockly';
+import './blocks/customblocks';
 
 class App extends React.Component {
 
@@ -41,9 +42,10 @@ class App extends React.Component {
             wheel: true
           }} initialXml={`
 <xml xmlns="http://www.w3.org/1999/xhtml">
-<block type="controls_if" x="0" y="0"></block>
+<block type="controls_ifelse" x="0" y="0"></block>
 </xml>
       `}>
+            <Block type="test_react_field" />
             <Block type="controls_ifelse" />
             <Block type="logic_compare" />
             <Block type="logic_operation" />
