@@ -31,6 +31,10 @@ import * as Blockly from 'blockly/core';
 
 class BlocklyReactField extends Blockly.Field {
 
+  static fromJson(options) {
+    return new BlocklyReactField(options['text']);
+  }
+
   showEditor_() {
     this.div_ = Blockly.DropDownDiv.getContentDiv();
     ReactDOM.render(<FieldRenderComponent />,
@@ -57,5 +61,7 @@ class FieldRenderComponent extends React.Component {
         </div>;
   }
 }
+
+Blockly.fieldRegistry.register('field_react_component', BlocklyReactField);
 
 export default BlocklyReactField;
