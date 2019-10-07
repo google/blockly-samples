@@ -17,36 +17,16 @@
  */
 
 /**
- * @fileoverview Define custom blocks.
+ * @fileoverview Define generation methods for custom blocks.
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-// More on defining blocks:
-// https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks
-
+// More on generating code:
+// https://developers.google.com/blockly/guides/create-custom-blocks/generating-code
 
 import * as Blockly from 'blockly/core';
+import 'blockly/javascript';
 
-// Since we're using json to initialize the field, we'll need to import it.
-import '../fields/BlocklyReactField';
-
-var testReactField = {
-  "type": "test_react_field",
-  "message0": "custom field %1",
-  "args0": [
-    {
-      "type": "field_react_component",
-      "name": "FIELD",
-      "text": "Click me"
-    },
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-};
-
-Blockly.Blocks['test_react_field'] = {
-  init: function() {
-    this.jsonInit(testReactField);
-    this.setStyle('loop_blocks');
-  }
+Blockly.JavaScript['test_react_field'] = function (block) {
+    return 'console.log(\'custom block\');\n';
 };
