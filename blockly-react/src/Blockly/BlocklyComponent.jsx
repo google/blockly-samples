@@ -45,22 +45,6 @@ class BlocklyComponent extends React.Component {
         if (initialXml) {
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(initialXml), this.primaryWorkspace);
         }
-
-        const wrapFunctions = ['getInverseScreenCTM', 'updateInverseScreenCTM', 'isVisible',
-            'createDom', 'dispose', 'newBlock', 'resize', 'getCanvas', 'getBubbleCanvas',
-            'getParentSvg', 'translate', 'getWidth', 'setVisible', 'render', 'highlightBlock',
-            'paste', 'recordDeleteAreas', 'isDeleteArea', 'startDrag', 'moveDrag', 'isDragging',
-            'isDraggable', 'getBlocksBoundingBox', 'cleanUp', 'updateToolbox', 'markFocused',
-            'zoom', 'zoomCenter', 'zoomToFit', 'scrollCenter', 'centerOnBlock', 'setScale',
-            'setResizesEnabled', 'clear', 'registerButtonCallback', 'getButtonCallback',
-            'removeButtonCallback', 'registerToolboxCategoryCallback', 'getToolboxCategoryCallback',
-            'removeToolboxCategoryCallback', 'getAudioManager'];
-        wrapFunctions.forEach((fn) => {
-            const workspace = this.primaryWorkspace;
-            this[fn] = (...args) => {
-                workspace[fn].apply(workspace, args);
-            }
-        })
     }
 
     get workspace() {
