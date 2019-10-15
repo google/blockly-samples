@@ -6,6 +6,6 @@
         "start": "node index.js"
     },
     "dependencies": {
-        "blockly": "^2.20190722.0"
+        "blockly": "^3.20191014.1"
     }
 }
