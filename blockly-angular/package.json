@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "blockly": "^2.20190722.0",
+    "blockly": "^3.20191014.1",
     "@angular/animations": "~8.1.2",
     "@angular/common": "~8.1.2",
     "@angular/compiler": "~8.1.2",

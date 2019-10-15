@@ -23,5 +23,5 @@ npm run start
 ## Browse
 
 - [http://localhost:3000/index.html](http://localhost:3000/index.html): references the UMD module bundle directly from node_modules.
-- [http://localhost:3000/unpkg.html](http://localhost:3000/unpkg.html): references the UMD module bundle from [Unpkg](https://unpkg.com/) at ``https://unpkg.com/blockly@2.20190722.0/blockly.min.js``. 
+- [http://localhost:3000/unpkg.html](http://localhost:3000/unpkg.html): references the UMD module bundle from [Unpkg](https://unpkg.com/) at ``https://unpkg.com/blockly@3.20191014.1/blockly.min.js``. 
 - [http://localhost:3000/custom.html](http://localhost:3000/custom.html): references specific UMD modules directly from node_modules. Blockly core, blocks, the JavaScript generator and the French locale.

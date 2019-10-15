@@ -62,6 +62,6 @@ class FieldRenderComponent extends React.Component {
   }
 }
 
-Blockly.Field.register('field_react_component', BlocklyReactField);
+Blockly.fieldRegistry.register('field_react_component', BlocklyReactField);
 
 export default BlocklyReactField;
