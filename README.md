@@ -7,7 +7,8 @@ Sample projects showing how to integrate Blockly into your project.
 - [``blockly-webpack-sample``](blockly-webpack/README.md): Using Blockly in Webpack.
 - [``blockly-react-sample``](blockly-react/README.md): Blockly in a React project, defines a React Blockly Component.
 - [``blockly-angular-sample``](blockly-angular/README.md): Blockly in an Angular project, defines an Angular Blockly Component.
-- [``blockly-vue-sample``](blockly-vue/README.md): Blockly in Vue project, defines Vue Blockly Component.
+- [``blockly-vue-sample``](blockly-vue/README.md): Blockly in Vue project, defines a Vue Blockly Component.
+- [``blockly-svelte-sample``](blockly-svelte/README.md): Blockly in Svelte project, defines a Svelte Blockly Component.
 
 ## Running the samples
 

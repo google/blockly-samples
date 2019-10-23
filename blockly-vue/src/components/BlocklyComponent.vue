@@ -35,7 +35,7 @@
 import Blockly from 'blockly';
 
 export default {
-  name: 'Blockly',
+  name: 'BlocklyComponent',
   data(){
     return {
       workspace: null
