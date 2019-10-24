@@ -22,5 +22,3 @@ npm run dev
 ### Browse
 
 Navigate to  [http://localhost:3000/](http://localhost:3000/) 
-
-(Change dev port by changing the line :`"start:dev": "sirv public --single --dev --port 3000"` in `package.json`)

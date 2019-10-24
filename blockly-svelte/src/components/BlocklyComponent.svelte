@@ -1,9 +1,9 @@
 <script>
-  import { onMount } from "svelte";
-  import Blockly from "blockly";
+  import { onMount } from 'svelte';
+  import Blockly from 'blockly';
 
   onMount(() => {
-    this.workspace = Blockly.inject(document.getElementById("blocklyDiv"), {
+    Blockly.inject(document.getElementById("blocklyDiv"), {
       toolbox: document.getElementById("toolbox")
     });
   });

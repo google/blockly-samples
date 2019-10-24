@@ -3,12 +3,12 @@
 Sample projects showing how to integrate Blockly into your project.
 - [``blockly-requirejs-sample``](blockly-requirejs/README.md): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
 - [``blockly-umd-sample``](blockly-umd/README.md): Loads the UMD build of Blockly (``blockly.min.js``), both from node_modules and from Unpkg.
-- [``blockly-node-sample``](blockly-node/README.md): Using Blockly in Node.js, loaded using require (``CommonJS``).
 - [``blockly-webpack-sample``](blockly-webpack/README.md): Using Blockly in Webpack.
-- [``blockly-react-sample``](blockly-react/README.md): Blockly in a React project, defines a React Blockly Component.
+- [``blockly-node-sample``](blockly-node/README.md): Using Blockly in Node.js, loaded using require (``CommonJS``).
 - [``blockly-angular-sample``](blockly-angular/README.md): Blockly in an Angular project, defines an Angular Blockly Component.
-- [``blockly-vue-sample``](blockly-vue/README.md): Blockly in Vue project, defines a Vue Blockly Component.
-- [``blockly-svelte-sample``](blockly-svelte/README.md): Blockly in Svelte project, defines a Svelte Blockly Component.
+- [``blockly-react-sample``](blockly-react/README.md): Blockly in a React project, defines a React Blockly Component.
+- [``blockly-svelte-sample``](blockly-svelte/README.md): Blockly in a Svelte project, defines a Svelte Blockly Component.
+- [``blockly-vue-sample``](blockly-vue/README.md): Blockly in a Vue project, defines a Vue Blockly Component.
 
 ## Running the samples
 
