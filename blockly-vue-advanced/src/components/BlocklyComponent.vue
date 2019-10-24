@@ -114,7 +114,6 @@ Blockly.JavaScript["stock_buy_prog"] = function(block) {
     "NAME",
     Blockly.JavaScript.ORDER_ATOMIC
   );
-  // TODO: Assemble JavaScript into code variable.
   var code = `buy(${value_number},${value_name},${value_name});\n`;
   return code;
 };
@@ -146,7 +145,6 @@ Blockly.JavaScript["stock_fetch_price"] = function(block) {
     block.getFieldValue("variable"),
     Blockly.Variables.NAME_TYPE
   );
-  // TODO: Assemble JavaScript into code variable.
   var code = `fetch_price(${value_fetch},${variable_variable});\n`;
   return code;
 };
