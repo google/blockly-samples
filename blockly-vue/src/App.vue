@@ -1,7 +1,13 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <BlocklyComponent>
+    <p>
+      <button v-on:click="showCode()">Show JavaScript</button>
+    </p>
+    <pre v-html="code"></pre>
+    <BlocklyComponent id="component1" ref="foo"></BlocklyComponent>
+
+
+    <BlocklyComponentSlot>
       <block type="controls_ifelse"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -24,14 +30,15 @@
               </block>
           </value>
       </block>
-    </BlocklyComponent>
+    </BlocklyComponentSlot>
+
   </div>
 </template>
 
 <script>
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,30 +56,47 @@
 
 /**
  * @fileoverview Main Vue component that includes the Blockly component.
- * @author samelh@google.com (Sam El-Husseini)
+ * @author abbychau@gmail.com (Abby Chau)
  */
 
-import BlocklyComponent from './components/BlocklyComponent.vue'
+import BlocklyComponent from "./components/BlocklyComponent.vue";
+import BlocklyComponentSlot from "./components/BlocklyComponentSlot.vue";
 
 export default {
-  name: 'app',
+  name: "app",
+  data: function() {
+    return { code: "" };
+  },
+
   components: {
-    BlocklyComponent
+    BlocklyComponent,
+    BlocklyComponentSlot
+  },
+  methods: {
+    showCode() {
+      this.code = this.$refs["foo"].toCode();
+    }
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
-html, body {
+html,
+body {
   margin: 0;
+}
+#component1 {
+  height: 50%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: left;
 }
 </style>

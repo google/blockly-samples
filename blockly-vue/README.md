@@ -2,7 +2,8 @@
 
 # blockly-vue-sample [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-This sample shows how to load Blockly in a [Vue](https://vuejs.org/) project.
+This sample shows how to load Blockly in a [Vue](https://vuejs.org/) project with more features provided by Blockly JS object.
+
 
 ## Installation
 
