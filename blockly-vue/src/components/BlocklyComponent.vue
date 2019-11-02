@@ -36,22 +36,18 @@ import Blockly from 'blockly';
 
 export default {
   name: 'BlocklyComponent',
-  props: ['toolbox'],
+  props: ['options'],
   data(){
     return {
       workspace: null
     }
   },
-  methods : {
-    toCode() {
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-      return Blockly.JavaScript.workspaceToCode(this.workspace);
-    }
-  },
   mounted() {
-    this.workspace = Blockly.inject(this.$refs["blocklyDiv"], {
-      toolbox: this.$props.toolbox || this.$refs["blocklyToolbox"]
-    });
+    var options = this.$props.options || {};
+    if (!options.toolbox) {
+      options.toolbox = this.$refs["blocklyToolbox"];
+    }
+    this.workspace = Blockly.inject(this.$refs["blocklyDiv"], options);
   }
 }
 </script>
