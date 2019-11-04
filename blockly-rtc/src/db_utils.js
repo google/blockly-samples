@@ -20,7 +20,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-var db = require('./db');
+const db = require('./db');
 
 /**
  * Query the database for rows since the given server id.
@@ -29,10 +29,9 @@ var db = require('./db');
  * @public
  */
 function queryDatabase(serverId) {
-  var sql = `SELECT * from events WHERE serverId > ${serverId};`;
-  db.all(sql, [], (err, rows) => {
+  db.all(`SELECT * from events WHERE serverId > ${serverId};`, (err, rows)  => {
     if (err) {
-      throw err;
+      return console.error(err.message);
     };
     return rows;
   });
@@ -45,42 +44,39 @@ function queryDatabase(serverId) {
  * @public
  */
 function addToServer(rows) {
-  var insertQueries = [];
+  const insertQueries = [];
   rows.forEach(function(row) {
     insertQueries.push(createInsertStatement_(row));
   });
 
   db.serialize(function() {
-    db.run('BEGIN TRANSACTION', function(error) {
-      if (error) {
-        console.error(error.message);
+    db.run('BEGIN TRANSACTION', (err) => {
+      if (err) {
+        console.error(err.message);
       };
     });
 
     insertQueries.forEach(function(insertQuery) {
-      db.run(insertQuery, function(error) {
-        if (error) {
+      db.run(insertQuery, (err) => {
+        if (err) {
           db.run('ROLLBACK');
-          console.error(error.message);
+          console.error(err.message);
         };
       });
     });
-
     db.run('COMMIT;');
   });   
-
 };
 
 /**
  * Create a SQlite query script to insert a new row.
  * @param {!Object} row serverId for the lower bound of the query.
- * @return {!String} The SQlite query.
+ * @return {string} The SQlite query.
  * @private
  */
 function createInsertStatement_(row) {
-  var sql =  `INSERT INTO events(documentId, event)
+  return `INSERT INTO events(documentId, event)
     VALUES('${row.documentId}', '${row.event}');`;
-  return sql;
 };
 
 module.exports.queryDatabase = queryDatabase;
