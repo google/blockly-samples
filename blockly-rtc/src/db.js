@@ -19,22 +19,22 @@
  * @fileoverview The SQlite database object.
  * @author navil@google.com (Navil Perez)
  */
+
 const sqlite3 = require('sqlite3');
 
-let db = new sqlite3.Database("./events.sqlite", function(error) {
-    if (error) {
-        return console.error(error.message);
+const db = new sqlite3.Database("./events.sqlite", (err) => {
+  if (err) {
+    return console.error(err.message);
+  };
+  console.log('successful connection');
+  let sql = `CREATE TABLE IF NOT EXISTS events(
+      serverId INTEGER PRIMARY KEY,
+      documentId TEXT, event BLOB);`;
+  db.run(sql, function(err) {
+    if (err) {
+      return console.error(err.message);
     };
-    console.log('successful connection');
-
-    let sql = `CREATE TABLE IF NOT EXISTS events(
-        serverId INTEGER PRIMARY KEY,
-        documentId TEXT, event BLOB);`;
-    db.run(sql, function(error) {
-        if (error) {
-            console.error(error.message);
-        };
-    });
+  });
 });
 
 module.exports = db;
