@@ -22,7 +22,7 @@
 
 const sqlite3 = require('sqlite3');
 
-const db = new sqlite3.Database("./events.sqlite", (err) => {
+const db = new sqlite3.Database('./events.sqlite', (err) => {
   if (err) {
     return console.error(err.message);
   };
