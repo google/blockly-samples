@@ -16,7 +16,7 @@ npm install
 
 start [Rollup](https://rollupjs.org) by:
 ```bash
-npm run dev
+npm run start
 ```
 
 ### Browse

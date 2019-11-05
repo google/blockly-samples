@@ -17,9 +17,9 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "autobuild": "rollup -c -w",
-    "dev": "run-p start:dev autobuild",
-    "start": "sirv public --single",
-    "start:dev": "sirv public --single --dev --port 3000"
+    "build:watch": "rollup -c -w",
+    "start": "run-p build:watch serve",
+    "serve": "sirv public --single --dev --port 3000",
+    "publish": "sirv public --single"
   }
 }
