@@ -25,17 +25,16 @@ const db = require('./db');
 /**
  * Query the database for rows since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
- * @return {Promise} Promise object represents the rows since the last given
+ * @return {!Promise} Promise object represents the rows since the last given
  * serverId.
  * @public
  */
 function queryDatabase(serverId) {
-  return new Promise (function (resolve, reject) {
-    db.all(`SELECT * from events WHERE serverId > ${serverId};`, (err, rows)  => {
+  return new Promise ((resolve, reject) => {
+    db.all(`SELECT * from events WHERE serverId > ${serverId};`, (err, rows) => {
       if (err) {
         reject(err);
-      }
-      else {
+      } else {
         resolve(rows);
       };
     });
@@ -45,7 +44,7 @@ function queryDatabase(serverId) {
 /**
  * Add rows to the database.
  * Rows are added transactionally.
- * @param {Promise} Promise object represents the success of the write.
+ * @param {!Promise} Promise object represents the success of the write.
  * @public
  */
 function addToServer(rows) {
@@ -55,16 +54,16 @@ function addToServer(rows) {
   });
 
   return new Promise((resolve, reject) => {
-    db.serialize(function() {
+    db.serialize(() => {
 
-      db.run('BEGIN TRANSACTION', function(err) {
+      db.run('BEGIN TRANSACTION', (err) => {
         if (err) {
           console.error(err.message);
           reject(error);
         };
       });
   
-      insertQueries.forEach(function(insertQuery) {
+      insertQueries.forEach((insertQuery) => {
         db.run(insertQuery, function(err) {
           if (err) {
             db.run('ROLLBACK');

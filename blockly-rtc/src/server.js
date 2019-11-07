@@ -25,11 +25,14 @@ const url = require('url');
 
 const sql = require('./db_utils');
 
-http.createServer(function (req, res) {
+const port = 3001;
+
+http.createServer((req, res) => {
   if (req.method === 'GET') {
     sql.queryDatabase(url.parse(req.url, true).query.serverId).then((rows) => {
+      res.setHeader('Content-Type', 'application/json');
       res.statusCode = 200;
-      res.write(JSON.stringify({rows:rows}));  
+      res.write(JSON.stringify({ rows }));  
       res.end();
     }); 
   }
@@ -48,11 +51,10 @@ http.createServer(function (req, res) {
         res.end();
       });
     });
-  }
-  else {
+  } else {
     res.statusCode = 404;
     res.end();
   };
-}).listen(3001, function() { 
-    console.log("server start at port 3001"); 
-}); 
+}).listen(port, () => { 
+    console.log('server start at port 3001'); 
+});

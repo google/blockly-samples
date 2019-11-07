@@ -20,16 +20,27 @@
  * @author navil@google.com (Navil Perez)
  */
 
+/**
+ * Query the database for rows since the given server id.
+ * @param {number} serverId serverId for the lower bound of the query.
+ * @return {!Array.<!Object>} Rows of events since the given serverId. 
+ * @public
+ */
 export async function getEvents(serverId) {
   const response = await fetch('/api/' + '?' + 'serverId=' + serverId);
   return await response.json();
 };
 
+/**
+ * Add rows to database.
+ * @param {!Array.<!Object>} rows The rows of events to be added to the
+ * database.
+ * @return Response from the server.
+ * @public
+ */
 export async function writeEvents(rows) {
   return await fetch('/api/', {
     method: 'POST',
-    body: JSON.stringify({
-      rows:rows
-    })
-  }); 
+    body: JSON.stringify({ rows })
+  });
 };
