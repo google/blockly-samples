@@ -30,19 +30,25 @@ const PORT = 3001;
 http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
-    sql.queryDatabase(parsedUrl.query.serverId).then((rows) => {
+    sql.queryDatabase(parsedUrl.query.serverId)
+    .then((rows) => {
       res.setHeader('Content-Type', 'application/json');
       res.statusCode = 200;
       res.write(JSON.stringify({ rows }));  
       res.end();
-    }); 
+    })
+    .catch(() => {
+      res.statusCode = 401;
+      res.end();
+    });
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
     const data = [];
     req.on('data', chunk => {
       data.push(chunk);
     });
     req.on('end', () => {
-      sql.addToServer(JSON.parse(data).rows).then(() => {
+      sql.addToServer(JSON.parse(data).rows)
+      .then(() => {
         res.statusCode = 200;
         res.end();  
       })
