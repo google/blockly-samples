@@ -27,7 +27,7 @@
  * @public
  */
 export async function getEvents(serverId) {
-  const response = await fetch('/api/' + '?' + 'serverId=' + serverId);
+  const response = await fetch('/api/events/query' + '?' + 'serverId=' + serverId);
   return await response.json();
 };
 
@@ -39,7 +39,7 @@ export async function getEvents(serverId) {
  * @public
  */
 export async function writeEvents(rows) {
-  return await fetch('/api/', {
+  return await fetch('/api/events/add', {
     method: 'POST',
     body: JSON.stringify({ rows })
   });

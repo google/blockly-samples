@@ -25,18 +25,18 @@ const url = require('url');
 
 const sql = require('./db_utils');
 
-const port = 3001;
+const PORT = 3001;
 
 http.createServer((req, res) => {
-  if (req.method === 'GET') {
-    sql.queryDatabase(url.parse(req.url, true).query.serverId).then((rows) => {
+  const parsedUrl = url.parse(req.url, true);
+  if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
+    sql.queryDatabase(parsedUrl.query.serverId).then((rows) => {
       res.setHeader('Content-Type', 'application/json');
       res.statusCode = 200;
       res.write(JSON.stringify({ rows }));  
       res.end();
     }); 
-  }
-  else if (req.method === 'POST') {
+  } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
     const data = [];
     req.on('data', chunk => {
       data.push(chunk);
@@ -55,6 +55,6 @@ http.createServer((req, res) => {
     res.statusCode = 404;
     res.end();
   };
-}).listen(port, () => { 
+}).listen(PORT, () => { 
     console.log('server start at port 3001'); 
 });
