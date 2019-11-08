@@ -29,7 +29,7 @@ const db = new sqlite3.Database('./events.sqlite', (err) => {
   console.log('successful connection');
   let sql = `CREATE TABLE IF NOT EXISTS events(
       serverId INTEGER PRIMARY KEY,
-      documentId TEXT, event BLOB);`;
+      entryId TEXT, event BLOB);`;
   db.run(sql, function(err) {
     if (err) {
       return console.error(err.message);
