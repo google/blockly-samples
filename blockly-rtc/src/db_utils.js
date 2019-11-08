@@ -87,7 +87,7 @@ function addToServer(rows) {
  */
 function createInsertStatement_(row) {
   return `INSERT INTO events(entryId, event)
-    VALUES('${row.entryId}', '${row.event}');`;
+    VALUES('${row.entryId}', '${JSON.stringify(row.event)}');`;
 };
 
 module.exports.queryDatabase = queryDatabase;
