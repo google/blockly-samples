@@ -24,13 +24,14 @@
  * Query the database for rows since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
  * @return {!Array.<!Object>} Rows of events since the given serverId.
- * @throws Will throw an error if response code is not 200.
+ * @throws Will throw an error if the response status code is not 200.
  * @public
  */
 export async function getEvents(serverId) {
-  const response = await fetch('/api/events/query' + '?' + 'serverId=' + serverId);
+  const response = await fetch('/api/events/query?serverId=' + serverId);
+  const responseJson = await response.json();
   if (response.status === 200) {
-    return response.json().rows;
+    return responseJson.rows;
   } else {
     throw 'Failed to query database.';
   };
@@ -40,7 +41,7 @@ export async function getEvents(serverId) {
  * Add rows to database.
  * @param {!Array.<!Object>} rows The rows of events to be added to the
  * database.
- * @throws will throw an error if response code is not 200.
+ * @throws Will throw an error if the response status code is not 200.
  * @public
  */
 export async function writeEvents(rows) {
