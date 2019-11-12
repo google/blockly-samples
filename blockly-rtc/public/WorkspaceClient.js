@@ -71,14 +71,13 @@ export default class WorkspaceClient {
      */    
     async writeToDatabase() {
         this.beginWrite_();
-        return await writeEvents(this.inProgress)
-        .then(() => {
+        try {
+            await writeEvents(this.inProgress);
             this.endWrite_(true);
-        })
-        .catch(() => {
-            this.endWrite_(false);
-            throw 'Failed to write to database.';
-        });
+        } catch {
+           this.endWrite_(false);
+           throw Error('Failed to write to database.');
+        };
     };
 
     /**
@@ -104,7 +103,6 @@ export default class WorkspaceClient {
         if (!success) {
             this.notSent = this.inProgress.concat(this.notSent);
             this.inProgress = [];
-            this.writeInProgress = false;
         };
         this.writeInProgress = false;
     };

@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         };
         workspaceClient.addEvent(event.toJson());
-        if (! Blockly.Events.getGroup()) {
+        if (!Blockly.Events.getGroup()) {
             workspaceClient.endGroup();
             sendChanges();
         };
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sendChanges();
         })
         .catch(() => {
-            console.error();
+            console.error('Failed to write to database.');
         });
     };
 });
