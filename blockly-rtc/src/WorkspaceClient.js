@@ -22,12 +22,13 @@
  */
 
 import {getEvents, writeEvents} from './api';
+import Blockly from 'blockly';
 
 /**
  * Class for managing events between the workspace and the server.
  * @param {string} workspaceId The id of the Blockly.Workspace instance this
  * client corresponds to.
- * */
+ */
 export default class WorkspaceClient {
     constructor(workspaceId) {
         this.workspaceId = workspaceId;
@@ -43,7 +44,7 @@ export default class WorkspaceClient {
      * An entry is of the form {"event": Blockly.Event, "entryId": string} where
      * event is an event created on the workspace and entryId is of the form
      * {workspaceId}:{counter}.
-     * @param {boolean} success Indicates the success of the database write.
+     * @param {!Blockly.Events} event The Blockly.Event created by the client.
      * @public
      */
     addEvent(event) {
@@ -56,10 +57,10 @@ export default class WorkspaceClient {
     };
 
     /**
-     * Add all events from a Blockly.Events group to notSent.
+     * Move events in a Blockly.Events group from activeChanges to notSent.
      * @public
      */
-    endGroup() {
+    flushEvents() {
         this.notSent = this.notSent.concat(this.activeChanges);
         this.activeChanges = [];
     };
@@ -68,7 +69,7 @@ export default class WorkspaceClient {
      * Trigger an API call to write events to the database.
      * @throws Throws an error if the write was not successful.
      * @public
-     */    
+     */
     async writeToDatabase() {
         this.beginWrite_();
         try {

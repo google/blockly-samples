@@ -24,7 +24,7 @@
 import * as Blockly from 'blockly';
 import WorkspaceClient from './WorkspaceClient';
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
     const workspace = Blockly.inject('blocklyDiv',
         {
             toolbox: document.getElementById('toolbox'),
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         workspaceClient.addEvent(event.toJson());
         if (!Blockly.Events.getGroup()) {
-            workspaceClient.endGroup();
+            workspaceClient.flushEvents();
             sendChanges();
         };
     });

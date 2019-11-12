@@ -22,14 +22,14 @@
 
 const assert = require('assert');
 const sinon = require('sinon');
-const api = require('../public/api');
-const WorkspaceClient = require('../public/WorkspaceClient').default;
+const api = require('../src/api');
+const WorkspaceClient = require('../src/WorkspaceClient').default;
 
 suite('WorkspaceClient', () => {
 
   suite('writeToDatabase()', () => {
     test('Write succeeds, events move from notSent to inProgress.', async () => {
-      const writeEventsStub = sinon.stub(api, "writeEvents").resolves();
+      const writeEventsStub = sinon.stub(api, 'writeEvents').resolves();
       const workspaceClient = new WorkspaceClient('mockClient');
       workspaceClient.notSent = [1,2,3];
       await workspaceClient.writeToDatabase();
@@ -60,7 +60,7 @@ suite('WorkspaceClient', () => {
     });
   });
 
-  suite('endGroup()', () => {
+  suite('flushEvents()', () => {
     test('Events in activeChanges are moved to tne end of notSent.', async () => {
       const workspaceClient = new WorkspaceClient('mockClient');
       workspaceClient.counter = 2;
@@ -72,7 +72,7 @@ suite('WorkspaceClient', () => {
         {event:'mockActiveChange2', entryId:'mockClient2'},
         {event:'mockActiveChange3', entryId:'mockClient3'}
       ];
-      workspaceClient.endGroup();
+      workspaceClient.flushEvents();
       assert.deepStrictEqual(
         [
           {event:'mockEvent0', entryId:'mockClient0'},

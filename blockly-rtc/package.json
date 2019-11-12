@@ -1,0 +1,30 @@
+{
+  "name": "blockly-realtime-demo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:frontend",
+    "build:frontend": "rimraf ./build && webpack",
+    "serve": "concurrently \"npm run serve:frontend\" \"npm run serve:backend\"",
+    "serve:backend": "node server/server.js",
+    "serve:frontend": "webpack-dev-server",
+    "start": "npm run build && npm run serve",
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "blockly": "^2.20190722.0",
+    "sqlite3": "4.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "5.0.0",
+    "copy-webpack-plugin": "^5.0.3",
+    "esm": "3.2.25",
+    "http-server": "^0.11.1",
+    "mocha": "^6.2.2",
+    "rimraf": "3.0.0",
+    "sinon": "7.5.0",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "3.9.0"
+  }
+}
