@@ -18,7 +18,7 @@
 
 /**
  * @fileoverview Webpack configuration file.
- * @author samelh@google.com (Sam El-Husseini)
+ * @author navil@google.com (Sam El-Husseini)
  */
 
 const path = require('path');
