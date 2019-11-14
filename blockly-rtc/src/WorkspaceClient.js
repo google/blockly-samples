@@ -44,7 +44,7 @@ export default class WorkspaceClient {
      * An entry is of the form {"event": Blockly.Event, "entryId": string} where
      * event is an event created on the workspace and entryId is of the form
      * {workspaceId}:{counter}.
-     * @param {!Blockly.Events} event The Blockly.Event created by the client.
+     * @param {!Object} event The Blockly.Event JSON created by the client.
      * @public
      */
     addEvent(event) {

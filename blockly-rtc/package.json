@@ -9,7 +9,7 @@
     "serve:backend": "node server/server.js",
     "serve:frontend": "webpack-dev-server",
     "start": "npm run build && npm run serve",
-    "test": "mocha test"
+    "test": "mocha test/*test.js"
   },
   "dependencies": {
     "blockly": "^2.20190722.0",
