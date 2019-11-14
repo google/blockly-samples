@@ -48,7 +48,7 @@ suite('WorkspaceClient', () => {
     });
   });
 
-   suite('addEvents()', () => {
+  suite('addEvents()', () => {
     test('Events added to activeChanges in the correct order with the correct entryId.', async () => {
       const workspaceClient = new WorkspaceClient('mockClient');
       workspaceClient.addEvent('mockEvent0');
@@ -82,6 +82,174 @@ suite('WorkspaceClient', () => {
         ],
         workspaceClient.notSent);
       assert.deepStrictEqual([], workspaceClient.activeChanges);
+    });
+  });
+
+  suite('processQueryResults_()', () => {
+    test('Rows is empty.', () => {
+      const workspaceClient = new WorkspaceClient('mockClient');
+      workspaceClient.inProgress = [
+        {event: {mockEvent: 'mockLocalEvent0'}, entryId:'mockClient0'}
+      ];
+      workspaceClient.notSent = [
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ];
+
+      const eventQueue = workspaceClient.processQueryResults_([]);
+
+      assert.deepStrictEqual([], eventQueue);
+      assert.equal(0, workspaceClient.lastSync);
+      assert.deepStrictEqual(
+        [
+          {event: {mockEvent: 'mockLocalEvent0'}, entryId:'mockClient0'}
+        ], workspaceClient.inProgress);
+        assert.deepStrictEqual(
+          [
+            {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+            {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+          ], workspaceClient.notSent);
+    });
+
+    test('Rows contains all local events.', () => {
+      const workspaceClient = new WorkspaceClient('mockClient');
+      workspaceClient.inProgress = [
+        {event: {mockEvent: 'mockLocalEvent0'}, entryId:'mockClient0'}
+      ];
+      workspaceClient.notSent = [
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ];
+
+      const eventQueue = workspaceClient.processQueryResults_([
+        {event: JSON.stringify({mockEvent:'mockLocalEvent0'}), entryId: 'mockClient0', serverId:1}
+      ]);
+
+      assert.deepStrictEqual([], eventQueue);
+      assert.equal(1, workspaceClient.lastSync);
+      assert.deepStrictEqual([], workspaceClient.inProgress);
+      assert.deepStrictEqual([
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ], workspaceClient.notSent);
+    });
+
+    test('Rows contains no local changes.', () => {
+      const workspaceClient = new WorkspaceClient('mockClient');
+      workspaceClient.inProgress = [
+        {event: {mockEvent: 'mockLocalEvent0'}, entryId:'mockClient0'}
+      ];
+      workspaceClient.notSent = [
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ];
+
+      const eventQueue = workspaceClient.processQueryResults_([
+        {event: JSON.stringify({mockEvent:'mockExternalEvent0'}), entryId: 'otherClient0', serverId:1}
+      ]);
+
+      assert.deepStrictEqual([
+        {event: {mockEvent: 'mockLocalEvent2'}, forward: false},
+        {event: {mockEvent: 'mockLocalEvent1'}, forward: false},
+        {event: {mockEvent: 'mockLocalEvent0'}, forward: false},
+        {event: {mockEvent: 'mockExternalEvent0'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent0'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent1'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent2'}, forward: true}
+      ], eventQueue);
+      assert.equal(1, workspaceClient.lastSync);
+      assert.deepStrictEqual(
+        [
+          {event: {mockEvent: 'mockLocalEvent0'}, entryId:'mockClient0'}
+        ], workspaceClient.inProgress);
+        assert.deepStrictEqual(
+          [
+            {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+            {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+          ], workspaceClient.notSent);
+    });
+      
+    test('Rows contains local changes followed by external changes.', () => {
+      const workspaceClient = new WorkspaceClient('mockClient');
+      workspaceClient.inProgress = [
+        {event: {mockEvent: 'mockLocalEvent0'}, entryId: 'mockClient0'}
+      ];
+      workspaceClient.notSent = [
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ];
+      const eventQueue = workspaceClient.processQueryResults_([
+        {event: JSON.stringify({mockEvent:'mockLocalEvent0'}), entryId: 'mockClient0', serverId:1},
+        {event: JSON.stringify({mockEvent:'mockExternalEvent0'}), entryId: 'otherClient0', serverId:2}
+      ]);
+      assert.deepStrictEqual([
+        {event: {mockEvent: 'mockLocalEvent2'}, forward: false},
+        {event: {mockEvent: 'mockLocalEvent1'}, forward: false},
+        {event: {mockEvent: 'mockExternalEvent0'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent1'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent2'}, forward: true}
+      ], eventQueue);
+      assert.equal(2, workspaceClient.lastSync);
+      assert.deepStrictEqual([], workspaceClient.inProgress);
+      assert.deepStrictEqual([
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ], workspaceClient.notSent);
+    });
+
+    test('Rows contains local changes sandwiched by external changes.', () => {
+      const workspaceClient = new WorkspaceClient('mockClient');
+      workspaceClient.inProgress = [
+        {event: {mockEvent: 'mockLocalEvent0'}, entryId:'mockClient0'},
+      ];
+      workspaceClient.notSent = [
+        {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+        {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+      ];
+
+      const eventQueue = workspaceClient.processQueryResults_([
+        {event: JSON.stringify({mockEvent:'mockExternalEvent0'}), entryId: 'otherClient0', serverId:1},
+        {event: JSON.stringify({mockEvent:'mockLocalEvent0'}), entryId: 'mockClient0', serverId:2},
+        {event: JSON.stringify({mockEvent:'mockExternalEvent1'}), entryId: 'otherClient1', serverId:3}
+      ]);
+
+      assert.deepStrictEqual([
+        {event: {mockEvent: 'mockLocalEvent2'}, forward: false},
+        {event: {mockEvent: 'mockLocalEvent1'}, forward: false},
+        {event: {mockEvent: 'mockLocalEvent0'}, forward: false},
+        {event: {mockEvent: 'mockExternalEvent0'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent0'}, forward: true},
+        {event: {mockEvent: 'mockExternalEvent1'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent1'}, forward: true},
+        {event: {mockEvent: 'mockLocalEvent2'}, forward: true}
+      ], eventQueue);
+      assert.equal(3, workspaceClient.lastSync);
+      assert.deepStrictEqual([], workspaceClient.inProgress);
+      assert.deepStrictEqual(
+        [
+          {event: {mockEvent: 'mockLocalEvent1'}, entryId:'mockClient1'},
+          {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
+        ], workspaceClient.notSent);
+    });
+  });
+
+  suite('queryDatabase()', () => {
+    test('Query fails.', async () => {
+      const getEventsStub = sinon.stub(api, 'getEvents').rejects();
+      const workspaceClient = new WorkspaceClient('mockClient');
+      const rows = await workspaceClient.queryDatabase();
+      assert.deepStrictEqual([], rows);
+      getEventsStub.restore();
+    });
+
+    test('Query succeeds.', async () => {
+      const workspaceClient = new WorkspaceClient('mockClient');
+      const getEventsStub = sinon.stub(api, 'getEvents').resolves([]);
+      const spy = sinon.spy(workspaceClient, 'processQueryResults_');
+      await workspaceClient.queryDatabase();
+      assert.equal(true, spy.calledWithExactly([]));
+      getEventsStub.restore();
+      spy.restore();
     });
   });
 });

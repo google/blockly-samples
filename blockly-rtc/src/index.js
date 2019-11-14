@@ -32,24 +32,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     var workspaceClient = new WorkspaceClient(workspace.id);
 
-    workspace.addChangeListener(function(event) {
+    workspace.addChangeListener((event) => {
         if (event instanceof Blockly.Events.Ui) {
             return;
         };
         workspaceClient.addEvent(event.toJson());
         if (!Blockly.Events.getGroup()) {
             workspaceClient.flushEvents();
-            sendChanges();
+            sendChanges_();
         };
     });
+    pollServer_();
 
     /**
      * Signal WorkspaceClient to send local changes to the server.
      * Continues signalling the WorkspaceClient until all local changes have
      * been sent.
-     * @public
+     * @private
      */
-    function sendChanges() {
+    function sendChanges_() {
         if (workspaceClient.writeInProgress) {
             return;
         };
@@ -58,10 +59,44 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         workspaceClient.writeToDatabase()
         .then(() => {
-            sendChanges();
+            sendChanges_();
         })
         .catch(() => {
             console.error('Failed to write to database.');
+        });
+    };
+
+    /**
+     * Periodically signal the WorkspaceClient to query the database and call
+     * runEvents_() with the result of the query.
+     * @private
+     */
+    function pollServer_() {
+        if (! workspaceClient.writeInProgress) {
+            workspaceClient.queryDatabase()
+            .then((eventQueue) => {
+                runEvents_(eventQueue);
+            });
+        };
+        var timeInterval = 5000;
+        setTimeout(() => {
+            pollServer_();
+        }, timeInterval);
+    };
+
+    /**
+     * Run a series of events that allow the order of events on the workspace
+     * to converge with the order of events on the database.
+     * @param {!Array<!Object>} eventQueue An array of events and the
+     * direction they should be run.
+     * @private
+     */
+    function runEvents_(eventQueue) {
+        eventQueue.forEach((event)=> {
+            const blocklyEvent = Blockly.Events.fromJson(event.event, workspace);
+            Blockly.Events.disable();
+            blocklyEvent.run(event.forward);
+            Blockly.Events.enable();
         });
     };
 });
