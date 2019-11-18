@@ -85,9 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
+     * A row from the database.
+     * @typedef {Object} WorkspaceEvent
+     * @property {string} event The JSON of a Blockly event.
+     * @property {boolean} forward Indicates the direction to run an event.
+     */
+
+    /**
      * Run a series of events that allow the order of events on the workspace
      * to converge with the order of events on the database.
-     * @param {!Array<!Object>} eventQueue An array of events and the
+     * @param {!Array<!WorkspaceEvent>} eventQueue An array of events and the
      * direction they should be run.
      * @private
      */

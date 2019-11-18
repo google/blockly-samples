@@ -110,8 +110,16 @@ export default class WorkspaceClient {
     };
 
     /**
+     * A row from the database.
+     * @typedef {Object} Row
+     * @property {string} event The stringified JSON of a Blockly event.
+     * @property {string} entryId The id assigned to an event by the client.
+     * @property {string} serverId The id assigned to an event by the server.
+     */
+
+    /**
      * Trigger an API call to query events from the database.
-     * @returns {!Array<!Object>} The result of processQueryResults_() or an
+     * @returns {!Array<!Row>} The result of processQueryResults_() or an
      * empty array if the API call fails.
      * @public
      */
@@ -125,12 +133,19 @@ export default class WorkspaceClient {
     };
 
     /**
+     * A row from the database.
+     * @typedef {Object} WorkspaceEvent
+     * @property {string} event The JSON of a Blockly event.
+     * @property {boolean} forward Indicates the direction to run an event.
+     */
+
+    /**
      * Compare the order of events in the rows retrieved from the database to
      * the stacks of local-only changes and provide a series of steps that
      * will allow the server and local workspace to converge.
-     * @param {<!Array<!Object>} rows Rows of event entries retrieved by
+     * @param {<!Array<!Row>} rows Rows of event entries retrieved by
      * querying the database.
-     * @returns {!Array<!Object>} eventQueue An array of events and the
+     * @returns {!Array<!WorkspaceEvent>} eventQueue An array of events and the
      * direction they should be run.
      * @private
      */
@@ -141,7 +156,7 @@ export default class WorkspaceClient {
             return eventQueue;
         };
     
-        this.lastSync = rows[rows.length-1].serverId;
+        this.lastSync = rows[rows.length - 1].serverId;
     
         // No local changes.
         if (this.notSent.length == 0 && this.inProgress.length == 0) {
