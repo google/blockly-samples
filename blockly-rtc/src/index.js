@@ -24,6 +24,13 @@
 import * as Blockly from 'blockly';
 import WorkspaceClient from './WorkspaceClient';
 
+/**
+ * An action to be performed on the workspace.
+ * @typedef {Object} WorkspaceAction
+ * @property {!Object} event The JSON of a Blockly event.
+ * @property {boolean} forward Indicates the direction to run an event.
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
     const workspace = Blockly.inject('blocklyDiv',
         {
@@ -72,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @private
      */
     function pollServer_() {
-        if (! workspaceClient.writeInProgress) {
+        if (!workspaceClient.writeInProgress) {
             workspaceClient.queryDatabase()
             .then((eventQueue) => {
                 runEvents_(eventQueue);
@@ -85,16 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * A row from the database.
-     * @typedef {Object} WorkspaceEvent
-     * @property {string} event The JSON of a Blockly event.
-     * @property {boolean} forward Indicates the direction to run an event.
-     */
-
-    /**
      * Run a series of events that allow the order of events on the workspace
      * to converge with the order of events on the database.
-     * @param {!Array<!WorkspaceEvent>} eventQueue An array of events and the
+     * @param {<!Array.<!WorkspaceEvent>>} eventQueue An array of events and the
      * direction they should be run.
      * @private
      */

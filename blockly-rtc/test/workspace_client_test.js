@@ -122,7 +122,7 @@ suite('WorkspaceClient', () => {
       ];
 
       const eventQueue = workspaceClient.processQueryResults_([
-        {event: JSON.stringify({mockEvent:'mockLocalEvent0'}), entryId: 'mockClient0', serverId:1}
+        {event: {mockEvent:'mockLocalEvent0'}, entryId: 'mockClient0', serverId:1}
       ]);
 
       assert.deepStrictEqual([], eventQueue);
@@ -145,7 +145,7 @@ suite('WorkspaceClient', () => {
       ];
 
       const eventQueue = workspaceClient.processQueryResults_([
-        {event: JSON.stringify({mockEvent:'mockExternalEvent0'}), entryId: 'otherClient0', serverId:1}
+        {event: {mockEvent:'mockExternalEvent0'}, entryId: 'otherClient0', serverId:1}
       ]);
 
       assert.deepStrictEqual([
@@ -179,8 +179,8 @@ suite('WorkspaceClient', () => {
         {event: {mockEvent: 'mockLocalEvent2'}, entryId:'mockClient2'}
       ];
       const eventQueue = workspaceClient.processQueryResults_([
-        {event: JSON.stringify({mockEvent:'mockLocalEvent0'}), entryId: 'mockClient0', serverId:1},
-        {event: JSON.stringify({mockEvent:'mockExternalEvent0'}), entryId: 'otherClient0', serverId:2}
+        {event: {mockEvent:'mockLocalEvent0'}, entryId: 'mockClient0', serverId:1},
+        {event: {mockEvent:'mockExternalEvent0'}, entryId: 'otherClient0', serverId:2}
       ]);
       assert.deepStrictEqual([
         {event: {mockEvent: 'mockLocalEvent2'}, forward: false},
@@ -208,9 +208,9 @@ suite('WorkspaceClient', () => {
       ];
 
       const eventQueue = workspaceClient.processQueryResults_([
-        {event: JSON.stringify({mockEvent:'mockExternalEvent0'}), entryId: 'otherClient0', serverId:1},
-        {event: JSON.stringify({mockEvent:'mockLocalEvent0'}), entryId: 'mockClient0', serverId:2},
-        {event: JSON.stringify({mockEvent:'mockExternalEvent1'}), entryId: 'otherClient1', serverId:3}
+        {event: {mockEvent:'mockExternalEvent0'}, entryId: 'otherClient0', serverId:1},
+        {event: {mockEvent:'mockLocalEvent0'}, entryId: 'mockClient0', serverId:2},
+        {event: {mockEvent:'mockExternalEvent1'}, entryId: 'otherClient1', serverId:3}
       ]);
 
       assert.deepStrictEqual([

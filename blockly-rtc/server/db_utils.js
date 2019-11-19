@@ -35,6 +35,9 @@ function queryDatabase(serverId) {
       if (err) {
         reject(err);
       } else {
+        rows.forEach((row) => {
+          row.event = JSON.parse(row.event);
+        });
         resolve(rows);
       };
     });
