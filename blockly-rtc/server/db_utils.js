@@ -31,12 +31,12 @@ const db = require('./db');
  */
 function queryDatabase(serverId) {
   return new Promise ((resolve, reject) => {
-    db.all(`SELECT * from events WHERE serverId > ${serverId};`, (err, rows) => {
+    db.all(`SELECT * from eventsdb WHERE serverId > ${serverId};`, (err, rows) => {
       if (err) {
         reject(err);
       } else {
         rows.forEach((row) => {
-          row.event = JSON.parse(row.event);
+          row.events = JSON.parse(row.events);
         });
         resolve(rows);
       };
@@ -50,47 +50,18 @@ function queryDatabase(serverId) {
  * @param {!Promise} Promise object represents the success of the write.
  * @public
  */
-function addToServer(rows) {
-  const insertQueries = [];
-  rows.forEach(function(row) {
-    insertQueries.push(createInsertStatement_(row));
-  });
+function addToServer(entry) {
 
   return new Promise((resolve, reject) => {
-    db.serialize(() => {
-
-      db.run('BEGIN TRANSACTION', (err) => {
-        if (err) {
-          console.error(err.message);
-          reject(error);
-        };
-      });
-  
-      insertQueries.forEach((insertQuery) => {
-        db.run(insertQuery, function(err) {
-          if (err) {
-            db.run('ROLLBACK');
-            console.error(err.message);
-            reject(err);
-          };
-        });
-      });
-  
-      db.run('COMMIT;');
+    db.run('INSERT INTO eventsdb(events, entryId) VALUES(?,?)',
+        [JSON.stringify(entry.events), entry.entryId], (err) => {
+      if (err) {
+        console.error(err.message);
+        reject(err);
+      };
     });
     resolve();
   });
-};
-
-/**
- * Create a SQlite query script to insert a new row.
- * @param {!Object} row serverId for the lower bound of the query.
- * @return {string} The SQlite query.
- * @private
- */
-function createInsertStatement_(row) {
-  return `INSERT INTO events(entryId, event)
-    VALUES('${row.entryId}', '${JSON.stringify(row.event)}');`;
 };
 
 module.exports.queryDatabase = queryDatabase;
