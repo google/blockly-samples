@@ -55,12 +55,12 @@ import {getEvents, writeEvents} from './api';
 export default class WorkspaceClient {
     constructor(workspaceId) {
       this.workspaceId = workspaceId;
-        this.lastSync = 0;
-        this.inProgress = [];
-        this.notSent = [];
-        this.activeChanges = [];
-        this.writeInProgress = false;
-        this.counter = 0;
+      this.lastSync = 0;
+      this.inProgress = [];
+      this.notSent = [];
+      this.activeChanges = [];
+      this.writeInProgress = false;
+      this.counter = 0;
     };
 
     /**
