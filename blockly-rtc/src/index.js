@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event instanceof Blockly.Events.Ui) {
             return;
         };
-        workspaceClient.activeChanges.push(event.toJson());
+        workspaceClient.addEvent(event.toJson());
         if (!Blockly.Events.getGroup()) {
             workspaceClient.flushEvents();
             sendChanges_();

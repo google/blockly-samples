@@ -64,6 +64,15 @@ export default class WorkspaceClient {
     };
 
     /**
+     * Add an event to activeChanges.
+     * @param {!Object} event The Blockly.Event JSON created by the client.
+     * @public
+     */
+    addEvent(event) {
+      this.activeChanges.push(event);
+    };
+
+    /**
      * Add the events in activeChanges to notSent.
      * @public
      */
@@ -80,7 +89,7 @@ export default class WorkspaceClient {
     async writeToDatabase() {
       this.beginWrite_();
       try {
-        await writeEvents(this.inProgress[0]);
+        await writeEvents(this.inProgress[this.inProgress.length - 1]);
         this.endWrite_(true);
       } catch {
         this.endWrite_(false);
@@ -177,8 +186,10 @@ export default class WorkspaceClient {
           eventQueue,
           this.createWorkspaceActions_(this.notSent.slice().reverse(), false));
         if (this.inProgress.length > 0) {
-          eventQueue.push.apply(eventQueue,this.createWorkspaceActions_(
-            this.inProgress[0].events.slice().reverse(), false));
+          this.inProgress.slice().reverse().forEach((row) => {
+            eventQueue.push.apply(eventQueue, this.createWorkspaceActions_(
+              row.events.slice().reverse(), false));
+          });
         };
         // Apply server events.
         rows.forEach((row) => {
