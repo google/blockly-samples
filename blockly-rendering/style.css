@@ -1,0 +1,57 @@
+body {
+  font-family: sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  align: center;
+}
+
+td {
+  width: 50%;
+}
+
+#comment_content {
+  height: 50%;
+  width: 100%;
+  font-family: sans-serif;
+  overflow: auto;
+}
+#code_content {
+  height: 50%;
+  width: 100%;
+  overflow: auto;
+}
+
+#blocklyDiv {
+  height: 100%;
+  width: 100%;
+}
+
+li.oldStep {
+ opacity: 65%;
+}
+
+code {
+  background-color: #eee;
+  border-radius: 3px;
+  font-family: courier, monospace;
+  padding: 0 3px;
+}
+
+li.oldStep > code {
+  background: none;
+}
+
+li.L0, li.L1, li.L2, li.L3,
+li.L5, li.L6, li.L7, li.L8 {
+  list-style-type: decimal !important;
+}
