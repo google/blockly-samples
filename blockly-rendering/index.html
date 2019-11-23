@@ -3,7 +3,7 @@
 <head>
     <title>Blockly - Making a custom renderer</title>
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=desert"></script>
     <script src="./node_modules/blockly/blockly.min.js"></script>
 
     <script type='text/javascript' src='./renderers/custom_renderer.js'></script>
@@ -17,13 +17,15 @@
 
 <body>
     <div>
-        <p>This sample shows several levels of customization of a block renderer.</p>
+        <!-- <p>This sample shows several levels of customization of a block renderer.</p> -->
         <nav>
-            <a href="/index.html">Default Renderer</a>
-            <a href="/index.html?renderer=custom_renderer">Custom Renderer</a>
-            <a href="/index.html?renderer=custom_constants">Custom Constants</a>
-            <a href="/index.html?renderer=custom_notch">Custom Notches</a>
-            <a href="/index.html?renderer=typed_connection_shapes">Typed connection shapes</a>
+            <ul>
+                <li><a href="/index.html">Default Renderer</a></li>
+                <li><a href="/index.html?renderer=custom_renderer">Custom Renderer</a></li>
+                <li><a href="/index.html?renderer=custom_constants">Custom Constants</a></li>
+                <li><a href="/index.html?renderer=custom_notch">Custom Notches</a></li>
+                <li><a href="/index.html?renderer=typed_connection_shapes">Typed connection shapes</a></li>
+            </ul>
         </nav>
     </div>
     <div>
@@ -34,8 +36,10 @@
                   </div>
                 </td>
                 <td>
-                    <h1 id="renderer_name"></h1>
-                    <div id="comment_content" wrap="on"></div>
+                    <div id="right_side">
+                        <h1 id="renderer_name"></h1>
+                        <div id="comment_content" wrap="on"></div>
+                    </div>
                     <pre id="code_content" class="content prettyprint lang-js linenums" wrap="off"></pre>
                 </td>
             </tr>

@@ -20,6 +20,8 @@ CustomNotchRenderer.prototype.makeConstants_ = function() {
   return new CustomNotchProvider();
 };
 
+// New code is below this line.
+
 /**
  * Override the `makeNotch` function to return a rectangular notch for previous
  * and next connections.

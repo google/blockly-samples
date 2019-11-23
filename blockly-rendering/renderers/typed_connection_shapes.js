@@ -1,26 +1,19 @@
 
-
-// Define a custom renderer that extends the base renderer.
 TypedConnectionShapeRenderer = function(name) {
   TypedConnectionShapeRenderer.superClass_.constructor.call(this, name);
 };
 Blockly.utils.object.inherits(TypedConnectionShapeRenderer,
     Blockly.blockRendering.Renderer);
 
-// Register your renderer by name.
 Blockly.blockRendering.register('typed_connection_shapes',
     TypedConnectionShapeRenderer);
 
-// Define a custom constants provider that extends the base constants provider.
 TypedConnectionShapeProvider = function() {
-  // Set up all of the constants from the base provider.
   TypedConnectionShapeProvider.superClass_.constructor.call(this);
 };
 Blockly.utils.object.inherits(TypedConnectionShapeProvider,
     Blockly.blockRendering.ConstantProvider);
 
-// Tell the custom renderer to use the custom constants provider instead of the
-// base constants provider.
 TypedConnectionShapeRenderer.prototype.makeConstants_ = function() {
   return new TypedConnectionShapeProvider();
 };

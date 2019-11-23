@@ -8,6 +8,8 @@ Blockly.utils.object.inherits(CustomConstantsRenderer,
 Blockly.blockRendering.register('custom_constants',
     CustomConstantsRenderer);
 
+// New code is below this line.
+
 // Define a custom constants provider that extends the base constants provider.
 CustomConstantsProvider = function() {
   // Set up all of the constants from the base provider.
