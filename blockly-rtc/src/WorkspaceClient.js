@@ -21,7 +21,6 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import {getEvents, writeEvents} from './api';
 import Blockly from 'blockly';
 
 /**
@@ -45,7 +44,7 @@ import Blockly from 'blockly';
  * client corresponds to.
  */
 export default class WorkspaceClient {
-    constructor(workspaceId) {
+    constructor(workspaceId, getEventsHandler, addEventsHandler) {
         this.workspaceId = workspaceId;
         this.lastSync = 0;
         this.inProgress = [];
@@ -53,6 +52,8 @@ export default class WorkspaceClient {
         this.activeChanges = [];
         this.writeInProgress = false;
         this.counter = 0;
+        this.getEventsHandler = getEventsHandler;
+        this.addEventsHandler = addEventsHandler;
     };
 
     /**
@@ -89,7 +90,7 @@ export default class WorkspaceClient {
     async writeToDatabase() {
         this.beginWrite_();
         try {
-            await writeEvents(this.inProgress);
+            await this.addEventsHandler(this.inProgress);
             this.endWrite_(true);
         } catch {
            this.endWrite_(false);
@@ -132,7 +133,7 @@ export default class WorkspaceClient {
      */
     async queryDatabase() {
       try {
-        const rows = await getEvents(this.lastSync);
+        const rows = await this.getEventsHandler(this.lastSync);
         return this.processQueryResults_(rows);
       } catch {
         return [];
