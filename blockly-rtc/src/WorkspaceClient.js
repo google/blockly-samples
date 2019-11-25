@@ -21,8 +21,6 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import {getEvents, writeEvents} from './api';
-
 /**
  * An action to be performed on the workspace.
  * @typedef {Object} WorkspaceAction
@@ -53,14 +51,16 @@ import {getEvents, writeEvents} from './api';
  * client corresponds to.
  */
 export default class WorkspaceClient {
-    constructor(workspaceId) {
-      this.workspaceId = workspaceId;
-      this.lastSync = 0;
-      this.inProgress = [];
-      this.notSent = [];
-      this.activeChanges = [];
-      this.writeInProgress = false;
-      this.counter = 0;
+    constructor(workspaceId, getEventsHandler, addEventsHandler) {
+        this.workspaceId = workspaceId;
+        this.lastSync = 0;
+        this.inProgress = [];
+        this.notSent = [];
+        this.activeChanges = [];
+        this.writeInProgress = false;
+        this.counter = 0;
+        this.getEventsHandler = getEventsHandler;
+        this.addEventsHandler = addEventsHandler;
     };
 
     /**
@@ -87,14 +87,14 @@ export default class WorkspaceClient {
      * @public
      */
     async writeToDatabase() {
-      this.beginWrite_();
-      try {
-        await writeEvents(this.inProgress[this.inProgress.length - 1]);
-        this.endWrite_(true);
-      } catch {
-        this.endWrite_(false);
-        throw Error('Failed to write to database.');
-      };
+        this.beginWrite_();
+        try {
+            await this.addEventsHandler(this.inProgress[this.inProgress.length - 1]);
+            this.endWrite_(true);
+        } catch {
+           this.endWrite_(false);
+           throw Error('Failed to write to database.');
+        };
     };
 
     /**
@@ -139,7 +139,7 @@ export default class WorkspaceClient {
      */
     async queryDatabase() {
       try {
-        const rows = await getEvents(this.lastSync);
+        const rows = await this.getEventsHandler(this.lastSync);
         return this.processQueryResults_(rows);
       } catch {
         return [];

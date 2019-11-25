@@ -22,6 +22,7 @@
  */
 
 import * as Blockly from 'blockly';
+import {getEvents, writeEvents} from './api';
 import WorkspaceClient from './WorkspaceClient';
 
 /**
@@ -37,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
             toolbox: document.getElementById('toolbox'),
             media: 'media/'
         });
-    var workspaceClient = new WorkspaceClient(workspace.id);
+    const workspaceClient = new WorkspaceClient(
+        workspace.id, getEvents, writeEvents);
 
     workspace.addChangeListener((event) => {
         if (event instanceof Blockly.Events.Ui) {
