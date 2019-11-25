@@ -52,15 +52,15 @@
  */
 export default class WorkspaceClient {
     constructor(workspaceId, getEventsHandler, addEventsHandler) {
-        this.workspaceId = workspaceId;
-        this.lastSync = 0;
-        this.inProgress = [];
-        this.notSent = [];
-        this.activeChanges = [];
-        this.writeInProgress = false;
-        this.counter = 0;
-        this.getEventsHandler = getEventsHandler;
-        this.addEventsHandler = addEventsHandler;
+      this.workspaceId = workspaceId;
+      this.lastSync = 0;
+      this.inProgress = [];
+      this.notSent = [];
+      this.activeChanges = [];
+      this.writeInProgress = false;
+      this.counter = 0;
+      this.getEventsHandler = getEventsHandler;
+      this.addEventsHandler = addEventsHandler;
     };
 
     /**
@@ -87,14 +87,14 @@ export default class WorkspaceClient {
      * @public
      */
     async writeToDatabase() {
-        this.beginWrite_();
-        try {
-            await this.addEventsHandler(this.inProgress[this.inProgress.length - 1]);
-            this.endWrite_(true);
-        } catch {
-           this.endWrite_(false);
-           throw Error('Failed to write to database.');
-        };
+      this.beginWrite_();
+      try {
+          await this.addEventsHandler(this.inProgress[this.inProgress.length - 1]);
+          this.endWrite_(true);
+      } catch {
+          this.endWrite_(false);
+          throw Error('Failed to write to database.');
+      };
     };
 
     /**
@@ -123,12 +123,12 @@ export default class WorkspaceClient {
      * @private
      */
     endWrite_(success) {
-        if (!success) {
-            this.notSent = this.inProgress[0].events.concat(this.notSent);
-            this.inProgress = [];
-            this.counter -=1;
-        };
-        this.writeInProgress = false;
+      if (!success) {
+          this.notSent = this.inProgress[0].events.concat(this.notSent);
+          this.inProgress = [];
+          this.counter -=1;
+      };
+      this.writeInProgress = false;
     };
 
     /**
