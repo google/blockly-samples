@@ -22,14 +22,14 @@
 
 const sqlite3 = require('sqlite3');
 
-const db = new sqlite3.Database('./events.sqlite', (err) => {
+const db = new sqlite3.Database('./eventsdb.sqlite', (err) => {
   if (err) {
     return console.error(err.message);
   };
   console.log('successful connection');
-  let sql = `CREATE TABLE IF NOT EXISTS events(
+  let sql = `CREATE TABLE IF NOT EXISTS eventsdb(
       serverId INTEGER PRIMARY KEY,
-      entryId TEXT, event BLOB);`;
+      entryId TEXT, events BLOB);`;
   db.run(sql, function(err) {
     if (err) {
       return console.error(err.message);

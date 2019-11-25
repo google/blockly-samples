@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Run a series of events that allow the order of events on the workspace
      * to converge with the order of events on the database.
-     * @param {<!Array.<!WorkspaceEvent>>} eventQueue An array of events and the
+     * @param {<!Array.<!WorkspaceAction>>} eventQueue An array of events and the
      * direction they should be run.
      * @private
      */
