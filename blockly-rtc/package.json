@@ -5,15 +5,19 @@
   "scripts": {
     "build": "npm run build:frontend",
     "build:frontend": "rimraf ./build && webpack",
-    "serve": "concurrently \"npm run serve:frontend\" \"npm run serve:backend\"",
-    "serve:backend": "node server/server.js",
+    "serve-http": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-http\"",
+    "serve-websocket": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-websocket\"",
+    "serve:backend-http": "node server/http_server.js",
+    "serve:backend-websocket": "node server/websocket_server.js",
     "serve:frontend": "webpack-dev-server",
-    "start": "npm run build && npm run serve",
+    "start-http": "npm run build && npm run serve-http",
+    "start-websocket": "npm run build && npm run serve-websocket",
     "test": "mocha test/*test.js"
   },
   "dependencies": {
     "blockly": "^2.20190722.0",
     "socket.io": "2.3.0",
+    "socket.io-client": "2.3.0",
     "sqlite3": "4.1.0"
   },
   "devDependencies": {
