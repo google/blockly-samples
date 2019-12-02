@@ -22,7 +22,7 @@
 
 const assert = require('assert');
 const sinon = require('sinon');
-const handler = require('../src/api');
+const handler = require('../src/http_handlers');
 const WorkspaceClient = require('../src/WorkspaceClient').default;
 
 suite('WorkspaceClient', () => {
@@ -247,8 +247,8 @@ suite('WorkspaceClient', () => {
       const workspaceClient = new WorkspaceClient(
         'mockClient', handler.getEvents, handler.writeEvents);
       const rows = await workspaceClient.queryDatabase();
-      assert.deepStrictEqual([], rows);
       getEventsStub.restore();
+      assert.deepStrictEqual([], rows);
     });
 
     test('Query succeeds.', async () => {
@@ -257,8 +257,8 @@ suite('WorkspaceClient', () => {
         'mockClient', handler.getEvents, handler.writeEvents);
       const spy = sinon.spy(workspaceClient, 'processQueryResults_');
       await workspaceClient.queryDatabase();
-      assert.equal(true, spy.calledWithExactly(['resolved']));
       getEventsStub.restore();
+      assert.equal(true, spy.calledWithExactly(['resolved']));
       spy.restore();
     });
   });

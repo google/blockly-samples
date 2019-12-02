@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "blockly": "^2.20190722.0",
+    "socket.io": "2.3.0",
     "sqlite3": "4.1.0"
   },
   "devDependencies": {
