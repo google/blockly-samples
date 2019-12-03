@@ -22,7 +22,7 @@
  */
 
 import * as Blockly from 'blockly';
-import {getEvents, writeEvents} from './api';
+import {getEvents, writeEvents} from './websocket_handlers';
 import WorkspaceClient from './WorkspaceClient';
 
 /**
