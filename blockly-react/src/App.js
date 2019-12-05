@@ -56,6 +56,7 @@ class App extends React.Component {
 </xml>
       `}>
             <Block type="test_react_field" />
+            <Block type="test_react_date_field" />
             <Block type="controls_ifelse" />
             <Block type="logic_compare" />
             <Block type="logic_operation" />

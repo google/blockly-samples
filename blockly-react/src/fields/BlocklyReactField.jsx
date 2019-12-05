@@ -37,7 +37,7 @@ class BlocklyReactField extends Blockly.Field {
 
   showEditor_() {
     this.div_ = Blockly.DropDownDiv.getContentDiv();
-    ReactDOM.render(<FieldRenderComponent />,
+    ReactDOM.render(this.render(),
       this.div_);
 
     var border = this.sourceBlock_.getColourBorder();
@@ -50,6 +50,10 @@ class BlocklyReactField extends Blockly.Field {
 
   dropdownDispose_() {
     ReactDOM.unmountComponentAtNode(this.div_);
+  }
+
+  render() {
+    return <FieldRenderComponent />
   }
 }
 
