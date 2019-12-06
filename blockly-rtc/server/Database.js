@@ -36,7 +36,7 @@ class Database {
    * serverId.
    * @public
    */
-  queryDatabase(serverId) {
+  query(serverId) {
     return new Promise ((resolve, reject) => {
       this.db.all(`SELECT * from eventsdb WHERE serverId > ${serverId};`,
           (err, rows) => {

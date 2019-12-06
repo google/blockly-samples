@@ -56,7 +56,7 @@ async function onConnect(user) {
   });
 
   user.on('getEvents', async (serverId, callback) => {
-    const rows = await database.queryDatabase(serverId);
+    const rows = await database.query(serverId);
     callback(rows);
   });
 

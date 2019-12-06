@@ -32,7 +32,7 @@ const PORT = 3001;
 http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
-    database.queryDatabase(parsedUrl.query.serverId)
+    database.query(parsedUrl.query.serverId)
     .then((rows) => {
       res.setHeader('Content-Type', 'application/json');
       res.statusCode = 200;
