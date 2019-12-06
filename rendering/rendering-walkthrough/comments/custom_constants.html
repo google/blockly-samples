@@ -1,8 +1,8 @@
 <p>This sample shows the minumum code needed to define a new renderer that overrides constants from the base renderer:</p>
 
 <ol>
-<li class="oldStep"> Define a renderer that extends the base renderer: <code>CustomConstantsRenderer</code> </li>
-<li class="oldStep"> Register the renderer by name: <code>'custom_constants'</code> </li>
+<li> Define a renderer that extends the base renderer: <code>CustomConstantsRenderer</code> </li>
+<li> Register the renderer by name: <code>'custom_constants'</code> </li>
 
 <li> Define a constants provider that extends the base constants provider: <code>CustomConstantsProvider</code>. It contains all of the constants needed to size a block during rendering. </li>
 <li>Call the superclass constructor to set default property values.</li>
@@ -20,3 +20,6 @@
   <p>
 For a more complete list of constants, look at the base <a href="https://github.com/google/blockly/blob/rendering-hackathon/core/renderers/common/constants.js">constants.js file</a>.
 </p>
+
+
+<a href="/index.html?renderer=custom_notch"class="nextBtn">Next</a>

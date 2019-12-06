@@ -36,19 +36,11 @@ td {
   width: 100%;
 }
 
-li.oldStep {
- opacity: 65%;
-}
-
 code {
   background-color: #eee;
   border-radius: 3px;
   font-family: courier, monospace;
   padding: 0 3px;
-}
-
-li.oldStep > code {
-  background: none;
 }
 
 li.L0, li.L1, li.L2, li.L3,
@@ -70,9 +62,19 @@ nav * {
 nav li {
     margin: 20px;
 }
-/*
-nav li a {
-    color: black;
-    text-decoration: none;
+
+.nextBtn {
+  display:inline-block;
+  padding:0.46em 1.6em;
+  border:0.1em solid #000000;
+  margin:0 0.2em 0.2em 0;
+  border-radius:0.12em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-size: 1.2em;
+  font-weight:400;
+  color:#000000;
+  background-color:#FFFFFF;
+  text-align:center;
 }
-*/
