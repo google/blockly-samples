@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <title>Blockly - Making a custom renderer</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=desert"></script>
+    <script src="./node_modules/blockly/blockly.min.js"></script>
+
+    <script type='text/javascript' src='./renderers/custom_renderer.js'></script>
+    <script type='text/javascript' src='./renderers/custom_constants.js'></script>
+    <script type='text/javascript' src='./renderers/custom_notch.js'></script>
+    <script type='text/javascript' src='./renderers/typed_connection_shapes.js'></script>
+
+    <script type='text/javascript' src='./index.js'></script>
+
+</head>
+
+<body>
+    <div>
+        <nav>
+            <ul>
+                <li><a href="/index.html">Default Renderer</a></li>
+                <li><a href="/index.html?renderer=custom_renderer">Custom Renderer</a></li>
+                <li><a href="/index.html?renderer=custom_constants">Custom Constants</a></li>
+                <li><a href="/index.html?renderer=custom_notch">Custom Notches</a></li>
+                <li><a href="/index.html?renderer=typed_connection_shapes">Typed connection shapes</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div>
+        <table >
+            <tr>
+                <td>
+                  <div id="blocklyDiv">
+                  </div>
+                </td>
+                <td>
+                    <div id="right_side">
+                        <h1 id="renderer_name"></h1>
+                        <div id="comment_content" wrap="on"></div>
+                    </div>
+                    <pre id="code_content" class="content prettyprint lang-js linenums" wrap="off"></pre>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+        <block type="controls_ifelse"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="controls_repeat_ext">
+            <value name="TIMES">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_number"></block>
+        <block type="text">
+            <field name="TEXT">Hello World!</field>
+        </block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+        <block type="logic_null" disabled="true"></block>
+        <block type="logic_ternary"></block>
+        <block type="text_charAt">
+            <value name="VALUE">
+                <block type="variables_get">
+                    <field name="VAR">text</field>
+                </block>
+            </value>
+        </block>
+    </xml>
+</body>
+
+</html>

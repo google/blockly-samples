@@ -1,0 +1,24 @@
+<p>This sample shows the minumum code needed to define a new renderer that sets connection shapes at runtime based on a connection's type checks:</p>
+
+<ol>
+  <li> Define a renderer that extends the base renderer: <code>TypedConnectionShapeRenderer</code> </li>
+  <li> Register the renderer by name: <code>'typed_connection_shapes'</code> </li>
+
+  <li> Define a constants provider that extends the base constants provider: <code>TypedConnectionShapeProvider</code>. It contains all of the constants needed to size a block during rendering. </li>
+  <li>Call the superclass constructor to set default property values.</li>
+  <li>Override <code>makeConstants_</code> to tell the custom renderer to use the custom constants provider.
+  </li>
+  <li>Define the <code>makeSquared</code> and <code>makeRounded</code> functions to return rectangular and rounded shapes respectively.
+  </li>
+  <li>Override the <code>init</code> function on the <code>TypedConnectionShapeProvider</code>:</li>
+  <ul>
+    <li>Call the superclass <code>init</code> function to set up default properties.</li>
+    <li>Create and save the new connection shapes in <code>this.SQUARED</code> and <code>this.ROUNDED</code></li>
+  </ul>
+  <li>Override the <code>shapeFor</code> function to inspect the connection's type checks array and return the correct connection shape:</li>
+  <ul>
+    <li>Return a rounded tab for inputs and outputs that accept numbers and strings.</li>
+    <li>Return a squared tab for other inputs and outputs.</li>
+    <li>Return the normal notch for previous and next connections.</li>
+  </ul>
+</ol>

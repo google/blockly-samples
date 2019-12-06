@@ -1,0 +1,26 @@
+<p>This sample shows the minumum code needed to define a new renderer that overrides connection shapes from the base renderer:</p>
+
+<ol>
+  <li> Define a renderer that extends the base renderer: <code>CustomNotchRenderer</code> </li>
+  <li> Register the renderer by name: <code>'custom_notch'</code> </li>
+
+  <li> Define a constants provider that extends the base constants provider: <code>CustomNotchProvider</code>. It contains all of the constants needed to size a block during rendering. </li>
+  <li>Call the superclass constructor to set default property values.</li>
+  <li> Override specific properties:
+    <ul>
+      <li><code>NOTCH_WIDTH</code>: the width of previous and next connection notches.</li>
+      <li><code>NOTCH_HEIGHT</code>: the height of previous and next connection notches.</li>
+    </ul>
+  </li>
+  <li>Override <code>makeConstants_</code> to tell the custom renderer to use the custom constants provider.
+  </li>
+  <li>Override the <code>makeNotch</code> function to return a rectangular notch shape for previous and next connections.
+  </li>
+  <li>Override the <code>makePuzzleTab</code> function to return a rectangular tab for input and output connections.
+  </li>
+</ol>
+
+<p><code>makeNotch</code> and <code>makePuzzleTab</code> are both called by the constants provider during initialization.
+
+
+  <a href="/index.html?renderer=typed_connection_shapes"class="nextBtn">Next</a>
