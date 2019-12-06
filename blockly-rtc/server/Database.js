@@ -20,12 +20,13 @@
  * @author navil@google.com (Navil Perez)
  */
 
+const db = require('./db');
+
 /**
  * Class for managing interactions between the server and the database.
- * @param {Object} db The SQLite database object.
  */
 class Database {
-  constructor(db) {
+  constructor() {
     this.db = db;
   };
 

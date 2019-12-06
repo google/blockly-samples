@@ -24,9 +24,8 @@ const http = require('http');
 const url = require('url');
 
 const Database = require('./Database').Database;
-const db = require('./db');
 
-const database = new Database(db);
+const database = new Database();
 const PORT = 3001;
 
 http.createServer((req, res) => {

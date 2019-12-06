@@ -25,9 +25,8 @@ const socket = require('socket.io');
 const http = require('http');
 
 const Database = require('./Database').Database;
-const db = require('./db');
 
-const database = new Database(db);
+const database = new Database();
 const WS_PORT = 3001;
  
 const server = http.createServer(function(request, response) {
