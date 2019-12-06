@@ -24,8 +24,9 @@
 const socket = require('socket.io');
 const http = require('http');
 
-const sql = require('./db_utils');
+const Database = require('./Database').Database;
 
+const database = new Database();
 const WS_PORT = 3001;
  
 const server = http.createServer(function(request, response) {
@@ -48,13 +49,13 @@ async function onConnect(user) {
   });
 
   user.on('addEvents', async (entry, callback) => {
-    const serverId = await sql.addToServer(entry);
+    const serverId = await database.addToServer(entry);
     entry.serverId = serverId;
     callback(serverId);
   });
 
   user.on('getEvents', async (serverId, callback) => {
-    const rows = await sql.queryDatabase(serverId);
+    const rows = await database.query(serverId);
     callback(rows);
   });
 

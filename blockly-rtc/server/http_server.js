@@ -23,14 +23,15 @@
 const http = require('http'); 
 const url = require('url');
 
-const sql = require('./db_utils');
+const Database = require('./Database').Database;
 
+const database = new Database();
 const PORT = 3001;
 
 http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
-    sql.queryDatabase(parsedUrl.query.serverId)
+    database.query(parsedUrl.query.serverId)
     .then((rows) => {
       res.setHeader('Content-Type', 'application/json');
       res.statusCode = 200;
@@ -47,7 +48,7 @@ http.createServer((req, res) => {
       data.push(chunk);
     });
     req.on('end', () => {
-      sql.addToServer(JSON.parse(data).rows)
+      database.addToServer(JSON.parse(data).rows)
       .then(() => {
         res.statusCode = 200;
         res.end();  
