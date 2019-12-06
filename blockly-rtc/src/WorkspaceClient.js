@@ -105,7 +105,7 @@ export default class WorkspaceClient {
      */
     beginWrite_() {
       this.writeInProgress = true;
-      const entryId = this.workspaceId.concat(this.counter);
+      const entryId = this.workspaceId + ':' + this.counter;
       this.counter +=1;
       this.inProgress.push({
         events: this.notSent,

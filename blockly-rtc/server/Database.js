@@ -55,29 +55,98 @@ class Database {
   };
 
   /**
-   * Add an entry to the database.
+   * Add entry to the database if the entry is a valid next addition.
+   * For each client, an addition is valid if the entryId is greater than the
+   * entryId of its last added entry.
+   * @param {!LocalEntry} entry The entry to be added to the database.
+   * @return {!Promise} Promise object with the serverId the entry was written
+   * to the database.
+   * @public
+   */
+  async addToServer(entry) {
+    return new Promise(async (resolve, reject) => {
+      const workspaceId = entry.entryId.split(':')[0];
+      const entryIdInt = entry.entryId.split(':')[1];
+      const lastEntryIdNumber = await this.getLastEntryIdNumber_(workspaceId);
+      if (entryIdInt > lastEntryIdNumber) {
+        try {
+          const serverId = await this.runInsertQuery_(entry);
+          resolve(serverId);
+        } catch {
+          reject('Failed to write to the database');
+        };
+      } else if (entryIdInt == lastEntryIdNumber) {
+        resolve(null);
+      } else {
+        reject('EntryId is not valid.');
+      };
+    });
+  };
+
+  /**
+   * Run query to add an entry to the database.
    * @param {!LocalEntry} entry The entry to be added to the database.
    * @return {!Promise} Promise object with the serverId for the entry if the
    * write succeeded.
    * @public
    */
-  addToServer(entry) {
-
+  runInsertQuery_(entry) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
         this.db.run('INSERT INTO eventsdb(events, entryId) VALUES(?,?)',
             [JSON.stringify(entry.events), entry.entryId], (err) => {
           if (err) {
             console.error(err.message);
-            reject(err);
+            reject('Failed to write to the database.');
           };
         });
         this.db.each(`SELECT last_insert_rowid() as serverId;`, (err, lastServerId) => {
           if (err) {
             console.error(err.message);
-            reject(err);
+            reject('Failed to retrieve serverId.');
           };
           resolve(lastServerId.serverId);
+        });
+      });
+    });
+  };
+
+  /**
+   * Get the numerical part of the last added entryId for a given client.
+   * @param {!string} workspaceId The workspaceId of the client.
+   * @return {!Promise} Promise object with the the numerical part of the
+   * entryId.
+   * @public
+   */
+  getLastEntryIdNumber_(workspaceId) {
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+
+        // Ensure client is in the database, otherwise add it.
+        this.db.all(
+            `SELECT * from clients
+            WHERE (EXISTS (SELECT 1 from clients WHERE workspaceId == ?));`,
+            [workspaceId],
+            (err, rows) => {
+          if (err) {
+            console.error(err.message);
+            reject('Failed to get last entryId number.');
+          } else if (rows.length == 0) {
+            this.db.run(`INSERT INTO clients(workspaceId, lastEntryNumber)
+                VALUES(?, -1)`, [workspaceId]);
+          };
+        });
+
+        this.db.each(
+            `SELECT lastEntryNumber from clients WHERE workspaceId = ?;`,
+            [workspaceId],
+            (err, result) => {
+          if (err) {
+            console.error(err.message);
+            reject('Failed to get last entryId number.');
+          } else {
+            resolve(result.lastEntryNumber);
+          };
         });
       });
     });
