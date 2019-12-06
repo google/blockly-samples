@@ -17,8 +17,8 @@
  */
 
 /**
- * @fileoverview Example of including Blockly using the UMD bundle
- * @author samelh@google.com (Sam El-Husseini)
+ * @fileoverview Example showing how to create and customize a renderer.
+ * @author fenichel@google.com (Rachel Fenichel)
  */
 
 document.addEventListener("DOMContentLoaded", function () {

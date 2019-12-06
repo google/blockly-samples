@@ -49,18 +49,18 @@ li.L5, li.L6, li.L7, li.L8 {
 }
 
 nav {
-    background-color: white;
-    height: 80px;
-    display: flex;
-    align-items: center;
+  background-color: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
 }
 
 nav * {
-    display: inline;
+  display: inline;
 }
 
 nav li {
-    margin: 20px;
+  margin: 20px;
 }
 
 .nextBtn {
