@@ -27,10 +27,18 @@ const db = new sqlite3.Database('./eventsdb.sqlite', (err) => {
     return console.error(err.message);
   };
   console.log('successful connection');
-  let sql = `CREATE TABLE IF NOT EXISTS eventsdb(
+  const eventsDbSql = `CREATE TABLE IF NOT EXISTS eventsdb(
       serverId INTEGER PRIMARY KEY,
       entryId TEXT, events BLOB);`;
-  db.run(sql, function(err) {
+  db.run(eventsDbSql, function(err) {
+    if (err) {
+      return console.error(err.message);
+    };
+  });
+  const clientTableSql = `CREATE TABLE IF NOT EXISTS clients(
+      workspaceId TEXT,
+      lastEntryNumber INTEGER);`
+  db.run(clientTableSql, function(err) {
     if (err) {
       return console.error(err.message);
     };
