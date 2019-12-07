@@ -139,17 +139,18 @@ export default class WorkspaceClient {
     };
   };
 
-  /**
-   * Change status of WorkspaceClient in preparation for the network call.
-   * Set writeInProgress to true, adds a LocalEntry to inProgress based on
-   * the events that were notSent, and clears the notSent array.
-   * @private
-   */
-  beginWrite_() {
-    this.writeInProgress = true;
-    const entryId = this.workspaceId.concat(this.counter);
-    this.counter +=1;
-    this.inProgress.push({
+
+    /**
+     * Change status of WorkspaceClient in preparation for the network call.
+     * Set writeInProgress to true, adds a LocalEntry to inProgress based on
+     * the events that were notSent, and clears the notSent array.
+     * @private
+     */
+    beginWrite_() {
+      this.writeInProgress = true;
+      const entryId = this.workspaceId + ':' + this.counter;
+      this.counter += 1;
+      this.inProgress.push({
         events: this.notSent,
         entryId: entryId
     });
