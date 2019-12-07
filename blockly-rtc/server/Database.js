@@ -88,7 +88,7 @@ class Database {
    * @param {!LocalEntry} entry The entry to be added to the database.
    * @return {!Promise} Promise object with the serverId for the entry if the
    * write succeeded.
-   * @public
+   * @private
    */
   runInsertQuery_(entry) {
     return new Promise((resolve, reject) => {
@@ -116,7 +116,7 @@ class Database {
    * @param {!string} workspaceId The workspaceId of the client.
    * @return {!Promise} Promise object with the the numerical part of the
    * entryId.
-   * @public
+   * @private
    */
   getLastEntryIdNumber_(workspaceId) {
     return new Promise((resolve, reject) => {
