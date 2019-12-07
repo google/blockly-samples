@@ -52,6 +52,7 @@ async function onConnect(user) {
     const serverId = await database.addToServer(entry);
     entry.serverId = serverId;
     callback(serverId);
+    io.emit('broadcastEvents', [entry]);
   });
 
   user.on('getEvents', async (serverId, callback) => {

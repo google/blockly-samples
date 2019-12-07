@@ -48,7 +48,7 @@ http.createServer((req, res) => {
       data.push(chunk);
     });
     req.on('end', () => {
-      database.addToServer(JSON.parse(data).rows)
+      database.addToServer(JSON.parse(data).entry)
       .then(() => {
         res.statusCode = 200;
         res.end();  

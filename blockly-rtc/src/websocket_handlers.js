@@ -25,6 +25,21 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');
 
+/**
+ * A local representation of an entry in the database.
+ * @typedef {Object} LocalEntry
+ * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
+ * format.
+ * @property {string} entryId The id assigned to an event by the client.
+ */
+
+/**
+ * Query the database for rows since the given server id.
+ * @param {number} serverId serverId for the lower bound of the query.
+ * @return {!Promise} Promise object that represents the rows of events since
+ * the given serverId.
+ * @public
+ */
 export async function getEvents(serverId) {
   return new Promise((resolve, reject) => {
     socket.emit('getEvents', serverId, (rows) => {
@@ -33,10 +48,29 @@ export async function getEvents(serverId) {
   });
 };
 
+/**
+ * Add an entry to the database.
+ * @param {!LocalEntry} entry The entry to be added to the database.
+ * @return {!Promise} Promise object that represents the success of the write.
+ * @public
+ */
 export async function writeEvents(entry) {
   return new Promise((resolve, reject) => {
-    socket.emit('addEvents', entry, (serverId) => {
-      resolve(serverId);
+    socket.emit('addEvents', entry, () => {
+      resolve();
     });
+  });
+};
+
+/**
+ * Listen for events broadcast by the server.
+ * @param {!Function} callback The callback handler that passes the events to
+ * the workspace.
+ * @return {!Promise} Promise object that represents the success of the write.
+ * @public
+ */
+export function getBroadcast(callback) {
+  socket.on('broadcastEvents', (rows)=> {
+    callback(rows);
   });
 };

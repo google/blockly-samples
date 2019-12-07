@@ -22,7 +22,7 @@
  */
 
 import * as Blockly from 'blockly';
-import {getEvents, writeEvents} from './websocket_handlers';
+import {getEvents, writeEvents} from './http_handlers';
 import WorkspaceClient from './WorkspaceClient';
 
 /**
@@ -33,65 +33,29 @@ import WorkspaceClient from './WorkspaceClient';
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const workspace = Blockly.inject('blocklyDiv',
-        {
-            toolbox: document.getElementById('toolbox'),
-            media: 'media/'
-        });
+  const workspace = Blockly.inject('blocklyDiv',
+    {
+        toolbox: document.getElementById('toolbox'),
+        media: 'media/'
+    });
     const workspaceClient = new WorkspaceClient(
-        workspace.id, getEvents, writeEvents);
+      workspace.id, getEvents, writeEvents);
+
+    workspaceClient.listener.on('runEvents', (eventQueue) => {
+        runEvents_(eventQueue);
+    });
+
+    workspaceClient.initiateWorkspace();
 
     workspace.addChangeListener((event) => {
         if (event instanceof Blockly.Events.Ui) {
-            return;
+          return;
         };
-        workspaceClient.addEvent(event.toJson());
+        workspaceClient.activeChanges.push(event.toJson());
         if (!Blockly.Events.getGroup()) {
-            workspaceClient.flushEvents();
-            sendChanges_();
+          workspaceClient.flushEvents();
         };
     });
-    pollServer_();
-
-    /**
-     * Signal WorkspaceClient to send local changes to the server.
-     * Continues signalling the WorkspaceClient until all local changes have
-     * been sent.
-     * @private
-     */
-    function sendChanges_() {
-        if (workspaceClient.writeInProgress) {
-            return;
-        };
-        if (workspaceClient.notSent.length == 0) {
-            return;
-        };
-        workspaceClient.writeToDatabase()
-        .then(() => {
-            sendChanges_();
-        })
-        .catch(() => {
-            console.error('Failed to write to database.');
-        });
-    };
-
-    /**
-     * Periodically signal the WorkspaceClient to query the database and call
-     * runEvents_() with the result of the query.
-     * @private
-     */
-    function pollServer_() {
-        if (!workspaceClient.writeInProgress) {
-            workspaceClient.queryDatabase()
-            .then((eventQueue) => {
-                runEvents_(eventQueue);
-            });
-        };
-        var timeInterval = 5000;
-        setTimeout(() => {
-            pollServer_();
-        }, timeInterval);
-    };
 
     /**
      * Run a series of events that allow the order of events on the workspace
