@@ -32,4 +32,4 @@ npm run start
 
 ## Browse
 
-Open [http://localhost:3000/](http://localhost:3000/)
+Open [http://localhost:3000/index.html](http://localhost:3000/index.html)
