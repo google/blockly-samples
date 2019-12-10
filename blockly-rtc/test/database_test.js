@@ -89,8 +89,8 @@ suite('Database', () => {
       this.getLastEntryIdStub.resolves(2);
       this.runInsertQueryStub.resolves();
       const entry = {
-          entryId: 'mockEntry:1',
-          events: [JSON.stringify({mockEvent:'event'})],
+        entryId: 'mockEntry:1',
+        events: [JSON.stringify({mockEvent:'event'})],
       };
       assert.rejects(database.addToServer(entry));
       assert.equal(true, this.runInsertQueryStub.notCalled);
