@@ -30,12 +30,12 @@ const database = new Database();
 const WS_PORT = 3001;
  
 const server = http.createServer(function(request, response) {
-    console.log((new Date()) + ' Received request for ' + request.url);
-    response.writeHead(404);
-    response.end();
+  console.log((new Date()) + ' Received request for ' + request.url);
+  response.writeHead(404);
+  response.end();
 });
 server.listen(WS_PORT, function() {
-    console.log((new Date()) + ' Server is listening on port 3001');
+  console.log((new Date()) + ' Server is listening on port 3001');
 });
 
 io = socket(server);
@@ -59,5 +59,4 @@ async function onConnect(user) {
     const rows = await database.query(serverId);
     callback(rows);
   });
-
 };
