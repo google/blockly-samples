@@ -34,42 +34,42 @@ import WorkspaceClient from './WorkspaceClient';
 
 document.addEventListener('DOMContentLoaded', () => {
   const workspace = Blockly.inject('blocklyDiv',
-    {
+      {
         toolbox: document.getElementById('toolbox'),
         media: 'media/'
-    });
-    const workspaceClient = new WorkspaceClient(
+      });
+  const workspaceClient = new WorkspaceClient(
       workspace.id, getEvents, writeEvents);
 
-    workspaceClient.listener.on('runEvents', (eventQueue) => {
-        runEvents_(eventQueue);
-    });
+  workspaceClient.listener.on('runEvents', (eventQueue) => {
+    runEvents_(eventQueue);
+  });
 
-    workspaceClient.initiateWorkspace();
+  workspaceClient.initiateWorkspace();
 
-    workspace.addChangeListener((event) => {
-        if (event instanceof Blockly.Events.Ui) {
-          return;
-        };
-        workspaceClient.activeChanges.push(event.toJson());
-        if (!Blockly.Events.getGroup()) {
-          workspaceClient.flushEvents();
-        };
-    });
-
-    /**
-     * Run a series of events that allow the order of events on the workspace
-     * to converge with the order of events on the database.
-     * @param {<!Array.<!WorkspaceAction>>} eventQueue An array of events and the
-     * direction they should be run.
-     * @private
-     */
-    function runEvents_(eventQueue) {
-        eventQueue.forEach((event)=> {
-            const blocklyEvent = Blockly.Events.fromJson(event.event, workspace);
-            Blockly.Events.disable();
-            blocklyEvent.run(event.forward);
-            Blockly.Events.enable();
-        });
+  workspace.addChangeListener((event) => {
+    if (event instanceof Blockly.Events.Ui) {
+      return;
     };
+    workspaceClient.activeChanges.push(event.toJson());
+    if (!Blockly.Events.getGroup()) {
+      workspaceClient.flushEvents();
+    };
+  });
+
+  /**
+   * Run a series of events that allow the order of events on the workspace
+   * to converge with the order of events on the database.
+   * @param {<!Array.<!WorkspaceAction>>} eventQueue An array of events and the
+   * direction they should be run.
+   * @private
+   */
+  function runEvents_(eventQueue) {
+    eventQueue.forEach((event)=> {
+      const blocklyEvent = Blockly.Events.fromJson(event.event, workspace);
+      Blockly.Events.disable();
+      blocklyEvent.run(event.forward);
+      Blockly.Events.enable();
+    });
+  };
 });
