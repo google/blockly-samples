@@ -23,7 +23,7 @@ When creating a Codelab you have two authoring options:
 In this codelab we are going to use the second option and author our codelab using a markdown file. This gives us the flexibility of using our markdown file for other things and also storing it in our github repo with any code that might be used for a tutorial. 
 
 Here is an example image of another CodeLab that I created:
-![image_caption](img/codelabexample.png)
+![image_caption](assets/codelabexample.png)
 
 
 **Resources:** 
