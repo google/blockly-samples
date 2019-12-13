@@ -71,6 +71,7 @@ class Database {
       if (entryIdInt > lastEntryIdNumber) {
         try {
           const serverId = await this.runInsertQuery_(entry);
+          await this.updateLastEntryIdNumber_(workspaceId, entryIdInt);
           resolve(serverId);
         } catch {
           reject('Failed to write to the database');
@@ -107,6 +108,28 @@ class Database {
           };
           resolve(lastServerId.serverId);
         });
+      });
+    });
+  };
+
+  /**
+   * Update lastEntryIdNumber in the clients table for a given client.
+   * @param {!string} workspaceId The workspaceId of the client.
+   * @param {!number} entryIdNumber The numeric part of the entryId.
+   * @return {!Promise} Promise object represents the success of the update.
+   * @private
+   */
+  updateLastEntryIdNumber_(workspaceId, entryIdNumber) {
+    return new Promise((resolve, reject) => {
+      this.db.run(`UPDATE clients SET lastEntryNumber = ?
+          WHERE workspaceId = ?;`,
+          [entryIdNumber, workspaceId],
+          async (err) => {
+        if (err) {
+          console.error(err.message);
+          reject('Failed update clients table.');
+        };
+        resolve();
       });
     });
   };
