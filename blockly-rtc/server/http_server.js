@@ -32,10 +32,10 @@ http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
     database.query(parsedUrl.query.serverId)
-    .then((rows) => {
+    .then((entries) => {
       res.setHeader('Content-Type', 'application/json');
       res.statusCode = 200;
-      res.write(JSON.stringify({ rows }));  
+      res.write(JSON.stringify({ entries }));  
       res.end();
     })
     .catch(() => {
@@ -48,7 +48,7 @@ http.createServer((req, res) => {
       data.push(chunk);
     });
     req.on('end', () => {
-      database.addToServer(JSON.parse(data).rows)
+      database.addToServer(JSON.parse(data).entry)
       .then(() => {
         res.statusCode = 200;
         res.end();  

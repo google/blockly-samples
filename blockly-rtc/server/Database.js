@@ -31,24 +31,24 @@ class Database {
   };
 
   /**
-   * Query the database for rows since the given server id.
+   * Query the database for entries since the given server id.
    * @param {number} serverId serverId for the lower bound of the query.
-   * @return {!Promise} Promise object represents the rows since the last given
-   * serverId.
+   * @return {!Promise} Promise object represents the entries since the last
+   * given serverId.
    * @public
    */
   query(serverId) {
     return new Promise ((resolve, reject) => {
       this.db.all(`SELECT * from eventsdb WHERE serverId > ${serverId};`,
-          (err, rows) => {
+          (err, entries) => {
         if (err) {
           console.error(err.message);
           reject('Failed to query the database.');
         } else {
-          rows.forEach((row) => {
-            row.events = JSON.parse(row.events);
+          entries.forEach((entry) => {
+            entry.events = JSON.parse(entry.events);
           });
-          resolve(rows);
+          resolve(entries);
         };
       });
     });
@@ -150,11 +150,11 @@ class Database {
             `SELECT * from clients
             WHERE (EXISTS (SELECT 1 from clients WHERE workspaceId == ?));`,
             [workspaceId],
-            (err, rows) => {
+            (err, entries) => {
           if (err) {
             console.error(err.message);
             reject('Failed to get last entryId number.');
-          } else if (rows.length == 0) {
+          } else if (entries.length == 0) {
             this.db.run(`INSERT INTO clients(workspaceId, lastEntryNumber)
                 VALUES(?, -1)`, [workspaceId]);
           };

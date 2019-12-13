@@ -52,10 +52,11 @@ async function onConnect(user) {
     const serverId = await database.addToServer(entry);
     entry.serverId = serverId;
     callback(serverId);
+    io.emit('broadcastEvents', [entry]);
   });
 
   user.on('getEvents', async (serverId, callback) => {
-    const rows = await database.query(serverId);
-    callback(rows);
+    const entries = await database.query(serverId);
+    callback(entries);
   });
 };
