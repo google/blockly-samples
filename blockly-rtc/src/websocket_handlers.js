@@ -34,16 +34,16 @@ const socket = io('http://localhost:3001');
  */
 
 /**
- * Query the database for rows since the given server id.
+ * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
- * @return {!Promise} Promise object that represents the rows of events since
+ * @return {!Promise} Promise object that represents the entries of events since
  * the given serverId.
  * @public
  */
 export async function getEvents(serverId) {
   return new Promise((resolve, reject) => {
-    socket.emit('getEvents', serverId, (rows) => {
-      resolve(rows);
+    socket.emit('getEvents', serverId, (entries) => {
+      resolve(entries);
     });
   });
 };
@@ -70,7 +70,7 @@ export async function writeEvents(entry) {
  * @public
  */
 export function getBroadcast(callback) {
-  socket.on('broadcastEvents', (rows)=> {
-    callback(rows);
+  socket.on('broadcastEvents', (entries)=> {
+    callback(entries);
   });
 };

@@ -141,7 +141,7 @@ suite('WorkspaceClient', () => {
   });
 
   suite('processQueryResults_()', () => {
-    test('Rows is empty.', () => {
+    test('Entries is empty.', () => {
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
       workspaceClient.inProgress = [
@@ -165,7 +165,7 @@ suite('WorkspaceClient', () => {
       ], workspaceClient.notSent);
     });
 
-    test('Rows contains all local events.', () => {
+    test('Entries contain all local events.', () => {
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
       workspaceClient.inProgress = [
@@ -189,7 +189,7 @@ suite('WorkspaceClient', () => {
       ], workspaceClient.notSent);
     });
 
-    test('Rows contains no local changes.', () => {
+    test('Entries contain no local changes.', () => {
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
       workspaceClient.inProgress = [
@@ -224,7 +224,7 @@ suite('WorkspaceClient', () => {
       ], workspaceClient.notSent);
     });
       
-    test('Rows contains local changes followed by external changes.', () => {
+    test('Entries contain local changes followed by external changes.', () => {
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
       workspaceClient.inProgress = [
@@ -261,7 +261,7 @@ suite('WorkspaceClient', () => {
       ], workspaceClient.notSent);
     });
 
-    test('Rows contains local changes sandwiched by external changes.', () => {
+    test('Entries contain local changes sandwiched by external changes.', () => {
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
       workspaceClient.inProgress = [
@@ -362,9 +362,9 @@ suite('WorkspaceClient', () => {
       const getEventsStub = sinon.stub(handler, 'getEvents').rejects();
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
-      const rows = await workspaceClient.queryDatabase_();
+      const entries = await workspaceClient.queryDatabase_();
       getEventsStub.restore();
-      assert.deepStrictEqual([], rows);
+      assert.deepStrictEqual([], entries);
     });
 
     test('Query succeeds.', async () => {
@@ -372,9 +372,9 @@ suite('WorkspaceClient', () => {
       .resolves(['resolved']);
       const workspaceClient = new WorkspaceClient(
           'mockClient', handler.getEvents, handler.writeEvents);
-      const rows = await workspaceClient.queryDatabase_();
+      const entries = await workspaceClient.queryDatabase_();
       getEventsStub.restore();
-      assert.deepStrictEqual(['resolved'], rows);
+      assert.deepStrictEqual(['resolved'], entries);
     });
   });
 

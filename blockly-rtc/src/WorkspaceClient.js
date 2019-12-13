@@ -39,8 +39,8 @@ import EventEmitter from 'events';
  */
 
 /**
- * A row from the database.
- * @typedef {Object} Row
+ * An entry from the database.
+ * @typedef {Object} Entry
  * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
  * format.
  * @property {string} entryId The id assigned to an event by the client.
@@ -180,14 +180,14 @@ export default class WorkspaceClient {
    * @private
    */
   async pollServer_() {
-    const rows = await this.queryDatabase_();
-    await this.addServerEvents_(rows);
-    this.pollServer_();
+    const entries = await this.queryDatabase_();
+    await this.addServerEvents_(entries);
+    setTimeout(() => {this.pollServer_()}, 5000);
   };
 
   /**
    * Trigger an API call to query events from the database.
-   * @returns {<!Array.<!Row>>} The result of the query.
+   * @returns {<!Array.<!Entry>>} The result of the query.
    * @public
    */
   async queryDatabase_() {
@@ -202,7 +202,8 @@ export default class WorkspaceClient {
    * Add newServerEvents to the end of this.serverEvents and initiate process of
    * applying server events to the workspace if the newServerEvents are recieved
    * in the correct order.
-   * @param {<!Array.<!row>>} newServerEvents The events recieved from the server.
+   * @param {<!Array.<!Entry>>} newServerEvents The events recieved from the
+   * server.
    * @throws Throws an error if newServerEvents are not recieved in the correct
    * order.
    * @private
@@ -214,7 +215,7 @@ export default class WorkspaceClient {
     if (newServerEvents[0].serverId != this.lastSync + 1) {
       newServerEvents = await this.queryDatabase_();
     };
-    this.lastSync = newServerEvents[newServerEvents.length-1].serverId;
+    this.lastSync = newServerEvents[newServerEvents.length - 1].serverId;
     this.serverEvents.push.apply(this.serverEvents, newServerEvents);
     this.updateWorkspace_();
   };
@@ -239,57 +240,56 @@ export default class WorkspaceClient {
   };
 
   /**
-   * Compare the order of events in the rows retrieved from the database to
+   * Compare the order of events in the entries retrieved from the database to
    * the stacks of local-only changes and provide a series of steps that
    * will allow the server and local workspace to converge.
-   * @param {<!Array.<!Row>>} rows Rows of event entries retrieved by
-   * querying the database.
+   * @param {<!Array.<!Entry>>} entries Entries retrieved from the database.
    * @returns {!Array.<!WorkspaceAction>>} eventQueue An array of events and the
    * direction they should be run.
    * @private
    */
-  processQueryResults_(rows) {
+  processQueryResults_(entries) {
     const eventQueue = [];
 
-    if (rows.length == 0) {
+    if (entries.length == 0) {
       return eventQueue;
     };
 
-    this.lastSync = rows[rows.length - 1].serverId;
+    this.lastSync = entries[entries.length - 1].serverId;
 
     // No local changes.
     if (this.notSent.length == 0 && this.inProgress.length == 0) {
-      rows.forEach((row) => {
+      entries.forEach((entry) => {
         eventQueue.push.apply(
-            eventQueue, this.createWorkspaceActions_(row.events, true));
+            eventQueue, this.createWorkspaceActions_(entry.events, true));
       });
       return eventQueue;
     };
 
     // Common root, remove common events from server events.
     if (this.inProgress.length > 0
-        && rows[0].entryId == this.inProgress[0].entryId) {
-      rows.shift();
+        && entries[0].entryId == this.inProgress[0].entryId) {
+      entries.shift();
       this.inProgress = [];
     };
 
-    if (rows.length > 0) {
+    if (entries.length > 0) {
       // Undo local events.
       eventQueue.push.apply(
           eventQueue,
           this.createWorkspaceActions_(this.notSent.slice().reverse(), false));
       if (this.inProgress.length > 0) {
-        this.inProgress.slice().reverse().forEach((row) => {
+        this.inProgress.slice().reverse().forEach((entry) => {
           eventQueue.push.apply(eventQueue, this.createWorkspaceActions_(
-              row.events.slice().reverse(), false));
+              entry.events.slice().reverse(), false));
         });
       };
       // Apply server events.
-      rows.forEach((row) => {
+      entries.forEach((entry) => {
         eventQueue.push.apply(
-          eventQueue, this.createWorkspaceActions_(row.events, true));
+          eventQueue, this.createWorkspaceActions_(entry.events, true));
         if (this.inProgress.length > 0
-            && row.entryId == this.inProgress[0].entryId) {
+            && entry.entryId == this.inProgress[0].entryId) {
           this.inProgress.shift();
         };
       });
