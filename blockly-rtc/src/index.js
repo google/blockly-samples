@@ -25,13 +25,6 @@ import * as Blockly from 'blockly';
 import {getEvents, writeEvents} from './http_handlers';
 import WorkspaceClient from './WorkspaceClient';
 
-/**
- * An action to be performed on the workspace.
- * @typedef {Object} WorkspaceAction
- * @property {!Object} event The JSON of a Blockly event.
- * @property {boolean} forward Indicates the direction to run an event.
- */
-
 document.addEventListener('DOMContentLoaded', () => {
   const workspace = Blockly.inject('blocklyDiv',
       {

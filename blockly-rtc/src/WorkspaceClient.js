@@ -24,30 +24,6 @@
 import EventEmitter from 'events';
 
 /**
- * An action to be performed on the workspace.
- * @typedef {Object} WorkspaceAction
- * @property {!Object} event The JSON of a Blockly event.
- * @property {boolean} forward Indicates the direction to run an event.
- */
-
-/**
- * A local representation of an entry in the database.
- * @typedef {Object} LocalEntry
- * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
- * format.
- * @property {string} entryId The id assigned to an event by the client.
- */
-
-/**
- * An entry from the database.
- * @typedef {Object} Entry
- * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
- * format.
- * @property {string} entryId The id assigned to an event by the client.
- * @property {string} serverId The id assigned to an event by the server.
- */
-
-/**
  * Class for managing events between the workspace and the server.
  * @param {string} workspaceId The id of the Blockly.Workspace instance this
  * client corresponds to.
