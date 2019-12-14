@@ -21,9 +21,17 @@
  */
 
 /**
- * Query the database for rows since the given server id.
+ * A local representation of an entry in the database.
+ * @typedef {Object} LocalEntry
+ * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
+ * format.
+ * @property {string} entryId The id assigned to an event by the client.
+ */
+
+/**
+ * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
- * @return {!Array.<!Object>} Rows of events since the given serverId.
+ * @return {<!Array.<!Entry>>} Entries since the given serverId.
  * @throws Will throw an error if the response status code is not 200.
  * @public
  */
@@ -31,23 +39,23 @@ export async function getEvents(serverId) {
   const response = await fetch('/api/events/query?serverId=' + serverId);
   const responseJson = await response.json();
   if (response.status === 200) {
-    return responseJson.rows;
+    return responseJson.entries;
   } else {
     throw 'Failed to query database.';
   };
 };
 
 /**
- * Add rows to database.
- * @param {!Array.<!Object>} rows The rows of events to be added to the
+ * Add an entry to database.
+ * @param {!LocalEntry} entry The LocalEntry objects to be added to the
  * database.
  * @throws Will throw an error if the response status code is not 200.
  * @public
  */
-export async function writeEvents(rows) {
+export async function writeEvents(entry) {
   const response = await fetch('/api/events/add', {
     method: 'POST',
-    body: JSON.stringify({ rows })
+    body: JSON.stringify({ entry })
   });
   if (response.status === 200) {
     return;

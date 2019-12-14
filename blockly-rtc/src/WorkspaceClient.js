@@ -21,13 +21,15 @@
  * @author navil@google.com (Navil Perez)
  */
 
+import EventEmitter from 'events';
+
 /**
  * Class for managing events between the workspace and the server.
  * @param {string} workspaceId The id of the Blockly.Workspace instance this
  * client corresponds to.
  */
 export default class WorkspaceClient {
-  constructor(workspaceId, getEventsHandler, addEventsHandler) {
+  constructor(workspaceId, getEventsHandler, addEventsHandler, broadcastEventsHandler) {
     this.workspaceId = workspaceId;
     this.lastSync = 0;
     this.inProgress = [];
@@ -35,8 +37,30 @@ export default class WorkspaceClient {
     this.activeChanges = [];
     this.writeInProgress = false;
     this.counter = 0;
+    this.serverEvents = [];
+    this.updateInProgress = false;
     this.getEventsHandler = getEventsHandler;
     this.addEventsHandler = addEventsHandler;
+    this.broadcastEventsHandler = broadcastEventsHandler;
+    this.listener = new EventEmitter();
+  };  
+
+
+  /**
+   * Initiate the workspace by running all stored events and activating the
+   * handling of recieving events from the server.
+   * @public
+   */
+  async initiateWorkspace() {
+    // TODO: Get an SVG of the current blocks on the workspace instead of
+    // replaying history.
+    const events = await this.getEventsHandler(0);
+    this.addServerEvents_(events);
+    if (this.broadcastEventsHandler) {
+      this.broadcastEventsHandler(this.addServerEvents_.bind(this));
+    } else {
+      this.pollServer_();
+    };
   };
 
   /**
@@ -49,20 +73,38 @@ export default class WorkspaceClient {
   };
 
   /**
-   * Add the events in activeChanges to notSent.
+   * Add the events in activeChanges to notSent. Initiates process for sending
+   * local changes to the database.
    * @public
    */
   flushEvents() {
     this.notSent = this.notSent.concat(this.activeChanges);
     this.activeChanges = [];
+    this.updateServer_();
+  };
+
+  /**
+   * Send local changes to the server. Continuously runs until all local changes
+   * have been sent.
+   * @private
+   */
+  async updateServer_() {
+    if (this.writeInProgress || this.notSent.length == 0) {
+      return;
+    };
+    this.writeInProgress = true;
+    while (this.notSent.length > 0) {
+      await this.writeToDatabase_();
+    };
+    this.writeInProgress = false;
   };
 
   /**
    * Trigger an API call to write events to the database.
    * @throws Throws an error if the write was not successful.
-   * @public
+   * @private
    */
-  async writeToDatabase() {
+  async writeToDatabase_() {
     this.beginWrite_();
     try {
       await this.addEventsHandler(this.inProgress[this.inProgress.length - 1]);
@@ -73,6 +115,7 @@ export default class WorkspaceClient {
     };
   };
 
+
   /**
    * Change status of WorkspaceClient in preparation for the network call.
    * Set writeInProgress to true, adds a LocalEntry to inProgress based on
@@ -82,11 +125,11 @@ export default class WorkspaceClient {
   beginWrite_() {
     this.writeInProgress = true;
     const entryId = this.workspaceId + ':' + this.counter;
-    this.counter +=1;
+    this.counter += 1;
     this.inProgress.push({
       events: this.notSent,
       entryId: entryId
-    }); 
+    });
     this.notSent = [];
   };
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
@@ -102,88 +145,138 @@ export default class WorkspaceClient {
     if (!success) {
       this.notSent = this.inProgress[0].events.concat(this.notSent);
       this.inProgress = [];
-      this.counter -=1;
+      this.counter -= 1;
     };
     this.writeInProgress = false;
   };
 
   /**
+   * Periodically query the database for new server events and add them to
+   * serverEvents.
+   * @private
+   */
+  async pollServer_() {
+    const entries = await this.queryDatabase_();
+    await this.addServerEvents_(entries);
+    setTimeout(() => {this.pollServer_()}, 5000);
+  };
+
+  /**
    * Trigger an API call to query events from the database.
-   * @returns {<!Array.<!Row>>} The result of processQueryResults_() or an
-   * empty array if the API call fails.
+   * @returns {<!Array.<!Entry>>} The result of the query.
    * @public
    */
-  async queryDatabase() {
+  async queryDatabase_() {
     try {
-      const rows = await this.getEventsHandler(this.lastSync);
-      return this.processQueryResults_(rows);
+      return await this.getEventsHandler(this.lastSync);
     } catch {
       return [];
     };
   };
 
   /**
-   * Compare the order of events in the rows retrieved from the database to
+   * Add newServerEvents to the end of this.serverEvents and initiate process of
+   * applying server events to the workspace if the newServerEvents are recieved
+   * in the correct order.
+   * @param {<!Array.<!Entry>>} newServerEvents The events recieved from the
+   * server.
+   * @throws Throws an error if newServerEvents are not recieved in the correct
+   * order.
+   * @private
+   */
+  async addServerEvents_(newServerEvents) {
+    if (newServerEvents.length == 0) {
+      return;
+    }
+    if (newServerEvents[0].serverId != this.lastSync + 1) {
+      newServerEvents = await this.queryDatabase_();
+    };
+    this.lastSync = newServerEvents[newServerEvents.length - 1].serverId;
+    this.serverEvents.push.apply(this.serverEvents, newServerEvents);
+    this.updateWorkspace_();
+  };
+
+  /**
+   * Send server events to the local workspace. Continuously runs until all
+   * server events have been sent.
+   * @private
+   */
+  async updateWorkspace_() {
+    if (this.updateInProgress || this.serverEvents == 0) {
+      return;
+    };
+    this.updateInProgress = true;
+    while (this.serverEvents.length > 0) {
+      const newServerEvents = this.serverEvents;
+      this.serverEvents = [];
+      const eventQueue = await this.processQueryResults_(newServerEvents);
+      this.updateInProgress = false;
+      this.listener.emit('runEvents', eventQueue);
+    };
+  };
+
+  /**
+   * Compare the order of events in the entries retrieved from the database to
    * the stacks of local-only changes and provide a series of steps that
    * will allow the server and local workspace to converge.
-   * @param {<!Array.<!Row>>} rows Rows of event entries retrieved by
-   * querying the database.
+   * @param {<!Array.<!Entry>>} entries Entries retrieved from the database.
    * @returns {!Array.<!WorkspaceAction>>} eventQueue An array of events and the
    * direction they should be run.
    * @private
    */
-  processQueryResults_(rows) {
+  processQueryResults_(entries) {
     const eventQueue = [];
 
-    if (rows.length == 0) {
+    if (entries.length == 0) {
       return eventQueue;
     };
 
-    this.lastSync = rows[rows.length - 1].serverId;
+    this.lastSync = entries[entries.length - 1].serverId;
 
     // No local changes.
     if (this.notSent.length == 0 && this.inProgress.length == 0) {
-      rows.forEach((row) => {
+      entries.forEach((entry) => {
         eventQueue.push.apply(
-            eventQueue, this.createWorkspaceActions_(row.events, true));
+            eventQueue, this.createWorkspaceActions_(entry.events, true));
       });
       return eventQueue;
     };
 
     // Common root, remove common events from server events.
     if (this.inProgress.length > 0
-        && rows[0].entryId == this.inProgress[0].entryId) {
-      rows.shift();
+        && entries[0].entryId == this.inProgress[0].entryId) {
+      entries.shift();
       this.inProgress = [];
     };
 
-    if (rows.length > 0) {
+    if (entries.length > 0) {
       // Undo local events.
       eventQueue.push.apply(
-        eventQueue,
-        this.createWorkspaceActions_(this.notSent.slice().reverse(), false));
+          eventQueue,
+          this.createWorkspaceActions_(this.notSent.slice().reverse(), false));
       if (this.inProgress.length > 0) {
-        this.inProgress.slice().reverse().forEach((row) => {
+        this.inProgress.slice().reverse().forEach((entry) => {
           eventQueue.push.apply(eventQueue, this.createWorkspaceActions_(
-            row.events.slice().reverse(), false));
+              entry.events.slice().reverse(), false));
         });
       };
       // Apply server events.
-      rows.forEach((row) => {
+      entries.forEach((entry) => {
         eventQueue.push.apply(
-          eventQueue, this.createWorkspaceActions_(row.events, true));
-        if (this.inProgress.length > 0 && row.entryId == this.inProgress[0].entryId) {
+          eventQueue, this.createWorkspaceActions_(entry.events, true));
+        if (this.inProgress.length > 0
+            && entry.entryId == this.inProgress[0].entryId) {
           this.inProgress.shift();
         };
       });
       // Reapply remaining local changes.
       if (this.inProgress.length > 0) {
         eventQueue.push.apply(
-          eventQueue,
-          this.createWorkspaceActions_(this.inProgress[0].events, true));
+            eventQueue,
+            this.createWorkspaceActions_(this.inProgress[0].events, true));
       };
       eventQueue.push.apply(
-        eventQueue, this.createWorkspaceActions_(this.notSent, true));
+          eventQueue, this.createWorkspaceActions_(this.notSent, true));
     };
     return eventQueue;
   };
