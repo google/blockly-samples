@@ -28,12 +28,12 @@ const Database = require('./Database').Database;
 const database = new Database();
 const PORT = 3001;
 
-http.createServer((req, res) => {
+http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
-    await queryEventsHandler(req, res, parsedUrl.query.serverId);
+    await queryEventsHandler_(res, parsedUrl.query.serverId);
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
-    await addEventsHandler(req, res);
+    await addEventsHandler_(req, res);
   } else {
     res.statusCode = 404;
     res.end();
@@ -42,7 +42,15 @@ http.createServer((req, res) => {
     console.log('server start at port 3001'); 
 });
 
-async function queryEventsHandler(req, res, serverId) {
+/**
+ * Handler for an events GET request. Query the database for events since the
+ * last serverId and return them in the HTTP response.
+ * @param {!Object} res The HTTP response object.
+ * @param {number} serverId serverId for the lower bound of the query.
+ * @private
+ */
+async function queryEventsHandler_(res, serverId) {
+  console.log('here');
   try {
     const entries = await database.query(serverId);
     res.setHeader('Content-Type', 'application/json');
@@ -55,13 +63,19 @@ async function queryEventsHandler(req, res, serverId) {
   };
 };
 
-async function addEventsHandler(req, res) {
+/**
+ * Handler for an events POST request. Add an entry to the database.
+ * @param {!Object} req The HTTP request object.
+ * @param {!Object} res The HTTP response object.
+ * @private
+ */
+async function addEventsHandler_(req, res) {
   try {
     const data = [];
     req.on('data', chunk => {
       data.push(chunk);
     });
-    req.on('end', () => {
+    req.on('end', async () => {
       await database.addToServer(JSON.parse(data).entry)
       res.statusCode = 200;
       res.end();  
