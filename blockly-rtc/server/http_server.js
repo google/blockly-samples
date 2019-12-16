@@ -50,7 +50,6 @@ http.createServer(async (req, res) => {
  * @private
  */
 async function queryEventsHandler_(res, serverId) {
-  console.log('here');
   try {
     const entries = await database.query(serverId);
     res.setHeader('Content-Type', 'application/json');
