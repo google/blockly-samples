@@ -40,10 +40,10 @@
  /**
  * The location of a Marker.
  * @typedef {Object} MarkerLocation
- * @property {<string>} type The type of element.
- * @property {<string>} blockId The blockId corresponding to the Block the
+ * @property {string} type The type of element.
+ * @property {string} blockId The blockId corresponding to the Block the
  * Marker is on.
- * @property {<string>} fieldName The name of the field if location is of type
+ * @property {string} fieldName The name of the field if location is of type
  * FIELD.
  */
 

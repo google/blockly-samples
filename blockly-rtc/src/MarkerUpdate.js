@@ -80,9 +80,9 @@ export default class MarkerUpdate {
    * @public
    */  
   hasLocation() {
-    if (this.type_ == 'FIELD' || this.blockId_ || this.fieldName_) {
+    if (this.type_ == 'FIELD' && this.blockId_ && this.fieldName_) {
       return true;
-    } else if (this.type_ == 'BLOCK' || this.blockId_) {
+    } else if (this.type_ == 'BLOCK' && this.blockId_) {
       return true;
     } else {
       return false;

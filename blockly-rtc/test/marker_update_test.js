@@ -37,15 +37,15 @@ suite('MarkerUpdate', () => {
       this.FAKE_WORKSPACE_ID = 'mockWorkspaceId';
       this.FAKE_BLOCK_ID = 'mockBlockId'
       sinon.stub(Blockly.utils, 'genUid')
-      .onFirstCall().returns(this.FAKE_WORKSPACE_ID)
-      .onSecondCall().returns(this.FAKE_BLOCK_ID);
+          .onFirstCall().returns(this.FAKE_WORKSPACE_ID)
+          .onSecondCall().returns(this.FAKE_BLOCK_ID);
       this.workspace = new Blockly.Workspace();
       this.block = new Blockly.Block(this.workspace, 'test_block');
     });
 
     teardown(() => {
       sinon.restore();
-      delete Blockly.Blocks['simple_test_block1'];
+      delete Blockly.Blocks['test_block'];
       this.workspace.dispose();
     });
 
