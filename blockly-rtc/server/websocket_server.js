@@ -59,4 +59,20 @@ async function onConnect(user) {
     const entries = await database.query(serverId);
     callback(entries);
   });
+
+  user.on('addClient', async (workspaceId, callback) => {
+    await database.addClient(workspaceId);
+    callback();
+  });
+
+  user.on('sendMarkerUpdate', async (markerUpdate, callback) => {
+    await database.updateMarker(markerUpdate);
+    callback();
+    user.broadcast.emit('broadcastMarker', [markerUpdate]);
+  });
+
+  user.on('getMarkerUpdates', async (workspaceId, callback) => {
+    const markerUpdates = await database.getMarkerUpdates(workspaceId);
+    callback(markerUpdates);
+  });
 };
