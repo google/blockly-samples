@@ -17,7 +17,8 @@
  */
 
 /**
- * @fileoverview Realtime collaboration demo using Node.js and SQlite.
+ * @fileoverview Websocket APIs for passing events between the client and the
+ * server.
  * @author navil@google.com (Navil Perez)
  */
 
