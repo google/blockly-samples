@@ -34,6 +34,12 @@ http.createServer(async (req, res) => {
     await queryEventsHandler_(res, parsedUrl.query.serverId);
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
     await addEventsHandler_(req, res);
+  } else if (req.method === 'GET' && parsedUrl.pathname === '/api/markers/query') {
+    await getMarkerUpdatesHandler_(res, parsedUrl.query.workspaceId);
+  } else if (req.method === 'POST' && parsedUrl.pathname === '/api/markers/add') {
+    await addClientHandler_(res, parsedUrl.query.workspaceId);
+  } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/markers/update') {
+    await updateMarkerHandler_(req, res);
   } else {
     res.statusCode = 404;
     res.end();
@@ -56,7 +62,7 @@ async function queryEventsHandler_(res, serverId) {
     res.statusCode = 200;
     res.write(JSON.stringify({ entries }));  
     res.end();
-  } catch  {
+  } catch {
     res.statusCode = 401;
     res.end();
   };
@@ -79,6 +85,67 @@ async function addEventsHandler_(req, res) {
       res.statusCode = 200;
       res.end();  
     });
+  } catch {
+    res.statusCode = 401;
+    res.end();
+  };
+};
+
+/**
+ * Handler for an clients PUT request. Update a client markerLocation.
+ * @param {!Object} req The HTTP request object.
+ * @param {!Object} res The HTTP response object.
+ * @private
+ */
+async function updateMarkerHandler_(req, res) {
+  try {
+    const data = [];
+    req.on('data', chunk => {
+      data.push(chunk);
+    });
+    req.on('end', async () => {
+      const markerUpdate = JSON.parse(data).markerUpdate;
+      await database.updateMarker(markerUpdate);
+      res.statusCode = 200;
+      res.end();  
+    });
+  } catch {
+    res.statusCode = 401;
+    res.end();
+  };
+};
+
+/**
+ * Handler for an clients POST request. Add a client to the clients table.
+ * @param {!Object} res The HTTP response object.
+ * @param {string} workspaceId workspaceId for specified client.
+ * @private
+ */
+async function addClientHandler_(res, workspaceId) {
+  try {
+    await database.addClient(workspaceId);
+    res.statusCode = 200;
+    res.end();
+  } catch {
+    res.statusCode = 401;
+    res.end();
+  };
+};
+
+/**
+ * Handler for an clients GET request. Query the database for a MarkerUpdate for
+ * the specified client or all if no client specified.
+ * @param {!Object} res The HTTP response object.
+ * @param {string=} workspaceId workspaceId for specified client.
+ * @private
+ */
+async function getMarkerUpdatesHandler_(res, workspaceId) {
+  try {
+    const markerUpdates = await database.getMarkerUpdates(workspaceId);
+    res.setHeader('Content-Type', 'application/json');
+    res.statusCode = 200;
+    res.write(JSON.stringify({ markerUpdates }));  
+    res.end();
   } catch {
     res.statusCode = 401;
     res.end();
