@@ -5,6 +5,7 @@
   "scripts": {
     "build": "npm run build:frontend",
     "build:frontend": "rimraf ./build && webpack",
+    "postinstall": "cd node_modules/blockly && python build.py -core && npm i && npm run package",
     "serve-http": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-http\"",
     "serve-websocket": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-websocket\"",
     "serve:backend-http": "node server/http_server.js",
@@ -15,7 +16,7 @@
     "test": "mocha test/*test.js"
   },
   "dependencies": {
-    "blockly": "^2.20190722.0",
+    "blockly": "google/blockly#develop",
     "socket.io": "2.3.0",
     "socket.io-client": "2.3.0",
     "sqlite3": "4.1.0"
