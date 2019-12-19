@@ -21,8 +21,10 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import * as Blockly from 'blockly';
-import {getEvents, writeEvents} from './http_handlers';
+import * as Blockly from 'blockly/dist';
+import {getEvents, writeEvents, getBroadcast} from './websocket/workspace_client_handlers';
+import {getMarkerUpdates, sendMarkerUpdate, addClient, getBroadcastMarkerUpdates} from './websocket/marker_manager_handlers';
+import MarkerManager from './MarkerManager';
 import WorkspaceClient from './WorkspaceClient';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,15 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   const workspaceClient = new WorkspaceClient(
       workspace.id, getEvents, writeEvents);
-
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
-
   workspaceClient.initiateWorkspace();
+
+  const markerManager = new MarkerManager(workspace.id, sendMarkerUpdate,
+      getMarkerUpdates, addClient, getBroadcastMarkerUpdates);  
+  markerManager.initMarkers();
 
   workspace.addChangeListener((event) => {
     if (event instanceof Blockly.Events.Ui) {
+      if (event.element == 'selected') {
+        markerManager.handleEvent(event);
+      };
       return;
     };
     workspaceClient.activeChanges.push(event.toJson());
