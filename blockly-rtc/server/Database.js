@@ -237,8 +237,15 @@ class Database {
    */
   updateMarker(markerUpdate) {
     return new Promise((resolve, reject) => {
-      this.db.run('UPDATE clients SET markerLocation = ? WHERE workspaceId = ?',
-          [JSON.stringify(markerUpdate.markerLocation), markerUpdate.id],
+      this.db.run(`INSERT INTO clients(workspaceId, lastEntryNumber, markerLocation)
+          VALUES(?, -1, ?)
+          ON CONFLICT(workspaceId)
+          DO UPDATE SET markerLocation = ?`,
+          [
+            markerUpdate.id,
+            JSON.stringify(markerUpdate.markerLocation),
+            JSON.stringify(markerUpdate.markerLocation)
+          ],
           (err) => {
         if (err) {
           console.error(err.message);
