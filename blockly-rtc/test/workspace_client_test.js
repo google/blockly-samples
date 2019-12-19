@@ -22,7 +22,7 @@
 
 const assert = require('assert');
 const sinon = require('sinon');
-const handler = require('../src/websocket_handlers');
+const handler = require('../src/websocket/workspace_client_handlers');
 const WorkspaceClient = require('../src/WorkspaceClient').default;
 
 suite('WorkspaceClient', () => {
