@@ -21,9 +21,8 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import * as Blockly from 'blockly/dist';
-import {getEvents, writeEvents, getBroadcast} from './websocket/workspace_client_handlers';
-import {getMarkerUpdates, sendMarkerUpdate, addClient, getBroadcastMarkerUpdates} from './websocket/marker_manager_handlers';
+import * as Blockly from 'blockly';
+import {getEvents, writeEvents} from './http_handlers';
 import WorkspaceClient from './WorkspaceClient';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,10 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         media: 'media/'
       });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getEvents, writeEvents, getBroadcast);
+      workspace.id, getEvents, writeEvents);
+
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
+
   workspaceClient.initiateWorkspace();
 
   workspace.addChangeListener((event) => {
