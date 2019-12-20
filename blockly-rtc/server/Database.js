@@ -176,32 +176,6 @@ class Database {
   };
 
   /**
-   * Add client to clients if it is not already in the table.
-   * @param {!string} workspaceId The workspaceId of the client.
-   * @return {!Promise} Promise object representing the success of the query.
-   * @public
-   */
-  addClient(workspaceId) {
-    return new Promise((resolve, reject) => {
-      this.db.all(
-          `SELECT * from clients
-          WHERE (EXISTS (SELECT 1 from clients WHERE workspaceId == ?));`,
-          [workspaceId],
-          (err, rows) => {
-        if (err) {
-          console.error(err.message);
-          reject('Failed to add client to clients.');
-        } else if (rows.length == 0) {
-          this.db.run(`INSERT INTO clients(workspaceId, lastEntryNumber, markerLocation)
-              VALUES(?, -1, ?)`,
-              [workspaceId, JSON.stringify({type: null, blockId: null, fieldName: null})]);
-        };
-      });
-    resolve();
-    });
-  };
-
-  /**
    * Query clients for a MarkerUpdate for given client. If no client is
    * specified will return a MarkerUpdate for all clients.
    * @param {string=} workspaceId workspaceId of the client.
@@ -237,8 +211,16 @@ class Database {
    */
   updateMarker(markerUpdate) {
     return new Promise((resolve, reject) => {
-      this.db.run('UPDATE clients SET markerLocation = ? WHERE workspaceId = ?',
-          [JSON.stringify(markerUpdate.markerLocation), markerUpdate.id],
+      this.db.run(
+          `INSERT INTO clients(workspaceId, lastEntryNumber, markerLocation)
+          VALUES(?, -1, ?)
+          ON CONFLICT(workspaceId)
+          DO UPDATE SET markerLocation = ?`,
+          [
+            markerUpdate.id,
+            JSON.stringify(markerUpdate.markerLocation),
+            JSON.stringify(markerUpdate.markerLocation)
+          ],
           (err) => {
         if (err) {
           console.error(err.message);
