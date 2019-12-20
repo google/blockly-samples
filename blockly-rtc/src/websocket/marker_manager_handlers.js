@@ -73,18 +73,3 @@ export function getBroadcastMarkerUpdates(callback) {
     await callback(markerUpdates);
   });
 };
-
-/**
- * Add the client to the database if not already in it. A client needs to be in
- * the database in order for it to appear as a marker.
- * @param {!string} workspaceId The workspaceId of the client.
- * @return {!Promise} Promise object representing the success of the query.
- * @public
- */
-export async function addClient(workspaceId) {
-  return new Promise((resolve, reject) => {
-    socket.emit('addClient', workspaceId, () => {
-      resolve();
-    })
-  });
-};

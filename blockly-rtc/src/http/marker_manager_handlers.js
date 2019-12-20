@@ -31,8 +31,8 @@ import MarkerUpdate from '../MarkerUpdate';
  * @public
  */
 export async function getMarkerUpdates(workspaceId) {
-  const response = workspaceId ? await fetch('/api/markers/query?workspaceId=' + workspaceId) :
-      await fetch('/api/markers/query?');
+  const response = workspaceId ? await fetch('/api/clients/query?workspaceId=' + workspaceId) :
+      await fetch('/api/clients/query?');
   const responseJson = await response.json();
   if (response.status === 200) {
     const markerUpdates = responseJson.markerUpdates
@@ -52,7 +52,7 @@ export async function getMarkerUpdates(workspaceId) {
   */
 export async function sendMarkerUpdate(markerUpdate) {
   const markerUpdateJson = markerUpdate.toJson();
-  const response = await fetch('/api/markers/update', {
+  const response = await fetch('/api/clients/update', {
     method: 'PUT',
     body: JSON.stringify({markerUpdate: markerUpdateJson})
   });
@@ -60,23 +60,5 @@ export async function sendMarkerUpdate(markerUpdate) {
     return;
   } else {
     throw 'Failed to update marker.';
-  };
-};
-
-/**
- * Add the client to the database if not already in it. A client needs to be in
- * the database in order for it to appear as a marker.
- * @param {!string} workspaceId The workspaceId of the client.
- * @return {!Promise} Promise object representing the success of the query.
- * @public
- */
-export async function addClient(workspaceId) {
-  const response = await fetch('/api/markers/add?workspaceId=' + workspaceId, {
-    method: 'POST'
-  });
-  if (response.status === 200) {
-    return;
-  } else {
-    throw 'Failed to add client to database.';
   };
 };

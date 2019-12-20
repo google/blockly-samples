@@ -34,11 +34,9 @@ http.createServer(async (req, res) => {
     await queryEventsHandler_(res, parsedUrl.query.serverId);
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
     await addEventsHandler_(req, res);
-  } else if (req.method === 'GET' && parsedUrl.pathname === '/api/markers/query') {
+  } else if (req.method === 'GET' && parsedUrl.pathname === '/api/clients/query') {
     await getMarkerUpdatesHandler_(res, parsedUrl.query.workspaceId);
-  } else if (req.method === 'POST' && parsedUrl.pathname === '/api/markers/add') {
-    await addClientHandler_(res, parsedUrl.query.workspaceId);
-  } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/markers/update') {
+  } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/clients/update') {
     await updateMarkerHandler_(req, res);
   } else {
     res.statusCode = 404;
@@ -109,23 +107,6 @@ async function updateMarkerHandler_(req, res) {
       res.statusCode = 200;
       res.end();  
     });
-  } catch {
-    res.statusCode = 401;
-    res.end();
-  };
-};
-
-/**
- * Handler for a clients POST request. Add a client to the clients table.
- * @param {!Object} res The HTTP response object.
- * @param {string} workspaceId workspaceId for specified client.
- * @private
- */
-async function addClientHandler_(res, workspaceId) {
-  try {
-    await database.addClient(workspaceId);
-    res.statusCode = 200;
-    res.end();
   } catch {
     res.statusCode = 401;
     res.end();
