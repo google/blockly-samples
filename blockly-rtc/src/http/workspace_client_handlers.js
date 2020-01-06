@@ -16,16 +16,9 @@
  */
 
 /**
- * @fileoverview API handler for interacting with node server.
+ * @fileoverview Endpoint APIs for passing events between the client and the
+ * server.
  * @author navil@google.com (Navil Perez)
- */
-
-/**
- * A local representation of an entry in the database.
- * @typedef {Object} LocalEntry
- * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
- * format.
- * @property {string} entryId The id assigned to an event by the client.
  */
 
 /**

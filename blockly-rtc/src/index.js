@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         media: 'media/'
       });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getEvents, writeEvents);
+      workspace.id, getEvents, writeEvents, getBroadcast);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
