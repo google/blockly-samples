@@ -32,7 +32,7 @@ suite('MarkerManager', () => {
   setup(() => {
     this.markerManager = new MarkerManager(
         'mockWorkspaceId', handlers.sendMarkerUpdate, handlers.getMarkerUpdates,
-        handlers.addClient, handlers.getBroadcastMarkerUpdates);
+        handlers.getBroadcastMarkerUpdates);
     Blockly.defineBlocksWithJsonArray([{
       'type': 'test_block',
       'message0': 'test block'

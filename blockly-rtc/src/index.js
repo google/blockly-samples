@@ -23,7 +23,7 @@
 
 import * as Blockly from 'blockly/dist';
 import {getEvents, writeEvents, getBroadcast} from './websocket/workspace_client_handlers';
-import {getMarkerUpdates, sendMarkerUpdate, addClient, getBroadcastMarkerUpdates} from './websocket/marker_manager_handlers';
+import {getMarkerUpdates, sendMarkerUpdate, getBroadcastMarkerUpdates} from './websocket/marker_manager_handlers';
 import MarkerManager from './MarkerManager';
 import WorkspaceClient from './WorkspaceClient';
 
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   workspaceClient.initiateWorkspace();
 
   const markerManager = new MarkerManager(workspace.id, sendMarkerUpdate,
-      getMarkerUpdates, addClient, getBroadcastMarkerUpdates);  
+      getMarkerUpdates, getBroadcastMarkerUpdates);  
   markerManager.initMarkers();
 
   workspace.addChangeListener((event) => {

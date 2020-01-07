@@ -25,13 +25,12 @@ import MarkerUpdate from './MarkerUpdate';
 
 export default class MarkerManager {
   constructor(workspaceId, sendMarkerUpdate, getMarkerUpdates,
-      addClient, getBroadcastMarkerUpdates) {
+      getBroadcastMarkerUpdates) {
     this.workspaceId = workspaceId
     this.colours =  [
         '#fcba03', '#03fc20', '#03f0fc', '#035efc', '#5603fc', '#fc03d2'];
     this.sendMarkerUpdate = sendMarkerUpdate;
     this.getMarkerUpdates = getMarkerUpdates;
-    this.addClient = addClient;
     this.broadcastMarkerHandler = getBroadcastMarkerUpdates;
   };
 
@@ -41,17 +40,16 @@ export default class MarkerManager {
    * @public
    */
   async initMarkers() {
-    await this.addClient(this.workspaceId);
     const markerUpdates = await this.getMarkerUpdates();
     markerUpdates.forEach((markerUpdate) => {
       this.createMarker_(markerUpdate);
-      if (this.broadcastMarkerHandler) {
-        this.broadcastMarkerHandler(this.updateMarkerLocations_.bind(this));
-      } else {
-        this.pollServer_();
-      };
     });
-  };
+    if (this.broadcastMarkerHandler) {
+      this.broadcastMarkerHandler(this.updateMarkerLocations_.bind(this));
+    } else {
+      this.pollServer_();
+    };
+};
 
   /**
    * Create a MarkerUpdate from a Blockly event and send it to the server.
@@ -91,15 +89,16 @@ export default class MarkerManager {
    * @private
    */  
   getMarkerManager_() {
-    return this.getWorkspace_().getMarkerManager();
+    return this.getWorkspace_() ?
+        this.getWorkspace_().getMarkerManager(): null;
   };
 
   /**
-   * Get a unique color to assign to a new client marker.
+   * Get a color to assign to a new client marker.
    * @returns {string} The string encoding a colour.
    * @private
    */  
-  setColour_() {
+  getColour_() {
     return this.colours.pop();
   };
 
@@ -111,8 +110,11 @@ export default class MarkerManager {
    * @private
    */
   createMarker_(markerUpdate) {
+    if (!this.getMarkerManager_()) {
+      return;
+    };
     const marker = markerUpdate.toMarker(this.getWorkspace_());
-    marker.colour = this.setColour_();
+    marker.colour = this.getColour_();
     this.getMarkerManager_().registerMarker(markerUpdate.id, marker)
     marker.setCurNode(markerUpdate.createNode(this.getWorkspace_()));
     return marker;
@@ -125,7 +127,8 @@ export default class MarkerManager {
    * @private
    */  
   getMarker(workspaceId) {
-    return this.getMarkerManager_().getMarker(workspaceId);
+    return this.getMarkerManager_() ?
+        this.getMarkerManager_().getMarker(workspaceId) : null;
   };
 
   /**
@@ -139,10 +142,10 @@ export default class MarkerManager {
         markerUpdate => markerUpdate.id != this.workspaceId);
     filteredMarkerUpdates.forEach((markerUpdate) => {
       const node = markerUpdate.createNode(this.getWorkspace_());
-      if (this.getMarker(markerUpdate.id) == undefined) {
-        this.createMarker_(markerUpdate).setCurNode(node);
-      } else {
+      if (this.getMarker(markerUpdate.id)) {
         this.getMarker(markerUpdate.id).setCurNode(node);
+      } else {
+        this.createMarker_(markerUpdate).setCurNode(node);        
       };
     });
   };
