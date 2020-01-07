@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event instanceof Blockly.Events.Ui) {
       return;
     };
-    workspaceClient.activeChanges.push(event.toJson());
+    workspaceClient.activeChanges.push(event);
     if (!Blockly.Events.getGroup()) {
       workspaceClient.flushEvents();
     };
@@ -57,10 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
    * @private
    */
   function runEvents_(eventQueue) {
-    eventQueue.forEach((event)=> {
-      const blocklyEvent = Blockly.Events.fromJson(event.event, workspace);
+    eventQueue.forEach((workspaceAction)=> {
       Blockly.Events.disable();
-      blocklyEvent.run(event.forward);
+      workspaceAction.event.run(workspaceAction.forward);
       Blockly.Events.enable();
     });
   };

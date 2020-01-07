@@ -22,6 +22,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
+import * as Blockly from 'blockly/dist';
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');
@@ -44,6 +45,11 @@ const socket = io('http://localhost:3001');
 export async function getEvents(serverId) {
   return new Promise((resolve, reject) => {
     socket.emit('getEvents', serverId, (entries) => {
+      entries.forEach((entry) => {
+        entry.events = entry.events.map((entry) => {
+          return Blockly.Events.fromJson(entry, Blockly.getMainWorkspace());
+        });
+      });
       resolve(entries);
     });
   });
@@ -56,8 +62,12 @@ export async function getEvents(serverId) {
  * @public
  */
 export async function writeEvents(entry) {
+  const entryJson = {
+    entryId: entry.entryId,
+    events: entry.events.map((event) => event.toJson())
+  };
   return new Promise((resolve, reject) => {
-    socket.emit('addEvents', entry, () => {
+    socket.emit('addEvents', entryJson, () => {
       resolve();
     });
   });
@@ -72,6 +82,11 @@ export async function writeEvents(entry) {
  */
 export function getBroadcast(callback) {
   socket.on('broadcastEvents', (entries)=> {
+    entries.forEach((entry) => {
+      entry.events = entry.events.map((entry) => {
+        return Blockly.Events.fromJson(entry, Blockly.getMainWorkspace());
+      });
+    });
     callback(entries);
   });
 };

@@ -21,6 +21,8 @@
  * @author navil@google.com (Navil Perez)
  */
 
+import * as Blockly from 'blockly/dist';
+
 /**
  * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
@@ -31,8 +33,14 @@
 export async function getEvents(serverId) {
   const response = await fetch('/api/events/query?serverId=' + serverId);
   const responseJson = await response.json();
+  const entries = responseJson.entries;
+  entries.forEach((entry) => {
+    entry.events = entry.events.map((event) => {
+      return Blockly.Events.fromJson(event, Blockly.getMainWorkspace());
+    });
+  });
   if (response.status === 200) {
-    return responseJson.entries;
+    return entries;
   } else {
     throw 'Failed to query database.';
   };
@@ -46,9 +54,13 @@ export async function getEvents(serverId) {
  * @public
  */
 export async function writeEvents(entry) {
+  const entryJson = {
+    entryId: entry.entryId,
+    events: entry.events.map((event) => event.toJson())
+  };
   const response = await fetch('/api/events/add', {
     method: 'POST',
-    body: JSON.stringify({ entry })
+    body: JSON.stringify({entry: entryJson})
   });
   if (response.status === 200) {
     return;

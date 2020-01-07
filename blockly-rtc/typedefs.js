@@ -23,8 +23,7 @@
 /**
  * An entry from the database.
  * @typedef {Object} Entry
- * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
- * format.
+ * @property {<!Array.<!Blockly.Event>>} events An array of Blockly Events.
  * @property {string} entryId The id assigned to an event by the client.
  * @property {string} serverId The id assigned to an event by the server.
  */
@@ -32,8 +31,7 @@
  /**
  * A local representation of an entry in the database.
  * @typedef {Object} LocalEntry
- * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
- * format.
+ * @property {<!Array.<!Blockly.Event>>} events An array of Blockly Events.
  * @property {string} entryId The id assigned to an event by the client.
  */
  
@@ -50,6 +48,6 @@
  /**
  * An action to be performed on the workspace.
  * @typedef {Object} WorkspaceAction
- * @property {!Object} event The JSON of a Blockly event.
+ * @property {!Blockly.Event} event A Blockly Event.
  * @property {boolean} forward Indicates the direction to run an event.
  */

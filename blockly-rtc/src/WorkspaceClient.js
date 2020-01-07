@@ -21,6 +21,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
+import * as Blockly from 'blockly/dist';
 import EventEmitter from 'events';
 
 /**
@@ -127,7 +128,7 @@ export default class WorkspaceClient {
     const entryId = this.workspaceId + ':' + this.counter;
     this.counter += 1;
     this.inProgress.push({
-      events: this.notSent,
+      events: Blockly.Events.filter(this.notSent, true),
       entryId: entryId
     });
     this.notSent = [];
@@ -187,7 +188,7 @@ export default class WorkspaceClient {
   async addServerEvents_(newServerEvents) {
     if (newServerEvents.length == 0) {
       return;
-    }
+    };
     if (newServerEvents[0].serverId != this.lastSync + 1) {
       newServerEvents = await this.queryDatabase_();
     };
@@ -262,11 +263,15 @@ export default class WorkspaceClient {
       };
       // Apply server events.
       entries.forEach((entry) => {
-        eventQueue.push.apply(
-          eventQueue, this.createWorkspaceActions_(entry.events, true));
         if (this.inProgress.length > 0
             && entry.entryId == this.inProgress[0].entryId) {
+          eventQueue.push.apply(
+              eventQueue,
+              this.createWorkspaceActions_(this.inProgress[0].events, true));
           this.inProgress.shift();
+        } else {
+          eventQueue.push.apply(
+              eventQueue, this.createWorkspaceActions_(entry.events, true));
         };
       });
       // Reapply remaining local changes.
