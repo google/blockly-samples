@@ -23,7 +23,7 @@
 /**
  * An entry from the database.
  * @typedef {Object} Entry
- * @property {<!Array.<!Blockly.Events>>} events An array of Blockly Events.
+ * @property {<!Array.<!Blockly.Event>>} events An array of Blockly Events.
  * @property {string} entryId The id assigned to an event by the client.
  * @property {string} serverId The id assigned to an event by the server.
  */
