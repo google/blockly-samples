@@ -21,6 +21,7 @@
  */
 
 const assert = require('assert');
+const Blockly = require('blockly/dist');
 const sinon = require('sinon');
 const handler = require('../src/websocket/workspace_client_handlers');
 const WorkspaceClient = require('../src/WorkspaceClient').default;
@@ -30,6 +31,9 @@ suite('WorkspaceClient', () => {
     this.workspaceClient = new WorkspaceClient(
         'mockClient', handler.getEvents, handler.writeEvents,
         handler.getBroadcast);
+    sinon.stub(Blockly.Events, 'filter').callsFake((events) => {
+      return events;
+    });
   });
 
   teardown(() =>  {
@@ -47,6 +51,7 @@ suite('WorkspaceClient', () => {
         events: [1,2,3]
       }], this.workspaceClient.inProgress);
       assert.strictEqual(1, this.workspaceClient.counter);
+      assert(Blockly.Events.filter.called);
     });
 
     test('Write fails, error is thrown and events stay in notSent.', async () => {
@@ -56,6 +61,7 @@ suite('WorkspaceClient', () => {
       assert.deepStrictEqual([1,2,3], this.workspaceClient.notSent);
       assert.deepStrictEqual([], this.workspaceClient.inProgress);
       assert.strictEqual(0, this.workspaceClient.counter);
+      assert(Blockly.Events.filter.called);
     });
   });
 
