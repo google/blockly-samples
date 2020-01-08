@@ -53,7 +53,7 @@ export default class MarkerManager {
 
   /**
    * Create a MarkerUpdate from a Blockly event and send it to the server.
-   * @param {!Blockly.Event} The event for which to create a MarkerUpdate.
+   * @param {!Blockly.Event} event The event for which to create a MarkerUpdate.
    * @public
    */
   async handleEvent(event) {
@@ -99,7 +99,9 @@ export default class MarkerManager {
    * @private
    */  
   getColour_() {
-    return this.colours.pop();
+    const colour = this.colours.shift();
+    this.colours.push(colour);
+    return colour;
   };
 
   /**
@@ -123,7 +125,7 @@ export default class MarkerManager {
   /**
    * Get the Marker that corresponds to the given client.
    * @param {!string} workspaceId The workspaceId of the client.
-   * @returns {Marker} The Marker for the client if it exists, otherwise null.
+   * @returns {Blockly.Marker} The Marker for the client if it exists, otherwise null.
    * @private
    */  
   getMarker(workspaceId) {
