@@ -61,7 +61,7 @@ suite('MarkerManager', () => {
 
   suite('createMarker', () => {
     test('No Blockly MarkerManager, throw error.', async () => {
-      // sinon.stub(this.markerManager, 'getMarkerManager_').returns(null);
+      sinon.stub(this.markerManager, 'getMarkerManager_').returns(null);
       sinon.spy(this.markerManager, 'createMarker_');
       const markerUpdate1 = new MarkerUpdate('Id', 'BLOCK', 'blockId', null);
       try {
