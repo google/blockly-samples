@@ -50,7 +50,8 @@ suite('MarkerManager', () => {
     this.BlocklyMarkerManager.registerMarker.callsFake((markerId, marker) => {
       this.BlocklyMarkerManager.markers_[markerId] = marker;
     });
-    sinon.stub(this.workspace, 'getMarkerManager').returns(this.BlocklyMarkerManager);
+    sinon.stub(this.workspace, 'getMarkerManager')
+        .returns(this.BlocklyMarkerManager);
   });
 
   teardown(() => {
@@ -59,6 +60,16 @@ suite('MarkerManager', () => {
   });
 
   suite('createMarker', () => {
+    test('No Blockly MarkerManager, throw error.', async () => {
+      // sinon.stub(this.markerManager, 'getMarkerManager_').returns(null);
+      sinon.spy(this.markerManager, 'createMarker_');
+      const markerUpdate1 = new MarkerUpdate('Id', 'BLOCK', 'blockId', null);
+      try {
+        this.markerManager.createMarker_(markerUpdate1);
+      } catch {};
+      assert(this.markerManager.createMarker_.threw());
+    });
+
     test('Markers have unique colors and are registered.', async () => {
       const markerUpdate1 = new MarkerUpdate('mockId1', 'BLOCK', 'blockId', null);
       const markerUpdate2 = new MarkerUpdate('mockId2', 'BLOCK', 'blockId', null);
@@ -78,7 +89,9 @@ suite('MarkerManager', () => {
     });
 
     test('MarkerUpdate has a new markerLocation, update curNode.', async () => {
-      const markerUpdates = [new MarkerUpdate('mockId', 'BLOCK', 'blockId', null)];
+      const markerUpdates = [
+        new MarkerUpdate('mockId', 'BLOCK', 'blockId', null)
+      ];
       this.markerManager.updateMarkerLocations_(markerUpdates);
       const curNode = this.markerManager.getMarker('mockId').curNode_;
       const expectedNode = Blockly.ASTNode.createBlockNode(this.block);

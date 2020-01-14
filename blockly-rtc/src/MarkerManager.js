@@ -26,8 +26,8 @@ import MarkerUpdate from './MarkerUpdate';
 export default class MarkerManager {
   constructor(workspaceId, sendMarkerUpdate, getMarkerUpdates,
       getBroadcastMarkerUpdates) {
-    this.workspaceId = workspaceId
-    this.colours =  [
+    this.workspaceId = workspaceId;
+    this.colours = [
         '#fcba03', '#03fc20', '#03f0fc', '#035efc', '#5603fc', '#fc03d2'];
     this.sendMarkerUpdate = sendMarkerUpdate;
     this.getMarkerUpdates = getMarkerUpdates;
@@ -109,11 +109,13 @@ export default class MarkerManager {
    * @param {!MarkerUpdate} markerUpdate The MarkerUpdate for which to create
    * a Marker.
    * @returns {!Marker} marker The Marker represented by the MarkerUpdate.
+   * @throws Throws an error if there is no Blockly MarkerManager to add the
+   * created marker to.
    * @private
    */
   createMarker_(markerUpdate) {
     if (!this.getMarkerManager_()) {
-      return;
+      throw Error('Cannot create a Marker without Blockly MarkerManager.');
     };
     const marker = markerUpdate.toMarker(this.getWorkspace_());
     marker.colour = this.getColour_();
@@ -124,8 +126,9 @@ export default class MarkerManager {
 
   /**
    * Get the Marker that corresponds to the given client.
-   * @param {!string} workspaceId The workspaceId of the client.
-   * @returns {Blockly.Marker} The Marker for the client if it exists, otherwise null.
+   * @param {string} workspaceId The workspaceId of the client.
+   * @returns {Blockly.Marker} The Marker for the client if it exists, otherwise
+   * null.
    * @private
    */  
   getMarker(workspaceId) {
