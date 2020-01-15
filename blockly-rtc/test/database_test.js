@@ -39,7 +39,7 @@ suite('Database', () => {
       database.getLastEntryIdNumber_.restore();
     });
 
-    test('New client, add to database.', async () => {
+    test('New user, add to database.', async () => {
       this.getLastEntryIdStub.resolves(-1);
       this.runInsertQueryStub.resolves(2);
       const entry = {
@@ -51,7 +51,7 @@ suite('Database', () => {
       assert.equal(true, this.runInsertQueryStub.calledOnce);
     });
 
-    test('Valid entry for existing client, add to database.', async () => {
+    test('Valid entry for existing user, add to database.', async () => {
       this.getLastEntryIdStub.resolves(2);
       this.runInsertQueryStub.resolves(2);
       const entry = {

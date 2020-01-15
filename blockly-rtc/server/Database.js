@@ -56,7 +56,7 @@ class Database {
 
   /**
    * Add entry to the database if the entry is a valid next addition.
-   * For each client, an addition is valid if the entryId is greater than the
+   * For each user, an addition is valid if the entryId is greater than the
    * entryId of its last added entry.
    * @param {!LocalEntry} entry The entry to be added to the database.
    * @return {!Promise} Promise object with the serverId the entry was written
@@ -113,21 +113,21 @@ class Database {
   };
 
   /**
-   * Update lastEntryIdNumber in the clients table for a given client.
-   * @param {!string} workspaceId The workspaceId of the client.
+   * Update lastEntryIdNumber in the users table for a given user.
+   * @param {!string} workspaceId The workspaceId of the user.
    * @param {!number} entryIdNumber The numeric part of the entryId.
    * @return {!Promise} Promise object represents the success of the update.
    * @private
    */
   updateLastEntryIdNumber_(workspaceId, entryIdNumber) {
     return new Promise((resolve, reject) => {
-      this.db.run(`UPDATE clients SET lastEntryNumber = ?
+      this.db.run(`UPDATE users SET lastEntryNumber = ?
           WHERE workspaceId = ?;`,
           [entryIdNumber, workspaceId],
           async (err) => {
         if (err) {
           console.error(err.message);
-          reject('Failed update clients table.');
+          reject('Failed update users table.');
         };
         resolve();
       });
@@ -135,8 +135,8 @@ class Database {
   };
 
   /**
-   * Get the numerical part of the last added entryId for a given client.
-   * @param {!string} workspaceId The workspaceId of the client.
+   * Get the numerical part of the last added entryId for a given user.
+   * @param {!string} workspaceId The workspaceId of the user.
    * @return {!Promise} Promise object with the the numerical part of the
    * entryId.
    * @private
@@ -145,23 +145,23 @@ class Database {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
 
-        // Ensure client is in the database, otherwise add it.
+        // Ensure user is in the database, otherwise add it.
         this.db.all(
-            `SELECT * from clients
-            WHERE (EXISTS (SELECT 1 from clients WHERE workspaceId == ?));`,
+            `SELECT * from users
+            WHERE (EXISTS (SELECT 1 from users WHERE workspaceId == ?));`,
             [workspaceId],
             (err, entries) => {
           if (err) {
             console.error(err.message);
             reject('Failed to get last entryId number.');
           } else if (entries.length == 0) {
-            this.db.run(`INSERT INTO clients(workspaceId, lastEntryNumber)
+            this.db.run(`INSERT INTO users(workspaceId, lastEntryNumber)
                 VALUES(?, -1)`, [workspaceId]);
           };
         });
 
         this.db.each(
-            `SELECT lastEntryNumber from clients WHERE workspaceId = ?;`,
+            `SELECT lastEntryNumber from users WHERE workspaceId = ?;`,
             [workspaceId],
             (err, result) => {
           if (err) {
@@ -176,52 +176,52 @@ class Database {
   };
 
   /**
-   * Query clients for a MarkerUpdate for given client. If no client is
-   * specified will return a MarkerUpdate for all clients.
-   * @param {string=} workspaceId workspaceId of the client.
-   * @return {!Promise} Promise object with an array of MarkerUpdate objects.
+   * Query the location for the given user. If no user is specified will
+   * return the locations of all users.
+   * @param {string=} workspaceId workspaceId of the user.
+   * @return {!Promise} Promise object with an array of LocationUpdate objects.
    * @public
    */
-  getMarkerUpdates(workspaceId) {
+  getLocationUpdates(workspaceId) {
     return new Promise((resolve, reject) => {
       const sql = workspaceId ? 
-          `SELECT workspaceId, markerLocation from clients
+          `SELECT workspaceId, location from users
           WHERE
-          (EXISTS (SELECT 1 from clients WHERE workspaceId == ${workspaceId}))
+          (EXISTS (SELECT 1 from users WHERE workspaceId == ${workspaceId}))
           AND workspaceId = ${workspaceId};` :
-          `SELECT workspaceId, markerLocation from clients;`;
-      this.db.all(sql, (err, markerUpdates) => {
+          `SELECT workspaceId, location from users;`;
+      this.db.all(sql, (err, locationUpdates) => {
         if (err) {
           console.error(err.message);
-          reject('Failed to get MarkerUpdates.');
+          reject('Failed to get locations.');
         } else {
-          markerUpdates.forEach((markerUpdate) => {
-            markerUpdate.markerLocation = JSON.parse(markerUpdate.markerLocation);
+          locationUpdates.forEach((locationUpdate) => {
+            locationUpdate.location = JSON.parse(locationUpdate.location);
           });
-          resolve(markerUpdates);
+          resolve(locationUpdates);
         };
       });
     });
   };
 
   /**
-   * Update markerLocation in the clients table for a given client.
-   * @param {!Object} markerUpdate The MarkerUpdate with the new
-   * MarkerLocation for a given client in JSON representation.
+   * Update the location in the users table for a given user.
+   * @param {!Object} locationUpdate The LocationUpdate with the new
+   * location for a given user.
    * @return {!Promise} Promise object represents the success of the update.
    * @public
    */
-  updateMarker(markerUpdate) {
+  updateLocation(locationUpdate) {
     return new Promise((resolve, reject) => {
       this.db.run(
-          `INSERT INTO clients(workspaceId, lastEntryNumber, markerLocation)
+          `INSERT INTO users(workspaceId, lastEntryNumber, location)
           VALUES(?, -1, ?)
           ON CONFLICT(workspaceId)
-          DO UPDATE SET markerLocation = ?`,
+          DO UPDATE SET location = ?`,
           [
-            markerUpdate.id,
-            JSON.stringify(markerUpdate.markerLocation),
-            JSON.stringify(markerUpdate.markerLocation)
+            locationUpdate.workspaceId,
+            JSON.stringify(locationUpdate.location),
+            JSON.stringify(locationUpdate.location)
           ],
           (err) => {
         if (err) {

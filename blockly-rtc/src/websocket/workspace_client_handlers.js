@@ -28,14 +28,6 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3001');
 
 /**
- * A local representation of an entry in the database.
- * @typedef {Object} LocalEntry
- * @property {<!Array.<!Object>>} events An array of Blockly Events in JSON
- * format.
- * @property {string} entryId The id assigned to an event by the client.
- */
-
-/**
  * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
  * @return {!Promise} Promise object that represents the entries of events since

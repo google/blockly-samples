@@ -16,96 +16,64 @@
  */
 
 /**
- * @fileoverview Object for communicating an update to a Marker's location.
+ * @fileoverview Object representing a user's location.
  * @author navil@google.com (Navil Perez)
  */
 
 import * as Blockly from 'blockly/dist';
 
-export default class MarkerUpdate {
-  constructor(id, type, blockId, fieldName) {
-    this.id = id;
-    this.type_ = type;
-    this.blockId_ = blockId;
-    this.fieldName_ = fieldName;
+export default class Location {
+  constructor(type, blockId, fieldName) {
+    this.type = type;
+    this.blockId = blockId;
+    this.fieldName = fieldName;
   };
 
   /**
-   * Create a MarkerUpdate from an event. Currently supports MarkerUpdates
-   * on blocks from a 'selected' UI event.
-   * @param {!Blockly.Event} event The event that creates a MarkerUpdate.
-   * @return {!MarkerUpdate} The MarkerUpdate representative of the event.
+   * Create a Location from an event. Currently supports creating Locations for
+   * blocks from a 'selected' UI event.
+   * @param {!Blockly.Event} event The event that creates a Location.
+   * @return {!LocationUpdate} The Location representative of the event.
    * @public
    */  
   static fromEvent(event) {
-    // TODO: Add support for a field marker on a change event.
+    // TODO: Add support for a field location on a change event.
     const id = event.workspaceId;
     const type = 'BLOCK';
     const blockId = event.newValue;
     const fieldName = null;
-    return new MarkerUpdate(id, type, blockId, fieldName);  
+    return new Location(type, blockId, fieldName);  
   };
 
   /**
-   * Decode the JSON into a MarkerUpdate.
-   * @param {!Object} json The JSON representation of the markerUpdate.
-   * @return {!MarkerUpdate} The MarkerUpdate represented by the JSON.
+   * Decode the JSON into a Location.
+   * @param {!Object} json The JSON representation of the Location.
+   * @return {!LocationUpdate} The Location represented by the JSON.
    * @public
    */
   static fromJson(json) {
-    const markerLocation = json.markerLocation;
-    return new MarkerUpdate(
-        json.id,
-        markerLocation.type,
-        markerLocation.blockId,
-        markerLocation.fieldName);
+    return new Location(json.type, json.blockId, json.fieldName);
   };
 
   /**
-   * Encode the MarkerUpdate as JSON.
-   * @return {!Object} The JSON representation of the MarkerUpdate.
-   * @public
-   */
-  toJson() {
-    return {
-      id: this.id,
-      markerLocation: this.getMarkerLocation()
-    };
-  };
-
-  /**
-   * Check if the combination of MarkerLocation properties describe a
-   * viable location.
-   * @return {!Boolean} Whether the MarkerUpdate has a viable location.
+   * Check if the combination of Location properties describe a viable location.
+   * @return {!Boolean} Whether the LocationUpdate has a viable location.
    * @public
    */  
-  hasLocation() {
-    if (this.type_ == 'FIELD' && this.blockId_ && this.fieldName_) {
+  hasValidLocation() {
+    if (this.type == 'FIELD' && this.blockId && this.fieldName) {
       return true;
-    } else if (this.type_ == 'BLOCK' && this.blockId_) {
+    } else if (this.type == 'BLOCK' && this.blockId) {
       return true;
     } else {
       return false;
     };
   };
-
-  /**
-   * Get the location of the MarkerUpdate.
-   * @return {!MarkerLocation} The MarkerLocation on the MarkerUpdate.
-   * @public
-   */
-  getMarkerLocation() {
-    return {
-      type: this.type_,
-      blockId: this.blockId_,
-      fieldName: this.fieldName_
-    };
-  };
   
   /**
-   * Decode the MarkerUpdate into a Marker object.
+   * Create a Marker at the Location.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {!MarkerUpdate} The MarkerUpdate represented by the JSON.
+   * @return {!Blockly.Marker} A Marker with the curNode set to the Location.
    * @public
    */
   toMarker(workspace) {
@@ -116,19 +84,19 @@ export default class MarkerUpdate {
   };
 
   /**
-   * Create an ASTNode pointing to the MarkerUpdate location.
+   * Create an ASTNode pointing to the Location.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {Blockly.ASTNode} An AST Node that points to the MarkerUpdate
-   * location or null if the location is not viable.
+   * @return {Blockly.ASTNode} An AST Node that points to the Location or null
+   * if the location is not viable.
    * @public
    */
   createNode(workspace) {
-    if (!this.hasLocation()) {
+    if (!this.hasValidLocation()) {
       return null;
     };
-    if (this.type_ == 'BLOCK') {
+    if (this.type == 'BLOCK') {
       return this.createBlockNode_(workspace);
-    } else if (this.type_ == 'FIELD') {
+    } else if (this.type == 'FIELD') {
       return this.createFieldNode_(workspace);
     };
   };
@@ -140,7 +108,7 @@ export default class MarkerUpdate {
    * @public
    */
   createBlockNode_(workspace) {
-    const block = workspace.getBlockById(this.blockId_);
+    const block = workspace.getBlockById(this.blockId);
     return Blockly.ASTNode.createBlockNode(block);
   };
 
@@ -151,8 +119,8 @@ export default class MarkerUpdate {
    * @public
    */  
   createFieldNode_(workspace) {
-    const block = workspace.getBlockById(this.blockId_);
-    const field = block.getField(this.fieldName_);
+    const block = workspace.getBlockById(this.blockId);
+    const field = block.getField(this.fieldName);
     return Blockly.ASTNode.createFieldNode(field);
   };
 };

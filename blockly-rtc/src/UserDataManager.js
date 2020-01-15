@@ -16,65 +16,68 @@
  */
 
 /**
- * @fileoverview Wrapper class for interacting with the Blockly MarkerManager.
+ * @fileoverview Class for tracking users' metadata.
  * @author navil@google.com (Navil Perez)
  */
 
 import * as Blockly from 'blockly/dist';
-import MarkerUpdate from './Location';
+import Location from './Location';
 
-export default class MarkerManager {
-  constructor(workspaceId, sendMarkerUpdate, getMarkerUpdates,
-      getBroadcastMarkerUpdates) {
+export default class UserDataManager {
+  constructor(workspaceId, sendLocationUpdate, getLocationUpdates,
+      getBroadcastLocationUpdates) {
     this.workspaceId = workspaceId;
     this.colours = [
         '#fcba03', '#03fc20', '#03f0fc', '#035efc', '#5603fc', '#fc03d2'];
-    this.sendMarkerUpdate = sendMarkerUpdate;
-    this.getMarkerUpdates = getMarkerUpdates;
-    this.broadcastMarkerHandler = getBroadcastMarkerUpdates;
+    this.sendLocationUpdate = sendLocationUpdate;
+    this.getLocationUpdates = getLocationUpdates;
+    this.getBroadcastLocationUpdates = getBroadcastLocationUpdates;
   };
 
   /**
    * Initialize the workspace by creating and registering markers for all active
-   * users and activating the handling of recieving MarkerUpdates from the server.
+   * users and activating the handling of recieving LocationUpdates from the server.
    * @public
    */
   async initMarkers() {
-    const markerUpdates = await this.getMarkerUpdates();
-    markerUpdates.forEach((markerUpdate) => {
-      this.createMarker_(markerUpdate);
+    const locationUpdates = await this.getLocationUpdates();
+    locationUpdates.forEach((locationUpdate) => {
+      this.createMarker_(locationUpdate);
     });
-    if (this.broadcastMarkerHandler) {
-      this.broadcastMarkerHandler(this.updateMarkerLocations_.bind(this));
+    if (this.getBroadcastLocationUpdates) {
+      this.getBroadcastLocationUpdates(this.updateMarkerLocations_.bind(this));
     } else {
       this.pollServer_();
     };
 };
 
   /**
-   * Create a MarkerUpdate from a Blockly event and send it to the server.
-   * @param {!Blockly.Event} event The event for which to create a MarkerUpdate.
+   * Create a LocationUpdate from a Blockly event and send it to the server.
+   * @param {!Blockly.Event} event The event for which to create a LocationUpdate.
    * @public
    */
   async handleEvent(event) {
-    const markerUpdate = MarkerUpdate.fromEvent(event);
-    await this.sendMarkerUpdate(markerUpdate);
+    const location = Location.fromEvent(event);
+    await this.sendLocationUpdate({
+      workspaceId: this.workspaceId,
+      location: location
+    });
   };
 
   /**
-   * Periodically query the database for MarkerUpdates.
+   * Periodically query the database for LocationUpdates.
    * @private
    */
   async pollServer_() {
-    const markerUpdates = await this.getMarkerUpdates();
-    await this.updateMarkerLocations_(markerUpdates);
+    const locationUpdates = await this.getLocationUpdates();
+    await this.updateMarkerLocations_(locationUpdates);
     setTimeout(() => {
       this.pollServer_();
     }, 5000)
   };
 
   /**
-   * Get the workspace with the id specified by the MarkerUpdate.
+   * Get the workspace that corresponds to workspaceId.
    * @return {Blockly.Workspace} The sought after workspace or null if not found.
    * @private
    */  
@@ -83,7 +86,7 @@ export default class MarkerManager {
   };
 
   /**
-   * Get the MarkerManager for the workspace specified by MarkerUpdate.
+   * Get the MarkerManager for the workspace.
    * @return {Blockly.MarkerManager} The sought after MarkerManager or null if not
    * found.
    * @private
@@ -94,7 +97,7 @@ export default class MarkerManager {
   };
 
   /**
-   * Get a color to assign to a new client marker.
+   * Get a color to assign to a new user marker.
    * @returns {string} The string encoding a colour.
    * @private
    */  
@@ -106,28 +109,29 @@ export default class MarkerManager {
 
   /**
    * Create a Marker with a unique color and register it.
-   * @param {!MarkerUpdate} markerUpdate The MarkerUpdate for which to create
+   * @param {!LocationUpdate} locationUpdate The LocationUpdate for which to create
    * a Marker.
-   * @returns {!Marker} marker The Marker represented by the MarkerUpdate.
+   * @returns {!Marker} marker The Marker represented by the LocationUpdate.
    * @throws Throws an error if there is no Blockly MarkerManager to add the
    * created marker to.
    * @private
    */
-  createMarker_(markerUpdate) {
+  createMarker_(locationUpdate) {
     if (!this.getMarkerManager_()) {
       throw Error('Cannot create a Marker without Blockly MarkerManager.');
     };
-    const marker = markerUpdate.toMarker(this.getWorkspace_());
+    const location = locationUpdate.location;
+    const marker = location.toMarker(this.getWorkspace_());
     marker.colour = this.getColour_();
-    this.getMarkerManager_().registerMarker(markerUpdate.id, marker)
-    marker.setCurNode(markerUpdate.createNode(this.getWorkspace_()));
+    this.getMarkerManager_().registerMarker(locationUpdate.workspaceId, marker)
+    marker.setCurNode(location.createNode(this.getWorkspace_()));
     return marker;
   };
 
   /**
-   * Get the Marker that corresponds to the given client.
-   * @param {string} workspaceId The workspaceId of the client.
-   * @returns {Blockly.Marker} The Marker for the client if it exists, otherwise
+   * Get the Marker that corresponds to the given user.
+   * @param {string} workspaceId The workspaceId of the user.
+   * @returns {Blockly.Marker} The Marker for the user if it exists, otherwise
    * null.
    * @private
    */  
@@ -138,19 +142,20 @@ export default class MarkerManager {
 
   /**
    * Updates curNode on a Marker based on MarkerLocation.
-   * @param {!<Array.<!MarkerUpdate>>} markerUpdates The MarkerUpdates which
+   * @param {!<Array.<!LocationUpdate>>} locationUpdates The LocationUpdates which
    * contain the new MarkerLocations.
    * @private
    */
-  async updateMarkerLocations_(markerUpdates) {
-    const filteredMarkerUpdates = markerUpdates.filter(
-        markerUpdate => markerUpdate.id != this.workspaceId);
-    filteredMarkerUpdates.forEach((markerUpdate) => {
-      const node = markerUpdate.createNode(this.getWorkspace_());
-      if (this.getMarker(markerUpdate.id)) {
-        this.getMarker(markerUpdate.id).setCurNode(node);
+  async updateMarkerLocations_(locationUpdates) {
+    const filteredLocationUpdates = locationUpdates.filter(
+        locationUpdate => locationUpdate.workspaceId != this.workspaceId);
+    filteredLocationUpdates.forEach((locationUpdate) => {
+      const location = locationUpdate.location;
+      const node = location.createNode(this.getWorkspace_());
+      if (this.getMarker(locationUpdate.workspaceId)) {
+        this.getMarker(locationUpdate.workspaceId).setCurNode(node);
       } else {
-        this.createMarker_(markerUpdate).setCurNode(node);        
+        this.createMarker_(locationUpdate).setCurNode(node);        
       };
     });
   };

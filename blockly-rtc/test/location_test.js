@@ -16,7 +16,7 @@
  */
 
 /**
- * @fileoverview Unit tests for MarkerUpdate.
+ * @fileoverview Unit tests for Location.
  * @author navil@google.com (Navil Perez)
  */
 
@@ -24,9 +24,9 @@ const assert = require('assert');
 const Blockly = require('blockly/dist');
 const sinon = require('sinon');
 
-const MarkerUpdate = require('../src/Location').default;
+const Location = require('../src/Location').default;
 
-suite('MarkerUpdate', () => {
+suite('Location', () => {
 
   suite('fromEvent()', () => {
     setup(() => {
@@ -50,80 +50,57 @@ suite('MarkerUpdate', () => {
     });
 
     test('From SELECT UI event on a block.', async () => {
-      const event = new Blockly.Events.Ui(this.block, 'selected', 'old', this.FAKE_BLOCK_ID);
-      const markerUpdate = MarkerUpdate.fromEvent(event);
-      const expectedMarkerUpdate = new MarkerUpdate(this.FAKE_WORKSPACE_ID, 'BLOCK', this.FAKE_BLOCK_ID, null);
-      assert.deepEqual(markerUpdate, expectedMarkerUpdate);
+      const event = new Blockly.Events.Ui(
+          this.block, 'selected', 'old', this.FAKE_BLOCK_ID);
+      const location = Location.fromEvent(event);
+      const expectedLocation = new Location('BLOCK', this.FAKE_BLOCK_ID, null);
+      assert.deepEqual(location, expectedLocation);
     });
   });
 
   suite('fromJson()', () => {
-    test('JSON object to MarkerUpdate object.', async () => {
+    test('JSON object to Location object.', async () => {
       const json = {
-        id: 'id',
-        markerLocation: {
-          type: 'type',
-          blockId: 'blockId',
-          fieldName: 'fieldName'
-        }
+        type: 'type',
+        blockId: 'blockId',
+        fieldName: 'fieldName'
       };
-      const markerUpdate = MarkerUpdate.fromJson(json);
-      const expectedMarkerUpdate = new MarkerUpdate(
-          'id', 'type', 'blockId', 'fieldName');
-      assert.deepEqual(markerUpdate, expectedMarkerUpdate);
-    });
-  });
-
-  suite('toJson()', () => {
-    test('MarkerUpdate object to JSON object.', async () => {
-      const markerUpdate = new MarkerUpdate('id', 'type', 'blockId', 'fieldName');
-      const json = markerUpdate.toJson(markerUpdate);
-      const expectedJson = {
-        id: 'id',
-        markerLocation: {
-          type: 'type',
-          blockId:  'blockId',
-          fieldName: 'fieldName'
-        }
-      };
-      assert.deepEqual(json, expectedJson);
+      const location = Location.fromJson(json);
+      const expectedLocation = new Location(
+          'type', 'blockId', 'fieldName');
+      assert.deepEqual(location, expectedLocation);
     });
   });
 
   suite('createNode()', () => {
     test('Location does not exists, node is undefined.', async () => {
-      const markerUpdate = new MarkerUpdate(this.FAKE_WORKSPACE_ID, null, null, null);
-      const node = markerUpdate.createNode(this.mockWorkspace);
+      const location = new Location(null, null, null);
+      const node = location.createNode(this.mockWorkspace);
       assert.deepEqual(null, node);
     });
 
     test('Location is a block, create block node.', async () => {
-      const markerUpdate = new MarkerUpdate('workspaceId', 'BLOCK', 'blockId', null);
-      const createBlockNodeStub = sinon.stub(markerUpdate, 'createBlockNode_');
-      markerUpdate.createNode(this.mockWorkspace);
-      assert.equal(true, createBlockNodeStub.calledOnce);
+      const location = new Location('BLOCK', 'blockId', null);
+      sinon.stub(location, 'createBlockNode_');
+      location.createNode(this.mockWorkspace);
+      assert(location.createBlockNode_.calledOnce);
     });
 
     test('Location is a field, create field node.', async () => {
-      const markerUpdate = new MarkerUpdate(
-          'workspaceId', 'FIELD', 'blockId', 'fieldName');
-      const createFieldNodeStub = sinon.stub(markerUpdate, 'createFieldNode_');
-      markerUpdate.createNode(this.mockWorkspace);
-      assert.equal(true, createFieldNodeStub.calledOnce);
+      const location = new Location('FIELD', 'blockId', 'fieldName');
+      sinon.stub(location, 'createFieldNode_');
+      location.createNode(this.mockWorkspace);
+      assert(location.createFieldNode_.calledOnce);
     });
   });
 
   suite('toMarker()', () => {
     test('Create marker with correct curNode.', async () => {
-      const markerUpdate = new MarkerUpdate(
-          'workspaceId', 'type', 'blockId', 'fieldName');
-      const createNodeStub = sinon.stub(markerUpdate, 'createNode');
-      createNodeStub.returns('mockNode');
-
+      const location = new Location('type', 'blockId', 'fieldName');
+      sinon.stub(location, 'createNode').returns('mockNode');
       const expectedMarker = new Blockly.Marker();
       expectedMarker.setCurNode('mockNode');
-
-      const marker = markerUpdate.toMarker('mockWorkspace');
+      const marker = location.toMarker('mockWorkspace');
       assert.deepEqual(marker, expectedMarker);
     });
   });

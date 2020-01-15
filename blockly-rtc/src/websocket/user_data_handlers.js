@@ -18,58 +18,60 @@
  */
 
 /**
- * @fileoverview Websocket APIs for passing MarkerUpdates between the client
- * and the server.
+ * @fileoverview Websocket APIs for passing user metadata between the client and
+ * the server.
  * @author navil@google.com (Navil Perez)
  */
 
 import io from 'socket.io-client';
-import MarkerUpdate from '../Location';
+import Location from '../Location';
 
 const socket = io('http://localhost:3001');
 
 /**
- * Get a MarkerUpdate for given client. If no client is specified will return
- * a MarkerUpdate for all clients.
- * @param {string=} workspaceId workspaceId of the client.
- * @return {!Promise} Promise object with an array of MarkerUpdate objects.
+ * Get the location for a given user. If no user is specified will return the
+ * locations of all users.
+ * @param {string=} workspaceId workspaceId of the user.
+ * @return {!Promise} Promise object with an array of LocationUpdate objects.
  * @public
  */
-export async function getMarkerUpdates(workspaceId) {
+export async function getLocationUpdates(workspaceId) {
   return new Promise((resolve, reject) => {
-    socket.emit('getMarkerUpdates', workspaceId, (markerUpdatesJson) => {
-      const markerUpdates = markerUpdatesJson
-          .map(markerUpdate => MarkerUpdate.fromJson(markerUpdate));
-      resolve(markerUpdates);
+    socket.emit('getLocationUpdates', workspaceId, (locationUpdates) => {
+      locationUpdates.forEach((locationUpdate) => {
+        locationUpdate.location = Location.fromJson(locationUpdate.location);
+      });
+      resolve(locationUpdates);
     });
   });
 };
 
 /**
- * Update the MarkerLocation of a client in the database.
- * @param {!MarkerUpdate} markerUpdate The MarkerUpdate with the new
- * MarkerLocation for a given client.
+ * Update the location of a user in the database.
+ * @param {!LocationUpdate} locationUpdate The LocationUpdate with the new
+ * location for a given user.
  * @return {!Promise} Promise object representing the success of the update.
  * @public
  */
-export async function sendMarkerUpdate(markerUpdate) {
+export async function sendLocationUpdate(locationUpdate) {
   return new Promise((resolve, reject) => {
-    socket.emit('sendMarkerUpdate', markerUpdate.toJson(), () => {
+    socket.emit('sendLocationUpdate', locationUpdate, () => {
       resolve();
     });
   });
 };
 
 /**
- * Listen for MarkerUpdates broadcast by the server.
- * @param {!Function} callback The callback handler that passes the MarkerUpdates
- * to the client.
+ * Listen for LocationUpdates broadcast by the server.
+ * @param {!Function} callback The callback handler that passes the
+ * LocationUpdates to WorkspaceClient.
  * @public
  */
-export function getBroadcastMarkerUpdates(callback) {
-  socket.on('broadcastMarker', async (markerUpdatesJson)=> {
-    const markerUpdates = markerUpdatesJson
-        .map(markerUpdate => MarkerUpdate.fromJson(markerUpdate));
-    await callback(markerUpdates);
+export function getBroadcastLocationUpdates(callback) {
+  socket.on('broadcastLocation', async (locationUpdates)=> {
+    locationUpdates.forEach((locationUpdate) => {
+      locationUpdate.location = Location.fromJson(locationUpdate.location);
+    });
+    await callback(locationUpdates);
   });
 };

@@ -16,7 +16,7 @@
  */
 
 /**
- * @fileoverview Unit tests for MarkerManager.
+ * @fileoverview Unit tests for UserDataManager.
  * @author navil@google.com (Navil Perez)
  */
 
@@ -25,14 +25,14 @@ const Blockly = require('blockly/dist');
 const sinon = require('sinon');
 
 const handlers = require('../src/websocket/user_data_handlers');
-const MarkerManager = require('../src/UserDataManager').default;
-const MarkerUpdate = require('../src/Location').default;
+const UserDataManager = require('../src/UserDataManager').default;
+const Location = require('../src/Location').default;
 
-suite('MarkerManager', () => {
+suite('UserDataManager', () => {
   setup(() => {
-    this.markerManager = new MarkerManager(
-        'mockWorkspaceId', handlers.sendMarkerUpdate, handlers.getMarkerUpdates,
-        handlers.getBroadcastMarkerUpdates);
+    this.userDataManager = new UserDataManager(
+        'mockWorkspaceId', handlers.sendLocationUpdate,
+        handlers.getLocationUpdates, handlers.getBroadcastLocationUpdates);
     Blockly.defineBlocksWithJsonArray([{
       'type': 'test_block',
       'message0': 'test block'
@@ -44,6 +44,7 @@ suite('MarkerManager', () => {
         .onSecondCall().returns(this.FAKE_BLOCK_ID);
     this.workspace = new Blockly.WorkspaceSvg({});
     this.block = new Blockly.Block(this.workspace, 'test_block');
+    this.location = new Location('BLOCK', 'blockId', null);
 
     this.BlocklyMarkerManager = new Blockly.MarkerManager(this.workspace);
     sinon.stub(this.BlocklyMarkerManager, 'registerMarker');
@@ -61,20 +62,20 @@ suite('MarkerManager', () => {
 
   suite('createMarker', () => {
     test('No Blockly MarkerManager, throw error.', async () => {
-      sinon.stub(this.markerManager, 'getMarkerManager_').returns(null);
-      sinon.spy(this.markerManager, 'createMarker_');
-      const markerUpdate1 = new MarkerUpdate('Id', 'BLOCK', 'blockId', null);
+      sinon.stub(this.userDataManager, 'getMarkerManager_').returns(null);
+      sinon.spy(this.userDataManager, 'createMarker_');
+      const locationUpdate1 = {workspaceId: 'mockId1', location: this.location};
       try {
-        this.markerManager.createMarker_(markerUpdate1);
+        this.userDataManager.createMarker_(locationUpdate1);
       } catch {};
-      assert(this.markerManager.createMarker_.threw());
+      assert(this.userDataManager.createMarker_.threw());
     });
 
     test('Markers have unique colors and are registered.', async () => {
-      const markerUpdate1 = new MarkerUpdate('mockId1', 'BLOCK', 'blockId', null);
-      const markerUpdate2 = new MarkerUpdate('mockId2', 'BLOCK', 'blockId', null);
-      const marker1 = this.markerManager.createMarker_(markerUpdate1);
-      const marker2 = this.markerManager.createMarker_(markerUpdate2);
+      const locationUpdate1 = {workspaceId: 'mockId1', location: this.location};
+      const locationUpdate2 = {workspaceId: 'mockId2', location: this.location};
+      const marker1 = this.userDataManager.createMarker_(locationUpdate1);
+      const marker2 = this.userDataManager.createMarker_(locationUpdate2);
       assert.notEqual(marker1.colour, marker2.colour);
       assert.deepEqual(this.BlocklyMarkerManager.getMarker('mockId1'), marker1);
       assert.deepEqual(this.BlocklyMarkerManager.getMarker('mockId2'), marker2);
@@ -85,25 +86,24 @@ suite('MarkerManager', () => {
     setup(() => {
       this.BlocklyMarkerManager.markers_ = {
         'mockId': new Blockly.Marker()
-      };      
+      };
     });
 
-    test('MarkerUpdate has a new markerLocation, update curNode.', async () => {
-      const markerUpdates = [
-        new MarkerUpdate('mockId', 'BLOCK', 'blockId', null)
-      ];
-      this.markerManager.updateMarkerLocations_(markerUpdates);
-      const curNode = this.markerManager.getMarker('mockId').curNode_;
+    test('New Location, update curNode.', async () => {
+      const locationUpdate = {workspaceId: 'mockId', location: this.location};
+      const locationUpdates = [locationUpdate];
+      this.userDataManager.updateMarkerLocations_(locationUpdates);
+      const curNode = this.userDataManager.getMarker('mockId').curNode_;
       const expectedNode = Blockly.ASTNode.createBlockNode(this.block);
       assert.deepEqual(curNode, expectedNode);
     });
 
-    test('MarkerUpdates has a new marker, new marker is created', async () => {
-      const createMarkerSpy = sinon.spy(this.markerManager, 'createMarker_');
-      const markerUpdate = new MarkerUpdate('mockId1', 'BLOCK', 'blockId', null)
-      const markerUpdates = [markerUpdate];
-      this.markerManager.updateMarkerLocations_(markerUpdates);
-      assert.equal(true, createMarkerSpy.calledOnceWith(markerUpdate));
+    test('Location is for a new user, new marker is created.', async () => {
+      sinon.spy(this.userDataManager, 'createMarker_');
+      const locationUpdate = {workspaceId: 'mockId1', location: this.location};
+      const locationUpdates = [locationUpdate];
+      this.userDataManager.updateMarkerLocations_(locationUpdates);
+      assert(this.userDataManager.createMarker_.calledOnceWith(locationUpdate));
     });
   });
 });
