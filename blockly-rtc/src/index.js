@@ -23,8 +23,8 @@
 
 import * as Blockly from 'blockly/dist';
 import {getEvents, writeEvents, getBroadcast} from './websocket/workspace_client_handlers';
-import {getMarkerUpdates, sendMarkerUpdate, getBroadcastMarkerUpdates} from './websocket/marker_manager_handlers';
-import MarkerManager from './MarkerManager';
+import {getMarkerUpdates, sendMarkerUpdate, getBroadcastMarkerUpdates} from './websocket/user_data_handlers';
+import MarkerManager from './UserDataManager';
 import WorkspaceClient from './WorkspaceClient';
 
 document.addEventListener('DOMContentLoaded', () => {

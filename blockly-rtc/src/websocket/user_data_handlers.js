@@ -24,7 +24,7 @@
  */
 
 import io from 'socket.io-client';
-import MarkerUpdate from '../MarkerUpdate';
+import MarkerUpdate from '../Location';
 
 const socket = io('http://localhost:3001');
 

@@ -24,7 +24,7 @@ const assert = require('assert');
 const Blockly = require('blockly/dist');
 const sinon = require('sinon');
 
-const MarkerUpdate = require('../src/MarkerUpdate').default;
+const MarkerUpdate = require('../src/Location').default;
 
 suite('MarkerUpdate', () => {
 

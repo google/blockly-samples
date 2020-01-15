@@ -21,7 +21,7 @@
  */
 
 import * as Blockly from 'blockly/dist';
-import MarkerUpdate from './MarkerUpdate';
+import MarkerUpdate from './Location';
 
 export default class MarkerManager {
   constructor(workspaceId, sendMarkerUpdate, getMarkerUpdates,

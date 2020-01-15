@@ -24,9 +24,9 @@ const assert = require('assert');
 const Blockly = require('blockly/dist');
 const sinon = require('sinon');
 
-const handlers = require('../src/websocket/marker_manager_handlers');
-const MarkerManager = require('../src/MarkerManager').default;
-const MarkerUpdate = require('../src/MarkerUpdate').default;
+const handlers = require('../src/websocket/user_data_handlers');
+const MarkerManager = require('../src/UserDataManager').default;
+const MarkerUpdate = require('../src/Location').default;
 
 suite('MarkerManager', () => {
   setup(() => {

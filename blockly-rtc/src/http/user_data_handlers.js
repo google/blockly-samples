@@ -21,7 +21,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import MarkerUpdate from '../MarkerUpdate';
+import MarkerUpdate from '../Location';
 
 /**
  * Get a MarkerUpdate for given client. If no client is specified will return
