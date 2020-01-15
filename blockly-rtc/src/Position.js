@@ -16,13 +16,13 @@
  */
 
 /**
- * @fileoverview Object representing a user's location.
+ * @fileoverview Object representing a user's cursor position on the workspace.
  * @author navil@google.com (Navil Perez)
  */
 
 import * as Blockly from 'blockly/dist';
 
-export default class Location {
+export default class Position {
   constructor(type, blockId, fieldName) {
     this.type = type;
     this.blockId = blockId;
@@ -30,37 +30,37 @@ export default class Location {
   };
 
   /**
-   * Create a Location from an event. Currently supports creating Locations for
+   * Create a Position from an event. Currently supports creating Positions for
    * blocks from a 'selected' UI event.
-   * @param {!Blockly.Event} event The event that creates a Location.
-   * @return {!LocationUpdate} The Location representative of the event.
+   * @param {!Blockly.Event} event The event that creates a Position.
+   * @return {!PositionUpdate} The Position representative of the event.
    * @public
    */  
   static fromEvent(event) {
-    // TODO: Add support for a field location on a change event.
+    // TODO: Add support for a field position on a change event.
     const id = event.workspaceId;
     const type = 'BLOCK';
     const blockId = event.newValue;
     const fieldName = null;
-    return new Location(type, blockId, fieldName);  
+    return new Position(type, blockId, fieldName);  
   };
 
   /**
-   * Decode the JSON into a Location.
-   * @param {!Object} json The JSON representation of the Location.
-   * @return {!LocationUpdate} The Location represented by the JSON.
+   * Decode the JSON into a Position.
+   * @param {!Object} json The JSON representation of the Position.
+   * @return {!PositionUpdate} The Position represented by the JSON.
    * @public
    */
   static fromJson(json) {
-    return new Location(json.type, json.blockId, json.fieldName);
+    return new Position(json.type, json.blockId, json.fieldName);
   };
 
   /**
-   * Check if the combination of Location properties describe a viable location.
-   * @return {!Boolean} Whether the LocationUpdate has a viable location.
+   * Check if the combination of Position properties describe a viable position.
+   * @return {!Boolean} Whether the PositionUpdate has a viable position.
    * @public
    */  
-  hasValidLocation() {
+  hasValidPosition() {
     if (this.type == 'FIELD' && this.blockId && this.fieldName) {
       return true;
     } else if (this.type == 'BLOCK' && this.blockId) {
@@ -71,9 +71,9 @@ export default class Location {
   };
   
   /**
-   * Create a Marker at the Location.
+   * Create a Marker at the Position.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {!Blockly.Marker} A Marker with the curNode set to the Location.
+   * @return {!Blockly.Marker} A Marker with the curNode set to the Position.
    * @public
    */
   toMarker(workspace) {
@@ -84,14 +84,14 @@ export default class Location {
   };
 
   /**
-   * Create an ASTNode pointing to the Location.
+   * Create an ASTNode pointing to the Position.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {Blockly.ASTNode} An AST Node that points to the Location or null
-   * if the location is not viable.
+   * @return {Blockly.ASTNode} An AST Node that points to the Position or null
+   * if the position is not viable.
    * @public
    */
   createNode(workspace) {
-    if (!this.hasValidLocation()) {
+    if (!this.hasValidPosition()) {
       return null;
     };
     if (this.type == 'BLOCK') {

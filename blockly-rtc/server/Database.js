@@ -176,52 +176,52 @@ class Database {
   };
 
   /**
-   * Query the location for the given user. If no user is specified will
-   * return the locations of all users.
+   * Query the position for the given user. If no user is specified will
+   * return the positions of all users.
    * @param {string=} workspaceId workspaceId of the user.
-   * @return {!Promise} Promise object with an array of LocationUpdate objects.
+   * @return {!Promise} Promise object with an array of positionUpdate objects.
    * @public
    */
-  getLocationUpdates(workspaceId) {
+  getPositionUpdates(workspaceId) {
     return new Promise((resolve, reject) => {
       const sql = workspaceId ? 
-          `SELECT workspaceId, location from users
+          `SELECT workspaceId, position from users
           WHERE
           (EXISTS (SELECT 1 from users WHERE workspaceId == ${workspaceId}))
           AND workspaceId = ${workspaceId};` :
-          `SELECT workspaceId, location from users;`;
-      this.db.all(sql, (err, locationUpdates) => {
+          `SELECT workspaceId, position from users;`;
+      this.db.all(sql, (err, positionUpdates) => {
         if (err) {
           console.error(err.message);
-          reject('Failed to get locations.');
+          reject('Failed to get positions.');
         } else {
-          locationUpdates.forEach((locationUpdate) => {
-            locationUpdate.location = JSON.parse(locationUpdate.location);
+          positionUpdates.forEach((positionUpdate) => {
+            positionUpdate.position = JSON.parse(positionUpdate.position);
           });
-          resolve(locationUpdates);
+          resolve(positionUpdates);
         };
       });
     });
   };
 
   /**
-   * Update the location in the users table for a given user.
-   * @param {!Object} locationUpdate The LocationUpdate with the new
-   * location for a given user.
+   * Update the position in the users table for a given user.
+   * @param {!Object} positionUpdate The positionUpdate with the new
+   * position for a given user.
    * @return {!Promise} Promise object represents the success of the update.
    * @public
    */
-  updateLocation(locationUpdate) {
+  updatePosition(positionUpdate) {
     return new Promise((resolve, reject) => {
       this.db.run(
-          `INSERT INTO users(workspaceId, lastEntryNumber, location)
+          `INSERT INTO users(workspaceId, lastEntryNumber, position)
           VALUES(?, -1, ?)
           ON CONFLICT(workspaceId)
-          DO UPDATE SET location = ?`,
+          DO UPDATE SET position = ?`,
           [
-            locationUpdate.workspaceId,
-            JSON.stringify(locationUpdate.location),
-            JSON.stringify(locationUpdate.location)
+            positionUpdate.workspaceId,
+            JSON.stringify(positionUpdate.position),
+            JSON.stringify(positionUpdate.position)
           ],
           (err) => {
         if (err) {

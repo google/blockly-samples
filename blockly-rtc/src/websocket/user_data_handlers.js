@@ -24,54 +24,54 @@
  */
 
 import io from 'socket.io-client';
-import Location from '../Location';
+import Position from '../Position';
 
 const socket = io('http://localhost:3001');
 
 /**
- * Get the location for a given user. If no user is specified will return the
- * locations of all users.
+ * Get the position for a given user. If no user is specified will return the
+ * positions of all users.
  * @param {string=} workspaceId workspaceId of the user.
- * @return {!Promise} Promise object with an array of LocationUpdate objects.
+ * @return {!Promise} Promise object with an array of PositionUpdate objects.
  * @public
  */
-export async function getLocationUpdates(workspaceId) {
+export async function getPositionUpdates(workspaceId) {
   return new Promise((resolve, reject) => {
-    socket.emit('getLocationUpdates', workspaceId, (locationUpdates) => {
-      locationUpdates.forEach((locationUpdate) => {
-        locationUpdate.location = Location.fromJson(locationUpdate.location);
+    socket.emit('getPositionUpdates', workspaceId, (positionUpdates) => {
+      positionUpdates.forEach((positionUpdate) => {
+        positionUpdate.position = Position.fromJson(positionUpdate.position);
       });
-      resolve(locationUpdates);
+      resolve(positionUpdates);
     });
   });
 };
 
 /**
- * Update the location of a user in the database.
- * @param {!LocationUpdate} locationUpdate The LocationUpdate with the new
- * location for a given user.
+ * Update the position of a user in the database.
+ * @param {!PositionUpdate} positionUpdate The PositionUpdate with the new
+ * position for a given user.
  * @return {!Promise} Promise object representing the success of the update.
  * @public
  */
-export async function sendLocationUpdate(locationUpdate) {
+export async function sendPositionUpdate(positionUpdate) {
   return new Promise((resolve, reject) => {
-    socket.emit('sendLocationUpdate', locationUpdate, () => {
+    socket.emit('sendPositionUpdate', positionUpdate, () => {
       resolve();
     });
   });
 };
 
 /**
- * Listen for LocationUpdates broadcast by the server.
+ * Listen for PositionUpdates broadcast by the server.
  * @param {!Function} callback The callback handler that passes the
- * LocationUpdates to WorkspaceClient.
+ * PositionUpdates to WorkspaceClient.
  * @public
  */
-export function getBroadcastLocationUpdates(callback) {
-  socket.on('broadcastLocation', async (locationUpdates)=> {
-    locationUpdates.forEach((locationUpdate) => {
-      locationUpdate.location = Location.fromJson(locationUpdate.location);
+export function getBroadcastPositionUpdates(callback) {
+  socket.on('broadcastPosition', async (positionUpdates)=> {
+    positionUpdates.forEach((positionUpdate) => {
+      positionUpdate.position = Position.fromJson(positionUpdate.position);
     });
-    await callback(locationUpdates);
+    await callback(positionUpdates);
   });
 };

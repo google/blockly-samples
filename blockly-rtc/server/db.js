@@ -38,7 +38,7 @@ const db = new sqlite3.Database('./eventsdb.sqlite', (err) => {
   const userTableSql = `CREATE TABLE IF NOT EXISTS users(
       workspaceId TEXT UNIQUE,
       lastEntryNumber INTEGER,
-      location TEXT);`
+      position TEXT);`
   db.run(userTableSql, function(err) {
     if (err) {
       return console.error(err.message);

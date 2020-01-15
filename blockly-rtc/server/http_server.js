@@ -34,10 +34,10 @@ http.createServer(async (req, res) => {
     await queryEventsHandler_(res, parsedUrl.query.serverId);
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
     await addEventsHandler_(req, res);
-  } else if (req.method === 'GET' && parsedUrl.pathname === '/api/users/location/query') {
-    await getLocationUpdatesHandler_(res, parsedUrl.query.workspaceId);
-  } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/users/location/update') {
-    await updateLocationHandler_(req, res);
+  } else if (req.method === 'GET' && parsedUrl.pathname === '/api/users/position/query') {
+    await getPositionUpdatesHandler_(res, parsedUrl.query.workspaceId);
+  } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/users/position/update') {
+    await updatePositionHandler_(req, res);
   } else {
     res.statusCode = 404;
     res.end();
@@ -90,20 +90,20 @@ async function addEventsHandler_(req, res) {
 };
 
 /**
- * Handler for a users PUT request. Update a user's location in the users table.
+ * Handler for a users PUT request. Update a user's position in the users table.
  * @param {!Object} req The HTTP request object.
  * @param {!Object} res The HTTP response object.
  * @private
  */
-async function updateLocationHandler_(req, res) {
+async function updatePositionHandler_(req, res) {
   try {
     const data = [];
     req.on('data', chunk => {
       data.push(chunk);
     });
     req.on('end', async () => {
-      const locationUpdate = JSON.parse(data).locationUpdate;
-      await database.updateLocation(locationUpdate);
+      const positionUpdate = JSON.parse(data).positionUpdate;
+      await database.updatePosition(positionUpdate);
       res.statusCode = 200;
       res.end();  
     });
@@ -114,18 +114,18 @@ async function updateLocationHandler_(req, res) {
 };
 
 /**
- * Handler for a getLocationUpdates message. Query the database for a
- * LocationUpdate for the specified user or all if no user is specified.
+ * Handler for a getPositionUpdates message. Query the database for a
+ * PositionUpdate for the specified user or all if no user is specified.
  * @param {!Object} res The HTTP response object.
  * @param {string=} workspaceId workspaceId for specified user.
  * @private
  */
-async function getLocationUpdatesHandler_(res, workspaceId) {
+async function getPositionUpdatesHandler_(res, workspaceId) {
   try {
-    const locationUpdates = await database.getLocationUpdates(workspaceId);
+    const positionUpdates = await database.getPositionUpdates(workspaceId);
     res.setHeader('Content-Type', 'application/json');
     res.statusCode = 200;
-    res.write(JSON.stringify({ locationUpdates }));  
+    res.write(JSON.stringify({ positionUpdates }));  
     res.end();
   } catch {
     res.statusCode = 401;

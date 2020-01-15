@@ -62,12 +62,12 @@ async function onConnect_(user) {
     await getEventsHandler_(serverId, callback);
   });
 
-  user.on('sendLocationUpdate', async (locationUpdate, callback) => {
-    updateLocationHandler_(user, locationUpdate, callback);
+  user.on('sendPositionUpdate', async (positionUpdate, callback) => {
+    updatePositionHandler_(user, positionUpdate, callback);
   });
 
-  user.on('getLocationUpdates', async (workspaceId, callback) => {
-    getLocationUpdatesHandler_(workspaceId, callback);
+  user.on('getPositionUpdates', async (workspaceId, callback) => {
+    getPositionUpdatesHandler_(workspaceId, callback);
   });
 };
 
@@ -99,31 +99,31 @@ async function addEventsHandler_(entry, callback) {
 };
 
 /**
- * Handler for an updateLocation message. Update a user's location in the
- * users table and broadcast the LocationUpdate to all users except the
+ * Handler for an updatePosition message. Update a user's position in the
+ * users table and broadcast the PositionUpdate to all users except the
  * sender.
  * @param {!Object} user The user who sent the message.
- * @param {!LocationUpdate} locationUpdate The LocationUpdate with the new
- * location for a given user.
+ * @param {!PositionUpdate} positionUpdate The PositionUpdate with the new
+ * position for a given user.
  * @param {!Function} callback The callback passed in by WorkspaceClient to
  * receive acknowledgement of the success of the write.
  * @private
  */
-async function updateLocationHandler_(user, locationUpdate, callback) {
-  await database.updateLocation(locationUpdate);
+async function updatePositionHandler_(user, positionUpdate, callback) {
+  await database.updatePosition(positionUpdate);
   callback();
-  user.broadcast.emit('broadcastLocation', [locationUpdate]);
+  user.broadcast.emit('broadcastPosition', [positionUpdate]);
 };
 
 /**
- * Handler for a getLocationUpdates message. Query the database for a
- * LocationUpdate for the specified user or all if no user specified.
+ * Handler for a getPositionUpdates message. Query the database for a
+ * PositionUpdate for the specified user or all if no user specified.
  * @param {string=} workspaceId The workspaceId for the specified user.
  * @param {!Function} callback The callback passed in by WorkspaceClient to
- * receive the LocationUpdates upon success of the query.
+ * receive the PositionUpdates upon success of the query.
  * @private
  */
-async function getLocationUpdatesHandler_(workspaceId, callback) {
-  const locationUpdates = await database.getLocationUpdates(workspaceId);
-  callback(locationUpdates);
+async function getPositionUpdatesHandler_(workspaceId, callback) {
+  const positionUpdates = await database.getPositionUpdates(workspaceId);
+  callback(positionUpdates);
 };

@@ -36,10 +36,10 @@
  */
  
  /**
- * An update to the location of a user.
- * @typedef {Object} LocationUpdate
+ * An update to the position of a user.
+ * @typedef {Object} PositionUpdate
  * @property {string} workspaceId The workspaceId of the user.
- * @property {Location} location The location of the user. 
+ * @property {Position} position The position of the user. 
  */
 
  /**
