@@ -186,7 +186,9 @@ class Database {
     return new Promise((resolve, reject) => {
       const sql = workspaceId ? 
           `SELECT workspaceId, markerLocation from clients
-          WHERE workspaceId = ${workspaceId};` :
+          WHERE
+          (EXISTS (SELECT 1 from clients WHERE workspaceId == ${workspaceId}))
+          AND workspaceId = ${workspaceId};` :
           `SELECT workspaceId, markerLocation from clients;`;
       this.db.all(sql, (err, markerUpdates) => {
         if (err) {
