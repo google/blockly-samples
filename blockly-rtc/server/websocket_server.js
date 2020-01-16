@@ -45,8 +45,7 @@ io.on('connection', (user) => {
 
 /**
  * Handler for listening to and emitting messages between the server and
- * connected nodes.
- * clients.
+ * connected users.
  * @param {!Object} user The user connecting.
  * @private
  */
@@ -63,12 +62,12 @@ async function onConnect_(user) {
     await getEventsHandler_(serverId, callback);
   });
 
-  user.on('sendMarkerUpdate', async (markerUpdate, callback) => {
-    updateMarkerHandler_(user, markerUpdate, callback);
+  user.on('sendPositionUpdate', async (positionUpdate, callback) => {
+    updatePositionHandler_(user, positionUpdate, callback);
   });
 
-  user.on('getMarkerUpdates', async (workspaceId, callback) => {
-    getMarkerUpdatesHandler_(workspaceId, callback);
+  user.on('getPositionUpdates', async (workspaceId, callback) => {
+    getPositionUpdatesHandler_(workspaceId, callback);
   });
 };
 
@@ -100,30 +99,31 @@ async function addEventsHandler_(entry, callback) {
 };
 
 /**
- * Handler for an updateMarker message. Update a client markerLocation in the
- * clients table and broadcast the markerUpdate to all users except the sender.
+ * Handler for an updatePosition message. Update a user's position in the
+ * users table and broadcast the PositionUpdate to all users except the
+ * sender.
  * @param {!Object} user The user who sent the message.
- * @param {!MarkerUpdate} markerUpdate The MarkerUpdate with the new
- * MarkerLocation for a given client.
+ * @param {!PositionUpdate} positionUpdate The PositionUpdate with the new
+ * position for a given user.
  * @param {!Function} callback The callback passed in by WorkspaceClient to
  * receive acknowledgement of the success of the write.
  * @private
  */
-async function updateMarkerHandler_(user, markerUpdate, callback) {
-  await database.updateMarker(markerUpdate);
+async function updatePositionHandler_(user, positionUpdate, callback) {
+  await database.updatePosition(positionUpdate);
   callback();
-  user.broadcast.emit('broadcastMarker', [markerUpdate]);
+  user.broadcast.emit('broadcastPosition', [positionUpdate]);
 };
 
 /**
- * Handler for a getMarkerUpdates message. Query the database for a MarkerUpdate
- * for the specified client or all if no client specified.
- * @param {string=} workspaceId workspaceId for specified client.
+ * Handler for a getPositionUpdates message. Query the database for a
+ * PositionUpdate for the specified user or all if no user specified.
+ * @param {string=} workspaceId The workspaceId for the specified user.
  * @param {!Function} callback The callback passed in by WorkspaceClient to
- * receive the MarkerUpdates upon success of the query.
+ * receive the PositionUpdates upon success of the query.
  * @private
  */
-async function getMarkerUpdatesHandler_(workspaceId, callback) {
-  const markerUpdates = await database.getMarkerUpdates(workspaceId);
-  callback(markerUpdates);
+async function getPositionUpdatesHandler_(workspaceId, callback) {
+  const positionUpdates = await database.getPositionUpdates(workspaceId);
+  callback(positionUpdates);
 };

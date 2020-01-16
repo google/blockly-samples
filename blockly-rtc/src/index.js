@@ -22,32 +22,32 @@
  */
 
 import * as Blockly from 'blockly/dist';
-import {getEvents, writeEvents, getBroadcast} from './websocket/workspace_client_handlers';
-import {getMarkerUpdates, sendMarkerUpdate, getBroadcastMarkerUpdates} from './websocket/marker_manager_handlers';
-import MarkerManager from './MarkerManager';
+import {getEvents, writeEvents} from './http/workspace_client_handlers';
+import {getPositionUpdates, sendPositionUpdate} from './http/user_data_handlers';
+import UserDataManager from './UserDataManager';
 import WorkspaceClient from './WorkspaceClient';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
       {
         toolbox: document.getElementById('toolbox'),
         media: 'media/'
       });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getEvents, writeEvents, getBroadcast);
+      workspace.id, getEvents, writeEvents);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
-  workspaceClient.initiateWorkspace();
+  await workspaceClient.initiateWorkspace();
 
-  const markerManager = new MarkerManager(workspace.id, sendMarkerUpdate,
-      getMarkerUpdates, getBroadcastMarkerUpdates);  
-  markerManager.initMarkers();
+  const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
+      getPositionUpdates);  
+  await userDataManager.initMarkers();
 
   workspace.addChangeListener((event) => {
     if (event instanceof Blockly.Events.Ui) {
       if (event.element == 'selected') {
-        markerManager.handleEvent(event);
+        userDataManager.handleEvent(event);
       };
       return;
     };

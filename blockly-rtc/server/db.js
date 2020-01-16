@@ -35,11 +35,11 @@ const db = new sqlite3.Database('./eventsdb.sqlite', (err) => {
       return console.error(err.message);
     };
   });
-  const clientTableSql = `CREATE TABLE IF NOT EXISTS clients(
+  const userTableSql = `CREATE TABLE IF NOT EXISTS users(
       workspaceId TEXT UNIQUE,
       lastEntryNumber INTEGER,
-      markerLocation TEXT);`
-  db.run(clientTableSql, function(err) {
+      position TEXT);`
+  db.run(userTableSql, function(err) {
     if (err) {
       return console.error(err.message);
     };
