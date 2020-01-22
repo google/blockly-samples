@@ -28,7 +28,10 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
     target: 'web',
     mode: 'development',
-    entry: './src/index.js',
+    entry: {
+        http: './src/http/index.js',
+        websocket: './src/websocket/index.js'
+    },
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].js'

@@ -22,10 +22,10 @@
  */
 
 import * as Blockly from 'blockly/dist';
-import {getEvents, writeEvents} from './http/workspace_client_handlers';
-import {getPositionUpdates, sendPositionUpdate} from './http/user_data_handlers';
-import UserDataManager from './UserDataManager';
-import WorkspaceClient from './WorkspaceClient';
+import {getEvents, writeEvents} from './workspace_client_handlers';
+import {getPositionUpdates, sendPositionUpdate} from './user_data_handlers';
+import UserDataManager from '../UserDataManager';
+import WorkspaceClient from '../WorkspaceClient';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
