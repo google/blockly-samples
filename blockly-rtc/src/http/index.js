@@ -17,7 +17,8 @@
  */
 
 /**
- * @fileoverview Realtime collaboration demo using Node.js and SQlite.
+ * @fileoverview Realtime collaboration sample code using Node.js HTTP server
+ * and SQlite.
  * @author navil@google.com (Navil Perez)
  */
 
