@@ -1,7 +1,7 @@
 /**
  * @license
  * 
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
  */
 
 /**
- * @fileoverview Realtime collaboration demo using Node.js and SQlite.
+ * @fileoverview Realtime collaboration sample code using Socket.IO and SQlite.
  * @author navil@google.com (Navil Perez)
  */
 
 import * as Blockly from 'blockly/dist';
-import {getEvents, writeEvents} from './http/workspace_client_handlers';
-import {getPositionUpdates, sendPositionUpdate} from './http/user_data_handlers';
-import UserDataManager from './UserDataManager';
-import WorkspaceClient from './WorkspaceClient';
+import {getEvents, writeEvents, getBroadcast} from './workspace_client_handlers';
+import {getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates} from './user_data_handlers';
+import UserDataManager from '../UserDataManager';
+import WorkspaceClient from '../WorkspaceClient';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
@@ -34,14 +34,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         media: 'media/'
       });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getEvents, writeEvents);
+      workspace.id, getEvents, writeEvents, getBroadcast);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
   await workspaceClient.initiateWorkspace();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-      getPositionUpdates);  
+      getPositionUpdates, getBroadcastPositionUpdates);  
   await userDataManager.initMarkers();
 
   workspace.addChangeListener((event) => {
