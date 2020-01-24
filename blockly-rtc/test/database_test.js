@@ -31,19 +31,20 @@ suite('Database', () => {
   suite('addToDatabase()', () => {
     setup(() => {
       this.runInsertQueryStub = sinon.stub(database, 'runInsertQuery_');
-      this.getLastEntryIdStub = sinon.stub(database, 'getLastEntryIdNumber_');
+      this.getLastEntryStub = sinon.stub(database, 'getLastEntryNumber_');
     });
 
     teardown(() => {
       database.runInsertQuery_.restore();
-      database.getLastEntryIdNumber_.restore();
+      database.getLastEntryNumber_.restore();
     });
 
     test('New user, add to database.', async () => {
-      this.getLastEntryIdStub.resolves(-1);
+      this.getLastEntryStub.resolves(-1);
       this.runInsertQueryStub.resolves(2);
       const entry = {
-          entryId: 'newMockEntry:1',
+          workspaceId: 'newMockEntry',
+          entryNumber: '1',
           events: [JSON.stringify({mockEvent:'event'})],
       };
       const serverId = await database.addToServer(entry);
