@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "blockly": "^3.20191014.1",
+    "blockly": "^3.20200123.0",
     "react": "^16.8.6",
+    "react-datepicker": "^2.10.1",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
-    "react-datepicker": "^2.10.1"
+    "react-scripts": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
