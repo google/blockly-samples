@@ -55,7 +55,7 @@ async function onConnect_(user) {
   });
 
   user.on('addEvents', async (entry, callback) => {
-    await EventsHandlers.addEventsHandler_(entry, (serverId) => {
+    await EventsHandlers.addEventsHandler(entry, (serverId) => {
       entry.serverId = serverId;
       io.emit('broadcastEvents', [entry]);
       callback(serverId);
@@ -63,14 +63,14 @@ async function onConnect_(user) {
   });
 
   user.on('getEvents', async (serverId, callback) => {
-    await EventsHandlers.getEventsHandler_(serverId, callback);
+    await EventsHandlers.getEventsHandler(serverId, callback);
   });
 
   user.on('sendPositionUpdate', async (positionUpdate, callback) => {
-    await UsersHandlers.updatePositionHandler_(user, positionUpdate, callback);
+    await UsersHandlers.updatePositionHandler(user, positionUpdate, callback);
   });
 
   user.on('getPositionUpdates', async (workspaceId, callback) => {
-    await UsersHandlers.getPositionUpdatesHandler_(workspaceId, callback);
+    await UsersHandlers.getPositionUpdatesHandler(workspaceId, callback);
   });
 };

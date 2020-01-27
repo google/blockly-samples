@@ -31,13 +31,13 @@ const PORT = 3001;
 http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   if (req.method === 'GET' && parsedUrl.pathname === '/api/events/query') {
-    await EventsHandlers.queryEventsHandler_(res, parsedUrl.query.serverId);
+    await EventsHandlers.queryEventsHandler(res, parsedUrl.query.serverId);
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
-    await EventsHandlers.addEventsHandler_(req, res);
+    await EventsHandlers.addEventsHandler(req, res);
   } else if (req.method === 'GET' && parsedUrl.pathname === '/api/users/position/query') {
-    await UsersHandlers.getPositionUpdatesHandler_(res, parsedUrl.query.workspaceId);
+    await UsersHandlers.getPositionUpdatesHandler(res, parsedUrl.query.workspaceId);
   } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/users/position/update') {
-    await UsersHandlers.updatePositionHandler_(req, res);
+    await UsersHandlers.updatePositionHandler(req, res);
   } else {
     res.statusCode = 404;
     res.end();

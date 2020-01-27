@@ -32,7 +32,7 @@ const database = require('../Database');
  * receive acknowledgement of the success of the write.
  * @private
  */
-async function getEventsHandler_(serverId, callback) {
+async function getEventsHandler(serverId, callback) {
   const entries = await database.query(serverId);
   callback(entries);
 };
@@ -44,10 +44,10 @@ async function getEventsHandler_(serverId, callback) {
  * the event.
  * @private
  */
-async function addEventsHandler_(entry, callback) {
+async function addEventsHandler(entry, callback) {
   const serverId = await database.addToServer(entry);
   callback(serverId);
 };
 
-module.exports.getEventsHandler_ = getEventsHandler_;
-module.exports.addEventsHandler_ = addEventsHandler_;
+module.exports.getEventsHandler = getEventsHandler;
+module.exports.addEventsHandler = addEventsHandler;

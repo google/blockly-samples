@@ -30,7 +30,7 @@ const database = require('../Database');
  * @param {!Object} res The HTTP response object.
  * @private
  */
-async function updatePositionHandler_(req, res) {
+async function updatePositionHandler(req, res) {
   try {
     const data = [];
     req.on('data', chunk => {
@@ -55,7 +55,7 @@ async function updatePositionHandler_(req, res) {
  * @param {string=} workspaceId workspaceId for specified user.
  * @private
  */
-async function getPositionUpdatesHandler_(res, workspaceId) {
+async function getPositionUpdatesHandler(res, workspaceId) {
   try {
     const positionUpdates = await database.getPositionUpdates(workspaceId);
     res.setHeader('Content-Type', 'application/json');
@@ -68,5 +68,5 @@ async function getPositionUpdatesHandler_(res, workspaceId) {
   };
 };
 
-module.exports.updatePositionHandler_ = updatePositionHandler_;
-module.exports.getPositionUpdatesHandler_ = getPositionUpdatesHandler_;
+module.exports.updatePositionHandler = updatePositionHandler;
+module.exports.getPositionUpdatesHandler = getPositionUpdatesHandler;

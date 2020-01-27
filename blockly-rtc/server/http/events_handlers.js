@@ -31,7 +31,7 @@ const database = require('../Database');
  * @param {number} serverId serverId for the lower bound of the query.
  * @private
  */
-async function queryEventsHandler_(res, serverId) {
+async function queryEventsHandler(res, serverId) {
   try {
     const entries = await database.query(serverId);
     res.setHeader('Content-Type', 'application/json');
@@ -39,7 +39,6 @@ async function queryEventsHandler_(res, serverId) {
     res.write(JSON.stringify({ entries }));
     res.end();
   } catch {
-    console.log('why am i here');
     res.statusCode = 401;
     res.end();
   };
@@ -51,7 +50,7 @@ async function queryEventsHandler_(res, serverId) {
  * @param {!Object} res The HTTP response object.
  * @private
  */
-async function addEventsHandler_(req, res) {
+async function addEventsHandler(req, res) {
   try {
     const data = [];
     req.on('data', chunk => {
@@ -68,5 +67,5 @@ async function addEventsHandler_(req, res) {
   };
 };
 
-module.exports.queryEventsHandler_ = queryEventsHandler_;
-module.exports.addEventsHandler_ = addEventsHandler_;
+module.exports.queryEventsHandler = queryEventsHandler;
+module.exports.addEventsHandler = addEventsHandler;

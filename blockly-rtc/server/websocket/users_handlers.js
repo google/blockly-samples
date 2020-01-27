@@ -35,7 +35,7 @@ const database = require('../Database');
  * receive acknowledgement of the success of the write.
  * @private
  */
-async function updatePositionHandler_(user, positionUpdate, callback) {
+async function updatePositionHandler(user, positionUpdate, callback) {
   await database.updatePosition(positionUpdate);
   callback();
   user.broadcast.emit('broadcastPosition', [positionUpdate]);
@@ -49,10 +49,10 @@ async function updatePositionHandler_(user, positionUpdate, callback) {
  * receive the PositionUpdates upon success of the query.
  * @private
  */
-async function getPositionUpdatesHandler_(workspaceId, callback) {
+async function getPositionUpdatesHandler(workspaceId, callback) {
   const positionUpdates = await database.getPositionUpdates(workspaceId);
   callback(positionUpdates);
 };
   
-module.exports.updatePositionHandler_ = updatePositionHandler_;
-module.exports.getPositionUpdatesHandler_ = getPositionUpdatesHandler_;
+module.exports.updatePositionHandler = updatePositionHandler;
+module.exports.getPositionUpdatesHandler = getPositionUpdatesHandler;
