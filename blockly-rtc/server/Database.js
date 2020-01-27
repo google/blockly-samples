@@ -59,8 +59,8 @@ class Database {
    * For each user, an addition is valid if the entryNumber is greater than the
    * entryNumber of its last added entry.
    * @param {!LocalEntry} entry The entry to be added to the database.
-   * @return {!Promise} Promise object with the serverId the entry was written
-   * to the database.
+   * @return {!Promise} Promise object with the serverId of the entry written to
+   * the database.
    * @public
    */
   async addToServer(entry) {
@@ -74,7 +74,7 @@ class Database {
         } catch {
           reject('Failed to write to the database');
         };
-      } else if (entryNumber == lastEntryNumber) {
+      } else if (entry.entryNumber == lastEntryNumber) {
         resolve(null);
       } else {
         reject('Entry is not valid.');
@@ -92,8 +92,10 @@ class Database {
   runInsertQuery_(entry) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
-        this.db.run('INSERT INTO eventsdb(events, workspaceId) VALUES(?,?)',
-            [JSON.stringify(entry.events), entry.workspaceId], (err) => {
+        this.db.run(`INSERT INTO eventsdb
+            (events, workspaceId, entryNumber) VALUES(?,?,?)`,
+            [JSON.stringify(entry.events), entry.workspaceId, entry.entryNumber],
+            (err) => {
           if (err) {
             console.error(err.message);
             reject('Failed to write to the database.');

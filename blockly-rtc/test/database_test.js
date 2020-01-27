@@ -30,8 +30,8 @@ suite('Database', () => {
 
   suite('addToDatabase()', () => {
     setup(() => {
-      this.runInsertQueryStub = sinon.stub(database, 'runInsertQuery_');
-      this.getLastEntryStub = sinon.stub(database, 'getLastEntryNumber_');
+      sinon.stub(database, 'runInsertQuery_');
+      sinon.stub(database, 'getLastEntryNumber_');
     });
 
     teardown(() => {
@@ -40,61 +40,65 @@ suite('Database', () => {
     });
 
     test('New user, add to database.', async () => {
-      this.getLastEntryStub.resolves(-1);
-      this.runInsertQueryStub.resolves(2);
+      database.getLastEntryNumber_.resolves(-1);
+      database.runInsertQuery_.resolves(2);
       const entry = {
-          workspaceId: 'newMockEntry',
+          workspaceId: 'newUser',
           entryNumber: '1',
           events: [JSON.stringify({mockEvent:'event'})],
       };
       const serverId = await database.addToServer(entry);
       assert.equal(2, serverId);
-      assert.equal(true, this.runInsertQueryStub.calledOnce);
+      assert(database.runInsertQuery_.calledOnce);
     });
 
     test('Valid entry for existing user, add to database.', async () => {
-      this.getLastEntryIdStub.resolves(2);
-      this.runInsertQueryStub.resolves(2);
+      database.getLastEntryNumber_.resolves(2);
+      database.runInsertQuery_.resolves(2);
       const entry = {
-          entryId: 'mockEntry:4',
+          workspaceId: 'mockUser',
+          entryNumber: '4',
           events: [JSON.stringify({mockEvent:'event'})],
       };
       const serverId = await database.addToServer(entry);
       assert.equal(2, serverId);
-      assert.equal(true, this.runInsertQueryStub.calledOnce);
+      assert(database.runInsertQuery_.calledOnce);
     });
 
     test('Database write fails, reject.', async () => {
-      this.getLastEntryIdStub.resolves(2);
-      this.runInsertQueryStub.rejects();
+      database.getLastEntryNumber_.resolves(2);
+      database.runInsertQuery_.rejects();
       const entry = {
-          entryId: 'mockEntry:3',
+        workspaceId: 'mockUser',
+        entryNumber: '3',
           events: [JSON.stringify({mockEvent:'event'})],
       };
       assert.rejects(database.addToServer(entry));
     });
 
     test('Duplicate of last entry, resolve without further action.', async () => {
-      this.getLastEntryIdStub.resolves(2);
-      this.runInsertQueryStub.resolves(null);
+      database.getLastEntryNumber_.resolves(2);
+      database.runInsertQuery_.resolves(null);
       const entry = {
-          entryId: 'mockEntry:2',
+        workspaceId: 'mockUser',
+        entryNumber: '2',
           events: [JSON.stringify({mockEvent:'event'})],
       };
       const serverId = await database.addToServer(entry);
       assert.equal(null, serverId);
-      assert.equal(true, this.runInsertQueryStub.notCalled);
+      assert(database.runInsertQuery_.notCalled);
     });
 
     test('Invalid entry, reject.', async () => {
-      this.getLastEntryIdStub.resolves(2);
-      this.runInsertQueryStub.resolves();
+      database.getLastEntryNumber_.resolves(2);
+      database.runInsertQuery_.resolves();
       const entry = {
-        entryId: 'mockEntry:1',
+        workspaceId: 'mockUser',
+        entryNumber: '1',
         events: [JSON.stringify({mockEvent:'event'})],
       };
       assert.rejects(database.addToServer(entry));
-      assert.equal(true, this.runInsertQueryStub.notCalled);
+      assert(database.runInsertQuery_.notCalled);
     });
   });
 });

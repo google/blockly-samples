@@ -125,12 +125,12 @@ export default class WorkspaceClient {
    */
   beginWrite_() {
     this.writeInProgress = true;
-    const entryId = this.workspaceId + ':' + this.counter;
-    this.counter += 1;
     this.inProgress.push({
+      workspaceId: this.workspaceId,
+      entryNumber: this.counter,
       events: Blockly.Events.filter(this.notSent, true),
-      entryId: entryId
     });
+    this.counter += 1;
     this.notSent = [];
   };
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
@@ -245,7 +245,8 @@ export default class WorkspaceClient {
 
     // Common root, remove common events from server events.
     if (this.inProgress.length > 0
-        && entries[0].entryId == this.inProgress[0].entryId) {
+        && entries[0].workspaceId == this.workspaceId
+        && entries[0].entryNumber == this.inProgress[0].entryNumber) {
       entries.shift();
       this.inProgress = [];
     };
@@ -264,7 +265,8 @@ export default class WorkspaceClient {
       // Apply server events.
       entries.forEach((entry) => {
         if (this.inProgress.length > 0
-            && entry.entryId == this.inProgress[0].entryId) {
+            && entry.workspaceId == this.inProgress[0].workspaceId
+            && entry.entryNumber == this.inProgress[0].entryNumber) {
           eventQueue.push.apply(
               eventQueue,
               this.createWorkspaceActions_(this.inProgress[0].events, true));
