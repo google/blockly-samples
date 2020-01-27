@@ -21,7 +21,7 @@
  */
 
 const assert = require('assert');
-const Blockly = require('blockly/dist');
+const Blockly = require('blockly');
 const sinon = require('sinon');
 
 const handlers = require('../src/websocket/user_data_handlers');

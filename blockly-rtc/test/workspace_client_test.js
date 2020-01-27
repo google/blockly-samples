@@ -21,7 +21,7 @@
  */
 
 const assert = require('assert');
-const Blockly = require('blockly/dist');
+const Blockly = require('blockly');
 const sinon = require('sinon');
 const handler = require('../src/websocket/workspace_client_handlers');
 const WorkspaceClient = require('../src/WorkspaceClient').default;

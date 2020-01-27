@@ -21,7 +21,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import * as Blockly from 'blockly/dist';
+import * as Blockly from 'blockly';
 import {getEvents, writeEvents, getBroadcast} from './workspace_client_handlers';
 import {getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates} from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
