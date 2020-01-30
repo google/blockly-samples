@@ -53,6 +53,43 @@ async function getPositionUpdatesHandler(workspaceId, callback) {
   const positionUpdates = await database.getPositionUpdates(workspaceId);
   callback(positionUpdates);
 };
-  
+
+/**
+ * Handler for a connectUser message. Attach the workspaceId to the user and
+ * add the user to the users table.
+ * @param {!Object} user The user connecting.
+ * @param {string} workspaceId The workspaceId for the connecting user.
+ * @param {!Function} callback The callback passed in by WorkspaceClient to
+ * receive acknowledgement of the success of the connection.
+ * @public
+ */
+async function connectUserHandler(user, workspaceId, callback) {
+  user.workspaceId = workspaceId;
+  const positionUpdate = {
+    workspaceId: workspaceId,
+    position: {
+      type: null,
+      blockId: null,
+      fieldName: null
+    },
+  };
+  await updatePositionHandler(user, positionUpdate, callback);
+};
+
+/**
+ * Handler for a disconnect. Delete the user from the users table.
+ * @param {string} workspaceId The workspaceId for the disconnecting user.
+ * @param {!Function} callback The callback that broadcasts the disconnect to
+ * the connected users.
+ * @public
+ */
+async function disconnectUserHandler(workspaceId, callback) {
+  console.log('User disconnected.');
+  await database.deleteUser(workspaceId);
+  callback();
+};
+
 module.exports.updatePositionHandler = updatePositionHandler;
 module.exports.getPositionUpdatesHandler = getPositionUpdatesHandler;
+module.exports.disconnectUserHandler = disconnectUserHandler;
+module.exports.connectUserHandler = connectUserHandler;

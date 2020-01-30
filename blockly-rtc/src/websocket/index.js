@@ -23,7 +23,8 @@
 
 import * as Blockly from 'blockly';
 import {getEvents, writeEvents, getBroadcast} from './workspace_client_handlers';
-import {getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates} from './user_data_handlers';
+import {getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates,
+    connectUser, getUserDisconnects} from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
 
@@ -41,8 +42,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   await workspaceClient.initiateWorkspace();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-      getPositionUpdates, getBroadcastPositionUpdates);  
-  await userDataManager.initMarkers();
+      getPositionUpdates, getBroadcastPositionUpdates);
+  await userDataManager.setPresenceHandlers(connectUser, getUserDisconnects);
+  await userDataManager.start();
 
   workspace.addChangeListener((event) => {
     if (event instanceof Blockly.Events.Ui) {

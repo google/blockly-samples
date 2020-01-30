@@ -82,6 +82,31 @@ suite('UserDataManager', () => {
     });
   });
 
+  suite('disposeMarker', () => {
+    test('No Blockly MarkerManager, throw error.', async () => {
+      sinon.stub(this.userDataManager, 'getMarkerManager_').returns(null);
+      sinon.spy(this.userDataManager, 'disposeMarker_');
+      try {
+        this.userDataManager.disposeMarker_();
+      } catch {};
+      assert(this.userDataManager.disposeMarker_.threw());
+    });
+
+    test('No Marker with the given workspaceId, no error.', async () => {
+      sinon.spy(this.userDataManager, 'disposeMarker_');
+      this.userDataManager.disposeMarker_('mockId');
+      assert(!this.userDataManager.disposeMarker_.threw());
+    });
+
+    test('Unregister Marker from Blockly MarkerManager.', async () => {
+      sinon.spy(this.BlocklyMarkerManager, 'unregisterMarker');
+      const marker = new Blockly.Marker();
+      this.BlocklyMarkerManager.markers_['mockId'] = marker;
+      this.userDataManager.disposeMarker_('mockId');
+      assert(this.BlocklyMarkerManager.unregisterMarker.calledOnceWith('mockId'));
+    });    
+  });
+
   suite('updateMarkerPositions', () => {
     setup(() => {
       this.BlocklyMarkerManager.markers_ = {

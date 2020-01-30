@@ -32,6 +32,7 @@ export default class UserDataManager {
     this.sendPositionUpdate = sendPositionUpdate;
     this.getPositionUpdates = getPositionUpdates;
     this.getBroadcastPositionUpdates = getBroadcastPositionUpdates;
+    this.getUserDisconnects = null;
   };
 
   /**
@@ -39,7 +40,7 @@ export default class UserDataManager {
    * users and activating the handling of recieving PositionUpdates from the server.
    * @public
    */
-  async initMarkers() {
+  async start() {
     const positionUpdates = await this.getPositionUpdates();
     positionUpdates.forEach((positionUpdate) => {
       this.createMarker_(positionUpdate);
@@ -49,7 +50,24 @@ export default class UserDataManager {
     } else {
       this.pollServer_();
     };
-};
+    if (this.getUserDisconnects) {
+      this.getUserDisconnects(this.disposeMarker_.bind(this));
+    };
+  };
+
+  /**
+   * Set handlers that enable the detection of user presence on the workspace
+   * and send workspaceId to the server.
+   * @param {!Function} connectUserHandler The callback that sends workspaceId to
+   * the server.
+   * @param {!Function} getUserDisconnectsHandler The callback that allows the
+   * workspace to detect user disconnects.
+   * @public
+   */
+  async setPresenceHandlers(connectUserHandler, getUserDisconnectsHandler) {
+    this.getUserDisconnects = getUserDisconnectsHandler;
+    await connectUserHandler(this.workspaceId);
+  };
 
   /**
    * Create a PositionUpdate from a Blockly event and send it to the server.
@@ -126,6 +144,22 @@ export default class UserDataManager {
     this.getMarkerManager_().registerMarker(positionUpdate.workspaceId, marker)
     marker.setCurNode(position.createNode(this.getWorkspace_()));
     return marker;
+  };
+
+  /**
+   * Unregister the Marker from Blockly MarkerManager and dispose the marker.
+   * @param {!String} workspaceId The workspaceId of the user whose marker is
+   * getting disposed.
+   * @throws Throws an error if there is no Blockly MarkerManager.
+   * @private
+   */
+  disposeMarker_(workspaceId) {
+    if (!this.getMarkerManager_()) {
+      throw Error('Cannot dispose of a Marker without Blockly MarkerManager.');
+    };
+    try {
+      this.getMarkerManager_().unregisterMarker(workspaceId);
+    } catch {};
   };
 
   /**

@@ -233,6 +233,27 @@ class Database {
       });
     });
   };
+
+  /**
+   * Delete a user from the users table.
+   * @param {string} workspaceId The workspaceId of the user to be removed from
+   * the users table.
+   * @return {!Promise} Promise object represents the success of the deletion.
+   * @public
+   */
+  deleteUser(workspaceId) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+          `DELETE FROM users WHERE workspaceId = '${workspaceId}';`,
+          (err) => {
+        if (err) {
+          console.error(err.message);
+          reject();
+        };
+        resolve();
+      });
+    });
+  };
 };
 
 module.exports = new Database();

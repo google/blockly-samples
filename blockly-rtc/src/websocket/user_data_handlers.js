@@ -64,14 +64,39 @@ export async function sendPositionUpdate(positionUpdate) {
 /**
  * Listen for PositionUpdates broadcast by the server.
  * @param {!Function} callback The callback handler that passes the
- * PositionUpdates to WorkspaceClient.
+ * PositionUpdates to UserDataManager.
  * @public
  */
-export function getBroadcastPositionUpdates(callback) {
+export async function getBroadcastPositionUpdates(callback) {
   socket.on('broadcastPosition', async (positionUpdates)=> {
     positionUpdates.forEach((positionUpdate) => {
       positionUpdate.position = Position.fromJson(positionUpdate.position);
     });
     await callback(positionUpdates);
+  });
+};
+
+/**
+ * Enable tracking of the user by sending the workspaceId to the server.
+ * @param {string} workspaceId The workspaceId of the user.
+ * @public
+ */
+export async function connectUser(workspaceId) {
+  return new Promise((resolve, reject) => {
+    socket.emit('connectUser', workspaceId, ()=> {
+      resolve();
+    });  
+  });
+};
+
+/**
+ * Listen for user disconnects broadcast by the server.
+ * @param {!Function} callback The callback handler that passes the
+ * workspaceId of the disconnected user to the UserDataManager.
+ * @public
+ */
+export function getUserDisconnects(callback) {
+  socket.on('disconnectUser', async (workspaceId)=> {
+    await callback(workspaceId);
   });
 };
