@@ -24,7 +24,9 @@
  * An entry from the database.
  * @typedef {Object} Entry
  * @property {<!Array.<!Blockly.Event>>} events An array of Blockly Events.
- * @property {string} entryId The id assigned to an entry by the client.
+ * @property {string} workspaceId The workspaceId of the user.
+ * @property {number} entryNumber The numeric id assigned to an entry by the
+ * client.
  * @property {string} serverId The id assigned to an entry by the server.
  */
 
@@ -32,7 +34,9 @@
  * A local representation of an entry in the database.
  * @typedef {Object} LocalEntry
  * @property {<!Array.<!Blockly.Event>>} events An array of Blockly Events.
- * @property {string} entryId The id assigned to an entry by the client.
+ * @property {string} workspaceId The workspaceId of the user.
+ * @property {number} entryNumber The numeric id assigned to an entry by the
+ * client.
  */
  
  /**

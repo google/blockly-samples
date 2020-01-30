@@ -56,30 +56,28 @@ class Database {
 
   /**
    * Add entry to the database if the entry is a valid next addition.
-   * For each user, an addition is valid if the entryId is greater than the
-   * entryId of its last added entry.
+   * For each user, an addition is valid if the entryNumber is greater than the
+   * entryNumber of its last added entry.
    * @param {!LocalEntry} entry The entry to be added to the database.
-   * @return {!Promise} Promise object with the serverId the entry was written
-   * to the database.
+   * @return {!Promise} Promise object with the serverId of the entry written to
+   * the database.
    * @public
    */
   async addToServer(entry) {
     return new Promise(async (resolve, reject) => {
-      const workspaceId = entry.entryId.split(':')[0];
-      const entryIdInt = entry.entryId.split(':')[1];
-      const lastEntryIdNumber = await this.getLastEntryIdNumber_(workspaceId);
-      if (entryIdInt > lastEntryIdNumber) {
+      const lastEntryNumber = await this.getLastEntryNumber_(entry.workspaceId);
+      if (entry.entryNumber > lastEntryNumber) {
         try {
           const serverId = await this.runInsertQuery_(entry);
-          await this.updateLastEntryIdNumber_(workspaceId, entryIdInt);
+          await this.updateLastEntryNumber_(entry.workspaceId, entry.entryNumber);
           resolve(serverId);
         } catch {
           reject('Failed to write to the database');
         };
-      } else if (entryIdInt == lastEntryIdNumber) {
+      } else if (entry.entryNumber == lastEntryNumber) {
         resolve(null);
       } else {
-        reject('EntryId is not valid.');
+        reject('Entry is not valid.');
       };
     });
   };
@@ -94,8 +92,10 @@ class Database {
   runInsertQuery_(entry) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
-        this.db.run('INSERT INTO eventsdb(events, entryId) VALUES(?,?)',
-            [JSON.stringify(entry.events), entry.entryId], (err) => {
+        this.db.run(`INSERT INTO eventsdb
+            (events, workspaceId, entryNumber) VALUES(?,?,?)`,
+            [JSON.stringify(entry.events), entry.workspaceId, entry.entryNumber],
+            (err) => {
           if (err) {
             console.error(err.message);
             reject('Failed to write to the database.');
@@ -113,17 +113,18 @@ class Database {
   };
 
   /**
-   * Update lastEntryIdNumber in the users table for a given user.
+   * Update lastEntryNumber in the users table for a given user.
    * @param {!string} workspaceId The workspaceId of the user.
-   * @param {!number} entryIdNumber The numeric part of the entryId.
+   * @param {!number} entryNumber The numeric ID assigned to an entry by the
+   * user.
    * @return {!Promise} Promise object represents the success of the update.
    * @private
    */
-  updateLastEntryIdNumber_(workspaceId, entryIdNumber) {
+  updateLastEntryNumber_(workspaceId, entryNumber) {
     return new Promise((resolve, reject) => {
       this.db.run(`UPDATE users SET lastEntryNumber = ?
           WHERE workspaceId = ?;`,
-          [entryIdNumber, workspaceId],
+          [entryNumber, workspaceId],
           async (err) => {
         if (err) {
           console.error(err.message);
@@ -135,13 +136,13 @@ class Database {
   };
 
   /**
-   * Get the numerical part of the last added entryId for a given user.
+   * Get the lastEntryNumber for a given user.
    * @param {!string} workspaceId The workspaceId of the user.
-   * @return {!Promise} Promise object with the the numerical part of the
-   * entryId.
+   * @return {!Promise} Promise object with the the numeric ID assigned to an
+   * entry by the user.
    * @private
    */
-  getLastEntryIdNumber_(workspaceId) {
+  getLastEntryNumber_(workspaceId) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
 
@@ -153,7 +154,7 @@ class Database {
             (err, entries) => {
           if (err) {
             console.error(err.message);
-            reject('Failed to get last entryId number.');
+            reject('Failed to get last entry number.');
           } else if (entries.length == 0) {
             this.db.run(`INSERT INTO users(workspaceId, lastEntryNumber)
                 VALUES(?, -1)`, [workspaceId]);
@@ -166,7 +167,7 @@ class Database {
             (err, result) => {
           if (err) {
             console.error(err.message);
-            reject('Failed to get last entryId number.');
+            reject('Failed to get last entry number.');
           } else {
             resolve(result.lastEntryNumber);
           };

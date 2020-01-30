@@ -55,7 +55,8 @@ export async function getEvents(serverId) {
  */
 export async function writeEvents(entry) {
   const entryJson = {
-    entryId: entry.entryId,
+    workspaceId: entry.workspaceId,
+    entryNumber: entry.entryNumber,
     events: entry.events.map((event) => event.toJson())
   };
   const response = await fetch('/api/events/add', {
