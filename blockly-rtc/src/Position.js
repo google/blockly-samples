@@ -20,7 +20,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import * as Blockly from 'blockly/dist';
+import * as Blockly from 'blockly';
 
 export default class Position {
   constructor(type, blockId, fieldName) {

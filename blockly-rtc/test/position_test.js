@@ -21,7 +21,7 @@
  */
 
 const assert = require('assert');
-const Blockly = require('blockly/dist');
+const Blockly = require('blockly');
 const sinon = require('sinon');
 
 const Position = require('../src/Position').default;

@@ -235,4 +235,4 @@ class Database {
   };
 };
 
-module.exports.Database = Database;
+module.exports = new Database();

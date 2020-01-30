@@ -21,7 +21,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-import * as Blockly from 'blockly/dist';
+import * as Blockly from 'blockly';
 
 /**
  * Query the database for entries since the given server id.

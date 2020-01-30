@@ -23,8 +23,7 @@
 const assert = require('assert');
 const sinon = require('sinon');
 
-const Database = require('../server/Database').Database;
-const database = new Database();
+const database = require('../server/Database');
 
 suite('Database', () => {
 
