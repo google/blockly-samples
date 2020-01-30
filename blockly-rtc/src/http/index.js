@@ -23,7 +23,7 @@
  */
 
 import * as Blockly from 'blockly';
-import {getEvents, writeEvents} from './workspace_client_handlers';
+import {getSnapshot, getEvents, writeEvents} from './workspace_client_handlers';
 import {getPositionUpdates, sendPositionUpdate} from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         media: 'media/'
       });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getEvents, writeEvents);
+      workspace.id, getSnapshot, getEvents, writeEvents);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
-  await workspaceClient.initiateWorkspace();
+  await workspaceClient.start();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
       getPositionUpdates);  

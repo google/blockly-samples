@@ -26,6 +26,111 @@ const sinon = require('sinon');
 const database = require('../server/Database');
 
 suite('Database', () => {
+  teardown(() => {
+    sinon.restore();
+  })
+
+  suite('getSnapshot()', () => {
+    setup(() => {
+      this.xmlText0 = '<xml xmlns="https://developers.google.com/blockly/xml"/>';
+      this.xmlText1 = '<xml xmlns="https://developers.google.com/blockly/xml">' +
+          '<block type="controls_if" id="^EzM:}wIx;MjBTcxQ@oB" x="238" y="63"/>' +
+          '</xml>';
+      this.xmlText2 = '<xml xmlns="https://developers.google.com/blockly/xml">' +
+          '<block type="controls_if" id="^EzM:}wIx;MjBTcxQ@oB" x="238" y="63">' +
+          '<value name="IF0">' +
+          '<block type="logic_compare" id="oNVDtK2cF?jWDM+.gCR3">' +
+          '<field name="OP">EQ</field>' +
+          '</block></value></block></xml>'
+      this.entry1 = {
+        serverId: 1,
+        events: [{
+          type: "create",
+          group: "zH!7f,gfyd$ni%`Wq`Y|",
+          blockId: "^EzM:}wIx;MjBTcxQ@oB",
+          xml: '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="controls_if" id="^EzM:}wIx;MjBTcxQ@oB" x="16" y="10"/>',
+          ids: ["^EzM:}wIx;MjBTcxQ@oB"]
+        }, {
+          type: "move",
+          group: "zH!7f,gfyd$ni%`Wq`Y|",
+          blockId: "^EzM:}wIx;MjBTcxQ@oB",
+          newCoordinate: "228,58"
+        }, {
+          type: "move",
+          group: "zH!7f,gfyd$ni%`Wq`Y|",
+          blockId: "^EzM:}wIx;MjBTcxQ@oB",
+          newCoordinate: "238,63"
+        }]
+      };
+      this.entry2 = {
+        serverId: 2,
+        events: [{
+          type: "create",
+          group: "|r115vF03q}F@7l]*PcB",
+          blockId: "oNVDtK2cF?jWDM+.gCR3",
+          xml: '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="logic_compare" id="oNVDtK2cF?jWDM+.gCR3" x="8" y="97">' +
+              '<field name="OP">EQ</field></block>',
+          ids: ["oNVDtK2cF?jWDM+.gCR3"]
+        }, {
+          type: "move",
+          group: "|r115vF03q}F@7l]*PcB",
+          blockId: "oNVDtK2cF?jWDM+.gCR3",
+          newParentId: "^EzM:}wIx;MjBTcxQ@oB",
+          newInputName: "IF0"
+        }]
+      };
+    });
+
+    test('No previous snapshot, no new events', async () => {
+      database.snapshot = {
+        xml: this.xmlText0,
+        serverId: 0
+      };
+      sinon.stub(database, 'query').resolves([]);
+      const newSnapshot = await database.getSnapshot();
+      assert.equal(this.xmlText0, newSnapshot.xml);
+      assert.equal(0, newSnapshot.serverId);
+      assert(database.query.calledOnceWith(0));
+    });
+
+    test('No previous snapshot, new events', async () => {
+      database.snapshot = {
+        xml: this.xmlText0,
+        serverId: 0
+      };
+      sinon.stub(database, 'query').resolves([this.entry1, this.entry2]);
+      const newSnapshot = await database.getSnapshot();
+      assert.equal(this.xmlText2, newSnapshot.xml);
+      assert.equal(2, newSnapshot.serverId);
+      assert(database.query.calledOnceWith(0));
+    });
+
+    test('Snapshot stored, no new events.', async () => {
+      database.snapshot = {
+        xml: this.xmlText1,
+        serverId: 1
+      };
+      sinon.stub(database, 'query').resolves([]);
+      const newSnapshot = await database.getSnapshot();
+      assert.equal(this.xmlText1, newSnapshot.xml);
+      assert.equal(1, newSnapshot.serverId);
+      assert(database.query.calledOnceWith(1));
+    });
+
+    test('Snapshot stored, new events.', async () => {
+      database.snapshot = {
+        xml: this.xmlText1,
+        serverId: 1
+      };
+      sinon.stub(database, 'query').resolves([this.entry2]);
+      const newSnapshot = await database.getSnapshot();
+      assert.equal(this.xmlText2, newSnapshot.xml);
+      assert.equal(2, newSnapshot.serverId);
+      assert(database.query.calledOnceWith(1));
+    });
+  });
 
   suite('addToDatabase()', () => {
     setup(() => {

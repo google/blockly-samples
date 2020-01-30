@@ -67,5 +67,25 @@ async function addEventsHandler(req, res) {
   };
 };
 
+/**
+ * Handler for a snapshot GET request. Get the latest snapshot of the
+ * workspace.
+ * @param {!Object} res The HTTP response object.
+ * @public
+ */
+async function getSnapshotHandler(res) {
+  try {
+    const snapshot = await database.getSnapshot();
+    res.setHeader('Content-Type', 'application/json');
+    res.statusCode = 200;
+    res.write(JSON.stringify({ snapshot }));
+    res.end();
+  } catch {
+    res.statusCode = 401;
+    res.end();
+  };
+};
+
 module.exports.queryEventsHandler = queryEventsHandler;
 module.exports.addEventsHandler = addEventsHandler;
+module.exports.getSnapshotHandler = getSnapshotHandler;

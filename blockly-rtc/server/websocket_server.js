@@ -73,4 +73,8 @@ async function onConnect_(user) {
   user.on('getPositionUpdates', async (workspaceId, callback) => {
     await UsersHandlers.getPositionUpdatesHandler(workspaceId, callback);
   });
+
+  user.on('getSnapshot', async (callback) => {
+    await EventsHandlers.getSnapshotHandler(callback);
+  });
 };

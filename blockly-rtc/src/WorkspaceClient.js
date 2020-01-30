@@ -30,7 +30,7 @@ import EventEmitter from 'events';
  * client corresponds to.
  */
 export default class WorkspaceClient {
-  constructor(workspaceId, getEventsHandler, addEventsHandler, broadcastEventsHandler) {
+  constructor(workspaceId, getSnapshotHandler, getEventsHandler, addEventsHandler, broadcastEventsHandler) {
     this.workspaceId = workspaceId;
     this.lastSync = 0;
     this.inProgress = [];
@@ -40,6 +40,7 @@ export default class WorkspaceClient {
     this.counter = 0;
     this.serverEvents = [];
     this.updateInProgress = false;
+    this.getSnapshotHandler = getSnapshotHandler;
     this.getEventsHandler = getEventsHandler;
     this.addEventsHandler = addEventsHandler;
     this.broadcastEventsHandler = broadcastEventsHandler;
@@ -48,15 +49,22 @@ export default class WorkspaceClient {
 
 
   /**
-   * Initiate the workspace by running all stored events and activating the
-   * handling of recieving events from the server.
+   * Initiate the workspace by loading the current workspace and activating the
+   * handlers for sending and recieving events between the client and server.
    * @public
    */
-  async initiateWorkspace() {
-    // TODO: Get an SVG of the current blocks on the workspace instead of
-    // replaying history.
-    const events = await this.getEventsHandler(0);
+  async start() {
+    // Load the current state of the workspace.
+    const workspace = Blockly.Workspace.getById(this.workspaceId);
+    const snapshot = await this.getSnapshotHandler();
+    Blockly.Xml.domToWorkspace(snapshot.xml, workspace);
+    this.lastSync = snapshot.serverId;
+
+    // Run any events that may have happened while loading the workspace.
+    const events = await this.getEventsHandler(this.lastSync);
     this.addServerEvents_(events);
+
+    // Enable handlers.
     if (this.broadcastEventsHandler) {
       this.broadcastEventsHandler(this.addServerEvents_.bind(this));
     } else {

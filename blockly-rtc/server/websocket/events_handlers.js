@@ -49,5 +49,17 @@ async function addEventsHandler(entry, callback) {
   callback(serverId);
 };
 
+/**
+ * Handler for a getSnapshot message. Get the latest snapshot of the workspace.
+ * @param {!Function} callback The callback passed in by WorkspaceClient to
+ * recieve the snapshot.
+ * @public
+ */
+async function getSnapshotHandler(callback) {
+  const snapshot = await database.getSnapshot();
+  callback(snapshot);
+};
+
 module.exports.getEventsHandler = getEventsHandler;
 module.exports.addEventsHandler = addEventsHandler;
+module.exports.getSnapshotHandler = getSnapshotHandler;

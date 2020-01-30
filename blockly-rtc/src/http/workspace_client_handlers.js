@@ -24,6 +24,23 @@
 import * as Blockly from 'blockly';
 
 /**
+ * Get a snapshot of the current workspace.
+ * @return {!Snapshot} The latest snapshot of the workspace.
+ * @public
+ */
+export async function getSnapshot() {
+  const response = await fetch('/api/snapshot/query');
+  const responseJson = await response.json();
+  const snapshot = responseJson.snapshot;
+  snapshot.xml = Blockly.Xml.textToDom(snapshot.xml);
+  if (response.status === 200) {
+    return snapshot;
+  } else {
+    throw 'Failed to get workspace snapshot.';
+  };
+};
+
+/**
  * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
  * @return {<!Array.<!Entry>>} Entries since the given serverId.
