@@ -84,7 +84,6 @@ async function connectUserHandler(user, workspaceId, callback) {
  * @public
  */
 async function disconnectUserHandler(workspaceId, callback) {
-  console.log('User disconnected.');
   await database.deleteUser(workspaceId);
   callback();
 };
