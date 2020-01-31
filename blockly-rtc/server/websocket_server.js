@@ -50,8 +50,14 @@ io.on('connection', (user) => {
  * @private
  */
 async function onConnect_(user) {
-  user.on('disconnect', () => {
-    console.log('User disconnected.');
+  user.on('connectUser', async (workspaceId, callback) => {
+    await UsersHandlers.connectUserHandler(user, workspaceId, callback);
+  });
+
+  user.on('disconnect', async () => {
+    await UsersHandlers.disconnectUserHandler(user.workspaceId, () => {
+      io.emit('disconnectUser', user.workspaceId);
+    });
   });
 
   user.on('addEvents', async (entry, callback) => {

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
       getPositionUpdates);  
-  await userDataManager.initMarkers();
+  await userDataManager.start();
 
   workspace.addChangeListener((event) => {
     if (event instanceof Blockly.Events.Ui) {
