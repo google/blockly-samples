@@ -21,6 +21,7 @@
  */
 
 const db = require('./db');
+const Blocky = require('blockly');
 
 /**
  * Class for managing interactions between the server and the database.
@@ -28,6 +29,10 @@ const db = require('./db');
 class Database {
   constructor() {
     this.db = db;
+    this.snapshot = {
+      serverId: 0,
+      xml: '<xml xmlns="https://developers.google.com/blockly/xml"/>'
+    };
   };
 
   /**
@@ -252,6 +257,51 @@ class Database {
         };
         resolve();
       });
+    });
+  };
+
+  /**
+   * Retrieve the latest snapshot of the workspace.
+   * @return {!Snapshot} The latest snapshot of the workspace.
+   * @public
+   */
+  async getSnapshot() {
+    await this.updateSnapshot_();
+    return this.snapshot;
+  };
+
+  /**
+   * Update the snapshot of the workspace.
+   * @return {!Promise} Promise object that represents the success of the
+   * update.
+   * @private
+   */
+  updateSnapshot_() {
+    return new Promise(async (resolve, reject) => {
+      const newEntries = await this.query(this.snapshot.serverId);
+      if (newEntries.length == 0) {
+        resolve();
+        return;
+      };
+      // Load last stored snapshot of the workspace.
+      const workspace = new Blocky.Workspace();
+      if (this.snapshot.xml) {
+        const xml = Blocky.Xml.textToDom(this.snapshot.xml);
+        Blocky.Xml.domToWorkspace(xml, workspace);  
+      };
+      // Play events since the last time the snapshot was generated.
+      newEntries.forEach((entry) => {
+        entry.events.forEach((event) => {
+          const blocklyEvent = Blocky.Events.fromJson(event, workspace);
+          blocklyEvent.run(true);
+        });
+      });
+      // Store the new snapshot object.
+      const newSnapshotXml = Blocky.Xml.workspaceToDom(workspace, false);
+      const newSnapshotText = Blocky.Xml.domToText(newSnapshotXml);
+      this.snapshot.xml = newSnapshotText;
+      this.snapshot.serverId = newEntries[newEntries.length -1].serverId;
+      resolve();
     });
   };
 };
