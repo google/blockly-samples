@@ -41,6 +41,9 @@ suite('Position', () => {
           .onSecondCall().returns(this.FAKE_BLOCK_ID);
       this.workspace = new Blockly.Workspace();
       this.block = new Blockly.Block(this.workspace, 'test_block');
+      this.field = new Blockly.Field('hello');
+      this.field.sourceBlock_ = this.block;
+      this.field.name = 'message0';
     });
 
     teardown(() => {
@@ -55,6 +58,25 @@ suite('Position', () => {
       const position = Position.fromEvent(event);
       const expectedPosition = new Position('BLOCK', this.FAKE_BLOCK_ID, null);
       assert.deepEqual(position, expectedPosition);
+    });
+
+    test('From CHANGE event on a field.', async () => {
+      const event = new Blockly.Events.Change(
+          this.block, 'field', 'message0', 'hello', 'goodbye');
+      const position = Position.fromEvent(event);
+      const expectedPosition = new Position(
+          'FIELD', this.FAKE_BLOCK_ID, 'message0');
+      assert.deepEqual(position, expectedPosition);
+    });
+
+    test('From other not supported event, throw error.', async () => {
+      sinon.spy(Position, 'fromEvent');
+      const event = new Blockly.Events.Change(
+          this.block, 'comment', 'message0', 'hello', 'goodbye');
+      try {
+        Position.fromEvent(event);
+      } catch {};
+      assert(Position.fromEvent.threw);
     });
   });
 

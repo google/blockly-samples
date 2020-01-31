@@ -37,11 +37,40 @@ export default class Position {
    * @public
    */  
   static fromEvent(event) {
-    // TODO: Add support for a field position on a change event.
-    const id = event.workspaceId;
+    if (event instanceof Blockly.Events.Ui
+        && event.element == 'selected') {
+      return this.fromSelectedUiEvent_(event);
+    } else if (event instanceof Blockly.Events.Change
+        && event.element == 'field') {
+      return this.fromFieldChangeEvent_(event);
+    } else {
+      throw Error('Cannot create position from this event.');
+    }
+  };
+
+  /**
+   * Create a Position from a Blockly UI event.
+   * @param {!Blockly.Event.Ui} event The event that creates a Position.
+   * @return {!PositionUpdate} The Position representative of the event.
+   * @private
+   */  
+  static fromSelectedUiEvent_(event) {
     const type = 'BLOCK';
     const blockId = event.newValue;
     const fieldName = null;
+    return new Position(type, blockId, fieldName);  
+  };
+
+  /**
+   * Create a Position from a Blockly Change event.
+   * @param {!Blockly.Event.Change} event The event that creates a Position.
+   * @return {!PositionUpdate} The Position representative of the event.
+   * @private
+   */  
+  static fromFieldChangeEvent_(event) {
+    const type = 'FIELD';
+    const blockId = event.blockId;
+    const fieldName = event.name;
     return new Position(type, blockId, fieldName);  
   };
 
