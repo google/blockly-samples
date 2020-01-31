@@ -37,10 +37,12 @@ export default class Position {
    * @public
    */  
   static fromEvent(event) {
-    if (event instanceof Blockly.Events.Ui) {
-      return this.fromUiEvent_(event);
-    } else if (event instanceof Blockly.Events.Change) {
-      return this.fromChangeEvent_(event);
+    if (event instanceof Blockly.Events.Ui
+        && event.element == 'selected') {
+      return this.fromSelectedUiEvent_(event);
+    } else if (event instanceof Blockly.Events.Change
+        && event.element == 'field') {
+      return this.fromFieldChangeEvent_(event);
     } else {
       throw Error('Cannot create position from this event.');
     }
@@ -52,7 +54,7 @@ export default class Position {
    * @return {!PositionUpdate} The Position representative of the event.
    * @private
    */  
-  static fromUiEvent_(event) {
+  static fromSelectedUiEvent_(event) {
     const type = 'BLOCK';
     const blockId = event.newValue;
     const fieldName = null;
@@ -65,7 +67,7 @@ export default class Position {
    * @return {!PositionUpdate} The Position representative of the event.
    * @private
    */  
-  static fromChangeEvent_(event) {
+  static fromFieldChangeEvent_(event) {
     const type = 'FIELD';
     const blockId = event.blockId;
     const fieldName = event.name;

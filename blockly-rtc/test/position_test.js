@@ -71,7 +71,8 @@ suite('Position', () => {
 
     test('From other not supported event, throw error.', async () => {
       sinon.spy(Position, 'fromEvent');
-      const event = new Blockly.Events.BlockMove();
+      const event = new Blockly.Events.Change(
+          this.block, 'comment', 'message0', 'hello', 'goodbye');
       try {
         Position.fromEvent(event);
       } catch {};

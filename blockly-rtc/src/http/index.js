@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       };
       return;
     };
-    if (event instanceof Blockly.Events.Change) {
+    if (event instanceof Blockly.Events.Change && event.element == 'field') {
       userDataManager.handleEvent(event);
     };
     workspaceClient.activeChanges.push(event);
