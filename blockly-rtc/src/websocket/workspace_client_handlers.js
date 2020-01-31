@@ -28,6 +28,21 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3001');
 
 /**
+ * Query the database a snapshot of the current workspace.
+ * @return {!Promise} Promise object that represents the latest snapshot of the
+ * workspace.
+ * @public
+ */
+export async function getSnapshot() {
+  return new Promise((resolve, reject) => {
+    socket.emit('getSnapshot', (snapshot) => {
+      snapshot.xml = Blockly.Xml.textToDom(snapshot.xml);
+      resolve(snapshot);
+    });
+  });
+};
+
+/**
  * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
  * @return {!Promise} Promise object that represents the entries of events since

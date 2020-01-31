@@ -47,6 +47,15 @@
  */
 
  /**
+ * A snapshot of the workspace.
+ * @typedef {Object} Snapshot
+ * @property {!Element} xml An XML DOM element that represents the current state
+ * of the workspace.
+ * @property {number} serverId The serverId of the last entry of events applied
+ * to the workspace.
+ */
+
+ /**
  * An action to be performed on the workspace.
  * @typedef {Object} WorkspaceAction
  * @property {!Blockly.Event} event A Blockly Event.

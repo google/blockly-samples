@@ -34,6 +34,8 @@ http.createServer(async (req, res) => {
     await EventsHandlers.queryEventsHandler(res, parsedUrl.query.serverId);
   } else if (req.method === 'POST' && parsedUrl.pathname === '/api/events/add') {
     await EventsHandlers.addEventsHandler(req, res);
+  } else if (req.method === 'GET' && parsedUrl.pathname === '/api/snapshot/query') {
+    await EventsHandlers.getSnapshotHandler(res);
   } else if (req.method === 'GET' && parsedUrl.pathname === '/api/users/position/query') {
     await UsersHandlers.getPositionUpdatesHandler(res, parsedUrl.query.workspaceId);
   } else if (req.method === 'PUT' && parsedUrl.pathname === '/api/users/position/update') {
