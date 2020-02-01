@@ -28,7 +28,7 @@ Open http://localhost:3000/http.html
 
 The collaboration algorithm's design focus is eventual consistency and algorithmic simplicity.
 
-In order to allow for realtime collaboration, a central server stores events and sends them to all clients connected to the same workspace.
+In order to allow for realtime collaboration, a central server stores events in eventsdb.sqlite and sends them to all clients connected to the same workspace.
 
 The server has no model of the workspace, it is just a 'bent pipe'. It does basic error checking, then appends all incoming events onto a structured database that assigns an incrementing serial number to each.
 
