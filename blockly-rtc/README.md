@@ -46,6 +46,6 @@ The UX for collaboration is based on the idea of minimal distraction. Users will
 
 Markers will be used to display the positions of other users on the workspace. Each user will have a colour assigned to them. Currently markers show when a user has selected a block or is editing a field.
 
-![markers](https://github.com/navilperez/blockly-samples/blob/readme/blockly-rtc/markers.png?raw=true)
+![markers](https://github.com/google/blockly-samples/blob/master/blockly-rtc/markers.png)
 
 The image above shows a yellow marker for one user, a blue marker for a second user, and a green marker for a third user.
