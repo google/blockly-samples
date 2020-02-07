@@ -1,0 +1,6 @@
+{
+    "name": "blockly-snap-renderer",
+    "dependencies": {
+        "blockly": "^3.20200123.1"
+    }
+}
