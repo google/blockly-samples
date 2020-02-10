@@ -25,7 +25,7 @@
 import * as Blockly from 'blockly';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const socket = io();
 
 /**
  * Query the database a snapshot of the current workspace.
