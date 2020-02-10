@@ -26,7 +26,7 @@
 import io from 'socket.io-client';
 import Position from '../Position';
 
-const socket = io('http://localhost:3001');
+const socket = io();
 
 /**
  * Get the position for a given user. If no user is specified will return the
