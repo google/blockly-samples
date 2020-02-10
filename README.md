@@ -9,6 +9,8 @@ Sample projects showing how to integrate Blockly into your project.
 - [``blockly-react-sample``](blockly-react/README.md): Blockly in a React project, defines a React Blockly Component.
 - [``blockly-svelte-sample``](blockly-svelte/README.md): Blockly in a Svelte project, defines a Svelte Blockly Component.
 - [``blockly-vue-sample``](blockly-vue/README.md): Blockly in a Vue project, defines a Vue Blockly Component.
+- [``blockly-rtc-sample``](blockly-rtc/README.md): Realtime collaboration environment on top of the Blockly framework.
+- [``blockly-rendering-sample``](rendering/rendering-walkthrough/README.md): Customizing Blockly's rendering.
 
 ## Running the samples
 
