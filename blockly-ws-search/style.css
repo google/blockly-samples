@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-end;
   padding: .25em;
-};
+}
 
 .workspaceSearchBar {
   position: absolute;
@@ -11,4 +11,4 @@
   background: white;
   border: solid black 1px;
   box-shadow: 5px 5px lightgrey;
-};
+}
