@@ -39,6 +39,13 @@ class WorkspaceSearch {
     this.blocks_ = [];
 
     /**
+     * Index of the currently "selected" block in the blocks array.
+     * @type {number}
+     * @private
+     */
+    this.blockIndex_ = -1;
+
+    /**
      * Current position in the list of blocks.
      * @type {number}
      * @private
@@ -48,8 +55,22 @@ class WorkspaceSearch {
     /**
      * The svg group
      * @type {Element}
+     * @private
      */
     this.svgGroup_ = null;
+
+    /**
+     * The search text.
+     * @type {string}
+     * @private
+     */
+    this.searchText_ = '';
+
+    /**
+     * Whether to search as input changes as opposed to on enter.
+     * @type {boolean}
+     */
+    this.searchOnInput = true;
   }
 
   /**
@@ -66,8 +87,8 @@ class WorkspaceSearch {
 
     // TODO: Figure out how we are going to deal with translating.
     textInput.setAttribute('placeholder', 'Search');
-    Blockly.bindEventWithChecks_(textInput,
-      'keydown', this, this.onKeyDown_);
+    Blockly.bindEventWithChecks_(textInput, 'keydown', this, this.onKeyDown_);
+    Blockly.bindEventWithChecks_(textInput, 'input', this, this.onInput_);
 
     // Add all the buttons for the search bar
     var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
@@ -114,44 +135,90 @@ class WorkspaceSearch {
     // Create the button
     var btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
-    Blockly.bindEventWithChecks_(btn,
-        'click', this, onClickFn);
+    Blockly.bindEventWithChecks_(btn, 'click', this, onClickFn);
     btn.append(textSpan);
     return btn;
   }
 
   /**
-   * Handles a key down for the search bar.
-   * @param {Event} e The key down event.
-   * @private
+   * Handles input value change in search bar.
+   * @param {Event} e The oninput event.
    */
-  onKeyDown_(e) {
-    if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
-      console.log("Close search bar");
-    } else if (e.keyCode == Blockly.utils.KeyCodes.TAB) {
-      return;
-    } else {
-      // Should check that the text value has changed before running search.
-      console.log("Search all the things");
+  onInput_(e) {
+    if (this.searchOnInput) {
+      const inputValue = e.target.value;
+      if (inputValue !== this.searchText_) {
+        this.setSearchText_(inputValue);
+        this.search();
+      }
     }
   }
 
   /**
-   * Goes to the previous block.
-   * @param {Event} e The key down event.
+   * Handles a key down for the search bar.
+   * @param {KeyboardEvent} e The key down event.
    * @private
    */
-  previous_(e) {
+  onKeyDown_(e) {
+    if (e.key === 'Escape') {
+      this.close();
+    } else if (e.key === 'Enter') {
+      if (this.searchOnInput) {
+        this.next_();
+      } else {
+        this.setSearchText_(e.target.value);
+        this.search();
+      }
+    }
+  }
+
+  /**
+   * Sets search text.
+   * @param {string} text
+   * @private
+   */
+  setSearchText_(text) {
+    this.searchText_ = text.trim()
+  }
+
+  /**
+   * Selects the previous block.`
+   * @private
+   */
+  previous_() {
+    if (!this.blocks_.length) {
+      return;
+    }
+    this.selectBlock_(this.blockIndex_ - 1);
     console.log("Get previous value");
   }
 
   /**
-   * Goes to the next block.
-   * @param {Event} e The key down event.
+   * Selects the next block.
    * @private
    */
   next_() {
-    console.log("Get next values");
+    if (!this.blocks_.length) {
+      return;
+    }
+    this.selectBlock_(this.blockIndex_ + 1);
+    console.log("Get next value");
+  }
+
+  /**
+   * Selects the block at the given index.
+   * @param {number} index Index of block to select. Number is wrapped.
+   */
+  selectBlock_(index) {
+    if (!this.blocks_.length) {
+      return;
+    }
+    this.blockIndex_ = index % this.blocks_.length;
+    if (this.workspace_.rendered) {
+      const selectedBlock = this.blocks_[this.blockIndex_];
+      (/** @type {!Blockly.BlockSvg} */ selectedBlock).select();
+      // TODO: scroll to block if it is not visible on workspace
+    }
   }
 
   /**
@@ -166,12 +233,14 @@ class WorkspaceSearch {
   }
 
   /**
-   * Flip the lid open or shut.
-   * @param {boolean} state True if open.
-   * @package
+   * Opens the search bar.
    */
   open() {
-
+    this.setVisible(true);
+    if (this.searchText_) {
+      this.search();
+    }
+    console.log("Open search bar");
   }
 
   /**
@@ -179,6 +248,8 @@ class WorkspaceSearch {
    */
   close() {
     this.setVisible(false);
+    this.clearBlocks();
+    console.log("Close search bar");
   }
 
   /**
@@ -190,9 +261,104 @@ class WorkspaceSearch {
   }
 
   /**
-   * Given a term search the workspace.
+   * Searches the workspace for the current search term.
    */
   search() {
+    this.clearBlocks();
+    this.populateBlocks();
+    this.highlightBlocks();
+    this.next_();
+  }
 
+  /**
+   * Returns pool of blocks to search from.
+   * @return {!Array.<!Blockly.Block>}
+   * @private
+   */
+  getSearchPool_() {
+    const blocks = /** @type {!Array.<!Blockly.Block>} */
+    (this.workspace_.getAllBlocks(true));
+    return blocks.filter(function(block) {
+      // Filter out blocks contained inside of another collapsed block.
+      const surroundParent = block.getSurroundParent();
+      return !surroundParent || !surroundParent.isCollapsed();
+    });
+  }
+
+  /**
+   * Returns whether the given block matches the provided text.
+   * @param {!Blockly.Block} block The block to check.
+   * @param {string} text The text to search the block for.
+   * @private
+   */
+  isBlockMatch_(block, text) {
+    let blockText = '';
+    if (block.isCollapsed()) {
+      // Search the whole string for collapsed blocks.
+      blockText = block.toString();
+    } else {
+      const topBlockText = [];
+      block.inputList.forEach(function(input) {
+        input.fieldRow.forEach(function(field) {
+          topBlockText.push(field.getText());
+        });
+        if (input.connection) {
+          topBlockText.push('?');
+        }
+      });
+      blockText = topBlockText.join(' ').trim();
+    }
+    return blockText.includes(text);
+  }
+
+  /**
+   * Populates block list with blocks that match the search text.
+   */
+  populateBlocks() {
+    if (!this.searchText_) {
+      return;
+    }
+    const searchGroup = this.getSearchPool_();
+    const isBlockMatch = this.isBlockMatch_;
+    const text = this.searchText_;
+    this.blocks_ = searchGroup.filter(
+        function(block) {
+          return isBlockMatch(block, text);
+    });
+  }
+
+  /**
+   * Clears the block list.
+   */
+  clearBlocks() {
+    this.unHighlightBlocks();
+    this.blocks_ = [];
+    this.blockIndex_ = -1;
+  }
+
+  /**
+   * Adds highlight to blocks in block list.
+   */
+  highlightBlocks() {
+    if (!this.workspace_.rendered) {
+      return;
+    }
+    this.blocks_.forEach(function(/** @type {!Blockly.BlockSvg} */ block) {
+      const blockPath = block.pathObject.svgPath;
+      Blockly.utils.dom.addClass(blockPath, 'searchHighlight');
+    });
+  }
+
+  /**
+   * Removes highlight from blocks in block list.
+   */
+  unHighlightBlocks() {
+    if (!this.workspace_.rendered) {
+      return;
+    }
+    this.blocks_.forEach(function(/** @type {!Blockly.BlockSvg} */ block) {
+      const blockPath = block.pathObject.svgPath;
+      Blockly.utils.dom.removeClass(blockPath, 'searchHighlight');
+    });
   }
 }

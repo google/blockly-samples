@@ -58,7 +58,7 @@ function startBlocklyInstance(suffix, rtl, horizontalLayout, position,
   var ws = Blockly.inject('blocklyDiv' + suffix, options);
   var workspaceSearch = new WorkspaceSearch(ws);
   workspaceSearch.init();
-  workspaceSearch.setVisible(true);
+  workspaceSearch.open(true);
 }
 </script>
 
@@ -92,7 +92,7 @@ h1 {
 </style>
 </head>
 <body onload="start()">
-  <h1>Blockly Multi Playground</h1>
+  <h1>Blockly Workspace Search Playground</h1>
 
   <form id="options">
     <select name="toolbox" onchange="document.forms.options.submit()">
