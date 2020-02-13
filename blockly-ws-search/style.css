@@ -1,14 +1,37 @@
-.workspaceSearchContainer{
-  display: flex;
-  justify-content: flex-end;
-  padding: .25em;
+.btnText {
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+.closeBtn {
+  background: url(media/close.svg) no-repeat top left;
+}
+
+.downBtn {
+  background: url(media/keyboard_arrow_down.svg) no-repeat top left;
+}
+
+.searchInput {
+  border: none;
+}
+
+.upBtn {
+  background: url(media/keyboard_arrow_up.svg) no-repeat top left;
 }
 
 .workspaceSearchBar {
+  background: white;
+  border: solid lightgrey .5px;
+  box-shadow:0px 10px 20px grey;
+  display: flex;
+  justify-content: center;
+  padding: .25em;
   position: absolute;
   z-index: 70;
-  right: 0px;
-  background: white;
-  border: solid black 1px;
-  box-shadow: 5px 5px lightgrey;
+}
+
+.workspaceSearchBar button {
+  border: none;
 }

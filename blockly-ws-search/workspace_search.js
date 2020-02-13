@@ -53,61 +53,109 @@ class WorkspaceSearch {
   }
 
   /**
-   * Initializes the toolbox.
+   * Initializes the workspace search bar.
    */
   init() {
     var svg = this.workspace_.getParentSvg();
+    var metrics = this.workspace_.getMetrics();
 
-    /**
-     * HTML container for the workspace search bar.
-     * @type {Element}
-     */
-    this.HtmlDiv = document.createElement('div');
-    var workspaceContainer = document.createElement('div');
-    workspaceContainer.className = 'workspaceSearchContainer';
-  
+    // Create the text input for search.
     var textInput = document.createElement('input');
+    Blockly.utils.dom.addClass(textInput, 'searchInput');
     textInput.type = 'text';
-  
-    var searchBtn = document.createElement('button');
-    searchBtn.className = 'workspaceButton';
-    searchBtn.innerText = 'Search';
-  
-    workspaceContainer.append(textInput);
-    workspaceContainer.append(searchBtn);
-  
-    this.HtmlDiv.className = 'workspaceSearchBar';
-    this.HtmlDiv.append(workspaceContainer);
+
+    // TODO: Figure out how we are going to deal with translating.
+    textInput.setAttribute('placeholder', 'Search');
+    Blockly.bindEventWithChecks_(textInput,
+      'keydown', this, this.onKeyDown_);
+
+    // Add all the buttons for the search bar
+    var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
+    var downBtn = this.createBtn_('downBtn', 'Find next', this.next_);
+    var closeBtn = this.createBtn_('closeBtn', 'Close search bar', this.close);
+
+    this.HtmlDiv = document.createElement('div');
+    Blockly.utils.dom.addClass(this.HtmlDiv, 'workspaceSearchBar');
+
+    if (this.workspace_.RTL) {
+      this.HtmlDiv.style.left = metrics.absoluteLeft + 'px';
+    } else {
+      if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
+        this.HtmlDiv.style.right = metrics.toolboxWidth + 'px';
+      } else {
+        this.HtmlDiv.style.right = '0';
+      }
+    }
+    this.HtmlDiv.style.top = metrics.absoluteTop + 'px';
+
+    this.HtmlDiv.append(textInput);
+    this.HtmlDiv.append(upBtn);
+    this.HtmlDiv.append(downBtn);
+    this.HtmlDiv.append(closeBtn);
+
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
-  
-    Blockly.bindEventWithChecks_(this.HtmlDiv,
-        'keydown', this, this.onKeyDown_);
-    Blockly.bindEventWithChecks_(searchBtn,
-        'mousedown', this, this.onMouseDown_);
-    this.setVisible(false);  
+    this.setVisible(false);
   }
 
   /**
-   * Called when a user hits a key in the search bar.
+   * Creates a button for the workspace search bar.
+   * @param {string} name The class name for the button.
+   * @param {string} text The text to display to the screen reader.
+   * @param {!Function} onClickFn The function to call when the user clicks on the button.
+   * @return {HTMLButtonElement} The created button.
+   * @private
+   */
+  createBtn_(className, text, onClickFn) {
+    // Create a span holding text to be used for accessibility purposes.
+    var textSpan = document.createElement('span');
+    textSpan.innerText = text;
+    Blockly.utils.dom.addClass(textSpan, 'btnText');
+
+    // Create the button
+    var btn = document.createElement('button');
+    Blockly.utils.dom.addClass(btn, className);
+    Blockly.bindEventWithChecks_(btn,
+        'click', this, onClickFn);
+    btn.append(textSpan);
+    return btn;
+  }
+
+  /**
+   * Handles a key down for the search bar.
    * @param {Event} e The key down event.
+   * @private
    */
   onKeyDown_(e) {
-    if (e.keyCode == Blockly.utils.KeyCodes.ENTER) {
+    if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
+      console.log("Close search bar");
+    } else if (e.keyCode == Blockly.utils.KeyCodes.TAB) {
+      return;
+    } else {
+      // Should check that the text value has changed before running search.
       console.log("Search all the things");
-    } else if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
-      console.log("Clsoe search bar");
     }
   }
 
   /**
-   * 
+   * Goes to the previous block.
+   * @param {Event} e The key down event.
+   * @private
    */
-  onMouseDown_() {
-    console.log("Search all the things");
+  previous_(e) {
+    console.log("Get previous value");
   }
 
   /**
-   * Dispose of workspace search.
+   * Goes to the next block.
+   * @param {Event} e The key down event.
+   * @private
+   */
+  next_() {
+    console.log("Get next values");
+  }
+
+  /**
+   * Disposes of workspace search.
    * Unlink from all DOM elements to prevent memory leaks.
    * @suppress {checkTypes}
    */
@@ -127,18 +175,18 @@ class WorkspaceSearch {
   }
 
   /**
-   * Close the search bar.
+   * Closes the search bar.
    */
   close() {
     this.setVisible(false);
   }
 
   /**
-   * 
+   * Shows or hides the workspace search bar.
    * @param {boolean} show True to set the search bar as visible. False otherwise. 
    */
   setVisible(show) {
-    this.HtmlDiv.style.display = show ? 'block' : 'none';
+    this.HtmlDiv.style.display = show ? 'flex' : 'none';
   }
 
   /**
