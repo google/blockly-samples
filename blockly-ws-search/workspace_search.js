@@ -83,7 +83,7 @@ class WorkspaceSearch {
       if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
         this.HtmlDiv.style.right = metrics.toolboxWidth + 'px';
       } else {
-        this.HtmlDiv.style.right = '0px';
+        this.HtmlDiv.style.right = '0';
       }
     }
     this.HtmlDiv.style.top = metrics.absoluteTop + 'px';
@@ -98,10 +98,11 @@ class WorkspaceSearch {
   }
 
   /**
-   * Create a button for the workspace search bar.
-   * @param {*} name The class name for the button.
-   * @param {*} text The text to display to the screen reader.
-   * @param {*} onClickFn The function to call when the user clicks on the button.
+   * Creates a button for the workspace search bar.
+   * @param {string} name The class name for the button.
+   * @param {string} text The text to display to the screen reader.
+   * @param {!Function} onClickFn The function to call when the user clicks on the button.
+   * @return {HTMLButtonElement} The created button.
    * @private
    */
   createBtn_(className, text, onClickFn) {
@@ -120,7 +121,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Handle a key down for the search bar.
+   * Handles a key down for the search bar.
    * @param {Event} e The key down event.
    * @private
    */
@@ -129,14 +130,14 @@ class WorkspaceSearch {
       console.log("Close search bar");
     } else if (e.keyCode == Blockly.utils.KeyCodes.TAB) {
       return;
-    }else {
+    } else {
       // Should check that the text value has changed before running search.
       console.log("Search all the things");
     }
   }
 
   /**
-   * Go to the previous block.
+   * Goes to the previous block.
    * @param {Event} e The key down event.
    * @private
    */
@@ -145,7 +146,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Go to the next block.
+   * Goes to the next block.
    * @param {Event} e The key down event.
    * @private
    */
@@ -154,7 +155,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Dispose of workspace search.
+   * Disposes of workspace search.
    * Unlink from all DOM elements to prevent memory leaks.
    * @suppress {checkTypes}
    */
@@ -174,7 +175,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Close the search bar.
+   * Closes the search bar.
    */
   close() {
     this.setVisible(false);
