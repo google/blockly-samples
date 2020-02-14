@@ -58,7 +58,7 @@ function startBlocklyInstance(suffix, rtl, horizontalLayout, position,
   var ws = Blockly.inject('blocklyDiv' + suffix, options);
   var workspaceSearch = new WorkspaceSearch(ws);
   workspaceSearch.init();
-  workspaceSearch.open(true);
+  workspaceSearch.open();
 }
 </script>
 

@@ -32,20 +32,6 @@ class WorkspaceSearch {
     this.workspace_ = workspace;
 
     /**
-     * A list of blocks that came up in the search
-     * @type {!Array.<Blockly.Block>}
-     * @private
-     */
-    this.blocks_ = [];
-
-    /**
-     * Index of the currently "selected" block in the blocks array.
-     * @type {number}
-     * @private
-     */
-    this.blockIndex_ = -1;
-
-    /**
      * The svg group
      * @type {Element}
      * @private
@@ -53,9 +39,23 @@ class WorkspaceSearch {
     this.svgGroup_ = null;
 
     /**
+     * A list of blocks that came up in the search
+     * @type {!Array.<Blockly.Block>}
+     * @protected
+     */
+    this.blocks_ = [];
+
+    /**
+     * Index of the currently "selected" block in the blocks array.
+     * @type {number}
+     * @protected
+     */
+    this.blockIndex_ = -1;
+
+    /**
      * The search text.
      * @type {string}
-     * @private
+     * @protected
      */
     this.searchText_ = '';
 
@@ -168,7 +168,7 @@ class WorkspaceSearch {
   /**
    * Sets search text.
    * @param {string} text
-   * @private
+   * @protected
    */
   setSearchText_(text) {
     this.searchText_ = text.trim()
@@ -201,6 +201,7 @@ class WorkspaceSearch {
   /**
    * Selects the block at the given index.
    * @param {number} index Index of block to select. Number is wrapped.
+   * @protected
    */
   selectBlock_(index) {
     if (!this.blocks_.length) {
