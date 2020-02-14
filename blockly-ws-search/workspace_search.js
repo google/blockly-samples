@@ -208,7 +208,9 @@ class WorkspaceSearch {
     }
     let oldBlock = (this.currentBlockIndex_ >= 0) ?
         this.blocks_[this.currentBlockIndex_] : null;
-    this.currentBlockIndex_ = index % this.blocks_.length;
+    this.currentBlockIndex_ =
+        (index % this.blocks_.length + this.blocks_.length) %
+        this.blocks_.length;
     if (this.workspace_.rendered) {
       if (oldBlock) {
         const oldPath = oldBlock.pathObject.svgPath;
