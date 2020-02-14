@@ -296,9 +296,6 @@ class WorkspaceSearch {
         input.fieldRow.forEach(function(field) {
           topBlockText.push(field.getText());
         });
-        if (input.connection) {
-          topBlockText.push('?');
-        }
       });
       blockText = topBlockText.join(' ').trim();
     }
