@@ -50,7 +50,7 @@ class WorkspaceSearch {
      * @type {number}
      * @protected
      */
-    this.blockIndex_ = -1;
+    this.currentBlockIndex_ = -1;
 
     /**
      * The search text.
@@ -182,8 +182,7 @@ class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.selectBlock_(this.blockIndex_ - 1);
-    console.log("Get previous value");
+    this.setCurrentIndex_(this.currentBlockIndex_ - 1);
   }
 
   /**
@@ -194,23 +193,30 @@ class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.selectBlock_(this.blockIndex_ + 1);
-    console.log("Get next value");
+    this.setCurrentIndex_(this.currentBlockIndex_ + 1);
   }
 
   /**
-   * Selects the block at the given index.
-   * @param {number} index Index of block to select. Number is wrapped.
+   * Changes the index of the current block in block list and adds extra
+   * highlight.
+   * @param {number} index Index of block to set as current. Number is wrapped.
    * @protected
    */
-  selectBlock_(index) {
+  setCurrentIndex_(index) {
     if (!this.blocks_.length) {
       return;
     }
-    this.blockIndex_ = index % this.blocks_.length;
+    let oldBlock = (this.currentBlockIndex_ >= 0) ?
+        this.blocks_[this.currentBlockIndex_] : null;
+    this.currentBlockIndex_ = index % this.blocks_.length;
     if (this.workspace_.rendered) {
-      const selectedBlock = this.blocks_[this.blockIndex_];
-      (/** @type {!Blockly.BlockSvg} */ selectedBlock).select();
+      if (oldBlock) {
+        const oldPath = oldBlock.pathObject.svgPath;
+        Blockly.utils.dom.removeClass(oldPath, 'searchCurrent');
+      }
+      const currBlock = this.blocks_[this.currentBlockIndex_];
+      const currPath = currBlock.pathObject.svgPath;
+      Blockly.utils.dom.addClass(currPath, 'searchCurrent');
       // TODO: scroll to block if it is not visible on workspace
     }
   }
@@ -327,7 +333,7 @@ class WorkspaceSearch {
   clearBlocks() {
     this.unHighlightBlocks();
     this.blocks_ = [];
-    this.blockIndex_ = -1;
+    this.currentBlockIndex_ = -1;
   }
 
   /**
