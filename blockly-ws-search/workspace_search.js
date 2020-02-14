@@ -46,13 +46,6 @@ class WorkspaceSearch {
     this.blockIndex_ = -1;
 
     /**
-     * Current position in the list of blocks.
-     * @type {number}
-     * @private
-     */
-    this.currentPosition_ = 0;
-
-    /**
      * The svg group
      * @type {Element}
      * @private
