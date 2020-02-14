@@ -35,3 +35,7 @@
 .workspaceSearchBar button {
   border: none;
 }
+
+path.blocklyPath.searchHighlight {
+  fill: black;
+}
