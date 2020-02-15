@@ -38,3 +38,7 @@
 path.blocklyPath.searchHighlight {
   fill: black;
 }
+
+path.blocklyPath.searchHighlight.searchCurrent {
+  fill: grey;
+}
