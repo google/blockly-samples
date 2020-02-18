@@ -67,14 +67,14 @@ class WorkspaceSearch {
 
     /**
      * HTML container for the workspace search bar.
-     * @type {?Element}
+     * @type {?HTMLElement}
      * @private
      */
     this.HtmlDiv_ = null;
 
     /**
      * The input for the search text.
-     * @type {?HTMLElement}
+     * @type {?HTMLTextInput}
      * @private
      */
     this.textInput_ = null;
@@ -192,7 +192,7 @@ class WorkspaceSearch {
    * @private
    */
   onWorkspaceKeyDown_ = function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.keyCode == Blockly.utils.KeyCodes.F) {
+    if ((e.ctrlKey || e.metaKey) && e.key == "f") {
       this.open();
       e.preventDefault();
     }
@@ -291,8 +291,7 @@ class WorkspaceSearch {
 
   /**
    * Shows or hides the workspace search bar.
-   * @param {boolean} show True to set the search bar as visible. False
-   *    otherwise.
+   * @param {boolean} show Whether to set the search bar as visible.
    */
   setVisible(show) {
     this.HtmlDiv.style.display = show ? 'flex' : 'none';
