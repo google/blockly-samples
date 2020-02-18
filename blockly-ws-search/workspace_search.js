@@ -216,6 +216,9 @@ class WorkspaceSearch {
       return;
     }
     this.setCurrentIndex_(this.currentBlockIndex_ - 1);
+    // Blockly.WidgetDiv.hide called in scroll is taking away focus.
+    // TODO: review setFocused call in Blockly.WidgetDiv.hide.
+    this.textInput_.focus();
   }
 
   /**
@@ -227,6 +230,9 @@ class WorkspaceSearch {
       return;
     }
     this.setCurrentIndex_(this.currentBlockIndex_ + 1);
+    // Blockly.WidgetDiv.hide called in scroll is taking away focus.
+    // TODO: review setFocused call in Blockly.WidgetDiv.hide.
+    this.textInput_.focus();
   }
 
   /**
@@ -252,7 +258,7 @@ class WorkspaceSearch {
       const currBlock = this.blocks_[this.currentBlockIndex_];
       const currPath = currBlock.pathObject.svgPath;
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
-      // TODO: scroll to block if it is not visible on workspace
+      this.scrollToVisible_(currBlock);
     }
   }
 
@@ -394,5 +400,76 @@ class WorkspaceSearch {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'searchHighlight');
     });
+  }
+
+  /**
+   * Scrolls workspace to bring given block into view.
+   * @param {Blockly.BlockSvg} block Block to bring into view.
+   * @private
+   */
+  scrollToVisible_(block) {
+    if (!this.workspace_.isMovable()) {
+      console.warn('Cannot scroll to block in a non-movable' +
+          'workspace.');
+      return;
+    }
+    // XY is in workspace coordinates.
+    const xy = block.getRelativeToSurfaceXY();
+    // Height/width is in workspace units.
+    const blockWidth = block.width;
+    const blockHeight = block.height;
+
+    const blockTop = xy.y;
+    const blockBottom = xy.y + blockHeight;
+    // In RTL the block's position is the top right of the block, not top left.
+    const blockLeft = this.workspace_.RTL ? xy.x - blockWidth: xy.x;
+    const blockRight = this.workspace_.RTL ? xy.x : xy.x + blockWidth;
+    // Workspace scale, used to convert from workspace coordinates to pixels.
+    const scale = this.workspace_.scale;
+
+    // Block bounds in pixels relative to the workspace origin (0,0 is centre).
+    const top = blockTop * scale;
+    const bottom = blockBottom * scale;
+    const left = blockLeft * scale;
+    const right = blockRight * scale;
+    const width = blockWidth * scale;
+    const height = blockHeight * scale;
+
+    const metrics = this.workspace_.getMetrics();
+
+    let targetLeft = metrics.viewLeft;
+
+    const overflowLeft = left < metrics.viewLeft;
+    const overflowRight = right > metrics.viewLeft + metrics.viewWidth;
+    const hasXOverflow = overflowLeft || overflowRight;
+    const wideBlock = width > metrics.viewWidth;
+
+    if ((overflowLeft && !wideBlock) ||
+        (wideBlock && !this.workspace_.RTL && hasXOverflow)) {
+      // Scroll to show left side of block
+      targetLeft = left;
+    } else if ((overflowRight && !wideBlock) ||
+        (wideBlock && this.workspace_.RTL && hasXOverflow)) {
+      // Scroll to show right side of block
+      targetLeft = right - metrics.viewWidth;
+    }
+
+    let targetTop = metrics.viewTop;
+
+    const overflowTop = top < metrics.viewTop;
+    const overflowBottom = bottom > metrics.viewTop + metrics.viewHeight;
+    const tallBlock = height > metrics.viewHeight;
+
+    if (overflowTop || (tallBlock && overflowBottom)) {
+      // Scroll to show top of block
+      targetTop = top;
+    } else if (overflowBottom) {
+      // Scroll to show bottom of block
+      targetTop = bottom - metrics.viewHeight;
+    }
+
+    if (targetLeft !== metrics.viewLeft || targetTop !== metrics.viewTop) {
+      this.workspace_.scroll(-targetLeft, -targetTop);
+    }
   }
 }
