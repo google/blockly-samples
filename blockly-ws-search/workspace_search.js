@@ -64,6 +64,20 @@ class WorkspaceSearch {
      * @type {boolean}
      */
     this.searchOnInput = true;
+
+    /**
+     * HTML container for the workspace search bar.
+     * @type {?HTMLElement}
+     * @private
+     */
+    this.HtmlDiv_ = null;
+
+    /**
+     * The input for the search text.
+     * @type {?HTMLTextInput}
+     * @private
+     */
+    this.textInput_ = null;
   }
 
   /**
@@ -80,8 +94,11 @@ class WorkspaceSearch {
 
     // TODO: Figure out how we are going to deal with translating.
     textInput.setAttribute('placeholder', 'Search');
+    this.textInput_ = textInput;
     Blockly.bindEventWithChecks_(textInput, 'keydown', this, this.onKeyDown_);
     Blockly.bindEventWithChecks_(textInput, 'input', this, this.onInput_);
+    Blockly.bindEventWithChecks_(svg.parentNode, 'keydown', this,
+        this.onWorkspaceKeyDown_);
 
     // Add all the buttons for the search bar
     var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
@@ -115,7 +132,8 @@ class WorkspaceSearch {
    * Creates a button for the workspace search bar.
    * @param {string} name The class name for the button.
    * @param {string} text The text to display to the screen reader.
-   * @param {!Function} onClickFn The function to call when the user clicks on the button.
+   * @param {!Function} onClickFn The function to call when the user clicks on
+   *    the button.
    * @return {HTMLButtonElement} The created button.
    * @private
    */
@@ -162,6 +180,21 @@ class WorkspaceSearch {
         this.setSearchText_(e.target.value);
         this.search();
       }
+    }
+  }
+
+    /**
+   * Add listener on the workspace to open the search bar when Control F or
+   * Command F are used.
+   * TODO: We might want Blockly to be able to deal with setting shortcuts on
+   * workspaces.
+   * @param {KeyboardEvent} e The key down event.
+   * @private
+   */
+  onWorkspaceKeyDown_ = function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key == "f") {
+      this.open();
+      e.preventDefault();
     }
   }
 
@@ -239,6 +272,7 @@ class WorkspaceSearch {
    */
   open() {
     this.setVisible(true);
+    this.textInput_.focus();
     if (this.searchText_) {
       this.search();
     }
@@ -250,13 +284,14 @@ class WorkspaceSearch {
    */
   close() {
     this.setVisible(false);
+    this.workspace_.markFocused();
     this.clearBlocks();
     console.log("Close search bar");
   }
 
   /**
    * Shows or hides the workspace search bar.
-   * @param {boolean} show True to set the search bar as visible. False otherwise. 
+   * @param {boolean} show Whether to set the search bar as visible.
    */
   setVisible(show) {
     this.HtmlDiv.style.display = show ? 'flex' : 'none';
