@@ -252,6 +252,10 @@ class WorkspaceSearch {
       const currBlock = this.blocks_[this.currentBlockIndex_];
       const currPath = currBlock.pathObject.svgPath;
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
+      if (this.workspace_.keyboardAccessibilityMode) {
+        let currAstNode = Blockly.navigation.getTopNode(currBlock);
+        this.workspace_.getCursor().setCurNode(currAstNode);
+      }
       // TODO: scroll to block if it is not visible on workspace
     }
   }
