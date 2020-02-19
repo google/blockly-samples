@@ -97,8 +97,11 @@ class WorkspaceSearch {
     this.textInput_ = textInput;
     Blockly.bindEventWithChecks_(textInput, 'keydown', this, this.onKeyDown_);
     Blockly.bindEventWithChecks_(textInput, 'input', this, this.onInput_);
+    Blockly.bindEventWithChecks_(textInput, 'click', this, this.onClick_);
     Blockly.bindEventWithChecks_(svg.parentNode, 'keydown', this,
         this.onWorkspaceKeyDown_);
+
+    // this.workspace_.addChangeListener(this.removeBlock_.bind(this));
 
     // Add all the buttons for the search bar
     var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
@@ -126,6 +129,17 @@ class WorkspaceSearch {
 
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
     this.setVisible(false);
+  }
+
+  /**
+   * 
+   */
+  removeBlock_(e) {
+    const deletedBlock = this.workspace_.getBlockById(e.blockId);
+    const deletedIdx = this.blocks_.indexOf(deletedBlock);
+    if (deletedIdx > -1) {
+      this.blocks_.splice(deletedIdx, 1);
+    }
   }
 
   /**
@@ -163,6 +177,16 @@ class WorkspaceSearch {
         this.search();
       }
     }
+  }
+
+  onClick_(e) {
+    console.log("HERE");
+    const inputValue = e.target.value;
+    const currIdx = this.currentBlockIndex_;
+    this.setSearchText_(inputValue);
+    this.search();
+    // Could this be something I pass into the search function?
+    this.setCurrentIndex_(currIdx);
   }
 
   /**
@@ -393,6 +417,9 @@ class WorkspaceSearch {
     this.blocks_.forEach(function(/** @type {!Blockly.BlockSvg} */ block) {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'searchHighlight');
+      if (Blockly.utils.dom.hasClass(blockPath, 'searchCurrent')) {
+        Blockly.utils.dom.removeClass(blockPath, 'searchCurrent');
+      }
     });
   }
 }
