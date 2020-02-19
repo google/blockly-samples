@@ -415,47 +415,34 @@ class WorkspaceSearch {
     }
     // XY is in workspace coordinates.
     const xy = block.getRelativeToSurfaceXY();
-    // Height/width is in workspace units.
-    const blockWidth = block.width;
-    const blockHeight = block.height;
-
-    const blockTop = xy.y;
-    const blockBottom = xy.y + blockHeight;
-    // In RTL the block's position is the top right of the block, not top left.
-    const blockLeft = this.workspace_.RTL ? xy.x - blockWidth: xy.x;
-    const blockRight = this.workspace_.RTL ? xy.x : xy.x + blockWidth;
-    // Workspace scale, used to convert from workspace coordinates to pixels.
     const scale = this.workspace_.scale;
 
     // Block bounds in pixels relative to the workspace origin (0,0 is centre).
-    const top = blockTop * scale;
-    const bottom = blockBottom * scale;
-    const left = blockLeft * scale;
-    const right = blockRight * scale;
-    const width = blockWidth * scale;
-    const height = blockHeight * scale;
+    const width = block.width * scale;
+    const height = block.height * scale;
+    const top = xy.y * scale;
+    const bottom = (xy.y + block.height) * scale;
+    // In RTL the block's position is the top right of the block, not top left.
+    const left = this.workspace_.RTL ? xy.x * scale - width: xy.x * scale;
+    const right = this.workspace_.RTL ? xy.x * scale : xy.x * scale +  width;
 
     const metrics = this.workspace_.getMetrics();
 
     let targetLeft = metrics.viewLeft;
-
     const overflowLeft = left < metrics.viewLeft;
     const overflowRight = right > metrics.viewLeft + metrics.viewWidth;
-    const hasXOverflow = overflowLeft || overflowRight;
     const wideBlock = width > metrics.viewWidth;
 
-    if ((overflowLeft && !wideBlock) ||
-        (wideBlock && !this.workspace_.RTL && hasXOverflow)) {
+    if ((!wideBlock && overflowLeft) || (wideBlock && !this.workspace_.RTL)) {
       // Scroll to show left side of block
       targetLeft = left;
-    } else if ((overflowRight && !wideBlock) ||
-        (wideBlock && this.workspace_.RTL && hasXOverflow)) {
+    } else if ((!wideBlock && overflowRight) ||
+        (wideBlock && this.workspace_.RTL)) {
       // Scroll to show right side of block
       targetLeft = right - metrics.viewWidth;
     }
 
     let targetTop = metrics.viewTop;
-
     const overflowTop = top < metrics.viewTop;
     const overflowBottom = bottom > metrics.viewTop + metrics.viewHeight;
     const tallBlock = height > metrics.viewHeight;
