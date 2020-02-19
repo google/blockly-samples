@@ -179,6 +179,10 @@ class WorkspaceSearch {
     }
   }
 
+  /**
+   * Handles clicking on the input value in search bar.
+   * @param {Event} e The onclick event.
+   */
   onClick_(e) {
     console.log("HERE");
     const inputValue = e.target.value;
