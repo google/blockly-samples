@@ -53,6 +53,13 @@ class WorkspaceSearch {
     this.currentBlockIndex_ = -1;
 
     /**
+     * Currently "selected" block.
+     * @type {Blockly.BlockSvg}
+     * @protected
+     */
+    this.currentBlock_ = null;
+
+    /**
      * The search text.
      * @type {string}
      * @protected
@@ -64,6 +71,12 @@ class WorkspaceSearch {
      * @type {boolean}
      */
     this.searchOnInput = true;
+
+    /**
+     * Whether search should be case sensitive.
+     * @type {boolean}
+     */
+    this.caseSensitive = false;
 
     /**
      * HTML container for the workspace search bar.
@@ -95,15 +108,18 @@ class WorkspaceSearch {
     // TODO: Figure out how we are going to deal with translating.
     textInput.setAttribute('placeholder', 'Search');
     this.textInput_ = textInput;
-    Blockly.bindEventWithChecks_(textInput, 'keydown', this, this.onKeyDown_);
-    Blockly.bindEventWithChecks_(textInput, 'input', this, this.onInput_);
-    Blockly.bindEventWithChecks_(svg.parentNode, 'keydown', this,
-        this.onWorkspaceKeyDown_);
+    textInput.addEventListener('keydown', this.onKeyDown_.bind(this));
+    textInput.addEventListener('input', this.onInput_.bind(this));
+    svg.parentNode.addEventListener('keydown',
+        this.onWorkspaceKeyDown_.bind(this));
 
     // Add all the buttons for the search bar
-    var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_.bind(this));
-    var downBtn = this.createBtn_('downBtn', 'Find next', this.next_.bind(this));
-    var closeBtn = this.createBtn_('closeBtn', 'Close search bar', this.close.bind(this));
+    var upBtn = this.createBtn_('upBtn', 'Find previous', 
+        this.previous_.bind(this));
+    var downBtn = this.createBtn_('downBtn', 'Find next', 
+        this.next_.bind(this));
+    var closeBtn = this.createBtn_('closeBtn', 'Close search bar', 
+        this.close.bind(this));
     this.HtmlDiv = document.createElement('div');
     Blockly.utils.dom.addClass(this.HtmlDiv, 'workspaceSearchBar');
 
@@ -193,16 +209,14 @@ class WorkspaceSearch {
     }
   }
 
-    /**
-   * Add listener on the workspace to open the search bar when Control F or
-   * Command F are used.
-   * TODO: We might want Blockly to be able to deal with setting shortcuts on
-   * workspaces.
+  /**
+   * Opens the search bar when Control F or Command F are used on the workspace.
+   * TODO: Look into handling keyboard shortcuts on workspace in Blockly.
    * @param {KeyboardEvent} e The key down event.
    * @private
    */
-  onWorkspaceKeyDown_ = function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key == "f") {
+  onWorkspaceKeyDown_(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "f") {
       this.open();
       e.preventDefault();
     }
@@ -214,7 +228,10 @@ class WorkspaceSearch {
    * @protected
    */
   setSearchText_(text) {
-    this.searchText_ = text.trim()
+    this.searchText_ = text.trim();
+    if (!this.caseSensitive) {
+      this.searchText_ =  this.searchText_.toLowerCase();
+    }
   }
 
   /**
@@ -225,7 +242,7 @@ class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.setCurrentIndex_(this.currentBlockIndex_ - 1);
+    this.setCurrentBlock_(this.currentBlockIndex_ - 1);
     // Blockly.WidgetDiv.hide called in scroll is taking away focus.
     // TODO: review setFocused call in Blockly.WidgetDiv.hide.
     this.textInput_.focus();
@@ -239,37 +256,47 @@ class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.setCurrentIndex_(this.currentBlockIndex_ + 1);
+    this.setCurrentBlock_(this.currentBlockIndex_ + 1);
     // Blockly.WidgetDiv.hide called in scroll is taking away focus.
     // TODO: review setFocused call in Blockly.WidgetDiv.hide.
     this.textInput_.focus();
   }
 
   /**
-   * Changes the index of the current block in block list and adds extra
-   * highlight.
+   * Changes the currently "selected" block and adds extra highlight.
    * @param {number} index Index of block to set as current. Number is wrapped.
    * @protected
    */
-  setCurrentIndex_(index) {
+  setCurrentBlock_(index) {
     if (!this.blocks_.length) {
       return;
     }
-    let oldBlock = (this.currentBlockIndex_ >= 0) ?
-        this.blocks_[this.currentBlockIndex_] : null;
+    this.clearCurrentBlock_();
     this.currentBlockIndex_ =
         (index % this.blocks_.length + this.blocks_.length) %
         this.blocks_.length;
+    this.currentBlock_ = (
+        /** @type {!Blockly.BlockSvg} */ this.blocks_[this.currentBlockIndex_]);
     if (this.workspace_.rendered) {
-      if (oldBlock) {
-        const oldPath = oldBlock.pathObject.svgPath;
-        Blockly.utils.dom.removeClass(oldPath, 'searchCurrent');
-      }
-      const currBlock = this.blocks_[this.currentBlockIndex_];
-      const currPath = currBlock.pathObject.svgPath;
+      const currPath = this.currentBlock_.pathObject.svgPath;
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
-      this.updateCursor_(currBlock);
-      this.scrollToVisible_(currBlock);
+      this.updateCursor_(this.currentBlock_);
+      this.scrollToVisible_(this.currentBlock_);
+    }
+  }
+
+  /**
+   * Clears the currently "selected" block.
+   * @protected
+   */
+  clearCurrentBlock_() {
+    this.currentBlockIndex_ = -1;
+    if (this.currentBlock_) {
+      if (this.workspace_.rendered) {
+        const path = this.currentBlock_.pathObject.svgPath;
+        Blockly.utils.dom.removeClass(path, 'searchCurrent');
+      }
+      this.currentBlock_ = null;
     }
   }
 
@@ -353,8 +380,9 @@ class WorkspaceSearch {
    * @private
    */
   getSearchPool_() {
-    const blocks = /** @type {!Array.<!Blockly.Block>} */
-    (this.workspace_.getAllBlocks(true));
+    const blocks = (
+        /** @type {!Array.<!Blockly.Block>} */
+        this.workspace_.getAllBlocks(true));
     return blocks.filter(function(block) {
       // Filter out blocks contained inside of another collapsed block.
       const surroundParent = block.getSurroundParent();
@@ -382,6 +410,9 @@ class WorkspaceSearch {
       });
       blockText = topBlockText.join(' ').trim();
     }
+    if (!this.caseSensitive) {
+      blockText = blockText.toLowerCase();
+    }
     return blockText.includes(text);
   }
 
@@ -406,8 +437,8 @@ class WorkspaceSearch {
    */
   clearBlocks() {
     this.unHighlightBlocks();
+    this.clearCurrentBlock_();
     this.blocks_ = [];
-    this.currentBlockIndex_ = -1;
   }
 
   /**
