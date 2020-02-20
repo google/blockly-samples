@@ -39,6 +39,13 @@ class WorkspaceSearch {
     this.svgGroup_ = null;
 
     /**
+     * The input for the search text.
+     * @type {?HTMLInputElement}
+     * @private
+     */
+    this.textInput_ = null;
+
+    /**
      * A list of blocks that came up in the search
      * @type {!Array.<Blockly.Block>}
      * @protected
@@ -64,20 +71,6 @@ class WorkspaceSearch {
      * @type {boolean}
      */
     this.searchOnInput = true;
-
-    /**
-     * HTML container for the workspace search bar.
-     * @type {?HTMLElement}
-     * @private
-     */
-    this.HtmlDiv_ = null;
-
-    /**
-     * The input for the search text.
-     * @type {?HTMLTextInput}
-     * @private
-     */
-    this.textInput_ = null;
   }
 
   /**
@@ -130,7 +123,7 @@ class WorkspaceSearch {
 
   /**
    * Creates a button for the workspace search bar.
-   * @param {string} name The class name for the button.
+   * @param {string} className The class name for the button.
    * @param {string} text The text to display to the screen reader.
    * @param {!Function} onClickFn The function to call when the user clicks on
    *    the button.
