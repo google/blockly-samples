@@ -110,7 +110,7 @@ class WorkspaceSearch {
     this.textInput_ = textInput;
     Blockly.bindEventWithChecks_(textInput, 'keydown', this, this.onKeyDown_);
     Blockly.bindEventWithChecks_(textInput, 'input', this, this.onInput_);
-    Blockly.bindEventWithChecks_(textInput, 'click', this, this.onClick_);
+    textInput.addEventListener('click', evt => this.onInputClick_(evt));
     Blockly.bindEventWithChecks_(svg.parentNode, 'keydown', this,
         this.onWorkspaceKeyDown_);
 
@@ -183,12 +183,16 @@ class WorkspaceSearch {
    * Handles clicking on the input value in search bar.
    * @param {Event} e The onclick event.
    */
-  onClick_(e) {
-    const inputValue = e.target.value;
-    const currIdx = this.currentBlockIndex_;
-    this.setSearchText_(inputValue);
+  onInputClick_() {
+    const oldBlock = this.currentBlock_;
+    let oldIdx = this.currentBlockIndex_;
     this.search();
-    this.setCurrentBlock_(currIdx);
+    const currentBlockIdx = this.blocks_.indexOf(oldBlock);
+    if (currentBlockIdx > -1) {
+      this.setCurrentBlock_(currentBlockIdx);
+    } else {
+      this.setCurrentBlock_(oldIdx);
+    }
   }
 
   /**
