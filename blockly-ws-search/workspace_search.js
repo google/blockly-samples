@@ -66,6 +66,12 @@ class WorkspaceSearch {
     this.searchOnInput = true;
 
     /**
+     * Whether search should be case sensitive.
+     * @type {boolean}
+     */
+    this.caseSensitive = false;
+
+    /**
      * HTML container for the workspace search bar.
      * @type {?HTMLElement}
      * @private
@@ -204,7 +210,10 @@ class WorkspaceSearch {
    * @protected
    */
   setSearchText_(text) {
-    this.searchText_ = text.trim()
+    this.searchText_ = text.trim();
+    if (!this.caseSensitive) {
+      this.searchText_ =  this.searchText_.toLowerCase();
+    }
   }
 
   /**
@@ -347,6 +356,9 @@ class WorkspaceSearch {
         });
       });
       blockText = topBlockText.join(' ').trim();
+    }
+    if (!this.caseSensitive) {
+      blockText = blockText.toLowerCase();
     }
     return blockText.includes(text);
   }
