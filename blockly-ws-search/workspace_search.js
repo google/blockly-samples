@@ -189,16 +189,14 @@ class WorkspaceSearch {
     }
   }
 
-    /**
-   * Add listener on the workspace to open the search bar when Control F or
-   * Command F are used.
-   * TODO: We might want Blockly to be able to deal with setting shortcuts on
-   * workspaces.
+  /**
+   * Opens the search bar when Control F or Command F are used on the workspace.
+   * TODO: Look into handling keyboard shortcuts on workspace in Blockly.
    * @param {KeyboardEvent} e The key down event.
    * @private
    */
-  onWorkspaceKeyDown_ = function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key == "f") {
+  onWorkspaceKeyDown_(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "f") {
       this.open();
       e.preventDefault();
     }
