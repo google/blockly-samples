@@ -78,7 +78,6 @@ class WorkspaceSearch {
      * @private
      */
     this.textInput_ = null;
-    this.id = Math.random();
   }
 
   /**
