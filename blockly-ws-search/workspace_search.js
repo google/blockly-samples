@@ -354,12 +354,11 @@ class WorkspaceSearch {
   }
 
   /**
-   * Returns whether the given block matches the provided text.
+   * Returns whether the given block matches the search text.
    * @param {!Blockly.Block} block The block to check.
-   * @param {string} text The text to search the block for.
    * @private
    */
-  isBlockMatch_(block, text) {
+  isBlockMatch_(block) {
     let blockText = '';
     if (block.isCollapsed()) {
       // Search the whole string for collapsed blocks.
@@ -376,7 +375,7 @@ class WorkspaceSearch {
     if (!this.caseSensitive) {
       blockText = blockText.toLowerCase();
     }
-    return blockText.includes(text);
+    return blockText.includes(this.searchText_);
   }
 
   /**
@@ -387,12 +386,8 @@ class WorkspaceSearch {
       return;
     }
     const searchGroup = this.getSearchPool_();
-    const isBlockMatch = this.isBlockMatch_;
-    const text = this.searchText_;
     this.blocks_ = searchGroup.filter(
-        function(block) {
-          return isBlockMatch(block, text);
-    });
+        block => this.isBlockMatch_(block));
   }
 
   /**
