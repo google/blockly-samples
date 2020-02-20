@@ -97,27 +97,29 @@ class WorkspaceSearch {
    * Initializes the workspace search bar.
    */
   init() {
-    var svg = this.workspace_.getParentSvg();
-    var metrics = this.workspace_.getMetrics();
+    let svg = this.workspace_.getParentSvg();
+    const metrics = this.workspace_.getMetrics();
 
     // Create the text input for search.
-    var textInput = document.createElement('input');
+    let textInput = document.createElement('input');
     Blockly.utils.dom.addClass(textInput, 'searchInput');
     textInput.type = 'text';
 
     // TODO: Figure out how we are going to deal with translating.
     textInput.setAttribute('placeholder', 'Search');
     this.textInput_ = textInput;
-    Blockly.bindEventWithChecks_(textInput, 'keydown', this, this.onKeyDown_);
-    Blockly.bindEventWithChecks_(textInput, 'input', this, this.onInput_);
-    Blockly.bindEventWithChecks_(svg.parentNode, 'keydown', this,
-        this.onWorkspaceKeyDown_);
+    textInput.addEventListener('keydown', evt => this.onKeyDown_(evt));
+    textInput.addEventListener('input', evt => this.onInput_(evt));
+    svg.parentNode.addEventListener('keydown',
+        evt => this.onWorkspaceKeyDown_(evt));
 
     // Add all the buttons for the search bar
-    var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
-    var downBtn = this.createBtn_('downBtn', 'Find next', this.next_);
-    var closeBtn = this.createBtn_('closeBtn', 'Close search bar', this.close);
-
+    const upBtn = this.createBtn_('upBtn', 'Find previous',
+        evt => this.previous_(evt));
+    const downBtn = this.createBtn_('downBtn', 'Find next',
+        evt => this.next_(evt));
+    const closeBtn = this.createBtn_('closeBtn', 'Close search bar',
+        evt => this.close(evt));
     this.HtmlDiv_ = document.createElement('div');
     Blockly.utils.dom.addClass(this.HtmlDiv_, 'workspaceSearchBar');
 
@@ -152,14 +154,25 @@ class WorkspaceSearch {
    */
   createBtn_(className, text, onClickFn) {
     // Create a span holding text to be used for accessibility purposes.
-    var textSpan = document.createElement('span');
+    let textSpan = document.createElement('span');
     textSpan.innerText = text;
     Blockly.utils.dom.addClass(textSpan, 'btnText');
 
     // Create the button
-    var btn = document.createElement('button');
+    let btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
-    Blockly.bindEventWithChecks_(btn, 'click', this, onClickFn);
+    btn.addEventListener('click', onClickFn);
+    // TODO: Review Blockly's key handling to see if there is a way to avoid
+    // this.
+    btn.addEventListener('keydown', e => function(e) {
+      if (e.key === "Enter") {
+        onClickFn(e);
+        e.preventDefault();  
+      } else if (e.key === "Escape") {
+        this.close();
+      }
+      e.stopPropagation();
+    });
     btn.append(textSpan);
     return btn;
   }
@@ -267,6 +280,7 @@ class WorkspaceSearch {
     if (this.workspace_.rendered) {
       const currPath = this.currentBlock_.pathObject.svgPath;
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
+      this.updateCursor_(this.currentBlock_);
       this.scrollToVisible_(this.currentBlock_);
     }
   }
@@ -287,6 +301,17 @@ class WorkspaceSearch {
   }
 
   /**
+   * Updates the location of the cursor if the user is in keyboard naviation
+   * mode.
+   */
+  updateCursor_(currBlock) {
+    if (this.workspace_.keyboardAccessibilityMode) {
+      const currAstNode = Blockly.navigation.getTopNode(currBlock);
+      this.workspace_.getCursor().setCurNode(currAstNode);
+    }
+  }
+
+  /**
    * Disposes of workspace search.
    * Unlink from all DOM elements to prevent memory leaks.
    * @suppress {checkTypes}
@@ -302,11 +327,24 @@ class WorkspaceSearch {
    */
   open() {
     this.setVisible(true);
+    this.updateMarker_();
     this.textInput_.focus();
     if (this.searchText_) {
       this.search();
     }
     console.log("Open search bar");
+  }
+
+  /**
+   * Marks the user's current position when opening the search bar.
+   */
+  updateMarker_() {
+    const marker = this.workspace_.getMarker(Blockly.navigation.MARKER_NAME);
+    if (this.workspace_.keyboardAccessibilityMode && marker &&
+        !marker.getCurNode()) {
+      const curNode = this.workspace_.getCursor().getCurNode();
+      marker.setCurNode(curNode);
+    }
   }
 
   /**
