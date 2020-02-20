@@ -78,6 +78,7 @@ class WorkspaceSearch {
      * @private
      */
     this.textInput_ = null;
+    this.id = Math.random();
   }
 
   /**
@@ -101,10 +102,9 @@ class WorkspaceSearch {
         this.onWorkspaceKeyDown_);
 
     // Add all the buttons for the search bar
-    var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
-    var downBtn = this.createBtn_('downBtn', 'Find next', this.next_);
-    var closeBtn = this.createBtn_('closeBtn', 'Close search bar', this.close);
-
+    var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_.bind(this));
+    var downBtn = this.createBtn_('downBtn', 'Find next', this.next_.bind(this));
+    var closeBtn = this.createBtn_('closeBtn', 'Close search bar', this.close.bind(this));
     this.HtmlDiv = document.createElement('div');
     Blockly.utils.dom.addClass(this.HtmlDiv, 'workspaceSearchBar');
 
@@ -146,7 +146,16 @@ class WorkspaceSearch {
     // Create the button
     var btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
-    Blockly.bindEventWithChecks_(btn, 'click', this, onClickFn);
+    btn.addEventListener('click', onClickFn);
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === "Enter") {
+        onClickFn(e);
+        e.preventDefault();  
+      } else if (e.key === "Escape") {
+        this.close();
+      }
+      e.stopPropagation();
+    }.bind(this));
     btn.append(textSpan);
     return btn;
   }
@@ -252,11 +261,19 @@ class WorkspaceSearch {
       const currBlock = this.blocks_[this.currentBlockIndex_];
       const currPath = currBlock.pathObject.svgPath;
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
-      if (this.workspace_.keyboardAccessibilityMode) {
-        let currAstNode = Blockly.navigation.getTopNode(currBlock);
-        this.workspace_.getCursor().setCurNode(currAstNode);
-      }
+      this.updateCursor_(currBlock);
       // TODO: scroll to block if it is not visible on workspace
+    }
+  }
+
+  /**
+   * Update the location of the cursor if the user is in keyboard naviation
+   * mode.
+   */
+  updateCursor_(currBlock) {
+    if (this.workspace_.keyboardAccessibilityMode) {
+      let currAstNode = Blockly.navigation.getTopNode(currBlock);
+      this.workspace_.getCursor().setCurNode(currAstNode);
     }
   }
 
@@ -276,11 +293,23 @@ class WorkspaceSearch {
    */
   open() {
     this.setVisible(true);
+    this.updateMarker_();
     this.textInput_.focus();
     if (this.searchText_) {
       this.search();
     }
     console.log("Open search bar");
+  }
+
+  /**
+   * Mark the user's current position when opening the search bar.
+   */
+  updateMarker_() {
+    var marker = this.workspace_.getMarker(Blockly.navigation.MARKER_NAME);
+    if (this.workspace_.keyboardAccessibilityMode && !marker.getCurNode()) {
+      var curNode = this.workspace_.getCursor().getCurNode();
+      marker.setCurNode(curNode);
+    }
   }
 
   /**
