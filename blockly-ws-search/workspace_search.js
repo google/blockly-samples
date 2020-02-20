@@ -424,7 +424,7 @@ class WorkspaceSearch {
       return;
     }
     const searchGroup = this.getSearchPool_();
-    const isBlockMatch = this.isBlockMatch_;
+    const isBlockMatch = this.isBlockMatch_.bind(this);
     const text = this.searchText_;
     this.blocks_ = searchGroup.filter(
         function(block) {
