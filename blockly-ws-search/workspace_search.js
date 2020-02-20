@@ -39,6 +39,20 @@ class WorkspaceSearch {
     this.svgGroup_ = null;
 
     /**
+     * HTML container for the workspace search bar.
+     * @type {?HTMLElement}
+     * @private
+     */
+    this.HtmlDiv_ = null;
+
+    /**
+     * The input for the search text.
+     * @type {?HTMLInputElement}
+     * @private
+     */
+    this.textInput_ = null;
+
+    /**
      * A list of blocks that came up in the search
      * @type {!Array.<Blockly.Block>}
      * @protected
@@ -77,20 +91,6 @@ class WorkspaceSearch {
      * @type {boolean}
      */
     this.caseSensitive = false;
-
-    /**
-     * HTML container for the workspace search bar.
-     * @type {?HTMLElement}
-     * @private
-     */
-    this.HtmlDiv_ = null;
-
-    /**
-     * The input for the search text.
-     * @type {?HTMLTextInput}
-     * @private
-     */
-    this.textInput_ = null;
   }
 
   /**
@@ -118,32 +118,32 @@ class WorkspaceSearch {
     var downBtn = this.createBtn_('downBtn', 'Find next', this.next_);
     var closeBtn = this.createBtn_('closeBtn', 'Close search bar', this.close);
 
-    this.HtmlDiv = document.createElement('div');
-    Blockly.utils.dom.addClass(this.HtmlDiv, 'workspaceSearchBar');
+    this.HtmlDiv_ = document.createElement('div');
+    Blockly.utils.dom.addClass(this.HtmlDiv_, 'workspaceSearchBar');
 
     if (this.workspace_.RTL) {
-      this.HtmlDiv.style.left = metrics.absoluteLeft + 'px';
+      this.HtmlDiv_.style.left = metrics.absoluteLeft + 'px';
     } else {
       if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
-        this.HtmlDiv.style.right = metrics.toolboxWidth + 'px';
+        this.HtmlDiv_.style.right = metrics.toolboxWidth + 'px';
       } else {
-        this.HtmlDiv.style.right = '0';
+        this.HtmlDiv_.style.right = '0';
       }
     }
-    this.HtmlDiv.style.top = metrics.absoluteTop + 'px';
+    this.HtmlDiv_.style.top = metrics.absoluteTop + 'px';
 
-    this.HtmlDiv.append(textInput);
-    this.HtmlDiv.append(upBtn);
-    this.HtmlDiv.append(downBtn);
-    this.HtmlDiv.append(closeBtn);
+    this.HtmlDiv_.append(textInput);
+    this.HtmlDiv_.append(upBtn);
+    this.HtmlDiv_.append(downBtn);
+    this.HtmlDiv_.append(closeBtn);
 
-    svg.parentNode.insertBefore(this.HtmlDiv, svg);
+    svg.parentNode.insertBefore(this.HtmlDiv_, svg);
     this.setVisible(false);
   }
 
   /**
    * Creates a button for the workspace search bar.
-   * @param {string} name The class name for the button.
+   * @param {string} className The class name for the button.
    * @param {string} text The text to display to the screen reader.
    * @param {!Function} onClickFn The function to call when the user clicks on
    *    the button.
@@ -292,8 +292,8 @@ class WorkspaceSearch {
    * @suppress {checkTypes}
    */
   dispose() {
-    if (this.HtmlDiv) {
-      Blockly.utils.dom.removeNode(this.HtmlDiv);
+    if (this.HtmlDiv_) {
+      Blockly.utils.dom.removeNode(this.HtmlDiv_);
     }  
   }
 
@@ -324,7 +324,7 @@ class WorkspaceSearch {
    * @param {boolean} show Whether to set the search bar as visible.
    */
   setVisible(show) {
-    this.HtmlDiv.style.display = show ? 'flex' : 'none';
+    this.HtmlDiv_.style.display = show ? 'flex' : 'none';
   }
 
   /**
