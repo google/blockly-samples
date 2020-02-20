@@ -146,6 +146,8 @@ class WorkspaceSearch {
     var btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
     btn.addEventListener('click', onClickFn);
+    // TODO: Reivew Blockly's key handling to see if there is a way to avoid
+    // this.
     btn.addEventListener('keydown', function(e) {
       if (e.key === "Enter") {
         onClickFn(e);
