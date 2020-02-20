@@ -114,8 +114,6 @@ class WorkspaceSearch {
     Blockly.bindEventWithChecks_(svg.parentNode, 'keydown', this,
         this.onWorkspaceKeyDown_);
 
-    // this.workspace_.addChangeListener(this.removeBlock_.bind(this));
-
     // Add all the buttons for the search bar
     var upBtn = this.createBtn_('upBtn', 'Find previous', this.previous_);
     var downBtn = this.createBtn_('downBtn', 'Find next', this.next_);
@@ -142,17 +140,6 @@ class WorkspaceSearch {
 
     svg.parentNode.insertBefore(this.HtmlDiv, svg);
     this.setVisible(false);
-  }
-
-  /**
-   * 
-   */
-  removeBlock_(e) {
-    const deletedBlock = this.workspace_.getBlockById(e.blockId);
-    const deletedIdx = this.blocks_.indexOf(deletedBlock);
-    if (deletedIdx > -1) {
-      this.blocks_.splice(deletedIdx, 1);
-    }
   }
 
   /**
@@ -197,13 +184,11 @@ class WorkspaceSearch {
    * @param {Event} e The onclick event.
    */
   onClick_(e) {
-    console.log("HERE");
     const inputValue = e.target.value;
     const currIdx = this.currentBlockIndex_;
     this.setSearchText_(inputValue);
     this.search();
-    // Could this be something I pass into the search function?
-    this.setCurrentIndex_(currIdx);
+    this.setCurrentBlock_(currIdx);
   }
 
   /**
@@ -258,9 +243,6 @@ class WorkspaceSearch {
       return;
     }
     this.setCurrentBlock_(this.currentBlockIndex_ - 1);
-    // Blockly.WidgetDiv.hide called in scroll is taking away focus.
-    // TODO: review setFocused call in Blockly.WidgetDiv.hide.
-    this.textInput_.focus();
   }
 
   /**
@@ -272,9 +254,6 @@ class WorkspaceSearch {
       return;
     }
     this.setCurrentBlock_(this.currentBlockIndex_ + 1);
-    // Blockly.WidgetDiv.hide called in scroll is taking away focus.
-    // TODO: review setFocused call in Blockly.WidgetDiv.hide.
-    this.textInput_.focus();
   }
 
   /**
@@ -296,6 +275,9 @@ class WorkspaceSearch {
       const currPath = this.currentBlock_.pathObject.svgPath;
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
       this.scrollToVisible_(this.currentBlock_);
+      // Blockly.WidgetDiv.hide called in scroll is taking away focus.
+      // TODO: review setFocused call in Blockly.WidgetDiv.hide.
+      this.textInput_.focus();
     }
   }
 
@@ -455,9 +437,6 @@ class WorkspaceSearch {
     this.blocks_.forEach(function(/** @type {!Blockly.BlockSvg} */ block) {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'searchHighlight');
-      if (Blockly.utils.dom.hasClass(blockPath, 'searchCurrent')) {
-        Blockly.utils.dom.removeClass(blockPath, 'searchCurrent');
-      }
     });
   }
 
