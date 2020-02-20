@@ -164,7 +164,7 @@ class WorkspaceSearch {
     btn.addEventListener('click', onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     // this.
-    btn.addEventListener('keydown', function(e) {
+    btn.addEventListener('keydown', e => function(e) {
       if (e.key === "Enter") {
         onClickFn(e);
         e.preventDefault();  
@@ -172,7 +172,7 @@ class WorkspaceSearch {
         this.close();
       }
       e.stopPropagation();
-    }.bind(this));
+    });
     btn.append(textSpan);
     return btn;
   }
