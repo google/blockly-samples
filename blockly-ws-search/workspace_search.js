@@ -377,21 +377,9 @@ class WorkspaceSearch {
     this.clearBlocks();
     this.populateBlocks();
     this.highlightBlocks();
-    this.setCurrentBlock_(this.findNewBlockIdx_(opt_block));
-  }
-
-  /**
-   * Given a block find the correct index to use as the current index.
-   * @param {Blockly.Block=} opt_block Optional block to use as the current
-   *    block.
-   */
-  findNewBlockIdx_(opt_block) {
-    let newBlockIdx = 0;
-    if (opt_block) {
-      const blockIdx = this.blocks_.indexOf(opt_block);
-      newBlockIdx = blockIdx > -1 ? blockIdx : 0;
-    }
-    return newBlockIdx;
+    let newBlockIdx = this.blocks_.indexOf(opt_block);
+    newBlockIdx = newBlockIdx > -1 ? newBlockIdx : 0;
+    this.setCurrentBlock_(newBlockIdx);
   }
 
   /**
