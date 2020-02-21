@@ -197,15 +197,7 @@ class WorkspaceSearch {
    * @param {Event} e The onclick event.
    */
   onInputClick_() {
-    const oldBlock = this.currentBlock_;
-    let oldIdx = this.currentBlockIndex_;
-    this.search();
-    const currentBlockIdx = this.blocks_.indexOf(oldBlock);
-    if (currentBlockIdx > -1) {
-      this.setCurrentBlock_(currentBlockIdx);
-    } else {
-      this.setCurrentBlock_(oldIdx);
-    }
+    this.search(this.currentBlock_);
   }
 
   /**
@@ -293,9 +285,6 @@ class WorkspaceSearch {
       Blockly.utils.dom.addClass(currPath, 'searchCurrent');
       this.updateCursor_(this.currentBlock_);
       this.scrollToVisible_(this.currentBlock_);
-      // Blockly.WidgetDiv.hide called in scroll is taking away focus.
-      // TODO: review setFocused call in Blockly.WidgetDiv.hide.
-      this.textInput_.focus();
     }
   }
 
@@ -381,12 +370,28 @@ class WorkspaceSearch {
 
   /**
    * Searches the workspace for the current search term.
+   * @param {Blockly.Block=} opt_block Optional block to use as the current
+   *     block.
    */
-  search() {
+  search(opt_block) {
     this.clearBlocks();
     this.populateBlocks();
     this.highlightBlocks();
-    this.next_();
+    this.setCurrentBlock_(this.findNewBlockIdx_(opt_block));
+  }
+
+  /**
+   * Given a block find the correct index to use as the current index.
+   * @param {Blockly.Block=} opt_block Optional block to use as the current
+   *    block.
+   */
+  findNewBlockIdx_(opt_block) {
+    let newBlockIdx = 0;
+    if (opt_block) {
+      const blockIdx = this.blocks_.indexOf(opt_block);
+      newBlockIdx = blockIdx > -1 ? blockIdx : 0;
+    }
+    return newBlockIdx;
   }
 
   /**
@@ -529,9 +534,14 @@ class WorkspaceSearch {
       // Scroll to show bottom of block
       targetTop = bottom - metrics.viewHeight;
     }
-
+    const activeEl = document.activeElement;
     if (targetLeft !== metrics.viewLeft || targetTop !== metrics.viewTop) {
       this.workspace_.scroll(-targetLeft, -targetTop);
+      if (activeEl) {
+        // Blockly.WidgetDiv.hide called in scroll is taking away focus.
+        // TODO: review setFocused call in Blockly.WidgetDiv.hide.
+        activeEl.focus();
+      }
     }
   }
 }
