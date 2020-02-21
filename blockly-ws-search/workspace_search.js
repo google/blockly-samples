@@ -97,11 +97,11 @@ class WorkspaceSearch {
    * Initializes the workspace search bar.
    */
   init() {
-    let svg = this.workspace_.getParentSvg();
+    const svg = this.workspace_.getParentSvg();
     const metrics = this.workspace_.getMetrics();
 
     // Create the text input for search.
-    let textInput = document.createElement('input');
+    const textInput = document.createElement('input');
     Blockly.utils.dom.addClass(textInput, 'searchInput');
     textInput.type = 'text';
 
@@ -154,12 +154,12 @@ class WorkspaceSearch {
    */
   createBtn_(className, text, onClickFn) {
     // Create a span holding text to be used for accessibility purposes.
-    let textSpan = document.createElement('span');
+    const textSpan = document.createElement('span');
     textSpan.innerText = text;
     Blockly.utils.dom.addClass(textSpan, 'btnText');
 
     // Create the button
-    let btn = document.createElement('button');
+    const btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
     btn.addEventListener('click', onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
