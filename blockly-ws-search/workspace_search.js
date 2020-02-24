@@ -370,8 +370,8 @@ class WorkspaceSearch {
 
   /**
    * Searches the workspace for the current search term.
-   * @param {Blockly.Block=} opt_block Optional block to use as the current
-   *     block.
+   * @param {Blockly.Block=} opt_block Block to use as the current
+   *     block if it is included in new search blocks.
    */
   search(opt_block) {
     this.clearBlocks();
@@ -522,8 +522,8 @@ class WorkspaceSearch {
       // Scroll to show bottom of block
       targetTop = bottom - metrics.viewHeight;
     }
-    const activeEl = document.activeElement;
     if (targetLeft !== metrics.viewLeft || targetTop !== metrics.viewTop) {
+      const activeEl = document.activeElement;
       this.workspace_.scroll(-targetLeft, -targetTop);
       if (activeEl) {
         // Blockly.WidgetDiv.hide called in scroll is taking away focus.
