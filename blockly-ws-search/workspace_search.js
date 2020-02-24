@@ -110,6 +110,7 @@ class WorkspaceSearch {
     this.textInput_ = textInput;
     textInput.addEventListener('keydown', evt => this.onKeyDown_(evt));
     textInput.addEventListener('input', evt => this.onInput_(evt));
+    textInput.addEventListener('click', evt => this.onInputClick_(evt));
     svg.parentNode.addEventListener('keydown',
         evt => this.onWorkspaceKeyDown_(evt));
 
@@ -192,6 +193,14 @@ class WorkspaceSearch {
   }
 
   /**
+   * Handles clicking on the input value in search bar.
+   * @param {Event} e The onclick event.
+   */
+  onInputClick_() {
+    this.search(this.currentBlock_);
+  }
+
+  /**
    * Handles a key down for the search bar.
    * @param {KeyboardEvent} e The key down event.
    * @private
@@ -243,9 +252,6 @@ class WorkspaceSearch {
       return;
     }
     this.setCurrentBlock_(this.currentBlockIndex_ - 1);
-    // Blockly.WidgetDiv.hide called in scroll is taking away focus.
-    // TODO: review setFocused call in Blockly.WidgetDiv.hide.
-    this.textInput_.focus();
   }
 
   /**
@@ -257,9 +263,6 @@ class WorkspaceSearch {
       return;
     }
     this.setCurrentBlock_(this.currentBlockIndex_ + 1);
-    // Blockly.WidgetDiv.hide called in scroll is taking away focus.
-    // TODO: review setFocused call in Blockly.WidgetDiv.hide.
-    this.textInput_.focus();
   }
 
   /**
@@ -367,12 +370,16 @@ class WorkspaceSearch {
 
   /**
    * Searches the workspace for the current search term.
+   * @param {Blockly.Block=} opt_block Block to use as the current
+   *     block if it is included in new search blocks.
    */
-  search() {
+  search(opt_block) {
     this.clearBlocks();
     this.populateBlocks();
     this.highlightBlocks();
-    this.next_();
+    let newBlockIdx = this.blocks_.indexOf(opt_block);
+    newBlockIdx = newBlockIdx > -1 ? newBlockIdx : 0;
+    this.setCurrentBlock_(newBlockIdx);
   }
 
   /**
@@ -515,9 +522,14 @@ class WorkspaceSearch {
       // Scroll to show bottom of block
       targetTop = bottom - metrics.viewHeight;
     }
-
     if (targetLeft !== metrics.viewLeft || targetTop !== metrics.viewTop) {
+      const activeEl = document.activeElement;
       this.workspace_.scroll(-targetLeft, -targetTop);
+      if (activeEl) {
+        // Blockly.WidgetDiv.hide called in scroll is taking away focus.
+        // TODO: review setFocused call in Blockly.WidgetDiv.hide.
+        activeEl.focus();
+      }
     }
   }
 }
