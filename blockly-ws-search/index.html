@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Multi-toolbox Playground</title>
+<title>Workspace Search Playground</title>
 <script src="node_modules/blockly/blockly.min.js"></script>
 <link rel="stylesheet" href="style.css">
 <script src="workspace_search.js"></script>
 <script>
-var options = {
+const options = {
   comments: true,
   collapse: true,
   disable: true,
@@ -31,12 +31,12 @@ var options = {
 };
 
 function start() {
-  var match = location.search.match(/toolbox=([^&]+)/);
-  var toolbox =
+  const match = location.search.match(/toolbox=([^&]+)/);
+  const toolbox =
       document.getElementById('toolbox-' + (match ? match[1] : 'categories'));
   document.forms.options.elements.toolbox.selectedIndex =
       Number(toolbox.getElementsByTagName('category').length == 0);
-  startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox);
+  startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, true);
   startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox);
 
   startBlocklyInstance('VertEndLTR', false, false, 'end', toolbox);
@@ -49,16 +49,17 @@ function start() {
   startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolbox);
 }
 
-function startBlocklyInstance(suffix, rtl, horizontalLayout, position,
-    toolbox) {
+function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, opt_openSearch) {
   options.rtl = rtl;
   options.toolbox = toolbox;
   options.horizontalLayout = horizontalLayout;
   options.toolboxPosition = position;
-  var ws = Blockly.inject('blocklyDiv' + suffix, options);
-  var workspaceSearch = new WorkspaceSearch(ws);
+  const ws = Blockly.inject('blocklyDiv' + suffix, options);
+  const workspaceSearch = new WorkspaceSearch(ws);
   workspaceSearch.init();
-  workspaceSearch.open();
+  if (opt_openSearch) {
+    workspaceSearch.open();
+  }
 }
 </script>
 
