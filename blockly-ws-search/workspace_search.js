@@ -121,7 +121,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Get the div that holds all of the search bar actions.
+   * Gets the div that holds all of the search bar actions.
    */
   getActionsDiv() {
     const actions = document.createElement('div');
@@ -137,7 +137,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Get the button used for closing the search bar.
+   * Gets the button used for closing the search bar.
    */
   getCloseBtn() {
     return this.createBtn_('close-btn', 'Close search bar',
@@ -145,7 +145,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Get the div responsible for holding inputs.
+   * Gets the div responsible for holding inputs.
    */
   getInputDiv() {
     const inputWrapper = document.createElement('div');
@@ -154,7 +154,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Get the text input for the search bar.
+   * Gets the text input for the search bar.
    */
   getTextInput() {
     let textInput = document.createElement('input');
@@ -169,7 +169,7 @@ class WorkspaceSearch {
   }
 
   /**
-   * Position the search bar based on where the workspace's toolbox is
+   * Positions the search bar based on where the workspace's toolbox is
    * positioned.
    * @private
    */
