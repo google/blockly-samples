@@ -1,5 +1,5 @@
 <h1 align="center">
-Blockly Samples <br /> <img src="https://tinyurl.com/built-on-blockly">
+Blockly Samples <br /> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" /> </a>
 </h1>
 
 This repo contains self-contained sample projects demonstrating techniques to include and extend the [Blockly](https://github.com/google/blockly) framework.
