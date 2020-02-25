@@ -3,17 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run build && npm run serve",
-    "serve": "node_modules/.bin/http-server -c-1 ./build -p 3000",
+    "start": "webpack-dev-server",
     "build": "webpack"
   },
   "dependencies": {
-    "blockly": "^3.20200123.0",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5",
-    "copy-webpack-plugin": "^5.0.3"
+    "blockly": "^3.20200123.0"
   },
   "devDependencies": {
-    "http-server": "^0.11.1"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "copy-webpack-plugin": "^5.1.1"
   }
 }
