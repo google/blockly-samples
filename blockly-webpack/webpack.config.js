@@ -52,5 +52,8 @@ module.exports = {
                 to: path.resolve(__dirname, 'build/media')
             }
         ])
-    ]
+    ],
+    devServer: {
+        port: 3000
+    }
 };

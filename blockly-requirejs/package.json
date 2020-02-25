@@ -9,6 +9,6 @@
         "blockly": "^3.20200123.0"
     },
     "devDependencies": {
-        "http-server": "^0.11.1"
+        "http-server": "^0.12.1"
     }
 }
