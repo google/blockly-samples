@@ -18,7 +18,7 @@ This repo contains self-contained sample projects demonstrating techniques to in
 
 ### Real-time Collaboration
 
-- [``blockly-rtc``](blockly-rtc/README.md): Real-time collaboration environment on top of the Blockly framework.
+- [``blockly-rtc``](blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
 
 ### Rendering
 
