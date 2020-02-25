@@ -1,44 +1,56 @@
-.btnText {
+.btn-text {
   height: 1px;
   overflow: hidden;
   position: absolute;
   width: 1px;
 }
 
-.closeBtn {
+.close-btn {
   background: url(media/close.svg) no-repeat top left;
 }
 
-.downBtn {
+.down-btn {
   background: url(media/keyboard_arrow_down.svg) no-repeat top left;
 }
 
-.searchInput {
-  border: none;
-}
-
-.upBtn {
+.up-btn {
   background: url(media/keyboard_arrow_up.svg) no-repeat top left;
 }
 
-.workspaceSearchBar {
+.ws-search {
   background: white;
   border: solid lightgrey .5px;
-  box-shadow:0px 10px 20px grey;
+  box-shadow: 0px 10px 20px grey;
   justify-content: center;
   padding: .25em;
   position: absolute;
   z-index: 70;
 }
 
-.workspaceSearchBar button {
+.ws-search-input input {
   border: none;
 }
 
-path.blocklyPath.searchHighlight {
+.ws-search button {
+  border: none;
+}
+
+.ws-search-actions {
+  display: flex;
+}
+
+.ws-search-container {
+  display: flex;
+}
+
+.ws-search-content {
+  display: flex;
+}
+
+path.blocklyPath.search-highlight {
   fill: black;
 }
 
-path.blocklyPath.searchHighlight.searchCurrent {
+path.blocklyPath.search-highlight.search-current {
   fill: grey;
 }
