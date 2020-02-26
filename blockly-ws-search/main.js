@@ -30,12 +30,8 @@ const options = {
   maxBlocks: Infinity,
   oneBasedIndex: true,
   readOnly: false,
-  //rtl: false,
   scrollbars: true,
   trashcan: true,
-  //toolbox: null,
-  //horizontalLayout: false,
-  //toolboxPosition: 'start',
   zoom: {
     controls: true,
     wheel: false,
