@@ -1,13 +1,27 @@
 {
   "name": "blockly-ws-search",
   "version": "1.0.0",
-  "description": "",
+  "description": "Implementation of workspace search for Blockly.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "license": "Apache-2.0",
   "dependencies": {
     "blockly": "^3.20200123.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "blockly-ws-search"
+  },
+  "keywords": [
+    "blockly",
+    "workspace",
+    "search"
+  ],
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme"
 }
