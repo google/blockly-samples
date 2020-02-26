@@ -22,5 +22,6 @@
   ],
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
-  }
+  },
+  "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme"
 }
