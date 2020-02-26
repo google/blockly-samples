@@ -11,7 +11,7 @@
     "blockly": "^3.20200123.1"
   },
   "files": [
-    "./src/workspace_search.js",
+    "./src",
     "./media"
   ],
   "repository": {

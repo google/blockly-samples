@@ -20,6 +20,8 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
+import './css.js'
+
 export default class WorkspaceSearch {
   /**
    * Class for workspace search.
