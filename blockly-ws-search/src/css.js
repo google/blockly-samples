@@ -21,18 +21,6 @@
  */
 
 /**
- * CSS for highlighting blocks.
- */
-Blockly.Css.register([
-  'path.blocklyPath.search-highlight {',
-    'fill: black;',
-  '}',
-  'path.blocklyPath.search-highlight.search-current {',
-    'fill: grey;',
-  '}'
-]);
-
-/**
  * Base64 encoded data uri for close icon.
  * @type {string}
  */
@@ -67,6 +55,12 @@ const ARROW_UP_ARROW_SVG_DATAURI =
  * CSS for search bar.
  */
 Blockly.Css.register([
+  'path.blocklyPath.search-highlight {',
+    'fill: black;',
+  '}',
+  'path.blocklyPath.search-highlight.search-current {',
+    'fill: grey;',
+  '}',
   '.btn-text {',
     'height: 1px;',
     'overflow: hidden;',
