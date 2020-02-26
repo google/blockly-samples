@@ -14,10 +14,6 @@
     "./src/workspace_search.js",
     "./media"
   ],
-  "directories": {
-    "src": "src",
-    "example": "example"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
