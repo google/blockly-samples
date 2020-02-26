@@ -19,10 +19,12 @@
  * @fileoverview Object responsible for workspace search.
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
-'use strict';
 
-
-class WorkspaceSearch {
+export default class WorkspaceSearch {
+  /**
+   * Class for workspace search.
+   * @param {!Blockly.WorkspaceSvg} workspace
+   */
   constructor(workspace) {
     /**
      * The workspace the trashcan sits in.
