@@ -1,7 +1,7 @@
 /**
  * @license
  * 
- * Copyright 2019 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 /**
  * @fileoverview Webpack configuration file.
- * @author samelh@google.com (Sam El-Husseini)
+ * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
 const path = require('path');
@@ -27,12 +27,10 @@ const webpack = require('webpack');
 module.exports = {
     target: 'web',
     mode: 'development',
-    entry: {
-        bundle: './src/WorkspaceSearch.js'
-    },
+    entry: './src/WorkspaceSearch.js',
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: '[name].js',
+        filename: 'workspace_search_bundle.js',
         libraryTarget: 'umd'
     }
 };
