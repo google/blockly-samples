@@ -9,7 +9,7 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 
 /**
  * Base64 encoded data uri for close icon.
