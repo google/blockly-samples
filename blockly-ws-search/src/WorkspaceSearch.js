@@ -42,7 +42,7 @@ export class WorkspaceSearch {
 
     /**
      * A list of blocks that came up in the search
-     * @type {!Array.<Blockly.Block>}
+     * @type {!Array.<Blockly.BlockSvg>}
      * @protected
      */
     this.blocks_ = [];
@@ -69,6 +69,13 @@ export class WorkspaceSearch {
     this.searchText_ = '';
 
     /**
+     * An optional custom search function to override default behavior.
+     * @type {?function(Blockly.WorkspaceSvg, string): Array.<Blockly.BlockSvg>}
+     * @protected
+     */
+    this.customSearchFunction_ = null;
+
+    /**
      * Whether to search as input changes as opposed to on enter.
      * @type {boolean}
      */
@@ -86,7 +93,14 @@ export class WorkspaceSearch {
    */
   init() {
     injectSearchCss();
+    this.createDom();
+    this.setVisible(false);
+  }
 
+  /**
+   * Creates the search bar's DOM.
+   */
+  createDom() {
     const workspaceSvg = this.workspace_.getParentSvg();
     workspaceSvg.parentNode.addEventListener('keydown',
         evt => this.onWorkspaceKeyDown_(evt));
@@ -114,7 +128,6 @@ export class WorkspaceSearch {
     this.HtmlDiv_.append(searchContainer);
 
     workspaceSvg.parentNode.insertBefore(this.HtmlDiv_, workspaceSvg);
-    this.setVisible(false);
   }
 
   /**
@@ -227,7 +240,7 @@ export class WorkspaceSearch {
       const inputValue = e.target.value;
       if (inputValue !== this.searchText_) {
         this.setSearchText_(inputValue);
-        this.search();
+        this.searchAndHighlight();
       }
     }
   }
@@ -237,7 +250,7 @@ export class WorkspaceSearch {
    * @param {Event} e The onclick event.
    */
   onInputClick_() {
-    this.search(this.currentBlock_);
+    this.searchAndHighlight(this.currentBlock_);
   }
 
   /**
@@ -253,7 +266,7 @@ export class WorkspaceSearch {
         this.next_();
       } else {
         this.setSearchText_(e.target.value);
-        this.search();
+        this.searchAndHighlight();
       }
     }
   }
@@ -373,7 +386,7 @@ export class WorkspaceSearch {
     this.updateMarker_();
     this.textInput_.focus();
     if (this.searchText_) {
-      this.search();
+      this.searchAndHighlight();
     }
     console.log("Open search bar");
   }
@@ -409,27 +422,40 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Searches the workspace for the current search term.
-   * @param {Blockly.Block=} opt_block Block to use as the current
+   * Overrides the default behavior of the search function.
+   * @param {?function(Blockly.WorkspaceSvg, string): Array.<Blockly.BlockSvg>} customSearchFunction
+   *    The function to use instead of the default search or null to reset to
+   *    default behavior.
+   */
+  setSearchFunction(customSearchFunction) {
+    this.customSearchFunction_ = customSearchFunction;
+  }
+
+  /**
+   * Searches the workspace for the current search term and highlights found
+   * blocks.
+   * @param {Blockly.BlockSvg=} opt_block Block to use as the current
    *     block if it is included in new search blocks.
    */
-  search(opt_block) {
+  searchAndHighlight(opt_block) {
     this.clearBlocks();
-    this.populateBlocks();
-    this.highlightBlocks();
-    let newBlockIdx = this.blocks_.indexOf(opt_block);
-    newBlockIdx = newBlockIdx > -1 ? newBlockIdx : 0;
-    this.setCurrentBlock_(newBlockIdx);
+    if (this.searchText_) {
+      this.search_();
+      this.highlightBlocks();
+      let newBlockIdx = this.blocks_.indexOf(opt_block);
+      newBlockIdx = newBlockIdx > -1 ? newBlockIdx : 0;
+      this.setCurrentBlock_(newBlockIdx);
+    }
   }
 
   /**
    * Returns pool of blocks to search from.
-   * @return {!Array.<!Blockly.Block>}
+   * @return {!Array.<!Blockly.BlockSvg>}
    * @private
   */
   getSearchPool_() {
     const blocks = (
-        /** @type {!Array.<!Blockly.Block>} */
+        /** @type {!Array.<!Blockly.BlockSvg>} */
         this.workspace_.getAllBlocks(true));
     return blocks.filter(function(block) {
       // Filter out blocks contained inside of another collapsed block.
@@ -440,7 +466,7 @@ export class WorkspaceSearch {
 
   /**
    * Returns whether the given block matches the search text.
-   * @param {!Blockly.Block} block The block to check.
+   * @param {!Blockly.BlockSvg} block The block to check.
    * @private
    */
   isBlockMatch_(block) {
@@ -465,9 +491,12 @@ export class WorkspaceSearch {
 
   /**
    * Populates block list with blocks that match the search text.
+   * @private
    */
-  populateBlocks() {
-    if (!this.searchText_) {
+  search_() {
+    if (this.customSearchFunction_) {
+      this.blocks_ =
+          this.customSearchFunction_(this.workspace_, this.searchText_);
       return;
     }
     const searchGroup = this.getSearchPool_();
