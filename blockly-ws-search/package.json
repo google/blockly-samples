@@ -29,9 +29,7 @@
   },
   "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme",
   "devDependencies": {
-    "copy-webpack-plugin": "^5.1.1",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-cli": "^3.3.11"
   }
 }

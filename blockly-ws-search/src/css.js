@@ -103,5 +103,3 @@ Blockly.Css.register([
     'display: flex;',
   '}',
 ]);
-
-console.log("here");
