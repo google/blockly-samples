@@ -34,17 +34,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].js',
-        // library: 'WorkspaceSearch',
         libraryTarget: 'umd'
-    },
-    devServer: {
-        port: 3000,
-        proxy: {
-            '/api': 'http://localhost:3001',
-            '/socket.io': {
-                target: 'ws://localhost:3001',
-                ws: true
-             }
-          }
-      }
+    }
 };

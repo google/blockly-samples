@@ -21,7 +21,6 @@
  * @author kozbial@gmail.com (Monica Kozbial)
  */
 
-import WorkspaceSearch from '../src/workspace_search.js';
 
 const options = {
   comments: true,
