@@ -4,7 +4,8 @@
   "description": "Implementation of workspace search for Blockly.",
   "main": "src/workspace_search.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "start": "http-server"
   },
   "license": "Apache-2.0",
   "dependencies": {
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme",
   "devDependencies": {
+    "http-server": "^0.12.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   }
