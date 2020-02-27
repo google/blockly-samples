@@ -20,9 +20,11 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-import './css.js';
 
-export default class WorkspaceSearch {
+import './css.js';
+import * as Blockly from 'blockly';
+
+export class WorkspaceSearch {
   /**
    * Class for workspace search.
    * @param {!Blockly.WorkspaceSvg} workspace

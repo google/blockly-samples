@@ -20,6 +20,8 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
+import * as Blockly from 'blockly';
+
 /**
  * Base64 encoded data uri for close icon.
  * @type {string}
@@ -101,3 +103,5 @@ Blockly.Css.register([
     'display: flex;',
   '}',
 ]);
+
+console.log("here");

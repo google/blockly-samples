@@ -34,24 +34,9 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].js',
-        library: 'WorkspaceSearch'
+        // library: 'WorkspaceSearch',
+        libraryTarget: 'umd'
     },
-    plugins: [
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        new CopyPlugin([
-            {
-                from: path.resolve(__dirname, 'example'),
-                to: path.resolve(__dirname, 'build')
-            }
-        ]),
-        // Copy over media resources from the Blockly package
-        new CopyPlugin([
-            {
-                from: path.resolve(__dirname, './node_modules/blockly/media'),
-                to: path.resolve(__dirname, 'build/media')
-            }
-        ])
-    ],
     devServer: {
         port: 3000,
         proxy: {
