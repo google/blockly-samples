@@ -2,7 +2,7 @@
   "name": "blockly-ws-search",
   "version": "1.0.0",
   "description": "Implementation of workspace search for Blockly.",
-  "main": "src/workspace_search.js",
+  "main": "./src/WorkspaceSearch.js",
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
