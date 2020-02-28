@@ -13,7 +13,7 @@
 import './css.js';
 import * as Blockly from 'blockly/core';
 
-export default class WorkspaceSearch {
+export class WorkspaceSearch {
   /**
    * Class for workspace search.
    * @param {!Blockly.WorkspaceSvg} workspace
