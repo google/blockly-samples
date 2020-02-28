@@ -515,8 +515,7 @@ export class WorkspaceSearch {
    */
   scrollToVisible_(block) {
     if (!this.workspace_.isMovable()) {
-      console.warn('Cannot scroll to block in a non-movable' +
-          'workspace.');
+      // Cannot scroll to block in a non-movable workspace.
       return;
     }
     // XY is in workspace coordinates.
