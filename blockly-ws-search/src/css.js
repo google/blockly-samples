@@ -9,8 +9,6 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
-import * as Blockly from 'blockly/core';
-
 /**
  * Base64 encoded data uri for close icon.
  * @type {string}
@@ -44,8 +42,9 @@ const ARROW_UP_ARROW_SVG_DATAURI =
 
 /**
  * CSS for search bar.
+ * @type {Array.<string>}
  */
-Blockly.Css.register([
+const CSS_CONTENT = [
   'path.blocklyPath.search-highlight {',
     'fill: black;',
   '}',
@@ -91,4 +90,25 @@ Blockly.Css.register([
   '.ws-search-content {',
     'display: flex;',
   '}',
-]);
+];
+
+/**
+ * Injects CSS for workspace search.
+ */
+export const injectSearchCss = (function() {
+  let executed = false;
+  return function() {
+    // Only inject the CSS once.
+    if (executed) {
+      return;
+    }
+    executed = true;
+    const text = CSS_CONTENT.join('\n');
+    // Inject CSS tag at start of head.
+    const cssNode = document.createElement('style');
+    cssNode.id = 'blockly-ws-search-style';
+    const cssTextNode = document.createTextNode(text);
+    cssNode.appendChild(cssTextNode);
+    document.head.insertBefore(cssNode, document.head.firstChild);
+  }
+})();

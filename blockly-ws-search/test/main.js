@@ -9,8 +9,6 @@
  * @author kozbial@gmail.com (Monica Kozbial)
  */
 
-
-
 const options = {
   comments: true,
   collapse: true,
