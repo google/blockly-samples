@@ -10,7 +10,6 @@
  */
 
 
-import WorkspaceSearch from '../src/WorkspaceSearch.js';
 
 const options = {
   comments: true,
