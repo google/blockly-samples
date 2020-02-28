@@ -5,7 +5,7 @@
   "main": "src/workspace_search.js",
   "scripts": {
     "build": "webpack",
-    "start": "http-server"
+    "start": "webpack-dev-server"
   },
   "license": "Apache-2.0",
   "dependencies": {
@@ -32,6 +32,7 @@
   "devDependencies": {
     "http-server": "^0.12.1",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   }
 }
