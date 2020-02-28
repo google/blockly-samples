@@ -19,5 +19,9 @@ module.exports = {
         path: path.resolve(__dirname, 'build'),
         filename: 'workspace_search_bundle.js',
         libraryTarget: 'umd'
+    },
+    devServer: {
+        openPage: 'test',
+        open: true
     }
 };
