@@ -4,8 +4,9 @@
   "description": "Implementation of workspace search for Blockly.",
   "main": "./src/WorkspaceSearch.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server"
+    "prepare": "webpack --display-error-details --config webpack.config.js\n",
+    "clean": "rm -rf $npm_package_directories_build",
+    "test": "webpack-dev-server"
   },
   "license": "Apache-2.0",
   "dependencies": {
@@ -15,6 +16,9 @@
     "./src",
     "./media"
   ],
+  "directories": {
+    "build": "build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
