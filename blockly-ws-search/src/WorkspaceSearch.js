@@ -10,7 +10,7 @@
  */
 
 
-import './css.js';
+import { injectSearchCss } from './css.js';
 import * as Blockly from 'blockly/core';
 
 export class WorkspaceSearch {
@@ -85,6 +85,8 @@ export class WorkspaceSearch {
    * Initializes the workspace search bar.
    */
   init() {
+    injectSearchCss();
+
     const workspaceSvg = this.workspace_.getParentSvg();
     workspaceSvg.parentNode.addEventListener('keydown',
         evt => this.onWorkspaceKeyDown_(evt));
