@@ -375,7 +375,6 @@ export class WorkspaceSearch {
     if (this.searchText_) {
       this.search();
     }
-    console.log("Open search bar");
   }
 
   /**
@@ -397,7 +396,6 @@ export class WorkspaceSearch {
     this.setVisible(false);
     this.workspace_.markFocused();
     this.clearBlocks();
-    console.log("Close search bar");
   }
 
   /**
