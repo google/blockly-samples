@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Example of using WorkspaceSearch with Blockly.
+ * @fileoverview Example of using WorkspaceSearch with Blockly with imports.
  * @author kozbial@gmail.com (Monica Kozbial)
  */
 
@@ -13,7 +13,6 @@ import * as Blockly from 'blockly';
 import { WorkspaceSearch } from 'blockly-ws-search';
 
 function start() {
-  console.log("START");
   const workspace = Blockly.inject('blocklyDiv',
       {toolbox: document.getElementById('toolbox')});
   const workspaceSearch = new WorkspaceSearch(workspace);
