@@ -18,7 +18,7 @@
 
 /**
  * @fileoverview Example of including Blockly in Node (Common JS)
- * @author samelh@google.com (Sam El-Husseini)
+ * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
 var Blockly = require('blockly');
