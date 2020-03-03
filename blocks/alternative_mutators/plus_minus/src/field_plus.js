@@ -5,13 +5,13 @@
  */
 
 /**
- * @fileoverview A field for a plus button used in mutation.
+ * @fileoverview A field for a plus button used for mutation.
  */
 'use strict';
 
 
 /**
- * Class for a plus button used in mutation.
+ * Class for a plus button used for mutation.
  * @param opt_args Arguements to pass to the 'plus' function when the button
  *    is clicked.
  * @constructor

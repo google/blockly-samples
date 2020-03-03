@@ -31,8 +31,7 @@ Blockly.defineBlocksWithJsonArray([
     ],
     "previousStatement": null,
     "nextStatement": null,
-    "colour": 210,
-    /*"style": "logic_blocks",*/
+    "style": "logic_blocks",
     "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
     "mutator": "new_controls_if_mutator",
     "extensions": [
@@ -66,8 +65,7 @@ Blockly.defineBlocksWithJsonArray([
     ],
     "previousStatement": null,
     "nextStatement": null,
-    "colour": 210,
-    /*"style": "logic_blocks",*/
+    "style": "logic_blocks",
     "tooltip": "%{BKYCONTROLS_IF_TOOLTIP_2}",
     "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
     "mutator": "new_controls_if_mutator",
@@ -236,29 +234,22 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
    */
   domToMutation: function(xmlElement) {
     var targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
-    // Tearing down and rebuilding happens to support undo.
     while (this.elseIfCount_ < targetCount) {
-      this.elseIfCount_++;
       this.addPart_();
     }
-
     while(this.elseIfCount_ > targetCount) {
       this.removePart_();
-      this.elseIfCount_--;
     }
-
     this.updateMinus_();
   },
 
   plus: function() {
-    this.elseIfCount_++;
     this.addPart_();
     this.updateMinus_();
   },
 
   minus: function() {
     this.removePart_();
-    this.elseIfCount_--;
     this.updateMinus_();
   },
 
@@ -269,22 +260,22 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
     this.appendStatementInput('DO' + this.elseIfCount_)
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
 
-    // Handle if/elseif/else block.
+    // Handle if-elseif-else block.
     if (this.getInput('ELSE')) {
       this.moveInputBefore('ELSE', /* put at end */ null);
     }
+    this.elseIfCount_++;
   },
 
   removePart_: function() {
     this.removeInput('IF' + this.elseIfCount_);
     this.removeInput('DO' + this.elseIfCount_);
+    this.elseIfCount_--;
   },
 
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField) {
-      // TODO: This is a time when it would be great to support visibility
-      //  on fields.
       this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
     } else if (!this.elseIfCount_) {
       this.topInput_.removeField('MINUS');
@@ -300,11 +291,9 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_HELPER_FN = function() {
   this.topInput_ = this.getInput('IF0');
 };
 
-Blockly.Extensions.registerMutator(
-    'new_controls_if_mutator',
+Blockly.Extensions.registerMutator('new_controls_if_mutator',
     Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN,
-    Blockly.Constants.Logic.NEW_CONTROLS_IF_HELPER_FN
-);
+    Blockly.Constants.Logic.NEW_CONTROLS_IF_HELPER_FN);
 
 Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
   itemCount_: 1,
@@ -327,42 +316,37 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
   domToMutation: function (xmlElement) {
     var targetCount = parseInt(xmlElement.getAttribute('items'), 10);
     while (this.itemCount_ < targetCount) {
-      this.itemCount_++;
       this.addPart_();
     }
-
     while(this.itemCount_ > targetCount) {
       this.removePart_();
-      this.itemCount_--;
     }
     this.updateMinus_();
   },
 
   plus: function() {
-    this.itemCount_++;
     this.addPart_();
     this.updateMinus_();
   },
 
   minus: function() {
     this.removePart_();
-    this.itemCount_--;
     this.updateMinus_();
   },
 
   addPart_: function() {
     this.appendValueInput('ADD' + this.itemCount_);
+    this.itemCount_++;
   },
 
   removePart_: function() {
     this.removeInput('ADD' + this.itemCount_);
+    this.itemCount_--;
   },
 
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField) {
-      // TODO: This is a time when it would be great to support visibility
-      //  on fields.
       this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
     } else if (this.itemCount_ <= 1) {
       this.topInput_.removeField('MINUS');
@@ -376,7 +360,6 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
  */
 Blockly.Constants.Text.NEW_TEXT_JOIN_HELPER_FN = function() {
   this.topInput_ = this.getInput('ADD0');
-  console.log(this.inputList);
 };
 
 Blockly.Extensions.registerMutator('new_text_join_mutator',
@@ -402,14 +385,12 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
    * @this Blockly.Block
    */
   domToMutation: function (xmlElement) {
-    var target = parseInt(xmlElement.getAttribute('items'), 10);
-    console.log(target);
-    this.updateShape_(target);
+    var targetCount = parseInt(xmlElement.getAttribute('items'), 10);
+    this.updateShape(targetCount);
   },
 
   plus: function() {
     this.addPart_();
-    this.itemCount_++;
     this.updateMinus_();
   },
 
@@ -420,31 +401,31 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
   },
 
   addPart_: function() {
-    console.log(this.itemCount_);
     if (this.itemCount_ == 0) {
       this.removeInput('EMPTY');
       this.topInput_ = this.appendValueInput('ADD0')
           .appendField(new plusMinus.FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
-      return;
+    } else {
+      this.appendValueInput('ADD' + this.itemCount_);
     }
-    this.appendValueInput('ADD' + this.itemCount_);
+    this.itemCount_++;
   },
 
   removePart_: function() {
-    if (this.itemCount_ == 0) {
+    if (this.itemCount_ == 1) {  // We are becoming empty.
       this.topInput_ = this.appendDummyInput('EMPTY')
           .appendField(new plusMinus.FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
+    } else {
+      this.removeInput('ADD' + this.itemCount_);
     }
-    this.removeInput('ADD' + this.itemCount_);
+    this.itemCount_--;
   },
 
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
-      // TODO: This is a time when it would be great to support visibility
-      //  on fields.
       this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
     } else if (minusField && this.itemCount_< 1) {
       this.topInput_.removeField('MINUS');
@@ -452,18 +433,9 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
   },
 
   updateShape_: function(targetCount) {
-    if (targetCount > 0 && this.itemCount_ == 0) {
-      this.removeInput('EMPTY');
-      this.topInput_ = this.appendValueInput('ADD0')
-          .appendField(new plusMinus.FieldPlus(), 'PLUS')
-          .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
-      this.itemCount_++;
-    }
     while (this.itemCount_ < targetCount) {
       this.addPart_();
-      this.itemCount_++;
     }
-
     while(this.itemCount_ > targetCount) {
       this.itemCount_--;
       this.removePart_();
@@ -552,6 +524,7 @@ Blockly.Extensions.registerMixin('procedure_context_menu',
     Blockly.Constants.Procedures.PROCEDURE_CONTEXT_MENU_MIXIN);
 
 Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
+  // Parallel arrays.
   arguments_: [],
   paramIds_: [],
   argumentVarModels_: [],
@@ -571,52 +544,21 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
   },
 
   domToMutation: function(xmlElement) {
-    this.targetArgs_ = [];
-    this.targetIds_ = [];
     this.paramIds_ = [];
     this.arguments_ = [];
     this.argumentVarModels_ = [];
-    for (var i = 0, childNode; childNode = xmlElement.childNodes[i]; i++) {
+
+    for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
       if (childNode.nodeName.toLowerCase() != 'arg') {
         continue;
       }
       var varName = childNode.getAttribute('name');
-      var varId = childNode.getAttribute('varid') || childNode.getAttribute('varId');
+      var varId = childNode.getAttribute('varid') ||
+          childNode.getAttribute('varId');
       var paramId = childNode.getAttribute('paramId');
-      this.targetArgs_.push(varName);
-      this.targetIds_.push(paramId);
-    }
-
-    var count = this.targetArgs_.length;
-    for (var i = 0; i < count; i++) {
-      this.addParam_(this.targetArgs_[i], this.targetIds_[i]);
+      this.addParam_(varName, paramId);
     }
     Blockly.Procedures.mutateCallers(this);
-  },
-
-  addParam_: function(opt_name, opt_id) {
-    if (!this.arguments_.length) {
-      this.getInput('TOP')
-          .appendField(
-              new Blockly.FieldLabel(Blockly.Msg['PROCEDURES_BEFORE_PARAMS']),
-              'WITH',
-          );
-    }
-    var name = opt_name || Blockly.Variables.generateUniqueNameFromOptions(
-        Blockly.Procedures.DEFAULT_ARG, this.arguments_);
-    var id = opt_id || Blockly.utils.genUid();
-    var field = new Blockly.FieldTextInput(name, this.validator_);
-    field.onFinishEditing_ = this.onFinish.bind(field);
-    var input = this.appendDummyInput(id)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new plusMinus.FieldMinus(id))
-        .appendField('variable:')  // Untranslated!
-        .appendField(field,  id);
-    this.moveInputBefore(id, 'STACK');
-    this.arguments_.push(name);
-    this.paramIds_.push(id);
-    this.argumentVarModels_.push(Blockly.Variables.getOrCreateVariablePackage(
-        this.workspace, id, name, ''));
   },
 
   plus: function() {
@@ -625,16 +567,47 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
   },
 
   minus: function(id) {
-    var name = this.getFieldValue(id);
-    var index = this.arguments_.indexOf(name);
+    this.removeParam_(id);
+    Blockly.Procedures.mutateCallers(this);
+  },
+
+  addParam_: function(opt_name, opt_id) {
+    if (!this.arguments_.length) {
+      var withField = new Blockly.FieldLabel(
+          Blockly.Msg['PROCEDURES_BEFORE_PARAMS']);
+      this.getInput('TOP')
+          .appendField(withField, 'WITH');
+    }
+
+    var name = opt_name || Blockly.Variables.generateUniqueNameFromOptions(
+        Blockly.Procedures.DEFAULT_ARG, this.arguments_);
+    var id = opt_id || Blockly.utils.genUid();
+
+    var nameField = new Blockly.FieldTextInput(name, this.validator_);
+    nameField.onFinishEditing_ = this.onFinish.bind(nameField);
+    var input = this.appendDummyInput(id)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new plusMinus.FieldMinus(id))
+        .appendField('variable:')  // Untranslated!
+        .appendField(nameField,  id);  // The name of the field is the var id.
+    this.moveInputBefore(id, 'STACK');
+
+    this.arguments_.push(name);
+    this.paramIds_.push(id);
+    this.argumentVarModels_.push(Blockly.Variables.getOrCreateVariablePackage(
+        this.workspace, id, name, ''));
+  },
+
+  removeParam_: function(id) {
+    this.removeInput(id);
+    if (this.arguments_.length == 1) {
+      this.getInput('TOP').removeField('WITH');
+    }
+
+    var index = this.paramIds_.indexOf(id);
     this.arguments_.splice(index, 1);
     this.paramIds_.splice(index, 1);
     this.argumentVarModels_.splice(index, 1);
-    this.removeInput(id);
-    if (!this.arguments_.length) {
-      this.getInput('TOP').removeField('WITH');
-    }
-    Blockly.Procedures.mutateCallers(this);
   },
 
   /**
@@ -647,8 +620,8 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
       return null;
     }
 
-    for (var i = 0, input; input = sourceBlock.inputList[i]; i++) {
-      for (var j = 0, field; field = input.fieldRow[j]; j++) {
+    for (var i = 0, input; (input = sourceBlock.inputList[i]); i++) {
+      for (var j = 0, field; (field = input.fieldRow[j]); j++) {
         if (field.name == this.name) {
           continue;
         }
@@ -672,20 +645,16 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
   },
 
   /**
-   * Must be bound to the text input field!
    * @this {Blockly.FieldTextInput}
    */
   onFinish: function(finalName) {
     var sourceBlock = this.getSourceBlock();
-    console.log(sourceBlock.workspace.getAllVariables());
     // The field name (aka id) is always equal to the var id.
     var index = sourceBlock.paramIds_.indexOf(this.name);
     sourceBlock.arguments_[index] = finalName;
     sourceBlock.workspace.renameVariableById(this.name, finalName);
     Blockly.Procedures.mutateCallers(sourceBlock);
   },
-
-
 };
 
 Blockly.Extensions.registerMutator('procedure_def_mutator',
@@ -699,6 +668,7 @@ Blockly.Extensions.register('procedure_rename',
     Blockly.Constants.Procedures.PROCEDURE_RENAME_EXTENSION);
 
 Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
+  // This is a hack to get around the don't-override-builtins check.
   var mixin = {
     getVars: function() {
       return this.arguments_;
@@ -718,6 +688,7 @@ Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
       var newVar = this.workspace.getVariableById(newId);
       var newName = newVar.name;
 
+      // Don't update paramIds until displayRenamedVar_
       this.arguments_[index] = newName;
       this.argumentVarModels_[index] = newVar;
 
