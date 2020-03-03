@@ -234,6 +234,10 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
    */
   domToMutation: function(xmlElement) {
     var targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
+    this.updateShape_(targetCount);
+  },
+
+  updateShape_: function(targetCount) {
     while (this.elseIfCount_ < targetCount) {
       this.addPart_();
     }
@@ -253,7 +257,11 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
     this.updateMinus_();
   },
 
+  // To properly keep track of indices we have to increment before/after adding
+  // the inputs, and decrement the opposite.
+  // Because we want our first elseif to be IF1 (not IF0) we increment first.
   addPart_: function() {
+    this.elseIfCount_++;
     this.appendValueInput('IF' + this.elseIfCount_)
         .setCheck('Boolean')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
@@ -264,7 +272,6 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
     if (this.getInput('ELSE')) {
       this.moveInputBefore('ELSE', /* put at end */ null);
     }
-    this.elseIfCount_++;
   },
 
   removePart_: function() {
@@ -335,8 +342,8 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
   },
 
   addPart_: function() {
-    this.appendValueInput('ADD' + this.itemCount_);
     this.itemCount_++;
+    this.appendValueInput('ADD' + this.itemCount_);
   },
 
   removePart_: function() {
@@ -386,7 +393,7 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
    */
   domToMutation: function (xmlElement) {
     var targetCount = parseInt(xmlElement.getAttribute('items'), 10);
-    this.updateShape(targetCount);
+    this.updateShape_(targetCount);
   },
 
   plus: function() {
@@ -433,11 +440,11 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
   },
 
   updateShape_: function(targetCount) {
+    console.trace(this.itemCount_, targetCount);
     while (this.itemCount_ < targetCount) {
       this.addPart_();
     }
     while(this.itemCount_ > targetCount) {
-      this.itemCount_--;
       this.removePart_();
     }
     this.updateMinus_();
