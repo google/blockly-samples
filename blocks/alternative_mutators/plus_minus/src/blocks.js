@@ -287,7 +287,7 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
     } else if (!this.elseIfCount_) {
       this.topInput_.removeField('MINUS');
     }
-  },
+  }
 };
 
 /**
@@ -396,21 +396,33 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
     this.updateShape_(targetCount);
   },
 
+  updateShape_: function(targetCount) {
+    while (this.itemCount_ < targetCount) {
+      this.addPart_();
+    }
+    while(this.itemCount_ > targetCount) {
+      this.removePart_();
+    }
+    this.updateMinus_();
+  },
+
   plus: function() {
     this.addPart_();
     this.updateMinus_();
   },
 
   minus: function() {
-    this.itemCount_--;
     this.removePart_();
     this.updateMinus_();
   },
 
+  // To properly keep track of indices we have to increment before/after adding
+  // the inputs, and decrement the opposite.
+  // Because we want our first input to be ADD0 (not ADD1) we increment after.
   addPart_: function() {
     if (this.itemCount_ == 0) {
       this.removeInput('EMPTY');
-      this.topInput_ = this.appendValueInput('ADD0')
+      this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
           .appendField(new plusMinus.FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
     } else {
@@ -420,14 +432,13 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
   },
 
   removePart_: function() {
-    if (this.itemCount_ == 1) {  // We are becoming empty.
+    this.itemCount_--;
+    this.removeInput('ADD' + this.itemCount_);
+    if (this.itemCount_ == 0) {
       this.topInput_ = this.appendDummyInput('EMPTY')
           .appendField(new plusMinus.FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
-    } else {
-      this.removeInput('ADD' + this.itemCount_);
     }
-    this.itemCount_--;
   },
 
   updateMinus_: function() {
@@ -437,17 +448,6 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
     } else if (minusField && this.itemCount_< 1) {
       this.topInput_.removeField('MINUS');
     }
-  },
-
-  updateShape_: function(targetCount) {
-    console.trace(this.itemCount_, targetCount);
-    while (this.itemCount_ < targetCount) {
-      this.addPart_();
-    }
-    while(this.itemCount_ > targetCount) {
-      this.removePart_();
-    }
-    this.updateMinus_();
   }
 };
 
