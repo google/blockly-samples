@@ -13,12 +13,28 @@ const webpack = require('webpack');
 
 module.exports = {
     target: 'web',
-    mode: 'development',
+    mode: 'production',
     entry: './src/WorkspaceSearch.js',
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'workspace_search_bundle.js',
-        libraryTarget: 'umd'
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'workspace-search.umd.js',
+        library: 'WorkspaceSearch',
+        libraryTarget: 'umd',
+        libraryExport: 'default',
+        umdNamedDefine: true,
+        globalObject: 'this'
+    },
+    module: {
+        rules: [{
+            test: /\.js$/,
+            exclude: /(node_modules)/,
+            use: {
+                loader: "babel-loader",
+                options: {
+                    presets: ["@babel/preset-env"]
+                }
+            }
+        }]
     },
     devServer: {
         openPage: 'test',

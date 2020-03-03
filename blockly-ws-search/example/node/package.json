@@ -2,6 +2,9 @@
   "name": "blockly-ws-search-node",
   "version": "1.0.0",
   "description": "Example of workspace search with node.",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "blockly": "^3.20200123.1",
     "blockly-ws-search": "file:../.."
