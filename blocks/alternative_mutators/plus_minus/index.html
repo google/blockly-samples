@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Blockly Plus/Minus Mutators Example</title>
+    <script src="./node_modules/blockly/blockly.min.js"></script>
+    <script src="main.js"></script>
+    <script src="src/field_minus.js"></script>
+    <script src="src/field_plus.js"></script>
+    <script src="src/blocks.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            height: calc(100% - 2em);
+            margin: 1em;
+            background-color: #fff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+        h1 {
+            font-weight: normal;
+            font-size: 140%;
+        }
+        #toolsDiv {
+            height: 100%;
+            width: 30%;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 0;
+        }
+        #blocklyDiv {
+            height: 100%;
+            width: 70%;
+            flex-grow: 1;
+        }
+        #tools {
+            flex-grow: 0;
+        }
+        #importExport {
+            width: calc(100% - 20px);
+            flex-grow: 1;
+            font-family: monospace;
+        }
+    </style>
+    <script>
+
+
+
+    </script>
+</head>
+<body>
+<div id="blocklyDiv"></div>
+
+<div id="toolsDiv">
+    <div id="tools">
+        <h1>Blockly Plus/Minus Mutators Playground</h1>
+
+        <p><a href="javascript:void(workspace.setVisible(true))">Show</a>
+            - <a href="javascript:void(workspace.setVisible(false))">Hide</a></p>
+
+        <form id="options">
+            <select name="dir" onchange="document.forms.options.submit()">
+                <option value="ltr">LTR</option>
+                <option value="rtl">RTL</option>
+            </select>
+            <select name="side" onchange="document.forms.options.submit()">
+                <option value="start">Start</option>
+                <option value="end">End</option>
+                <option value="top">Top</option>
+                <option value="bottom">Bottom</option>
+            </select>
+        </form>
+
+        <p>
+            <select id="stress-test">
+                <option value="misc">N/A</option>
+            </select>
+            <input type="button" value="Test" onclick="stressTest()">
+        </p>
+
+        <div class="bundle">
+            <span id="auto-update-text">Auto Update &nbsp;</span>
+            <input class="bundle--item" type="checkbox" id="auto-update" checked="" onclick="setAutoUpdate(this.checked)">
+
+            <div id="break" style="width: 100%; display: none;"></div>
+            <input class="bundle--item" type="button" id="import" value="Import" style="display: none;" onclick="fromXml()">
+            <input class="bundle--item" type="button" id="export" value="Export to" style="display: none;" onclick="exportWorkspace()">
+            <select class="bundle--item" id="export-type" name="export" onchange="exportWorkspace();">
+                <option class="export-opt" value="clean-xml">Clean XML</option>
+                <option class="export-opt" value="xml">XML</option>
+                <option class="export-opt" value="JavaScript">JavaScript</option>
+            </select>
+        </div>
+    </div>
+
+    <textarea id="importExport" onchange="textAreaChange();" onkeyup="textAreaChange()"></textarea>
+</div>
+
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <category name="Others" categorystyle="logic_category">
+        <block type="controls_if"></block>
+        <block type="controls_ifelse"></block>
+        <block type="text_join"></block>
+        <block type="lists_create_with">
+            <mutation items="0"></mutation>
+        </block>
+        <block type="lists_create_with"></block>
+    </category>
+    <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
+    <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+</xml>
+
+</body>
+</html>
