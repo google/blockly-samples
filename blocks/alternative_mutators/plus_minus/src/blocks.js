@@ -76,26 +76,18 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "text_join",
-    "message0": "%1 %{BKY_TEXT_JOIN_TITLE_CREATEWITH} %2 %3",
+    "message0": "%1",
     "args0": [
       {
-        "type": "field_plus",
-        "name": "PLUS"
-      },
-      {
-        "type": "input_value",
-        "name": "ADD0"
-      },
-      {
-        "type": "input_value",
-        "name": "ADD1"
+        "type": "input_dummy",
+        "name": "EMPTY",
       }
     ],
     "output": "String",
     "style": "text_blocks",
     "helpUrl": "%{BKY_TEXT_JOIN_HELPURL}",
     "tooltip": "%{BKY_TEXT_JOIN_TOOLTIP}",
-    "mutator": "new_text_join_mutator"
+    "mutator": "new_text_join_mutator",
   },
   {
     "type": "lists_create_with",
@@ -303,7 +295,7 @@ Blockly.Extensions.registerMutator('new_controls_if_mutator',
     Blockly.Constants.Logic.NEW_CONTROLS_IF_HELPER_FN);
 
 Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
-  itemCount_: 1,
+  itemCount_: 0,
 
   /**
    * Create XML to represent number of text inputs.
@@ -322,6 +314,10 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
    */
   domToMutation: function (xmlElement) {
     var targetCount = parseInt(xmlElement.getAttribute('items'), 10);
+    this.updateShape_(targetCount);
+  },
+
+  updateShape_: function(targetCount) {
     while (this.itemCount_ < targetCount) {
       this.addPart_();
     }
@@ -341,21 +337,37 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
     this.updateMinus_();
   },
 
+  // To properly keep track of indices we have to increment before/after adding
+  // the inputs, and decrement the opposite.
+  // Because we want our first item to be ADD0 (not ADD1) we increment after.
   addPart_: function() {
+    if (this.itemCount_ == 0) {
+      this.removeInput('EMPTY');
+      this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
+          .appendField(new plusMinus.FieldPlus(), 'PLUS')
+          .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
+    } else {
+      this.appendValueInput('ADD' + this.itemCount_);
+    }
     this.itemCount_++;
-    this.appendValueInput('ADD' + this.itemCount_);
   },
 
   removePart_: function() {
-    this.removeInput('ADD' + this.itemCount_);
     this.itemCount_--;
+    this.removeInput('ADD' + this.itemCount_);
+    if (this.itemCount_ == 0) {
+      this.topInput_ = this.appendDummyInput('EMPTY')
+          .appendField(new plusMinus.FieldPlus(), 'PLUS')
+          .appendField(this.newQuote_(true))
+          .appendField(this.newQuote_(false));
+    }
   },
 
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
-    if (!minusField) {
+    if (!minusField && this.itemCount_ > 0) {
       this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
-    } else if (this.itemCount_ <= 1) {
+    } else if (minusField && this.itemCount_ < 1) {
       this.topInput_.removeField('MINUS');
     }
   },
@@ -366,7 +378,8 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
  * @constructor
  */
 Blockly.Constants.Text.NEW_TEXT_JOIN_HELPER_FN = function() {
-  this.topInput_ = this.getInput('ADD0');
+  this.mixin(Blockly.Constants.Text.QUOTE_IMAGE_MIXIN);
+  this.updateShape_(2);
 };
 
 Blockly.Extensions.registerMutator('new_text_join_mutator',
@@ -445,7 +458,7 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
     var minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
       this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
-    } else if (minusField && this.itemCount_< 1) {
+    } else if (minusField && this.itemCount_ < 1) {
       this.topInput_.removeField('MINUS');
     }
   }
