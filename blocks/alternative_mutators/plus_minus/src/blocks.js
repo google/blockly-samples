@@ -503,39 +503,41 @@ Blockly.Constants.Procedures.PROCEDURE_CONTEXT_MENU_MIXIN = {
     if (this.isInFlyout) {
       return;
     }
+
     // Add option to create caller.
-    var option = {enabled: true};
     var name = this.getFieldValue('NAME');
-    option.text = Blockly.Msg['PROCEDURES_CREATE_DO'].replace('%1', name);
-    var xmlMutation = Blockly.utils.xml.createElement('mutation');
-    xmlMutation.setAttribute('name', name);
-    for (var i = 0; i < this.arguments_.length; i++) {
-      var xmlArg = Blockly.utils.xml.createElement('arg');
-      xmlArg.setAttribute('name', this.arguments_[i]);
-      xmlMutation.appendChild(xmlArg);
+    var text = Blockly.Msg['PROCEDURES_CREATE_DO'].replace('%1', name);
+
+    var xml = Blockly.utils.xml.createElement('block');
+    xml.setAttribute('type', this.callType_);
+    xml.appendChild(this.mutationToDom());
+    var callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+
+    options.push({
+      enabled: true,
+      text: text,
+      callback: callback
+    });
+
+    if (this.isCollapsed) {
+      return;
     }
-    var xmlBlock = Blockly.utils.xml.createElement('block');
-    xmlBlock.setAttribute('type', this.callType_);
-    xmlBlock.appendChild(xmlMutation);
-    option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
-    options.push(option);
 
     // Add options to create getters for each parameter.
-    if (!this.isCollapsed()) {
-      for (var i = 0; i < this.argumentVarModels_.length; i++) {
-        var argOption = {enabled: true};
-        var argVar = this.argumentVarModels_[i];
-        argOption.text = Blockly.Msg['VARIABLES_SET_CREATE_GET']
-            .replace('%1', argVar.name);
+    for (var i = 0, model; (model = this.argumentVarModels_[i]); i++) {
+      var text = Blockly.Msg['VARIABLES_SET_CREATE_GET']
+          .replace('%1', model.name);
 
-        var argXmlField = Blockly.Variables.generateVariableFieldDom(argVar);
-        var argXmlBlock = Blockly.utils.xml.createElement('block');
-        argXmlBlock.setAttribute('type', 'variables_get');
-        argXmlBlock.appendChild(argXmlField);
-        argOption.callback =
-            Blockly.ContextMenu.callbackFactory(this, argXmlBlock);
-        options.push(argOption);
-      }
+      var xml = Blockly.utils.xml.createElement('block');
+      xml.setAttribute('type', 'variables_get');
+      xml.appendChild(Blockly.Variables.generateVariableFieldDom(model));
+      var callback = Blockly.ContextMenu.callbackFactory(this, xml);
+
+      options.push({
+        enabled: true,
+        text: text,
+        callback: callback
+      });
     }
   }
 };
