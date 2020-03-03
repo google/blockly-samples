@@ -10,7 +10,7 @@
     "test": "webpack-dev-server"
   },
   "license": "Apache-2.0",
-  "dependencies": {
+  "peerDependencies": {
     "blockly": "^3.20200123.1"
   },
   "files": [
@@ -38,6 +38,7 @@
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "http-server": "^0.12.1",
+    "install-peers-cli": "^2.2.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

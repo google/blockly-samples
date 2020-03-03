@@ -39,5 +39,13 @@ module.exports = {
     devServer: {
         openPage: 'test',
         open: true
+    },
+    externals: {
+        'blockly/core': {
+            root: 'Blockly',
+            commonjs: 'blockly/core',
+            commonjs2: 'blockly/core',
+            amd: 'blockly/core'
+        },
     }
 };
