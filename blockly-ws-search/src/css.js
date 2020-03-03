@@ -41,7 +41,7 @@ const ARROW_UP_ARROW_SVG_DATAURI =
     'BhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==';
 
 /**
- * CSS for search bar.
+ * CSS for workspace search.
  * @type {Array.<string>}
  */
 const CSS_CONTENT = [
