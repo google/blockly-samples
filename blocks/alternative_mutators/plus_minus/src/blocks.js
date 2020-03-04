@@ -10,45 +10,15 @@
  */
 
 Blockly.defineBlocksWithJsonArray([
-  {
-    "type": "controls_if",
-    "message0": "%1 %{BKY_CONTROLS_IF_MSG_IF} %2" +
-        "%{BKY_CONTROLS_IF_MSG_THEN} %3",
-    "args0": [
-      {
-        "type": "field_plus",
-        "name": "PLUS"
-      },
-      {
-        "type": "input_value",
-        "name": "IF0",
-        "check": "Boolean"
-      },
-      {
-        "type": "input_statement",
-        "name": "DO0"
-      }
-    ],
-    "previousStatement": null,
-    "nextStatement": null,
-    "style": "logic_blocks",
-    "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
-    "mutator": "new_controls_if_mutator",
-    "extensions": [
-      "controls_if_tooltip",
-      "suppress_prefix_suffix"
-    ]
-  },
+  // TODO: It's annoying that we have to redefine the whole controls_ifelse
+  //  block. It would be nice if the default block had an empty mutator
+  //  we could override.
   {
     "type": "controls_ifelse",
-    "message0": " %1 %{BKY_CONTROLS_IF_MSG_IF} %2" +
-        "%{BKY_CONTROLS_IF_MSG_THEN} %3" +
-        "%{BKY_CONTROLS_IF_MSG_ELSE} %4",
+    "message0": "%{BKY_CONTROLS_IF_MSG_IF} %1" +
+        "%{BKY_CONTROLS_IF_MSG_THEN} %2" +
+        "%{BKY_CONTROLS_IF_MSG_ELSE} %3",
     "args0": [
-      {
-        "type": "field_plus",
-        "name": "PLUS"
-      },
       {
         "type": "input_value",
         "name": "IF0",
@@ -68,26 +38,10 @@ Blockly.defineBlocksWithJsonArray([
     "style": "logic_blocks",
     "tooltip": "%{BKYCONTROLS_IF_TOOLTIP_2}",
     "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
-    "mutator": "new_controls_if_mutator",
+    "mutator": "controls_if_mutator",
     "extensions": [
       "controls_if_tooltip",
-      "suppress_prefix_suffix"
     ]
-  },
-  {
-    "type": "text_join",
-    "message0": "%1",
-    "args0": [
-      {
-        "type": "input_dummy",
-        "name": "EMPTY",
-      }
-    ],
-    "output": "String",
-    "style": "text_blocks",
-    "helpUrl": "%{BKY_TEXT_JOIN_HELPURL}",
-    "tooltip": "%{BKY_TEXT_JOIN_TOOLTIP}",
-    "mutator": "new_text_join_mutator",
   },
   {
     "type": "lists_create_with",
@@ -190,17 +144,10 @@ Blockly.defineBlocksWithJsonArray([
   }
 ]);
 
-Blockly.Constants.SUPPRESS_PREFIX_SUFFIX = {
-  /**
-   * Don't automatically add STATEMENT_PREFIX and STATEMENT_SUFFIX to generated
-   * code.  These will be handled manually in this block's generators.
-   */
+controlsIfMutator =  {
+  // TODO: This should be its own extension. But that requires core changes.
   suppressPrefixSuffix: true,
-};
-Blockly.Extensions.registerMixin(
-    'suppress_prefix_suffix', Blockly.Constants.SUPPRESS_PREFIX_SUFFIX);
 
-Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
   elseIfCount_: 0,
 
   /**
@@ -284,15 +231,16 @@ Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN =  {
  * @this {Blockly.Block}
  * @constructor
  */
-Blockly.Constants.Logic.NEW_CONTROLS_IF_HELPER_FN = function() {
+controlsIfHelper = function() {
   this.topInput_ = this.getInput('IF0');
+  this.topInput_.insertFieldAt(0, new plusMinus.FieldPlus(), 'PLUS');
 };
 
-Blockly.Extensions.registerMutator('new_controls_if_mutator',
-    Blockly.Constants.Logic.NEW_CONTROLS_IF_MUTATOR_MIXIN,
-    Blockly.Constants.Logic.NEW_CONTROLS_IF_HELPER_FN);
+Blockly.Extensions.unregister('controls_if_mutator');
+Blockly.Extensions.registerMutator('controls_if_mutator',
+    controlsIfMutator, controlsIfHelper);
 
-Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
+textJoinMutator = {
   itemCount_: 0,
 
   /**
@@ -340,7 +288,11 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
   // Because we want our first item to be ADD0 (not ADD1) we increment after.
   addPart_: function() {
     if (this.itemCount_ == 0) {
-      this.removeInput('EMPTY');
+      if (this.getInput('EMPTY')) {
+        // TODO: I don't think this should throw errors. It would be nice if
+        //   It returned a boolean instead.
+        this.removeInput('EMPTY');
+      }
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
           .appendField(new plusMinus.FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
@@ -375,16 +327,16 @@ Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN = {
  * @this {Blockly.Block}
  * @constructor
  */
-Blockly.Constants.Text.NEW_TEXT_JOIN_HELPER_FN = function() {
+textJoinHelper = function() {
   this.mixin(Blockly.Constants.Text.QUOTE_IMAGE_MIXIN);
   this.updateShape_(2);
 };
 
-Blockly.Extensions.registerMutator('new_text_join_mutator',
-    Blockly.Constants.Text.NEW_TEXT_JOIN_MUTATOR_MIXIN,
-    Blockly.Constants.Text.NEW_TEXT_JOIN_HELPER_FN);
+Blockly.Extensions.unregister('text_join_mutator');
+Blockly.Extensions.registerMutator('text_join_mutator',
+    textJoinMutator, textJoinHelper);
 
-Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
+listCreateMutator = {
   itemCount_: 0,
 
   /**
@@ -466,37 +418,32 @@ Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN = {
  * @this {Blockly.Block}
  * @constructor
  */
-Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_HELPER_FN = function() {
+listCreateHelper = function() {
   this.updateShape_(3);
 };
 
 Blockly.Extensions.registerMutator('new_list_create_with_mutator',
-    Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_MUTATOR_MIXIN,
-    Blockly.Constants.Lists.NEW_LIST_CREATE_WITH_HELPER_FN);
+    listCreateMutator, listCreateHelper);
 
-Blockly.Constants.Procedures = Object.create(null);
-
-Blockly.Constants.Procedures.PROCEDURE_GET_DEF_NO_RETURN_MIXIN = {
+getDefNoReturn = {
   getProcedureDef: function() {
     return [this.getFieldValue('NAME'), this.arguments_, false];
   },
   callType_: 'procedures_callnoreturn'
 };
 
-Blockly.Extensions.registerMixin('get_procedure_def_no_return',
-    Blockly.Constants.Procedures.PROCEDURE_GET_DEF_NO_RETURN_MIXIN);
+Blockly.Extensions.registerMixin('get_procedure_def_no_return', getDefNoReturn);
 
-Blockly.Constants.Procedures.PROCEDURE_GET_DEF_RETURN_MIXIN = {
+getDefReturn = {
   getProcedureDef: function() {
     return [this.getFieldValue('NAME'), this.arguments_, false];
   },
   callType_: 'procedures_callreturn'
 };
 
-Blockly.Extensions.registerMixin('get_procedure_def_return',
-    Blockly.Constants.Procedures.PROCEDURE_GET_DEF_RETURN_MIXIN);
+Blockly.Extensions.registerMixin('get_procedure_def_return', getDefReturn);
 
-Blockly.Constants.Procedures.PROCEDURE_CONTEXT_MENU_MIXIN = {
+procedureContextMenu = {
   customContextMenu: function(options) {
     if (this.isInFlyout) {
       return;
@@ -540,10 +487,9 @@ Blockly.Constants.Procedures.PROCEDURE_CONTEXT_MENU_MIXIN = {
   }
 };
 
-Blockly.Extensions.registerMixin('procedure_context_menu',
-    Blockly.Constants.Procedures.PROCEDURE_CONTEXT_MENU_MIXIN);
+Blockly.Extensions.registerMixin('procedure_context_menu', procedureContextMenu);
 
-Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
+procedureDefMutator = {
   // Parallel arrays.
   arguments_: [],
   paramIds_: [],
@@ -677,17 +623,15 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator('procedure_def_mutator',
-    Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN);
+Blockly.Extensions.registerMutator('procedure_def_mutator', procedureDefMutator);
 
-Blockly.Constants.Procedures.PROCEDURE_RENAME_EXTENSION = function() {
+procedureRename = function() {
   this.getField('NAME').setValidator(Blockly.Procedures.rename);
 };
 
-Blockly.Extensions.register('procedure_rename',
-    Blockly.Constants.Procedures.PROCEDURE_RENAME_EXTENSION);
+Blockly.Extensions.register('procedure_rename', procedureRename);
 
-Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
+procedureVars = function() {
   // This is a hack to get around the don't-override-builtins check.
   var mixin = {
     getVars: function() {
@@ -744,6 +688,5 @@ Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
   this.mixin(mixin, true);
 };
 
-Blockly.Extensions.register('procedure_vars',
-    Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN);
+Blockly.Extensions.register('procedure_vars', procedureVars);
 
