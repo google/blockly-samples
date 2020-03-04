@@ -12,7 +12,7 @@
 function start() {
   const workspace = Blockly.inject('blocklyDiv',
       {toolbox: document.getElementById('toolbox')});
-  const workspaceSearch = new WorkspaceSearch.WorkspaceSearch(workspace);
+  const workspaceSearch = new WorkspaceSearch(workspace);
   workspaceSearch.init();
   workspaceSearch.open();
 }

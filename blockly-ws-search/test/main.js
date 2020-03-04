@@ -52,7 +52,7 @@ function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, 
   options.horizontalLayout = horizontalLayout;
   options.toolboxPosition = position;
   const ws = Blockly.inject('blocklyDiv' + suffix, options);
-  const workspaceSearch = new WorkspaceSearch.WorkspaceSearch(ws);
+  const workspaceSearch = new WorkspaceSearch(ws);
   workspaceSearch.init();
   if (opt_openSearch) {
     workspaceSearch.open();
