@@ -20,7 +20,6 @@ module.exports = {
         filename: 'workspace-search.umd.js',
         library: 'WorkspaceSearch',
         libraryTarget: 'umd',
-        libraryExport: 'default',
         umdNamedDefine: true,
         globalObject: 'this'
     },

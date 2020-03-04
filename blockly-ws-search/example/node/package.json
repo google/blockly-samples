@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Example of workspace search with node.",
   "scripts": {
-    "start": "node index.js"
+    "preinstall": "npm install ../../../blockly-ws-search",
+    "start": "node --preserve-symlinks index.js"
   },
   "dependencies": {
     "blockly": "^3.20200123.1",

@@ -10,7 +10,7 @@
  */
 
 import * as Blockly from 'blockly';
-import WorkspaceSearch from 'blockly-ws-search';
+import { WorkspaceSearch } from 'blockly-ws-search';
 
 function start() {
   const workspace = Blockly.inject('blocklyDiv',

@@ -22,7 +22,7 @@
  */
 
 var Blockly = require('blockly');
-var WorkspaceSearch = require('blockly-ws-search');
+var WorkspaceSearch = require('blockly-ws-search').WorkspaceSearch;
 
 var xmlText = `<xml xmlns="https://developers.google.com/blockly/xml">
 <block type="text_print" x="37" y="63">
