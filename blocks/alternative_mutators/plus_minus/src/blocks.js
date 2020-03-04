@@ -141,7 +141,6 @@ Blockly.defineBlocksWithJsonArray([
       "procedure_context_menu",
       "procedure_rename",
       "procedure_vars",
-      "procedure_display_renamed"
     ],
     "mutator": "procedure_def_mutator"
   },
@@ -186,7 +185,6 @@ Blockly.defineBlocksWithJsonArray([
       "procedure_context_menu",
       "procedure_rename",
       "procedure_vars",
-      "procedure_display_renamed"
     ],
     "mutator": "procedure_def_mutator"
   }
@@ -566,20 +564,34 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
   },
 
   domToMutation: function(xmlElement) {
-    this.paramIds_ = [];
-    this.arguments_ = [];
-    this.argumentVarModels_ = [];
-
+    var names = [];
+    var ids = [];
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
       if (childNode.nodeName.toLowerCase() != 'arg') {
         continue;
       }
-      var varName = childNode.getAttribute('name');
-      var varId = childNode.getAttribute('varid') ||
+      names[i] = childNode.getAttribute('name');
+      ids[i] = childNode.getAttribute('varid') ||
           childNode.getAttribute('varId');
-      var paramId = childNode.getAttribute('paramId');
-      this.addParam_(varName, paramId);
     }
+    this.updateShape_(names, ids);
+  },
+
+  updateShape_: function(names, ids) {
+    // In this case it is easiest to just reset and build from scratch.
+    for (var i = 0, id; (id = this.paramIds_[i]); i++) {
+      this.removeParam_(id);
+    }
+
+    this.paramIds_ = [];
+    this.arguments_ = [];
+    this.argumentVarModels_ = [];
+
+    var length = ids.length;
+    for (i = 0; i < length; i++) {
+      this.addParam_(names[i], ids[i]);
+    }
+
     Blockly.Procedures.mutateCallers(this);
   },
 
@@ -605,13 +617,7 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
         Blockly.Procedures.DEFAULT_ARG, this.arguments_);
     var id = opt_id || Blockly.utils.genUid();
 
-    var nameField = new Blockly.FieldTextInput(name, this.validator_);
-    nameField.onFinishEditing_ = this.onFinish.bind(nameField);
-    var input = this.appendDummyInput(id)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new plusMinus.FieldMinus(id))
-        .appendField('variable:')  // Untranslated!
-        .appendField(nameField,  id);  // The name of the field is the var id.
+    this.addVarInput_(name, id);
     this.moveInputBefore(id, 'STACK');
 
     this.arguments_.push(name);
@@ -622,7 +628,7 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
 
   removeParam_: function(id) {
     this.removeInput(id);
-    if (this.arguments_.length == 1) {
+    if (this.arguments_.length == 1) {  // Becoming parameterless.
       this.getInput('TOP').removeField('WITH');
     }
 
@@ -630,6 +636,15 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
     this.arguments_.splice(index, 1);
     this.paramIds_.splice(index, 1);
     this.argumentVarModels_.splice(index, 1);
+  },
+
+  addVarInput_: function(name, id) {
+    var nameField = new Blockly.FieldTextInput(name, this.validator_);
+    this.appendDummyInput(id)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new plusMinus.FieldMinus(id))
+        .appendField('variable:')  // Untranslated!
+        .appendField(nameField,  id);  // The name of the field is the var id.
   },
 
   /**
@@ -642,14 +657,9 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
       return null;
     }
 
-    for (var i = 0, input; (input = sourceBlock.inputList[i]); i++) {
-      for (var j = 0, field; (field = input.fieldRow[j]); j++) {
-        if (field.name == this.name) {
-          continue;
-        }
-        if (field.getValue() == newName) {
-          return null;  // It matches, so it is invalid.
-        }
+    for (var i = 0, name; (name = sourceBlock.arguments_[i]); i++) {
+      if (newName == name) {
+        return null;  // It matches, so it is invalid.
       }
     }
 
@@ -664,18 +674,6 @@ Blockly.Constants.Procedures.PROCEDURE_DEF_MUTATOR_MIXIN = {
       sourceBlock.workspace.renameVariableById(this.name, newName);
       Blockly.Procedures.mutateCallers(sourceBlock);
     }
-  },
-
-  /**
-   * @this {Blockly.FieldTextInput}
-   */
-  onFinish: function(finalName) {
-    var sourceBlock = this.getSourceBlock();
-    // The field name (aka id) is always equal to the var id.
-    var index = sourceBlock.paramIds_.indexOf(this.name);
-    sourceBlock.arguments_[index] = finalName;
-    sourceBlock.workspace.renameVariableById(this.name, finalName);
-    Blockly.Procedures.mutateCallers(sourceBlock);
   },
 };
 
@@ -700,21 +698,30 @@ Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
       return this.argumentVarModels_;
     },
 
+    /**
+     * Notification that a variable was renamed to the same name as an existing
+     * variable. These variables are coalescing into a single variable with the
+     * ID of the variable that was already using the name.
+     * @param {string} oldId The ID of the variable that was renamed.
+     * @param {string} newId The ID of the variable that was already using
+     *     the name.
+     */
     renameVarById: function(oldId, newId) {
       var index = this.paramIds_.indexOf(oldId);
       if (index == -1) {
         return;  // Not on this block.
       }
 
-      var oldName = this.workspace.getVariableById(oldId).name;
       var newVar = this.workspace.getVariableById(newId);
       var newName = newVar.name;
+      this.addVarInput_(newName, newId);
+      this.moveInputBefore(newId, oldId);
+      this.removeInput(oldId);
 
-      // Don't update paramIds until displayRenamedVar_
+      this.paramIds_[index] = newId;
       this.arguments_[index] = newName;
       this.argumentVarModels_[index] = newVar;
 
-      this.displayRenamedVar_(oldName, newName);
       Blockly.Procedures.mutateCallers(this);
     },
 
@@ -724,12 +731,13 @@ Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
       if (index == -1) {
         return;  // Not on this block.
       }
+      var name = variable.name;
+      if (variable.name == this.arguments_[index]) {
+        return;  // No change. Occurs when field is being edited.
+      }
 
-      var oldName = this.arguments_[index];
-      var newName = variable.name;
-      this.arguments_[index] = newName;
-
-      this.displayRenamedVar_(oldName, newName);
+      this.setFieldValue(name, id);
+      this.arguments_[index] = name;
     },
   };
 
@@ -739,13 +747,3 @@ Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN = function() {
 Blockly.Extensions.register('procedure_vars',
     Blockly.Constants.Procedures.PROCEDURE_VARS_MIXIN);
 
-Blockly.Constants.Procedures.PROCEDURE_DISPLAY_RENAMED = {
-  displayRenamedVar_: function(oldName, newName) {
-    var index = this.arguments_.indexOf(newName);
-    var id = this.paramIds_[index];
-    this.setFieldValue(newName, id);
-  }
-};
-
-Blockly.Extensions.registerMixin('procedure_display_renamed',
-    Blockly.Constants.Procedures.PROCEDURE_DISPLAY_RENAMED);
