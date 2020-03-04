@@ -1,39 +1,38 @@
 {
-  "name": "blockly-ws-search",
-  "version": "1.0.0",
+  "name": "@blockly/plugin-workspace-search",
+  "version": "1.20200304.0",
   "description": "Implementation of workspace search for Blockly.",
-  "main": "./dist/workspace-search.umd.js",
-  "scripts": {
-    "prepare": "webpack --display-error-details --config webpack.config.js\n",
-    "build": "webpack --display-error-details --config webpack.config.js\n",
-    "clean": "rm -rf $npm_package_directories_build",
-    "test": "webpack-dev-server"
-  },
-  "license": "Apache-2.0",
-  "peerDependencies": {
-    "blockly": "^3.20200123.1"
-  },
-  "files": [
-    "./src",
-    "./media"
+  "keywords": [
+    "blockly",
+    "workspace",
+    "search"
   ],
-  "directories": {
-    "build": "build"
+  "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
     "directory": "blockly-ws-search"
   },
-  "keywords": [
-    "blockly",
-    "workspace",
-    "search"
-  ],
-  "bugs": {
-    "url": "https://github.com/google/blockly-samples/issues"
+  "license": "Apache-2.0",
+  "main": "./dist/workspace-search.umd.js",
+  "unpkg": "./dist/workspace-search.umd.js",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
   },
-  "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme",
+  "files": [
+    "src",
+    "media",
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf $npm_package_directories_dist",
+    "prepare": "webpack --display-error-details --config webpack.config.js\n",
+    "test": "webpack-dev-server"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
@@ -43,5 +42,11 @@
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
+  },
+  "peerDependencies": {
+    "blockly": "^3.20200123.1"
+  },
+  "engines": {
+    "node": ">=8.17.0"
   }
 }

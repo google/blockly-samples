@@ -13,8 +13,8 @@
     "dist": "dist"
   },
   "dependencies": {
-    "blockly": "^3.20200123.1",
-    "blockly-ws-search": "file:../.."
+    "@blockly/plugin-workspace-search": "file:../..",
+    "blockly": "^3.20200123.1"
   },
   "devDependencies": {
     "install": "^0.13.0",
