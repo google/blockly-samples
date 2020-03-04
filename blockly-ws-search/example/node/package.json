@@ -9,5 +9,8 @@
   "dependencies": {
     "blockly": "^3.20200123.1",
     "blockly-ws-search": "file:../.."
+  },
+  "devDependencies": {
+    "node": "^13.9.0"
   }
 }
