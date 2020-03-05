@@ -349,40 +349,14 @@ export class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.clearCurrentBlock_();
+    this.unhighlightCurrentSelection_(this.currentBlock_);
     this.currentBlockIndex_ =
         (index % this.blocks_.length + this.blocks_.length) %
         this.blocks_.length;
     this.currentBlock_ = this.blocks_[this.currentBlockIndex_];
-    const path = this.currentBlock_.pathObject.svgPath;
-    Blockly.utils.dom.addClass(path, 'search-current');
-    this.updateCursor_(this.currentBlock_);
+    this.highlightCurrentSelection_(this.currentBlock_);
+    this.updateCursor_();
     this.scrollToVisible_(this.currentBlock_);
-  }
-
-  /**
-   * Clears the currently "selected" block.
-   * @protected
-   */
-  clearCurrentBlock_() {
-    this.currentBlockIndex_ = -1;
-    if (this.currentBlock_) {
-      const path = this.currentBlock_.pathObject.svgPath;
-      Blockly.utils.dom.removeClass(path, 'search-current');
-      this.currentBlock_ = null;
-    }
-  }
-
-  /**
-   * Updates the location of the cursor if the user is in keyboard accessibility
-   * mode.
-   * @protected
-   */
-  updateCursor_(currBlock) {
-    if (this.workspace_.keyboardAccessibilityMode) {
-      const currAstNode = Blockly.navigation.getTopNode(currBlock);
-      this.workspace_.getCursor().setCurNode(currAstNode);
-    }
   }
 
   /**
@@ -435,7 +409,7 @@ export class WorkspaceSearch {
     let oldCurrentBlock = this.currentBlock_;
     this.clearBlocks();
     this.populateBlocks_();
-    this.highlightBlocks();
+    this.highlightSearchGroup(this.blocks_);
     let currentIdx = 0;
     if (preserveCurrent) {
       currentIdx = this.blocks_.indexOf(oldCurrentBlock);
@@ -500,29 +474,70 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Clears the block list.
+   * Clears the selection group and current block.
    */
   clearBlocks() {
-    this.unHighlightBlocks();
-    this.clearCurrentBlock_();
+    this.unhighlightSearchGroup(this.blocks_);
+    this.unhighlightCurrentSelection_(this.currentBlock_);
+    this.currentBlock_ = null;
+    this.currentBlockIndex_ = -1;
     this.blocks_ = [];
   }
 
   /**
-   * Adds highlight to blocks in block list.
+   * Updates the location of the cursor if the user is in keyboard accessibility
+   * mode.
+   * @protected
    */
-  highlightBlocks() {
-    this.blocks_.forEach(function(block) {
+  updateCursor_() {
+    if (this.workspace_.keyboardAccessibilityMode) {
+      const currAstNode = Blockly.navigation.getTopNode(this.currentBlock_);
+      this.workspace_.getCursor().setCurNode(currAstNode);
+    }
+  }
+
+  /**
+   * Adds "current selection" highlight to the provided block.
+   * Highlights the provided block as the "current selection".
+   * @param {!Blockly.BlockSvg} currentBlock The block to highlight.
+   * @protected
+   */
+  highlightCurrentSelection_(currentBlock) {
+    blocks.forEach(function(block) {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.addClass(blockPath, 'search-highlight');
     });
   }
 
   /**
-   * Removes highlight from blocks in block list.
+   * Removes "current selection" highlight from provided block.
+   * @param {!Blockly.BlockSvg} currentBlock The block to unhighlight.
+   * @protected
    */
-  unHighlightBlocks() {
-    this.blocks_.forEach(function(block) {
+  unhighlightCurrentSelection_(currentBlock) {
+    const path = currentBlock.pathObject.svgPath;
+    Blockly.utils.dom.removeClass(path, 'search-current');
+  }
+
+  /**
+   * Adds highlight to the provided blocks.
+   * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to highlight.
+   * @protected
+   */
+  highlightSearchGroup(blocks) {
+    blocks.forEach(function(block) {
+      const blockPath = block.pathObject.svgPath;
+      Blockly.utils.dom.addClass(blockPath, 'search-highlight');
+    });
+  }
+
+  /**
+   * Removes highlight from the provided blocks.
+   * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to unhighlight.
+   * @protected
+   */
+  unhighlightSearchGroup(blocks) {
+    blocks.forEach(function(block) {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'search-highlight');
     });
@@ -530,8 +545,8 @@ export class WorkspaceSearch {
 
   /**
    * Scrolls workspace to bring given block into view.
-   * @param {Blockly.BlockSvg} block Block to bring into view.
-   * @private
+   * @param {!Blockly.BlockSvg} block The block to bring into view.
+   * @protected
    */
   scrollToVisible_(block) {
     if (!this.workspace_.isMovable()) {
