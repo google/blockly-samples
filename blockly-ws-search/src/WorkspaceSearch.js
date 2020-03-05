@@ -101,13 +101,28 @@ export class WorkspaceSearch {
   init() {
     injectSearchCss();
     this.createDom_();
+    this.setVisible(false);
   }
 
   /**
-   * Creates the search bar's DOM.
+   * Creates and injects the search bar's DOM.
    * @protected
    */
   createDom_() {
+    /*
+     * Creates the search bar. The generated search bar looks like:
+     * <div class="ws-search'>
+     *   <div class="ws-search-container'>
+     *     <div class="ws-search-content'>
+     *       <div class="ws-search-input'>
+     *         [... text input goes here ...]
+     *       </div>
+     *       [... actions div goes here ...]
+     *     </div>
+     *     [... close button goes here ...]
+     *   </div>
+     * </div>
+     */
     const parentSvg = this.workspace_.getParentSvg();
     parentSvg.parentNode.addEventListener('keydown',
         evt => this.onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
@@ -123,7 +138,8 @@ export class WorkspaceSearch {
     Blockly.utils.dom.addClass(searchContent, 'ws-search-content');
     searchContainer.append(searchContent);
 
-    const inputWrapper = this.createInputDiv_();
+    const inputWrapper = document.createElement('div');
+    Blockly.utils.dom.addClass(inputWrapper, 'ws-search-input');
     this.textInput_ = this.createTextInput_();
     inputWrapper.append(this.textInput_);
     searchContent.append(inputWrapper);
@@ -135,11 +151,28 @@ export class WorkspaceSearch {
     this.HtmlDiv_.append(searchContainer);
 
     parentSvg.parentNode.insertBefore(this.HtmlDiv_, parentSvg);
-    this.setVisible(false);
+  }
+
+  /**
+   * Creates the text input for the search bar.
+   * @return {!HTMLInputElement} A text input for the search bar.
+   * @protected
+   */
+  createTextInput_() {
+    let textInput = document.createElement('input');
+    textInput.type = 'text';
+    textInput.setAttribute('placeholder', this.textInputPlaceholder_);
+    textInput.addEventListener('keydown',
+        evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
+    textInput.addEventListener('input', () => this.onInput_());
+    textInput.addEventListener('click',
+        () => this.search(this.preserveSelected));
+    return textInput;
   }
 
   /**
    * Creates the div that holds all of the search bar actions.
+   * @return {!HTMLDivElement} A div holding search bar actions.
    * @protected
    */
   createActionsDiv_() {
@@ -157,37 +190,12 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used for closing the search bar.
+   * @return {!HTMLElement} A button for closing the search bar.
    * @protected
    */
   createCloseBtn_() {
     return this.createBtn_('close-btn', 'Close search bar',
         () => this.close());
-  }
-
-  /**
-   * Creates the div responsible for holding inputs.
-   * @protected
-   */
-  createInputDiv_() {
-    const inputWrapper = document.createElement('div');
-    Blockly.utils.dom.addClass(inputWrapper, 'ws-search-input');
-    return inputWrapper;
-  }
-
-  /**
-   * Creates the text input for the search bar.
-   * @protected
-   */
-  createTextInput_() {
-    let textInput = document.createElement('input');
-    textInput.type = 'text';
-    textInput.setAttribute('placeholder', this.textInputPlaceholder_);
-    textInput.addEventListener('keydown',
-            evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
-    textInput.addEventListener('input', () => this.onInput_());
-    textInput.addEventListener('click',
-        () => this.search(this.preserveSelected));
-    return textInput;
   }
 
   /**
@@ -288,7 +296,7 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Selects the previous block.`
+   * Selects the previous block.
    * @private
    */
   previous_() {
@@ -438,7 +446,7 @@ export class WorkspaceSearch {
 
   /**
    * Returns pool of blocks to search from.
-   * @return {!Array.<!Blockly.BlockSvg>}
+   * @return {!Array.<!Blockly.BlockSvg>} The search pool of blocks to use.
    * @private
   */
   getSearchPool_() {
@@ -455,6 +463,7 @@ export class WorkspaceSearch {
   /**
    * Returns whether the given block matches the search text.
    * @param {!Blockly.BlockSvg} block The block to check.
+   * @return {boolean} Whether the block matches the search text.
    * @private
    */
   isBlockMatch_(block) {
