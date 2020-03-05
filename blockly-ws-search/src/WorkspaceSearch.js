@@ -124,7 +124,7 @@ export class WorkspaceSearch {
     searchContainer.append(searchContent);
 
     const inputWrapper = this.createInputDiv_();
-    this.textInput_ = this.createTextInput();
+    this.textInput_ = this.createTextInput_();
     inputWrapper.append(this.textInput_);
     searchContent.append(inputWrapper);
 
@@ -178,7 +178,7 @@ export class WorkspaceSearch {
    * Creates the text input for the search bar.
    * @protected
    */
-  createTextInput() {
+  createTextInput_() {
     let textInput = document.createElement('input');
     textInput.type = 'text';
     textInput.setAttribute('placeholder', this.textInputPlaceholder_);
