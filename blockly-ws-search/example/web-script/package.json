@@ -4,7 +4,7 @@
   "description": "Example of workspace search with script tag.",
   "private": true,
   "scripts": {
-    "preinstall": "npm install ../../../blockly-ws-search",
+    "preinstall": "cd ../.. && npm install",
     "start": "http-server"
   },
   "dependencies": {

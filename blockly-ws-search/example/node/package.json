@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "description": "Example of workspace search with node.",
   "scripts": {
-    "preinstall": "npm install ../../../blockly-ws-search",
+    "preinstall": "cd ../.. && npm install",
     "start": "node --preserve-symlinks index.js"
   },
   "dependencies": {
-    "blockly": "^3.20200123.1",
-    "blockly-ws-search": "file:../.."
-  },
-  "devDependencies": {
-    "node": "^13.9.0"
+    "@blockly/plugin-workspace-search": "file:../..",
+    "blockly": "^3.20200123.1"
   }
 }
