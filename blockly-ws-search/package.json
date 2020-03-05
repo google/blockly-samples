@@ -30,7 +30,8 @@
   ],
   "scripts": {
     "clean": "rm -rf $npm_package_directories_dist",
-    "prepare": "webpack --display-error-details --config webpack.config.js\n",
+    "build": "webpack --display-error-details --config webpack.config.js\n",
+    "prepare": "npm run clean && npm run build",
     "test": "webpack-dev-server"
   },
   "devDependencies": {
@@ -46,6 +47,10 @@
   },
   "peerDependencies": {
     "blockly": ">=3.20200123.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
   },
   "engines": {
     "node": ">=8.17.0"
