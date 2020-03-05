@@ -349,15 +349,12 @@ export class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.clearCurrentBlock_();
+    WorkspaceSearch.unhighlightCurrentSelection(this.currentBlock_);
     this.currentBlockIndex_ =
         (index % this.blocks_.length + this.blocks_.length) %
         this.blocks_.length;
     this.currentBlock_ = this.blocks_[this.currentBlockIndex_];
-    const path = this.currentBlock_.pathObject.svgPath;
-    Blockly.utils.dom.addClass(path, 'search-current');
-    this.updateCursor_(this.currentBlock_);
-    this.scrollToVisible_(this.currentBlock_);
+    WorkspaceSearch.highlightCurrentSelection(this.currentBlock_);
   }
 
   /**
@@ -366,23 +363,8 @@ export class WorkspaceSearch {
    */
   clearCurrentBlock_() {
     this.currentBlockIndex_ = -1;
-    if (this.currentBlock_) {
-      const path = this.currentBlock_.pathObject.svgPath;
-      Blockly.utils.dom.removeClass(path, 'search-current');
-      this.currentBlock_ = null;
-    }
-  }
-
-  /**
-   * Updates the location of the cursor if the user is in keyboard accessibility
-   * mode.
-   * @protected
-   */
-  updateCursor_(currBlock) {
-    if (this.workspace_.keyboardAccessibilityMode) {
-      const currAstNode = Blockly.navigation.getTopNode(currBlock);
-      this.workspace_.getCursor().setCurNode(currAstNode);
-    }
+    WorkspaceSearch.unhighlightCurrentSelection(this.currentBlock_);
+    this.currentBlock_ = null;
   }
 
   /**
@@ -435,7 +417,7 @@ export class WorkspaceSearch {
     let oldCurrentBlock = this.currentBlock_;
     this.clearBlocks();
     this.populateBlocks_();
-    this.highlightBlocks();
+    WorkspaceSearch.highlightSearchGroup(this.blocks_);
     let currentIdx = 0;
     if (preserveCurrent) {
       currentIdx = this.blocks_.indexOf(oldCurrentBlock);
@@ -503,26 +485,62 @@ export class WorkspaceSearch {
    * Clears the block list.
    */
   clearBlocks() {
-    this.unHighlightBlocks();
+    WorkspaceSearch.unhighlightSearchGroup(this.blocks_);
     this.clearCurrentBlock_();
     this.blocks_ = [];
   }
 
   /**
-   * Adds highlight to blocks in block list.
+   * Updates the location of the cursor if the user is in keyboard accessibility
+   * mode.
+   * @protected
    */
-  highlightBlocks() {
-    this.blocks_.forEach(function(block) {
+  static updateCursor_(workspace, currBlock) {
+    if (workspace.keyboardAccessibilityMode) {
+      const currAstNode = Blockly.navigation.getTopNode(currBlock);
+      workspace.getCursor().setCurNode(currAstNode);
+    }
+  }
+
+  /**
+   * Highlights the provided block as the "current selection".
+   * @param {!Blockly.BlockSvg} currentBlock The block to highlight.
+   */
+  static highlightCurrentSelection(workspace, currentBlock) {
+    blocks.forEach(function(block) {
+      const blockPath = block.pathObject.svgPath;
+      Blockly.utils.dom.addClass(blockPath, 'search-highlight');
+    });
+    WorkspaceSearch.updateCursor_(workspace, currentBlock);
+    WorkspaceSearch.scrollToVisible(workspace, currentBlock);
+  }
+
+  /**
+   * Removes "current selection" highlight from provided block.
+   * @param {!Blockly.BlockSvg} currentBlock The block to unhighlight.
+   */
+  static unhighlightCurrentSelection(currentBlock) {
+    const path = currentBlock.pathObject.svgPath;
+    Blockly.utils.dom.removeClass(path, 'search-current');
+  }
+
+  /**
+   * Adds highlight to the provided blocks.
+   * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to highlight.
+   */
+  static highlightSearchGroup(blocks) {
+    blocks.forEach(function(block) {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.addClass(blockPath, 'search-highlight');
     });
   }
 
   /**
-   * Removes highlight from blocks in block list.
+   * Removes highlight from the provided blocks.
+   * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to unhighlight.
    */
-  unHighlightBlocks() {
-    this.blocks_.forEach(function(block) {
+  static unhighlightSearchGroup(blocks) {
+    blocks.forEach(function(block) {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'search-highlight');
     });
@@ -533,14 +551,14 @@ export class WorkspaceSearch {
    * @param {Blockly.BlockSvg} block Block to bring into view.
    * @private
    */
-  scrollToVisible_(block) {
-    if (!this.workspace_.isMovable()) {
+  static scrollToVisible(workspace, block) {
+    if (!workspace.isMovable()) {
       // Cannot scroll to block in a non-movable workspace.
       return;
     }
     // XY is in workspace coordinates.
     const xy = block.getRelativeToSurfaceXY();
-    const scale = this.workspace_.scale;
+    const scale = workspace.scale;
 
     // Block bounds in pixels relative to the workspace origin (0,0 is centre).
     const width = block.width * scale;
@@ -548,21 +566,21 @@ export class WorkspaceSearch {
     const top = xy.y * scale;
     const bottom = (xy.y + block.height) * scale;
     // In RTL the block's position is the top right of the block, not top left.
-    const left = this.workspace_.RTL ? xy.x * scale - width: xy.x * scale;
-    const right = this.workspace_.RTL ? xy.x * scale : xy.x * scale +  width;
+    const left = workspace.RTL ? xy.x * scale - width: xy.x * scale;
+    const right = workspace.RTL ? xy.x * scale : xy.x * scale +  width;
 
-    const metrics = this.workspace_.getMetrics();
+    const metrics = workspace.getMetrics();
 
     let targetLeft = metrics.viewLeft;
     const overflowLeft = left < metrics.viewLeft;
     const overflowRight = right > metrics.viewLeft + metrics.viewWidth;
     const wideBlock = width > metrics.viewWidth;
 
-    if ((!wideBlock && overflowLeft) || (wideBlock && !this.workspace_.RTL)) {
+    if ((!wideBlock && overflowLeft) || (wideBlock && !workspace.RTL)) {
       // Scroll to show left side of block
       targetLeft = left;
     } else if ((!wideBlock && overflowRight) ||
-        (wideBlock && this.workspace_.RTL)) {
+        (wideBlock && workspace.RTL)) {
       // Scroll to show right side of block
       targetLeft = right - metrics.viewWidth;
     }
@@ -581,7 +599,7 @@ export class WorkspaceSearch {
     }
     if (targetLeft !== metrics.viewLeft || targetTop !== metrics.viewTop) {
       const activeEl = document.activeElement;
-      this.workspace_.scroll(-targetLeft, -targetTop);
+      workspace.scroll(-targetLeft, -targetTop);
       if (activeEl) {
         // Blockly.WidgetDiv.hide called in scroll is taking away focus.
         // TODO: Review setFocused call in Blockly.WidgetDiv.hide.
