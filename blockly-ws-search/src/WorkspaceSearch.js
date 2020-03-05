@@ -166,7 +166,7 @@ export class WorkspaceSearch {
         evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
     textInput.addEventListener('input', () => this.onInput_());
     textInput.addEventListener('click',
-        () => this.search(this.preserveSelected));
+        () => this.searchAndHighlight(this.preserveSelected));
     return textInput;
   }
 
@@ -259,7 +259,7 @@ export class WorkspaceSearch {
       const inputValue = this.textInput_.value;
       if (inputValue !== this.searchText_) {
         this.setSearchText_(inputValue);
-        this.search(this.preserveSelected);
+        this.searchAndHighlight(this.preserveSelected);
       }
     }
   }
@@ -277,7 +277,7 @@ export class WorkspaceSearch {
         this.next_();
       } else {
         this.setSearchText_(this.textInput_.value);
-        this.search(this.preserveSelected);
+        this.searchAndHighlight(this.preserveSelected);
       }
     }
   }
@@ -393,7 +393,7 @@ export class WorkspaceSearch {
     this.updateMarker_();
     this.textInput_.focus();
     if (this.searchText_) {
-      this.search();
+      this.searchAndHighlight();
     }
   }
 
@@ -427,14 +427,16 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Searches the workspace for the current search term.
+   * Searches the workspace for the current search term and highlights matching
+   * blocks.
    * @param {boolean=} preserveCurrent Whether to preserve the current block
-   *    if it is included in the new search block.
+   *    if it is included in the new matching blocks.
    */
-  search(preserveCurrent) {
+  searchAndHighlight(preserveCurrent) {
     let oldCurrentBlock = this.currentBlock_;
     this.clearBlocks();
-    this.populateBlocks_();
+    this.blocks_ = this.getMatchingBlocks_(
+        this.workspace_, this.searchText_, this.caseSensitive);
     this.highlightBlocks();
     let currentIdx = 0;
     if (preserveCurrent) {
@@ -446,13 +448,14 @@ export class WorkspaceSearch {
 
   /**
    * Returns pool of blocks to search from.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to get blocks from.
    * @return {!Array.<!Blockly.BlockSvg>} The search pool of blocks to use.
    * @private
   */
-  getSearchPool_() {
+  getSearchPool_(workspace) {
     const blocks = (
         /** @type {!Array.<!Blockly.BlockSvg>} */
-        this.workspace_.getAllBlocks(true));
+        workspace.getAllBlocks(true));
     return blocks.filter(function(block) {
       // Filter out blocks contained inside of another collapsed block.
       const surroundParent = block.getSurroundParent();
@@ -463,10 +466,13 @@ export class WorkspaceSearch {
   /**
    * Returns whether the given block matches the search text.
    * @param {!Blockly.BlockSvg} block The block to check.
+   * @param {string} searchText The search text. Note if the search is case
+   *    insensitive, this will be passed already converted to lowercase letters.
+   * @param {boolean} caseSensitive Whether the search is caseSensitive.
    * @return {boolean} Whether the block matches the search text.
    * @private
    */
-  isBlockMatch_(block) {
+  isBlockMatch_(block, searchText, caseSensitive) {
     let blockText = '';
     if (block.isCollapsed()) {
       // Search the whole string for collapsed blocks.
@@ -480,23 +486,29 @@ export class WorkspaceSearch {
       });
       blockText = topBlockText.join(' ').trim();
     }
-    if (!this.caseSensitive) {
+    if (!caseSensitive) {
       blockText = blockText.toLowerCase();
     }
-    return blockText.includes(this.searchText_);
+    return blockText.includes(searchText);
   }
 
   /**
-   * Populates block list with blocks that match the search text.
+   * Returns blocks that match the given search text.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to search.
+   * @param {string} searchText The search text. Note if the search is case
+   *    insensitive, this will be passed already converted to lowercase letters.
+   * @param {boolean} caseSensitive Whether the search is caseSensitive.
+   * @return {!Array.<Blockly.BlockSvg>} blocks The blocks that match the search
+   *    text.
    * @protected
    */
-  populateBlocks_() {
-    if (!this.searchText_) {
-      return;
+  getMatchingBlocks_(workspace, searchText, caseSensitive) {
+    if (!searchText) {
+      return [];
     }
-    const searchGroup = this.getSearchPool_();
-    this.blocks_ = searchGroup.filter(
-        block => this.isBlockMatch_(block));
+    const searchGroup = this.getSearchPool_(workspace);
+    return searchGroup.filter(
+        block => this.isBlockMatch_(block, searchText, caseSensitive));
   }
 
   /**
