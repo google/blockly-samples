@@ -1,4 +1,5 @@
 {
+  "author": "Blockly Team",
   "name": "@blockly/plugin-workspace-search",
   "version": "1.20200304.0",
   "description": "Implementation of workspace search for Blockly.",
@@ -24,9 +25,8 @@
     "src": "src"
   },
   "files": [
-    "src",
-    "media",
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "clean": "rm -rf $npm_package_directories_dist",

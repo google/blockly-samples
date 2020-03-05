@@ -4,7 +4,7 @@
   "description": "Example of workspace search with web imports.",
   "private": true,
   "scripts": {
-    "preinstall": "npm install ../../../blockly-ws-search",
+    "preinstall": "cd ../.. && npm install",
     "prepare": "webpack --display-error-details --config webpack.config.js\n",
     "clean": "rm $npm_package_directories_dist/main.js",
     "start": "webpack-dev-server"
