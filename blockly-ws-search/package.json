@@ -45,7 +45,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "peerDependencies": {
-    "blockly": "^3.20200123.1"
+    "blockly": ">=3.20200123.0"
   },
   "engines": {
     "node": ">=8.17.0"
