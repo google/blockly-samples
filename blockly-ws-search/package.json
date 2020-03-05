@@ -37,6 +37,7 @@
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "babel-loader": "^8.0.6",
+    "blockly": "^3.20200123.1",
     "http-server": "^0.12.1",
     "install-peers-cli": "^2.2.0",
     "webpack": "^4.41.6",
