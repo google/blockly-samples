@@ -180,9 +180,9 @@ export class WorkspaceSearch {
     Blockly.utils.dom.addClass(actions, 'ws-search-actions');
     // Add all the buttons for the search bar
     const upBtn = this.createBtn_('up-btn', 'Find previous',
-        () => this.previous_());
+        () => this.previous());
     const downBtn = this.createBtn_('down-btn', 'Find next',
-        () => this.next_());
+        () => this.next());
     actions.append(upBtn);
     actions.append(downBtn);
     return actions;
@@ -274,7 +274,7 @@ export class WorkspaceSearch {
       this.close();
     } else if (e.key === 'Enter') {
       if (this.searchOnInput) {
-        this.next_();
+        this.next();
       } else {
         this.setSearchText_(this.textInput_.value);
         this.search(this.preserveSelected);
@@ -297,9 +297,8 @@ export class WorkspaceSearch {
 
   /**
    * Selects the previous block.
-   * @private
    */
-  previous_() {
+  previous() {
     if (!this.blocks_.length) {
       return;
     }
@@ -308,9 +307,8 @@ export class WorkspaceSearch {
 
   /**
    * Selects the next block.
-   * @private
    */
-  next_() {
+  next() {
     if (!this.blocks_.length) {
       return;
     }
