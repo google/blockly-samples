@@ -349,7 +349,9 @@ export class WorkspaceSearch {
     if (!this.blocks_.length) {
       return;
     }
-    this.unhighlightCurrentSelection_(this.currentBlock_);
+    if (this.currentBlock_) {
+      this.unhighlightCurrentSelection_(this.currentBlock_);
+    }
     this.currentBlockIndex_ =
         (index % this.blocks_.length + this.blocks_.length) %
         this.blocks_.length;
@@ -478,7 +480,9 @@ export class WorkspaceSearch {
    */
   clearBlocks() {
     this.unhighlightSearchGroup(this.blocks_);
-    this.unhighlightCurrentSelection_(this.currentBlock_);
+    if (this.currentBlock_) {
+      this.unhighlightCurrentSelection_(this.currentBlock_);
+    }
     this.currentBlock_ = null;
     this.currentBlockIndex_ = -1;
     this.blocks_ = [];
@@ -503,15 +507,13 @@ export class WorkspaceSearch {
    * @protected
    */
   highlightCurrentSelection_(currentBlock) {
-    blocks.forEach(function(block) {
-      const blockPath = block.pathObject.svgPath;
-      Blockly.utils.dom.addClass(blockPath, 'search-highlight');
-    });
+    const path = currentBlock.pathObject.svgPath;
+    Blockly.utils.dom.addClass(path, 'search-current');
   }
 
   /**
    * Removes "current selection" highlight from provided block.
-   * @param {!Blockly.BlockSvg} currentBlock The block to unhighlight.
+   * @param {Blockly.BlockSvg} currentBlock The block to unhighlight.
    * @protected
    */
   unhighlightCurrentSelection_(currentBlock) {
