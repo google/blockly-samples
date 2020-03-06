@@ -46,7 +46,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "peerDependencies": {
-    "blockly": ">=3.20200123.0"
+    "blockly": ">=3.20200123.0 <4"
   },
   "publishConfig": {
     "access": "public",
