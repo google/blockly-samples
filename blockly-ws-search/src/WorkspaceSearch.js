@@ -335,9 +335,6 @@ export class WorkspaceSearch {
    */
   setSearchText_(text) {
     this.searchText_ = text.trim();
-    if (!this.caseSensitive) {
-      this.searchText_ =  this.searchText_.toLowerCase();
-    }
   }
 
   /**
@@ -495,9 +492,8 @@ export class WorkspaceSearch {
   /**
    * Returns blocks that match the given search text.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to search.
-   * @param {string} searchText The search text. Note if the search is case
-   *    insensitive, this will be passed already converted to lowercase letters.
-   * @param {boolean} caseSensitive Whether the search is caseSensitive.
+   * @param {string} searchText The search text.
+   * @param {boolean} caseSensitive Whether the search should be case sensitive.
    * @return {!Array.<Blockly.BlockSvg>} blocks The blocks that match the search
    *    text.
    * @protected
@@ -505,6 +501,9 @@ export class WorkspaceSearch {
   getMatchingBlocks_(workspace, searchText, caseSensitive) {
     if (!searchText) {
       return [];
+    }
+    if (!this.caseSensitive) {
+      searchText = searchText.toLowerCase();
     }
     const searchGroup = this.getSearchPool_(workspace);
     return searchGroup.filter(
