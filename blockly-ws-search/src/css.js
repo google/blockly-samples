@@ -6,6 +6,7 @@
 
 /**
  * @fileoverview Styling for workspace search.
+ * @author aschmiedt@google.com (Abby Schmiedt)
  * @author kozbial@google.com (Monica Kozbial)
  */
 
