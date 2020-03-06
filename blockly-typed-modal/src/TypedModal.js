@@ -9,8 +9,6 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-import { injectSearchCss } from './css.js';
-import * as Blockly from 'blockly/core';
 
 export class TypedVariableModal {
   /**
@@ -33,8 +31,9 @@ export class TypedVariableModal {
      * @private
      */
     this.types_ = types;
+    var that = this;
     this.workspace_.registerButtonCallback('CREATE_VARIABLE', function(button) {
-      Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace());
+      that.show();
     });
 
 
