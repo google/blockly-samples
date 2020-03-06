@@ -352,7 +352,7 @@ export class WorkspaceSearch {
         this.blocks_.length;
     this.currentBlock_ = this.blocks_[this.currentBlockIndex_];
     this.highlightCurrentSelection_(this.currentBlock_);
-    this.updateCursor_();
+    this.updateCursor_(this.currentBlock_);
     this.scrollToVisible_(this.currentBlock_);
   }
 
@@ -361,7 +361,7 @@ export class WorkspaceSearch {
    */
   open() {
     this.setVisible(true);
-    this.updateMarker_();
+    this.markCurrentPosition_();
     this.textInput_.focus();
     if (this.searchText_) {
       this.searchAndHighlight();
@@ -371,7 +371,7 @@ export class WorkspaceSearch {
   /**
    * Marks the user's current position when opening the search bar.
    */
-  updateMarker_() {
+  markCurrentPosition_() {
     const marker = this.workspace_.getMarker(Blockly.navigation.MARKER_NAME);
     if (this.workspace_.keyboardAccessibilityMode && marker &&
         !marker.getCurNode()) {
@@ -500,11 +500,12 @@ export class WorkspaceSearch {
   /**
    * Updates the location of the cursor if the user is in keyboard accessibility
    * mode.
+   * @param {!Blockly.BlockSvg} block The block to set the cursor to.
    * @protected
    */
-  updateCursor_() {
+  updateCursor_(block) {
     if (this.workspace_.keyboardAccessibilityMode) {
-      const currAstNode = Blockly.navigation.getTopNode(this.currentBlock_);
+      const currAstNode = Blockly.navigation.getTopNode(block);
       this.workspace_.getCursor().setCurNode(currAstNode);
     }
   }
