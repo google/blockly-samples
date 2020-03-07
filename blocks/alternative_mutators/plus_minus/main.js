@@ -65,7 +65,6 @@ function setAutoUpdate(doAutoUpdating) {
 
     workspace.removeChangeListener(autoUpdater);
   }
-  exportWorkspace();
 }
 
 function autoUpdater(e) {
