@@ -184,7 +184,7 @@ export class WorkspaceSearch {
   /**
    * Add a button to the action div. This must be called after the init function
    * has been called.
-   * @param {HTMLButtonElement} btn The button to add the event listener to.
+   * @param {!HTMLButtonElement} btn The button to add the event listener to.
    * @param {!Function} onClickFn The function to call when the user clicks on 
    *     or hits enter on the button.
    */
@@ -207,7 +207,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the next block in the list.
-   * @return {HTMLButtonElement} The next button.
+   * @return {?HTMLButtonElement} The next button.
    * @protected
    */
   createNextBtn_() {
@@ -216,7 +216,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the previous block in the list.
-   * @return {HTMLButtonElement} The previous button.
+   * @return {?HTMLButtonElement} The previous button.
    * @protected
    */
   createPreviousBtn_() {
@@ -225,7 +225,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used for closing the search bar.
-   * @return {!HTMLElement} A button for closing the search bar.
+   * @return {?HTMLElement} A button for closing the search bar.
    * @protected
    */
   createCloseBtn_() {
