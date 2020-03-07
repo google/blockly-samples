@@ -536,7 +536,10 @@ procedureDefMutator = {
 
   updateShape_: function(names, ids) {
     // In this case it is easiest to just reset and build from scratch.
-    for (var i = 0, id; (id = this.paramIds_[i]); i++) {
+
+    // We need to remove params in reverse order so that it doesn't mess up
+    // ass removeParam_ modifies our arrays.
+    for (var i = this.paramIds_.length - 1, id; (id = this.paramIds_[i]); i--) {
       this.removeParam_(id);
     }
 

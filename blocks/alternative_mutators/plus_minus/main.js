@@ -14,6 +14,10 @@ function start() {
   parseArguments();
   workspace = Blockly.inject('blocklyDiv', options);
   restoreSessionStorage();
+
+  workspace.addChangeListener(function(e) {
+    console.log(e);
+  })
 }
 
 document.addEventListener("DOMContentLoaded", function () { start() });
