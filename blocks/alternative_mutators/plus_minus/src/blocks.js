@@ -516,9 +516,9 @@ procedureDefMutator = {
       if (childNode.nodeName.toLowerCase() != 'arg') {
         continue;
       }
-      names[i] = childNode.getAttribute('name');
-      ids[i] = childNode.getAttribute('varid') ||
-          childNode.getAttribute('varId');
+      names.push(childNode.getAttribute('name'));
+      ids.push(childNode.getAttribute('varid') ||
+          childNode.getAttribute('varId'));
     }
     this.updateShape_(names, ids);
   },
