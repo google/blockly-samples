@@ -436,7 +436,7 @@ Blockly.Extensions.registerMixin('get_procedure_def_no_return', getDefNoReturn);
 
 getDefReturn = {
   getProcedureDef: function() {
-    return [this.getFieldValue('NAME'), this.arguments_, false];
+    return [this.getFieldValue('NAME'), this.arguments_, true];
   },
   callType_: 'procedures_callreturn'
 };
@@ -456,7 +456,7 @@ procedureContextMenu = {
     var xml = Blockly.utils.xml.createElement('block');
     xml.setAttribute('type', this.callType_);
     xml.appendChild(this.mutationToDom());
-    var callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+    var callback = Blockly.ContextMenu.callbackFactory(this, xml);
 
     options.push({
       enabled: true,
@@ -464,7 +464,7 @@ procedureContextMenu = {
       callback: callback
     });
 
-    if (this.isCollapsed) {
+    if (this.isCollapsed()) {
       return;
     }
 
