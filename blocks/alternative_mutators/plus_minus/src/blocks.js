@@ -561,15 +561,16 @@ procedureDefMutator = {
 
     var name = opt_name || Blockly.Variables.generateUniqueNameFromOptions(
         Blockly.Procedures.DEFAULT_ARG, this.arguments_);
-    var id = opt_id || Blockly.utils.genUid();
+    var variable = Blockly.Variables.getOrCreateVariablePackage(
+        this.workspace, opt_id, name, '');
+    var id = variable.getId();
 
     this.addVarInput_(name, id);
     this.moveInputBefore(id, 'STACK');
 
     this.arguments_.push(name);
     this.paramIds_.push(id);
-    this.argumentVarModels_.push(Blockly.Variables.getOrCreateVariablePackage(
-        this.workspace, id, name, ''));
+    this.argumentVarModels_.push(variable);
   },
 
   removeParam_: function(id) {
