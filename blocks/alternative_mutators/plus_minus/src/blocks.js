@@ -587,6 +587,7 @@ procedureDefMutator = {
 
   addVarInput_: function(name, id) {
     var nameField = new Blockly.FieldTextInput(name, this.validator_);
+    nameField.onFinishEditing_ = this.finishEditing_.bind(nameField);
     this.appendDummyInput(id)
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new plusMinus.FieldMinus(id))
@@ -619,6 +620,18 @@ procedureDefMutator = {
     var variable = sourceBlock.workspace.getVariableById(this.name);
     if (variable.name != newName) {
       sourceBlock.workspace.renameVariableById(this.name, newName);
+      Blockly.Procedures.mutateCallers(sourceBlock);
+    }
+  },
+
+  /**
+   * @this {Blockly.FieldTextInput}
+   */
+  finishEditing_: function(finalName) {
+    var sourceBlock = this.getSourceBlock();
+    var variable = sourceBlock.workspace.getVariableById(this.name);
+    if (variable.name != finalName) {
+      sourceBlock.workspace.renameVariableById(this.name, finalName);
       Blockly.Procedures.mutateCallers(sourceBlock);
     }
   },
