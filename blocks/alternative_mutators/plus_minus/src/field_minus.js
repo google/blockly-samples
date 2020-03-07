@@ -19,7 +19,7 @@
 plusMinus.FieldMinus = function(opt_args) {
   this.args_ = opt_args;
   return plusMinus.FieldMinus.superClass_.constructor.call(
-      this, 'media/minus.svg', 15, 15, '+');
+      this, 'media/minus.svg', 15, 15, '');
 };
 Blockly.utils.object.inherits(plusMinus.FieldMinus, Blockly.FieldImage);
 
