@@ -30,8 +30,8 @@
   ],
   "scripts": {
     "clean": "rm -rf $npm_package_directories_dist",
-    "build": "webpack --display-error-details --config webpack.config.js\n",
-    "prepare": "npm run clean && npm run build",
+    "build": "webpack --display-error-details --env.mode=development",
+    "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
     "test": "webpack-dev-server"
   },
   "devDependencies": {
@@ -39,8 +39,6 @@
     "@babel/preset-env": "^7.8.6",
     "babel-loader": "^8.0.6",
     "blockly": "^3.20200123.1",
-    "http-server": "^0.12.1",
-    "install-peers-cli": "^2.2.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

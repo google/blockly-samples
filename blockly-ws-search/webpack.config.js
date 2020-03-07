@@ -11,39 +11,42 @@
 const path = require('path');
 const webpack = require('webpack');
 
-module.exports = {
-    target: 'web',
-    mode: 'production',
-    entry: './src/WorkspaceSearch.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'workspace-search.umd.js',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        globalObject: 'this'
-    },
-    module: {
-        rules: [{
-            test: /\.js$/,
-            exclude: /(node_modules)/,
-            use: {
-                loader: "babel-loader",
-                options: {
-                    presets: ["@babel/preset-env"]
-                }
-            }
-        }]
-    },
-    devServer: {
-        openPage: 'test',
-        open: true
-    },
-    externals: {
-        'blockly/core': {
-            root: 'Blockly',
-            commonjs: 'blockly/core',
-            commonjs2: 'blockly/core',
-            amd: 'blockly/core'
+module.exports = env => {
+    return {
+        target: 'web',
+        mode: env.mode,
+        entry: './src/WorkspaceSearch.js',
+        devtool: 'source-map',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'workspace-search.umd.js',
+            libraryTarget: 'umd',
+            umdNamedDefine: true,
+            globalObject: 'this'
         },
+        module: {
+            rules: [{
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env"]
+                    }
+                }
+            }]
+        },
+        devServer: {
+            openPage: 'test',
+            open: true
+        },
+        externals: {
+            'blockly/core': {
+                root: 'Blockly',
+                commonjs: 'blockly/core',
+                commonjs2: 'blockly/core',
+                amd: 'blockly/core'
+            },
+        }
     }
 };

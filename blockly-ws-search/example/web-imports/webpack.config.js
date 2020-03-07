@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './src/index.js',
   output: {
     filename: 'main.js',
@@ -14,5 +14,14 @@ module.exports = {
   },
   resolve: {
     symlinks: false
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
+      }
+    ]
   }
 };
