@@ -506,10 +506,21 @@ procedureDefMutator = {
       parameter.setAttribute('paramId', this.paramIds_[i]);
       container.appendChild(parameter);
     }
+
+    // Not used by this block, but necessary if switching back and forth
+    // between this mutator UI and the default UI.
+    if (!this.hasStatements_) {
+      container.setAttribute('statements', 'false');
+    }
+
     return container;
   },
 
   domToMutation: function(xmlElement) {
+    // Not used by this block, but necessary if switching back and forth
+    // between this mutator UI and the default UI.
+    this.hasStatements_ = xmlElement.getAttribute('statements') !== 'false';
+
     var names = [];
     var ids = [];
     for (var i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
