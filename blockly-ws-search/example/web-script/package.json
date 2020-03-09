@@ -12,8 +12,6 @@
     "blockly-ws-search": "file:../.."
   },
   "devDependencies": {
-    "http-server": "^0.12.1",
-    "install": "^0.13.0",
-    "npm": "^6.14.1"
+    "http-server": "^0.12.1"
   }
 }

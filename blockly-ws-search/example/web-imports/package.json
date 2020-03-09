@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "preinstall": "cd ../.. && npm install",
-    "prepare": "webpack --display-error-details --config webpack.config.js\n",
+    "prepare": "webpack --display-error-details",
     "clean": "rm $npm_package_directories_dist/main.js",
     "start": "webpack-dev-server"
   },
@@ -17,8 +17,7 @@
     "blockly": "^3.20200123.1"
   },
   "devDependencies": {
-    "install": "^0.13.0",
-    "npm": "^6.14.1",
+    "source-map-loader": "^0.2.4",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
