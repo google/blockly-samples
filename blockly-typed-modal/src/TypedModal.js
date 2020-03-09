@@ -9,12 +9,15 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-
+/**
+ * Class for workspace search.
+ */
 export class TypedVariableModal {
   /**
-   * Class for workspace search.
-   * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
-   * @param {Array.<Array.<string>>} types The types of the variable.
+   * Constructor for creating a typed variable modal.
+   * @param {Blockly.WorkspaceSvg} workspace  The workspace to add a typed variable modal to.
+   * @param {Array<Array<string>>} types  An array of arrays that contain display name and type.
+   *     Example: [["Animal", "ANIMAL"], ["Mineral", "MINERAL"]]
    */
   constructor(workspace, types) {
     /**
@@ -31,27 +34,25 @@ export class TypedVariableModal {
      * @private
      */
     this.types_ = types;
-    var that = this;
+    const that = this;
     this.workspace_.registerButtonCallback('CREATE_VARIABLE', function(button) {
       that.show();
     });
-
-
   }
 
-  /** 
+  /**
    * Hide the modal.
    */
-  hide () {
+  hide() {
     console.log("Hidden");
   }
 
   /**
    * Show the modal.
    */
-  show () {
+  show() {
     console.log("Showed");
-    //TODO: Should I take in the variables to display here? 
-    //When would they want to set the types they have? 
+    // TODO: Should I take in the variables to display here?
+    // When would they want to set the types they have?
   }
 }
