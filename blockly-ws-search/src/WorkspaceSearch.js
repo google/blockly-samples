@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Object responsible for workspace search.
+ * @fileoverview Class responsible for workspace search.
  * @author aschmiedt@google.com (Abby Schmiedt)
  * @author kozbial@google.com (Monica Kozbial)
  */
@@ -17,7 +17,7 @@ import * as Blockly from 'blockly/core';
 export class WorkspaceSearch {
   /**
    * Class for workspace search.
-   * @param {!Blockly.WorkspaceSvg} workspace
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the search bar sits in.
    */
   constructor(workspace) {
     /**
@@ -56,7 +56,7 @@ export class WorkspaceSearch {
     this.textInputPlaceholder_ = 'Search';
 
     /**
-     * A list of blocks that came up in the search
+     * A list of blocks that came up in the search.
      * @type {!Array.<Blockly.BlockSvg>}
      * @protected
      */
@@ -108,7 +108,7 @@ export class WorkspaceSearch {
   init() {
     injectSearchCss();
     this.createDom_();
-    this.setVisible(false);
+    this.setVisible_(false);
   }
 
   /**
@@ -130,23 +130,23 @@ export class WorkspaceSearch {
      *   </div>
      * </div>
      */
-    const parentSvg = this.workspace_.getParentSvg();
-    parentSvg.parentNode.addEventListener('keydown',
+    const injectionDiv = this.workspace_.getInjectionDiv();
+    injectionDiv.addEventListener('keydown',
         evt => this.onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
 
     this.htmlDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.htmlDiv_, 'ws-search');
-    this.positionSearchBar();
+    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-ws-search');
+    this.positionSearchBar_();
 
     const searchContainer = document.createElement('div');
-    Blockly.utils.dom.addClass(searchContainer, 'ws-search-container');
+    Blockly.utils.dom.addClass(searchContainer, 'blockly-ws-search-container');
 
     const searchContent = document.createElement('div');
-    Blockly.utils.dom.addClass(searchContent, 'ws-search-content');
+    Blockly.utils.dom.addClass(searchContent, 'blockly-ws-search-content');
     searchContainer.append(searchContent);
 
     const inputWrapper = document.createElement('div');
-    Blockly.utils.dom.addClass(inputWrapper, 'ws-search-input');
+    Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement_ = this.createTextInput_();
     this.inputElement_.addEventListener('keydown',
         evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
@@ -157,7 +157,7 @@ export class WorkspaceSearch {
     searchContent.append(inputWrapper);
 
     this.actionDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.actionDiv_, 'ws-search-actions');
+    Blockly.utils.dom.addClass(this.actionDiv_, 'blockly-ws-search-actions');
     searchContent.append(this.actionDiv_);
 
     const nextBtn = this.createNextBtn_();
@@ -178,7 +178,7 @@ export class WorkspaceSearch {
 
     this.htmlDiv_.append(searchContainer);
 
-    parentSvg.parentNode.insertBefore(this.htmlDiv_, parentSvg);
+    injectionDiv.insertBefore(this.htmlDiv_, this.workspace_.getParentSvg());
   }
 
   /**
@@ -211,7 +211,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createNextBtn_() {
-    return this.createBtn('next-btn', 'Find next');
+    return this.createBtn('blockly-next-btn', 'Find next');
   }
 
   /**
@@ -220,7 +220,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createPreviousBtn_() {
-    return this.createBtn('previous-btn', 'Find previous');
+    return this.createBtn('blockly-previous-btn', 'Find previous');
   }
 
   /**
@@ -229,7 +229,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createCloseBtn_() {
-    return this.createBtn('close-btn', 'Close search bar');
+    return this.createBtn('blockly-close-btn', 'Close search bar');
   }
 
   /**
@@ -242,7 +242,7 @@ export class WorkspaceSearch {
     // Create a span holding text to be used for accessibility purposes.
     const textSpan = document.createElement('span');
     textSpan.innerText = text;
-    Blockly.utils.dom.addClass(textSpan, 'btn-text');
+    Blockly.utils.dom.addClass(textSpan, 'blockly-btn-text');
 
     // Create the button
     const btn = document.createElement('button');
@@ -275,8 +275,9 @@ export class WorkspaceSearch {
 
   /**
    * Positions the search bar based on where the workspace's toolbox is.
+   * @protected
    */
-  positionSearchBar() {
+  positionSearchBar_() {
     // TODO: Handle positioning search bar when window is resized.
     const metrics = this.workspace_.getMetrics();
     if (this.workspace_.RTL) {
@@ -333,6 +334,7 @@ export class WorkspaceSearch {
     if ((e.ctrlKey || e.metaKey) && e.key === "f") {
       this.open();
       e.preventDefault();
+      e.stopPropagation();
     }
   }
 
@@ -340,9 +342,6 @@ export class WorkspaceSearch {
    * Selects the previous block.
    */
   previous() {
-    if (!this.blocks_.length) {
-      return;
-    }
     this.setCurrentBlock_(this.currentBlockIndex_ - 1);
   }
 
@@ -350,9 +349,6 @@ export class WorkspaceSearch {
    * Selects the next block.
    */
   next() {
-    if (!this.blocks_.length) {
-      return;
-    }
     this.setCurrentBlock_(this.currentBlockIndex_ + 1);
   }
 
@@ -401,7 +397,7 @@ export class WorkspaceSearch {
    * Opens the search bar.
    */
   open() {
-    this.setVisible(true);
+    this.setVisible_(true);
     this.markCurrentPosition_();
     this.inputElement_.focus();
     if (this.searchText_) {
@@ -411,6 +407,7 @@ export class WorkspaceSearch {
 
   /**
    * Marks the user's current position when opening the search bar.
+   * @private
    */
   markCurrentPosition_() {
     const marker = this.workspace_.getMarker(Blockly.navigation.MARKER_NAME);
@@ -425,7 +422,7 @@ export class WorkspaceSearch {
    * Closes the search bar.
    */
   close() {
-    this.setVisible(false);
+    this.setVisible_(false);
     this.workspace_.markFocused();
     this.clearBlocks();
   }
@@ -433,8 +430,9 @@ export class WorkspaceSearch {
   /**
    * Shows or hides the workspace search bar.
    * @param {boolean} show Whether to set the search bar as visible.
+   * @private
    */
-  setVisible(show) {
+  setVisible_(show) {
     this.htmlDiv_.style.display = show ? 'flex' : 'none';
   }
 
@@ -449,7 +447,7 @@ export class WorkspaceSearch {
     this.clearBlocks();
     this.blocks_ = this.getMatchingBlocks_(
         this.workspace_, this.searchText_, this.caseSensitive);
-    this.highlightSearchGroup(this.blocks_);
+    this.highlightSearchGroup_(this.blocks_);
     let currentIdx = 0;
     if (preserveCurrent) {
       currentIdx = this.blocks_.indexOf(oldCurrentBlock);
@@ -468,7 +466,7 @@ export class WorkspaceSearch {
     const blocks = (
         /** @type {!Array.<!Blockly.BlockSvg>} */
         workspace.getAllBlocks(true));
-    return blocks.filter(function(block) {
+    return blocks.filter(block => {
       // Filter out blocks contained inside of another collapsed block.
       const surroundParent = block.getSurroundParent();
       return !surroundParent || !surroundParent.isCollapsed();
@@ -491,8 +489,8 @@ export class WorkspaceSearch {
       blockText = block.toString();
     } else {
       const topBlockText = [];
-      block.inputList.forEach(function(input) {
-        input.fieldRow.forEach(function(field) {
+      block.inputList.forEach(input => {
+        input.fieldRow.forEach(field => {
           topBlockText.push(field.getText());
         });
       });
@@ -529,7 +527,7 @@ export class WorkspaceSearch {
    * Clears the selection group and current block.
    */
   clearBlocks() {
-    this.unhighlightSearchGroup(this.blocks_);
+    this.unhighlightSearchGroup_(this.blocks_);
     if (this.currentBlock_) {
       this.unhighlightCurrentSelection_(this.currentBlock_);
     }
@@ -559,7 +557,7 @@ export class WorkspaceSearch {
    */
   highlightCurrentSelection_(currentBlock) {
     const path = currentBlock.pathObject.svgPath;
-    Blockly.utils.dom.addClass(path, 'search-current');
+    Blockly.utils.dom.addClass(path, 'blockly-search-current');
   }
 
   /**
@@ -569,7 +567,7 @@ export class WorkspaceSearch {
    */
   unhighlightCurrentSelection_(currentBlock) {
     const path = currentBlock.pathObject.svgPath;
-    Blockly.utils.dom.removeClass(path, 'search-current');
+    Blockly.utils.dom.removeClass(path, 'blockly-search-current');
   }
 
   /**
@@ -577,10 +575,10 @@ export class WorkspaceSearch {
    * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to highlight.
    * @protected
    */
-  highlightSearchGroup(blocks) {
-    blocks.forEach(function(block) {
+  highlightSearchGroup_(blocks) {
+    blocks.forEach(block => {
       const blockPath = block.pathObject.svgPath;
-      Blockly.utils.dom.addClass(blockPath, 'search-highlight');
+      Blockly.utils.dom.addClass(blockPath, 'blockly-search-highlight');
     });
   }
 
@@ -589,10 +587,10 @@ export class WorkspaceSearch {
    * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to unhighlight.
    * @protected
    */
-  unhighlightSearchGroup(blocks) {
-    blocks.forEach(function(block) {
+  unhighlightSearchGroup_(blocks) {
+    blocks.forEach(block => {
       const blockPath = block.pathObject.svgPath;
-      Blockly.utils.dom.removeClass(blockPath, 'search-highlight');
+      Blockly.utils.dom.removeClass(blockPath, 'blockly-search-highlight');
     });
   }
 

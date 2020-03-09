@@ -7,15 +7,17 @@ This package provides an implementation of workspace search for a Blockly worksp
 ## Installation
 
 ```
-npm install blockly-ws-search
+npm install @blockly/plugin-workspace-search
 ```
 
 ## Usage
 
 ```js
-var WorkSpaceSearch = require('blockly-ws-search');
+var WorkSpaceSearch = require('@blockly/plugin-workspace-search');
 
-var workspace = Blockly.inject('blocklyDiv' + suffix, options);
+// Dictionary of options used to initialize the workspace.
+var options  = {};
+var workspace = Blockly.inject('blocklyDiv', options);
 var workspaceSearch = new WorkspaceSearch(workspace);
 workspaceSearch.init();
 ```

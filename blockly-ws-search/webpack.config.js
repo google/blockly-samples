@@ -21,7 +21,6 @@ module.exports = env => {
             path: path.resolve(__dirname, 'dist'),
             filename: 'workspace-search.umd.js',
             libraryTarget: 'umd',
-            umdNamedDefine: true,
             globalObject: 'this'
         },
         module: {

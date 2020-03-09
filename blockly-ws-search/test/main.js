@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Example of using WorkspaceSearch with Blockly.
+ * @fileoverview Testing playground for WorkspaceSearch.
  * @author kozbial@gmail.com (Monica Kozbial)
  */
 
