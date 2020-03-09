@@ -32,14 +32,21 @@ export class WorkspaceSearch {
      * @type {?HTMLElement}
      * @private
      */
-    this.HtmlDiv_ = null;
+    this.htmlDiv_ = null;
+
+    /**
+     * The div that holds the search bar actions.
+     * @type {?HTMLElement}
+     * @protected
+     */
+    this.actionDiv_ = null;
 
     /**
      * The text input for the search bar.
      * @type {?HTMLInputElement}
      * @private
      */
-    this.textInput_ = null;
+    this.inputElement_ = null;
 
     /**
      * The placeholder text for the search bar input.
@@ -127,8 +134,8 @@ export class WorkspaceSearch {
     parentSvg.parentNode.addEventListener('keydown',
         evt => this.onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
 
-    this.HtmlDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.HtmlDiv_, 'ws-search');
+    this.htmlDiv_ = document.createElement('div');
+    Blockly.utils.dom.addClass(this.htmlDiv_, 'ws-search');
     this.positionSearchBar();
 
     const searchContainer = document.createElement('div');
@@ -140,17 +147,50 @@ export class WorkspaceSearch {
 
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'ws-search-input');
-    this.textInput_ = this.createTextInput_();
-    inputWrapper.append(this.textInput_);
+    this.inputElement_ = this.createTextInput_();
+    this.inputElement_.addEventListener('keydown',
+        evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
+    this.inputElement_.addEventListener('input', () => this.onInput_());
+    this.inputElement_.addEventListener('click',
+        () => this.searchAndHighlight(this.preserveSelected));
+    inputWrapper.append(this.inputElement_);
     searchContent.append(inputWrapper);
 
-    const actionDiv = this.createActionsDiv_();
-    searchContent.append(actionDiv);
-    searchContainer.append(this.createCloseBtn_());
+    this.actionDiv_ = document.createElement('div');
+    Blockly.utils.dom.addClass(this.actionDiv_, 'ws-search-actions');
+    searchContent.append(this.actionDiv_);
 
-    this.HtmlDiv_.append(searchContainer);
+    const nextBtn = this.createNextBtn_();
+    if (nextBtn) {
+      this.addActionBtn(nextBtn, () => this.next());
+    }
 
-    parentSvg.parentNode.insertBefore(this.HtmlDiv_, parentSvg);
+    const previousBtn = this.createPreviousBtn_();
+    if (previousBtn) {
+      this.addActionBtn(previousBtn, () => this.previous());
+    }
+
+    const closeBtn = this.createCloseBtn_();
+    if (closeBtn) {
+      this.addBtnListener_(closeBtn, () => this.close())
+      searchContainer.append(closeBtn);
+    }
+
+    this.htmlDiv_.append(searchContainer);
+
+    parentSvg.parentNode.insertBefore(this.htmlDiv_, parentSvg);
+  }
+
+  /**
+   * Add a button to the action div. This must be called after the init function
+   * has been called.
+   * @param {!HTMLButtonElement} btn The button to add the event listener to.
+   * @param {!Function} onClickFn The function to call when the user clicks on 
+   *     or hits enter on the button.
+   */
+  addActionBtn(btn, onClickFn) {
+    this.addBtnListener_(btn, onClickFn);
+    this.actionDiv_.append(btn);
   }
 
   /**
@@ -162,30 +202,25 @@ export class WorkspaceSearch {
     let textInput = document.createElement('input');
     textInput.type = 'text';
     textInput.setAttribute('placeholder', this.textInputPlaceholder_);
-    textInput.addEventListener('keydown',
-        evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
-    textInput.addEventListener('input', () => this.onInput_());
-    textInput.addEventListener('click',
-        () => this.searchAndHighlight(this.preserveSelected));
     return textInput;
   }
 
   /**
-   * Creates the div that holds all of the search bar actions.
-   * @return {!HTMLDivElement} A div holding search bar actions.
+   * Creates the button used to get the next block in the list.
+   * @return {!HTMLButtonElement} The next button.
    * @protected
    */
-  createActionsDiv_() {
-    const actions = document.createElement('div');
-    Blockly.utils.dom.addClass(actions, 'ws-search-actions');
-    // Add all the buttons for the search bar
-    const upBtn = this.createBtn_('up-btn', 'Find previous',
-        () => this.previous());
-    const downBtn = this.createBtn_('down-btn', 'Find next',
-        () => this.next());
-    actions.append(upBtn);
-    actions.append(downBtn);
-    return actions;
+  createNextBtn_() {
+    return this.createBtn('next-btn', 'Find next');
+  }
+
+  /**
+   * Creates the button used to get the previous block in the list.
+   * @return {!HTMLButtonElement} The previous button.
+   * @protected
+   */
+  createPreviousBtn_() {
+    return this.createBtn('previous-btn', 'Find previous');
   }
 
   /**
@@ -194,20 +229,16 @@ export class WorkspaceSearch {
    * @protected
    */
   createCloseBtn_() {
-    return this.createBtn_('close-btn', 'Close search bar',
-        () => this.close());
+    return this.createBtn('close-btn', 'Close search bar');
   }
 
   /**
    * Creates a button for the workspace search bar.
    * @param {string} className The class name for the button.
    * @param {string} text The text to display to the screen reader.
-   * @param {!Function} onClickFn The function to call when the user clicks on
-   *    the button.
-   * @return {HTMLButtonElement} The created button.
-   * @private
+   * @return {!HTMLButtonElement} The created button.
    */
-  createBtn_(className, text, onClickFn) {
+  createBtn(className, text) {
     // Create a span holding text to be used for accessibility purposes.
     const textSpan = document.createElement('span');
     textSpan.innerText = text;
@@ -216,6 +247,18 @@ export class WorkspaceSearch {
     // Create the button
     const btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
+    btn.append(textSpan);
+    return btn;
+  }
+
+  /**
+   * Add event listener for clicking and keydown on the given button.
+   * @param {!HTMLButtonElement} btn The button to add the event listener to.
+   * @param {!Function} onClickFn The function to call when the user clicks on 
+   *     or hits enter on the button.
+   * @private
+   */
+  addBtnListener_(btn, onClickFn) {
     btn.addEventListener('click', onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
@@ -228,8 +271,6 @@ export class WorkspaceSearch {
       }
       e.stopPropagation();
     });
-    btn.append(textSpan);
-    return btn;
   }
 
   /**
@@ -239,15 +280,15 @@ export class WorkspaceSearch {
     // TODO: Handle positioning search bar when window is resized.
     const metrics = this.workspace_.getMetrics();
     if (this.workspace_.RTL) {
-      this.HtmlDiv_.style.left = metrics.absoluteLeft + 'px';
+      this.htmlDiv_.style.left = metrics.absoluteLeft + 'px';
     } else {
       if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
-        this.HtmlDiv_.style.right = metrics.toolboxWidth + 'px';
+        this.htmlDiv_.style.right = metrics.toolboxWidth + 'px';
       } else {
-        this.HtmlDiv_.style.right = '0';
+        this.htmlDiv_.style.right = '0';
       }
     }
-    this.HtmlDiv_.style.top = metrics.absoluteTop + 'px';
+    this.htmlDiv_.style.top = metrics.absoluteTop + 'px';
   }
 
   /**
@@ -256,7 +297,7 @@ export class WorkspaceSearch {
    */
   onInput_() {
     if (this.searchOnInput) {
-      const inputValue = this.textInput_.value;
+      const inputValue = this.inputElement_.value;
       if (inputValue !== this.searchText_) {
         this.setSearchText_(inputValue);
         this.searchAndHighlight(this.preserveSelected);
@@ -276,7 +317,7 @@ export class WorkspaceSearch {
       if (this.searchOnInput) {
         this.next();
       } else {
-        this.setSearchText_(this.textInput_.value);
+        this.setSearchText_(this.inputElement_.value);
         this.searchAndHighlight(this.preserveSelected);
       }
     }
@@ -321,8 +362,8 @@ export class WorkspaceSearch {
    */
   setSearchPlaceholder(placeholderText) {
     this.textInputPlaceholder_ = placeholderText;
-    if (this.textInput_) {
-      this.textInput_.setAttribute('placeholder', this.textInputPlaceholder_);
+    if (this.inputElement_) {
+      this.inputElement_.setAttribute('placeholder', this.textInputPlaceholder_);
     }
   }
 
@@ -362,7 +403,7 @@ export class WorkspaceSearch {
   open() {
     this.setVisible(true);
     this.markCurrentPosition_();
-    this.textInput_.focus();
+    this.inputElement_.focus();
     if (this.searchText_) {
       this.searchAndHighlight();
     }
@@ -394,7 +435,7 @@ export class WorkspaceSearch {
    * @param {boolean} show Whether to set the search bar as visible.
    */
   setVisible(show) {
-    this.HtmlDiv_.style.display = show ? 'flex' : 'none';
+    this.htmlDiv_.style.display = show ? 'flex' : 'none';
   }
 
   /**
