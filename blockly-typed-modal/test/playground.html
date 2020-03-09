@@ -6,6 +6,7 @@
 
 
   <script src="../node_modules/blockly/blockly.min.js"></script>
+  <script src="../src/TypedModal.js"></script>
   <script>
     'use strict';
     function start() {
@@ -16,6 +17,7 @@
       workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
       });
+      const typedModal = new TypedVariableModal(workspace);
     }
   </script>
   <style>
