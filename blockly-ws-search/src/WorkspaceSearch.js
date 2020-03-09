@@ -207,7 +207,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the next block in the list.
-   * @return {?HTMLButtonElement} The next button.
+   * @return {!HTMLButtonElement} The next button.
    * @protected
    */
   createNextBtn_() {
@@ -216,7 +216,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the previous block in the list.
-   * @return {?HTMLButtonElement} The previous button.
+   * @return {!HTMLButtonElement} The previous button.
    * @protected
    */
   createPreviousBtn_() {
@@ -225,7 +225,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used for closing the search bar.
-   * @return {?HTMLElement} A button for closing the search bar.
+   * @return {!HTMLElement} A button for closing the search bar.
    * @protected
    */
   createCloseBtn_() {
@@ -236,7 +236,7 @@ export class WorkspaceSearch {
    * Creates a button for the workspace search bar.
    * @param {string} className The class name for the button.
    * @param {string} text The text to display to the screen reader.
-   * @return {HTMLButtonElement} The created button.
+   * @return {!HTMLButtonElement} The created button.
    */
   createBtn(className, text) {
     // Create a span holding text to be used for accessibility purposes.
