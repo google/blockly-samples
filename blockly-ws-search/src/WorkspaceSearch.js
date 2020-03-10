@@ -136,7 +136,7 @@ export class WorkspaceSearch {
 
     const searchContent = document.createElement('div');
     Blockly.utils.dom.addClass(searchContent, 'blockly-ws-search-content');
-    searchContainer.append(searchContent);
+    searchContainer.appendChild(searchContent);
 
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
@@ -146,12 +146,12 @@ export class WorkspaceSearch {
     this.inputElement_.addEventListener('input', () => this.onInput_());
     this.inputElement_.addEventListener('click',
         () => this.searchAndHighlight(this.searchText_, this.preserveSelected));
-    inputWrapper.append(this.inputElement_);
-    searchContent.append(inputWrapper);
+    inputWrapper.appendChild(this.inputElement_);
+    searchContent.appendChild(inputWrapper);
 
     this.actionDiv_ = document.createElement('div');
     Blockly.utils.dom.addClass(this.actionDiv_, 'blockly-ws-search-actions');
-    searchContent.append(this.actionDiv_);
+    searchContent.appendChild(this.actionDiv_);
 
     const nextBtn = this.createNextBtn_();
     if (nextBtn) {
@@ -166,10 +166,10 @@ export class WorkspaceSearch {
     const closeBtn = this.createCloseBtn_();
     if (closeBtn) {
       this.addBtnListener_(closeBtn, () => this.close())
-      searchContainer.append(closeBtn);
+      searchContainer.appendChild(closeBtn);
     }
 
-    this.htmlDiv_.append(searchContainer);
+    this.htmlDiv_.appendChild(searchContainer);
 
     injectionDiv.insertBefore(this.htmlDiv_, this.workspace_.getParentSvg());
   }
@@ -196,7 +196,7 @@ export class WorkspaceSearch {
    */
   addActionBtn(btn, onClickFn) {
     this.addBtnListener_(btn, onClickFn);
-    this.actionDiv_.append(btn);
+    this.actionDiv_.appendChild(btn);
   }
 
   /**
@@ -496,7 +496,7 @@ export class WorkspaceSearch {
     if (!caseSensitive) {
       blockText = blockText.toLowerCase();
     }
-    return blockText.includes(searchText);
+    return blockText.indexOf(searchText) > -1;
   }
 
   /**
