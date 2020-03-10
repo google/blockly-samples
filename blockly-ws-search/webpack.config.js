@@ -19,6 +19,7 @@ module.exports = env => {
         devtool: 'source-map',
         output: {
             path: path.resolve(__dirname, 'dist'),
+            publicPath: '/dist/',
             filename: 'workspace-search.umd.js',
             libraryTarget: 'umd',
             globalObject: 'this'
@@ -37,6 +38,7 @@ module.exports = env => {
         },
         devServer: {
             openPage: 'test',
+            port: 3000,
             open: true
         },
         externals: {
