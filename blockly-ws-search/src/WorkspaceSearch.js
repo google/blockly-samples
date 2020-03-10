@@ -217,7 +217,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createNextBtn_() {
-    return this.createBtn_('blockly-next-btn', 'Find next');
+    return this.createBtn_('blockly-ws-search-next-btn', 'Find next');
   }
 
   /**
@@ -226,7 +226,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createPreviousBtn_() {
-    return this.createBtn_('blockly-previous-btn', 'Find previous');
+    return this.createBtn_('blockly-ws-search-previous-btn', 'Find previous');
   }
 
   /**
@@ -235,7 +235,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createCloseBtn_() {
-    return this.createBtn_('blockly-close-btn', 'Close search bar');
+    return this.createBtn_('blockly-ws-search-close-btn', 'Close search bar');
   }
 
   /**
