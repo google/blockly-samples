@@ -265,10 +265,10 @@ export class WorkspaceSearch {
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
     btn.addEventListener('keydown', e => {
-      if (e.key === "Enter") {
+      if (e.keyCode == Blockly.utils.KeyCodes.ENTER) {
         onClickFn(e);
         e.preventDefault();  
-      } else if (e.key === "Escape") {
+      } else if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
         this.close();
       }
       e.stopPropagation();
@@ -313,9 +313,9 @@ export class WorkspaceSearch {
    * @private
    */
   onKeyDown_(e) {
-    if (e.key === 'Escape') {
+    if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
       this.close();
-    } else if (e.key === 'Enter') {
+    } else if (e.keyCode == Blockly.utils.KeyCodes.ENTER) {
       if (this.searchOnInput) {
         this.next();
       } else {
@@ -334,7 +334,7 @@ export class WorkspaceSearch {
    */
   onWorkspaceKeyDown_(e) {
     // TODO: Look into handling keyboard shortcuts on workspace in Blockly.
-    if ((e.ctrlKey || e.metaKey) && e.key === "f") {
+    if ((e.ctrlKey || e.metaKey) && e.keyCode == Blockly.utils.KeyCodes.F) {
       this.open();
       e.preventDefault();
       e.stopPropagation();
