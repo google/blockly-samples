@@ -1,4 +1,4 @@
-# @blockly/field-date
+# @blockly/field-date [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) date picker field that uses the Google Closure date picker ([goog.ui.DatePicker](https://google.github.io/closure-library/source/closure/goog/demos/)).
 
