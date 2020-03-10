@@ -300,7 +300,7 @@ export class WorkspaceSearch {
    */
   onInput_() {
     if (this.searchOnInput) {
-      const inputValue = this.inputElement_.value;
+      const inputValue = this.inputElement_.value.trim();
       if (inputValue !== this.searchText_) {
         this.searchAndHighlight(inputValue, this.preserveSelected);
       }
@@ -319,7 +319,10 @@ export class WorkspaceSearch {
       if (this.searchOnInput) {
         this.next();
       } else {
-        this.searchAndHighlight(this.inputElement_.value, this.preserveSelected);
+        const inputValue = this.inputElement_.value.trim();
+        if (inputValue !== this.searchText_) {
+          this.searchAndHighlight(inputValue, this.preserveSelected);
+        }
       }
     }
   }
