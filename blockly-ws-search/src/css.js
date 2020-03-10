@@ -46,6 +46,7 @@ const ARROW_UP_ARROW_SVG_DATAURI =
  * @type {Array.<string>}
  */
 const CSS_CONTENT = [
+  /* eslint-disable indent */
   'path.blocklyPath.search-highlight {',
     'fill: black;',
   '}',
@@ -85,6 +86,7 @@ const CSS_CONTENT = [
   '.blockly-ws-search-content {',
     'display: flex;',
   '}',
+  /* eslint-enable indent */
 ];
 
 /**

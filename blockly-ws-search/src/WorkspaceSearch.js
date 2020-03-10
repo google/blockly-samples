@@ -17,7 +17,8 @@ import * as Blockly from 'blockly/core';
 export class WorkspaceSearch {
   /**
    * Class for workspace search.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace the search bar sits in.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the search bar sits
+   *     in.
    */
   constructor(workspace) {
     /**
@@ -165,7 +166,7 @@ export class WorkspaceSearch {
 
     const closeBtn = this.createCloseBtn_();
     if (closeBtn) {
-      this.addBtnListener_(closeBtn, () => this.close())
+      this.addBtnListener_(closeBtn, () => this.close());
       searchContainer.appendChild(closeBtn);
     }
 
@@ -191,7 +192,7 @@ export class WorkspaceSearch {
    * Add a button to the action div. This must be called after the init function
    * has been called.
    * @param {!HTMLButtonElement} btn The button to add the event listener to.
-   * @param {!Function} onClickFn The function to call when the user clicks on 
+   * @param {!Function} onClickFn The function to call when the user clicks on
    *     or hits enter on the button.
    */
   addActionBtn(btn, onClickFn) {
@@ -231,7 +232,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used for closing the search bar.
-   * @return {!HTMLElement} A button for closing the search bar.
+   * @return {!HTMLButtonElement} A button for closing the search bar.
    * @protected
    */
   createCloseBtn_() {
@@ -256,8 +257,8 @@ export class WorkspaceSearch {
   /**
    * Add event listener for clicking and keydown on the given button.
    * @param {!HTMLButtonElement} btn The button to add the event listener to.
-   * @param {!Function} onClickFn The function to call when the user clicks on 
-   *     or hits enter on the button.
+   * @param {!Function} onClickFn The function to call when the user clicks on
+   *      or hits enter on the button.
    * @private
    */
   addBtnListener_(btn, onClickFn) {
@@ -265,10 +266,10 @@ export class WorkspaceSearch {
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
     btn.addEventListener('keydown', e => {
-      if (e.keyCode == Blockly.utils.KeyCodes.ENTER) {
+      if (e.keyCode === Blockly.utils.KeyCodes.ENTER) {
         onClickFn(e);
-        e.preventDefault();  
-      } else if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
+        e.preventDefault();
+      } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
         this.close();
       }
       e.stopPropagation();
@@ -285,7 +286,7 @@ export class WorkspaceSearch {
     if (this.workspace_.RTL) {
       this.htmlDiv_.style.left = metrics.absoluteLeft + 'px';
     } else {
-      if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
+      if (metrics.toolboxPosition === Blockly.TOOLBOX_AT_RIGHT) {
         this.htmlDiv_.style.right = metrics.toolboxWidth + 'px';
       } else {
         this.htmlDiv_.style.right = '0';
@@ -313,9 +314,9 @@ export class WorkspaceSearch {
    * @private
    */
   onKeyDown_(e) {
-    if (e.keyCode == Blockly.utils.KeyCodes.ESC) {
+    if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
       this.close();
-    } else if (e.keyCode == Blockly.utils.KeyCodes.ENTER) {
+    } else if (e.keyCode === Blockly.utils.KeyCodes.ENTER) {
       if (this.searchOnInput) {
         this.next();
       } else {
@@ -334,7 +335,7 @@ export class WorkspaceSearch {
    */
   onWorkspaceKeyDown_(e) {
     // TODO: Look into handling keyboard shortcuts on workspace in Blockly.
-    if ((e.ctrlKey || e.metaKey) && e.keyCode == Blockly.utils.KeyCodes.F) {
+    if ((e.ctrlKey || e.metaKey) && e.keyCode === Blockly.utils.KeyCodes.F) {
       this.open();
       e.preventDefault();
       e.stopPropagation();
@@ -362,7 +363,8 @@ export class WorkspaceSearch {
   setSearchPlaceholder(placeholderText) {
     this.textInputPlaceholder_ = placeholderText;
     if (this.inputElement_) {
-      this.inputElement_.setAttribute('placeholder', this.textInputPlaceholder_);
+      this.inputElement_.setAttribute('placeholder',
+          this.textInputPlaceholder_);
     }
   }
 
@@ -379,7 +381,8 @@ export class WorkspaceSearch {
     if (currentBlock) {
       this.unhighlightCurrentSelection_(currentBlock);
     }
-    this.currentBlockIndex_ = (index % this.blocks_.length + this.blocks_.length) %
+    this.currentBlockIndex_ =
+        (index % this.blocks_.length + this.blocks_.length) %
         this.blocks_.length;
     currentBlock = this.blocks_[this.currentBlockIndex_];
 
@@ -435,7 +438,7 @@ export class WorkspaceSearch {
    * Searches the workspace for the current search term and highlights matching
    * blocks.
    * @param {string} searchText The search text.
-   * @param {boolean=} preserveCurrent Whether to preserve the current block.
+   * @param {boolean=} preserveCurrent Whether to preserve the current block
    *    if it is included in the new matching blocks.
    */
   searchAndHighlight(searchText, preserveCurrent) {
@@ -458,11 +461,11 @@ export class WorkspaceSearch {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get blocks from.
    * @return {!Array.<!Blockly.BlockSvg>} The search pool of blocks to use.
    * @private
-  */
+   */
   getSearchPool_(workspace) {
     const blocks = (
-        /** @type {!Array.<!Blockly.BlockSvg>} */
-        workspace.getAllBlocks(true));
+      /** @type {!Array.<!Blockly.BlockSvg>} */
+      workspace.getAllBlocks(true));
     return blocks.filter(block => {
       // Filter out blocks contained inside of another collapsed block.
       const surroundParent = block.getSurroundParent();
@@ -476,7 +479,7 @@ export class WorkspaceSearch {
    * @param {string} searchText The search text. Note if the search is case
    *    insensitive, this will be passed already converted to lowercase letters.
    * @param {boolean} caseSensitive Whether the search is caseSensitive.
-   * @return {boolean} Whether the block matches the search text.
+   * @return {boolean} True if the block is a match, false otherwise.
    * @private
    */
   isBlockMatch_(block, searchText, caseSensitive) {
@@ -504,7 +507,7 @@ export class WorkspaceSearch {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to search.
    * @param {string} searchText The search text.
    * @param {boolean} caseSensitive Whether the search should be case sensitive.
-   * @return {!Array.<Blockly.BlockSvg>} blocks The blocks that match the search
+   * @return {!Array.<Blockly.BlockSvg>} The blocks that match the search
    *    text.
    * @protected
    */
@@ -611,8 +614,8 @@ export class WorkspaceSearch {
     const top = xy.y * scale;
     const bottom = (xy.y + block.height) * scale;
     // In RTL the block's position is the top right of the block, not top left.
-    const left = this.workspace_.RTL ? xy.x * scale - width: xy.x * scale;
-    const right = this.workspace_.RTL ? xy.x * scale : xy.x * scale +  width;
+    const left = this.workspace_.RTL ? xy.x * scale - width : xy.x * scale;
+    const right = this.workspace_.RTL ? xy.x * scale : xy.x * scale + width;
 
     const metrics = this.workspace_.getMetrics();
 
