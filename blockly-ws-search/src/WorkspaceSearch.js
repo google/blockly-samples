@@ -145,7 +145,7 @@ export class WorkspaceSearch {
         evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
     this.inputElement_.addEventListener('input', () => this.onInput_());
     this.inputElement_.addEventListener('click',
-        () => this.searchAndHighlight(this.preserveSelected));
+        () => this.searchAndHighlight(this.searchText_, this.preserveSelected));
     inputWrapper.append(this.inputElement_);
     searchContent.append(inputWrapper);
 
@@ -217,7 +217,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createNextBtn_() {
-    return this.createBtn('blockly-next-btn', 'Find next');
+    return this.createBtn_('blockly-next-btn', 'Find next');
   }
 
   /**
@@ -226,7 +226,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createPreviousBtn_() {
-    return this.createBtn('blockly-previous-btn', 'Find previous');
+    return this.createBtn_('blockly-previous-btn', 'Find previous');
   }
 
   /**
@@ -235,7 +235,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createCloseBtn_() {
-    return this.createBtn('blockly-close-btn', 'Close search bar');
+    return this.createBtn_('blockly-close-btn', 'Close search bar');
   }
 
   /**
@@ -243,8 +243,9 @@ export class WorkspaceSearch {
    * @param {string} className The class name for the button.
    * @param {string} text The text to display to the screen reader.
    * @return {!HTMLButtonElement} The created button.
+   * @private
    */
-  createBtn(className, text) {
+  createBtn_(className, text) {
     // Create the button
     const btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
@@ -301,8 +302,7 @@ export class WorkspaceSearch {
     if (this.searchOnInput) {
       const inputValue = this.inputElement_.value;
       if (inputValue !== this.searchText_) {
-        this.setSearchText_(inputValue);
-        this.searchAndHighlight(this.preserveSelected);
+        this.searchAndHighlight(inputValue, this.preserveSelected);
       }
     }
   }
@@ -319,8 +319,7 @@ export class WorkspaceSearch {
       if (this.searchOnInput) {
         this.next();
       } else {
-        this.setSearchText_(this.inputElement_.value);
-        this.searchAndHighlight(this.preserveSelected);
+        this.searchAndHighlight(this.inputElement_.value, this.preserveSelected);
       }
     }
   }
@@ -365,15 +364,6 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Sets search text.
-   * @param {string} text
-   * @protected
-   */
-  setSearchText_(text) {
-    this.searchText_ = text.trim();
-  }
-
-  /**
    * Changes the currently "selected" block and adds extra highlight.
    * @param {number} index Index of block to set as current. Number is wrapped.
    * @protected
@@ -386,7 +376,8 @@ export class WorkspaceSearch {
     if (currentBlock) {
       this.unhighlightCurrentSelection_(currentBlock);
     }
-    this.currentBlockIndex_ = index % this.blocks_.length;
+    this.currentBlockIndex_ = (index % this.blocks_.length + this.blocks_.length) %
+        this.blocks_.length;
     currentBlock = this.blocks_[this.currentBlockIndex_];
 
     this.highlightCurrentSelection_(currentBlock);
@@ -402,7 +393,7 @@ export class WorkspaceSearch {
     this.markCurrentPosition_();
     this.inputElement_.focus();
     if (this.searchText_) {
-      this.searchAndHighlight();
+      this.searchAndHighlight(this.searchText_);
     }
   }
 
@@ -440,11 +431,13 @@ export class WorkspaceSearch {
   /**
    * Searches the workspace for the current search term and highlights matching
    * blocks.
-   * @param {boolean=} preserveCurrent Whether to preserve the current block
+   * @param {string} searchText The search text.
+   * @param {boolean=} preserveCurrent Whether to preserve the current block.
    *    if it is included in the new matching blocks.
    */
-  searchAndHighlight(preserveCurrent) {
+  searchAndHighlight(searchText, preserveCurrent) {
     const oldCurrentBlock = this.blocks_[this.currentBlockIndex_];
+    this.searchText_ = searchText.trim();
     this.clearBlocks();
     this.blocks_ = this.getMatchingBlocks_(
         this.workspace_, this.searchText_, this.caseSensitive);
