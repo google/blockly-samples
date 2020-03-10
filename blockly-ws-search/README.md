@@ -1,32 +1,36 @@
-[Home](../README.md)
+# @blockly/plugin-workspace-search [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-# blockly-ws-search [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
-
-This package provides an implementation of workspace search for a Blockly workspace.
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds workspace search support.
 
 ## Installation
 
 ```
-npm install @blockly/plugin-workspace-search
+npm install @blockly/plugin-workspace-search --save
 ```
 
 ## Usage
 
+### ES6 Imports
 ```js
-var WorkSpaceSearch = require('@blockly/plugin-workspace-search');
+import Blockly from 'blockly';
+import { WorkspaceSearch } from '@blockly/plugin-workspace-search';
 
-// Dictionary of options used to initialize the workspace.
-var options  = {};
-var workspace = Blockly.inject('blocklyDiv', options);
-var workspaceSearch = new WorkspaceSearch(workspace);
+const workspace = Blockly.inject('blocklyDiv');
+const workspaceSearch = new WorkspaceSearch(workspace);
+
 workspaceSearch.init();
+```
+### Script Tag
+```js
+<script src="./node_modules/blockly-ws-search/dist/workspace-search.umd.js"></script>
 ```
 
 ## API
-
-### `blockly-ws-search`
 
 - `init`
 - `dispose`
 - `open`
 - `close`
+
+## License
+Apache 2.0
