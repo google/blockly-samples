@@ -220,7 +220,7 @@ suite('WorkspaceSearch', () => {
     });
 
     test('Preserve current, in results', async () => {
-      this.workspaceSearch.searchAndHighlight('test', false);
+      this.workspaceSearch.searchAndHighlight('test');
       this.workspaceSearch.setCurrentBlock_(1);
       // this.testStatementBlock should be current.
       var expectedBlocks = [
@@ -238,10 +238,10 @@ suite('WorkspaceSearch', () => {
     });
 
     test('Preserve current, not in results', async () => {
-      this.workspaceSearch.searchAndHighlight('test', false);
+      this.workspaceSearch.searchAndHighlight('test');
       this.workspaceSearch.setCurrentBlock_(1);
       // this.testStatementBlock should be current.
-      this.workspaceSearch.searchAndHighlight('string', false);
+      this.workspaceSearch.searchAndHighlight('string', true);
       var expectedBlocks = [
         this.testStatementBlockWithInputCollapsed,
         this.fieldWithOutputConnected,
