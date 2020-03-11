@@ -240,6 +240,11 @@ CustomNotchProvider.prototype.makePuzzleTab = function() {
 };
 ```
 
+### The result
+
+The resulting block has rectangular connections for all four connection types.
+
+![A repeat block with squared-off connections](assets/custom-renderer/custom_notches.png)
 
 ## Typed connection shapes
 
