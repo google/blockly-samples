@@ -1,77 +1,49 @@
-# blockly-samples [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+<h1 align="center">
+Blockly Samples <br /> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" /> </a>
+</h1>
 
-Sample projects showing how to integrate Blockly into your project.
-- [``blockly-requirejs-sample``](blockly-requirejs/README.md): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
-- [``blockly-umd-sample``](blockly-umd/README.md): Loads the UMD build of Blockly (``blockly.min.js``), both from node_modules and from Unpkg.
-- [``blockly-webpack-sample``](blockly-webpack/README.md): Using Blockly in Webpack.
-- [``blockly-node-sample``](blockly-node/README.md): Using Blockly in Node.js, loaded using require (``CommonJS``).
-- [``blockly-angular-sample``](blockly-angular/README.md): Blockly in an Angular project, defines an Angular Blockly Component.
-- [``blockly-react-sample``](blockly-react/README.md): Blockly in a React project, defines a React Blockly Component.
-- [``blockly-svelte-sample``](blockly-svelte/README.md): Blockly in a Svelte project, defines a Svelte Blockly Component.
-- [``blockly-vue-sample``](blockly-vue/README.md): Blockly in a Vue project, defines a Vue Blockly Component.
+This repo contains self-contained sample projects demonstrating techniques to include and extend the [Blockly](https://github.com/google/blockly) framework.
 
-## Running the samples
+## Samples
 
-In order to run each of the samples, cd into each sample directoy and run: 
-```bash
-npm install
+### Integrating Blockly
+- [``blockly-requirejs-sample``](blockly-requirejs/): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
+- [``blockly-umd-sample``](blockly-umd/): Loads the UMD build of Blockly (``blockly.min.js``), both from node_modules and from Unpkg.
+- [``blockly-webpack-sample``](blockly-webpack/): Using Blockly in Webpack.
+- [``blockly-node-sample``](blockly-node/): Using Blockly in Node.js, loaded using require (``CommonJS``).
+- [``blockly-angular-sample``](blockly-angular/): Blockly in an Angular project, defines an Angular Blockly Component.
+- [``blockly-react-sample``](blockly-react/): Blockly in a React project, defines a React Blockly Component.
+- [``blockly-svelte-sample``](blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
+- [``blockly-vue-sample``](blockly-vue/): Blockly in a Vue project, defines a Vue Blockly Component.
+
+### Real-time Collaboration
+
+- [``blockly-rtc``](blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
+
+### Rendering
+
+- [``blockly-rendering-sample``](rendering/rendering-walkthrough/): Customizing Blockly's rendering.
+
+## Prerequisites
+
+Install [node](https://nodejs.org/) and [npm](https://www.npmjs.com/get-npm).
+
+## Running
+
 ```
+git clone https://github.com/google/blockly-samples
+cd <any sample folder>
+npm install
+npm run start
+```
+Browse to http://localhost:3000
 
-You can then run ``npm run start`` to start a web server. 
-
-All samples are configured to use port ``3000``<br/>
-so open [http://localhost:3000](http://localhost:3000) to view each sample in the browser.
+You may need to refer to a sample's README for further setup and running instructions.
 
 ## Support
 
 Blockly has an active [developer forum](https://groups.google.com/forum/#!forum/blockly). Please drop by and say hello. Show us your prototypes early; collectively we have a lot of experience and can offer hints which will save you time. We actively monitor the forums and typically respond to questions within 2 working days.
 
-## Get Blockly
-
-You can install the ``blockly`` package on [npm](https://www.npmjs.com/package/blockly).
-
-```
-npm install blockly
-```
-
-
-## Importing Blockly
-
-When you import Blockly with ``import * as Blockly from 'blockly';`` you'll get the default modules:
-Blockly core, Blockly built-in blocks, the JavaScript generator and the English lang files. 
-
-If you need more flexibility, you'll want to define your imports more carefully: 
-
-#### Blockly Core
-
-```js
-import * as Blockly from 'blockly/core';
-```
-
-#### Blockly built in blocks
-
-```js
-import 'blockly/blocks';
-```
-
-#### Blockly Generators
-If your application needs to generate code from the Blockly blocks, you'll want to include a generator.
-
-```js
-import 'blockly/python';
-```
-to include the Python generator, you can also import ``blockly/javascript``, ``blockly/php``, ``blockly/dart`` and ``blockly/lua``.
-
-#### Blockly Languages
-
-```js
-import * as Fr from 'blockly/msg/fr';
-Blockly.setLocale(Fr);
-```
-
-To import the French lang files. Once you've imported the specific lang module, you'll also want to set the locale in Blockly.
-
-For a full list of supported Blockly locales, see: [https://github.com/google/blockly/tree/master/msg/js](https://github.com/google/blockly/tree/master/msg/js)
 
 ## License
 

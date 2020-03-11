@@ -94,6 +94,15 @@ export class WorkspaceSearch {
      * @type {boolean}
      */
     this.preserveSelected = true;
+
+    /**
+     * Array holding info needed to unbind events.
+     * Used for disposing.
+     * Ex: [[node, name, func], [node, name, func]].
+     * @type {!Array.<Array<?>>}
+     * @private
+     */
+    this.boundEvents_ = [];
   }
 
   /**
@@ -103,6 +112,24 @@ export class WorkspaceSearch {
     injectSearchCss();
     this.createDom_();
     this.setVisible_(false);
+  }
+
+  /**
+   * Disposes of workspace search.
+   * Unlink from all DOM elements and remove all event listeners
+   * to prevent memory leaks.
+   */
+  dispose() {
+    for (let event of this.boundEvents_) {
+      Blockly.unbindEvent_(event);
+    }
+    this.boundEvents_ = null;
+    if (this.htmlDiv_) {
+      this.htmlDiv_.remove();
+      this.htmlDiv_ = null;
+    }
+    this.actionDiv_ = null;
+    this.inputElement_ = null;
   }
 
   /**
@@ -125,8 +152,8 @@ export class WorkspaceSearch {
      * </div>
      */
     const injectionDiv = this.workspace_.getInjectionDiv();
-    injectionDiv.addEventListener('keydown',
-        evt => this.onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
+    this.addEvent_(injectionDiv, 'keydown', this, evt => this
+        .onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
 
     this.htmlDiv_ = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-ws-search');
@@ -142,11 +169,13 @@ export class WorkspaceSearch {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement_ = this.createTextInput_();
-    this.inputElement_.addEventListener('keydown',
-        evt => this.onKeyDown_(/** @type {KeyboardEvent} */ evt));
-    this.inputElement_.addEventListener('input', () => this.onInput_());
-    this.inputElement_.addEventListener('click',
-        () => this.searchAndHighlight(this.searchText_, this.preserveSelected));
+    this.addEvent_(this.inputElement_, 'keydown', this, evt => this
+        .onKeyDown_(/** @type {KeyboardEvent} */ evt));
+    this.addEvent_(this.inputElement_, 'input', this, () =>this
+        .onInput_());
+    this.addEvent_(this.inputElement_, 'click', this, () => this
+        .searchAndHighlight(this.searchText_, this.preserveSelected));
+
     inputWrapper.appendChild(this.inputElement_);
     searchContent.appendChild(inputWrapper);
 
@@ -173,6 +202,19 @@ export class WorkspaceSearch {
     this.htmlDiv_.appendChild(searchContainer);
 
     injectionDiv.insertBefore(this.htmlDiv_, this.workspace_.getParentSvg());
+  }
+
+  /**
+   * Helper method for adding an event.
+   * @param {!Element} node Node upon which to listen.
+   * @param {string} name Event name to listen to (e.g. 'mousedown').
+   * @param {Object} thisObject The value of 'this' in the function.
+   * @param {!Function} func Function to call when event is triggered.
+   * @private
+   */
+  addEvent_(node, name, thisObject, func) {
+    const event = Blockly.bindEventWithChecks_(node, name, thisObject, func);
+    this.boundEvents_.push(event);
   }
 
   /**
@@ -249,10 +291,10 @@ export class WorkspaceSearch {
    * @private
    */
   addBtnListener_(btn, onClickFn) {
-    btn.addEventListener('click', onClickFn);
+    this.addEvent_(btn, 'click', this, onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
-    btn.addEventListener('keydown', e => {
+    this.addEvent_(btn, 'keydown', this, e => {
       if (e.keyCode === Blockly.utils.KeyCodes.ENTER) {
         onClickFn(e);
         e.preventDefault();
