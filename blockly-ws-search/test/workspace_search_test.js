@@ -17,17 +17,14 @@ const WorkspaceSearch = require('../dist/workspace-search.umd').WorkspaceSearch;
 
 suite('WorkspaceSearch', () => {
   setup(() => {
-    this.jsdom = require('jsdom-global')();
-    this.blocklyDiv = document.createElement('div');
-    this.blocklyDiv.id = 'blocklyDiv';
-    document.body.appendChild(this.blocklyDiv);
+    this.jsdomCleanup =
+        require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
     this.workspace = Blockly.inject('blocklyDiv');
     this.workspaceSearch = new WorkspaceSearch(this.workspace);
   });
 
   teardown(() => {
-    this.workspace.dispose();
-    this.jsdom();
+    this.jsdomCleanup();
   });
 
   suite('init()', () => {
@@ -36,8 +33,28 @@ suite('WorkspaceSearch', () => {
           document.getElementById('blockly-ws-search-style');
       assert.equal(!!searchStyle, false);
       this.workspaceSearch.init();
-      searchStyle =document.getElementById('blockly-ws-search-style');
+      searchStyle = document.getElementById('blockly-ws-search-style');
       assert.equal(!!searchStyle, true);
+    });
+
+
+    test('DOM is intialized at init()', async () => {
+      var dom = document.querySelector('div.blockly-ws-search');
+      assert.equal(!!dom, false);
+      this.workspaceSearch.init();
+      dom = document.querySelector('div.blockly-ws-search');
+      assert.equal(!!dom, true);
+    });
+  });
+
+  suite('dispose()', () => {
+    test('DOM is disposed', async () => {
+      this.workspaceSearch.init();
+      var dom = document.querySelector('div.blockly-ws-search');
+      assert.equal(!!dom, true);
+      this.workspaceSearch.dispose();
+      dom = document.querySelector('div.blockly-ws-search');
+      assert.equal(!!dom, false);
     });
   });
 
