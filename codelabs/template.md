@@ -1,6 +1,6 @@
 author: YOUR NAME
 summary: CODELAB SUMMARY
-id: TEMPLATE_CODELAB_ID
+id: TEMPLATE-CODELAB-ID
 categories: codelab,blockly,MORE CATEGORIES
 status: Draft
 Feedback Link: https://github.com/google/blockly-samples/issues/new
@@ -41,7 +41,7 @@ function sampleCode() {
 
 Show the developer the expected result of running their code.  You can point to images in the `assets` directory, as in the example below.
 
-![A console log from running the sample code](assets/TEMPLATE_CODELAB_ID/run_sample_code.png)
+![A console log from running the sample code](assets/TEMPLATE-CODELAB-ID/run_sample_code.png)
 
 Put your assets in a subfolder with your codelab's ID as the folder name.
 
