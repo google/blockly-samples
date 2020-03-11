@@ -176,19 +176,6 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Disposes of workspace search.
-   * Unlink from all DOM elements to prevent memory leaks.
-   */
-  dispose() {
-    if (this.htmlDiv_) {
-      this.htmlDiv_.remove();
-      this.htmlDiv_ = null;
-    }
-    this.actionDiv_ = null;
-    this.inputElement_ = null;
-  }
-
-  /**
    * Add a button to the action div. This must be called after the init function
    * has been called.
    * @param {!HTMLButtonElement} btn The button to add the event listener to.
@@ -557,7 +544,7 @@ export class WorkspaceSearch {
    */
   highlightCurrentSelection_(currentBlock) {
     const path = currentBlock.pathObject.svgPath;
-    Blockly.utils.dom.addClass(path, 'search-current');
+    Blockly.utils.dom.addClass(path, 'blockly-ws-search-current');
   }
 
   /**
@@ -567,7 +554,7 @@ export class WorkspaceSearch {
    */
   unhighlightCurrentSelection_(currentBlock) {
     const path = currentBlock.pathObject.svgPath;
-    Blockly.utils.dom.removeClass(path, 'search-current');
+    Blockly.utils.dom.removeClass(path, 'blockly-ws-search-current');
   }
 
   /**
@@ -578,7 +565,7 @@ export class WorkspaceSearch {
   highlightSearchGroup_(blocks) {
     blocks.forEach(block => {
       const blockPath = block.pathObject.svgPath;
-      Blockly.utils.dom.addClass(blockPath, 'search-highlight');
+      Blockly.utils.dom.addClass(blockPath, 'blockly-ws-search-highlight');
     });
   }
 
@@ -590,7 +577,7 @@ export class WorkspaceSearch {
   unhighlightSearchGroup_(blocks) {
     blocks.forEach(block => {
       const blockPath = block.pathObject.svgPath;
-      Blockly.utils.dom.removeClass(blockPath, 'search-highlight');
+      Blockly.utils.dom.removeClass(blockPath, 'blockly-ws-search-highlight');
     });
   }
 

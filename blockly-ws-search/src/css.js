@@ -47,10 +47,10 @@ const ARROW_UP_ARROW_SVG_DATAURI =
  */
 const CSS_CONTENT = [
   /* eslint-disable indent */
-  'path.blocklyPath.search-highlight {',
+  'path.blocklyPath.blockly-ws-search-highlight {',
     'fill: black;',
   '}',
-  'path.blocklyPath.search-highlight.search-current {',
+  'path.blocklyPath.blockly-ws-search-highlight.blockly-ws-search-current {',
     'fill: grey;',
   '}',
   '.blockly-ws-search-close-btn {',
