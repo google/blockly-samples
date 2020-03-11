@@ -72,7 +72,11 @@
     }],
     "jsdoc/require-description": 1,
     "jsdoc/check-tag-names": 0,
-    "jsdoc/check-access": 1
+    "jsdoc/check-access": 1,
+    "jsdoc/check-types": 0,
+    "jsdoc/require-jsdoc": ["error",
+      {"require":{"ClassDeclaration":true,"MethodDefinition":true}}
+    ]
   },
   "settings": {
     "jsdoc": {
