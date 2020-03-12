@@ -16,6 +16,32 @@ const sinon = require('sinon');
 const WorkspaceSearch = require('../dist/workspace-search.umd').WorkspaceSearch;
 
 suite('WorkspaceSearch', () => {
+  function isBlockHighlighted(block) {
+    var path = block.pathObject.svgPath;
+    var classes = path.getAttribute('class');
+    return (' ' + classes + ' ')
+        .indexOf(' blockly-ws-search-highlight ') !== -1;
+  }
+  function isBlockCurrentStyled(block) {
+    var path = block.pathObject.svgPath;
+    var classes = path.getAttribute('class');
+    return (' ' + classes + ' ')
+        .indexOf(' blockly-ws-search-current ') !== -1;
+  }
+  function assertNoExtraCurrentStyling(blocks, opt_expectedCurrent) {
+    for (var block, i = 0; (block = blocks[i]); i++) {
+      var isCurrentStyled = isBlockCurrentStyled(block);
+      if (isCurrentStyled) {
+        assert.equal(opt_expectedCurrent, block,
+            'Unexpected block [' + block.type +
+            '] found styled as current.');
+      } else {
+        assert.notEqual(block, opt_expectedCurrent,
+            'Expected block [' + block.type + '] to be styled as current.');
+      }
+    }
+  }
+
   setup(() => {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
@@ -59,31 +85,6 @@ suite('WorkspaceSearch', () => {
   });
 
   suite('searchAndHighlight()', () => {
-    function isBlockHighlighted(block) {
-      var path = block.pathObject.svgPath;
-      var classes = path.getAttribute('class');
-      return (' ' + classes + ' ')
-          .indexOf(' blockly-ws-search-highlight ') !== -1;
-    }
-    function isBlockCurrentStyled(block) {
-      var path = block.pathObject.svgPath;
-      var classes = path.getAttribute('class');
-      return (' ' + classes + ' ')
-          .indexOf(' blockly-ws-search-current ') !== -1;
-    }
-    function assertNoExtraCurrentStyling(blocks, opt_expectedCurrent) {
-      for (var block, i = 0; (block = blocks[i]); i++) {
-        var isCurrentStyled = isBlockCurrentStyled(block);
-        if (isCurrentStyled) {
-          assert.equal(opt_expectedCurrent, block,
-              'Unexpected block [' + block.type +
-              '] found styled as current.');
-        } else {
-          assert.notEqual(block, opt_expectedCurrent,
-              'Expected block [' + block.type + '] to be styled as current.');
-        }
-      }
-    }
     function assertEqualsSearchGroup(allBlocks, actualGroup, expectedGroup) {
       assert.equal(actualGroup.length, expectedGroup.length);
       for (var block, i = 0; (block = allBlocks[i]); i++) {
@@ -255,14 +256,15 @@ suite('WorkspaceSearch', () => {
 
   suite('next()', () => {
     setup(() => {
-      this.workspaceSearch.blocks_ =
-          [ this.testBlock, this.testStatementBlock ];
+      this.blocks = [ this.testBlock, this.testStatementBlock ];
+      this.workspaceSearch.blocks_ = this.blocks;
     });
 
     test('next() with unset current', async () => {
       this.workspaceSearch.next();
       var currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 0);
+      assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
     });
 
     test('next() wrap around', async () => {
@@ -270,9 +272,11 @@ suite('WorkspaceSearch', () => {
       this.workspaceSearch.next();
       var currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 1);
+      assertNoExtraCurrentStyling(this.blocks, this.blocks[1]);
       this.workspaceSearch.next();
       currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 0);
+      assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
     });
   });
 
@@ -292,9 +296,11 @@ suite('WorkspaceSearch', () => {
       this.workspaceSearch.previous();
       currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 0);
+      assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
       this.workspaceSearch.previous();
       currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 1);
+      assertNoExtraCurrentStyling(this.blocks, this.blocks[1]);
     });
   });
 });

@@ -33,7 +33,7 @@
     "build": "webpack --display-error-details --env.mode=development",
     "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
     "start": "webpack-dev-server --env.mode=development",
-    "test": "mocha test/workspace_search_test.js"
+    "test": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.js"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
