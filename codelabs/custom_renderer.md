@@ -21,12 +21,14 @@ In this codelab you will learn:
 Over the course of this codelab you will build and use four renderers.
 
 1. A minimal custom renderer
-![image_caption](assets/minimal_custom_renderer.png)
+![](assets/custom-renderer/custom_renderer.png)
 1. A renderer with custom constants
-![image_caption](assets/custom_constant_renderer.png)
-...
-
-### Prerequisites
+![](assets/custom-renderer/custom_constants.png)
+1. A renderer with custom notches
+![](assets/custom-renderer/custom_notches.png)
+1. A renderer with connection shapes that depend on the type checks of each connection.
+![](assets/custom-renderer/typed_connection_shapes.png)
+### What you'll need
 This codelab assumes that you are already comfortable with using the Blockly playground locally.
 
 ## Setup
@@ -73,6 +75,11 @@ Add your renderer to the "Renderer" dropdown in `playground.html`.
 ```
 
 To test, open the playground in a browser and select your new renderer from the dropdown.
+### The result
+
+The resulting block looks close to normal, but with slightly different alignment than Geras or Thrasos.
+
+![](assets/custom-renderer/custom_renderer.png)
 
 ## Custom constants
 
@@ -124,6 +131,12 @@ CustomConstantsRenderer.prototype.makeConstants_ = function() {
   return new CustomConstantsProvider();
 };
 ```
+
+### The result
+
+The resulting block has triangular previous and next connections, and skinny input and output connections.
+
+![](assets/custom-renderer/custom_constants.png)
 
 For a more complete list of constants, look at the base constants.js file.
 
@@ -385,5 +398,12 @@ TypedConnectionShapeProvider.prototype.shapeFor = function(connection) {
   }
 };
 ```
+
+### The result
+
+In this screenshot, the number inputs and outputs are semicircular.  The boolean input on the if block is rectangular.
+![](assets/custom-renderer/typed_connection_shapes.png)
+
 ## Summary
-In this section, recap the work the developer has done and suggest ways to use it.
+
+Custom renderers are a powerful way to change the look and feel of Blockly.  In this codelab you worked through four different levels of customization of a renderer.
