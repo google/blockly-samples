@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-workspace-search",
-  "version": "1.20200304.0",
+  "version": "1.20200312.0",
   "description": "A Blockly plugin that adds workspace search support.",
   "author": "Blockly Team",
   "keywords": [
