@@ -12,12 +12,12 @@
     function start() {
       var workspace = null;
       var toolbox = document.getElementById('toolbox-categories-typed-variables');
-
+      var types = [["ANIMAL", "animal"], ["PENGUINS", "penguins"]];
+      TypedModal.init(types);
       // Create main workspace.
       workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
       });
-      const typedModal = new TypedVariableModal(workspace);
     }
   </script>
   <style>
@@ -382,7 +382,7 @@
       </block>
     </category>
     <sep></sep>
-    <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+    <category name="Variables" categorystyle="variable_category" custom="VARIABLE_DYNAMIC"></category>
     <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
   </xml>
 </body>
