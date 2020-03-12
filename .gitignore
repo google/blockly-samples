@@ -10,6 +10,9 @@ lerna-debug.log*
 node_modules/
 build/
 
+# Generated files
+dist/
+
 # TypeScript cache
 *.tsbuildinfo
 

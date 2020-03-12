@@ -1,0 +1,63 @@
+{
+  "name": "@blockly/plugin-workspace-search",
+  "version": "1.20200312.0",
+  "description": "A Blockly plugin that adds workspace search support.",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "workspace",
+    "search"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "blockly-ws-search"
+  },
+  "license": "Apache-2.0",
+  "main": "./dist/workspace-search.umd.js",
+  "unpkg": "./dist/workspace-search.umd.js",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rm -rf $npm_package_directories_dist",
+    "build": "webpack --display-error-details --env.mode=development",
+    "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
+    "start": "webpack-dev-server --env.mode=development",
+    "test": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-loader": "^8.0.6",
+    "blockly": "^3.20200123.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-jsdoc": "^22.0.0",
+    "jsdom": "16.2.1",
+    "jsdom-global": "3.0.2",
+    "mocha": "^7.1.0",
+    "sinon": "7.5.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "peerDependencies": {
+    "blockly": ">=3.20200123.0 <4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  }
+}

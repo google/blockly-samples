@@ -1,0 +1,17 @@
+{
+  "name": "blockly-ws-search-web-script",
+  "version": "1.0.0",
+  "description": "Example of workspace search with script tag.",
+  "private": true,
+  "scripts": {
+    "preinstall": "cd ../.. && npm install",
+    "start": "http-server"
+  },
+  "dependencies": {
+    "blockly": "^3.20200123.1",
+    "blockly-ws-search": "file:../.."
+  },
+  "devDependencies": {
+    "http-server": "^0.12.1"
+  }
+}

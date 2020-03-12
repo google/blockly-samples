@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Workspace Search Example: module imports</title>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Blockly Workspace Search Playground</h1>
+
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <block type="controls_if"></block>
+    <block type="logic_compare"></block>
+    <block type="controls_repeat_ext"></block>
+    <block type="math_number">
+      <field name="NUM">123</field>
+    </block>
+    <block type="math_arithmetic"></block>
+    <block type="text"></block>
+    <block type="text_print"></block>
+  </xml>
+
+  <script src="main.js"></script>
+</body>
+</html>
