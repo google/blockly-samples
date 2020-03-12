@@ -10,19 +10,19 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new
 ## Codelab overview
 
 ### What you'll learn
-Describe the skills or tools the developers will learn by the end of this codelab.
+List the skills or tools the developers will learn by the end of this codelab.
 
 ### What you'll build
 Describe what the finished product will look like.  Include screenshots or gifs.
 
-### Prerequisites
+### What you'll need
 List any terms, skills, or tools the developer should be familiar with when starting this codelab.
 
 ## Setup
 
 In this section, tell the developer how to get set up to write and run their code.
 
-## Step One
+## Step One Title
 Start by explaining the goal of each step.
 
 ### Use subheadings to organize your codelab
