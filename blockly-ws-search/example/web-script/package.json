@@ -8,8 +8,8 @@
     "start": "http-server"
   },
   "dependencies": {
-    "blockly": "^3.20200123.1",
-    "blockly-ws-search": "file:../.."
+    "@blockly/plugin-workspace-search": "file:../..",
+    "blockly": "^3.20200123.1"
   },
   "devDependencies": {
     "http-server": "^0.12.1"
