@@ -22,7 +22,7 @@ workspaceSearch.init();
 ```
 ### Script Tag
 ```js
-<script src="./node_modules/blockly-ws-search/dist/workspace-search.umd.js"></script>
+<script src="./node_modules/@blockly/plugin-workspace-search/dist/workspace-search.umd.js"></script>
 ```
 
 ## API
