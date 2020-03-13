@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2015 Google LLC
+ * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -53,7 +53,7 @@ goog.provide('Blockly.utils.string');`;
       namespace: function () { return 'Blockly.FieldDate'; },
       exports: function () { return 'Blockly.FieldDate'; },
     }))
-    .pipe(gulp.dest('./build/'));
+    .pipe(gulp.dest('./dist/'));
 };
 
 module.exports = {

@@ -3,9 +3,10 @@
     "version": "3.20200304.0",
     "description": "A Blockly date picker field that uses the Google Closure date picker.",
     "scripts": {
-        "build": "gulp build"
+        "build": "gulp build",
+        "prepublishOnly": "npm run build"
     },
-    "main": "build/date_compressed.js",
+    "main": "dist/date_compressed.js",
     "author": "Blockly Team",
     "keywords": [
         "blockly",
@@ -19,6 +20,11 @@
     "license": "Apache-2.0",
     "peerDependencies": {
         "blockly": ">=3.20191014.4"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/google/blockly-samples.git",
+      "directory": "packages/blockly-field-date"
     },
     "devDependencies": {
         "google-closure-library": "^20200224.0.0",

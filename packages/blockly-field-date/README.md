@@ -25,7 +25,7 @@ Blockly.Blocks["test_fields_date"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("date: ")
-      .appendField(new FieldDate("2020-02-20"), "FIELDNAME")
+      .appendField(new FieldDate("2020-02-20"), "FIELDNAME");
   }
 };
 ```
