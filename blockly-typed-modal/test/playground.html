@@ -6,18 +6,31 @@
 
 
   <script src="../node_modules/blockly/blockly.min.js"></script>
-  <script src="../src/TypedModal.js"></script>
+  <script src="../dist/typed-modal.umd.js"></script>
   <script>
     'use strict';
     function start() {
       var workspace = null;
       var toolbox = document.getElementById('toolbox-categories-typed-variables');
       var types = [["ANIMAL", "animal"], ["PENGUINS", "penguins"]];
-      TypedModal.init(types);
       // Create main workspace.
+      Blockly.VariablesDynamic.flyoutCategory = function() {
+        var xmlList = [];
+        var button = document.createElement('button');
+        button.setAttribute('text', 'Create Typed Variable');
+        button.setAttribute('callbackKey', 'CREATE_TYPED_VARIABLE');
+        xmlList.push(button);
+
+        var blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
+        xmlList = xmlList.concat(blockList);
+        return xmlList;
+      };
+
       workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
       });
+      TypedModal.init(workspace, types);
+
     }
   </script>
   <style>

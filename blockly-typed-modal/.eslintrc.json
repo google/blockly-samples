@@ -1,4 +1,8 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
   "rules": {
     "curly": ["error"],
     "eol-last": ["error"],
@@ -52,7 +56,6 @@
     "space-infix-ops": ["error"],
     "strict": ["off"],
     "no-redeclare": ["off"],
-    "valid-jsdoc": ["error", {"requireReturn": false}],
     "no-console": ["off"],
     "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
     "operator-linebreak": ["error", "after"],
@@ -62,7 +65,25 @@
       },
       "exceptions": ["*"]
     }],
-    "es5/no-es6-methods": ["warn"]
+    "jsdoc/newline-after-description": 0,
+    "jsdoc/require-description-complete-sentence": 1,
+    "jsdoc/require-returns": ["error", {
+      "forceRequireReturn": false
+    }],
+    "jsdoc/require-description": 1,
+    "jsdoc/check-tag-names": 0,
+    "jsdoc/check-access": 1,
+    "jsdoc/check-types": 0,
+    "jsdoc/require-jsdoc": ["error",
+      {"require":{"ClassDeclaration":true,"MethodDefinition":true}}
+    ]
+  },
+  "settings": {
+    "jsdoc": {
+      "tagNamePreference": {
+        "returns": "return"
+      }
+    }
   },
   "env": {
     "browser": true
@@ -71,12 +92,8 @@
     "Blockly": true,
     "goog": true
   },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
   "extends": [
     "eslint:recommended",
-    "google"
+    "plugin:jsdoc/recommended"
   ]
 }
