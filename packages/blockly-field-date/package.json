@@ -22,9 +22,9 @@
         "blockly": ">=3.20191014.4"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/google/blockly-samples.git",
-      "directory": "packages/blockly-field-date"
+        "type": "git",
+        "url": "https://github.com/google/blockly-samples.git",
+        "directory": "packages/blockly-field-date"
     },
     "devDependencies": {
         "google-closure-library": "^20200224.0.0",
