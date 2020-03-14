@@ -1,0 +1,43 @@
+{
+    "name": "@blockly/field-date",
+    "version": "3.20200313.0",
+    "description": "A Blockly date picker field that uses the Google Closure date picker.",
+    "scripts": {
+        "build": "gulp build",
+        "prepublishOnly": "npm run build"
+    },
+    "main": "dist/date_compressed.js",
+    "author": "Blockly Team",
+    "keywords": [
+        "blockly",
+        "field",
+        "date",
+        "datepicker"
+    ],
+    "bugs": {
+        "url": "https://github.com/google/blockly-samples/issues"
+    },
+    "license": "Apache-2.0",
+    "peerDependencies": {
+        "blockly": ">=3.20191014.4"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/google/blockly-samples.git",
+      "directory": "packages/blockly-field-date"
+    },
+    "devDependencies": {
+        "google-closure-library": "^20200224.0.0",
+        "google-closure-compiler": "^20200224.0.0",
+        "gulp": "^4.0.2",
+        "gulp-umd": "^2.0.0",
+        "gulp-replace": "^1.0.0"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://wombat-dressing-room.appspot.com"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    }
+}
