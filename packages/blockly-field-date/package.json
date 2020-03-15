@@ -18,21 +18,29 @@
     "bugs": {
         "url": "https://github.com/google/blockly-samples/issues"
     },
-    "license": "Apache-2.0",
-    "peerDependencies": {
-        "blockly": ">=3.20191014.4"
-    },
     "repository": {
         "type": "git",
         "url": "https://github.com/google/blockly-samples.git",
         "directory": "packages/blockly-field-date"
     },
+    "license": "Apache-2.0",
+    "directories": {
+      "dist": "dist",
+      "src": "src"
+    },
+    "files": [
+      "dist",
+      "src"
+    ],
     "devDependencies": {
         "google-closure-library": "^20200224.0.0",
         "google-closure-compiler": "^20200224.0.0",
         "gulp": "^4.0.2",
         "gulp-umd": "^2.0.0",
         "gulp-replace": "^1.0.0"
+    },
+    "peerDependencies": {
+        "blockly": ">=3.20191014.4"
     },
     "publishConfig": {
         "access": "public",
