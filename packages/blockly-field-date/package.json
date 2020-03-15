@@ -14,6 +14,7 @@
         "date",
         "datepicker"
     ],
+    "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blockly-field-date",
     "bugs": {
         "url": "https://github.com/google/blockly-samples/issues"
     },

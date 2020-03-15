@@ -8,7 +8,7 @@
     "workspace",
     "search"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/workspace_search//blockly-ws-search#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/blockly-ws-search",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
