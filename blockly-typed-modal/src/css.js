@@ -11,12 +11,12 @@ const CSS_CONTENT = `
     font-weight: 300;
     padding: 1em;
     width: 400px;
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     box-shadow: 0px 10px 20px grey;
     z-index: 100;
-    position: absolute;
+    margin: 15% auto;
   }
   .typed-modal-overlay {
     position: fixed;
@@ -43,6 +43,19 @@ const CSS_CONTENT = `
   .typed-modal-dialog-variables li {
     margin-right: 1em;
     display: flex;
+  }
+
+  .typed-modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 100; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }`;
 
 /**
