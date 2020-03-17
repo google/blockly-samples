@@ -490,21 +490,46 @@ procedureContextMenu = {
 Blockly.Extensions.registerMixin('procedure_context_menu', procedureContextMenu);
 
 procedureDefMutator = {
-  // Parallel arrays.
+  /**
+   * Names of all arg-models (vars) associated with this block.
+   * @type {!Array<string>}
+   */
   arguments_: [],
-  paramIds_: [],
+  /**
+   * Ids of all the arg-models (vars) associated with this block.
+   * @type {!Array<string>}
+   */
+  varIds_: [],
+  /**
+   * Arg-models (vars) associated with this block.
+   * @type {!Array<Blockly.VariableModel>}
+   */
   argumentVarModels_: [],
+  // Note because the order is static this we could use the index as the argId.
+  // But if we ever add the ability to reorder the args that will break and each
+  // arg will need an ID. Currently we can't reorder because of #3725.
+  /**
+   * Ids associated with each argument. These are separate from the var Ids
+   * and are used to keep track of an arg when its variable is changing. E.g
+   * as the name is being edited.
+   * @type {!Array<string>}
+   */
+  argIds_: [],
 
-  mutationToDom: function() {
+  mutationToDom: function(opt_isForCaller) {
     var container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('name', this.getFieldValue('NAME'));
+    if (opt_isForCaller) {
+      container.setAttribute('name', this.getFieldValue('NAME'));
+    }
     for (var i = 0; i < this.argumentVarModels_.length; i++) {
-      var parameter = Blockly.utils.xml.createElement('arg');
+      var argument = Blockly.utils.xml.createElement('arg');
       var argModel = this.argumentVarModels_[i];
-      parameter.setAttribute('name', argModel.name);
-      parameter.setAttribute('varid', argModel.getId());
-      parameter.setAttribute('paramId', this.paramIds_[i]);
-      container.appendChild(parameter);
+      argument.setAttribute('name', argModel.name);
+      argument.setAttribute('varid', argModel.getId());
+      if (opt_isForCaller) {
+        argument.setAttribute('paramid', this.argIds_[i]);
+      }
+      container.appendChild(argument);
     }
 
     // Not used by this block, but necessary if switching back and forth
@@ -534,38 +559,39 @@ procedureDefMutator = {
     this.updateShape_(names, ids);
   },
 
-  updateShape_: function(names, ids) {
+  updateShape_: function(names, varIds) {
     // In this case it is easiest to just reset and build from scratch.
 
-    // We need to remove params in reverse order so that it doesn't mess up
-    // ass removeParam_ modifies our arrays.
-    for (var i = this.paramIds_.length - 1, id; (id = this.paramIds_[i]); i--) {
-      this.removeParam_(id);
+    // We need to remove args in reverse order so that it doesn't mess up
+    // as removeArg_ modifies our arrays.
+    for (var i = this.argIds_.length - 1; i >= 0; i--) {
+      this.removeArg_(this.argIds_[i]);
     }
 
-    this.paramIds_ = [];
     this.arguments_ = [];
+    this.varIds_ = [];
     this.argumentVarModels_ = [];
+    this.argIds_ = [];
 
-    var length = ids.length;
+    var length = varIds.length;
     for (i = 0; i < length; i++) {
-      this.addParam_(names[i], ids[i]);
+      this.addArg_(names[i], varIds[i]);
     }
 
     Blockly.Procedures.mutateCallers(this);
   },
 
   plus: function() {
-    this.addParam_();
+    this.addArg_();
     Blockly.Procedures.mutateCallers(this);
   },
 
-  minus: function(id) {
-    this.removeParam_(id);
+  minus: function(argId) {
+    this.removeArg_(argId);
     Blockly.Procedures.mutateCallers(this);
   },
 
-  addParam_: function(opt_name, opt_id) {
+  addArg_: function(opt_name, opt_varId) {
     if (!this.arguments_.length) {
       var withField = new Blockly.FieldLabel(
           Blockly.Msg['PROCEDURES_BEFORE_PARAMS']);
@@ -576,37 +602,41 @@ procedureDefMutator = {
     var name = opt_name || Blockly.Variables.generateUniqueNameFromOptions(
         Blockly.Procedures.DEFAULT_ARG, this.arguments_);
     var variable = Blockly.Variables.getOrCreateVariablePackage(
-        this.workspace, opt_id, name, '');
-    var id = variable.getId();
+        this.workspace, opt_varId, name, '');
+    var argId = Blockly.utils.genUid();
 
-    this.addVarInput_(name, id);
-    this.moveInputBefore(id, 'STACK');
+    this.addVarInput_(name, argId);
+    this.moveInputBefore(argId, 'STACK');
 
     this.arguments_.push(name);
-    this.paramIds_.push(id);
+    this.varIds_.push(variable.getId());
     this.argumentVarModels_.push(variable);
+    this.argIds_.push(argId);
   },
 
-  removeParam_: function(id) {
-    this.removeInput(id);
-    if (this.arguments_.length == 1) {  // Becoming parameterless.
+  removeArg_: function(argId) {
+    this.removeInput(argId);
+    if (this.arguments_.length == 1) {  // Becoming argumentless.
       this.getInput('TOP').removeField('WITH');
     }
 
-    var index = this.paramIds_.indexOf(id);
+    var index = this.argIds_.indexOf(argId);
     this.arguments_.splice(index, 1);
-    this.paramIds_.splice(index, 1);
+    this.varIds_.splice(index, 1);
     this.argumentVarModels_.splice(index, 1);
+    this.argIds_.splice(index, 1);
   },
 
-  addVarInput_: function(name, id) {
+  addVarInput_: function(name, argId) {
     var nameField = new Blockly.FieldTextInput(name, this.validator_);
     nameField.onFinishEditing_ = this.finishEditing_.bind(nameField);
-    this.appendDummyInput(id)
+    nameField.createdVarIds_ = [];
+
+    this.appendDummyInput(argId)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new plusMinus.FieldMinus(id))
+        .appendField(new plusMinus.FieldMinus(argId))
         .appendField('variable:')  // Untranslated!
-        .appendField(nameField,  id);  // The name of the field is the var id.
+        .appendField(nameField, argId);  // The name of the field is the arg id.
   },
 
   /**
@@ -625,16 +655,23 @@ procedureDefMutator = {
       }
     }
 
-    // The field name (aka id) is always equal to the var id.
-    var index = sourceBlock.paramIds_.indexOf(this.name);
+    // The field name (aka id) is always equal to the arg id.
+    var index = sourceBlock.argIds_.indexOf(this.name);
     sourceBlock.arguments_[index] = newName;
 
-    // These may already match if this gets triggered by the variable being
-    // renamed somewhere else.
-    var variable = sourceBlock.workspace.getVariableById(this.name);
-    if (variable.name != newName) {
-      sourceBlock.workspace.renameVariableById(this.name, newName);
-      Blockly.Procedures.mutateCallers(sourceBlock);
+    // We want to create new vars instead of renaming the old ones, so that
+    // users don't accidentally rename/coalesce vars they don't want to.
+    var workspace = sourceBlock.workspace;
+    var model = workspace.getVariable(newName, '');
+    if (!model) {
+      model = workspace.createVariable(newName, '');
+      this.createdVarIds_.push(model.getId());
+      sourceBlock.varIds_[index] = model.getId();
+      sourceBlock.argumentVarModels_[index] = model;
+    } else if (model.name != newName) {
+      // Ideally we would create a new var. But Blockly is case-insensitive so
+      // we update the var to reflect the latest case instead.
+      workspace.renameVariableById(model.getId(), newName);
     }
   },
 
@@ -642,12 +679,14 @@ procedureDefMutator = {
    * @this {Blockly.FieldTextInput}
    */
   finishEditing_: function(finalName) {
-    var sourceBlock = this.getSourceBlock();
-    var variable = sourceBlock.workspace.getVariableById(this.name);
-    if (variable.name != finalName) {
-      sourceBlock.workspace.renameVariableById(this.name, finalName);
-      Blockly.Procedures.mutateCallers(sourceBlock);
+    var source = this.getSourceBlock();
+    var currentVarId = source.varIds_[source.argIds_.indexOf(this.name)];
+    for (var i = 0, varId; (varId = this.createdVarIds_[i]); i++) {
+      if (varId != currentVarId) {
+        source.workspace.deleteVariableById(varId);
+      }
     }
+    this.createdVarIds_.length = 0;
   },
 };
 
@@ -679,7 +718,7 @@ procedureVars = function() {
      *     the name.
      */
     renameVarById: function(oldId, newId) {
-      var index = this.paramIds_.indexOf(oldId);
+      var index = this.varIds_.indexOf(oldId);
       if (index == -1) {
         return;  // Not on this block.
       }
@@ -690,8 +729,9 @@ procedureVars = function() {
       this.moveInputBefore(newId, oldId);
       this.removeInput(oldId);
 
-      this.paramIds_[index] = newId;
+      // No need to update argIds_ b/c it is constant.
       this.arguments_[index] = newName;
+      this.varIds_[index] = newId;
       this.argumentVarModels_[index] = newVar;
 
       Blockly.Procedures.mutateCallers(this);
@@ -699,7 +739,7 @@ procedureVars = function() {
 
     updateVarName: function(variable) {
       var id = variable.getId();
-      var index = this.paramIds_.indexOf(id);
+      var index = this.varIds_.indexOf(id);
       if (index == -1) {
         return;  // Not on this block.
       }
@@ -708,7 +748,7 @@ procedureVars = function() {
         return;  // No change. Occurs when field is being edited.
       }
 
-      this.setFieldValue(name, id);
+      this.setFieldValue(name, this.argIds_[index]);
       this.arguments_[index] = name;
     },
   };
