@@ -1,4 +1,4 @@
-# @blockly/field-number-draf [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/field-slider [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) slider field.
 
@@ -46,8 +46,6 @@ Blockly.defineBlocksWithJsonArray([
         ]
     }]);
 ```
-
-[View the developer documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/date) for further usage examples.
 
 ## License
 

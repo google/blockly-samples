@@ -8,7 +8,6 @@
  * @fileoverview Slider field test playground.
  * @author kozbial@google.com (Monica Kozbial)
  */
-console.log(Blockly.fieldRegistry.typeMap_);
 
 Blockly.defineBlocksWithJsonArray([
   {
