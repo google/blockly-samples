@@ -25,7 +25,8 @@ export const TypedModal = {};
 
 TypedModal.init = function(workspace, types) {
   injectTypedModalCss();
-  TypedModal.htmlDiv_ = TypedModal.createDom(types, TypedModal.createVariable, TypedModal.hide);
+  TypedModal.htmlDiv_ = TypedModal.createDom(types, TypedModal.createVariable_, TypedModal.hide);
+  workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', TypedModal.createTypedFlyout_);
   workspace.registerButtonCallback('CREATE_TYPED_VARIABLE', function(button) {
     TypedModal.show(button.getTargetWorkspace());
   });
@@ -33,20 +34,73 @@ TypedModal.init = function(workspace, types) {
 
 TypedModal.show = function(workspace) {
   TypedModal.workspace = workspace;
-
-  if (!document.getElementById('typed-modal-dialog')) {
-    document.body.appendChild(TypedModal.htmlDiv_);
-  }
-  TypedModal.htmlDiv_.style.display = 'block';
+  // TODO: Fix the dispose method
+  Blockly.WidgetDiv.show(TypedModal, workspace.RTL, () => {});
+  TypedModal.widgetCreate_();
+  TypedModal.focusableEls[0].focus();
 };
 
+TypedModal.hide = function() {
+  Blockly.WidgetDiv.hide();
+};
+
+TypedModal.createTypedFlyout_ = function(workspace) {
+  let xmlList = [];
+  const button = document.createElement('button');
+  button.setAttribute('text', 'Create Typed Variable');
+  button.setAttribute('callbackKey', 'CREATE_TYPED_VARIABLE');
+  xmlList.push(button);
+
+  // TODO: Can I use this?
+  const blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
+  xmlList = xmlList.concat(blockList);
+  return xmlList;
+};
+
+
+TypedModal.widgetCreate_ = function() {
+  const widgetDiv = Blockly.WidgetDiv.DIV;
+  const htmlInput_ = TypedModal.htmlDiv_;
+  widgetDiv.appendChild(htmlInput_);
+};
+
+TypedModal.handleBackwardTab_ = function(e) {
+  if (document.activeElement === TypedModal.focusableEls[0]) {
+    e.preventDefault();
+    TypedModal.focusableEls[TypedModal.focusableEls.length - 1].focus();
+  }
+};
+
+TypedModal.handleForwardTab_ = function(e) {
+  const focusedElements = TypedModal.focusableEls;
+  if (document.activeElement === focusedElements[focusedElements.length - 1]) {
+    e.preventDefault();
+    TypedModal.focusableEls[0].focus();
+  }
+};
+
+TypedModal.handleKeyDown_ = function(e) {
+  if (e.keyCode === Blockly.utils.KeyCodes.TAB) {
+    if (TypedModal.focusableEls.length === 1) {
+      e.preventDefault();
+      return;
+    }
+    if (e.shiftKey) {
+      TypedModal.handleBackwardTab_(e);
+    } else {
+      TypedModal.handleForwardTab_(e);
+    }
+  } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
+    TypedModal.hide();
+  }
+};
 
 TypedModal.getValidInput_ = function() {
   let newVar = TypedModal.dialogInput.value;
   if (newVar) {
     newVar = newVar.replace(/[\s\xa0]+/g, ' ').trim();
-    if (newVar == Blockly.Msg['RENAME_VARIABLE'] ||
-        newVar == Blockly.Msg['NEW_VARIABLE']) {
+    if (newVar === Blockly.Msg['RENAME_VARIABLE'] ||
+        newVar === Blockly.Msg['NEW_VARIABLE']) {
       // Ok, not ALL names are legal...
       newVar = null;
     }
@@ -54,7 +108,7 @@ TypedModal.getValidInput_ = function() {
   return newVar;
 };
 
-TypedModal.createVariable = function(e, opt_callback) {
+TypedModal.createVariable_ = function(e, opt_callback) {
   const text = TypedModal.getValidInput_();
   const type = TypedModal.selected ? TypedModal.selected.id : '';
   if (text) {
@@ -89,11 +143,6 @@ TypedModal.createVariable = function(e, opt_callback) {
     }
   }
 };
-
-TypedModal.hide = function() {
-  TypedModal.htmlDiv_.style.display = 'none';
-};
-
 
 TypedModal.createDom = function(types, onCreate, onCancel) {
   /*
@@ -131,7 +180,7 @@ TypedModal.createDom = function(types, onCreate, onCancel) {
   dialogHeader.appendChild(dialogTitle);
   Blockly.utils.dom.addClass(dialogHeader, 'typed-modal-dialog-title');
 
-  const dialogInputDiv = TypedModal.createDialogInput_();
+  const dialogInputDiv = TypedModal.createDialogInputDiv_();
 
   const dialogVariableDiv = document.createElement('div');
   Blockly.utils.dom.addClass(dialogVariableDiv, 'typed-modal-dialog-variables');
@@ -147,6 +196,10 @@ TypedModal.createDom = function(types, onCreate, onCancel) {
   dialogContent.appendChild(dialogVariableDiv);
   dialogContent.appendChild(actions);
   dialog.appendChild(dialogContent);
+  Blockly.bindEventWithChecks_(dialog, 'keydown', null, TypedModal.handleKeyDown_);
+  TypedModal.focusableEls = dialog.querySelectorAll('a[href],' +
+      'area[href], input:not([disabled]), select:not([disabled]),' +
+      'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
   return dialog;
 };
 
@@ -162,13 +215,14 @@ TypedModal.createTypeList_ = function(types) {
     typeInput.type = "radio";
     typeInput.id = typeName;
     typeInput.name = "variableType";
-    Blockly.bindEventWithChecks_(typeInput, 'click', TypedModal, function(e) {
+    Blockly.bindEventWithChecks_(typeInput, 'click', null, function(e) {
       TypedModal.selected = e.target;
     });
 
     const typeLabel = document.createElement("Label");
     typeLabel.innerText = typeDisplayName;
     typeLabel.setAttribute('for', typeName);
+
     typeLi.appendChild(typeInput);
     typeLi.appendChild(typeLabel);
     typeList.appendChild(typeLi);
@@ -176,14 +230,19 @@ TypedModal.createTypeList_ = function(types) {
   return typeList;
 };
 
-TypedModal.createDialogInput_ = function() {
-  // TODO: Make this into a label
+TypedModal.createDialogInputDiv_ = function() {
   const dialogInputDiv = document.createElement('div');
   Blockly.utils.dom.addClass(dialogInputDiv, 'typed-modal-dialog-input');
-  dialogInputDiv.innerHTML = 'Name';
+
+  const inputLabel = document.createElement("Label");
+  inputLabel.innerText = 'Variable Name';
+  inputLabel.setAttribute('for', 'variableInput');
 
   const dialogInput = document.createElement('input');
   dialogInput.type = 'text';
+  dialogInput.id = 'variableInput';
+
+  dialogInputDiv.appendChild(inputLabel);
   dialogInputDiv.appendChild(dialogInput);
   TypedModal.dialogInput = dialogInput;
   return dialogInputDiv;
@@ -203,15 +262,13 @@ TypedModal.createActions_ = function(onCreate, onCancel) {
 TypedModal.createCancelBtn_ = function(onCancel) {
   const cancelBtn = document.createElement('button');
   cancelBtn.innerText = "Cancel";
-  // TODO: Check on using TypedModal here.
-  Blockly.bindEventWithChecks_(cancelBtn, 'click', TypedModal, onCancel);
+  Blockly.bindEventWithChecks_(cancelBtn, 'click', null, onCancel);
   return cancelBtn;
 };
 
 TypedModal.createCreateVariableBtn_ = function(onCreate) {
   const createBtn = document.createElement('button');
   createBtn.innerText = "Create";
-  Blockly.bindEventWithChecks_(createBtn, 'click', TypedModal, function() {});
-  createBtn.addEventListener('click', onCreate);
+  Blockly.bindEventWithChecks_(createBtn, 'click', null, onCreate);
   return createBtn;
 };

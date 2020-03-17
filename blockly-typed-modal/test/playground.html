@@ -10,27 +10,14 @@
   <script>
     'use strict';
     function start() {
-      var workspace = null;
-      var toolbox = document.getElementById('toolbox-categories-typed-variables');
-      var types = [["ANIMAL", "animal"], ["PENGUINS", "penguins"]];
+      let workspace = null;
+      const toolbox = document.getElementById('toolbox-categories-typed-variables');
+      const types = [["ANIMAL", "animal"], ["PENGUINS", "penguins"]];
       // Create main workspace.
-      Blockly.VariablesDynamic.flyoutCategory = function() {
-        var xmlList = [];
-        var button = document.createElement('button');
-        button.setAttribute('text', 'Create Typed Variable');
-        button.setAttribute('callbackKey', 'CREATE_TYPED_VARIABLE');
-        xmlList.push(button);
-
-        var blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
-        xmlList = xmlList.concat(blockList);
-        return xmlList;
-      };
-
       workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
       });
       TypedModal.init(workspace, types);
-
     }
   </script>
   <style>
@@ -395,7 +382,7 @@
       </block>
     </category>
     <sep></sep>
-    <category name="Variables" categorystyle="variable_category" custom="VARIABLE_DYNAMIC"></category>
+    <category name="Variables" categorystyle="variable_category" custom="CREATE_TYPED_VARIABLE"></category>
     <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
   </xml>
 </body>
