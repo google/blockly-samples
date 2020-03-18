@@ -387,6 +387,9 @@ const listCreateMutator = {
   },
 
   minus: function() {
+    if (this.itemCount_ == 0) {
+      return;
+    }
     this.removePart_();
     this.updateMinus_();
   },
