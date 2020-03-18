@@ -9,6 +9,9 @@
  *    the shape of a block.
  */
 
+
+import * as Blockly from 'blockly/core';
+
 Blockly.defineBlocksWithJsonArray([
   // TODO: It's annoying that we have to redefine the whole controls_ifelse
   //  block. It would be nice if the default block had an empty mutator
@@ -144,7 +147,7 @@ Blockly.defineBlocksWithJsonArray([
   }
 ]);
 
-controlsIfMutator =  {
+const controlsIfMutator =  {
   // TODO: This should be its own extension. But that requires core changes.
   suppressPrefixSuffix: true,
 
@@ -220,7 +223,7 @@ controlsIfMutator =  {
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField) {
-      this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
+      this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
     } else if (!this.elseIfCount_) {
       this.topInput_.removeField('MINUS');
     }
@@ -231,16 +234,16 @@ controlsIfMutator =  {
  * @this {Blockly.Block}
  * @constructor
  */
-controlsIfHelper = function() {
+const controlsIfHelper = function() {
   this.topInput_ = this.getInput('IF0');
-  this.topInput_.insertFieldAt(0, new plusMinus.FieldPlus(), 'PLUS');
+  this.topInput_.insertFieldAt(0, new FieldPlus(), 'PLUS');
 };
 
 Blockly.Extensions.unregister('controls_if_mutator');
 Blockly.Extensions.registerMutator('controls_if_mutator',
     controlsIfMutator, controlsIfHelper);
 
-textJoinMutator = {
+const textJoinMutator = {
   itemCount_: 0,
 
   /**
@@ -294,7 +297,7 @@ textJoinMutator = {
         this.removeInput('EMPTY');
       }
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
-          .appendField(new plusMinus.FieldPlus(), 'PLUS')
+          .appendField(new FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     } else {
       this.appendValueInput('ADD' + this.itemCount_);
@@ -307,7 +310,7 @@ textJoinMutator = {
     this.removeInput('ADD' + this.itemCount_);
     if (this.itemCount_ == 0) {
       this.topInput_ = this.appendDummyInput('EMPTY')
-          .appendField(new plusMinus.FieldPlus(), 'PLUS')
+          .appendField(new FieldPlus(), 'PLUS')
           .appendField(this.newQuote_(true))
           .appendField(this.newQuote_(false));
     }
@@ -316,7 +319,7 @@ textJoinMutator = {
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
-      this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
+      this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
     } else if (minusField && this.itemCount_ < 1) {
       this.topInput_.removeField('MINUS');
     }
@@ -327,7 +330,7 @@ textJoinMutator = {
  * @this {Blockly.Block}
  * @constructor
  */
-textJoinHelper = function() {
+const textJoinHelper = function() {
   this.mixin(Blockly.Constants.Text.QUOTE_IMAGE_MIXIN);
   this.updateShape_(2);
 };
@@ -336,7 +339,7 @@ Blockly.Extensions.unregister('text_join_mutator');
 Blockly.Extensions.registerMutator('text_join_mutator',
     textJoinMutator, textJoinHelper);
 
-listCreateMutator = {
+const listCreateMutator = {
   itemCount_: 0,
 
   /**
@@ -386,7 +389,7 @@ listCreateMutator = {
     if (this.itemCount_ == 0) {
       this.removeInput('EMPTY');
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
-          .appendField(new plusMinus.FieldPlus(), 'PLUS')
+          .appendField(new FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
     } else {
       this.appendValueInput('ADD' + this.itemCount_);
@@ -399,7 +402,7 @@ listCreateMutator = {
     this.removeInput('ADD' + this.itemCount_);
     if (this.itemCount_ == 0) {
       this.topInput_ = this.appendDummyInput('EMPTY')
-          .appendField(new plusMinus.FieldPlus(), 'PLUS')
+          .appendField(new FieldPlus(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
     }
   },
@@ -407,7 +410,7 @@ listCreateMutator = {
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
-      this.topInput_.insertFieldAt(1, new plusMinus.FieldMinus(), 'MINUS');
+      this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
     } else if (minusField && this.itemCount_ < 1) {
       this.topInput_.removeField('MINUS');
     }
@@ -418,14 +421,14 @@ listCreateMutator = {
  * @this {Blockly.Block}
  * @constructor
  */
-listCreateHelper = function() {
+const listCreateHelper = function() {
   this.updateShape_(3);
 };
 
 Blockly.Extensions.registerMutator('new_list_create_with_mutator',
     listCreateMutator, listCreateHelper);
 
-getDefNoReturn = {
+const getDefNoReturn = {
   getProcedureDef: function() {
     return [this.getFieldValue('NAME'), this.arguments_, false];
   },
@@ -434,7 +437,7 @@ getDefNoReturn = {
 
 Blockly.Extensions.registerMixin('get_procedure_def_no_return', getDefNoReturn);
 
-getDefReturn = {
+const getDefReturn = {
   getProcedureDef: function() {
     return [this.getFieldValue('NAME'), this.arguments_, true];
   },
@@ -443,7 +446,7 @@ getDefReturn = {
 
 Blockly.Extensions.registerMixin('get_procedure_def_return', getDefReturn);
 
-procedureContextMenu = {
+const procedureContextMenu = {
   customContextMenu: function(options) {
     if (this.isInFlyout) {
       return;
@@ -489,7 +492,7 @@ procedureContextMenu = {
 
 Blockly.Extensions.registerMixin('procedure_context_menu', procedureContextMenu);
 
-procedureDefMutator = {
+const procedureDefMutator = {
   /**
    * Names of all arg-models (vars) associated with this block.
    * @type {!Array<string>}
@@ -634,7 +637,7 @@ procedureDefMutator = {
 
     this.appendDummyInput(argId)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new plusMinus.FieldMinus(argId))
+        .appendField(new FieldMinus(argId))
         .appendField('variable:')  // Untranslated!
         .appendField(nameField, argId);  // The name of the field is the arg id.
   },
@@ -695,13 +698,13 @@ procedureDefMutator = {
 
 Blockly.Extensions.registerMutator('procedure_def_mutator', procedureDefMutator);
 
-procedureRename = function() {
+const procedureRename = function() {
   this.getField('NAME').setValidator(Blockly.Procedures.rename);
 };
 
 Blockly.Extensions.register('procedure_rename', procedureRename);
 
-procedureVars = function() {
+const procedureVars = function() {
   // This is a hack to get around the don't-override-builtins check.
   var mixin = {
     getVars: function() {

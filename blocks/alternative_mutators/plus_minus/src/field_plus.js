@@ -9,25 +9,29 @@
  */
 'use strict';
 
+import * as Blockly from 'blockly/core';
 
+
+// TODO: Refactor into class?
+// TODO: Re-add plusMinus namespace prefix?
 /**
  * Class for a plus button used for mutation.
  * @param opt_args Arguements to pass to the 'plus' function when the button
  *    is clicked.
  * @constructor
  */
-plusMinus.FieldPlus = function(opt_args) {
+const FieldPlus = function(opt_args) {
   this.args_ = opt_args;
-  return plusMinus.FieldPlus.superClass_.constructor.call(
+  return FieldPlus.superClass_.constructor.call(
       this, 'media/plus.svg', 15, 15, '');
 };
-Blockly.utils.object.inherits(plusMinus.FieldPlus, Blockly.FieldImage);
+Blockly.utils.object.inherits(FieldPlus, Blockly.FieldImage);
 
-plusMinus.FieldPlus.fromJson = function(options) {
-  return new plusMinus.FieldPlus(options['args']);
+FieldPlus.fromJson = function(options) {
+  return new FieldPlus(options['args']);
 };
 
-plusMinus.FieldPlus.prototype.showEditor_ = function() {
+FieldPlus.prototype.showEditor_ = function() {
   // TODO: This is a dupe of the mutator code, anyway to unify?
   var block = this.getSourceBlock();
 
@@ -54,4 +58,4 @@ plusMinus.FieldPlus.prototype.showEditor_ = function() {
   }
 };
 
-Blockly.fieldRegistry.register('field_plus', plusMinus.FieldPlus);
+Blockly.fieldRegistry.register('field_plus', FieldPlus);
