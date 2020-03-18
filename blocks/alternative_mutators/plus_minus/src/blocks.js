@@ -196,6 +196,9 @@ const controlsIfMutator =  {
   },
 
   minus: function() {
+    if (this.elseIfCount_ == 0) {
+      return;
+    }
     this.removePart_();
     this.updateMinus_();
   },
