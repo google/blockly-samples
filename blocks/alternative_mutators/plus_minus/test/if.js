@@ -26,9 +26,7 @@ suite('if & ifelse', () => {
 
   setup(() => {
     this.workspace = new Blockly.Workspace();
-    this.ifBlock = this.workspace.newBlock('controls_if');
     this.ifelseBlock = this.workspace.newBlock('controls_ifelse');
-    this.clock = sinon.useFakeTimers();
   });
   suite('Adding and removing inputs', () => {
     test('Add', () => {
