@@ -50,11 +50,27 @@ export class FieldSlider extends Blockly.FieldNumber {
   }
 
   /**
-   * Creates and shows the slider field's editor.
+   * Constructs a FieldSlider from a JSON arg object.
+   * @param {!Object} options A JSON object with options (value, min, max, and
+   *                          precision).
+   * @return {!FieldSlider} The new field instance.
+   * @package
+   * @nocollapse
+   */
+  static fromJson (options) {
+    return new FieldSlider(options['value'],
+        undefined, undefined, undefined, undefined, options);
+  }
+
+  /**
+   * Show the inline free-text editor on top of the text along with the slider
+   *    editor.
+   * @param {boolean=} opt_quietInput True if editor should be created without
+   *     focus.  Defaults to false.
    * @protected
    * @override
    */
-  showEditor_() {
+  showEditor_(opt_quietInput) {
     super.showEditor_();
     // Build the DOM.
     var editor = this.dropdownCreate_();
@@ -66,6 +82,16 @@ export class FieldSlider extends Blockly.FieldNumber {
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));
+  }
+
+  /**
+   * Updates the slider when the field rerenders.
+   * @protected
+   * @override
+   */
+  render_() {
+    super.render_();
+    this.updateSlider_();
   }
 
   /**
@@ -102,16 +128,6 @@ export class FieldSlider extends Blockly.FieldNumber {
   }
 
   /**
-   * Updates the slider when the field rerenders.
-   * @protected
-   * @override
-   */
-  render_() {
-    super.render_();
-    this.updateSlider_();
-  }
-
-  /**
    * Sets the text to match the slider's position.
    * @private
    */
@@ -128,22 +144,8 @@ export class FieldSlider extends Blockly.FieldNumber {
       return;
     }
     this.sliderInput_.setAttribute('value', this.getValue());
-  };
-
+  }
 }
-
-/**
- * Constructs a FieldSlider from a JSON arg object.
- * @param {!Object} options A JSON object with options (value, min, max, and
- *                          precision).
- * @return {!FieldSlider} The new field instance.
- * @package
- * @nocollapse
- */
-FieldSlider.fromJson = function(options) {
-  return new FieldSlider(options['value'],
-      undefined, undefined, undefined, undefined, options);
-};
 
 Blockly.fieldRegistry.register('field_slider', FieldSlider);
 
