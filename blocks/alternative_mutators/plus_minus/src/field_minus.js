@@ -20,7 +20,7 @@ import * as Blockly from 'blockly/core';
  *    is clicked.
  * @constructor
  */
-const FieldMinus = function(opt_args) {
+export default function FieldMinus(opt_args) {
   this.args_ = opt_args;
   return FieldMinus.superClass_.constructor.call(
       this, 'media/minus.svg', 15, 15, '');

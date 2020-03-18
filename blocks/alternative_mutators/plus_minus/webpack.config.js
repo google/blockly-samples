@@ -15,8 +15,7 @@ module.exports = env => {
     return {
         target: 'web',
         mode: env.mode,
-        // TODO: Refactor so blocks.js requires the fields.
-        entry: ['./src/blocks.js', './src/field_plus.js', './src/field_minus.js'],
+        entry: './src/blocks.js',
         devtool: 'source-map',
         output: {
             path: path.resolve(__dirname, 'dist'),
