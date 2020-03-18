@@ -31,7 +31,7 @@ const CSS_CONTENT = `
     font-size: 1em;
   }
 
-  .typed-modal-dialog-input {
+  .typed-modal-dialog-input-wrapper {
     margin: 1em 0 1em 0;
   }
   .typed-modal-dialog-variables ul{
