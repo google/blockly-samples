@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Workspace Search Playground</title>
+  <title>Typed Modal Playground</title>
 
 
   <script src="../node_modules/blockly/blockly.min.js"></script>
@@ -17,7 +17,21 @@
       workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
       });
-      TypedModal.init(workspace, types);
+      const createFlyout = function(workspace) {
+        let xmlList = [];
+        const button = document.createElement('button');
+        button.setAttribute('text', 'Create Typed Variable');
+        button.setAttribute('callbackKey', 'CREATE_TYPED_VARIABLE');
+
+        xmlList.push(button);
+
+        const blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
+        xmlList = xmlList.concat(blockList);
+        return xmlList;
+      };
+      workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
+      const typedModal = new TypedModal(workspace);
+      typedModal.init('CREATE_TYPED_VARIABLE', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
     }
   </script>
   <style>

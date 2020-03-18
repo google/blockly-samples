@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Workspace Search Playground</title>
-
+    <title>Multi Typed Modal Playground</title>
 
     <script src="../node_modules/blockly/blockly.min.js"></script>
     <script src="../dist/typed-modal.umd.js"></script>
@@ -31,29 +30,43 @@
         const toolbox =
             document.getElementById('toolbox-' + (match ? match[1] : 'categories'));
         document.forms.options.elements.toolbox.selectedIndex =
-        startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, true);
-        startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox);
+        startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, [["PENGUIN", "Penguin"],["GIRAFFE", "Giraffe"]]);
+        startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
 
-        startBlocklyInstance('VertEndLTR', false, false, 'end', toolbox);
-        startBlocklyInstance('VertEndRTL', true, false, 'end', toolbox);
+        startBlocklyInstance('VertEndLTR', false, false, 'end', toolbox,[["WHALE", "Whale"],["SHARK", "Shark"]]);
+        startBlocklyInstance('VertEndRTL', true, false, 'end', toolbox,[["GREAT_DANE", "Great Dane"],["BOSTON_TERRIER", "Boston Terrier"]]);
 
-        startBlocklyInstance('HorizontalStartLTR', false, true, 'start', toolbox);
-        startBlocklyInstance('HorizontalStartRTL', true, true, 'start', toolbox);
+        startBlocklyInstance('HorizontalStartLTR', false, true, 'start', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
+        startBlocklyInstance('HorizontalStartRTL', true, true, 'start', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
 
-        startBlocklyInstance('HorizontalEndLTR', false, true, 'end', toolbox);
-        startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolbox);
+        startBlocklyInstance('HorizontalEndLTR', false, true, 'end', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
+        startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
       }
 
-      function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, opt_openSearch) {
+      function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, types) {
+        const createFlyout = function(workspace) {
+          let xmlList = [];
+          const button = document.createElement('button');
+          button.setAttribute('text', 'Create Typed Variable');
+          button.setAttribute('callbackKey', 'CREATE_TYPED_VARIABLE');
+
+          xmlList.push(button);
+
+          const blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
+          xmlList = xmlList.concat(blockList);
+          return xmlList;
+        };
         options.rtl = rtl;
         options.toolbox = toolbox;
         options.horizontalLayout = horizontalLayout;
         options.toolboxPosition = position;
 
         const ws = Blockly.inject('blocklyDiv' + suffix, options);
-        TypedModal.init(ws, [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']])
+        ws.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
+        const typedModal = new TypedModal(ws);
+        typedModal.init('CREATE_TYPED_VARIABLE', types);
+        return ws;
       }
-
       document.addEventListener("DOMContentLoaded", function () { start() });
     </script>
 
