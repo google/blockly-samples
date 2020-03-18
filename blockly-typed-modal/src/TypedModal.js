@@ -20,6 +20,7 @@
 
 import { injectTypedModalCss } from './css.js';
 import * as Blockly from 'blockly/core';
+import { Modal } from './Modal.js';
 
 /**
  * Class for displaying a modal used for creating typed variables.
@@ -40,18 +41,13 @@ export class TypedModal {
     this.workspace_ = workspace;
 
     /**
-     * HTML container for the typed modal.
-     * @type {?HTMLElement}
-     * @private
-     */
-    this.htmlDiv_ = null;
-
-    /**
      * The selected type for the modal.
      * @type {?string}
      * @private
      */
     this.selectedType_ = null;
+
+    this.modal_ = null;
   }
 
   /**
@@ -64,7 +60,9 @@ export class TypedModal {
    */
   init(btnCallbackName, types) {
     injectTypedModalCss();
-    this.htmlDiv_ = this.createDom(types, this.createVariable_, this.hide);
+    this.modal_ = new Modal("Create New Variable", this.createVariable_,
+        this.hide);
+    this.createDom(types);
     this.workspace_.registerButtonCallback(btnCallbackName, (button) => {
       this.show(button.getTargetWorkspace());
     });
@@ -75,76 +73,17 @@ export class TypedModal {
    * @param {!Blockly.WorkspaceSvg} workspace The button's target workspace.
    */
   show(workspace) {
-    // TODO: Fix the dispose method
-    Blockly.WidgetDiv.show(this, workspace.RTL, () => {
+    this.modal_.show(workspace, () => {
       this.checkFirstType_();
       this.getTextInputDiv_().value = '';
     });
-    this.widgetCreate_();
-    this.focusableEls[0].focus();
   }
 
   /**
    * Hide the typed modal.
    */
   hide() {
-    Blockly.WidgetDiv.hide();
-  }
-
-  /**
-   * Add the typed modal html to the widget div.
-   * @private
-   */
-  widgetCreate_() {
-    const widgetDiv = Blockly.WidgetDiv.DIV;
-    const htmlInput_ = this.htmlDiv_;
-    widgetDiv.appendChild(htmlInput_);
-  }
-
-  /**
-   * Handle when the user does a backwards tab.
-   * @param {KeyboardEvent} e The keydown event.
-   * @private
-   */
-  handleBackwardTab_(e) {
-    if (document.activeElement === this.focusableEls[0]) {
-      e.preventDefault();
-      this.focusableEls[this.focusableEls.length - 1].focus();
-    }
-  }
-
-  /**
-   * Handle when the user does a forward tab.
-   * @param {KeyboardEvent} e The keydown event.
-   * @private
-   */
-  handleForwardTab_(e) {
-    const focusedElements = this.focusableEls;
-    if (document.activeElement === focusedElements[focusedElements.length - 1]) {
-      e.preventDefault();
-      this.focusableEls[0].focus();
-    }
-  }
-
-  /**
-   * Handles keydown event for the typed modal.
-   * @param {KeyboardEvent} e The keydown event.
-   * @private
-   */
-  handleKeyDown_(e) {
-    if (e.keyCode === Blockly.utils.KeyCodes.TAB) {
-      if (this.focusableEls.length === 1) {
-        e.preventDefault();
-        return;
-      }
-      if (e.shiftKey) {
-        this.handleBackwardTab_(e);
-      } else {
-        this.handleForwardTab_(e);
-      }
-    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
-      this.hide();
-    }
+    this.modal_.hide();
   }
 
   /**
@@ -200,11 +139,8 @@ export class TypedModal {
    * @param {Array<Array<string>>}types An array holding arrays with the name of
    *     the type and the display name for the type.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
-   * @param {Function} onCreate Function to be called on create.
-   * @param {Function} onCancel Function to be called on cancel.
-   * @return {HTMLDivElement} The html for the dialog.
    */
-  createDom(types, onCreate, onCancel) {
+  createDom(types) {
     /*
      * Creates the search bar. The generated search bar looks like:
      * <div class="typed-modal-dialog">
@@ -226,20 +162,6 @@ export class TypedModal {
      * </div>
      */
 
-    const dialog = document.createElement('div');
-    Blockly.utils.dom.addClass(dialog, 'typed-modal');
-
-    const dialogContent = document.createElement('div');
-    Blockly.utils.dom.addClass(dialogContent, 'typed-modal-dialog');
-    dialogContent.setAttribute('role', 'dialog');
-    dialogContent.setAttribute('aria-labelledby', 'Typed Variable Dialog');
-    dialogContent.setAttribute('aria-describedby', 'Dialog for creating a types variable.');
-
-    const dialogHeader = document.createElement('H1');
-    const dialogTitle = document.createTextNode("Create New Variable");
-    dialogHeader.appendChild(dialogTitle);
-    Blockly.utils.dom.addClass(dialogHeader, 'typed-modal-dialog-title');
-
     this.dialogInputDiv = this.createDialogInputDiv_();
 
     const dialogVariableDiv = document.createElement('div');
@@ -250,18 +172,9 @@ export class TypedModal {
     this.checkFirstType_();
     dialogVariableDiv.appendChild(this.typeList);
 
-    const actions = this.createActions_(onCreate, onCancel);
-
-    dialogContent.appendChild(dialogHeader);
-    dialogContent.appendChild(this.dialogInputDiv);
-    dialogContent.appendChild(dialogVariableDiv);
-    dialogContent.appendChild(actions);
-    dialog.appendChild(dialogContent);
-    Blockly.bindEventWithChecks_(dialog, 'keydown', this, this.handleKeyDown_);
-    this.focusableEls = dialog.querySelectorAll('a[href],' +
-        'area[href], input:not([disabled]), select:not([disabled]),' +
-        'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
-    return dialog;
+    const contentDiv = this.modal_.getContentDiv();
+    contentDiv.appendChild(this.dialogInputDiv);
+    contentDiv.appendChild(dialogVariableDiv);
   }
 
   /**
@@ -340,49 +253,5 @@ export class TypedModal {
     dialogInputDiv.appendChild(dialogInput);
     this.dialogInput = dialogInput;
     return dialogInputDiv;
-  }
-
-  /**
-   * Create the actions for the modal.
-   * @param {Function} onCreate Function to be called on create.
-   * @param {Function} onCancel Function to be called on cancel.
-   * @return {HTMLDivElement} The div containing the cancel and create buttons.
-   * @private
-   */
-  createActions_(onCreate, onCancel) {
-    const actions = document.createElement('div');
-    Blockly.utils.dom.addClass(actions, 'typed-modal-actions');
-
-    const createBtn = this.createCreateVariableBtn_(onCreate);
-    const cancelBtn = this.createCancelBtn_(onCancel);
-    actions.appendChild(createBtn);
-    actions.appendChild(cancelBtn);
-    return actions;
-  }
-
-  /**
-   * Create the cancel button.
-   * @param {Function} onCancel Function to be called on cancel.
-   * @return {HTMLButtonElement} The cancel button.
-   * @private
-   */
-  createCancelBtn_(onCancel) {
-    const cancelBtn = document.createElement('button');
-    cancelBtn.innerText = "Cancel";
-    Blockly.bindEventWithChecks_(cancelBtn, 'click', this, onCancel);
-    return cancelBtn;
-  }
-
-  /**
-   * Create the button for creating a variable.
-   * @param {Function} onCreate Function to be called on create.
-   * @return {HTMLButtonElement} The create button.
-   * @private
-   */
-  createCreateVariableBtn_(onCreate) {
-    const createBtn = document.createElement('button');
-    createBtn.innerText = "Create";
-    Blockly.bindEventWithChecks_(createBtn, 'click', this, onCreate);
-    return createBtn;
   }
 }

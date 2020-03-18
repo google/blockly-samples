@@ -3,7 +3,7 @@
  * @type {string}
  */
 const CSS_CONTENT = `
-  .typed-modal-dialog {
+  .modal-container {
     background-color: white;
     border: 1px solid gray;
     max-width: 50%;
@@ -18,14 +18,17 @@ const CSS_CONTENT = `
     z-index: 100;
     margin: 15% auto;
   }
-  .typed-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
+  
+  .modal-header {
+    display: flex;
   }
+    
+  .modal-header .modal-btn {
+    margin-left: auto;
+    height: fit-content;
+  }
+  
+  
   .typed-modal-dialog-title {
     font-weight: bold;
     font-size: 1em;
@@ -43,19 +46,6 @@ const CSS_CONTENT = `
   .typed-modal-dialog-variables li {
     margin-right: 1em;
     display: flex;
-  }
-
-  .typed-modal {
-    display: block; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 100; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }`;
 
 /**
