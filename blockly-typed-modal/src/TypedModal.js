@@ -29,10 +29,8 @@ export class TypedModal {
    * Constructor for creating and registering a typed modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the button
    *     callback will be registered on.
-   * @param {boolean=} opt_requireType If true require the user to create a
-   *     variable with one of the types.
    */
-  constructor(workspace, opt_requireType) {
+  constructor(workspace) {
 
     /**
      * The workspace that the button callback will be registered on.
@@ -47,13 +45,6 @@ export class TypedModal {
      * @private
      */
     this.htmlDiv_ = null;
-
-    /**
-     * True to require a type in the modal.
-     * @type {boolean}
-     * @private
-     */
-    this.requireType_ = !!opt_requireType;
 
     /**
      * The selected type for the modal.
@@ -85,7 +76,10 @@ export class TypedModal {
    */
   show(workspace) {
     // TODO: Fix the dispose method
-    Blockly.WidgetDiv.show(this, workspace.RTL, () => {});
+    Blockly.WidgetDiv.show(this, workspace.RTL, () => {
+      this.checkFirstType_();
+      this.getTextInputDiv_().value = '';
+    });
     this.widgetCreate_();
     this.focusableEls[0].focus();
   }
@@ -105,7 +99,7 @@ export class TypedModal {
     const widgetDiv = Blockly.WidgetDiv.DIV;
     const htmlInput_ = this.htmlDiv_;
     widgetDiv.appendChild(htmlInput_);
-  };
+  }
 
   /**
    * Handle when the user does a backwards tab.
@@ -117,7 +111,7 @@ export class TypedModal {
       e.preventDefault();
       this.focusableEls[this.focusableEls.length - 1].focus();
     }
-  };
+  }
 
   /**
    * Handle when the user does a forward tab.
@@ -130,7 +124,7 @@ export class TypedModal {
       e.preventDefault();
       this.focusableEls[0].focus();
     }
-  };
+  }
 
   /**
    * Handles keydown event for the typed modal.
@@ -151,7 +145,7 @@ export class TypedModal {
     } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
       this.hide();
     }
-  };
+  }
 
   /**
    * Get the valid variable name, or null if the name is not valid.
@@ -169,7 +163,7 @@ export class TypedModal {
       }
     }
     return newVar;
-  };
+  }
 
   /**
    * Callback for when someone hits the create variable button. Creates a
@@ -199,7 +193,7 @@ export class TypedModal {
         this.hide();
       }
     }
-  };
+  }
 
   /**
    * Create the typed modal's dom.
@@ -246,19 +240,20 @@ export class TypedModal {
     dialogHeader.appendChild(dialogTitle);
     Blockly.utils.dom.addClass(dialogHeader, 'typed-modal-dialog-title');
 
-    const dialogInputDiv = this.createDialogInputDiv_();
+    this.dialogInputDiv = this.createDialogInputDiv_();
 
     const dialogVariableDiv = document.createElement('div');
     Blockly.utils.dom.addClass(dialogVariableDiv, 'typed-modal-dialog-variables');
     dialogVariableDiv.innerHTML = "Variable Types";
 
-    const typeList = this.createTypeList_(types);
-    dialogVariableDiv.appendChild(typeList);
+    this.typeList = this.createTypeList_(types);
+    this.checkFirstType_();
+    dialogVariableDiv.appendChild(this.typeList);
 
     const actions = this.createActions_(onCreate, onCancel);
 
     dialogContent.appendChild(dialogHeader);
-    dialogContent.appendChild(dialogInputDiv);
+    dialogContent.appendChild(this.dialogInputDiv);
     dialogContent.appendChild(dialogVariableDiv);
     dialogContent.appendChild(actions);
     dialog.appendChild(dialogContent);
@@ -267,7 +262,25 @@ export class TypedModal {
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
     return dialog;
-  };
+  }
+
+  /**
+   * Get the input div.
+   * @return {null|HTMLInputElement} The text input that holds the variable name.
+   * @private
+   */
+  getTextInputDiv_() {
+    return this.dialogInputDiv.querySelector('.typed-modal-dialog-input');
+  }
+
+  /**
+   * Check the first type in the list.
+   * @private
+   */
+  checkFirstType_() {
+    const firstType = this.typeList.querySelector('.typed-modal-types');
+    firstType.checked = true;
+  }
 
   /**
    * Creates an unordered list containing all the types.
@@ -279,12 +292,13 @@ export class TypedModal {
    */
   createTypeList_(types) {
     const typeList = document.createElement('ul');
-
+    Blockly.utils.dom.addClass(typeList, 'typed-modal-list');
     for (const type of types) {
       const typeName = type[0];
       const typeDisplayName = type[1];
       const typeLi = document.createElement('li');
       const typeInput = document.createElement('input');
+      Blockly.utils.dom.addClass(typeInput, 'typed-modal-types');
       typeInput.type = "radio";
       typeInput.id = typeName;
       typeInput.name = "variableType";
@@ -301,7 +315,7 @@ export class TypedModal {
       typeList.appendChild(typeLi);
     }
     return typeList;
-  };
+  }
 
   /**
    * Create the div that holds the text input and label for the text input.
@@ -311,13 +325,14 @@ export class TypedModal {
    */
   createDialogInputDiv_() {
     const dialogInputDiv = document.createElement('div');
-    Blockly.utils.dom.addClass(dialogInputDiv, 'typed-modal-dialog-input');
+    Blockly.utils.dom.addClass(dialogInputDiv, 'typed-modal-dialog-input-wrapper');
 
     const inputLabel = document.createElement("Label");
     inputLabel.innerText = 'Variable Name';
     inputLabel.setAttribute('for', 'variableInput');
 
     const dialogInput = document.createElement('input');
+    Blockly.utils.dom.addClass(dialogInput, 'typed-modal-dialog-input');
     dialogInput.type = 'text';
     dialogInput.id = 'variableInput';
 
@@ -325,7 +340,7 @@ export class TypedModal {
     dialogInputDiv.appendChild(dialogInput);
     this.dialogInput = dialogInput;
     return dialogInputDiv;
-  };
+  }
 
   /**
    * Create the actions for the modal.
@@ -343,7 +358,7 @@ export class TypedModal {
     actions.appendChild(createBtn);
     actions.appendChild(cancelBtn);
     return actions;
-  };
+  }
 
   /**
    * Create the cancel button.
@@ -356,7 +371,7 @@ export class TypedModal {
     cancelBtn.innerText = "Cancel";
     Blockly.bindEventWithChecks_(cancelBtn, 'click', this, onCancel);
     return cancelBtn;
-  };
+  }
 
   /**
    * Create the button for creating a variable.
@@ -369,5 +384,5 @@ export class TypedModal {
     createBtn.innerText = "Create";
     Blockly.bindEventWithChecks_(createBtn, 'click', this, onCreate);
     return createBtn;
-  };
+  }
 }
