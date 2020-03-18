@@ -12,7 +12,7 @@
 
 import * as Blockly from 'blockly/core';
 import FieldPlus from './field_plus.js';
-import * as FieldMinus from './field_minus.js';
+import FieldMinus from './field_minus.js';
 
 
 Blockly.defineBlocksWithJsonArray([
