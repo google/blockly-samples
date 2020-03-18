@@ -659,6 +659,9 @@ procedureDefMutator = {
     var index = sourceBlock.argIds_.indexOf(this.name);
     sourceBlock.arguments_[index] = newName;
 
+    // TODO: Maybe delete the pre-edit variable if it has no other uses.
+    //  Currently unaccomplishable as the workspace var map is private.
+
     // We want to create new vars instead of renaming the old ones, so that
     // users don't accidentally rename/coalesce vars they don't want to.
     var workspace = sourceBlock.workspace;
