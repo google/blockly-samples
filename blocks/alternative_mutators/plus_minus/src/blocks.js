@@ -505,32 +505,6 @@ const procedureContextMenu = {
 Blockly.Extensions.registerMixin('procedure_context_menu', procedureContextMenu);
 
 const procedureDefMutator = {
-  /**
-   * Names of all arg-models (vars) associated with this block.
-   * @type {!Array<string>}
-   */
-  arguments_: [],
-  /**
-   * Ids of all the arg-models (vars) associated with this block.
-   * @type {!Array<string>}
-   */
-  varIds_: [],
-  /**
-   * Arg-models (vars) associated with this block.
-   * @type {!Array<Blockly.VariableModel>}
-   */
-  argumentVarModels_: [],
-  // Note because the order is static this we could use the index as the argId.
-  // But if we ever add the ability to reorder the args that will break and each
-  // arg will need an ID. Currently we can't reorder because of #3725.
-  /**
-   * Ids associated with each argument. These are separate from the var Ids
-   * and are used to keep track of an arg when its variable is changing. E.g
-   * as the name is being edited.
-   * @type {!Array<string>}
-   */
-  argIds_: [],
-
   mutationToDom: function(opt_isForCaller) {
     var container = Blockly.utils.xml.createElement('mutation');
     if (opt_isForCaller) {
@@ -602,6 +576,9 @@ const procedureDefMutator = {
   },
 
   minus: function(argId) {
+    if (!this.argIds_.length) {
+      return;
+    }
     this.removeArg_(argId);
     Blockly.Procedures.mutateCallers(this);
   },
@@ -630,6 +607,11 @@ const procedureDefMutator = {
   },
 
   removeArg_: function(argId) {
+    if (!this.getInput(argId)) {
+      return;
+    }
+    // TODO: My life would be so much happier if this returned a boolean instead
+    //  of throwing an error. I'm saying at least 15% more joy.
     this.removeInput(argId);
     if (this.arguments_.length == 1) {  // Becoming argumentless.
       this.getInput('TOP').removeField('WITH');
@@ -708,7 +690,36 @@ const procedureDefMutator = {
   },
 };
 
-Blockly.Extensions.registerMutator('procedure_def_mutator', procedureDefMutator);
+const procedureDefHelper = function() {
+  /**
+    * Names of all arg-models (vars) associated with this block.
+    * @type {!Array<string>}
+    */
+   this.arguments_ = [];
+   /**
+    * Ids of all the arg-models (vars) associated with this block.
+    * @type {!Array<string>}
+    */
+   this.varIds_ = [];
+   /**
+    * Arg-models (vars) associated with this block.
+    * @type {!Array<Blockly.VariableModel>}
+    */
+   this.argumentVarModels_ = [];
+   // Note because the order is static this we could use the index as the argId.
+   // But if we ever add the ability to reorder the args that will break and each
+   // arg will need an ID. Currently we can't reorder because of #3725.
+   /**
+    * Ids associated with each argument. These are separate from the var Ids
+    * and are used to keep track of an arg when its variable is changing. E.g
+    * as the name is being edited.
+    * @type {!Array<string>}
+    */
+   this.argIds_ = [];
+};
+
+Blockly.Extensions.registerMutator('procedure_def_mutator',
+    procedureDefMutator, procedureDefHelper);
 
 const procedureRename = function() {
   this.getField('NAME').setValidator(Blockly.Procedures.rename);
