@@ -3,32 +3,6 @@
  * @type {string}
  */
 const CSS_CONTENT = `
-  .modal-container {
-    background-color: white;
-    border: 1px solid gray;
-    max-width: 50%;
-    font-family: Helvetica;
-    font-weight: 300;
-    padding: 1em;
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 0px 10px 20px grey;
-    z-index: 100;
-    margin: 15% auto;
-  }
-  
-  .modal-header {
-    display: flex;
-  }
-    
-  .modal-header .modal-btn {
-    margin-left: auto;
-    height: fit-content;
-  }
-  
-  
   .typed-modal-dialog-title {
     font-weight: bold;
     font-size: 1em;
@@ -68,3 +42,5 @@ export const injectTypedModalCss = (function() {
     document.head.insertBefore(cssNode, document.head.firstChild);
   };
 })();
+
+
