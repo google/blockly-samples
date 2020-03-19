@@ -9,8 +9,9 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-import { injectModalCss } from './modalCss.js';
 import * as Blockly from 'blockly/core';
+import { injectCss } from "./css";
+
 /**
  * Class responsible for creating a modal.
  */
@@ -25,9 +26,9 @@ export class Modal {
   constructor(title, workspace) {
 
     /**
-     * The selected type for the modal.
-     * @type {?string}
-     * @private
+     * The title for the modal.
+     * @type {string}
+     * @protected
      */
     this.title = title;
 
@@ -40,35 +41,35 @@ export class Modal {
 
     /**
      * The list of focusable elements in the modal.
-     * @type {Array<HTMLElement>}
+     * @type {Array<!HTMLElement>}
      * @private
      */
     this.focusableEls = [];
 
     /**
-     * The selected type for the modal.
+     * The header div for the Blockly modal.
+     * @type {HTMLHeadingElement}
+     * @private
+     */
+    this.headerDiv_ = null;
+
+    /**
+     * The content div for the Blockly modal.
      * @type {HTMLDivElement}
      * @private
      */
     this.contentDiv_ = null;
 
     /**
-     * The div for the footer of the modal.
+     * The footer div for the Blockly modal.
      * @type {HTMLDivElement}
      * @private
      */
     this.footerDiv_ = null;
 
     /**
-     * The div for the header of the modal.
-     * @type {HTMLElement}
-     * @private
-     */
-    this.headerDiv_ = null;
-
-    /**
      * The selected type for the modal.
-     * @type {?HTMLDivElement}
+     * @type {HTMLDivElement}
      * @private
      */
     this.htmlDiv_ = null;
@@ -87,9 +88,39 @@ export class Modal {
    * Initialize a basic accessible modal.
    */
   init() {
-    injectModalCss();
+    this.injectCss();
     this.createDom();
-    this.addEvent_(this.htmlDiv_, 'keydown', this, this.handleKeyDown_)
+    this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
+        this, this.handleKeyDown_);
+  }
+
+  /**
+   * Inject the css for a Blockly modal.
+   */
+  injectCss() {
+    injectCss('blockly-modal-css', `
+      .blockly-modal-container {
+        background-color: white;
+        border: 1px solid gray;
+        max-width: 50%;
+        font-family: Helvetica;
+        font-weight: 300;
+        padding: 1em;
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0px 10px 20px grey;
+        z-index: 100;
+        margin: 15% auto;
+      }
+      .blockly-modal-header {
+        display: flex;
+      }
+      .blockly-modal-header .blockly-modal-btn {
+        margin-left: auto;
+        height: fit-content;
+      }`);
   }
 
   /**
@@ -112,7 +143,7 @@ export class Modal {
   }
 
   /**
-   * Shows the typed modal.
+   * Shows the Blockly modal.
    * @param {!Blockly.WorkspaceSvg} workspace The button's target workspace.
    */
   show(workspace) {
@@ -126,7 +157,7 @@ export class Modal {
   }
 
   /**
-   * Hide the typed modal.
+   * Hide the blockly modal.
    */
   hide() {
     Blockly.WidgetDiv.hide();
@@ -155,7 +186,7 @@ export class Modal {
 
   /**
    * Get the header div for the modal.
-   * @return {HTMLDivElement} The div holding the header of the modal.
+   * @return {HTMLHeadingElement} The div holding the header of the modal.
    */
   getHeaderDiv() {
     return this.headerDiv_;
@@ -172,7 +203,6 @@ export class Modal {
   /**
    * Get the footer div for the modal.
    * @return {HTMLDivElement} The div holding the footer of hte modal.
-   * TODO: Could just make this.footerDiv_ protected?
    */
   getFooterDiv() {
     return this.footerDiv_;
@@ -187,7 +217,7 @@ export class Modal {
   }
 
   /**
-   * Add the typed modal html to the widget div.
+   * Add the Blockly modal to the widget div.
    * @protected
    */
   widgetCreate_() {
@@ -234,7 +264,7 @@ export class Modal {
   }
 
   /**
-   * Handles keydown event for the typed modal.
+   * Handles keydown event for a Blockly modal.
    * @param {KeyboardEvent} e The keydown event.
    * @private
    */
@@ -320,10 +350,7 @@ export class Modal {
     Blockly.utils.dom.addClass(dialogContainer, 'blockly-modal-container');
     dialogContainer.setAttribute('role', 'dialog');
     // TODO: These should be translated.
-    dialogContainer.setAttribute('aria-labelledby',
-        'Typed Variable Dialog');
-    dialogContainer.setAttribute('aria-describedby',
-        'Dialog for creating a types variable.');
+    dialogContainer.setAttribute('aria-labelledby', this.title);
 
     dialogContainer.appendChild(modalHeader);
     dialogContainer.appendChild(modalContent);
