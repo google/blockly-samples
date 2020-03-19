@@ -30,8 +30,8 @@
         return xmlList;
       };
       workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
-      const typedModal = new TypedModal(workspace);
-      typedModal.init('CREATE_TYPED_VARIABLE', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
+      const typedModal = new TypedModal(workspace, 'CREATE_TYPED_VARIABLE', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
+      typedModal.init();
     }
   </script>
   <style>
