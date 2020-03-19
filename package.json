@@ -3,5 +3,12 @@
     "version": "0.0.0",
     "description": "Samples for using Blockly",
     "author": "Blockly Team",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "scripts": {
+        "license": "gulp checkLicenses"
+    },
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "js-green-licenses": "^1.1.0"
+    }
 }
