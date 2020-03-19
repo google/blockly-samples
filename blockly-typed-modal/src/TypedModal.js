@@ -13,14 +13,13 @@
 // TODO: Update css names
 // TODO: Test on mobile
 // TODO: Make sure we are properly cleaning up after ourselves.
-// TODO: Look at how I am dealing with css.
 // TODO: How should be exporting.
 // TODO: CHeck that it works in ie11
 // TODO: Clean up createDOM method
 
-import { injectTypedModalCss } from './typedModalCss.js';
 import * as Blockly from 'blockly/core';
 import { Modal } from './Modal.js';
+import { injectCss } from "./css";
 
 /**
  * Class for displaying a modal used for creating typed variables.
@@ -29,20 +28,20 @@ export class TypedModal extends Modal {
   /**
    * Constructor for creating and registering a typed modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the modal will
-   *     be registered to work on.
+   *     be registered on.
    * @param {string} btnCallbackName The name used to register the button
    *     callback.
-   * @param {Array<Array<string>>}types An array holding arrays with the name of
-   *     the type and the display name for the type.
+   * @param {Array<Array<string>>} types An array holding arrays with the
+   *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
    */
   constructor(workspace, btnCallbackName, types) {
     super('Create Typed Variable', workspace);
 
     /**
-     * The selected type for the modal.
+     * The id of the currently selected type.
      * @type {?string}
-     * @private
+     * @protected
      */
     this.selectedType_ = null;
 
@@ -55,9 +54,9 @@ export class TypedModal extends Modal {
 
     /**
      * An array holding arrays with the name of the type and the display name
-     *     for the type.
+     *     for the type. Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
      * @type {Array<Array<string>>}
-     * @private
+     * @protected
      */
     this.types_ = types;
   }
@@ -67,10 +66,35 @@ export class TypedModal extends Modal {
    */
   init() {
     super.init();
-    injectTypedModalCss();
+    this.injectCss();
     this.workspace_.registerButtonCallback(this.btnCallBackName_, (button) => {
       this.show(button.getTargetWorkspace());
     });
+  }
+
+  /**
+   * Inject necessary css for a typed modal.
+   */
+  injectCss() {
+    super.injectCss();
+    injectCss('typed-modal-css', `
+      .typed-modal-title {
+        font-weight: bold;
+        font-size: 1em;
+      }
+      .typed-modal-variable-name-container {
+        margin: 1em 0 1em 0;
+      }
+      .typed-modal-types ul{
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+        padding: 0;
+      }
+      .typed-modal-types li {
+        margin-right: 1em;
+        display: flex;
+      }`);
   }
 
   /**
@@ -158,13 +182,13 @@ export class TypedModal extends Modal {
      * TODO: Redo this to reflect new html.
      */
     super.createDom();
-    this.dialogInputDiv = this.createDialogInputDiv_();
+    this.dialogInputDiv = this.createVariableNameInput_();
 
     const dialogVariableDiv = document.createElement('div');
-    Blockly.utils.dom.addClass(dialogVariableDiv, 'typed-modal-dialog-variables');
+    Blockly.utils.dom.addClass(dialogVariableDiv, 'typed-modal-types');
     dialogVariableDiv.innerHTML = "Variable Types";
 
-    this.typeList = this.createTypeList_(this.types_);
+    this.typeList = this.createVariableTypeContainer_(this.types_);
     this.checkFirstType_();
     dialogVariableDiv.appendChild(this.typeList);
 
@@ -179,7 +203,7 @@ export class TypedModal extends Modal {
    * @private
    */
   getTextInputDiv_() {
-    return this.dialogInputDiv.querySelector('.typed-modal-dialog-input');
+    return this.dialogInputDiv.querySelector('.typed-modal-input');
   }
 
   /**
@@ -194,18 +218,18 @@ export class TypedModal extends Modal {
 
   /**
    * Creates an unordered list containing all the types.
-   * @param {Array<Array<string>>}types An array holding arrays with the name of
-   *     the type and the display name for the type.
+   * @param {Array<Array<string>>} types An array holding arrays with the
+   *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
    * @return {HTMLUListElement} The list of types.
-   * @private
+   * @protected
    */
-  createTypeList_(types) {
+  createVariableTypeContainer_(types) {
     const typeList = document.createElement('ul');
     Blockly.utils.dom.addClass(typeList, 'typed-modal-list');
     for (const type of types) {
-      const typeName = type[0];
-      const typeDisplayName = type[1];
+      const typeDisplayName = type[0];
+      const typeName = type[1];
       const typeLi = document.createElement('li');
       const typeInput = document.createElement('input');
       Blockly.utils.dom.addClass(typeInput, 'typed-modal-types');
@@ -231,18 +255,21 @@ export class TypedModal extends Modal {
    * Create the div that holds the text input and label for the text input.
    * @return {HTMLDivElement} The div holding the text input and label for text
    *     input.
-   * @private
+   * @protected
    */
-  createDialogInputDiv_() {
+  createVariableNameInput_() {
     const dialogInputDiv = document.createElement('div');
-    Blockly.utils.dom.addClass(dialogInputDiv, 'typed-modal-dialog-input-wrapper');
+    Blockly.utils.dom.addClass(dialogInputDiv,
+        'typed-modal-variable-name-container');
 
     const inputLabel = document.createElement("Label");
+    Blockly.utils.dom.addClass(inputLabel,
+        'typed-modal-variable-name-label');
     inputLabel.innerText = 'Variable Name';
     inputLabel.setAttribute('for', 'variableInput');
 
     const dialogInput = document.createElement('input');
-    Blockly.utils.dom.addClass(dialogInput, 'typed-modal-dialog-input');
+    Blockly.utils.dom.addClass(dialogInput, 'typed-modal-variable-name-input');
     dialogInput.type = 'text';
     dialogInput.id = 'variableInput';
 
