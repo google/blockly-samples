@@ -2,7 +2,8 @@
   "name": "@blockly/plugin-typed-modal",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/typed-modal.umd.js",
+  "unpkg": "./dist/typed-modal.umd.js",
   "directories": {
     "test": "test"
   },

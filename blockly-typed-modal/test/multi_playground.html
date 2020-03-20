@@ -30,17 +30,17 @@
         const toolbox =
             document.getElementById('toolbox-' + (match ? match[1] : 'categories'));
         document.forms.options.elements.toolbox.selectedIndex =
-        startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, [["PENGUIN", "Penguin"],["GIRAFFE", "Giraffe"]]);
-        startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
+        startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, [["Penguin", "PENGUIN"],["Giraffe", "GIRAFFE"]]);
+        startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox, [["Pink", "PINK"],["Blue", "BLUE"]]);
 
-        startBlocklyInstance('VertEndLTR', false, false, 'end', toolbox,[["WHALE", "Whale"],["SHARK", "Shark"]]);
-        startBlocklyInstance('VertEndRTL', true, false, 'end', toolbox,[["GREAT_DANE", "Great Dane"],["BOSTON_TERRIER", "Boston Terrier"]]);
+        startBlocklyInstance('VertEndLTR', false, false, 'end', toolbox,[["Whale", "WHALE"],["Shark", "SHARK"]]);
+        startBlocklyInstance('VertEndRTL', true, false, 'end', toolbox,[["Great Dane", "GREAT_DANE"],["Boston Terrier", "BOSTON_TERRIER"]]);
 
-        startBlocklyInstance('HorizontalStartLTR', false, true, 'start', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
-        startBlocklyInstance('HorizontalStartRTL', true, true, 'start', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
+        startBlocklyInstance('HorizontalStartLTR', false, true, 'start', toolbox, [["Pink", "PINK"],["Blue", "BLUE"]]);
+        startBlocklyInstance('HorizontalStartRTL', true, true, 'start', toolbox, [["Pink", "PINK"],["Blue", "BLUE"]]);
 
-        startBlocklyInstance('HorizontalEndLTR', false, true, 'end', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
-        startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolbox, [["PINK", "Pink"],["Blue", "Blue"]]);
+        startBlocklyInstance('HorizontalEndLTR', false, true, 'end', toolbox, [["Pink", "PINK"],["Blue", "BLUE"]]);
+        startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolbox, [["Pink", "PINK"],["Blue", "BLUE"]]);
       }
 
       function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, types) {
@@ -100,7 +100,7 @@
     </style>
 </head>
 <body>
-<h1>Blockly Workspace Search Playground</h1>
+<h1>Blockly Typed Modal Playground</h1>
 
 <form id="options">
     <select name="toolbox" onchange="document.forms.options.submit()">

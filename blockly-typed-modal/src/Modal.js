@@ -48,22 +48,22 @@ export class Modal {
 
     /**
      * The header div for the Blockly modal.
-     * @type {HTMLHeadingElement}
-     * @private
+     * @type {HTMLElement}
+     * @protected
      */
     this.headerDiv_ = null;
 
     /**
      * The content div for the Blockly modal.
      * @type {HTMLDivElement}
-     * @private
+     * @protected
      */
     this.contentDiv_ = null;
 
     /**
      * The footer div for the Blockly modal.
      * @type {HTMLDivElement}
-     * @private
+     * @protected
      */
     this.footerDiv_ = null;
 
@@ -116,10 +116,21 @@ export class Modal {
       }
       .blockly-modal-header {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .blockly-modal-header-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 1.25em;
+        line-height: 1.25;
       }
       .blockly-modal-header .blockly-modal-btn {
         margin-left: auto;
         height: fit-content;
+      }
+      .blockly-modal-btn-close:before {
+        content: "\\2715";
       }`);
   }
 
@@ -147,12 +158,13 @@ export class Modal {
    * @param {!Blockly.WorkspaceSvg} workspace The button's target workspace.
    */
   show(workspace) {
+    console.log(this.htmlDiv_.childNodes);
+    console.log(Blockly.getMainWorkspace());
     this.focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
-    // TODO: Fix the dispose method
-    Blockly.WidgetDiv.show(this, workspace.RTL, () => this.widgetDispose_());
-    this.widgetCreate_();
+    Blockly.WidgetDiv.show(this, workspace.RTL, () => this.onClose_());
+    this.onShow_();
     this.focusableEls[0].focus();
   }
 
@@ -169,7 +181,7 @@ export class Modal {
    * @param {string} name Event name to listen to (e.g. 'mousedown').
    * @param {Object} thisObject The value of 'this' in the function.
    * @param {!Function} func Function to call when event is triggered.
-   * @private
+   * @protected
    */
   addEvent_(node, name, thisObject, func) {
     const event = Blockly.bindEventWithChecks_(node, name, thisObject, func);
@@ -181,31 +193,7 @@ export class Modal {
    * @return {Function} Function called when the user hits the confirm button.
    */
   getConfirmAction() {
-    return null;
-  }
-
-  /**
-   * Get the header div for the modal.
-   * @return {HTMLHeadingElement} The div holding the header of the modal.
-   */
-  getHeaderDiv() {
-    return this.headerDiv_;
-  }
-
-  /**
-   * Get the div that holds the content for the modal.
-   * @return {HTMLDivElement} The div holding the content of the modal.
-   */
-  getContentDiv() {
-    return this.contentDiv_;
-  }
-
-  /**
-   * Get the footer div for the modal.
-   * @return {HTMLDivElement} The div holding the footer of hte modal.
-   */
-  getFooterDiv() {
-    return this.footerDiv_;
+    return this.hide;
   }
 
   /**
@@ -220,11 +208,12 @@ export class Modal {
    * Add the Blockly modal to the widget div.
    * @protected
    */
-  widgetCreate_() {
+  onShow_() {
     const widgetDiv = Blockly.WidgetDiv.DIV;
     widgetDiv.style.width = '100%';
     widgetDiv.style.height = '100%';
     const htmlInput_ = this.htmlDiv_;
+    Blockly.utils.dom.addClass(htmlInput_, 'blockly-modal-is-open');
     widgetDiv.appendChild(htmlInput_);
   }
 
@@ -232,10 +221,17 @@ export class Modal {
    * Disposes of any events or dom-references belonging to the editor.
    * @protected
    */
-  widgetDispose_() {
+  onClose_() {
+    console.log("Before on close", this.htmlDiv_.childNodes);
     const widgetDiv = Blockly.WidgetDiv.DIV;
     widgetDiv.style.width = 'auto';
     widgetDiv.style.height = 'auto';
+    Blockly.utils.dom.removeClass(this.htmlDiv_, 'blockly-modal-is-open');
+    console.log("Blockly.WidgetDiv.DIV", Blockly.WidgetDiv.DIV);
+    console.log("inner html", Blockly.WidgetDiv.DIV.innerHTML);
+    Blockly.WidgetDiv.DIV.textContent = '';
+    console.log("inner html", Blockly.WidgetDiv.DIV.innerHTML);
+    console.log("After on close", this.htmlDiv_.childNodes);
   }
 
   /**
@@ -315,16 +311,17 @@ export class Modal {
 
     const exitButton = document.createElement('button');
     Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn');
-    // TODO: Fix exit button
-    exitButton.innerText = "X";
+    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn-close');
     this.addEvent_(exitButton, 'click', this, this.getCancelAction());
     modalHeader.appendChild(exitButton);
     this.headerDiv_ = modalHeader;
+    // End creating the header
 
     // Create the content
     const modalContent = document.createElement('div');
     Blockly.utils.dom.addClass(modalContent, 'blockly-modal-content');
     this.contentDiv_ = modalContent;
+    // End creating the content
 
     // Create the footer
     const modalFooter = document.createElement('div');
@@ -344,17 +341,18 @@ export class Modal {
     modalFooter.appendChild(createBtn);
     modalFooter.appendChild(cancelBtn);
     this.footerDiv_ = modalFooter;
+    // End creating the footer
 
     // Create Container
-    const dialogContainer = document.createElement('div');
-    Blockly.utils.dom.addClass(dialogContainer, 'blockly-modal-container');
-    dialogContainer.setAttribute('role', 'dialog');
+    this.htmlDiv_ = document.createElement('div');
+    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-container');
+    this.htmlDiv_.setAttribute('role', 'dialog');
     // TODO: These should be translated.
-    dialogContainer.setAttribute('aria-labelledby', this.title);
+    this.htmlDiv_.setAttribute('aria-labelledby', this.title);
+    // End creating the container
 
-    dialogContainer.appendChild(modalHeader);
-    dialogContainer.appendChild(modalContent);
-    dialogContainer.appendChild(modalFooter);
-    this.htmlDiv_ = dialogContainer;
+    this.htmlDiv_.appendChild(modalHeader);
+    this.htmlDiv_.appendChild(modalContent);
+    this.htmlDiv_.appendChild(modalFooter);
   }
 }
