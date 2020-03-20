@@ -7,12 +7,12 @@
 
   <script src="../node_modules/blockly/blockly.min.js"></script>
   <script src="../dist/typed-modal.umd.js"></script>
+<!--  <script src="./InputModal.js"></script>-->
   <script>
     'use strict';
     function start() {
       let workspace = null;
       const toolbox = document.getElementById('toolbox-categories-typed-variables');
-      const types = [["ANIMAL", "animal"], ["PENGUINS", "penguins"]];
       // Create main workspace.
       workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
@@ -30,7 +30,7 @@
         return xmlList;
       };
       workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
-      const typedModal = new TypedModal(workspace, 'CREATE_TYPED_VARIABLE', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
+      const typedModal = new TypedModal(workspace, 'CREATE_TYPED_VARIABLE', [["Penguin", "PENGUIN"], ["Giraffe", "GIRAFFE"]]);
       typedModal.init();
     }
   </script>
@@ -56,7 +56,7 @@
   </style>
 </head>
 <body onload="start()">
-  <h1>Blockly Workspace Search Playground</h1>
+  <h1>Blockly Typed Modal Playground</h1>
   <div id="blocklyDiv"></div>
   <!-- toolbox-categories-typed-variables has a category menu and an
   auto-closing flyout.  The Variables category uses typed variable blocks.
