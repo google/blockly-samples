@@ -25,12 +25,20 @@ workspaceSearch.init();
 <script src="./node_modules/@blockly/plugin-workspace-search/dist/workspace-search.umd.js"></script>
 ```
 
+To open workspace search use either command + f or control + f. To close the search bar hit escape or the 'x' in the top right corner.
+
 ## API
 
-- `init`
-- `dispose`
-- `open`
-- `close`
+- `init`: Initializes the workspace search bar.
+- `dispose`: Disposes of workspace search.
+- `open`: Opens the search bar.
+- `close`: Closes the search bar.
+- `previous`: Selects the previous block.
+- `next`: Selects the next block.
+- `setSearchPlaceholder`: Sets the placeholder text for the search bar text input.
+- `addActionBtn`: Add a button to the action div. This must be called after the init function has been called.
+- `clearBlocks`: Clears the selection group and current block.
+- `searchAndHighlight`: Searches the workspace for the current search term and highlights matching blocks.
 
 ## License
 Apache 2.0
