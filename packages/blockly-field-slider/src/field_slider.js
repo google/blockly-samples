@@ -101,6 +101,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    */
   dropdownCreate_() {
     var wrapper = document.createElement('div');
+    wrapper.className = 'fieldSliderContainer';
     var sliderInput = document.createElement('input');
     sliderInput.setAttribute('type', 'range');
     sliderInput.setAttribute('min', this.min_);
@@ -154,7 +155,13 @@ Blockly.fieldRegistry.register('field_slider', FieldSlider);
  */
 Blockly.Css.register([
     /* eslint-disable indent */
-    `.fieldSlider {
+    `.fieldSliderContainer {
+      align-items: center;
+      display: flex;
+      height: 25px;
+      justify-content: center;
+    }
+    .fieldSlider {
       appearance: none;
       -webkit-appearance: none;
       background: #ddd;
@@ -170,9 +177,9 @@ Blockly.Css.register([
       border-color: #fff;
       border-radius: 50%;
       cursor: pointer;
-      height: 10px;
+      height: 20px;
       opacity: 1;
-      width: 10px;
+      width: 20px;
     }
     /* Firefox */
     .fieldSlider::-moz-range-thumb {
@@ -180,37 +187,12 @@ Blockly.Css.register([
       border-radius: 50%;
       background: #fff;
       cursor: pointer;
-      height: 10px;
-      width: 10px;
+      height: 20px;
+      width: 20px;
     }
     .fieldSlider::-moz-focus-outer {
       /* override the focus border style */
       border: 0;
-    }
-    /* IE */
-    .fieldSlider::-ms-track {
-      /* IE wont let the thumb overflow the track, so fake it */
-      background: transparent;
-      border-color: transparent;
-      border-width: 3px 0;
-      /* remove default tick marks */
-      color: transparent;
-    }
-    .fieldSlider::-ms-fill-lower  {
-      border-radius: 5px;
-      background: #ddd;
-    }
-    .fieldSlider::-ms-fill-upper  {
-      border-radius: 5px;
-      background: #ddd;
-    }
-    .fieldSlider::-ms-thumb {
-      border-color: #fff;
-      border-radius: 50%;
-      background: #fff;
-      cursor: pointer;
-      height: 10px;
-      width: 10px;
     }`
     /* eslint-enable indent */
 ]);
