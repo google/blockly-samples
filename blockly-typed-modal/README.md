@@ -27,6 +27,9 @@ typedModal.init();
 ```
 
 ## API
+- init 
+- dispose 
+
 
 
 ## License
