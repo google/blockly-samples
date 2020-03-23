@@ -38,9 +38,6 @@ export class TypedModal extends Modal {
    */
   constructor(workspace, btnCallbackName, types, opt_title) {
     const title = opt_title || 'Create Typed Variable';
-    console.log(Blockly);
-    console.log(Blockly.Msg);
-    console.log(Blockly.getMainWorkspace());
     super(title, workspace);
 
     /**
@@ -93,7 +90,7 @@ export class TypedModal extends Modal {
    */
   init() {
     super.init();
-    this.injectCss();
+    this.injectCss_();
     this.workspace_.registerButtonCallback(this.btnCallBackName_, (button) => {
       this.show(button.getTargetWorkspace());
     });
@@ -101,9 +98,10 @@ export class TypedModal extends Modal {
 
   /**
    * Inject necessary css for a typed modal.
+   * @override
    */
-  injectCss() {
-    super.injectCss();
+  injectCss_() {
+    super.injectCss_();
     injectCss('typed-modal-css', `
       .typed-modal-title {
         font-weight: bold;
@@ -148,8 +146,8 @@ export class TypedModal extends Modal {
    * Get the function to be called when the user confirms.
    * @override
    */
-  getConfirmAction() {
-    return this.createVariable_;
+  onConfirm_() {
+    this.createVariable_();
   }
 
   /**

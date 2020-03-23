@@ -24,7 +24,6 @@ export class Modal {
    *     over.
    */
   constructor(title, workspace) {
-
     /**
      * The title for the modal.
      * @type {string}
@@ -82,13 +81,19 @@ export class Modal {
      * @private
      */
     this.boundEvents_ = [];
+
+    /**
+     * If true center on the workspace. Otherwise, center on the entire page.
+     * @type {boolean}
+     */
+    this.centerOnWorkspace = true;
   }
 
   /**
    * Initialize a basic accessible modal.
    */
   init() {
-    this.injectCss();
+    this.injectCss_();
     this.createDom();
     this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
         this, this.handleKeyDown_);
@@ -96,8 +101,9 @@ export class Modal {
 
   /**
    * Inject the css for a Blockly modal.
+   * @protected
    */
-  injectCss() {
+  injectCss_() {
     injectCss('blockly-modal-css', `
       .blockly-modal-container {
         background-color: white;
@@ -158,8 +164,6 @@ export class Modal {
    * @param {!Blockly.WorkspaceSvg} workspace The button's target workspace.
    */
   show(workspace) {
-    console.log(this.htmlDiv_.childNodes);
-    console.log(Blockly.getMainWorkspace());
     this.focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
@@ -189,19 +193,19 @@ export class Modal {
   }
 
   /**
-   * Get the action to be used when the user hits the confirm button.
-   * @return {Function} Function called when the user hits the confirm button.
+   * The function to be called when the user hits the confirm button.
+   * @protected
    */
-  getConfirmAction() {
-    return this.hide;
+  onConfirm_() {
+    this.hide();
   }
 
   /**
-   * Get the action to be used when the user hits the cancel button.
-   * @return {Function} Function called when user hits the cancel button.
+   * The function to be called when the user hits the cancel button.
+   * @protected
    */
-  getCancelAction() {
-    return this.hide;
+  onCancel_() {
+    this.hide();
   }
 
   /**
@@ -210,8 +214,13 @@ export class Modal {
    */
   onShow_() {
     const widgetDiv = Blockly.WidgetDiv.DIV;
-    widgetDiv.style.width = '100%';
-    widgetDiv.style.height = '100%';
+    const metrics = this.workspace_.getMetrics();
+
+    widgetDiv.style.width = this.centerOnWorkspace ? metrics.svgWidth + 'px' : '100%';
+    widgetDiv.style.height = this.centerOnWorkspace ? metrics.svgHeight + 'px' : '100%';
+
+    widgetDiv.style.left = this.centerOnWorkspace ? metrics.viewLeft + 'px' : '0px';
+    widgetDiv.style.top = this.centerOnWorkspace ? metrics.viewTop + 'px' : '0px';
     const htmlInput_ = this.htmlDiv_;
     Blockly.utils.dom.addClass(htmlInput_, 'blockly-modal-is-open');
     widgetDiv.appendChild(htmlInput_);
@@ -222,16 +231,11 @@ export class Modal {
    * @protected
    */
   onClose_() {
-    console.log("Before on close", this.htmlDiv_.childNodes);
     const widgetDiv = Blockly.WidgetDiv.DIV;
     widgetDiv.style.width = 'auto';
     widgetDiv.style.height = 'auto';
     Blockly.utils.dom.removeClass(this.htmlDiv_, 'blockly-modal-is-open');
-    console.log("Blockly.WidgetDiv.DIV", Blockly.WidgetDiv.DIV);
-    console.log("inner html", Blockly.WidgetDiv.DIV.innerHTML);
     Blockly.WidgetDiv.DIV.textContent = '';
-    console.log("inner html", Blockly.WidgetDiv.DIV.innerHTML);
-    console.log("After on close", this.htmlDiv_.childNodes);
   }
 
   /**
@@ -312,7 +316,7 @@ export class Modal {
     const exitButton = document.createElement('button');
     Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn');
     Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn-close');
-    this.addEvent_(exitButton, 'click', this, this.getCancelAction());
+    this.addEvent_(exitButton, 'click', this, this.onCancel_);
     modalHeader.appendChild(exitButton);
     this.headerDiv_ = modalHeader;
     // End creating the header
@@ -331,12 +335,12 @@ export class Modal {
     Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn');
     Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn-primary');
     createBtn.innerText = Blockly.Msg['IOS_OK'];
-    this.addEvent_(createBtn, 'click', this, this.getConfirmAction());
+    this.addEvent_(createBtn, 'click', this, this.onConfirm_);
 
     const cancelBtn = document.createElement('button');
     Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
     cancelBtn.innerText = Blockly.Msg['IOS_CANCEL'];
-    this.addEvent_(cancelBtn, 'click', this, this.getCancelAction());
+    this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
 
     modalFooter.appendChild(createBtn);
     modalFooter.appendChild(cancelBtn);

@@ -5,8 +5,13 @@
   "main": "./dist/typed-modal.umd.js",
   "unpkg": "./dist/typed-modal.umd.js",
   "directories": {
-    "test": "test"
+    "dist": "dist",
+    "src": "src"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "webpack --display-error-details --env.mode=development",
     "start": "webpack-dev-server --env.mode=development"
