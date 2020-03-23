@@ -136,7 +136,7 @@ The resulting block has triangular previous and next connections, and skinny inp
 
 ![](assets/custom-renderer/custom_constants.png)
 
-## Change connection shapes
+## Understand connection shapes
 
 A common use case of a custom renderer is changing the shape of connections. This requires a more detailed understanding of how a block is drawn and how SVG paths are defined.
 
@@ -148,7 +148,70 @@ Each sub-path is a string of [path commands](https://developer.mozilla.org/en-US
 
 While you can write SVG path commands as strings, Blockly provides a set of [utility functions](https://developers.google.com/blockly/reference/js/Blockly.utils.svgPaths) to make writing and reading paths easier.
 
-### Changing previous/next connection shape
+### Connection shapes
+
+A connection's shape is stored as an object with information about its width, height, and sub-path. These objects are created in the constant provider's `init` function:
+
+```js
+/**
+ * Initialize shape objects based on the constants set in the constructor.
+ * @package
+ */
+Blockly.blockRendering.ConstantProvider.prototype.init = function() {
+  /**
+   * An object containing sizing and path information about notches.
+   * @type {!Object}
+   */
+  this.NOTCH = this.makeNotch();
+
+  /**
+   * An object containing sizing and path information about puzzle tabs.
+   * @type {!Object}
+   */
+  this.PUZZLE_TAB = this.makePuzzleTab();
+
+  // Additional code has been removed for brevity.
+};
+```
+
+As a rule of thumb, **properties that are primitives should be set in the constructor, while objects should be set in `init`**. This separation allows a subclass to override a constant such as `NOTCH_WIDTH` and see the change reflected in objects that depend on the constant.
+
+### `shapeFor`
+
+The `shapeFor` function on a constants provider maps from connection to connection shape. Here is the default implementation, which returns a puzzle tab for input/output connections and a notch for previous/next connections:
+
+```js
+/**
+ * Get an object with connection shape and sizing information based on the type
+ * of the connection.
+ * @param {!Blockly.RenderedConnection} connection The connection to find a
+ *     shape object for
+ * @return {!Object} The shape object for the connection.
+ * @package
+ */
+Blockly.blockRendering.ConstantProvider.prototype.shapeFor = function(
+    connection) {
+  switch (connection.type) {
+    case Blockly.INPUT_VALUE:
+    case Blockly.OUTPUT_VALUE:
+      return this.PUZZLE_TAB;
+    case Blockly.PREVIOUS_STATEMENT:
+    case Blockly.NEXT_STATEMENT:
+      return this.NOTCH;
+    default:
+      throw Error('Unknown connection type');
+  }
+};
+```
+
+## Change conenction shapes
+
+In this step you will define and use new shapes for previous/next connections and input/output connections. This takes three steps:
+1. Define new shape objects.
+1. Override `init` to store the new shape objects.
+1. Override `shapeFor` to return the new objects.
+
+### Define a previous/next connection shape
 
 The outline path is drawn clockwise around the block, starting at the top left. As a result the previous connection is drawn from left to right, while the next connection is drawn from right to left.
 
@@ -158,15 +221,14 @@ Previous and next connections are defined by the same object. The object has fou
 - `pathLeft`: The sub-path that describes the connection when drawn from left to right.
 - `pathRight`: The sub-path that describes the connection when drawn from right to left.
 
-The constants provider calls `makeNotch()` during initialization to create this object. You can override the function on your `CustomConstantsProvider`. Note that `NOTCH_WIDTH` and `NOTCH_HEIGHT` have already been overridden in the constructor.
+Define a new function called `makeRectangularPreviousConn`. Note that `NOTCH_WIDTH` and `NOTCH_HEIGHT` have already been overridden in the constructor.
 
 ```js
 /**
- * Override the `makeNotch` function to return a rectangular notch for previous
- * and next connections.
+ * Return a rectangular notch for use with previous and next connections.
  * @override
  */
-CustomConstantsProvider.prototype.makeNotch = function() {
+CustomConstantsProvider.prototype.makeRectangularPreviousConn = function() {
   var width = this.NOTCH_WIDTH;
   var height = this.NOTCH_HEIGHT;
 
@@ -194,7 +256,7 @@ CustomConstantsProvider.prototype.makeNotch = function() {
 };
 ```
 
-### Changing input/output connection shape
+### Define input/output connection shape
 
 By the same logic input and output connections are drawn in two directions: top to bottom, and bottom to top. The object contains four properties:
 - `width`
@@ -202,15 +264,14 @@ By the same logic input and output connections are drawn in two directions: top 
 - `pathUp`
 - `pathDown`
 
-The function to override is `makePuzzleTab()`:
+Define a new function called `makeRectangularInputConn`:
 
 ```js
 /**
- * Override the `makePuzzleTab` function to return a rectangular puzzle tab for
- * input and output connections.
+ * Return a rectangular puzzle tab for use with input and output connections.
  * @override
  */
-CustomConstantsProvider.prototype.makePuzzleTab = function() {
+CustomConstantsProvider.prototype.makeRectangularInputConn = function() {
   var width = this.TAB_WIDTH;
   var height = this.TAB_HEIGHT;
 
@@ -239,6 +300,45 @@ CustomConstantsProvider.prototype.makePuzzleTab = function() {
 };
 ```
 
+### Override init
+
+Override the `init` function and store the new objects as `RECT_PREV_NEXT` and `RECT_INPUT_OUTPUT`. Make sure you call the superclass `init` function to store other objects that you have not overridden.
+
+```js
+/**
+ * @override
+ */
+CustomConstantsProvider.prototype.init = function() {
+  CustomConstantsProvider.superClass_.init.call(this);
+  // Add calls to create shape objects for the new connection shapes.
+  this.RECT_PREV_NEXT = this.makeRectangularPreviousConn();
+  this.RECT_INPUT_OUTPUT = this.makeRectangularInputConn();
+};
+```
+
+### Override shapeFor
+
+Next, override the `shapeFor` function and return your new objects:
+
+```js
+/**
+ * @override
+ */
+CustomConstantsProvider.prototype.shapeFor = function(
+    connection) {
+  switch (connection.type) {
+    case Blockly.INPUT_VALUE:
+    case Blockly.OUTPUT_VALUE:
+      return this.RECT_INPUT_OUTPUT;
+    case Blockly.PREVIOUS_STATEMENT:
+    case Blockly.NEXT_STATEMENT:
+      return this.RECT_PREV_NEXT;
+    default:
+      throw Error('Unknown connection type');
+  }
+};
+```
+
 ### The result
 
 The resulting block has rectangular connections for all four connection types.
@@ -247,137 +347,32 @@ The resulting block has rectangular connections for all four connection types.
 
 ## Typed connection shapes
 
-In this step we will create a renderer that sets connection shapes at runtime based on a connection's type checks.
+In this step we will create a renderer that sets connection shapes at runtime based on a connection's type checks. We will use the default connection shapes and the shapes defined in the previous steps.
 
+### Override shapeFor
 
-### Define your renderer and constants provider
-Create and include a new file named `typed_connection_shapes.js`, and add it to the renderer dropdown.
-
-Define a renderer named `TypedConnectionShapeRenderer` and a constants provider named `TypedConnectionShapeProvider`.
-
-```js
-TypedConnectionShapeRenderer = function(name) {
-  TypedConnectionShapeRenderer.superClass_.constructor.call(this, name);
-};
-Blockly.utils.object.inherits(TypedConnectionShapeRenderer,
-    Blockly.blockRendering.Renderer);
-
-Blockly.blockRendering.register('typed_connection_shapes',
-    TypedConnectionShapeRenderer);
-
-TypedConnectionShapeProvider = function() {
-  TypedConnectionShapeProvider.superClass_.constructor.call(this);
-};
-Blockly.utils.object.inherits(TypedConnectionShapeProvider,
-    Blockly.blockRendering.ConstantProvider);
-
-TypedConnectionShapeRenderer.prototype.makeConstants_ = function() {
-  return new TypedConnectionShapeProvider();
-};
-```
-
-### Define shapes
-
-Define the `makeSquared` and `makeRounded` functions to return rectangular and rounded shapes respectively.
-
-```js
-/**
- * Create a new function to return a rectangular puzzle tab that works for input
- * and output connections.
- */
-TypedConnectionShapeProvider.prototype.makeSquared = function() {
-  var width = this.TAB_WIDTH;
-  var height = this.TAB_HEIGHT;
-
-  function makeMainPath(up) {
-    return Blockly.utils.svgPaths.line(
-        [
-          Blockly.utils.svgPaths.point(-width, 0),
-          Blockly.utils.svgPaths.point(0, -1 * up * height),
-          Blockly.utils.svgPaths.point(width, 0)
-        ]);
-  }
-
-  var pathUp = makeMainPath(1);
-  var pathDown = makeMainPath(-1);
-
-  return {
-    width: width,
-    height: height,
-    pathDown: pathDown,
-    pathUp: pathUp
-  };
-};
-
-/**
- * Create a new function to return a rounded puzzle tab that works for input and
- * output connections.
- */
-TypedConnectionShapeProvider.prototype.makeRounded = function() {
-  var height = this.TAB_HEIGHT;
-
-  // The 'up' and 'down' versions of the paths are the same, but the Y sign
-  // flips.
-  function makeMainPath(up) {
-    var width = height / 2;
-    return Blockly.utils.svgPaths.arc(
-        'a',
-        '0 0 ' + (up ? 1 : 0),
-        width,
-        Blockly.utils.svgPaths.point(0, (up ? -1 : 1) * height)
-    );
-  }
-
-  var pathUp = makeMainPath(true);
-  var pathDown = makeMainPath(false);
-
-  return {
-    width: height / 2,
-    height: height,
-    pathDown: pathDown,
-    pathUp: pathUp
-  };
-};
-```
-
-### Use the shapes
-* Override the `init` function on the `TypedConnectionShapeProvider`.
-* Call the superclass `init` function to set up default properties.
-* Create and save the new connection shapes in `this.SQUARED` and `this.ROUNDED`.
-
-```js
-/**
- * @override
- */
-TypedConnectionShapeProvider.prototype.init = function() {
-  TypedConnectionShapeProvider.superClass_.init.call(this);
-  // Add calls to create shape objects for the new connection shapes.
-  this.SQUARED = this.makeSquared();
-  this.ROUNDED = this.makeRounded();
-};
-```
 Override the shapeFor function to inspect the connection's type checks array and return the correct connection shape:
-- Return a rounded tab for inputs and outputs that accept numbers and strings.
-- Return a squared tab for other inputs and outputs.
+- Return a rectangular tab for inputs and outputs that accept numbers and strings.
+- Return the default puzzle tab for other inputs and outputs.
 - Return the normal notch for previous and next connections.
 
 ```js
 /**
  * @override
  */
-TypedConnectionShapeProvider.prototype.shapeFor = function(connection) {
+CustomConstantsProvider.prototype.shapeFor = function(connection) {
   var checks = connection.getCheck();
   switch (connection.type) {
     case Blockly.INPUT_VALUE:
     case Blockly.OUTPUT_VALUE:
       // Includes doesn't work in IE.
       if (checks && checks.indexOf('Number') != -1) {
-        return this.ROUNDED;
+        return this.RECT_INPUT_OUTPUT;
       }
       if (checks && checks.indexOf('String') != -1) {
-        return this.ROUNDED;
+        return this.RECT_INPUT_OUTPUT;
       }
-      return this.SQUARED;
+      return this.PUZZLE_TAB;
     case Blockly.PREVIOUS_STATEMENT:
     case Blockly.NEXT_STATEMENT:
       return this.NOTCH;
@@ -389,9 +384,15 @@ TypedConnectionShapeProvider.prototype.shapeFor = function(connection) {
 
 ### The result
 
-In this screenshot, the number inputs and outputs are semicircular.  The boolean input on the if block is rectangular.
+In this screenshot, the number inputs and outputs are rectangular.  The boolean input on the if block is a puzzle tab.
 ![](assets/custom-renderer/typed_connection_shapes.png)
 
 ## Summary
 
-Custom renderers are a powerful way to change the look and feel of Blockly.  In this codelab you worked through four different levels of customization of a renderer.
+Custom renderers are a powerful way to change the look and feel of Blockly.  In this codelab you learned:
+* You learned how to declare and register a custom renderer.
+* How to replace a renderer's constant provider.
+* How to override primitive constants, such as `NOTCH_HEIGHT`.
+* How to define and use a complex constant, such as a connection shape.
+* How to update the mapping from connection to connection shape.
+
