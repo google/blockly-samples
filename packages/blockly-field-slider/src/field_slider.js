@@ -73,7 +73,12 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @override
    */
   showEditor_(_opt_e, opt_quietInput) {
-    super.showEditor_(_opt_e, opt_quietInput);
+    // Mobile browsers have issues with in-line textareas (focus & keyboards).
+    var noFocus =
+        Blockly.utils.userAgent.MOBILE ||
+        Blockly.utils.userAgent.ANDROID ||
+        Blockly.utils.userAgent.IPAD;
+    super.showEditor_(_opt_e, noFocus);
     // Build the DOM.
     var editor = this.dropdownCreate_();
 
