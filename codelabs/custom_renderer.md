@@ -20,22 +20,22 @@ In this codelab you will learn:
 
 Over the course of this codelab you will build and use four renderers.
 
-1. A minimal custom renderer
+1. A minimal custom renderer.
 ![](assets/custom-renderer/custom_renderer.png)
-1. A renderer with custom constants
+1. A renderer with custom constants.
 ![](assets/custom-renderer/custom_constants.png)
-1. A renderer with custom notches
+1. A renderer with custom notches.
 ![](assets/custom-renderer/custom_notches.png)
 1. A renderer with connection shapes that depend on the type checks of each connection.
 ![](assets/custom-renderer/typed_connection_shapes.png)
 ### What you'll need
-This codelab assumes that you are already comfortable with using the Blockly playground locally.
+This codelab assumes that you are already comfortable with using the Blockly playground locally.  You can find it in `tests/playground.html`.
 
 ## Setup
 
-In this codelab you will add code to the Blockly playground to create and use a new renderer.
+In this codelab you will add code to the Blockly playground to create and use a new renderer. The playgound contains all of Blockly's base blocks, as well as some that exist only to test rendering code. You can find the playground at `tests/playground.html`.
 
-When the instructions say to "create and include a new file", you should place that file in the same folder as the playground and include it with a script tag.
+To start, create a file named `custom_renderer.js` in the same folder as the playground.  Include it with a script tag.
 
 ```
 <script src="custom_renderer.js"></script>
@@ -43,13 +43,11 @@ When the instructions say to "create and include a new file", you should place t
 
 Note: you must include your custom code *after* including the Blockly library.
 
-## Minimal custom renderer
+## Define and register a renderer
 
-This is the minimum code needed to define a new renderer.
+A **Renderer** is the interface between your custom rendering code and the rest of Blockly. Blockly provides a base renderer with all required fields set to default values.
 
-Create and include a new file named `custom_renderer.js`.
-
-Define a renderer that extends the base renderer.
+Your new renderer must extend the base renderer:
 ```js
 CustomRenderer = function(name) {
   CustomRenderer.superClass_.constructor.call(this, name);
@@ -58,57 +56,35 @@ Blockly.utils.object.inherits(CustomRenderer,
     Blockly.blockRendering.Renderer);
 ```
 
-Register the renderer by name:
+After defining your renderer you need to tell Blockly that it exists. Register your renderer by name:
 ```js
 Blockly.blockRendering.register('custom_renderer', CustomRenderer);
 ```
 
-Add your renderer to the "Renderer" dropdown in `playground.html`.
-```html
-<select name="renderer" onchange="document.forms.options.submit()">
-  <option value="custom_renderer">Custom Renderer</option>
-  <option value="geras">Geras</option>
-  <option value="thrasos">Thrasos</option>
-  <option value="zelos">Zelos</option>
-  <option value="minimalist">Minimalist</option>
-</select>
+To use your custom renderer, set the `renderer` property in the configuration struct in `playground.html`:
+```js
+Blockly.inject('blocklyDiv', {
+    renderer: 'custom_renderer'
+  }
+);
 ```
 
-To test, open the playground in a browser and select your new renderer from the dropdown.
 ### The result
 
-The resulting block looks close to normal, but with slightly different alignment than Geras or Thrasos.
+To test, open the playground in your browser and drag out a repeat block. The resulting block looks close to normal, but with slightly different alignment than Geras or Thrasos.
 
 ![](assets/custom-renderer/custom_renderer.png)
 
-## Custom constants
+## Override constants
 
-This sample shows the minumum code needed to define a new renderer that overrides constants from the base renderer.
+A **ConstantsProvider** holds all rendering-related constants.  This includes sizing information and colours.  Blockly provides a base **ConstantsProvider** with all required fields set to default values.
 
-### Define your renderer
-Create and include a new file named `custom_constants.js`, and add it to the renderer dropdown.
+The **ConstantsProvider** constructor sets all static properties, such as `NOTCH_WIDTH` and `NOTCH_HEIGHT`. For a full list of properties, see [constants.js](https://github.com/google/blockly/blob/master/core/renderers/common/constants.js).
 
-Define a renderer that extends the base renderer: `CustomConstantsRenderer`
-```js
-CustomConstantsRenderer = function(name) {
-  CustomConstantsRenderer.superClass_.constructor.call(this, name);
-};
-Blockly.utils.object.inherits(CustomConstantsRenderer,
-    Blockly.blockRendering.Renderer);
-```
-
-Register the renderer by name: `custom_constants`.
-```js
-Blockly.blockRendering.register('custom_constants',
-    CustomConstantsRenderer);
-```
-
-Define a constants provider that extends the base constants provider: `CustomConstantsProvider`. It contains all of the constants needed to size a block during rendering. Call the superclass constructor to set default property values, then override specific properties directly:
-  - `NOTCH_WIDTH`: the width of previous and next connection notches.
-  - `NOTCH_HEIGHT`: the height of previous and next connection notches.
-  - `CORNER_RADIUS`: the radius of all rounded corners on the block.
-  - `TAB_HEIGHT`: the height of the puzzle tab used for input and output connections.
-
+In general you will want to override a subset of the constants, rather than all of them. To do so:
+- Define a constants provider that extends the base provider.
+- Call the superclass constructor in your constructor.
+- Set individual properties.
 
 ```js
 CustomConstantsProvider = function() {
@@ -116,81 +92,73 @@ CustomConstantsProvider = function() {
   CustomConstantsProvider.superClass_.constructor.call(this);
 
   // Override a few properties.
+  /**
+   * The width of the notch used for previous and next connections.
+   * @type {number}
+   * @override
+   */
   this.NOTCH_WIDTH = 20;
+
+  /**
+   * The height of the notch used for previous and next connections.
+   * @type {number}
+   * @override
+   */
   this.NOTCH_HEIGHT = 10;
+
+  /**
+   * Rounded corner radius.
+   * @type {number}
+   * @override
+   */
   this.CORNER_RADIUS = 2;
+  /**
+   * The height of the puzzle tab used for input and output connections.
+   * @type {number}
+   * @override
+   */
   this.TAB_HEIGHT = 8;
 };
 Blockly.utils.object.inherits(CustomConstantsProvider,
     Blockly.blockRendering.ConstantProvider);
 ```
 
-Override `makeConstants_` to tell the custom renderer to use the custom constants provider.
+To use your new **ConstantsProvider**, you must override `makeConstants_` on your custom renderer:
 ```js
-CustomConstantsRenderer.prototype.makeConstants_ = function() {
+CustomRenderer.prototype.makeConstants_ = function() {
   return new CustomConstantsProvider();
 };
 ```
 
 ### The result
 
-The resulting block has triangular previous and next connections, and skinny input and output connections.
+The resulting block has triangular previous and next connections, and skinny input and output connections. Note that the general shapes of the connections have not changed--only parameters such as width and height.
 
 ![](assets/custom-renderer/custom_constants.png)
 
-For a more complete list of constants, look at the base constants.js file.
+## Change connection shapes
 
-## Custom notches
+A common use case of a custom renderer is changing the shape of connections. This requires a more detailed understanding of how a block is drawn and how SVG paths are defined.
 
-This sample shows the minumum code needed to define a new renderer that overrides connection shapes from the base renderer.
+### The block outline
 
-### Define your renderer
-Create and include a new file named `custom_notches.js`, and add it to the renderer dropdown.
+The outline of the block is a single [SVG path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path). The outline is built out of many sub-paths (e.g. the path for a previous connection; the path for the top of the block; and the path for an input connection).
 
-Define a renderer that extends the base renderer: `CustomNotchRenderer` and register it with the name `custom_notch`.
+Each sub-path is a string of [path commands](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#Path_commands) that describe the appropriate shape. These commands must use relative (rather than absolute) coordinates.
 
-```js
-CustomNotchRenderer = function(name) {
-  CustomNotchRenderer.superClass_.constructor.call(this, name);
-};
-Blockly.utils.object.inherits(CustomNotchRenderer,
-    Blockly.blockRendering.Renderer);
+While you can write SVG path commands as strings, Blockly provides a set of [utility functions](https://developers.google.com/blockly/reference/js/Blockly.utils.svgPaths) to make writing and reading paths easier.
 
-Blockly.blockRendering.register('custom_notch',
-    CustomNotchRenderer);
-```
+### Changing previous/next connection shape
 
-### Define your ConstantProvider
-Define a constants provider named `CustomNotchProvider` that extends the base constants provider.  It will contain all of the constants needed to size a block during rendering.
+The outline path is drawn clockwise around the block, starting at the top left. As a result the previous connection is drawn from left to right, while the next connection is drawn from right to left.
 
-Call the superclass constructor to set default property values, then override specific properties:
-  * `NOTCH_WIDTH`: the width of previous and next connection notches.
-  * `NOTCH_HEIGHT`: the height of previous and next connection notches.
+Previous and next connections are defined by the same object. The object has four properties:
+- `width`: The width of the connection.
+- `height`: The height of the connection.
+- `pathLeft`: The sub-path that describes the connection when drawn from left to right.
+- `pathRight`: The sub-path that describes the connection when drawn from right to left.
 
-```js
-CustomNotchProvider = function() {
-  CustomNotchProvider.superClass_.constructor.call(this);
-  this.NOTCH_WIDTH = 20;
-  this.NOTCH_HEIGHT = 10;
-};
-Blockly.utils.object.inherits(CustomNotchProvider,
-    Blockly.blockRendering.ConstantProvider);
-```
-
-Override `makeConstants_` to tell the custom renderer to use the custom constants provider.
-
-```js
-CustomNotchRenderer.prototype.makeConstants_ = function() {
-  return new CustomNotchProvider();
-};
-```
-
-### Override notch shapes
-
-`makeNotch` and `makePuzzleTab` are two functions that are called by the constants provider during initialization.
-
-
-Override the `makeNotch` function to return a rectangular notch shape for previous and next connections.
+The constants provider calls `makeNotch()` during initialization to create this object. You can override the function on your `CustomConstantsProvider`. Note that `NOTCH_WIDTH` and `NOTCH_HEIGHT` have already been overridden in the constructor.
 
 ```js
 /**
@@ -198,9 +166,14 @@ Override the `makeNotch` function to return a rectangular notch shape for previo
  * and next connections.
  * @override
  */
-CustomNotchProvider.prototype.makeNotch = function() {
+CustomConstantsProvider.prototype.makeNotch = function() {
   var width = this.NOTCH_WIDTH;
   var height = this.NOTCH_HEIGHT;
+
+  /**
+   * Since previous and next connections share the same shape
+   * you can define a function to generate the path for both.
+   */
   function makeMainPath(dir) {
     return Blockly.utils.svgPaths.line(
         [
@@ -220,7 +193,16 @@ CustomNotchProvider.prototype.makeNotch = function() {
   };
 };
 ```
-Override the `makePuzzleTab` function to return a rectangular tab for input and output connections.
+
+### Changing input/output connection shape
+
+By the same logic input and output connections are drawn in two directions: top to bottom, and bottom to top. The object contains four properties:
+- `width`
+- `height`
+- `pathUp`
+- `pathDown`
+
+The function to override is `makePuzzleTab()`:
 
 ```js
 /**
@@ -228,10 +210,14 @@ Override the `makePuzzleTab` function to return a rectangular tab for input and 
  * input and output connections.
  * @override
  */
-CustomNotchProvider.prototype.makePuzzleTab = function() {
+CustomConstantsProvider.prototype.makePuzzleTab = function() {
   var width = this.TAB_WIDTH;
   var height = this.TAB_HEIGHT;
 
+  /**
+   * Since input and output connections share the same shape you can
+   * define a function to generate the path for both.
+   */
   function makeMainPath(up) {
     return Blockly.utils.svgPaths.line(
         [
@@ -261,7 +247,7 @@ The resulting block has rectangular connections for all four connection types.
 
 ## Typed connection shapes
 
-In this step we will create a renderer that sets connection shapes are runtime based on a connection's type checks.
+In this step we will create a renderer that sets connection shapes at runtime based on a connection's type checks.
 
 
 ### Define your renderer and constants provider
@@ -355,7 +341,9 @@ TypedConnectionShapeProvider.prototype.makeRounded = function() {
 ```
 
 ### Use the shapes
-Override the `init` function on the `TypedConnectionShapeProvider`.  Call the superclass `init` function to set up default properties, then create and save the new connection shapes in `this.SQUARED` and `this.ROUNDED`.
+* Override the `init` function on the `TypedConnectionShapeProvider`.
+* Call the superclass `init` function to set up default properties.
+* Create and save the new connection shapes in `this.SQUARED` and `this.ROUNDED`.
 
 ```js
 /**
@@ -369,9 +357,9 @@ TypedConnectionShapeProvider.prototype.init = function() {
 };
 ```
 Override the shapeFor function to inspect the connection's type checks array and return the correct connection shape:
-* Return a rounded tab for inputs and outputs that accept numbers and strings.
-* Return a squared tab for other inputs and outputs.
-* Return the normal notch for previous and next connections.
+- Return a rounded tab for inputs and outputs that accept numbers and strings.
+- Return a squared tab for other inputs and outputs.
+- Return the normal notch for previous and next connections.
 
 ```js
 /**
