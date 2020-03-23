@@ -67,12 +67,11 @@ export class FieldSlider extends Blockly.FieldNumber {
    *    editor.
    * @param {Event=} opt_e Optional mouse event that triggered the field to open,
    *     or undefined if triggered programmatically.
-   * @param {boolean=} opt_quietInput True if editor should be created without
-   *     focus.  Defaults to false.
+   * @param {boolean=} _opt_quietInput
    * @protected
    * @override
    */
-  showEditor_(opt_e, opt_quietInput) {
+  showEditor_(opt_e, _opt_quietInput) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
     var noFocus =
         Blockly.utils.userAgent.MOBILE ||
