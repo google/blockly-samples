@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import { injectCss } from "./css";
+import './modal_messages';
 
 /**
  * Class responsible for creating a modal.
@@ -334,12 +335,12 @@ export class Modal {
     const createBtn = document.createElement('button');
     Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn');
     Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn-primary');
-    createBtn.innerText = Blockly.Msg['IOS_OK'];
+    createBtn.innerText = Blockly.Msg['MODAL_CONFIRM_BUTTON'];
     this.addEvent_(createBtn, 'click', this, this.onConfirm_);
 
     const cancelBtn = document.createElement('button');
     Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
-    cancelBtn.innerText = Blockly.Msg['IOS_CANCEL'];
+    cancelBtn.innerText = Blockly.Msg['MODAL_CANCEL_BUTTON'];
     this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
 
     modalFooter.appendChild(createBtn);
