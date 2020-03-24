@@ -1,7 +1,7 @@
 author: Rachel Fenichel
 summary: Codelab to create a custom renderer
 id: custom-renderer
-categories: codelab,blockly,rendering,customization
+categories: blockly,codelab,rendering,customization
 status: Draft
 Feedback Link: https://github.com/google/blockly-samples/issues/new
 
