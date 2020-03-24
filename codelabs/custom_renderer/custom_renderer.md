@@ -21,13 +21,13 @@ In this codelab you will learn:
 Over the course of this codelab you will build and use four renderers.
 
 1. A minimal custom renderer.
-![](assets/custom-renderer/custom_renderer.png)
+![](./custom_renderer.png)
 1. A renderer with custom constants.
-![](assets/custom-renderer/custom_constants.png)
+![](./custom_constants.png)
 1. A renderer with custom notches.
-![](assets/custom-renderer/custom_notches.png)
+![](./custom_notches.png)
 1. A renderer with connection shapes that depend on the type checks of each connection.
-![](assets/custom-renderer/typed_connection_shapes.png)
+![](./typed_connection_shapes.png)
 ### What you'll need
 This codelab assumes that you are already comfortable with using the Blockly playground locally.  You can find it in `tests/playground.html`.
 
@@ -73,7 +73,7 @@ Blockly.inject('blocklyDiv', {
 
 To test, open the playground in your browser and drag out a repeat block. The resulting block looks close to normal, but with slightly different alignment than Geras or Thrasos.
 
-![](assets/custom-renderer/custom_renderer.png)
+![](./custom_renderer.png)
 
 ## Override constants
 
@@ -134,7 +134,7 @@ CustomRenderer.prototype.makeConstants_ = function() {
 
 The resulting block has triangular previous and next connections, and skinny input and output connections. Note that the general shapes of the connections have not changed--only parameters such as width and height.
 
-![](assets/custom-renderer/custom_constants.png)
+![](./custom_constants.png)
 
 ## Understand connection shapes
 
@@ -343,7 +343,7 @@ CustomConstantsProvider.prototype.shapeFor = function(
 
 The resulting block has rectangular connections for all four connection types.
 
-![A repeat block with squared-off connections](assets/custom-renderer/custom_notches.png)
+![A repeat block with squared-off connections](./custom_notches.png)
 
 ## Typed connection shapes
 
@@ -385,7 +385,7 @@ CustomConstantsProvider.prototype.shapeFor = function(connection) {
 ### The result
 
 In this screenshot, the number inputs and outputs are rectangular.  The boolean input on the if block is a puzzle tab.
-![](assets/custom-renderer/typed_connection_shapes.png)
+![](./typed_connection_shapes.png)
 
 ## Summary
 
