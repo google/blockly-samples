@@ -13,12 +13,12 @@
 // TODO: Test on mobile
 // TODO: Make sure we are properly cleaning up after ourselves.
 // TODO: How should be exporting.
-// TODO: CHeck that it works in ie11
 // TODO: Clean up createDOM method
 
 import * as Blockly from 'blockly/core';
 import { Modal } from './Modal.js';
 import { injectCss } from "./css";
+import './typed_modal_messages';
 
 /**
  * Class for displaying a modal used for creating typed variables.
@@ -37,7 +37,7 @@ export class TypedModal extends Modal {
    *     will default to 'Create Typed Modal'.
    */
   constructor(workspace, btnCallbackName, types, opt_title) {
-    const title = opt_title || 'Create Typed Variable';
+    const title = opt_title || Blockly.Msg['TYPED_MODAL_TITLE'];
     super(title, workspace);
 
     /**
@@ -213,7 +213,7 @@ export class TypedModal extends Modal {
 
     const typedVarDiv = document.createElement('div');
     Blockly.utils.dom.addClass(typedVarDiv, 'typed-modal-types');
-    typedVarDiv.innerText = "Variable Types";
+    typedVarDiv.innerText = Blockly.Msg["TYPED_MODAL_VARIABLE_TYPE_LABEL"];
 
     this.variableTypesDiv_ = this.createVariableTypeContainer_(this.types_);
     this.checkFirstType_();
@@ -290,7 +290,7 @@ export class TypedModal extends Modal {
     const varNameLabel = document.createElement("Label");
     Blockly.utils.dom.addClass(varNameLabel,
         'typed-modal-variable-name-label');
-    varNameLabel.innerText = 'Variable Name';
+    varNameLabel.innerText = Blockly.Msg["TYPED_MODAL_VARIABLES_DEFAULT_NAME"];
     varNameLabel.setAttribute('for', 'variableInput');
 
     const varNameInput = document.createElement('input');
