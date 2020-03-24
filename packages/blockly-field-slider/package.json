@@ -1,0 +1,56 @@
+{
+  "name": "@blockly/field-slider",
+  "version": "3.20200313.0",
+  "description": "A Blockly slider field.",
+  "scripts": {
+    "clean": "rm -rf $npm_package_directories_dist",
+    "build": "webpack --display-error-details --env.mode=development",
+    "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
+    "start": "webpack-dev-server --env.mode=development"
+  },
+  "main": "./dist/field-slider.umd.js",
+  "unpkg": "./dist/field-slider.umd.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "field",
+    "slider"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blockly-field-slider#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "packages/blockly-field-slider"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-loader": "^8.0.6",
+    "blockly": "^3.20200123.1",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "peerDependencies": {
+    "blockly": ">=3.20191014.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
