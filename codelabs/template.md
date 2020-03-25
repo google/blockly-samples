@@ -1,7 +1,7 @@
 author: YOUR NAME
 summary: CODELAB SUMMARY
 id: TEMPLATE-CODELAB-ID
-categories: codelab,blockly,MORE CATEGORIES
+categories: blockly,codelab,MORE CATEGORIES
 status: Draft
 Feedback Link: https://github.com/google/blockly-samples/issues/new
 
