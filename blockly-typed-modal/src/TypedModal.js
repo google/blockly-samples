@@ -37,7 +37,8 @@ export class TypedModal extends Modal {
    * }} opt_messages The messages for a typed modal.
    */
   constructor(workspace, btnCallbackName, types, opt_messages) {
-    const title = opt_messages["TYPED_MODAL_TITLE"] || 'Create Typed Variable';
+    const title = opt_messages ? opt_messages["TYPED_MODAL_TITLE"] :
+        'Create Typed Variable';
     super(title, workspace);
 
     /**
