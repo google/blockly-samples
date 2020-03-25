@@ -10,12 +10,12 @@ export const injectCss = (function() {
       return;
     }
     cssAdded.push(id);
-    // const text = CSS_CONTENT.join('\n');
     // Inject CSS tag at start of head.
     const cssNode = document.createElement('style');
     cssNode.id = id;
     const cssTextNode = document.createTextNode(css);
     cssNode.appendChild(cssTextNode);
     document.head.insertBefore(cssNode, document.head.firstChild);
+    return cssNode;
   };
 })();
