@@ -7,18 +7,18 @@ This repo contains self-contained sample projects demonstrating techniques to in
 ## Samples
 
 ### Integrating Blockly
-- [``blockly-requirejs-sample``](blockly-requirejs/): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
-- [``blockly-umd-sample``](blockly-umd/): Loads the UMD build of Blockly (``blockly.min.js``), both from node_modules and from Unpkg.
+- [``blockly-requirejs-sample``](examples/blockly-requirejs/): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
+- [``blockly-umd-sample``](examples/blockly-umd/): Loads the UMD build of Blockly (``blockly.min.js``), both from node_modules and from Unpkg.
 - [``blockly-webpack-sample``](blockly-webpack/): Using Blockly in Webpack.
-- [``blockly-node-sample``](blockly-node/): Using Blockly in Node.js, loaded using require (``CommonJS``).
-- [``blockly-angular-sample``](blockly-angular/): Blockly in an Angular project, defines an Angular Blockly Component.
-- [``blockly-react-sample``](blockly-react/): Blockly in a React project, defines a React Blockly Component.
-- [``blockly-svelte-sample``](blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
-- [``blockly-vue-sample``](blockly-vue/): Blockly in a Vue project, defines a Vue Blockly Component.
+- [``blockly-node-sample``](examples/blockly-node/): Using Blockly in Node.js, loaded using require (``CommonJS``).
+- [``blockly-angular-sample``](examples/blockly-angular/): Blockly in an Angular project, defines an Angular Blockly Component.
+- [``blockly-react-sample``](examples/blockly-react/): Blockly in a React project, defines a React Blockly Component.
+- [``blockly-svelte-sample``](examples/blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
+- [``blockly-vue-sample``](examples/blockly-vue/): Blockly in a Vue project, defines a Vue Blockly Component.
 
 ### Real-time Collaboration
 
-- [``blockly-rtc``](blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
+- [``blockly-rtc``](examples/blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
 
 ### Rendering
 
