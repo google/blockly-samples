@@ -47,77 +47,77 @@ suite('FieldSlider', () => {
     assertSliderField(sliderField, value, value, value, value);
   }
   suite('Constructor', () => {
-    test('Empty', async () => {
+    test('Empty', () => {
       const sliderField = new FieldSlider();
       assertSliderFieldDefault(sliderField);
     });
-    test('Undefined', async () => {
+    test('Undefined', () => {
       const sliderField = createsliderFieldSameValuesConstructor(undefined);
       assertSliderFieldDefault(sliderField);
     });
-    test('NaN', async () => {
+    test('NaN', () => {
       const sliderField = createsliderFieldSameValuesConstructor(NaN);
       assertSliderFieldDefault(sliderField);
     });
-    test('Integer', async () => {
+    test('Integer', () => {
       const sliderField = createsliderFieldSameValuesConstructor(1);
       assertSliderFieldSameValues(sliderField, 1);
     });
-    test('Float', async () => {
+    test('Float', () => {
       const sliderField = createsliderFieldSameValuesConstructor(1.5);
       assertSliderFieldSameValues(sliderField, 1.5);
     });
-    test('Integer String', async () => {
+    test('Integer String', () => {
       const sliderField = createsliderFieldSameValuesConstructor('1');
       assertSliderFieldSameValues(sliderField, 1);
     });
-    test('Float String', async () => {
+    test('Float String', () => {
       const sliderField = createsliderFieldSameValuesConstructor('1.5');
       assertSliderFieldSameValues(sliderField, 1.5);
     });
-    test('Infinity', async () => {
+    test('Infinity', () => {
       const sliderField = createsliderFieldSameValuesConstructor('Infinity');
       assertSliderFieldSameValues(sliderField, Infinity);
     });
-    test('Negative Infinity String', async () => {
+    test('Negative Infinity String', () => {
       const sliderField = createsliderFieldSameValuesConstructor('-Infinity');
       assertSliderFieldSameValues(sliderField, -Infinity);
     });
   });
   suite('fromJson', () => {
-    test('Empty', async () => {
+    test('Empty', () => {
       const sliderField = FieldSlider.fromJson({});
       assertSliderFieldDefault(sliderField);
     });
-    test('Undefined', async () => {
+    test('Undefined', () => {
       const sliderField = createsliderFieldSameValuesJson(undefined);
       assertSliderFieldDefault(sliderField);
     });
-    test('NaN', async () => {
+    test('NaN', () => {
       const sliderField = createsliderFieldSameValuesJson(NaN);
       assertSliderFieldDefault(sliderField);
     });
-    test('Integer', async () => {
+    test('Integer', () => {
       const sliderField = createsliderFieldSameValuesJson(1);
       assertSliderFieldSameValues(sliderField, 1);
     });
-    test('Float', async () => {
+    test('Float', () => {
       const sliderField = createsliderFieldSameValuesJson(1.5);
       assertSliderFieldSameValues(sliderField, 1.5);
     });
-    test('Integer String', async () => {
+    test('Integer String', () => {
       const sliderField = createsliderFieldSameValuesJson('1');
       assertSliderFieldSameValues(sliderField, 1);
     });
-    test('Float String', async () => {
+    test('Float String', () => {
       const sliderField = createsliderFieldSameValuesJson('1.5');
       assertSliderFieldSameValues(sliderField, 1.5);
     });
-    test('Infinity', async () => {
+    test('Infinity', () => {
       const sliderField = createsliderFieldSameValuesJson('Infinity');
       assertSliderFieldSameValues(sliderField, Infinity);
     });
-    test('Negative Infinity String', async () => {
+    test('Negative Infinity String', () => {
       const sliderField = createsliderFieldSameValuesJson('-Infinity');
       assertSliderFieldSameValues(sliderField, -Infinity);
     });
@@ -128,43 +128,43 @@ suite('FieldSlider', () => {
         setup(() => {
           this.sliderField = new FieldSlider();
         });
-        test('Null', async () => {
+        test('Null', () => {
           this.sliderField.setValue(null);
           assertValueDefault(this.sliderField);
         });
-        test('Undefined', async () => {
+        test('Undefined', () => {
           this.sliderField.setValue(undefined);
           assertValueDefault(this.sliderField);
         });
-        test('Non-Parsable String', async () => {
+        test('Non-Parsable String', () => {
           this.sliderField.setValue('bad');
           assertValueDefault(this.sliderField);
         });
-        test('NaN', async () => {
+        test('NaN', () => {
           this.sliderField.setValue(NaN);
           assertValueDefault(this.sliderField);
         });
-        test('Integer', async () => {
+        test('Integer', () => {
           this.sliderField.setValue(2);
           assertValue(this.sliderField, 2);
         });
-        test('Float', async () => {
+        test('Float', () => {
           this.sliderField.setValue(2.5);
           assertValue(this.sliderField, 2.5);
         });
-        test('Integer String', async () => {
+        test('Integer String', () => {
           this.sliderField.setValue('2');
           assertValue(this.sliderField, 2);
         });
-        test('Float String', async () => {
+        test('Float String', () => {
           this.sliderField.setValue('2.5');
           assertValue(this.sliderField, 2.5);
         });
-        test('Infinity', async () => {
+        test('Infinity', () => {
           this.sliderField.setValue(Infinity);
           assertValue(this.sliderField, Infinity);
         });
-        test('Negative Infinity String', async () => {
+        test('Negative Infinity String', () => {
           this.sliderField.setValue('-Infinity');
           assertValue(this.sliderField, -Infinity);
         });
@@ -173,43 +173,43 @@ suite('FieldSlider', () => {
         setup(() => {
           this.sliderField = new FieldSlider(1);
         });
-        test('Null', async () => {
+        test('Null', () => {
           this.sliderField.setValue(null);
           assertValue(this.sliderField, 1);
         });
-        test('Undefined', async () => {
+        test('Undefined', () => {
           this.sliderField.setValue(undefined);
           assertValue(this.sliderField, 1);
         });
-        test('Non-Parsable String', async () => {
+        test('Non-Parsable String', () => {
           this.sliderField.setValue('bad');
           assertValue(this.sliderField, 1);
         });
-        test('NaN', async () => {
+        test('NaN', () => {
           this.sliderField.setValue(NaN);
           assertValue(this.sliderField, 1);
         });
-        test('Integer', async () => {
+        test('Integer', () => {
           this.sliderField.setValue(2);
           assertValue(this.sliderField, 2);
         });
-        test('Float', async () => {
+        test('Float', () => {
           this.sliderField.setValue(2.5);
           assertValue(this.sliderField, 2.5);
         });
-        test('Integer String', async () => {
+        test('Integer String', () => {
           this.sliderField.setValue('2');
           assertValue(this.sliderField, 2);
         });
-        test('Float String', async () => {
+        test('Float String', () => {
           this.sliderField.setValue('2.5');
           assertValue(this.sliderField, 2.5);
         });
-        test('Infinity', async () => {
+        test('Infinity', () => {
           this.sliderField.setValue(Infinity);
           assertValue(this.sliderField, Infinity);
         });
-        test('Negative Infinity String', async () => {
+        test('Negative Infinity String', () => {
           this.sliderField.setValue('-Infinity');
           assertValue(this.sliderField, -Infinity);
         });
@@ -217,38 +217,38 @@ suite('FieldSlider', () => {
     });
     suite('Constraints', () => {
       suite('Precision', () => {
-        test('Float', async () => {
+        test('Float', () => {
           const sliderField = new FieldSlider();
           sliderField.setValue(123.456);
           assertValue(sliderField, 123.456);
         });
-        test('0.01', async () => {
+        test('0.01', () => {
           const sliderField = new FieldSlider.fromJson({ precision: .01 });
           sliderField.setValue(123.456);
           assertValue(sliderField, 123.46);
         });
-        test('0.5', async () => {
+        test('0.5', () => {
           const sliderField = new FieldSlider.fromJson({ precision: .5 });
           sliderField.setValue(123.456);
           assertValue(sliderField, 123.5);
         });
-        test('1', async () => {
+        test('1', () => {
           const sliderField = new FieldSlider.fromJson({ precision: 1 });
           sliderField.setValue(123.456);
           assertValue(sliderField, 123);
         });
-        test('1.5', async () => {
+        test('1.5', () => {
           const sliderField = new FieldSlider.fromJson({ precision: 1.5 });
           sliderField.setValue(123.456);
           assertValue(sliderField, 123);
         });
-        test('Null', async () => {
+        test('Null', () => {
           const sliderField = new FieldSlider.fromJson({ precision: null});
           assert.equal(sliderField.getPrecision(), 0);
         });
       });
       suite('Min', () => {
-        test('-10', async () => {
+        test('-10', () => {
           const sliderField = new FieldSlider.fromJson({ min: -10 });
           sliderField.setValue(-20);
           assertValue(sliderField, -10);
@@ -257,7 +257,7 @@ suite('FieldSlider', () => {
           sliderField.setValue(20);
           assertValue(sliderField, 20);
         });
-        test('0', async () => {
+        test('0', () => {
           const sliderField = new FieldSlider.fromJson({ min: 0 });
           sliderField.setValue(-20);
           assertValue(sliderField, 0);
@@ -266,7 +266,7 @@ suite('FieldSlider', () => {
           sliderField.setValue(20);
           assertValue(sliderField, 20);
         });
-        test('+10', async () => {
+        test('+10', () => {
           const sliderField = new FieldSlider.fromJson({ min: 10 });
           sliderField.setValue(-20);
           assertValue(sliderField, 10);
@@ -275,13 +275,13 @@ suite('FieldSlider', () => {
           sliderField.setValue(20);
           assertValue(sliderField, 20);
         });
-        test('Null', async () => {
+        test('Null', () => {
           const sliderField = new FieldSlider.fromJson({ min: null});
           assert.equal(sliderField.getMin(), -Infinity);
         });
       });
       suite('Max', () => {
-        test('-10', async () => {
+        test('-10', () => {
           const sliderField = new FieldSlider.fromJson({ max: -10 });
           sliderField.setValue(-20);
           assertValue(sliderField, -20);
@@ -290,7 +290,7 @@ suite('FieldSlider', () => {
           sliderField.setValue(20);
           assertValue(sliderField, -10);
         });
-        test('0', async () => {
+        test('0', () => {
           const sliderField = new FieldSlider.fromJson({ max: 0 });
           sliderField.setValue(-20);
           assertValue(sliderField, -20);
@@ -299,7 +299,7 @@ suite('FieldSlider', () => {
           sliderField.setValue(20);
           assertValue(sliderField, 0);
         });
-        test('+10', async () => {
+        test('+10', () => {
           const sliderField = new FieldSlider.fromJson({ max: 10 });
           sliderField.setValue(-20);
           assertValue(sliderField, -20);
@@ -308,7 +308,7 @@ suite('FieldSlider', () => {
           sliderField.setValue(20);
           assertValue(sliderField, 10);
         });
-        test('null', async () => {
+        test('null', () => {
           const sliderField = new FieldSlider.fromJson({ max: null});
           assert.equal(sliderField.getMax(), Infinity);
         });
@@ -336,14 +336,14 @@ suite('FieldSlider', () => {
           return null;
         });
       });
-      test('When Editing', async () => {
+      test('When Editing', () => {
         this.sliderField.isBeingEdited_ = true;
         this.sliderField.htmlInput_.value = '2';
         this.sliderField.onHtmlInputChange_(null);
         assertValue(this.sliderField, 1, '2');
         this.sliderField.isBeingEdited_ = false;
       });
-      test('When Not Editing', async () => {
+      test('When Not Editing', () => {
         this.sliderField.setValue(2);
         assertValue(this.sliderField, 1);
       });
@@ -354,14 +354,14 @@ suite('FieldSlider', () => {
           return String(newValue).replace(/.$/, "6");
         });
       });
-      test('When Editing', async () => {
+      test('When Editing', () => {
         this.sliderField.isBeingEdited_ = true;
         this.sliderField.htmlInput_.value = '25';
         this.sliderField.onHtmlInputChange_(null);
         assertValue(this.sliderField, 26, '25');
         this.sliderField.isBeingEdited_ = false;
       });
-      test('When Not Editing', async () => {
+      test('When Not Editing', () => {
         this.sliderField.setValue(25);
         assertValue(this.sliderField, 26);
       });
@@ -370,14 +370,14 @@ suite('FieldSlider', () => {
       setup(() => {
         this.sliderField.setValidator(() => {});
       });
-      test('When Editing', async () => {
+      test('When Editing', () => {
         this.sliderField.isBeingEdited_ = true;
         this.sliderField.htmlInput_.value = '2';
         this.sliderField.onHtmlInputChange_(null);
         assertValue(this.sliderField, 2);
         this.sliderField.isBeingEdited_ = false;
       });
-      test('When Not Editing', async () => {
+      test('When Not Editing', () => {
         this.sliderField.setValue(2);
         assertValue(this.sliderField, 2);
       });
@@ -385,34 +385,34 @@ suite('FieldSlider', () => {
   });
   suite('Customizations', () => {
     suite('Min', () => {
-      test('JS Constructor', async () => {
+      test('JS Constructor', () => {
         var field = new FieldSlider(0, -10);
         assertSliderField(field, -10, Infinity, 0, 0);
       });
-      test('JSON Definition', async () => {
+      test('JSON Definition', () => {
         var field = FieldSlider.fromJson({
           min: -10,
         });
         assertSliderField(field, -10, Infinity, 0, 0);
       });
-      test('Set Constraints', async () => {
+      test('Set Constraints', () => {
         var field = new FieldSlider();
         field.setConstraints(-10);
         assertSliderField(field, -10, Infinity, 0, 0);
       });
-      test('Set Min', async () => {
+      test('Set Min', () => {
         var field = new FieldSlider();
         field.setMin(-10);
         assertSliderField(field, -10, Infinity, 0, 0);
       });
-      test('JS Configuration - Simple', async () => {
+      test('JS Configuration - Simple', () => {
         var field = new FieldSlider(
             undefined, undefined, undefined, undefined, undefined, {
               min: -10
             });
         assertSliderField(field, -10, Infinity, 0, 0);
       });
-      test('JS Configuration - Ignore', async () => {
+      test('JS Configuration - Ignore', () => {
         var field = new FieldSlider(
             undefined, -1, undefined, undefined, undefined, {
               min: -10
@@ -421,34 +421,34 @@ suite('FieldSlider', () => {
       });
     });
     suite('Max', () => {
-      test('JS Constructor', async () => {
+      test('JS Constructor', () => {
         var field = new FieldSlider(0, undefined, 10);
         assertSliderField(field, -Infinity, 10, 0, 0);
       });
-      test('JSON Definition', async () => {
+      test('JSON Definition', () => {
         var field = FieldSlider.fromJson({
           max: 10,
         });
         assertSliderField(field, -Infinity, 10, 0, 0);
       });
-      test('Set Constraints', async () => {
+      test('Set Constraints', () => {
         var field = new FieldSlider();
         field.setConstraints(undefined, 10);
         assertSliderField(field, -Infinity, 10, 0, 0);
       });
-      test('Set Max', async () => {
+      test('Set Max', () => {
         var field = new FieldSlider();
         field.setMax(10);
         assertSliderField(field, -Infinity, 10, 0, 0);
       });
-      test('JS Configuration - Simple', async () => {
+      test('JS Configuration - Simple', () => {
         var field = new FieldSlider(
             undefined, undefined, undefined, undefined, undefined, {
               max: 10
             });
         assertSliderField(field, -Infinity, 10, 0, 0);
       });
-      test('JS Configuration - Ignore', async () => {
+      test('JS Configuration - Ignore', () => {
         var field = new FieldSlider(
             undefined, undefined, 1, undefined, undefined, {
               max: 10
@@ -457,34 +457,34 @@ suite('FieldSlider', () => {
       });
     });
     suite('Precision', () => {
-      test('JS Constructor', async () => {
+      test('JS Constructor', () => {
         var field = new FieldSlider(0, undefined, undefined, 1);
         assertSliderField(field, -Infinity, Infinity, 1, 0);
       });
-      test('JSON Definition', async () => {
+      test('JSON Definition', () => {
         var field = FieldSlider.fromJson({
           precision: 1,
         });
         assertSliderField(field, -Infinity, Infinity, 1, 0);
       });
-      test('Set Constraints', async () => {
+      test('Set Constraints', () => {
         var field = new FieldSlider();
         field.setConstraints(undefined, undefined, 1);
         assertSliderField(field, -Infinity, Infinity, 1, 0);
       });
-      test('Set Precision', async () => {
+      test('Set Precision', () => {
         var field = new FieldSlider();
         field.setPrecision(1);
         assertSliderField(field, -Infinity, Infinity, 1, 0);
       });
-      test('JS Configuration - Simple', async () => {
+      test('JS Configuration - Simple', () => {
         var field = new FieldSlider(
             undefined, undefined, undefined, undefined, undefined, {
               precision: 1
             });
         assertSliderField(field, -Infinity, Infinity, 1, 0);
       });
-      test('JS Configuration - Ignore', async () => {
+      test('JS Configuration - Ignore', () => {
         var field = new FieldSlider(
             undefined, undefined, undefined, .5, undefined, {
               precision: 1
