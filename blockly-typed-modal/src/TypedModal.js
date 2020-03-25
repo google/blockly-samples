@@ -13,7 +13,7 @@
 
 import * as Blockly from 'blockly/core';
 import { Modal } from './Modal.js';
-import { injectCss } from "./css";
+import { injectCss } from "./css_inject";
 import './typed_modal_messages';
 
 /**
@@ -80,6 +80,9 @@ export class TypedModal extends Modal {
     this.types_ = types;
 
     /**
+     * If true close the modal when the user clicks outside the modal.
+     * Otherwise, only close when user hits the 'X' button or escape.
+     * @type {boolean}
      * @override
      */
     this.closeOnClick = false;
@@ -91,8 +94,8 @@ export class TypedModal extends Modal {
   init() {
     super.init();
     this.injectCss_();
-    this.workspace_.registerButtonCallback(this.btnCallBackName_, (button) => {
-      this.show(button.getTargetWorkspace());
+    this.workspace_.registerButtonCallback(this.btnCallBackName_, () => {
+      this.show();
     });
   }
 
@@ -127,6 +130,7 @@ export class TypedModal extends Modal {
 
   /**
    * Dispose of the typed modal.
+   * @override
    */
   dispose() {
     super.dispose();
@@ -157,7 +161,7 @@ export class TypedModal extends Modal {
 
   /**
    * Get the function to be called when the user confirms.
-   * @private
+   * @protected
    */
   onConfirm_() {
     const text = this.getValidInput_();
@@ -173,7 +177,8 @@ export class TypedModal extends Modal {
         } else {
           msg =
               Blockly.Msg['VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE'];
-          msg = msg.replace('%1', existing.name).replace('%2', existing.type);
+          msg = msg.replace('%1', existing.name).replace('%2',
+              this.getDisplayName_(existing.type));
         }
         Blockly.alert(msg);
       } else {
@@ -182,6 +187,22 @@ export class TypedModal extends Modal {
         this.hide();
       }
     }
+  }
+
+  /**
+   * Get the display name for the given type.
+   * @param {string} type The type.
+   * @return {string} The display name for the type.
+   * @private
+   */
+  getDisplayName_(type) {
+    for (let i = 0; i < this.types_.length; i++) {
+      const typeNames = this.types_[i];
+      if (type === typeNames[1]) {
+        return typeNames[0];
+      }
+    }
+    return '';
   }
 
   /**
@@ -203,6 +224,8 @@ export class TypedModal extends Modal {
   }
 
   /**
+   * Render content for the content div.
+   * @param {HTMLDivElement} contentContainer The modal's content div.
    * @override
    */
   renderContent_(contentContainer) {
@@ -222,6 +245,8 @@ export class TypedModal extends Modal {
   }
 
   /**
+   * Render content for the modal footer.
+   * @param {HTMLElement} footerContainer The modal's footer div.
    * @override
    */
   renderFooter_(footerContainer) {

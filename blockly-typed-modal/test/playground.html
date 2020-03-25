@@ -7,9 +7,11 @@
 
   <script src="../node_modules/blockly/blockly.min.js"></script>
   <script src="../dist/typed-modal.umd.js"></script>
-<!--  <script src="./InputModal.js"></script>-->
+  <script src="./InputModal.js"></script>
   <script>
     'use strict';
+    import {TypedModal} from "../src/TypedModal";
+
     function start() {
       let workspace = null;
       const toolbox = document.getElementById('toolbox-categories-typed-variables');

@@ -11,7 +11,7 @@
 
 
 import * as Blockly from 'blockly/core';
-import { injectCss } from "./css";
+import { injectCss } from "./css_inject";
 
 /**
  * Class responsible for creating a Blockly modal.
@@ -61,13 +61,6 @@ export class Modal {
      * @private
      */
     this.boundEvents_ = [];
-
-    /**
-     * If true center on the modal over the workspace. Otherwise, center modal
-     * over the entire page.
-     * @type {boolean}
-     */
-    this.centerOnWorkspace = true;
 
     /**
      * If true close the modal when the user clicks outside the modal.
@@ -157,13 +150,12 @@ export class Modal {
 
   /**
    * Shows the Blockly modal and focus on the first focusable element.
-   * @param {!Blockly.WorkspaceSvg} workspace The button's target workspace.
    */
-  show(workspace) {
+  show() {
     this.focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
-    Blockly.WidgetDiv.show(this, workspace.RTL,
+    Blockly.WidgetDiv.show(this, this.workspace_.RTL,
         () => this.widgetDispose_());
     this.widgetCreate_();
     if (this.focusableEls.length > 0) {
@@ -192,16 +184,12 @@ export class Modal {
    */
   widgetCreate_() {
     const widgetDiv = Blockly.WidgetDiv.DIV;
-    const metrics = this.workspace_.getMetrics();
 
-    widgetDiv.style.width = this.centerOnWorkspace ?
-        metrics.svgWidth + 'px' : '100%';
-    widgetDiv.style.height = this.centerOnWorkspace ?
-        metrics.svgHeight + 'px' : '100%';
-    widgetDiv.style.left = this.centerOnWorkspace ?
-        metrics.viewLeft + 'px' : '0px';
-    widgetDiv.style.top = this.centerOnWorkspace ?
-        metrics.viewTop + 'px' : '0px';
+    widgetDiv.style.width = '100%';
+    widgetDiv.style.height = '100%';
+    widgetDiv.style.left = '0px';
+    widgetDiv.style.top = '0px';
+    widgetDiv.style.position = 'fixed';
     if (this.closeOnClick) {
       this.hideEvent = this.addEvent_(widgetDiv, 'click', this, this.hide);
       this.modalEvent = this.addEvent_(this.htmlDiv_, 'click', this, (e) => {
@@ -349,7 +337,7 @@ export class Modal {
   /**
    * Render content for the header.
    * @param {HTMLElement} headerContainer The modal's header div.
-   * @package
+   * @protected
    */
   renderHeader_(headerContainer) {
     const modalTitle = document.createElement('H2');
@@ -361,7 +349,7 @@ export class Modal {
   /**
    * Render content for the content div.
    * @param {HTMLDivElement} _contentContainer The modal's content div.
-   * @package
+   * @protected
    */
   renderContent_(_contentContainer) {
     // No-op on the base class.
@@ -370,7 +358,7 @@ export class Modal {
   /**
    * Render content for the modal footer.
    * @param {HTMLElement} _footerContainer The modal's footer div.
-   * @package
+   * @protected
    */
   renderFooter_(_footerContainer) {
     // No-op on the base class.

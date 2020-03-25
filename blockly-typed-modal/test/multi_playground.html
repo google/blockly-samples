@@ -63,8 +63,8 @@
 
         const ws = Blockly.inject('blocklyDiv' + suffix, options);
         ws.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
-        const typedModal = new TypedModal(ws);
-        typedModal.init('CREATE_TYPED_VARIABLE', types);
+        const typedModal = new TypedModal(ws, 'CREATE_TYPED_VARIABLE', types);
+        typedModal.init();
         return ws;
       }
       document.addEventListener("DOMContentLoaded", function () { start() });
