@@ -31,12 +31,17 @@ suite('procedures', () => {
     assert.include(call.toString(), 'with');
 
     for (var i = 1; i < defLength - 2; i++) {
+      var varName = opt_args[i - 1];
       var defInput = defInputs[i];
       var callInput = callInputs[i];
       assert.equal(defInput.type, Blockly.DUMMY_INPUT);
       assert.equal(callInput.type, Blockly.INPUT_VALUE);
       assert.equal(defInput.name, def.argIds_[i - 1]);
+      assert.equal(defInput.fieldRow[2].getValue(), varName,
+          'Def vars did not match expected');
       assert.equal(callInput.name, 'ARG' + (i - 1));
+      assert.equal(callInput.fieldRow[0].getValue(), varName,
+          'Call vars did not match expected.');
     }
 
     // Assert the last input is not a dummy. Sometimes
@@ -138,6 +143,79 @@ suite('procedures', () => {
         assert.isNotNull(child);
         assert.equal(child.type, 'logic_boolean');
       })
+    });
+    test('<> arg', () => {
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('<>');
+      this.assertRoundTrip(this.def, this.call, (def, call) => {
+        assertProc(def, call, 1, ['<>']);
+      })
+    });
+  });
+  suite('Renaming args', () => {
+    setup(() => {
+      this.assertVars = function(varsArray) {
+        var varNames = this.workspace.getVariablesOfType('').map(
+            model => model.name );
+        console.log(varNames);
+        assert.sameMembers(varNames, varsArray);
+      };
+    });
+
+    test('Simple Rename', () => {
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('newName');
+      assertProc(this.def, this.call, 1, ['newName']);
+      this.assertVars(['x', 'newName']);
+    });
+    test('Change Case', () => {
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('X');
+      assertProc(this.def, this.call, 1, ['X']);
+      this.assertVars(['X']);
+    });
+    test('Empty', () => {
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('');
+      assertProc(this.def, this.call, 1, ['x']);
+      this.assertVars(['x']);
+    });
+    test('Whitespace', () => {
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('  newName   ');
+      assertProc(this.def, this.call, 1, ['newName']);
+      this.assertVars(['x', 'newName']);
+    });
+    test('Duplicate', () => {
+      this.def.plus();
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('y');
+      assertProc(this.def, this.call, 2, ['x', 'y']);
+      this.assertVars(['x', 'y']);
+    });
+    test('Duplicate Different Case', () => {
+      this.def.plus();
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('Y');
+      assertProc(this.def, this.call, 2, ['x', 'y']);
+      this.assertVars(['x', 'y']);
+    });
+    test('Match Existing', () => {
+      this.workspace.createVariable('test', '');
+      this.def.plus();
+      var field = this.def.inputList[1].fieldRow[2];
+      field.setValue('test');
+      assertProc(this.def, this.call, 1, ['test']);
+      this.assertVars(['x', 'test']);
+      assert.equal(this.def.varIds_[0],
+          this.workspace.getVariable('test', '').getId());
     });
   })
 });

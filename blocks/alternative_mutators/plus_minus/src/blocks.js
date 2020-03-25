@@ -646,14 +646,19 @@ const procedureDefMutator = {
       return null;
     }
 
+    // The field name (aka id) is always equal to the arg id.
+    var index = sourceBlock.argIds_.indexOf(this.name);
+    var caselessName = newName.toLowerCase();
     for (var i = 0, name; (name = sourceBlock.arguments_[i]); i++) {
-      if (newName == name) {
+      if (i == index) {
+        // Don't check self because if we just added whitespace this breaks.
+        continue;
+      }
+      if (caselessName == name.toLowerCase()) {
         return null;  // It matches, so it is invalid.
       }
     }
 
-    // The field name (aka id) is always equal to the arg id.
-    var index = sourceBlock.argIds_.indexOf(this.name);
     sourceBlock.arguments_[index] = newName;
 
     // TODO: Maybe delete the pre-edit variable if it has no other uses.
@@ -666,13 +671,18 @@ const procedureDefMutator = {
     if (!model) {
       model = workspace.createVariable(newName, '');
       this.createdVarIds_.push(model.getId());
-      sourceBlock.varIds_[index] = model.getId();
-      sourceBlock.argumentVarModels_[index] = model;
     } else if (model.name != newName) {
       // Ideally we would create a new var. But Blockly is case-insensitive so
       // we update the var to reflect the latest case instead.
       workspace.renameVariableById(model.getId(), newName);
     }
+    if (model.getId() != sourceBlock.varIds_[index]) {
+      sourceBlock.varIds_[index] = model.getId();
+      sourceBlock.argumentVarModels_[index] = model;
+    }
+    console.log(sourceBlock.mutationToDom(true));
+    Blockly.Procedures.mutateCallers(sourceBlock);
+    return newName;
   },
 
   /**
