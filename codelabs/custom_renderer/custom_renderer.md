@@ -204,7 +204,7 @@ Blockly.blockRendering.ConstantProvider.prototype.shapeFor = function(
 };
 ```
 
-## Change conenction shapes
+## Change connection shapes
 
 In this step you will define and use new shapes for previous/next connections and input/output connections. This takes three steps:
 1. Define new shape objects.
