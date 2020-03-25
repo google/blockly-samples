@@ -20,7 +20,7 @@ import { injectCss } from "./css_inject";
  */
 export class TypedModal extends Modal {
   /**
-   * Constructor for creating and registering a typed modal.
+   * Constructor for creating a typed modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the modal will
    *     be registered on.
    * @param {string} btnCallbackName The name used to register the button
@@ -85,14 +85,6 @@ export class TypedModal extends Modal {
     this.types_ = types;
 
     /**
-     * If true close the modal when the user clicks outside the modal.
-     * Otherwise, only close when user hits the 'X' button or escape.
-     * @type {boolean}
-     * @override
-     */
-    this.closeOnClick = false;
-
-    /**
      * The messages for a typed modal.
      * @type {{
      *     TYPED_MODAL_CONFIRM_BUTTON: string,
@@ -109,10 +101,18 @@ export class TypedModal extends Modal {
       "TYPED_MODAL_CONFIRM_BUTTON":"Ok",
       "TYPED_MODAL_CANCEL_BUTTON":"Cancel"
     };
+
+    /**
+     * If true close the modal when the user clicks outside the modal.
+     * Otherwise, only close when user hits the 'X' button or escape.
+     * @type {boolean}
+     * @override
+     */
+    this.closeOnClick = false;
   }
 
   /**
-   * Create a typed modal and register it with the given button name.
+   * Create a typed modal and display it on the given button name.
    */
   init() {
     super.init();
@@ -264,7 +264,7 @@ export class TypedModal extends Modal {
   }
 
   /**
-   * Render content for the content div.
+   * Render content for the modal content div.
    * @param {HTMLDivElement} contentContainer The modal's content div.
    * @override
    */
