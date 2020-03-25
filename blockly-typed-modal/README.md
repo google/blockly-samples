@@ -14,22 +14,32 @@ To add a Typed Modal to your application you will have to create a custom
 dynamically populated flyout category. More information on custom flyouts can be
 found [here](https://developers.google.com/blockly/guides/configure/web/toolbox?hl=en#dynamic_categories).
 
-Import Blockly and create your workspace.
+#### Import
 ```js
 import Blockly from 'blockly';
 import { TypedModal } from '@blockly/plugin-typed-modal';
+```
+or
 
-const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: toolbox
+```js
+<script src="https://unpkg.com/@blockly/plugin-typed-modal"></script>
+```
+
+#### Setup
+
+Create your workspace and your category.
+```js
+workspace = Blockly.inject('blocklyDiv', {
+    toolbox: toolbox
 });
 ```
 
-In your toolbox add a custom category.
+Add a category to your toolbox.
 ```js
 <category name="Colours" custom="CREATE_TYPED_VARIABLE"></category>
 ```
 
-Define a callback to provide the category content
+Define a callback to provide the category content.
 ```js
 const createFlyout = function(workspace) {
     let xmlList = [];
@@ -53,16 +63,25 @@ Register the callback on the workspace.
 workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
 ```
 
-Create your Typed Modal using the callbackName for the button.
+Create your Typed Modal using the workspace, callbackName for the button and
+your types.
 ```js
 const typedModal = new TypedModal(workspace, 'callbackName', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
 typedModal.init();
 ```
 
-This can also be used by adding a script tag:
-```js
-<script src="https://unpkg.com/@blockly/plugin-typed-modal"></script>
-```
+#### Blockly Languages
+We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the
+different messages in the typed modal can be set by calling `typedModal.setLocale(messages)`.
+
+Messages that need to be translated for a Typed Modal:
+- `TYPED_MODAL_CONFIRM_BUTTON` (Default: "Ok"): The label for the confirmation button.
+- `TYPED_MODAL_VARIABLES_DEFAULT_NAME` (Default: "Variable Name: "): The label in front of the variable input.
+- `TYPED_MODAL_VARIABLE_TYPE_LABEL` (Default: "Variable Types"): The label in front of the types.
+- `TYPED_MODAL_CANCEL_BUTTON` (Default: "Cancel"): The label for the cancel button.
+- `TYPED_MODAL_TITLE` (Default: "Create Typed Variable"): The modal title.
+
 
 ## API
 - `init`: Create a typed modal and register it with the given button name.
@@ -71,6 +90,8 @@ This can also be used by adding a script tag:
 - `hide`: Hide the modal.
 - `render`: Create all the dom elements for the modal.
 - `getSelectedType`: Get the selected type of the modal.
+- `setLocale`: Change the language for the typed modal.
+
 
 ## License
 Apache 2.0
