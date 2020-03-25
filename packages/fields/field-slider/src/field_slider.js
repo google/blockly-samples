@@ -164,41 +164,83 @@ Blockly.Css.register([
     `.fieldSliderContainer {
       align-items: center;
       display: flex;
-      height: 25px;
+      height: 32px;
       justify-content: center;
+      width: 150px;
     }
     .fieldSlider {
-      appearance: none;
       -webkit-appearance: none;
-      background: #ddd;
-      border-radius: 5px;
-      height: 5px;
-      opacity: 1;
+      background: transparent; /* override white in chrome */
+      margin: 4px;
+      padding: 0;
+      width: 100%;
+    }
+    .fieldSlider:focus {
       outline: none;
     }
     /* Webkit */
+    .fieldSlider::-webkit-slider-runnable-track {
+      background: #ddd;
+      border-radius: 5px;
+      height: 10px;
+    }
     .fieldSlider::-webkit-slider-thumb {
       -webkit-appearance: none;
       background: #fff;
-      border-color: #fff;
       border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(255,255,255,.15);
       cursor: pointer;
-      height: 20px;
-      opacity: 1;
-      width: 20px;
+      height: 24px;
+      margin-top: -7px;
+      width: 24px;
     }
     /* Firefox */
+    .fieldSlider::-moz-range-track {
+      background: #ddd;
+      border-radius: 5px;
+      height: 10px;
+    }
     .fieldSlider::-moz-range-thumb {
-      border-color: #fff;
-      border-radius: 50%;
       background: #fff;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(255,255,255,.15);
       cursor: pointer;
-      height: 20px;
-      width: 20px;
+      height: 24px;
+      width: 24px;
     }
     .fieldSlider::-moz-focus-outer {
       /* override the focus border style */
       border: 0;
+    }
+    /* IE */
+    .fieldSlider::-ms-track {
+      /* IE wont let the thumb overflow the track, so fake it */
+      background: transparent;
+      border-color: transparent;
+      border-width: 15px 0;
+      /* remove default tick marks */
+      color: transparent;
+      height: 10px;
+      width: 100%;
+      margin: -4px 0;
+    }
+    .fieldSlider::-ms-fill-lower  {
+      background: #ddd;
+      border-radius: 5px;
+    }
+    .fieldSlider::-ms-fill-upper  {
+      background: #ddd;
+      border-radius: 5px;
+    }
+    .fieldSlider::-ms-thumb {
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(255,255,255,.15);
+      cursor: pointer;
+      height: 24px;
+      width: 24px;
     }`
     /* eslint-enable indent */
 ]);
