@@ -9,18 +9,18 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
+
 import * as Blockly from 'blockly/core';
 import { injectCss } from "./css";
-import './modal_messages';
 
 /**
- * Class responsible for creating a modal.
+ * Class responsible for creating a Blockly modal.
  */
 export class Modal {
 
   /**
-   * Constructor for creating a modal.
-   * @param {string} title The content for the modal.
+   * Constructor for creating a Blockly modal.
+   * @param {string} title The title for the modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to display the modal
    *     over.
    */
@@ -33,7 +33,7 @@ export class Modal {
     this.title = title;
 
     /**
-     * The workspace that the modal will be created on.
+     * The workspace to display the modal over.
      * @type {!Blockly.WorkspaceSvg}
      * @protected
      */
@@ -47,28 +47,7 @@ export class Modal {
     this.focusableEls = [];
 
     /**
-     * The header div for the Blockly modal.
-     * @type {HTMLElement}
-     * @protected
-     */
-    this.headerDiv_ = null;
-
-    /**
-     * The content div for the Blockly modal.
-     * @type {HTMLDivElement}
-     * @protected
-     */
-    this.contentDiv_ = null;
-
-    /**
-     * The footer div for the Blockly modal.
-     * @type {HTMLDivElement}
-     * @protected
-     */
-    this.footerDiv_ = null;
-
-    /**
-     * The selected type for the modal.
+     * HTML container for the modal.
      * @type {HTMLDivElement}
      * @private
      */
@@ -84,18 +63,26 @@ export class Modal {
     this.boundEvents_ = [];
 
     /**
-     * If true center on the workspace. Otherwise, center on the entire page.
+     * If true center on the modal over the workspace. Otherwise, center modal
+     * over the entire page.
      * @type {boolean}
      */
     this.centerOnWorkspace = true;
+
+    /**
+     * If true close the modal when the user clicks outside the modal.
+     * Otherwise, only close when user hits the 'X' button or escape.
+     * @type {boolean}
+     */
+    this.closeOnClick = true;
   }
 
   /**
-   * Initialize a basic accessible modal.
+   * Initialize a Blockly modal.
    */
   init() {
     this.injectCss_();
-    this.createDom();
+    this.render();
     this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
         this, this.handleKeyDown_);
   }
@@ -129,7 +116,7 @@ export class Modal {
       .blockly-modal-header-title {
         margin-top: 0;
         margin-bottom: 0;
-        font-size: 1.25em;
+        font-size: 1.2em;
         line-height: 1.25;
       }
       .blockly-modal-header .blockly-modal-btn {
@@ -138,6 +125,17 @@ export class Modal {
       }
       .blockly-modal-btn-close:before {
         content: "\\2715";
+      }
+      .blockly-modal-btn {
+        margin-right: .5em;
+        border: 1px solid gray;
+        font-weight: 500;
+        color: gray;
+        border-radius: 25px;
+      }
+      .blockly-modal-btn-primary {
+        background-color: gray;
+        color: white;
       }`);
   }
 
@@ -155,29 +153,127 @@ export class Modal {
       this.htmlDiv_.remove();
       this.htmlDiv_ = null;
     }
-    this.contentDiv_ = null;
-    this.headerDiv_ = null;
-    this.footerDiv_ = null;
   }
 
   /**
-   * Shows the Blockly modal.
+   * Shows the Blockly modal and focus on the first focusable element.
    * @param {!Blockly.WorkspaceSvg} workspace The button's target workspace.
    */
   show(workspace) {
     this.focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
-    Blockly.WidgetDiv.show(this, workspace.RTL, () => this.onClose_());
-    this.onShow_();
-    this.focusableEls[0].focus();
+    Blockly.WidgetDiv.show(this, workspace.RTL,
+        () => this.widgetDispose_());
+    this.widgetCreate_();
+    if (this.focusableEls.length > 0) {
+      this.focusableEls[0].focus();
+    }
   }
 
   /**
-   * Hide the blockly modal.
+   * Hide the Blockly modal.
    */
   hide() {
     Blockly.WidgetDiv.hide();
+  }
+
+  /**
+   * The function to be called when the user hits the 'x' button.
+   * @protected
+   */
+  onCancel_() {
+    this.hide();
+  }
+
+  /**
+   * Add the Blockly modal to the widget div and position it properly.
+   * @protected
+   */
+  widgetCreate_() {
+    const widgetDiv = Blockly.WidgetDiv.DIV;
+    const metrics = this.workspace_.getMetrics();
+
+    widgetDiv.style.width = this.centerOnWorkspace ?
+        metrics.svgWidth + 'px' : '100%';
+    widgetDiv.style.height = this.centerOnWorkspace ?
+        metrics.svgHeight + 'px' : '100%';
+    widgetDiv.style.left = this.centerOnWorkspace ?
+        metrics.viewLeft + 'px' : '0px';
+    widgetDiv.style.top = this.centerOnWorkspace ?
+        metrics.viewTop + 'px' : '0px';
+    if (this.closeOnClick) {
+      this.hideEvent = this.addEvent_(widgetDiv, 'click', this, this.hide);
+      this.modalEvent = this.addEvent_(this.htmlDiv_, 'click', this, (e) => {
+        e.stopPropagation();
+      });
+    }
+    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-open');
+    widgetDiv.appendChild(this.htmlDiv_);
+  }
+
+  /**
+   * Disposes of any events or dom-references belonging to the editor.
+   * @protected
+   */
+  widgetDispose_() {
+    const widgetDiv = Blockly.WidgetDiv.DIV;
+    widgetDiv.style.width = 'auto';
+    widgetDiv.style.height = 'auto';
+    if (this.closeOnClick) {
+      Blockly.unbindEvent_(this.hideEvent);
+      Blockly.unbindEvent_(this.modalEvent);
+    }
+    Blockly.utils.dom.removeClass(this.htmlDiv_, 'blockly-modal-open');
+  }
+
+  /**
+   * Handle when the user goes to the previous focusable element.
+   * @param {KeyboardEvent} e The keydown event.
+   * @private
+   */
+  handleBackwardTab_(e) {
+    if (document.activeElement === this.focusableEls[0]) {
+      e.preventDefault();
+      this.focusableEls[this.focusableEls.length - 1].focus();
+    }
+  }
+
+  /**
+   * Handle when the user goes to the next focusable element.
+   * @param {KeyboardEvent} e The keydown event.
+   * @private
+   */
+  handleForwardTab_(e) {
+    const focusedElements = this.focusableEls;
+    if (document.activeElement === focusedElements[focusedElements.length - 1]) {
+      e.preventDefault();
+      this.focusableEls[0].focus();
+    }
+  }
+
+  /**
+   * Handles keydown event for a Blockly modal. Handles forward tab, backward
+   * tab, and escape button.
+   * @param {KeyboardEvent} e The keydown event.
+   * @private
+   */
+  handleKeyDown_(e) {
+    if (e.keyCode === Blockly.utils.KeyCodes.TAB) {
+      if (this.focusableEls.length <= 1) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      if (e.shiftKey) {
+        this.handleBackwardTab_(e);
+      } else {
+        this.handleForwardTab_(e);
+      }
+    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
+      this.hide();
+    }
+    e.stopPropagation();
   }
 
   /**
@@ -194,101 +290,9 @@ export class Modal {
   }
 
   /**
-   * The function to be called when the user hits the confirm button.
-   * @protected
+   * Create all the dom elements for the modal.
    */
-  onConfirm_() {
-    this.hide();
-  }
-
-  /**
-   * The function to be called when the user hits the cancel button.
-   * @protected
-   */
-  onCancel_() {
-    this.hide();
-  }
-
-  /**
-   * Add the Blockly modal to the widget div.
-   * @protected
-   */
-  onShow_() {
-    const widgetDiv = Blockly.WidgetDiv.DIV;
-    const metrics = this.workspace_.getMetrics();
-
-    widgetDiv.style.width = this.centerOnWorkspace ? metrics.svgWidth + 'px' : '100%';
-    widgetDiv.style.height = this.centerOnWorkspace ? metrics.svgHeight + 'px' : '100%';
-
-    widgetDiv.style.left = this.centerOnWorkspace ? metrics.viewLeft + 'px' : '0px';
-    widgetDiv.style.top = this.centerOnWorkspace ? metrics.viewTop + 'px' : '0px';
-    const htmlInput_ = this.htmlDiv_;
-    Blockly.utils.dom.addClass(htmlInput_, 'blockly-modal-is-open');
-    widgetDiv.appendChild(htmlInput_);
-  }
-
-  /**
-   * Disposes of any events or dom-references belonging to the editor.
-   * @protected
-   */
-  onClose_() {
-    const widgetDiv = Blockly.WidgetDiv.DIV;
-    widgetDiv.style.width = 'auto';
-    widgetDiv.style.height = 'auto';
-    Blockly.utils.dom.removeClass(this.htmlDiv_, 'blockly-modal-is-open');
-    Blockly.WidgetDiv.DIV.textContent = '';
-  }
-
-  /**
-   * Handle when the user does a backwards tab.
-   * @param {KeyboardEvent} e The keydown event.
-   * @private
-   */
-  handleBackwardTab_(e) {
-    if (document.activeElement === this.focusableEls[0]) {
-      e.preventDefault();
-      this.focusableEls[this.focusableEls.length - 1].focus();
-    }
-  }
-
-  /**
-   * Handle when the user does a forward tab.
-   * @param {KeyboardEvent} e The keydown event.
-   * @private
-   */
-  handleForwardTab_(e) {
-    const focusedElements = this.focusableEls;
-    if (document.activeElement === focusedElements[focusedElements.length - 1]) {
-      e.preventDefault();
-      this.focusableEls[0].focus();
-    }
-  }
-
-  /**
-   * Handles keydown event for a Blockly modal.
-   * @param {KeyboardEvent} e The keydown event.
-   * @private
-   */
-  handleKeyDown_(e) {
-    if (e.keyCode === Blockly.utils.KeyCodes.TAB) {
-      if (this.focusableEls.length === 1) {
-        e.preventDefault();
-        return;
-      }
-      if (e.shiftKey) {
-        this.handleBackwardTab_(e);
-      } else {
-        this.handleForwardTab_(e);
-      }
-    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
-      this.hide();
-    }
-  }
-
-  /**
-   * Create the dom for the modal.
-   */
-  createDom() {
+  render() {
     /*
      * Creates the Modal. The generated modal looks like:
      * <div class="blockly-modal-container" role="dialog">
@@ -305,59 +309,70 @@ export class Modal {
      * </div>
      */
 
+    // Create Container
+    this.htmlDiv_ = document.createElement('div');
+    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-container');
+    this.htmlDiv_.setAttribute('role', 'dialog');
+    this.htmlDiv_.setAttribute('aria-labelledby', this.title);
+    // End creating the container
+
     // Create the header
     const modalHeader = document.createElement('header');
     Blockly.utils.dom.addClass(modalHeader, 'blockly-modal-header');
 
-    const modalTitle = document.createElement('H2');
-    Blockly.utils.dom.addClass(modalTitle, 'blockly-modal-header-title');
-    modalTitle.appendChild(document.createTextNode(this.title));
-    modalHeader.appendChild(modalTitle);
+    this.renderHeader_(modalHeader);
 
     const exitButton = document.createElement('button');
     Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn');
     Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn-close');
     this.addEvent_(exitButton, 'click', this, this.onCancel_);
     modalHeader.appendChild(exitButton);
-    this.headerDiv_ = modalHeader;
-    // End creating the header
+    // End create header
 
-    // Create the content
+    // Create content
     const modalContent = document.createElement('div');
     Blockly.utils.dom.addClass(modalContent, 'blockly-modal-content');
-    this.contentDiv_ = modalContent;
-    // End creating the content
+    this.renderContent_(modalContent);
+    // End creating content
 
-    // Create the footer
-    const modalFooter = document.createElement('div');
+    // Create Footer
+    const modalFooter = document.createElement('footer');
     Blockly.utils.dom.addClass(modalFooter, 'blockly-modal-footer');
-
-    const createBtn = document.createElement('button');
-    Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn');
-    Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn-primary');
-    createBtn.innerText = Blockly.Msg['MODAL_CONFIRM_BUTTON'];
-    this.addEvent_(createBtn, 'click', this, this.onConfirm_);
-
-    const cancelBtn = document.createElement('button');
-    Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
-    cancelBtn.innerText = Blockly.Msg['MODAL_CANCEL_BUTTON'];
-    this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
-
-    modalFooter.appendChild(createBtn);
-    modalFooter.appendChild(cancelBtn);
-    this.footerDiv_ = modalFooter;
-    // End creating the footer
-
-    // Create Container
-    this.htmlDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-container');
-    this.htmlDiv_.setAttribute('role', 'dialog');
-    // TODO: These should be translated.
-    this.htmlDiv_.setAttribute('aria-labelledby', this.title);
-    // End creating the container
+    this.renderFooter_(modalFooter);
+    // End creating footer
 
     this.htmlDiv_.appendChild(modalHeader);
     this.htmlDiv_.appendChild(modalContent);
     this.htmlDiv_.appendChild(modalFooter);
+  }
+
+  /**
+   * Render content for the header.
+   * @param {HTMLElement} headerContainer The modal's header div.
+   * @package
+   */
+  renderHeader_(headerContainer) {
+    const modalTitle = document.createElement('H2');
+    Blockly.utils.dom.addClass(modalTitle, 'blockly-modal-header-title');
+    modalTitle.appendChild(document.createTextNode(this.title));
+    headerContainer.appendChild(modalTitle);
+  }
+
+  /**
+   * Render content for the content div.
+   * @param {HTMLDivElement} _contentContainer The modal's content div.
+   * @package
+   */
+  renderContent_(_contentContainer) {
+    // No-op on the base class.
+  }
+
+  /**
+   * Render content for the modal footer.
+   * @param {HTMLElement} _footerContainer The modal's footer div.
+   * @package
+   */
+  renderFooter_(_footerContainer) {
+    // No-op on the base class.
   }
 }

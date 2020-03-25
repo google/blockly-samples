@@ -10,10 +10,6 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-// TODO: Test on mobile
-// TODO: Make sure we are properly cleaning up after ourselves.
-// TODO: How should be exporting.
-// TODO: Clean up createDOM method
 
 import * as Blockly from 'blockly/core';
 import { Modal } from './Modal.js';
@@ -54,7 +50,6 @@ export class TypedModal extends Modal {
      */
     this.variableNameInput_ = null;
 
-
     /**
      * The div holding the list of variable types.
      * @type {HTMLElement}
@@ -83,6 +78,11 @@ export class TypedModal extends Modal {
      * @protected
      */
     this.types_ = types;
+
+    /**
+     * @override
+     */
+    this.closeOnClick = false;
   }
 
   /**
@@ -110,6 +110,9 @@ export class TypedModal extends Modal {
       .typed-modal-variable-name-container {
         margin: 1em 0 1em 0;
       }
+      .typed-modal-variable-name-label{
+        margin-right: .5em;
+      }
       .typed-modal-types ul{
         display: flex;
         flex-wrap: wrap;
@@ -128,6 +131,18 @@ export class TypedModal extends Modal {
   dispose() {
     super.dispose();
     this.workspace_.removeButtonCallback(this.btnCallBackName_);
+    this.variableNameInput_ = null;
+    this.variableTypesDiv_ = null;
+    this.firstTypeInput_ = null;
+    // TODO: Remove style tag.
+  }
+
+  /**
+   * Get the selected type.
+   * @return {?string} The selected type.
+   */
+  getSelectedType() {
+    return this.selectedType_;
   }
 
   /**
@@ -135,45 +150,16 @@ export class TypedModal extends Modal {
    * the inputs.
    * @override
    */
-  onClose_() {
-    super.onClose_();
-
-    this.checkFirstType_();
-    this.variableNameInput_.value = '';
+  widgetDispose_() {
+    super.widgetDispose_();
+    this.resetModalInputs_();
   }
 
   /**
    * Get the function to be called when the user confirms.
-   * @override
+   * @private
    */
   onConfirm_() {
-    this.createVariable_();
-  }
-
-  /**
-   * Get the valid variable name, or null if the name is not valid.
-   * @return {string} The valid variable name, or null if the name exists.
-   * @private
-   */
-  getValidInput_() {
-    let newVar = this.variableNameInput_.value;
-    if (newVar) {
-      newVar = newVar.replace(/[\s\xa0]+/g, ' ').trim();
-      if (newVar === Blockly.Msg['RENAME_VARIABLE'] ||
-          newVar === Blockly.Msg['NEW_VARIABLE']) {
-        // Ok, not ALL names are legal...
-        newVar = null;
-      }
-    }
-    return newVar;
-  }
-
-  /**
-   * Callback for when someone hits the create variable button. Creates a
-   * variable if the name is valid, otherwise creates a pop up.
-   * @private
-   */
-  createVariable_() {
     const text = this.getValidInput_();
     const type = this.getSelectedType() || '';
     if (text) {
@@ -199,14 +185,27 @@ export class TypedModal extends Modal {
   }
 
   /**
-   * Create the typed modal's dom.
+   * Get the valid variable name, or null if the name is not valid.
+   * @return {string} The valid variable name, or null if the name exists.
+   * @private
    */
-  createDom() {
-    /*
-     * Creates a modal with types. The generated typed modal:
-     * TODO: Redo this to reflect new html.
-     */
-    super.createDom();
+  getValidInput_() {
+    let newVar = this.variableNameInput_.value;
+    if (newVar) {
+      newVar = newVar.replace(/[\s\xa0]+/g, ' ').trim();
+      if (newVar === Blockly.Msg['RENAME_VARIABLE'] ||
+          newVar === Blockly.Msg['NEW_VARIABLE']) {
+        // Ok, not ALL names are legal...
+        newVar = null;
+      }
+    }
+    return newVar;
+  }
+
+  /**
+   * @override
+   */
+  renderContent_(contentContainer) {
     const varNameContainer = this.createVarNameContainer_();
     this.variableNameInput_ = varNameContainer
         .querySelector('.typed-modal-variable-name-input');
@@ -216,20 +215,39 @@ export class TypedModal extends Modal {
     typedVarDiv.innerText = Blockly.Msg["TYPED_MODAL_VARIABLE_TYPE_LABEL"];
 
     this.variableTypesDiv_ = this.createVariableTypeContainer_(this.types_);
-    this.checkFirstType_();
+    this.resetModalInputs_();
     typedVarDiv.appendChild(this.variableTypesDiv_);
+    contentContainer.appendChild(varNameContainer);
+    contentContainer.appendChild(typedVarDiv);
+  }
 
-    this.contentDiv_.appendChild(varNameContainer);
-    this.contentDiv_.appendChild(typedVarDiv);
+  /**
+   * @override
+   */
+  renderFooter_(footerContainer) {
+    const createBtn = document.createElement('button');
+    Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn');
+    Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn-primary');
+    createBtn.innerText = Blockly.Msg['TYPED_MODAL_CONFIRM_BUTTON'];
+    this.addEvent_(createBtn, 'click', this, this.onConfirm_);
+
+    const cancelBtn = document.createElement('button');
+    Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
+    cancelBtn.innerText = Blockly.Msg['TYPED_MODAL_CANCEL_BUTTON'];
+    this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
+
+    footerContainer.appendChild(createBtn);
+    footerContainer.appendChild(cancelBtn);
   }
 
   /**
    * Check the first type in the list.
    * @protected
    */
-  checkFirstType_() {
+  resetModalInputs_() {
     this.firstTypeInput_.checked = true;
     this.selectedType_ = this.firstTypeInput_.id;
+    this.variableNameInput_.value = '';
   }
 
   /**
@@ -269,15 +287,8 @@ export class TypedModal extends Modal {
   }
 
   /**
-   * Get the selected type.
-   * @return {?string} The selected type.
-   */
-  getSelectedType() {
-    return this.selectedType_;
-  }
-
-  /**
-   * Create the div that holds the text input and label for the text input.
+   * Create the div that holds the text input and label for the variable name
+   * input.
    * @return {HTMLDivElement} The div holding the text input and label for text
    *     input.
    * @protected
