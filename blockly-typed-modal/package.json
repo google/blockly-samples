@@ -1,7 +1,23 @@
 {
   "name": "@blockly/plugin-typed-modal",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Blockly plugin to create a modal for creating typed variables.",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "modal",
+    "typed variables"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/typed-modal#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "blockly-typed-modal"
+  },
+  "license": "Apache-2.0",
   "main": "./dist/typed-modal.umd.js",
   "unpkg": "./dist/typed-modal.umd.js",
   "directories": {
@@ -13,16 +29,10 @@
     "src"
   ],
   "scripts": {
+    "clean": "rm -rf $npm_package_directories_dist",
     "build": "webpack --display-error-details --env.mode=development",
+    "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
     "start": "webpack-dev-server --env.mode=development"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "babel-loader": "^8.0.6"
-  },
-  "peerDependencies": {
-    "blockly": ">=3.20200123.0 <4"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -34,5 +44,15 @@
     "eslint": "^6.8.0",
     "eslint-plugin-jsdoc": "^22.0.0",
     "webpack-cli": "^3.3.11"
+  },
+  "peerDependencies": {
+    "blockly": ">3.20200123.0 <4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.17.0"
   }
 }

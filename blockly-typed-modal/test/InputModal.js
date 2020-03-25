@@ -30,22 +30,23 @@ class InputModal extends TypedModal {
 
   /**
    * Get the first type in the list.
-   * @private
+   * @override
    */
-  checkFirstType_() {
+  resetModalInputs_() {
+    super.resetModalInputs_()
     this.firstTypeInput_.selected = true;
   }
 
   /**
-   * Add an extra button to the footer.
+   * @override
    */
-  createDom() {
-    super.createDom();
+  renderFooter_(footerContainer) {
+    super.renderFooter_(footerContainer);
     const randomBtn = document.createElement('button');
     Blockly.utils.dom.addClass(randomBtn, 'blockly-modal-btn');
     randomBtn.innerText = 'Create random name';
     this.addEvent_(randomBtn,'click',this, ()=> this.randomName());
-    this.footerDiv_.appendChild(randomBtn);
+    footerContainer.appendChild(randomBtn);
   }
 
   /**
