@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-slider",
-  "version": "3.20200313.0",
+  "version": "1.20200326.0",
   "description": "A Blockly slider field.",
   "scripts": {
     "clean": "rm -rf $npm_package_directories_dist",
