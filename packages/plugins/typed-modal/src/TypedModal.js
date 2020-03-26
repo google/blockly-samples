@@ -13,7 +13,6 @@
 
 import * as Blockly from 'blockly/core';
 import { Modal } from './Modal.js';
-import { injectCss } from "./css_inject";
 
 /**
  * Class for displaying a modal used for creating typed variables.
@@ -118,39 +117,9 @@ export class TypedModal extends Modal {
    */
   init() {
     super.init();
-    this.injectCss_();
     this.workspace_.registerButtonCallback(this.btnCallBackName_, () => {
       this.show();
     });
-  }
-
-  /**
-   * Inject necessary css for a typed modal.
-   * @override
-   */
-  injectCss_() {
-    super.injectCss_();
-    injectCss('typed-modal-css', `
-      .typed-modal-title {
-        font-weight: bold;
-        font-size: 1em;
-      }
-      .typed-modal-variable-name-container {
-        margin: 1em 0 1em 0;
-      }
-      .typed-modal-variable-name-label{
-        margin-right: .5em;
-      }
-      .typed-modal-types ul{
-        display: flex;
-        flex-wrap: wrap;
-        list-style-type: none;
-        padding: 0;
-      }
-      .typed-modal-types li {
-        margin-right: 1em;
-        display: flex;
-      }`);
   }
 
   /**
@@ -378,3 +347,25 @@ export class TypedModal extends Modal {
     return varNameContainer;
   }
 }
+
+Blockly.Css.register([`
+      .typed-modal-title {
+        font-weight: bold;
+        font-size: 1em;
+      }
+      .typed-modal-variable-name-container {
+        margin: 1em 0 1em 0;
+      }
+      .typed-modal-variable-name-label{
+        margin-right: .5em;
+      }
+      .typed-modal-types ul{
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+        padding: 0;
+      }
+      .typed-modal-types li {
+        margin-right: 1em;
+        display: flex;
+      }`]);

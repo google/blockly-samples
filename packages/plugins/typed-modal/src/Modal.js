@@ -11,7 +11,6 @@
 
 
 import * as Blockly from 'blockly/core';
-import { injectCss } from "./css_inject";
 
 /**
  * Class responsible for creating a Blockly modal.
@@ -81,62 +80,9 @@ export class Modal {
    * Initialize a Blockly modal.
    */
   init() {
-    this.injectCss_();
     this.render();
     this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
         this, this.handleKeyDown_);
-  }
-
-  /**
-   * Inject the css for a Blockly modal.
-   * @protected
-   */
-  injectCss_() {
-    injectCss('blockly-modal-css', `
-      .blockly-modal-container {
-        background-color: white;
-        border: 1px solid gray;
-        max-width: 50%;
-        font-family: Helvetica;
-        font-weight: 300;
-        padding: 1em;
-        width: 400px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 0px 10px 20px grey;
-        z-index: 100;
-        margin: 15% auto;
-      }
-      .blockly-modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .blockly-modal-header-title {
-        margin-top: 0;
-        margin-bottom: 0;
-        font-size: 1.2em;
-        line-height: 1.25;
-      }
-      .blockly-modal-header .blockly-modal-btn {
-        margin-left: auto;
-        height: fit-content;
-      }
-      .blockly-modal-btn-close:before {
-        content: "\\2715";
-      }
-      .blockly-modal-btn {
-        margin-right: .5em;
-        border: 1px solid gray;
-        font-weight: 500;
-        color: gray;
-        border-radius: 25px;
-      }
-      .blockly-modal-btn-primary {
-        background-color: gray;
-        color: white;
-      }`);
   }
 
   /**
@@ -376,3 +322,48 @@ export class Modal {
     // No-op on the base class.
   }
 }
+Blockly.Css.register([`
+      .blockly-modal-container {
+        background-color: white;
+        border: 1px solid gray;
+        max-width: 50%;
+        font-family: Helvetica;
+        font-weight: 300;
+        padding: 1em;
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0px 10px 20px grey;
+        z-index: 100;
+        margin: 15% auto;
+      }
+      .blockly-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .blockly-modal-header-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 1.2em;
+        line-height: 1.25;
+      }
+      .blockly-modal-header .blockly-modal-btn {
+        margin-left: auto;
+        height: fit-content;
+      }
+      .blockly-modal-btn-close:before {
+        content: "\\2715";
+      }
+      .blockly-modal-btn {
+        margin-right: .5em;
+        border: 1px solid gray;
+        font-weight: 500;
+        color: gray;
+        border-radius: 25px;
+      }
+      .blockly-modal-btn-primary {
+        background-color: gray;
+        color: white;
+      }`]);
