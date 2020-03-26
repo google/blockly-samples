@@ -28,13 +28,7 @@ export class TypedModal extends Modal {
    * @param {Array<Array<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
-   * @param {{
-   *     TYPED_MODAL_CONFIRM_BUTTON: string,
-   *     TYPED_MODAL_VARIABLES_DEFAULT_NAME: string,
-   *     TYPED_MODAL_VARIABLE_TYPE_LABEL: string,
-   *     TYPED_MODAL_CANCEL_BUTTON: string,
-   *     TYPED_MODAL_TITLE: string
-   * }} opt_messages The messages for a typed modal.
+   * @param {TypedModalMessages} opt_messages The messages for a typed modal.
    */
   constructor(workspace, btnCallbackName, types, opt_messages) {
     const title = opt_messages ? opt_messages["TYPED_MODAL_TITLE"] :
@@ -86,20 +80,16 @@ export class TypedModal extends Modal {
 
     /**
      * The messages for a typed modal.
-     * @type {{
-     *     TYPED_MODAL_CONFIRM_BUTTON: string,
-     *     TYPED_MODAL_VARIABLES_DEFAULT_NAME: string,
-     *     TYPED_MODAL_VARIABLE_TYPE_LABEL: string,
-     *     TYPED_MODAL_CANCEL_BUTTON: string,
-     *     TYPED_MODAL_TITLE: string
-     * }}
+     * @type {!TypedModalMessages}
      */
     this.messages = opt_messages || {
       "TYPED_MODAL_TITLE": "Create Typed Variable",
-      "TYPED_MODAL_VARIABLES_DEFAULT_NAME": "Variable Name: ",
-      "TYPED_MODAL_VARIABLE_TYPE_LABEL": "Variable Types",
-      "TYPED_MODAL_CONFIRM_BUTTON":"Ok",
-      "TYPED_MODAL_CANCEL_BUTTON":"Cancel"
+      "TYPED_MODAL_VARIABLE_NAME_LABEL": "Variable Name: ",
+      "TYPED_MODAL_TYPES_LABEL": "Variable Types",
+      "TYPED_MODAL_CONFIRM_BUTTON": "Ok",
+      "TYPED_MODAL_CANCEL_BUTTON": "Cancel",
+      "TYPED_MODAL_INVALID_NAME":
+          "Name is not valid. Please choose a different name."
     };
 
     /**
@@ -110,6 +100,18 @@ export class TypedModal extends Modal {
      */
     this.closeOnClick = false;
   }
+
+  /**
+   * The messages for a typed modal.
+   * @typedef {{
+   *     TYPED_MODAL_CONFIRM_BUTTON: string,
+   *     TYPED_MODAL_VARIABLE_NAME_LABEL: string,
+   *     TYPED_MODAL_TYPES_LABEL: string,
+   *     TYPED_MODAL_CANCEL_BUTTON: string,
+   *     TYPED_MODAL_TITLE: string,
+   *     TYPED_MODAL_INVALID_NAME: string
+   * }} TypedModalMessages
+   */
 
   /**
    * Create a typed modal and display it on the given button name.
@@ -175,13 +177,8 @@ export class TypedModal extends Modal {
   /**
    * Set the messages for the typed modal.
    * Used to change the location.
-   * @param {{
-   *     TYPED_MODAL_CONFIRM_BUTTON: string,
-   *     TYPED_MODAL_VARIABLES_DEFAULT_NAME: string,
-   *     TYPED_MODAL_VARIABLE_TYPE_LABEL: string,
-   *     TYPED_MODAL_CANCEL_BUTTON: string,
-   *     TYPED_MODAL_TITLE: string
-   * }} messages The messages needed to create a typed modal.
+   * @param {!TypedModalMessages} messages The messages needed to create a typed
+   *     modal.
    */
   setLocale(messages) {
     Object.keys(messages).forEach(function (k) {
@@ -200,7 +197,7 @@ export class TypedModal extends Modal {
   }
 
   /**
-   * Get the function to be called when the user confirms.
+   * Get the function to be called when the user tries to create a variable.
    * @protected
    */
   onConfirm_() {
@@ -226,12 +223,14 @@ export class TypedModal extends Modal {
         this.workspace_.createVariable(text, type);
         this.hide();
       }
+    } else {
+      Blockly.alert(this.messages['TYPED_MODAL_INVALID_NAME']);
     }
   }
 
   /**
    * Get the display name for the given type.
-   * @param {string} type The type.
+   * @param {string} type The type to get the display name for.
    * @return {string} The display name for the type.
    * @private
    */
@@ -275,7 +274,7 @@ export class TypedModal extends Modal {
 
     const typedVarDiv = document.createElement('div');
     Blockly.utils.dom.addClass(typedVarDiv, 'typed-modal-types');
-    typedVarDiv.innerText = this.messages["TYPED_MODAL_VARIABLE_TYPE_LABEL"];
+    typedVarDiv.innerText = this.messages["TYPED_MODAL_TYPES_LABEL"];
 
     this.variableTypesDiv_ = this.createVariableTypeContainer_(this.types_);
     this.resetModalInputs_();
@@ -366,7 +365,7 @@ export class TypedModal extends Modal {
     const varNameLabel = document.createElement("Label");
     Blockly.utils.dom.addClass(varNameLabel,
         'typed-modal-variable-name-label');
-    varNameLabel.innerText = this.messages["TYPED_MODAL_VARIABLES_DEFAULT_NAME"];
+    varNameLabel.innerText = this.messages["TYPED_MODAL_VARIABLE_NAME_LABEL"];
     varNameLabel.setAttribute('for', 'variableInput');
 
     const varNameInput = document.createElement('input');

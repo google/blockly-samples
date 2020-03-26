@@ -27,14 +27,14 @@ or
 
 #### Setup
 
-Create your workspace and your category.
+Create your workspace.
 ```js
 workspace = Blockly.inject('blocklyDiv', {
     toolbox: toolbox
 });
 ```
 
-Add a category to your toolbox.
+Add a custom category to your toolbox.
 ```js
 <category name="Colours" custom="CREATE_TYPED_VARIABLE"></category>
 ```
@@ -58,7 +58,7 @@ const createFlyout = function(workspace) {
 };
 ```
 
-Register the callback on the workspace.
+Register the callback for the toolbox category.
 ```js
 workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
 ```
@@ -77,10 +77,14 @@ different messages in the typed modal can be set by calling `typedModal.setLocal
 
 Messages that need to be translated for a Typed Modal:
 - `TYPED_MODAL_CONFIRM_BUTTON` (Default: "Ok"): The label for the confirmation button.
-- `TYPED_MODAL_VARIABLES_DEFAULT_NAME` (Default: "Variable Name: "): The label in front of the variable input.
-- `TYPED_MODAL_VARIABLE_TYPE_LABEL` (Default: "Variable Types"): The label in front of the types.
+- `TYPED_MODAL_VARIABLE_NAME_LABEL` (Default: "Variable Name: "): The label in front of the variable input.
+- `TYPED_MODAL_TYPES_LABEL` (Default: "Variable Types"): The label in front of the types.
 - `TYPED_MODAL_CANCEL_BUTTON` (Default: "Cancel"): The label for the cancel button.
 - `TYPED_MODAL_TITLE` (Default: "Create Typed Variable"): The modal title.
+- `TYPED_MODAL_INVALID_NAME`
+(Default: "Name is not valid. Please choose a different name.") The message used
+when a user gives an invalid variable name. Name is invalid if it is the message
+used for renaming a variable, creating a variable, or an empty string.
 
 
 ## API

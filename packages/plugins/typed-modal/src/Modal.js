@@ -28,9 +28,9 @@ export class Modal {
     /**
      * The title for the modal.
      * @type {string}
-     * @protected
+     * @private
      */
-    this.title = title;
+    this.title_ = title;
 
     /**
      * The workspace to display the modal over.
@@ -301,7 +301,6 @@ export class Modal {
     this.htmlDiv_ = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-container');
     this.htmlDiv_.setAttribute('role', 'dialog');
-    this.htmlDiv_.setAttribute('aria-labelledby', this.title);
     // End creating the container
 
     // Create the header
@@ -335,19 +334,20 @@ export class Modal {
   }
 
   /**
-   * Render content for the header.
+   * Render content for the modal header.
    * @param {HTMLElement} headerContainer The modal's header div.
    * @protected
    */
   renderHeader_(headerContainer) {
     const modalTitle = document.createElement('H2');
     Blockly.utils.dom.addClass(modalTitle, 'blockly-modal-header-title');
-    modalTitle.appendChild(document.createTextNode(this.title));
+    modalTitle.appendChild(document.createTextNode(this.title_));
+    this.htmlDiv_.setAttribute('aria-labelledby', this.title_);
     headerContainer.appendChild(modalTitle);
   }
 
   /**
-   * Render content for the content div.
+   * Render content for the modal content div.
    * @param {HTMLDivElement} _contentContainer The modal's content div.
    * @protected
    */

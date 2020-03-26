@@ -15,7 +15,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "blockly-typed-modal"
+    "directory": "packages/plugins/blockly-typed-modal"
   },
   "license": "Apache-2.0",
   "main": "./dist/typed-modal.umd.js",
