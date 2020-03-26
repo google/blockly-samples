@@ -40,11 +40,18 @@ export class Modal {
     this.workspace_ = workspace;
 
     /**
-     * The list of focusable elements in the modal.
-     * @type {Array<!HTMLElement>}
+     * The last focusable element for the modal.
+     * @type {HTMLElement}
      * @private
      */
-    this.focusableEls = [];
+    this.lastFocusableEl_ = null;
+
+    /**
+     * The first focusable element for the modal.
+     * @type {HTMLElement}
+     * @private
+     */
+    this.firstFocusableEl_ = null;
 
     /**
      * HTML container for the modal.
@@ -152,14 +159,18 @@ export class Modal {
    * Shows the Blockly modal and focus on the first focusable element.
    */
   show() {
-    this.focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
+    const focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+    if (focusableEls.length > 0) {
+      this.firstFocusableEl_ = focusableEls[0];
+      this.lastFocusableEl_ = focusableEls[focusableEls.length - 1];
+    }
     Blockly.WidgetDiv.show(this, this.workspace_.RTL,
         () => this.widgetDispose_());
     this.widgetCreate_();
-    if (this.focusableEls.length > 0) {
-      this.focusableEls[0].focus();
+    if (this.firstFocusableEl_) {
+      this.firstFocusableEl_.focus();
     }
   }
 
@@ -221,9 +232,9 @@ export class Modal {
    * @private
    */
   handleBackwardTab_(e) {
-    if (document.activeElement === this.focusableEls[0]) {
+    if (document.activeElement === this.firstFocusableEl_) {
       e.preventDefault();
-      this.focusableEls[this.focusableEls.length - 1].focus();
+      this.lastFocusableEl_.focus();
     }
   }
 
@@ -233,10 +244,9 @@ export class Modal {
    * @private
    */
   handleForwardTab_(e) {
-    const focusedElements = this.focusableEls;
-    if (document.activeElement === focusedElements[focusedElements.length - 1]) {
+    if (document.activeElement === this.lastFocusableEl_) {
       e.preventDefault();
-      this.focusableEls[0].focus();
+      this.firstFocusableEl_.focus();
     }
   }
 
@@ -248,7 +258,9 @@ export class Modal {
    */
   handleKeyDown_(e) {
     if (e.keyCode === Blockly.utils.KeyCodes.TAB) {
-      if (this.focusableEls.length <= 1) {
+      // If there are no elements or there is one element don't wrap.
+      if (!this.firstFocusableEl_ ||
+          this.firstFocusableEl_ === this.lastFocusableEl_) {
         e.preventDefault();
         e.stopPropagation();
         return;
