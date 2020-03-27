@@ -94,7 +94,6 @@ used for renaming a variable, creating a variable, or an empty string.
 - `show`: Shows the modal and focus on the first focusable element.
 - `hide`: Hide the modal.
 - `render`: Create all the dom elements for the modal.
-- `getSelectedType`: Get the selected type of the modal.
 - `setLocale`: Change the language for the typed variable modal.
 
 

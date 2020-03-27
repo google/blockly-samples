@@ -11,7 +11,7 @@
 
 import * as Blockly from 'blockly';
 import { TypedVariableModal } from '../src/index.js';
-import { toolboxCategories, toolboxSimple } from '@blockly/dev-tools';
+import { toolboxCategories } from '@blockly/dev-tools';
 
 const options = {
   comments: true,
@@ -32,17 +32,20 @@ const options = {
 };
 
 function start() {
-  startBlocklyInstance('VertStartLTR', false, false, 'start', toolboxCategories, [["Penguin", "PENGUIN"],["Giraffe", "GIRAFFE"]]);
-  startBlocklyInstance('VertStartRTL', true, false, 'start', toolboxCategories, [["Pink", "PINK"],["Blue", "BLUE"]]);
+  let toolboxString = toolboxCategories.replace('</xml>', '<category name="Typed Variables" categorystyle="variable_category" custom="CREATE_TYPED_VARIABLE"></category>');
+  toolboxString = toolboxString + '</xml>';
 
-  startBlocklyInstance('VertEndLTR', false, false, 'end', toolboxCategories,[["Whale", "WHALE"],["Shark", "SHARK"]]);
-  startBlocklyInstance('VertEndRTL', true, false, 'end', toolboxCategories,[["Great Dane", "GREAT_DANE"],["Boston Terrier", "BOSTON_TERRIER"]]);
+  startBlocklyInstance('VertStartLTR', false, false, 'start', toolboxString, [["Penguin", "PENGUIN"],["Giraffe", "GIRAFFE"]]);
+  startBlocklyInstance('VertStartRTL', true, false, 'start', toolboxString, [["Pink", "PINK"],["Blue", "BLUE"]]);
 
-  startBlocklyInstance('HorizontalStartLTR', false, true, 'start', toolboxCategories, [["Pink", "PINK"],["Blue", "BLUE"]]);
-  startBlocklyInstance('HorizontalStartRTL', true, true, 'start', toolboxCategories, [["Pink", "PINK"],["Blue", "BLUE"]]);
+  startBlocklyInstance('VertEndLTR', false, false, 'end', toolboxString,[["Whale", "WHALE"],["Shark", "SHARK"]]);
+  startBlocklyInstance('VertEndRTL', true, false, 'end', toolboxString,[["Great Dane", "GREAT_DANE"],["Boston Terrier", "BOSTON_TERRIER"]]);
 
-  startBlocklyInstance('HorizontalEndLTR', false, true, 'end', toolboxCategories, [["Pink", "PINK"],["Blue", "BLUE"]]);
-  startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolboxCategories, [["Pink", "PINK"],["Blue", "BLUE"]]);
+  startBlocklyInstance('HorizontalStartLTR', false, true, 'start', toolboxString, [["Pink", "PINK"],["Blue", "BLUE"]]);
+  startBlocklyInstance('HorizontalStartRTL', true, true, 'start', toolboxString, [["Pink", "PINK"],["Blue", "BLUE"]]);
+
+  startBlocklyInstance('HorizontalEndLTR', false, true, 'end', toolboxString, [["Pink", "PINK"],["Blue", "BLUE"]]);
+  startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolboxString, [["Pink", "PINK"],["Blue", "BLUE"]]);
 }
 
 function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, types) {
