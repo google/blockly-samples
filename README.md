@@ -23,10 +23,6 @@ released under the ``@blockly`` scope.
 
 - [``blockly-rtc``](examples/blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
 
-### Rendering
-
-- [``blockly-rendering-sample``](rendering/rendering-walkthrough/): Customizing Blockly's rendering.
-
 ## Prerequisites
 
 Install [node](https://nodejs.org/) and [npm](https://www.npmjs.com/get-npm).
