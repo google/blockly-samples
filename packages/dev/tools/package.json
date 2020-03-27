@@ -1,9 +1,10 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "0.20200313.0",
+  "version": "0.20200313.1",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",
+    "clean": "rm -rf $npm_package_directories_dist",
     "prepublishOnly": "webpack --config ../../webpack.config.js  --display-error-details --env.mode=production"
   },
   "main": "dist/index.js",
@@ -31,6 +32,14 @@
     "dist",
     "src"
   ],
+  "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
   "peerDependencies": {
     "blockly": ">=3.20191014.4"
   },

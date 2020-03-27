@@ -1,7 +1,8 @@
 
-# Codelabs
+# Blockly Codelabs
 
 This directory is where the Blockly codelabs are authored and stored.
+You can browse hosted codelabs at [blocklycodelabs.dev](https://blocklycodelabs.dev/)
 
 
 ## Creating a new Codelab
