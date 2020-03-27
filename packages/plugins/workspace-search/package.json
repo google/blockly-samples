@@ -4,13 +4,13 @@
   "description": "A Blockly plugin that adds workspace search support.",
   "scripts": {
     "clean": "rm -rf $npm_package_directories_dist",
-    "build": "webpack --display-error-details --env.mode=development",
-    "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
-    "start": "webpack-dev-server --env.mode=development",
+    "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",
+    "prepublishOnly": "npm run clean && webpack --config ../../webpack.config.js --display-error-details --env.mode=production",
+    "start": "webpack-dev-server --config ../../webpack.config.js --env.buildTest=true --env.mode=development",
     "test": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.js"
   },
-  "main": "./dist/workspace-search.umd.js",
-  "unpkg": "./dist/workspace-search.umd.js",
+  "main": "./dist/index.js",
+  "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
     "blockly",
@@ -40,6 +40,7 @@
     "@babel/preset-env": "^7.8.6",
     "babel-loader": "^8.0.6",
     "blockly": "^3.20200123.1",
+    "@blockly/dev-tools": "0.20200313.0",
     "eslint": "^6.8.0",
     "eslint-plugin-jsdoc": "^22.0.0",
     "jsdom": "16.2.1",
