@@ -1,5 +1,5 @@
 
-class InputModal extends TypedModal {
+class InputModal extends TypedVariableModal {
   /**
    * The element holding the input type.
    * @override

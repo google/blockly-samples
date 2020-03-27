@@ -1,4 +1,4 @@
-# @blockly/plugin-typed-modal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-typed-variable-modal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds the ability 
 to create a modal for creating typed variables.
@@ -6,7 +6,7 @@ to create a modal for creating typed variables.
 ## Installation
 
 ```
-npm install @blockly/plugin-typed-modal --save
+npm install @blockly/plugin-typed-variable-modal --save
 ```
 
 ## Usage
@@ -17,12 +17,12 @@ found [here](https://developers.google.com/blockly/guides/configure/web/toolbox?
 #### Import
 ```js
 import Blockly from 'blockly';
-import { TypedModal } from '@blockly/plugin-typed-modal';
+import { TypedVariableModal } from '@blockly/plugin-typed-variable-modal';
 ```
 or
 
 ```js
-<script src="https://unpkg.com/@blockly/plugin-typed-modal"></script>
+<script src="https://unpkg.com/@blockly/plugin-typed-variable-modal"></script>
 ```
 
 #### Setup
@@ -66,35 +66,35 @@ workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout)
 Create your Typed Modal using the workspace, callbackName for the button and
 your types.
 ```js
-const typedModal = new TypedModal(workspace, 'callbackName', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
+const typedModal = new TypedVariableModal(workspace, 'callbackName', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
 typedModal.init();
 ```
 
 #### Blockly Languages
 We do not currently support translating the text in this plugin to different
 languages. However, if you would like to support multiple languages the
-different messages in the typed modal can be set by calling `typedModal.setLocale(messages)`.
+different messages in the typed variable modal can be set by calling `typedModal.setLocale(messages)`.
 
-Messages that need to be translated for a Typed Modal:
-- `TYPED_MODAL_CONFIRM_BUTTON` (Default: "Ok"): The label for the confirmation button.
-- `TYPED_MODAL_VARIABLE_NAME_LABEL` (Default: "Variable Name: "): The label in front of the variable input.
-- `TYPED_MODAL_TYPES_LABEL` (Default: "Variable Types"): The label in front of the types.
-- `TYPED_MODAL_CANCEL_BUTTON` (Default: "Cancel"): The label for the cancel button.
-- `TYPED_MODAL_TITLE` (Default: "Create Typed Variable"): The modal title.
-- `TYPED_MODAL_INVALID_NAME`
+Messages that need to be translated for a Typed Variable Modal:
+- `TYPED_VAR_MODAL_CONFIRM_BUTTON` (Default: "Ok"): The label for the confirmation button.
+- `TYPED_VAR_MODAL_VARIABLE_NAME_LABEL` (Default: "Variable Name: "): The label in front of the variable input.
+- `TYPED__VAR_MODAL_TYPES_LABEL` (Default: "Variable Types"): The label in front of the types.
+- `TYPED__VAR_MODAL_CANCEL_BUTTON` (Default: "Cancel"): The label for the cancel button.
+- `TYPED_VAR_MODAL_TITLE` (Default: "Create Typed Variable"): The modal title.
+- `TYPED_VAR_MODAL_INVALID_NAME`
 (Default: "Name is not valid. Please choose a different name.") The message used
 when a user gives an invalid variable name. Name is invalid if it is the message
 used for renaming a variable, creating a variable, or an empty string.
 
 
 ## API
-- `init`: Create a typed modal and register it with the given button name.
-- `dispose`: Dispose of the typed modal.
+- `init`: Create a typed variable modal and register it with the given button name.
+- `dispose`: Dispose of the typed variable modal.
 - `show`: Shows the modal and focus on the first focusable element.
 - `hide`: Hide the modal.
 - `render`: Create all the dom elements for the modal.
 - `getSelectedType`: Get the selected type of the modal.
-- `setLocale`: Change the language for the typed modal.
+- `setLocale`: Change the language for the typed variable modal.
 
 
 ## License

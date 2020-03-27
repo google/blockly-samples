@@ -6,7 +6,7 @@
 
 
   <script src="../node_modules/blockly/blockly.min.js"></script>
-  <script src="../dist/typed-modal.umd.js"></script>
+  <script src="../dist/typed-var-modal.umd.js"></script>
   <script src="./InputModal.js"></script>
   <script>
     'use strict';
@@ -30,7 +30,7 @@
         return xmlList;
       };
       workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
-      const typedModal = new TypedModal(workspace, 'CREATE_TYPED_VARIABLE', [["Penguin", "PENGUIN"], ["Giraffe", "GIRAFFE"]]);
+      const typedModal = new TypedVariableModal(workspace, 'CREATE_TYPED_VARIABLE', [["Penguin", "PENGUIN"], ["Giraffe", "GIRAFFE"]]);
       typedModal.init();
     }
   </script>

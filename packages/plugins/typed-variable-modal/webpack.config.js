@@ -14,12 +14,12 @@ module.exports = env => {
     return {
         target: 'web',
         mode: env.mode,
-        entry: './src/TypedModal.js',
+        entry: './src/TypedVariableModal.js',
         devtool: 'source-map',
         output: {
             path: path.resolve(__dirname, 'dist'),
             publicPath: '/dist/',
-            filename: 'typed-modal.umd.js',
+            filename: 'typed-var-modal.umd.js',
             libraryTarget: 'umd',
             globalObject: 'this'
         },
