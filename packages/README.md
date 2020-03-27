@@ -11,12 +11,12 @@ tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 ### Plugins
 
-- [``@blockly/plugin-workspace-search``](plugins/workspace-search/): A Blockly plugin that adds workspace search support.
+- [``@blockly/plugin-workspace-search``](plugins/workspace-search/): A plugin that adds workspace search support.
 
 ### Fields
 
-- [``@blockly/field-date``](fields/field-date/): A Blockly date picker field that uses the Google Closure date picker.
-- [``@blockly/field-slider``](fields/field-slider/): A Blockly slider field.
+- [``@blockly/field-date``](fields/field-date/): A date picker field that uses the Google Closure date picker.
+- [``@blockly/field-slider``](fields/field-slider/): A slider field.
 
 ### Dev
 
