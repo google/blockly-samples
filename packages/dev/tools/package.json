@@ -32,6 +32,14 @@
     "dist",
     "src"
   ],
+  "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
   "peerDependencies": {
     "blockly": ">=3.20191014.4"
   },
