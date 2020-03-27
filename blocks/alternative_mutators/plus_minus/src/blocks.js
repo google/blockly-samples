@@ -20,6 +20,39 @@ Blockly.defineBlocksWithJsonArray([
   //  block. It would be nice if the default block had an empty mutator
   //  we could override.
   {
+    "type": "controls_if",
+    "message0": "%1 %{BKY_CONTROLS_IF_MSG_IF} %2" +
+        "%{BKY_CONTROLS_IF_MSG_THEN} %3" +
+        "%4 %5",
+    "args0": [
+      {
+        "type": "field_plus",
+        "name": "IFELSE_PLUS"
+      },
+      {
+        "type": "input_value",
+        "name": "IF0",
+        "check": "Boolean"
+      },
+      {
+        "type": "input_statement",
+        "name": "DO0"
+      },
+      {
+        "type": "field_plus",
+        "name": "ELSE_PLUS"
+      },
+      {
+        "type": "input_dummy",
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null,
+    "style": "logic_blocks",
+    "tooltip": "%{BKYCONTROLS_IF_TOOLTIP_2}",
+    "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
+  },
+  {
     "type": "controls_ifelse",
     "message0": "%{BKY_CONTROLS_IF_MSG_IF} %1" +
         "%{BKY_CONTROLS_IF_MSG_THEN} %2" +
@@ -470,7 +503,7 @@ const procedureContextMenu = {
 
     var xml = Blockly.utils.xml.createElement('block');
     xml.setAttribute('type', this.callType_);
-    xml.appendChild(this.mutationToDom());
+    xml.appendChild(this.mutationToDom(true));
     var callback = Blockly.ContextMenu.callbackFactory(this, xml);
 
     options.push({
@@ -680,7 +713,6 @@ const procedureDefMutator = {
       sourceBlock.varIds_[index] = model.getId();
       sourceBlock.argumentVarModels_[index] = model;
     }
-    console.log(sourceBlock.mutationToDom(true));
     Blockly.Procedures.mutateCallers(sourceBlock);
     return newName;
   },

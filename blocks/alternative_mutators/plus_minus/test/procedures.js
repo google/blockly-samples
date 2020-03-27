@@ -73,6 +73,94 @@ suite('procedures', () => {
     delete this.call;
     delete this.workspace;
   });
+  suite('Serialization Matches Old', () => {
+    test('Simple', () => {
+      this.workspace.clear();
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <variables>\n' +
+          '    <variable id="O:Sr,z]cTdOh.rxYtbpK">x</variable>\n' +
+          '    <variable id="b0khn,ShlhUP,dU}e+;-">y</variable>\n' +
+          '    <variable id="@O5;lK8){`{*?=-t:Yxy">z</variable>\n' +
+          '  </variables>\n' +
+          '  <block type="procedures_defreturn" id="def" x="63" y="-477">\n' +
+          '    <mutation>\n' +
+          '      <arg name="x" varid="O:Sr,z]cTdOh.rxYtbpK"/>\n' +
+          '      <arg name="y" varid="b0khn,ShlhUP,dU}e+;-"/>\n' +
+          '      <arg name="z" varid="@O5;lK8){`{*?=-t:Yxy"/>\n' +
+          '    </mutation>\n' +
+          '    <field name="NAME">do something</field>\n' +
+          '    <comment pinned="false" h="80" w="160">Describe this function...</comment>\n' +
+          '  </block>\n' +
+          '  <block type="procedures_callreturn" id="call" x="56" y="-282">\n' +
+          '    <mutation name="do something">\n' +
+          '      <arg name="x"/>\n' +
+          '      <arg name="y"/>\n' +
+          '      <arg name="z"/>\n' +
+          '    </mutation>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertProc(this.workspace.getBlockById('def'),
+          this.workspace.getBlockById('call'), 3, ['x', 'y', 'z']);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+
+      // Remove extra fields.
+      var blocks = xml.getElementsByTagName('block');
+      for (var i = 0, block; (block = blocks[i]); i++) {
+        var fields = block.getElementsByTagName('field');
+        for (var j = fields.length - 1, field; (field = fields[j]); j--) {
+          if (field.getAttribute('name') != 'NAME') {
+            block.removeChild(field);
+          }
+        }
+      }
+
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
+    test('Duplicate Params', () => {
+      this.workspace.clear();
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <variables>\n' +
+          '    <variable id="|bfmCeh02-k|go!MeHd6">x</variable>\n' +
+          '  </variables>\n' +
+          '  <block type="procedures_defreturn" id="def" x="92" y="113">\n' +
+          '    <mutation>\n' +
+          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '    </mutation>\n' +
+          '    <field name="NAME">do something</field>\n' +
+          '    <comment pinned="false" h="80" w="160">Describe this function...</comment>\n' +
+          '  </block>\n' +
+          '  <block type="procedures_callreturn" id="call" x="92" y="227">\n' +
+          '    <mutation name="do something">\n' +
+          '      <arg name="x"/>\n' +
+          '      <arg name="x"/>\n' +
+          '      <arg name="x"/>\n' +
+          '    </mutation>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertProc(this.workspace.getBlockById('def'),
+          this.workspace.getBlockById('call'), 3, ['x', 'x', 'x']);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+
+      // Remove extra fields.
+      var blocks = xml.getElementsByTagName('block');
+      for (var i = 0, block; (block = blocks[i]); i++) {
+        var fields = block.getElementsByTagName('field');
+        for (var j = fields.length - 1, field; (field = fields[j]); j--) {
+          if (field.getAttribute('name') != 'NAME') {
+            block.removeChild(field);
+          }
+        }
+      }
+
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
+  });
   suite('Adding and removing', () => {
     test('Add', () => {
       this.def.plus();
@@ -158,7 +246,6 @@ suite('procedures', () => {
       this.assertVars = function(varsArray) {
         var varNames = this.workspace.getVariablesOfType('').map(
             model => model.name );
-        console.log(varNames);
         assert.sameMembers(varNames, varsArray);
       };
     });
@@ -217,5 +304,36 @@ suite('procedures', () => {
       assert.equal(this.def.varIds_[0],
           this.workspace.getVariable('test', '').getId());
     });
-  })
+  });
+  suite('Vars Renamed Elsewhere', () => {
+    test('Simple Rename', () => {
+      this.def.plus();
+      var variable = this.workspace.getVariable('x', '');
+      this.workspace.renameVariableById(variable.getId(), 'test');
+      assertProc(this.def, this.call, 1, ['test']);
+      this.assertVars(['test']);
+    });
+    // Don't know how we want to react here.
+    test.skip('Duplicate', () => {
+      this.def.plus();
+      this.def.plus();
+      var variable = this.workspace.getVariable('x', '');
+      this.workspace.renameVariableById(variable.getId(), 'y');
+      // Don't know what we want to have happen.
+    });
+    test('Change Case', () => {
+      this.def.plus();
+      var variable = this.workspace.getVariable('x', '');
+      this.workspace.renameVariableById(variable.getId(), 'X');
+      assertProc(this.def, this.call, 1, ['X']);
+      this.assertVars(['X']);
+    });
+    test('Coalesce Change Case', () => {
+      var variable = this.workspace.createVariable('test');
+      this.def.plus();
+      this.workspace.renameVariableById(variable.getId(), 'X');
+      assertProc(this.def, this.call, 1, ['X']);
+      this.assertVars(['X']);
+    });
+  });
 });
