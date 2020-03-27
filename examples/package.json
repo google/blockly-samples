@@ -1,0 +1,13 @@
+{
+  "name": "blockly-examples",
+  "private": true,
+  "scripts": {
+    "audit": "lerna run audit",
+    "boot": "lerna bootstrap",
+    "postinstall": "npm run boot",
+    "update": "lerna run update"
+  },
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  }
+}
