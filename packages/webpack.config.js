@@ -15,7 +15,7 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
-console.log(`Building ${packageJson.name}`)
+console.log(`Building ${packageJson.name}`);
 
 module.exports = env => {
     const src = {
@@ -81,7 +81,7 @@ module.exports = env => {
                 port: 3000,
                 open: true
             },
-        }
+        };
         webpackExports.push(test);
     }
     return webpackExports;
