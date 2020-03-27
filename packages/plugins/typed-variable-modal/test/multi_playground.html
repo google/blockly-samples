@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Multi Typed Modal Playground</title>
+    <title>Multi Typed Variable Modal Playground</title>
 
     <script src="../node_modules/blockly/blockly.min.js"></script>
     <script src="../dist/typed-var-modal.umd.js"></script>
@@ -63,8 +63,8 @@
 
         const ws = Blockly.inject('blocklyDiv' + suffix, options);
         ws.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
-        const typedModal = new TypedVariableModal(ws, 'CREATE_TYPED_VARIABLE', types);
-        typedModal.init();
+        const typedVarModal = new TypedVariableModal(ws, 'CREATE_TYPED_VARIABLE', types);
+        typedVarModal.init();
         return ws;
       }
       document.addEventListener("DOMContentLoaded", function () { start() });

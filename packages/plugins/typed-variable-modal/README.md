@@ -10,8 +10,9 @@ npm install @blockly/plugin-typed-variable-modal --save
 ```
 
 ## Usage
-To add a Typed Modal to your application you will have to create a custom
-dynamically populated flyout category. More information on custom flyouts can be
+To add a Typed Variable Modal to your application you will have to create a
+custom dynamically populated flyout category. More information on custom flyouts
+can be
 found [here](https://developers.google.com/blockly/guides/configure/web/toolbox?hl=en#dynamic_categories).
 
 #### Import
@@ -63,17 +64,17 @@ Register the callback for the toolbox category.
 workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);
 ```
 
-Create your Typed Modal using the workspace, callbackName for the button and
-your types.
+Create your Typed Variable Modal using the workspace, callbackName for the
+button and your types.
 ```js
-const typedModal = new TypedVariableModal(workspace, 'callbackName', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
-typedModal.init();
+const typedVarModal = new TypedVariableModal(workspace, 'callbackName', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
+typedVarModal.init();
 ```
 
 #### Blockly Languages
 We do not currently support translating the text in this plugin to different
 languages. However, if you would like to support multiple languages the
-different messages in the typed variable modal can be set by calling `typedModal.setLocale(messages)`.
+different messages in the typed variable modal can be set by calling `typedVarModal.setLocale(messages)`.
 
 Messages that need to be translated for a Typed Variable Modal:
 - `TYPED_VAR_MODAL_CONFIRM_BUTTON` (Default: "Ok"): The label for the confirmation button.
