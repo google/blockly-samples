@@ -1,19 +1,18 @@
 {
-  "name": "blockly-ws-search-web-imports",
+  "name": "@blockly/plugin-workspace-search-example-web-imports",
   "version": "1.0.0",
   "description": "Example of workspace search with web imports.",
   "private": true,
   "scripts": {
-    "preinstall": "cd ../.. && npm install",
-    "prepare": "webpack --display-error-details",
-    "clean": "rm $npm_package_directories_dist/main.js",
+    "build": "webpack --display-error-details",
+    "clean": "rm -rf $npm_package_directories_build",
     "start": "webpack-dev-server"
   },
   "directories": {
-    "dist": "dist"
+    "build": "build"
   },
   "dependencies": {
-    "@blockly/plugin-workspace-search": "file:../..",
+    "@blockly/plugin-workspace-search": "1.20200312.2",
     "blockly": "^3.20200123.1"
   },
   "devDependencies": {
