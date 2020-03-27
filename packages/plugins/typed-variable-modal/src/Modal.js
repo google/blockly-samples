@@ -22,8 +22,9 @@ export class Modal {
    * @param {string} title The title for the modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to display the modal
    *     over.
+   * @param {ModalMessages} opt_messages The messages for a modal.
    */
-  constructor(title, workspace) {
+  constructor(title, workspace, opt_messages) {
     /**
      * The title for the modal.
      * @type {string}
@@ -74,7 +75,20 @@ export class Modal {
      * @type {boolean}
      */
     this.closeOnClick = true;
+
+
+    const messages = opt_messages || {
+      "MODAL_CANCEL_BUTTON": "Cancel"
+    };
+    this.setLocale(messages);
   }
+
+  /**
+   * The messages for a typed variable modal.
+   * @typedef {{
+   *     MODAL_CANCEL_BUTTON: string
+   * }} ModalMessages
+   */
 
   /**
    * Initialize a Blockly modal.
@@ -83,6 +97,18 @@ export class Modal {
     this.render();
     this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
         this, this.handleKeyDown_);
+  }
+
+  /**
+   * Set the messages for the typed variable modal.
+   * Used to change the location.
+   * @param {Object} messages The messages needed to create a typed
+   *     modal.
+   */
+  setLocale(messages) {
+    Object.keys(messages).forEach(function(k) {
+      Blockly.Msg[k] = messages[k];
+    });
   }
 
   /**
@@ -265,12 +291,6 @@ export class Modal {
     Blockly.utils.dom.addClass(modalHeader, 'blockly-modal-header');
 
     this.renderHeader_(modalHeader);
-
-    const exitButton = document.createElement('button');
-    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn');
-    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn-close');
-    this.addEvent_(exitButton, 'click', this, this.onCancel_);
-    modalHeader.appendChild(exitButton);
     // End create header
 
     // Create content
@@ -282,7 +302,15 @@ export class Modal {
     // Create Footer
     const modalFooter = document.createElement('footer');
     Blockly.utils.dom.addClass(modalFooter, 'blockly-modal-footer');
+
     this.renderFooter_(modalFooter);
+
+    const cancelBtn = document.createElement('button');
+    Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
+    cancelBtn.innerText = Blockly.Msg['MODAL_CANCEL_BUTTON'];
+    this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
+    modalFooter.appendChild(cancelBtn);
+
     // End creating footer
 
     this.htmlDiv_.appendChild(modalHeader);
