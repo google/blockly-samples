@@ -15,8 +15,8 @@ import Blockly from 'blockly';
 import {toolboxSimple, toolboxCateogires} from '@blockly/dev-tools';
 
 Blockly.inject('blocklyDiv', {
-    toolbox: toolboxCategories
-  });
+  toolbox: toolboxCategories
+});
 ```
 
 ## License
