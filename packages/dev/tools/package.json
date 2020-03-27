@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "0.20200313.0",
+  "version": "0.20200313.1",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",

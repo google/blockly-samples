@@ -40,7 +40,7 @@
     "@babel/preset-env": "^7.8.6",
     "babel-loader": "^8.0.6",
     "blockly": "^3.20200123.1",
-    "@blockly/dev-tools": "0.20200313.0",
+    "@blockly/dev-tools": "^0.20200313.0",
     "eslint": "^6.8.0",
     "eslint-plugin-jsdoc": "^22.0.0",
     "jsdom": "16.2.1",
