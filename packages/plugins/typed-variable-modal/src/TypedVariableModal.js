@@ -133,8 +133,9 @@ export class TypedVariableModal extends Modal {
   /**
    * Get the selected type.
    * @return {?string} The selected type.
+   * @protected
    */
-  getSelectedType() {
+  getSelectedType_() {
     return this.selectedType_;
   }
 
@@ -154,7 +155,7 @@ export class TypedVariableModal extends Modal {
    */
   onConfirm_() {
     const text = this.getValidInput_();
-    const type = this.getSelectedType() || '';
+    const type = this.getSelectedType_() || '';
     if (text) {
       const existing =
           Blockly.Variables.nameUsedWithAnyType_(text, this.workspace_);

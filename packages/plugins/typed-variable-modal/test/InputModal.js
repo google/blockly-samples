@@ -22,8 +22,9 @@ class InputModal extends TypedVariableModal {
   /**
    * Get the selected type.
    * @return {string} The selected type.
+   * @override
    */
-  getSelectedType() {
+  getSelectedType_() {
     const selectDiv = this.variableTypesDiv_;
     return selectDiv.options[selectDiv.selectedIndex].value;
   }
