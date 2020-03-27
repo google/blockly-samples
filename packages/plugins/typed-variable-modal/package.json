@@ -18,8 +18,8 @@
     "directory": "packages/plugins/typed-var-modal"
   },
   "license": "Apache-2.0",
-  "main": "",
-  "unpkg": "./dist/typed-var-modal.umd.js",
+  "main": "./dist/index.js",
+  "unpkg": "./dist/index.js",
   "directories": {
     "dist": "dist",
     "src": "src"
@@ -29,10 +29,10 @@
     "src"
   ],
   "scripts": {
+    "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",
     "clean": "rm -rf $npm_package_directories_dist",
-    "build": "webpack --display-error-details --env.mode=development",
-    "prepublishOnly": "npm run clean && webpack --display-error-details --env.mode=production",
-    "start": "webpack-dev-server --env.mode=development"
+    "prepublishOnly": "npm run clean && webpack --config ../../webpack.config.js --display-error-details --env.mode=production",
+    "start": "webpack-dev-server --config ../../webpack.config.js --env.buildTest=true --env.mode=development"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -43,6 +43,7 @@
     "blockly": "^3.20200123.1",
     "eslint": "^6.8.0",
     "eslint-plugin-jsdoc": "^22.0.0",
+    "@blockly/dev-tools": "0.20200313.0",
     "webpack-cli": "^3.3.11"
   },
   "peerDependencies": {

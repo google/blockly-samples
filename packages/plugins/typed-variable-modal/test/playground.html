@@ -5,16 +5,14 @@
   <title>Typed Variable Modal Playground</title>
 
 
-  <script src="../node_modules/blockly/blockly.min.js"></script>
-  <script src="../dist/typed-var-modal.umd.js"></script>
+  <script src="../build/test_bundle.js"></script>
   <script src="./InputModal.js"></script>
   <script>
     'use strict';
     function start() {
-      let workspace = null;
       const toolbox = document.getElementById('toolbox-categories-typed-variables');
       // Create main workspace.
-      workspace = Blockly.inject('blocklyDiv', {
+      let workspace = Blockly.inject('blocklyDiv', {
         toolbox: toolbox
       });
       const createFlyout = function(workspace) {
