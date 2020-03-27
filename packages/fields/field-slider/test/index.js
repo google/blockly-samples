@@ -9,6 +9,9 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
+import * as Blockly from 'blockly';
+import '../src/index.js';
+
 Blockly.defineBlocksWithJsonArray([
   {
     "type": "test_field_slider",
@@ -31,6 +34,8 @@ Blockly.defineBlocksWithJsonArray([
 document.addEventListener("DOMContentLoaded", function () {
   Blockly.inject('blocklyDiv',
       {
-        toolbox: document.getElementById('blocklyToolbox')
+        toolbox: `<xml xmlns="https://developers.google.com/blockly/xml" style="display: none">
+          <block type="test_field_slider"></block>
+        </xml>`
       });
 });
