@@ -1,0 +1,44 @@
+{
+  "name": "@blockly/dev-tools",
+  "version": "1.20200313.0",
+  "description": "A Blockly package with development tools.",
+  "scripts": {
+    "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",
+    "prepublishOnly": "webpack --config ../../webpack.config.js  --display-error-details --env.mode=production"
+  },
+  "main": "dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "dev",
+    "tools"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/tools#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "packages/dev/tools"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "peerDependencies": {
+    "blockly": ">=3.20191014.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
