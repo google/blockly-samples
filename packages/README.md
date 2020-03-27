@@ -25,7 +25,7 @@ tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 ## Using Lerna
 
-(Lerna)(https://lerna.js.org/) is being used to manage all the packages released
+[Lerna](https://lerna.js.org/) is being used to manage all the packages released
 under the ``@blockly`` npm scope.
 
 When you first check out the repo, or if additional packages are added, run
