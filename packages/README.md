@@ -20,7 +20,7 @@ tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 ### Dev
 
-- [``@blockly/dev-tool``][dev/tools/]: A library of common utilities for Blockly extension development.
+- [``@blockly/dev-tool``](dev/tools/): A library of common utilities for Blockly extension development.
 
 
 ## Using Lerna
