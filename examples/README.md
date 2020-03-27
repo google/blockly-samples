@@ -18,7 +18,6 @@ Browse to http://localhost:3000
 
 You may need to refer to a sample's README for further setup and running instructions.
 
-
 ## Development
 
 ### Bootstrap
