@@ -9,6 +9,10 @@
  * @author kozbial@gmail.com (Monica Kozbial)
  */
 
+import * as Blockly from 'blockly';
+import { WorkspaceSearch } from '../src/index.js';
+import { toolboxCategories, toolboxSimple } from '@blockly/dev-tools';
+
 const options = {
   comments: true,
   collapse: true,
@@ -29,10 +33,7 @@ const options = {
 
 function start() {
   const match = location.search.match(/toolbox=([^&]+)/);
-  const toolbox =
-      document.getElementById('toolbox-' + (match ? match[1] : 'categories'));
-  document.forms.options.elements.toolbox.selectedIndex =
-      Number(toolbox.getElementsByTagName('category').length === 0);
+  const toolbox = match && match[1] == 'simple' ? toolboxSimple : toolboxCategories;
   startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, true);
   startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox);
 
