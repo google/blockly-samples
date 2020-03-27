@@ -1,30 +1,27 @@
 {
-  "name": "@blockly/field-slider",
-  "version": "1.20200326.0",
-  "description": "A Blockly slider field.",
+  "name": "@blockly/dev-tools",
+  "version": "0.20200313.1",
+  "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",
     "clean": "rm -rf $npm_package_directories_dist",
-    "prepublishOnly": "npm run clean && webpack --config ../../webpack.config.js --display-error-details --env.mode=production",
-    "start": "webpack-dev-server --config ../../webpack.config.js --env.buildTest=true --env.mode=development",
-    "test": "mocha --ui tdd test/field_slider_test.js"
+    "prepublishOnly": "webpack --config ../../webpack.config.js  --display-error-details --env.mode=production"
   },
-  "main": "./dist/index.js",
-  "unpkg": "./dist/index.js",
+  "main": "dist/index.js",
   "author": "Blockly Team",
   "keywords": [
     "blockly",
-    "field",
-    "slider"
+    "dev",
+    "tools"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/fields/field-slider#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/tools#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/fields/field-slider"
+    "directory": "packages/dev/tools"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -39,9 +36,6 @@
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "babel-loader": "^8.0.6",
-    "blockly": "^3.20200123.1",
-    "mocha": "^7.1.0",
-    "sinon": "^9.0.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

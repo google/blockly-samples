@@ -5,10 +5,19 @@
     "author": "Blockly Team",
     "license": "Apache-2.0",
     "scripts": {
-        "license": "gulp checkLicenses"
+        "boot": "lerna bootstrap",
+        "build": "lerna run build",
+        "clean": "lerna run clean",
+        "license": "gulp checkLicenses",
+        "postinstall": "npm run boot"
     },
     "devDependencies": {
         "gulp": "^4.0.2",
-        "js-green-licenses": "^1.1.0"
+        "js-green-licenses": "^1.1.0",
+        "lerna": "^3.20.2"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://wombat-dressing-room.appspot.com"
     }
 }

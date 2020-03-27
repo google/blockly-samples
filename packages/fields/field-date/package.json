@@ -4,6 +4,7 @@
     "description": "A Blockly date picker field that uses the Google Closure date picker.",
     "scripts": {
         "build": "gulp build",
+        "clean": "rm -rf $npm_package_directories_dist",
         "prepublishOnly": "npm run build"
     },
     "main": "dist/date_compressed.js",
