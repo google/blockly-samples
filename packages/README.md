@@ -2,10 +2,10 @@
 
 This directory is where [Blockly](http://github.com/google/blockly) extension
 packages such as plugins and fields are authored and stored. These packages are
-released to npm under the ``@blockly`` organization.
+released to npm under the ``@blockly`` scope.
 
 A full list of published packages can be found by searching for the ``@blockly``
-organization tag on [npm](https://www.npmjs.com/search?q=%40blockly).
+tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 ## Packages
 
