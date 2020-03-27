@@ -18,6 +18,15 @@ const packageJson = require(resolveApp('package.json'));
 console.log(`Building ${packageJson.name}`);
 
 module.exports = env => {
+    const devServer = {
+        port: 3000,
+        host: '0.0.0.0'
+    };
+    if (env.buildTest) {
+        devServer.openPage = 'test';
+        devServer.open = true;
+    }
+
     const src = {
         name: "src",
         mode: env.mode,
@@ -42,6 +51,7 @@ module.exports = env => {
                 }
             }]
         },
+        devServer: devServer,
         externals: {
             'blockly/core': {
                 root: 'Blockly',
@@ -75,12 +85,7 @@ module.exports = env => {
                         }
                     }
                 }]
-            },
-            devServer: {
-                openPage: 'test',
-                port: 3000,
-                open: true
-            },
+            }
         };
         webpackExports.push(test);
     }
