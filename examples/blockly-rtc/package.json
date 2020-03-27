@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "audit": "npm audit fix",
+    "update": "npm update",
     "build": "npm run build:frontend",
     "build:frontend": "rimraf ./build && webpack",
     "serve-http": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-http\"",
@@ -10,6 +12,7 @@
     "serve:backend-http": "node server/http_server.js",
     "serve:backend-websocket": "node server/websocket_server.js",
     "serve:frontend": "webpack-dev-server",
+    "start": "npm run start-websocket",
     "start-http": "npm run build && npm run serve-http",
     "start-websocket": "npm run build && npm run serve-websocket",
     "test": "mocha test/*test.js"
@@ -25,10 +28,10 @@
     "copy-webpack-plugin": "^5.0.3",
     "esm": "3.2.25",
     "http-server": "^0.12.1",
-    "mocha": "^6.2.2",
+    "mocha": "^6.2.3",
     "rimraf": "3.0.0",
     "sinon": "7.5.0",
-    "webpack": "^4.35.3",
+    "webpack": "^4.42.1",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "3.9.0"
   }
