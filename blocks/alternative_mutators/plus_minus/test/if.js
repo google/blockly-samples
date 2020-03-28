@@ -28,6 +28,11 @@ suite('if & ifelse', () => {
     this.workspace = new Blockly.Workspace();
     this.ifBlock = this.workspace.newBlock('controls_if');
   });
+  teardown(() => {
+    this.workspace.dispose();
+    delete this.workspace;
+    delete this.ifBlock;
+  });
   suite('Serialization Matches Old', () => {
     setup(() => {
       this.workspace.clear();
@@ -118,6 +123,9 @@ suite('if & ifelse', () => {
         var newBlock = Blockly.Xml.domToBlock(xml, this.workspace);
         func(block);
       }
+    });
+    teardown(() => {
+      delete this.assertRoundTrip;
     });
 
     test('Unmutated', () => {

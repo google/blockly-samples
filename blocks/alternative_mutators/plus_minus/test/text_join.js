@@ -33,6 +33,11 @@ suite('join', () => {
     this.workspace = new Blockly.Workspace();
     this.joinBlock = this.workspace.newBlock('text_join');
   });
+  teardown(() => {
+    this.workspace.dispose();
+    delete this.workspace;
+    delete this.ifBlock;
+  });
   suite('Serialization matches old', () => {
     setup(() => {
       this.workspace.clear();
@@ -159,6 +164,9 @@ suite('join', () => {
         var newBlock = Blockly.Xml.domToBlock(xml, this.workspace);
         func(block);
       }
+    });
+    teardown(() => {
+      delete this.assertRoundTrip;
     });
 
     test('Unmutated', () => {

@@ -210,6 +210,9 @@ suite('procedures', () => {
         func(def, call);
       }
     });
+    teardown(() => {
+      delete this.assertRoundTrip;
+    });
     test('Unmutated', () => {
       this.assertRoundTrip(this.def, this.call, (def, call) => {
         assertProc(def, call, 0);
@@ -242,7 +245,7 @@ suite('procedures', () => {
       })
     });
   });
-  suite('Renaming args', () => {
+  suite('Vars', () => {
     setup(() => {
       this.assertVars = function(varsArray) {
         var varNames = this.workspace.getVariablesOfType('').map(
@@ -250,91 +253,96 @@ suite('procedures', () => {
         assert.sameMembers(varNames, varsArray);
       };
     });
+    teardown(() => {
+      delete this.assertVars;
+    });
 
-    test('Simple Rename', () => {
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('newName');
-      assertProc(this.def, this.call, 1, ['newName']);
-      this.assertVars(['x', 'newName']);
+    suite('Renaming args', () => {
+      test('Simple Rename', () => {
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('newName');
+        assertProc(this.def, this.call, 1, ['newName']);
+        this.assertVars(['x', 'newName']);
+      });
+      test('Change Case', () => {
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('X');
+        assertProc(this.def, this.call, 1, ['X']);
+        this.assertVars(['X']);
+      });
+      test('Empty', () => {
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('');
+        assertProc(this.def, this.call, 1, ['x']);
+        this.assertVars(['x']);
+      });
+      test('Whitespace', () => {
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('  newName   ');
+        assertProc(this.def, this.call, 1, ['newName']);
+        this.assertVars(['x', 'newName']);
+      });
+      test('Duplicate', () => {
+        this.def.plus();
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('y');
+        assertProc(this.def, this.call, 2, ['x', 'y']);
+        this.assertVars(['x', 'y']);
+      });
+      test('Duplicate Different Case', () => {
+        this.def.plus();
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('Y');
+        assertProc(this.def, this.call, 2, ['x', 'y']);
+        this.assertVars(['x', 'y']);
+      });
+      test('Match Existing', () => {
+        this.workspace.createVariable('test', '');
+        this.def.plus();
+        var field = this.def.inputList[1].fieldRow[2];
+        field.setValue('test');
+        assertProc(this.def, this.call, 1, ['test']);
+        this.assertVars(['x', 'test']);
+        assert.equal(this.def.varIds_[0],
+            this.workspace.getVariable('test', '').getId());
+      });
     });
-    test('Change Case', () => {
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('X');
-      assertProc(this.def, this.call, 1, ['X']);
-      this.assertVars(['X']);
-    });
-    test('Empty', () => {
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('');
-      assertProc(this.def, this.call, 1, ['x']);
-      this.assertVars(['x']);
-    });
-    test('Whitespace', () => {
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('  newName   ');
-      assertProc(this.def, this.call, 1, ['newName']);
-      this.assertVars(['x', 'newName']);
-    });
-    test('Duplicate', () => {
-      this.def.plus();
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('y');
-      assertProc(this.def, this.call, 2, ['x', 'y']);
-      this.assertVars(['x', 'y']);
-    });
-    test('Duplicate Different Case', () => {
-      this.def.plus();
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('Y');
-      assertProc(this.def, this.call, 2, ['x', 'y']);
-      this.assertVars(['x', 'y']);
-    });
-    test('Match Existing', () => {
-      this.workspace.createVariable('test', '');
-      this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
-      field.setValue('test');
-      assertProc(this.def, this.call, 1, ['test']);
-      this.assertVars(['x', 'test']);
-      assert.equal(this.def.varIds_[0],
-          this.workspace.getVariable('test', '').getId());
-    });
-  });
-  suite('Vars Renamed Elsewhere', () => {
-    test('Simple Rename', () => {
-      this.def.plus();
-      var variable = this.workspace.getVariable('x', '');
-      this.workspace.renameVariableById(variable.getId(), 'test');
-      assertProc(this.def, this.call, 1, ['test']);
-      this.assertVars(['test']);
-    });
-    // Don't know how we want to react here.
-    test.skip('Duplicate', () => {
-      this.def.plus();
-      this.def.plus();
-      var variable = this.workspace.getVariable('x', '');
-      this.workspace.renameVariableById(variable.getId(), 'y');
-      // Don't know what we want to have happen.
-    });
-    test('Change Case', () => {
-      this.def.plus();
-      var variable = this.workspace.getVariable('x', '');
-      this.workspace.renameVariableById(variable.getId(), 'X');
-      assertProc(this.def, this.call, 1, ['X']);
-      this.assertVars(['X']);
-    });
-    test('Coalesce Change Case', () => {
-      var variable = this.workspace.createVariable('test');
-      this.def.plus();
-      this.workspace.renameVariableById(variable.getId(), 'X');
-      assertProc(this.def, this.call, 1, ['X']);
-      this.assertVars(['X']);
+    suite('Vars Renamed Elsewhere', () => {
+      test('Simple Rename', () => {
+        this.def.plus();
+        var variable = this.workspace.getVariable('x', '');
+        this.workspace.renameVariableById(variable.getId(), 'test');
+        assertProc(this.def, this.call, 1, ['test']);
+        this.assertVars(['test']);
+      });
+      // Don't know how we want to react here.
+      test.skip('Duplicate', () => {
+        this.def.plus();
+        this.def.plus();
+        var variable = this.workspace.getVariable('x', '');
+        this.workspace.renameVariableById(variable.getId(), 'y');
+        // Don't know what we want to have happen.
+      });
+      test('Change Case', () => {
+        this.def.plus();
+        var variable = this.workspace.getVariable('x', '');
+        this.workspace.renameVariableById(variable.getId(), 'X');
+        assertProc(this.def, this.call, 1, ['X']);
+        this.assertVars(['X']);
+      });
+      test('Coalesce Change Case', () => {
+        var variable = this.workspace.createVariable('test');
+        this.def.plus();
+        this.workspace.renameVariableById(variable.getId(), 'X');
+        assertProc(this.def, this.call, 1, ['X']);
+        this.assertVars(['X']);
+      });
     });
   });
 });

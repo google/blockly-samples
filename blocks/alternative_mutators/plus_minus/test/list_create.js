@@ -32,6 +32,11 @@ suite('list create', () => {
     this.workspace = new Blockly.Workspace();
     this.listBlock = this.workspace.newBlock('lists_create_with');
   });
+  teardown(() => {
+    this.workspace.dispose();
+    delete this.workspace;
+    delete this.listBlock;
+  });
   suite('Serialization matches old', () => {
     setup(() => {
       this.workspace.clear();
@@ -158,6 +163,9 @@ suite('list create', () => {
         var newBlock = Blockly.Xml.domToBlock(xml, this.workspace);
         func(block);
       }
+    });
+    teardown( () => {
+      delete this.assertRoundTrip;
     });
 
     test('Unmutated', () => {
