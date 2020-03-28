@@ -147,7 +147,6 @@ const controlsIfMutator =  {
    * @this Blockly.Block
    */
   domToMutation: function(xmlElement) {
-    console.log(xmlElement);
     var targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
     this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10) || 0;
     if (this.type == 'controls_if' && !!this.elseCount_) {

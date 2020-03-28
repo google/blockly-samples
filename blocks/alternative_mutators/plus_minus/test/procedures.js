@@ -74,8 +74,10 @@ suite('procedures', () => {
     delete this.workspace;
   });
   suite('Serialization Matches Old', () => {
-    test('Simple', () => {
+    setup(() => {
       this.workspace.clear();
+    });
+    test('Simple', () => {
       var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <variables>\n' +
           '    <variable id="O:Sr,z]cTdOh.rxYtbpK">x</variable>\n' +
@@ -119,7 +121,6 @@ suite('procedures', () => {
       assert.equal(newText, oldText);
     });
     test('Duplicate Params', () => {
-      this.workspace.clear();
       var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <variables>\n' +
           '    <variable id="|bfmCeh02-k|go!MeHd6">x</variable>\n' +

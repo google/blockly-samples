@@ -5,7 +5,7 @@ const Blockly = require('blockly');
 
 require('../dist/plus-minus-mutators.umd');
 
-suite.skip('join', () => {
+suite('join', () => {
   function assertJoin(block, inputCount) {
     if (inputCount == 0) {
       assert.equal(block.inputList.length, 1);
@@ -32,6 +32,50 @@ suite.skip('join', () => {
   setup(() => {
     this.workspace = new Blockly.Workspace();
     this.joinBlock = this.workspace.newBlock('text_join');
+  });
+  suite('Serialization matches old', () => {
+    setup(() => {
+      this.workspace.clear();
+    });
+    test('Simple', () => {
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="text_join" id="join" x="128" y="173">\n' +
+          '    <mutation items="5"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertJoin(this.workspace.getBlockById('join'), 5);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
+    test('No mutation', () => {
+      var given = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="text_join" id="join" x="128" y="173"></block>\n' +
+          '</xml>';
+      var expected = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="text_join" id="join" x="128" y="173">\n' +
+          '    <mutation items="2"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(given), this.workspace);
+      assertJoin(this.workspace.getBlockById('join'), 2);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, expected);
+    });
+    test('No inputs', () => {
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="text_join" id="join" x="128" y="173">\n' +
+          '    <mutation items="0"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertJoin(this.workspace.getBlockById('join'), 0);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
   });
   suite('Creation', () => {
     test('Programmatic', () => {

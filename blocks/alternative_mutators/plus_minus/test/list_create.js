@@ -4,7 +4,7 @@ const Blockly = require('blockly');
 
 require('../dist/plus-minus-mutators.umd');
 
-suite.skip('list create', () => {
+suite('list create', () => {
   function assertList(block, inputCount) {
     if (inputCount == 0) {
       assert.equal(block.inputList.length, 1);
@@ -31,6 +31,50 @@ suite.skip('list create', () => {
   setup(() => {
     this.workspace = new Blockly.Workspace();
     this.listBlock = this.workspace.newBlock('lists_create_with');
+  });
+  suite('Serialization matches old', () => {
+    setup(() => {
+      this.workspace.clear();
+    });
+    test('Simple', () => {
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
+          '    <mutation items="5"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertList(this.workspace.getBlockById('list'), 5);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
+    test('No mutation', () => {
+      var given = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="lists_create_with" id="list" x="128" y="173"></block>\n' +
+          '</xml>';
+      var expected = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
+          '    <mutation items="3"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(given), this.workspace);
+      assertList(this.workspace.getBlockById('list'), 3);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, expected);
+    });
+    test('No inputs', () => {
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
+          '    <mutation items="0"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertList(this.workspace.getBlockById('list'), 0);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
   });
   suite('Creation', () => {
     test('Programmatic', () => {
