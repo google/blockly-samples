@@ -16,72 +16,6 @@ import FieldMinus from './field_minus.js';
 
 
 Blockly.defineBlocksWithJsonArray([
-  // TODO: It's annoying that we have to redefine the whole controls_ifelse
-  //  block. It would be nice if the default block had an empty mutator
-  //  we could override.
-  {
-    "type": "controls_if",
-    "message0": "%1 %{BKY_CONTROLS_IF_MSG_IF} %2" +
-        "%{BKY_CONTROLS_IF_MSG_THEN} %3" +
-        "%4 %5",
-    "args0": [
-      {
-        "type": "field_plus",
-        "name": "IFELSE_PLUS"
-      },
-      {
-        "type": "input_value",
-        "name": "IF0",
-        "check": "Boolean"
-      },
-      {
-        "type": "input_statement",
-        "name": "DO0"
-      },
-      {
-        "type": "field_plus",
-        "name": "ELSE_PLUS"
-      },
-      {
-        "type": "input_dummy",
-      }
-    ],
-    "previousStatement": null,
-    "nextStatement": null,
-    "style": "logic_blocks",
-    "tooltip": "%{BKYCONTROLS_IF_TOOLTIP_2}",
-    "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
-  },
-  {
-    "type": "controls_ifelse",
-    "message0": "%{BKY_CONTROLS_IF_MSG_IF} %1" +
-        "%{BKY_CONTROLS_IF_MSG_THEN} %2" +
-        "%{BKY_CONTROLS_IF_MSG_ELSE} %3",
-    "args0": [
-      {
-        "type": "input_value",
-        "name": "IF0",
-        "check": "Boolean"
-      },
-      {
-        "type": "input_statement",
-        "name": "DO0"
-      },
-      {
-        "type": "input_statement",
-        "name": "ELSE"
-      }
-    ],
-    "previousStatement": null,
-    "nextStatement": null,
-    "style": "logic_blocks",
-    "tooltip": "%{BKYCONTROLS_IF_TOOLTIP_2}",
-    "helpUrl": "%{BKY_CONTROLS_IF_HELPURL}",
-    "mutator": "controls_if_mutator",
-    "extensions": [
-      "controls_if_tooltip",
-    ]
-  },
   {
     "type": "lists_create_with",
     "message0": "%1 %{BKY_LISTS_CREATE_EMPTY_TITLE} %2",
@@ -188,6 +122,7 @@ const controlsIfMutator =  {
   suppressPrefixSuffix: true,
 
   elseIfCount_: 0,
+  elseCount_: 0,
 
   /**
    * Create XML to represent the number of else-if and else inputs.
@@ -195,11 +130,14 @@ const controlsIfMutator =  {
    * @this Blockly.Block
    */
   mutationToDom: function() {
-    if (!this.elseIfCount_) {
+    if (!this.elseIfCount_ && !this.elseCount_) {
       return null;
     }
     var container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('elseif', this.elseIfCount_);
+    if (this.type == 'controls_if' && !!this.elseCount_) {
+      container.setAttribute('else', this.elseCount_);
+    }
     return container;
   },
 
@@ -209,7 +147,13 @@ const controlsIfMutator =  {
    * @this Blockly.Block
    */
   domToMutation: function(xmlElement) {
+    console.log(xmlElement);
     var targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
+    this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10) || 0;
+    if (this.type == 'controls_if' && !!this.elseCount_) {
+      this.appendStatementInput('ELSE')
+          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+    }
     this.updateShape_(targetCount);
   },
 
@@ -261,9 +205,9 @@ const controlsIfMutator =  {
 
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
-    if (!minusField) {
+    if (!minusField && this.elseIfCount_) {
       this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
-    } else if (!this.elseIfCount_) {
+    } else if (minusField && !this.elseIfCount_) {
       this.topInput_.removeField('MINUS');
     }
   }

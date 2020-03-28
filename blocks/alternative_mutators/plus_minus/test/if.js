@@ -1,32 +1,61 @@
 const chai = require('chai');
+const assert = chai.assert;
 const sinon = require('sinon');
 const Blockly = require('blockly');
 
 require('../dist/plus-minus-mutators.umd');
 
-suite.skip('if & ifelse', () => {
-  function assertIf(block, ifCount) {
-    var hasElse = block.type == 'controls_ifelse';
+suite('if & ifelse', () => {
+  function assertIf(block, ifCount, hasElse) {
+    if (hasElse == undefined) hasElse = true;
     var inputs = block.inputList;
     var length = inputs.length;
-    chai.assert.equal(length, hasElse ? ifCount * 2 + 1 : ifCount * 2);
+    assert.equal(length, hasElse ? ifCount * 2 + 1 : ifCount * 2);
     for (var i = 0; i < ifCount; i++) {
-      chai.assert.equal(inputs[i * 2].name, 'IF' + i);
-      chai.assert.equal(inputs[i * 2 + 1].name, 'DO' + i);
+      assert.equal(inputs[i * 2].name, 'IF' + i);
+      assert.equal(inputs[i * 2 + 1].name, 'DO' + i);
     }
     if (hasElse) {
-      chai.assert.equal(inputs[length - 1].name, 'ELSE');
+      assert.equal(inputs[length - 1].name, 'ELSE');
     }
     if (ifCount == 1) {
-      chai.assert.isNull(block.getField('MINUS'));
+      assert.isNull(block.getField('MINUS'));
     } else {
-      chai.assert.isNotNull(block.getField('MINUS'));
+      assert.isNotNull(block.getField('MINUS'));
     }
   }
 
   setup(() => {
     this.workspace = new Blockly.Workspace();
     this.ifelseBlock = this.workspace.newBlock('controls_ifelse');
+  });
+  suite('Serialization Matches Old', () => {
+    test('No else', () => {
+      this.workspace.clear();
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="controls_if" id="if" x="44" y="134">\n' +
+          '    <mutation elseif="2"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertIf(this.workspace.getBlockById('if'), 3, false);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
+    test('With else', () => {
+      this.workspace.clear();
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="controls_if" id="if" x="44" y="134">\n' +
+          '    <mutation elseif="2" else="1"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertIf(this.workspace.getBlockById('if'), 3);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    })
   });
   suite('Adding and removing inputs', () => {
     test('Add', () => {
@@ -69,16 +98,16 @@ suite.skip('if & ifelse', () => {
       this.ifelseBlock.plus();
       this.ifelseBlock.getInput('IF1').connection
           .connect(block.outputConnection);
-      chai.assert.equal(this.ifelseBlock.getInputTargetBlock('IF1'), block);
+      assert.equal(this.ifelseBlock.getInputTargetBlock('IF1'), block);
 
       this.ifelseBlock.minus();
       assertIf(this.ifelseBlock, 1);
-      chai.assert.isNull(block.outputConnection.targetBlock());
+      assert.isNull(block.outputConnection.targetBlock());
 
       // Assert that it does not get reattached. Only reattach on undo.
       this.ifelseBlock.plus();
       assertIf(this.ifelseBlock, 2);
-      chai.assert.isNull(block.outputConnection.targetBlock());
+      assert.isNull(block.outputConnection.targetBlock());
     });
   });
   suite('Xml round-tripping', () => {
@@ -110,8 +139,8 @@ suite.skip('if & ifelse', () => {
       this.assertRoundTrip(this.ifelseBlock, (block) => {
         assertIf(block, 2);
         var child = block.getInputTargetBlock('IF1');
-        chai.assert.isNotNull(child);
-        chai.assert.equal(child.type, 'logic_boolean');
+        assert.isNotNull(child);
+        assert.equal(child.type, 'logic_boolean');
       })
     })
   });
