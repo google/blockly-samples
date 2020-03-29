@@ -163,20 +163,17 @@ const controlsIfMutator =  {
     while(this.elseIfCount_ > targetCount) {
       this.removePart_();
     }
-    this.updateMinus_();
   },
 
   plus: function() {
     this.addPart_();
-    this.updateMinus_();
   },
 
-  minus: function() {
+  minus: function(index) {
     if (this.elseIfCount_ == 0) {
       return;
     }
-    this.removePart_();
-    this.updateMinus_();
+    this.removePart_(index);
   },
 
   // To properly keep track of indices we have to increment before/after adding
@@ -186,7 +183,9 @@ const controlsIfMutator =  {
     this.elseIfCount_++;
     this.appendValueInput('IF' + this.elseIfCount_)
         .setCheck('Boolean')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'])
+        .appendField(
+            new FieldMinus(this.elseIfCount_), 'MINUS' + this.elseIfCount_);
     this.appendStatementInput('DO' + this.elseIfCount_)
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
 
@@ -196,20 +195,46 @@ const controlsIfMutator =  {
     }
   },
 
-  removePart_: function() {
+  removePart_: function(index) {
+    // The strategy for removing a part at an index is to:
+    //  - Kick any blocks connected to the relevant inputs.
+    //  - Move all connect blocks from the other inputs up.
+    //  - Remove the last input.
+    // This makes sure all of our indices are correct.
+    var foundInput = false;
+    var name = 'IF' + index;
+    for (var i = 0, input; (input = this.inputList[i]); i++) {
+      if (input.name == name) {
+        foundInput = true;
+        var connection = input.connection;
+        // TODO: Is there any reason we need to throw errors when the connection
+        //   isn't currently connected?
+        if (connection.isConnected()) {
+          connection.disconnect();
+        }
+        connection = this.inputList[++i].connection;  // Do connection.
+        if (connection.isConnected()) {
+          connection.disconnect();
+        }
+        this.bumpNeighbours();
+        continue;
+      }
+      if (!foundInput) {
+        continue;
+      }
+      if (input.name == 'ELSE') {
+        break;  // Should be last anyway.
+      }
+      var targetConnect = input.connection.targetConnection;
+      if (targetConnect) {
+        this.inputList[i - 2].connection.connect(targetConnect);
+      }
+    }
+
     this.removeInput('IF' + this.elseIfCount_);
     this.removeInput('DO' + this.elseIfCount_);
     this.elseIfCount_--;
   },
-
-  updateMinus_: function() {
-    var minusField = this.getField('MINUS');
-    if (!minusField && this.elseIfCount_) {
-      this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
-    } else if (minusField && !this.elseIfCount_) {
-      this.topInput_.removeField('MINUS');
-    }
-  }
 };
 
 /**
