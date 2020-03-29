@@ -121,11 +121,19 @@ const controlsIfMutator =  {
   // TODO: This should be its own extension. But that requires core changes.
   suppressPrefixSuffix: true,
 
+  /**
+   * Number of else-if inputs on this block.
+   * @type {number}
+   */
   elseIfCount_: 0,
+  /**
+   * Number of else inputs on this block. Max should be 1.
+   * @type {number}
+   */
   elseCount_: 0,
 
   /**
-   * Create XML to represent the number of else-if and else inputs.
+   * Creates XML to represent the number of else-if and else inputs.
    * @return {Element} XML storage element.
    * @this Blockly.Block
    */
@@ -142,7 +150,7 @@ const controlsIfMutator =  {
   },
 
   /**
-   * Parse XML to restore the else-if and else inputs.
+   * Parses XML to restore the else-if and else inputs.
    * @param {!Element} xmlElement XML storage element.
    * @this Blockly.Block
    */
@@ -156,6 +164,13 @@ const controlsIfMutator =  {
     this.updateShape_(targetCount);
   },
 
+  /**
+   * Adds else-if and do inputs to the block until the block matches the
+   * target else-if count.
+   * @param {number} targetCount The target number of else-if inputs.
+   * @this Blockly.Block
+   * @private
+   */
   updateShape_: function(targetCount) {
     while (this.elseIfCount_ < targetCount) {
       this.addPart_();
@@ -165,10 +180,20 @@ const controlsIfMutator =  {
     }
   },
 
+  /**
+   * Callback for the plus field. Adds an else-if input to the block.
+   */
   plus: function() {
     this.addPart_();
   },
 
+  /**
+   * Callback for the minus field. Triggers "removing" the input at the specific
+   * index.
+   * @see removeInput_
+   * @param {number} index The index of the else-if input to "remove"
+   * @this Blockly.Block
+   */
   minus: function(index) {
     if (this.elseIfCount_ == 0) {
       return;
@@ -179,6 +204,12 @@ const controlsIfMutator =  {
   // To properly keep track of indices we have to increment before/after adding
   // the inputs, and decrement the opposite.
   // Because we want our first elseif to be IF1 (not IF0) we increment first.
+
+  /**
+   * Adds an else-if and a do input to the bottom of the block.
+   * @this Blockly.Block
+   * @private
+   */
   addPart_: function() {
     this.elseIfCount_++;
     this.appendValueInput('IF' + this.elseIfCount_)
@@ -195,6 +226,14 @@ const controlsIfMutator =  {
     }
   },
 
+  /**
+   * Appears to remove the input at the given index. Actually shifts attached
+   * blocks and then removes the input at the bottom of the block. This is to
+   * keep input names accurate.
+   * @param {number} index The index of the input to "remove".
+   * @this Blockly.Block
+   * @private
+   */
   removePart_: function(index) {
     // The strategy for removing a part at an index is to:
     //  - Kick any blocks connected to the relevant inputs.
@@ -238,8 +277,8 @@ const controlsIfMutator =  {
 };
 
 /**
+ * Adds the initial plus button to the if block.
  * @this {Blockly.Block}
- * @constructor
  */
 const controlsIfHelper = function() {
   this.topInput_ = this.getInput('IF0');
@@ -251,10 +290,14 @@ Blockly.Extensions.registerMutator('controls_if_mutator',
     controlsIfMutator, controlsIfHelper);
 
 const textJoinMutator = {
+  /**
+   * Number of text inputs on this block.
+   * @type {number}
+   */
   itemCount_: 0,
 
   /**
-   * Create XML to represent number of text inputs.
+   * Creates XML to represent number of inputs.
    * @return {!Element} XML storage element.
    * @this Blockly.Block
    */
@@ -264,7 +307,7 @@ const textJoinMutator = {
     return container;
   },
   /**
-   * Parse XML to restore the text inputs.
+   * Parses XML to restore the inputs.
    * @param {!Element} xmlElement XML storage element.
    * @this Blockly.Block
    */
@@ -273,6 +316,12 @@ const textJoinMutator = {
     this.updateShape_(targetCount);
   },
 
+  /**
+   * Adds inputs to the block until the block reaches the target input count.
+   * @param {number} targetCount The number of inputs the block should have
+   * @this Blockly.Block
+   * @private
+   */
   updateShape_: function(targetCount) {
     while (this.itemCount_ < targetCount) {
       this.addPart_();
@@ -283,11 +332,21 @@ const textJoinMutator = {
     this.updateMinus_();
   },
 
+  /**
+   * Callback for the plus image. Adds an input to the block and updates the
+   * state of the minus.
+   * @this Blockly.Block
+   */
   plus: function() {
     this.addPart_();
     this.updateMinus_();
   },
 
+  /**
+   * Callback for the minus image. Removes the input at the end of the block and
+   * updates the state of the minus.
+   * @this Blockly.Block
+   */
   minus: function() {
     if (this.itemCount_ == 0) {
       return;
@@ -299,6 +358,13 @@ const textJoinMutator = {
   // To properly keep track of indices we have to increment before/after adding
   // the inputs, and decrement the opposite.
   // Because we want our first item to be ADD0 (not ADD1) we increment after.
+
+  /**
+   * Adds an input to the end of the block. If the block currently has no
+   * inputs it updates the top 'EMPTY' input to receive a block.
+   * @this Blockly.Block
+   * @private
+   */
   addPart_: function() {
     if (this.itemCount_ == 0) {
       if (this.getInput('EMPTY')) {
@@ -315,6 +381,12 @@ const textJoinMutator = {
     this.itemCount_++;
   },
 
+  /**
+   * Removes an input from the end of the block. If we are removing the last
+   * input this updates the block to have an 'EMPTY' top input.
+   * @this Blockly.Block
+   * @private
+   */
   removePart_: function() {
     this.itemCount_--;
     this.removeInput('ADD' + this.itemCount_);
@@ -326,6 +398,10 @@ const textJoinMutator = {
     }
   },
 
+  /**
+   * Makes it so the minus is visible iff there is an input available to remove.
+   * @private
+   */
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
@@ -337,6 +413,8 @@ const textJoinMutator = {
 };
 
 /**
+ * Adds the quotes mixin to the block. Also updates the shape so that if no
+ * mutator is provided the block has two inputs.
  * @this {Blockly.Block}
  * @constructor
  */
@@ -350,10 +428,14 @@ Blockly.Extensions.registerMutator('text_join_mutator',
     textJoinMutator, textJoinHelper);
 
 const listCreateMutator = {
+  /**
+   * Number of item inputs the block has.
+   * @type {number}
+   */
   itemCount_: 0,
 
   /**
-   * Create XML to represent number of text inputs.
+   * Creates XML to represent number of text inputs.
    * @return {!Element} XML storage element.
    * @this Blockly.Block
    */
@@ -363,7 +445,7 @@ const listCreateMutator = {
     return container;
   },
   /**
-   * Parse XML to restore the text inputs.
+   * Parses XML to restore the text inputs.
    * @param {!Element} xmlElement XML storage element.
    * @this Blockly.Block
    */
@@ -372,6 +454,12 @@ const listCreateMutator = {
     this.updateShape_(targetCount);
   },
 
+  /**
+   * Adds inputs to the block until it reaches the target number of inputs.
+   * @param {number} targetCount The target number of inputs for the block.
+   * @this Blockly.Block
+   * @private
+   */
   updateShape_: function(targetCount) {
     while (this.itemCount_ < targetCount) {
       this.addPart_();
@@ -382,11 +470,19 @@ const listCreateMutator = {
     this.updateMinus_();
   },
 
+  /**
+   * Callback for the plus image. Adds an input to the end of the block and
+   * updates the state of the minus.
+   */
   plus: function() {
     this.addPart_();
     this.updateMinus_();
   },
 
+  /**
+   * Callback for the minus image. Removes an input from the end of the block
+   * and updates the state of the minus.
+   */
   minus: function() {
     if (this.itemCount_ == 0) {
       return;
@@ -398,6 +494,13 @@ const listCreateMutator = {
   // To properly keep track of indices we have to increment before/after adding
   // the inputs, and decrement the opposite.
   // Because we want our first input to be ADD0 (not ADD1) we increment after.
+
+  /**
+   * Adds an input to the end of the block. If the block currently has no
+   * inputs it updates the top 'EMPTY' input to receive a block.
+   * @this Blockly.Block
+   * @private
+   */
   addPart_: function() {
     if (this.itemCount_ == 0) {
       this.removeInput('EMPTY');
@@ -410,6 +513,12 @@ const listCreateMutator = {
     this.itemCount_++;
   },
 
+  /**
+   * Removes an input from the end of the block. If we are removing the last
+   * input this updates the block to have an 'EMPTY' top input.
+   * @this Blockly.Block
+   * @private
+   */
   removePart_: function() {
     this.itemCount_--;
     this.removeInput('ADD' + this.itemCount_);
@@ -420,6 +529,10 @@ const listCreateMutator = {
     }
   },
 
+  /**
+   * Makes it so the minus is visible iff there is an input available to remove.
+   * @private
+   */
   updateMinus_: function() {
     var minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
@@ -431,6 +544,7 @@ const listCreateMutator = {
 };
 
 /**
+ * Updates the shape of the block to have 3 inputs if no mutation is provided.
  * @this {Blockly.Block}
  * @constructor
  */
@@ -441,25 +555,58 @@ const listCreateHelper = function() {
 Blockly.Extensions.registerMutator('new_list_create_with_mutator',
     listCreateMutator, listCreateHelper);
 
+/**
+ * Defines the what are essentially info-getters for the procedures_defnoreturn
+ * block.
+ * @type {{callType_: string, getProcedureDef: (function(): *[])}}
+ */
 const getDefNoReturn = {
+  /**
+   * Returns info about this block to be used by the Blockly.Procedures
+   * @this Blockly.Block
+   */
   getProcedureDef: function() {
     return [this.getFieldValue('NAME'), this.arguments_, false];
   },
+
+  /**
+   * Used by the context menu to create a caller block.
+   * @type {string}
+   */
   callType_: 'procedures_callnoreturn'
 };
 
 Blockly.Extensions.registerMixin('get_procedure_def_no_return', getDefNoReturn);
 
+/**
+ * Defines what are es
+ * @type {{callType_: string, getProcedureDef: (function(): *[])}}
+ */
 const getDefReturn = {
+  /**
+   * Returns info about this block to be used by the Blockly.Procedures
+   * @this Blockly.Block
+   */
   getProcedureDef: function() {
     return [this.getFieldValue('NAME'), this.arguments_, true];
   },
+  /**
+   * Used by the context menu to create a caller block.
+   * @type {string}
+   */
   callType_: 'procedures_callreturn'
 };
 
 Blockly.Extensions.registerMixin('get_procedure_def_return', getDefReturn);
 
 const procedureContextMenu = {
+  /**
+   * Adds an option to create a caller block.
+   * Adds an option to create a variable getter for each variable included in
+   * the procedure definition.
+   * @this Blockly.Block
+   * @param {!Array} options The current options for the context menu.
+   */
   customContextMenu: function(options) {
     if (this.isInFlyout) {
       return;
@@ -506,6 +653,14 @@ const procedureContextMenu = {
 Blockly.Extensions.registerMixin('procedure_context_menu', procedureContextMenu);
 
 const procedureDefMutator = {
+  /**
+   * Create XML to represent the argument inputs.
+   * @param {boolean=} opt_isForCaller If true include the procedure name and
+   *     argument IDs. Used by Blockly.Procedures.mutateCallers for
+   *     reconnection.
+   * @return {!Element} XML storage element.
+   * @this {Blockly.Block}
+   */
   mutationToDom: function(opt_isForCaller) {
     var container = Blockly.utils.xml.createElement('mutation');
     if (opt_isForCaller) {
@@ -531,6 +686,11 @@ const procedureDefMutator = {
     return container;
   },
 
+  /**
+   * Parse XML to restore the argument inputs.
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
   domToMutation: function(xmlElement) {
     // Not used by this block, but necessary if switching back and forth
     // between this mutator UI and the default UI.
@@ -549,6 +709,14 @@ const procedureDefMutator = {
     this.updateShape_(names, ids);
   },
 
+  /**
+   * Adds arguments to the block until it matches the targets.
+   * @param {!Array<string>} names An array of argument names to display.
+   * @param {!Array<string>} varIds An array of variable IDs associated with
+   *     those names.
+   * @this Blockly.Block
+   * @private
+   */
   updateShape_: function(names, varIds) {
     // In this case it is easiest to just reset and build from scratch.
 
@@ -571,11 +739,21 @@ const procedureDefMutator = {
     Blockly.Procedures.mutateCallers(this);
   },
 
+  /**
+   * Callback for the plus image. Adds an argument to the block and mutates
+   * callers to match.
+   */
   plus: function() {
     this.addArg_();
     Blockly.Procedures.mutateCallers(this);
   },
 
+  /**
+   * Callback for the minus image. Removes the argument associated with the
+   * given argument ID and mutates the callers to match.
+   * @this Blockly.Block
+   * @param argId
+   */
   minus: function(argId) {
     if (!this.argIds_.length) {
       return;
@@ -584,6 +762,14 @@ const procedureDefMutator = {
     Blockly.Procedures.mutateCallers(this);
   },
 
+  /**
+   * Adds an argument to the block and updates the block's parallel tracking
+   * tracking arrays as appropriate.
+   * @param {string} opt_name An optional name for the argument.
+   * @param {string} opt_varId An optional variable ID for the argument.
+   * @this Blockly.Block
+   * @private
+   */
   addArg_: function(opt_name, opt_varId) {
     if (!this.arguments_.length) {
       var withField = new Blockly.FieldLabel(
@@ -607,6 +793,11 @@ const procedureDefMutator = {
     this.argIds_.push(argId);
   },
 
+  /**
+   * Removes the argument associated with the given argument ID from the block.
+   * @param {string} argId An ID used to track arguments on the block.
+   * @private
+   */
   removeArg_: function(argId) {
     if (!this.getInput(argId)) {
       return;
@@ -625,6 +816,14 @@ const procedureDefMutator = {
     this.argIds_.splice(index, 1);
   },
 
+  /**
+   * Appends the actual inputs and fields associated with an argument to the
+   * block.
+   * @param {string} name The name of the argument.
+   * @param {string} argId The UUID of the argument (different from var ID).
+   * @this Blockly.Block
+   * @private
+   */
   addVarInput_: function(name, argId) {
     var nameField = new Blockly.FieldTextInput(name, this.validator_);
     nameField.onFinishEditing_ = this.finishEditing_.bind(nameField);
@@ -638,6 +837,7 @@ const procedureDefMutator = {
   },
 
   /**
+   * Validates text entered into the argument name field.
    * @this {Blockly.FieldTextInput}
    */
   validator_: function(newName) {
@@ -686,6 +886,7 @@ const procedureDefMutator = {
   },
 
   /**
+   * Removes any unused vars that were created as a result of editing.
    * @this {Blockly.FieldTextInput}
    */
   finishEditing_: function(finalName) {
@@ -700,6 +901,9 @@ const procedureDefMutator = {
   },
 };
 
+/**
+ * Initializes some private variables for procedure blocks.
+ */
 const procedureDefHelper = function() {
   /**
     * Names of all arg-models (vars) associated with this block.
@@ -731,19 +935,35 @@ const procedureDefHelper = function() {
 Blockly.Extensions.registerMutator('procedure_def_mutator',
     procedureDefMutator, procedureDefHelper);
 
+/**
+ * Sets the validator for the procedure's name field.
+ */
 const procedureRename = function() {
   this.getField('NAME').setValidator(Blockly.Procedures.rename);
 };
 
 Blockly.Extensions.register('procedure_rename', procedureRename);
 
+/**
+ * Defines functions for dealing with variables and renaming variables.
+ */
 const procedureVars = function() {
   // This is a hack to get around the don't-override-builtins check.
   var mixin = {
+    /**
+     * Return all variables referenced by this block.
+     * @return {!Array.<string>} List of variable names.
+     * @this {Blockly.Block}
+     */
     getVars: function() {
       return this.arguments_;
     },
 
+    /**
+     * Return all variables referenced by this block.
+     * @return {!Array.<!Blockly.VariableModel>} List of variable models.
+     * @this {Blockly.Block}
+     */
     getVarModels: function() {
       return this.argumentVarModels_;
     },
@@ -776,6 +996,14 @@ const procedureVars = function() {
       Blockly.Procedures.mutateCallers(this);
     },
 
+    /**
+     * Notification that a variable is renaming but keeping the same ID.  If the
+     * variable is in use on this block, rerender to show the new name.
+     * @param {!Blockly.VariableModel} variable The variable being renamed.
+     * @package
+     * @override
+     * @this {Blockly.Block}
+     */
     updateVarName: function(variable) {
       var id = variable.getId();
       var index = this.varIds_.indexOf(id);
