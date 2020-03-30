@@ -161,6 +161,23 @@ suite('procedures', () => {
       var newText = Blockly.Xml.domToPrettyText(xml);
       assert.equal(newText, oldText);
     });
+    test('No Statements', () => {
+      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="procedures_defreturn" id="def" x="80" y="130">\n' +
+          '    <mutation statements="false"/>\n' +
+          '    <field name="NAME">do something</field>\n' +
+          '  </block>\n' +
+          '  <block type="procedures_callreturn" id="call" x="86" y="209">\n' +
+          '    <mutation name="do something"/>\n' +
+          '  </block>\n' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      assertProc(this.workspace.getBlockById('def'),
+          this.workspace.getBlockById('call'), 0);
+      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      var newText = Blockly.Xml.domToPrettyText(xml);
+      assert.equal(newText, oldText);
+    });
   });
   suite('Adding and removing', () => {
     test('Add', () => {
