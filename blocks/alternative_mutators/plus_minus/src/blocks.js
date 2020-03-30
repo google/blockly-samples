@@ -692,9 +692,12 @@ const procedureDefMutator = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
-    // Not used by this block, but necessary if switching back and forth
-    // between this mutator UI and the default UI.
+    // We have to handle this so that the user doesn't add blocks to the stack,
+    // in which case it would be impossible to return to the old mutators.
     this.hasStatements_ = xmlElement.getAttribute('statements') !== 'false';
+    if (!this.hasStatements_) {
+      this.removeInput('STACK');
+    }
 
     var names = [];
     var ids = [];
@@ -785,7 +788,11 @@ const procedureDefMutator = {
     var argId = Blockly.utils.genUid();
 
     this.addVarInput_(name, argId);
-    this.moveInputBefore(argId, 'STACK');
+    if (this.getInput('STACK')) {
+      this.moveInputBefore(argId, 'STACK');
+    } else {
+      this.moveInputBefore(argId, 'RETURN');
+    }
 
     this.arguments_.push(name);
     this.varIds_.push(variable.getId());
@@ -930,6 +937,12 @@ const procedureDefHelper = function() {
     * @type {!Array<string>}
     */
    this.argIds_ = [];
+  /**
+   * Does this block have a 'STACK' input for statements?
+   * @type {boolean}
+   * @private
+   */
+   this.hasStatements_ = true;
 };
 
 Blockly.Extensions.registerMutator('procedure_def_mutator',

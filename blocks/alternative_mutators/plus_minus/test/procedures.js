@@ -6,7 +6,13 @@ const Blockly = require('blockly');
 require('../dist/plus-minus-mutators.umd');
 
 suite('procedures', () => {
-  function assertProc(def, call, argCount, opt_args) {
+  function assertProc(def, call, argCount, opt_args, opt_hasStatements) {
+    if (opt_hasStatements === false) {
+      assert.isNull(def.getInput('STACK'));
+    } else {
+      opt_hasStatements = true;
+      assert.isNotNull(def.getInput('STACK'));
+    }
     if (opt_args) {
       assert.sameOrderedMembers(def.arguments_, opt_args);
     }
@@ -14,11 +20,12 @@ suite('procedures', () => {
     var defInputs = def.inputList;
     var callInputs = call.inputList;
     var defLength = defInputs.length;
+    var defArgCount = opt_hasStatements ? defLength - 3 : defLength - 2;
 
     // Just looking at var inputs.
-    assert.equal(defLength - 3, callInputs.length - 1,
+    assert.equal(defArgCount, callInputs.length - 1,
         'def and call have the same number of args');
-    assert.equal(defLength - 3, argCount,
+    assert.equal(defArgCount, argCount,
         'blocks have the expected number of args');
 
     if (argCount == 0) {
@@ -173,7 +180,7 @@ suite('procedures', () => {
           '</xml>';
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
       assertProc(this.workspace.getBlockById('def'),
-          this.workspace.getBlockById('call'), 0);
+          this.workspace.getBlockById('call'), 0, [], false);
       var xml = Blockly.Xml.workspaceToDom(this.workspace);
       var newText = Blockly.Xml.domToPrettyText(xml);
       assert.equal(newText, oldText);
@@ -189,6 +196,21 @@ suite('procedures', () => {
         this.def.plus();
       }
       assertProc(this.def, this.call, 5, ['x', 'y', 'z', 'a', 'b']);
+    });
+    test('Add, no stack', () => {
+      var xml = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <block type="procedures_defreturn" id="def">\n' +
+          '    <mutation statements="false"></mutation>\n' +
+          '    <field name="NAME">do something</field>\n' +
+          '  </block>\n' +
+          '  <block type="procedures_callreturn" id="call">\n' +
+          '    <mutation name="do something"></mutation>\n' +
+          '  </block>' +
+          '</xml>';
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
+      var def = this.workspace.getBlockById('def');
+      def.plus();
+      assertProc(def, this.workspace.getBlockById('call'), 1, ['x'], false);
     });
     test('Remove', () => {
       this.def.plus();
