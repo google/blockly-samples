@@ -13,14 +13,12 @@ suite('if & ifelse', () => {
     for (var i = 0; i < ifCount; i++) {
       assert.equal(inputs[i * 2].name, 'IF' + i);
       assert.equal(inputs[i * 2 + 1].name, 'DO' + i);
+      if (i > 0) {
+        assert.isNotNull(block.getField('MINUS' + i));
+      }
     }
     if (hasElse) {
       assert.equal(inputs[length - 1].name, 'ELSE');
-    }
-    if (ifCount == 1) {
-      assert.isNull(block.getField('MINUS'));
-    } else {
-      assert.isNotNull(block.getField('MINUS'));
     }
   }
 
