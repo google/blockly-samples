@@ -80,7 +80,7 @@ Messages that need to be translated for a Typed Variable Modal:
 - `TYPED_VAR_MODAL_CONFIRM_BUTTON` (Default: "Ok"): The label for the confirmation button.
 - `TYPED_VAR_MODAL_VARIABLE_NAME_LABEL` (Default: "Variable Name: "): The label in front of the variable input.
 - `TYPED_VAR_MODAL_TYPES_LABEL` (Default: "Variable Types"): The label in front of the types.
-- `MODAL_CANCEL_BUTTON` (Default: "Cancel"): The label for the cancel button.
+- `TYPED_VAR_MODAL_CANCEL_BUTTON` (Default: "Cancel"): The label for the cancel button.
 - `TYPED_VAR_MODAL_TITLE` (Default: "Create Typed Variable"): The modal title.
 - `TYPED_VAR_MODAL_INVALID_NAME`
 (Default: "Name is not valid. Please choose a different name.") The message used
