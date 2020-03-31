@@ -39,6 +39,8 @@ export class BlocklyComponent implements OnInit {
 
     Blockly.inject(blocklyDiv, {
       readOnly: false,
+      media: 'media/',
+      trashcan: true,
       move: {
         scrollbars: true,
         drag: true,
