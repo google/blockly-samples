@@ -22,9 +22,8 @@ export class Modal {
    * @param {string} title The title for the modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to display the modal
    *     over.
-   * @param {ModalMessages} opt_messages The messages for a modal.
    */
-  constructor(title, workspace, opt_messages) {
+  constructor(title, workspace) {
     /**
      * The title for the modal.
      * @type {string}
@@ -75,20 +74,7 @@ export class Modal {
      * @type {boolean}
      */
     this.closeOnClick = true;
-
-
-    const messages = opt_messages || {
-      "MODAL_CANCEL_BUTTON": "Cancel"
-    };
-    this.setLocale(messages);
   }
-
-  /**
-   * The messages for a typed variable modal.
-   * @typedef {{
-   *     MODAL_CANCEL_BUTTON: string
-   * }} ModalMessages
-   */
 
   /**
    * Initialize a Blockly modal.
@@ -97,18 +83,6 @@ export class Modal {
     this.render();
     this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
         this, this.handleKeyDown_);
-  }
-
-  /**
-   * Set the messages for the typed variable modal.
-   * Used to change the location.
-   * @param {Object} messages The messages needed to create a typed
-   *     modal.
-   */
-  setLocale(messages) {
-    Object.keys(messages).forEach(function(k) {
-      Blockly.Msg[k] = messages[k];
-    });
   }
 
   /**
@@ -130,18 +104,21 @@ export class Modal {
    * Shows the Blockly modal and focus on the first focusable element.
    */
   show() {
+    Blockly.WidgetDiv.show(this, this.workspace_.RTL,
+        () => this.widgetDispose_());
+    this.widgetCreate_();
     const focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
         'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
     if (focusableEls.length > 0) {
       this.firstFocusableEl_ = focusableEls[0];
       this.lastFocusableEl_ = focusableEls[focusableEls.length - 1];
-    }
-    Blockly.WidgetDiv.show(this, this.workspace_.RTL,
-        () => this.widgetDispose_());
-    this.widgetCreate_();
-    if (this.firstFocusableEl_) {
-      this.firstFocusableEl_.focus();
+      if (focusableEls[0].classList.contains('blockly-modal-btn-close') &&
+          focusableEls.length > 1) {
+        focusableEls[1].focus();
+      } else {
+        this.firstFocusableEl_.focus();
+      }
     }
   }
 
@@ -291,6 +268,12 @@ export class Modal {
     Blockly.utils.dom.addClass(modalHeader, 'blockly-modal-header');
 
     this.renderHeader_(modalHeader);
+
+    const exitButton = document.createElement('button');
+    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn');
+    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn-close');
+    this.addEvent_(exitButton, 'click', this, this.onCancel_);
+    modalHeader.appendChild(exitButton);
     // End create header
 
     // Create content
@@ -304,13 +287,6 @@ export class Modal {
     Blockly.utils.dom.addClass(modalFooter, 'blockly-modal-footer');
 
     this.renderFooter_(modalFooter);
-
-    const cancelBtn = document.createElement('button');
-    Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
-    cancelBtn.innerText = Blockly.Msg['MODAL_CANCEL_BUTTON'];
-    this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
-    modalFooter.appendChild(cancelBtn);
-
     // End creating footer
 
     this.htmlDiv_.appendChild(modalHeader);

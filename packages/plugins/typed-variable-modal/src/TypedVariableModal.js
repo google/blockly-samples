@@ -83,7 +83,7 @@ export class TypedVariableModal extends Modal {
       "TYPED_VAR_MODAL_VARIABLE_NAME_LABEL": "Variable Name: ",
       "TYPED_VAR_MODAL_TYPES_LABEL": "Variable Types",
       "TYPED_VAR_MODAL_CONFIRM_BUTTON": "Ok",
-      "MODAL_CANCEL_BUTTON": "Cancel",
+      "TYPED_VAR_MODAL_CANCEL_BUTTON": "Cancel",
       "TYPED_VAR_MODAL_INVALID_NAME":
           "Name is not valid. Please choose a different name."
     };
@@ -107,9 +107,10 @@ export class TypedVariableModal extends Modal {
    *     TYPED_VAR_MODAL_TYPES_LABEL: string,
    *     TYPED_VAR_MODAL_TITLE: string,
    *     TYPED_VAR_MODAL_INVALID_NAME: string,
-   *     MODAL_CANCEL_BUTTON: string
+   *     TYPED_VAR_MODAL_CANCEL_BUTTON: string
    * }} TypedVarModalMessages
    */
+
 
   /**
    * Create a typed variable modal and display it on the given button name.
@@ -118,6 +119,18 @@ export class TypedVariableModal extends Modal {
     super.init();
     this.workspace_.registerButtonCallback(this.btnCallBackName_, () => {
       this.show();
+    });
+  }
+
+  /**
+   * Set the messages for the typed variable modal.
+   * Used to change the location.
+   * @param {!TypedVarModalMessages} messages The messages needed to create a
+   *     typed modal.
+   */
+  setLocale(messages) {
+    Object.keys(messages).forEach(function(k) {
+      Blockly.Msg[k] = messages[k];
     });
   }
 
@@ -242,15 +255,37 @@ export class TypedVariableModal extends Modal {
    * @override
    */
   renderFooter_(footerContainer) {
-    const createBtn = document.createElement('button');
-    Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn');
-    Blockly.utils.dom.addClass(createBtn, 'blockly-modal-btn-primary');
-    createBtn.innerText = Blockly.Msg['TYPED_VAR_MODAL_CONFIRM_BUTTON'];
-    this.addEvent_(createBtn, 'click', this, this.onConfirm_);
-
-
-    footerContainer.appendChild(createBtn);
+    footerContainer.appendChild(this.createConfirmBtn_());
+    footerContainer.appendChild(this.createCancelBtn_());
   }
+
+  /**
+   * Create button in charge of creating the variable.
+   * @return {!HTMLButtonElement}The button in charge of creating a variable.
+   * @protected
+   */
+  createConfirmBtn_() {
+    const confirmBtn = document.createElement('button');
+    Blockly.utils.dom.addClass(confirmBtn, 'blockly-modal-btn');
+    Blockly.utils.dom.addClass(confirmBtn, 'blockly-modal-btn-primary');
+    confirmBtn.innerText = Blockly.Msg['TYPED_VAR_MODAL_CONFIRM_BUTTON'];
+    this.addEvent_(confirmBtn, 'click', this, this.onConfirm_);
+    return confirmBtn;
+  }
+
+  /**
+   * Create button in charge of cancelling.
+   * @return {!HTMLButtonElement} The button in charge of cancelling.
+   * @protected
+   */
+  createCancelBtn_() {
+    const cancelBtn = document.createElement('button');
+    Blockly.utils.dom.addClass(cancelBtn, 'blockly-modal-btn');
+    cancelBtn.innerText = Blockly.Msg['TYPED_VAR_MODAL_CANCEL_BUTTON'];
+    this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
+    return cancelBtn;
+  }
+
 
   /**
    * Check the first type in the list.

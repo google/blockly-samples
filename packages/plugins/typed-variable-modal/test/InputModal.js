@@ -1,12 +1,16 @@
 
-class InputModal extends TypedVariableModal {
+import { TypedVariableModal } from '../src/TypedVariableModal.js';
+import * as Blockly from 'blockly/core';
+
+export class InputModal extends TypedVariableModal {
   /**
    * The element holding the input type.
    * @override
    */
   createVariableTypeContainer_(types) {
     const selectDiv = document.createElement('select');
-    for (const type of types) {
+    for (let i = 0; i < types.length; i++) {
+      const type = types[i];
       const displayName = type[0];
       const typeName = type[1];
       const option = document.createElement('option');
@@ -42,12 +46,13 @@ class InputModal extends TypedVariableModal {
    * @override
    */
   renderFooter_(footerContainer) {
-    super.renderFooter_(footerContainer);
+    footerContainer.appendChild(this.createConfirmBtn_());
     const randomBtn = document.createElement('button');
     Blockly.utils.dom.addClass(randomBtn, 'blockly-modal-btn');
     randomBtn.innerText = 'Create random name';
     this.addEvent_(randomBtn,'click',this, ()=> this.randomName());
     footerContainer.appendChild(randomBtn);
+    footerContainer.appendChild(this.createCancelBtn_());
   }
 
   /**

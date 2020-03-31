@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly';
 import { TypedVariableModal } from '../src/index.js';
+import { InputModal } from './InputModal.js';
 import { toolboxCategories } from '@blockly/dev-tools';
 
 const options = {
