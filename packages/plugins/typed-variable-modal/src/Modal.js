@@ -252,6 +252,7 @@ export class Modal {
     const modalContainer = document.createElement('div');
     modalContainer.className = 'blocklyModalContainer';
     modalContainer.setAttribute('role', 'dialog');
+    modalContainer.setAttribute('aria-labelledby', this.title_);
     // End creating the container
 
     // Add Events
@@ -305,7 +306,6 @@ export class Modal {
     const modalTitle = document.createElement('h2');
     modalTitle.className = 'blocklyModalHeaderTitle';
     modalTitle.appendChild(document.createTextNode(this.title_));
-    this.htmlDiv_.setAttribute('aria-labelledby', this.title_);
     headerContainer.appendChild(modalTitle);
   }
 
