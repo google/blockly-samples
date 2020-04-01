@@ -48,9 +48,9 @@ export class InputModal extends TypedVariableModal {
   renderFooter_(footerContainer) {
     footerContainer.appendChild(this.createConfirmBtn_());
     const randomBtn = document.createElement('button');
-    Blockly.utils.dom.addClass(randomBtn, 'blockly-modal-btn');
+    randomBtn.className = 'blockly-modal-btn';
     randomBtn.innerText = 'Create random name';
-    this.addEvent_(randomBtn,'click',this, ()=> this.randomName());
+    this.addEvent_(randomBtn, 'click', this, ()=> this.randomName());
     footerContainer.appendChild(randomBtn);
     footerContainer.appendChild(this.createCancelBtn_());
   }

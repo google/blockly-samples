@@ -73,7 +73,13 @@ export class Modal {
      * Otherwise, only close when user hits the 'X' button or escape.
      * @type {boolean}
      */
-    this.closeOnClick = true;
+    this.shouldCloseOnOverlayClick = true;
+
+    /**
+     * If true close the modal when the user hits escape. Otherwise, do not
+     * close on escape.
+     */
+    this.shouldCloseOnEsc = true;
   }
 
   /**
@@ -149,7 +155,7 @@ export class Modal {
     widgetDiv.style.left = '0px';
     widgetDiv.style.top = '0px';
     widgetDiv.style.position = 'fixed';
-    if (this.closeOnClick) {
+    if (this.shouldCloseOnOverlayClick) {
       this.hideEvent = this.addEvent_(widgetDiv, 'click', this, this.hide);
       this.modalEvent = this.addEvent_(this.htmlDiv_, 'click', this, (e) => {
         e.stopPropagation();
@@ -167,7 +173,7 @@ export class Modal {
     const widgetDiv = Blockly.WidgetDiv.DIV;
     widgetDiv.style.width = 'auto';
     widgetDiv.style.height = 'auto';
-    if (this.closeOnClick) {
+    if (this.shouldCloseOnOverlayClick) {
       Blockly.unbindEvent_(this.hideEvent);
       Blockly.unbindEvent_(this.modalEvent);
     }
@@ -218,7 +224,8 @@ export class Modal {
       } else {
         this.handleForwardTab_(e);
       }
-    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
+    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC
+        && this.shouldCloseOnEsc) {
       this.hide();
     }
     e.stopPropagation();
@@ -259,32 +266,31 @@ export class Modal {
 
     // Create Container
     this.htmlDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-container');
+    this.htmlDiv_.className = 'blockly-modal-container';
     this.htmlDiv_.setAttribute('role', 'dialog');
     // End creating the container
 
     // Create the header
     const modalHeader = document.createElement('header');
-    Blockly.utils.dom.addClass(modalHeader, 'blockly-modal-header');
+    modalHeader.className = 'blockly-modal-header';
 
     this.renderHeader_(modalHeader);
 
     const exitButton = document.createElement('button');
-    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn');
-    Blockly.utils.dom.addClass(exitButton, 'blockly-modal-btn-close');
+    exitButton.className = 'blockly-modal-btn blockly-modal-btn-close';
     this.addEvent_(exitButton, 'click', this, this.onCancel_);
     modalHeader.appendChild(exitButton);
     // End create header
 
     // Create content
     const modalContent = document.createElement('div');
-    Blockly.utils.dom.addClass(modalContent, 'blockly-modal-content');
+    modalContent.className = 'blockly-modal-content';
     this.renderContent_(modalContent);
     // End creating content
 
     // Create Footer
     const modalFooter = document.createElement('footer');
-    Blockly.utils.dom.addClass(modalFooter, 'blockly-modal-footer');
+    modalFooter.className = 'blockly-modal-footer';
 
     this.renderFooter_(modalFooter);
     // End creating footer
@@ -300,8 +306,8 @@ export class Modal {
    * @protected
    */
   renderHeader_(headerContainer) {
-    const modalTitle = document.createElement('H2');
-    Blockly.utils.dom.addClass(modalTitle, 'blockly-modal-header-title');
+    const modalTitle = document.createElement('h2');
+    modalTitle.className = 'blockly-modal-header-title';
     modalTitle.appendChild(document.createTextNode(this.title_));
     this.htmlDiv_.setAttribute('aria-labelledby', this.title_);
     headerContainer.appendChild(modalTitle);

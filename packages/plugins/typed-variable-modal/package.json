@@ -1,5 +1,5 @@
 {
-  "name": "@blockly/plugin-typed-var-modal",
+  "name": "@blockly/plugin-typed-variable-modal",
   "version": "1.0.0",
   "description": "A Blockly plugin to create a modal for creating typed variables.",
   "author": "Blockly Team",
@@ -8,14 +8,14 @@
     "modal",
     "typed variables"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/typed-var-modal#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/typed-variable-modal#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/plugins/typed-var-modal"
+    "directory": "packages/plugins/typed-variable-modal"
   },
   "license": "Apache-2.0",
   "main": "./dist/index.js",

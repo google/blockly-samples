@@ -36,7 +36,7 @@ workspace = Blockly.inject('blocklyDiv', {
 ```
 
 Add a custom category to your toolbox.
-```js
+```xml
 <category name="Colours" custom="CREATE_TYPED_VARIABLE"></category>
 ```
 
