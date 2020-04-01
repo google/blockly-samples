@@ -241,7 +241,7 @@ export class TypedVariableModal extends Modal {
         .querySelector('.typed-modal-variable-name-input');
 
     const typedVarDiv = document.createElement('div');
-    typedVarDiv.className = 'typed-modal-types';
+    typedVarDiv.className = 'typedModalTypes';
     typedVarDiv.textContent = Blockly.Msg["TYPED_VAR_MODAL_TYPES_LABEL"];
 
     this.variableTypesDiv_ = this.createVariableTypeContainer_(this.types_);
@@ -268,7 +268,7 @@ export class TypedVariableModal extends Modal {
    */
   createConfirmBtn_() {
     const confirmBtn = document.createElement('button');
-    confirmBtn.className = 'blockly-modal-btn blockly-modal-btn-primary';
+    confirmBtn.className = 'blocklyModalBtn blocklyModalBtnPrimary';
     confirmBtn.textContent = Blockly.Msg['TYPED_VAR_MODAL_CONFIRM_BUTTON'];
     this.addEvent_(confirmBtn, 'click', this, this.onConfirm_);
     return confirmBtn;
@@ -281,7 +281,7 @@ export class TypedVariableModal extends Modal {
    */
   createCancelBtn_() {
     const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'blockly-modal-btn';
+    cancelBtn.className = 'blocklyModalBtn';
     cancelBtn.textContent = Blockly.Msg['TYPED_VAR_MODAL_CANCEL_BUTTON'];
     this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
     return cancelBtn;
@@ -315,14 +315,14 @@ export class TypedVariableModal extends Modal {
       const typeName = type[1];
       const typeLi = document.createElement('li');
       const typeInput = document.createElement('input');
-      typeInput.className = 'typed-modal-types';
+      typeInput.className = 'typedModalTypes';
       typeInput.type = "radio";
       typeInput.id = typeName;
       typeInput.name = "blocklyVariableType";
       this.addEvent_(typeInput, 'click', this, (e) => {
         this.selectedType_ = e.target.id;
       });
-      this.firstTypeInput_ = typeList.querySelector('.typed-modal-types');
+      this.firstTypeInput_ = typeList.querySelector('.typedModalTypes');
       const typeLabel = document.createElement("Label");
       typeLabel.textContent = typeDisplayName;
       typeLabel.setAttribute('for', typeName);
@@ -343,10 +343,10 @@ export class TypedVariableModal extends Modal {
    */
   createVarNameContainer_() {
     const varNameContainer = document.createElement('div');
-    varNameContainer.className = 'typed-modal-variable-name-container';
+    varNameContainer.className = 'typedModalVariableInputContainer';
 
     const varNameLabel = document.createElement("Label");
-    varNameLabel.className = 'typed-modal-variable-name-label';
+    varNameLabel.className = 'typedModalVariableLabel';
     varNameLabel.textContent = Blockly.Msg["TYPED_VAR_MODAL_VARIABLE_NAME_LABEL"];
     varNameLabel.setAttribute('for', 'variableInput');
 
@@ -362,23 +362,23 @@ export class TypedVariableModal extends Modal {
 }
 
 Blockly.Css.register([`
-    .typed-modal-title {
+    .typedModalTitle {
       font-weight: bold;
       font-size: 1em;
     }
-    .typed-modal-variable-name-container {
+    .typedModalVariableInputContainer {
       margin: 1em 0 1em 0;
     }
-    .typed-modal-variable-name-label{
+    .typedModalVariableLabel{
       margin-right: .5em;
     }
-    .typed-modal-types ul{
+    .typedModalTypes ul{
       display: flex;
       flex-wrap: wrap;
       list-style-type: none;
       padding: 0;
     }
-    .typed-modal-types li {
+    .typedModalTypes li {
       margin-right: 1em;
       display: flex;
     }`]);

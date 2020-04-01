@@ -87,8 +87,6 @@ export class Modal {
    */
   init() {
     this.render();
-    this.addEvent_(/** @type{!HTMLDivElement} */ this.htmlDiv_, 'keydown',
-        this, this.handleKeyDown_);
   }
 
   /**
@@ -119,7 +117,7 @@ export class Modal {
     if (focusableEls.length > 0) {
       this.firstFocusableEl_ = focusableEls[0];
       this.lastFocusableEl_ = focusableEls[focusableEls.length - 1];
-      if (focusableEls[0].classList.contains('blockly-modal-btn-close') &&
+      if (focusableEls[0].classList.contains('blocklyModalBtnClose') &&
           focusableEls.length > 1) {
         focusableEls[1].focus();
       } else {
@@ -149,19 +147,7 @@ export class Modal {
    */
   widgetCreate_() {
     const widgetDiv = Blockly.WidgetDiv.DIV;
-
-    widgetDiv.style.width = '100%';
-    widgetDiv.style.height = '100%';
-    widgetDiv.style.left = '0px';
-    widgetDiv.style.top = '0px';
-    widgetDiv.style.position = 'fixed';
-    if (this.shouldCloseOnOverlayClick) {
-      this.hideEvent = this.addEvent_(widgetDiv, 'click', this, this.hide);
-      this.modalEvent = this.addEvent_(this.htmlDiv_, 'click', this, (e) => {
-        e.stopPropagation();
-      });
-    }
-    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-modal-open');
+    Blockly.utils.dom.addClass(this.htmlDiv_, 'blocklyModalOpen');
     widgetDiv.appendChild(this.htmlDiv_);
   }
 
@@ -170,14 +156,7 @@ export class Modal {
    * @protected
    */
   widgetDispose_() {
-    const widgetDiv = Blockly.WidgetDiv.DIV;
-    widgetDiv.style.width = 'auto';
-    widgetDiv.style.height = 'auto';
-    if (this.shouldCloseOnOverlayClick) {
-      Blockly.unbindEvent_(this.hideEvent);
-      Blockly.unbindEvent_(this.modalEvent);
-    }
-    Blockly.utils.dom.removeClass(this.htmlDiv_, 'blockly-modal-open');
+    Blockly.utils.dom.removeClass(this.htmlDiv_, 'blocklyModalOpen');
   }
 
   /**
@@ -250,54 +229,71 @@ export class Modal {
   render() {
     /*
      * Creates the Modal. The generated modal looks like:
-     * <div class="blockly-modal-container" role="dialog">
-     *   <header class="blockly-moddal-header">
-     *     <h2 class="blockly-modal-header-title">Modal Name</h2>
-     *     <button class="blockly-modal-btn">X</button>
+     * <div class="blocklyModalContainer" role="dialog">
+     *   <header class="blocklyModalHeader">
+     *     <h2 class="blocklyModalHeaderTitle">Modal Name</h2>
+     *     <button class="blocklyModalBtn">X</button>
      *   </header>
-     *   <div class="blockly-modal-content">
+     *   <div class="blocklyModalContent">
      *   </div>
-     *   <div class="blockly-modal-footer">
-     *     <button class="blockly-modal-btn blockly-modal-btn-primary">OK</button>
-     *     <button class="blockly-modal-btn">Cancel</button>
+     *   <div class="blocklyModalFooter">
+     *     <button class="blocklyModalBtn blocklyModalBtnPrimary">OK</button>
+     *     <button class="blocklyModalBtn">Cancel</button>
      *   </div>
      * </div>
      */
 
-    // Create Container
+    // Create Overlay
     this.htmlDiv_ = document.createElement('div');
-    this.htmlDiv_.className = 'blockly-modal-container';
-    this.htmlDiv_.setAttribute('role', 'dialog');
+    this.htmlDiv_.className = 'blocklyModalOverlay';
+    // End Creating the Overlay
+
+    // Create Container
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'blocklyModalContainer';
+    modalContainer.setAttribute('role', 'dialog');
     // End creating the container
+
+    // Add Events
+    this.addEvent_(/** @type{!HTMLDivElement} */ modalContainer, 'keydown',
+        this, this.handleKeyDown_);
+
+    if (this.shouldCloseOnOverlayClick) {
+      this.addEvent_(this.htmlDiv_, 'click', this, this.hide);
+      this.addEvent_(modalContainer, 'click', this, (e) => {
+        e.stopPropagation();
+      });
+    }
 
     // Create the header
     const modalHeader = document.createElement('header');
-    modalHeader.className = 'blockly-modal-header';
+    modalHeader.className = 'blocklyModalHeader';
 
     this.renderHeader_(modalHeader);
 
     const exitButton = document.createElement('button');
-    exitButton.className = 'blockly-modal-btn blockly-modal-btn-close';
+    exitButton.className = 'blocklyModalBtn blocklyModalBtnClose';
     this.addEvent_(exitButton, 'click', this, this.onCancel_);
     modalHeader.appendChild(exitButton);
     // End create header
 
     // Create content
     const modalContent = document.createElement('div');
-    modalContent.className = 'blockly-modal-content';
+    modalContent.className = 'blocklyModalContent';
     this.renderContent_(modalContent);
     // End creating content
 
     // Create Footer
     const modalFooter = document.createElement('footer');
-    modalFooter.className = 'blockly-modal-footer';
+    modalFooter.className = 'blocklyModalFooter';
 
     this.renderFooter_(modalFooter);
     // End creating footer
 
-    this.htmlDiv_.appendChild(modalHeader);
-    this.htmlDiv_.appendChild(modalContent);
-    this.htmlDiv_.appendChild(modalFooter);
+    modalContainer.appendChild(modalHeader);
+    modalContainer.appendChild(modalContent);
+    modalContainer.appendChild(modalFooter);
+    this.htmlDiv_.appendChild(modalContainer);
   }
 
   /**
@@ -307,7 +303,7 @@ export class Modal {
    */
   renderHeader_(headerContainer) {
     const modalTitle = document.createElement('h2');
-    modalTitle.className = 'blockly-modal-header-title';
+    modalTitle.className = 'blocklyModalHeaderTitle';
     modalTitle.appendChild(document.createTextNode(this.title_));
     this.htmlDiv_.setAttribute('aria-labelledby', this.title_);
     headerContainer.appendChild(modalTitle);
@@ -331,11 +327,18 @@ export class Modal {
     // No-op on the base class.
   }
 }
+
 Blockly.Css.register([`
-    .blockly-modal-container {
+    .blocklyModalOverlay {
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      position: fixed;
+    }
+    .blocklyModalContainer {
       background-color: white;
       border: 1px solid gray;
-      max-width: 50%;
       font-family: Helvetica;
       font-weight: 300;
       padding: 1em;
@@ -347,32 +350,32 @@ Blockly.Css.register([`
       z-index: 100;
       margin: 15% auto;
     }
-    .blockly-modal-header {
+    .blocklyModalHeader {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .blockly-modal-header-title {
+    .blocklyModalHeaderTitle {
       margin-top: 0;
       margin-bottom: 0;
       font-size: 1.2em;
       line-height: 1.25;
     }
-    .blockly-modal-header .blockly-modal-btn {
+    .blocklyModalHeader .blocklyModalBtn {
       margin-left: auto;
       height: fit-content;
     }
-    .blockly-modal-btn-close:before {
+    .blocklyModalBtnClose:before {
       content: "\\2715";
     }
-    .blockly-modal-btn {
+    .blocklyModalBtn {
       margin-right: .5em;
       border: 1px solid gray;
       font-weight: 500;
       color: gray;
       border-radius: 25px;
     }
-    .blockly-modal-btn-primary {
+    .blocklyModalBtnPrimary {
       background-color: gray;
       color: white;
     }`]);
