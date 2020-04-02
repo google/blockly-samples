@@ -49,6 +49,7 @@ FieldPlus.prototype.onClick_ = function() {
     Blockly.Events.fire(new Blockly.Events.BlockChange(
         block, 'mutation', null, oldMutation, newMutation));
   }
+  Blockly.Events.setGroup(false);
 };
 
 Blockly.fieldRegistry.register('field_plus', FieldPlus);
