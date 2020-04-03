@@ -11,6 +11,9 @@
 # production
 /build
 
+# blockly media
+/public/media
+
 # misc
 .DS_Store
 .env.local
