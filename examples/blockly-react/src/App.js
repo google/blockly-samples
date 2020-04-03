@@ -46,11 +46,14 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <button onClick={this.generateCode}>Convert</button>
-          <BlocklyComponent ref={e => this.simpleWorkspace = e} readOnly={false} move={{
+          <BlocklyComponent ref={e => this.simpleWorkspace = e}
+          readOnly={false} trashcan={true} media={'media/'}
+          move={{
             scrollbars: true,
             drag: true,
             wheel: true
-          }} initialXml={`
+          }}
+          initialXml={`
 <xml xmlns="http://www.w3.org/1999/xhtml">
 <block type="controls_ifelse" x="0" y="0"></block>
 </xml>
