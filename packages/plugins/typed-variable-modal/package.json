@@ -8,8 +8,7 @@
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run prod",
-    "start": "blockly-scripts start",
-    "test": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.js"
+    "start": "blockly-scripts start"
   },
   "author": "Blockly Team",
   "keywords": [
