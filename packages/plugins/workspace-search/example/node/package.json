@@ -1,6 +1,7 @@
 {
-  "name": "blockly-ws-search-node",
+  "name": "@blockly/plugin-workspace-search-example-node",
   "version": "1.0.0",
+  "private": true,
   "description": "Example of workspace search with node.",
   "scripts": {
     "start": "node --preserve-symlinks index.js"

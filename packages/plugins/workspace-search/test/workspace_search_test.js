@@ -13,7 +13,7 @@ const assert = require('assert');
 const Blockly = require('blockly');
 const sinon = require('sinon');
 
-const WorkspaceSearch = require('../dist/workspace-search.umd').WorkspaceSearch;
+const WorkspaceSearch = require('../dist/index').WorkspaceSearch;
 
 suite('WorkspaceSearch', () => {
   function isBlockHighlighted(block) {
