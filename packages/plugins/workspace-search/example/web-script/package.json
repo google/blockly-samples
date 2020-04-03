@@ -1,5 +1,5 @@
 {
-  "name": "blockly-ws-search-web-script",
+  "name": "@blockly/plugin-workspace-search-example-script",
   "version": "1.0.0",
   "description": "Example of workspace search with script tag.",
   "private": true,
