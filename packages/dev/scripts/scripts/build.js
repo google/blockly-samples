@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * @fileoverview A 'build' script for Blockly extension packages.
+ * @author samelh@google.com (Sam El-Husseini)
+ */
+
 'use strict';
 
 const args = process.argv.slice(2);

@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * @fileoverview A 'clean' script for Blockly extension packages.
+ * @author samelh@google.com (Sam El-Husseini)
+ */
+
 'use strict';
 
 const fs = require('fs');

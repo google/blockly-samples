@@ -5,6 +5,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * @fileoverview Blockly dev scripts entry point.
+ * @author samelh@google.com (Sam El-Husseini)
+ */
+
 const args = process.argv.slice(2);
 const {spawnSync} = require('child_process');
 
