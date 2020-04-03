@@ -333,6 +333,8 @@ export default `<xml xmlns="https://developers.google.com/blockly/xml" id="toolb
   </block>
 </category>
 <sep></sep>
-<category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
-<category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
+<category name="Variables" categorystyle="variable_category" custom="VARIABLE">
+</category>
+<category name="Functions" categorystyle="procedure_category"
+custom="PROCEDURE"></category>
 </xml>`;
