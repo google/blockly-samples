@@ -6,6 +6,11 @@
 
 /**
  * @fileoverview A 'start' script for Blockly extension packages.
+ * This script: 
+ *   Builds the src and test directories in development mode.
+ *   Starts the webpack dev server which watches changes to these directories.
+ *   Opens the test page 0.0.0.0:3000/test
+ *   Hot reloads the page if any changes are made to the source files.
  * @author samelh@google.com (Sam El-Husseini)
  */
 

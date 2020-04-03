@@ -6,6 +6,8 @@
 
 /**
  * @fileoverview A 'lint' script for Blockly extension packages.
+ * This script:
+ *   Runs eslint on the src and test directories.
  * @author samelh@google.com (Sam El-Husseini)
  */
 

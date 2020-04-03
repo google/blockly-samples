@@ -6,6 +6,8 @@
 
 /**
  * @fileoverview A 'clean' script for Blockly extension packages.
+ * This script:
+ *   Deletes the dist and build directories if they exist.
  * @author samelh@google.com (Sam El-Husseini)
  */
 

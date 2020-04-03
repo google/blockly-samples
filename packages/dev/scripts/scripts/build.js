@@ -6,6 +6,11 @@
 
 /**
  * @fileoverview A 'build' script for Blockly extension packages.
+ * This script:
+ *   - Uses webpack to build the src directory in development mode if no
+ *   additional arguments are passed.
+ *   - Uses webpack to build the src directory in production mode if
+ *   ``blockly-scripts build prod`` is called.
  * @author samelh@google.com (Sam El-Husseini)
  */
 
