@@ -18,10 +18,15 @@ const CLIEngine = require('eslint').CLIEngine;
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const cli = new CLIEngine();
+const packageJson = require(resolveApp('package.json'));
+console.log(`Running lint for ${packageJson.name}`);
 
+// Create the eslint engine.
+const cli = new CLIEngine();
 const formatter = cli.getFormatter();
 
+// Run eslint for both the src and test directories.
+// The eslint engine will use the .eslintrc under packages/ for configuration.
 const dirs = ['src', 'test'];
 dirs.forEach((dir) => {
   const resolvePath = resolveApp(dir);

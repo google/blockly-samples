@@ -13,10 +13,10 @@
 
 const path = require('path');
 const fs = require('fs');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
 const open = require('open');
 
+const webpack = require('webpack');
+const webpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('../config/webpack.config');
 
 const appDirectory = fs.realpathSync(process.cwd());
@@ -25,19 +25,23 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const packageJson = require(resolveApp('package.json'));
 console.log(`Running start for ${packageJson.name}`);
 
+// Create the webpack configuration for the development environment.
+// Build the test directory.
 const config = webpackConfig({
   mode: 'development',
   buildTest: true
 });
 const compiler = webpack(config);
 
+// Read the webpack devServer configuration.
 const devServerConfig = config[0].devServer;
 const port = devServerConfig.port;
 const host = devServerConfig.host;
 const page = devServerConfig.openPage;
 const URL = `http://${host}:${port}/${page}`;
 
-const devServer = new WebpackDevServer(compiler);
+// Start the deve server.
+const devServer = new webpackDevServer(compiler);
 devServer.listen(port, host, async (err) => {
   if (err) {
     return console.log(err);
