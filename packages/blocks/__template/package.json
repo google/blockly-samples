@@ -1,7 +1,7 @@
 {
   "name": "@blockly/block-template",
-  "version": "1.20200312.2",
-  "description": "A Blockly block that ...",
+  "version": "1.YYYYMMDD.0",
+  "description": "A Blockly block that (TODO: add description)",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
@@ -17,14 +17,14 @@
     "block",
     "..."
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blocks/...#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blocks/template#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/blocks/..."
+    "directory": "packages/blocks/template"
   },
   "license": "Apache-2.0",
   "directories": {
