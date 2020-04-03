@@ -1,0 +1,53 @@
+{
+  "name": "@blockly/block-template",
+  "version": "1.20200312.2",
+  "description": "A Blockly block that ...",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "dist": "blockly-scripts build prod",
+    "prepublishOnly": "npm run clean && npm run prod",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "block",
+    "..."
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blocks/...#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "packages/blocks/..."
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-tools": "^0.20200313.1",
+    "@blockly/dev-scripts": "^0.20200403.0",
+    "blockly": "^3.20200123.1"
+  },
+  "peerDependencies": {
+    "blockly": ">=3.20200123.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  }
+}
