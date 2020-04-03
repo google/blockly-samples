@@ -1,7 +1,7 @@
 {
   "name": "@blockly/plugin-template",
-  "version": "1.20200312.2",
-  "description": "A Blockly plugin that ...",
+  "version": "1.YYYYMMDD.0",
+  "description": "A Blockly plugin that (TODO: add description)",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
@@ -18,14 +18,14 @@
     "plugin",
     "..."
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/...#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/template#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/plugins/..."
+    "directory": "packages/plugins/template"
   },
   "license": "Apache-2.0",
   "directories": {

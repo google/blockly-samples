@@ -11,7 +11,7 @@
 /**
  * TODO: Rename plugin and add plugin description.
  */
-export default class Plugin {
+export class Plugin {
   /**
    * Constructor for ...
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
