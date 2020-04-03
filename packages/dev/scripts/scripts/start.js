@@ -45,7 +45,7 @@ const host = devServerConfig.host;
 const page = devServerConfig.openPage;
 const URL = `http://${host}:${port}/${page}`;
 
-// Start the deve server.
+// Start the dev server.
 const devServer = new webpackDevServer(compiler);
 devServer.listen(port, host, async (err) => {
   if (err) {
