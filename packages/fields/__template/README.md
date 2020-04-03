@@ -1,9 +1,18 @@
+<!--
+  - TODO: Rename to the desired field name.
+  -->
 # @blockly/field-template [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
+<!--
+  - TODO: Add field description.
+  -->
 A [Blockly](https://www.npmjs.com/package/blockly) ... field.
 
 ## Installation
 
+<!--
+  - TODO: Rename to field name.
+  -->
 ### Yarn
 ```
 yarn add @blockly/field-template
@@ -15,6 +24,10 @@ npm install @blockly/field-template --save
 ```
 
 ## Usage
+
+<!--
+  - TODO: Update usage and rename to field name.
+  -->
 
 ### JavaScript
 ```js
