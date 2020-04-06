@@ -12,6 +12,7 @@
     "test": "mocha --ui tdd test/field_slider_test.js"
   },
   "main": "./dist/index.js",
+  "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
