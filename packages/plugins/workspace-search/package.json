@@ -13,6 +13,7 @@
     "test:mocha": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.js"
   },
   "main": "./dist/index.js",
+  "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
@@ -40,7 +41,7 @@
   ],
   "devDependencies": {
     "blockly": "^3.20200123.1",
-    "@blockly/dev-tools": "^0.20200313.0",
+    "@blockly/dev-tools": "^0.20200313.1",
     "@blockly/dev-scripts": "^0.20200403.0",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",
