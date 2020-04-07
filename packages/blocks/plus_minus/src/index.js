@@ -158,7 +158,10 @@ const controlsIfMutator = {
   domToMutation: function(xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
     this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10) || 0;
-    if (this.type == 'controls_if' && !!this.elseCount_) {
+    if (this.type == 'controls_if' &&
+        !!this.elseCount_ &&
+        !this.getInput('ELSE')
+    ) {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
     }
@@ -241,33 +244,35 @@ const controlsIfMutator = {
     //  - Move all connect blocks from the other inputs up.
     //  - Remove the last input.
     // This makes sure all of our indices are correct.
-    let foundInput = false;
-    const name = 'IF' + index;
-    for (let i = 0, input; (input = this.inputList[i]); i++) {
-      if (input.name == name) {
-        foundInput = true;
-        let connection = input.connection;
-        // TODO: Is there any reason we need to throw errors when the connection
-        //   isn't currently connected?
-        if (connection.isConnected()) {
-          connection.disconnect();
+    if (index !== undefined) {
+      let foundInput = false;
+      const name = 'IF' + index;
+      for (let i = 0, input; (input = this.inputList[i]); i++) {
+        if (input.name == name) {
+          foundInput = true;
+          let connection = input.connection;
+          // TODO: Is there any reason we need to throw errors when the
+          //  connection isn't currently connected?
+          if (connection.isConnected()) {
+            connection.disconnect();
+          }
+          connection = this.inputList[++i].connection; // Do connection.
+          if (connection.isConnected()) {
+            connection.disconnect();
+          }
+          this.bumpNeighbours();
+          continue;
         }
-        connection = this.inputList[++i].connection; // Do connection.
-        if (connection.isConnected()) {
-          connection.disconnect();
+        if (!foundInput) {
+          continue;
         }
-        this.bumpNeighbours();
-        continue;
-      }
-      if (!foundInput) {
-        continue;
-      }
-      if (input.name == 'ELSE') {
-        break; // Should be last anyway.
-      }
-      const targetConnect = input.connection.targetConnection;
-      if (targetConnect) {
-        this.inputList[i - 2].connection.connect(targetConnect);
+        if (input.name == 'ELSE') {
+          break; // Should be last anyway.
+        }
+        const targetConnect = input.connection.targetConnection;
+        if (targetConnect) {
+          this.inputList[i - 2].connection.connect(targetConnect);
+        }
       }
     }
 
