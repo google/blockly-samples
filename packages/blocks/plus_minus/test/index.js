@@ -8,7 +8,7 @@
  * @fileoverview Plus minus blocks' test playground.
  */
 
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import '../src/index.js';
 
 let workspace;

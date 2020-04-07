@@ -47,7 +47,7 @@ suite('join', () => {
     test('Simple', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="text_join" id="join" x="128" y="173">\n' +
-          '    <mutation items="5"/>\n' +
+          '    <mutation items="5"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(
@@ -63,7 +63,7 @@ suite('join', () => {
           '</xml>';
       const expected = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="text_join" id="join" x="128" y="173">\n' +
-          '    <mutation items="2"/>\n' +
+          '    <mutation items="2"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(given), this.workspace);
@@ -75,7 +75,7 @@ suite('join', () => {
     test('No inputs', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="text_join" id="join" x="128" y="173">\n' +
-          '    <mutation items="0"/>\n' +
+          '    <mutation items="0"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(

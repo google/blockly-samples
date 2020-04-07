@@ -7,7 +7,9 @@
         "clean": "blockly-scripts clean",
         "dist": "blockly-scripts build prod",
         "prepublishOnly": "npm run clean && npm run prod",
-        "start": "blockly-scripts start"
+        "start": "blockly-scripts start",
+        "test": "npm run build && npm run test:mocha",
+        "test:mocha": "mocha --ui tdd test/if.js test/list_create.js test/procedures.js test/text_join.js"
     },
     "main": "./dist/index.js",
     "unpkg": "./dist/index.js",
@@ -36,9 +38,12 @@
         "src"
     ],
     "devDependencies": {
-        "@blockly/dev-tools": "^0.20200313.1",
         "@blockly/dev-scripts": "^0.20200403.0",
-        "blockly": "^3.20200123.1"
+        "@blockly/dev-tools": "^0.20200313.1",
+        "blockly": "^3.20200123.1",
+        "chai": "^4.2.0",
+        "mocha": "^7.1.0",
+        "sinon": "^9.0.1"
     },
     "peerDependencies": {
         "blockly": ">=3.20200123.0"

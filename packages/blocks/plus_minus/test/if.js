@@ -15,7 +15,7 @@ suite('if & ifelse', () => {
     const inputs = block.inputList;
     const length = inputs.length;
     assert.equal(length, hasElse ? ifCount * 2 + 1 : ifCount * 2);
-    for (const i = 0; i < ifCount; i++) {
+    for (let i = 0; i < ifCount; i++) {
       assert.equal(inputs[i * 2].name, 'IF' + i);
       assert.equal(inputs[i * 2 + 1].name, 'DO' + i);
       if (i > 0) {
@@ -43,7 +43,7 @@ suite('if & ifelse', () => {
     test('No else', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="controls_if" id="if" x="44" y="134">\n' +
-          '    <mutation elseif="2"/>\n' +
+          '    <mutation elseif="2"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(
@@ -56,7 +56,7 @@ suite('if & ifelse', () => {
     test('With else', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="controls_if" id="if" x="44" y="134">\n' +
-          '    <mutation elseif="2" else="1"/>\n' +
+          '    <mutation elseif="2" else="1"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(

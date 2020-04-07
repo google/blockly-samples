@@ -96,29 +96,32 @@ suite('procedures', () => {
     });
     test('Simple', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <constiables>\n' +
-          '    <constiable id="O:Sr,z]cTdOh.rxYtbpK">x</constiable>\n' +
-          '    <constiable id="b0khn,ShlhUP,dU}e+;-">y</constiable>\n' +
-          '    <constiable id="@O5;lK8){`{*?=-t:Yxy">z</constiable>\n' +
-          '  </constiables>\n' +
+          '  <variables>\n' +
+          '    <variable id="O:Sr,z]cTdOh.rxYtbpK">x</variable>\n' +
+          '    <variable id="b0khn,ShlhUP,dU}e+;-">y</variable>\n' +
+          '    <variable id="@O5;lK8){`{*?=-t:Yxy">z</variable>\n' +
+          '  </variables>\n' +
           '  <block type="procedures_defreturn" id="def" x="63" y="-477">\n' +
           '    <mutation>\n' +
-          '      <arg name="x" constid="O:Sr,z]cTdOh.rxYtbpK"/>\n' +
-          '      <arg name="y" constid="b0khn,ShlhUP,dU}e+;-"/>\n' +
-          '      <arg name="z" constid="@O5;lK8){`{*?=-t:Yxy"/>\n' +
+          '      <arg name="x" varid="O:Sr,z]cTdOh.rxYtbpK"></arg>\n' +
+          '      <arg name="y" varid="b0khn,ShlhUP,dU}e+;-"></arg>\n' +
+          '      <arg name="z" varid="@O5;lK8){`{*?=-t:Yxy"></arg>\n' +
           '    </mutation>\n' +
           '    <field name="NAME">do something</field>\n' +
-          '    <comment pinned="false" h="80" w="160">Describe this function...</comment>\n' +
+          '    <comment pinned="false" h="80" w="160">' +
+          '      Describe this function...' +
+          '    </comment>\n' +
           '  </block>\n' +
           '  <block type="procedures_callreturn" id="call" x="56" y="-282">\n' +
           '    <mutation name="do something">\n' +
-          '      <arg name="x"/>\n' +
-          '      <arg name="y"/>\n' +
-          '      <arg name="z"/>\n' +
+          '      <arg name="x"></arg>\n' +
+          '      <arg name="y"></arg>\n' +
+          '      <arg name="z"></arg>\n' +
           '    </mutation>\n' +
           '  </block>\n' +
           '</xml>';
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      Blockly.Xml.domToWorkspace(
+          Blockly.Xml.textToDom(oldText), this.workspace);
       assertProc(this.workspace.getBlockById('def'),
           this.workspace.getBlockById('call'), 3, ['x', 'y', 'z']);
       const xml = Blockly.Xml.workspaceToDom(this.workspace);
@@ -139,14 +142,14 @@ suite('procedures', () => {
     });
     test('Duplicate Params', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <constiables>\n' +
-          '    <constiable id="|bfmCeh02-k|go!MeHd6">x</constiable>\n' +
-          '  </constiables>\n' +
+          '  <variables>\n' +
+          '    <variable id="|bfmCeh02-k|go!MeHd6">x</variable>\n' +
+          '  </variables>\n' +
           '  <block type="procedures_defreturn" id="def" x="92" y="113">\n' +
           '    <mutation>\n' +
-          '      <arg name="x" constid="|bfmCeh02-k|go!MeHd6"/>\n' +
-          '      <arg name="x" constid="|bfmCeh02-k|go!MeHd6"/>\n' +
-          '      <arg name="x" constid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"></arg>\n' +
+          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"></arg>\n' +
+          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"></arg>\n' +
           '    </mutation>\n' +
           '    <field name="NAME">do something</field>\n' +
           '    <comment pinned="false" h="80" w="160">' +
@@ -155,9 +158,9 @@ suite('procedures', () => {
           '  </block>\n' +
           '  <block type="procedures_callreturn" id="call" x="92" y="227">\n' +
           '    <mutation name="do something">\n' +
-          '      <arg name="x"/>\n' +
-          '      <arg name="x"/>\n' +
-          '      <arg name="x"/>\n' +
+          '      <arg name="x"></arg>\n' +
+          '      <arg name="x"></arg>\n' +
+          '      <arg name="x"></arg>\n' +
           '    </mutation>\n' +
           '  </block>\n' +
           '</xml>';
@@ -184,11 +187,11 @@ suite('procedures', () => {
     test('No Statements', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="procedures_defreturn" id="def" x="80" y="130">\n' +
-          '    <mutation statements="false"/>\n' +
+          '    <mutation statements="false"></mutation>\n' +
           '    <field name="NAME">do something</field>\n' +
           '  </block>\n' +
           '  <block type="procedures_callreturn" id="call" x="86" y="209">\n' +
-          '    <mutation name="do something"/>\n' +
+          '    <mutation name="do something"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(
@@ -301,7 +304,7 @@ suite('procedures', () => {
   suite('Vars', () => {
     setup(() => {
       this.assertVars = function(constsArray) {
-        const constNames = this.workspace.getconstiablesOfType('').map(
+        const constNames = this.workspace.getVariablesOfType('').map(
             (model) => model.name );
         assert.sameMembers(constNames, constsArray);
       };
@@ -356,21 +359,21 @@ suite('procedures', () => {
         this.assertVars(['x', 'y']);
       });
       test('Match Existing', () => {
-        this.workspace.createconstiable('test', '');
+        this.workspace.createVariable('test', '');
         this.def.plus();
         const field = this.def.inputList[1].fieldRow[2];
         field.setValue('test');
         assertProc(this.def, this.call, 1, ['test']);
         this.assertVars(['x', 'test']);
-        assert.equal(this.def.constIds_[0],
-            this.workspace.getconstiable('test', '').getId());
+        assert.equal(this.def.varIds_[0],
+            this.workspace.getVariable('test', '').getId());
       });
     });
     suite('consts Renamed Elsewhere', () => {
       test('Simple Rename', () => {
         this.def.plus();
-        const constiable = this.workspace.getconstiable('x', '');
-        this.workspace.renameVariableById(constiable.getId(), 'test');
+        const Variable = this.workspace.getVariable('x', '');
+        this.workspace.renameVariableById(Variable.getId(), 'test');
         assertProc(this.def, this.call, 1, ['test']);
         this.assertVars(['test']);
       });
@@ -378,21 +381,21 @@ suite('procedures', () => {
       test.skip('Duplicate', () => {
         this.def.plus();
         this.def.plus();
-        const constiable = this.workspace.getconstiable('x', '');
-        this.workspace.renameVariableById(constiable.getId(), 'y');
+        const Variable = this.workspace.getVariable('x', '');
+        this.workspace.renameVariableById(Variable.getId(), 'y');
         // Don't know what we want to have happen.
       });
       test('Change Case', () => {
         this.def.plus();
-        const constiable = this.workspace.getconstiable('x', '');
-        this.workspace.renameVariableById(constiable.getId(), 'X');
+        const Variable = this.workspace.getVariable('x', '');
+        this.workspace.renameVariableById(Variable.getId(), 'X');
         assertProc(this.def, this.call, 1, ['X']);
         this.assertVars(['X']);
       });
       test('Coalesce Change Case', () => {
-        const constiable = this.workspace.createconstiable('test');
+        const Variable = this.workspace.createVariable('test');
         this.def.plus();
-        this.workspace.renameVariableById(constiable.getId(), 'X');
+        this.workspace.renameVariableById(Variable.getId(), 'X');
         assertProc(this.def, this.call, 1, ['X']);
         this.assertVars(['X']);
       });

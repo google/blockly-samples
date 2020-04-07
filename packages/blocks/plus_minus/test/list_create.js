@@ -47,7 +47,7 @@ suite('list create', () => {
     test('Simple', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
-          '    <mutation items="5"/>\n' +
+          '    <mutation items="5"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(
@@ -64,7 +64,7 @@ suite('list create', () => {
           '</xml>';
       const expected = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
-          '    <mutation items="3"/>\n' +
+          '    <mutation items="3"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(given), this.workspace);
@@ -76,7 +76,7 @@ suite('list create', () => {
     test('No inputs', () => {
       const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
-          '    <mutation items="0"/>\n' +
+          '    <mutation items="0"></mutation>\n' +
           '  </block>\n' +
           '</xml>';
       Blockly.Xml.domToWorkspace(
