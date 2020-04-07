@@ -11,6 +11,9 @@
 
 import * as Blockly from 'blockly/core';
 
+/**
+ * Slider field.
+ */
 export class FieldSlider extends Blockly.FieldNumber {
   /**
    * Class for an number slider field.
@@ -30,7 +33,8 @@ export class FieldSlider extends Blockly.FieldNumber {
    */
   constructor(opt_value, opt_min, opt_max, opt_precision,
       opt_validator, opt_config) {
-    super(opt_value, opt_min, opt_max, opt_precision, opt_validator, opt_config);
+    super(opt_value, opt_min, opt_max, opt_precision, opt_validator,
+        opt_config);
 
     /**
      * Array holding info needed to unbind events.
@@ -57,7 +61,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @package
    * @nocollapse
    */
-  static fromJson (options) {
+  static fromJson(options) {
     return new FieldSlider(options['value'],
         undefined, undefined, undefined, undefined, options);
   }
@@ -65,21 +69,21 @@ export class FieldSlider extends Blockly.FieldNumber {
   /**
    * Show the inline free-text editor on top of the text along with the slider
    *    editor.
-   * @param {Event=} opt_e Optional mouse event that triggered the field to open,
-   *     or undefined if triggered programmatically.
-   * @param {boolean=} _opt_quietInput
+   * @param {Event=} opt_e Optional mouse event that triggered the field to
+   *     open, or undefined if triggered programmatically.
+   * @param {boolean=} _opt_quietInput Quiet input.
    * @protected
    * @override
    */
   showEditor_(opt_e, _opt_quietInput) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    var noFocus =
+    const noFocus =
         Blockly.utils.userAgent.MOBILE ||
         Blockly.utils.userAgent.ANDROID ||
         Blockly.utils.userAgent.IPAD;
     super.showEditor_(opt_e, noFocus);
     // Build the DOM.
-    var editor = this.dropdownCreate_();
+    const editor = this.dropdownCreate_();
 
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
@@ -106,14 +110,14 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @private
    */
   dropdownCreate_() {
-    var wrapper = document.createElement('div');
+    const wrapper = document.createElement('div');
     wrapper.className = 'fieldSliderContainer';
-    var sliderInput = document.createElement('input');
+    const sliderInput = document.createElement('input');
     sliderInput.setAttribute('type', 'range');
     sliderInput.setAttribute('min', this.min_);
     sliderInput.setAttribute('max', this.max_);
     sliderInput.setAttribute('value', this.getValue());
-    sliderInput.className ='fieldSlider';
+    sliderInput.className = 'fieldSlider';
     wrapper.appendChild(sliderInput);
     this.sliderInput_ = sliderInput;
 
@@ -128,7 +132,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @private
    */
   dropdownDispose_() {
-    for (let event of this.boundEvents_) {
+    for (const event of this.boundEvents_) {
       Blockly.unbindEvent_(event);
     }
     this.sliderInput_ = null;
@@ -160,7 +164,7 @@ Blockly.fieldRegistry.register('field_slider', FieldSlider);
  * CSS for slider field.
  */
 Blockly.Css.register([
-    /* eslint-disable indent */
+  /* eslint-disable indent */
     `.fieldSliderContainer {
       align-items: center;
       display: flex;
@@ -241,7 +245,7 @@ Blockly.Css.register([
       cursor: pointer;
       height: 24px;
       width: 24px;
-    }`
-    /* eslint-enable indent */
+    }`,
+  /* eslint-enable indent */
 ]);
 
