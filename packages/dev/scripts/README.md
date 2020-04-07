@@ -1,4 +1,4 @@
-## blockly-scripts
+# @blockly/dev-scripts [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 This package includes scripts and configuration used by Blockly extension
 packages.
@@ -7,14 +7,14 @@ packages.
 
 ### `blockly-scripts start`
 
-Runs the extension in the development mode.
+Runs the package in development mode.
 
-Open [http://localhost:3000/test](http://localhost:3000/test) to view it in the
-browser. The page will reload if you make edits.
+Open [http://localhost:3000/test](http://localhost:3000/test) to view the test
+playground in the browser. The page will reload if you make edits.
 
 ### `blockly-scripts build`
 
-Builds the extension for production to the `dist` folder.
+Builds the package into the `dist` directory.
 
 ### `blockly-scripts lint`
 
