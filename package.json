@@ -5,7 +5,7 @@
     "author": "Blockly Team",
     "license": "Apache-2.0",
     "scripts": {
-        "boot": "lerna bootstrap --force-local",
+        "boot": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna run clean",
         "license": "gulp checkLicenses",
@@ -16,7 +16,8 @@
         "js-green-licenses": "^1.1.0",
         "lerna": "^3.20.2",
         "eslint": "^6.8.0",
-        "eslint-config-google": "^0.14.0"
+        "eslint-config-google": "^0.14.0",
+        "eslint-plugin-jsdoc": "^22.1.0"
     },
     "publishConfig": {
         "access": "public",

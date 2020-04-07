@@ -41,9 +41,9 @@ module.exports = (env) => {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           options: {
-            presets: ['@babel/preset-env'],
+            presets: [require.resolve('@babel/preset-env')],
           },
         },
       }],
@@ -76,9 +76,9 @@ module.exports = (env) => {
           test: /\.js$/,
           exclude: /(node_modules)/,
           use: {
-            loader: 'babel-loader',
+            loader: require.resolve('babel-loader'),
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [require.resolve('@babel/preset-env')],
             },
           },
         }],
