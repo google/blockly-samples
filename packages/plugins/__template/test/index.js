@@ -10,10 +10,10 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories} from '@blockly/dev-tools';
-import Plugin from '../src/index';
+import {Plugin} from '../src/index';
 
 /**
- * DOM loaded.
+ * Test page startup, setup Blockly.
  */
 function start() {
   const workspace = Blockly.inject('blocklyDiv', {
