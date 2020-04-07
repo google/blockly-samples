@@ -1,6 +1,9 @@
 language: node_js
+os: linux
+dist: xenial
 node_js:
-  - "7"
+  - 10
+  - 12
 before_script:
   - npm install -g lerna
   - npm install
