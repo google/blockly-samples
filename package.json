@@ -9,6 +9,7 @@
         "build": "lerna run build",
         "clean": "lerna run clean",
         "license": "gulp checkLicenses",
+        "lint": "lerna run lint",
         "postinstall": "npm run boot"
     },
     "devDependencies": {
