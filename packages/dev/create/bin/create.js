@@ -60,7 +60,7 @@ if (fs.existsSync(packageDir)) {
 }
 
 console.log(`Creating a new Blockly\
-  ${chalk.green(packageType)} in ${chalk.green(root)}.\n`);
+ ${chalk.green(packageType)} in ${chalk.green(root)}.\n`);
 
 // Create the package directory.
 fs.mkdirSync(packageDir);
@@ -138,7 +138,13 @@ fs.writeFileSync(path.join(packageDir, 'README.md'), readme, 'utf-8');
 fs.copySync(path.resolve(__dirname, templateDir, 'template'), packageDir);
 
 // Run npm install.
-execSync(`cd ${packageName} && npm install`, {stdio: [0, 1, 2]});
+console.log('Installing packages. This might take a couple of minutes.');
+// execSync(`cd ${packageName} && npm install`, {stdio: [0, 1, 2]});
 
-console.log('Done.');
+console.log(chalk.green('\nPackage created.\n'));
+console.log('Next steps, run:');
+console.log(chalk.blue(`  cd ${packageName}`));
+console.log(chalk.blue(`  npm start`));
+console.log(`Search ${chalk.red(`'TODO'`)} to see remaining tasks.`);
+
 process.exit(1);
