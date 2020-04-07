@@ -6,8 +6,10 @@
 
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
+import BlocklyDebugRenderer from './debugRenderer';
 
 export {
   toolboxCategories,
   toolboxSimple,
+  BlocklyDebugRenderer,
 };

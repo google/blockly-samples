@@ -8,7 +8,7 @@
  * @fileoverview Visualizer for debugging custom renderers in Blockly.
  * @author fenichel@google.com (Rachel Fenichel)
  */
-import * as Blockly from 'blockly';
+import Blockly from 'blockly/core';
 
 /**
  * A basic visualizer for debugging custom renderers.
@@ -49,7 +49,7 @@ export class BlocklyDebugRenderer {
    * Initialize the debug renderer.
    * @public
    */
-  static init(){
+  static init() {
     Blockly.blockRendering.useDebugger = true;
     Blockly.blockRendering.Debug = BlocklyDebugRenderer;
   }
@@ -59,7 +59,7 @@ export class BlocklyDebugRenderer {
    * @package
    */
   clearElems() {
-    for (var i = 0, elem; (elem = this.debugElements_[i]); i++) {
+    for (let i = 0, elem; (elem = this.debugElements_[i]); i++) {
       Blockly.utils.dom.removeNode(elem);
     }
 
@@ -78,8 +78,8 @@ export class BlocklyDebugRenderer {
       return;
     }
 
-    var height = Math.abs(row.height);
-    var isNegativeSpacing = row.height < 0;
+    const height = Math.abs(row.height);
+    const isNegativeSpacing = row.height < 0;
     if (isNegativeSpacing) {
       cursorY -= height;
     }
@@ -94,7 +94,7 @@ export class BlocklyDebugRenderer {
           'stroke': isNegativeSpacing ? 'black' : 'blue',
           'fill': 'blue',
           'fill-opacity': '0.5',
-          'stroke-width': '1px'
+          'stroke-width': '1px',
         },
         this.svgRoot_));
   }
@@ -111,13 +111,13 @@ export class BlocklyDebugRenderer {
       return;
     }
 
-    var width = Math.abs(elem.width);
-    var isNegativeSpacing = elem.width < 0;
-    var xPos = isNegativeSpacing ? elem.xPos - width : elem.xPos;
+    const width = Math.abs(elem.width);
+    const isNegativeSpacing = elem.width < 0;
+    let xPos = isNegativeSpacing ? elem.xPos - width : elem.xPos;
     if (isRtl) {
       xPos = -(xPos + width);
     }
-    var yPos = elem.centerline - elem.height / 2;
+    const yPos = elem.centerline - elem.height / 2;
     this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
         {
           'class': 'elemSpacerRect blockRenderDebug',
@@ -128,7 +128,7 @@ export class BlocklyDebugRenderer {
           'stroke': 'pink',
           'fill': isNegativeSpacing ? 'black' : 'pink',
           'fill-opacity': '0.5',
-          'stroke-width': '1px'
+          'stroke-width': '1px',
         },
         this.svgRoot_));
   }
@@ -141,11 +141,11 @@ export class BlocklyDebugRenderer {
    */
   drawRenderedElem(elem, isRtl) {
     if (Blockly.blockRendering.Debug.config.elems) {
-      var xPos = elem.xPos;
+      let xPos = elem.xPos;
       if (isRtl) {
         xPos = -(xPos + elem.width);
       }
-      var yPos = elem.centerline - elem.height / 2;
+      const yPos = elem.centerline - elem.height / 2;
       this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
           {
             'class': 'rowRenderingRect blockRenderDebug',
@@ -155,13 +155,13 @@ export class BlocklyDebugRenderer {
             'height': elem.height,
             'stroke': 'black',
             'fill': 'none',
-            'stroke-width': '1px'
+            'stroke-width': '1px',
           },
           this.svgRoot_));
 
       if (Blockly.blockRendering.Types.isField(elem) &&
           elem.field instanceof Blockly.FieldLabel) {
-        var baseline = this.constants_.FIELD_TEXT_BASELINE;
+        const baseline = this.constants_.FIELD_TEXT_BASELINE;
         this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
             {
               'class': 'rowRenderingRect blockRenderDebug',
@@ -171,7 +171,7 @@ export class BlocklyDebugRenderer {
               'height': '0.1px',
               'stroke': 'red',
               'fill': 'none',
-              'stroke-width': '0.5px'
+              'stroke-width': '0.5px',
             },
             this.svgRoot_));
       }
@@ -189,8 +189,8 @@ export class BlocklyDebugRenderer {
    * share the same colours, as do previous and next.  When positioned correctly
    * a connected pair will look like a bullseye.
    * @param {Blockly.RenderedConnection} conn The connection to circle.
-   * @suppress {visibility} Suppress visibility of conn.offsetInBlock_ since this
-   *     is a debug module.
+   * @suppress {visibility} Suppress visibility of conn.offsetInBlock_ since
+   *     this is a debug module.
    * @package
    */
   drawConnection(conn) {
@@ -198,9 +198,9 @@ export class BlocklyDebugRenderer {
       return;
     }
 
-    var colour;
-    var size;
-    var fill;
+    let colour;
+    let size;
+    let fill;
     if (conn.type == Blockly.INPUT_VALUE) {
       size = 4;
       colour = 'magenta';
@@ -250,7 +250,7 @@ export class BlocklyDebugRenderer {
           'height': row.height,
           'stroke': 'red',
           'fill': 'none',
-          'stroke-width': '1px'
+          'stroke-width': '1px',
         },
         this.svgRoot_));
 
@@ -269,7 +269,7 @@ export class BlocklyDebugRenderer {
             'stroke': this.randomColour_,
             'fill': 'none',
             'stroke-width': '1px',
-            'stroke-dasharray': '3,3'
+            'stroke-dasharray': '3,3',
           },
           this.svgRoot_));
     }
@@ -283,8 +283,8 @@ export class BlocklyDebugRenderer {
    * @package
    */
   drawRowWithElements(row, cursorY, isRtl) {
-    for (var i = 0, l = row.elements.length; i < l; i++) {
-      var elem = row.elements[i];
+    for (let i = 0, l = row.elements.length; i < l; i++) {
+      const elem = row.elements[i];
       if (!elem) {
         console.warn('A row has an undefined or null element.', row, elem);
         continue;
@@ -302,8 +302,8 @@ export class BlocklyDebugRenderer {
 
   /**
    * Draw a debug rectangle around the entire block.
-   * @param {!Blockly.blockRendering.RenderInfo} info Rendering information about
-   *     the block to debug.
+   * @param {!Blockly.blockRendering.RenderInfo} info Rendering information
+   *     about the block to debug.
    * @package
    */
   drawBoundingBox(info) {
@@ -311,8 +311,8 @@ export class BlocklyDebugRenderer {
       return;
     }
     // Bounding box without children.
-    var xPos = info.RTL ? -info.width : 0;
-    var yPos = 0;
+    let xPos = info.RTL ? -info.width : 0;
+    const yPos = 0;
     this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
         {
           'class': 'blockBoundingBox blockRenderDebug',
@@ -323,7 +323,7 @@ export class BlocklyDebugRenderer {
           'stroke': 'black',
           'fill': 'none',
           'stroke-width': '1px',
-          'stroke-dasharray': '5,5'
+          'stroke-dasharray': '5,5',
         },
         this.svgRoot_));
 
@@ -340,7 +340,7 @@ export class BlocklyDebugRenderer {
             'stroke': '#DF57BC',
             'fill': 'none',
             'stroke-width': '1px',
-            'stroke-dasharray': '3,3'
+            'stroke-dasharray': '3,3',
           },
           this.svgRoot_));
     }
@@ -349,18 +349,19 @@ export class BlocklyDebugRenderer {
   /**
    * Do all of the work to draw debug information for the whole block.
    * @param {!Blockly.BlockSvg} block The block to draw debug information for.
-   * @param {!Blockly.blockRendering.RenderInfo} info Rendering information about
-   *     the block to debug.
+   * @param {!Blockly.blockRendering.RenderInfo} info Rendering information
+   *     about the block to debug.
    * @package
    */
   drawDebug(block, info) {
     this.clearElems();
     this.svgRoot_ = block.getSvgRoot();
 
-    this.randomColour_ = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    this.randomColour_ =
+        '#' + Math.floor(Math.random() * 16777215).toString(16);
 
-    var cursorY = 0;
-    for (var i = 0, row; (row = info.rows[i]); i++) {
+    let cursorY = 0;
+    for (let i = 0, row; (row = info.rows[i]); i++) {
       if (Blockly.blockRendering.Types.isBetweenRowSpacer(row)) {
         this.drawSpacerRow(row, cursorY, info.RTL);
       } else {
@@ -418,5 +419,5 @@ BlocklyDebugRenderer.config = {
   connections: true,
   blockBounds: true,
   connectedBlockBounds: true,
-  render: true
+  render: true,
 };
