@@ -11,14 +11,14 @@
     "dev",
     "scripts"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/build#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/scripts#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/dev/build"
+    "directory": "packages/dev/scripts"
   },
   "license": "Apache-2.0",
   "dependencies": {
