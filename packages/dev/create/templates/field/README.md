@@ -20,13 +20,13 @@ npm install @blockly/field-template --save
 ## Usage
 
 <!--
-  - TODO: Update usage.
+  - TODO: Update usage and rename field.
   -->
 
 ### JavaScript
 ```js
 import * as Blockly from 'blockly';
-import Field from '@blockly/field-template';
+import {FieldTemplate} from '@blockly/field-template';
 Blockly.Blocks["test_field_template"] = {
   init: function () {
     this.appendDummyInput()

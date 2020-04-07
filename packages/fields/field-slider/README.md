@@ -19,7 +19,7 @@ npm install @blockly/field-slider --save
 ### JavaScript
 ```js
 import * as Blockly from 'blockly';
-import FieldSlider from '@blockly/field-slider';
+import {FieldSlider} from '@blockly/field-slider';
 Blockly.Blocks["test_field_slider"] = {
   init: function () {
     this.appendDummyInput()
