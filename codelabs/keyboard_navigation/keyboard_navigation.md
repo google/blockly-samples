@@ -50,7 +50,7 @@ To start, create a file named `custom_cursor.js` and a file named `custom_marker
 Note: you must include your custom code *after* including the Blockly library.
 
 ## Define and set a cursor
-We are going to extend `Blockly.Cursor` to make our new cursor. In your `custom_cursor.js` file add the following code.
+We extend `Blockly.Cursor` to make our new cursor. Add the following code to your `custom_cursor.js` file.
 ```js
 CustomCursor = function() {
   CustomCursor.superClass_.constructor.call(this);
@@ -68,7 +68,7 @@ workspace.getMarkerManager().setCursor(new CustomCursor());
 When designing keyboard navigation we needed a way to organize all the different components in a workspace in a structured way. Our solution was to represent the workspace and its components as an abstract syntax tree ([AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)).
 
 The below image displays the AST for a workspace.
-![](./AST_Diagram.png)
+![](./AST.png)
 
 There are four different levels to the AST:
 1. Workspace Level (green): Holds all workspace nodes.
@@ -80,7 +80,7 @@ navigation [documentation](https://developers.google.com/blockly/guides/configur
 
 The `Blockly.ASTNode` class is used to represent the AST. `Blockly.ASTNode`s hold a workspace component. This component can be a block, connection, field, input or workspace coordinate. 
 
-### Creating AST nodes
+### Create AST nodes
 The below code shows how to create a `Blockly.ASTNode` for the different workspace components.
 ```js
 const workspaceNode = Blockly.ASTNode.createWorkspaceNode(workspace, wsCoordinate);
@@ -90,8 +90,8 @@ const blockNode = Blockly.ASTNode.createBlockNode(block);
 const fieldNode = Blockly.ASTNode.createFieldNode(field);
 const inputNode = Blockly.ASTNode.createInputNode(input);
 ```
-### Using AST nodes
-We use these nodes in our cursor in deciding where to go and what to draw.
+### Use AST nodes
+We use these nodes in our cursor to decide where to go and what to draw.
 
 Every node can: 
 1. Return the node below it (`in()`)
@@ -99,15 +99,15 @@ Every node can:
 1. Return the previous node (`prev()`)
 1. Return the next node (`next()`)
 
-For example, to get the first stack on the workspace using a workspace node we can use the below code.
+For example, use the below code to get the stack node from a workspace node.
 ```js
 const stackNode = workspaceNode.in();
 ```
 
 ## Change the marker look
-The `Blockly.blockRendering.MarkerSvg` class contains the logic for drawing cursors and markers. The  `Blockly.blockRendering.MarkerSvg` class decides what to draw depending on the current node the cursor or marker is holding.  
+The `Blockly.blockRendering.MarkerSvg` class contains the logic to draw cursors and markers. The  `Blockly.blockRendering.MarkerSvg` class decides what to draw depending on the current node the cursor or marker holds.  
 
-We are going to create a new custom marker that will change the look of cursors and markers when they are on a block.
+Create a new custom marker that will change the look of cursors and markers when they are on a block.
 
 ### Create a custom marker svg
 Add the below code to your `custom_marker_svg.js` file.
@@ -121,7 +121,7 @@ Blockly.utils.object.inherits(CustomMarkerSvg,
     Blockly.blockRendering.MarkerSvg);
 ```
 
-Override `createDomInternal_`. This method is in charge of creating all dom elements for the marker. We are going to add a new path element for when the cursor is on a block.
+Override `createDomInternal_`. This method is in charge of creating all dom elements for the marker. Add a new path element for when the cursor is on a block.
 ```js
 CustomMarkerSvg.prototype.createDomInternal_ = function() {
   CustomMarkerSvg.superClass_.createDomInternal_.call(this);
@@ -182,12 +182,13 @@ CustomMarkerSvg.prototype.hide = function() {
   this.markerBlock_.style.display = 'none';
 };
 ```
+
 ### Renderer setup
-In order to have the cursor use the new `CustomMarkerSvg` we are going to override
-the renderer. For more information on how to create a custom renderer see the
+In order to change the look of the cursor to use `CustomMarkerSvg` we need to
+override the renderer. For more information on how to create a custom renderer see the
 custom renderer [codelab](https://blocklycodelabs.dev/codelabs/custom-renderer/index.html?index=..%2F..index#2).
 
-For simplicity sake, we are going to add the following code to our `custom_marker_svg.js` file. 
+Add the below code to your `custom_marker_svg.js` file. 
 ```js
 CustomRenderer = function(name) {
   CustomRenderer.superClass_.constructor.call(this, name);
@@ -214,16 +215,13 @@ Blockly.inject('blocklyDiv', {
 ```
 
 ### Test it out
-Open the playground and drag a function block on to your workspace. Enter
-keyboard navigation mode by pressing **ctrl + shift + k**. Notice how the entire
-block starts flashing red.
+Open the playground and drag a function block on to your workspace. Press **ctrl + shift + k** to enter into keyboard navigation mode. Notice how the entire block starts flashing red.
 ![The cursor flashing red](./flashing_cursor.gif)
 
-## Change Cursor Behavior
+## Change the cursor behavior
 
 ### Override the move methods
-In order to create a cursor that skips over previous and next connections we are
-first going to override the methods that move the cursor. 
+In order to create a cursor that skips over previous and next connections override the methods that move the cursor. 
 
 Add the below code to your `custom_cursor.js` file.
 ```js
@@ -280,9 +278,9 @@ CustomCursor.prototype.out = function() {
 ```
 
 ### Modify the move methods
-We are now going to add logic to the move methods to skip over the previous and
+Add logic to the move methods to skip over the previous and
 next connections. We can reference the below image as we add logic to the
-move methods. The red boxes represent the nodes we are planning on skipping.
+move methods. The red boxes represent the nodes we want to skip.
 
 ![Displays the abstract syntax tree with the previous and next connection nodes highlighted in red.](./skip_connections.png)
 
@@ -348,15 +346,15 @@ CustomCursor.prototype.in = function() {
 };
 ```
 
-#### The result
-Open the playground and enter into keyboard navigation mode. Drag some blocks
+#### Test it out
+Open the playground and enter into keyboard navigation mode (**ctrl + shift + k**). Drag some blocks
 on to the workspace and navigate to the first block. From here hit the **S** key
 to go to the next block. Notice how the cursor skips over the previous and next
 connection and goes straight to the next block.
 ![](./new_cursor.gif)
 
 ## Add a shortcut
-In this section we are going to add a shortcut to allow users to move their
+In this section we add a shortcut to allow users to move their
 cursor to the top of the stack their cursor is currently on.
 
 ### Create and set an action
@@ -368,7 +366,7 @@ modifier keys. The possible modifier keys are:
 1. `Blockly.user.keyMap.modifierKeys.ALT`
 1. `Blockly.user.keyMap.modifierKeys.META`
 
-We are going to set up **shift + T** to move the cursor to the top
+Set up **shift + T** to move the cursor to the top
 of a stack of blocks. Add the below code to the `playground.html` file after
 we have set the cursor.
 
@@ -394,8 +392,8 @@ Blockly.user.keyMap.setActionForKey(shiftT, actionTopOfStack);
 ### Override onBlocklyAction 
 
 When the user hits **shift + T** and is in keyboard navigation mode we will get a
-'topOfStack' action. We can now handle this action inside of our cursor by
-overriding `onBlocklyAction`. Add the below code to the `custom_cursor.js` file.
+'topOfStack' action. Override `onBlocklyAction` on our cursor to handle this action.
+Add the below code to the `custom_cursor.js` file.
 ```js
 CustomCursor.prototype.onBlocklyAction = function(action) {
   var handled = CustomCursor.superClass_.onBlocklyAction.call(this, action);
@@ -419,7 +417,7 @@ CustomCursor.prototype.onBlocklyAction = function(action) {
 };
 ```
 
-### The result
+### Test it out
 Open the playground and create a stack of blocks. Move your cursor down a few
 blocks. And then press **shift + T**. Notice how the cursor jumps to the top of the
 stack of blocks.
@@ -427,10 +425,10 @@ stack of blocks.
 ![](./skip_to_top.gif)
 
 ## Change current key mappings
-In this section we are going to update our key mappings so we can use the arrow
+In this section, we update our key mappings so we can use the arrow
 keys for our cursor instead of the **WASD** keys. 
 
-In `playground.html` we are going to set the keys for the next, previous, in
+In `playground.html` we set the keys for the next, previous, in
 and out actions. For a full list of built in actions see [here](https://github.com/google/blockly/blob/07762ff4da3c713f7592c80052b1fa7cadb461a2/core/keyboard_nav/navigation.js#L957).
 ```js
 Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.LEFT, Blockly.navigation.ACTION_OUT);
@@ -438,8 +436,8 @@ Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.RIGHT, Blockly.naviga
 Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.UP, Blockly.navigation.ACTION_PREVIOUS);
 Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.DOWN, Blockly.navigation.ACTION_NEXT);
 ```
-### The result
-Open the playground and enter keyboard navigation mode. You can now use the arrow
+### Test it out
+Open the playground and enter keyboard navigation mode (**ctrl + shift + k**). You can now use the arrow
 keys to move around instead of the **WASD** keys.
 
 ## Summary
