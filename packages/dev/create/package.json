@@ -1,0 +1,35 @@
+{
+  "name": "@blockly/create-package",
+  "version": "0.20200407.0",
+  "description": "Create a Blockly plugin, field or block package based on a template.",
+  "bin": "./bin/create.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "dev",
+    "create",
+    "package",
+    "template"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/create#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "packages/dev/create"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "fs-extra": "^9.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
