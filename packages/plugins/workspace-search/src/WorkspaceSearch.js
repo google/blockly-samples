@@ -11,9 +11,12 @@
  */
 
 
-import { injectSearchCss } from './css.js';
+import {injectSearchCss} from './css.js';
 import * as Blockly from 'blockly/core';
 
+/**
+ * Class for workspace search.
+ */
 export class WorkspaceSearch {
   /**
    * Class for workspace search.
@@ -120,7 +123,7 @@ export class WorkspaceSearch {
    * to prevent memory leaks.
    */
   dispose() {
-    for (let event of this.boundEvents_) {
+    for (const event of this.boundEvents_) {
       Blockly.unbindEvent_(event);
     }
     this.boundEvents_ = null;
@@ -152,7 +155,7 @@ export class WorkspaceSearch {
      * </div>
      */
     const injectionDiv = this.workspace_.getInjectionDiv();
-    this.addEvent_(injectionDiv, 'keydown', this, evt => this
+    this.addEvent_(injectionDiv, 'keydown', this, (evt) => this
         .onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
 
     this.htmlDiv_ = document.createElement('div');
@@ -169,7 +172,7 @@ export class WorkspaceSearch {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement_ = this.createTextInput_();
-    this.addEvent_(this.inputElement_, 'keydown', this, evt => this
+    this.addEvent_(this.inputElement_, 'keydown', this, (evt) => this
         .onKeyDown_(/** @type {KeyboardEvent} */ evt));
     this.addEvent_(this.inputElement_, 'input', this, () =>this
         .onInput_());
@@ -235,7 +238,7 @@ export class WorkspaceSearch {
    * @protected
    */
   createTextInput_() {
-    let textInput = document.createElement('input');
+    const textInput = document.createElement('input');
     textInput.type = 'text';
     textInput.setAttribute('placeholder', this.textInputPlaceholder_);
     return textInput;
@@ -294,7 +297,7 @@ export class WorkspaceSearch {
     this.addEvent_(btn, 'click', this, onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
-    this.addEvent_(btn, 'keydown', this, e => {
+    this.addEvent_(btn, 'keydown', this, (e) => {
       if (e.keyCode === Blockly.utils.KeyCodes.ENTER) {
         onClickFn(e);
         e.preventDefault();
@@ -495,7 +498,7 @@ export class WorkspaceSearch {
     const blocks = (
       /** @type {!Array.<!Blockly.BlockSvg>} */
       workspace.getAllBlocks(true));
-    return blocks.filter(block => {
+    return blocks.filter((block) => {
       // Filter out blocks contained inside of another collapsed block.
       const surroundParent = block.getSurroundParent();
       return !surroundParent || !surroundParent.isCollapsed();
@@ -518,8 +521,8 @@ export class WorkspaceSearch {
       blockText = block.toString();
     } else {
       const topBlockText = [];
-      block.inputList.forEach(input => {
-        input.fieldRow.forEach(field => {
+      block.inputList.forEach((input) => {
+        input.fieldRow.forEach((field) => {
           topBlockText.push(field.getText());
         });
       });
@@ -549,7 +552,7 @@ export class WorkspaceSearch {
     }
     const searchGroup = this.getSearchPool_(workspace);
     return searchGroup.filter(
-        block => this.isBlockMatch_(block, searchText, caseSensitive));
+        (block) => this.isBlockMatch_(block, searchText, caseSensitive));
   }
 
   /**
@@ -605,7 +608,7 @@ export class WorkspaceSearch {
    * @protected
    */
   highlightSearchGroup_(blocks) {
-    blocks.forEach(block => {
+    blocks.forEach((block) => {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.addClass(blockPath, 'blockly-ws-search-highlight');
     });
@@ -617,7 +620,7 @@ export class WorkspaceSearch {
    * @protected
    */
   unhighlightSearchGroup_(blocks) {
-    blocks.forEach(block => {
+    blocks.forEach((block) => {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'blockly-ws-search-highlight');
     });

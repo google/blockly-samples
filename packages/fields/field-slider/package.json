@@ -9,7 +9,7 @@
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run prod",
     "start": "blockly-scripts start",
-    "test": "mocha --ui tdd test/field_slider_test.js"
+    "test": "mocha --ui tdd test/field_slider_test.mocha.js"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",

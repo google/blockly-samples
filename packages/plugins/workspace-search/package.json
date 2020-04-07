@@ -10,7 +10,7 @@
     "prepublishOnly": "npm run clean && npm run prod",
     "start": "blockly-scripts start",
     "test": "npm run build && npm run test:mocha",
-    "test:mocha": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.js"
+    "test:mocha": "mocha --ui tdd -r jsdom-global/register test/workspace_search_test.mocha.js"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
