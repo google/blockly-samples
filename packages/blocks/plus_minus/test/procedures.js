@@ -3,9 +3,19 @@ const assert = chai.assert;
 const sinon = require('sinon');
 const Blockly = require('blockly');
 
-require('../dist/plus-minus-mutators.umd');
+require('../dist/index');
 
 suite('procedures', () => {
+  /**
+   * Asserts that the procedure def and caller have the inputs and fields
+   * we expect.
+   * @param {!Blockly.Block} def The procedure definition block.
+   * @param {!Blockly.Block} call The procedure call block.
+   * @param {number} argCount The number of arguements we expect.
+   * @param {Array<string>?} opt_args An optional array of argument names.
+   * @param {boolean?} opt_hasStatements If we expect the procedure def to have
+   *     a statement input or not.
+   */
   function assertProc(def, call, argCount, opt_args, opt_hasStatements) {
     if (opt_hasStatements === false) {
       assert.isNull(def.getInput('STACK'));
@@ -17,12 +27,12 @@ suite('procedures', () => {
       assert.sameOrderedMembers(def.arguments_, opt_args);
     }
 
-    var defInputs = def.inputList;
-    var callInputs = call.inputList;
-    var defLength = defInputs.length;
-    var defArgCount = opt_hasStatements ? defLength - 3 : defLength - 2;
+    const defInputs = def.inputList;
+    const callInputs = call.inputList;
+    const defLength = defInputs.length;
+    const defArgCount = opt_hasStatements ? defLength - 3 : defLength - 2;
 
-    // Just looking at var inputs.
+    // Just looking at const inputs.
     assert.equal(defArgCount, callInputs.length - 1,
         'def and call have the same number of args');
     assert.equal(defArgCount, argCount,
@@ -37,18 +47,18 @@ suite('procedures', () => {
     assert.include(def.toString(), 'with');
     assert.include(call.toString(), 'with');
 
-    for (var i = 1; i < defLength - 2; i++) {
-      var varName = opt_args[i - 1];
-      var defInput = defInputs[i];
-      var callInput = callInputs[i];
+    for (let i = 1; i < defLength - 2; i++) {
+      const constName = opt_args[i - 1];
+      const defInput = defInputs[i];
+      const callInput = callInputs[i];
       assert.equal(defInput.type, Blockly.DUMMY_INPUT);
       assert.equal(callInput.type, Blockly.INPUT_VALUE);
       assert.equal(defInput.name, def.argIds_[i - 1]);
-      assert.equal(defInput.fieldRow[2].getValue(), varName,
-          'Def vars did not match expected');
+      assert.equal(defInput.fieldRow[2].getValue(), constName,
+          'Def consts did not match expected');
       assert.equal(callInput.name, 'ARG' + (i - 1));
-      assert.equal(callInput.fieldRow[0].getValue(), varName,
-          'Call vars did not match expected.');
+      assert.equal(callInput.fieldRow[0].getValue(), constName,
+          'Call consts did not match expected.');
     }
 
     // Assert the last input is not a dummy. Sometimes
@@ -85,17 +95,17 @@ suite('procedures', () => {
       this.workspace.clear();
     });
     test('Simple', () => {
-      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <variables>\n' +
-          '    <variable id="O:Sr,z]cTdOh.rxYtbpK">x</variable>\n' +
-          '    <variable id="b0khn,ShlhUP,dU}e+;-">y</variable>\n' +
-          '    <variable id="@O5;lK8){`{*?=-t:Yxy">z</variable>\n' +
-          '  </variables>\n' +
+      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <constiables>\n' +
+          '    <constiable id="O:Sr,z]cTdOh.rxYtbpK">x</constiable>\n' +
+          '    <constiable id="b0khn,ShlhUP,dU}e+;-">y</constiable>\n' +
+          '    <constiable id="@O5;lK8){`{*?=-t:Yxy">z</constiable>\n' +
+          '  </constiables>\n' +
           '  <block type="procedures_defreturn" id="def" x="63" y="-477">\n' +
           '    <mutation>\n' +
-          '      <arg name="x" varid="O:Sr,z]cTdOh.rxYtbpK"/>\n' +
-          '      <arg name="y" varid="b0khn,ShlhUP,dU}e+;-"/>\n' +
-          '      <arg name="z" varid="@O5;lK8){`{*?=-t:Yxy"/>\n' +
+          '      <arg name="x" constid="O:Sr,z]cTdOh.rxYtbpK"/>\n' +
+          '      <arg name="y" constid="b0khn,ShlhUP,dU}e+;-"/>\n' +
+          '      <arg name="z" constid="@O5;lK8){`{*?=-t:Yxy"/>\n' +
           '    </mutation>\n' +
           '    <field name="NAME">do something</field>\n' +
           '    <comment pinned="false" h="80" w="160">Describe this function...</comment>\n' +
@@ -111,35 +121,37 @@ suite('procedures', () => {
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
       assertProc(this.workspace.getBlockById('def'),
           this.workspace.getBlockById('call'), 3, ['x', 'y', 'z']);
-      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      const xml = Blockly.Xml.workspaceToDom(this.workspace);
 
       // Remove extra fields.
-      var blocks = xml.getElementsByTagName('block');
-      for (var i = 0, block; (block = blocks[i]); i++) {
-        var fields = block.getElementsByTagName('field');
-        for (var j = fields.length - 1, field; (field = fields[j]); j--) {
+      const blocks = xml.getElementsByTagName('block');
+      for (let i = 0, block; (block = blocks[i]); i++) {
+        const fields = block.getElementsByTagName('field');
+        for (let j = fields.length - 1, field; (field = fields[j]); j--) {
           if (field.getAttribute('name') != 'NAME') {
             block.removeChild(field);
           }
         }
       }
 
-      var newText = Blockly.Xml.domToPrettyText(xml);
+      const newText = Blockly.Xml.domToPrettyText(xml);
       assert.equal(newText, oldText);
     });
     test('Duplicate Params', () => {
-      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <variables>\n' +
-          '    <variable id="|bfmCeh02-k|go!MeHd6">x</variable>\n' +
-          '  </variables>\n' +
+      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+          '  <constiables>\n' +
+          '    <constiable id="|bfmCeh02-k|go!MeHd6">x</constiable>\n' +
+          '  </constiables>\n' +
           '  <block type="procedures_defreturn" id="def" x="92" y="113">\n' +
           '    <mutation>\n' +
-          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"/>\n' +
-          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"/>\n' +
-          '      <arg name="x" varid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '      <arg name="x" constid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '      <arg name="x" constid="|bfmCeh02-k|go!MeHd6"/>\n' +
+          '      <arg name="x" constid="|bfmCeh02-k|go!MeHd6"/>\n' +
           '    </mutation>\n' +
           '    <field name="NAME">do something</field>\n' +
-          '    <comment pinned="false" h="80" w="160">Describe this function...</comment>\n' +
+          '    <comment pinned="false" h="80" w="160">' +
+          '      Describe this function...' +
+          '    </comment>\n' +
           '  </block>\n' +
           '  <block type="procedures_callreturn" id="call" x="92" y="227">\n' +
           '    <mutation name="do something">\n' +
@@ -149,27 +161,28 @@ suite('procedures', () => {
           '    </mutation>\n' +
           '  </block>\n' +
           '</xml>';
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      Blockly.Xml.domToWorkspace(
+          Blockly.Xml.textToDom(oldText), this.workspace);
       assertProc(this.workspace.getBlockById('def'),
           this.workspace.getBlockById('call'), 3, ['x', 'x', 'x']);
-      var xml = Blockly.Xml.workspaceToDom(this.workspace);
+      const xml = Blockly.Xml.workspaceToDom(this.workspace);
 
       // Remove extra fields.
-      var blocks = xml.getElementsByTagName('block');
-      for (var i = 0, block; (block = blocks[i]); i++) {
-        var fields = block.getElementsByTagName('field');
-        for (var j = fields.length - 1, field; (field = fields[j]); j--) {
+      const blocks = xml.getElementsByTagName('block');
+      for (let i = 0, block; (block = blocks[i]); i++) {
+        const fields = block.getElementsByTagName('field');
+        for (let j = fields.length - 1, field; (field = fields[j]); j--) {
           if (field.getAttribute('name') != 'NAME') {
             block.removeChild(field);
           }
         }
       }
 
-      var newText = Blockly.Xml.domToPrettyText(xml);
+      const newText = Blockly.Xml.domToPrettyText(xml);
       assert.equal(newText, oldText);
     });
     test('No Statements', () => {
-      var oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="procedures_defreturn" id="def" x="80" y="130">\n' +
           '    <mutation statements="false"/>\n' +
           '    <field name="NAME">do something</field>\n' +
@@ -178,11 +191,12 @@ suite('procedures', () => {
           '    <mutation name="do something"/>\n' +
           '  </block>\n' +
           '</xml>';
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(oldText), this.workspace);
+      Blockly.Xml.domToWorkspace(
+          Blockly.Xml.textToDom(oldText), this.workspace);
       assertProc(this.workspace.getBlockById('def'),
           this.workspace.getBlockById('call'), 0, [], false);
-      var xml = Blockly.Xml.workspaceToDom(this.workspace);
-      var newText = Blockly.Xml.domToPrettyText(xml);
+      const xml = Blockly.Xml.workspaceToDom(this.workspace);
+      const newText = Blockly.Xml.domToPrettyText(xml);
       assert.equal(newText, oldText);
     });
   });
@@ -192,13 +206,13 @@ suite('procedures', () => {
       assertProc(this.def, this.call, 1, ['x']);
     });
     test('Add lots', () => {
-      for (var i = 0; i < 5; i++) {
+      for (let i = 0; i < 5; i++) {
         this.def.plus();
       }
       assertProc(this.def, this.call, 5, ['x', 'y', 'z', 'a', 'b']);
     });
     test('Add, no stack', () => {
-      var xml = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+      const xml = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="procedures_defreturn" id="def">\n' +
           '    <mutation statements="false"></mutation>\n' +
           '    <field name="NAME">do something</field>\n' +
@@ -208,7 +222,7 @@ suite('procedures', () => {
           '  </block>' +
           '</xml>';
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
-      var def = this.workspace.getBlockById('def');
+      const def = this.workspace.getBlockById('def');
       def.plus();
       assertProc(def, this.workspace.getBlockById('call'), 1, ['x'], false);
     });
@@ -218,12 +232,12 @@ suite('procedures', () => {
       assertProc(this.def, this.call, 0);
     });
     test('Remove lots', () => {
-      for (var i = 0; i < 10; i++) {
+      for (let i = 0; i < 10; i++) {
         this.def.plus();
       }
       // Remove every other input. Must do it backwards so that the array
       // doesn't get out of whack.
-      for (var i = 9; i > 0; i-=2) {
+      for (let i = 9; i > 0; i-=2) {
         this.def.minus(this.def.argIds_[i]);
       }
       assertProc(this.def, this.call, 5, ['x', 'z', 'b', 'd', 'f']);
@@ -242,12 +256,12 @@ suite('procedures', () => {
     setup(() => {
       this.assertRoundTrip = (def, call, func) => {
         func(def, call);
-        var defXml = Blockly.Xml.blockToDom(def);
-        var callXml = Blockly.Xml.blockToDom(call);
-        var newDef = Blockly.Xml.domToBlock(defXml, this.workspace);
-        var newCall = Blockly.Xml.domToBlock(callXml, this.workspace);
+        const defXml = Blockly.Xml.blockToDom(def);
+        const callXml = Blockly.Xml.blockToDom(call);
+        const newDef = Blockly.Xml.domToBlock(defXml, this.workspace);
+        const newCall = Blockly.Xml.domToBlock(callXml, this.workspace);
         func(def, call);
-      }
+      };
     });
     teardown(() => {
       delete this.assertRoundTrip;
@@ -255,41 +269,41 @@ suite('procedures', () => {
     test('Unmutated', () => {
       this.assertRoundTrip(this.def, this.call, (def, call) => {
         assertProc(def, call, 0);
-      })
+      });
     });
     test('Mutated', () => {
       this.def.plus();
       this.assertRoundTrip(this.def, this.call, (def, call) => {
         assertProc(this.def, this.call, 1, ['x']);
-      })
+      });
     });
     test('Child attached', () => {
-      var child1 = this.workspace.newBlock('logic_boolean');
+      const child1 = this.workspace.newBlock('logic_boolean');
       this.def.plus();
       this.call.getInput('ARG0').connection
           .connect(child1.outputConnection);
       this.assertRoundTrip(this.def, this.call, (def, call) => {
         assertProc(def, call, 1, ['x']);
-        var child = call.getInputTargetBlock('ARG0');
+        const child = call.getInputTargetBlock('ARG0');
         assert.isNotNull(child);
         assert.equal(child.type, 'logic_boolean');
-      })
+      });
     });
     test('<> arg', () => {
       this.def.plus();
-      var field = this.def.inputList[1].fieldRow[2];
+      const field = this.def.inputList[1].fieldRow[2];
       field.setValue('<>');
       this.assertRoundTrip(this.def, this.call, (def, call) => {
         assertProc(def, call, 1, ['<>']);
-      })
+      });
     });
   });
   suite('Vars', () => {
     setup(() => {
-      this.assertVars = function(varsArray) {
-        var varNames = this.workspace.getVariablesOfType('').map(
-            model => model.name );
-        assert.sameMembers(varNames, varsArray);
+      this.assertVars = function(constsArray) {
+        const constNames = this.workspace.getconstiablesOfType('').map(
+            (model) => model.name );
+        assert.sameMembers(constNames, constsArray);
       };
     });
     teardown(() => {
@@ -299,28 +313,28 @@ suite('procedures', () => {
     suite('Renaming args', () => {
       test('Simple Rename', () => {
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('newName');
         assertProc(this.def, this.call, 1, ['newName']);
         this.assertVars(['x', 'newName']);
       });
       test('Change Case', () => {
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('X');
         assertProc(this.def, this.call, 1, ['X']);
         this.assertVars(['X']);
       });
       test('Empty', () => {
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('');
         assertProc(this.def, this.call, 1, ['x']);
         this.assertVars(['x']);
       });
       test('Whitespace', () => {
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('  newName   ');
         assertProc(this.def, this.call, 1, ['newName']);
         this.assertVars(['x', 'newName']);
@@ -328,7 +342,7 @@ suite('procedures', () => {
       test('Duplicate', () => {
         this.def.plus();
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('y');
         assertProc(this.def, this.call, 2, ['x', 'y']);
         this.assertVars(['x', 'y']);
@@ -336,27 +350,27 @@ suite('procedures', () => {
       test('Duplicate Different Case', () => {
         this.def.plus();
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('Y');
         assertProc(this.def, this.call, 2, ['x', 'y']);
         this.assertVars(['x', 'y']);
       });
       test('Match Existing', () => {
-        this.workspace.createVariable('test', '');
+        this.workspace.createconstiable('test', '');
         this.def.plus();
-        var field = this.def.inputList[1].fieldRow[2];
+        const field = this.def.inputList[1].fieldRow[2];
         field.setValue('test');
         assertProc(this.def, this.call, 1, ['test']);
         this.assertVars(['x', 'test']);
-        assert.equal(this.def.varIds_[0],
-            this.workspace.getVariable('test', '').getId());
+        assert.equal(this.def.constIds_[0],
+            this.workspace.getconstiable('test', '').getId());
       });
     });
-    suite('Vars Renamed Elsewhere', () => {
+    suite('consts Renamed Elsewhere', () => {
       test('Simple Rename', () => {
         this.def.plus();
-        var variable = this.workspace.getVariable('x', '');
-        this.workspace.renameVariableById(variable.getId(), 'test');
+        const constiable = this.workspace.getconstiable('x', '');
+        this.workspace.renameVariableById(constiable.getId(), 'test');
         assertProc(this.def, this.call, 1, ['test']);
         this.assertVars(['test']);
       });
@@ -364,21 +378,21 @@ suite('procedures', () => {
       test.skip('Duplicate', () => {
         this.def.plus();
         this.def.plus();
-        var variable = this.workspace.getVariable('x', '');
-        this.workspace.renameVariableById(variable.getId(), 'y');
+        const constiable = this.workspace.getconstiable('x', '');
+        this.workspace.renameVariableById(constiable.getId(), 'y');
         // Don't know what we want to have happen.
       });
       test('Change Case', () => {
         this.def.plus();
-        var variable = this.workspace.getVariable('x', '');
-        this.workspace.renameVariableById(variable.getId(), 'X');
+        const constiable = this.workspace.getconstiable('x', '');
+        this.workspace.renameVariableById(constiable.getId(), 'X');
         assertProc(this.def, this.call, 1, ['X']);
         this.assertVars(['X']);
       });
       test('Coalesce Change Case', () => {
-        var variable = this.workspace.createVariable('test');
+        const constiable = this.workspace.createconstiable('test');
         this.def.plus();
-        this.workspace.renameVariableById(variable.getId(), 'X');
+        this.workspace.renameVariableById(constiable.getId(), 'X');
         assertProc(this.def, this.call, 1, ['X']);
         this.assertVars(['X']);
       });

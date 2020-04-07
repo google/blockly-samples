@@ -13,40 +13,45 @@ import '../src/index.js';
 
 let workspace;
 
+/**
+ * Injects the workspace.
+ */
 function start() {
   workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
   });
 }
 
-document.addEventListener("DOMContentLoaded", start);
+document.addEventListener('DOMContentLoaded', start);
 
-function exportWorkspace() {
-  var type = document.getElementById('export-type').value;
+window.exportWorkspace = function() {
+  const type = document.getElementById('export-type').value;
   if (sessionStorage) {
     sessionStorage.setItem('exportType', type);
   }
-  var output = document.getElementById('importExport');
+  const output = document.getElementById('importExport');
+  let value;
   switch (type) {
     case 'clean-xml':
-      var xml = Blockly.Xml.workspaceToDom(workspace);
-      xml = cleanXml(xml);
-      output.value = Blockly.Xml.domToPrettyText(xml);
+      value = Blockly.Xml.workspaceToDom(workspace);
+      value = window.cleanXml(value);
+      value = Blockly.Xml.domToPrettyText(value);
       break;
     case 'xml':
-      var xml = Blockly.Xml.workspaceToDom(workspace);
-      output.value = Blockly.Xml.domToPrettyText(xml);
+      value = Blockly.Xml.workspaceToDom(workspace);
+      value = Blockly.Xml.domToPrettyText(value);
       break;
     default:
       output.value = Blockly[type].workspaceToCode(workspace);
       break;
   }
-  textAreaChange();
-}
+  output.value = value;
+  window.textAreaChange();
+};
 
-function cleanXml(xml) {
-  var newXml = xml.cloneNode(true);
-  var node = newXml;
+window.cleanXml = function(xml) {
+  const newXml = xml.cloneNode(true);
+  let node = newXml;
   while (node) {
     // Things like text inside tags are still treated as nodes, but they
     // don't have attributes (or the removeAttribute function) so we can
@@ -58,7 +63,7 @@ function cleanXml(xml) {
     }
 
     // Try to go down the tree
-    var nextNode = node.firstChild || node.nextSibling;
+    let nextNode = node.firstChild || node.nextSibling;
     // If we can't go down, try to go back up the tree.
     if (!nextNode) {
       nextNode = node.parentNode;
@@ -76,25 +81,25 @@ function cleanXml(xml) {
     node = nextNode;
   }
   return newXml;
-}
+};
 
-function fromXml() {
-  var input = document.getElementById('importExport');
-  var xml = Blockly.Xml.textToDom(input.value);
+window.fromXml = function() {
+  const input = document.getElementById('importExport');
+  const xml = Blockly.Xml.textToDom(input.value);
   Blockly.Xml.domToWorkspace(xml, workspace);
-  textAreaChange();
-}
+  window.textAreaChange();
+};
 
-function textAreaChange() {
-  var textarea = document.getElementById('importExport');
+window.textAreaChange = function() {
+  const textarea = document.getElementById('importExport');
   if (sessionStorage) {
     sessionStorage.setItem('textarea', textarea.value);
   }
-  var valid = true;
+  let valid = true;
   try {
     Blockly.Xml.textToDom(textarea.value);
   } catch (e) {
     valid = false;
   }
   document.getElementById('import').disabled = !valid;
-}
+};
