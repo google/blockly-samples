@@ -25,7 +25,7 @@ npm install @blockly/field-template --save
 
 ### JavaScript
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import Field from '@blockly/field-template';
 Blockly.Blocks["test_field_template"] = {
   init: function () {
@@ -38,7 +38,7 @@ Blockly.Blocks["test_field_template"] = {
 ### JSON
 
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import '@blockly/field-template';
 Blockly.defineBlocksWithJsonArray([
     {

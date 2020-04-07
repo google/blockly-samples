@@ -8,7 +8,7 @@
  * @fileoverview Block test.
  */
 
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import '../src/index.js';
 
 // TODO: Edit list of blocks.

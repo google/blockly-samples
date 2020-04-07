@@ -18,7 +18,7 @@ npm install @blockly/field-slider --save
 
 ### JavaScript
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import FieldSlider from '@blockly/field-slider';
 Blockly.Blocks["test_field_slider"] = {
   init: function () {
@@ -31,7 +31,7 @@ Blockly.Blocks["test_field_slider"] = {
 ### JSON
 
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import '@blockly/field-slider';
 Blockly.defineBlocksWithJsonArray([
     {

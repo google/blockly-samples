@@ -21,7 +21,7 @@ npm install @blockly/block-template --save
 
 ### Import
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import '@blockly/block-template';
 
 ```

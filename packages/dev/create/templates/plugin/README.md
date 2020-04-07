@@ -23,7 +23,7 @@ npm install @blockly/plugin-template --save
   - TODO: Update usage.
   -->
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import {Plugin} from '@blockly/plugin-template';
 
 // Inject Blockly.

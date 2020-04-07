@@ -17,7 +17,7 @@ found [here](https://developers.google.com/blockly/guides/configure/web/toolbox?
 
 #### Import
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import { TypedVariableModal } from '@blockly/plugin-typed-variable-modal';
 ```
 or
