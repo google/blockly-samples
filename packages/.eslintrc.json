@@ -20,6 +20,7 @@
   },
   "rules": {
     "camelcase": "warn",
+    "no-warning-comments": "warn",
     "jsdoc/newline-after-description": 0,
     "jsdoc/require-description-complete-sentence": 1,
     "jsdoc/require-returns": [
