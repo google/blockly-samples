@@ -185,7 +185,7 @@ CustomMarkerSvg.prototype.hide = function() {
 
 ### Renderer setup
 In order to change the look of the cursor to use `CustomMarkerSvg` we need to
-override the renderer. For more information on how to create a custom renderer see the
+override the renderer. For more information on customizing a renderer see the
 custom renderer [codelab](https://blocklycodelabs.dev/codelabs/custom-renderer/index.html?index=..%2F..index#2).
 
 Add the below code to your `custom_marker_svg.js` file. 
@@ -199,14 +199,14 @@ Blockly.utils.object.inherits(CustomRenderer,
 Blockly.blockRendering.register('custom_renderer', CustomRenderer);
 ```
 
-Now we need to override the method responsible for returning our `CustomMarkerSvg`. 
+Now we need to override the method responsible for returning the drawer for markers and cursors.
 ```js
 CustomRenderer.prototype.makeMarkerDrawer = function(workspace, marker) {
   return new CustomMarkerSvg(workspace, this.getConstants(), marker);
 };
 ```
 
-To use your custom renderer, set the renderer property in the configuration struct in `playground.html`:
+Set the renderer property in the configuration struct in `playground.html` in order to use your custom renderer.
 ```js
 Blockly.inject('blocklyDiv', {
     renderer: 'custom_renderer'
