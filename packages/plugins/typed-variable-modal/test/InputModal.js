@@ -1,7 +1,9 @@
 
-import { TypedVariableModal } from '../src/TypedVariableModal.js';
-import * as Blockly from 'blockly/core';
+import {TypedVariableModal} from '../src/TypedVariableModal.js';
 
+/**
+ * A test input modal.
+ */
 export class InputModal extends TypedVariableModal {
   /**
    * The element holding the input type.
@@ -38,7 +40,7 @@ export class InputModal extends TypedVariableModal {
    * @override
    */
   resetModalInputs_() {
-    super.resetModalInputs_()
+    super.resetModalInputs_();
     this.firstTypeInput_.selected = true;
   }
 

@@ -16,7 +16,6 @@ import * as Blockly from 'blockly/core';
  * Class responsible for creating a Blockly modal.
  */
 export class Modal {
-
   /**
    * Constructor for creating a Blockly modal.
    * @param {string} title The title for the modal.
@@ -95,7 +94,7 @@ export class Modal {
    * to prevent memory leaks.
    */
   dispose() {
-    for (let event of this.boundEvents_) {
+    for (const event of this.boundEvents_) {
       Blockly.unbindEvent_(event);
     }
     this.boundEvents_ = [];
@@ -203,8 +202,8 @@ export class Modal {
       } else {
         this.handleForwardTab_(e);
       }
-    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC
-        && this.shouldCloseOnEsc) {
+    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC &&
+        this.shouldCloseOnEsc) {
       this.hide();
     }
     e.stopPropagation();
