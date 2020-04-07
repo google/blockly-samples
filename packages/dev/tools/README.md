@@ -3,7 +3,7 @@
 A library of common utilities for Blockly extension development.
 - `toolboxSimple`: XML for an always-open flyout with no categories.
 - `toolboxCategories`: XML for a toolbox with multiple categories and all of the default blocks.
-- `BlocklyDebugRenderer`: A visualizer for debugging custom renderers.
+- `DebugRenderer`: A visualizer for debugging custom renderers.
 
 ## Installation
 
@@ -15,14 +15,14 @@ npm install @blockly/dev-tools -D --save
 
 ```js
 import Blockly from 'blockly';
-import {toolboxSimple, toolboxCategories, BlocklyDebugRenderer} from '@blockly/dev-tools';
+import {toolboxSimple, toolboxCategories, DebugRenderer} from '@blockly/dev-tools';
 
 Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories
 });
 
 // Initialize the debug renderer if you are making a custom renderer.
-BlocklyDebugRenderer.init();
+DebugRenderer.init();
 ```
 
 ## License

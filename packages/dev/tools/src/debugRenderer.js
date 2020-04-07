@@ -13,7 +13,7 @@ import Blockly from 'blockly/core';
 /**
  * A basic visualizer for debugging custom renderers.
  */
-export class BlocklyDebugRenderer {
+export class DebugRenderer {
   /**
    * An object that renders rectangles and dots for debugging rendering code.
    * @param {!Blockly.blockRendering.ConstantProvider} constants The renderer's
@@ -51,7 +51,7 @@ export class BlocklyDebugRenderer {
    */
   static init() {
     Blockly.blockRendering.useDebugger = true;
-    Blockly.blockRendering.Debug = BlocklyDebugRenderer;
+    Blockly.blockRendering.Debug = DebugRenderer;
   }
 
   /**
@@ -411,7 +411,7 @@ export class BlocklyDebugRenderer {
  * rendering of specific rendering components.
  * @type {!Object.<string, boolean>}
  */
-BlocklyDebugRenderer.config = {
+DebugRenderer.config = {
   rowSpacers: true,
   elemSpacers: true,
   rows: true,
