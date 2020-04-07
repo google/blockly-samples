@@ -107,5 +107,5 @@ export const injectSearchCss = (function() {
     const cssTextNode = document.createTextNode(text);
     cssNode.appendChild(cssTextNode);
     document.head.insertBefore(cssNode, document.head.firstChild);
-  }
+  };
 })();
