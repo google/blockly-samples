@@ -2,7 +2,7 @@ This package was bootstrapped with [@blockly/create-package](https://www.npmjs.c
 
 ## Available Scripts
 
-In the package directory, you can run:
+In this directory, you can run:
 
 ### `npm start`
 
@@ -13,13 +13,13 @@ browser. The page will reload if you make edits.
 
 ### `npm run build`
 
-Builds the package for production to the `dist` folder.
+Builds the package into the `dist` directory.
 
 ### `npm run lint`
 
-Cleans the `dist` and `build` folders.
+Runs lint on the `src` and `test` directories.
 
 ### `npm run clean`
 
-Cleans the `dist` and `build` folders.
+Cleans the `dist` and `build` directories.
 

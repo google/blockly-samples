@@ -1,6 +1,6 @@
 # @blockly/create-package
 
-Creating a Blockly package based on a pre-existing template.
+A tool for creating a Blockly package based on a pre-existing template.
 
 ## Available templates
 - plugin
