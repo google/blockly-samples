@@ -4,22 +4,21 @@ This package was bootstrapped with [@blockly/create-package](https://www.npmjs.c
 
 In this directory, you can run:
 
-### `npm start`
+### `blockly-scripts start`
 
-Runs the app in the development mode.
+Runs the package in development mode.
 
-Open [http://localhost:3000/test](http://localhost:3000/test) to view it in the
-browser. The page will reload if you make edits.
+Open [http://localhost:3000/test](http://localhost:3000/test) to view the test
+playground in the browser. The page will reload if you make edits.
 
-### `npm run build`
+### `blockly-scripts build`
 
 Builds the package into the `dist` directory.
 
-### `npm run lint`
+### `blockly-scripts lint`
 
-Runs lint on the `src` and `test` directories.
+Runs eslint on the `src` and `test` directories.
 
-### `npm run clean`
+### `blockly-scripts clean`
 
-Cleans the `dist` and `build` directories.
-
+Deletes the `dist` and `build` directories if they exist.
