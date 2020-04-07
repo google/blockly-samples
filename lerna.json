@@ -6,8 +6,7 @@
   "npmClient": "npm",
   "command": {
     "bootstrap": {
-      "forceLocal": true,
-      "npmClientArgs": ["--no-package-lock"]
+      "forceLocal": true
     }
   }
 }

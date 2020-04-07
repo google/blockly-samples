@@ -10,8 +10,8 @@
  */
 
 import * as Blockly from 'blockly';
-import { WorkspaceSearch } from '../src/index.js';
-import { toolboxCategories, toolboxSimple } from '@blockly/dev-tools';
+import {WorkspaceSearch} from '../src/index.js';
+import {toolboxCategories, toolboxSimple} from '@blockly/dev-tools';
 
 const options = {
   comments: true,
@@ -27,13 +27,17 @@ const options = {
     wheel: false,
     maxScale: 4,
     minScale: 0.25,
-    scaleSpeed: 1.1
-  }
+    scaleSpeed: 1.1,
+  },
 };
 
+/**
+ * Test page startup, setup Blockly instances.
+ */
 function start() {
   const match = location.search.match(/toolbox=([^&]+)/);
-  const toolbox = match && match[1] == 'simple' ? toolboxSimple : toolboxCategories;
+  const toolbox = match && match[1] == 'simple' ?
+      toolboxSimple : toolboxCategories;
   startBlocklyInstance('VertStartLTR', false, false, 'start', toolbox, true);
   startBlocklyInstance('VertStartRTL', true, false, 'start', toolbox);
 
@@ -47,7 +51,18 @@ function start() {
   startBlocklyInstance('HorizontalEndRTL', true, true, 'end', toolbox);
 }
 
-function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, opt_openSearch) {
+/**
+ * Inject a Blockly instance.
+ * @param {string} suffix Id suffix to use.
+ * @param {boolean} rtl RTL option.
+ * @param {boolean} horizontalLayout Horizontal layout option.
+ * @param {string} position Toolbox position option.
+ * @param {string} toolbox Toolbox value.
+ * @param {boolean=} optOpenSearch Optional, whether or not to open the
+ *     workspace search box.
+ */
+function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox,
+    optOpenSearch) {
   options.rtl = rtl;
   options.toolbox = toolbox;
   options.horizontalLayout = horizontalLayout;
@@ -55,9 +70,9 @@ function startBlocklyInstance(suffix, rtl, horizontalLayout, position, toolbox, 
   const ws = Blockly.inject('blocklyDiv' + suffix, options);
   const workspaceSearch = new WorkspaceSearch(ws);
   workspaceSearch.init();
-  if (opt_openSearch) {
+  if (optOpenSearch) {
     workspaceSearch.open();
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () { start() });
+document.addEventListener('DOMContentLoaded', start);
