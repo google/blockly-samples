@@ -2,10 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Blockly Plus/Minus Mutators Example</title>
-    <script src="./node_modules/blockly/blockly.min.js"></script>
-    <script src="./dist/plus-minus-mutators.umd.js"></script>
-    <script src="main.js"></script>
+    <title>Blockly Plus/Minus Mutators Test</title>
     <style>
         html {
             height: 100%;
@@ -52,36 +49,10 @@
     <div id="tools">
         <h1>Blockly Plus/Minus Mutators Playground</h1>
 
-        <p><a href="javascript:void(workspace.setVisible(true))">Show</a>
-            - <a href="javascript:void(workspace.setVisible(false))">Hide</a></p>
-
-        <form id="options">
-            <select name="dir" onchange="document.forms.options.submit()">
-                <option value="ltr">LTR</option>
-                <option value="rtl">RTL</option>
-            </select>
-            <select name="side" onchange="document.forms.options.submit()">
-                <option value="start">Start</option>
-                <option value="end">End</option>
-                <option value="top">Top</option>
-                <option value="bottom">Bottom</option>
-            </select>
-        </form>
-
-        <p>
-            <select id="stress-test">
-                <option value="misc">N/A</option>
-            </select>
-            <input type="button" value="Test" onclick="stressTest()">
-        </p>
-
         <div class="bundle">
-            <span id="auto-update-text">Auto Update &nbsp;</span>
-            <input class="bundle--item" type="checkbox" id="auto-update" checked="" onclick="setAutoUpdate(this.checked)">
-
             <div id="break" style="width: 100%; display: none;"></div>
-            <input class="bundle--item" type="button" id="import" value="Import" style="display: none;" onclick="fromXml()">
-            <input class="bundle--item" type="button" id="export" value="Export to" style="display: none;" onclick="exportWorkspace()">
+            <input class="bundle--item" type="button" id="import" value="Import" onclick="fromXml()">
+            <input class="bundle--item" type="button" id="export" value="Export to" onclick="exportWorkspace()">
             <select class="bundle--item" id="export-type" name="export" onchange="exportWorkspace();">
                 <option class="export-opt" value="clean-xml">Clean XML</option>
                 <option class="export-opt" value="xml">XML</option>
@@ -110,5 +81,6 @@
     <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
 </xml>
 
+<script src="../build/test_bundle.js"></script>
 </body>
 </html>

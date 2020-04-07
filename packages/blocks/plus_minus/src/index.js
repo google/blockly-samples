@@ -5,14 +5,13 @@
  */
 
 /**
- * @fileoverview Blocks for demonstrating using +/- icons for manipulating
- *    the shape of a block.
+ * @fileoverview Adds blocks that replace the built-in mutator UI with a +/- UI.
  */
 
 
 import * as Blockly from 'blockly/core';
-import FieldPlus from './field_plus.js';
-import FieldMinus from './field_minus.js';
+import {FieldPlus} from './field_plus.js';
+import {FieldMinus} from './field_minus.js';
 
 
 Blockly.defineBlocksWithJsonArray([
@@ -117,7 +116,7 @@ Blockly.defineBlocksWithJsonArray([
   }
 ]);
 
-const controlsIfMutator =  {
+const controlsIfMutator = {
   // TODO: This should be its own extension. But that requires core changes.
   suppressPrefixSuffix: true,
 
