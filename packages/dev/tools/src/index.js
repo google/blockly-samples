@@ -6,8 +6,10 @@
 
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
+import DebugRenderer from './debugRenderer';
 
 export {
+  DebugRenderer,
   toolboxCategories,
   toolboxSimple,
 };
