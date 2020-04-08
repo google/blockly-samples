@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * @license
  * Copyright 2020 Google LLC
@@ -19,22 +20,20 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 const root = process.cwd();
+const scriptName = '@blockly/create-package';
+const usage = `  ${chalk.blue(scriptName)}\
+ ${chalk.green('<plugin|field|block>')}\
+ ${chalk.green('<package-directory>')}
 
-const usage = `
-  ${chalk.blue('blockly-scripts create')}\
-  ${chalk.green('<plugin|field|block>')}\
-  ${chalk.green('<package-directory>')}
-
-For example:
-  ${chalk.blue('blockly-scripts create')}\
-  ${chalk.green('plugin')} ${chalk.green('my-blockly-plugin')}\n`;
+For example:\n  ${chalk.blue(scriptName)}\
+ ${chalk.green('plugin')} ${chalk.green('my-blockly-plugin')}\n`;
 
 const packageType = args[0];
 // Check package type exists.
 if (!packageType) {
   console.error('Please specify the package type.');
   console.log(`It can either be ${chalk.green('plugin')},\
-  ${chalk.green('field')} or ${chalk.green('block')}.`);
+ ${chalk.green('field')} or ${chalk.green('block')}.`);
   console.log(usage);
   process.exit(1);
 }
@@ -139,7 +138,7 @@ fs.copySync(path.resolve(__dirname, templateDir, 'template'), packageDir);
 
 // Run npm install.
 console.log('Installing packages. This might take a couple of minutes.');
-// execSync(`cd ${packageName} && npm install`, {stdio: [0, 1, 2]});
+execSync(`cd ${packageName} && npm install`, {stdio: [0, 1, 2]});
 
 console.log(chalk.green('\nPackage created.\n'));
 console.log('Next steps, run:');
