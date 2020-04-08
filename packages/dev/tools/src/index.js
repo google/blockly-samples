@@ -9,7 +9,7 @@ import toolboxSimple from './toolboxSimple';
 import DebugRenderer from './debugRenderer';
 
 export {
+  DebugRenderer,
   toolboxCategories,
   toolboxSimple,
-  DebugRenderer,
 };
