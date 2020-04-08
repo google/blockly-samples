@@ -2,6 +2,9 @@
   "name": "@blockly/dev-scripts",
   "version": "0.20200403.0",
   "description": "Configuration and scripts for Blockly packages.",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "bin": {
     "blockly-scripts": "./bin/blockly-scripts.js"
   },
