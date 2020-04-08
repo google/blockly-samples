@@ -8,7 +8,9 @@
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run prod",
-    "start": "blockly-scripts start"
+    "start": "blockly-scripts start",
+    "test": "npm run build && npm run test:mocha",
+    "test:mocha": "mocha --ui tdd -r jsdom-global/register test/typed_variable_modal_test.mocha.js"
   },
   "author": "Blockly Team",
   "keywords": [
@@ -39,8 +41,12 @@
   ],
   "devDependencies": {
     "blockly": "^3.20200123.1",
-    "@blockly/dev-tools": "^0.20200313.0",
-    "@blockly/dev-scripts": "^0.20200403.0"
+    "@blockly/dev-tools": "^0.20200313.1",
+    "@blockly/dev-scripts": "^0.20200403.0",
+    "jsdom": "16.2.1",
+    "jsdom-global": "3.0.2",
+    "mocha": "^7.1.0",
+    "sinon": "7.5.0"
   },
   "peerDependencies": {
     "blockly": ">3.20200123.0 <4"
