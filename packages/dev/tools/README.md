@@ -14,7 +14,7 @@ npm install @blockly/dev-tools -D --save
 ## Usage
 
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import {toolboxSimple, toolboxCategories, DebugRenderer} from '@blockly/dev-tools';
 
 Blockly.inject('blocklyDiv', {
