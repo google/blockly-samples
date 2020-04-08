@@ -28,12 +28,13 @@ Over the course of this codelab you will build and use four renderers.
 ![](./custom_notches.png)
 1. A renderer with connection shapes that depend on the type checks of each connection.
 ![](./typed_connection_shapes.png)
+
 ### What you'll need
 This codelab assumes that you are already comfortable with using the Blockly playground locally.  You can find it in `tests/playground.html`.
 
 ## Setup
 
-In this codelab you will add code to the Blockly playground to create and use a new renderer. The playgound contains all of Blockly's base blocks, as well as some that exist only to test rendering code. You can find the playground at `tests/playground.html`.
+In this codelab you will add code to the Blockly playground to create and use a new renderer. The playground contains all of Blockly's base blocks, as well as some that exist only to test rendering code. You can find the playground at `tests/playground.html`.
 
 To start, create a file named `custom_renderer.js` in the same folder as the playground.  Include it with a script tag.
 
