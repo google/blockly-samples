@@ -1,6 +1,6 @@
 # @blockly/dev-scripts [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-This package includes scripts and configuration used by Blockly extension
+This package includes scripts and configuration files used by Blockly extension
 packages.
 
 ## Available Scripts

@@ -23,11 +23,11 @@ the Google Closure date picker.
 ### Dev
 
 - [``@blockly/create-package``](dev/create/): A tool for creating a Blockly
-package based on a pre-existing template.
+extension package based on a pre-existing template.
 - [``@blockly/dev-tool``](dev/tools/): A library of common utilities for Blockly
- extension development.
+extension package development.
 - [``@blockly/dev-scripts``](dev/scripts/): Configuration and scripts for
-Blockly packages.
+Blockly extension package.
 
 
 ## Using Lerna
