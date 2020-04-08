@@ -6,10 +6,10 @@
 
 /**
  * @fileoverview A 'start' script for Blockly extension packages.
- * This script: 
+ * This script:
  *   Builds the src and test directories in development mode.
  *   Starts the webpack dev server which watches changes to these directories.
- *   Opens the test page 0.0.0.0:3000/test
+ *   Opens the test page `0.0.0.0:3000/test`.
  *   Hot reloads the page if any changes are made to the source files.
  * @author samelh@google.com (Sam El-Husseini)
  */
@@ -21,11 +21,11 @@ const fs = require('fs');
 const open = require('open');
 
 const webpack = require('webpack');
-const webpackDevServer = require('webpack-dev-server');
+const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('../config/webpack.config');
 
 const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
 console.log(`Running start for ${packageJson.name}`);
@@ -34,7 +34,7 @@ console.log(`Running start for ${packageJson.name}`);
 // Build the test directory.
 const config = webpackConfig({
   mode: 'development',
-  buildTest: true
+  buildTest: true,
 });
 const compiler = webpack(config);
 
@@ -46,7 +46,7 @@ const page = devServerConfig.openPage;
 const URL = `http://${host}:${port}/${page}`;
 
 // Start the dev server.
-const devServer = new webpackDevServer(compiler);
+const devServer = new WebpackDevServer(compiler);
 devServer.listen(port, host, async (err) => {
   if (err) {
     return console.log(err);
