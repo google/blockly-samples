@@ -12,6 +12,9 @@
     "test": "npm run build && npm run test:mocha",
     "test:mocha": "mocha --ui tdd -r jsdom-global/register test/typed_variable_modal_test.mocha.js"
   },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
     "blockly",
@@ -28,9 +31,6 @@
     "directory": "packages/plugins/typed-variable-modal"
   },
   "license": "Apache-2.0",
-  "main": "./dist/index.js",
-  "module": "./src/index.js",
-  "unpkg": "./dist/index.js",
   "directories": {
     "dist": "dist",
     "src": "src"
