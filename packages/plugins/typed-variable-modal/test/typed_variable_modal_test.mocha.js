@@ -14,7 +14,6 @@ const Blockly = require('blockly');
 const sinon = require('sinon');
 
 const TypedVariableModal = require('../dist/index.js').TypedVariableModal;
-const toolboxCategories = require('@blockly/dev-tools').toolboxCategories;
 
 suite('TypedVariableModal', () => {
   function workspaceSetup(rtl, toolbox, types) {
