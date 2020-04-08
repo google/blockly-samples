@@ -10,7 +10,13 @@ A tool for creating a Blockly package based on a pre-existing template.
 ## Usage
 
 ```
-npx @blockly/create-package <plugin|field|block> my-plugin
+npx @blockly/create-package <plugin|field|block> <package-directory>
+```
+
+## Example Usage
+
+```
+npx @blockly/create-package plugin my-plugin
 cd my-plugin
 npm start
 ```
