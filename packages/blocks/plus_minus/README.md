@@ -1,5 +1,5 @@
 
-# @blockly/plus-minus [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/block-plus-minus [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A group of [Blockly](https://www.npmjs.com/package/blockly) blocks that replace the built-in mutator UI with a +/-
 based UI.
@@ -14,12 +14,12 @@ in the future.
 
 ### Yarn
 ```
-yarn add @blockly/plus-minus
+yarn add @blockly/block-plus-minus
 ```
 
 ### npm
 ```
-npm install @blockly/plus-minus --save
+npm install @blockly/block-plus-minus --save
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ npm install @blockly/plus-minus --save
 ### Import
 ```js
 import Blockly from 'blockly';
-import '@blockly/plus-minus';
+import '@blockly/block-plus-minus';
 ```
 
 ### XML
