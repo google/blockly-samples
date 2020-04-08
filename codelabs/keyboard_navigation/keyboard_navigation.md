@@ -11,7 +11,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new
 Keyboard navigation is the first step in making Blockly more accessible. This guide focuses on how to modify keyboard navigation for testing purposes. 
 
 ### Prerequisites
-1. A basic understanding of how to use the Blockly playground locally. This can be found in `tests/playground.html`.
+1. A basic understanding of how to use the Blockly playground locally. This can be found in [`tests/playground.html`](https://github.com/google/blockly/blob/master/tests/playground.html).
 1. Read through the keyboard navigation [documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
 
 ### What you'll learn
@@ -38,7 +38,7 @@ A **Cursor** is a marker that can move. It extends a `Blockly.Marker` but adds l
 ![Displays the different parts of a block. The previous connection on the top of a block. The next connection on the bottom of a block. Input value as a cut out of a puzzle piece. The statement input as a connection inside of a block. The output connection as a puzzle piece.](./block_terms.png)
 
 ## Setup
-In this codelab you will add code to the Blockly playground to create and use a new cursor. You can find the playground at `tests/playground.html`.
+In this codelab you will add code to the Blockly playground to create and use a new cursor. You can find the playground at [`tests/playground.html`](https://github.com/google/blockly/blob/master/tests/playground.html).
 
 To start, create a file named `custom_cursor.js` and a file named `custom_marker_svg.js` in the same folder as the playground.  In `playground.html` include both files with a script tag.
 
