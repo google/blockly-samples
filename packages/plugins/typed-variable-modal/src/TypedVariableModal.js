@@ -236,7 +236,7 @@ export class TypedVariableModal extends Modal {
    * @override
    */
   renderContent_(contentContainer) {
-     const varNameContainer = this.createVarNameContainer_();
+    const varNameContainer = this.createVarNameContainer_();
     this.variableNameInput_ = varNameContainer
         .querySelector('.typedModalVariableNameInput');
 
