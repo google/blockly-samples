@@ -12,7 +12,7 @@ npm install @blockly/plugin-workspace-search --save
 
 ### ES6 Imports
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import { WorkspaceSearch } from '@blockly/plugin-workspace-search';
 
 const workspace = Blockly.inject('blocklyDiv');
