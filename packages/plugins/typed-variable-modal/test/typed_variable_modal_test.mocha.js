@@ -186,8 +186,8 @@ suite('TypedVariableModal', () => {
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert.calledWith(`A variable named 'varName'
-          already exists for another type: 'Giraffe'.`));
+      assert(Blockly.alert.calledWith('A variable named \'varName\' already ' +
+        'exists for another type: \'Giraffe\'.'));
     });
     test('Variable with same type already exits', () => {
       Blockly.Variables.nameUsedWithAnyType_ = sinon.fake.returns({
@@ -196,8 +196,8 @@ suite('TypedVariableModal', () => {
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert.calledWith(`A variable named 'varName' already
-          exists.`));
+      assert(Blockly.alert.calledWith('A variable named \'varName\' already ' +
+          'exists.'));
     });
   });
 
