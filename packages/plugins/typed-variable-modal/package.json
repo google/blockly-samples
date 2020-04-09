@@ -40,7 +40,7 @@
     "src"
   ],
   "devDependencies": {
-    "blockly": "^3.20200123.1",
+    "blockly": "^3.20200402.0",
     "@blockly/dev-tools": "^0.20200313.1",
     "@blockly/dev-scripts": "^0.20200403.0",
     "jsdom": "16.2.1",
