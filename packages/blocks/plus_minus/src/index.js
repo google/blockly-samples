@@ -128,10 +128,10 @@ const controlsIfMutator = {
    */
   elseIfCount_: 0,
   /**
-   * Number of else inputs on this block. Max should be 1.
-   * @type {number}
+   * Whether this block has an else input or not.
+   * @type {boolean}
    */
-  elseCount_: 0,
+  hasElse_: false,
 
   /**
    * Creates XML to represent the number of else-if and else inputs.
@@ -139,13 +139,14 @@ const controlsIfMutator = {
    * @this Blockly.Block
    */
   mutationToDom: function() {
-    if (!this.elseIfCount_ && !this.elseCount_) {
+    if (!this.elseIfCount_ && !this.hasElse_) {
       return null;
     }
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('elseif', this.elseIfCount_);
-    if (this.type == 'controls_if' && !!this.elseCount_) {
-      container.setAttribute('else', this.elseCount_);
+    if (this.hasElse_) {
+      // Has to be stored as an int for backwards compat.
+      container.setAttribute('else', 1);
     }
     return container;
   },
@@ -157,11 +158,8 @@ const controlsIfMutator = {
    */
   domToMutation: function(xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
-    this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10) || 0;
-    if (this.type == 'controls_if' &&
-        !!this.elseCount_ &&
-        !this.getInput('ELSE')
-    ) {
+    this.hasElse_ = !!parseInt(xmlElement.getAttribute('else'), 10) || 0;
+    if (this.hasElse_ && !this.getInput('ELSE')) {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
     }
