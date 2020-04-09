@@ -24,7 +24,7 @@ export class TypedVariableModal extends Modal {
    *     be registered on.
    * @param {string} btnCallbackName The name used to register the button
    *     callback.
-   * @param {Array.<Array.<string>>} types An array holding arrays with the
+   * @param {Array<Array<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
    * @param {TypedVarModalMessages} optMessages The messages for a typed
@@ -73,7 +73,7 @@ export class TypedVariableModal extends Modal {
     /**
      * An array holding arrays with the name of the type and the display name
      *     for the type. Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
-     * @type {Array.<Array.<string>>}
+     * @type {Array<Array<string>>}
      * @protected
      */
     this.types_ = types;
@@ -300,7 +300,7 @@ export class TypedVariableModal extends Modal {
 
   /**
    * Creates an unordered list containing all the types.
-   * @param {Array.<Array.<string>>} types An array holding arrays with the
+   * @param {Array<Array<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
    * @return {HTMLElement} The list of types.

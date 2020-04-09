@@ -73,10 +73,10 @@ suite('TypedVariableModal', () => {
   });
 
   suite('init()', () => {
-    test('Render is called', () => {
+    test('Registers button', () => {
       this.workspace.registerButtonCallback = sinon.fake();
       this.typedVarModal.init();
-      assert(this.workspace.registerButtonCallback.calledOnce);
+      sinon.assert.calledOnce(this.workspace.registerButtonCallback);
     });
   });
 
@@ -101,7 +101,7 @@ suite('TypedVariableModal', () => {
 
       assert(this.workspace.removeButtonCallback.calledOnce);
       assert.equal(document.querySelector('.blocklyModalOverlay'), null);
-      assert.equal(Blockly.unbindEvent_.callCount, numEvents);
+      sinon.assert.callCount(Blockly.unbindEvent_, numEvents);
     });
   });
 
@@ -173,7 +173,7 @@ suite('TypedVariableModal', () => {
       assert(Blockly.alert
           .calledWith('Name is not valid. Please choose a different name.'));
     });
-    test('Valid Name', () => {
+    test('Valid name', () => {
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.workspace.createVariable = sinon.fake();
       this.typedVarModal.onConfirm_();
