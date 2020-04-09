@@ -28,13 +28,14 @@ Over the course of this codelab you will build the following:
 1. A keyboard shortcut for moving your cursor to the top of a stack.
 
 ### What you'll need
-1. A Blockly version greater than or equal to `3.20200123.0`.
+1. A Blockly version greater than or equal to `3.20200402.0`.
 
 ## Terminology
 A **Marker** holds a location and is not movable. 
 
 A **Cursor** is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
 
+The below image displays different parts of a block that a user can navigate to using keyboard navigation.
 ![Displays the different parts of a block. The previous connection on the top of a block. The next connection on the bottom of a block. Input value as a cut out of a puzzle piece. The statement input as a connection inside of a block. The output connection as a puzzle piece.](./block_terms.png)
 
 ## Setup
@@ -75,12 +76,14 @@ There are four different levels to the AST:
 1. Stack Level (blue): Holds all stack nodes.
 1. Block and Connection Level (red): Holds all block and connection nodes.
 1. Field and Input Level (yellow): Holds all field and input nodes.
+
 For a more detailed explanation of the different levels please see the keyboard
 navigation [documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav#using_the_default_cursor).
 
-The `Blockly.ASTNode` class is used to represent the AST. `Blockly.ASTNode`s hold a workspace component. This component can be a block, connection, field, input or workspace coordinate. 
 
 ### Create AST nodes
+The `Blockly.ASTNode` class is used to represent the AST. `Blockly.ASTNode`s hold a workspace component. This component can be a block, connection, field, input or workspace coordinate.
+
 The below code shows how to create a `Blockly.ASTNode` for the different workspace components.
 ```js
 const workspaceNode = Blockly.ASTNode.createWorkspaceNode(workspace, wsCoordinate);
@@ -351,11 +354,12 @@ Open the playground and enter into keyboard navigation mode (**ctrl + shift + k*
 on to the workspace and navigate to the first block. From here hit the **S** key
 to go to the next block. Notice how the cursor skips over the previous and next
 connection and goes straight to the next block.
+
 ![](./new_cursor.gif)
 
 ## Add a shortcut
 In this section we add a shortcut to allow users to move their
-cursor to the top of the stack their cursor is currently on.
+cursor to the top of the stack their cursor is currently on when they hit **ctrl + W**.
 
 ### Create and set an action
 
@@ -366,14 +370,12 @@ modifier keys. The possible modifier keys are:
 1. `Blockly.user.keyMap.modifierKeys.ALT`
 1. `Blockly.user.keyMap.modifierKeys.META`
 
-Set up **shift + T** to move the cursor to the top
-of a stack of blocks. Add the below code to the `playground.html` file after
-we have set the cursor.
+Add the below code to the `playground.html` file after we have set the cursor.
 
 ```js
 // Create a serialized key from the primary key and any modifiers.
-var shiftT = Blockly.user.keyMap.createSerializedKey(
-    Blockly.utils.KeyCodes.T, [Blockly.user.keyMap.modifierKeys.SHIFT]);  
+var ctrlW = Blockly.user.keyMap.createSerializedKey(
+    Blockly.utils.KeyCodes.W, [Blockly.user.keyMap.modifierKeys.CONTROL]);
 ```
 
 Next, create an action. A `Blockly.Action` describes a users' intent.
@@ -386,12 +388,12 @@ var actionTopOfStack = new Blockly.Action('topOfStack', 'Move cursor to top of s
 Finally, bind the action and the key code.
 
 ```js
-Blockly.user.keyMap.setActionForKey(shiftT, actionTopOfStack);
+Blockly.user.keyMap.setActionForKey(ctrlW, actionTopOfStack);
 ```
 
 ### Override onBlocklyAction 
 
-When the user hits **shift + T** and is in keyboard navigation mode we will get a
+When the user hits **ctrl + W** and is in keyboard navigation mode we will get a
 'topOfStack' action. Override `onBlocklyAction` on our cursor to handle this action.
 Add the below code to the `custom_cursor.js` file.
 ```js
@@ -419,7 +421,7 @@ CustomCursor.prototype.onBlocklyAction = function(action) {
 
 ### Test it out
 Open the playground and create a stack of blocks. Move your cursor down a few
-blocks. And then press **shift + T**. Notice how the cursor jumps to the top of the
+blocks. And then press **ctrl + W**. Notice how the cursor jumps to the top of the
 stack of blocks.
 
 ![](./skip_to_top.gif)
@@ -443,8 +445,8 @@ keys to move around instead of the **WASD** keys.
 ## Summary
 There is still a lot of work to be done in figuring out the best way to provide
 keyboard navigation support for users. Hopefully, everything you learned in this
-codelab will help you test out any ideas or assumptions you have.
-In this codelab you learned: 
+codelab will help you test out any ideas you have.
+In this codelab you learned:
 * How to create a new cursor
 * How to change the look of markers and cursors
-* How to add shortcuts 
+* How to add shortcuts
