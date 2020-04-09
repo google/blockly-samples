@@ -13,24 +13,40 @@ const assert = require('assert');
 const Blockly = require('blockly');
 const sinon = require('sinon');
 
-const WorkspaceSearch = require('../dist/workspace-search.umd').WorkspaceSearch;
+const WorkspaceSearch = require('../dist/index').WorkspaceSearch;
 
 suite('WorkspaceSearch', () => {
+  /**
+   * Check if a block is currently highlighted.
+   * @param {Blockly.BlockSvg} block The block to test.
+   * @return {boolean} True if the block is currently highlighted.
+   */
   function isBlockHighlighted(block) {
-    var path = block.pathObject.svgPath;
-    var classes = path.getAttribute('class');
+    const path = block.pathObject.svgPath;
+    const classes = path.getAttribute('class');
     return (' ' + classes + ' ')
         .indexOf(' blockly-ws-search-highlight ') !== -1;
   }
+  /**
+   * Check if a block is currently styled.
+   * @param {Blockly.BlockSvg} block The block to test.
+   * @return {boolean} True if the block is currently styled.
+   */
   function isBlockCurrentStyled(block) {
-    var path = block.pathObject.svgPath;
-    var classes = path.getAttribute('class');
+    const path = block.pathObject.svgPath;
+    const classes = path.getAttribute('class');
     return (' ' + classes + ' ')
         .indexOf(' blockly-ws-search-current ') !== -1;
   }
+  /**
+   * Assert that no extra styling is currently added to these blocks.
+   * @param {Array.<Blockly.BlockSvg>} blocks The blocks to test.
+   * @param {Blockly.BlockSvg=} opt_expectedCurrent Optional, block that is
+   *     expected.
+   */
   function assertNoExtraCurrentStyling(blocks, opt_expectedCurrent) {
-    for (var block, i = 0; (block = blocks[i]); i++) {
-      var isCurrentStyled = isBlockCurrentStyled(block);
+    for (let block, i = 0; (block = blocks[i]); i++) {
+      const isCurrentStyled = isBlockCurrentStyled(block);
       if (isCurrentStyled) {
         assert.equal(opt_expectedCurrent, block,
             'Unexpected block [' + block.type +
@@ -54,8 +70,8 @@ suite('WorkspaceSearch', () => {
   });
 
   suite('init()', () => {
-    test('CSS is injected at init()', async () => {
-      var searchStyle =
+    test('CSS is injected at init()', () => {
+      let searchStyle =
           document.getElementById('blockly-ws-search-style');
       assert.equal(!!searchStyle, false);
       this.workspaceSearch.init();
@@ -64,8 +80,8 @@ suite('WorkspaceSearch', () => {
     });
 
 
-    test('DOM is intialized at init()', async () => {
-      var dom = document.querySelector('div.blockly-ws-search');
+    test('DOM is intialized at init()', () => {
+      let dom = document.querySelector('div.blockly-ws-search');
       assert.equal(!!dom, false);
       this.workspaceSearch.init();
       dom = document.querySelector('div.blockly-ws-search');
@@ -74,9 +90,9 @@ suite('WorkspaceSearch', () => {
   });
 
   suite('dispose()', () => {
-    test('DOM is disposed', async () => {
+    test('DOM is disposed', () => {
       this.workspaceSearch.init();
-      var dom = document.querySelector('div.blockly-ws-search');
+      let dom = document.querySelector('div.blockly-ws-search');
       assert.equal(!!dom, true);
       this.workspaceSearch.dispose();
       dom = document.querySelector('div.blockly-ws-search');
@@ -85,9 +101,15 @@ suite('WorkspaceSearch', () => {
   });
 
   suite('searchAndHighlight()', () => {
+    /**
+     * Assert blocks are equal to the search group of blocks.
+     * @param {Array.<Blockly.BlockSvg>} allBlocks All blocks.
+     * @param {Array.<Blockly.BlockSvg>} actualGroup Search blocks group.
+     * @param {*} expectedGroup Expected search block group.
+     */
     function assertEqualsSearchGroup(allBlocks, actualGroup, expectedGroup) {
       assert.equal(actualGroup.length, expectedGroup.length);
-      for (var block, i = 0; (block = allBlocks[i]); i++) {
+      for (let block, i = 0; (block = allBlocks[i]); i++) {
         if (expectedGroup.indexOf(block) !== -1) {
           assert.equal(actualGroup.indexOf(block) !== -1, true,
               'Expected block [' + block.type + '] to be in search results');
@@ -105,34 +127,34 @@ suite('WorkspaceSearch', () => {
       Blockly.defineBlocksWithJsonArray([
         {
           'type': 'test_block',
-          'message0': 'test block'
+          'message0': 'test block',
         },
         {
-          "type": "test_statement_block",
-          "message0": "%test %1",
-          "args0": [{
-            "type": "input_value",
-            "name": "INPUT0",
-            "check": "String"
+          'type': 'test_statement_block',
+          'message0': '%test %1',
+          'args0': [{
+            'type': 'input_value',
+            'name': 'INPUT0',
+            'check': 'String',
           }],
-          "message1": "%block %1",
-          "args1": [{
-            "type": "input_statement",
-            "name": "INPUT1"
+          'message1': '%block %1',
+          'args1': [{
+            'type': 'input_statement',
+            'name': 'INPUT1',
           }],
-          "previousStatement": null,
-          "nextStatement": null
+          'previousStatement': null,
+          'nextStatement': null,
         },
         {
-          "type": "test_text",
-          "message0": "%1",
-          "args0": [{
-            "type": "field_input",
-            "name": "NAME",
-            "text": "test string"
+          'type': 'test_text',
+          'message0': '%1',
+          'args0': [{
+            'type': 'field_input',
+            'name': 'NAME',
+            'text': 'test string',
           }],
-          "output": null
-        }
+          'output': null,
+        },
       ]);
       this.testBlock = this.workspace.newBlock('test_block');
       this.testStatementBlock = this.workspace.newBlock('test_statement_block');
@@ -152,16 +174,17 @@ suite('WorkspaceSearch', () => {
       this.fieldWithOutput = this.workspace.newBlock('test_text');
 
       this.blocks = [
-          this.testBlock,
-          this.testStatementBlock,
-          this.testStatementBlockWithInput,
-          this.testStatementBlockWithInputCollapsed,
-          this.fieldWithOutputConnected,
-          this.fieldWithOutputCollapsed,
-          this.fieldWithOutput
+        this.testBlock,
+        this.testStatementBlock,
+        this.testStatementBlockWithInput,
+        this.testStatementBlockWithInputCollapsed,
+        this.fieldWithOutputConnected,
+        this.fieldWithOutputCollapsed,
+        this.fieldWithOutput,
       ];
 
-      sinon.stub(this.workspace, "getAllBlocks").returns(Object.values(this.blocks));
+      sinon.stub(this.workspace,
+          'getAllBlocks').returns(Object.values(this.blocks));
     });
 
     teardown(() => {
@@ -171,15 +194,15 @@ suite('WorkspaceSearch', () => {
       sinon.restore();
     });
 
-    test('Match all blocks', async () => {
+    test('Match all blocks', () => {
       this.workspaceSearch.searchAndHighlight('test', false);
-      var expectedBlocks = [
-          this.testBlock,
-          this.testStatementBlock,
-          this.testStatementBlockWithInput,
-          this.testStatementBlockWithInputCollapsed,
-          this.fieldWithOutputConnected,
-          this.fieldWithOutput
+      const expectedBlocks = [
+        this.testBlock,
+        this.testStatementBlock,
+        this.testStatementBlockWithInput,
+        this.testStatementBlockWithInputCollapsed,
+        this.fieldWithOutputConnected,
+        this.fieldWithOutput,
       ];
       assertEqualsSearchGroup(
           this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
@@ -189,48 +212,48 @@ suite('WorkspaceSearch', () => {
           'Expected field within a collapsed block to not be highlighted.');
     });
 
-    test('Match no blocks', async () => {
+    test('Match no blocks', () => {
       this.workspaceSearch.searchAndHighlight('none', false);
       assertEqualsSearchGroup(this.blocks, this.workspaceSearch.blocks_, []);
       assertNoExtraCurrentStyling(this.blocks);
     });
 
-    test('Match all non-fields', async () => {
+    test('Match all non-fields', () => {
       this.workspaceSearch.searchAndHighlight('block', false);
-      var expectedBlocks = [
-          this.testBlock,
-          this.testStatementBlock,
-          this.testStatementBlockWithInput,
-          this.testStatementBlockWithInputCollapsed
+      const expectedBlocks = [
+        this.testBlock,
+        this.testStatementBlock,
+        this.testStatementBlockWithInput,
+        this.testStatementBlockWithInputCollapsed,
       ];
       assertEqualsSearchGroup(
           this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
 
-    test('Match all field and collapsed blocks', async () => {
+    test('Match all field and collapsed blocks', () => {
       this.workspaceSearch.searchAndHighlight('string', false);
-      var expectedBlocks = [
-          this.testStatementBlockWithInputCollapsed,
-          this.fieldWithOutputConnected,
-          this.fieldWithOutput
+      const expectedBlocks = [
+        this.testStatementBlockWithInputCollapsed,
+        this.fieldWithOutputConnected,
+        this.fieldWithOutput,
       ];
       assertEqualsSearchGroup(
           this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
 
-    test('Preserve current, in results', async () => {
+    test('Preserve current, in results', () => {
       this.workspaceSearch.searchAndHighlight('test');
       this.workspaceSearch.setCurrentBlock_(1);
       // this.testStatementBlock should be current.
-      var expectedBlocks = [
+      const expectedBlocks = [
         this.testBlock,
         this.testStatementBlock,
         this.testStatementBlockWithInput,
         this.testStatementBlockWithInputCollapsed,
         this.fieldWithOutputConnected,
-        this.fieldWithOutput
+        this.fieldWithOutput,
       ];
       this.workspaceSearch.searchAndHighlight('test', true);
       assertEqualsSearchGroup(
@@ -238,15 +261,15 @@ suite('WorkspaceSearch', () => {
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[1]);
     });
 
-    test('Preserve current, not in results', async () => {
+    test('Preserve current, not in results', () => {
       this.workspaceSearch.searchAndHighlight('test');
       this.workspaceSearch.setCurrentBlock_(1);
       // this.testStatementBlock should be current.
       this.workspaceSearch.searchAndHighlight('string', true);
-      var expectedBlocks = [
+      const expectedBlocks = [
         this.testStatementBlockWithInputCollapsed,
         this.fieldWithOutputConnected,
-        this.fieldWithOutput
+        this.fieldWithOutput,
       ];
       assertEqualsSearchGroup(
           this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
@@ -256,21 +279,21 @@ suite('WorkspaceSearch', () => {
 
   suite('next()', () => {
     setup(() => {
-      this.blocks = [ this.testBlock, this.testStatementBlock ];
+      this.blocks = [this.testBlock, this.testStatementBlock];
       this.workspaceSearch.blocks_ = this.blocks;
     });
 
-    test('next() with unset current', async () => {
+    test('next() with unset current', () => {
       this.workspaceSearch.next();
-      var currentIndex = this.workspaceSearch.currentBlockIndex_;
+      const currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 0);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
     });
 
-    test('next() wrap around', async () => {
+    test('next() wrap around', () => {
       this.workspaceSearch.currentBlockIndex_ = 0;
       this.workspaceSearch.next();
-      var currentIndex = this.workspaceSearch.currentBlockIndex_;
+      let currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 1);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[1]);
       this.workspaceSearch.next();
@@ -283,18 +306,18 @@ suite('WorkspaceSearch', () => {
   suite('previous()', () => {
     setup(() => {
       this.workspaceSearch.blocks_ =
-          [ this.testBlock, this.testStatementBlock ];
+          [this.testBlock, this.testStatementBlock];
     });
 
-    test('previous() with unset current', async () => {
+    test('previous() with unset current', () => {
       this.workspaceSearch.previous();
       // No expected current index, but should not throw.
     });
 
-    test('previous() wrap around', async () => {
+    test('previous() wrap around', () => {
       this.workspaceSearch.currentBlockIndex_ = 1;
       this.workspaceSearch.previous();
-      currentIndex = this.workspaceSearch.currentBlockIndex_;
+      let currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 0);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
       this.workspaceSearch.previous();

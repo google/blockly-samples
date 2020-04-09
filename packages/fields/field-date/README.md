@@ -18,7 +18,7 @@ npm install @blockly/field-date --save
 
 ### JavaScript
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import FieldDate from '@blockly/field-date';
 
 Blockly.Blocks["test_fields_date"] = {
@@ -32,7 +32,7 @@ Blockly.Blocks["test_fields_date"] = {
 ### JSON
 
 ```js
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 import '@blockly/field-date';
 
 Blockly.defineBlocksWithJsonArray([

@@ -12,7 +12,7 @@
 
 
 import * as Blockly from 'blockly/core';
-import { Modal } from './Modal.js';
+import {Modal} from './Modal.js';
 
 /**
  * Class for displaying a modal used for creating typed variables.
@@ -24,14 +24,14 @@ export class TypedVariableModal extends Modal {
    *     be registered on.
    * @param {string} btnCallbackName The name used to register the button
    *     callback.
-   * @param {Array<Array<string>>} types An array holding arrays with the
+   * @param {Array.<Array.<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
-   * @param {TypedVarModalMessages} opt_messages The messages for a typed variable
-   *     modal.
+   * @param {TypedVarModalMessages} optMessages The messages for a typed
+   *     variable modal.
    */
-  constructor(workspace, btnCallbackName, types, opt_messages) {
-    const title = (opt_messages && opt_messages["TYPED_VAR_MODAL_TITLE"]) ||
+  constructor(workspace, btnCallbackName, types, optMessages) {
+    const title = (optMessages && optMessages['TYPED_VAR_MODAL_TITLE']) ||
         'Create Typed Variable';
     super(title, workspace);
 
@@ -79,16 +79,16 @@ export class TypedVariableModal extends Modal {
     this.types_ = types;
 
     const messages = {
-      "TYPED_VAR_MODAL_TITLE": "Create Typed Variable",
-      "TYPED_VAR_MODAL_VARIABLE_NAME_LABEL": "Variable Name: ",
-      "TYPED_VAR_MODAL_TYPES_LABEL": "Variable Types",
-      "TYPED_VAR_MODAL_CONFIRM_BUTTON": "Ok",
-      "TYPED_VAR_MODAL_CANCEL_BUTTON": "Cancel",
-      "TYPED_VAR_MODAL_INVALID_NAME":
-          "Name is not valid. Please choose a different name."
+      'TYPED_VAR_MODAL_TITLE': 'Create Typed Variable',
+      'TYPED_VAR_MODAL_VARIABLE_NAME_LABEL': 'Variable Name: ',
+      'TYPED_VAR_MODAL_TYPES_LABEL': 'Variable Types',
+      'TYPED_VAR_MODAL_CONFIRM_BUTTON': 'Ok',
+      'TYPED_VAR_MODAL_CANCEL_BUTTON': 'Cancel',
+      'TYPED_VAR_MODAL_INVALID_NAME':
+          'Name is not valid. Please choose a different name.',
     };
 
-    Blockly.utils.object.mixin(messages, opt_messages);
+    Blockly.utils.object.mixin(messages, optMessages);
 
     this.setLocale(messages);
 
@@ -131,7 +131,7 @@ export class TypedVariableModal extends Modal {
    *     typed modal.
    */
   setLocale(messages) {
-    Object.keys(messages).forEach(k => {
+    Object.keys(messages).forEach((k) => {
       Blockly.Msg[k] = messages[k];
     });
   }
@@ -242,7 +242,7 @@ export class TypedVariableModal extends Modal {
 
     const typedVarDiv = document.createElement('div');
     typedVarDiv.className = 'typedModalTypes';
-    typedVarDiv.textContent = Blockly.Msg["TYPED_VAR_MODAL_TYPES_LABEL"];
+    typedVarDiv.textContent = Blockly.Msg['TYPED_VAR_MODAL_TYPES_LABEL'];
 
     this.variableTypesDiv_ = this.createVariableTypeContainer_(this.types_);
     this.resetModalInputs_();
@@ -316,14 +316,14 @@ export class TypedVariableModal extends Modal {
       const typeLi = document.createElement('li');
       const typeInput = document.createElement('input');
       typeInput.className = 'typedModalTypes';
-      typeInput.type = "radio";
+      typeInput.type = 'radio';
       typeInput.id = typeName;
-      typeInput.name = "blocklyVariableType";
+      typeInput.name = 'blocklyVariableType';
       this.addEvent_(typeInput, 'click', this, (e) => {
         this.selectedType_ = e.target.id;
       });
       this.firstTypeInput_ = typeList.querySelector('.typedModalTypes');
-      const typeLabel = document.createElement("Label");
+      const typeLabel = document.createElement('label');
       typeLabel.textContent = typeDisplayName;
       typeLabel.setAttribute('for', typeName);
 
@@ -345,9 +345,10 @@ export class TypedVariableModal extends Modal {
     const varNameContainer = document.createElement('div');
     varNameContainer.className = 'typedModalVariableInputContainer';
 
-    const varNameLabel = document.createElement("Label");
+    const varNameLabel = document.createElement('label');
     varNameLabel.className = 'typedModalVariableLabel';
-    varNameLabel.textContent = Blockly.Msg["TYPED_VAR_MODAL_VARIABLE_NAME_LABEL"];
+    varNameLabel.textContent =
+      Blockly.Msg['TYPED_VAR_MODAL_VARIABLE_NAME_LABEL'];
     varNameLabel.setAttribute('for', 'variableInput');
 
     const varNameInput = document.createElement('input');

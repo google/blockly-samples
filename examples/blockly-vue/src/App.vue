@@ -73,6 +73,7 @@ export default {
     return {
       code: '',
       options: {
+        media: 'media/',
         grid:
           {
             spacing: 25,

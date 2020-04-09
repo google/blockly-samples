@@ -2,6 +2,14 @@
   "name": "@blockly/plugin-typed-variable-modal",
   "version": "1.0.0",
   "description": "A Blockly plugin to create a modal for creating typed variables.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "dist": "blockly-scripts build prod",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run prod",
+    "start": "blockly-scripts start"
+  },
   "author": "Blockly Team",
   "keywords": [
     "blockly",
@@ -19,6 +27,7 @@
   },
   "license": "Apache-2.0",
   "main": "./dist/index.js",
+  "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "directories": {
     "dist": "dist",
@@ -28,23 +37,10 @@
     "dist",
     "src"
   ],
-  "scripts": {
-    "build": "webpack --config ../../webpack.config.js --display-error-details --env.mode=development",
-    "clean": "rm -rf $npm_package_directories_dist",
-    "prepublishOnly": "npm run clean && webpack --config ../../webpack.config.js --display-error-details --env.mode=production",
-    "start": "webpack-dev-server --config ../../webpack.config.js --env.buildTest=true --env.mode=development"
-  },
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "babel-loader": "^8.0.6",
-    "webpack": "^4.42.0",
-    "webpack-dev-server": "^3.10.3",
-    "@babel/preset-env": "^7.8.7",
     "blockly": "^3.20200123.1",
-    "eslint": "^6.8.0",
-    "eslint-plugin-jsdoc": "^22.0.0",
     "@blockly/dev-tools": "^0.20200313.0",
-    "webpack-cli": "^3.3.11"
+    "@blockly/dev-scripts": "^0.20200403.0"
   },
   "peerDependencies": {
     "blockly": ">3.20200123.0 <4"

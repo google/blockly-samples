@@ -1,0 +1,47 @@
+{
+  "name": "@blockly/dev-scripts",
+  "version": "0.20200403.0",
+  "description": "Configuration and scripts for Blockly packages.",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "bin": {
+    "blockly-scripts": "./bin/blockly-scripts.js"
+  },
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "dev",
+    "scripts"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/build#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "packages/dev/build"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-loader": "^8.0.6",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.0",
+    "open": "^7.0.3",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

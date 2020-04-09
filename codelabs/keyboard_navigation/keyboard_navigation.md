@@ -28,14 +28,21 @@ Over the course of this codelab you will build the following:
 1. A keyboard shortcut for moving your cursor to the top of a stack.
 
 ### What you'll need
+<<<<<<< HEAD
 1. A Blockly version greater than or equal to `3.20200402.0`.
+=======
+1. A Blockly version greater than or equal to `3.20200123.0`.
+>>>>>>> 058d77539a90182498a5983d0e6c86088603b692
 
 ## Terminology
 A **Marker** holds a location and is not movable. 
 
 A **Cursor** is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
 
+<<<<<<< HEAD
 The below image displays different parts of a block that a user can navigate to using keyboard navigation.
+=======
+>>>>>>> 058d77539a90182498a5983d0e6c86088603b692
 ![Displays the different parts of a block. The previous connection on the top of a block. The next connection on the bottom of a block. Input value as a cut out of a puzzle piece. The statement input as a connection inside of a block. The output connection as a puzzle piece.](./block_terms.png)
 
 ## Setup
@@ -76,6 +83,7 @@ There are four different levels to the AST:
 1. Stack Level (blue): Holds all stack nodes.
 1. Block and Connection Level (red): Holds all block and connection nodes.
 1. Field and Input Level (yellow): Holds all field and input nodes.
+<<<<<<< HEAD
 
 For a more detailed explanation of the different levels please see the keyboard
 navigation [documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav#using_the_default_cursor).
@@ -84,6 +92,14 @@ navigation [documentation](https://developers.google.com/blockly/guides/configur
 ### Create AST nodes
 The `Blockly.ASTNode` class is used to represent the AST. `Blockly.ASTNode`s hold a workspace component. This component can be a block, connection, field, input or workspace coordinate.
 
+=======
+For a more detailed explanation of the different levels please see the keyboard
+navigation [documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav#using_the_default_cursor).
+
+The `Blockly.ASTNode` class is used to represent the AST. `Blockly.ASTNode`s hold a workspace component. This component can be a block, connection, field, input or workspace coordinate. 
+
+### Create AST nodes
+>>>>>>> 058d77539a90182498a5983d0e6c86088603b692
 The below code shows how to create a `Blockly.ASTNode` for the different workspace components.
 ```js
 const workspaceNode = Blockly.ASTNode.createWorkspaceNode(workspace, wsCoordinate);
