@@ -14,7 +14,7 @@ const args = process.argv.slice(2);
 const {spawnSync} = require('child_process');
 
 const script = args[0];
-if (['build', 'start', 'clean', 'lint'].includes(script)) {
+if (['build', 'start', 'clean', 'lint', 'test'].includes(script)) {
   const result = spawnSync('node',
       [].concat(require.resolve('../scripts/' + script))
           .concat(args.slice(1)), {stdio: 'inherit'}
