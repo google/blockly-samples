@@ -359,7 +359,7 @@ connection and goes straight to the next block.
 
 ## Add a shortcut
 In this section we add a shortcut to allow users to move their
-cursor to the top of the stack their cursor is currently on when they hit **shift + T**.
+cursor to the top of the stack their cursor is currently on when they hit **ctrl + W**.
 
 ### Create and set an action
 
@@ -370,13 +370,12 @@ modifier keys. The possible modifier keys are:
 1. `Blockly.user.keyMap.modifierKeys.ALT`
 1. `Blockly.user.keyMap.modifierKeys.META`
 
-Add the below code to the `playground.html` file after
-we have set the cursor.
+Add the below code to the `playground.html` file after we have set the cursor.
 
 ```js
 // Create a serialized key from the primary key and any modifiers.
-var shiftT = Blockly.user.keyMap.createSerializedKey(
-    Blockly.utils.KeyCodes.T, [Blockly.user.keyMap.modifierKeys.SHIFT]);  
+var ctrlW = Blockly.user.keyMap.createSerializedKey(
+    Blockly.utils.KeyCodes.W, [Blockly.user.keyMap.modifierKeys.CONTROL]);
 ```
 
 Next, create an action. A `Blockly.Action` describes a users' intent.
@@ -389,12 +388,12 @@ var actionTopOfStack = new Blockly.Action('topOfStack', 'Move cursor to top of s
 Finally, bind the action and the key code.
 
 ```js
-Blockly.user.keyMap.setActionForKey(shiftT, actionTopOfStack);
+Blockly.user.keyMap.setActionForKey(ctrlW, actionTopOfStack);
 ```
 
 ### Override onBlocklyAction 
 
-When the user hits **shift + T** and is in keyboard navigation mode we will get a
+When the user hits **ctrl + W** and is in keyboard navigation mode we will get a
 'topOfStack' action. Override `onBlocklyAction` on our cursor to handle this action.
 Add the below code to the `custom_cursor.js` file.
 ```js
@@ -422,7 +421,7 @@ CustomCursor.prototype.onBlocklyAction = function(action) {
 
 ### Test it out
 Open the playground and create a stack of blocks. Move your cursor down a few
-blocks. And then press **shift + T**. Notice how the cursor jumps to the top of the
+blocks. And then press **ctrl + W**. Notice how the cursor jumps to the top of the
 stack of blocks.
 
 ![](./skip_to_top.gif)
