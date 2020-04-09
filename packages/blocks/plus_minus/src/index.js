@@ -203,16 +203,13 @@ const controlsIfMutator = {
     this.removeElseIf_(index);
   },
 
-  // To properly keep track of indices we have to increment before/after adding
-  // the inputs, and decrement the opposite.
-  // Because we want our first elseif to be IF1 (not IF0) we increment first.
-
   /**
    * Adds an else-if and a do input to the bottom of the block.
    * @this Blockly.Block
    * @private
    */
   addElseIf_: function() {
+    // Because else-if inputs are 1-indexed we increment first, decrement last.
     this.elseIfCount_++;
     this.appendValueInput('IF' + this.elseIfCount_)
         .setCheck('Boolean')
@@ -231,7 +228,7 @@ const controlsIfMutator = {
   /**
    * Appears to remove the input at the given index. Actually shifts attached
    * blocks and then removes the input at the bottom of the block. This is to
-   * keep input names accurate.
+   * make sure the inputs are always IF0, IF1, etc. with no gaps.
    * @param {number?} opt_index The index of the input to "remove", or undefined
    *     to remove the last input.
    * @this Blockly.Block
@@ -243,21 +240,22 @@ const controlsIfMutator = {
     //  - Move all connect blocks from the other inputs up.
     //  - Remove the last input.
     // This makes sure all of our indices are correct.
+
     if (opt_index !== undefined && opt_index!= this.elseIfCount_) {
-      let inputIndex = opt_index * 2;
+      // Each else-if is two inputs on the block:
+      // the else-if input and the do input.
+      const elseIfIndex = opt_index * 2;
       const inputs = this.inputList;
-      let connection = inputs[inputIndex].connection; // If connection.
+      let connection = inputs[elseIfIndex].connection; // If connection.
       if (connection.isConnected()) {
         connection.disconnect();
       }
-      // Increment before (++inputIndex) to get the next input.
-      connection = inputs[++inputIndex].connection; // Do connection.
+      connection = inputs[elseIfIndex + 1].connection; // Do connection.
       if (connection.isConnected()) {
         connection.disconnect();
       }
       this.bumpNeighbours();
-      // Same here increment before (++inputIndex).
-      for (let i = ++inputIndex, input; (input = this.inputList[i]); i++) {
+      for (let i = elseIfIndex + 2, input; (input = this.inputList[i]); i++) {
         if (input.name == 'ELSE') {
           break; // Should be last, so break.
         }
@@ -270,6 +268,7 @@ const controlsIfMutator = {
 
     this.removeInput('IF' + this.elseIfCount_);
     this.removeInput('DO' + this.elseIfCount_);
+    // Because else-if inputs are 1-indexed we increment first, decrement last.
     this.elseIfCount_--;
   },
 };
@@ -353,10 +352,6 @@ const textJoinMutator = {
     this.updateMinus_();
   },
 
-  // To properly keep track of indices we have to increment before/after adding
-  // the inputs, and decrement the opposite.
-  // Because we want our first item to be ADD0 (not ADD1) we increment after.
-
   /**
    * Adds an input to the end of the block. If the block currently has no
    * inputs it updates the top 'EMPTY' input to receive a block.
@@ -374,6 +369,7 @@ const textJoinMutator = {
     } else {
       this.appendValueInput('ADD' + this.itemCount_);
     }
+    // Because item inputs are 0-index we decrement first, increment last.
     this.itemCount_++;
   },
 
@@ -412,7 +408,6 @@ const textJoinMutator = {
  * Adds the quotes mixin to the block. Also updates the shape so that if no
  * mutator is provided the block has two inputs.
  * @this Blockly.Block
- * @constructor
  */
 const textJoinHelper = function() {
   this.mixin(Blockly.Constants.Text.QUOTE_IMAGE_MIXIN);
@@ -542,7 +537,6 @@ const listCreateMutator = {
 /**
  * Updates the shape of the block to have 3 inputs if no mutation is provided.
  * @this Blockly.Block
- * @constructor
  */
 const listCreateHelper = function() {
   this.updateShape_(3);
@@ -702,12 +696,11 @@ const procedureDefMutator = {
     const names = [];
     const ids = [];
     for (let i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
-      if (childNode.nodeName.toLowerCase() != 'arg') {
-        continue;
+      if (childNode.nodeName.toLowerCase() == 'arg') {
+        names.push(childNode.getAttribute('name'));
+        ids.push(childNode.getAttribute('varid') ||
+            childNode.getAttribute('varId'));
       }
-      names.push(childNode.getAttribute('name'));
-      ids.push(childNode.getAttribute('varid') ||
-          childNode.getAttribute('varId'));
     }
     this.updateShape_(names, ids);
   },
@@ -721,7 +714,13 @@ const procedureDefMutator = {
    * @private
    */
   updateShape_: function(names, varIds) {
-    // In this case it is easiest to just reset and build from scratch.
+    if (names.length != varIds.length) {
+      throw Error('names and varIds must have the same length.');
+    }
+
+    // Usually it's more efficient to modify the block, rather than tearing it
+    // down and rebuilding (less render calls), but in this case it's easier
+    // to just work from scratch.
 
     // We need to remove args in reverse order so that it doesn't mess up
     // as removeArg_ modifies our arrays.
@@ -767,7 +766,7 @@ const procedureDefMutator = {
 
   /**
    * Adds an argument to the block and updates the block's parallel tracking
-   * tracking arrays as appropriate.
+   * arrays as appropriate.
    * @param {string} opt_name An optional name for the argument.
    * @param {string} opt_varId An optional variable ID for the argument.
    * @this Blockly.Block
@@ -850,6 +849,8 @@ const procedureDefMutator = {
    */
   validator_: function(newName) {
     const sourceBlock = this.getSourceBlock();
+    // Replaces all whitespace (including non-breaking) with normal spaces.
+    // Then removes spaces at the beginning or end of the string.
     newName = newName.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
     if (!newName) {
       return null;
@@ -859,12 +860,11 @@ const procedureDefMutator = {
     const index = sourceBlock.argIds_.indexOf(this.name);
     const caselessName = newName.toLowerCase();
     for (let i = 0, name; (name = sourceBlock.arguments_[i]); i++) {
-      if (i == index) {
-        // Don't check self because if we just added whitespace this breaks.
-        continue;
-      }
-      if (caselessName == name.toLowerCase()) {
-        return null; // It matches, so it is invalid.
+      // Don't check self because if we just added whitespace this breaks.
+      if (i != index) {
+        if (caselessName == name.toLowerCase()) {
+          return null; // It matches, so it is invalid.
+        }
       }
     }
 
