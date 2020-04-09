@@ -177,10 +177,10 @@ const controlsIfMutator = {
    */
   updateShape_: function(targetCount) {
     while (this.elseIfCount_ < targetCount) {
-      this.addPart_();
+      this.addElseIf_();
     }
     while (this.elseIfCount_ > targetCount) {
-      this.removePart_();
+      this.removeElseIf_();
     }
   },
 
@@ -188,7 +188,7 @@ const controlsIfMutator = {
    * Callback for the plus field. Adds an else-if input to the block.
    */
   plus: function() {
-    this.addPart_();
+    this.addElseIf_();
   },
 
   /**
@@ -202,7 +202,7 @@ const controlsIfMutator = {
     if (this.elseIfCount_ == 0) {
       return;
     }
-    this.removePart_(index);
+    this.removeElseIf_(index);
   },
 
   // To properly keep track of indices we have to increment before/after adding
@@ -214,7 +214,7 @@ const controlsIfMutator = {
    * @this Blockly.Block
    * @private
    */
-  addPart_: function() {
+  addElseIf_: function() {
     this.elseIfCount_++;
     this.appendValueInput('IF' + this.elseIfCount_)
         .setCheck('Boolean')
@@ -234,44 +234,38 @@ const controlsIfMutator = {
    * Appears to remove the input at the given index. Actually shifts attached
    * blocks and then removes the input at the bottom of the block. This is to
    * keep input names accurate.
-   * @param {number} index The index of the input to "remove".
+   * @param {number?} opt_index The index of the input to "remove", or undefined
+   *     to remove the last input.
    * @this Blockly.Block
    * @private
    */
-  removePart_: function(index) {
+  removeElseIf_: function(opt_index) {
     // The strategy for removing a part at an index is to:
     //  - Kick any blocks connected to the relevant inputs.
     //  - Move all connect blocks from the other inputs up.
     //  - Remove the last input.
     // This makes sure all of our indices are correct.
-    if (index !== undefined) {
-      let foundInput = false;
-      const name = 'IF' + index;
-      for (let i = 0, input; (input = this.inputList[i]); i++) {
-        if (input.name == name) {
-          foundInput = true;
-          let connection = input.connection;
-          // TODO: Is there any reason we need to throw errors when the
-          //  connection isn't currently connected?
-          if (connection.isConnected()) {
-            connection.disconnect();
-          }
-          connection = this.inputList[++i].connection; // Do connection.
-          if (connection.isConnected()) {
-            connection.disconnect();
-          }
-          this.bumpNeighbours();
-          continue;
-        }
-        if (!foundInput) {
-          continue;
-        }
+    if (opt_index !== undefined && opt_index!= this.elseIfCount_) {
+      let inputIndex = opt_index * 2;
+      const inputs = this.inputList;
+      let connection = inputs[inputIndex].connection; // If connection.
+      if (connection.isConnected()) {
+        connection.disconnect();
+      }
+      // Increment before (++inputIndex) to get the next input.
+      connection = inputs[++inputIndex].connection; // Do connection.
+      if (connection.isConnected()) {
+        connection.disconnect();
+      }
+      this.bumpNeighbours();
+      // Same here increment before (++inputIndex).
+      for (let i = ++inputIndex, input; (input = this.inputList[i]); i++) {
         if (input.name == 'ELSE') {
-          break; // Should be last anyway.
+          break; // Should be last, so break.
         }
-        const targetConnect = input.connection.targetConnection;
-        if (targetConnect) {
-          this.inputList[i - 2].connection.connect(targetConnect);
+        const targetConnection = input.connection.targetConnection;
+        if (targetConnection) {
+          this.inputList[i - 2].connection.connect(targetConnection);
         }
       }
     }
