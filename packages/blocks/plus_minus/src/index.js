@@ -366,8 +366,6 @@ const textJoinMutator = {
   addPart_: function() {
     if (this.itemCount_ == 0) {
       if (this.getInput('EMPTY')) {
-        // TODO: I don't think this should throw errors. It would be nice if
-        //   It returned a boolean instead.
         this.removeInput('EMPTY');
       }
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
@@ -808,11 +806,10 @@ const procedureDefMutator = {
    * @private
    */
   removeArg_: function(argId) {
+    // TODO: Refactor after blockly/#3803 is completed.
     if (!this.getInput(argId)) {
       return;
     }
-    // TODO: My life would be so much happier if this returned a boolean instead
-    //  of throwing an error. I'm saying at least 15% more joy.
     this.removeInput(argId);
     if (this.arguments_.length == 1) { // Becoming argumentless.
       this.getInput('TOP').removeField('WITH');
