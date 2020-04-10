@@ -24,7 +24,7 @@ export class TypedVariableModal extends Modal {
    *     be registered on.
    * @param {string} btnCallbackName The name used to register the button
    *     callback.
-   * @param {Array.<Array.<string>>} types An array holding arrays with the
+   * @param {Array<Array<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
    * @param {TypedVarModalMessages} optMessages The messages for a typed
@@ -238,7 +238,7 @@ export class TypedVariableModal extends Modal {
   renderContent_(contentContainer) {
     const varNameContainer = this.createVarNameContainer_();
     this.variableNameInput_ = varNameContainer
-        .querySelector('.typed-modal-variable-name-input');
+        .querySelector('.typedModalVariableNameInput');
 
     const typedVarDiv = document.createElement('div');
     typedVarDiv.className = 'typedModalTypes';
@@ -308,7 +308,7 @@ export class TypedVariableModal extends Modal {
    */
   createVariableTypeContainer_(types) {
     const typeList = document.createElement('ul');
-    typeList.className = 'typed-modal-list';
+    typeList.className = 'typedModalList';
     for (let i = 0; i < types.length; i++) {
       const type = types[i];
       const typeDisplayName = type[0];
@@ -352,7 +352,7 @@ export class TypedVariableModal extends Modal {
     varNameLabel.setAttribute('for', 'variableInput');
 
     const varNameInput = document.createElement('input');
-    varNameInput.className = 'typed-modal-variable-name-input';
+    varNameInput.className = 'typedModalVariableNameInput';
     varNameInput.type = 'text';
     varNameInput.id = 'variableInput';
 
