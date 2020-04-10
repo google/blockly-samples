@@ -557,7 +557,8 @@ const getDefNoReturn = {
    * @this Blockly.Block
    */
   getProcedureDef: function() {
-    return [this.getFieldValue('NAME'), this.arguments_, false];
+    const argNames = this.argData_.map((elem) => elem.model.name);
+    return [this.getFieldValue('NAME'), argNames, false];
   },
 
   /**
@@ -581,7 +582,8 @@ const getDefReturn = {
    * @this Blockly.Block
    */
   getProcedureDef: function() {
-    return [this.getFieldValue('NAME'), this.arguments_, true];
+    const argNames = this.argData_.map((elem) => elem.model.name);
+    return [this.getFieldValue('NAME'), argNames, true];
   },
   /**
    * Used by the context menu to create a caller block.
@@ -625,7 +627,8 @@ const procedureContextMenu = {
     }
 
     // Add options to create getters for each parameter.
-    for (let i = 0, model; (model = this.argumentVarModels_[i]); i++) {
+    const varModels = this.getVarModels();
+    for (let i = 0, model; (model = varModels); i++) {
       const text = Blockly.Msg['VARIABLES_SET_CREATE_GET']
           .replace('%1', model.name);
 
@@ -660,16 +663,16 @@ const procedureDefMutator = {
     if (opt_isForCaller) {
       container.setAttribute('name', this.getFieldValue('NAME'));
     }
-    for (let i = 0; i < this.argumentVarModels_.length; i++) {
+    this.argData_.forEach((element) => {
       const argument = Blockly.utils.xml.createElement('arg');
-      const argModel = this.argumentVarModels_[i];
+      const argModel = element.model;
       argument.setAttribute('name', argModel.name);
       argument.setAttribute('varid', argModel.getId());
       if (opt_isForCaller) {
-        argument.setAttribute('paramid', this.argIds_[i]);
+        argument.setAttribute('paramid', element.argId);
       }
       container.appendChild(argument);
-    }
+    });
 
     // Not used by this block, but necessary if switching back and forth
     // between this mutator UI and the default UI.
@@ -717,27 +720,20 @@ const procedureDefMutator = {
     if (names.length != varIds.length) {
       throw Error('names and varIds must have the same length.');
     }
-
     // Usually it's more efficient to modify the block, rather than tearing it
     // down and rebuilding (less render calls), but in this case it's easier
     // to just work from scratch.
 
     // We need to remove args in reverse order so that it doesn't mess up
-    // as removeArg_ modifies our arrays.
-    for (let i = this.argIds_.length - 1; i >= 0; i--) {
-      this.removeArg_(this.argIds_[i]);
+    // as removeArg_ modifies our array.
+    for (let i = this.argData_.length - 1; i >= 0; i--) {
+      this.removeArg_(this.argData_[i].argId);
     }
-
-    this.arguments_ = [];
-    this.varIds_ = [];
-    this.argumentVarModels_ = [];
-    this.argIds_ = [];
-
+    this.argData_ = [];
     const length = varIds.length;
     for (let i = 0; i < length; i++) {
       this.addArg_(names[i], varIds[i]);
     }
-
     Blockly.Procedures.mutateCallers(this);
   },
 
@@ -757,7 +753,7 @@ const procedureDefMutator = {
    * @this Blockly.Block
    */
   minus: function(argId) {
-    if (!this.argIds_.length) {
+    if (!this.argData_.length) {
       return;
     }
     this.removeArg_(argId);
@@ -773,15 +769,16 @@ const procedureDefMutator = {
    * @private
    */
   addArg_: function(opt_name, opt_varId) {
-    if (!this.arguments_.length) {
+    if (!this.argData_.length) {
       const withField = new Blockly.FieldLabel(
           Blockly.Msg['PROCEDURES_BEFORE_PARAMS']);
       this.getInput('TOP')
           .appendField(withField, 'WITH');
     }
 
+    const argNames = this.argData_.map((elem) => elem.model.name);
     const name = opt_name || Blockly.Variables.generateUniqueNameFromOptions(
-        Blockly.Procedures.DEFAULT_ARG, this.arguments_);
+        Blockly.Procedures.DEFAULT_ARG, argNames);
     const variable = Blockly.Variables.getOrCreateVariablePackage(
         this.workspace, opt_varId, name, '');
     const argId = Blockly.utils.genUid();
@@ -793,10 +790,10 @@ const procedureDefMutator = {
       this.moveInputBefore(argId, 'RETURN');
     }
 
-    this.arguments_.push(name);
-    this.varIds_.push(variable.getId());
-    this.argumentVarModels_.push(variable);
-    this.argIds_.push(argId);
+    this.argData_.push({
+      model: variable,
+      argId: argId,
+    });
   },
 
   /**
@@ -810,15 +807,11 @@ const procedureDefMutator = {
       return;
     }
     this.removeInput(argId);
-    if (this.arguments_.length == 1) { // Becoming argumentless.
+    if (this.argData_.length == 1) { // Becoming argumentless.
       this.getInput('TOP').removeField('WITH');
     }
 
-    const index = this.argIds_.indexOf(argId);
-    this.arguments_.splice(index, 1);
-    this.varIds_.splice(index, 1);
-    this.argumentVarModels_.splice(index, 1);
-    this.argIds_.splice(index, 1);
+    this.argData_ = this.argData_.filter((element) => element.argId != argId);
   },
 
   /**
@@ -856,19 +849,27 @@ const procedureDefMutator = {
       return null;
     }
 
-    // The field name (aka id) is always equal to the arg id.
-    const index = sourceBlock.argIds_.indexOf(this.name);
+    /**
+     * Checks that all of the args (that aren't this arg) have a different
+     * name than this arg.
+     * @param {{model: Blockly.VariableModel, argId:string}} element
+     * @return {boolean} True if the other name is not a match.
+     * @this Blockly.FieldTextInput
+     */
+    const nameCheck = (element) => {
+      // The field name (aka id) is always equal to the arg id.
+      return element.argId == this.name ||
+          caselessName != element.model.name.toLowerCase();
+    };
+
     const caselessName = newName.toLowerCase();
-    for (let i = 0, name; (name = sourceBlock.arguments_[i]); i++) {
-      // Don't check self because if we just added whitespace this breaks.
-      if (i != index) {
-        if (caselessName == name.toLowerCase()) {
-          return null; // It matches, so it is invalid.
-        }
-      }
+    if (!sourceBlock.argData_.every(nameCheck, this)) {
+      return null;
     }
 
-    sourceBlock.arguments_[index] = newName;
+    const argData = sourceBlock.argData_.find(
+        (element) => element.argId == this.name);
+    //argData.model.name = newName;
 
     // TODO: Maybe delete the pre-edit variable if it has no other uses.
     //  Currently unaccomplishable as the workspace var map is private.
@@ -885,9 +886,8 @@ const procedureDefMutator = {
       // we update the var to reflect the latest case instead.
       workspace.renameVariableById(model.getId(), newName);
     }
-    if (model.getId() != sourceBlock.varIds_[index]) {
-      sourceBlock.varIds_[index] = model.getId();
-      sourceBlock.argumentVarModels_[index] = model;
+    if (model.getId() != argData.model.getId()) {
+      argData.model = model;
     }
     Blockly.Procedures.mutateCallers(sourceBlock);
     return newName;
@@ -900,12 +900,15 @@ const procedureDefMutator = {
    */
   finishEditing_: function(_finalName) {
     const source = this.getSourceBlock();
-    const currentVarId = source.varIds_[source.argIds_.indexOf(this.name)];
-    for (let i = 0, varId; (varId = this.createdVarIds_[i]); i++) {
-      if (varId != currentVarId) {
-        source.workspace.deleteVariableById(varId);
+    const argData = source.argData_.find(
+        (element) => element.argId == this.name);
+
+    const currentVarId = argData.model.getId();
+    this.createdVarIds_.forEach((id) => {
+      if (id != currentVarId) {
+        source.workspace.deleteVariableById(id);
       }
-    }
+    });
     this.createdVarIds_.length = 0;
   },
 };
@@ -916,30 +919,40 @@ const procedureDefMutator = {
  */
 const procedureDefHelper = function() {
   /**
+   * An array of objects containing data about the args belonging to the
+   * procedure definition.
+   * @type {{
+   *          model:Blockly.VariableModel,
+   *          argId: string
+   *       }}
+   * @private
+   */
+  this.argData_ = [];
+  /*/!**
    * Names of all arg-models (vars) associated with this block.
    * @type {!Array<string>}
-   */
+   *!/
   this.arguments_ = [];
-  /**
+  /!**
    * Ids of all the arg-models (vars) associated with this block.
    * @type {!Array<string>}
-   */
+   *!/
   this.varIds_ = [];
-  /**
+  /!**
    * Arg-models (vars) associated with this block.
    * @type {!Array<Blockly.VariableModel>}
-   */
+   *!/
   this.argumentVarModels_ = [];
   // Note because the order is static this we could use the index as the argId.
   // But if we ever add the ability to reorder the args that will break and each
   // arg will need an ID. Currently we can't reorder because of #3725.
-  /**
+  /!**
    * Ids associated with each argument. These are separate from the var Ids
    * and are used to keep track of an arg when its variable is changing. E.g
    * as the name is being edited.
    * @type {!Array<string>}
-   */
-  this.argIds_ = [];
+   *!/
+  this.argIds_ = [];*/
   /**
    * Does this block have a 'STACK' input for statements?
    * @type {boolean}
@@ -974,7 +987,7 @@ const procedureVars = function() {
      * @this Blockly.Block
      */
     getVars: function() {
-      return this.arguments_;
+      return this.argData_.map((elem) => elem.model.name);
     },
 
     /**
@@ -983,7 +996,7 @@ const procedureVars = function() {
      * @this Blockly.Block
      */
     getVarModels: function() {
-      return this.argumentVarModels_;
+      return this.argData_.map((elem) => elem.model);
     },
 
     /**
@@ -995,8 +1008,9 @@ const procedureVars = function() {
      *     the name.
      */
     renameVarById: function(oldId, newId) {
-      const index = this.varIds_.indexOf(oldId);
-      if (index == -1) {
+      const argData = this.argData_.find(
+          (element) => element.model.getId() == oldId);
+      if (!argData) {
         return; // Not on this block.
       }
 
@@ -1005,12 +1019,7 @@ const procedureVars = function() {
       this.addVarInput_(newName, newId);
       this.moveInputBefore(newId, oldId);
       this.removeInput(oldId);
-
-      // No need to update argIds_ b/c it is constant.
-      this.arguments_[index] = newName;
-      this.varIds_[index] = newId;
-      this.argumentVarModels_[index] = newVar;
-
+      argData.model = newVar;
       Blockly.Procedures.mutateCallers(this);
     },
 
@@ -1024,17 +1033,13 @@ const procedureVars = function() {
      */
     updateVarName: function(variable) {
       const id = variable.getId();
-      const index = this.varIds_.indexOf(id);
-      if (index == -1) {
+      const argData = this.argData_.find(
+          (element) => element.model.getId() == id);
+      if (!argData) {
         return; // Not on this block.
       }
-      const name = variable.name;
-      if (variable.name == this.arguments_[index]) {
-        return; // No change. Occurs when field is being edited.
-      }
-
-      this.setFieldValue(name, this.argIds_[index]);
-      this.arguments_[index] = name;
+      this.setFieldValue(variable.name, argData.argId);
+      argData.model = variable;
     },
   };
 

@@ -24,7 +24,7 @@ suite('procedures', () => {
       assert.isNotNull(def.getInput('STACK'));
     }
     if (opt_args) {
-      assert.sameOrderedMembers(def.arguments_, opt_args);
+      assert.sameOrderedMembers(def.getVars(), opt_args);
     }
 
     const defInputs = def.inputList;
@@ -47,13 +47,14 @@ suite('procedures', () => {
     assert.include(def.toString(), 'with');
     assert.include(call.toString(), 'with');
 
+    const argIds = def.argData_.map((element) => element.argId);
     for (let i = 1; i < defLength - 2; i++) {
       const constName = opt_args[i - 1];
       const defInput = defInputs[i];
       const callInput = callInputs[i];
       assert.equal(defInput.type, Blockly.DUMMY_INPUT);
       assert.equal(callInput.type, Blockly.INPUT_VALUE);
-      assert.equal(defInput.name, def.argIds_[i - 1]);
+      assert.equal(defInput.name, argIds[i - 1]);
       assert.equal(defInput.fieldRow[2].getValue(), constName,
           'Def consts did not match expected');
       assert.equal(callInput.name, 'ARG' + (i - 1));
@@ -231,7 +232,7 @@ suite('procedures', () => {
     });
     test('Remove', () => {
       this.def.plus();
-      this.def.minus(this.def.argIds_[0]);
+      this.def.minus(this.def.argData_[0].argId);
       assertProc(this.def, this.call, 0);
     });
     test('Remove lots', () => {
@@ -241,7 +242,7 @@ suite('procedures', () => {
       // Remove every other input. Must do it backwards so that the array
       // doesn't get out of whack.
       for (let i = 9; i > 0; i-=2) {
-        this.def.minus(this.def.argIds_[i]);
+        this.def.minus(this.def.argData_[i].argId);
       }
       assertProc(this.def, this.call, 5, ['x', 'z', 'b', 'd', 'f']);
     });
@@ -365,11 +366,11 @@ suite('procedures', () => {
         field.setValue('test');
         assertProc(this.def, this.call, 1, ['test']);
         this.assertVars(['x', 'test']);
-        assert.equal(this.def.varIds_[0],
+        assert.equal(this.def.argData_[0].model.getId(),
             this.workspace.getVariable('test', '').getId());
       });
     });
-    suite('consts Renamed Elsewhere', () => {
+    suite('Vars Renamed Elsewhere', () => {
       test('Simple Rename', () => {
         this.def.plus();
         const Variable = this.workspace.getVariable('x', '');
@@ -393,9 +394,9 @@ suite('procedures', () => {
         this.assertVars(['X']);
       });
       test('Coalesce Change Case', () => {
-        const Variable = this.workspace.createVariable('test');
+        const variable = this.workspace.createVariable('test');
         this.def.plus();
-        this.workspace.renameVariableById(Variable.getId(), 'X');
+        this.workspace.renameVariableById(variable.getId(), 'X');
         assertProc(this.def, this.call, 1, ['X']);
         this.assertVars(['X']);
       });
