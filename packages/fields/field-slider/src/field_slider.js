@@ -116,6 +116,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     sliderInput.setAttribute('type', 'range');
     sliderInput.setAttribute('min', this.min_);
     sliderInput.setAttribute('max', this.max_);
+    sliderInput.setAttribute('step', this.precision_);
     sliderInput.setAttribute('value', this.getValue());
     sliderInput.className = 'fieldSlider';
     wrapper.appendChild(sliderInput);
