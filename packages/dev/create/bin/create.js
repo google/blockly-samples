@@ -76,7 +76,7 @@ const packageJson = {
     'clean': 'blockly-scripts clean',
     'dist': 'blockly-scripts build prod',
     'lint': 'blockly-scripts lint',
-    'prepublishOnly': 'npm run clean && npm run prod',
+    'prepublishOnly': 'npm run clean && npm run dist',
     'start': 'blockly-scripts start',
   },
   main: './dist/index.js',
