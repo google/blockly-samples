@@ -88,8 +88,8 @@ export class FieldSlider extends Blockly.FieldNumber {
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
     Blockly.DropDownDiv.setColour(
-        this.sourceBlock_.style ? this.sourceBlock_.style.colourPrimary : this.sourceBlock_.colour_, 
-        this.sourceBlock_.style ? this.sourceBlock_.style.colourTertiary : this.sourceBlock_.colour_, 
+        this.sourceBlock_.style ? this.sourceBlock_.style.colourPrimary : this.sourceBlock_.getColour(),
+        this.sourceBlock_.style ? this.sourceBlock_.style.colourTertiary : this.sourceBlock_.getColour(),
     );
 
     Blockly.DropDownDiv.showPositionedByField(
