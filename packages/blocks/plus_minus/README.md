@@ -24,13 +24,22 @@ npm install @blockly/block-plus-minus --save
 
 ## Usage
 
-<!--
-  - TODO: Update block module name.
-  -->
 ### Import
 ```js
 import Blockly from 'blockly';
 import '@blockly/block-plus-minus';
+```
+
+### Blockly Languages
+We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the messages
+can be translated by assigning the following properties of Blockly.Msg
+- `PROCEDURE_VARIABLE` (Default: "variable:"): The label which signals the text
+   input is a variable.
+   
+```javascript
+Blockly.Msg['PROCEDURE_VARIABLE'] = 'variabele:';  // Dutch 
+// Inject workspace, etc...
 ```
 
 ### XML

@@ -12,6 +12,8 @@ import Blockly from 'blockly/core';
 import {createMinusField} from './field_minus';
 import {createPlusField} from './field_plus';
 
+Blockly.Msg['PROCEDURE_VARIABLE'] = 'variable:';
+
 /* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {
@@ -374,7 +376,7 @@ const procedureDefMutator = {
     this.appendDummyInput(argId)
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(createMinusField(argId))
-        .appendField('variable:') // Untranslated!
+        .appendField(Blockly.Msg['PROCEDURE_VARIABLE']) // Untranslated!
         .appendField(nameField, argId); // The name of the field is the arg id.
   },
 
