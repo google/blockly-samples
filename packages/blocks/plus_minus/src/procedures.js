@@ -402,26 +402,40 @@ const procedureDefMutator = {
      * @return {boolean} True if the other name is not a match.
      * @this Blockly.FieldTextInput
      */
-    const nameCheck = (element) => {
+    const hasDifName = (element) => {
       // The field name (aka id) is always equal to the arg id.
       return element.argId == this.name ||
           caselessName != element.model.name.toLowerCase();
     };
-
     const caselessName = newName.toLowerCase();
-    if (!sourceBlock.argData_.every(nameCheck, this)) {
+    if (!sourceBlock.argData_.every(hasDifName, this)) {
       return null;
     }
 
+    const workspace = sourceBlock.workspace;
     const argData = sourceBlock.argData_.find(
         (element) => element.argId == this.name);
+    const id = argData.model.getId();
 
-    // TODO: Maybe delete the pre-edit variable if it has no other uses.
-    //  Currently unaccomplishable as the workspace var map is private.
+    /**
+     * Checks that every block is either this block (the def) or a caller of
+     * this procedure.
+     * @param {Blockly.Block} element The block to check.
+     * @return {boolean} Whether the block is associated with this procedure.
+     */
+    const isThisProcedure = (element) => {
+      return element.id == sourceBlock.id ||
+          (element.getProcedureCall &&
+              element.getProcedureCall() == sourceBlock.getProcedureDef()[0]);
+    };
+    if (!this.createdVarIds_.length &&
+        workspace.getVariableUsesById(id).every(isThisProcedure)) {
+      // If this is our first edit and the pre-edit var is only used here.
+      this.createdVarIds_.push(id);
+    }
 
     // We want to create new vars instead of renaming the old ones, so that
     // users don't accidentally rename/coalesce vars they don't want to.
-    const workspace = sourceBlock.workspace;
     let model = workspace.getVariable(newName, '');
     if (!model) {
       model = workspace.createVariable(newName, '');
@@ -431,7 +445,7 @@ const procedureDefMutator = {
       // we update the var to reflect the latest case instead.
       workspace.renameVariableById(model.getId(), newName);
     }
-    if (model.getId() != argData.model.getId()) {
+    if (model.getId() != id) {
       argData.model = model;
     }
     Blockly.Procedures.mutateCallers(sourceBlock);
