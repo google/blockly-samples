@@ -7,7 +7,7 @@ based UI.
 Currently this only affects the built-in blocks that use mutators (controls_if, text_join, list_create_with,
 procedures_defnoreturn, and procedures_defreturn).
 
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/If.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/If.png)
 
 But the ability to easily add this to your own mutators may be added
 in the future.
@@ -54,45 +54,45 @@ add specific mutations of blocks:
 ```xml
 <block type="controls_if"></block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/If.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/If.png)
 ```xml
 <block type="controls_if">
     <mutation elseif="1"></mutation>
 </block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/IfElseIf.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/IfElseIf.png)
 ```xml
 <block type="controls_if">
     <mutation elseif="1" else="1"></mutation>
 </block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/IfElseIfElse.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/IfElseIfElse.png)
 
 #### Text Join
 
 ```xml
 <block type="text_join"></block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/TextJoin.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/TextJoin.png)
 ```xml
 <block type="text_join">
     <mutation items="0"></mutation>
 </block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/TextJoinNone.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/TextJoinNone.png)
 
 #### List Create
 
 ```xml
 <block type="lists_create_with"></block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/ListCreateWith.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/ListCreateWith.png)
 ```xml
 <block type="lists_create_with">
     <mutation items="0"></mutation>
 </block>
 ```
-![](https://github.com/google/blockly-samples/tree/master/packages/blocks/plus_minus/readme-media/ListCreateWithNone.png)
+![](https://github.com/google/blockly-samples/raw/master/packages/blocks/plus_minus/readme-media/ListCreateWithNone.png)
 
 ## License
 Apache 2.0
