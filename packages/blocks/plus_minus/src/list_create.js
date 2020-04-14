@@ -9,19 +9,15 @@
  */
 
 import Blockly from 'blockly/core';
-import {FieldPlus} from './field_plus';
-import {FieldMinus} from './field_minus';
+import {createPlusField} from './field_plus';
+import {createMinusField, FieldMinus} from './field_minus';
 
 /* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {
     "type": "lists_create_with",
-    "message0": "%1 %{BKY_LISTS_CREATE_EMPTY_TITLE} %2",
+    "message0": "%{BKY_LISTS_CREATE_EMPTY_TITLE} %1",
     "args0": [
-      {
-        "type": "field_plus",
-        "name": "PLUS",
-      },
       {
         "type": "input_dummy",
         "name": "EMPTY",
@@ -114,7 +110,7 @@ const listCreateMutator = {
     if (this.itemCount_ == 0) {
       this.removeInput('EMPTY');
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
-          .appendField(new FieldPlus(), 'PLUS')
+          .appendField(createPlusField(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
     } else {
       this.appendValueInput('ADD' + this.itemCount_);
@@ -133,7 +129,7 @@ const listCreateMutator = {
     this.removeInput('ADD' + this.itemCount_);
     if (this.itemCount_ == 0) {
       this.topInput_ = this.appendDummyInput('EMPTY')
-          .appendField(new FieldPlus(), 'PLUS')
+          .appendField(createPlusField(), 'PLUS')
           .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
     }
   },
@@ -145,7 +141,7 @@ const listCreateMutator = {
   updateMinus_: function() {
     const minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
-      this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
+      this.topInput_.insertFieldAt(1, createMinusField(), 'MINUS');
     } else if (minusField && this.itemCount_ < 1) {
       this.topInput_.removeField('MINUS');
     }
@@ -157,6 +153,7 @@ const listCreateMutator = {
  * @this Blockly.Block
  */
 const listCreateHelper = function() {
+  this.getInput('EMPTY').insertFieldAt(0, createPlusField(), 'PLUS');
   this.updateShape_(3);
 };
 

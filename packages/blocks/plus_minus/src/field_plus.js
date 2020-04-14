@@ -12,62 +12,46 @@
 import * as Blockly from 'blockly/core';
 
 /**
- * Plus button used for mutation.
+ * Creates a plus image field used for mutation.
+ * @param {Object} opt_args Untyped args passed to block.minus when the field
+ *     is clicked.
+ * @param {Blockly.FieldImage} The plus field.
  */
-export class FieldPlus extends Blockly.FieldImage {
+export function createPlusField(opt_args) {
+  const plus = new Blockly.FieldImage(plusImage, 15, 15, undefined, onClick_);
   /**
-   * Plus button used for mutation.
-   * @param {Object} opt_args Arguments to pass to the 'plus' function when the
-   *    button is clicked.
-   * @constructor
-   */
-  constructor(opt_args) {
-    super(plusImage, 15, 15, undefined, FieldPlus.onClick_);
-
-    /**
-     * Untyped args passed to block.plus when the field is clicked.
-     * @type {Object}
-     * @private
-     */
-    this.args_ = opt_args;
-  }
-
-  /**
-   * Constructs a FieldPlus from a JSON arg object.
-   * @param {!Object} options A JSON object with an optional arg value.
-   * @return {FieldPlus} The new field instance.
-   * @package
-   * @nocollapse
-   */
-  static fromJson(options) {
-    return new FieldPlus(options['args']);
-  }
-
-  /**
-   * Calls block.plus(args) when the plus field is clicked.
-   * @param {!FieldPlus} plusField The field being clicked.
+   * Untyped args passed to block.plus when the field is clicked.
+   * @type {Object}
    * @private
    */
-  static onClick_(plusField) {
-    // TODO: This is a dupe of the mutator code, anyway to unify?
-    const block = plusField.getSourceBlock();
+  plus.args_ = opt_args;
+  return plus;
+}
 
-    Blockly.Events.setGroup(true);
+/**
+ * Calls block.plus(args) when the plus field is clicked.
+ * @param {!FieldPlus} plusField The field being clicked.
+ * @private
+ */
+function onClick_(plusField) {
+  // TODO: This is a dupe of the mutator code, anyway to unify?
+  const block = plusField.getSourceBlock();
 
-    const oldMutationDom = block.mutationToDom();
-    const oldMutation = oldMutationDom && Blockly.Xml.domToText(oldMutationDom);
+  Blockly.Events.setGroup(true);
 
-    block.plus(plusField.args_);
+  const oldMutationDom = block.mutationToDom();
+  const oldMutation = oldMutationDom && Blockly.Xml.domToText(oldMutationDom);
 
-    const newMutationDom = block.mutationToDom();
-    const newMutation = newMutationDom && Blockly.Xml.domToText(newMutationDom);
+  block.plus(plusField.args_);
 
-    if (oldMutation != newMutation) {
-      Blockly.Events.fire(new Blockly.Events.BlockChange(
-          block, 'mutation', null, oldMutation, newMutation));
-    }
-    Blockly.Events.setGroup(false);
+  const newMutationDom = block.mutationToDom();
+  const newMutation = newMutationDom && Blockly.Xml.domToText(newMutationDom);
+
+  if (oldMutation != newMutation) {
+    Blockly.Events.fire(new Blockly.Events.BlockChange(
+        block, 'mutation', null, oldMutation, newMutation));
   }
+  Blockly.Events.setGroup(false);
 }
 
 const plusImage =
@@ -77,5 +61,3 @@ const plusImage =
     'FjLTEuMTA0IDAtMiAuODk2LTIgMnMuODk2IDIgMiAybDQuMDcxLS4wNzEtLjA3MSA0LjA3MW' +
     'MwIDEuMTA0Ljg5NiAyIDIgMnMyLS44OTYgMi0ydi00LjA3MWw0IC4wNzFjMS4xMDQgMCAyLS' +
     '44OTYgMi0ycy0uODk2LTItMi0yeiIgZmlsbD0id2hpdGUiIC8+PC9zdmc+Cg==';
-
-Blockly.fieldRegistry.register('field_plus', FieldPlus);

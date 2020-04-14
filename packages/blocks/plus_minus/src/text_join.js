@@ -9,8 +9,8 @@
  */
 
 import Blockly from 'blockly/core';
-import {FieldPlus} from './field_plus';
-import {FieldMinus} from './field_minus';
+import {createPlusField} from './field_plus';
+import {createMinusField, FieldMinus} from './field_minus';
 
 const textJoinMutator = {
   /**
@@ -90,7 +90,7 @@ const textJoinMutator = {
         this.removeInput('EMPTY');
       }
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
-          .appendField(new FieldPlus(), 'PLUS')
+          .appendField(createPlusField(), 'PLUS')
           .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     } else {
       this.appendValueInput('ADD' + this.itemCount_);
@@ -110,7 +110,7 @@ const textJoinMutator = {
     this.removeInput('ADD' + this.itemCount_);
     if (this.itemCount_ == 0) {
       this.topInput_ = this.appendDummyInput('EMPTY')
-          .appendField(new FieldPlus(), 'PLUS')
+          .appendField(createPlusField(), 'PLUS')
           .appendField(this.newQuote_(true))
           .appendField(this.newQuote_(false));
     }
@@ -123,7 +123,7 @@ const textJoinMutator = {
   updateMinus_: function() {
     const minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
-      this.topInput_.insertFieldAt(1, new FieldMinus(), 'MINUS');
+      this.topInput_.insertFieldAt(1, createMinusField(), 'MINUS');
     } else if (minusField && this.itemCount_ < 1) {
       this.topInput_.removeField('MINUS');
     }

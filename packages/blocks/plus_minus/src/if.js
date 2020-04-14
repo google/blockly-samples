@@ -9,8 +9,8 @@
  */
 
 import Blockly from 'blockly/core';
-import {FieldMinus} from './field_minus';
-import {FieldPlus} from './field_plus';
+import {createMinusField} from './field_minus';
+import {createPlusField} from './field_plus';
 
 const controlsIfMutator = {
   // TODO: This should be its own extension. But that requires core changes.
@@ -109,7 +109,7 @@ const controlsIfMutator = {
         .setCheck('Boolean')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'])
         .appendField(
-            new FieldMinus(this.elseIfCount_), 'MINUS' + this.elseIfCount_);
+            createMinusField(this.elseIfCount_), 'MINUS' + this.elseIfCount_);
     this.appendStatementInput('DO' + this.elseIfCount_)
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
 
@@ -172,8 +172,7 @@ const controlsIfMutator = {
  * @this Blockly.Block
  */
 const controlsIfHelper = function() {
-  this.topInput_ = this.getInput('IF0');
-  this.topInput_.insertFieldAt(0, new FieldPlus(), 'PLUS');
+  this.getInput('IF0').insertFieldAt(0, createPlusField(), 'PLUS');
 };
 
 Blockly.Extensions.unregister('controls_if_mutator');

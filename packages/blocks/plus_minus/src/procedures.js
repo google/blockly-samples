@@ -8,21 +8,17 @@
  * @fileoverview Changes the procedure blocks to use a +/- mutator UI.
  */
 
-import  Blockly from 'blockly/core';
-import {FieldMinus} from './field_minus';
-import {FieldPlus} from './field_plus';
+import Blockly from 'blockly/core';
+import {createMinusField} from './field_minus';
+import {createPlusField} from './field_plus';
 
 /* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {
     "type": "procedures_defnoreturn",
-    "message0": "%1 %{BKY_PROCEDURES_DEFNORETURN_TITLE} %2 %3",
+    "message0": "%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2",
     "message1": "%{BKY_PROCEDURES_DEFNORETURN_DO} %1",
     "args0": [
-      {
-        "type": "field_plus",
-        "name": "PLUS",
-      },
       {
         "type": "field_input",
         "name": "NAME",
@@ -52,14 +48,10 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "procedures_defreturn",
-    "message0": "%1 %{BKY_PROCEDURES_DEFRETURN_TITLE} %2 %3",
+    "message0": "%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2",
     "message1": "%{BKY_PROCEDURES_DEFRETURN_DO} %1",
     "message2": "%{BKY_PROCEDURES_DEFRETURN_RETURN} %1",
     "args0": [
-      {
-        "type": "field_plus",
-        "name": "PLUS",
-      },
       {
         "type": "field_input",
         "name": "NAME",
@@ -381,7 +373,7 @@ const procedureDefMutator = {
 
     this.appendDummyInput(argId)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new FieldMinus(argId))
+        .appendField(createMinusField(argId))
         .appendField('variable:') // Untranslated!
         .appendField(nameField, argId); // The name of the field is the arg id.
   },
@@ -485,6 +477,8 @@ const procedureDefHelper = function() {
    * @private
    */
   this.hasStatements_ = true;
+
+  this.getInput('TOP').insertFieldAt(0, createPlusField(), 'PLUS');
 };
 
 Blockly.Extensions.registerMutator('procedure_def_mutator',
