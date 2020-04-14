@@ -1,0 +1,58 @@
+{
+    "name": "@blockly/block-plus-minus",
+    "version": "1.20200406.0",
+    "description": "A group of blocks that replace the built-in mutator UI with a +/- based UI.",
+    "scripts": {
+        "build": "blockly-scripts build",
+        "clean": "blockly-scripts clean",
+        "dist": "blockly-scripts build prod",
+        "prepublishOnly": "npm run clean && npm run prod",
+        "start": "blockly-scripts start",
+        "test": "npm run build && npm run test:mocha",
+        "test:mocha": "mocha --ui tdd test/if.js test/list_create.js test/procedures.js test/text_join.js"
+    },
+    "main": "./dist/index.js",
+    "unpkg": "./dist/index.js",
+    "author": "Beka Westberg",
+    "keywords": [
+        "blockly",
+        "block",
+        "mutator"
+    ],
+    "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blocks/block-plus-minus#readme",
+    "bugs": {
+        "url": "https://github.com/google/blockly-samples/issues"
+    },
+    "respository": {
+        "type": "git",
+        "url": "https://github.com/google/blockly-samples.git",
+        "directory": "packages/blocks/plus-minus"
+    },
+    "license": "Apache-2.0",
+    "directories": {
+        "dist": "dist",
+        "src": "src"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "devDependencies": {
+        "@blockly/dev-scripts": "^0.20200403.0",
+        "@blockly/dev-tools": "^0.20200313.1",
+        "blockly": "^3.20200123.1",
+        "chai": "^4.2.0",
+        "mocha": "^7.1.0",
+        "sinon": "^9.0.1"
+    },
+    "peerDependencies": {
+        "blockly": ">=3.20200123.0"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://wombat-dressing-room.appspot.com"
+    },
+    "engines": {
+        "node": ">=8.17.0"
+    }
+}
