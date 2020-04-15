@@ -17,7 +17,7 @@ Google Closure date picker.
 
 ### Blocks
 
-- [``@blockly/block-plug-minus``](block-plus-minus/): A group of blocks that
+- [``@blockly/block-plus-minus``](block-plus-minus/): A group of blocks that
 replace the built-in mutator UI with a +/- based UI.
 
 ### Dev
