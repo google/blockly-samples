@@ -43,18 +43,18 @@ if (!['plugin', 'field', 'block'].includes(packageType)) {
   console.log(usage);
   process.exit(1);
 }
-const packageName = args[1];
-// Check package name.
+const packageName = args[1].substr(args[1].lastIndexOf("/") + 1);
+const packagePath = args[1];
 if (!packageName) {
   console.error('Please specify the package directory:');
   console.log(usage);
   process.exit(1);
 }
-const packageDir = path.join(root, packageName);
+const packageDir = path.join(root, packagePath);
 // Check package name directory doesn't already exist.
-if (fs.existsSync(packageDir)) {
+if (fs.existsSync(packagePath)) {
   console.error(`Package directory already exists,
-    Remove ${packageName} and try again.`);
+    Remove ${packagePath} and try again.`);
   process.exit(1);
 }
 
@@ -138,11 +138,11 @@ fs.copySync(path.resolve(__dirname, templateDir, 'template'), packageDir);
 
 // Run npm install.
 console.log('Installing packages. This might take a couple of minutes.');
-execSync(`cd ${packageName} && npm install`, {stdio: [0, 1, 2]});
+execSync(`cd ${packagePath} && npm install`, {stdio: [0, 1, 2]});
 
 console.log(chalk.green('\nPackage created.\n'));
 console.log('Next steps, run:');
-console.log(chalk.blue(`  cd ${packageName}`));
+console.log(chalk.blue(`  cd ${packagePath}`));
 console.log(chalk.blue(`  npm start`));
 console.log(`Search ${chalk.red(`'TODO'`)} to see remaining tasks.`);
 
