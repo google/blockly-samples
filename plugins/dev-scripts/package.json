@@ -1,7 +1,7 @@
 {
   "name": "@blockly/dev-scripts",
   "version": "0.20200403.0",
-  "description": "Configuration and scripts for Blockly packages.",
+  "description": "Configuration and scripts for Blockly plugins.",
   "scripts": {
     "lint": "eslint ."
   },
@@ -14,14 +14,14 @@
     "dev",
     "scripts"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/build#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-scripts#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/dev/build"
+    "directory": "plugins/dev-scripts"
   },
   "license": "Apache-2.0",
   "dependencies": {

@@ -7,20 +7,34 @@ authored and stored. These plugin packages are released to npm under the
 A full list of published packages can be found by searching for the ``@blockly``
 tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
-## Packages
-
-### Plugins
-
-- [``@blockly/plugin-workspace-search``](workspace-search/): A plugin that adds workspace search support.
+## Plugins
 
 ### Fields
 
-- [``@blockly/field-date``](field-date/): A date picker field that uses the Google Closure date picker.
+- [``@blockly/field-date``](field-date/): A date picker field that uses the
+Google Closure date picker.
 - [``@blockly/field-slider``](field-slider/): A slider field.
+
+### Blocks
+
+- [``@blockly/block-plug-minus``](block-plus-minus/): A group of blocks that
+replace the built-in mutator UI with a +/- based UI.
 
 ### Dev
 
-- [``@blockly/dev-tool``](dev-tools/): A library of common utilities for Blockly extension development.
+- [``@blockly/create-package``](dev-create/): A tool for creating a Blockly
+extension package based on a pre-existing template.
+- [``@blockly/dev-tool``](dev-tools/): A library of common utilities for Blockly
+plugin development.
+- [``@blockly/dev-scripts``](dev-scripts/): Configuration and scripts for Blockly
+plugins.
+
+### Other
+
+- [``@blockly/plugin-workspace-search``](workspace-search/): A plugin that adds
+workspace search support.
+- [``@blockly/plugin-typed-variable-modal``](typed-variable-modal/): A plugin to
+create a modal for creating typed variables.
 
 
 ## Using Lerna
