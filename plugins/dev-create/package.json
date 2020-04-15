@@ -1,7 +1,7 @@
 {
   "name": "@blockly/create-package",
   "version": "0.20200407.2",
-  "description": "A tool for creating a Blockly plugin, field or block package based on a template.",
+  "description": "A tool for creating a Blockly plugin based on a template.",
   "bin": "./bin/create.js",
   "author": "Blockly Team",
   "keywords": [
@@ -11,14 +11,14 @@
     "package",
     "template"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/dev/create#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-create#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/dev/create"
+    "directory": "plugins/dev-create"
   },
   "license": "Apache-2.0",
   "dependencies": {

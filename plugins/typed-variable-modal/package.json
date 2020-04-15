@@ -21,14 +21,14 @@
     "modal",
     "typed variables"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/typed-variable-modal#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/typed-variable-modal#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/plugins/typed-variable-modal"
+    "directory": "plugins/typed-variable-modal"
   },
   "license": "Apache-2.0",
   "directories": {

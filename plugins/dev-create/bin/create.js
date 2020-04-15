@@ -67,6 +67,9 @@ fs.mkdirSync(packageDir);
 const templateDir = `../templates/${packageType}/`;
 const templateJson = require(path.join(templateDir, 'template.json'));
 
+const dirName = packageType == 'plugin' ? packageName :
+  `${packageType}-${packageName}`;
+
 const packageJson = {
   name: `@blockly/${packageType}-${packageName}`,
   version: `0.${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.0`,
@@ -84,14 +87,14 @@ const packageJson = {
   unpkg: './dist/index.js',
   author: 'Blockly Team',
   keywords: ['blockly', packageType, packageName],
-  homepage: `https://github.com/google/blockly-samples/tree/master/packages/${packageType}s/${packageName}#readme`,
+  homepage: `https://github.com/google/blockly-samples/tree/master/plugins/${dirName}#readme`,
   bugs: {
     url: 'https://github.com/google/blockly-samples/issues',
   },
   repository: {
     'type': 'git',
     'url': 'https://github.com/google/blockly-samples.git',
-    'directory': `packages/${packageType}s/${packageName}`,
+    'directory': `plugins/${dirName}`,
   },
   license: 'Apache-2.0',
   directories: {

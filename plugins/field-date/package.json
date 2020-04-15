@@ -15,14 +15,14 @@
         "date",
         "datepicker"
     ],
-    "homepage": "https://github.com/google/blockly-samples/tree/master/packages/fields/field-date#readme",
+    "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/field-date#readme",
     "bugs": {
         "url": "https://github.com/google/blockly-samples/issues"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/google/blockly-samples.git",
-        "directory": "packages/fields/field-date"
+        "directory": "plugins/field-date"
     },
     "license": "Apache-2.0",
     "directories": {

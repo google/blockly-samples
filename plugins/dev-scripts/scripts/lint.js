@@ -28,7 +28,7 @@ const cli = new CLIEngine();
 const formatter = cli.getFormatter();
 
 // Run eslint for both the src and test directories.
-// The eslint engine will use the .eslintrc under packages/ for configuration.
+// The eslint engine will use the .eslintrc under plugins/ for configuration.
 const dirs = ['src', 'test'];
 dirs.forEach((dir) => {
   const resolvePath = resolveApp(dir);

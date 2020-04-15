@@ -21,14 +21,14 @@
     "workspace",
     "search"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/packages/plugins/workspace-search#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/workspace-search#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "packages/plugins/workspace-search"
+    "directory": "plugins/workspace-search"
   },
   "license": "Apache-2.0",
   "directories": {
