@@ -20,6 +20,7 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 const root = process.cwd();
+const pluginDirName = 'plugins';
 const scriptName = '@blockly/create-package';
 const usage = `  ${chalk.blue(scriptName)}\
  ${chalk.green('<plugin|field|block>')}\
@@ -43,23 +44,24 @@ if (!['plugin', 'field', 'block'].includes(packageType)) {
   console.log(usage);
   process.exit(1);
 }
-const packageName = args[1].substr(args[1].lastIndexOf("/") + 1);
-const packagePath = args[1];
+const packageName = args[1];
+const packageDir = execSync(`git rev-parse --show-toplevel`).toString().trim()
+    + "/" + pluginDirName + "/" + packageName;
 if (!packageName) {
   console.error('Please specify the package directory:');
   console.log(usage);
   process.exit(1);
 }
-const packageDir = path.join(root, packagePath);
+
 // Check package name directory doesn't already exist.
-if (fs.existsSync(packagePath)) {
+if (fs.existsSync(packageDir)) {
   console.error(`Package directory already exists,
-    Remove ${packagePath} and try again.`);
+    Remove ${packageDir} and try again.`);
   process.exit(1);
 }
 
 console.log(`Creating a new Blockly\
- ${chalk.green(packageType)} in ${chalk.green(root)}.\n`);
+ ${chalk.green(packageType)} in ${chalk.green(packageDir)}.\n`);
 
 // Create the package directory.
 fs.mkdirSync(packageDir);
@@ -87,14 +89,14 @@ const packageJson = {
   unpkg: './dist/index.js',
   author: 'Blockly Team',
   keywords: ['blockly', packageType, packageName],
-  homepage: `https://github.com/google/blockly-samples/tree/master/plugins/${dirName}#readme`,
+  homepage: `https://github.com/google/blockly-samples/tree/master/${pluginDirName}/${dirName}#readme`,
   bugs: {
     url: 'https://github.com/google/blockly-samples/issues',
   },
   repository: {
     'type': 'git',
     'url': 'https://github.com/google/blockly-samples.git',
-    'directory': `plugins/${dirName}`,
+    'directory': `${pluginDirName}/${dirName}`,
   },
   license: 'Apache-2.0',
   directories: {
@@ -141,11 +143,11 @@ fs.copySync(path.resolve(__dirname, templateDir, 'template'), packageDir);
 
 // Run npm install.
 console.log('Installing packages. This might take a couple of minutes.');
-execSync(`cd ${packagePath} && npm install`, {stdio: [0, 1, 2]});
+execSync(`cd ${packageDir} && npm install`, {stdio: [0, 1, 2]});
 
 console.log(chalk.green('\nPackage created.\n'));
 console.log('Next steps, run:');
-console.log(chalk.blue(`  cd ${packagePath}`));
+console.log(chalk.blue(`  cd ${packageDir}`));
 console.log(chalk.blue(`  npm start`));
 console.log(`Search ${chalk.red(`'TODO'`)} to see remaining tasks.`);
 
