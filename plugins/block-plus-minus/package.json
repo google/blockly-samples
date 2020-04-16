@@ -19,14 +19,14 @@
         "block",
         "mutator"
     ],
-    "homepage": "https://github.com/google/blockly-samples/tree/master/packages/blocks/block-plus-minus#readme",
+    "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-plus-minus#readme",
     "bugs": {
         "url": "https://github.com/google/blockly-samples/issues"
     },
     "respository": {
         "type": "git",
         "url": "https://github.com/google/blockly-samples.git",
-        "directory": "packages/blocks/plus-minus"
+        "directory": "plugins/block-plus-minus"
     },
     "license": "Apache-2.0",
     "directories": {

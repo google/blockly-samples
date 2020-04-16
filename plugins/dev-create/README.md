@@ -1,11 +1,11 @@
 # @blockly/create-package [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A tool for creating a Blockly package based on a pre-existing template.
+A tool for creating a Blockly plugin based on a pre-existing template.
 
 ## Available templates
-- plugin
 - field
 - block
+- plugin
 
 ## Usage
 

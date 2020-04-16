@@ -4,7 +4,7 @@ Blockly Samples <br /> <a href="https://github.com/google/blockly"><img src="htt
 
 This repo contains self-contained sample projects demonstrating techniques to
 include and extend the [Blockly](https://github.com/google/blockly) library.
-It also contains [codelabs](codelabs/) and extension [packages](packages/)
+It also contains [codelabs](codelabs/) and [plugins](plugins/)
 released under the ``@blockly`` scope.
 
 ## Samples
