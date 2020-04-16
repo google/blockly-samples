@@ -67,8 +67,14 @@ fs.mkdirSync(packageDir);
 const templateDir = `../templates/${packageType}/`;
 const templateJson = require(path.join(templateDir, 'template.json'));
 
-const dirName = packageType == 'plugin' ? packageName :
+const packageDirName = packageType == 'plugin' ? packageName :
   `${packageType}-${packageName}`;
+
+const repoUrl =
+  execSync(`git config --get remote.origin.url`).toString().trim();
+const repoRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
+const repoRelativePath = path.relative(repoRoot, process.cwd());
+const packagePath = path.join(repoRelativePath, packageDirName);
 
 const packageJson = {
   name: `@blockly/${packageType}-${packageName}`,
@@ -86,15 +92,15 @@ const packageJson = {
   module: './src/index.js',
   unpkg: './dist/index.js',
   author: 'Blockly Team',
-  keywords: ['blockly', packageType, packageName],
-  homepage: `https://github.com/google/blockly-samples/tree/master/plugins/${dirName}#readme`,
+  keywords: ['blockly', `blockly-${packageType}`, packageName],
+  homepage: `${repoUrl}/tree/master/${packagePath}#readme`,
   bugs: {
-    url: 'https://github.com/google/blockly-samples/issues',
+    url: `${repoUrl}/issues`,
   },
   repository: {
     'type': 'git',
-    'url': 'https://github.com/google/blockly-samples.git',
-    'directory': `plugins/${dirName}`,
+    'url': `${repoUrl}.git`,
+    'directory': packagePath,
   },
   license: 'Apache-2.0',
   directories: {
