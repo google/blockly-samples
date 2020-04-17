@@ -18,9 +18,9 @@ const args = process.argv.slice(2);
 const fs = require('fs-extra');
 const path = require('path');
 const execSync = require('child_process').execSync;
+const os = require('os');
 
 const root = process.cwd();
-const pluginDirName = 'plugins';
 const scriptName = '@blockly/create-package';
 const usage = `  ${chalk.blue(scriptName)}\
  ${chalk.green('<plugin|field|block>')}\
@@ -45,8 +45,18 @@ if (!['plugin', 'field', 'block'].includes(packageType)) {
   process.exit(1);
 }
 const packageName = args[1];
-const packageDir = execSync(`git rev-parse --show-toplevel`).toString().trim()
-    + "/" + pluginDirName + "/" + packageName;
+const gitUrl = execSync(`git config --get remote.upstream.url`)
+    .toString().trim().replace('.git', '');
+if (gitUrl === '') {
+  gitUrl = execSync(`git config --get remote.origin.url`).toString().trim()
+      .replace('.git', '');
+}
+
+const gitRepoPath = execSync(`git rev-parse --show-toplevel`).toString().trim();
+const dirPath = path.relative(gitRepoPath, root);
+
+const packageDir = path.join(root, packageName);
+//Check package name
 if (!packageName) {
   console.error('Please specify the package directory:');
   console.log(usage);
@@ -56,7 +66,7 @@ if (!packageName) {
 // Check package name directory doesn't already exist.
 if (fs.existsSync(packageDir)) {
   console.error(`Package directory already exists,
-    Remove ${packageDir} and try again.`);
+    Remove ${packageName} and try again.`);
   process.exit(1);
 }
 
@@ -89,14 +99,14 @@ const packageJson = {
   unpkg: './dist/index.js',
   author: 'Blockly Team',
   keywords: ['blockly', packageType, packageName],
-  homepage: `https://github.com/google/blockly-samples/tree/master/${pluginDirName}/${dirName}#readme`,
+  homepage: `${gitUrl}/tree/master/${dirPath}/${dirName}#readme`,
   bugs: {
-    url: 'https://github.com/google/blockly-samples/issues',
+    url: `${gitUrl}/issues`,
   },
   repository: {
     'type': 'git',
-    'url': 'https://github.com/google/blockly-samples.git',
-    'directory': `${pluginDirName}/${dirName}`,
+    'url': `${gitUrl}.git`,
+    'directory': `${dirPath}/${dirName}`,
   },
   license: 'Apache-2.0',
   directories: {
@@ -143,11 +153,11 @@ fs.copySync(path.resolve(__dirname, templateDir, 'template'), packageDir);
 
 // Run npm install.
 console.log('Installing packages. This might take a couple of minutes.');
-execSync(`cd ${packageDir} && npm install`, {stdio: [0, 1, 2]});
+execSync(`cd ${packageName} && npm install`, {stdio: [0, 1, 2]});
 
 console.log(chalk.green('\nPackage created.\n'));
 console.log('Next steps, run:');
-console.log(chalk.blue(`  cd ${packageDir}`));
+console.log(chalk.blue(`  cd ${packageName}`));
 console.log(chalk.blue(`  npm start`));
 console.log(`Search ${chalk.red(`'TODO'`)} to see remaining tasks.`);
 
