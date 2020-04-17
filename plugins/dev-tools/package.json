@@ -36,6 +36,9 @@
     "dist",
     "src"
   ],
+  "dependencies": {
+    "dat.gui": "^0.7.7"
+  },
   "devDependencies": {
     "blockly": "^3.20200123.1",
     "@blockly/dev-scripts": "^0.20200403.0"
