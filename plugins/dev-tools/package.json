@@ -37,6 +37,7 @@
     "src"
   ],
   "devDependencies": {
+    "blockly": "^3.20200123.1",
     "@blockly/dev-scripts": "^0.20200403.0"
   },
   "peerDependencies": {
