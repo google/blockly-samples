@@ -29,6 +29,8 @@ Over the course of this codelab you will build and use four renderers.
 1. A renderer with connection shapes that depend on the type checks of each connection.
 ![](./typed_connection_shapes.png)
 
+The code samples are written in ES5 syntax. You can find the code for the [completed custom renderer](https://github.com/google/blockly-samples/tree/master/codelabs/custom_renderer) on GitHub, in both ES5 and ES6 syntax.
+
 ### What you'll need
 This codelab assumes that you are already comfortable with using the Blockly playground locally.  You can find it in `tests/playground.html`.
 
@@ -227,7 +229,6 @@ Define a new function called `makeRectangularPreviousConn`. Note that `NOTCH_WID
 ```js
 /**
  * Return a rectangular notch for use with previous and next connections.
- * @override
  */
 CustomConstantsProvider.prototype.makeRectangularPreviousConn = function() {
   var width = this.NOTCH_WIDTH;
@@ -270,7 +271,6 @@ Define a new function called `makeRectangularInputConn`:
 ```js
 /**
  * Return a rectangular puzzle tab for use with input and output connections.
- * @override
  */
 CustomConstantsProvider.prototype.makeRectangularInputConn = function() {
   var width = this.TAB_WIDTH;
@@ -397,3 +397,4 @@ Custom renderers are a powerful way to change the look and feel of Blockly.  In 
 * How to define and use a complex constant, such as a connection shape.
 * How to update the mapping from connection to connection shape.
 
+You can find the code for the [completed custom renderer](https://github.com/google/blockly-samples/tree/master/codelabs/custom_renderer) on GitHub, in both ES5 and ES6 syntax.
