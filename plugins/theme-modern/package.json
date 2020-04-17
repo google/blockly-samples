@@ -1,0 +1,55 @@
+{
+  "name": "@blockly/theme-modern",
+  "version": "0.20200417.0",
+  "description": "A Blockly modern theme.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "dist": "blockly-scripts build prod",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run dist",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "blockly-theme",
+    "modern"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/theme-modern#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/theme-modern"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "blockly": "^3.20200402.1",
+    "@blockly/dev-scripts": "^0.20200403.0",
+    "@blockly/dev-tools": "^0.20200313.1"
+  },
+  "peerDependencies": {
+    "blockly": ">=2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  }
+}
