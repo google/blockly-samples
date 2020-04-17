@@ -1,0 +1,17 @@
+{
+  "description": "A Blockly theme.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "dist": "blockly-scripts build prod",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run dist",
+    "start": "blockly-scripts start"
+  },
+  "devDependencies": {
+    "@blockly/dev-tools": "^0.20200313.1"
+  },
+  "peerDependencies": {
+    "blockly": ">=2"
+  }
+}
