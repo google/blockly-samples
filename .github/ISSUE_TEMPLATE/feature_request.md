@@ -1,10 +1,22 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-labels: 'enhancement, triage'
+labels: 'type: feature request, triage'
 assignees: ''
 
 ---
+
+**Category**
+
+<!-- Choose one of:
+ - Plugins
+ - Examples
+ - Codelabs
+-->
+
+**Component**
+
+<!-- The name of the component that you want to add or change (e.g. field-date, blockly-rtc).-->
 
 **Is your feature request related to a problem? Please describe.**
 
