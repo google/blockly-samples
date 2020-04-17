@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-labels: 'bug, triage'
+labels: 'type: bug, triage'
 assignees: ''
 
 ---
@@ -14,6 +14,18 @@ assignees: ''
   - please ask questions on the mailing list, instead of filing issues:
   -       https://groups.google.com/forum/#!forum/blockly
   -->
+
+**Category**
+
+<!-- Choose one of:
+ - Plugins
+ - Examples
+ - Codelabs
+-->
+
+**Component**
+
+<!-- The name of the component that has a bug (e.g. field-date, blockly-rtc).-->
 
 **Describe the bug**
 
@@ -35,30 +47,6 @@ Steps to reproduce the behavior:
 **Screenshots**
 
 <!-- If applicable, add screenshots to help explain your problem. -->
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Stack Traces**
-
-<!-- Please open up the console.  If you see any Blockly-related errors,
-  -        paste them between the quotes below.
-  -
-  - Ignore any instances of...
-  - "Uncaught (in promise) DOMException: The play() request was interrupted by a call to pause()."
-  -->
-
-```
-Replace with error stack trace.
-```
 
 **Additional context**
 
