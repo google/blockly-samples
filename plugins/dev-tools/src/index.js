@@ -6,7 +6,7 @@
 
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
-import DebugRenderer from './debugRenderer';
+import {DebugRenderer} from './debugRenderer';
 
 export {
   DebugRenderer,
