@@ -12,6 +12,6 @@
     "@blockly/dev-tools": "^0.20200313.1"
   },
   "peerDependencies": {
-    "blockly": ">=2"
+    "blockly": ">=3.30300123.0"
   }
 }
