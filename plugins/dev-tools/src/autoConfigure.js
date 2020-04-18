@@ -24,7 +24,32 @@ export default function autoConfigure(createWorkspace, defaultOptions) {
   let workspace = createWorkspace(defaultOptions);
   const saveOptions = defaultOptions;
 
-  const gui = new dat.GUI();
+  const gui = new dat.GUI({autoPlace: false});
+  const guiElement = gui.domElement;
+  guiElement.style.position = 'absolute';
+  guiElement.style.zIndex = '1000';
+
+  const onResize = () => {
+    const metrics = workspace.getMetrics();
+    if (workspace.RTL) {
+      guiElement.style.left = metrics.absoluteLeft + 'px';
+      guiElement.style.right = 'auto';
+    } else {
+      guiElement.style.left = 'auto';
+      if (metrics.toolboxPosition === Blockly.TOOLBOX_AT_RIGHT) {
+        guiElement.style.right = metrics.toolboxWidth + 'px';
+      } else {
+        guiElement.style.right = '0';
+      }
+    }
+    guiElement.style.top = metrics.absoluteTop + 'px';
+  };
+  onResize();
+
+  const container = workspace.getInjectionDiv().parentNode;
+  container.style.position = 'relative';
+  container.appendChild(guiElement);
+
   const options = workspace.options;
 
   const onChangeInternal = () => {
@@ -36,6 +61,8 @@ export default function autoConfigure(createWorkspace, defaultOptions) {
     workspace = createWorkspace(saveOptions);
     // Deserialize state into workspace.
     Blockly.Xml.domToWorkspace(state, workspace);
+    // Resize the gui.
+    onResize();
   };
 
   const onChange = (key, value) => {
@@ -99,7 +126,7 @@ export default function autoConfigure(createWorkspace, defaultOptions) {
       ...saveOptions.zoom,
       wheel: value,
     }));
-  zoomFolder.add(options.zoomOptions, 'startScale', 0.1, 10).onChange((value) =>
+  zoomFolder.add(options.zoomOptions, 'startScale', 0.1, 4).onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
       startScale: value,
