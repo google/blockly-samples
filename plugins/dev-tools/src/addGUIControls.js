@@ -13,18 +13,20 @@ import * as dat from 'dat.gui';
 import * as Blockly from 'blockly/core';
 
 /**
- * Use dat.GUI to configure options on a Blockly workspace.
+ * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
  * @param {!function(!Blockly.BlocklyOptions):Blockly.Workspace} createWorkspace
  *     A workspace creation method called every time the toolbox is
  *     re-configured.
  * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
  *     to use.
  */
-export default function autoConfigure(createWorkspace, defaultOptions) {
+export default function addGUIControls(createWorkspace, defaultOptions) {
   let workspace = createWorkspace(defaultOptions);
   const saveOptions = defaultOptions;
 
   const gui = new dat.GUI({autoPlace: false});
+  gui.close();
+
   const guiElement = gui.domElement;
   guiElement.style.position = 'absolute';
   guiElement.style.zIndex = '1000';
