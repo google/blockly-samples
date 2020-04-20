@@ -22,10 +22,19 @@ import {DebugRenderer} from './debugRenderer';
  *     to use.
  */
 export default function addGUIControls(createWorkspace, defaultOptions) {
-  let workspace = createWorkspace(defaultOptions);
-  const saveOptions = defaultOptions;
+  let guiControlOptions =
+    JSON.parse(localStorage.getItem('guiControlOptions') || '{}');
+  let saveOptions = {
+    ...defaultOptions,
+    ...guiControlOptions,
+  };
+  let workspace = createWorkspace(saveOptions);
 
-  const gui = new dat.GUI({autoPlace: false});
+  const gui = new dat.GUI({
+    autoPlace: false,
+    closeOnTop: true,
+    width: 250,
+  });
   gui.close();
 
   const guiElement = gui.domElement;
@@ -53,7 +62,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   container.style.position = 'relative';
   container.appendChild(guiElement);
 
-  const options = workspace.options;
+  const options = Object.assign({}, workspace.options);
 
   const onChangeInternal = () => {
     // Serialize current workspace state.
@@ -66,12 +75,31 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     Blockly.Xml.domToWorkspace(state, workspace);
     // Resize the gui.
     onResize();
+    // Save GUI control options to local storage.
+    localStorage.setItem('guiControlOptions',
+        JSON.stringify(guiControlOptions));
+    // Update options.
+    Object.assign(options, workspace.options);
+    gui.updateDisplay();
   };
 
   const onChange = (key, value) => {
     saveOptions[key] = value;
+    guiControlOptions[key] = value;
     onChangeInternal();
   };
+
+  const resetObj = {
+    'Reset to Defaults': () => {
+      saveOptions = {
+        ...defaultOptions,
+      };
+      guiControlOptions = {};
+      Object.keys(DebugRenderer.config)
+          .forEach((key) => DebugRenderer.config[key] = false);
+      onChangeInternal();
+    }};
+  gui.add(resetObj, 'Reset to Defaults');
 
   gui.add(options, 'RTL').onChange((value) => onChange('rtl', value));
   gui.add(options, 'readOnly').onChange((value) => onChange('readOnly', value));
@@ -169,6 +197,8 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     }));
   // Debug renderer.
   DebugRenderer.init();
+  Object.keys(DebugRenderer.config)
+      .forEach((key) => DebugRenderer.config[key] = false);
   const debugFolder = gui.addFolder('Debug');
   Object.keys(DebugRenderer.config).map((key) =>
     debugFolder.add(DebugRenderer.config, key, 0, 50).onChange((value) => {
