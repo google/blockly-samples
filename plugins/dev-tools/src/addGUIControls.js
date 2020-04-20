@@ -101,7 +101,8 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     }};
   gui.add(resetObj, 'Reset to Defaults');
 
-  gui.add(options, 'RTL').onChange((value) => onChange('rtl', value));
+  gui.add(options, 'RTL').name('rtl').onChange((value) =>
+    onChange('rtl', value));
 
   // Renderer.
   gui.add(options, 'renderer', ['geras', 'thrasos', 'zelos'])
@@ -118,12 +119,12 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   if (defaultOptions.theme) {
     themes[defaultOptions.theme.name] = defaultOptions.theme;
   }
-  gui.add(options.theme, 'name', Object.keys(themes))
+  gui.add(options.theme, 'name', Object.keys(themes)).name('theme')
       .onChange((value) => onChange('theme', themes[value]));
 
   // Toolbox.
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
-  gui.add(options, 'toolboxPosition', toolboxSides)
+  gui.add(options, 'toolboxPosition', toolboxSides).name('toolboxPosition')
       .onChange((value) => {
         const side = Object.keys(toolboxSides).find((key) =>
           toolboxSides[key] == value);
@@ -137,9 +138,9 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   const basicFolder = gui.addFolder('Basic');
   basicFolder.add(options, 'readOnly').onChange((value) =>
     onChange('readOnly', value));
-  basicFolder.add(options, 'hasTrashcan').onChange((value) =>
+  basicFolder.add(options, 'hasTrashcan').name('trashCan').onChange((value) =>
     onChange('trashcan', value));
-  basicFolder.add(options, 'hasSounds').onChange((value) =>
+  basicFolder.add(options, 'hasSounds').name('sounds').onChange((value) =>
     onChange('sounds', value));
   basicFolder.add(options, 'disable').onChange((value) =>
     onChange('disable', value));
