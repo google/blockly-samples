@@ -1,6 +1,5 @@
 {
   "name": "@blockly/plugin-workspace-search-example-web-imports",
-  "version": "1.0.0",
   "description": "Example of workspace search with web imports.",
   "private": true,
   "scripts": {

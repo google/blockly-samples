@@ -48,6 +48,7 @@
     "peerDependencies": {
         "blockly": ">=3.20200123.0"
     },
+    "private": true,
     "publishConfig": {
         "access": "public",
         "registry": "https://wombat-dressing-room.appspot.com"
