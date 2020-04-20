@@ -9,6 +9,7 @@
  */
 
 import * as Blockly from 'blockly';
+import {addGUIControls} from '@blockly/dev-tools';
 import '../src/index.js';
 
 let workspace;
@@ -17,9 +18,12 @@ let workspace;
  * Injects the workspace.
  */
 function start() {
-  workspace = Blockly.inject('blocklyDiv', {
+  const defaultOptions = {
     toolbox: document.getElementById('toolbox'),
-  });
+  };
+  addGUIControls((options) => {
+    return Blockly.inject('blocklyDiv', options);
+  }, defaultOptions);
 }
 
 document.addEventListener('DOMContentLoaded', start);

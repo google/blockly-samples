@@ -13,16 +13,38 @@ npm install @blockly/dev-tools -D --save
 
 ## Usage
 
+### Toolboxes
+Blockly built-in Simple and Category toolboxes.
+
 ```js
 import * as Blockly from 'blockly';
-import {toolboxSimple, toolboxCategories, DebugRenderer} from '@blockly/dev-tools';
+import {toolboxSimple, toolboxCategories} from '@blockly/dev-tools';
 
 Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories
 });
+```
 
-// Initialize the debug renderer if you are making a custom renderer.
+### Debug Renderer
+The debug renderer is a helpful tool to debug blocks when building a custom renderer.
+
+```js
+import {DebugRenderer} from '@blockly/dev-tools';
+// Initialize the debug renderer.
 DebugRenderer.init();
+```
+
+### GUI Controls
+Add GUI controls to adjust Blockly workspace options with a dat.GUI interface.
+
+```js
+import {addGUIControl} from '@blockly/dev-tools';
+const defaultOptions = {
+  ...
+};
+addGUIControl((options) => {
+  return Blockly.inject('blocklyDiv', options);
+}, defaultOptions);
 ```
 
 ## License

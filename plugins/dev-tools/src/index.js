@@ -6,10 +6,12 @@
 
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
+import addGUIControls from './addGUIControls';
 import {DebugRenderer} from './debugRenderer';
 
 export {
   DebugRenderer,
   toolboxCategories,
   toolboxSimple,
+  addGUIControls,
 };
