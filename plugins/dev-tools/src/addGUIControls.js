@@ -79,7 +79,14 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     localStorage.setItem('guiControlOptions',
         JSON.stringify(guiControlOptions));
     // Update options.
-    Object.assign(options, workspace.options);
+    Object.keys(options).forEach((k) => k != 'theme' && delete options[k]);
+    Object.keys(workspace.options).forEach((key) => {
+      if (key == 'theme') {
+        Object.assign(options[key], workspace.options[key]);
+      } else {
+        options[key] = workspace.options[key];
+      }
+    });
     gui.updateDisplay();
   };
 
@@ -94,6 +101,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       saveOptions = {
         ...defaultOptions,
       };
+      saveOptions['theme'] = defaultOptions.theme || Blockly.Themes.Classic;
       guiControlOptions = {};
       Object.keys(DebugRenderer.config)
           .forEach((key) => DebugRenderer.config[key] = false);
