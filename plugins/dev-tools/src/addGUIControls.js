@@ -107,6 +107,20 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   gui.add(options, 'renderer', ['geras', 'thrasos', 'zelos'])
       .onChange((value) => onChange('renderer', value));
 
+  // Theme.
+  const themes = {
+    'classic': Blockly.Themes.Classic,
+    'dark': Blockly.Themes.Dark,
+    'deuteranopia': Blockly.Themes.Deuteranopia,
+    'highcontrast': Blockly.Themes.HighContrast,
+    'tritanopia': Blockly.Themes.Tritanopia,
+  };
+  if (defaultOptions.theme) {
+    themes[defaultOptions.theme.name] = defaultOptions.theme;
+  }
+  gui.add(options.theme, 'name', Object.keys(themes))
+      .onChange((value) => onChange('theme', themes[value]));
+
   // Toolbox.
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
   gui.add(options, 'toolboxPosition', toolboxSides)
