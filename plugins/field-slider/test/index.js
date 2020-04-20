@@ -10,6 +10,7 @@
  */
 
 import * as Blockly from 'blockly';
+import {addGUIControls} from '@blockly/dev-tools';
 import '../src/index.js';
 
 Blockly.defineBlocksWithJsonArray([
@@ -32,10 +33,12 @@ Blockly.defineBlocksWithJsonArray([
   }]);
 
 document.addEventListener('DOMContentLoaded', function() {
-  Blockly.inject('blocklyDiv',
-      {
-        toolbox: `<xml xmlns="https://developers.google.com/blockly/xml">
+  const defaultOptions = {
+    toolbox: `<xml xmlns="https://developers.google.com/blockly/xml">
           <block type="test_field_slider"></block>
         </xml>`,
-      });
+  };
+  addGUIControls((options) => {
+    return Blockly.inject('blocklyDiv', options);
+  }, defaultOptions);
 });

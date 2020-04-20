@@ -11,6 +11,7 @@
  */
 import * as dat from 'dat.gui';
 import * as Blockly from 'blockly/core';
+import {DebugRenderer} from './debugRenderer';
 
 /**
  * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
@@ -166,4 +167,13 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       ...saveOptions.grid,
       snap: value,
     }));
+  // Debug renderer.
+  DebugRenderer.init();
+  const debugFolder = gui.addFolder('Debug');
+  Object.keys(DebugRenderer.config).map((key) =>
+    debugFolder.add(DebugRenderer.config, key, 0, 50).onChange((value) => {
+      DebugRenderer.config[key] = value;
+      onChangeInternal();
+    })
+  );
 }

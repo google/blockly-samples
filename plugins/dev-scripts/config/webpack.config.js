@@ -71,6 +71,11 @@ module.exports = (env) => {
         publicPath: '/build/',
         filename: 'test_bundle.js',
       },
+      resolve: {
+        alias: {
+          'blockly': resolveApp('node_modules/blockly'),
+        },
+      },
       module: {
         rules: [{
           test: /\.js$/,
