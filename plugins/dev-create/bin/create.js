@@ -116,6 +116,11 @@ const packageJson = {
   engines: {
     'node': '>=8.17.0',
   },
+  browserslist: [
+    'defaults',
+    'IE 11',
+    'IE_Mob 11',
+  ],
 };
 
 // Add dev dependencies.
