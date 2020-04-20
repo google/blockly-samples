@@ -1,16 +1,14 @@
 {
-  "name": "@blockly/plugin-workspace-search",
-  "version": "1.20200312.2",
-  "description": "A Blockly plugin that adds workspace search support.",
+  "name": "@blockly/theme-modern",
+  "version": "1.20200417.0",
+  "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run dist",
-    "start": "blockly-scripts start",
-    "test": "npm run build && npm run test:mocha",
-    "test:mocha": "blockly-scripts test"
+    "start": "blockly-scripts start"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
@@ -18,17 +16,17 @@
   "author": "Blockly Team",
   "keywords": [
     "blockly",
-    "workspace",
-    "search"
+    "blockly-theme",
+    "modern"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/workspace-search#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/theme-modern#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/workspace-search"
+    "directory": "plugins/theme-modern"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -40,15 +38,12 @@
     "src"
   ],
   "devDependencies": {
-    "blockly": "^3.20200123.1",
-    "@blockly/dev-tools": "^0.20200313.1",
+    "blockly": "^3.20200402.1",
     "@blockly/dev-scripts": "^0.20200403.0",
-    "jsdom": "16.2.1",
-    "jsdom-global": "3.0.2",
-    "sinon": "^9.0.1"
+    "@blockly/dev-tools": "^0.20200313.1"
   },
   "peerDependencies": {
-    "blockly": ">=3.20200123.0 <4"
+    "blockly": ">=3.30300123.0"
   },
   "publishConfig": {
     "access": "public",
@@ -58,8 +53,8 @@
     "node": ">=8.17.0"
   },
   "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
+      "defaults",
+      "IE 11",
+      "IE_Mob 11"
   ]
 }
