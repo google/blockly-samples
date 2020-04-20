@@ -102,20 +102,12 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   gui.add(resetObj, 'Reset to Defaults');
 
   gui.add(options, 'RTL').onChange((value) => onChange('rtl', value));
-  gui.add(options, 'readOnly').onChange((value) => onChange('readOnly', value));
-  gui.add(options, 'hasTrashcan').onChange((value) =>
-    onChange('trashcan', value));
-  gui.add(options, 'hasSounds').onChange((value) => onChange('sounds', value));
-
-  gui.add(options, 'disable').onChange((value) => onChange('disable', value));
-  gui.add(options, 'collapse').onChange((value) => onChange('collapse', value));
-  gui.add(options, 'comments').onChange((value) => onChange('comments', value));
 
   // Renderer.
   gui.add(options, 'renderer', ['geras', 'thrasos', 'zelos'])
       .onChange((value) => onChange('renderer', value));
 
-  // Toolbox sides.
+  // Toolbox.
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
   gui.add(options, 'toolboxPosition', toolboxSides)
       .onChange((value) => {
@@ -126,6 +118,21 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
           'start' : 'end';
         onChangeInternal();
       });
+
+  // Basic options.
+  const basicFolder = gui.addFolder('Basic');
+  basicFolder.add(options, 'readOnly').onChange((value) =>
+    onChange('readOnly', value));
+  basicFolder.add(options, 'hasTrashcan').onChange((value) =>
+    onChange('trashcan', value));
+  basicFolder.add(options, 'hasSounds').onChange((value) =>
+    onChange('sounds', value));
+  basicFolder.add(options, 'disable').onChange((value) =>
+    onChange('disable', value));
+  basicFolder.add(options, 'collapse').onChange((value) =>
+    onChange('collapse', value));
+  basicFolder.add(options, 'comments').onChange((value) =>
+    onChange('comments', value));
 
   // Move options.
   const moveFolder = gui.addFolder('Move');
