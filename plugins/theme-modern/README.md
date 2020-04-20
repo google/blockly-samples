@@ -1,6 +1,9 @@
 # @blockly/theme-modern [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) modern theme.
+A [Blockly](https://www.npmjs.com/package/blockly) modern theme that uses the
+same block colours as the [Classic theme](https://github.com/google/blockly/blob/master/core/theme/classic.js)
+but with a darker border. This theme is mainly meant for use with the Thrasos or
+Zelos renderer.
 
 ## Installation
 

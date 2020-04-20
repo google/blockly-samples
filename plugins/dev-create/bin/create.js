@@ -72,7 +72,7 @@ const templateJson = require(path.join(templateDir, 'template.json'));
 
 const packageJson = {
   name: `@blockly/${packageType}-${packageName}`,
-  version: `0.${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.0`,
+  version: `1.${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.0`,
   description: templateJson.description || `A Blockly ${packageType}.`,
   scripts: templateJson.scripts || {
     'build': 'blockly-scripts build',
