@@ -18,6 +18,9 @@ module.exports = (env) => {
   const devServer = {
     port: 3000,
     host: '0.0.0.0',
+    watchOptions: {
+      ignored: /node_modules/,
+    },
   };
   if (env.buildTest) {
     devServer.openPage = 'test';
