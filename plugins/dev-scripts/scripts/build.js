@@ -16,7 +16,6 @@
 
 'use strict';
 
-const args = process.argv.slice(2);
 const path = require('path');
 const fs = require('fs');
 
@@ -27,13 +26,11 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
-const mode = args.length > 0 && args[0] == 'prod' ?
-  'production' : 'development';
-console.log(`Running ${mode} build for ${packageJson.name}`);
+console.log(`Running production build for ${packageJson.name}`);
 
 // Create the webpack configuration for based on the build environment.
 const config = webpackConfig({
-  mode,
+  mode: 'production',
 });
 
 // Create and run the webpack compiler.

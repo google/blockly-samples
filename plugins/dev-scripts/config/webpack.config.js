@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * @fileoverview Webpack base configuration file.
+ * @fileoverview Webpack configuration file.
  * @author samelh@google.com (Sam El-Husseini)
  */
+'use strict';
 
 const path = require('path');
 const fs = require('fs');
@@ -15,29 +16,31 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 module.exports = (env) => {
-  const devServer = {
-    port: 3000,
-    host: '0.0.0.0',
-    watchOptions: {
-      ignored: /node_modules/,
-    },
-  };
-  if (env.buildTest) {
-    devServer.openPage = 'test';
-    devServer.open = true;
-  }
+  const mode = env.mode;
+  const isProduction = mode === 'production';
 
-  const src = {
-    name: 'src',
-    mode: env.mode,
-    entry: './src/index.js',
+  const srcEntry = `./src/index.${['js', 'ts'].find((ext) =>
+    fs.existsSync(resolveApp(`./src/index.${ext}`))
+  )}`;
+  const testEntry = `./test/index.${['js', 'ts'].find((ext) =>
+    fs.existsSync(resolveApp(`./test/index.${ext}`))
+  )}`;
+
+  return {
+    mode,
+    entry: isProduction ? srcEntry : testEntry,
     devtool: 'source-map',
     output: {
-      path: resolveApp('dist'),
-      publicPath: '/dist/',
-      filename: 'index.js',
+      path: isProduction ? resolveApp('dist') : resolveApp('build'),
+      publicPath: isProduction ? '/dist/' : '/build/',
+      filename: isProduction ? 'index.js' : 'test_bundle.js',
       libraryTarget: 'umd',
       globalObject: 'this',
+    },
+    resolve: {
+      alias: {
+        'blockly': resolveApp('node_modules/blockly'),
+      },
     },
     module: {
       rules: [{
@@ -51,48 +54,13 @@ module.exports = (env) => {
         },
       }],
     },
-    devServer: devServer,
-    externals: {
+    externals: isProduction ? {
       'blockly/core': {
         root: 'Blockly',
         commonjs: 'blockly/core',
         commonjs2: 'blockly/core',
         amd: 'blockly/core',
       },
-    },
+    } : {},
   };
-  const webpackExports = [src];
-
-  if (env.buildTest) {
-    const test = {
-      name: 'test',
-      mode: 'development',
-      entry: './test/index.js',
-      devtool: 'source-map',
-      output: {
-        path: resolveApp('build'),
-        publicPath: '/build/',
-        filename: 'test_bundle.js',
-      },
-      resolve: {
-        alias: {
-          'blockly': resolveApp('node_modules/blockly'),
-        },
-      },
-      module: {
-        rules: [{
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          use: {
-            loader: require.resolve('babel-loader'),
-            options: {
-              presets: [require.resolve('@babel/preset-env')],
-            },
-          },
-        }],
-      },
-    };
-    webpackExports.push(test);
-  }
-  return webpackExports;
 };
