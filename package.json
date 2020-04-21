@@ -11,7 +11,9 @@
         "license": "gulp checkLicenses",
         "lint": "lerna run lint",
         "postinstall": "npm run boot",
-        "test": "lerna run test"
+        "test": "lerna run test",
+        "publish:check": "lerna changed",
+        "publish": "lerna publish"
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",
