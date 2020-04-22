@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {addGUIControls} from '@blockly/dev-tools';
-import '../src/index.js';
+import '../src/index';
 
 // TODO: Edit list of blocks.
 const allBlocks = ['block_template'];
