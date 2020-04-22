@@ -5,10 +5,11 @@
     "scripts": {
         "build": "blockly-scripts build",
         "clean": "blockly-scripts clean",
+        "lint": "blockly-scripts lint",
         "prepublishOnly": "npm run clean && npm run build",
         "start": "blockly-scripts start",
         "test": "npm run build && npm run test:mocha",
-        "test:mocha": "mocha --ui tdd test/if.js test/list_create.js test/procedures.js test/text_join.js"
+        "test:mocha": "blockly-scripts test"
     },
     "main": "./dist/index.js",
     "unpkg": "./dist/index.js",

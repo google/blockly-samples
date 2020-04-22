@@ -22,13 +22,6 @@
     "camelcase": "warn",
     "no-warning-comments": "warn"
   },
-  "settings": {
-    "jsdoc": {
-      "tagNamePreference": {
-        "returns": "return"
-      }
-    }
-  },
   "overrides": [
     {
       "files": [
@@ -37,6 +30,13 @@
       "extends": [
         "plugin:jsdoc/recommended"
       ],
+      "settings": {
+        "jsdoc": {
+          "tagNamePreference": {
+            "returns": "return"
+          }
+        }
+      },
       "rules": {
         "jsdoc/newline-after-description": 0,
         "jsdoc/require-description-complete-sentence": 1,

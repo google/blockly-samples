@@ -583,5 +583,3 @@ const procedureVars = function() {
 };
 
 Blockly.Extensions.register('procedure_vars', procedureVars);
-
-
