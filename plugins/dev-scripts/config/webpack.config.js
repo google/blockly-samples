@@ -49,6 +49,7 @@ module.exports = (env) => {
           .filter((ext) => isTypescript || !ext.includes('ts')),
     },
     module: {
+      rules: [
         // Run the linter.
         {
           test: /\.(js|mjs|ts)$/,
