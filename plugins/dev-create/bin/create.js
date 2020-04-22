@@ -72,17 +72,19 @@ if (!pluginTypes.includes(pluginType)) {
 }
 
 // Check plugin directory doesn't already exist.
-if (fs.existsSync(pluginPath)) {
-  console.error(`Package directory already exists,\
- delete ${chalk.red(pluginDir)} and try again.`);
-  process.exit(1);
+if (pluginPath != root) { // Allow creating a plugin in current directory '.'.
+  if (fs.existsSync(pluginPath)) {
+    console.error(`Package directory already exists,\
+   delete ${chalk.red(pluginDir)} and try again.`);
+    process.exit(1);
+  } else {
+    // Create the plugin directory.
+    fs.mkdirSync(pluginPath);
+  }
 }
 
 console.log(`Creating a new Blockly\
  ${chalk.green(pluginType)} in ${chalk.green(pluginDir)}.\n`);
-
-// Create the plugin directory.
-fs.mkdirSync(pluginPath);
 
 const templateDir =
     `../templates/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
@@ -91,7 +93,7 @@ const templateJson = require(path.join(templateDir, 'template.json'));
 const gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
 const gitURL = execSync(`git config --get remote.origin.url`).toString().trim();
 const gitPluginPath =
-  path.join(path.relative(gitRoot, process.cwd()), pluginDir);
+  path.join(path.relative(gitRoot, root), pluginDir);
 
 const pluginPackageName = `@blockly/${pluginType}-${pluginName}`;
 
