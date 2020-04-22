@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-scripts",
-  "version": "0.20200403.2",
+  "version": "0.20200403.3",
   "description": "Configuration and scripts for Blockly plugins.",
   "scripts": {
     "lint": "eslint ."
