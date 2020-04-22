@@ -9,6 +9,7 @@
     "dev",
     "create",
     "package",
+    "plugin",
     "template"
   ],
   "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-create#readme",
@@ -23,6 +24,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^4.0.0",
+    "commander": "^5.0.0",
     "fs-extra": "^9.0.0"
   },
   "publishConfig": {

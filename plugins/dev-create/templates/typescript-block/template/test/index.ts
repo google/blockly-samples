@@ -9,16 +9,20 @@
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories, addGUIControls} from '@blockly/dev-tools';
-import Theme from '../src/index';
+import {addGUIControls} from '@blockly/dev-tools';
+import '../src/index';
+
+// TODO: Edit list of blocks.
+const allBlocks = ['block_template'];
 
 /**
  * Test page startup, sets up Blockly.
  */
-function start() {
+function start(): void {
   const defaultOptions = {
-    toolbox: toolboxCategories,
-    theme: Theme,
+    toolbox: `<xml xmlns="https://developers.google.com/blockly/xml">
+      ${allBlocks.map((b) => `<block type="${b}"></block>`)}
+    </xml>`,
   };
   addGUIControls((options) => {
     return Blockly.inject('blocklyDiv', options);
