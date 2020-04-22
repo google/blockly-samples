@@ -38,8 +38,8 @@
         "src"
     ],
     "devDependencies": {
-        "@blockly/dev-scripts": "^0.20200403.0",
-        "@blockly/dev-tools": "^0.20200313.1",
+        "@blockly/dev-scripts": "^0.20200403.1",
+        "@blockly/dev-tools": "^0.20200313.2",
         "blockly": "^3.20200123.1",
         "chai": "^4.2.0",
         "mocha": "^7.1.0",

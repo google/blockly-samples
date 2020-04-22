@@ -37,9 +37,9 @@
     "src"
   ],
   "devDependencies": {
-    "blockly": "^3.20200402.1",
-    "@blockly/dev-scripts": "^0.20200403.0",
-    "@blockly/dev-tools": "^0.20200313.1"
+    "@blockly/dev-scripts": "^0.20200403.1",
+    "@blockly/dev-tools": "^0.20200313.2",
+    "blockly": "^3.20200402.1"
   },
   "peerDependencies": {
     "blockly": ">=3.30300123.0"
@@ -52,8 +52,8 @@
     "node": ">=8.17.0"
   },
   "browserslist": [
-      "defaults",
-      "IE 11",
-      "IE_Mob 11"
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
   ]
 }
