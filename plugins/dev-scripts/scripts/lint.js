@@ -24,7 +24,9 @@ const packageJson = require(resolveApp('package.json'));
 console.log(`Running lint for ${packageJson.name}`);
 
 // Create the eslint engine.
-const cli = new CLIEngine();
+const cli = new CLIEngine({
+  extensions: ['.js', '.ts'],
+});
 const formatter = cli.getFormatter();
 
 // Run eslint for both the src and test directories.
@@ -33,7 +35,7 @@ const dirs = ['src', 'test'];
 dirs.forEach((dir) => {
   const resolvePath = resolveApp(dir);
   if (fs.existsSync(resolvePath)) {
-    const report = cli.executeOnFiles(resolvePath);
+    const report = cli.executeOnFiles([dir]);
     console.log(formatter(report.results));
   }
 });

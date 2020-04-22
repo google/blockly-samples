@@ -264,7 +264,7 @@ suite('procedures', () => {
         const callXml = Blockly.Xml.blockToDom(call);
         const newDef = Blockly.Xml.domToBlock(defXml, this.workspace);
         const newCall = Blockly.Xml.domToBlock(callXml, this.workspace);
-        func(def, call);
+        func(newDef, newCall);
       };
     });
     teardown(() => {

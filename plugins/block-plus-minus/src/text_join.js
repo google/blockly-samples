@@ -10,7 +10,7 @@
 
 import Blockly from 'blockly/core';
 import {createPlusField} from './field_plus';
-import {createMinusField, FieldMinus} from './field_minus';
+import {createMinusField} from './field_minus';
 
 const textJoinMutator = {
   /**
