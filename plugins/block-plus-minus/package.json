@@ -5,8 +5,7 @@
     "scripts": {
         "build": "blockly-scripts build",
         "clean": "blockly-scripts clean",
-        "dist": "blockly-scripts build prod",
-        "prepublishOnly": "npm run clean && npm run prod",
+        "prepublishOnly": "npm run clean && npm run build",
         "start": "blockly-scripts start",
         "test": "npm run build && npm run test:mocha",
         "test:mocha": "mocha --ui tdd test/if.js test/list_create.js test/procedures.js test/text_join.js"

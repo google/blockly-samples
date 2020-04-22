@@ -3,9 +3,8 @@
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
-    "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
-    "prepublishOnly": "npm run clean && npm run dist",
+    "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start"
   },
   "devDependencies": {
