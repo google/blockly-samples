@@ -39,7 +39,6 @@ const program = new commander.Command(scriptName)
     .option('-t, --type <plugin-type>',
         `specify the type of the plugin. One of ${pluginTypes.join(', ')}`)
     .option('--typescript', 'use typescript')
-    .option('-l, --license <license>', 'license to use, eg: Apache-2.0, MIT')
     .option('--author <author>', 'author, eg: Blockly Team')
     .option('--skip-install')
     .parse(process.argv);
@@ -60,7 +59,6 @@ const pluginType = program.type || 'plugin';
 const pluginDir = program.dir ||
     (pluginType == 'plugin' ? pluginName : `${pluginType}-${pluginName}`);
 const pluginPath = path.join(root, pluginDir);
-const pluginLicense = program.license || 'Apache-2.0';
 const pluginAuthor = program.author || 'Blockly Team';
 
 const isTypescript = program.typescript;
@@ -127,7 +125,7 @@ const packageJson = {
     'url': `${gitURL}.git`,
     'directory': gitPluginPath,
   },
-  license: pluginLicense,
+  license: 'Apache 2.0',
   directories: {
     'dist': 'dist',
     'src': 'src',
