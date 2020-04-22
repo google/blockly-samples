@@ -9,8 +9,8 @@
  */
 'use strict';
 
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const resolve = require('resolve');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
