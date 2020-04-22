@@ -1,8 +1,7 @@
 {
   "extends": [
     "eslint:recommended",
-    "eslint-config-google",
-    "plugin:jsdoc/recommended"
+    "eslint-config-google"
   ],
   "env": {
     "es6": true,
@@ -21,29 +20,7 @@
   },
   "rules": {
     "camelcase": "warn",
-    "no-warning-comments": "warn",
-    "jsdoc/newline-after-description": 0,
-    "jsdoc/require-description-complete-sentence": 1,
-    "jsdoc/require-returns": [
-      "error",
-      {
-        "forceRequireReturn": false
-      }
-    ],
-    "jsdoc/require-description": 1,
-    "jsdoc/check-tag-names": 0,
-    "jsdoc/check-access": 1,
-    "jsdoc/check-types": 0,
-    "jsdoc/check-values": 0,
-    "jsdoc/require-jsdoc": [
-      "error",
-      {
-        "require": {
-          "ClassDeclaration": true,
-          "MethodDefinition": true
-        }
-      }
-    ]
+    "no-warning-comments": "warn"
   },
   "settings": {
     "jsdoc": {
@@ -55,10 +32,60 @@
   "overrides": [
     {
       "files": [
+        "*.js"
+      ],
+      "extends": [
+        "plugin:jsdoc/recommended"
+      ],
+      "rules": {
+        "jsdoc/newline-after-description": 0,
+        "jsdoc/require-description-complete-sentence": 1,
+        "jsdoc/require-returns": [
+          "error",
+          {
+            "forceRequireReturn": false
+          }
+        ],
+        "jsdoc/require-description": 1,
+        "jsdoc/check-tag-names": 0,
+        "jsdoc/check-access": 1,
+        "jsdoc/check-types": 0,
+        "jsdoc/check-values": 0,
+        "jsdoc/require-jsdoc": [
+          "error",
+          {
+            "require": {
+              "ClassDeclaration": true,
+              "MethodDefinition": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "files": [
         "*.mocha.js"
       ],
       "rules": {
         "no-invalid-this": "off"
+      }
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {},
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/indent": [2, 2]
       }
     }
   ]
