@@ -1,0 +1,41 @@
+{
+  "name": "@blockly/eslint-config",
+  "version": "0.20200422.0",
+  "description": "ESlint configuration used by Blockly plugins.",
+  "files": [
+    "index.js"
+  ],
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "eslint",
+    "eslintplugin",
+    "dev",
+    "plugin"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/eslint-config#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/eslint-config"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsdoc": "^22.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

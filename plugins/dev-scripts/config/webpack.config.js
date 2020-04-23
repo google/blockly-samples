@@ -60,7 +60,10 @@ module.exports = (env) => {
                 cache: true,
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
-                useEslintrc: true,
+                useEslintrc: false,
+                baseConfig: {
+                  extends: [require.resolve('@blockly/eslint-config')],
+                },
               },
               loader: require.resolve('eslint-loader'),
             },

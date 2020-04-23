@@ -24,8 +24,12 @@ const packageJson = require(resolveApp('package.json'));
 console.log(`Running lint for ${packageJson.name}`);
 
 // Create the eslint engine.
+const eslintConfig = require('@blockly/eslint-config');
 const cli = new CLIEngine({
   extensions: ['.js', '.ts'],
+  baseConfig: eslintConfig,
+  useEslintrc: false,
+  resolvePluginsRelativeTo: __dirname,
 });
 const formatter = cli.getFormatter();
 

@@ -9,17 +9,20 @@
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories} from '@blockly/dev-tools';
+import {toolboxCategories, addGUIControls} from '@blockly/dev-tools';
 import Theme from '../src/index';
 
 /**
  * Test page startup, sets up Blockly.
  */
 function start(): void {
-  Blockly.inject('blocklyDiv', {
+  const defaultOptions = {
     toolbox: toolboxCategories,
     theme: Theme,
-  });
+  };
+  addGUIControls((options) => {
+    return Blockly.inject('blocklyDiv', options);
+  }, defaultOptions);
 }
 
 document.addEventListener('DOMContentLoaded', start);
