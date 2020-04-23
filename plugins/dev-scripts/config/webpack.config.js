@@ -58,6 +58,7 @@ module.exports = (env) => {
             {
               options: {
                 cache: true,
+                emitWarning: true,
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
                 useEslintrc: true,
