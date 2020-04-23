@@ -38,11 +38,11 @@ DebugRenderer.init();
 Add GUI controls to adjust Blockly workspace options with a dat.GUI interface.
 
 ```js
-import {addGUIControl} from '@blockly/dev-tools';
+import {addGUIControls} from '@blockly/dev-tools';
 const defaultOptions = {
   ...
 };
-addGUIControl((options) => {
+addGUIControls((options) => {
   return Blockly.inject('blocklyDiv', options);
 }, defaultOptions);
 ```
