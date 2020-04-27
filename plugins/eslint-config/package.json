@@ -31,7 +31,13 @@
     "eslint-plugin-jsdoc": "^22.1.0"
   },
   "peerDependencies": {
-    "eslint": "6.x"
+    "eslint": "6.x",
+    "typescript": "3.x"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public",
