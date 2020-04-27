@@ -1,6 +1,7 @@
 {
     "name": "@blockly/block-plus-minus",
     "version": "1.20200406.2",
+    "private": true,
     "description": "A group of blocks that replace the built-in mutator UI with a +/- based UI.",
     "scripts": {
         "build": "blockly-scripts build",
@@ -48,10 +49,12 @@
     "peerDependencies": {
         "blockly": ">=3.20200123.0"
     },
-    "private": true,
     "publishConfig": {
         "access": "public",
         "registry": "https://wombat-dressing-room.appspot.com"
+    },
+    "eslintConfig": {
+        "extends": "@blockly/eslint-config"
     },
     "engines": {
         "node": ">=8.17.0"

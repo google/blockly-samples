@@ -59,7 +59,7 @@ const pluginType = program.type || 'plugin';
 const pluginDir = program.dir ||
     (pluginType == 'plugin' ? pluginName : `${pluginType}-${pluginName}`);
 const pluginPath = path.join(root, pluginDir);
-const pluginAuthor = program.author || 'Blockly Team';
+const pluginAuthor = program.author || '';
 
 const isTypescript = program.typescript;
 const skipInstall = program.skipInstall;
@@ -145,9 +145,12 @@ const packageJson = {
   peerDependencies: templateJson.peerDependencies || {
     'blockly': '>=3.20200123.0',
   },
-  publishConfig: {
+  publishConfig: isFirstParty ? {
     'access': 'public',
     'registry': 'https://wombat-dressing-room.appspot.com',
+  } : {},
+  eslintConfig: {
+    'extends': '@blockly/eslint-config',
   },
   engines: {
     'node': '>=8.17.0',
@@ -180,9 +183,6 @@ fs.copySync(path.resolve(__dirname, templateDir, 'template'), pluginPath);
 if (!isFirstParty) {
   fs.copySync(path.resolve(__dirname, templatesDir, 'third_party'),
       pluginPath);
-  packageJson['eslintConfig'] = {
-    'extends': '@blockly/eslint-config',
-  };
 }
 
 // Write the package.json to the new package.
