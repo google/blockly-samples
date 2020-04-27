@@ -97,7 +97,7 @@ const gitURL = execSync(`git config --get remote.origin.url`).toString().trim();
 const gitPluginPath =
   path.join(path.relative(gitRoot, root), pluginDir);
 
-// Use the @blockly scope only for packages in blockly-samples.
+// Only use the @blockly scope for first party plugins.
 const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
 const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;

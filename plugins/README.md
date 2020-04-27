@@ -24,6 +24,8 @@ replace the built-in mutator UI with a +/- based UI.
 
 - [``@blockly/create-package``](dev-create/): A tool for creating a Blockly
 plugin based on a pre-existing template.
+- [``@blockly/eslint-config``](eslint-config/): ESlint configuration used by
+Blockly plugins.
 - [``@blockly/dev-tool``](dev-tools/): A library of common utilities for Blockly
 plugin development.
 - [``@blockly/dev-scripts``](dev-scripts/): Configuration and scripts for Blockly
