@@ -15,7 +15,7 @@ The examples directory has one folder per example. Each example can be run with 
 
 **Plugins** are self-contained pieces of code that add functionality to Blockly. Plugins can add fields, define themes, create renderers, and much more. The target user is a developer who finds and uses the plugin through npm. Plugins defined in this repository are *first-party* plugins, which means that they are supported by the Blockly team.
 
-The plugins directory has one folder per plugin. To create the correct directory structure for your plugin, use [@blockly/create-package](https://www.npmjs.com/package/@blockly/create-package).
+The plugins directory has one folder per plugin. To set up a new plugin based on one of the existing templates, use [@blockly/create-package](https://www.npmjs.com/package/@blockly/create-package).
 
 ## How can I contribute?
 
@@ -39,7 +39,7 @@ A plugin starts as a **suggestion**. You can suggest a plugin by creating a new 
 
 Before making a suggestion, [search](https://github.com/google/blockly-samples/issues?q=is%3Aopen+is%3Aissue+label%3A%22category%3A+plugin%22+label%3A%22type%3A+feature+request%22) for a related issue. If you find one, add a comment to the existing issue instead of opening a new one.
 
-Next a plugin will go into the **discussion** phase. This phase includes:
+Next, a plugin will go into the **discussion** phase. This phase includes:
 - Clarification of the desired functionality.
 - Clarification of the plugin's API.
 - Planning for implementation.
@@ -51,13 +51,13 @@ Next a plugin will go into the **discussion** phase. This phase includes:
 The goal is that at the end of the discussion phase all major design decisions have been made and there is a clear list of implementation steps. During discussion we may decide that a plugin should be a third-party plugin, and not be published under the `@blockly` scope. In that case we will close the issue.
 
 Next is the **implementation** phase, which includes
-- Creating the plugin's folder.
+- Running `npx @blockly/create-package` to set up the plugin and its directory from a template.
 - Implementing core logic for the plugin.
 - Implementing a UI, if needed.
-- Adding tests.
-- Writing the plugin's `README.md`.
+- Testing the plugin, using mocha.
+- Documenting the plugin, including the `README`.
 
-Implentation may be done by multiple contributors in parallel.
+Implentation may be done by multiple contributors in parallel. Anyone interested should comment on the issue and ask if it's still open for contributions. You may implement a plugin collaboratively on your own fork, or through pull requests against this repository. Plugins are not published while they are under initial construction.
 
 Finally, **publishing**. This is done by Blockly team members when implementation is complete.
 
