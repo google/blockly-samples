@@ -53,13 +53,15 @@ For example:\n  ${chalk.blue(scriptName)}\
   process.exit(1);
 }
 
+const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
+
 // Default to type=plugin.
 const pluginType = program.type || 'plugin';
 // Default to the plugin name if the type=plugin, otherwise use [type]-[name].
 const pluginDir = program.dir ||
     (pluginType == 'plugin' ? pluginName : `${pluginType}-${pluginName}`);
 const pluginPath = path.join(root, pluginDir);
-const pluginAuthor = program.author || 'Blockly Team';
+const pluginAuthor = program.author || (isFirstParty ? 'Blockly Team' : '');
 
 const isTypescript = program.typescript;
 const skipInstall = program.skipInstall;
@@ -84,10 +86,12 @@ if (pluginPath != root) { // Allow creating a plugin in current directory '.'.
 }
 
 console.log(`Creating a new Blockly\
- ${chalk.green(pluginType)} in ${chalk.green(pluginDir)}.\n`);
+ ${chalk.green(pluginType)} with name ${chalk.green(pluginName)}\
+ in ${chalk.green(pluginPath)}.\n`);
 
+const templatesDir = `../templates`;
 const templateDir =
-    `../templates/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
+    `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
 const templateJson = require(path.join(templateDir, 'template.json'));
 
 const gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
@@ -95,7 +99,9 @@ const gitURL = execSync(`git config --get remote.origin.url`).toString().trim();
 const gitPluginPath =
   path.join(path.relative(gitRoot, root), pluginDir);
 
-const pluginPackageName = `@blockly/${pluginType}-${pluginName}`;
+// Only use the @blockly scope for first party plugins.
+const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
+const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
 
 const packageJson = {
   name: pluginPackageName,
@@ -140,9 +146,12 @@ const packageJson = {
   peerDependencies: templateJson.peerDependencies || {
     'blockly': '>=3.20200123.0',
   },
-  publishConfig: {
+  publishConfig: isFirstParty ? {
     'access': 'public',
     'registry': 'https://wombat-dressing-room.appspot.com',
+  } : {},
+  eslintConfig: {
+    'extends': '@blockly/eslint-config',
   },
   engines: {
     'node': '>=8.17.0',
@@ -162,10 +171,6 @@ devDependencies.sort().forEach((dep) => {
   packageJson.devDependencies[dep] = `^${latestVersion.trim()}`;
 });
 
-// Write the package.json to the new package.
-fs.writeFileSync(path.join(pluginPath, 'package.json'),
-    JSON.stringify(packageJson, null, 2));
-
 // Write the README.md to the new package.
 let readme = fs.readFileSync(path.resolve(__dirname, templateDir, 'README.md'),
     'utf-8');
@@ -175,14 +180,31 @@ fs.writeFileSync(path.join(pluginPath, 'README.md'), readme, 'utf-8');
 // Copy the rest of the template folder into the new package.
 fs.copySync(path.resolve(__dirname, templateDir, 'template'), pluginPath);
 
+// Copy third party plugin files to the new package if third-party.
+if (!isFirstParty) {
+  fs.copySync(path.resolve(__dirname, templatesDir, 'third_party'),
+      pluginPath);
+}
+
+// Write the package.json to the new package.
+fs.writeFileSync(path.join(pluginPath, 'package.json'),
+    JSON.stringify(packageJson, null, 2));
+
 // Run npm install.
 if (!skipInstall) {
   console.log('Installing packages. This might take a couple of minutes.');
   execSync(`cd ${pluginDir} && npm install`, {stdio: [0, 1, 2]});
 }
 
-console.log(chalk.green('\nPackage created.\n'));
-console.log('Next steps, run:');
+console.log(`Success! Created ${pluginType} '${pluginName}' at ${pluginPath}`);
+console.log(`\n  ${chalk.blue(`  npm start`)}`);
+console.log(`    Starts the development server.\n`);
+console.log(`  ${chalk.blue(`  npm run build`)}`);
+console.log(`    Builds a production build of the plugin.\n`);
+console.log(`  ${chalk.blue(`  npm test`)}`);
+console.log(`    Runs mocha tests.\n\n`);
+
+console.log(`You can begin by typing:`);
 console.log(chalk.blue(`  cd ${pluginDir}`));
 if (skipInstall) {
   console.log(chalk.blue(`  npm install`));

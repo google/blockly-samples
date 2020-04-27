@@ -28,6 +28,7 @@
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "@babel/preset-typescript": "^7.9.0",
+    "@blockly/eslint-config": "^1.20200426.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "eslint": "^6.8.0",
@@ -39,9 +40,20 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
+  "peerDependencies": {
+    "typescript": "^3.2.1"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
   },
   "engines": {
     "node": ">=8.0.0"
