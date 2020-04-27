@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-workspace-search",
-  "version": "1.20200312.5",
+  "version": "1.20200312.6",
   "description": "A Blockly plugin that adds workspace search support.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -39,8 +39,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^0.20200403.3",
-    "@blockly/dev-tools": "^0.20200313.4",
+    "@blockly/dev-scripts": "^0.20200403.4",
+    "@blockly/dev-tools": "^0.20200313.5",
     "blockly": "^3.20200123.1",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",
@@ -54,7 +54,7 @@
     "registry": "https://wombat-dressing-room.appspot.com"
   },
   "eslintConfig": {
-      "extends": "@blockly/eslint-config"
+    "extends": "@blockly/eslint-config"
   },
   "engines": {
     "node": ">=8.17.0"

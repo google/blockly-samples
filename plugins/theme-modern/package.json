@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-modern",
-  "version": "1.20200417.2",
+  "version": "1.20200417.3",
   "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -37,8 +37,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^0.20200403.3",
-    "@blockly/dev-tools": "^0.20200313.4",
+    "@blockly/dev-scripts": "^0.20200403.4",
+    "@blockly/dev-tools": "^0.20200313.5",
     "blockly": "^3.20200402.1"
   },
   "peerDependencies": {
@@ -49,7 +49,7 @@
     "registry": "https://wombat-dressing-room.appspot.com"
   },
   "eslintConfig": {
-      "extends": "@blockly/eslint-config"
+    "extends": "@blockly/eslint-config"
   },
   "engines": {
     "node": ">=8.17.0"
