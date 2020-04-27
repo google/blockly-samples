@@ -53,13 +53,15 @@ For example:\n  ${chalk.blue(scriptName)}\
   process.exit(1);
 }
 
+const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
+
 // Default to type=plugin.
 const pluginType = program.type || 'plugin';
 // Default to the plugin name if the type=plugin, otherwise use [type]-[name].
 const pluginDir = program.dir ||
     (pluginType == 'plugin' ? pluginName : `${pluginType}-${pluginName}`);
 const pluginPath = path.join(root, pluginDir);
-const pluginAuthor = program.author || '';
+const pluginAuthor = program.author || (isFirstParty ? 'Blockly Team' : '');
 
 const isTypescript = program.typescript;
 const skipInstall = program.skipInstall;
@@ -98,7 +100,6 @@ const gitPluginPath =
   path.join(path.relative(gitRoot, root), pluginDir);
 
 // Only use the @blockly scope for first party plugins.
-const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
 const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
 
