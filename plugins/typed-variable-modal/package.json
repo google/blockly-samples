@@ -50,6 +50,9 @@
   "peerDependencies": {
     "blockly": ">3.20200123.0 <4"
   },
+  "dependencies": {
+    "@blockly/plugin-modal": "0.20200427.0"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"

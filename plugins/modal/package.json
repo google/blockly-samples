@@ -1,5 +1,5 @@
 {
-  "name": "blockly-plugin-modal",
+  "name": "@blockly/plugin-modal",
   "version": "0.20200427.0",
   "description": "A Blockly plugin that creates a modal.",
   "scripts": {
@@ -18,13 +18,13 @@
     "blockly-plugin",
     "modal"
   ],
-  "homepage": "https://github.com/alschmiedt/blockly-samples.git/tree/master/plugins/modal#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/modal#readme",
   "bugs": {
-    "url": "https://github.com/alschmiedt/blockly-samples.git/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alschmiedt/blockly-samples.git.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/modal"
   },
   "license": "Apache 2.0",
@@ -44,7 +44,10 @@
   "peerDependencies": {
     "blockly": ">=3"
   },
-  "publishConfig": {},
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   },

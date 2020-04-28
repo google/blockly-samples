@@ -1,4 +1,4 @@
-# blockly-plugin-modal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-modal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 <!--
   - TODO: Edit plugin description.
@@ -9,19 +9,19 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that creates a modal.
 
 ### Yarn
 ```
-yarn add blockly-plugin-modal
+yarn add @blockly/plugin-modal
 ```
 
 ### npm
 ```
-npm install blockly-plugin-modal --save
+npm install @blockly/plugin-modal --save
 ```
 
 ## Usage
 
 ```js
 import * as Blockly from 'blockly';
-import {Modal} from 'blockly-plugin-modal';
+import {Modal} from '@blockly/plugin-modal';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -39,10 +39,9 @@ modal.init();
 - `show`: Shows the modal and focus on the first focusable element.
 - `hide`: Hide the modal.
 - `render`: Create all the dom elements for the modal.
-
-### For extending
-- `shouldCloseOnOverlayClick`: 
-- `shouldCloseOnEsc`: 
+- `shouldCloseOnOverlayClick`: (default true) If set too true will close the
+overlay when a user clicks outside of the modal.
+- `shouldCloseOnEsc`: (default true) If set to true will close the modal when the user hits escape.
 
 ## License
 Apache 2.0
