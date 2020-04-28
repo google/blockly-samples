@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Unit tests for TypedVariableModal.
+ * @fileoverview Unit tests for a Blockly Modal.
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
