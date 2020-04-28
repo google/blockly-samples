@@ -1,0 +1,59 @@
+{
+  "name": "blockly-plugin-modal",
+  "version": "0.20200427.0",
+  "description": "A Blockly plugin that creates a modal.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "modal"
+  ],
+  "homepage": "https://github.com/alschmiedt/blockly-samples.git/tree/master/plugins/modal#readme",
+  "bugs": {
+    "url": "https://github.com/alschmiedt/blockly-samples.git/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alschmiedt/blockly-samples.git.git",
+    "directory": "plugins/modal"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^0.20200403.4",
+    "@blockly/dev-tools": "^0.20200313.5",
+    "blockly": "^3.20200402.1"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {},
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
+  ]
+}
