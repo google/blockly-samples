@@ -91,61 +91,6 @@ suite('TypedVariableModal', () => {
     });
   });
 
-  suite('dispose()', () => {
-    test('Events and button callback removed', () => {
-      this.typedVarModal.init();
-      this.workspace.removeButtonCallback = sinon.fake();
-      const numEvents = this.typedVarModal.boundEvents_.length;
-      Blockly.unbindEvent_ = sinon.fake();
-      this.typedVarModal.dispose();
-
-      assert(this.workspace.removeButtonCallback.calledOnce);
-      assert.equal(document.querySelector('.blocklyModalOverlay'), null);
-      sinon.assert.callCount(Blockly.unbindEvent_, numEvents);
-    });
-  });
-
-  suite('handleKeyDown()', () => {
-    setup(() => {
-      this.typedVarModal.init();
-      this.typedVarModal.show();
-    });
-    /**
-     * Make a fake event.
-     * @param {number} keyCode The keycode to use for the event.
-     * @param {boolean} shift True if we want to emulate hitting the shift key.
-     *    False otherwise.
-     * @return {Object} A fake event.
-     */
-    function makeEvent(keyCode, shift) {
-      const event = {
-        keyCode: keyCode,
-        shiftKey: shift,
-      };
-      event.stopPropagation = sinon.fake();
-      event.preventDefault = sinon.fake();
-      return event;
-    }
-    test('Tab pressed', () => {
-      const event = makeEvent(Blockly.utils.KeyCodes.TAB, false);
-      this.typedVarModal.handleForwardTab_ = sinon.fake();
-      this.typedVarModal.handleKeyDown_(event);
-      assert(this.typedVarModal.handleForwardTab_.calledOnce);
-    });
-    test('Shift tab pressed', () => {
-      const event = makeEvent(Blockly.utils.KeyCodes.TAB, true);
-      this.typedVarModal.handleBackwardTab_ = sinon.fake();
-      this.typedVarModal.handleKeyDown_(event);
-      assert(this.typedVarModal.handleBackwardTab_.calledOnce);
-    });
-    test('Escape pressed', () => {
-      const event = makeEvent(Blockly.utils.KeyCodes.ESC, false);
-      this.typedVarModal.hide = sinon.fake();
-      this.typedVarModal.handleKeyDown_(event);
-      assert(this.typedVarModal.hide.calledOnce);
-    });
-  });
-
   suite('setLocale()', () => {
     test('Messages added', () => {
       this.typedVarModal.init();
