@@ -53,6 +53,17 @@ For example:\n  ${chalk.blue(scriptName)}\
   process.exit(1);
 }
 
+let gitRoot = '';
+let gitURL = '';
+try {
+  gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
+  gitURL = execSync(`git config --get remote.origin.url`).toString().trim()
+      .replace(/\.git$/, '');
+} catch (err) {
+  // NOP
+}
+
+const isGit = !!gitURL;
 const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
 
 // Default to type=plugin.
@@ -94,14 +105,12 @@ const templateDir =
     `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
 const templateJson = require(path.join(templateDir, 'template.json'));
 
-const gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
-const gitURL = execSync(`git config --get remote.origin.url`).toString().trim();
-const gitPluginPath =
-  path.join(path.relative(gitRoot, root), pluginDir);
-
 // Only use the @blockly scope for first party plugins.
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
 const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
+
+const gitPluginPath =
+  path.join(path.relative(gitRoot, root), pluginDir);
 
 const packageJson = {
   name: pluginPackageName,
@@ -124,15 +133,15 @@ const packageJson = {
     'blockly-plugin',
     pluginType != 'plugin' && `blockly-${pluginType}`,
     pluginName].filter(Boolean),
-  homepage: `${gitURL}/tree/master/${gitPluginPath}#readme`,
-  bugs: {
+  homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
+  bugs: isGit ? {
     url: `${gitURL}/issues`,
-  },
-  repository: {
+  } : {},
+  repository: isGit ? {
     'type': 'git',
     'url': `${gitURL}.git`,
     'directory': gitPluginPath,
-  },
+  } : {},
   license: 'Apache 2.0',
   directories: {
     'dist': 'dist',
