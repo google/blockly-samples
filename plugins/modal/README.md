@@ -36,7 +36,7 @@ modal.init();
 - `show`: Shows the modal and focus on the first focusable element.
 - `hide`: Hide the modal.
 - `render`: Create all the dom elements for the modal.
-- `shouldCloseOnOverlayClick`: (default true) If set too true will close the
+- `shouldCloseOnOverlayClick`: (default true) If set to true will close the
 overlay when a user clicks outside of the modal.
 - `shouldCloseOnEsc`: (default true) If set to true will close the modal when the user hits escape.
 
