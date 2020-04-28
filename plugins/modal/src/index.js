@@ -231,13 +231,11 @@ export class Modal {
      * <div class="blocklyModalContainer" role="dialog">
      *   <header class="blocklyModalHeader">
      *     <h2 class="blocklyModalHeaderTitle">Modal Name</h2>
-     *     <button class="blocklyModalBtn">X</button>
+     *     <button class="blocklyModalBtn blocklyModalBtnClose">X</button>
      *   </header>
      *   <div class="blocklyModalContent">
      *   </div>
      *   <div class="blocklyModalFooter">
-     *     <button class="blocklyModalBtn blocklyModalBtnPrimary">OK</button>
-     *     <button class="blocklyModalBtn">Cancel</button>
      *   </div>
      * </div>
      */

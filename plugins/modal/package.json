@@ -7,7 +7,9 @@
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start"
+    "start": "blockly-scripts start",
+    "test": "npm run build && npm run test:mocha",
+    "test:mocha": "blockly-scripts test"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
@@ -39,7 +41,11 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^0.20200403.4",
     "@blockly/dev-tools": "^0.20200313.5",
-    "blockly": "^3.20200402.1"
+    "blockly": "^3.20200402.0",
+    "jsdom": "16.2.1",
+    "jsdom-global": "3.0.2",
+    "mocha": "^7.1.0",
+    "sinon": "7.5.0"
   },
   "peerDependencies": {
     "blockly": ">=3"
