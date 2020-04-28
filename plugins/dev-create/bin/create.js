@@ -58,7 +58,7 @@ let gitURL = '';
 try {
   gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
   gitURL = execSync(`git config --get remote.origin.url`).toString().trim()
-      .replace('.git', '');
+      .replace(/\.git$/, '');
 } catch (err) {
   // NOP
 }
