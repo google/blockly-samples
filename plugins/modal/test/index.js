@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Modal test.
  */
 
 import * as Blockly from 'blockly';
@@ -19,7 +19,6 @@ function start() {
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: toolboxCategories,
   });
-  console.log(Modal);
   const modal = new Modal('Test Modal', workspace);
   modal.init();
   modal.show();

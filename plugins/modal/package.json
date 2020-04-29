@@ -14,7 +14,7 @@
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
-  "author": "",
+  "author": "Blockly Team",
   "keywords": [
     "blockly",
     "blockly-plugin",
