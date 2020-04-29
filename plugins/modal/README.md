@@ -31,11 +31,14 @@ modal.init();
 ```
 
 ## API
+### Methods
 - `init`: Create a modal.
 - `dispose`: Dispose of the modal.
 - `show`: Show the modal and focus on the first interactable element.
 - `hide`: Hide the modal.
 - `render`: Create all the dom elements for the modal.
+
+### Properties
 - `shouldCloseOnOverlayClick`: (default true) If set to true will close the
 overlay when a user clicks outside of the modal.
 - `shouldCloseOnEsc`: (default true) If set to true will close the modal when the user hits escape.
