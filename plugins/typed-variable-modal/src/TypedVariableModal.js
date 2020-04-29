@@ -12,7 +12,7 @@
 
 
 import * as Blockly from 'blockly/core';
-import {Modal} from './Modal.js';
+import {Modal} from '@blockly/plugin-modal';
 
 /**
  * Class for displaying a modal used for creating typed variables.

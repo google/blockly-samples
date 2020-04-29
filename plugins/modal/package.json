@@ -1,7 +1,7 @@
 {
-  "name": "@blockly/plugin-typed-variable-modal",
-  "version": "1.20200420.3",
-  "description": "A Blockly plugin to create a modal for creating typed variables.",
+  "name": "@blockly/plugin-modal",
+  "version": "0.20200427.0",
+  "description": "A Blockly plugin that creates a modal.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
@@ -17,19 +17,19 @@
   "author": "Blockly Team",
   "keywords": [
     "blockly",
-    "modal",
-    "typed variables"
+    "blockly-plugin",
+    "modal"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/typed-variable-modal#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/modal#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/typed-variable-modal"
+    "directory": "plugins/modal"
   },
-  "license": "Apache-2.0",
+  "license": "Apache 2.0",
   "directories": {
     "dist": "dist",
     "src": "src"
@@ -48,10 +48,7 @@
     "sinon": "7.5.0"
   },
   "peerDependencies": {
-    "blockly": ">3.20200123.0 <4"
-  },
-  "dependencies": {
-    "@blockly/plugin-modal": "0.20200427.0"
+    "blockly": ">=3.20200402.0<4"
   },
   "publishConfig": {
     "access": "public",
