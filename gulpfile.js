@@ -52,7 +52,7 @@ function publish(dryRun) {
     execSync(`npm login --registry https://wombat-dressing-room.appspot.com`,
         {stdio: 'inherit'});
 
-    const releaseDir = path.join('..', 'blockly-samples-release');
+    const releaseDir = 'dist';
     // Delete the release directory if it exists.
     if (fs.existsSync(releaseDir)) {
       rimraf.sync(releaseDir);
