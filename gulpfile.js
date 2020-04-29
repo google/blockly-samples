@@ -60,7 +60,7 @@ function publish(dryRun) {
 
     // Clone a fresh copy of blockly-samples.
     console.log(`Checking out a fresh copy of blockly-samples under\
-  ${path.resolve(releaseDir)}`);
+ ${path.resolve(releaseDir)}`);
     execSync(`git clone https://github.com/google/blockly-samples ${releaseDir}`,
         {stdio: 'pipe'});
 
@@ -78,18 +78,20 @@ function publish(dryRun) {
 
 /**
  * Publish all plugins.
+ * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function publishRelease() {
-  return publish();
+function publishRelease(done) {
+  return publish()(done);
 }
 
 /**
  * Run through a dry run of the release script.
+ * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function publishDryRun() {
-  return publish(true);
+function publishDryRun(done) {
+  return publish(true)(done);
 }
 
 module.exports = {
