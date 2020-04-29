@@ -13,7 +13,9 @@
         "postinstall": "npm run boot",
         "test": "lerna run test",
         "publish:check": "lerna changed",
-        "publish": "lerna publish"
+        "publish:release": "lerna publish",
+        "publish:dryrun": "gulp publishDryRun",
+        "publish": "gulp publish"
     },
     "devDependencies": {
         "@blockly/eslint-config": "^1.20200426.1",
@@ -21,6 +23,7 @@
         "gulp": "^4.0.2",
         "js-green-licenses": "^1.1.0",
         "lerna": "^3.20.2",
+        "rimraf": "^3.0.2",
         "typescript": "^3.8.3"
     },
     "publishConfig": {
