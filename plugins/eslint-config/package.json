@@ -10,8 +10,7 @@
     "blockly",
     "eslint",
     "eslintplugin",
-    "dev",
-    "plugin"
+    "dev"
   ],
   "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/eslint-config#readme",
   "bugs": {
@@ -31,13 +30,7 @@
     "eslint-plugin-jsdoc": "^22.1.0"
   },
   "peerDependencies": {
-    "eslint": "6.x",
-    "typescript": "3.x"
-  },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
+    "eslint": "6.x"
   },
   "publishConfig": {
     "access": "public",
