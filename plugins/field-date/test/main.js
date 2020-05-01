@@ -11,26 +11,26 @@
 
 Blockly.defineBlocksWithJsonArray([
   {
-    "type": "test_fields_date",
-    "message0": "date: %1",
-    "args0": [
+    'type': 'test_fields_date',
+    'message0': 'date: %1',
+    'args0': [
       {
-        "type": "field_date",
-        "name": "FIELDNAME",
-        "date": "2020-02-20",
-        "alt":
+        'type': 'field_date',
+        'name': 'FIELDNAME',
+        'date': '2020-02-20',
+        'alt':
         {
-          "type": "field_label",
-          "text": "NO DATE FIELD"
-        }
-      }
+          'type': 'field_label',
+          'text': 'NO DATE FIELD',
+        },
+      },
     ],
-    "style": "math_blocks",
+    'style': 'math_blocks',
   }]);
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function() {
   Blockly.inject('blocklyDiv',
-    {
-      toolbox: document.getElementById('blocklyToolbox')
-    });
+      {
+        toolbox: document.getElementById('blocklyToolbox'),
+      });
 });
