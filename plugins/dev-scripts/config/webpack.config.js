@@ -71,6 +71,12 @@ module.exports = (env) => {
           ],
           include: [resolveApp('./src/'), resolveApp('./test/')],
         },
+        // Load Blockly source maps.
+        {
+          test: /(blockly\/.*\.js)$/,
+          use: [require.resolve('source-map-loader')],
+          enforce: 'pre',
+        },
         // Run babel to compile both JS and TS.
         {
           test: /\.(js|mjs|ts)$/,
