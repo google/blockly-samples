@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "0.20200313.6",
+  "version": "0.20200313.7",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -39,7 +39,7 @@
     "dat.gui": "^0.7.7"
   },
   "devDependencies": {
-    "@blockly/dev-scripts": "^0.20200403.5",
+    "@blockly/dev-scripts": "^0.20200403.6",
     "blockly": "^3.20200123.1"
   },
   "peerDependencies": {
