@@ -77,6 +77,8 @@ module.exports = (env) => {
           exclude: /(node_modules)/,
           loader: require.resolve('babel-loader'),
           options: {
+            babelrc: false,
+            configFile: false,
             presets: [
               require.resolve('@babel/preset-env'),
               isTypescript && require.resolve('@babel/preset-typescript'),

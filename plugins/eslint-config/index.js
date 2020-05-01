@@ -10,6 +10,14 @@
  */
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+
+const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
+
 module.exports = {
   root: true,
 
@@ -87,7 +95,7 @@ module.exports = {
         'no-invalid-this': 'off',
       },
     },
-    {
+    isTypescript && {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -107,5 +115,5 @@ module.exports = {
         '@typescript-eslint/indent': [2, 2],
       },
     },
-  ],
+  ].filter(Boolean),
 };
