@@ -172,6 +172,7 @@ Blockly.Css.register([
       height: 32px;
       justify-content: center;
       width: 150px;
+      background-color: inherit;
     }
     .fieldSlider {
       -webkit-appearance: none;
