@@ -2,6 +2,11 @@
 import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
+interface FieldGeneratorOptions {
+  label?: string;
+  args: {[key: string]: unknown};
+}
+
 declare namespace DevTools {
 
   /**
@@ -15,8 +20,15 @@ declare namespace DevTools {
    * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
    */
   function addGUIControls(createWorkspace:
-      (options: Blockly.BlocklyOptions) => Blockly.Workspace,
-      defaultOptions: Blockly.BlocklyOptions): dat.GUI;
+  (options: Blockly.BlocklyOptions) => Blockly.Workspace,
+    defaultOptions: Blockly.BlocklyOptions): dat.GUI;
+
+  /**
+   * Generates a number of field testing blocks for a specific field and returns
+   * the toolbox xml string.
+   */
+  export function generateFieldTestBlocks(fieldName: string, options?:
+  FieldGeneratorOptions|FieldGeneratorOptions[]): string;
 
   /**
    * A toolbox xml with built-in blocks split into categories.
