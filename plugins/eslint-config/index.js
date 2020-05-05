@@ -107,15 +107,13 @@ module.exports = {
         'no-undef': 'off',
 
         // Add TypeScript specific rules (and turn off ESLint equivalents)
-        '@typescript-eslint/array-type': [
-          'error',
+        '@typescript-eslint/array-type': ['error',
           {
             'default': 'array-simple',
           },
         ],
         '@typescript-eslint/ban-ts-ignore': 'error',
-        '@typescript-eslint/ban-types': [
-          'error',
+        '@typescript-eslint/ban-types': ['error',
           {
             'types': {
               'Object': {
@@ -133,22 +131,17 @@ module.exports = {
             },
           },
         ],
-        // Converted from tslint: class-name
-        // '@typescript-eslint/class-name-casing': 'error',
         'camelcase': 'off',
         '@typescript-eslint/camelcase': 'warn',
-        '@typescript-eslint/naming-convention': [
-          'error',
+        '@typescript-eslint/naming-convention': ['error',
           {
             'selector': 'class',
             'format': ['PascalCase'],
           },
         ],
         '@typescript-eslint/consistent-type-assertions': 'error',
-        // '@typescript-eslint/explicit-function-return-type': 'warn',
         '@typescript-eslint/interface-name-prefix': 'error',
-        '@typescript-eslint/member-delimiter-style': [
-          'error',
+        '@typescript-eslint/member-delimiter-style': ['error',
           {
             'multiline': {
               'delimiter': 'semi',
@@ -173,12 +166,7 @@ module.exports = {
         '@typescript-eslint/no-this-alias': 'error',
 
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': [
-          'warn',
-          {
-            args: 'none',
-          },
-        ],
+        '@typescript-eslint/no-unused-vars': ['warn', {args: 'none'}],
 
         '@typescript-eslint/no-var-requires': 'error',
         '@typescript-eslint/prefer-namespace-keyword': 'error',
@@ -186,17 +174,10 @@ module.exports = {
         '@typescript-eslint/type-annotation-spacing': 'error',
 
         '@typescript-eslint/consistent-type-definitions': 'error',
-        '@typescript-eslint/explicit-member-accessibility': [
-          'error',
-          {
-            'accessibility': 'no-public',
-          },
-        ],
+        '@typescript-eslint/explicit-member-accessibility': ['error',
+          {'accessibility': 'no-public'}],
         '@typescript-eslint/no-require-imports': 'error',
-        '@typescript-eslint/semi': [
-          'error',
-          'always',
-        ],
+        '@typescript-eslint/semi': ['error', 'always'],
       },
     },
   ],
