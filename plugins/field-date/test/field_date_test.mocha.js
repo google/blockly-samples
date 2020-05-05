@@ -5,8 +5,6 @@
  */
 
 const assert = require('assert');
-require('blockly');
-
 const FieldDate = require('../dist/date_compressed');
 
 suite('Date Fields', () => {

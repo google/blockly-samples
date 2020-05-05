@@ -7,7 +7,7 @@
         "clean": "rm -rf $npm_package_directories_dist",
         "prepublishOnly": "npm run build",
         "test": "npm run build && npm run test:mocha",
-        "test:mocha": "mocha --ui tdd test/test.mocha.js"
+        "test:mocha": "mocha --ui tdd test/field_date_test.mocha.js"
     },
     "main": "dist/date_compressed.js",
     "author": "Blockly Team",
