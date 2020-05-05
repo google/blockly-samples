@@ -8,7 +8,7 @@ import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
 import addGUIControls from './addGUIControls';
 import {DebugRenderer} from './debugRenderer';
-import generateFieldTestBlocks from './generateFieldTestBlocks';
+import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 
 export {
   DebugRenderer,

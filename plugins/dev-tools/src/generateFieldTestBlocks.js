@@ -17,13 +17,13 @@ import * as Blockly from 'blockly/core';
  * Generates a number of field testing blocks for a specific field and returns
  * the toolbox xml string.
  * @param {string} fieldName The name of the field.
- * @param {Object|Array.<Object>=} options An options object containing a label
+ * @param {Object|Array<Object>=} options An options object containing a label
  *     and an args map that is passed to the field during initialization.  If an
  *     array is passed, multiple groups of blocks are created each with
  *     different initialization arguments.
  * @return {string} The toolbox XML string.
  */
-export default function generateFieldTestBlocks(fieldName, options) {
+export function generateFieldTestBlocks(fieldName, options) {
   if (!Array.isArray(options)) {
     options = [options || {}];
   }
