@@ -10,33 +10,43 @@
  */
 
 import * as Blockly from 'blockly';
-import {addGUIControls} from '@blockly/dev-tools';
+import {generateFieldTestBlocks, addGUIControls} from '@blockly/dev-tools';
 import '../src/index.js';
 
-Blockly.defineBlocksWithJsonArray([
+const toolbox = generateFieldTestBlocks('field_slider', [
   {
-    'type': 'test_field_slider',
-    'message0': 'slider: %1',
-    'args0': [
-      {
-        'type': 'field_slider',
-        'name': 'FIELDNAME',
-        'value': 50,
-        'alt':
-            {
-              'type': 'field_label',
-              'text': 'NO_SLIDER_FIELD',
-            },
-      },
-    ],
-    'style': 'math_blocks',
-  }]);
+    'label': 'Basic',
+    'args': {
+      'value': 50,
+    },
+  },
+  {
+    'label': 'Min',
+    'args': {
+      'value': 20,
+      'min': 10,
+    },
+  },
+  {
+    'label': 'Max',
+    'args': {
+      'value': 70,
+      'max': 80,
+    },
+  },
+  {
+    'label': 'Min and Max',
+    'args': {
+      'value': 60,
+      'min': 10,
+      'max': 80,
+    },
+  },
+]);
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
-    toolbox: `<xml xmlns="https://developers.google.com/blockly/xml">
-          <block type="test_field_slider"></block>
-        </xml>`,
+    toolbox,
   };
   addGUIControls((options) => {
     return Blockly.inject('blocklyDiv', options);
