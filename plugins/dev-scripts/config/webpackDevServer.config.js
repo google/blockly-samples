@@ -20,7 +20,7 @@ module.exports = () => {
     port: 3000,
     host: '0.0.0.0',
     hot: true,
-    quiet: false,
+    quiet: true,
     overlay: true,
     publicPath: resolveApp('build'),
     writeToDisk: true,
