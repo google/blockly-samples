@@ -5,7 +5,9 @@
     "scripts": {
         "build": "gulp build",
         "clean": "rm -rf $npm_package_directories_dist",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run build",
+        "test": "npm run build && npm run test:mocha",
+        "test:mocha": "mocha --ui tdd test/field_date_test.mocha.js"
     },
     "main": "dist/date_compressed.js",
     "author": "Blockly Team",
@@ -34,6 +36,8 @@
         "src"
     ],
     "devDependencies": {
+        "blockly": "^3.20200402.1",
+        "mocha": "^7.1.2",
         "google-closure-compiler": "^20200224.0.0",
         "google-closure-library": "^20200224.0.0",
         "gulp": "^4.0.2",
