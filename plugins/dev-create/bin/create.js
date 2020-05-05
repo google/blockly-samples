@@ -173,9 +173,8 @@ const packageJson = {
 };
 
 // Add dev dependencies.
-const devDependencies = ['blockly', '@blockly/dev-scripts',
-  isTypescript && 'typescript']
-    .concat(Object.keys(templateJson.devDependencies)).filter(Boolean);
+const devDependencies = ['blockly', '@blockly/dev-scripts']
+    .concat(Object.keys(templateJson.devDependencies));
 devDependencies.sort().forEach((dep) => {
   const latestVersion = execSync(`npm show ${dep} version`).toString();
   packageJson.devDependencies[dep] = `^${latestVersion.trim()}`;
