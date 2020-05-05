@@ -9,7 +9,8 @@
     "start": "blockly-scripts start"
   },
   "devDependencies": {
-    "@blockly/dev-tools": "^0.20200313.1"
+    "@blockly/dev-tools": "^0.20200313.1",
+    "typescript": "^3.8.0"
   },
   "peerDependencies": {
     "blockly": ">=3"
