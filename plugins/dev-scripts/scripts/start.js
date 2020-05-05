@@ -32,10 +32,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const clearConsole = () => process.stdout.write(
-    process.platform === 'win32' ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H'
-);
-
 const packageJson = require(resolveApp('package.json'));
 const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
 
@@ -62,7 +58,6 @@ const devSocket = {
 };
 
 compiler.hooks.invalid.tap('invalid', () => {
-  clearConsole();
   console.log('Compiling...');
 });
 
@@ -116,8 +111,6 @@ if (isTypescript) {
 
 // Register webpack compiler hooks.
 compiler.hooks.done.tap('done', async (stats) => {
-  clearConsole();
-
   const statsData = stats.toJson({
     all: false,
     warnings: true,
@@ -143,8 +136,6 @@ compiler.hooks.done.tap('done', async (stats) => {
     } else if (messages.warnings.length > 0) {
       devSocket.warnings(messages.warnings);
     }
-
-    clearConsole();
   }
 
   const formatWebpackMessage = (message) => {
