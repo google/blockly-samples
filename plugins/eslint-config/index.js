@@ -5,7 +5,7 @@
  */
 
 /**
- * @file ESLint configuration file.
+ * @fileoverview ESLint configuration file.
  * @author samelh@google.com (Sam El-Husseini)
  */
 'use strict';
