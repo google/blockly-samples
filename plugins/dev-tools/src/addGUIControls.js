@@ -20,6 +20,7 @@ import {DebugRenderer} from './debugRenderer';
  *     re-configured.
  * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
  *     to use.
+ * @return {dat.GUI} The dat.GUI instance.
  */
 export default function addGUIControls(createWorkspace, defaultOptions) {
   let guiControlOptions =
@@ -228,4 +229,6 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       onChangeInternal();
     })
   );
+
+  return gui;
 }

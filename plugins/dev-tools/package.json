@@ -11,6 +11,7 @@
   "main": "dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
+  "types": "./src/index.d.ts",
   "author": "Blockly Team",
   "keywords": [
     "blockly",
@@ -36,6 +37,7 @@
     "src"
   ],
   "dependencies": {
+    "@types/dat.gui": "^0.7.5",
     "dat.gui": "^0.7.7"
   },
   "devDependencies": {
