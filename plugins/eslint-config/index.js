@@ -10,14 +10,6 @@
  */
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
-
-const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
-
 module.exports = {
   root: true,
 
@@ -38,6 +30,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'eslint-config-google',
+    'plugin:jsdoc/recommended',
   ],
 
   globals: {
@@ -45,57 +38,55 @@ module.exports = {
     'goog': true,
   },
 
-  rules: {
-    'camelcase': 'warn',
-    'no-warning-comments': 'warn',
-  },
-
-  overrides: [
-    {
-      files: ['**/*.js'],
-      extends: ['plugin:jsdoc/recommended'],
-      settings: {
-        jsdoc: {
-          tagNamePreference: {
-            'returns': 'return',
-          },
-        },
-      },
-      rules: {
-        'jsdoc/newline-after-description': 0,
-        'jsdoc/require-description-complete-sentence': 1,
-        'jsdoc/require-returns': [
-          'error',
-          {
-            'forceRequireReturn': false,
-          },
-        ],
-        'jsdoc/require-description': 1,
-        'jsdoc/check-tag-names': 0,
-        'jsdoc/check-access': 1,
-        'jsdoc/check-types': 0,
-        'jsdoc/check-values': 0,
-        'jsdoc/require-jsdoc': [
-          'error',
-          {
-            'require': {
-              'ClassDeclaration': true,
-              'MethodDefinition': true,
-            },
-          },
-        ],
+  settings: {
+    jsdoc: {
+      tagNamePreference: {
+        'returns': 'return',
       },
     },
+  },
+
+  rules: {
+    // http://eslint.org/docs/rules/
+    'camelcase': 'warn',
+    'no-warning-comments': 'warn',
+    'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
+    'no-invalid-this': 'off',
+
+    // https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules
+    'require-jsdoc': 'off',
+    'jsdoc/newline-after-description': 'off',
+    'jsdoc/require-description-complete-sentence': 'warn',
+    'jsdoc/require-returns': [
+      'error',
+      {
+        'forceRequireReturn': false,
+      },
+    ],
+    'jsdoc/require-description': 'warn',
+    'jsdoc/check-tag-names': 'off',
+    'jsdoc/check-access': 'warn',
+    'jsdoc/check-types': 'off',
+    'jsdoc/check-values': 'off',
+    'jsdoc/require-jsdoc': [
+      'warn',
+      {
+        'require': {
+          'FunctionDeclaration': true,
+          'ClassDeclaration': true,
+          'MethodDefinition': true,
+        },
+      },
+    ],
+  },
+  overrides: [
     {
       files: ['**/*.mocha.js'],
       env: {
         mocha: true,
       },
-      rules: {
-        'no-invalid-this': 'off',
-      },
     },
-    isTypescript && {
+    {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -106,14 +97,88 @@ module.exports = {
         warnOnUnsupportedTypeScriptVersion: true,
       },
       plugins: ['@typescript-eslint'],
-      extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
-      ],
+
+      // If adding a typescript-eslint version of an existing ESLint rule,
+      // make sure to disable the ESLint rule here.
       rules: {
-        '@typescript-eslint/indent': [2, 2],
+
+        // Already handled by tsc.
+        'no-dupe-class-members': 'off',
+        'no-undef': 'off',
+
+        // Add TypeScript specific rules (and turn off ESLint equivalents)
+        '@typescript-eslint/array-type': ['error',
+          {
+            'default': 'array-simple',
+          },
+        ],
+        '@typescript-eslint/ban-ts-ignore': 'error',
+        '@typescript-eslint/ban-types': ['error',
+          {
+            'types': {
+              'Object': {
+                'message': 'Use {} or \'object\' instead.',
+              },
+              'String': {
+                'message': 'Use \'string\' instead.',
+              },
+              'Number': {
+                'message': 'Use \'number\' instead.',
+              },
+              'Boolean': {
+                'message': 'Use \'boolean\' instead.',
+              },
+            },
+          },
+        ],
+        'camelcase': 'off',
+        '@typescript-eslint/camelcase': 'warn',
+        '@typescript-eslint/naming-convention': ['error',
+          {
+            'selector': 'class',
+            'format': ['PascalCase'],
+          },
+        ],
+        '@typescript-eslint/consistent-type-assertions': 'error',
+        '@typescript-eslint/interface-name-prefix': 'error',
+        '@typescript-eslint/member-delimiter-style': ['error',
+          {
+            'multiline': {
+              'delimiter': 'semi',
+              'requireLast': true,
+            },
+            'singleline': {
+              'delimiter': 'semi',
+              'requireLast': false,
+            },
+          },
+        ],
+
+        'no-array-constructor': 'off',
+        '@typescript-eslint/no-array-constructor': 'error',
+
+        '@typescript-eslint/no-empty-interface': 'error',
+        '@typescript-eslint/no-explicit-any': 'warn',
+        '@typescript-eslint/no-inferrable-types': 'error',
+        '@typescript-eslint/no-misused-new': 'error',
+        '@typescript-eslint/no-namespace': 'error',
+        '@typescript-eslint/no-non-null-assertion': 'warn',
+        '@typescript-eslint/no-this-alias': 'error',
+
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['warn', {args: 'none'}],
+
+        '@typescript-eslint/no-var-requires': 'error',
+        '@typescript-eslint/prefer-namespace-keyword': 'error',
+        '@typescript-eslint/triple-slash-reference': 'error',
+        '@typescript-eslint/type-annotation-spacing': 'error',
+
+        '@typescript-eslint/consistent-type-definitions': 'error',
+        '@typescript-eslint/explicit-member-accessibility': ['error',
+          {'accessibility': 'no-public'}],
+        '@typescript-eslint/no-require-imports': 'error',
+        '@typescript-eslint/semi': ['error', 'always'],
       },
     },
-  ].filter(Boolean),
+  ],
 };
