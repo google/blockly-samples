@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-scripts",
-  "version": "0.20200403.5",
+  "version": "0.20200403.6",
   "description": "Configuration and scripts for Blockly plugins.",
   "scripts": {
     "lint": "eslint ."
@@ -26,10 +26,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/core": "^7.8.6",
+    "@babel/code-frame": "^7.8.3",
     "@babel/preset-env": "^7.8.6",
     "@babel/preset-typescript": "^7.9.0",
-    "@blockly/eslint-config": "^1.20200426.2",
+    "@blockly/eslint-config": "^1.20200426.3",
     "babel-loader": "^8.0.6",
+    "chalk": "^4.0.0",
     "eslint": "^6.8.0",
     "eslint-loader": "^4.0.0",
     "fork-ts-checker-webpack-plugin": "^4.1.3",

@@ -58,6 +58,7 @@ module.exports = (env) => {
             {
               options: {
                 cache: true,
+                formatter: 'stylish',
                 emitWarning: true,
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
@@ -74,7 +75,7 @@ module.exports = (env) => {
         // Run babel to compile both JS and TS.
         {
           test: /\.(js|mjs|ts)$/,
-          exclude: /(node_modules)/,
+          exclude: /(node_modules|build|dist)/,
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
