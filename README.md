@@ -4,7 +4,7 @@ Blockly Samples <br /> <a href="https://github.com/google/blockly"><img src="htt
 
 Plugins, codelabs, and exapmles related to the [Blockly](https://github.com/google/blockly) library.
 
-This repository  has three sections:
+This repository has three sections:
 
 - [Plugins](plugins/): self-contained pieces of code that add functionality to Blockly.
 - [Examples](examples/): self-contained sample projects demonstrating techniques to include and extend the Blockly library.
