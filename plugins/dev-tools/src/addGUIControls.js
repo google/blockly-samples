@@ -106,7 +106,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     onChange('rtl', value));
 
   // Renderer.
-  gui.add(options, 'renderer', ['geras', 'thrasos', 'zelos'])
+  gui.add(options, 'renderer', Object.keys(Blockly.blockRendering.rendererMap_))
       .onChange((value) => onChange('renderer', value));
 
   // Theme.
