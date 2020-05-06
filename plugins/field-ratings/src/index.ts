@@ -30,7 +30,7 @@ export class FieldRatings extends Blockly.Field {
   private starColourHover: string;
 
   // Bound events.
-  private boundEvents_: Blockly.EventTarget[];
+  private boundEvents_: Blockly.EventData[];
 
   /**
    * Ratings field constructor.
@@ -136,7 +136,8 @@ export class FieldRatings extends Blockly.Field {
       this.stars.push(this.createRatingStar(i));
     }
 
-    const isReadOnly = this.sourceBlock_.workspace.options.readOnly;
+    const isReadOnly =
+      (this.sourceBlock_.workspace.options as Blockly.BlocklyOptions).readOnly;
     if (isReadOnly) {
       return;
     }
@@ -246,7 +247,7 @@ Blockly.Css.register([`
     pointer-events: none;
   }
   .blocklyRatingsStar.blocklyStarSelected {
-    stroke: yellow;
+    stroke: white;
   }
   .blocklyRatingsStar.blocklyStarHover {
   }
