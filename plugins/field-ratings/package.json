@@ -1,0 +1,65 @@
+{
+  "name": "@blockly/field-ratings",
+  "version": "0.20200506.0",
+  "description": "A Blockly ratings field.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "dist": "blockly-scripts build prod",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run dist",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "blockly-field",
+    "ratings"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/field-ratings#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/field-ratings"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^0.20200403.6",
+    "@blockly/dev-tools": "^0.20200313.7",
+    "blockly": "^3.20200402.1",
+    "typescript": "^3.8.3"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
+  ]
+}
