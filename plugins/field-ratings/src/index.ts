@@ -136,8 +136,8 @@ export class FieldRatings extends Blockly.Field {
       this.stars.push(this.createRatingStar(i));
     }
 
-    const isReadOnly =
-      (this.sourceBlock_.workspace.options as Blockly.BlocklyOptions).readOnly;
+    const workspace = this.sourceBlock_.workspace as Blockly.WorkspaceSvg;
+    const isReadOnly = (workspace.options as Blockly.BlocklyOptions).readOnly;
     if (isReadOnly) {
       return;
     }
@@ -145,6 +145,9 @@ export class FieldRatings extends Blockly.Field {
     this.boundEvents_.push(
         Blockly.bindEvent_(this.ratingsGroup, 'mousemove', this,
             (e: MouseEvent) => {
+              if (workspace.isDragging()) {
+                return;
+              }
               const bBox = this.ratingsGroup.getBoundingClientRect();
               const index =Math.floor((e.clientX - bBox.left) /
                   bBox.width * this.maxRating);
