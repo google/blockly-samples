@@ -21,8 +21,8 @@ export class FieldRatings extends Blockly.Field {
   // Field config properties.
   private maxRating: number;
 
-  private starOuterRadius: number;
-  private starInnerRadius: number;
+  private starSize: number;
+  private starRadius: number;
   private starPadding: number;
 
   private starColour: string;
@@ -83,8 +83,8 @@ export class FieldRatings extends Blockly.Field {
     this.maxRating = validateNumber(config['maxRating'], 5, true);
 
     // Star shape.
-    this.starOuterRadius = validateNumber(config['starSize'], 10, true);
-    this.starInnerRadius = validateNumber(config['starInnerRadius'], 5, true);
+    this.starSize = validateNumber(config['starSize'], 10, true);
+    this.starRadius = validateNumber(config['starRadius'], 5, true);
     this.starPadding = validateNumber(config['starPadding'], 2, true);
 
     // Star style.
@@ -115,7 +115,7 @@ export class FieldRatings extends Blockly.Field {
    * Create the rating stars.
    */
   createRatings() {
-    const starSize = this.starOuterRadius * 2;
+    const starSize = this.starSize * 2;
 
     this.size_.height = starSize + this.starPadding * 2;
     this.size_.width =
@@ -174,8 +174,8 @@ export class FieldRatings extends Blockly.Field {
    * @return {SVGPolygonElement} The resulting star SVG.
    */
   createRatingStar(index): SVGPolygonElement {
-    const innerRadius = this.starInnerRadius;
-    const outerRadius = this.starOuterRadius;
+    const innerRadius = this.starRadius;
+    const outerRadius = this.starSize;
 
     const center = Math.max(innerRadius, outerRadius);
     const angle = Math.PI / 5;
@@ -187,7 +187,7 @@ export class FieldRatings extends Blockly.Field {
       points.push(center - radius * Math.cos(i * angle));
     }
 
-    const starSize = this.starOuterRadius * 2;
+    const starSize = this.starSize * 2;
     const transform = `translate(${this.starPadding + index *
         (starSize + this.starPadding)}, ${this.starPadding})`;
     const star = Blockly.utils.dom.createSvgElement('polygon', {
@@ -212,13 +212,13 @@ export class FieldRatings extends Blockly.Field {
       if (i < value) {
         star.style.fill = isHover ? this.starColourHover :
           this.starColourSelect;
-        Blockly.utils.dom.addClass(star, 'blocklyStarSelected');
+        Blockly.utils.dom.addClass(star, 'blocklyStarSelect');
         if (isHover) {
           Blockly.utils.dom.addClass(star, 'blocklyStarHover');
         }
       } else {
         Blockly.utils.dom.removeClass(star, 'blocklyStarHover');
-        Blockly.utils.dom.removeClass(star, 'blocklyStarSelected');
+        Blockly.utils.dom.removeClass(star, 'blocklyStarSelect');
         star.style.fill = this.starColour;
       }
     }
@@ -246,7 +246,7 @@ Blockly.Css.register([`
   .blocklyRatingsStar {
     pointer-events: none;
   }
-  .blocklyRatingsStar.blocklyStarSelected {
+  .blocklyRatingsStar.blocklyStarSelect {
     stroke: white;
   }
   .blocklyRatingsStar.blocklyStarHover {

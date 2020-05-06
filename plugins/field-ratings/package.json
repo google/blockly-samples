@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-ratings",
-  "version": "0.20200506.0",
+  "private": true,
   "description": "A Blockly ratings field.",
   "scripts": {
     "build": "blockly-scripts build",

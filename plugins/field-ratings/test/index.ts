@@ -31,9 +31,9 @@ const toolbox = generateFieldTestBlocks('field_ratings', [
   {
     label: 'Shape of stars',
     args: {
-      value: 5,
+      value: 4,
       starSize: 15,
-      starRadius: 9,
+      starRadius: 4,
     },
   },
   {
