@@ -31,7 +31,7 @@ Blockly.Blocks["test_field_template"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("template: ")
-      .appendField(new Field(...), "FIELDNAME")
+      .appendField(new FieldTemplate(...), "FIELDNAME")
   }
 };
 ```
@@ -43,7 +43,7 @@ import '@blockly/plugin';
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "test_field_template",
-        "message0": "slider: %1",
+        "message0": "template: %1",
         "args0": [
             {
                 "type": "field_template",
