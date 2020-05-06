@@ -11,7 +11,7 @@
 
 import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, addGUIControls} from '@blockly/dev-tools';
-import '../src/index.js';
+import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_slider', [
   {
