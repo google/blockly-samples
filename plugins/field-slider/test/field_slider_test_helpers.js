@@ -5,32 +5,10 @@
  */
 
 const assert = require('chai').assert;
+const fieldTest = require('../test/field_test_helpers');
 const FieldSlider = require('../dist/index').FieldSlider;
 
-// Monica's note
-// These were moved out to clean up the test file to make it easier to read.
 
-/**
- * Assert a field's value is the same as the expected value.
- * @param {Field} field The field.
- * @param {*} expectedValue The expected value.
- * @param {string=} opt_expectedText The expected text.
- */
-function assertFieldValue(field, expectedValue, opt_expectedText) {
-  var actualValue = field.getValue();
-  var actualText = field.getText();
-  opt_expectedText = opt_expectedText || String(expectedValue);
-  assert.equal(actualValue, expectedValue, 'Value');
-  assert.equal(actualText, opt_expectedText, 'Text');
-}
-
-/**
- * Assert the slider field's value is the default value.
- * @param {FieldSlider} sliderField The slider field.
- */
-function assertFieldValueDefault(sliderField) {
-  assertFieldValue(sliderField, 0);
-}
 /**
  * Assert the slider field options.
  * @param {FieldSlider} sliderField The slider field.
@@ -41,7 +19,7 @@ function assertFieldValueDefault(sliderField) {
  */
 function assertSliderField(sliderField, expectedMin, expectedMax,
     expectedPrecision, expectedValue) {
-  assertFieldValue(sliderField, expectedValue);
+  fieldTest.assertFieldValue(sliderField, expectedValue);
   assert.equal(sliderField.getMin(), expectedMin, 'Min');
   assert.equal(sliderField.getMax(), expectedMax, 'Max');
   assert.equal(sliderField.getPrecision(), expectedPrecision, 'Precision');
@@ -81,8 +59,6 @@ function assertSliderFieldSameValues(sliderField, value) {
 }
 
 module.exports = {
-  assertFieldValue,
-  assertFieldValueDefault,
   assertSliderField,
   assertSliderFieldDefault,
   createSliderFieldSameValuesConstructor,
