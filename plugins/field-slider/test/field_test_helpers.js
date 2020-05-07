@@ -75,7 +75,7 @@ function runSetValueTests(validValueRuns, invalidValueRuns,
   });
 }
 
-exports = {
+module.exports = {
   assertFieldValue,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,

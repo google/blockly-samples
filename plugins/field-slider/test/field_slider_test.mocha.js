@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const assert = require('assert');
+const assert = require('chai').assert;
 const sinon = require('sinon');
 const helpers = require('../test/field_slider_test_helpers');
-const fieldTest = require('@blockly/dev-tools');
+const fieldTest = require('../test/field_test_helpers');
 
 const FieldSlider = require('../dist/index').FieldSlider;
 

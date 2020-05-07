@@ -42,8 +42,7 @@
   },
   "devDependencies": {
     "@blockly/dev-scripts": "^0.20200403.6",
-    "blockly": "^3.20200123.1",
-    "chai": "^4.2.0"
+    "blockly": "^3.20200123.1"
   },
   "peerDependencies": {
     "blockly": ">=3.20191014.4"

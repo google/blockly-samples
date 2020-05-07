@@ -9,8 +9,6 @@ import toolboxSimple from './toolboxSimple';
 import addGUIControls from './addGUIControls';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
-import {assertFieldValue, runConstructorSuiteTests, runFromJsonSuiteTests,
-  runSetValueTests} from './field_test_helpers';
 
 export {
   DebugRenderer,
@@ -18,8 +16,4 @@ export {
   toolboxSimple,
   addGUIControls,
   generateFieldTestBlocks,
-  assertFieldValue,
-  runConstructorSuiteTests,
-  runFromJsonSuiteTests,
-  runSetValueTests,
 };
