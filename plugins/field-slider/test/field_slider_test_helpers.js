@@ -5,7 +5,7 @@
  */
 
 const assert = require('chai').assert;
-const fieldTest = require('../test/field_test_helpers');
+const assertFieldValue = require('@blockly/dev-tools').assertFieldValue;
 const FieldSlider = require('../dist/index').FieldSlider;
 
 
@@ -19,7 +19,7 @@ const FieldSlider = require('../dist/index').FieldSlider;
  */
 function assertSliderField(sliderField, expectedMin, expectedMax,
     expectedPrecision, expectedValue) {
-  fieldTest.assertFieldValue(sliderField, expectedValue);
+  assertFieldValue(sliderField, expectedValue);
   assert.equal(sliderField.getMin(), expectedMin, 'Min');
   assert.equal(sliderField.getMax(), expectedMax, 'Max');
   assert.equal(sliderField.getPrecision(), expectedPrecision, 'Precision');
@@ -31,37 +31,8 @@ function assertSliderField(sliderField, expectedMin, expectedMax,
 function assertSliderFieldDefault(sliderField) {
   assertSliderField(sliderField, -Infinity, Infinity, 0, 0);
 }
-/**
- * Create a simple slider field with constructor values that are all the same.
- * @param {number} value The constructor value.
- * @return {FieldSlider} A new field slider.
- */
-function createSliderFieldSameValuesConstructor(value) {
-  return new FieldSlider(value, value, value, value);
-}
-/**
- * Create a simple slider field with constructor values that are all the same
- * using the field's static fromJson method.
- * @param {number} value The constructor value.
- * @return {FieldSlider} A new field slider.
- */
-function createSliderFieldSameValuesJson(value) {
-  return FieldSlider.fromJson(
-      {'value': value, 'min': value, 'max': value, 'precision': value});
-}
-/**
- * Assert all of the slider field's options are the same as the input value.
- * @param {FieldSlider} sliderField The slider field.
- * @param {number} value The constructor value.
- */
-function assertSliderFieldSameValues(sliderField, value) {
-  assertSliderField(sliderField, value, value, value, value);
-}
 
 module.exports = {
   assertSliderField,
   assertSliderFieldDefault,
-  createSliderFieldSameValuesConstructor,
-  createSliderFieldSameValuesJson,
-  assertSliderFieldSameValues,
 };

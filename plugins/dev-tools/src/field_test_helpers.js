@@ -19,47 +19,43 @@ function assertFieldValue(field, expectedValue, opt_expectedText) {
   assert.equal(actualValue, expectedValue, 'Value');
   assert.equal(actualText, opt_expectedText, 'Text');
 }
-function runContructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
-    assertFieldDefault, assertField) {
+
+function runCreationTests_(runs, assertion, creation) {
+  runs.forEach(function(run) {
+    test(run.title, function() {
+      const field = creation(run);
+      assertion(field, run);
+    });
+  });
+}
+
+function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
+    validRunAssertField, assertFieldDefault) {
   suite('Constructor', function() {
     test('Empty', function() {
       const field = new TestedField();
       assertFieldDefault(field);
     });
-    invalidValueRuns.forEach(function(run) {
-      test(run.title, function() {
-        const field = new TestedField(...run.args);
-        assertFieldDefault(field);
-      });
-    });
-    validValueRuns.forEach(function(run) {
-      test(run.title, function() {
-        const field = new TestedField(...run.args);
-        assertField(field, run.expectedValue);
-      });
-    });
+    const createWithJS = function(run) {
+      return new TestedField(...run.args);
+    };
+    runCreationTests_(invalidValueRuns, assertFieldDefault, createWithJS);
+    runCreationTests_(validValueRuns, validRunAssertField, createWithJS);
   });
 }
 
 function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
-    assertFieldDefault, assertField) {
+    validRunAssertField, assertFieldDefault) {
   suite('fromJson', function() {
     test('Empty', function() {
       const field = TestedField.fromJson({});
       assertFieldDefault(field);
     });
-    invalidValueRuns.forEach(function(run) {
-      test(run.title, function() {
-        const field = TestedField.fromJson(run.json);
-        assertFieldDefault(field);
-      });
-    });
-    validValueRuns.forEach(function(run) {
-      test(run.title, function() {
-        const field = TestedField.fromJson(run.json);
-        assertField(field, run.expectedValue);
-      });
-    });
+    const createWithJson = function(run) {
+      return TestedField.fromJson(run.json);
+    };
+    runCreationTests_(invalidValueRuns, assertFieldDefault, createWithJson);
+    runCreationTests_(validValueRuns, validRunAssertField, createWithJson);
   });
 }
 
@@ -79,9 +75,9 @@ function runSetValueTests(validValueRuns, invalidValueRuns,
   });
 }
 
-module.exports = {
+exports = {
   assertFieldValue,
-  runContructorSuiteTests,
+  runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
 };

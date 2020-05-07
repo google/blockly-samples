@@ -7,16 +7,17 @@
 const assert = require('assert');
 const sinon = require('sinon');
 const helpers = require('../test/field_slider_test_helpers');
-const fieldTest = require('../test/field_test_helpers');
+const fieldTest = require('@blockly/dev-tools');
 
 const FieldSlider = require('../dist/index').FieldSlider;
 
-suite('FieldTemplate', function() {
+suite('FieldSlider', function() {
   const invalidValueRuns = [
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
-    // {title: 'Non-Parsable String', value: 'bad'}, // TODO investigate this failure
+    // TODO(kozbial) investigate this failure
+    // {title: 'Non-Parsable String', value: 'bad'},
   ];
   const validValueRuns = [
     {title: 'Integer', value: 1, expectedValue: 1},
@@ -29,25 +30,25 @@ suite('FieldTemplate', function() {
     {title: 'Negative Infinity String', value: '-Infinity',
       expectedValue: -Infinity},
   ];
-  invalidValueRuns.forEach(function(run) {
+  const addArgsAndJson = function(run) {
     run.args = Array(4).fill(run.value);
-    run.json = {
-      'value': run.value, 'min': run.value, 'max': run.value,
+    run.json = {'value': run.value, 'min': run.value, 'max': run.value,
       'precision': run.value};
-  });
-  validValueRuns.forEach(function(run) {
-    run.args = Array(4).fill(run.value);
-    run.json = {
-      'value': run.value, 'min': run.value, 'max': run.value,
-      'precision': run.value};
-  });
+  };
+  invalidValueRuns.forEach(addArgsAndJson);
+  validValueRuns.forEach(addArgsAndJson);
 
-  fieldTest.runContructorSuiteTests(
-      FieldSlider, validValueRuns, invalidValueRuns,
-      helpers.assertSliderFieldDefault, helpers.assertSliderFieldSameValues);
+  const validRunAssertField = function(field, run) {
+    helpers.assertSliderField(
+        field, run.value, run.value, run.value, run.value);
+  };
+
+  fieldTest.runConstructorSuiteTests(
+      FieldSlider, validValueRuns, invalidValueRuns, validRunAssertField,
+      helpers.assertSliderFieldDefault);
 
   fieldTest.runFromJsonSuiteTests(FieldSlider, validValueRuns, invalidValueRuns,
-      helpers.assertSliderFieldDefault, helpers.assertSliderFieldSameValues);
+      validRunAssertField, helpers.assertSliderFieldDefault);
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {
