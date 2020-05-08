@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const assert = require('chai').assert;
-const Blockly = require('blockly');
-
+const {assert} = require('chai');
 
 /**
+ * Run configuration information.
  * @typedef {{
  *            title:string,
  *            value:*
@@ -34,9 +33,9 @@ function assertFieldValue(field, expectedValue, opt_expectedText) {
 /**
  * Runs provided creation test cases.
  * @param {Array<Run>} runs The test cases to run.
- * @param {function(T, Run)} assertion The assertion to use.
- * @param {function(new:T,Run):T} creation The creation method to use.
- * @template {!Blockly.Field} T
+ * @param {function(Blockly.Field, Run)} assertion The assertion to use.
+ * @param {function(new:Blockly.Field,Run):Blockly.Field} creation The creation
+ *    method to use.
  * @this {Mocha}
  */
 function runCreationTests_(runs, assertion, creation) {
@@ -50,16 +49,16 @@ function runCreationTests_(runs, assertion, creation) {
 
 /**
  * Runs suite of tests for constructor for the specified field.
- * @param {function(new:T, *=)} TestedField The class of the field being tested.
+ * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
+ *    being tested.
  * @param {Array<Run>} validValueRuns Test cases with invalid values for given
  *    field.
  * @param {Array<Run>} invalidValueRuns Test cases with valid values for given
  *    field.
- * @param {function(T, Run)} validRunAssertField Asserts that field has expected
- *    values.
- * @param {function(T)} assertFieldDefault Asserts that field has default
- *    values.
- * @template {!Blockly.Field} T
+ * @param {function(Blockly.Field, Run)} validRunAssertField Asserts that field
+ *    has expected values.
+ * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
+ *    default values.
  * @this {Mocha}
  */
 function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
@@ -79,16 +78,16 @@ function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
 
 /**
  * Runs suite of tests for fromJson creation of specified field.
- * @param {function(new:T, *=)} TestedField The class of the field being tested.
+ * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
+ *    being tested.
  * @param {Array<Run>} validValueRuns Test cases with invalid values for given
  *    field.
  * @param {Array<Run>} invalidValueRuns Test cases with valid values for given
  *    field.
- * @param {function(T, Run)} validRunAssertField Asserts that field has expected
- *    values.
- * @param {function(T)} assertFieldDefault Asserts that field has default
- *    values.
- * @template {!Blockly.Field} T
+ * @param {function(Blockly.Field, Run)} validRunAssertField Asserts that field
+ *    has expected values.
+ * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
+ *    default values.
  * @this {Mocha}
  */
 function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
@@ -111,7 +110,6 @@ function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
  * @param {Array<Run>} validValueRuns Test cases with invalid values.
  * @param {Array<Run>} invalidValueRuns Test cases with valid values.
  * @param {*} invalidRunExpectedValue Expected default value.
- * @template {!Blockly.Field} T
  * @this {Mocha}
  */
 function runSetValueTests(validValueRuns, invalidValueRuns,

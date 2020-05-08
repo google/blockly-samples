@@ -4,10 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const fieldTest = require('../../field-slider/test/field_test_helpers');
+
+const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
+  assertFieldValue} = require('../../field-slider/test/field_test_helpers');
 const FieldDate = require('../dist/date_compressed');
 
 suite('FieldDate', function() {
+  /**
+   * Configuration for field tests with invalid values.
+   * @type {Array<Run>}
+   */
   const invalidValueRuns = [
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
@@ -17,6 +23,10 @@ suite('FieldDate', function() {
     // {title: 'Invalid Date - Month(2020-13-20)', value: '2020-13-20'},
     // {title: 'Invalid Date - Day(2020-02-32)', value: '2020-02-32'},
   ];
+  /**
+   * Configuration for field tests with valid values.
+   * @type {Array<Run>}
+   */
   const validValueRuns = [
     {title: 'String', value: '3030-03-30', expectedValue: '3030-03-30'},
   ];
@@ -28,17 +38,17 @@ suite('FieldDate', function() {
   validValueRuns.forEach(addArgsAndJson);
   const defaultFieldValue = new Date().toISOString().substring(0, 10);
   const assertFieldDefault = function(field) {
-    fieldTest.assertFieldValue(field, defaultFieldValue);
+    assertFieldValue(field, defaultFieldValue);
   };
   const validRunAssertField = function(field, run) {
-    fieldTest.assertFieldValue(field, run.value);
+    assertFieldValue(field, run.value);
   };
 
-  fieldTest.runConstructorSuiteTests(
+  runConstructorSuiteTests(
       FieldDate, validValueRuns, invalidValueRuns, validRunAssertField,
       assertFieldDefault);
 
-  fieldTest.runFromJsonSuiteTests(
+  runFromJsonSuiteTests(
       FieldDate, validValueRuns, invalidValueRuns, validRunAssertField,
       assertFieldDefault);
 
@@ -47,7 +57,7 @@ suite('FieldDate', function() {
       setup(function() {
         this.field = new FieldDate();
       });
-      fieldTest.runSetValueTests(
+      runSetValueTests(
           validValueRuns, invalidValueRuns, defaultFieldValue);
     });
     suite('Value -> New Value', function() {
@@ -55,7 +65,7 @@ suite('FieldDate', function() {
       setup(function() {
         this.field = new FieldDate(initialValue);
       });
-      fieldTest.runSetValueTests(
+      runSetValueTests(
           validValueRuns, invalidValueRuns, initialValue);
     });
   });
@@ -75,7 +85,7 @@ suite('FieldDate', function() {
       });
       test('New Value', function() {
         this.field.setValue('3030-03-30');
-        fieldTest.assertFieldValue(this.field, '2020-02-20');
+        assertFieldValue(this.field, '2020-02-20');
       });
     });
     suite('Force Day 20s Validator', function() {
@@ -86,7 +96,7 @@ suite('FieldDate', function() {
       });
       test('New Value', function() {
         this.field.setValue('3030-03-30');
-        fieldTest.assertFieldValue(this.field, '3030-03-20');
+        assertFieldValue(this.field, '3030-03-20');
       });
     });
     suite('Returns Undefined Validator', function() {
@@ -95,7 +105,7 @@ suite('FieldDate', function() {
       });
       test('New Value', function() {
         this.field.setValue('3030-03-30');
-        fieldTest.assertFieldValue(this.field, '3030-03-30');
+        assertFieldValue(this.field, '3030-03-30');
       });
     });
   });

@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const assert = require('chai').assert;
-const assertFieldValue = require('../test/field_test_helpers').assertFieldValue;
-const FieldSlider = require('../dist/index').FieldSlider;
+const {assert} = require('chai');
+const {assertFieldValue} = require('../test/field_test_helpers');
+const {FieldSlider} = require('../dist/index');
 
 
 /**
