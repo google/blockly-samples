@@ -16,7 +16,7 @@ suite('FieldSlider', function() {
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
-    // TODO(kozbial) investigate this failure
+    // TODO(kozbial): investigate failure and add bug and/or ability to skip.
     // {title: 'Non-Parsable String', value: 'bad'},
   ];
   const validValueRuns = [
