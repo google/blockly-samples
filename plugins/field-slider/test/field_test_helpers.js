@@ -5,10 +5,21 @@
  */
 
 const assert = require('chai').assert;
+const Blockly = require('blockly');
+
+
+/**
+ * @typedef {{
+ *            title:string,
+ *            value:*
+ *            expectedValue:?
+ *          }}
+ */
+let Run;
 
 /**
  * Assert a field's value is the same as the expected value.
- * @param {Field} field The field.
+ * @param {Blockly.Field} field The field.
  * @param {*} expectedValue The expected value.
  * @param {string=} opt_expectedText The expected text.
  */
@@ -20,6 +31,14 @@ function assertFieldValue(field, expectedValue, opt_expectedText) {
   assert.equal(actualText, opt_expectedText, 'Text');
 }
 
+/**
+ * Runs provided creation test cases.
+ * @param {Array<Run>} runs The test cases to run.
+ * @param {function(T, Run)} assertion The assertion to use.
+ * @param {function(new:T,Run):T} creation The creation method to use.
+ * @template {!Blockly.Field} T
+ * @this {Mocha}
+ */
 function runCreationTests_(runs, assertion, creation) {
   runs.forEach(function(run) {
     test(run.title, function() {
@@ -29,6 +48,20 @@ function runCreationTests_(runs, assertion, creation) {
   });
 }
 
+/**
+ * Runs suite of tests for constructor for the specified field.
+ * @param {function(new:T, *=)} TestedField The class of the field being tested.
+ * @param {Array<Run>} validValueRuns Test cases with invalid values for given
+ *    field.
+ * @param {Array<Run>} invalidValueRuns Test cases with valid values for given
+ *    field.
+ * @param {function(T, Run)} validRunAssertField Asserts that field has expected
+ *    values.
+ * @param {function(T)} assertFieldDefault Asserts that field has default
+ *    values.
+ * @template {!Blockly.Field} T
+ * @this {Mocha}
+ */
 function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
     validRunAssertField, assertFieldDefault) {
   suite('Constructor', function() {
@@ -44,6 +77,20 @@ function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
   });
 }
 
+/**
+ * Runs suite of tests for fromJson creation of specified field.
+ * @param {function(new:T, *=)} TestedField The class of the field being tested.
+ * @param {Array<Run>} validValueRuns Test cases with invalid values for given
+ *    field.
+ * @param {Array<Run>} invalidValueRuns Test cases with valid values for given
+ *    field.
+ * @param {function(T, Run)} validRunAssertField Asserts that field has expected
+ *    values.
+ * @param {function(T)} assertFieldDefault Asserts that field has default
+ *    values.
+ * @template {!Blockly.Field} T
+ * @this {Mocha}
+ */
 function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
     validRunAssertField, assertFieldDefault) {
   suite('fromJson', function() {
@@ -59,6 +106,14 @@ function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
   });
 }
 
+/**
+ * Runs tests for setValue calls.
+ * @param {Array<Run>} validValueRuns Test cases with invalid values.
+ * @param {Array<Run>} invalidValueRuns Test cases with valid values.
+ * @param {*} invalidRunExpectedValue Expected default value.
+ * @template {!Blockly.Field} T
+ * @this {Mocha}
+ */
 function runSetValueTests(validValueRuns, invalidValueRuns,
     invalidRunExpectedValue) {
   invalidValueRuns.forEach(function(run) {

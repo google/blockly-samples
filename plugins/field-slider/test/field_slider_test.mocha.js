@@ -149,8 +149,11 @@ suite('FieldSlider', function() {
       sinon.restore();
     });
     const runs = [
-      {title: 'Null Validator', validator: function() {return null;},
-        value: 2, expectedValue: 1},
+      {title: 'Null Validator', validator:
+            function() {
+              return null;
+            },
+      value: 2, expectedValue: 1},
       {title: 'Force End with 6 Validator', validator:
             function(newValue) {
               return String(newValue).replace(/.$/, '6');
