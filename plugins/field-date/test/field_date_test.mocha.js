@@ -12,7 +12,7 @@ suite('FieldDate', function() {
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
-    // TODO(kozbial): investigate failures and add bug and/or ability to skip.
+    // TODO(269): investigate failures and only skip for creation tests.
     // {title: 'Non-Parsable String', value: 'bad'},
     // {title: 'Invalid Date - Month(2020-13-20)', value: '2020-13-20'},
     // {title: 'Invalid Date - Day(2020-02-32)', value: '2020-02-32'},
