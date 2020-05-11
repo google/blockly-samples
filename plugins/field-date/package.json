@@ -39,7 +39,6 @@
         "@blockly/dev-scripts": "^0.20200403.6",
         "@blockly/dev-tools": "^0.20200313.7",
         "blockly": "^3.20200402.1",
-        "mocha": "^7.1.2",
         "google-closure-compiler": "^20200224.0.0",
         "google-closure-library": "^20200224.0.0",
         "gulp": "^4.0.2",
