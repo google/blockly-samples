@@ -8,7 +8,7 @@ const {testHelpers} = require('@blockly/dev-tools');
 const FieldDate = require('../dist/date_compressed');
 
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue} = testHelpers;
+  assertFieldValue, Run} = testHelpers;
 
 suite('FieldDate', function() {
   /**
@@ -19,10 +19,9 @@ suite('FieldDate', function() {
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
-    // TODO(269): investigate failures and only skip for creation tests.
-    // {title: 'Non-Parsable String', value: 'bad'},
-    // {title: 'Invalid Date - Month(2020-13-20)', value: '2020-13-20'},
-    // {title: 'Invalid Date - Day(2020-02-32)', value: '2020-02-32'},
+    {title: 'Non-Parsable String', value: 'bad'},
+    {title: 'Invalid Date - Month(2020-13-20)', value: '2020-13-20'},
+    {title: 'Invalid Date - Day(2020-02-32)', value: '2020-02-32'},
   ];
   /**
    * Configuration for field tests with valid values.
@@ -45,6 +44,12 @@ suite('FieldDate', function() {
     assertFieldValue(field, run.value);
   };
 
+  // TODO(https://github.com/google/blockly/issues/3903): Re-enable test cases
+  //  after fixing.
+  invalidValueRuns[3].skip = true;
+  invalidValueRuns[4].skip = true;
+  invalidValueRuns[5].skip = true;
+
   runConstructorSuiteTests(
       FieldDate, validValueRuns, invalidValueRuns, validRunAssertField,
       assertFieldDefault);
@@ -52,6 +57,12 @@ suite('FieldDate', function() {
   runFromJsonSuiteTests(
       FieldDate, validValueRuns, invalidValueRuns, validRunAssertField,
       assertFieldDefault);
+
+  // TODO(https://github.com/google/blockly/issues/3903): Remove skip=false
+  //  after removing skip=true.
+  invalidValueRuns[3].skip = false;
+  invalidValueRuns[4].skip = false;
+  invalidValueRuns[5].skip = false;
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {

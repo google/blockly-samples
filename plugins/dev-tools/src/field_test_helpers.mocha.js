@@ -5,16 +5,7 @@
  */
 
 import {assert} from 'chai';
-
-/**
- * Run configuration information.
- * @typedef {{
- *            title:string,
- *            value:*
- *            expectedValue:?
- *          }}
- */
-let Run;
+import {runTestCases, Run} from './common_test_helpers.mocha';
 
 /**
  * Assert a field's value is the same as the expected value.
@@ -40,11 +31,11 @@ export function assertFieldValue(field, expectedValue,
  * @private
  */
 function runCreationTests_(runs, assertion, creation) {
-  runs.forEach(function(run) {
-    test(run.title, function() {
+  runTestCases(runs, (run) => {
+    return function() {
       const field = creation(run);
       assertion(field, run);
-    });
+    };
   });
 }
 
@@ -112,16 +103,16 @@ export function runFromJsonSuiteTests(TestedField, validValueRuns,
  */
 export function runSetValueTests(validValueRuns, invalidValueRuns,
     invalidRunExpectedValue) {
-  invalidValueRuns.forEach(function(run) {
-    test(run.title, function() {
+  runTestCases(invalidValueRuns, (run) => {
+    return function() {
       this.field.setValue(run.value);
       assertFieldValue(this.field, invalidRunExpectedValue);
-    });
+    };
   });
-  validValueRuns.forEach(function(run) {
-    test(run.title, function() {
+  runTestCases(validValueRuns, (run) => {
+    return function() {
       this.field.setValue(run.value);
       assertFieldValue(this.field, run.expectedValue);
-    });
+    };
   });
 }

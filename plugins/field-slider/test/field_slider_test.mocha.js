@@ -12,7 +12,7 @@ const {testHelpers} = require('@blockly/dev-tools');
 const {FieldSlider} = require('../dist/index');
 
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue} = testHelpers;
+  assertFieldValue, Run} = testHelpers;
 
 suite('FieldSlider', function() {
   /**
@@ -23,8 +23,7 @@ suite('FieldSlider', function() {
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
-    // TODO(269): investigate failures and only skip for creation tests.
-    // {title: 'Non-Parsable String', value: 'bad'},
+    {title: 'Non-Parsable String', value: 'bad'},
   ];
   /**
    * Configuration for field tests with valid values.
@@ -59,12 +58,22 @@ suite('FieldSlider', function() {
     assertSliderField(field, run.value, run.value, run.value, run.value);
   };
 
+
+  // TODO(https://github.com/google/blockly/issues/3903): Re-enable test cases
+  //  after fixing
+  invalidValueRuns[3].skip = true;
+
   runConstructorSuiteTests(
       FieldSlider, validValueRuns, invalidValueRuns, validRunAssertField,
       assertSliderFieldDefault);
 
   runFromJsonSuiteTests(FieldSlider, validValueRuns, invalidValueRuns,
       validRunAssertField, assertSliderFieldDefault);
+
+
+  // TODO(https://github.com/google/blockly/issues/3903): Remove skip=false
+  //  after removing skip=true.
+  invalidValueRuns[3].skip = false;
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {
