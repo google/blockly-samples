@@ -9,7 +9,7 @@
  */
 
 import * as Blockly from 'blockly';
-import {addGUIControls} from '@blockly/dev-tools';
+import {addGUIControls, populateRandomButton} from '@blockly/dev-tools';
 import '../src/index.js';
 
 let workspace;
@@ -22,8 +22,11 @@ function start() {
     toolbox: document.getElementById('toolbox'),
   };
   addGUIControls((options) => {
-    return Blockly.inject('blocklyDiv', options);
+    workspace = Blockly.inject('blocklyDiv', options);
+    return workspace;
   }, defaultOptions);
+
+  populateRandomButton(workspace, document.getElementById('toolsDiv'), 10);
 }
 
 document.addEventListener('DOMContentLoaded', start);
