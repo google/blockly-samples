@@ -6,11 +6,11 @@
 
 const {assert} = require('chai');
 const sinon = require('sinon');
-const {assertSliderField,
+const {
+  assertSliderField,
   assertSliderFieldDefault} = require('../test/field_slider_test_helpers');
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue} = require('../test/field_test_helpers');
-
+  assertFieldValue} = require('@blockly/dev-tools');
 const {FieldSlider} = require('../dist/index');
 
 suite('FieldSlider', function() {
