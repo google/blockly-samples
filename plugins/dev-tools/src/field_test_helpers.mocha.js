@@ -20,14 +20,15 @@ let Run;
  * Assert a field's value is the same as the expected value.
  * @param {Blockly.Field} field The field.
  * @param {*} expectedValue The expected value.
- * @param {string=} opt_expectedText The expected text.
+ * @param {string=} expectedText The expected text.
  */
-export function assertFieldValue(field, expectedValue, opt_expectedText) {
+export function assertFieldValue(field, expectedValue,
+    expectedText = undefined) {
   const actualValue = field.getValue();
   const actualText = field.getText();
-  opt_expectedText = opt_expectedText || String(expectedValue);
+  expectedText = expectedText || String(expectedValue);
   assert.equal(actualValue, expectedValue, 'Value');
-  assert.equal(actualText, opt_expectedText, 'Text');
+  assert.equal(actualText, expectedText, 'Text');
 }
 
 /**
@@ -36,7 +37,7 @@ export function assertFieldValue(field, expectedValue, opt_expectedText) {
  * @param {function(Blockly.Field, Run)} assertion The assertion to use.
  * @param {function(new:Blockly.Field,Run):Blockly.Field} creation The creation
  *    method to use.
- * @this {Mocha}
+ * @this Mocha
  * @private
  */
 function runCreationTests_(runs, assertion, creation) {
@@ -60,7 +61,7 @@ function runCreationTests_(runs, assertion, creation) {
  *    has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
- * @this {Mocha}
+ * @this Mocha
  */
 export function runConstructorSuiteTests(TestedField, validValueRuns,
     invalidValueRuns, validRunAssertField, assertFieldDefault) {
@@ -89,7 +90,7 @@ export function runConstructorSuiteTests(TestedField, validValueRuns,
  *    has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
- * @this {Mocha}
+ * @this Mocha
  */
 export function runFromJsonSuiteTests(TestedField, validValueRuns,
     invalidValueRuns, validRunAssertField, assertFieldDefault) {
@@ -111,7 +112,7 @@ export function runFromJsonSuiteTests(TestedField, validValueRuns,
  * @param {Array<Run>} validValueRuns Test cases with invalid values.
  * @param {Array<Run>} invalidValueRuns Test cases with valid values.
  * @param {*} invalidRunExpectedValue Expected default value.
- * @this {Mocha}
+ * @this Mocha
  */
 export function runSetValueTests(validValueRuns, invalidValueRuns,
     invalidRunExpectedValue) {
