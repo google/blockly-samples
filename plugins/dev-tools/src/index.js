@@ -9,6 +9,7 @@ import toolboxSimple from './toolboxSimple';
 import addGUIControls from './addGUIControls';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
+import {populateRandom, populateRandomButton} from './populateRandom';
 
 export {
   DebugRenderer,
@@ -16,4 +17,6 @@ export {
   toolboxSimple,
   addGUIControls,
   generateFieldTestBlocks,
+  populateRandom,
+  populateRandomButton,
 };
