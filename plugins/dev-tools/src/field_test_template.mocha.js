@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const fieldTest = require('../test/field_test_helpers');
+const fieldTest = require('../test/field_test_helpers.mocha');
 const {FieldTemplate} = require('../dist/index');
 
 suite('FieldTemplate', function() {

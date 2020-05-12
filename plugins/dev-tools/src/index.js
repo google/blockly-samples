@@ -11,7 +11,7 @@ if (typeof window !== 'undefined') {
   addGUIControls = require('./addGUIControls').default;
 }
 import {assertFieldValue, runConstructorSuiteTests, runFromJsonSuiteTests,
-  runSetValueTests} from './field_test_helpers';
+  runSetValueTests} from './field_test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 

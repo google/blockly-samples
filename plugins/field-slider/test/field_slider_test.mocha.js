@@ -6,9 +6,8 @@
 
 const {assert} = require('chai');
 const sinon = require('sinon');
-const {
-  assertSliderField,
-  assertSliderFieldDefault} = require('../test/field_slider_test_helpers');
+const {assertSliderField,assertSliderFieldDefault} = require(
+    '../test/field_slider_test_helpers.mocha');
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
   assertFieldValue} = require('@blockly/dev-tools');
 const {FieldSlider} = require('../dist/index');
