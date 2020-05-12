@@ -26,10 +26,13 @@ function start() {
     return workspace;
   }, defaultOptions);
 
-  populateRandomButton(workspace, document.getElementById('toolsDiv'), 10);
+
+  populateRandomButton(Blockly.getMainWorkspace,
+      document.getElementById('toolsDiv'), 10);
 }
 
 document.addEventListener('DOMContentLoaded', start);
+
 
 window.exportWorkspace = function() {
   const type = document.getElementById('export-type').value;
