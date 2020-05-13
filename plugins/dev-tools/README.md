@@ -47,5 +47,14 @@ addGUIControls((options) => {
 }, defaultOptions);
 ```
 
+### Populate Random
+
+The `populateRandom` function adds random blocks to a workspace. Blocks are selected from the full set of defined blocks. Pass in a worskpace and how many blocks should be created.
+```js
+import {populateRandom} from '@blockly/dev-tools';
+// Add 10 random blocks to the workspace.
+populateRandom(workspace, 10);
+```
+
 ## License
 Apache 2.0

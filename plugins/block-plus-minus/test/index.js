@@ -22,11 +22,13 @@ function start() {
     toolbox: document.getElementById('toolbox'),
   };
   addGUIControls((options) => {
-    return Blockly.inject('blocklyDiv', options);
+    workspace = Blockly.inject('blocklyDiv', options);
+    return workspace;
   }, defaultOptions);
 }
 
 document.addEventListener('DOMContentLoaded', start);
+
 
 window.exportWorkspace = function() {
   const type = document.getElementById('export-type').value;
