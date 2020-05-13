@@ -4,7 +4,7 @@ const Blockly = require('blockly');
 
 require('../dist/index');
 
-suite('join', () => {
+suite.skip('join', () => {
   /**
    * Asserts that the join block has the inputs and fields we expect.
    * @param {!Blockly.Block} block The text join block.

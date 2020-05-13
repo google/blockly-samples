@@ -4,7 +4,7 @@ const Blockly = require('blockly');
 
 require('../dist/index');
 
-suite('list create', () => {
+suite.skip('list create', () => {
   /**
    * Asserts that the list block has the inptus and fields we expect.
    * @param {!Blockly.Block} block The list block.

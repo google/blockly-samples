@@ -1,20 +1,30 @@
-const chai = require('chai');
-const assert = chai.assert;
-const Blockly = require('blockly');
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
+const chai = require('chai');
+const Blockly = require('blockly');
+const {testHelpers} = require('@blockly/dev-tools');
 require('../dist/index');
 
-suite('if & ifelse', () => {
+const assert = chai.assert;
+const {runTestCases} = testHelpers;
+
+suite('BlockTemplate', function() {
   /**
-   * Assert that the if block has the expected inputs and fields.
+   * Asserts that the if block has the expected inputs and fields.
    * @param {!Blockly.Block} block The if block to check.
    * @param {number} ifCount The number of ifs we expect.
-   * @param {number} hasElse If we expect an else input.
+   * @param {=boolean} hasElse If we expect an else input.
    */
-  function assertIf(block, ifCount, hasElse) {
+  function assertIfBlockStructure(block, ifCount, hasElse) {
     const inputs = block.inputList;
+    assert.exists(inputs);
     const length = inputs.length;
-    assert.equal(length, hasElse ? ifCount * 2 + 1 : ifCount * 2);
+    const expectedLength = hasElse ? ifCount * 2 + 1 : ifCount * 2;
+    assert.equal(length, expectedLength);
     for (let i = 0; i < ifCount; i++) {
       assert.equal(inputs[i * 2].name, 'IF' + i);
       assert.equal(inputs[i * 2 + 1].name, 'DO' + i);
@@ -27,134 +37,201 @@ suite('if & ifelse', () => {
     }
   }
 
-  setup(() => {
+  setup(function() {
     this.workspace = new Blockly.Workspace();
-    this.ifBlock = this.workspace.newBlock('controls_if');
   });
-  teardown(() => {
+
+  teardown(function() {
     this.workspace.dispose();
-    delete this.workspace;
-    delete this.ifBlock;
   });
-  suite('Serialization Matches Old', () => {
-    setup(() => {
-      this.workspace.clear();
-    });
-    test('No else', () => {
-      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="controls_if" id="if" x="44" y="134">\n' +
-          '    <mutation elseif="2"></mutation>\n' +
-          '  </block>\n' +
-          '</xml>';
-      Blockly.Xml.domToWorkspace(
-          Blockly.Xml.textToDom(oldText), this.workspace);
-      assertIf(this.workspace.getBlockById('if'), 3);
-      const xml = Blockly.Xml.workspaceToDom(this.workspace);
-      const newText = Blockly.Xml.domToPrettyText(xml);
-      assert.equal(newText, oldText);
-    });
-    test('With else', () => {
-      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="controls_if" id="if" x="44" y="134">\n' +
-          '    <mutation elseif="2" else="1"></mutation>\n' +
-          '  </block>\n' +
-          '</xml>';
-      Blockly.Xml.domToWorkspace(
-          Blockly.Xml.textToDom(oldText), this.workspace);
-      assertIf(this.workspace.getBlockById('if'), 3, true);
-      const xml = Blockly.Xml.workspaceToDom(this.workspace);
-      const newText = Blockly.Xml.domToPrettyText(xml);
-      assert.equal(newText, oldText);
+
+  test('Structure', function() {
+    this.block = this.workspace.newBlock('controls_if');
+    assertIfBlockStructure(this.block, 1);
+  });
+
+  suite('blockToCode', function() {
+    const trivialCreateBlock = () => this.workspace.newBlock('controls_if');
+    const dartSuiteTestCases = [
+      {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+        createBlock: trivialCreateBlock},
+    ];
+    const jsSuiteTestCases = [
+      {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+        createBlock: trivialCreateBlock},
+    ];
+    const luaSuiteTestCases = [
+      {title: 'Trivial', expectedCode: 'if false then\nend\n',
+        createBlock: trivialCreateBlock},
+    ];
+    const phpSuiteTestCases = [
+      {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+        createBlock: trivialCreateBlock},
+    ];
+    const pythonSuiteTestCases = [
+      {title: 'Trivial', expectedCode: 'if False:\nundefined',
+        createBlock: trivialCreateBlock},
+    ];
+    const testSuites = [
+      {title: 'Dart', generator: Blockly.Dart, testCases: dartSuiteTestCases},
+      {title: 'JavaScript', generator: Blockly.JavaScript,
+        testCases: jsSuiteTestCases},
+      {title: 'Lua', generator: Blockly.Lua, testCases: luaSuiteTestCases},
+      {title: 'PHP', generator: Blockly.PHP, testCases: phpSuiteTestCases},
+      {title: 'Python', generator: Blockly.Python,
+        testCases: pythonSuiteTestCases},
+    ];
+
+    const createGeneratorTestFn = (generator) => {
+      return (testCase) => {
+        return function() {
+          const block = testCase.createBlock();
+          const code = generator.blockToCode(block);
+          assert.equal(code, testCase.expectedCode);
+        };
+      };
+    };
+
+    testSuites.forEach(function(suiteInfo) {
+      suite(suiteInfo.title, function() {
+        runTestCases(
+            suiteInfo.testCases, createGeneratorTestFn(suiteInfo.generator));
+      });
     });
   });
-  suite('Adding and removing inputs', () => {
-    test('Add', () => {
-      assertIf(this.ifBlock, 1);
-      this.ifBlock.plus();
-      assertIf(this.ifBlock, 2);
+
+  suite('Serialization', function() {
+    function assertXmlMatch(xml, blockType, expectedBlockContents='') {
+      const expectedXml =
+          new RegExp('<block[^>]* type="' + blockType +
+              '" [^>]*>\\s*' + expectedBlockContents + '\\s*</block>');
+      assert.match(xml, expectedXml);
+    }
+
+    suite('blockToXml', function() {
+
+      setup(function() {
+        this.block = this.workspace.newBlock('controls_if');
+      });
+
+      test('Trivial', function() {
+        const xml =
+            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(this.block));
+        assertXmlMatch(xml, 'controls_if');
+      });
+
+      test('No else', function() {
+        this.block.plus();
+        this.block.plus();
+        const expectedBlockContents =
+            '<mutation elseif="2"></mutation>';
+        const xml =
+            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(this.block));
+        assertXmlMatch(xml, 'controls_if', expectedBlockContents);
+      });
+
+      test('With else', function() {
+        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+            `<block type="controls_if" id="if" x="44" y="134">
+        <mutation elseif="3" else="1"></mutation>
+      </block>`
+        ), this.workspace);
+        const expectedBlockContents =
+            '<mutation elseif="3" else="1"></mutation>';
+        const xml =
+            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
+        assertXmlMatch(xml, 'controls_if', expectedBlockContents);
+      });
     });
-    test('Add lots', () => {
-      assertIf(this.ifBlock, 1);
+
+    suite('xmlToBlock', function() {
+      test('Trivial', function() {
+        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+            '<block type="controls_if"/>'
+        ), this.workspace);
+        assertIfBlockStructure(block, 1);
+      });
+
+      test('No else', function() {
+        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+            `<block type="controls_if">
+        <mutation elseif="2"></mutation>
+      </block>`
+        ), this.workspace);
+        assertIfBlockStructure(block, 3);
+      });
+
+      test('With else', function() {
+        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+            `<block type="controls_if" id="if" x="44" y="134">
+        <mutation elseif="3" else="1"></mutation>
+      </block>`
+        ), this.workspace);
+        assertIfBlockStructure(block, 4, true);
+      });
+    });
+  });
+
+  suite('Adding and removing inputs', function() {
+    setup(function() {
+      this.block = this.workspace.newBlock('controls_if');
+    });
+
+    test('Add', function() {
+      assertIfBlockStructure(this.block, 1);
+      this.block.plus();
+      assertIfBlockStructure(this.block, 2);
+    });
+
+    test('Add lots', function() {
+      assertIfBlockStructure(this.block, 1);
       for (let i = 0; i < 9; i++) {
-        this.ifBlock.plus();
+        this.block.plus();
       }
-      assertIf(this.ifBlock, 10);
+      assertIfBlockStructure(this.block, 10);
     });
-    test('Remove nothing', () => {
-      assertIf(this.ifBlock, 1);
-      this.ifBlock.minus();
-      assertIf(this.ifBlock, 1);
+
+    test('Remove nothing', function() {
+      assertIfBlockStructure(this.block, 1);
+      this.block.minus();
+      assertIfBlockStructure(this.block, 1);
     });
-    test('Remove', () => {
-      assertIf(this.ifBlock, 1);
-      this.ifBlock.plus();
-      this.ifBlock.minus();
-      assertIf(this.ifBlock, 1);
+
+    test('Remove', function() {
+      assertIfBlockStructure(this.block, 1);
+      this.block.plus();
+      this.block.minus();
+      assertIfBlockStructure(this.block, 1);
     });
-    test('Remove lots', () => {
-      assertIf(this.ifBlock, 1);
+
+    test('Remove lots', function() {
+      assertIfBlockStructure(this.block, 1);
       for (let i = 0; i < 9; i++) {
-        this.ifBlock.plus();
+        this.block.plus();
       }
       for (let i = 0; i < 5; i++) {
-        this.ifBlock.minus();
+        this.block.minus();
       }
-      assertIf(this.ifBlock, 5);
+      assertIfBlockStructure(this.block, 5);
     });
-    test('Remove attached', () => {
+
+    test('Remove attached', function() {
       const block = this.workspace.newBlock('logic_boolean');
 
-      assertIf(this.ifBlock, 1);
-      this.ifBlock.plus();
-      this.ifBlock.getInput('IF1').connection
+      assertIfBlockStructure(this.block, 1);
+      this.block.plus();
+      this.block.getInput('IF1').connection
           .connect(block.outputConnection);
-      assert.equal(this.ifBlock.getInputTargetBlock('IF1'), block);
+      assert.equal(this.block.getInputTargetBlock('IF1'), block);
 
-      this.ifBlock.minus();
-      assertIf(this.ifBlock, 1);
+      this.block.minus();
+      assertIfBlockStructure(this.block, 1);
       assert.isNull(block.outputConnection.targetBlock());
 
       // Assert that it does not get reattached. Only reattach on undo.
-      this.ifBlock.plus();
-      assertIf(this.ifBlock, 2);
+      this.block.plus();
+      assertIfBlockStructure(this.block, 2);
       assert.isNull(block.outputConnection.targetBlock());
-    });
-  });
-  suite('Xml round-tripping', () => {
-    setup(() => {
-      this.assertRoundTrip = (block, func) => {
-        func(block);
-        const xml = Blockly.Xml.blockToDom(block);
-        const newBlock = Blockly.Xml.domToBlock(xml, this.workspace);
-        func(newBlock);
-      };
-    });
-    teardown(() => {
-      delete this.assertRoundTrip;
-    });
-
-    test('Unmutated', () => {
-      this.assertRoundTrip(this.ifBlock, (block) => {
-        assertIf(block, 1);
-      });
-    });
-    test('Else if', () => {
-      this.ifBlock.plus();
-      this.assertRoundTrip(this.ifBlock, (block) => {
-        assertIf(block, 2);
-      });
-    });
-    test('Attached block', () => {
-      const childBlock = this.workspace.newBlock('logic_boolean');
-      this.ifBlock.plus();
-      this.ifBlock.getInput('IF1').connection
-          .connect(childBlock.outputConnection);
-      this.assertRoundTrip(this.ifBlock, (block) => {
-        assertIf(block, 2);
-        const child = block.getInputTargetBlock('IF1');
-        assert.isNotNull(child);
-        assert.equal(child.type, 'logic_boolean');
-      });
     });
   });
 });

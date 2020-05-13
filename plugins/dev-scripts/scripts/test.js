@@ -27,7 +27,6 @@ const testDir = resolveApp('test');
 
 let mochaConfig = {
   ui: 'tdd',
-  reporter: 'list',
 };
 // If custom configuration exists, use that instead.
 if (fs.existsSync(path.join(testDir, '.mocharc.js'))) {
