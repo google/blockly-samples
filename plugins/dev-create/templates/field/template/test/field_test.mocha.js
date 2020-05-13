@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const fieldTest = require('../test/field_test_helpers.mocha');
+const {testHelpers} = require('@blockly/dev-tools');
 const {FieldTemplate} = require('../dist/index');
 
 suite('FieldTemplate', function() {
@@ -44,11 +44,11 @@ suite('FieldTemplate', function() {
     // TODO
   };
 
-  fieldTest.runConstructorSuiteTests(
+  testHelpers.runConstructorSuiteTests(
       FieldTemplate, validValueRuns, invalidValueRuns, validRunAssertField,
       assertFieldDefault);
 
-  fieldTest.runFromJsonSuiteTests(
+  testHelpers.runFromJsonSuiteTests(
       FieldTemplate, validValueRuns, invalidValueRuns, validRunAssertField,
       assertFieldDefault);
 
@@ -57,7 +57,7 @@ suite('FieldTemplate', function() {
       setup(function() {
         this.field = new FieldTemplate();
       });
-      fieldTest.runSetValueTests(
+      testHelpers.runSetValueTests(
           validValueRuns, invalidValueRuns, defaultFieldValue);
     });
     suite('Value -> New Value', function() {
@@ -65,7 +65,7 @@ suite('FieldTemplate', function() {
       setup(function() {
         this.field = new FieldTemplate(initialValue);
       });
-      fieldTest.runSetValueTests(
+      testHelpers.runSetValueTests(
           validValueRuns, invalidValueRuns, initialValue);
     });
   });

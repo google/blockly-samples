@@ -8,9 +8,11 @@ const {assert} = require('chai');
 const sinon = require('sinon');
 const {assertSliderField, assertSliderFieldDefault} = require(
     './field_slider_test_helpers.mocha');
-const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue} = require('@blockly/dev-tools').testHelpers;
+const {testHelpers} = require('@blockly/dev-tools');
 const {FieldSlider} = require('../dist/index');
+
+const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
+  assertFieldValue} = testHelpers;
 
 suite('FieldSlider', function() {
   /**
