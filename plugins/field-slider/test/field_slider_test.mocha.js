@@ -9,7 +9,7 @@ const sinon = require('sinon');
 const {assertSliderField,assertSliderFieldDefault} = require(
     '../test/field_slider_test_helpers.mocha');
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue} = require('@blockly/dev-tools');
+  assertFieldValue} = require('@blockly/dev-tools').testHelpers;
 const {FieldSlider} = require('../dist/index');
 
 suite('FieldSlider', function() {

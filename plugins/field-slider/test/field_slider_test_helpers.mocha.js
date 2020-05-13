@@ -5,7 +5,7 @@
  */
 
 const {assert} = require('chai');
-const {assertFieldValue} = require('@blockly/dev-tools');
+const {assertFieldValue} = require('@blockly/dev-tools').testHelpers;
 const {FieldSlider} = require('../dist/index');
 
 

@@ -6,7 +6,7 @@
 
 
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue} = require('@blockly/dev-tools');
+  assertFieldValue} = require('@blockly/dev-tools').testHelpers;
 const FieldDate = require('../dist/date_compressed');
 
 suite('FieldDate', function() {

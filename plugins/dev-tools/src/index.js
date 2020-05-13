@@ -10,19 +10,15 @@ let addGUIControls;
 if (typeof window !== 'undefined') {
   addGUIControls = require('./addGUIControls').default;
 }
-import {assertFieldValue, runConstructorSuiteTests, runFromJsonSuiteTests,
-  runSetValueTests} from './field_test_helpers.mocha';
+import * as testHelpers from './field_test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 
 export {
-  assertFieldValue,
   addGUIControls,
   DebugRenderer,
   generateFieldTestBlocks,
-  runConstructorSuiteTests,
-  runFromJsonSuiteTests,
-  runSetValueTests,
+  testHelpers,
   toolboxCategories,
   toolboxSimple,
 };
