@@ -56,15 +56,5 @@ import {populateRandom} from '@blockly/dev-tools';
 populateRandom(workspace, 10);
 ```
 
-The `populateRandomButton` function adds a button to the page with `populateRandom` as its onClick function.
-The first parameter is a function that returns the workspace blocks should be added to.
-The second parameter says where to add the button on the document.
-The third parameter is how many blocks to add.
-```js
-import {populateRandomButton} from '@blockly/dev-tools';
-
-populateRandomButton(Blockly.getMainWorkspace, document.getElementById('myElement'), 10);
-
-````
 ## License
 Apache 2.0

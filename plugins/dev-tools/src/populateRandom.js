@@ -33,24 +33,3 @@ export function populateRandom(workspace, count) {
     block.render();
   }
 }
-
-/**
- * Add a button to randomly populate the workspace.
- * @param {function():Blockly.Workspace} getWorkspaceFn A function that returns
- *     the workspace bocks should be added to.
- * @param {Element} location Where to append the new button.
- * @param {number} count How many blocks to create.
- * @return {Element} The new button.
- */
-export function populateRandomButton(getWorkspaceFn, location, count) {
-  const button = document.createElement('input');
-  button.type = 'button';
-  button.id = 'populateRandomBtn';
-  button.value = 'Add random blocks!';
-  button.onclick = function() {
-    populateRandom(getWorkspaceFn(), count);
-  };
-
-  location.appendChild(button);
-  return button;
-}
