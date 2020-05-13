@@ -13,11 +13,13 @@ if (typeof window !== 'undefined') {
 import * as testHelpers from './field_test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
+import {populateRandom} from './populateRandom';
 
 export {
   addGUIControls,
   DebugRenderer,
   generateFieldTestBlocks,
+  populateRandom,
   testHelpers,
   toolboxCategories,
   toolboxSimple,
