@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const {assert} = require('chai');
+import {assert} from 'chai';
 
 /**
  * Run configuration information.
@@ -20,14 +20,15 @@ let Run;
  * Assert a field's value is the same as the expected value.
  * @param {Blockly.Field} field The field.
  * @param {*} expectedValue The expected value.
- * @param {string=} opt_expectedText The expected text.
+ * @param {string=} expectedText The expected text.
  */
-function assertFieldValue(field, expectedValue, opt_expectedText) {
+export function assertFieldValue(field, expectedValue,
+    expectedText = undefined) {
   const actualValue = field.getValue();
   const actualText = field.getText();
-  opt_expectedText = opt_expectedText || String(expectedValue);
+  expectedText = expectedText || String(expectedValue);
   assert.equal(actualValue, expectedValue, 'Value');
-  assert.equal(actualText, opt_expectedText, 'Text');
+  assert.equal(actualText, expectedText, 'Text');
 }
 
 /**
@@ -36,7 +37,8 @@ function assertFieldValue(field, expectedValue, opt_expectedText) {
  * @param {function(Blockly.Field, Run)} assertion The assertion to use.
  * @param {function(new:Blockly.Field,Run):Blockly.Field} creation The creation
  *    method to use.
- * @this {Mocha}
+ * @this Mocha
+ * @private
  */
 function runCreationTests_(runs, assertion, creation) {
   runs.forEach(function(run) {
@@ -59,10 +61,10 @@ function runCreationTests_(runs, assertion, creation) {
  *    has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
- * @this {Mocha}
+ * @this Mocha
  */
-function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
-    validRunAssertField, assertFieldDefault) {
+export function runConstructorSuiteTests(TestedField, validValueRuns,
+    invalidValueRuns, validRunAssertField, assertFieldDefault) {
   suite('Constructor', function() {
     test('Empty', function() {
       const field = new TestedField();
@@ -88,10 +90,10 @@ function runConstructorSuiteTests(TestedField, validValueRuns, invalidValueRuns,
  *    has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
- * @this {Mocha}
+ * @this Mocha
  */
-function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
-    validRunAssertField, assertFieldDefault) {
+export function runFromJsonSuiteTests(TestedField, validValueRuns,
+    invalidValueRuns, validRunAssertField, assertFieldDefault) {
   suite('fromJson', function() {
     test('Empty', function() {
       const field = TestedField.fromJson({});
@@ -110,9 +112,9 @@ function runFromJsonSuiteTests(TestedField, validValueRuns, invalidValueRuns,
  * @param {Array<Run>} validValueRuns Test cases with invalid values.
  * @param {Array<Run>} invalidValueRuns Test cases with valid values.
  * @param {*} invalidRunExpectedValue Expected default value.
- * @this {Mocha}
+ * @this Mocha
  */
-function runSetValueTests(validValueRuns, invalidValueRuns,
+export function runSetValueTests(validValueRuns, invalidValueRuns,
     invalidRunExpectedValue) {
   invalidValueRuns.forEach(function(run) {
     test(run.title, function() {
@@ -127,10 +129,3 @@ function runSetValueTests(validValueRuns, invalidValueRuns,
     });
   });
 }
-
-module.exports = {
-  assertFieldValue,
-  runConstructorSuiteTests,
-  runFromJsonSuiteTests,
-  runSetValueTests,
-};

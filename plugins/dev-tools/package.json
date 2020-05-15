@@ -38,6 +38,7 @@
   ],
   "dependencies": {
     "@types/dat.gui": "^0.7.5",
+    "chai": "^4.2.0",
     "dat.gui": "^0.7.7"
   },
   "devDependencies": {

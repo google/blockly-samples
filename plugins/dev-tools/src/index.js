@@ -6,16 +6,21 @@
 
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
-import addGUIControls from './addGUIControls';
+let addGUIControls;
+if (typeof window !== 'undefined') {
+  addGUIControls = require('./addGUIControls').default;
+}
+import * as testHelpers from './field_test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
 
 export {
-  DebugRenderer,
-  toolboxCategories,
-  toolboxSimple,
   addGUIControls,
+  DebugRenderer,
   generateFieldTestBlocks,
   populateRandom,
+  testHelpers,
+  toolboxCategories,
+  toolboxSimple,
 };
