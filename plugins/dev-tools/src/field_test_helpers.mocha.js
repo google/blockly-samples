@@ -37,7 +37,6 @@ export function assertFieldValue(field, expectedValue,
  * @param {function(Blockly.Field, Run)} assertion The assertion to use.
  * @param {function(new:Blockly.Field,Run):Blockly.Field} creation The creation
  *    method to use.
- * @this Mocha
  * @private
  */
 function runCreationTests_(runs, assertion, creation) {
@@ -61,7 +60,6 @@ function runCreationTests_(runs, assertion, creation) {
  *    has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
- * @this Mocha
  */
 export function runConstructorSuiteTests(TestedField, validValueRuns,
     invalidValueRuns, validRunAssertField, assertFieldDefault) {
@@ -90,7 +88,6 @@ export function runConstructorSuiteTests(TestedField, validValueRuns,
  *    has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
- * @this Mocha
  */
 export function runFromJsonSuiteTests(TestedField, validValueRuns,
     invalidValueRuns, validRunAssertField, assertFieldDefault) {
@@ -112,7 +109,6 @@ export function runFromJsonSuiteTests(TestedField, validValueRuns,
  * @param {Array<Run>} validValueRuns Test cases with invalid values.
  * @param {Array<Run>} invalidValueRuns Test cases with valid values.
  * @param {*} invalidRunExpectedValue Expected default value.
- * @this Mocha
  */
 export function runSetValueTests(validValueRuns, invalidValueRuns,
     invalidRunExpectedValue) {
