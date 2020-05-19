@@ -12,14 +12,14 @@ const {testHelpers} = require('@blockly/dev-tools');
 const {FieldSlider} = require('../dist/index');
 
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue, Run} = testHelpers;
+  assertFieldValue, TestCase, runTestCases} = testHelpers;
 
 suite('FieldSlider', function() {
   /**
    * Configuration for field tests with invalid values.
-   * @type {Array<Run>}
+   * @type {Array<TestCase>}
    */
-  const invalidValueRuns = [
+  const invalidValueTestCases = [
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
@@ -27,9 +27,9 @@ suite('FieldSlider', function() {
   ];
   /**
    * Configuration for field tests with valid values.
-   * @type {Array<Run>}
+   * @type {Array<TestCase>}
    */
-  const validValueRuns = [
+  const validValueTestCases = [
     {title: 'Integer', value: 1, expectedValue: 1},
     {title: 'Float', value: 1.5, expectedValue: 1.5},
     {title: 'Integer String', value: '1', expectedValue: 1},
@@ -40,56 +40,56 @@ suite('FieldSlider', function() {
     {title: 'Negative Infinity String', value: '-Infinity',
       expectedValue: -Infinity},
   ];
-  const addArgsAndJson = function(run) {
-    run.args = Array(4).fill(run.value);
-    run.json = {'value': run.value, 'min': run.value, 'max': run.value,
-      'precision': run.value};
+  const addArgsAndJson = function(testCase) {
+    testCase.args = Array(4).fill(testCase.value);
+    testCase.json = {'value': testCase.value, 'min': testCase.value,
+      'max': testCase.value, 'precision': testCase.value};
   };
-  invalidValueRuns.forEach(addArgsAndJson);
-  validValueRuns.forEach(addArgsAndJson);
+  invalidValueTestCases.forEach(addArgsAndJson);
+  validValueTestCases.forEach(addArgsAndJson);
 
   /**
-   * Asserts that the field properties are correct based on the test run
-   *    configuration.
+   * Asserts that the field properties are correct based on the test case.
    * @param {FieldSlider} field The field to check.
-   * @param {Run} run The run configuration.
+   * @param {TestCase} testCase The test case.
    */
-  const validRunAssertField = function(field, run) {
-    assertSliderField(field, run.value, run.value, run.value, run.value);
+  const validTestCaseAssertField = function(field, testCase) {
+    assertSliderField(
+        field, testCase.value, testCase.value, testCase.value, testCase.value);
   };
 
 
   // TODO(https://github.com/google/blockly/issues/3903): Re-enable test cases
   //  after fixing
-  invalidValueRuns[3].skip = true;
+  invalidValueTestCases[3].skip = true;
 
   runConstructorSuiteTests(
-      FieldSlider, validValueRuns, invalidValueRuns, validRunAssertField,
-      assertSliderFieldDefault);
+      FieldSlider, validValueTestCases, invalidValueTestCases,
+      validTestCaseAssertField, assertSliderFieldDefault);
 
-  runFromJsonSuiteTests(FieldSlider, validValueRuns, invalidValueRuns,
-      validRunAssertField, assertSliderFieldDefault);
+  runFromJsonSuiteTests(FieldSlider, validValueTestCases, invalidValueTestCases,
+      validTestCaseAssertField, assertSliderFieldDefault);
 
 
   // TODO(https://github.com/google/blockly/issues/3903): Remove skip=false
   //  after removing skip=true.
-  invalidValueRuns[3].skip = false;
+  invalidValueTestCases[3].skip = false;
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {
       setup(function() {
         this.field = new FieldSlider();
       });
-      runSetValueTests(validValueRuns, invalidValueRuns, 0);
+      runSetValueTests(validValueTestCases, invalidValueTestCases, 0);
     });
     suite('Value -> New Value', function() {
       setup(function() {
         this.field = new FieldSlider(1);
       });
-      runSetValueTests(validValueRuns, invalidValueRuns, 1);
+      runSetValueTests(validValueTestCases, invalidValueTestCases, 1);
     });
     suite('Constraints', function() {
-      const runs = [
+      const testCases = [
         {title: 'Float', json: {}, value: 123.456, expectedValue: 123.456},
         {title: '0.01', json: {precision: .01}, value: 123.456,
           expectedValue: 123.46},
@@ -101,20 +101,29 @@ suite('FieldSlider', function() {
           expectedValue: 123},
       ];
       suite('Precision', function() {
-        runs.forEach(function(run) {
-          test(run.title, function() {
-            const sliderField = FieldSlider.fromJson(run.json);
-            sliderField.setValue(run.value);
-            assertFieldValue(sliderField, run.expectedValue);
-          });
+        runTestCases(testCases, function(testCase) {
+          return function() {
+            const sliderField = FieldSlider.fromJson(testCase.json);
+            sliderField.setValue(testCase.value);
+            assertFieldValue(sliderField, testCase.expectedValue);
+          };
         });
         test('Null', function() {
           const sliderField = FieldSlider.fromJson({precision: null});
           assert.equal(sliderField.getPrecision(), 0);
         });
       });
+      const setValueBoundsTestFn = (testCase) => {
+        return function () {
+          const sliderField = FieldSlider.fromJson(testCase.json);
+          testCase.values.forEach(function(value, i) {
+            sliderField.setValue(value);
+            assertFieldValue(sliderField, testCase.expectedValues[i]);
+          });
+        };
+      };
       suite('Min', function() {
-        const runs = [
+        const testCases = [
           {title: '-10', json: {min: -10}, values: [-20, 0, 20],
             expectedValues: [-10, 0, 20]},
           {title: '0', json: {min: 0}, values: [-20, 0, 20],
@@ -122,22 +131,14 @@ suite('FieldSlider', function() {
           {title: '+10', json: {min: 10}, values: [-20, 0, 20],
             expectedValues: [10, 10, 20]},
         ];
-        runs.forEach(function(run) {
-          test(run.title, function() {
-            const sliderField = FieldSlider.fromJson(run.json);
-            run.values.forEach(function(value, i) {
-              sliderField.setValue(value);
-              assertFieldValue(sliderField, run.expectedValues[i]);
-            });
-          });
-          test('Null', function() {
-            const sliderField = FieldSlider.fromJson({min: null});
-            assert.equal(sliderField.getMin(), -Infinity);
-          });
+        runTestCases(testCases, setValueBoundsTestFn);
+        test('Null', function() {
+          const sliderField = FieldSlider.fromJson({min: null});
+          assert.equal(sliderField.getMin(), -Infinity);
         });
       });
       suite('Max', function() {
-        const runs = [
+        const testCases = [
           {title: '-10', json: {max: -10}, values: [-20, 0, 20],
             expectedValues: [-20, -10, -10]},
           {title: '0', json: {max: 0}, values: [-20, 0, 20],
@@ -145,18 +146,10 @@ suite('FieldSlider', function() {
           {title: '+10', json: {max: 10}, values: [-20, 0, 20],
             expectedValues: [-20, 0, 10]},
         ];
-        runs.forEach(function(run) {
-          test(run.title, function() {
-            const sliderField = FieldSlider.fromJson(run.json);
-            run.values.forEach(function(value, i) {
-              sliderField.setValue(value);
-              assertFieldValue(sliderField, run.expectedValues[i]);
-            });
-          });
-          test('Null', function() {
-            const sliderField = FieldSlider.fromJson({max: null});
-            assert.equal(sliderField.getMax(), Infinity);
-          });
+        runTestCases(testCases, setValueBoundsTestFn);
+        test('Null', function() {
+          const sliderField = FieldSlider.fromJson({max: null});
+          assert.equal(sliderField.getMax(), Infinity);
         });
       });
     });
@@ -173,7 +166,7 @@ suite('FieldSlider', function() {
     teardown(function() {
       sinon.restore();
     });
-    const runs = [
+    const testSuites = [
       {title: 'Null Validator', validator:
             function() {
               return null;
@@ -187,21 +180,22 @@ suite('FieldSlider', function() {
       {title: 'Returns Undefined Validator', validator: function() {}, value: 2,
         expectedValue: 2},
     ];
-    runs.forEach(function(run) {
-      suite(run.title, function() {
+    testSuites.forEach(function(suiteInfo) {
+      suite(suiteInfo.title, function() {
         setup(function() {
-          this.sliderField.setValidator(run.validator);
+          this.sliderField.setValidator(suiteInfo.validator);
         });
         test('When Editing', function() {
           this.sliderField.isBeingEdited_ = true;
-          this.sliderField.htmlInput_.value = String(run.value);
+          this.sliderField.htmlInput_.value = String(suiteInfo.value);
           this.sliderField.onHtmlInputChange_(null);
           assertFieldValue(
-              this.sliderField, run.expectedValue, String(run.value));
+              this.sliderField, suiteInfo.expectedValue,
+              String(suiteInfo.value));
         });
         test('When Not Editing', function() {
-          this.sliderField.setValue(run.value);
-          assertFieldValue(this.sliderField, run.expectedValue);
+          this.sliderField.setValue(suiteInfo.value);
+          assertFieldValue(this.sliderField, suiteInfo.expectedValue);
         });
       });
     });

@@ -5,7 +5,7 @@
  */
 
 import {assert} from 'chai';
-import {runTestCases, Run} from './common_test_helpers.mocha';
+import {runTestCases, TestCase} from './common_test_helpers.mocha';
 
 /**
  * Assert a field's value is the same as the expected value.
@@ -24,17 +24,17 @@ export function assertFieldValue(field, expectedValue,
 
 /**
  * Runs provided creation test cases.
- * @param {Array<Run>} runs The test cases to run.
- * @param {function(Blockly.Field, Run)} assertion The assertion to use.
- * @param {function(new:Blockly.Field,Run):Blockly.Field} creation The creation
- *    method to use.
+ * @param {Array<TestCase>} testCases The test cases to run.
+ * @param {function(Blockly.Field, TestCase)} assertion The assertion to use.
+ * @param {function(new:Blockly.Field,TestCase):Blockly.Field} creation A
+ *    function that returns an instance of the field based on the test case.
  * @private
  */
-function runCreationTests_(runs, assertion, creation) {
-  runTestCases(runs, (run) => {
+function runCreationTests_(testCases, assertion, creation) {
+  runTestCases(testCases, (testCase) => {
     return function() {
-      const field = creation(run);
-      assertion(field, run);
+      const field = creation(testCase);
+      assertion(field, testCase);
     };
   });
 }
@@ -43,27 +43,27 @@ function runCreationTests_(runs, assertion, creation) {
  * Runs suite of tests for constructor for the specified field.
  * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
  *    being tested.
- * @param {Array<Run>} validValueRuns Test cases with invalid values for given
- *    field.
- * @param {Array<Run>} invalidValueRuns Test cases with valid values for given
- *    field.
- * @param {function(Blockly.Field, Run)} validRunAssertField Asserts that field
- *    has expected values.
+ * @param {Array<TestCase>} validValueTestCases Test cases with invalid values
+ *    for given field.
+ * @param {Array<TestCase>} invalidValueTestCases Test cases with valid values
+ *    for given field.
+ * @param {function(Blockly.Field, TestCase)} validRunAssertField Asserts that
+ *    field has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
  */
-export function runConstructorSuiteTests(TestedField, validValueRuns,
-    invalidValueRuns, validRunAssertField, assertFieldDefault) {
+export function runConstructorSuiteTests(TestedField, validValueTestCases,
+    invalidValueTestCases, validRunAssertField, assertFieldDefault) {
   suite('Constructor', function() {
     test('Empty', function() {
       const field = new TestedField();
       assertFieldDefault(field);
     });
-    const createWithJS = function(run) {
-      return new TestedField(...run.args);
+    const createWithJS = function(testCase) {
+      return new TestedField(...testCase.args);
     };
-    runCreationTests_(invalidValueRuns, assertFieldDefault, createWithJS);
-    runCreationTests_(validValueRuns, validRunAssertField, createWithJS);
+    runCreationTests_(invalidValueTestCases, assertFieldDefault, createWithJS);
+    runCreationTests_(validValueTestCases, validRunAssertField, createWithJS);
   });
 }
 
@@ -71,17 +71,17 @@ export function runConstructorSuiteTests(TestedField, validValueRuns,
  * Runs suite of tests for fromJson creation of specified field.
  * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
  *    being tested.
- * @param {Array<Run>} validValueRuns Test cases with invalid values for given
- *    field.
- * @param {Array<Run>} invalidValueRuns Test cases with valid values for given
- *    field.
- * @param {function(Blockly.Field, Run)} validRunAssertField Asserts that field
- *    has expected values.
+ * @param {Array<TestCase>} validValueTestCases Test cases with invalid values
+ *    for given field.
+ * @param {Array<TestCase>} invalidValueTestCases Test cases with valid values
+ *    for given field.
+ * @param {function(Blockly.Field, TestCase)} validRunAssertField Asserts that
+ *    field has expected values.
  * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
  *    default values.
  */
-export function runFromJsonSuiteTests(TestedField, validValueRuns,
-    invalidValueRuns, validRunAssertField, assertFieldDefault) {
+export function runFromJsonSuiteTests(TestedField, validValueTestCases,
+    invalidValueTestCases, validRunAssertField, assertFieldDefault) {
   suite('fromJson', function() {
     test('Empty', function() {
       const field = TestedField.fromJson({});
@@ -90,29 +90,30 @@ export function runFromJsonSuiteTests(TestedField, validValueRuns,
     const createWithJson = function(run) {
       return TestedField.fromJson(run.json);
     };
-    runCreationTests_(invalidValueRuns, assertFieldDefault, createWithJson);
-    runCreationTests_(validValueRuns, validRunAssertField, createWithJson);
+    runCreationTests_(
+        invalidValueTestCases, assertFieldDefault, createWithJson);
+    runCreationTests_(validValueTestCases, validRunAssertField, createWithJson);
   });
 }
 
 /**
  * Runs tests for setValue calls.
- * @param {Array<Run>} validValueRuns Test cases with invalid values.
- * @param {Array<Run>} invalidValueRuns Test cases with valid values.
+ * @param {Array<TestCase>} validValueTestCases Test cases with invalid values.
+ * @param {Array<TestCase>} invalidValueTestCases Test cases with valid values.
  * @param {*} invalidRunExpectedValue Expected default value.
  */
-export function runSetValueTests(validValueRuns, invalidValueRuns,
+export function runSetValueTests(validValueTestCases, invalidValueTestCases,
     invalidRunExpectedValue) {
-  runTestCases(invalidValueRuns, (run) => {
+  runTestCases(invalidValueTestCases, (testCase) => {
     return function() {
-      this.field.setValue(run.value);
+      this.field.setValue(testCase.value);
       assertFieldValue(this.field, invalidRunExpectedValue);
     };
   });
-  runTestCases(validValueRuns, (run) => {
+  runTestCases(validValueTestCases, (testCase) => {
     return function() {
-      this.field.setValue(run.value);
-      assertFieldValue(this.field, run.expectedValue);
+      this.field.setValue(testCase.value);
+      assertFieldValue(this.field, testCase.expectedValue);
     };
   });
 }

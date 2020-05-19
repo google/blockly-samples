@@ -7,19 +7,22 @@
 const {testHelpers} = require('@blockly/dev-tools');
 const {FieldTemplate} = require('../dist/index');
 
+const {runConstructorSuiteTests, runFromJsonSuiteTests,
+  runSetValueTests} = testHelpers;
+
 suite('FieldTemplate', function() {
   /**
    * Configuration for field tests with invalid values.
-   * @type {Array<Run>}
+   * @type {Array<TestCase>}
    */
-  const invalidValueRuns = [
+  const invalidValueTestCases = [
     // TODO
   ];
   /**
    * Configuration for field tests with valid values.
-   * @type {Array<Run>}
+   * @type {Array<TestCase>}
    */
-  const validValueRuns = [
+  const validValueTestCases = [
     // TODO
   ];
   /**
@@ -32,41 +35,40 @@ suite('FieldTemplate', function() {
    * @param {FieldTemplate} field The field to check.
    */
   const assertFieldDefault = function(field) {
-    // TODO
+    // TODO Recommend use of assertFieldValue from testHelpers
   };
   /**
-   * Asserts that the field properties are correct based on the test run
-   *    configuration.
+   * Asserts that the field properties are correct based on the test case.
    * @param {FieldTemplate} field The field to check.
-   * @param {Run} run The run configuration.
+   * @param {TestCase} testCase The test case.
    */
-  const validRunAssertField = function(field, run) {
+  const validTestCaseAssertField = function(field, testCase) {
     // TODO
   };
 
-  testHelpers.runConstructorSuiteTests(
-      FieldTemplate, validValueRuns, invalidValueRuns, validRunAssertField,
-      assertFieldDefault);
+  runConstructorSuiteTests(
+      FieldTemplate, validValueTestCases, invalidValueTestCases,
+      validTestCaseAssertField, assertFieldDefault);
 
-  testHelpers.runFromJsonSuiteTests(
-      FieldTemplate, validValueRuns, invalidValueRuns, validRunAssertField,
-      assertFieldDefault);
+  runFromJsonSuiteTests(
+      FieldTemplate, validValueTestCases, invalidValueTestCases,
+      validTestCaseAssertField, assertFieldDefault);
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {
       setup(function() {
         this.field = new FieldTemplate();
       });
-      testHelpers.runSetValueTests(
-          validValueRuns, invalidValueRuns, defaultFieldValue);
+      runSetValueTests(
+          validValueTestCases, invalidValueTestCases, defaultFieldValue);
     });
     suite('Value -> New Value', function() {
       const initialValue = 1; // TODO update with initial value for test.
       setup(function() {
         this.field = new FieldTemplate(initialValue);
       });
-      testHelpers.runSetValueTests(
-          validValueRuns, invalidValueRuns, initialValue);
+      runSetValueTests(
+          validValueTestCases, invalidValueTestCases, initialValue);
     });
   });
 

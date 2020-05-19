@@ -5,7 +5,7 @@
  */
 
 /**
- * Run configuration information.
+ * Test case configuration information.
  * @typedef {{
  *            title:string,
  *            value:*
@@ -14,18 +14,18 @@
  *            expectedValue:?
  *          }}
  */
-let Run;
+export let TestCase;
 
 /**
  * Runs provided test cases.
- * @param {Array<Run>} runs The test cases to run.
- * @param {function(Run):function} testFn Function that returns test callback.
- * @private
+ * @param {Array<TestCase>} testCases The test cases to run.
+ * @param {function(TestCase):function} testFn Function that returns test
+ *  callback.
  */
-export function runTestCases(runs, testFn) {
-  runs.forEach((run) => {
-    let testCall = (run.skip ? test.skip : test);
-    testCall = (run.only ? test.skip : testCall);
-    testCall(run.title, testFn(run));
+export function runTestCases(testCases, testFn) {
+  testCases.forEach((testCase) => {
+    let testCall = (testCase.skip ? test.skip : test);
+    testCall = (testCase.only ? test.skip : testCall);
+    testCall(testCase.title, testFn(testCase));
   });
 }

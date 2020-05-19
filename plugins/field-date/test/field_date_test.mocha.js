@@ -8,14 +8,14 @@ const {testHelpers} = require('@blockly/dev-tools');
 const FieldDate = require('../dist/date_compressed');
 
 const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue, Run} = testHelpers;
+  assertFieldValue, TestCase} = testHelpers;
 
 suite('FieldDate', function() {
   /**
    * Configuration for field tests with invalid values.
-   * @type {Array<Run>}
+   * @type {Array<TestCase>}
    */
-  const invalidValueRuns = [
+  const invalidValueTestCases = [
     {title: 'Undefined', value: undefined},
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
@@ -25,44 +25,44 @@ suite('FieldDate', function() {
   ];
   /**
    * Configuration for field tests with valid values.
-   * @type {Array<Run>}
+   * @type {Array<TestCase>}
    */
-  const validValueRuns = [
+  const validValueTestCases = [
     {title: 'String', value: '3030-03-30', expectedValue: '3030-03-30'},
   ];
-  const addArgsAndJson = function(run) {
-    run.args = [run.value];
-    run.json = {'date': run.value};
+  const addArgsAndJson = function(testCase) {
+    testCase.args = [testCase.value];
+    testCase.json = {'date': testCase.value};
   };
-  invalidValueRuns.forEach(addArgsAndJson);
-  validValueRuns.forEach(addArgsAndJson);
+  invalidValueTestCases.forEach(addArgsAndJson);
+  validValueTestCases.forEach(addArgsAndJson);
   const defaultFieldValue = new Date().toISOString().substring(0, 10);
   const assertFieldDefault = function(field) {
     assertFieldValue(field, defaultFieldValue);
   };
-  const validRunAssertField = function(field, run) {
-    assertFieldValue(field, run.value);
+  const validTestCaseAssertField = function(field, testCase) {
+    assertFieldValue(field, testCase.value);
   };
 
   // TODO(https://github.com/google/blockly/issues/3903): Re-enable test cases
   //  after fixing.
-  invalidValueRuns[3].skip = true;
-  invalidValueRuns[4].skip = true;
-  invalidValueRuns[5].skip = true;
+  invalidValueTestCases[3].skip = true;
+  invalidValueTestCases[4].skip = true;
+  invalidValueTestCases[5].skip = true;
 
   runConstructorSuiteTests(
-      FieldDate, validValueRuns, invalidValueRuns, validRunAssertField,
-      assertFieldDefault);
+      FieldDate, validValueTestCases, invalidValueTestCases,
+      validTestCaseAssertField, assertFieldDefault);
 
   runFromJsonSuiteTests(
-      FieldDate, validValueRuns, invalidValueRuns, validRunAssertField,
-      assertFieldDefault);
+      FieldDate, validValueTestCases, invalidValueTestCases,
+      validTestCaseAssertField, assertFieldDefault);
 
   // TODO(https://github.com/google/blockly/issues/3903): Remove skip=false
   //  after removing skip=true.
-  invalidValueRuns[3].skip = false;
-  invalidValueRuns[4].skip = false;
-  invalidValueRuns[5].skip = false;
+  invalidValueTestCases[3].skip = false;
+  invalidValueTestCases[4].skip = false;
+  invalidValueTestCases[5].skip = false;
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {
@@ -70,7 +70,7 @@ suite('FieldDate', function() {
         this.field = new FieldDate();
       });
       runSetValueTests(
-          validValueRuns, invalidValueRuns, defaultFieldValue);
+          validValueTestCases, invalidValueTestCases, defaultFieldValue);
     });
     suite('Value -> New Value', function() {
       const initialValue = '2020-02-20';
@@ -78,7 +78,7 @@ suite('FieldDate', function() {
         this.field = new FieldDate(initialValue);
       });
       runSetValueTests(
-          validValueRuns, invalidValueRuns, initialValue);
+          validValueTestCases, invalidValueTestCases, initialValue);
     });
   });
 

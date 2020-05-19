@@ -7,7 +7,7 @@
 import * as commonHelpers from './common_test_helpers.mocha';
 import * as fieldHelpers from './field_test_helpers.mocha';
 
-const {Run} = commonHelpers;
+const {TestCase, runTestCases} = commonHelpers;
 
 const {
   assertFieldValue,
@@ -17,9 +17,10 @@ const {
 } = fieldHelpers;
 
 export {
-  Run,
   assertFieldValue,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
+  runTestCases,
+  TestCase,
 };
