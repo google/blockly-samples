@@ -10,14 +10,15 @@ const {testHelpers} = require('@blockly/dev-tools');
 require('../dist/index');
 
 const assert = chai.assert;
-const {runTestCases} = testHelpers;
+const {assertBlockXmlContentsMatch, CodeGenerationTestSuite,
+  runCodeGenerationTestSuites} = testHelpers;
 
 suite('BlockTemplate', function() {
   /**
    * Asserts that the if block has the expected inputs and fields.
    * @param {!Blockly.Block} block The if block to check.
    * @param {number} ifCount The number of ifs we expect.
-   * @param {=boolean} hasElse If we expect an else input.
+   * @param {boolean=} hasElse If we expect an else input.
    */
   function assertIfBlockStructure(block, ifCount, hasElse) {
     const inputs = block.inputList;
@@ -51,65 +52,48 @@ suite('BlockTemplate', function() {
   });
 
   suite('blockToCode', function() {
-    const trivialCreateBlock = () => this.workspace.newBlock('controls_if');
-    const dartSuiteTestCases = [
-      {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-        createBlock: trivialCreateBlock},
-    ];
-    const jsSuiteTestCases = [
-      {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-        createBlock: trivialCreateBlock},
-    ];
-    const luaSuiteTestCases = [
-      {title: 'Trivial', expectedCode: 'if false then\nend\n',
-        createBlock: trivialCreateBlock},
-    ];
-    const phpSuiteTestCases = [
-      {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-        createBlock: trivialCreateBlock},
-    ];
-    const pythonSuiteTestCases = [
-      {title: 'Trivial', expectedCode: 'if False:\nundefined',
-        createBlock: trivialCreateBlock},
-    ];
-    const testSuites = [
-      {title: 'Dart', generator: Blockly.Dart, testCases: dartSuiteTestCases},
-      {title: 'JavaScript', generator: Blockly.JavaScript,
-        testCases: jsSuiteTestCases},
-      {title: 'Lua', generator: Blockly.Lua, testCases: luaSuiteTestCases},
-      {title: 'PHP', generator: Blockly.PHP, testCases: phpSuiteTestCases},
-      {title: 'Python', generator: Blockly.Python,
-        testCases: pythonSuiteTestCases},
-    ];
-
-    const createGeneratorTestFn = (generator) => {
-      return (testCase) => {
-        return function() {
-          const block = testCase.createBlock();
-          const code = generator.blockToCode(block);
-          assert.equal(code, testCase.expectedCode);
-        };
-      };
+    const trivialCreateBlock = (workspace) => {
+      return workspace.newBlock('controls_if');
     };
 
-    testSuites.forEach(function(suiteInfo) {
-      suite(suiteInfo.title, function() {
-        runTestCases(
-            suiteInfo.testCases, createGeneratorTestFn(suiteInfo.generator));
-      });
-    });
+    /**
+     * Test suites for code generation test.
+     * @type {Array<CodeGenerationTestSuite>}
+     */
+    const testSuites = [
+      {title: 'Dart', generator: Blockly.Dart,
+        testCases: [
+          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'JavaScript', generator: Blockly.JavaScript,
+        testCases: [
+
+          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'Lua', generator: Blockly.Lua,
+        testCases: [
+          {title: 'Trivial', expectedCode: 'if false then\nend\n',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'PHP', generator: Blockly.PHP,
+        testCases: [
+          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'Python', generator: Blockly.Python,
+        testCases: [
+          {title: 'Trivial', expectedCode: 'if False:\nundefined',
+            createBlock: trivialCreateBlock},
+        ]},
+    ];
+
+    runCodeGenerationTestSuites(testSuites);
   });
 
   suite('Serialization', function() {
-    function assertXmlMatch(xml, blockType, expectedBlockContents='') {
-      const expectedXml =
-          new RegExp('<block[^>]* type="' + blockType +
-              '" [^>]*>\\s*' + expectedBlockContents + '\\s*</block>');
-      assert.match(xml, expectedXml);
-    }
-
     suite('blockToXml', function() {
-
       setup(function() {
         this.block = this.workspace.newBlock('controls_if');
       });
@@ -117,7 +101,7 @@ suite('BlockTemplate', function() {
       test('Trivial', function() {
         const xml =
             Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(this.block));
-        assertXmlMatch(xml, 'controls_if');
+        assertBlockXmlContentsMatch(xml, 'controls_if');
       });
 
       test('No else', function() {
@@ -127,20 +111,20 @@ suite('BlockTemplate', function() {
             '<mutation elseif="2"></mutation>';
         const xml =
             Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(this.block));
-        assertXmlMatch(xml, 'controls_if', expectedBlockContents);
+        assertBlockXmlContentsMatch(xml, 'controls_if', expectedBlockContents);
       });
 
       test('With else', function() {
         const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             `<block type="controls_if" id="if" x="44" y="134">
-        <mutation elseif="3" else="1"></mutation>
-      </block>`
+              <mutation elseif="3" else="1"></mutation>
+            </block>`
         ), this.workspace);
         const expectedBlockContents =
             '<mutation elseif="3" else="1"></mutation>';
         const xml =
             Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-        assertXmlMatch(xml, 'controls_if', expectedBlockContents);
+        assertBlockXmlContentsMatch(xml, 'controls_if', expectedBlockContents);
       });
     });
 
@@ -155,8 +139,8 @@ suite('BlockTemplate', function() {
       test('No else', function() {
         const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             `<block type="controls_if">
-        <mutation elseif="2"></mutation>
-      </block>`
+              <mutation elseif="2"></mutation>
+            </block>`
         ), this.workspace);
         assertIfBlockStructure(block, 3);
       });
@@ -164,8 +148,8 @@ suite('BlockTemplate', function() {
       test('With else', function() {
         const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             `<block type="controls_if" id="if" x="44" y="134">
-        <mutation elseif="3" else="1"></mutation>
-      </block>`
+              <mutation elseif="3" else="1"></mutation>
+            </block>`
         ), this.workspace);
         assertIfBlockStructure(block, 4, true);
       });

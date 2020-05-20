@@ -5,19 +5,31 @@
  */
 
 import * as commonHelpers from './common_test_helpers.mocha';
-import * as fieldHelpers from './field_test_helpers.mocha';
+import * as blockTestHelpers from './block_test_helpers.mocha';
+import * as fieldTestHelpers from './field_test_helpers.mocha';
 
 const {TestCase, runTestCases} = commonHelpers;
+
+const {
+  assertBlockXmlContentsMatch,
+  CodeGenerationTestCase,
+  CodeGenerationTestSuite,
+  runCodeGenerationTestSuites,
+} = blockTestHelpers;
 
 const {
   assertFieldValue,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
-} = fieldHelpers;
+} = fieldTestHelpers;
 
 export {
   assertFieldValue,
+  assertBlockXmlContentsMatch,
+  CodeGenerationTestCase,
+  CodeGenerationTestSuite,
+  runCodeGenerationTestSuites,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
