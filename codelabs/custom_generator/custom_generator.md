@@ -19,7 +19,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new
 
 You will build a JSON generator that implements the [JSON language spec](https://www.json.org/json-en.html).
 
-(todo: add image)
+![](./json_workspace.png)
 
 ### What you'll need
 
@@ -27,11 +27,6 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 - Comfort with defining blocks and toolboxes.
 
 This codelab assumes that you are already comfortable with using the Blockly playground locally.  You can find it in `tests/playground.html`.
-
-(TODO: Update when the new playground is ready).
-
-### Resources/Further reading
-https://developers.google.com/blockly/guides/create-custom-blocks/generating-code
 
 ## Setup
 
@@ -144,7 +139,7 @@ The first step is to define and call your generator.
 A custom generator is simply an instance of `Blockly.Generator`. Call the constructor, passing in your generator's name, and store the result.
 
 ```js
-let myGenerator = new Blockly.Generator('Codelab');
+const myGenerator = new Blockly.Generator('Codelab');
 ```
 
 ### Generate code
@@ -179,21 +174,20 @@ This error occurs because you need to write a generator for each type of block. 
 
 At its core, a block generator is a function that takes in a block, translates the block into code, and returns that code as a string.
 
-Block generators are defined on the language generator object. In this case, that's `myGenerator`.
+Block generators are defined on the language generator object. In this case, that's `myGenerator`. For instance, here is the code to add a block generator for blocks of type `sample_block`.
 
 ```js
 myGenerator['sample_block'] = function(block) {
-  // Assemble some code
   return 'my code string';
 }
 ```
 
 ### Statement blocks
-*Statement blocks* represent code that does not return a value.
+Statement blocks represent code that does not have an output connection.
 
 A statement block's generator simply returns a string.
 
-For example, this defines a generator that always returns the same function call.
+For example, this code defines a generator that always returns the same function call.
 
 ```js
 myGenerator['left_turn_block'] = function(block) {
@@ -202,7 +196,7 @@ myGenerator['left_turn_block'] = function(block) {
 ```
 
 ### Value blocks
-*Value blocks* represent code that returns a value.
+Value blocks represent code that returns a value.
 
 A value block's generator returns an array containing a string and a [precedence value](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence).
 
@@ -214,7 +208,21 @@ myGenerator['two_block'] = function(block) {
 }
 ```
 
-Operator precedence is not important for the JSON generator that you are building, so you will use `myGenerator.ORDER_NONE` for all precedence values.
+### Operator precedence
+
+Operator precedence rules determine how the correct order of operations is maintained during parsing. In Blockly's code generators, operator precedence determines when to add parentheses.
+
+--> Read more about [operator precedence in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence).
+
+--> Read more about [operator precedence in Blockly](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence).
+
+Since JSON does not allow values that are expressions, you do not need to consider operator precedence for the generator that you are building in this codelab. You can use the same value everywhere a precedence value is required. In this case, we'll call it `PRECEDENCE`.
+
+You need to be able to access this value inside your block generators, so add `PRECEDENCE` to your generator:
+
+```js
+myGenerator.PRECEDENCE = 0;
+```
 
 ## Value block generators
 
@@ -228,7 +236,7 @@ The simplest block in this example is the `logic_null` block. No matter what, it
 
 ```js
 myGenerator['logic_null'] = function(block) {
-  return ['null', myGenerator.ORDER_NONE];
+  return ['null', myGenerator.PRECEDENCE];
 };
 ```
 
@@ -246,7 +254,7 @@ Since this is a string in the generated code, wrap the value in quotation marks 
 myGenerator['text'] = function(block) {
   var textValue = block.getFieldValue('TEXT');
   var code = '"' + textValue + '"';
-  return [code, myGenerator.ORDER_NONE];
+  return [code, myGenerator.PRECEDENCE];
 };
 ```
 
@@ -257,7 +265,7 @@ The `math_number` block has a number field. Like the `text` block, you can use `
 ```js
 myGenerator['math_number'] = function(block) {
   const code = Number(block.getFieldValue('NUM'));
-  return [code, myGenerator.ORDER_NONE];
+  return [code, myGenerator.PRECEDENCE];
 };
 ```
 
@@ -268,7 +276,7 @@ The `logic_boolean` block has a dropdown field named `BOOL`. Calling `getFieldVa
 ```js
 myGenerator['logic_boolean'] = function(block) {
   const code = (block.getFieldValue('BOOL') == 'TRUE') ? 'true' : 'false';
-  return [code, myGenerator.ORDER_NONE];
+  return [code, myGenerator.PRECEDENCE];
 ```
 
 ### Summary
@@ -280,6 +288,8 @@ myGenerator['logic_boolean'] = function(block) {
 
 
 ## Member block generator
+
+In this step you will build the generator for the `member` block. You will use `getFieldValue`, and add `valueToCode` to your tool kit.
 
 The member block has a text input field and a value input. It generates code that looks like `"a": b,`.
 
@@ -296,7 +306,7 @@ The member block has a text input field and a value input. It generates code tha
 
 ```js
 const value_name = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
-    codelabGenerator.ORDER_ATOMIC);
+    codelabGenerator.PRECEDENCE);
 ```
 
 `valueToCode` does three things:
@@ -306,8 +316,7 @@ const value_name = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
 
 If no block is attached, `valueToCode` returns `null`.
 
-The third argument is related to operator precedence.
-TODO: Decide whether/how to explain operator precedence.
+The third argument is related to operator precedence, as discussed in a previous section.
 
 ### Build the code string
 Next, assemble the arguments `a` and `b` into the correct code, of the form `"a": b,`.
@@ -326,7 +335,7 @@ All together, the block generator for the member block looks like this:
 myGenerator['member'] = function(block) {
   const text_member_name = block.getFieldValue('MEMBER_NAME');
   const value_name = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
-      codelabGenerator.ORDER_NONE);
+      codelabGenerator.PRECEDENCE);
   const code = '"' + text_member_name + '" : ' + value_name + ',\n';
   return code;
 };
@@ -335,11 +344,15 @@ myGenerator['member'] = function(block) {
 
 ## Array block generator
 
+(TODO: Write this section)
+
 [ a, b ]
 
 This adds in a variable number of inputs.
 
 ## Object block generator
+
+(TODO: Write this section)
 
 {
   "a": b,
@@ -349,25 +362,18 @@ This uses a statement input.
 
 ## Putting it all together
 
+(TODO: Write this section)
+
 Call the new generator to generate your code, and check the results.
 
-## Other topics
-
-A quick overview of other generator topics not covered in this codelab.
-
-### Reserved words
-
-e.g. for, while, break. Different per language.
-
-### Indentation
-
-Set how indentation works (tabs vs spaces, etc).
-
-### Variables
-
-
 ## Summary
+
+(TODO: Write this section)
+
 In this section, recap the work the developer has done and suggest ways to use it.
 
 ### Resources
+
+(TODO: Write this section)
+
 List any additional resources about this topic that the developer may want to consult.
