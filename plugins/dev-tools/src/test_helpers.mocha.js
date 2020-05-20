@@ -8,7 +8,13 @@ import * as commonHelpers from './common_test_helpers.mocha';
 import * as blockTestHelpers from './block_test_helpers.mocha';
 import * as fieldTestHelpers from './field_test_helpers.mocha';
 
-const {TestCase, runTestCases} = commonHelpers;
+const {
+  MochaTestCallback,
+  TestCase,
+  TestCaseCallbackGenerator,
+  TestSuiteCallbackGenerator,
+  runTestCases,
+} = commonHelpers;
 
 const {
   assertBlockXmlContentsMatch,
@@ -29,10 +35,13 @@ export {
   assertBlockXmlContentsMatch,
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
+  MochaTestCallback,
   runCodeGenerationTestSuites,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
   runTestCases,
   TestCase,
+  TestCaseCallbackGenerator,
+  TestSuiteCallbackGenerator,
 };

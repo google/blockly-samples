@@ -5,50 +5,92 @@
  */
 
 import {assert} from 'chai';
-import {runTestSuites, TestCase, TestSuite} from './common_test_helpers.mocha';
+import * as commonTestHelpers from './common_test_helpers.mocha';
+
+const {
+  runTestSuites,
+  TestCase,
+  TestSuite,
+} = commonTestHelpers;
 
 export const assertBlockXmlContentsMatch = (
     xml, blockType, expectedBlockContents='') => {
   const expectedXml =
-      new RegExp('<block[^>]* type="' + blockType +
-          '" [^>]*>\\s*' + expectedBlockContents + '\\s*</block>');
+      new RegExp('<block [^>]*type="' + blockType +
+          '"[^>]*>\\s*' + expectedBlockContents + '\\s*</block>');
   assert.match(xml, expectedXml);
 };
 
 /**
- * Test case configuration information.
- * @typedef {TestCase}
- * @property {string} expectedCode The expected code.
- * @property {function(Blockly.Workspace):Blockly.Block} createBlock A function
- *    that creates the block for the test.
+ * Code generation test case.
+ * @extends {TestCase}
+ * @record
  */
-export let CodeGenerationTestCase;
+export function CodeGenerationTestCase() {}
+CodeGenerationTestCase.prototype = new TestCase();
+/**
+ * @type {string} The expected code.
+ */
+CodeGenerationTestCase.prototype.expectedCode = '';
+/**
+ * @type {number|undefined} The expected inner order.
+ */
+CodeGenerationTestCase.prototype.expectedInnerOrder = undefined;
+/**
+ * A function that creates the block for the test.
+ * @param {Blockly.Workspace} workspace The workspace context for this test.
+ * @return {Blockly.Block}
+ */
+CodeGenerationTestCase.prototype.createBlock = undefined;
 
 /**
- * Test case configuration information.
- * @typedef {TestSuite}
- * @property {Blockly.Generator} generator The generator associated with this
- *    test suite.
- * @property {Array<CodeGenerationTestCase>} testCases The test cases for this
- *    suite.
+ * Code generation test suite.
+ * @extends {TestSuite<CodeGenerationTestCase>}
+ * @record
  */
-export let CodeGenerationTestSuite;
+export function CodeGenerationTestSuite() {}
+CodeGenerationTestSuite.prototype = new TestSuite();
+/**
+ * @type {!Blockly.Generator} The generator to use for running test cases.
+ */
+CodeGenerationTestSuite.prototype.generator = undefined;
+
 
 /**
  * Returns mocha test callback for code generation based on provided
  *    generator.
  * @param {Blockly.Generator} generator The generator to use in test.
- * @return {function(CodeGenerationTestCase): Function} The test callback.
+ * @return {function(CodeGenerationTestCase):Function} Function that
+ *    returns mocha test callback based on test case.
  * @private
  */
 const createCodeGenerationTestFn_ = (generator) => {
-  return (testCase) => {
+  /**
+   * Returns mocha test callback based on test case.
+   * @param {CodeGenerationTestCase} testCase
+   * @return {function(CodeGenerationTestCase):Function}
+   */
+  const testFn = (testCase) => {
     return function() {
       const block = testCase.createBlock(this.workspace);
-      const code = generator.blockToCode(block);
-      assert.equal(code, testCase.expectedCode);
+      const tuple = generator.blockToCode(block);
+      let code;
+      let innerOrder;
+      if (Array.isArray(tuple)) {
+        innerOrder = tuple[1];
+        code = tuple[0];
+      } else {
+        code = tuple;
+      }
+      const assertFunc = (typeof testCase.expectedCode === 'string') ?
+          assert.equal : assert.match;
+      assertFunc(code, testCase.expectedCode);
+      if (testCase.expectedInnerOrder !== undefined) {
+        assert.equal(innerOrder, testCase.expectedInnerOrder);
+      }
     };
   };
+  return testFn;
 };
 
 /**
@@ -58,15 +100,13 @@ const createCodeGenerationTestFn_ = (generator) => {
 export const runCodeGenerationTestSuites = (testSuites) => {
   /**
    * Creates function used to generate mocha test callback.
-   * @param {TestSuite} suiteInfo The test suite information.
-   * @return {function(TestCase): Function} Function that creates
-   *    mocha test callback.
+   * @param {CodeGenerationTestSuite} suiteInfo The test suite information.
+   * @return {function(CodeGenerationTestCase):Function} Function that
+   *    creates mocha test callback.
    */
   const createTestFn = (suiteInfo) => {
-    return (
-    /** @type {function(TestCase):function} */ createCodeGenerationTestFn_(
-          (/** @type {CodeGenerationTestSuite} */ suiteInfo).generator)
-    );
+    return createCodeGenerationTestFn_(suiteInfo.generator);
   };
-  runTestSuites(/** @type {Array<TestSuite>} */ testSuites, createTestFn);
+  
+  runTestSuites(testSuites, createTestFn);
 };

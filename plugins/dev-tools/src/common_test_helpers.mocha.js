@@ -6,57 +6,76 @@
 
 /**
  * Test case configuration information.
- * @typedef {object<*>}
- * @property {string} title The title for the test case.
- * @property {?} value The value.
- * @property {?} expectedValue The expected value.
- * @property {boolean} [skip] Whether this test case should be skipped. Used to
+ * @record
+ */
+export function TestCase() {}
+/**
+ * @type {string} The title for the test case.
+ */
+TestCase.prototype.title = '';
+/**
+ * @type {boolean|undefined} Whether this test case should be skipped. Used to
  *    skip buggy test case and should have an associated bug.
- * @property {boolean} [only] Whether this test case should be called as only.
+ */
+TestCase.prototype.skip = false;
+/**
+ * @type {boolean|undefined} Whether this test case should be called as only.
  *    Used for debugging.
  */
-export let TestCase;
+TestCase.prototype.only = false;
 
 /**
- * Test case configuration information.
- * @typedef {object<*>}
- * @property {string} title The title for the test suite.
- * @property {Array<TestCase>} testCases The associated test cases.
+ * Test suite configuration information.
+ * @record
+ * @template {TestCase} T
  */
-export let TestSuite;
-
+export function TestSuite() {}
 /**
- * Function that creates a mocha test callback based on test case.
- * @typedef {function(TestCase):function(Function=)}
+ * @type {string} The title for the test case.
  */
-let MochaCallbackCreateFn;
+TestSuite.prototype.title = '';
+/**
+ * @type {boolean} Whether this test suite should be skipped. Used to
+ *    skip buggy test case and should have an associated bug.
+ */
+TestSuite.prototype.skip = false;
+/**
+ * @type {boolean} Whether this test suite should be called as only.
+ *    Used for debugging.s
+ */
+TestSuite.prototype.only = false;
+/**
+ * @type {Array<T>} The associated test cases.
+ */
+TestSuite.prototype.testCases = [];
 
 /**
  * Runs provided test cases.
- * @param {Array<TestCase>} testCases The test cases to run.
- * @param {MochaCallbackCreateFn} testFn Function that returns
- *    test callback.
+ * @param {Array<T>} testCases The test cases to run.
+ * @param {function(T):Function} createTestCallback Creates test
+ *    callback using given test case
+ * @template {TestCase} T
  */
-export function runTestCases(testCases, testFn) {
-  testCases.forEach((testCase) => {
+export function runTestCases(testCases, createTestCallback) {
+  testCases.forEach((/** @type {TestCase} */testCase) => {
     let testCall = (testCase.skip ? test.skip : test);
     testCall = (testCase.only ? test.only : testCall);
-    testCall(testCase.title, testFn(testCase));
+    testCall(testCase.title, createTestCallback(testCase));
   });
 }
 
 /**
  * Runs provided test suite.
- * @param {Array<TestSuite>} testSuites The test suites to run.
- * @param {function(TestSuite):MochaCallbackCreateFn} createTestFn A function
- *    that creates function that creates test callback.
+ * @param {Array<TestSuite<T>>} testSuites The test suites to run.
+ * @param {function(TestSuite<T>):function(TestCase<T>):Function
+ *    } createTestCaseCallback Creates test case callback using given test
+ *    suite.
+ * @template {TestCase} T
  */
-export function runTestSuites(testSuites, createTestFn) {
-  testSuites.forEach(function(suiteInfo) {
-    suite(suiteInfo.title, function() {
-      runTestCases(
-          suiteInfo.testCases,
-          createTestFn(suiteInfo));
+export function runTestSuites(testSuites, createTestCaseCallback) {
+  testSuites.forEach((testSuite) => {
+    suite(testSuite.title, function() {
+      runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
     });
   });
 }
