@@ -25,7 +25,7 @@ export let TestCase;
 export function runTestCases(testCases, testFn) {
   testCases.forEach((testCase) => {
     let testCall = (testCase.skip ? test.skip : test);
-    testCall = (testCase.only ? test.skip : testCall);
+    testCall = (testCase.only ? test.only : testCall);
     testCall(testCase.title, testFn(testCase));
   });
 }
