@@ -10,7 +10,7 @@ let addGUIControls;
 if (typeof window !== 'undefined') {
   addGUIControls = require('./addGUIControls').default;
 }
-import * as testHelpers from './field_test_helpers.mocha';
+import * as testHelpers from './test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
