@@ -7,6 +7,7 @@
 const chai = require('chai');
 const Blockly = require('blockly');
 const {testHelpers} = require('@blockly/dev-tools');
+const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
 require('../dist/index');
 
 const assert = chai.assert;
@@ -49,7 +50,7 @@ suite('List create block', function() {
     this.workspace.dispose();
   });
 
-  test('Structure', function() {
+  test('Creation', function() {
     this.block = this.workspace.newBlock('lists_create_with');
     assertListBlockStructure(this.block, 3);
   });
@@ -166,59 +167,6 @@ suite('List create block', function() {
   ];
   runSerializationTestSuite(testCases, Blockly);
 
-  suite('Adding and removing inputs', function() {
-    setup(function() {
-      this.block = this.workspace.newBlock('lists_create_with');
-    });
-
-    test('Add', function() {
-      assertListBlockStructure(this.block, 3);
-      this.block.plus();
-      assertListBlockStructure(this.block, 4);
-    });
-
-    test('Add lots', function() {
-      assertListBlockStructure(this.block, 3);
-      for (let i = 0; i < 7; i++) {
-        this.block.plus();
-      }
-      assertListBlockStructure(this.block, 10);
-    });
-
-    test('Remove', function() {
-      assertListBlockStructure(this.block, 3);
-      this.block.minus();
-      assertListBlockStructure(this.block, 2);
-    });
-
-    test('Remove too many', function() {
-      assertListBlockStructure(this.block, 3);
-      for (let i = 0; i < 4; i++) {
-        this.block.minus();
-      }
-      assertListBlockStructure(this.block, 0);
-    });
-
-    test('Remove lots', function() {
-      assertListBlockStructure(this.block, 3);
-      for (let i = 0; i < 7; i++) {
-        this.block.plus();
-      }
-      for (let i = 0; i < 5; i++) {
-        this.block.minus();
-      }
-      assertListBlockStructure(this.block, 5);
-    });
-
-    test('Remove attached', function() {
-      const childBlock = this.workspace.newBlock('logic_boolean');
-      assertListBlockStructure(this.block, 3);
-      this.block.getInput('ADD2').connection
-          .connect(childBlock.outputConnection);
-      assert.equal(this.block.getInputTargetBlock('ADD2'), childBlock);
-      this.block.minus();
-      assert.isNull(this.block.getInputTargetBlock('ADD2'));
-      assert.isNull(childBlock.outputConnection.targetBlock());
-    });
-  });
+  runPlusMinusTestSuite('lists_create_with', 3, 0, 'ADD',
+      assertListBlockStructure);
 });

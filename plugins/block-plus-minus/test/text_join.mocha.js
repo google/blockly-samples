@@ -7,6 +7,7 @@
 const chai = require('chai');
 const Blockly = require('blockly');
 const {testHelpers} = require('@blockly/dev-tools');
+const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
 require('../dist/index');
 
 const assert = chai.assert;
@@ -49,7 +50,7 @@ suite('Text join block', function() {
     this.workspace.dispose();
   });
 
-  test('Structure', function() {
+  test('Creation', function() {
     this.block = this.workspace.newBlock('text_join');
     assertTextJoinBlockStructure(this.block, 2);
   });
@@ -155,59 +156,6 @@ suite('Text join block', function() {
   ];
   runSerializationTestSuite(testCases, Blockly);
 
-  suite('Adding and removing inputs', function() {
-    setup(function() {
-      this.block = this.workspace.newBlock('text_join');
-    });
-
-    test('Add', function() {
-      assertTextJoinBlockStructure(this.block, 2);
-      this.block.plus();
-      assertTextJoinBlockStructure(this.block, 3);
-    });
-
-    test('Add lots', function() {
-      assertTextJoinBlockStructure(this.block, 2);
-      for (let i = 0; i < 8; i++) {
-        this.block.plus();
-      }
-      assertTextJoinBlockStructure(this.block, 10);
-    });
-
-    test('Remove', function() {
-      assertTextJoinBlockStructure(this.block, 2);
-      this.block.minus();
-      assertTextJoinBlockStructure(this.block, 1);
-    });
-
-    test('Remove too many', function() {
-      assertTextJoinBlockStructure(this.block, 2);
-      for (let i = 0; i < 3; i++) {
-        this.block.minus();
-      }
-      assertTextJoinBlockStructure(this.block, 0);
-    });
-
-    test('Remove lots', function() {
-      assertTextJoinBlockStructure(this.block, 2);
-      for (let i = 0; i < 8; i++) {
-        this.block.plus();
-      }
-      for (let i = 0; i < 5; i++) {
-        this.block.minus();
-      }
-      assertTextJoinBlockStructure(this.block, 5);
-    });
-
-    test('Remove attached', function() {
-      const childBlock = this.workspace.newBlock('logic_boolean');
-      assertTextJoinBlockStructure(this.block, 2);
-      this.block.getInput('ADD1').connection
-          .connect(childBlock.outputConnection);
-      assert.equal(this.block.getInputTargetBlock('ADD1'), childBlock);
-      this.block.minus();
-      assert.isNull(this.block.getInputTargetBlock('ADD1'));
-      assert.isNull(childBlock.outputConnection.targetBlock());
-    });
-  });
+  runPlusMinusTestSuite('text_join', 2, 0, 'ADD',
+      assertTextJoinBlockStructure);
 });

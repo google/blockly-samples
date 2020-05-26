@@ -7,6 +7,7 @@
 const chai = require('chai');
 const Blockly = require('blockly');
 const {testHelpers} = require('@blockly/dev-tools');
+const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
 require('../dist/index');
 
 const assert = chai.assert;
@@ -48,7 +49,7 @@ suite('If block', function() {
     this.workspace.dispose();
   });
 
-  test('Structure', function() {
+  test('Creation', function() {
     this.block = this.workspace.newBlock('controls_if');
     assertIfBlockStructure(this.block, 1);
   });
@@ -132,66 +133,6 @@ suite('If block', function() {
   ];
   runSerializationTestSuite(testCases, Blockly);
 
-  suite('Adding and removing inputs', function() {
-    setup(function() {
-      this.block = this.workspace.newBlock('controls_if');
-    });
-
-    test('Add', function() {
-      assertIfBlockStructure(this.block, 1);
-      this.block.plus();
-      assertIfBlockStructure(this.block, 2);
-    });
-
-    test('Add lots', function() {
-      assertIfBlockStructure(this.block, 1);
-      for (let i = 0; i < 9; i++) {
-        this.block.plus();
-      }
-      assertIfBlockStructure(this.block, 10);
-    });
-
-    test('Remove nothing', function() {
-      assertIfBlockStructure(this.block, 1);
-      this.block.minus();
-      assertIfBlockStructure(this.block, 1);
-    });
-
-    test('Remove', function() {
-      assertIfBlockStructure(this.block, 1);
-      this.block.plus();
-      this.block.minus();
-      assertIfBlockStructure(this.block, 1);
-    });
-
-    test('Remove lots', function() {
-      assertIfBlockStructure(this.block, 1);
-      for (let i = 0; i < 9; i++) {
-        this.block.plus();
-      }
-      for (let i = 0; i < 5; i++) {
-        this.block.minus();
-      }
-      assertIfBlockStructure(this.block, 5);
-    });
-
-    test('Remove attached', function() {
-      const block = this.workspace.newBlock('logic_boolean');
-
-      assertIfBlockStructure(this.block, 1);
-      this.block.plus();
-      this.block.getInput('IF1').connection
-          .connect(block.outputConnection);
-      assert.equal(this.block.getInputTargetBlock('IF1'), block);
-
-      this.block.minus();
-      assertIfBlockStructure(this.block, 1);
-      assert.isNull(block.outputConnection.targetBlock());
-
-      // Assert that it does not get reattached. Only reattach on undo.
-      this.block.plus();
-      assertIfBlockStructure(this.block, 2);
-      assert.isNull(block.outputConnection.targetBlock());
-    });
-  });
+  runPlusMinusTestSuite('controls_if', 1, 1, 'IF',
+      assertIfBlockStructure);
 });
