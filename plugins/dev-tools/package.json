@@ -39,7 +39,8 @@
   "dependencies": {
     "@types/dat.gui": "^0.7.5",
     "chai": "^4.2.0",
-    "dat.gui": "^0.7.7"
+    "dat.gui": "^0.7.7",
+    "sinon": "^9.0.2"
   },
   "devDependencies": {
     "@blockly/dev-scripts": "^0.20200403.6",

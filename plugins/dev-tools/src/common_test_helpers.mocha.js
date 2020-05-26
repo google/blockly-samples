@@ -51,10 +51,10 @@ TestSuite.prototype.testCases = [];
 
 /**
  * Runs provided test cases.
+ * @template {TestCase} T
  * @param {Array<T>} testCases The test cases to run.
  * @param {function(T):Function} createTestCallback Creates test
- *    callback using given test case
- * @template {TestCase} T
+ *    callback using given test case.
  */
 export function runTestCases(testCases, createTestCallback) {
   testCases.forEach((/** @type {TestCase} */testCase) => {
@@ -66,11 +66,11 @@ export function runTestCases(testCases, createTestCallback) {
 
 /**
  * Runs provided test suite.
+ * @template {TestCase} T
  * @param {Array<TestSuite<T>>} testSuites The test suites to run.
  * @param {function(TestSuite<T>):(function(T):Function)
  *    } createTestCaseCallback Creates test case callback using given test
  *    suite.
- * @template {TestCase} T
  */
 export function runTestSuites(testSuites, createTestCaseCallback) {
   testSuites.forEach((testSuite) => {

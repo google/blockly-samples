@@ -10,8 +10,8 @@ const {testHelpers} = require('@blockly/dev-tools');
 require('../dist/index');
 
 const assert = chai.assert;
-const {assertBlockXmlContentsMatch, CodeGenerationTestSuite,
-  runCodeGenerationTestSuites} = testHelpers;
+const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
+  runSerializationTestSuite, SerializationTestCase} = testHelpers;
 
 suite('List create block', function() {
   /**
@@ -20,6 +20,7 @@ suite('List create block', function() {
    * @param {number=} inputCount The number of inputs we expect.
    */
   function assertListBlockStructure(block, inputCount = 0) {
+    assert.equal(block.type, 'lists_create_with');
     if (inputCount === 0) {
       assert.equal(block.inputList.length, 1);
       const input = block.inputList[0];
@@ -59,7 +60,7 @@ suite('List create block', function() {
     };
 
     /**
-     * Test suites for code generation test.
+     * Test suites for code generation tests.
      * @type {Array<CodeGenerationTestSuite>}
      */
     const testSuites = [
@@ -94,112 +95,95 @@ suite('List create block', function() {
     runCodeGenerationTestSuites(testSuites);
   });
 
-  suite('Serialization', function() {
-    suite('blockToXml', function() {
-      test('Trivial', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="lists_create_with" id="list" x="128" y="173">
-              <mutation items="5"></mutation>
-            </block>`
-        ), this.workspace);
-        const expectedBlockContents =
-            '<mutation items="5"></mutation>';
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-        assertBlockXmlContentsMatch(xml, 'lists_create_with',
-            expectedBlockContents);
-      });
+  /**
+   * Test cases for serialization tests.
+   * @type {Array<SerializationTestCase>}
+   */
+  const testCases = [
+    {title: 'Empty XML', xml: '<block type="lists_create_with"/>',
+      expectedXml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 3);
+          },
+    },
+    {title: '3 items',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 3);
+          },
+    },
+    {title: '5 items',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="5"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 5);
+          },
+    },
+    {title: '0 items',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="0"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 0);
+          },
+    },
+  ];
+  // TODO(kozbial) add this test case
+  // test.skip('Child attached', function() {
+  //   const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+  //       `<block type="lists_create_with">
+  //             <mutation items="4"></mutation>
+  //             <value name="ADD3">
+  //               <block type="logic_boolean">
+  //                 <field name="BOOL">TRUE</field>
+  //               </block>
+  //             </value>
+  //           </block>`
+  //   ), this.workspace);
+  //   const expectedBlockContents =
+  //       new RegExp(
+  //           '<mutation items="4"></mutation>\\s*' +
+  //           '<value name="ADD3">\\s*' +
+  //           '<block[^>]* type="logic_boolean"[^>]*>\\s*' +
+  //           '<field name="BOOL">TRUE</field>\\s*' +
+  //           '</block>\\s*' +
+  //           '</value>');
+  //   const xml =
+  //       Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
+  //   assertBlockXmlContentsMatch(xml, 'lists_create_with',
+  //       expectedBlockContents);
+  //
+  //   const childBlock = this.workspace.newBlock('logic_boolean');
+  //   this.listBlock.plus();
+  //   this.listBlock.getInput('ADD3').connection
+  //       .connect(childBlock.outputConnection);
+  //   this.assertRoundTrip(this.listBlock, (block) => {
+  //     assertList(block, 4);
+  //     const child = block.getInputTargetBlock('ADD3');
+  //     assert.isNotNull(child);
+  //     assert.equal(child.type, 'logic_boolean');
+  //   });
+  // });
 
-      test('No mutation', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            '<block type="lists_create_with"></block>'
-        ), this.workspace);
-        const expectedBlockContents =
-            '<mutation items="3"></mutation>';
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-        assertBlockXmlContentsMatch(xml, 'lists_create_with',
-            expectedBlockContents);
-      });
+  runSerializationTestSuite(testCases, Blockly);
 
-      test('No inputs', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="lists_create_with" id="list" x="128" y="173">
-              <mutation items="0"></mutation>
-            </block>`
-        ), this.workspace);
-        const expectedBlockContents =
-            '<mutation items="0"></mutation>';
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-        assertBlockXmlContentsMatch(xml, 'lists_create_with',
-            expectedBlockContents);
-      });
-
-      test.skip('Child attached', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="lists_create_with">
-              <mutation items="4"></mutation>
-              <value name="ADD3">
-                <block type="logic_boolean">
-                  <field name="BOOL">TRUE</field>
-                </block>
-              </value>
-            </block>`
-        ), this.workspace);
-        const expectedBlockContents =
-            new RegExp(
-                '<mutation items="4"></mutation>\\s*' +
-              '<value name="ADD3">\\s*' +
-                '<block[^>]* type="logic_boolean"[^>]*>\\s*' +
-                  '<field name="BOOL">TRUE</field>\\s*' +
-                '</block>\\s*' +
-              '</value>');
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-        assertBlockXmlContentsMatch(xml, 'lists_create_with',
-            expectedBlockContents);
-
-        const childBlock = this.workspace.newBlock('logic_boolean');
-        this.listBlock.plus();
-        this.listBlock.getInput('ADD3').connection
-            .connect(childBlock.outputConnection);
-        this.assertRoundTrip(this.listBlock, (block) => {
-          assertList(block, 4);
-          const child = block.getInputTargetBlock('ADD3');
-          assert.isNotNull(child);
-          assert.equal(child.type, 'logic_boolean');
-        });
-      });
-    });
-
-    suite('xmlToBlock', function() {
-      test('Trivial', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="lists_create_with" id="list" x="128" y="173">
-              <mutation items="5"></mutation>
-            </block>`
-        ), this.workspace);
-        assertListBlockStructure(block, 5);
-      });
-
-      test('No mutation', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            '<block type="lists_create_with"></block>'
-        ), this.workspace);
-        assertListBlockStructure(block, 3);
-      });
-
-      test('No inputs', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="lists_create_with" id="list" x="128" y="173">
-              <mutation items="0"></mutation>
-            </block>`
-        ), this.workspace);
-        assertListBlockStructure(block, 0);
-      });
-    });
-  });
   suite('Adding and removing inputs', function() {
     setup(function() {
       this.block = this.workspace.newBlock('lists_create_with');

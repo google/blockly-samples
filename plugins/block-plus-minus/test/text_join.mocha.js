@@ -20,6 +20,7 @@ suite('Text join block', function() {
    * @param {number=} inputCount The number of inputs we expect.
    */
   function assertTextJoinBlockStructure(block, inputCount) {
+    assert.equal(block.type, 'text_join');
     if (!inputCount) {
       assert.equal(block.inputList.length, 1);
       const input = block.inputList[0];
@@ -53,7 +54,7 @@ suite('Text join block', function() {
     assertTextJoinBlockStructure(this.block, 2);
   });
 
-  suite.skip('blockToCode', function() {
+  suite('blockToCode', function() {
     const trivialCreateBlock = (workspace) => {
       return workspace.newBlock('text_join');
     };
@@ -65,28 +66,28 @@ suite('Text join block', function() {
     const testSuites = [
       {title: 'Dart', generator: Blockly.Dart,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+          {title: 'Trivial', expectedCode: '[\'\',\'\'].join()',
             createBlock: trivialCreateBlock},
         ]},
       {title: 'JavaScript', generator: Blockly.JavaScript,
         testCases: [
 
-          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+          {title: 'Trivial', expectedCode: '\'\' + \'\'',
             createBlock: trivialCreateBlock},
         ]},
       {title: 'Lua', generator: Blockly.Lua,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if false then\nend\n',
+          {title: 'Trivial', expectedCode: '\'\' .. \'\'',
             createBlock: trivialCreateBlock},
         ]},
       {title: 'PHP', generator: Blockly.PHP,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+          {title: 'Trivial', expectedCode: '\'\' . \'\'',
             createBlock: trivialCreateBlock},
         ]},
       {title: 'Python', generator: Blockly.Python,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if False:\nundefined',
+          {title: 'Trivial', expectedCode: '\'\' + \'\'',
             createBlock: trivialCreateBlock},
         ]},
     ];
@@ -101,8 +102,9 @@ suite('Text join block', function() {
   const testCases = [
     {title: 'Empty XML', xml: '<block type="text_join"/>',
       expectedXml:
-          '<block type="text_join">\n' +
-          '  <mutation items="2"/>\n' +
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="2"></mutation>\n' +
           '</block>',
       assertBlockStructure:
         (block) => {
@@ -111,8 +113,9 @@ suite('Text join block', function() {
     },
     {title: '0 items',
       xml:
-          '<block type="text_join">\n' +
-          '  <mutation items="0"/>\n' +
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="0"></mutation>\n' +
           '</block>',
       assertBlockStructure:
           (block) => {
@@ -121,8 +124,9 @@ suite('Text join block', function() {
     },
     {title: '3 items',
       xml:
-          '<block type="text_join">\n' +
-          '  <mutation items="3"/>\n' +
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
           '</block>',
       assertBlockStructure:
           (block) => {
@@ -143,7 +147,7 @@ suite('Text join block', function() {
   //     assert.equal(child.type, 'logic_boolean');
   //   });
 
-  runSerializationTestSuite(testCases);//, Blockly);
+  runSerializationTestSuite(testCases, Blockly);
 
   suite('Adding and removing inputs', function() {
     setup(function() {

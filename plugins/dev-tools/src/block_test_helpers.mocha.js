@@ -5,6 +5,7 @@
  */
 
 import {assert} from 'chai';
+import * as sinon from 'sinon';
 import * as commonTestHelpers from './common_test_helpers.mocha';
 import * as Blockly from 'blockly/core';
 
@@ -76,7 +77,7 @@ SerializationTestCase.prototype.expectedXml = '';
 /**
  * A function that asserts tests has the expected structure after converting to
  *    block from given xml.
- * @param {Blockly.Block} The block to check.
+ * @param {Blockly.Block} block The block to check.
  */
 SerializationTestCase.prototype.assertBlockStructure = undefined;
 
@@ -131,15 +132,16 @@ export const runCodeGenerationTestSuites = (testSuites) => {
 
 /**
  * Runs serialization test suite.
- * @param {Array<SerializationTestCase>} testCases The test cases to run.]
+ * @param {Array<SerializationTestCase>} testCases The test cases to run.
+ * @param {*} tempBlocklyRef A reference to Blockly (temporary workaround).
  */
 export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
-  // TODO(kozbial) remove tempBlocklyRef
+  // TODO(kozbial) remove tempBlocklyRef param and replace with Blockly
   tempBlocklyRef = tempBlocklyRef || Blockly;
   /**
    * Creates test callback for xmlToBlock test.
-   * @param {SerializationTestCase} testCase
-   * @return {function(SerializationTestCase):Function}
+   * @param {SerializationTestCase} testCase The test case information.
+   * @return {function(SerializationTestCase):Function} The test callback.
    */
   const createXmlToBlockTestCallback = (testCase) => {
     return function() {
@@ -150,8 +152,8 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
   };
   /**
    * Creates test callback for xml round trip test.
-   * @param {SerializationTestCase} testCase
-   * @return {function(SerializationTestCase):Function}
+   * @param {SerializationTestCase} testCase The test case information.
+   * @return {function(SerializationTestCase):Function} The test callback.
    */
   const createXmlRoundTripTestCallback = (testCase) => {
     return function() {
@@ -168,7 +170,15 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
     suite('xmlToBlock', function() {
       runTestCases(testCases, createXmlToBlockTestCallback);
     });
-    suite('xml round tripping', function() {
+    suite('xml round-trip', function() {
+      setup(function() {
+        sinon.stub(tempBlocklyRef.utils, 'genUid').returns('1');
+      });
+
+      teardown(function() {
+        sinon.restore();
+      });
+
       runTestCases(testCases, createXmlRoundTripTestCallback);
     });
   });

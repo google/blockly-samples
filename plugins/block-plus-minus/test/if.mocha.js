@@ -10,8 +10,9 @@ const {testHelpers} = require('@blockly/dev-tools');
 require('../dist/index');
 
 const assert = chai.assert;
-const {assertBlockXmlContentsMatch, CodeGenerationTestSuite,
-  runCodeGenerationTestSuites} = testHelpers;
+
+const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
+  runSerializationTestSuite, SerializationTestCase} = testHelpers;
 
 suite('If block', function() {
   /**
@@ -21,6 +22,7 @@ suite('If block', function() {
    * @param {boolean=} hasElse If we expect an else input.
    */
   function assertIfBlockStructure(block, ifCount, hasElse) {
+    assert.equal(block.type, 'controls_if');
     const inputs = block.inputList;
     assert.exists(inputs);
     const length = inputs.length;
@@ -57,7 +59,7 @@ suite('If block', function() {
     };
 
     /**
-     * Test suites for code generation test.
+     * Test suites for code generation tests.
      * @type {Array<CodeGenerationTestSuite>}
      */
     const testSuites = [
@@ -92,69 +94,45 @@ suite('If block', function() {
     runCodeGenerationTestSuites(testSuites);
   });
 
-  suite('Serialization', function() {
-    suite('blockToXml', function() {
-      setup(function() {
-        this.block = this.workspace.newBlock('controls_if');
-      });
+  /**
+   * Test cases for serialization tests.
+   * @type {Array<SerializationTestCase>}
+   */
+  const testCases = [
+    {title: 'Empty XML', xml: '<block type="controls_if"/>',
+      expectedXml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1"></block>',
+      assertBlockStructure:
+          (block) => {
+            assertIfBlockStructure(block, 1);
+          },
+    },
+    {title: '2 elseif no else',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1">\n' +
+          '  <mutation elseif="2"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertIfBlockStructure(block, 3);
+          },
+    },
+    {title: '3 elseif with else',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1">\n' +
+          '  <mutation elseif="3" else="1"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertIfBlockStructure(block, 4, true);
+          },
+    },
+  ];
 
-      test('Trivial', function() {
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(this.block));
-        assertBlockXmlContentsMatch(xml, 'controls_if');
-      });
-
-      test('No else', function() {
-        this.block.plus();
-        this.block.plus();
-        const expectedBlockContents =
-            '<mutation elseif="2"></mutation>';
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(this.block));
-        assertBlockXmlContentsMatch(xml, 'controls_if', expectedBlockContents);
-      });
-
-      test('With else', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="controls_if" id="if" x="44" y="134">
-              <mutation elseif="3" else="1"></mutation>
-            </block>`
-        ), this.workspace);
-        const expectedBlockContents =
-            '<mutation elseif="3" else="1"></mutation>';
-        const xml =
-            Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-        assertBlockXmlContentsMatch(xml, 'controls_if', expectedBlockContents);
-      });
-    });
-
-    suite('xmlToBlock', function() {
-      test('Trivial', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            '<block type="controls_if"/>'
-        ), this.workspace);
-        assertIfBlockStructure(block, 1);
-      });
-
-      test('No else', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="controls_if">
-              <mutation elseif="2"></mutation>
-            </block>`
-        ), this.workspace);
-        assertIfBlockStructure(block, 3);
-      });
-
-      test('With else', function() {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-            `<block type="controls_if" id="if" x="44" y="134">
-              <mutation elseif="3" else="1"></mutation>
-            </block>`
-        ), this.workspace);
-        assertIfBlockStructure(block, 4, true);
-      });
-    });
-  });
+  runSerializationTestSuite(testCases, Blockly);
 
   suite('Adding and removing inputs', function() {
     setup(function() {

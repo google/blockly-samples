@@ -5,7 +5,7 @@ const Blockly = require('blockly');
 
 require('../dist/index');
 
-suite.skip('procedures', () => {
+suite('procedures', () => {
   /**
    * Asserts that the procedure def and caller have the inputs and fields
    * we expect.
