@@ -15,7 +15,6 @@ const {
 } = commonHelpers;
 
 const {
-  assertBlockXmlContentsMatch,
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
   runCodeGenerationTestSuites,
@@ -32,7 +31,6 @@ const {
 
 export {
   assertFieldValue,
-  assertBlockXmlContentsMatch,
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
   runCodeGenerationTestSuites,

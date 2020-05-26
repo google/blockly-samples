@@ -90,7 +90,6 @@ suite('If block', function() {
             createBlock: trivialCreateBlock},
         ]},
     ];
-
     runCodeGenerationTestSuites(testSuites);
   });
 
@@ -131,7 +130,6 @@ suite('If block', function() {
           },
     },
   ];
-
   runSerializationTestSuite(testCases, Blockly);
 
   suite('Adding and removing inputs', function() {

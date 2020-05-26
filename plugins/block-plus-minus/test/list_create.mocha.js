@@ -91,7 +91,6 @@ suite('List create block', function() {
             createBlock: trivialCreateBlock},
         ]},
     ];
-
     runCodeGenerationTestSuites(testSuites);
   });
 
@@ -144,44 +143,27 @@ suite('List create block', function() {
             assertListBlockStructure(block, 0);
           },
     },
+    {title: '4 items with child attached',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="4"></mutation>\n' +
+          '  <value name="ADD3">\n' +
+          '    <block type="logic_boolean" id="1">\n' +
+          '      <field name="BOOL">FALSE</field>\n' +
+          '    </block>\n' +
+          '  </value>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 4);
+            const child = block.getInputTargetBlock('ADD3');
+            assert.isNotNull(child);
+            assert.equal(child.type, 'logic_boolean');
+            assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+          },
+    },
   ];
-  // TODO(kozbial) add this test case
-  // test.skip('Child attached', function() {
-  //   const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-  //       `<block type="lists_create_with">
-  //             <mutation items="4"></mutation>
-  //             <value name="ADD3">
-  //               <block type="logic_boolean">
-  //                 <field name="BOOL">TRUE</field>
-  //               </block>
-  //             </value>
-  //           </block>`
-  //   ), this.workspace);
-  //   const expectedBlockContents =
-  //       new RegExp(
-  //           '<mutation items="4"></mutation>\\s*' +
-  //           '<value name="ADD3">\\s*' +
-  //           '<block[^>]* type="logic_boolean"[^>]*>\\s*' +
-  //           '<field name="BOOL">TRUE</field>\\s*' +
-  //           '</block>\\s*' +
-  //           '</value>');
-  //   const xml =
-  //       Blockly.Xml.domToPrettyText(Blockly.Xml.blockToDom(block));
-  //   assertBlockXmlContentsMatch(xml, 'lists_create_with',
-  //       expectedBlockContents);
-  //
-  //   const childBlock = this.workspace.newBlock('logic_boolean');
-  //   this.listBlock.plus();
-  //   this.listBlock.getInput('ADD3').connection
-  //       .connect(childBlock.outputConnection);
-  //   this.assertRoundTrip(this.listBlock, (block) => {
-  //     assertList(block, 4);
-  //     const child = block.getInputTargetBlock('ADD3');
-  //     assert.isNotNull(child);
-  //     assert.equal(child.type, 'logic_boolean');
-  //   });
-  // });
-
   runSerializationTestSuite(testCases, Blockly);
 
   suite('Adding and removing inputs', function() {

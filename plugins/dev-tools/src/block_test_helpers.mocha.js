@@ -16,14 +16,6 @@ const {
   TestSuite,
 } = commonTestHelpers;
 
-export const assertBlockXmlContentsMatch = (
-    xml, blockType, expectedBlockContents='') => {
-  const expectedXml =
-      new RegExp('<block [^>]*type="' + blockType +
-          '"[^>]*>\\s*' + expectedBlockContents + '\\s*</block>');
-  assert.match(xml, expectedXml);
-};
-
 /**
  * Code generation test case.
  * @extends {TestCase}

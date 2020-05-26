@@ -133,20 +133,26 @@ suite('Text join block', function() {
             assertTextJoinBlockStructure(block, 3);
           },
     },
+    {title: '3 items with child attached',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '  <value name="ADD2">\n' +
+          '    <block type="logic_boolean" id="1">\n' +
+          '      <field name="BOOL">FALSE</field>\n' +
+          '    </block>\n' +
+          '  </value>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertTextJoinBlockStructure(block, 3);
+            const child = block.getInputTargetBlock('ADD2');
+            assert.isNotNull(child);
+            assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+          },
+    },
   ];
-  // TODO(kozbial) add this test case
-  // test('Child attached', () => {
-  //   const childBlock = this.workspace.newBlock('logic_boolean');
-  //   this.joinBlock.plus();
-  //   this.joinBlock.getInput('ADD2').connection
-  //       .connect(childBlock.outputConnection);
-  //   this.assertRoundTrip(this.joinBlock, (block) => {
-  //     assertJoin(block, 3);
-  //     const child = block.getInputTargetBlock('ADD2');
-  //     assert.isNotNull(child);
-  //     assert.equal(child.type, 'logic_boolean');
-  //   });
-
   runSerializationTestSuite(testCases, Blockly);
 
   suite('Adding and removing inputs', function() {
