@@ -21,6 +21,8 @@ const {
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
   runCodeGenerationTestSuites,
+  runSerializationTestSuite,
+  SerializationTestCase,
 } = blockTestHelpers;
 
 const {
@@ -39,8 +41,10 @@ export {
   runCodeGenerationTestSuites,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
+  runSerializationTestSuite,
   runSetValueTests,
   runTestCases,
+  SerializationTestCase,
   TestCase,
   TestCaseCallbackGenerator,
   TestSuiteCallbackGenerator,

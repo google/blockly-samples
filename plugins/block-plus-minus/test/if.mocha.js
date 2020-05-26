@@ -13,7 +13,7 @@ const assert = chai.assert;
 const {assertBlockXmlContentsMatch, CodeGenerationTestSuite,
   runCodeGenerationTestSuites} = testHelpers;
 
-suite('BlockTemplate', function() {
+suite('If block', function() {
   /**
    * Asserts that the if block has the expected inputs and fields.
    * @param {!Blockly.Block} block The if block to check.

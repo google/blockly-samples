@@ -13,7 +13,7 @@ const assert = chai.assert;
 const {assertBlockXmlContentsMatch, CodeGenerationTestSuite,
   runCodeGenerationTestSuites} = testHelpers;
 
-suite('BlockTemplate', function() {
+suite('List create block', function() {
   /**
    * Asserts that the list block has the inputs and fields we expect.
    * @param {!Blockly.Block} block The list block.
@@ -136,7 +136,7 @@ suite('BlockTemplate', function() {
             expectedBlockContents);
       });
 
-      test('Child attached', function() {
+      test.skip('Child attached', function() {
         const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             `<block type="lists_create_with">
               <mutation items="4"></mutation>

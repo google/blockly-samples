@@ -67,14 +67,16 @@ export function runTestCases(testCases, createTestCallback) {
 /**
  * Runs provided test suite.
  * @param {Array<TestSuite<T>>} testSuites The test suites to run.
- * @param {function(TestSuite<T>):function(TestCase<T>):Function
+ * @param {function(TestSuite<T>):(function(T):Function)
  *    } createTestCaseCallback Creates test case callback using given test
  *    suite.
  * @template {TestCase} T
  */
 export function runTestSuites(testSuites, createTestCaseCallback) {
   testSuites.forEach((testSuite) => {
-    suite(testSuite.title, function() {
+    let suiteCall = (testSuite.skip ? suite.skip : suite);
+    suiteCall = (testSuite.only ? suite.only : suiteCall);
+    suiteCall(testSuite.title, function() {
       runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
     });
   });

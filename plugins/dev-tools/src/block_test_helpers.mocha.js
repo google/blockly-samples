@@ -6,8 +6,10 @@
 
 import {assert} from 'chai';
 import * as commonTestHelpers from './common_test_helpers.mocha';
+import * as Blockly from 'blockly/core';
 
 const {
+  runTestCases,
   runTestSuites,
   TestCase,
   TestSuite,
@@ -55,6 +57,28 @@ CodeGenerationTestSuite.prototype = new TestSuite();
  */
 CodeGenerationTestSuite.prototype.generator = undefined;
 
+/**
+ * Serialization test case.
+ * @extends {TestCase}
+ * @record
+ */
+export function SerializationTestCase() {}
+SerializationTestCase.prototype = new TestCase();
+/**
+ * @type {string} The xml to use for test.
+ */
+SerializationTestCase.prototype.xml = '';
+/**
+ * @type {string|undefined} The expected xml after round trip. Provided if
+ *    different from xml that is passed in.
+ */
+SerializationTestCase.prototype.expectedXml = '';
+/**
+ * A function that asserts tests has the expected structure after converting to
+ *    block from given xml.
+ * @param {Blockly.Block} The block to check.
+ */
+SerializationTestCase.prototype.assertBlockStructure = undefined;
 
 /**
  * Returns mocha test callback for code generation based on provided
@@ -65,12 +89,7 @@ CodeGenerationTestSuite.prototype.generator = undefined;
  * @private
  */
 const createCodeGenerationTestFn_ = (generator) => {
-  /**
-   * Returns mocha test callback based on test case.
-   * @param {CodeGenerationTestCase} testCase
-   * @return {function(CodeGenerationTestCase):Function}
-   */
-  const testFn = (testCase) => {
+  return (testCase) => {
     return function() {
       const block = testCase.createBlock(this.workspace);
       const tuple = generator.blockToCode(block);
@@ -90,7 +109,6 @@ const createCodeGenerationTestFn_ = (generator) => {
       }
     };
   };
-  return testFn;
 };
 
 /**
@@ -107,6 +125,51 @@ export const runCodeGenerationTestSuites = (testSuites) => {
   const createTestFn = (suiteInfo) => {
     return createCodeGenerationTestFn_(suiteInfo.generator);
   };
-  
+
   runTestSuites(testSuites, createTestFn);
+};
+
+/**
+ * Runs serialization test suite.
+ * @param {Array<SerializationTestCase>} testCases The test cases to run.]
+ */
+export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
+  // TODO(kozbial) remove tempBlocklyRef
+  tempBlocklyRef = tempBlocklyRef || Blockly;
+  /**
+   * Creates test callback for xmlToBlock test.
+   * @param {SerializationTestCase} testCase
+   * @return {function(SerializationTestCase):Function}
+   */
+  const createXmlToBlockTestCallback = (testCase) => {
+    return function() {
+      const block = tempBlocklyRef.Xml.domToBlock(tempBlocklyRef.Xml.textToDom(
+          testCase.xml), this.workspace);
+      testCase.assertBlockStructure(block);
+    };
+  };
+  /**
+   * Creates test callback for xml round trip test.
+   * @param {SerializationTestCase} testCase
+   * @return {function(SerializationTestCase):Function}
+   */
+  const createXmlRoundTripTestCallback = (testCase) => {
+    return function() {
+      const block = tempBlocklyRef.Xml.domToBlock(tempBlocklyRef.Xml.textToDom(
+          testCase.xml), this.workspace);
+      const generatedXml =
+          tempBlocklyRef.Xml.domToPrettyText(
+              tempBlocklyRef.Xml.blockToDom(block));
+      const expectedXml = testCase.expectedXml || testCase.xml;
+      assert.equal(generatedXml, expectedXml);
+    };
+  };
+  suite('Serialization', function() {
+    suite('xmlToBlock', function() {
+      runTestCases(testCases, createXmlToBlockTestCallback);
+    });
+    suite('xml round tripping', function() {
+      runTestCases(testCases, createXmlRoundTripTestCallback);
+    });
+  });
 };
