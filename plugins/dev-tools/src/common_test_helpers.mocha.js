@@ -57,7 +57,7 @@ TestSuite.prototype.testCases = [];
  *    callback using given test case.
  */
 export function runTestCases(testCases, createTestCallback) {
-  testCases.forEach((/** @type {TestCase} */testCase) => {
+  testCases.forEach(/** @type {TestCase} */(testCase) => {
     let testCall = (testCase.skip ? test.skip : test);
     testCall = (testCase.only ? test.only : testCall);
     testCall(testCase.title, createTestCallback(testCase));
@@ -73,7 +73,7 @@ export function runTestCases(testCases, createTestCallback) {
  *    suite.
  */
 export function runTestSuites(testSuites, createTestCaseCallback) {
-  testSuites.forEach((testSuite) => {
+  testSuites.forEach(/** @type {TestSuite} */(testSuite) => {
     let suiteCall = (testSuite.skip ? suite.skip : suite);
     suiteCall = (testSuite.only ? suite.only : suiteCall);
     suiteCall(testSuite.title, function() {
