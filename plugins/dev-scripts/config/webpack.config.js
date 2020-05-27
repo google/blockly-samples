@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const resolve = require('resolve');
+const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const appDirectory = fs.realpathSync(process.cwd());
@@ -21,23 +22,48 @@ module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
   const isProduction = mode === 'production';
+  const isTest = mode === 'test';
   const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
 
-  const srcEntry = `./src/index.${['js', 'ts'].find((ext) =>
-    fs.existsSync(resolveApp(`./src/index.${ext}`))
-  )}`;
-  const testEntry = `./test/index.${['js', 'ts'].find((ext) =>
-    fs.existsSync(resolveApp(`./test/index.${ext}`))
-  )}`;
+  let entry;
+  let outputFile;
+  let target = 'web';
+  if (isProduction) { // Production.
+    ['js', 'ts'].filter((ext) =>
+      fs.existsSync(resolveApp(`./src/index.${ext}`))
+    ).forEach((ext) => {
+      entry = `./src/index.${ext}`;
+    });
+    outputFile = 'index.js';
+  } else if (isDevelopment) { // Development.
+    ['js', 'ts'].filter((ext) =>
+      fs.existsSync(resolveApp(`./test/index.${ext}`))
+    ).forEach((ext) => {
+      entry = `./test/index.${ext}`;
+    });
+    outputFile = 'test_bundle.js';
+  } else if (isTest) { // Test.
+    // Create an entry point for each .mocha.js file.
+    fs.readdirSync('./test/')
+        .filter((file) => file.substr(-9) === '.mocha.js')
+        .forEach((file) => {
+          const entryName = file.replace(/\.mocha\.js/i, '');
+          if (!entry) entry = {};
+          entry[entryName] = `./test/${file}`;
+        });
+    outputFile = '[name].mocha.js';
+    target = 'node';
+  }
 
   return {
-    mode,
-    entry: isProduction ? srcEntry : testEntry,
+    target,
+    mode: isProduction ? 'production' : 'development',
+    entry: entry,
     devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
     output: {
       path: isProduction ? resolveApp('dist') : resolveApp('build'),
       publicPath: isProduction ? '/dist/' : '/build/',
-      filename: isProduction ? 'index.js' : 'test_bundle.js',
+      filename: outputFile,
       libraryTarget: 'umd',
       globalObject: 'this',
     },
@@ -105,6 +131,9 @@ module.exports = (env) => {
         ],
         silent: true,
       }),
+      // canvas should only be required by jsdom if the 'canvas' package is
+      // installed in package.json. Ignoring canvas require errors.
+      isTest && new webpack.IgnorePlugin(/canvas$/),
     ].filter(Boolean),
     externals: isProduction ? {
       'blockly/core': {

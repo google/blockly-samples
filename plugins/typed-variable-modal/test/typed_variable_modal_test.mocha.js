@@ -10,10 +10,10 @@
  */
 
 const assert = require('assert');
-const Blockly = require('blockly');
+const Blockly = require('blockly/node');
 const sinon = require('sinon');
 
-const TypedVariableModal = require('../dist/index.js').TypedVariableModal;
+const TypedVariableModal = require('../src/index.js').TypedVariableModal;
 
 suite('TypedVariableModal', () => {
   /**

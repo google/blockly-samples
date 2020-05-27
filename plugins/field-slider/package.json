@@ -8,7 +8,7 @@
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start",
-    "test": "npm run build && blockly-scripts test"
+    "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
