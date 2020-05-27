@@ -7,20 +7,22 @@
 const {testHelpers} = require('@blockly/dev-tools');
 const {FieldTemplate} = require('../dist/index');
 
-const {runConstructorSuiteTests, runFromJsonSuiteTests,
-  runSetValueTests} = testHelpers;
+const {
+  FieldCreationTestCase, FieldValueTestCase, runConstructorSuiteTests,
+  runFromJsonSuiteTests, runSetValueTests,
+} = testHelpers;
 
 suite('FieldTemplate', function() {
   /**
    * Configuration for field tests with invalid values.
-   * @type {Array<TestCase>}
+   * @type {Array<FieldCreationTestCase>}
    */
   const invalidValueTestCases = [
     // TODO
   ];
   /**
    * Configuration for field tests with valid values.
-   * @type {Array<TestCase>}
+   * @type {Array<FieldCreationTestCase>}
    */
   const validValueTestCases = [
     // TODO
@@ -40,7 +42,7 @@ suite('FieldTemplate', function() {
   /**
    * Asserts that the field properties are correct based on the test case.
    * @param {FieldTemplate} field The field to check.
-   * @param {TestCase} testCase The test case.
+   * @param {FieldValueTestCase} testCase The test case.
    */
   const validTestCaseAssertField = function(field, testCase) {
     // TODO

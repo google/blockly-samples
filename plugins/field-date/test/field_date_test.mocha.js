@@ -7,13 +7,15 @@
 const {testHelpers} = require('@blockly/dev-tools');
 const FieldDate = require('../dist/date_compressed');
 
-const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue, TestCase} = testHelpers;
+const {
+  assertFieldValue, FieldCreationTestCase, FieldValueTestCase,
+  runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
+} = testHelpers;
 
 suite('FieldDate', function() {
   /**
    * Configuration for field tests with invalid values.
-   * @type {Array<TestCase>}
+   * @type {Array<FieldCreationTestCase>}
    */
   const invalidValueTestCases = [
     {title: 'Undefined', value: undefined},
@@ -25,7 +27,7 @@ suite('FieldDate', function() {
   ];
   /**
    * Configuration for field tests with valid values.
-   * @type {Array<TestCase>}
+   * @type {Array<FieldCreationTestCase>}
    */
   const validValueTestCases = [
     {title: 'String', value: '3030-03-30', expectedValue: '3030-03-30'},
@@ -40,6 +42,12 @@ suite('FieldDate', function() {
   const assertFieldDefault = function(field) {
     assertFieldValue(field, defaultFieldValue);
   };
+
+  /**
+   * Asserts that the field properties are correct based on the test case.
+   * @param {FieldDate} field The field to check.
+   * @param {FieldValueTestCase} testCase The test case.
+   */
   const validTestCaseAssertField = function(field, testCase) {
     assertFieldValue(field, testCase.value);
   };

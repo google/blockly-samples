@@ -133,7 +133,7 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
   /**
    * Creates test callback for xmlToBlock test.
    * @param {SerializationTestCase} testCase The test case information.
-   * @return {function(SerializationTestCase):Function} The test callback.
+   * @return {Function} The test callback.
    */
   const createXmlToBlockTestCallback = (testCase) => {
     return function() {
@@ -145,7 +145,7 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
   /**
    * Creates test callback for xml round trip test.
    * @param {SerializationTestCase} testCase The test case information.
-   * @return {function(SerializationTestCase):Function} The test callback.
+   * @return {Function} The test callback.
    */
   const createXmlRoundTripTestCallback = (testCase) => {
     return function() {

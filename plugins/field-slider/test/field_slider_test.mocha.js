@@ -11,13 +11,16 @@ const {assertSliderField, assertSliderFieldDefault} = require(
 const {testHelpers} = require('@blockly/dev-tools');
 const {FieldSlider} = require('../dist/index');
 
-const {runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
-  assertFieldValue, TestCase, runTestCases} = testHelpers;
+const {
+  assertFieldValue, FieldCreationTestCase, FieldValueTestCase,
+  runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
+  runTestCases,
+} = testHelpers;
 
 suite('FieldSlider', function() {
   /**
    * Configuration for field tests with invalid values.
-   * @type {Array<TestCase>}
+   * @type {Array<FieldCreationTestCase>}
    */
   const invalidValueTestCases = [
     {title: 'Undefined', value: undefined},
@@ -27,7 +30,7 @@ suite('FieldSlider', function() {
   ];
   /**
    * Configuration for field tests with valid values.
-   * @type {Array<TestCase>}
+   * @type {Array<FieldCreationTestCase>}
    */
   const validValueTestCases = [
     {title: 'Integer', value: 1, expectedValue: 1},
@@ -51,7 +54,7 @@ suite('FieldSlider', function() {
   /**
    * Asserts that the field properties are correct based on the test case.
    * @param {FieldSlider} field The field to check.
-   * @param {TestCase} testCase The test case.
+   * @param {FieldValueTestCase} testCase The test case.
    */
   const validTestCaseAssertField = function(field, testCase) {
     assertSliderField(
