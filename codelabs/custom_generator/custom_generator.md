@@ -12,7 +12,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new
 ### What you'll learn
 - How to create a custom language generator.
 - How to create block generator definitions for existing blocks.
-- How to create block generator definitions for new block.
+- How to create block generator definitions for new blocks.
 - How to use a custom generator in the playground.
 
 ### What you'll build
@@ -119,11 +119,12 @@ var codelabToolbox = `
 <block type="text"><field name="TEXT"/></block>
 <block type="logic_boolean"><field name="BOOL">TRUE</field></block>
 <block type="logic_null"/>
-<block type="lists_create_with"><mutation items="3"/></block></xml>
+<block type="lists_create_with"><mutation items="3"/></block>
+</xml>
 `
 ```
 
-Then update the options struct in the playgound to use your new toolbox:
+Then update the options struct in the playground to use your new toolbox:
 
 ```js
 var defaultOptions = {
@@ -323,7 +324,7 @@ codelabGenerator['logic_boolean'] = function(block) {
 ### Summary
 
 - Value blocks return an array containing the value as a string and the precedence.
-- `getFieldValue` find the field with the specified name and returns its value.
+- `getFieldValue` finds the field with the specified name and returns its value.
 - The type of the return value from `getFieldValue` depends on the type of the field.
   - Each field type must document what its value represents.
 
