@@ -159,6 +159,8 @@ Other functions such as `blockToCode` are public so that you can use them in you
 
 Put a number block on the workspace, then click your button to call your generator.
 
+TODO: Add a screenshot.
+
 Check the console for the output. You should see an error:
 
 ```
@@ -226,7 +228,7 @@ myGenerator.PRECEDENCE = 0;
 
 ## Value block generators
 
-In this step you will build the generators for the simple value blocks: null, string, number, and boolean.
+In this step you will build the generators for the simple value blocks: `logic_null`, `text`, `math_number`, and `logic_boolean`.
 
 You will use `getFieldValue` on several types of fields.
 
@@ -302,7 +304,7 @@ The member block has a text input field and a value input. It generates code tha
 ```
 
 ### Input value
-`b` is whatever is attached to the value input. A variety of blocks could be attached there: string, number, boolean, null, or even an array. Use `valueToCode` to get the correct value:
+`b` is whatever is attached to the value input. A variety of blocks could be attached there:  `logic_null`, `text`, `math_number`, `logic_boolean`. or even an array (`lists_create_with`). Use `valueToCode` to get the correct value:
 
 ```js
 const value_name = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
@@ -314,14 +316,14 @@ const value_name = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
 - Generates the code for that block
 - Returns the code as a string
 
-If no block is attached, `valueToCode` returns `null`.
+If no block is attached, `valueToCode` returns `null`. In another generator you might need to replace `null` with a different default value; in JSON, `null` is fine.
 
 The third argument is related to operator precedence, as discussed in a previous section.
 
 ### Build the code string
 Next, assemble the arguments `a` and `b` into the correct code, of the form `"a": b,`.
 
-To generate clean code, you should also add a newline at the end of the statement.
+To generate clean code, add a newline at the end of the statement.
 
 ```js
 const code = '"' + text_member_name + '" : ' + value_name + ',\n'
@@ -344,21 +346,191 @@ myGenerator['member'] = function(block) {
 
 ## Array block generator
 
-(TODO: Write this section)
+In this step you will build the generator for the array block. You will learn how to indent code and handle a variable number of inputs.
 
-[ a, b ]
+The array block uses a mutator to dynamically change the number of inputs it has. The generated code looks like:
 
-This adds in a variable number of inputs.
+```json
+[
+  "one",
+  "two",
+  false,
+  true,
+]
+```
+
+As with member blocks, there are no restrictions on the types of blocks connected to inputs.
+
+### Gather values
+
+Each value input on the block has a name: `ADD0`, `ADD1`, etc. Use `valueToCode` in a loop to build an array of values:
+
+```js
+const elements = [];
+for (var i = 0; i < block.itemCount_; i++) {
+  let valueCode =  codelabGenerator.valueToCode(block, 'ADD' + i,
+      codelabGenerator.PRECEDENCE);
+  if (valueCode) {
+    elements.push(valueCode);
+  }
+}
+```
+
+Notice that we skip empty inputs by checking if `valueCode` is `null`.
+
+To include empty inputs, use the string `'null'` as the value.
+
+```js
+const values = [];
+for (var i = 0; i < block.itemCount_; i++) {
+  let valueCode =  codelabGenerator.valueToCode(block, 'ADD' + i,
+      codelabGenerator.PRECEDENCE) || 'null';
+  values.push(valueCode);
+}
+```
+
+### Format
+
+At this point `values` is an array of `string`s. The strings contain the generated code for each input.
+
+Convert the list into a single `string`, with newlines separating elements:
+
+```js
+let valueString = values.join(',\n');
+```
+
+Next, use `prefixLines` to add indentation at the beginning of each line:
+
+```js
+const indentedValueString =
+    codelabGenerator.prefixLines(valueString, codelabGenerator.INDENT);
+```
+
+`INDENT` is a property on the generator. It defaults to two spaces, but language generators may override it to increase indent or change to tabs.
+
+Finally, wrap the indented values in brackets and return the string:
+
+```js
+const codeString = '[\n' + indentedValueString + '\n]';
+return [codeString, codelabGenerator.PRECEDENCE];
+```
+
+### Putting it all together
+
+Here is the final array block generator:
+
+```js
+codelabGenerator['lists_create_with'] = function(block) {
+  const values = [];
+  for (var i = 0; i < block.itemCount_; i++) {
+    let valueCode = codelabGenerator.valueToCode(block, 'ADD' + i,
+        codelabGenerator.PRECEDENCE);
+    if (valueCode) {
+      values.push(valueCode);
+    }
+  }
+  const valueString = values.join(',\n');
+  const indentedValueString =
+      codelabGenerator.prefixLines(valueString, codelabGenerator.INDENT);
+  const codeString = '[\n' + indentedValueString + '\n]';
+  return [codeString, codelabGenerator.PRECEDENCE];
+};
+```
+
+Test the block generator by adding an array to your onscreen blocks an populating it.
+
+What code does it generate if you have no inputs?
+
+What if you have five inputs, one of which is empty?
 
 ## Object block generator
 
-(TODO: Write this section)
+In this section you will write the generator for the `object` block. You will learn how to use `statementToCode`.
 
+The `object` block generates code for a JSON Object. It has a single statement input, in which member blocks may be stacked.
+
+The generated code looks like this:
+
+```json
 {
-  "a": b,
+  "a": true,
+  "b": "one",
+  "c": 1,
 }
+```
 
-This uses a statement input.
+### Get the contents
+
+`statementToCode` does three things:
+- Finds the blocks connected to the named statement input (the second argument)
+- Generates the code for that block
+- Returns the code as a string
+
+In this case the input name is `'MEMBERS'`.
+
+```js
+const statement_members =
+    codelabGenerator.statementToCode(block, 'MEMBERS');
+```
+
+### Format and return
+
+Wrap the statements in brackets and return the code, using the default precedence:
+
+```js
+const code = '{\n' + statement_members + '}';
+return [code, codelabGenerator.PRECEDENCE];
+```
+
+### Test it
+
+Here is the full block generator:
+
+```js
+codelabGenerator['object'] = function(block) {
+  const statement_members =
+      codelabGenerator.statementToCode(block, 'MEMBERS');
+  const code = '{\n' + statement_members + '}';
+  return [code, codelabGenerator.PRECEDENCE];
+};
+```
+
+Test it by generating code for an `object` block containing a single `member` block. The result should look like this:
+
+```json
+{
+  "test": true
+}
+```
+
+Next, add a second member block and rerun the generator. Did the resulting code change?
+
+## Generating a stack
+
+In this step you will learn to generate code for a stack of statement blocks by overriding `scrub_`.
+
+### The scrub_ function
+
+The `scrub_` function is called on every block from `blockToCode`. It takes in three arguments:
+- `_block` is the current block.
+- `code` is the code generated for this block, which includes code from all attached value blocks.
+- `_opt_thisOnly` is an optional `boolean`. If true, code should be generated for this block but no subsequent blocks.
+
+By default, `scrub_` simply returns the passed-in code. A common pattern is to override the function to also generate code for any blocks that follow the current block in a stack:
+
+```js
+codelabGenerator.scrub_ = function(block, code, opt_thisOnly) {
+  const nextBlock =
+      block.nextConnection && block.nextConnection.targetBlock();
+  const nextCode =
+      opt_thisOnly ? '' : codelabGenerator.blockToCode(nextBlock);
+  return code +  nextCode;
+};
+```
+### Testing scrub_
+
+
+
 
 ## Putting it all together
 
@@ -366,9 +538,14 @@ This uses a statement input.
 
 Call the new generator to generate your code, and check the results.
 
+--Can generate linked value statements, but not stacks of statement blocks
+--implement scrub to ix that
+-- what about top level (naked) blocks?
+
 ## Summary
 
 (TODO: Write this section)
+(TODO: Add screenshots everywhere)
 
 In this section, recap the work the developer has done and suggest ways to use it.
 
