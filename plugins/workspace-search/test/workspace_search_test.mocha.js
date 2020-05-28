@@ -13,7 +13,7 @@ const assert = require('assert');
 const Blockly = require('blockly/node');
 const sinon = require('sinon');
 
-const WorkspaceSearch = require('../src/index').WorkspaceSearch;
+const {WorkspaceSearch} = require('../src/index');
 
 suite('WorkspaceSearch', () => {
   /**

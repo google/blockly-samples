@@ -13,7 +13,7 @@ const assert = require('assert');
 const Blockly = require('blockly/node');
 const sinon = require('sinon');
 
-const TypedVariableModal = require('../src/index.js').TypedVariableModal;
+const {TypedVariableModal} = require('../src/index.js');
 
 suite('TypedVariableModal', () => {
   /**
