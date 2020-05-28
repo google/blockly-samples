@@ -34,7 +34,7 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 ### The playground
 
-You will make all of your changes in the advanced playground, which you can find at `tests/advanced_playground.html`. This playground contains all of Blockly's base blocks, as well as some developer tools to make testing easier.
+You will make all of your changes in the advanced playground, which you can find at `tests/playgrounds/advanced_playground.html`. This playground contains all of Blockly's base blocks, as well as some developer tools to make testing easier.
 
 To start, create a file named `custom_generator.js` in the same folder as the playground.  Include it with a script tag.
 
@@ -207,7 +207,8 @@ sampleGenerator['sample_block'] = function(block) {
 ```
 
 ### Statement blocks
-Statement blocks represent code that does not have an output connection.
+
+Statement blocks represent code that does not return a value.
 
 A statement block's generator simply returns a string.
 
@@ -319,6 +320,7 @@ Calling `getFieldValue` on a dropdown field returns the value of the selected op
 codelabGenerator['logic_boolean'] = function(block) {
   const code = (block.getFieldValue('BOOL') == 'TRUE') ? 'true' : 'false';
   return [code, codelabGenerator.PRECEDENCE];
+};
 ```
 
 ### Summary
@@ -413,12 +415,12 @@ As with member blocks, there are no restrictions on the types of blocks connecte
 Each value input on the block has a name: `ADD0`, `ADD1`, etc. Use `valueToCode` in a loop to build an array of values:
 
 ```js
-const elements = [];
+const values = [];
 for (var i = 0; i < block.itemCount_; i++) {
   let valueCode = codelabGenerator.valueToCode(block, 'ADD' + i,
       codelabGenerator.PRECEDENCE);
   if (valueCode) {
-    elements.push(valueCode);
+    values.push(valueCode);
   }
 }
 ```
@@ -484,7 +486,9 @@ codelabGenerator['lists_create_with'] = function(block) {
 };
 ```
 
-Test the block generator by adding an array to your onscreen blocks an populating it.
+### Test it
+
+Test the block generator by adding an array to your onscreen blocks and populating it.
 
 What code does it generate if you have no inputs?
 
@@ -588,7 +592,7 @@ Next, add an `object` block and drag your `member` blocks into it, then click "T
 
 In this codelab you:
 - Built a custom language generator to generate JSON.
-- Defined block generators for built in blocks and for custom blocks
+- Defined block generators for built in blocks and for custom blocks.
 - Used your generator in the playground.
 - Learned how to use the core generator functions: `statementToCode`, `valueToCode`, `blockToCode`, and `getFieldValue`.
 - Learned how to generate code for stacks of blocks.
@@ -598,5 +602,6 @@ JSON is a simple language, and there are many additional features you may want t
 - Function definition and use.
 - Initialization and cleanup.
 - Injecting additional functions and variables.
+- Handling comments.
 
-Blockly ships with five language generators: Python, Dart, JavaScript, PHP, and Lua. You can find the language generators and block generators in the `generators` directory.
+Blockly ships with five language generators: Python, Dart, JavaScript, PHP, and Lua. You can find the language generators and block generators in the [generators directory](https://github.com/google/blockly/tree/master/generators).
