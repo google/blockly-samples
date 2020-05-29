@@ -1,6 +1,6 @@
 author: Rachel Fenichel, ewag
 summary: In this codelab, you’ll add Blockly editor to a simple web app, to allow users to program their own music keys.
-id: TEMPLATE-CODELAB-ID
+id: blockly-getting-started
 categories: blockly,codelab,MORE CATEGORIES
 status: Draft
 Feedback Link: https://github.com/google/blockly-samples/issues/new
@@ -51,7 +51,7 @@ The blockly repository contains several versions of the app:
 - `demos/codelab/app/`: The starting code that you'll build upon in this codelab.
 - `demos/codelab/app-complete/`: The code after completing the codelab, in case you get lost or want to compare to your version.
 
-## Install and verify web server
+### Install and verify web server
 
 TODO(fenichel): Remove web server integration if not needed.
 
@@ -87,8 +87,6 @@ Now visit your site in your web browser (by clicking on the highlighted Web Serv
 
 ## Explore the app
 
-Duration: 5:00
-
 ### Play Mode
 
 By default, the app launches in "**Play Mode**". In this mode, you can see 9 buttons. None of them can do anything yet. The idea is to let user define custom behaviors for each button, using Blockly.
@@ -112,7 +110,7 @@ Now that you know what you'll be building, let's add Blockly dependencies to the
 1. Navigate to `demos/codelab/app/.`
 1. Open the `index.html` file in a text editor.
 
-## Add Blockly javascript libraries
+### Add Blockly javascript libraries
 
 At the end of `index.html` you can see two scripts being imported:
 
@@ -157,7 +155,7 @@ A Blockly workspace consists of two parts:
 ![image](insert_image_url_here)
 
 
-## Define Blockly toolbox
+### Define Blockly toolbox
 
 TODO (fenichel): Decide whether to use the new JSON representation (not until it's released and debugged?)
 TODO (fenichel): Use es6 for sample code, and use a multiline string here.
@@ -185,7 +183,7 @@ For more information on this XML format and toolbox configuration, click <a href
 
 We set the display style of the toolbox to `none`, because we do not intend to display the XML structure on our web page - it will be just used to construct the toolbox programmatically.
 
-## Add Blockly workspace to the edit view
+### Add Blockly workspace to the edit view
 
 Now open `scripts/main.js`. Just before the end of the main function, add code to inject Blockly editor:
 
@@ -295,7 +293,7 @@ This step discussed how to manually define custom blocks in Blockly. Once you've
 
 Once the button behavior is defined by the user, it needs to be saved for later use.
 
-## Add the save method
+### Add the save method
 
 Open `scripts/main.js`. Add the following code to the `save()` method:
 
@@ -337,7 +335,6 @@ Now, test the code. Edit the workspace for one of the buttons, add some blocks, 
 
 ## Generate JavaScript code
 
-Duration: 7:00
 Now that each button can be configured with its own Blockly workspace, the next thing we want to do is to generate JavaScript code from each workspace.
 
 This generated code will be run by the browser, effectively executing the blocks set up in the Blockly workspace.
@@ -365,7 +362,7 @@ Blockly.JavaScript['play_sound'] = function(block) {
   var value = '\'' + block.getFieldValue('VALUE') + '\'';
   return 'MusicMaker.queueSound(' + value + ');\n';
 };
-````
+```
 
 With this translation function, the following `play_sound` block:
 
