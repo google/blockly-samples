@@ -6,16 +6,19 @@
 
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
-let addGUIControls;
-if (typeof window !== 'undefined') {
-  addGUIControls = require('./addGUIControls').default;
-}
 import * as testHelpers from './test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
-import {createPlayground} from './playground/';
-import {addCodeEditor} from './playground/monaco';
+
+let addGUIControls;
+let addCodeEditor;
+let createPlayground;
+if (typeof window !== 'undefined') {
+  addGUIControls = require('./addGUIControls').default;
+  addCodeEditor = require('./playground/monaco');
+  createPlayground = require('./playground/');
+}
 
 export {
   addGUIControls,
