@@ -14,11 +14,15 @@ import * as testHelpers from './test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
+import {createPlayground} from './playground/';
+import {addCodeEditor} from './playground/monaco';
 
 export {
   addGUIControls,
   DebugRenderer,
   generateFieldTestBlocks,
+  createPlayground,
+  addCodeEditor,
   populateRandom,
   testHelpers,
   toolboxCategories,

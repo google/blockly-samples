@@ -7,6 +7,12 @@ interface FieldGeneratorOptions {
   args: {[key: string]: unknown};
 }
 
+interface PlaygroundAPI {
+  addAction: (name: string, callback: (workspace: Blockly.Workspace) => void,
+    folder?: string) => void;
+  addGenerator: () => void;
+}
+
 declare namespace DevTools {
 
   /**
@@ -17,11 +23,27 @@ declare namespace DevTools {
   }
 
   /**
+   * An extension of dat.GUI with additional functionality.
+   */
+  export class GUI extends dat.GUI {
+    addAction(name: string, callback: (workspace: Blockly.Workspace) => void,
+      folder?: string): void;
+  }
+
+  /**
+   * Create the Blockly playground.
+   */
+  function createPlayground(container: HTMLElement, createWorkspace:
+  (blocklyDiv: HTMLElement, options: Blockly.BlocklyOptions) =>
+  Blockly.Workspace, defaultOptions: Blockly.BlocklyOptions,
+    vsEditorPath?: string): Promise<PlaygroundAPI>;
+
+  /**
    * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
    */
   function addGUIControls(createWorkspace:
   (options: Blockly.BlocklyOptions) => Blockly.Workspace,
-    defaultOptions: Blockly.BlocklyOptions): dat.GUI;
+    defaultOptions: Blockly.BlocklyOptions): GUI;
 
   /**
    * Generates a number of field testing blocks for a specific field and returns

@@ -36,7 +36,6 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     closeOnTop: true,
     width: 250,
   });
-  gui.close();
 
   const guiElement = gui.domElement;
   guiElement.style.position = 'absolute';
@@ -90,6 +89,10 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     onChangeInternal();
   };
 
+  // Options folder.
+  const optionsFolder = gui.addFolder('Options');
+  optionsFolder.open();
+
   const resetObj = {
     'Reset to Defaults': () => {
       saveOptions = {
@@ -100,13 +103,15 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
           .forEach((key) => DebugRenderer.config[key] = false);
       onChangeInternal();
     }};
-  gui.add(resetObj, 'Reset to Defaults');
 
-  gui.add(options, 'RTL').name('rtl').onChange((value) =>
+  optionsFolder.add(resetObj, 'Reset to Defaults');
+
+  optionsFolder.add(options, 'RTL').name('rtl').onChange((value) =>
     onChange('rtl', value));
 
   // Renderer.
-  gui.add(options, 'renderer', Object.keys(Blockly.blockRendering.rendererMap_))
+  optionsFolder.add(options, 'renderer',
+      Object.keys(Blockly.blockRendering.rendererMap_))
       .onChange((value) => onChange('renderer', value));
 
   // Theme.
@@ -120,12 +125,13 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   if (defaultOptions.theme) {
     themes[defaultOptions.theme.name] = defaultOptions.theme;
   }
-  gui.add(options.theme, 'name', Object.keys(themes)).name('theme')
+  optionsFolder.add(options.theme, 'name', Object.keys(themes)).name('theme')
       .onChange((value) => onChange('theme', themes[value]));
 
   // Toolbox.
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
-  gui.add(options, 'toolboxPosition', toolboxSides).name('toolboxPosition')
+  optionsFolder.add(options, 'toolboxPosition', toolboxSides)
+      .name('toolboxPosition')
       .onChange((value) => {
         const side = Object.keys(toolboxSides).find((key) =>
           toolboxSides[key] == value);
@@ -136,7 +142,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       });
 
   // Basic options.
-  const basicFolder = gui.addFolder('Basic');
+  const basicFolder = optionsFolder.addFolder('Basic');
   basicFolder.add(options, 'readOnly').onChange((value) =>
     onChange('readOnly', value));
   basicFolder.add(options, 'hasTrashcan').name('trashCan').onChange((value) =>
@@ -151,7 +157,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     onChange('comments', value));
 
   // Move options.
-  const moveFolder = gui.addFolder('Move');
+  const moveFolder = optionsFolder.addFolder('Move');
   moveFolder.add(options.moveOptions, 'scrollbars').onChange((value) =>
     onChange('move', {
       ...saveOptions.move,
@@ -169,7 +175,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     }));
 
   // Zoom options.
-  const zoomFolder = gui.addFolder('Zoom');
+  const zoomFolder = optionsFolder.addFolder('Zoom');
   zoomFolder.add(options.zoomOptions, 'controls').onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
@@ -197,7 +203,7 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     })).step(0.05);
 
   // Grid options.
-  const gridFolder = gui.addFolder('Grid');
+  const gridFolder = optionsFolder.addFolder('Grid');
   gridFolder.add(options.gridOptions, 'spacing', 0, 50).onChange((value) =>
     onChange('grid', {
       ...saveOptions.grid,
@@ -229,6 +235,95 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       onChangeInternal();
     })
   );
+
+  // GUI actions.
+  const actionsFolder = gui.addFolder('Actions');
+  const actionSubFolders = {};
+  const actions = {};
+
+  const devGui = /** @type {*} */ (gui);
+  devGui.addAction = (name, callback, folderName) => {
+    actions[name] = callback(workspace);
+    let folder = actionsFolder;
+    if (folderName) {
+      if (actionSubFolders[folderName]) {
+        folder = actionSubFolders[folderName];
+      } else {
+        folder = actionsFolder.addFolder(folderName);
+        folder.open();
+        actionSubFolders[folderName] = folder;
+      }
+    }
+    const controller = folder.add(actions, name);
+    if (name) {
+      controller.name(name);
+    }
+  };
+
+  // Visibility actions.
+  devGui.addAction('Show', (workspace) => {
+    return () => {
+      workspace.setVisible(true);
+    };
+  }, 'Visibility');
+  devGui.addAction('Hide', (workspace) => {
+    return () => {
+      workspace.setVisible(false);
+    };
+  }, 'Visibility');
+
+  // Block actions.
+  devGui.addAction('Clear', (workspace) => {
+    return () => {
+      workspace.clear();
+    };
+  }, 'Blocks');
+  devGui.addAction('Format', (workspace) => {
+    return () => {
+      workspace.cleanUp();
+    };
+  }, 'Blocks');
+
+  // Undo/Redo actions.
+  devGui.addAction('Undo', (workspace) => {
+    return () => {
+      workspace.undo();
+    };
+  }, 'Undo/Redo');
+  devGui.addAction('Redo', (workspace) => {
+    return () => {
+      workspace.undo(true);
+    };
+  }, 'Undo/Redo');
+  devGui.addAction('Clear Undo Stack', (workspace) => {
+    return () => {
+      workspace.clearUndo();
+    };
+  }, 'Undo/Redo');
+
+  // Scale actions.
+  devGui.addAction('Zoom to Fit', (workspace) => {
+    return () => {
+      workspace.zoomToFit();
+    };
+  }, 'Scale');
+
+  // Accessibility actions.
+  devGui.addAction('Keyboard', (workspace) => {
+    return () => {
+      if (workspace.keyboardAccessibilityMode) {
+        Blockly.navigation.disableKeyboardAccessibility();
+      } else {
+        Blockly.navigation.enableKeyboardAccessibility();
+      }
+    };
+  }, 'Accessibility');
+  devGui.addAction('Navigate All', (workspace) => {
+    return () => {
+      Blockly.ASTNode.NAVIGATE_ALL_FIELDS =
+        !Blockly.ASTNode.NAVIGATE_ALL_FIELDS;
+    };
+  }, 'Accessibility');
 
   return gui;
 }
