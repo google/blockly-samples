@@ -15,7 +15,11 @@ This codelab will teach you how to modify a simple web app to include the [Block
 
 ### What is Blockly?
 
-Blockly is a library for building block programming apps. Block programming allows users to create scripts and programs by using visual blocks, even if they do not know any programming language. Blockly includes everything you need for defining and rendering blocks in a drag-n-drop editor. Each block represents a chunk of code that can be easily stacked and translated into code. It can be used to let users customize components and add behaviors to parts of the app.
+Blockly is a library for building block programming apps.
+
+Block programming allows users to create scripts and programs by using visual blocks, even if they do not know any programming language.
+
+Blockly includes everything you need for defining and rendering blocks in a drag-n-drop editor. Each block represents a chunk of code that can be easily stacked and translated into code.
 
 ### What you'll build
 
@@ -23,11 +27,10 @@ MusicMaker, a web  app where you can program buttons to play different sounds, u
 
 ### What you'll need
 
--  Chrome web browser
--  [Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb), or your own web server of choice
+-  A browser
 -  A text editor
 -  Basic knowledge of HTML, CSS and JavaScript
--  The sample code, see **Get setup** section for instructions
+-  The starter code, see **Get setup** section for instructions
 
 This codelab is focused on Blockly. The app structure, non-relevant concepts and code are glossed over and are provided for you to simply copy and paste.
 
@@ -37,60 +40,33 @@ This codelab is focused on Blockly. The app structure, non-relevant concepts and
 
 You can get the sample code for this code by either downloading the zip here:
 
-[Download zip](https://github.com/google/blockly/archive/master.zip)
+[Download zip](https://github.com/google/blockly-samples/archive/master.zip)
 
 or by cloning this git repo:
 
 ```bash
-git clone https://github.com/google/blockly.git
+git clone https://github.com/google/blockly-samples.git
 ```
 
-If you downloaded the source as a zip, unpacking it should give you a root folder `blockly-master`.
+If you downloaded the source as a zip, unpacking it should give you a root folder `blockly-samples-master`.
 
-The blockly repository contains several versions of the app:
-- `demos/codelab/app/`: The starting code that you'll build upon in this codelab.
-- `demos/codelab/app-complete/`: The code after completing the codelab, in case you get lost or want to compare to your version.
+The relevant files are in `examples/getting-started-codelab`. There are two versions of the app:
+- `starter-code/`: The starter code that you'll build upon in this codelab.
+- `complete-code/`: The code after completing the codelab, in case you get lost or want to compare to your version.
 
-### Install and verify web server
-
-TODO(fenichel): Remove web server integration if not needed.
-
-While you're free to use your own web server, this codelab is designed to work well with the Chrome Web Server. If you don't have that app installed yet, you can install it from the Chrome Web Store.
-
-[Install Web Server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
-
-After installing the Web Server for Chrome app, click on the Apps shortcut on the bookmarks bar:
-
-![image](insert_image_url_here)
-
-In the ensuing window, click on the Web Server icon:
-
-![image](insert_image_url_here)
-
-You'll see this dialog next, which allows you to configure your local web server:
-
-![image](insert_image_url_here)
-
-Click the **choose folder** button, and select the blockly root folder. This will enable you to serve your work in progress via the URL highlighted in the web server dialog (in the **Web Server URL(s)** section).
-
-Under Options, check the box next to "Automatically show index.html", as shown below:
-
-![image](insert_image_url_here)
-
-Then stop and restart the server by sliding the toggle labeled "Web Server: STARTED" to the left and then back to the right.
-
-![image](insert_image_url_here)
-
-Now visit your site in your web browser (by clicking on the highlighted Web Server URL). In the browser, navigate to the **demos/codelab/app** directory. You should see a page that looks like this:
-
-![image](insert_image_url_here)
+Each folder contains:
+- `scripts/`
+- `sounds/`
+- `styles/`
+- `index.html`
 
 ## Explore the app
+
+To run the app, simply open `starter-code/index.html` in a browser.
 
 ### Play Mode
 
 By default, the app launches in "**Play Mode**". In this mode, you can see 9 buttons. None of them can do anything yet. The idea is to let user define custom behaviors for each button, using Blockly.
-
 
 ![image](insert_image_url_here)
 
@@ -104,49 +80,56 @@ You can go back to the play mode by tapping **SAVE** and then **DONE** buttons.
 
 ## Add Blockly libraries
 
+Now that you know what you'll be building, you need to add Blockly dependencies to your app.
 
-Now that you know what you'll be building, let's add Blockly dependencies to the app.
+Blockly releases are [published on npm](https://www.npmjs.com/package/blockly) on a quarterly basis. For this codelab you will import blockly using [unkpg](https://unpkg.com), which lets you import all of the files you need with a single script tag.
 
-1. Navigate to `demos/codelab/app/.`
-1. Open the `index.html` file in a text editor.
-
-### Add Blockly javascript libraries
-
-At the end of `index.html` you can see two scripts being imported:
-
--  `scripts/main.js` - this is the main logic for the app. Currently it has all the code needed to navigate and switch between views in the basic app
--  `scripts/music_maker.js` - a small library to play sounds. It will be used by our Blockly code to actually play sounds in the browser.
-
-Add Blockly scripts just before these two scripts. The order is important, because we will use Blockly objects later in main.js.
-First, include the core Blockly script and the core blocks set.
+Open `starter-code/index.html` in a text editor and scroll to the end. You can see two script tags:
 
 ```html
-<script src="../../../blockly_compressed.js"></script>
-<script src="../../../blocks_compressed.js"></script>
+<script src="scripts/music_maker.js"></script>
+<script src="scripts/main.js"></script>
 ```
 
-Then include the messages the blocks are using for the user's language (in this case English):
+`main.js` contains the main logic for the app. In the starter project it has all the code needed to navigate and switch between views in the basic app.
+
+`music_maker.js` is a small library to play sounds. We will use it to actually play sounds in the browser.
+
+Add Blockly just before these two scripts. The order is important, because you will use Blockly objects later in `main.js`.
 
 ```html
-<script src="../../../msg/js/en.js"></script>
+<script src="https://unpkg.com/blockly/blockly.min.js"></script>
+<script src="scripts/music_maker.js"></script>
+<script src="scripts/main.js"></script>
 ```
 
-These paths assume the codelab's relative location in the source code. When building your own app it should be the relative path to your version of these files.
+### Default imports
 
-TODO(fenichel): Either use the npm import, or point to blockly-samples to show how to include it in other ways.
+Importing Blockly this way loads four default modules.
+- Blockly core: The main Blockly library, which defines the basic Blockly UI and logic.
+- Built-in block definitions: Common blocks such as loops, logic, math, and string manipulation.
+- The JavaScript generator: Converts blocks into JavaScript, and contains block generators for all built-in blocks.
+- English language files: String tables for all messages on built-in blocks and the Blockly UI, in English.
 
-TODO(fenichel): Decide if the code should be in blockly-samples.
+### Alternate imports
 
+There are many ways to import a library in JavaScript, and this tutorial does not cover all of them. For samples that show how to integrate Blockly in your project, look at the `examples` folder in [blockly-samples](https://github.com/google/blockly-samples).
+
+You can also define your imports more carefully, to get [different generators](https://www.npmjs.com/package/blockly#blockly-generators) and [locales](https://www.npmjs.com/package/blockly#blockly-languages).
 
 ## Add Blockly workspace
 
-In `index.html`, in the `<main>` section, you can see a div with the id "blockly-div":
+A Blockly editor is created with a call to `Blockly.inject(container, options)`. This function takes two arguments:
+- `container` is where the Blockly workspace should be placed on the page. It can be an `Element`, an ID string, or a CSS selector.
+- `options` is a dictionary of configuration options.
+
+In `index.html`, in the `<main>` section, you can see a div with the id `"blockly-div"`:
 
 ```html
 <div id="blockly-div" style="height: 480px; width: 400px;"></div>
 ```
 
-This is where we will insert a lockly editor. The div has a defined width and height, because we will insert a [fixed size workspace](https://developers.google.com/blockly/guides/configure/web/fixed-size) into it.
+This is where we will insert a Blockly editor. The div has a defined width and height, because we will insert a [fixed size workspace](https://developers.google.com/blockly/guides/configure/web/fixed-size) into it.
 
 A Blockly workspace consists of two parts:
 - An area where the blocks to be converted to code are assembled
@@ -189,7 +172,6 @@ Now open `scripts/main.js`. Just before the end of the main function, add code t
 
 ```js
 Blockly.inject('blockly-div', {
-  media: '../../../media/',
   toolbox: document.getElementById('toolbox'),
   toolboxPosition: 'end',
   horizontalLayout: true,
