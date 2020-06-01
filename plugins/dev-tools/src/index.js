@@ -16,8 +16,8 @@ let addCodeEditor;
 let createPlayground;
 if (typeof window !== 'undefined') {
   addGUIControls = require('./addGUIControls').default;
-  addCodeEditor = require('./playground/monaco');
-  createPlayground = require('./playground/');
+  addCodeEditor = require('./playground/monaco').addCodeEditor;
+  createPlayground = require('./playground/').createPlayground;
 }
 
 export {
