@@ -5,7 +5,7 @@
  */
 
 const {testHelpers} = require('@blockly/dev-tools');
-const {FieldTemplate} = require('../dist/index');
+const {FieldTemplate} = require('../src/index');
 
 const {runConstructorSuiteTests, runFromJsonSuiteTests,
   runSetValueTests} = testHelpers;

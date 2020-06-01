@@ -19,6 +19,7 @@
 const path = require('path');
 const fs = require('fs');
 
+const chalk = require('chalk');
 const webpack = require('webpack');
 const webpackConfig = require('../config/webpack.config');
 
@@ -32,6 +33,12 @@ console.log(`Running production build for ${packageJson.name}`);
 const config = webpackConfig({
   mode: 'production',
 });
+if (!config.entry) {
+  console.log(`${chalk.red(`Configuration error.`)}
+Make sure a ${chalk.red('src/index.(js|ts)')} file is included in your package.
+`);
+  process.exit(1);
+}
 
 // Create and run the webpack compiler.
 webpack(config, (err, stats) => {

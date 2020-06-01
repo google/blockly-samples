@@ -42,6 +42,13 @@ console.log(`Running start for ${packageJson.name}`);
 const config = webpackConfig({
   mode: 'development',
 });
+if (!config.entry) {
+  console.log(`${chalk.red(`Configuration error.`)}
+Make sure a ${chalk.red('test/index.(js|ts)')} file is included in your package.
+`);
+  process.exit(1);
+}
+
 let compiler;
 try {
   compiler = webpack(config);

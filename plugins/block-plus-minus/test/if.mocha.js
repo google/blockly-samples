@@ -1,8 +1,8 @@
 const chai = require('chai');
 const assert = chai.assert;
-const Blockly = require('blockly');
+const Blockly = require('blockly/node');
 
-require('../dist/index');
+require('../src/index');
 
 suite('if & ifelse', () => {
   /**
