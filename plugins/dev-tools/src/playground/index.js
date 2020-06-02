@@ -50,7 +50,7 @@ export function createPlayground(container, createWorkspace,
 
   // Load the code editor.
   return addCodeEditor(monacoDiv, {
-    value: '',
+    model: null,
     language: 'xml',
     minimap: {
       enabled: false,
@@ -212,6 +212,18 @@ export function createPlayground(container, createWorkspace,
       contextMenuOrder: 1,
       run: () => {
         updateEditor();
+      },
+    });
+    editor.addAction({
+      id: 'clean-xml',
+      label: 'Clean XML',
+      precondition: 'isEditorXml',
+      contextMenuGroupId: 'playground',
+      contextMenuOrder: 2,
+      run: () => {
+        const model = editor.getModel();
+        const text = model.getValue();
+        model.setValue(text.replace(/ (x|y|id)="[^"]*"/gmi, ''));
       },
     });
     // Add a Generator generate action.
