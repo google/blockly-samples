@@ -17,7 +17,7 @@ import * as BlocklyDart from 'blockly/dart';
 import * as BlocklyPHP from 'blockly/php';
 
 import {renderPlayground, renderCheckbox, renderCodeTab} from './ui';
-import {addCodeEditor, displayCode, displayErrorMessage} from './monaco';
+import {addCodeEditor} from './monaco';
 import addGUIControls from '../addGUIControls';
 
 /**
@@ -61,6 +61,9 @@ export function createPlayground(container, createWorkspace,
   }, vsEditorPath).then((editor) => {
     let workspace;
 
+    // Create a model for displaying errors.
+    const errorModel = window.monaco.editor.createModel('');
+
     // TODO(samelh): Sync playground settings with localStorage.
     const playgroundSettings = {
       activeTab: 0,
@@ -78,31 +81,64 @@ export function createPlayground(container, createWorkspace,
      *     contains the newly created tab element, and an update method.
      */
     function registerGenerator(name, language, generator, isReadOnly) {
-      const tab = renderCodeTab(name);
+      const tabElement = renderCodeTab(name);
+      tabsDiv.appendChild(tabElement);
+
+      // Create a monaco editor model for each tab.
+      const model = window.monaco.editor.createModel('', language);
+      const state = {
+        model,
+        viewState: undefined,
+      };
+
       /**
        * Call the generator, displaying an error message if it fails.
        */
       function generate() {
+        let code;
+        let hasError = false;
+        let generateModel = model;
         try {
-          const code = generator(workspace);
-          displayCode(editor, code, language, isReadOnly);
+          code = generator(workspace);
           isEditorXml.set(language == 'xml');
         } catch (e) {
           console.error(e);
-          displayErrorMessage(editor, e.message);
+          code = e.message;
+          hasError = true;
+          generateModel = errorModel;
         }
+        generateModel.setValue(code);
+        editor.setModel(generateModel);
+        editor.updateOptions({
+          readOnly: hasError ? false : isReadOnly,
+          wordWrap: hasError ? true : false,
+        });
       }
-      tab.addEventListener('click', () => {
-        markActive(tab);
-        updateEditor = generate;
-        updateEditor();
-      });
-      tabsDiv.appendChild(tab);
 
-      return {
-        tab,
+      tabElement.addEventListener('click', () => {
+        // Save current tab state (eg: scroll position).
+        currentTab.state.viewState = editor.saveViewState();
+
+        setActiveTab(tab);
+
+        updateEditor = generate;
+        if (autoGenerate) {
+          updateEditor();
+        } else {
+          editor.setModel(model);
+        }
+
+        // Restore tab state (eg: scroll position).
+        editor.restoreViewState(currentTab.state.viewState);
+        editor.focus();
+      });
+
+      const tab = {
         generate,
+        state,
+        tabElement,
       };
+      return tab;
     }
 
     // Add tabs.
@@ -120,9 +156,11 @@ export function createPlayground(container, createWorkspace,
       registerGenerator('PHP', 'php',
           (ws) => BlocklyPHP.workspaceToCode(ws), true),
     ];
-    const markActive = (tab) => {
+    const setActiveTab = (tab) => {
+      currentTab = tab;
       tabs.forEach((t) =>
-        t.tab.style.background = (t.tab == tab) ? '#1E1E1E' : '#2D2D2D');
+        t.tabElement.style.background =
+          (t.tabElement == tab.tabElement) ? '#1E1E1E' : '#2D2D2D');
     };
     // Add tab buttons.
     const [autoGenerateButton, autoGenerateLabel] =
@@ -133,41 +171,62 @@ export function createPlayground(container, createWorkspace,
       autoGenerate = !!e.target.checked;
       if (autoGenerate) {
         updateEditor();
+      } else {
+        editor.setModel(currentTab.state.model);
       }
     });
     tabButtons.appendChild(autoGenerateButton);
     tabButtons.appendChild(autoGenerateLabel);
 
-    // Mark the initial tab as active.
-    const initialTab = tabs[playgroundSettings.activeTab];
-    let updateEditor = initialTab.generate;
-    markActive(initialTab.tab);
+    // Set the initial tab as active.
+    let currentTab = tabs[playgroundSettings.activeTab];
+    let updateEditor = currentTab.generate;
+    setActiveTab(currentTab);
 
     // Add editor commands.
     const isEditorXml = editor.createContextKey('isEditorXml', true);
+    // Add XMl Import action (only available on the XML tab).
     editor.addAction({
       id: 'import-xml',
-      label: 'Import',
+      label: 'Import from XML',
       keybindings: [
         window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.KEY_I,
       ],
       precondition: 'isEditorXml',
-      contextMenuGroupId: 'navigation',
-      contextMenuOrder: 1.5,
+      contextMenuGroupId: 'playground',
+      contextMenuOrder: 0,
       run: () => {
         const xml = editor.getModel().getValue();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
       },
     });
+    // Add XMl Export action (only available on the XML tab).
     editor.addAction({
       id: 'export-xml',
-      label: 'Export',
+      label: 'Export to XML',
       keybindings: [
         window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.KEY_S,
       ],
-      contextMenuGroupId: 'navigation',
-      contextMenuOrder: 1.5,
-      run: updateEditor,
+      precondition: 'isEditorXml',
+      contextMenuGroupId: 'playground',
+      contextMenuOrder: 1,
+      run: () => {
+        updateEditor();
+      },
+    });
+    // Add a Generator generate action.
+    editor.addAction({
+      id: 'generate',
+      label: 'Generate',
+      keybindings: [
+        window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.KEY_S,
+      ],
+      precondition: '!isEditorXml',
+      contextMenuGroupId: 'playground',
+      contextMenuOrder: 1,
+      run: () => {
+        updateEditor();
+      },
     });
 
     // Load the GUI controls.

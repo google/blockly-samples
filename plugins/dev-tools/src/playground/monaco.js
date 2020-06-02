@@ -75,37 +75,3 @@ function checkFileExists(url) {
   return http.status != 404;
 }
 
-/**
- * Display an error message in the current editor.
- * @param {monaco.editor.IStandaloneCodeEditor} editor The current editor.
- * @param {string} message The error message to display.
- */
-export function displayErrorMessage(editor, message) {
-  const model = editor.getModel();
-  model.setValue(message);
-
-  editor.updateOptions({
-    readOnly: true,
-    wordWrap: true,
-  });
-  window.monaco.editor.setModelLanguage(model, 'javascript');
-}
-
-/**
- * Display code in the current editor.
- * @param {monaco.editor.IStandaloneCodeEditor} editor The current editor.
- * @param {string} code The code to display.
- * @param {string} language The language of the code.
- * @param {boolean} isReadOnly Whether or not the editor should display in
- *     read-only mode.
- */
-export function displayCode(editor, code, language, isReadOnly) {
-  const model = editor.getModel();
-  window.monaco.editor.setModelLanguage(model, language);
-  model.setValue(code);
-
-  editor.updateOptions({
-    readOnly: isReadOnly,
-    wordWrap: false,
-  });
-}
