@@ -10,10 +10,10 @@
  */
 
 const assert = require('assert');
-const Blockly = require('blockly');
+const Blockly = require('blockly/node');
 const sinon = require('sinon');
 
-const Modal = require('../dist/index.js').Modal;
+const Modal = require('../src/index.js').Modal;
 
 suite('Modal', () => {
   setup(() => {

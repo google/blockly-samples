@@ -5,10 +5,11 @@
  */
 
 const chai = require('chai');
-const Blockly = require('blockly');
 const {testHelpers} = require('@blockly/dev-tools');
 const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
-require('../dist/index');
+const Blockly = require('blockly/node');
+
+require('../src/index');
 
 const assert = chai.assert;
 

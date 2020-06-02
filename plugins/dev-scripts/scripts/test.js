@@ -13,39 +13,71 @@
 
 'use strict';
 
-const Mocha = require('mocha');
 const fs = require('fs');
 const path = require('path');
+
+const chalk = require('chalk');
+const Mocha = require('mocha');
+const webpack = require('webpack');
+const webpackConfig = require('../config/webpack.config');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
-console.log(`Running test for ${packageJson.name}`);
+console.log(`Building tests for ${packageJson.name}`);
 
-const testDir = resolveApp('test');
+const config = webpackConfig({
+  mode: 'test',
+});
+if (!config.entry) {
+  console.log(chalk.red(`Configuration error.`) + '\n' +
+  'Make sure at least one ' + chalk.red('test/*.mocha.js') + ' file is ' +
+  'included in your package.\n');
+  process.exit(1);
+}
 
 let mochaConfig = {
   ui: 'tdd',
 };
 // If custom configuration exists, use that instead.
+const testDir = resolveApp('test');
 if (fs.existsSync(path.join(testDir, '.mocharc.js'))) {
   mochaConfig = require(path.join(testDir, '.mocharc.js'));
 }
 
-// Instantiate a Mocha instance.
-const mocha = new Mocha(mochaConfig);
+// Create and run the webpack compiler.
+webpack(config, (err, stats) => {
+  if (err) {
+    console.error(err.stack || err);
+    if (err.details) {
+      console.error(err.details);
+    }
+    return;
+  }
+  console.log(stats.toString({
+    chunks: false, // Makes the build much quieter
+    colors: true, // Shows colors in the console
+  }));
 
-// Run mocha for each mocha .js file.
-fs.readdirSync(testDir).filter((file) => {
-  // Only keep the .mocha.js files
-  return file.substr(-9) === '.mocha.js';
-}).forEach((file) => {
-  mocha.addFile(path.join(testDir, file));
-});
+  // Run mocha.
+  console.log(`Running tests for ${packageJson.name}`);
 
-// Run the tests.
-mocha.run((failures) => {
-  // exit with non-zero status if there were failures.
-  process.exitCode = failures ? 1 : 0;
+  // Instantiate a Mocha instance.
+  const mocha = new Mocha(mochaConfig);
+
+  // Run mocha for each built mocha .js file.
+  const testOutputDir = 'build';
+  fs.readdirSync(testOutputDir).filter((file) => {
+    // Only keep the .mocha.js files
+    return file.substr(-9) === '.mocha.js';
+  }).forEach((file) => {
+    mocha.addFile(path.join(testOutputDir, file));
+  });
+
+  // Run the tests.
+  mocha.run((failures) => {
+    // exit with non-zero status if there were failures.
+    process.exitCode = failures ? 1 : 0;
+  });
 });

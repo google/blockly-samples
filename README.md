@@ -2,7 +2,7 @@
 Blockly Samples <br /> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" /> </a>
 </h1>
 
-Plugins, codelabs, and exapmles related to the [Blockly](https://github.com/google/blockly) library.
+Plugins, codelabs, and examples related to the [Blockly](https://github.com/google/blockly) library.
 
 This repository has three sections:
 
