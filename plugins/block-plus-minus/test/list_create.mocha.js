@@ -166,7 +166,7 @@ suite('List create block', function() {
           },
     },
   ];
-  runSerializationTestSuite(testCases, Blockly);
+  runSerializationTestSuite(testCases);
 
   runPlusMinusTestSuite('lists_create_with', 3, 0, 'ADD',
       assertListBlockStructure);

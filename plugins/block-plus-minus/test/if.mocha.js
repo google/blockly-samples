@@ -132,7 +132,7 @@ suite('If block', function() {
           },
     },
   ];
-  runSerializationTestSuite(testCases, Blockly);
+  runSerializationTestSuite(testCases);
 
   runPlusMinusTestSuite('controls_if', 1, 1, 'IF',
       assertIfBlockStructure);

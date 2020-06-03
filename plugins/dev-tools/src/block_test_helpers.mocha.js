@@ -125,11 +125,8 @@ export const runCodeGenerationTestSuites = (testSuites) => {
 /**
  * Runs serialization test suite.
  * @param {Array<SerializationTestCase>} testCases The test cases to run.
- * @param {*} tempBlocklyRef A reference to Blockly (temporary workaround).
  */
-export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
-  // TODO(kozbial) remove tempBlocklyRef param and replace with Blockly
-  tempBlocklyRef = tempBlocklyRef || Blockly;
+export const runSerializationTestSuite = (testCases) => {
   /**
    * Creates test callback for xmlToBlock test.
    * @param {SerializationTestCase} testCase The test case information.
@@ -137,7 +134,7 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
    */
   const createXmlToBlockTestCallback = (testCase) => {
     return function() {
-      const block = tempBlocklyRef.Xml.domToBlock(tempBlocklyRef.Xml.textToDom(
+      const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
           testCase.xml), this.workspace);
       testCase.assertBlockStructure(block);
     };
@@ -149,11 +146,11 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
    */
   const createXmlRoundTripTestCallback = (testCase) => {
     return function() {
-      const block = tempBlocklyRef.Xml.domToBlock(tempBlocklyRef.Xml.textToDom(
+      const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
           testCase.xml), this.workspace);
       const generatedXml =
-          tempBlocklyRef.Xml.domToPrettyText(
-              tempBlocklyRef.Xml.blockToDom(block));
+          Blockly.Xml.domToPrettyText(
+              Blockly.Xml.blockToDom(block));
       const expectedXml = testCase.expectedXml || testCase.xml;
       assert.equal(generatedXml, expectedXml);
     };
@@ -164,7 +161,7 @@ export const runSerializationTestSuite = (testCases, tempBlocklyRef) => {
     });
     suite('xml round-trip', function() {
       setup(function() {
-        sinon.stub(tempBlocklyRef.utils, 'genUid').returns('1');
+        sinon.stub(Blockly.utils, 'genUid').returns('1');
       });
 
       teardown(function() {

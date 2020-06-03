@@ -155,7 +155,7 @@ suite('Text join block', function() {
           },
     },
   ];
-  runSerializationTestSuite(testCases, Blockly);
+  runSerializationTestSuite(testCases);
 
   runPlusMinusTestSuite('text_join', 2, 0, 'ADD',
       assertTextJoinBlockStructure);
