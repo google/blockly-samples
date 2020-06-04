@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "0.20200313.8",
+  "version": "0.20200313.9",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -42,7 +42,7 @@
     "monaco-editor": "^0.20.0"
   },
   "devDependencies": {
-    "@blockly/dev-scripts": "^0.20200403.7",
+    "@blockly/dev-scripts": "^0.20200403.8",
     "@types/dat.gui": "^0.7.5",
     "blockly": "^3.20200123.1"
   },
