@@ -120,9 +120,7 @@ export function addGUIControls(createWorkspace, defaultOptions) {
     onChange('rtl', value));
 
   // Renderer.
-  optionsFolder.add(options, 'renderer',
-      Object.keys(Blockly.blockRendering.rendererMap_))
-      .onChange((value) => onChange('renderer', value));
+  populateRendererOption(optionsFolder, options, onChange);
 
   // Theme.
   const themes = {
@@ -241,6 +239,22 @@ function populateBasicOptions(basicFolder, options, onChange) {
     onChange('collapse', value));
   basicFolder.add(options, 'comments').onChange((value) =>
     onChange('comments', value));
+}
+
+/**
+ * Populate the renderer option.
+ * @param {dat.GUI} folder The dat.GUI folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateRendererOption(folder, options, onChange) {
+  // Get the list of renderers. Previous versions of Blockly used the
+  // rendererMap_, whereas newer versions that use the global registry get their
+  // list of renderers from somewhere else.
+  const renderers = Blockly.blockRendering.rendererMap_ ||
+      Blockly.registry.typeMap_['renderer'];
+  folder.add(options, 'renderer', Object.keys(renderers))
+      .onChange((value) => onChange('renderer', value));
 }
 
 /**
