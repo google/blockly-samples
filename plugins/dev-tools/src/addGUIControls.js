@@ -242,7 +242,7 @@ function populateBasicOptions(basicFolder, options, onChange) {
 }
 
 /**
- * Populate move options.
+ * Populate the renderer option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Blockly.Options} options Blockly options.
  * @param {function(string, string):void} onChange On Change method.
