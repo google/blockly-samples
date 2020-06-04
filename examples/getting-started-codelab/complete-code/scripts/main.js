@@ -9,8 +9,7 @@
 
   function handlePlay(event) {
     loadWorkspace(event.target);
-    Blockly.JavaScript.addReservedWords('code');
-    var code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+    let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
     code += 'MusicMaker.play();';
     // Eval can be dangerous. For more controlled execution, check
     // https://github.com/NeilFraser/JS-Interpreter.
@@ -30,8 +29,7 @@
   }
 
   function save(button) {
-    let xml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
-    button.blocklyXml = xml;
+    button.blocklyXml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
   }
 
   function handleSave() {
@@ -69,8 +67,6 @@
 
   Blockly.inject('blockly-div', {
     toolbox: document.getElementById('toolbox'),
-    toolboxPosition: 'end',
-    horizontalLayout: true,
-    scrollbars: false
+    scrollbars: false,
   });
 })();

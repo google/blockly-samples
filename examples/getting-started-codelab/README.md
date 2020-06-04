@@ -1,6 +1,6 @@
-# Blockly for the Web codelab
+# Blockly getting started codelab
 
-Code for the [Blockly for the Web codelab](https://developers.google.com/TODO).
+Code for the [Blockly getting started codelab](https://blocklycodelabs.dev/getting-started/index.html).
 
 In this codelab, you'll learn how to use Blockly JavaScript library
 to add a block code editor to a web application.
@@ -13,4 +13,4 @@ to add a block code editor to a web application.
 * How to generate and run JavaScript code from blocks.
 
 Example code for each step of the codelab is available from
-the [completed](completed/) directory.
+the [completed](complete-code/) directory.
