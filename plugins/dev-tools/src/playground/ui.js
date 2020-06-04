@@ -27,7 +27,7 @@ export function renderPlayground(container) {
   container.style.height = '100vh';
   container.style.width = '100vw';
   container.style.userSelect = 'none';
-  container.style.background = '#1D1D1D';
+  container.style.background = '#E4E4E4';
 
   // Blockly area.
 
