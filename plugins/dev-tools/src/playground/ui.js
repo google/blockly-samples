@@ -18,6 +18,7 @@
  *     monacoDiv: HTMLElement,
  *     guiContainer: HTMLElement,
  *     tabsDiv: HTMLElement,
+ *     tabButtons: HTMLElement,
  * }} An object with the various playground components.
  */
 export function renderPlayground(container) {

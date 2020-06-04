@@ -7,10 +7,18 @@ interface FieldGeneratorOptions {
   args: {[key: string]: unknown};
 }
 
+interface PlaygroundTab {
+  generate: () => void;
+  state: any;
+  tabElement: HTMLElement;
+}
+
 interface PlaygroundAPI {
   addAction: (name: string, callback: (workspace: Blockly.Workspace) => void,
-    folder?: string) => void;
+    folder?: string) => dat.GUI;
   addGenerator: () => void;
+  getCurrentTab: () => PlaygroundTab;
+  getWorkspace: () => Blockly.WorkspaceSvg;
 }
 
 declare namespace DevTools {
@@ -26,8 +34,9 @@ declare namespace DevTools {
    * An extension of dat.GUI with additional functionality.
    */
   export class GUI extends dat.GUI {
+    getWorkspace: () => Blockly.WorkspaceSvg;
     addAction(name: string, callback: (workspace: Blockly.Workspace) => void,
-      folder?: string): void;
+      folder?: string): dat.GUI;
   }
 
   /**
