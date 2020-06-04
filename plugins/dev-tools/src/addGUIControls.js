@@ -252,7 +252,7 @@ function populateRendererOption(folder, options, onChange) {
   // rendererMap_, whereas newer versions that use the global registry get their
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
-    Blockly.registry.typeMap_['renderer'];
+      Blockly.registry.typeMap_['renderer'];
   folder.add(options, 'renderer', Object.keys(renderers))
       .onChange((value) => onChange('renderer', value));
 }
