@@ -9,7 +9,7 @@
  * @fileoverview Plugin overview.
  */
 
-// TODOO: Rename plugin and edit plugin description.
+// TODO: Rename plugin and edit plugin description.
 /**
  * Plugin description.
  */

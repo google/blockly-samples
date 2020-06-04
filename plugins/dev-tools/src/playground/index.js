@@ -126,8 +126,10 @@ export function createPlayground(container, createWorkspace,
             wordWrap: true,
           });
         }
-        generateModel.setValue(text);
+        generateModel.pushEditOperations([],
+            [{range: generateModel.getFullModelRange(), text}], () => null);
         editor.setModel(generateModel);
+        editor.setSelection(new window.monaco.Range(0, 0, 0, 0));
       }
 
       const tab = {
@@ -168,6 +170,12 @@ export function createPlayground(container, createWorkspace,
      */
     const updateEditor = () => {
       if (playgroundState.get('autoGenerate')) {
+        if (initialWorkspaceXml && isFirstLoad) {
+          isFirstLoad = false;
+          Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(initialWorkspaceXml),
+              workspace);
+        }
+
         currentGenerate();
 
         playgroundState.set('workspaceXml', Blockly.Xml.domToPrettyText(
@@ -217,6 +225,7 @@ export function createPlayground(container, createWorkspace,
     const initialWorkspaceXml = playgroundState.get('workspaceXml') || '';
     const xmlTab = tabs['XML'];
     const xmlModel = xmlTab.state.model;
+    let isFirstLoad = true;
     xmlModel.setValue(initialWorkspaceXml);
     xmlModel.onDidChangeContent(() => {
       playgroundState.set('workspaceXml', xmlModel.getValue());
@@ -232,13 +241,7 @@ export function createPlayground(container, createWorkspace,
     const gui = addGUIControls((options) => {
       workspace = createWorkspace(blocklyDiv, options);
 
-      if (playgroundState.get('autoGenerate')) {
-        if (initialWorkspaceXml) {
-          Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(initialWorkspaceXml),
-              workspace);
-        }
-        updateEditor();
-      }
+      updateEditor();
       workspace.addChangeListener((e) => {
         if (e.type !== 'ui') {
           updateEditor();
@@ -310,7 +313,7 @@ export function createPlayground(container, createWorkspace,
     };
 
     // Add tab buttons.
-    registerTabButtons(editor, playground, tabButtons);
+    registerTabButtons(editor, playground, tabButtons, updateEditor);
 
     // Register editor commands.
     registerEditorCommands(editor, playground);
@@ -324,8 +327,9 @@ export function createPlayground(container, createWorkspace,
  * @param {monaco.editor.IStandaloneCodeEditor} editor The monaco editor.
  * @param {PlaygroundAPI} playground The current playground.
  * @param {!HTMLElement} tabButtons Tab buttons element wrapper.
+ * @param {function():void} updateEditor Update Editor method.
  */
-function registerTabButtons(editor, playground, tabButtons) {
+function registerTabButtons(editor, playground, tabButtons, updateEditor) {
   const [autoGenerateCheckbox, autoGenerateLabel] =
     renderCheckbox('autoGenerate', 'Auto');
   /** @type {HTMLInputElement} */ (autoGenerateCheckbox).checked =
@@ -334,11 +338,8 @@ function registerTabButtons(editor, playground, tabButtons) {
     const inputTarget = /** @type {HTMLInputElement} */ (e.target);
     playground.state.set('autoGenerate', !!inputTarget.checked);
     playground.state.save();
-    if (playground.state.get('autoGenerate')) {
-      playground.getCurrentTab().generate();
-    } else {
-      editor.setModel(playground.getCurrentTab().state.model);
-    }
+
+    updateEditor();
   });
   tabButtons.appendChild(autoGenerateCheckbox);
   tabButtons.appendChild(autoGenerateLabel);
@@ -355,7 +356,7 @@ function registerEditorCommands(editor, playground) {
     id: 'import-xml',
     label: 'Import from XML',
     keybindings: [
-      window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.KEY_I,
+      window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.Enter,
     ],
     precondition: 'isEditorXml',
     contextMenuGroupId: 'playground',
@@ -388,8 +389,10 @@ function registerEditorCommands(editor, playground) {
     contextMenuOrder: 2,
     run: () => {
       const model = editor.getModel();
-      const text = model.getValue();
-      model.setValue(text.replace(/ (x|y|id)="[^"]*"/gmi, ''));
+      const text = model.getValue().replace(/ (x|y|id)="[^"]*"/gmi, '');
+      model.pushEditOperations([],
+          [{range: model.getFullModelRange(), text}], () => null);
+      editor.setSelection(new window.monaco.Range(0, 0, 0, 0));
     },
   });
   // Add a Generator generate action.
