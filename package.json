@@ -8,6 +8,7 @@
         "boot": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna run clean",
+        "clean:node": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
         "license": "gulp checkLicenses",
         "lint": "lerna run lint",
         "postinstall": "npm run boot",

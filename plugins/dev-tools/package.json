@@ -37,11 +37,12 @@
     "src"
   ],
   "dependencies": {
-    "@types/dat.gui": "^0.7.5",
     "chai": "^4.2.0",
-    "dat.gui": "^0.7.7"
+    "dat.gui": "^0.7.7",
+    "monaco-editor": "^0.20.0"
   },
   "devDependencies": {
+    "@types/dat.gui": "^0.7.5",
     "@blockly/dev-scripts": "^0.20200403.6",
     "blockly": "^3.20200123.1"
   },

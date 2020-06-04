@@ -142,6 +142,36 @@ module.exports = (env) => {
         commonjs2: 'blockly/core',
         amd: 'blockly/core',
       },
+      'blockly/javascript': {
+        root: 'Blockly.JavaScript',
+        commonjs: 'blockly/javascript',
+        commonjs2: 'blockly/javascript',
+        amd: 'blockly/javascript',
+      },
+      'blockly/python': {
+        root: 'Blockly.Python',
+        commonjs: 'blockly/python',
+        commonjs2: 'blockly/python',
+        amd: 'blockly/python',
+      },
+      'blockly/dart': {
+        root: 'Blockly.Dart',
+        commonjs: 'blockly/dart',
+        commonjs2: 'blockly/dart',
+        amd: 'blockly/dart',
+      },
+      'blockly/php': {
+        root: 'Blockly.PHP',
+        commonjs: 'blockly/php',
+        commonjs2: 'blockly/php',
+        amd: 'blockly/php',
+      },
+      'blockly/lua': {
+        root: 'Blockly.Lua',
+        commonjs: 'blockly/lua',
+        commonjs2: 'blockly/lua',
+        amd: 'blockly/lua',
+      },
     } : {},
   };
 };
