@@ -23,8 +23,14 @@ import {DebugRenderer} from './debugRenderer';
  * @return {dat.GUI} The dat.GUI instance.
  */
 export function addGUIControls(createWorkspace, defaultOptions) {
+  const hash = window.location.hash;
   const guiState = JSON.parse(localStorage.getItem('guiState') ||
       '{"options":{},"debug":{}}');
+  if (hash) {
+    hash.replace(/#?([^=&]+)=([^=&]+)/gm, function(_m0, m1, m2) {
+      guiState.options[m1] = m2;
+    });
+  }
   let saveOptions = {
     ...defaultOptions,
     ...guiState.options,
@@ -79,6 +85,11 @@ export function addGUIControls(createWorkspace, defaultOptions) {
     onResize();
     // Save GUI control options to local storage.
     localStorage.setItem('guiState', JSON.stringify(guiState));
+    // Save GUI state into window.hash:
+    window.location.hash = Object.keys(guiState.options)
+        .filter((k) => typeof guiState.options[k] != 'object')
+        .map((k) => `${k}=${guiState.options[k]}`)
+        .join('&');
     // Update options.
     Object.assign(options, workspace.options);
     gui.updateDisplay();
