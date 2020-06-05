@@ -1,8 +1,8 @@
 # Blockly getting started codelab
 
-Code for the [Blockly getting started codelab](https://blocklycodelabs.dev/getting-started/index.html).
+Code for the [Blockly getting started codelab](https://blocklycodelabs.dev/codelabs/getting-started/index.html).
 
-In this codelab, you'll learn how to use Blockly JavaScript library
+In this codelab, you'll learn how to use the Blockly JavaScript library
 to add a block code editor to a web application.
 
 ## What you'll learn

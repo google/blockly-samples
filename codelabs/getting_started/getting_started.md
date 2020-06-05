@@ -23,7 +23,7 @@ Blockly includes everything you need for defining and rendering blocks in a drag
 
 ### What you'll build
 
-MusicMaker, a web  app where you can program buttons to play different sounds, using Blockly.
+MusicMaker, a web app where you can program buttons to play different sounds, using Blockly.
 
 ![image](play_mode.png)
 
@@ -101,7 +101,7 @@ Open `starter-code/index.html` in a text editor and scroll to the end. You can s
 Add Blockly just before these two scripts. The order is important, because you will use Blockly objects later in `main.js`.
 
 ```html
-<script src="https://unpkg.com/blockly/blockly.min.js"></script>
+<script src="https://unpkg.com/blockly"></script>
 <script src="scripts/music_maker.js"></script>
 <script src="scripts/main.js"></script>
 ```
@@ -140,7 +140,7 @@ For more information on this XML format and toolbox configuration, including cat
 
 ### Define the toolbox
 
-Add the structure of the toolbox just after the `blockly-div`:
+Add the structure of the toolbox just after the `blocklyDiv`:
 
 ```xml
 <xml id="toolbox" style="display: none">
@@ -166,10 +166,10 @@ The function to call is `Blockly.inject(container, options)`, which takes two ar
 - `container` is where the Blockly workspace should be placed on the page. It can be an `Element`, an ID string, or a CSS selector.
 - `options` is a dictionary of configuration options.
 
-For this codelab we will inject into a div with the id `"blockly-div"`, which you can find in `index.html`:
+For this codelab we will inject into a div with the id `"blocklyDiv"`, which you can find in `index.html`:
 
 ```html
-<div id="blockly-div" style="height: 480px; width: 400px;"></div>
+<div id="blocklyDiv" style="height: 480px; width: 400px;"></div>
 ```
 
 ### Create the workspace
@@ -177,7 +177,7 @@ For this codelab we will inject into a div with the id `"blockly-div"`, which yo
 Now open `scripts/main.js`. Just before the end of the main function, add code to inject Blockly editor:
 
 ```js
-Blockly.inject('blockly-div', {
+Blockly.inject('blocklyDiv', {
   toolbox: document.getElementById('toolbox'),
   scrollbars: false
 });
@@ -268,13 +268,13 @@ Now we can update the toolbox to include the new sound block, by adding `<block 
 </xml>
 ```
 
-Run the app one more time, and play around with the new "Play (sound)" block. It should look like this:
+Run the app one more time, and play around with the new `Play (sound)` block. It should look like this:
 
 ![image](workspace_with_toolbox.png)
 
 ### The block factory
 
-This step discussed how to manually define custom blocks in Blockly. Once you've completed the entire codelab, we recommend that you check out our <a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools">block factory tool</a>, which helps automate part of this process.
+This step discussed how to manually define custom blocks in Blockly. Once you've completed the entire codelab, we recommend that you check out our [block factory tool](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools), which helps automate part of this process.
 
 ## Save/load workspace
 

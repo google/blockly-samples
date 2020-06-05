@@ -65,7 +65,7 @@
 
   enableMakerMode();
 
-  Blockly.inject('blockly-div', {
+  Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
     scrollbars: false,
   });
