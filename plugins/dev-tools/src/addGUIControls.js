@@ -241,7 +241,7 @@ function populateRendererOption(folder, options, onChange) {
   // rendererMap_, whereas newer versions that use the global registry get their
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
-      Blockly.registry.typeMap_['renderer'];
+      (Blockly.registry && Blockly.registry.typeMap_['renderer']);
   folder.add(options, 'renderer', Object.keys(renderers))
       .onChange((value) => onChange('renderer', value));
 }
@@ -255,7 +255,7 @@ function populateRendererOption(folder, options, onChange) {
  */
 function populateThemeOption(folder, options, defaultOptions, onChange) {
   let themes;
-  if (Blockly.registry.typeMap_['theme']) {
+  if (Blockly.registry && Blockly.registry.typeMap_['theme']) {
     // Using a version of Blockly that registers themes.
     themes = Blockly.registry.typeMap_['theme'];
   } else {
