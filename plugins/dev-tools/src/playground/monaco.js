@@ -25,7 +25,6 @@ export function addCodeEditor(container, options, vsEditorPath) {
           break;
         }
       }
-      console.log('sortd', vsEditorPath);
     }
 
     const onLoad = () => {
