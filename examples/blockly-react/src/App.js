@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,6 +34,10 @@ import './blocks/customblocks';
 import './generator/generator';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.simpleWorkspace = React.createRef();
+  }
 
   generateCode = () => {
     var code = BlocklyJS.workspaceToCode(this.simpleWorkspace.workspace);
@@ -46,7 +50,7 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <button onClick={this.generateCode}>Convert</button>
-          <BlocklyComponent ref={e => this.simpleWorkspace = e}
+          <BlocklyComponent ref={this.simpleWorkspace}
           readOnly={false} trashcan={true} media={'media/'}
           move={{
             scrollbars: true,

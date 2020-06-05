@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,13 +31,18 @@ import 'blockly/blocks';
 Blockly.setLocale(locale);
 
 class BlocklyComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.blocklyDiv = React.createRef();
+        this.toolbox = React.createRef();
+    }
 
     componentDidMount() {
         const { initialXml, children, ...rest } = this.props;
         this.primaryWorkspace = Blockly.inject(
-            this.blocklyDiv,
+            this.blocklyDiv.current,
             {
-                toolbox: this.toolbox,
+                toolbox: this.toolbox.current,
                 ...rest
             },
         );
@@ -59,8 +64,8 @@ class BlocklyComponent extends React.Component {
         const { children } = this.props;
 
         return <React.Fragment>
-            <div ref={e => this.blocklyDiv = e} id="blocklyDiv" />
-            <xml xmlns="https://developers.google.com/blockly/xml" is="blockly" style={{ display: 'none' }} ref={(toolbox) => { this.toolbox = toolbox; }}>
+            <div ref={this.blocklyDiv} id="blocklyDiv" />
+            <xml xmlns="https://developers.google.com/blockly/xml" is="blockly" style={{ display: 'none' }} ref={this.toolbox}>
                 {children}
             </xml>
         </React.Fragment>;
