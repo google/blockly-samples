@@ -123,18 +123,7 @@ export function addGUIControls(createWorkspace, defaultOptions) {
   populateRendererOption(optionsFolder, options, onChange);
 
   // Theme.
-  const themes = {
-    'classic': Blockly.Themes.Classic,
-    'dark': Blockly.Themes.Dark,
-    'deuteranopia': Blockly.Themes.Deuteranopia,
-    'highcontrast': Blockly.Themes.HighContrast,
-    'tritanopia': Blockly.Themes.Tritanopia,
-  };
-  if (defaultOptions.theme) {
-    themes[defaultOptions.theme.name] = defaultOptions.theme;
-  }
-  optionsFolder.add(options.theme, 'name', Object.keys(themes)).name('theme')
-      .onChange((value) => onChange('theme', themes[value]));
+  populateThemeOption(optionsFolder, options, defaultOptions, onChange);
 
   // Toolbox.
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
@@ -252,9 +241,38 @@ function populateRendererOption(folder, options, onChange) {
   // rendererMap_, whereas newer versions that use the global registry get their
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
-      Blockly.registry.typeMap_['renderer'];
+      (Blockly.registry && Blockly.registry.typeMap_['renderer']);
   folder.add(options, 'renderer', Object.keys(renderers))
       .onChange((value) => onChange('renderer', value));
+}
+
+/**
+ * Populate the theme option.
+ * @param {dat.GUI} folder The dat.GUI folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {Blockly.Options} defaultOptions Default Blockly options.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateThemeOption(folder, options, defaultOptions, onChange) {
+  let themes;
+  if (Blockly.registry && Blockly.registry.typeMap_['theme']) {
+    // Using a version of Blockly that registers themes.
+    themes = Blockly.registry.typeMap_['theme'];
+  } else {
+    // Fall back to a pre-set list of themes.
+    themes = {
+      'classic': Blockly.Themes.Classic,
+      'dark': Blockly.Themes.Dark,
+      'deuteranopia': Blockly.Themes.Deuteranopia,
+      'highcontrast': Blockly.Themes.HighContrast,
+      'tritanopia': Blockly.Themes.Tritanopia,
+    };
+    if (defaultOptions.theme) {
+      themes[defaultOptions.theme.name] = defaultOptions.theme;
+    }
+  }
+  folder.add(options.theme, 'name', Object.keys(themes)).name('theme')
+      .onChange((value) => onChange('theme', themes[value]));
 }
 
 /**

@@ -71,7 +71,11 @@ function createEditor(container, options) {
 function checkFileExists(url) {
   const http = new XMLHttpRequest();
   http.open('HEAD', url, false);
-  http.send();
+  try {
+    http.send();
+  } catch (_e) {
+    return false;
+  }
   return http.status != 404;
 }
 
