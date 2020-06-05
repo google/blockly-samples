@@ -9,41 +9,33 @@
  */
 
 import * as Blockly from 'blockly';
-import {addGUIControls} from '@blockly/dev-tools';
+import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
 import '../src/index';
 
-Blockly.defineBlocksWithJsonArray([
+const toolbox = generateFieldTestBlocks('field_template', [
   {
-    'type': 'test_field',
-    'message0': 'test: %1',
-    'args0': [
-      {
-        'type': 'field_template',
-        'name': 'FIELDNAME',
-        'value': 0, // TODO: change default value
-        'alt':
-        {
-          'type': 'field_label',
-          'text': 'NO_SLIDER_FIELD',
-        },
-      },
-    ],
-    'style': 'math_blocks',
-  }]);
+    'args': {
+      'value': 0, // TODO: change default value
+    },
+  },
+]);
 
 /**
- * Test page startup, sets up Blockly.
+ * Create a workspace.
+ * @param {HTMLElement} blocklyDiv The blockly container div.
+ * @param {!Blockly.BlocklyOptions} options The Blockly options.
+ * @return {!Blockly.WorkspaceSvg} The created workspace.
  */
-function start(): void {
-  const defaultOptions = {
-    toolbox:
-      `<xml xmlns="https://developers.google.com/blockly/xml">
-      <block type='test_field'></block>
-    </xml>`,
-  };
-  addGUIControls((options) => {
-    return Blockly.inject('blocklyDiv', options);
-  }, defaultOptions);
+function createWorkspace(blocklyDiv: HTMLElement,
+    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+  const workspace = Blockly.inject(blocklyDiv, options);
+  return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', start);
+document.addEventListener('DOMContentLoaded', function() {
+  const defaultOptions = {
+    toolbox,
+  };
+  createPlayground(document.getElementById('root'), createWorkspace,
+      defaultOptions);
+});

@@ -22,13 +22,21 @@ import {DebugRenderer} from './debugRenderer';
  *     to use.
  * @return {dat.GUI} The dat.GUI instance.
  */
-export default function addGUIControls(createWorkspace, defaultOptions) {
-  let guiControlOptions =
-    JSON.parse(localStorage.getItem('guiControlOptions') || '{}');
+export function addGUIControls(createWorkspace, defaultOptions) {
+  const hash = window.location.hash;
+  const guiState = JSON.parse(localStorage.getItem('guiState') ||
+      '{"options":{},"debug":{}}');
+  if (hash) {
+    hash.replace(/#?([^=&]+)=([^=&]+)/gm, function(_m0, m1, m2) {
+      guiState.options[m1] = m2;
+    });
+  }
   let saveOptions = {
     ...defaultOptions,
-    ...guiControlOptions,
+    ...guiState.options,
   };
+  initDebugRenderer(guiState.debug);
+
   let workspace = createWorkspace(saveOptions);
 
   const gui = new dat.GUI({
@@ -36,7 +44,6 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     closeOnTop: true,
     width: 250,
   });
-  gui.close();
 
   const guiElement = gui.domElement;
   guiElement.style.position = 'absolute';
@@ -77,8 +84,12 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     // Resize the gui.
     onResize();
     // Save GUI control options to local storage.
-    localStorage.setItem('guiControlOptions',
-        JSON.stringify(guiControlOptions));
+    localStorage.setItem('guiState', JSON.stringify(guiState));
+    // Save GUI state into window.hash:
+    window.location.hash = Object.keys(guiState.options)
+        .filter((k) => typeof guiState.options[k] != 'object')
+        .map((k) => `${k}=${guiState.options[k]}`)
+        .join('&');
     // Update options.
     Object.assign(options, workspace.options);
     gui.updateDisplay();
@@ -86,27 +97,31 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
 
   const onChange = (key, value) => {
     saveOptions[key] = value;
-    guiControlOptions[key] = value;
+    guiState.options[key] = value;
     onChangeInternal();
   };
 
   const resetObj = {
-    'Reset to Defaults': () => {
+    'Reset': () => {
       saveOptions = {
         ...defaultOptions,
       };
-      guiControlOptions = {};
-      Object.keys(DebugRenderer.config)
-          .forEach((key) => DebugRenderer.config[key] = false);
+      guiState.options = {};
+      initDebugRenderer(guiState.debug, true);
       onChangeInternal();
     }};
-  gui.add(resetObj, 'Reset to Defaults');
 
-  gui.add(options, 'RTL').name('rtl').onChange((value) =>
+  gui.add(resetObj, 'Reset');
+
+  // Options folder.
+  const optionsFolder = gui.addFolder('Options');
+
+  optionsFolder.add(options, 'RTL').name('rtl').onChange((value) =>
     onChange('rtl', value));
 
   // Renderer.
-  gui.add(options, 'renderer', Object.keys(Blockly.blockRendering.rendererMap_))
+  optionsFolder.add(options, 'renderer',
+      Object.keys(Blockly.blockRendering.rendererMap_))
       .onChange((value) => onChange('renderer', value));
 
   // Theme.
@@ -120,12 +135,13 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
   if (defaultOptions.theme) {
     themes[defaultOptions.theme.name] = defaultOptions.theme;
   }
-  gui.add(options.theme, 'name', Object.keys(themes)).name('theme')
+  optionsFolder.add(options.theme, 'name', Object.keys(themes)).name('theme')
       .onChange((value) => onChange('theme', themes[value]));
 
   // Toolbox.
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
-  gui.add(options, 'toolboxPosition', toolboxSides).name('toolboxPosition')
+  optionsFolder.add(options, 'toolboxPosition', toolboxSides)
+      .name('toolboxPosition')
       .onChange((value) => {
         const side = Object.keys(toolboxSides).find((key) =>
           toolboxSides[key] == value);
@@ -136,7 +152,83 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       });
 
   // Basic options.
-  const basicFolder = gui.addFolder('Basic');
+  const basicFolder = optionsFolder.addFolder('Basic');
+  populateBasicOptions(basicFolder, options, onChange);
+
+  // Move options.
+  const moveFolder = optionsFolder.addFolder('Move');
+  populateMoveOptions(moveFolder, options, saveOptions, onChange);
+
+  // Zoom options.
+  const zoomFolder = optionsFolder.addFolder('Zoom');
+  populateZoomOptions(zoomFolder, options, saveOptions, onChange);
+
+  // Grid options.
+  const gridFolder = optionsFolder.addFolder('Grid');
+  populateGridOptions(gridFolder, options, saveOptions, onChange);
+
+  // Debug renderer.
+  const debugFolder = gui.addFolder('Debug');
+  populateDebugOptions(debugFolder, guiState.debug, onChangeInternal);
+
+  // GUI actions.
+  const actionsFolder = gui.addFolder('Actions');
+  const actionSubFolders = {};
+  const actions = {};
+
+  /**
+   * Get the current workspace.
+   * @return {!Blockly.WorkspaceSvg} The Blockly workspace.
+   */
+  const getWorkspace = () => {
+    return workspace;
+  };
+
+  /**
+   * Add a custom action to the list of playground actions.
+   * @param {string} name The action label.
+   * @param {function(!Blockly.Workspace):void} callback The callback to call
+   *     when the action is clicked.
+   * @param {string=} folderName Optional folder to place the action under.
+   * @return {dat.GUI} The GUI controller.
+   */
+  const addAction = (name, callback, folderName) => {
+    actions[name] = () => {
+      callback(workspace);
+    };
+    let folder = actionsFolder;
+    if (folderName) {
+      if (actionSubFolders[folderName]) {
+        folder = actionSubFolders[folderName];
+      } else {
+        folder = actionsFolder.addFolder(folderName);
+        folder.open();
+        actionSubFolders[folderName] = folder;
+      }
+    }
+    const controller = folder.add(actions, name);
+    if (name) {
+      controller.name(name);
+    }
+    return controller;
+  };
+
+  const devGui = /** @type {?} */ (gui);
+  devGui.addAction = addAction;
+  devGui.getWorkspace = getWorkspace;
+
+  addActions(devGui);
+
+  return devGui;
+}
+
+/**
+ * Populate basic options.
+ * @param {dat.GUI} basicFolder The dat.GUI basic folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateBasicOptions(basicFolder, options, onChange) {
   basicFolder.add(options, 'readOnly').onChange((value) =>
     onChange('readOnly', value));
   basicFolder.add(options, 'hasTrashcan').name('trashCan').onChange((value) =>
@@ -149,9 +241,16 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
     onChange('collapse', value));
   basicFolder.add(options, 'comments').onChange((value) =>
     onChange('comments', value));
+}
 
-  // Move options.
-  const moveFolder = gui.addFolder('Move');
+/**
+ * Populate move options.
+ * @param {dat.GUI} moveFolder The dat.GUI move options folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {Blockly.Options} saveOptions Saved Blockly options.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateMoveOptions(moveFolder, options, saveOptions, onChange) {
   moveFolder.add(options.moveOptions, 'scrollbars').onChange((value) =>
     onChange('move', {
       ...saveOptions.move,
@@ -167,9 +266,16 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       ...saveOptions.move,
       drag: value,
     }));
+}
 
-  // Zoom options.
-  const zoomFolder = gui.addFolder('Zoom');
+/**
+ * Populate zoom options.
+ * @param {dat.GUI} zoomFolder The dat.GUI zoom options folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {Blockly.Options} saveOptions Saved Blockly options.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateZoomOptions(zoomFolder, options, saveOptions, onChange) {
   zoomFolder.add(options.zoomOptions, 'controls').onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
@@ -195,9 +301,16 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       ...saveOptions.zoom,
       minScale: value,
     })).step(0.05);
+}
 
-  // Grid options.
-  const gridFolder = gui.addFolder('Grid');
+/**
+ * Populate grid options.
+ * @param {dat.GUI} gridFolder The dat.GUI grid options folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {Blockly.Options} saveOptions Saved Blockly options.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateGridOptions(gridFolder, options, saveOptions, onChange) {
   gridFolder.add(options.gridOptions, 'spacing', 0, 50).onChange((value) =>
     onChange('grid', {
       ...saveOptions.grid,
@@ -218,17 +331,93 @@ export default function addGUIControls(createWorkspace, defaultOptions) {
       ...saveOptions.grid,
       snap: value,
     }));
-  // Debug renderer.
-  DebugRenderer.init();
-  Object.keys(DebugRenderer.config)
-      .forEach((key) => DebugRenderer.config[key] = false);
-  const debugFolder = gui.addFolder('Debug');
-  Object.keys(DebugRenderer.config).map((key) =>
-    debugFolder.add(DebugRenderer.config, key, 0, 50).onChange((value) => {
-      DebugRenderer.config[key] = value;
-      onChangeInternal();
-    })
-  );
+}
 
-  return gui;
+/**
+ * Initialize debug renderer.
+ * @param {Object.<string, boolean>} guiDebugState Saved GUI debug state.
+ * @param {boolean=} reset Whether or not to reset the renderer config.
+ */
+function initDebugRenderer(guiDebugState, reset) {
+  DebugRenderer.init();
+  Object.keys(DebugRenderer.config).map((key) => {
+    if (guiDebugState[key] == undefined || reset) {
+      guiDebugState[key] = false;
+    }
+    DebugRenderer.config[key] = guiDebugState[key];
+  });
+}
+
+/**
+ * Populate debug options.
+ * @param {dat.GUI} debugFolder The dat.GUI debug folder.
+ * @param {Object.<string, boolean>} guiDebugState Saved GUI debug state.
+ * @param {function():void} onChangeInternal Internal on change method.
+ */
+function populateDebugOptions(debugFolder, guiDebugState, onChangeInternal) {
+  Object.keys(DebugRenderer.config).map((key) => {
+    debugFolder.add(guiDebugState, key, 0, 50).onChange((value) => {
+      guiDebugState[key] = value;
+      DebugRenderer.config[key] = guiDebugState[key];
+      onChangeInternal();
+    });
+  });
+}
+
+/**
+ * Add default actions to the GUI instance.
+ * @param {?} gui The GUI instance.
+ */
+function addActions(gui) {
+  // Visibility actions.
+  gui.addAction('Show', (workspace) => {
+    workspace.setVisible(true);
+  }, 'Visibility');
+  gui.addAction('Hide', (workspace) => {
+    workspace.setVisible(false);
+  }, 'Visibility');
+
+  // Block actions.
+  gui.addAction('Clear', (workspace) => {
+    workspace.clear();
+  }, 'Blocks');
+  gui.addAction('Format', (workspace) => {
+    workspace.cleanUp();
+  }, 'Blocks');
+
+  // Undo/Redo actions.
+  gui.addAction('Undo', (workspace) => {
+    workspace.undo();
+  }, 'Undo/Redo');
+  gui.addAction('Redo', (workspace) => {
+    workspace.undo(true);
+  }, 'Undo/Redo');
+  gui.addAction('Clear Undo Stack', (workspace) => {
+    workspace.clearUndo();
+  }, 'Undo/Redo');
+
+  // Scale actions.
+  gui.addAction('Zoom reset', (workspace) => {
+    workspace.setScale(workspace.options.zoomOptions.startScale);
+    workspace.scrollCenter();
+  }, 'Scale');
+  gui.addAction('Zoom center', (workspace) => {
+    workspace.scrollCenter();
+  }, 'Scale');
+  gui.addAction('Zoom to Fit', (workspace) => {
+    workspace.zoomToFit();
+  }, 'Scale');
+
+  // Accessibility actions.
+  gui.addAction('Keyboard', (workspace) => {
+    if (workspace.keyboardAccessibilityMode) {
+      Blockly.navigation.disableKeyboardAccessibility();
+    } else {
+      Blockly.navigation.enableKeyboardAccessibility();
+    }
+  }, 'Accessibility');
+  gui.addAction('Navigate All', (_workspace) => {
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS =
+      !Blockly.ASTNode.NAVIGATE_ALL_FIELDS;
+  }, 'Accessibility');
 }

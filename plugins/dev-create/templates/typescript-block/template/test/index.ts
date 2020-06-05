@@ -9,24 +9,31 @@
  */
 
 import * as Blockly from 'blockly';
-import {addGUIControls} from '@blockly/dev-tools';
+import {createPlayground} from '@blockly/dev-tools';
 import '../src/index';
+
 
 // TODO: Edit list of blocks.
 const allBlocks = ['block_template'];
 
 /**
- * Test page startup, sets up Blockly.
+ * Create a workspace.
+ * @param {HTMLElement} blocklyDiv The blockly container div.
+ * @param {!Blockly.BlocklyOptions} options The Blockly options.
+ * @return {!Blockly.WorkspaceSvg} The created workspace.
  */
-function start(): void {
+function createWorkspace(blocklyDiv: HTMLElement,
+    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+  const workspace = Blockly.inject(blocklyDiv, options);
+  return workspace;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: `<xml xmlns="https://developers.google.com/blockly/xml">
       ${allBlocks.map((b) => `<block type="${b}"></block>`)}
     </xml>`,
   };
-  addGUIControls((options) => {
-    return Blockly.inject('blocklyDiv', options);
-  }, defaultOptions);
-}
-
-document.addEventListener('DOMContentLoaded', start);
+  createPlayground(document.getElementById('root'), createWorkspace,
+      defaultOptions);
+});

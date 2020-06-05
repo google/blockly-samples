@@ -8,6 +8,7 @@
         "boot": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna run clean",
+        "clean:node": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
         "license": "gulp checkLicenses",
         "lint": "lerna run lint",
         "postinstall": "npm run boot",
@@ -18,7 +19,7 @@
         "publish": "gulp publish"
     },
     "devDependencies": {
-        "@blockly/eslint-config": "^1.20200426.1",
+        "@blockly/eslint-config": "^1.20200426.3",
         "eslint": "^6.8.0",
         "gulp": "^4.0.2",
         "js-green-licenses": "^1.1.0",

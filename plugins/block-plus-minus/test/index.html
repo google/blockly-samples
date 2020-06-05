@@ -4,83 +4,33 @@
     <meta charset="utf-8">
     <title>Blockly Plus/Minus Mutators Test</title>
     <style>
-        html {
-            height: 100%;
-        }
-        body {
-            height: calc(100% - 2em);
-            margin: 1em;
-            background-color: #fff;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: row-reverse;
-        }
-        h1 {
-            font-weight: normal;
-            font-size: 140%;
-        }
-        #toolsDiv {
-            height: 100%;
-            width: 30%;
-            min-width: 250px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 0;
-        }
-        #blocklyDiv {
-            height: 100%;
-            width: 70%;
-            flex-grow: 1;
-        }
-        #tools {
-            flex-grow: 0;
-        }
-        #importExport {
-            width: calc(100% - 20px);
-            flex-grow: 1;
-            font-family: monospace;
-        }
+      html, body {
+        margin: 0;
+      }
     </style>
 </head>
+
 <body>
-<div id="blocklyDiv"></div>
+    <div id="root"></div>
 
-<div id="toolsDiv">
-    <div id="tools">
-        <h1>Blockly Plus/Minus Mutators Playground</h1>
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+        <category name="Others" categorystyle="logic_category">
+            <block type="controls_if"></block>
+            <block type="controls_if">
+                <mutation else="1"></mutation>
+            </block>
+            <block type="controls_ifelse"></block>
+            <block type="text_join"></block>
+            <block type="lists_create_with">
+                <mutation items="0"></mutation>
+            </block>
+            <block type="lists_create_with"></block>
+        </category>
+        <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
+        <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+    </xml>
 
-        <div class="bundle">
-            <div id="break" style="width: 100%; display: none;"></div>
-            <input class="bundle--item" type="button" id="import" value="Import" disabled="true" onclick="fromXml()">
-            <input class="bundle--item" type="button" id="exportBtn" value="Export to" onclick="exportWorkspace()">
-            <select class="bundle--item" id="export-type" name="export" onchange="exportWorkspace();">
-                <option class="export-opt" value="clean-xml">Clean XML</option>
-                <option class="export-opt" value="xml">XML</option>
-                <option class="export-opt" value="JavaScript">JavaScript</option>
-            </select>
-        </div>
-    </div>
-
-    <textarea id="importExport" onchange="textAreaChange();" onkeyup="textAreaChange()"></textarea>
-</div>
-
-<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Others" categorystyle="logic_category">
-        <block type="controls_if"></block>
-        <block type="controls_if">
-            <mutation else="1"></mutation>
-        </block>
-        <block type="controls_ifelse"></block>
-        <block type="text_join"></block>
-        <block type="lists_create_with">
-            <mutation items="0"></mutation>
-        </block>
-        <block type="lists_create_with"></block>
-    </category>
-    <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
-    <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
-</xml>
-
-<script src="../build/test_bundle.js"></script>
+    <script src="../build/test_bundle.js"></script>
 </body>
+
 </html>
