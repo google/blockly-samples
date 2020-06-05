@@ -71,7 +71,7 @@ To run the app, simply open `starter-code/index.html` in a browser.
 
 ### Play Mode
 
-By default, the app launches in "**Play Mode**". In this mode, you can see 9 buttons. None of them can do anything yet. The idea is to let user define custom behaviors for each button, using Blockly.
+By default, the app launches in "**Play Mode**". In this mode, you can see 9 buttons. None of them can do anything yet. The idea is to let the user define custom behaviors for each button, using Blockly.
 
 ![image](play_mode.png)
 
@@ -160,7 +160,7 @@ We set the display style of the toolbox to `none`, because we do not intend to d
 
 ### Injection
 
-Adding a Blockly workspace to a page is called *injection*, because the workspace is injected into a `div` that lready exists on the page.
+Adding a Blockly workspace to a page is called *injection*, because the workspace is injected into a `div` that already exists on the page.
 
 The function to call is `Blockly.inject(container, options)`, which takes two arguments:
 - `container` is where the Blockly workspace should be placed on the page. It can be an `Element`, an ID string, or a CSS selector.
@@ -250,6 +250,8 @@ Add a script tag to `index.html` to include your new block definition:
 ```html
 <script src="scripts/sound_blocks.js"></script>
 ```
+
+Your block definitions must come after importing Blocky, since you will use Blockly functions in this file.
 
 ### Add the sound block to the toolbox
 
