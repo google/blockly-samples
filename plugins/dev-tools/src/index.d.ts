@@ -44,7 +44,6 @@ declare namespace DevTools {
         (workspace: Blockly.Workspace, value: boolean) => void,
       folder?: string, defaultValue?: boolean) => dat.GUIController;
     getWorkspace: () => Blockly.WorkspaceSvg;
-    setResizeEnabled(enabled: boolean): void;
   }
 
   /**
