@@ -21,6 +21,7 @@ import {addCodeEditor} from './monaco';
 import {addGUIControls} from '../addGUIControls';
 import {LocalStorageState} from './state';
 
+
 /**
  * @typedef {function(!HTMLElement,!Blockly.BlocklyOptions):Blockly.Workspace}
  */
@@ -37,9 +38,19 @@ let PlaygroundTab;
 
 /**
  * @typedef {{
+ *     auto:?boolean,
+ *     toolboxes:Array<Blockly.utils.toolbox.ToolboxDefinition>,
+ * }}
+ */
+let PlaygroundConfig;
+
+/**
+ * @typedef {{
  *     state: ?,
  *     addAction:function(string,function(!Blockly.Workspace):void,string=):
  *         dat.GUI,
+ *     addCheckboxAction:function(string,
+ *         function(!Blockly.Workspace,boolean):void,string=,boolean=):dat.GUI,
  *     addGenerator: function(string,!Blockly.Generator,string=):void,
  *     getCurrentTab: function():!PlaygroundTab,
  *     getWorkspace: function():!Blockly.WorkspaceSvg,
@@ -54,11 +65,12 @@ let PlaygroundAPI;
  *     every time the toolbox is re-configured.
  * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
  *     to use.
+ * @param {PlaygroundConfig=} config Optional Playground config.
  * @param {string=} vsEditorPath Optional editor path.
  * @return {Promise<PlaygroundAPI>} A promise to the playground API.
  */
 export function createPlayground(container, createWorkspace,
-    defaultOptions, vsEditorPath) {
+    defaultOptions, config, vsEditorPath) {
   const {blocklyDiv, monacoDiv, guiContainer, tabButtons, tabsDiv} =
     renderPlayground(container);
 
@@ -82,7 +94,7 @@ export function createPlayground(container, createWorkspace,
     // Load / Save playground state.
     const playgroundState = new LocalStorageState('playgroundState', {
       activeTab: 'XML',
-      autoGenerate: true,
+      autoGenerate: config && config.auto != undefined ? config.auto : true,
       workspaceXml: '',
     });
     playgroundState.load();
@@ -248,11 +260,13 @@ export function createPlayground(container, createWorkspace,
         }
       });
       return workspace;
-    }, defaultOptions);
+    }, defaultOptions, config);
+    (/** @type {?} */ (gui)).setResizeEnabled(false);
 
     // Move the GUI Element to the gui container.
     const guiElement = gui.domElement;
     guiElement.removeChild(guiElement.firstChild);
+    guiElement.style.top = '0';
     guiElement.style.position = 'relative';
     guiElement.style.minWidth = '100%';
     guiContainer.appendChild(guiElement);
@@ -276,20 +290,6 @@ export function createPlayground(container, createWorkspace,
     };
 
     /**
-     * Add a custom action to the list of playground actions.
-     * @param {string} name The action label.
-     * @param {function(!Blockly.Workspace):void} callback The callback to call
-     *     when the action is clicked.
-     * @param {string=} folderName Optional folder to place the action under.
-     * @return {dat.GUI} The GUI controller.
-     */
-    const addAction = function(name, callback, folderName) {
-      return (/** @type {?} */ (gui)).addAction(name, (workspace) => {
-        callback(workspace);
-      }, folderName);
-    };
-
-    /**
      * Add a generator tab.
      * @param {string} label The label of the generator tab.
      * @param {Blockly.Generator} generator The Blockly generator.
@@ -306,7 +306,8 @@ export function createPlayground(container, createWorkspace,
 
     const playground = {
       state: playgroundState,
-      addAction,
+      addAction: (/** @type {?} */ (gui)).addAction,
+      addCheckboxAction: (/** @type {?} */ (gui)).addCheckboxAction,
       addGenerator,
       getCurrentTab,
       getWorkspace,
