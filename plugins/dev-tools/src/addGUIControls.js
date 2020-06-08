@@ -48,7 +48,12 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
         'categories': toolboxCategories,
         'simple': toolboxSimple,
       });
-  initToolbox(toolboxes, defaultOptions.toolbox, guiState);
+  const defaultToolboxName =
+    initDefaultToolbox(defaultOptions, toolboxes);
+  if (!guiState.toolboxName) {
+    guiState.toolboxName = defaultToolboxName;
+  }
+  guiState.options.toolbox = toolboxes[guiState.toolboxName];
 
   // Merge default and saved state.
   const saveOptions = {
@@ -106,7 +111,8 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
     if (resizeEnabled) {
       onResize();
     }
-    saveGUIState(guiState);
+    // Save the GUI state locally.
+    saveGUIState(guiState, defaultToolboxName);
     // Update options.
     merge(options, workspace.options);
     gui.updateDisplay();
@@ -118,18 +124,21 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
     onChangeInternal();
   };
 
-  const resetObj = {
-    'Reset': () => {
-      Object.keys(saveOptions).forEach((k) => delete saveOptions[k]);
-      assign(saveOptions, defaultOptions);
-      Object.keys(guiState.options).forEach((k) => delete guiState.options[k]);
-      initDebugRenderer(guiState.debug, true);
-      guiState.toolboxName = '';
-      initToolbox(toolboxes, defaultOptions.toolbox, guiState);
-      onChangeInternal();
-    }};
+  const reset = () => {
+    // Reset saved options.
+    Object.keys(saveOptions).forEach((k) => delete saveOptions[k]);
+    assign(saveOptions, defaultOptions);
+    Object.keys(guiState.options).forEach((k) => delete guiState.options[k]);
+    // Reset debug options.
+    initDebugRenderer(guiState.debug, true);
+    // Reset toolbox selection.
+    guiState.toolboxName = defaultToolboxName;
+    onChangeInternal();
+  };
 
-  gui.add(resetObj, 'Reset');
+  gui.add({
+    'Reset': reset,
+  }, 'Reset');
 
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
@@ -146,14 +155,8 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
   populateThemeOption(optionsFolder, options, defaultOptions, onChange);
 
   // Toolbox.
-  optionsFolder.add(guiState, 'toolboxName')
-      .options(Object.keys(toolboxes)).name('toolbox')
-      .onChange((value) => {
-        guiState.toolboxName = value;
-        onChange('toolbox', toolboxes[value]);
-      });
-  openFolderIfOptionSelected(optionsFolder, guiState.options, ['toolbox']);
-
+  populateToolboxOption(optionsFolder, guiState, toolboxes, defaultToolboxName,
+      onChange);
   populateToolboxSidesOption(optionsFolder, options, saveOptions, guiState,
       onChangeInternal);
 
@@ -271,8 +274,9 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
 /**
  * Save the GUI state to local storage and the window hash.
  * @param {Object} guiState The GUI State.
+ * @param {string} defaultToolboxName The default toolbox name.
  */
-function saveGUIState(guiState) {
+function saveGUIState(guiState, defaultToolboxName) {
   // Don't save toolbox and theme, as we'll save their names instead.
   delete guiState.options['toolbox'];
   delete guiState.options['theme'];
@@ -280,12 +284,12 @@ function saveGUIState(guiState) {
   // Save GUI control options to local storage.
   localStorage.setItem('guiState', JSON.stringify(guiState));
 
-  // Save GUI state into window.hash:
-  const saveGuiState = Object.assign({}, guiState.options);
-  if (guiState.toolboxName !== 'Default') {
-    saveGuiState.toolboxName = guiState.toolboxName;
+  // Save GUI state into the URL:
+  const hashGuiState = Object.assign({}, guiState.options);
+  if (guiState.toolboxName !== defaultToolboxName) {
+    hashGuiState.toolbox = guiState.toolboxName;
   }
-  window.location.hash = HashState.save(saveGuiState);
+  window.location.hash = HashState.save(hashGuiState);
 }
 
 /**
@@ -327,27 +331,27 @@ function openFolderIfOptionSelected(folder, guiState, options) {
 }
 
 /**
- * Initialize the toolbox.
+ * Initialize the default toolbox.  If the default toolbox is not in the list of
+ * toolboxes, add a "default" option to the toolbox list.
+ * @param {Blockly.Options} defaultOptions Default Blockly options.
  * @param {Array<Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The list of
  *     toolboxes.
- * @param {Blockly.utils.toolbox.ToolboxDefinition} defaultToolbox The default
- *     toolbox.
- * @param {Object} guiState The GUI state.
+ * @return {string} The default toolbox name.
  */
-function initToolbox(toolboxes, defaultToolbox, guiState) {
+function initDefaultToolbox(defaultOptions, toolboxes) {
+  const defaultToolbox = defaultOptions.toolbox;
   const isDefaultInToolboxes =
-    Object.keys(toolboxes).filter((k) => toolboxes[k] == defaultToolbox);
+      Object.keys(toolboxes).filter((k) => toolboxes[k] == defaultToolbox);
   if (defaultToolbox && !isDefaultInToolboxes.length) {
-    toolboxes['Default'] = defaultToolbox;
-  } else if (isDefaultInToolboxes.length && !guiState.toolbox) {
-    guiState.toolboxName = isDefaultInToolboxes[0];
-  }
-
-  if (guiState.toolboxName) {
-    // Load toolbox by name.
-    guiState.options.toolbox = toolboxes[guiState.toolboxName];
+    // Default toolbox not in the toolbox list.  Add a "default" option.
+    toolboxes['default'] = defaultToolbox;
+    return 'default';
+  } else if (isDefaultInToolboxes.length) {
+    // Get the
+    return isDefaultInToolboxes[0];
   } else {
-    guiState.toolboxName = 'Default';
+    // No default toolbox set, choose the first one.
+    return Object.keys(toolboxes)[0];
   }
 }
 
@@ -393,7 +397,29 @@ function populateRendererOption(folder, options, onChange) {
 }
 
 /**
- * Populate the renderer option.
+ * Populate the toolbox option.
+ * @param {dat.GUI} folder The dat.GUI folder.
+ * @param {Object} guiState The GUI state.
+ * @param {Array<Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
+ *     registered toolboxes.
+ * @param {string} defaultToolboxName The default toolbox name.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateToolboxOption(folder, guiState, toolboxes, defaultToolboxName,
+    onChange) {
+  folder.add(guiState, 'toolboxName')
+      .options(Object.keys(toolboxes)).name('toolbox')
+      .onChange((value) => {
+        guiState.toolboxName = value;
+        onChange('toolbox', toolboxes[value]);
+      });
+  if (guiState.toolboxName !== defaultToolboxName) {
+    openFolderIfOptionSelected(folder, guiState.options, ['toolbox']);
+  }
+}
+
+/**
+ * Populate the toolbox sides option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Blockly.Options} options Blockly options.
  * @param {Blockly.Options} saveOptions Saved Blockly options.
