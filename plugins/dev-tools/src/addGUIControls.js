@@ -285,9 +285,6 @@ function saveGUIState(guiState) {
   if (guiState.toolboxName !== 'Default') {
     saveGuiState.toolboxName = guiState.toolboxName;
   }
-  if (guiState.themeName) {
-    saveGuiState.themeName = guiState.toolboxName;
-  }
   window.location.hash = HashState.save(saveGuiState);
 }
 
