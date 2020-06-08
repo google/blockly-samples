@@ -267,7 +267,10 @@ export function createPlayground(container, createWorkspace,
     // Move the GUI Element to the gui container.
     const guiElement = gui.domElement;
     guiElement.removeChild(guiElement.firstChild);
-    guiElement.style.top = '0';
+    guiElement.style.top = '';
+    guiElement.style.left = '';
+    guiElement.style.right = '';
+    guiElement.style.bottom = '';
     guiElement.style.position = 'relative';
     guiElement.style.minWidth = '100%';
     guiContainer.appendChild(guiElement);
