@@ -21,11 +21,15 @@ const merge = require('lodash.merge');
 
 
 /**
- * @typedef {{
- *     toolboxes:Array<Blockly.utils.toolbox.ToolboxDefinition>,
- * }}
+ * @typedef {Blockly.utils.toolbox.ToolboxDefinition} BlocklyToolbox
  */
-let GUIConfig;
+
+/**
+ * @typedef {Object} GUIConfig
+ * @property {boolean} [disableResize] Whether or not to disable automatically
+ *     resizing the GUI control.
+ * @property {Object<string,BlocklyToolbox>} [toolboxes] The toolbox registry.
+ */
 
 /**
  * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
@@ -37,14 +41,14 @@ let GUIConfig;
  * @param {GUIConfig=} config Optional GUI config.
  * @return {dat.GUI} The dat.GUI instance.
  */
-export function addGUIControls(createWorkspace, defaultOptions, config) {
+export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   // Initialize state.
   const guiState = loadGUIState();
 
   // Initialize toolboxes.
   const toolboxes =
-    /** @type {Array<Blockly.utils.toolbox.ToolboxDefinition>} */ (
-      (config && config.toolboxes) || {
+    /** @type {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} */ (
+      config.toolboxes || {
         'categories': toolboxCategories,
         'simple': toolboxSimple,
       });
@@ -68,7 +72,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
   initDebugRenderer(guiState.debug);
 
   let workspace = createWorkspace(saveOptions);
-  let resizeEnabled = true;
+  const resizeEnabled = !config.disableResize;
 
   const gui = new dat.GUI({
     autoPlace: false,
@@ -95,7 +99,9 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
     }
     guiElement.style.top = metrics.absoluteTop + 'px';
   };
-  onResize();
+  if (resizeEnabled) {
+    onResize();
+  }
 
   const container = workspace.getInjectionDiv().parentNode;
   container.style.position = 'relative';
@@ -269,9 +275,6 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
   devGui.addCheckboxAction = addCheckboxAction;
   devGui.addAction = addAction;
   devGui.getWorkspace = getWorkspace;
-  devGui.setResizeEnabled = (enabled) => {
-    resizeEnabled = enabled;
-  };
 
   addActions(devGui, workspace);
 
@@ -351,8 +354,8 @@ function openFolderIfOptionSelected(folder, guiState, options) {
  * Initialize the default toolbox.  If the default toolbox is not in the list of
  * toolboxes, add a "default" option to the toolbox list.
  * @param {Blockly.Options} defaultOptions Default Blockly options.
- * @param {Array<Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The list of
- *     toolboxes.
+ * @param {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
+ *     registered toolboxes.
  * @return {string} The default toolbox name.
  */
 function initDefaultToolbox(defaultOptions, toolboxes) {
@@ -417,7 +420,7 @@ function populateRendererOption(folder, options, onChange) {
  * Populate the toolbox option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Object} guiState The GUI state.
- * @param {Array<Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
+ * @param {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
  *     registered toolboxes.
  * @param {string} defaultToolboxName The default toolbox name.
  * @param {function(string, string):void} onChange On Change method.
