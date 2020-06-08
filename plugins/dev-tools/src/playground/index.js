@@ -10,11 +10,11 @@
  */
 
 import * as Blockly from 'blockly/core';
-import 'blockly/javascript';
-import 'blockly/python';
-import 'blockly/lua';
-import 'blockly/dart';
-import 'blockly/php';
+import * as BlocklyJS from 'blockly/javascript';
+import * as BlocklyPython from 'blockly/python';
+import * as BlocklyLua from 'blockly/lua';
+import * as BlocklyDart from 'blockly/dart';
+import * as BlocklyPHP from 'blockly/php';
 
 import {renderPlayground, renderCheckbox, renderCodeTab} from './ui';
 import {addCodeEditor} from './monaco';
@@ -202,15 +202,15 @@ export function createPlayground(container, createWorkspace,
       'XML': registerGenerator('XML', 'xml', (ws) =>
         Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(ws))),
       'JavaScript': registerGenerator('JavaScript', 'javascript',
-          (ws) => Blockly.JavaScript.workspaceToCode(ws), true),
+          (ws) => (BlocklyJS || Blockly.JavaScript).workspaceToCode(ws), true),
       'Python': registerGenerator('Python', 'python',
-          (ws) => Blockly.Python.workspaceToCode(ws), true),
+          (ws) => (BlocklyPython || Blockly.Python).workspaceToCode(ws), true),
       'Dart': registerGenerator('Dart', 'javascript',
-          (ws) => Blockly.Dart.workspaceToCode(ws), true),
+          (ws) => (BlocklyDart || Blockly.Dart).workspaceToCode(ws), true),
       'Lua': registerGenerator('Lua', 'lua',
-          (ws) => Blockly.Lua.workspaceToCode(ws), true),
+          (ws) => (BlocklyLua || Blockly.Lua).workspaceToCode(ws), true),
       'PHP': registerGenerator('PHP', 'php',
-          (ws) => Blockly.PHP.workspaceToCode(ws), true),
+          (ws) => (BlocklyPHP || Blockly.PHP).workspaceToCode(ws), true),
     };
 
     // Handle tab click.
