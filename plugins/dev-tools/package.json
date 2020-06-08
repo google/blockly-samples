@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "0.20200313.9",
+  "version": "0.20200313.10",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "build": "blockly-scripts build",

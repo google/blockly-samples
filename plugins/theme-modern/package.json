@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-modern",
-  "version": "1.20200417.7",
+  "version": "1.20200417.8",
   "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -38,7 +38,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^0.20200403.8",
-    "@blockly/dev-tools": "^0.20200313.9",
+    "@blockly/dev-tools": "^0.20200313.10",
     "blockly": "^3.20200402.1"
   },
   "peerDependencies": {
