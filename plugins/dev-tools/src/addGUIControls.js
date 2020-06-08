@@ -12,6 +12,20 @@
 import * as dat from 'dat.gui';
 import * as Blockly from 'blockly/core';
 import {DebugRenderer} from './debugRenderer';
+import {HashState} from './playground/hash_state';
+import toolboxCategories from './toolboxCategories';
+import toolboxSimple from './toolboxSimple';
+
+const assign = require('lodash.assign');
+const merge = require('lodash.merge');
+
+
+/**
+ * @typedef {{
+ *     toolboxes:Array<Blockly.utils.toolbox.ToolboxDefinition>,
+ * }}
+ */
+let GUIConfig;
 
 /**
  * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
@@ -20,24 +34,36 @@ import {DebugRenderer} from './debugRenderer';
  *     re-configured.
  * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
  *     to use.
+ * @param {GUIConfig=} config Optional GUI config.
  * @return {dat.GUI} The dat.GUI instance.
  */
-export function addGUIControls(createWorkspace, defaultOptions) {
-  const hash = window.location.hash;
-  const guiState = JSON.parse(localStorage.getItem('guiState') ||
-      '{"options":{},"debug":{}}');
-  if (hash) {
-    hash.replace(/#?([^=&]+)=([^=&]+)/gm, function(_m0, m1, m2) {
-      guiState.options[m1] = m2;
-    });
+export function addGUIControls(createWorkspace, defaultOptions, config) {
+  // Initialize state.
+  const guiState = loadGUIState();
+
+  // Initialize toolboxes.
+  const toolboxes =
+    /** @type {Array<Blockly.utils.toolbox.ToolboxDefinition>} */ (
+      (config && config.toolboxes) || {
+        'categories': toolboxCategories,
+        'simple': toolboxSimple,
+      });
+  const defaultToolboxName =
+    initDefaultToolbox(defaultOptions, toolboxes);
+  if (!guiState.toolboxName) {
+    guiState.toolboxName = defaultToolboxName;
   }
-  let saveOptions = {
+  guiState.options.toolbox = toolboxes[guiState.toolboxName];
+
+  // Merge default and saved state.
+  const saveOptions = {
     ...defaultOptions,
     ...guiState.options,
   };
   initDebugRenderer(guiState.debug);
 
   let workspace = createWorkspace(saveOptions);
+  let resizeEnabled = true;
 
   const gui = new dat.GUI({
     autoPlace: false,
@@ -82,16 +108,13 @@ export function addGUIControls(createWorkspace, defaultOptions) {
     // Deserialize state into workspace.
     Blockly.Xml.domToWorkspace(state, workspace);
     // Resize the gui.
-    onResize();
-    // Save GUI control options to local storage.
-    localStorage.setItem('guiState', JSON.stringify(guiState));
-    // Save GUI state into window.hash:
-    window.location.hash = Object.keys(guiState.options)
-        .filter((k) => typeof guiState.options[k] != 'object')
-        .map((k) => `${k}=${guiState.options[k]}`)
-        .join('&');
+    if (resizeEnabled) {
+      onResize();
+    }
+    // Save the GUI state locally.
+    saveGUIState(guiState, defaultToolboxName);
     // Update options.
-    Object.assign(options, workspace.options);
+    merge(options, workspace.options);
     gui.updateDisplay();
   };
 
@@ -101,20 +124,26 @@ export function addGUIControls(createWorkspace, defaultOptions) {
     onChangeInternal();
   };
 
-  const resetObj = {
-    'Reset': () => {
-      saveOptions = {
-        ...defaultOptions,
-      };
-      guiState.options = {};
-      initDebugRenderer(guiState.debug, true);
-      onChangeInternal();
-    }};
+  const reset = () => {
+    // Reset saved options.
+    Object.keys(saveOptions).forEach((k) => delete saveOptions[k]);
+    assign(saveOptions, defaultOptions);
+    Object.keys(guiState.options).forEach((k) => delete guiState.options[k]);
+    // Reset debug options.
+    initDebugRenderer(guiState.debug, true);
+    // Reset toolbox selection.
+    guiState.toolboxName = defaultToolboxName;
+    onChangeInternal();
+  };
 
-  gui.add(resetObj, 'Reset');
+  gui.add({
+    'Reset': reset,
+  }, 'Reset');
 
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
+  openFolderIfOptionSelected(optionsFolder, guiState.options,
+      ['rtl', 'renderer', 'theme', 'toolboxPosition', 'horizontalLayout']);
 
   optionsFolder.add(options, 'RTL').name('rtl').onChange((value) =>
     onChange('rtl', value));
@@ -126,33 +155,29 @@ export function addGUIControls(createWorkspace, defaultOptions) {
   populateThemeOption(optionsFolder, options, defaultOptions, onChange);
 
   // Toolbox.
-  const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
-  optionsFolder.add(options, 'toolboxPosition', toolboxSides)
-      .name('toolboxPosition')
-      .onChange((value) => {
-        const side = Object.keys(toolboxSides).find((key) =>
-          toolboxSides[key] == value);
-        saveOptions['horizontalLayout'] = side == 'top' || side == 'bottom';
-        saveOptions['toolboxPosition'] = side == 'top' || side == 'left' ?
-          'start' : 'end';
-        onChangeInternal();
-      });
+  populateToolboxOption(optionsFolder, guiState, toolboxes, defaultToolboxName,
+      onChange);
+  populateToolboxSidesOption(optionsFolder, options, saveOptions, guiState,
+      onChangeInternal);
 
   // Basic options.
   const basicFolder = optionsFolder.addFolder('Basic');
-  populateBasicOptions(basicFolder, options, onChange);
+  populateBasicOptions(basicFolder, options, guiState, onChange);
 
   // Move options.
   const moveFolder = optionsFolder.addFolder('Move');
   populateMoveOptions(moveFolder, options, saveOptions, onChange);
+  openFolderIfOptionSelected(moveFolder, guiState.options, ['move']);
 
   // Zoom options.
   const zoomFolder = optionsFolder.addFolder('Zoom');
   populateZoomOptions(zoomFolder, options, saveOptions, onChange);
+  openFolderIfOptionSelected(moveFolder, guiState.options, ['zoom']);
 
   // Grid options.
   const gridFolder = optionsFolder.addFolder('Grid');
   populateGridOptions(gridFolder, options, saveOptions, onChange);
+  openFolderIfOptionSelected(moveFolder, guiState.options, ['grid']);
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
@@ -177,7 +202,7 @@ export function addGUIControls(createWorkspace, defaultOptions) {
    * @param {function(!Blockly.Workspace):void} callback The callback to call
    *     when the action is clicked.
    * @param {string=} folderName Optional folder to place the action under.
-   * @return {dat.GUI} The GUI controller.
+   * @return {dat.GUIController} The GUI controller.
    */
   const addAction = (name, callback, folderName) => {
     actions[name] = () => {
@@ -200,22 +225,144 @@ export function addGUIControls(createWorkspace, defaultOptions) {
     return controller;
   };
 
+  /**
+   * Add a custom checkbox action to the list of playground actions.
+   * @param {string} name The action label.
+   * @param {function(!Blockly.Workspace,boolean):void} callback The callback to
+   *     call when the action is clicked.
+   * @param {string=} folderName Optional folder to place the action under.
+   * @param {boolean=} defaultValue Default value.
+   * @return {dat.GUIController} The GUI controller.
+   */
+  const addCheckboxAction = (name, callback, folderName, defaultValue) => {
+    actions[name] = !!defaultValue;
+    let folder = actionsFolder;
+    if (folderName) {
+      if (actionSubFolders[folderName]) {
+        folder = actionSubFolders[folderName];
+      } else {
+        folder = actionsFolder.addFolder(folderName);
+        folder.open();
+        actionSubFolders[folderName] = folder;
+      }
+    }
+    const controller = folder.add(actions, name);
+    if (name) {
+      controller.name(name);
+    }
+    controller.listen()
+        .onFinishChange((value) => {
+          callback(workspace, value);
+        });
+
+    return controller;
+  };
+
   const devGui = /** @type {?} */ (gui);
+  devGui.addCheckboxAction = addCheckboxAction;
   devGui.addAction = addAction;
   devGui.getWorkspace = getWorkspace;
+  devGui.setResizeEnabled = (enabled) => {
+    resizeEnabled = enabled;
+  };
 
-  addActions(devGui);
+  addActions(devGui, workspace);
 
   return devGui;
+}
+
+/**
+ * Save the GUI state to local storage and the window hash.
+ * @param {Object} guiState The GUI State.
+ * @param {string} defaultToolboxName The default toolbox name.
+ */
+function saveGUIState(guiState, defaultToolboxName) {
+  // Don't save toolbox and theme, as we'll save their names instead.
+  delete guiState.options['toolbox'];
+  delete guiState.options['theme'];
+
+  // Save GUI control options to local storage.
+  localStorage.setItem('guiState', JSON.stringify(guiState));
+
+  // Save GUI state into the URL:
+  const hashGuiState = Object.assign({}, guiState.options);
+  if (guiState.toolboxName !== defaultToolboxName) {
+    hashGuiState.toolbox = guiState.toolboxName;
+  }
+  window.location.hash = HashState.save(hashGuiState);
+}
+
+/**
+ * Load the GUI state from local storage and the window hash.
+ * @return {Object} The GUI state.
+ */
+function loadGUIState() {
+  const defaultState = {options: {}, debug: {}};
+  const guiState = JSON.parse(localStorage.getItem('guiState')) || defaultState;
+  if (window.location.hash) {
+    HashState.parse(window.location.hash, guiState.options);
+  }
+  // Move GUI toolbox state out of options, as it refers to the toolbox name
+  // and not the toolbox value.
+  if (guiState.options.toolbox) {
+    guiState.toolboxName = guiState.options.toolbox;
+    delete guiState.options.toolbox;
+  }
+  return guiState;
+}
+
+/**
+ * Open a dat.GUI folder and all of its parents if one of the options is present
+ * in the GUI state.
+ * @param {dat.GUI} folder The GUI folder.
+ * @param {Object} guiState GUI state.
+ * @param {Array<string>} options The options to check.
+ */
+function openFolderIfOptionSelected(folder, guiState, options) {
+  options.forEach((option) => {
+    if (guiState[option] != undefined) {
+      folder.open();
+      while (folder.parent) {
+        folder = folder.parent;
+        folder.open();
+      }
+    }
+  });
+}
+
+/**
+ * Initialize the default toolbox.  If the default toolbox is not in the list of
+ * toolboxes, add a "default" option to the toolbox list.
+ * @param {Blockly.Options} defaultOptions Default Blockly options.
+ * @param {Array<Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The list of
+ *     toolboxes.
+ * @return {string} The default toolbox name.
+ */
+function initDefaultToolbox(defaultOptions, toolboxes) {
+  const defaultToolbox = defaultOptions.toolbox;
+  const isDefaultInToolboxes =
+      Object.keys(toolboxes).filter((k) => toolboxes[k] == defaultToolbox);
+  if (defaultToolbox && !isDefaultInToolboxes.length) {
+    // Default toolbox not in the toolbox list.  Add a "default" option.
+    toolboxes['default'] = defaultToolbox;
+    return 'default';
+  } else if (isDefaultInToolboxes.length) {
+    // Get the
+    return isDefaultInToolboxes[0];
+  } else {
+    // No default toolbox set, choose the first one.
+    return Object.keys(toolboxes)[0];
+  }
 }
 
 /**
  * Populate basic options.
  * @param {dat.GUI} basicFolder The dat.GUI basic folder.
  * @param {Blockly.Options} options Blockly options.
+ * @param {Object} guiState The GUI state.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateBasicOptions(basicFolder, options, onChange) {
+function populateBasicOptions(basicFolder, options, guiState, onChange) {
   basicFolder.add(options, 'readOnly').onChange((value) =>
     onChange('readOnly', value));
   basicFolder.add(options, 'hasTrashcan').name('trashCan').onChange((value) =>
@@ -228,6 +375,9 @@ function populateBasicOptions(basicFolder, options, onChange) {
     onChange('collapse', value));
   basicFolder.add(options, 'comments').onChange((value) =>
     onChange('comments', value));
+
+  openFolderIfOptionSelected(basicFolder, guiState.options,
+      ['readOnly', 'trashcan', 'sounds', 'disable', 'collapse', 'comments']);
 }
 
 /**
@@ -244,6 +394,53 @@ function populateRendererOption(folder, options, onChange) {
       (Blockly.registry && Blockly.registry.typeMap_['renderer']);
   folder.add(options, 'renderer', Object.keys(renderers))
       .onChange((value) => onChange('renderer', value));
+}
+
+/**
+ * Populate the toolbox option.
+ * @param {dat.GUI} folder The dat.GUI folder.
+ * @param {Object} guiState The GUI state.
+ * @param {Array<Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
+ *     registered toolboxes.
+ * @param {string} defaultToolboxName The default toolbox name.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateToolboxOption(folder, guiState, toolboxes, defaultToolboxName,
+    onChange) {
+  folder.add(guiState, 'toolboxName')
+      .options(Object.keys(toolboxes)).name('toolbox')
+      .onChange((value) => {
+        guiState.toolboxName = value;
+        onChange('toolbox', toolboxes[value]);
+      });
+  if (guiState.toolboxName !== defaultToolboxName) {
+    openFolderIfOptionSelected(folder, guiState.options, ['toolbox']);
+  }
+}
+
+/**
+ * Populate the toolbox sides option.
+ * @param {dat.GUI} folder The dat.GUI folder.
+ * @param {Blockly.Options} options Blockly options.
+ * @param {Blockly.Options} saveOptions Saved Blockly options.
+ * @param {Object} guiState GUI state.
+ * @param {function():void} onChangeInternal Internal on change method.
+ */
+function populateToolboxSidesOption(folder, options, saveOptions, guiState,
+    onChangeInternal) {
+  const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
+  folder.add(options, 'toolboxPosition', toolboxSides)
+      .name('toolboxPosition')
+      .onChange((value) => {
+        const side = Object.keys(toolboxSides).find((key) =>
+          toolboxSides[key] == value);
+        saveOptions['horizontalLayout'] = side == 'top' || side == 'bottom';
+        saveOptions['toolboxPosition'] = side == 'top' || side == 'left' ?
+          'start' : 'end';
+        guiState.options['toolboxPosition'] = saveOptions['toolboxPosition'];
+        guiState.options['horizontalLayout'] = saveOptions['horizontalLayout'];
+        onChangeInternal();
+      });
 }
 
 /**
@@ -394,13 +591,16 @@ function populateDebugOptions(debugFolder, guiDebugState, onChangeInternal) {
       onChangeInternal();
     });
   });
+  openFolderIfOptionSelected(debugFolder, guiDebugState,
+      Object.keys(DebugRenderer.config).filter((k) => !!guiDebugState[k]));
 }
 
 /**
  * Add default actions to the GUI instance.
  * @param {?} gui The GUI instance.
+ * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
  */
-function addActions(gui) {
+function addActions(gui, workspace) {
   // Visibility actions.
   gui.addAction('Show', (workspace) => {
     workspace.setVisible(true);
@@ -441,15 +641,14 @@ function addActions(gui) {
   }, 'Scale');
 
   // Accessibility actions.
-  gui.addAction('Keyboard', (workspace) => {
-    if (workspace.keyboardAccessibilityMode) {
-      Blockly.navigation.disableKeyboardAccessibility();
-    } else {
+  gui.addCheckboxAction('Keyboard Nav', (_workspace, value) => {
+    if (value) {
       Blockly.navigation.enableKeyboardAccessibility();
+    } else {
+      Blockly.navigation.disableKeyboardAccessibility();
     }
-  }, 'Accessibility');
-  gui.addAction('Navigate All', (_workspace) => {
-    Blockly.ASTNode.NAVIGATE_ALL_FIELDS =
-      !Blockly.ASTNode.NAVIGATE_ALL_FIELDS;
-  }, 'Accessibility');
+  }, 'Accessibility', workspace.keyboardAccessibilityMode);
+  gui.addCheckboxAction('Navigate All', (_workspace, value) => {
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = value;
+  }, 'Accessibility', Blockly.ASTNode.NAVIGATE_ALL_FIELDS);
 }

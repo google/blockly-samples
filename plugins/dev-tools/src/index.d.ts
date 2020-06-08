@@ -15,9 +15,13 @@ interface PlaygroundTab {
 
 interface PlaygroundAPI {
   addAction: (name: string, callback: (workspace: Blockly.Workspace) => void,
-    folder?: string) => dat.GUI;
+    folder?: string) => dat.GUIController;
+  addCheckboxAction: (name: string, callback:
+      (workspace: Blockly.Workspace, value: boolean) => void,
+    folder?: string, defaultValue?: boolean) => dat.GUIController;
   addGenerator: () => void;
   getCurrentTab: () => PlaygroundTab;
+  getGUI: () => DevTools.GUI;
   getWorkspace: () => Blockly.WorkspaceSvg;
 }
 
@@ -34,9 +38,13 @@ declare namespace DevTools {
    * An extension of dat.GUI with additional functionality.
    */
   export class GUI extends dat.GUI {
-    getWorkspace: () => Blockly.WorkspaceSvg;
     addAction(name: string, callback: (workspace: Blockly.Workspace) => void,
-      folder?: string): dat.GUI;
+      folder?: string): dat.GUIController;
+    addCheckboxAction: (name: string, callback:
+        (workspace: Blockly.Workspace, value: boolean) => void,
+      folder?: string, defaultValue?: boolean) => dat.GUIController;
+    getWorkspace: () => Blockly.WorkspaceSvg;
+    setResizeEnabled(enabled: boolean): void;
   }
 
   /**

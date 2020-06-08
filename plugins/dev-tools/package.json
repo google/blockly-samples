@@ -39,6 +39,8 @@
   "dependencies": {
     "chai": "^4.2.0",
     "dat.gui": "^0.7.7",
+    "lodash.assign": "^4.2.0",
+    "lodash.merge": "^4.6.2",
     "monaco-editor": "^0.20.0"
   },
   "devDependencies": {
