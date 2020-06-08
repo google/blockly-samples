@@ -13,6 +13,7 @@ import * as dat from 'dat.gui';
 import * as Blockly from 'blockly/core';
 import {DebugRenderer} from './debugRenderer';
 import {HashState} from './playground/hash_state';
+import {populateRandom} from './populateRandom';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
 
@@ -639,6 +640,11 @@ function addActions(gui, workspace) {
   gui.addAction('Zoom to Fit', (workspace) => {
     workspace.zoomToFit();
   }, 'Scale');
+
+  // Stress Test.
+  gui.addAction('Random Blocks', (workspace) => {
+    populateRandom(workspace, 100);
+  }, 'Stress Test');
 
   // Accessibility actions.
   gui.addCheckboxAction('Keyboard Nav', (_workspace, value) => {
