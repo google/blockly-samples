@@ -158,7 +158,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config) {
   populateRendererOption(optionsFolder, options, onChange);
 
   // Theme.
-  populateThemeOption(optionsFolder, guiState, defaultOptions, defaultThemeName,
+  populateThemeOption(optionsFolder, guiState, themes, defaultThemeName,
       onChange);
 
   // Toolbox.
@@ -490,29 +490,13 @@ function getThemes(defaultOptions) {
  * Populate the theme option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Object} guiState The GUI state.
- * @param {Blockly.Options} defaultOptions Default Blockly options.
+ * @param {Object<string,Blockly.Theme>} themes The list of
+ *     themes.
  * @param {string} defaultThemeName Default Theme name.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateThemeOption(folder, guiState, defaultOptions, defaultThemeName,
+function populateThemeOption(folder, guiState, themes, defaultThemeName,
     onChange) {
-  let themes;
-  if (Blockly.registry && Blockly.registry.typeMap_['theme']) {
-    // Using a version of Blockly that registers themes.
-    themes = Blockly.registry.typeMap_['theme'];
-  } else {
-    // Fall back to a pre-set list of themes.
-    themes = {
-      'classic': Blockly.Themes.Classic,
-      'dark': Blockly.Themes.Dark,
-      'deuteranopia': Blockly.Themes.Deuteranopia,
-      'highcontrast': Blockly.Themes.HighContrast,
-      'tritanopia': Blockly.Themes.Tritanopia,
-    };
-    if (defaultOptions.theme) {
-      themes[defaultOptions.theme.name] = defaultOptions.theme;
-    }
-  }
   folder.add(guiState, 'themeName')
       .options(Object.keys(themes)).name('theme')
       .onChange((value) => {
