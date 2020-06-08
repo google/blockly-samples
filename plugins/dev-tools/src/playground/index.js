@@ -36,13 +36,17 @@ let CreateWorkspaceFn;
  */
 let PlaygroundTab;
 
+
 /**
- * @typedef {{
- *     auto:?boolean,
- *     toolboxes:Array<Blockly.utils.toolbox.ToolboxDefinition>,
- * }}
+ * @typedef {Blockly.utils.toolbox.ToolboxDefinition} BlocklyToolbox
  */
-let PlaygroundConfig;
+
+/**
+ * @typedef {Object} PlaygroundConfig
+ * @property {boolean} [auto] Whether or not to automatically import, and run
+ *     the XML and code generators.
+ * @property {Object<string,BlocklyToolbox>} [toolboxes] The toolbox registry.
+ */
 
 /**
  * @typedef {{
@@ -71,7 +75,7 @@ let PlaygroundAPI;
  * @return {Promise<PlaygroundAPI>} A promise to the playground API.
  */
 export function createPlayground(container, createWorkspace,
-    defaultOptions, config, vsEditorPath) {
+    defaultOptions, config = {}, vsEditorPath) {
   const {blocklyDiv, monacoDiv, guiContainer, tabButtons, tabsDiv} =
     renderPlayground(container);
 
@@ -185,14 +189,24 @@ export function createPlayground(container, createWorkspace,
       if (playgroundState.get('autoGenerate')) {
         if (initialWorkspaceXml && isFirstLoad) {
           isFirstLoad = false;
-          Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(initialWorkspaceXml),
-              workspace);
+          try {
+            Blockly.Xml.domToWorkspace(
+                Blockly.Xml.textToDom(initialWorkspaceXml), workspace);
+          } catch (e) {
+            console.warn('Failed to auto import.', e);
+          }
         }
 
         currentGenerate();
 
-        playgroundState.set('workspaceXml', Blockly.Xml.domToPrettyText(
-            Blockly.Xml.workspaceToDom(workspace)));
+        let code = '';
+        try {
+          code = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(
+              workspace));
+        } catch (e) {
+          console.warn('Failed to auto save.', e);
+        }
+        playgroundState.set('workspaceXml', code);
         playgroundState.save();
       }
     };
@@ -261,16 +275,14 @@ export function createPlayground(container, createWorkspace,
         }
       });
       return workspace;
-    }, defaultOptions, config);
-    (/** @type {?} */ (gui)).setResizeEnabled(false);
+    }, defaultOptions, {
+      disableResize: false,
+      toolboxes: config.toolboxes,
+    });
 
     // Move the GUI Element to the gui container.
     const guiElement = gui.domElement;
     guiElement.removeChild(guiElement.firstChild);
-    guiElement.style.top = '';
-    guiElement.style.left = '';
-    guiElement.style.right = '';
-    guiElement.style.bottom = '';
     guiElement.style.position = 'relative';
     guiElement.style.minWidth = '100%';
     guiContainer.appendChild(guiElement);
