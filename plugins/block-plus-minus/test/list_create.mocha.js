@@ -1,17 +1,29 @@
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 const chai = require('chai');
-const assert = chai.assert;
+const {testHelpers} = require('@blockly/dev-tools');
+const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
 const Blockly = require('blockly/node');
 
 require('../src/index');
 
-suite('list create', () => {
+const assert = chai.assert;
+const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
+  runSerializationTestSuite, SerializationTestCase} = testHelpers;
+
+suite('List create block', function() {
   /**
-   * Asserts that the list block has the inptus and fields we expect.
+   * Asserts that the list block has the inputs and fields we expect.
    * @param {!Blockly.Block} block The list block.
-   * @param {number} inputCount The number of inputs we expect.
+   * @param {number=} inputCount The number of inputs we expect.
    */
-  function assertList(block, inputCount) {
-    if (inputCount == 0) {
+  function assertListBlockStructure(block, inputCount = 0) {
+    assert.equal(block.type, 'lists_create_with');
+    if (inputCount === 0) {
       assert.equal(block.inputList.length, 1);
       const input = block.inputList[0];
       assert.equal(input.type, Blockly.DUMMY_INPUT);
@@ -31,171 +43,131 @@ suite('list create', () => {
     assert.notEqual(block.toString(), 'create empty list');
   }
 
-  setup(() => {
+  setup(function() {
     this.workspace = new Blockly.Workspace();
-    this.listBlock = this.workspace.newBlock('lists_create_with');
   });
-  teardown(() => {
-    this.workspace.dispose();
-    delete this.workspace;
-    delete this.listBlock;
-  });
-  suite('Serialization matches old', () => {
-    setup(() => {
-      this.workspace.clear();
-    });
-    test('Simple', () => {
-      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
-          '    <mutation items="5"></mutation>\n' +
-          '  </block>\n' +
-          '</xml>';
-      Blockly.Xml.domToWorkspace(
-          Blockly.Xml.textToDom(oldText), this.workspace);
-      assertList(this.workspace.getBlockById('list'), 5);
-      const xml = Blockly.Xml.workspaceToDom(this.workspace);
-      const newText = Blockly.Xml.domToPrettyText(xml);
-      assert.equal(newText, oldText);
-    });
-    test('No mutation', () => {
-      const given = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="lists_create_with" id="list" x="128" y="173">' +
-          '  </block>\n' +
-          '</xml>';
-      const expected = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
-          '    <mutation items="3"></mutation>\n' +
-          '  </block>\n' +
-          '</xml>';
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(given), this.workspace);
-      assertList(this.workspace.getBlockById('list'), 3);
-      const xml = Blockly.Xml.workspaceToDom(this.workspace);
-      const newText = Blockly.Xml.domToPrettyText(xml);
-      assert.equal(newText, expected);
-    });
-    test('No inputs', () => {
-      const oldText = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="lists_create_with" id="list" x="128" y="173">\n' +
-          '    <mutation items="0"></mutation>\n' +
-          '  </block>\n' +
-          '</xml>';
-      Blockly.Xml.domToWorkspace(
-          Blockly.Xml.textToDom(oldText), this.workspace);
-      assertList(this.workspace.getBlockById('list'), 0);
-      const xml = Blockly.Xml.workspaceToDom(this.workspace);
-      const newText = Blockly.Xml.domToPrettyText(xml);
-      assert.equal(newText, oldText);
-    });
-  });
-  suite('Creation', () => {
-    test('Programmatic', () => {
-      const listBlock = this.workspace.newBlock('lists_create_with');
-      assertList(listBlock, 3);
-    });
-    test('Empty XML', () => {
-      const listBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-          '<block type="lists_create_with"/>'
-      ), this.workspace);
-      assertList(listBlock, 3);
-    });
-    test('0 items', () => {
-      const listBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-          '<block type="lists_create_with">' +
-          '  <mutation items="0"/>' +
-          '</block>'
-      ), this.workspace);
-      assertList(listBlock, 0);
-    });
-    test('4 items', () => {
-      const listBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-          '<block type="lists_create_with">' +
-          '  <mutation items="4"/>' +
-          '</block>'
-      ), this.workspace);
-      assertList(listBlock, 4);
-    });
-  });
-  suite('Adding and removing inputs', () => {
-    test('Add', () => {
-      assertList(this.listBlock, 3);
-      this.listBlock.plus();
-      assertList(this.listBlock, 4);
-    });
-    test('Add lots', () => {
-      assertList(this.listBlock, 3);
-      for (let i = 0; i < 7; i++) {
-        this.listBlock.plus();
-      }
-      assertList(this.listBlock, 10);
-    });
-    test('Remove', () => {
-      assertList(this.listBlock, 3);
-      this.listBlock.minus();
-      assertList(this.listBlock, 2);
-    });
-    test('Remove too many', () => {
-      assertList(this.listBlock, 3);
-      for (let i = 0; i < 4; i++) {
-        this.listBlock.minus();
-      }
-      assertList(this.listBlock, 0);
-    });
-    test('Remove lots', () => {
-      assertList(this.listBlock, 3);
-      for (let i = 0; i < 7; i++) {
-        this.listBlock.plus();
-      }
-      for (let i = 0; i < 5; i++) {
-        this.listBlock.minus();
-      }
-      assertList(this.listBlock, 5);
-    });
-    test('Remove attached', () => {
-      const childBlock = this.workspace.newBlock('logic_boolean');
-      assertList(this.listBlock, 3);
-      this.listBlock.getInput('ADD2').connection
-          .connect(childBlock.outputConnection);
-      assert.equal(this.listBlock.getInputTargetBlock('ADD2'), childBlock);
-      this.listBlock.minus();
-      assert.isNull(this.listBlock.getInputTargetBlock('ADD2'));
-      assert.isNull(childBlock.outputConnection.targetBlock());
-    });
-  });
-  suite('Xml round-tripping', () => {
-    setup(() => {
-      this.assertRoundTrip = (block, func) => {
-        func(block);
-        const xml = Blockly.Xml.blockToDom(block);
-        const newBlock = Blockly.Xml.domToBlock(xml, this.workspace);
-        func(newBlock);
-      };
-    });
-    teardown( () => {
-      delete this.assertRoundTrip;
-    });
 
-    test('Unmutated', () => {
-      this.assertRoundTrip(this.listBlock, (block) => {
-        assertList(block, 3);
-      });
-    });
-    test('Mutated', () => {
-      this.listBlock.plus();
-      this.assertRoundTrip(this.listBlock, (block) => {
-        assertList(block, 4);
-      });
-    });
-    test('Child attached', () => {
-      const childBlock = this.workspace.newBlock('logic_boolean');
-      this.listBlock.plus();
-      this.listBlock.getInput('ADD3').connection
-          .connect(childBlock.outputConnection);
-      this.assertRoundTrip(this.listBlock, (block) => {
-        assertList(block, 4);
-        const child = block.getInputTargetBlock('ADD3');
-        assert.isNotNull(child);
-        assert.equal(child.type, 'logic_boolean');
-      });
-    });
+  teardown(function() {
+    this.workspace.dispose();
   });
+
+  test('Creation', function() {
+    this.block = this.workspace.newBlock('lists_create_with');
+    assertListBlockStructure(this.block, 3);
+  });
+
+  suite('blockToCode', function() {
+    const trivialCreateBlock = (workspace) => {
+      return workspace.newBlock('lists_create_with');
+    };
+
+    /**
+     * Test suites for code generation tests.
+     * @type {Array<CodeGenerationTestSuite>}
+     */
+    const testSuites = [
+      {title: 'Dart', generator: Blockly.Dart,
+        testCases: [
+          {title: 'Trivial', expectedCode: '[null, null, null]',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'JavaScript', generator: Blockly.JavaScript,
+        testCases: [
+
+          {title: 'Trivial', expectedCode: '[null, null, null]',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'Lua', generator: Blockly.Lua,
+        testCases: [
+          {title: 'Trivial', expectedCode: '{None, None, None}',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'PHP', generator: Blockly.PHP,
+        testCases: [
+          {title: 'Trivial', expectedCode: 'array(null, null, null)',
+            createBlock: trivialCreateBlock},
+        ]},
+      {title: 'Python', generator: Blockly.Python,
+        testCases: [
+          {title: 'Trivial', expectedCode: '[None, None, None]',
+            createBlock: trivialCreateBlock},
+        ]},
+    ];
+    runCodeGenerationTestSuites(testSuites);
+  });
+
+  /**
+   * Test cases for serialization tests.
+   * @type {Array<SerializationTestCase>}
+   */
+  const testCases = [
+    {title: 'Empty XML', xml: '<block type="lists_create_with"/>',
+      expectedXml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 3);
+          },
+    },
+    {title: '3 items',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 3);
+          },
+    },
+    {title: '5 items',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="5"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 5);
+          },
+    },
+    {title: '0 items',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="0"></mutation>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 0);
+          },
+    },
+    {title: '4 items with child attached',
+      xml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="lists_create_with" id="1">\n' +
+          '  <mutation items="4"></mutation>\n' +
+          '  <value name="ADD3">\n' +
+          '    <block type="logic_boolean" id="1">\n' +
+          '      <field name="BOOL">FALSE</field>\n' +
+          '    </block>\n' +
+          '  </value>\n' +
+          '</block>',
+      assertBlockStructure:
+          (block) => {
+            assertListBlockStructure(block, 4);
+            const child = block.getInputTargetBlock('ADD3');
+            assert.isNotNull(child);
+            assert.equal(child.type, 'logic_boolean');
+            assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+          },
+    },
+  ];
+  runSerializationTestSuite(testCases);
+
+  runPlusMinusTestSuite('lists_create_with', 3, 0, 'ADD',
+      assertListBlockStructure);
 });

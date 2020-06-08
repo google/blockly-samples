@@ -39,7 +39,6 @@ if (!config.entry) {
 
 let mochaConfig = {
   ui: 'tdd',
-  reporter: 'list',
 };
 // If custom configuration exists, use that instead.
 const testDir = resolveApp('test');

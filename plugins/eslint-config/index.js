@@ -82,6 +82,12 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.mocha.js'],
+      settings: {
+        jsdoc: {
+          mode: 'closure',
+        },
+      },
+
       env: {
         mocha: true,
       },
