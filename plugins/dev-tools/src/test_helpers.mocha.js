@@ -41,4 +41,5 @@ export {
   runTestCases,
   SerializationTestCase,
   TestCase,
+  TestSuite,
 };
