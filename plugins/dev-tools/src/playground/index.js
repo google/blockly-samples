@@ -202,15 +202,15 @@ export function createPlayground(container, createWorkspace,
       'XML': registerGenerator('XML', 'xml', (ws) =>
         Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(ws))),
       'JavaScript': registerGenerator('JavaScript', 'javascript',
-          (ws) => BlocklyJS.workspaceToCode(ws), true),
+          (ws) => (BlocklyJS || Blockly.JavaScript).workspaceToCode(ws), true),
       'Python': registerGenerator('Python', 'python',
-          (ws) => BlocklyPython.workspaceToCode(ws), true),
+          (ws) => (BlocklyPython || Blockly.Python).workspaceToCode(ws), true),
       'Dart': registerGenerator('Dart', 'javascript',
-          (ws) => BlocklyDart.workspaceToCode(ws), true),
+          (ws) => (BlocklyDart || Blockly.Dart).workspaceToCode(ws), true),
       'Lua': registerGenerator('Lua', 'lua',
-          (ws) => BlocklyLua.workspaceToCode(ws), true),
+          (ws) => (BlocklyLua || Blockly.Lua).workspaceToCode(ws), true),
       'PHP': registerGenerator('PHP', 'php',
-          (ws) => BlocklyPHP.workspaceToCode(ws), true),
+          (ws) => (BlocklyPHP || Blockly.PHP).workspaceToCode(ws), true),
     };
 
     // Handle tab click.
