@@ -53,6 +53,7 @@ let PlaygroundConfig;
  *         function(!Blockly.Workspace,boolean):void,string=,boolean=):dat.GUI,
  *     addGenerator: function(string,!Blockly.Generator,string=):void,
  *     getCurrentTab: function():!PlaygroundTab,
+ *     getGUI: function():!dat.GUI,
  *     getWorkspace: function():!Blockly.WorkspaceSvg,
  * }}
  */
@@ -274,6 +275,14 @@ export function createPlayground(container, createWorkspace,
     // Playground API.
 
     /**
+     * Get the current GUI controls.
+     * @return {!dat.GUI} The GUI controls.
+     */
+    const getGUI = function() {
+      return gui;
+    };
+
+    /**
      * Get the current workspace.
      * @return {!Blockly.WorkspaceSvg} The Blockly workspace.
      */
@@ -310,6 +319,7 @@ export function createPlayground(container, createWorkspace,
       addCheckboxAction: (/** @type {?} */ (gui)).addCheckboxAction,
       addGenerator,
       getCurrentTab,
+      getGUI,
       getWorkspace,
     };
 

@@ -21,6 +21,7 @@ interface PlaygroundAPI {
     folder?: string, defaultValue?: boolean) => dat.GUIController;
   addGenerator: () => void;
   getCurrentTab: () => PlaygroundTab;
+  getGUI: () => DevTools.GUI;
   getWorkspace: () => Blockly.WorkspaceSvg;
 }
 
