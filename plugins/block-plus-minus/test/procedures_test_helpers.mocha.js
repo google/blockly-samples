@@ -37,9 +37,11 @@ function assertDefBlockStructure(
         'Def block should not have RETURN input');
   }
   if (args.length) {
-    assert.include(defBlock.toString(), 'with');
+    assert.include(defBlock.toString(), 'with',
+        'Def block string should include "with"');
   } else {
-    assert.notInclude(defBlock.toString(), 'with');
+    assert.notInclude(defBlock.toString(), 'with',
+        'Def block string should not include "with"');
   }
 
   assertDefBlockArgsStructure_(defBlock, args, hasReturn, hasStatements);
@@ -116,7 +118,6 @@ function assertDefBlockArgsStructure_(
  */
 function assertCallBlockArgsStructure_(callBlock, args) {
   // inputList also contains "TOPROW"
-  console.log(callBlock.inputList[0].name);
   assert.equal(callBlock.inputList.length - 1, args.length,
       'call block has the expected number of args');
 
@@ -148,32 +149,37 @@ function assertProcBlocksStructure(
 }
 
 /**
- * Creates simple procedure definition block using domToBlock call.
+ * Creates procedure definition block using domToBlock call.
  * @param {!Blockly.Workspace} workspace The Blockly workspace.
- * @param {boolean} hasReturn Whether the procedure definition should have
+ * @param {boolean=} hasReturn Whether the procedure definition should have
  *    return.
  * @param {string=} nameId The procedure name.
+ * @param {boolean=} hasStatements Whether the block has statements (STACK).
  * @return {Blockly.Block} The created block.
  */
-function createSimpleProcDefBlock(workspace, hasReturn, nameId = 'proc name') {
+function createProcDefBlock(
+    workspace, hasReturn = false, nameId = 'proc name', hasStatements = true) {
   const type = hasReturn ?
       'procedures_defreturn' : 'procedures_defnoreturn';
   return Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
       '<block type="' + type + '">' +
-      '  <field name="NAME">"' + nameId + '"</field>' +
+      ((hasStatements) ? '' :
+          '    <mutation statements="false"></mutation>\n') +
+      '  <field name="NAME">' + nameId + '</field>' +
       '</block>'
   ), workspace);
 }
 
 /**
- * Creates simple procedure call block using domToBlock call.
+ * Creates procedure call block using domToBlock call.
  * @param {!Blockly.Workspace} workspace The Blockly workspace.
- * @param {boolean} hasReturn Whether the corresponding procedure definition
+ * @param {boolean=} hasReturn Whether the corresponding procedure definition
  *    has return.
  * @param {string=} nameId The procedure name.
  * @return {Blockly.Block} The created block.
  */
-function createSimpleProcCallBlock(workspace, hasReturn, nameId = 'proc name') {
+function createProcCallBlock(
+    workspace, hasReturn = false, nameId = 'proc name') {
   const type = hasReturn ?
       'procedures_callreturn' : 'procedures_callnoreturn';
   return Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
@@ -187,6 +193,6 @@ module.exports = {
   assertDefBlockStructure,
   assertCallBlockStructure,
   assertProcBlocksStructure,
-  createSimpleProcDefBlock,
-  createSimpleProcCallBlock,
+  createProcDefBlock,
+  createProcCallBlock,
 };

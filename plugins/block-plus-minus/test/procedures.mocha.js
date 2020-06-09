@@ -16,8 +16,8 @@ const assert = chai.assert;
 const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
   runSerializationTestSuite, SerializationTestCase} = testHelpers;
 const {assertDefBlockStructure, assertCallBlockStructure,
-  assertProcBlocksStructure, createSimpleProcDefBlock,
-  createSimpleProcCallBlock} = procedureTestHelpers;
+  assertProcBlocksStructure, createProcDefBlock,
+  createProcCallBlock} = procedureTestHelpers;
 
 suite.only('Procedure blocks', function() {
   setup(function() {
@@ -32,6 +32,16 @@ suite.only('Procedure blocks', function() {
     this.clock.tick(100);
     this.workspace.dispose();
   });
+
+  // const suites = [
+  //   {title: 'with return', hasReturn: true},
+  //   {title: 'no return', hasReturn: true},
+  // ];
+  //
+  // suites.forEach((suite) => {
+  //   suite(suite.title, function() {
+  //
+  //   });
 
   test('Structure', function() {
     const defBlock = this.workspace.newBlock('procedures_defnoreturn');
@@ -54,7 +64,7 @@ suite.only('Procedure blocks', function() {
       {title: 'Dart', generator: Blockly.Dart,
         testCases: [
           {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-            createBlock: createSimpleProcDefBlock},
+            createBlock: createProcDefBlock},
         ]},
       {title: 'JavaScript', generator: Blockly.JavaScript,
         testCases: [
@@ -64,17 +74,17 @@ suite.only('Procedure blocks', function() {
       {title: 'Lua', generator: Blockly.Lua,
         testCases: [
           {title: 'Trivial', expectedCode: 'if false then\nend\n',
-            createBlock: createSimpleProcDefBlock},
+            createBlock: createProcDefBlock},
         ]},
       {title: 'PHP', generator: Blockly.PHP,
         testCases: [
           {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-            createBlock: createSimpleProcDefBlock},
+            createBlock: createProcDefBlock},
         ]},
       {title: 'Python', generator: Blockly.Python,
         testCases: [
           {title: 'Trivial', expectedCode: 'if False:\nundefined',
-            createBlock: createSimpleProcDefBlock},
+            createBlock: createProcDefBlock},
         ]},
     ];
 
@@ -141,69 +151,65 @@ suite.only('Procedure blocks', function() {
   ];
   runSerializationTestSuite(testCases);
 
-  suite.skip('Adding and removing', function() {
+
+  suite('Adding and removing inputs', function() {
+    setup(function() {
+      this.def = createProcDefBlock(this.workspace);
+      this.call = createProcCallBlock(this.workspace);
+    });
+
     test('Add', function() {
-      const def = createSimpleProcDefBlock(this.workspace);
-      const call = createSimpleProcCallBlock(this.workspace);
-      def.plus();
-      assertProcBlocksStructure(def, call, ['x']);
+      assertProcBlocksStructure(this.def, this.call);
+      this.def.plus();
+      assertProcBlocksStructure(this.def, this.call, ['x']);
     });
-    test('Add lots', function() {
-      const def = createSimpleProcDefBlock(this.workspace);
-      const call = createSimpleProcCallBlock(this.workspace);
+
+    test('Add many', function() {
+      assertProcBlocksStructure(this.def, this.call);
       for (let i = 0; i < 5; i++) {
-        def.plus();
+        this.def.plus();
       }
-      assertProcBlocksStructure(def, call, ['x', 'y', 'z', 'a', 'b']);
+      assertProcBlocksStructure(this.def, this.call, ['x', 'y', 'z', 'a', 'b']);
     });
+
     test('Add, no stack', function() {
-      const xml = '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="procedures_defreturn" id="def">\n' +
-          '    <mutation statements="false"></mutation>\n' +
-          '    <field name="NAME">do something</field>\n' +
-          '  </block>\n' +
-          '  <block type="procedures_callreturn" id="call">\n' +
-          '    <mutation name="do something"></mutation>\n' +
-          '  </block>' +
-          '</xml>';
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
-      const def = this.workspace.getBlockById('def');
-      def.plus();
-      assertProcBlocksStructure(
-          def, this.workspace.getBlockById('call'), ['x'], false);
+      this.def = createProcDefBlock(
+          this.workspace, true, 'proc name2', false);
+      this.call = createProcCallBlock(this.workspace, true, 'proc name2');
+      assertProcBlocksStructure(this.def, this.call, [], true, false);
+      this.def.plus();
+      assertProcBlocksStructure(this.def, this.call, ['x'], true, false);
     });
+
     test('Remove', function() {
-      const def = createSimpleProcDefBlock(this.workspace);
-      const call = createSimpleProcCallBlock(this.workspace);
-      def.plus();
-      def.minus(def.argData_[0].argId);
-      assertProcBlocksStructure(def, call);
+      assertProcBlocksStructure(this.def, this.call);
+      this.def.plus();
+      this.def.minus(this.def.argData_[0].argId);
+      assertProcBlocksStructure(this.def, this.call);
     });
-    test('Remove lots', function() {
-      const def = createSimpleProcDefBlock(this.workspace);
-      const call = createSimpleProcCallBlock(this.workspace);
+
+    test('Remove many', function() {
+      assertProcBlocksStructure(this.def, this.call);
       for (let i = 0; i < 10; i++) {
-        def.plus();
+        this.def.plus();
       }
       // Remove every other input. Must do it backwards so that the array
       // doesn't get out of whack.
       for (let i = 9; i > 0; i-=2) {
-        def.minus(def.argData_[i].argId);
+        this.def.minus(this.def.argData_[i].argId);
       }
-      assertProcBlocksStructure(def, call, ['x', 'z', 'b', 'd', 'f']);
+      assertProcBlocksStructure(this.def, this.call, ['x', 'z', 'b', 'd', 'f']);
     });
-    test('Remove w/ no args', function() {
-      const def = createSimpleProcDefBlock(this.workspace);
-      const call = createSimpleProcCallBlock(this.workspace);
-      def.minus('whatevs');
-      assertProcBlocksStructure(def, call);
+
+    test('Remove too many (w/ no args)', function() {
+      this.def.minus('whatevs');
+      assertProcBlocksStructure(this.def, this.call);
     });
+
     test('Remove bad arg', function() {
-      const def = createSimpleProcDefBlock(this.workspace);
-      const call = createSimpleProcCallBlock(this.workspace);
-      def.plus();
-      def.minus('whatevs');
-      assertProcBlocksStructure(def, call, ['x']);
+      this.def.plus();
+      this.def.minus('whatevs');
+      assertProcBlocksStructure(this.def, this.call, ['x']);
     });
   });
 
@@ -221,8 +227,8 @@ suite.only('Procedure blocks', function() {
 
     suite('Renaming args', function() {
       setup(function() {
-        this.def = createSimpleProcDefBlock(this.workspace);
-        this.call = createSimpleProcCallBlock(this.workspace);
+        this.def = createProcDefBlock(this.workspace);
+        this.call = createProcCallBlock(this.workspace);
       });
       test('Simple Rename', function() {
         this.def.plus();
@@ -281,8 +287,8 @@ suite.only('Procedure blocks', function() {
     });
     suite('Vars Renamed Elsewhere', function() {
       setup(function() {
-        this.def = createSimpleProcDefBlock(this.workspace);
-        this.call = createSimpleProcCallBlock(this.workspace);
+        this.def = createProcDefBlock(this.workspace);
+        this.call = createProcCallBlock(this.workspace);
       });
       test('Simple Rename', function() {
         this.def.plus();
