@@ -56,7 +56,7 @@ suite('Procedure blocks', function() {
       });
 
       // TODO(kozbial): Fix errors with runCodeGenerationTestSuites call
-      suite.skip('blockToCode', function() {
+      suite.only('blockToCode', function() {
         const trivial = (workspace) => {
           return workspace.newBlock(testSuite.defType);
         };

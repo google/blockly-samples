@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-<<<<<<< Updated upstream:plugins/dev-create/templates/field/template/test/field_test.mocha.js
 const {testHelpers} = require('@blockly/dev-tools');
 const {FieldTemplate} = require('../src/index');
 
@@ -12,10 +11,6 @@ const {
   FieldCreationTestCase, FieldValueTestCase, runConstructorSuiteTests,
   runFromJsonSuiteTests, runSetValueTests,
 } = testHelpers;
-=======
-const {testHelpers} = require('../test/field_test_helpers.mocha');
-const {FieldTemplate} = require('../dist/index');
->>>>>>> Stashed changes:plugins/dev-tools/src/field_test_template.mocha.js
 
 suite('FieldTemplate', function() {
   /**
