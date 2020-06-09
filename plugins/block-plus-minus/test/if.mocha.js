@@ -88,7 +88,7 @@ suite('If block', function() {
         ]},
       {title: 'Python', generator: Blockly.Python,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if False:\nundefined',
+          {title: 'Trivial', expectedCode: 'if False:\n  pass',
             createBlock: trivialCreateBlock},
         ]},
     ];

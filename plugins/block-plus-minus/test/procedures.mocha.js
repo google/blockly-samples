@@ -55,7 +55,7 @@ suite('Procedure blocks', function() {
         });
       });
 
-      // TODO(kozbial): Fix errors with runCodeGenerationTestSuites call
+      // TODO(#301): Remove skip after bug is fixed.
       suite.skip('blockToCode', function() {
         const trivial = (workspace) => {
           return workspace.newBlock(testSuite.defType);
@@ -68,27 +68,47 @@ suite('Procedure blocks', function() {
         const codeGenerationTestSuites = [
           {title: 'Dart', generator: Blockly.Dart,
             testCases: [
-              {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+              {title: 'Trivial',
+                expectedCode:
+                    '// Describe this function...\n' +
+                    'void proc_name() {\n' +
+                    '}',
                 createBlock: createProcDefBlock},
             ]},
           {title: 'JavaScript', generator: Blockly.JavaScript,
             testCases: [
-              {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+              {title: 'Trivial',
+                expectedCode:
+                    '// Describe this function...\n' +
+                    'function proc_name() {\n' +
+                    '}',
                 createBlock: trivial},
             ]},
           {title: 'Lua', generator: Blockly.Lua,
             testCases: [
-              {title: 'Trivial', expectedCode: 'if false then\nend\n',
+              {title: 'Trivial',
+                expectedCode:
+                    '-- Describe this function...\n' +
+                    'function proc_name()\n' +
+                    'end',
                 createBlock: createProcDefBlock},
             ]},
           {title: 'PHP', generator: Blockly.PHP,
             testCases: [
-              {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
+              {title: 'Trivial',
+                expectedCode:
+                    '// Describe this function...\n' +
+                    'function proc_name() {\n' +
+                    '}',
                 createBlock: createProcDefBlock},
             ]},
           {title: 'Python', generator: Blockly.Python,
             testCases: [
-              {title: 'Trivial', expectedCode: 'if False:\nundefined',
+              {title: 'Trivial',
+                expectedCode:
+                    '# Describe this function...\n' +
+                    'def proc_name():\n' +
+                    '  pass',
                 createBlock: createProcDefBlock},
             ]},
         ];
