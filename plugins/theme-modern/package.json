@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-modern",
-  "version": "1.20200417.8",
+  "version": "2.0.0",
   "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
     "build": "blockly-scripts build",
