@@ -56,7 +56,7 @@ suite('Procedure blocks', function() {
       });
 
       // TODO(kozbial): Fix errors with runCodeGenerationTestSuites call
-      suite.only('blockToCode', function() {
+      suite.skip('blockToCode', function() {
         const trivial = (workspace) => {
           return workspace.newBlock(testSuite.defType);
         };
@@ -65,7 +65,7 @@ suite('Procedure blocks', function() {
          * Test suites for code generation test.
          * @type {Array<CodeGenerationTestSuite>}
          */
-        const testSuites = [
+        const codeGenerationTestSuites = [
           {title: 'Dart', generator: Blockly.Dart,
             testCases: [
               {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
@@ -93,7 +93,7 @@ suite('Procedure blocks', function() {
             ]},
         ];
 
-        runCodeGenerationTestSuites(testSuites);
+        runCodeGenerationTestSuites(codeGenerationTestSuites);
       });
 
       /**

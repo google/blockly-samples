@@ -55,7 +55,7 @@ suite('If block', function() {
     assertIfBlockStructure(this.block, 1);
   });
 
-  suite.only('blockToCode', function() {
+  suite('blockToCode', function() {
     const trivialCreateBlock = (workspace) => {
       return workspace.newBlock('controls_if');
     };

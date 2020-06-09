@@ -85,7 +85,7 @@ const createCodeGenerationTestFn_ = (generator) => {
   return (testCase) => {
     return function() {
       const block = testCase.createBlock(this.workspace);
-      const tuple = generator.workspaceToCode(block);
+      const tuple = generator.blockToCode(block);
       let code;
       let innerOrder;
       if (Array.isArray(tuple)) {
