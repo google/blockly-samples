@@ -14,14 +14,14 @@ const assert = chai.assert;
  * Asserts that the procedure definition block has the expected inputs and
  *    fields.
  * @param {!Blockly.Block} defBlock The procedure definition block.
- * @param {Array<string>=} args An array of argument names.
  * @param {boolean=} hasReturn If we expect the procedure def to have a return
  *     input or not.
+ * @param {Array<string>=} args An array of argument names.
  * @param {boolean=} hasStatements If we expect the procedure def to have a
  *     statement input or not.
  */
 function assertDefBlockStructure(
-    defBlock, args = [], hasReturn = false, hasStatements = true) {
+    defBlock, hasReturn = false, args = [], hasStatements = true) {
   if (hasStatements) {
     assert.isNotNull(defBlock.getInput('STACK'),
         'Def block should have STACK input');
@@ -44,7 +44,7 @@ function assertDefBlockStructure(
         'Def block string should not include "with"');
   }
 
-  assertDefBlockArgsStructure_(defBlock, args, hasReturn, hasStatements);
+  assertDefBlockArgsStructure_(defBlock, hasReturn, args, hasStatements);
 }
 
 /**
@@ -66,15 +66,15 @@ function assertCallBlockStructure(callBlock, args = []) {
 /**
  * Asserts that the procedure definition block has the expected arguments.
  * @param {!Blockly.Block} defBlock The procedure definition block.
- * @param {Array<string>=} args An array of argument names.
  * @param {boolean=} hasReturn If we expect the procedure def to have a return
  *     input or not.
+ * @param {Array<string>=} args An array of argument names.
  * @param {boolean=} hasStatements If we expect the procedure def to have
  *     a statement input or not.
  * @private
  */
 function assertDefBlockArgsStructure_(
-    defBlock, args, hasReturn, hasStatements) {
+    defBlock, hasReturn, args, hasStatements) {
   // inputList also contains "TOP" input and optionally "RETURN" and "STACK"
   let defArgCount = defBlock.inputList.length - 1;
   if (hasReturn) {
@@ -136,15 +136,15 @@ function assertCallBlockArgsStructure_(callBlock, args) {
  *    inputs and fields.
  * @param {!Blockly.Block} def The procedure definition block.
  * @param {!Blockly.Block} call The procedure call block.
- * @param {Array<string>=} args An array of argument names.
  * @param {boolean=} hasReturn If we expect the procedure def to have a return
  *     input or not.
+ * @param {Array<string>=} args An array of argument names.
  * @param {boolean=} hasStatements If we expect the procedure def to have
  *     a statement input or not.
  */
 function assertProcBlocksStructure(
-    def, call, args = [], hasReturn = false, hasStatements = true) {
-  assertDefBlockStructure(def, args, hasReturn, hasStatements);
+    def, call, hasReturn = false, args = [], hasStatements = true) {
+  assertDefBlockStructure(def, hasReturn, args, hasStatements);
   assertCallBlockStructure(call, args);
 }
 
