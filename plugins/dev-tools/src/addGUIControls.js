@@ -53,11 +53,16 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
         'simple': toolboxSimple,
       });
   const defaultToolboxName =
-    initDefaultToolbox(defaultOptions, toolboxes);
-  if (!guiState.toolboxName) {
-    guiState.toolboxName = defaultToolboxName;
-  }
+      initDefaultToolbox(defaultOptions, toolboxes);
+  guiState.toolboxName = guiState.toolboxName || defaultToolboxName;
   guiState.options.toolbox = toolboxes[guiState.toolboxName];
+
+  // Initialize themes.
+  const themes = getThemes(defaultOptions);
+  const defaultThemeName = defaultOptions.theme ? defaultOptions.theme.name :
+      'classic';
+  guiState.themeName = guiState.themeName || defaultThemeName;
+  guiState.options.theme = themes[guiState.themeName];
 
   // Merge default and saved state.
   const saveOptions = {
@@ -118,7 +123,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
       onResize();
     }
     // Save the GUI state locally.
-    saveGUIState(guiState, defaultToolboxName);
+    saveGUIState(guiState, defaultToolboxName, defaultThemeName);
     // Update options.
     merge(options, workspace.options);
     gui.updateDisplay();
@@ -139,6 +144,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     initDebugRenderer(guiState.debug, true);
     // Reset toolbox selection.
     guiState.toolboxName = defaultToolboxName;
+    guiState.themeName = defaultThemeName;
     onChangeInternal();
   };
 
@@ -149,7 +155,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
   openFolderIfOptionSelected(optionsFolder, guiState.options,
-      ['rtl', 'renderer', 'theme', 'toolboxPosition', 'horizontalLayout']);
+      ['rtl', 'renderer', 'toolboxPosition', 'horizontalLayout']);
 
   optionsFolder.add(options, 'RTL').name('rtl').onChange((value) =>
     onChange('rtl', value));
@@ -158,7 +164,8 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   populateRendererOption(optionsFolder, options, onChange);
 
   // Theme.
-  populateThemeOption(optionsFolder, options, defaultOptions, onChange);
+  populateThemeOption(optionsFolder, guiState, themes, defaultThemeName,
+      onChange);
 
   // Toolbox.
   populateToolboxOption(optionsFolder, guiState, toolboxes, defaultToolboxName,
@@ -278,8 +285,9 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
  * Save the GUI state to local storage and the window hash.
  * @param {Object} guiState The GUI State.
  * @param {string} defaultToolboxName The default toolbox name.
+ * @param {string} defaultThemeName The default theme name.
  */
-function saveGUIState(guiState, defaultToolboxName) {
+function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   // Don't save toolbox and theme, as we'll save their names instead.
   delete guiState.options['toolbox'];
   delete guiState.options['theme'];
@@ -291,6 +299,9 @@ function saveGUIState(guiState, defaultToolboxName) {
   const hashGuiState = Object.assign({}, guiState.options);
   if (guiState.toolboxName !== defaultToolboxName) {
     hashGuiState.toolbox = guiState.toolboxName;
+  }
+  if (guiState.themeName !== defaultThemeName) {
+    hashGuiState.theme = guiState.themeName;
   }
   window.location.hash = HashState.save(hashGuiState);
 }
@@ -310,6 +321,12 @@ function loadGUIState() {
   if (guiState.options.toolbox) {
     guiState.toolboxName = guiState.options.toolbox;
     delete guiState.options.toolbox;
+  }
+  // Move GUI theme state out of options, as it refers to the theme name
+  // and not the theme object.
+  if (guiState.options.theme) {
+    guiState.themeName = guiState.options.theme;
+    delete guiState.options.theme;
   }
   return guiState;
 }
@@ -447,13 +464,11 @@ function populateToolboxSidesOption(folder, options, saveOptions, guiState,
 }
 
 /**
- * Populate the theme option.
- * @param {dat.GUI} folder The dat.GUI folder.
- * @param {Blockly.Options} options Blockly options.
+ * Get the list of Blockly themes.
  * @param {Blockly.Options} defaultOptions Default Blockly options.
- * @param {function(string, string):void} onChange On Change method.
+ * @return {Object<string,Blockly.Theme>} The list of registered themes.
  */
-function populateThemeOption(folder, options, defaultOptions, onChange) {
+function getThemes(defaultOptions) {
   let themes;
   if (Blockly.registry && Blockly.registry.typeMap_['theme']) {
     // Using a version of Blockly that registers themes.
@@ -471,8 +486,29 @@ function populateThemeOption(folder, options, defaultOptions, onChange) {
       themes[defaultOptions.theme.name] = defaultOptions.theme;
     }
   }
-  folder.add(options.theme, 'name', Object.keys(themes)).name('theme')
-      .onChange((value) => onChange('theme', themes[value]));
+  return themes;
+}
+
+/**
+ * Populate the theme option.
+ * @param {dat.GUI} folder The dat.GUI folder.
+ * @param {Object} guiState The GUI state.
+ * @param {Object<string,Blockly.Theme>} themes The list of
+ *     themes.
+ * @param {string} defaultThemeName Default Theme name.
+ * @param {function(string, string):void} onChange On Change method.
+ */
+function populateThemeOption(folder, guiState, themes, defaultThemeName,
+    onChange) {
+  folder.add(guiState, 'themeName')
+      .options(Object.keys(themes)).name('theme')
+      .onChange((value) => {
+        guiState.themeName = value;
+        onChange('theme', themes[value]);
+      });
+  if (guiState.themeName !== defaultThemeName) {
+    openFolderIfOptionSelected(folder, guiState.options, ['theme']);
+  }
 }
 
 /**
