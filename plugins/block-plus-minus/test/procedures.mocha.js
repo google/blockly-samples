@@ -58,7 +58,7 @@ suite('Procedure blocks', function() {
       // TODO(#301): Remove skip after bug is fixed.
       suite.skip('blockToCode', function() {
         const trivial = (workspace) => {
-          return workspace.newBlock(testSuite.defType);
+          return createProcDefBlock(workspace, testSuite.hasReturn);
         };
 
         /**
@@ -73,7 +73,7 @@ suite('Procedure blocks', function() {
                     '// Describe this function...\n' +
                     'void proc_name() {\n' +
                     '}',
-                createBlock: createProcDefBlock},
+                createBlock: trivial},
             ]},
           {title: 'JavaScript', generator: Blockly.JavaScript,
             testCases: [
@@ -91,7 +91,7 @@ suite('Procedure blocks', function() {
                     '-- Describe this function...\n' +
                     'function proc_name()\n' +
                     'end',
-                createBlock: createProcDefBlock},
+                createBlock: trivial},
             ]},
           {title: 'PHP', generator: Blockly.PHP,
             testCases: [
@@ -100,7 +100,7 @@ suite('Procedure blocks', function() {
                     '// Describe this function...\n' +
                     'function proc_name() {\n' +
                     '}',
-                createBlock: createProcDefBlock},
+                createBlock: trivial},
             ]},
           {title: 'Python', generator: Blockly.Python,
             testCases: [
@@ -109,7 +109,7 @@ suite('Procedure blocks', function() {
                     '# Describe this function...\n' +
                     'def proc_name():\n' +
                     '  pass',
-                createBlock: createProcDefBlock},
+                createBlock: trivial},
             ]},
         ];
 
