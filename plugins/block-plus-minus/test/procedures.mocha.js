@@ -19,7 +19,7 @@ const {assertDefBlockStructure, assertCallBlockStructure,
   assertProcBlocksStructure, createProcDefBlock,
   createProcCallBlock} = procedureTestHelpers;
 
-suite.only('Procedure blocks', function() {
+suite('Procedure blocks', function() {
   setup(function() {
     this.workspace = new Blockly.Workspace();
     this.clock = sinon.useFakeTimers();
