@@ -84,6 +84,7 @@ SerializationTestCase.prototype.assertBlockStructure = undefined;
 const createCodeGenerationTestFn_ = (generator) => {
   return (testCase) => {
     return function() {
+      generator.init(this.workspace);
       const block = testCase.createBlock(this.workspace);
       const tuple = generator.blockToCode(block);
       let code;

@@ -72,7 +72,6 @@ suite('If block', function() {
         ]},
       {title: 'JavaScript', generator: Blockly.JavaScript,
         testCases: [
-
           {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
             createBlock: trivialCreateBlock},
         ]},
@@ -88,7 +87,7 @@ suite('If block', function() {
         ]},
       {title: 'Python', generator: Blockly.Python,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if False:\nundefined',
+          {title: 'Trivial', expectedCode: 'if False:\n  pass\n',
             createBlock: trivialCreateBlock},
         ]},
     ];
