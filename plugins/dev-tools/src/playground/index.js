@@ -342,7 +342,7 @@ export function createPlayground(container, createWorkspace,
     registerTabButtons(editor, playground, tabButtons, updateEditor);
 
     // Register editor commands.
-    registerEditorCommands(editor, playground);
+    registerEditorCommands(editor, playground, xmlModel);
 
     return playground;
   });
@@ -375,8 +375,21 @@ function registerTabButtons(editor, playground, tabButtons, updateEditor) {
  * Register editor commands / shortcuts.
  * @param {monaco.editor.IStandaloneCodeEditor} editor The monaco editor.
  * @param {PlaygroundAPI} playground The current playground.
+ * @param {monaco.editor.IModel} xmlModel The XML model.
  */
-function registerEditorCommands(editor, playground) {
+function registerEditorCommands(editor, playground, xmlModel) {
+  const load = () => {
+    if (playground.getCurrentTab().state.name !== 'XML') {
+      return;
+    }
+    const xml = editor.getModel().getValue();
+    const workspace = playground.getWorkspace();
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  };
+  const save = () => {
+    playground.getCurrentTab().generate();
+  };
+
   // Add XMl Import action (only available on the XML tab).
   editor.addAction({
     id: 'import-xml',
@@ -387,11 +400,7 @@ function registerEditorCommands(editor, playground) {
     precondition: 'isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 0,
-    run: () => {
-      const xml = editor.getModel().getValue();
-      const workspace = playground.getWorkspace();
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
-    },
+    run: load,
   });
   // Add XMl Export action (only available on the XML tab).
   editor.addAction({
@@ -403,9 +412,7 @@ function registerEditorCommands(editor, playground) {
     precondition: 'isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 1,
-    run: () => {
-      playground.getCurrentTab().generate();
-    },
+    run: save,
   });
   editor.addAction({
     id: 'clean-xml',
@@ -431,8 +438,18 @@ function registerEditorCommands(editor, playground) {
     precondition: '!isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 1,
-    run: () => {
-      playground.getCurrentTab().generate();
-    },
+    run: save,
+  });
+  document.addEventListener('keydown', (e) => {
+    const ctrlCmd = e.metaKey || e.ctrlKey;
+    if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.S) {
+      // Save.
+      save();
+      e.preventDefault();
+    } else if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.ENTER) {
+      // Load.
+      load();
+      e.preventDefault();
+    }
   });
 }
