@@ -342,7 +342,7 @@ export function createPlayground(container, createWorkspace,
     registerTabButtons(editor, playground, tabButtons, updateEditor);
 
     // Register editor commands.
-    registerEditorCommands(editor, playground, xmlModel);
+    registerEditorCommands(editor, playground);
 
     return playground;
   });
@@ -375,9 +375,8 @@ function registerTabButtons(editor, playground, tabButtons, updateEditor) {
  * Register editor commands / shortcuts.
  * @param {monaco.editor.IStandaloneCodeEditor} editor The monaco editor.
  * @param {PlaygroundAPI} playground The current playground.
- * @param {monaco.editor.IModel} xmlModel The XML model.
  */
-function registerEditorCommands(editor, playground, xmlModel) {
+function registerEditorCommands(editor, playground) {
   const load = () => {
     if (playground.getCurrentTab().state.name !== 'XML') {
       return;
