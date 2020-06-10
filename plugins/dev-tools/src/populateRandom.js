@@ -18,7 +18,8 @@ import Blockly from 'blockly/core';
 export function populateRandom(workspace, count) {
   const names = [];
   for (const blockName in Blockly.Blocks) {
-    if (Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockName)) {
+    if (Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockName) &&
+      Object.prototype.hasOwnProperty.call(Blockly.Blocks[blockName], 'init')) {
       names.push(blockName);
     }
   }
