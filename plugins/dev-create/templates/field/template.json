@@ -9,7 +9,7 @@
     "test": "blockly-scripts test"
   },
   "devDependencies": {
-    "@blockly/dev-tools": "^0.20200313.1"
+    "@blockly/dev-tools": "^1.0.0"
   },
   "peerDependencies": {
     "blockly": ">=3"

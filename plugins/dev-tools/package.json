@@ -46,7 +46,7 @@
     "monaco-editor": "^0.20.0"
   },
   "devDependencies": {
-    "@blockly/dev-scripts": "^0.20200403.8",
+    "@blockly/dev-scripts": "^1.0.0",
     "@types/dat.gui": "^0.7.5",
     "blockly": "^3.20200123.1"
   },
