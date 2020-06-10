@@ -5,5 +5,5 @@
     "checkJs": true,
     "resolveJsonModule": true,
   },
-  "exclude": ["node_modules", "field-date"]
+  "exclude": ["node_modules", "build", "dist", "field-date"]
 }

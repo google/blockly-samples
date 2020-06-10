@@ -276,7 +276,7 @@ export function createPlayground(container, createWorkspace,
       });
       return workspace;
     }, defaultOptions, {
-      disableResize: false,
+      disableResize: true,
       toolboxes: config.toolboxes,
     });
 
@@ -377,6 +377,18 @@ function registerTabButtons(editor, playground, tabButtons, updateEditor) {
  * @param {PlaygroundAPI} playground The current playground.
  */
 function registerEditorCommands(editor, playground) {
+  const load = () => {
+    if (playground.getCurrentTab().state.name !== 'XML') {
+      return;
+    }
+    const xml = editor.getModel().getValue();
+    const workspace = playground.getWorkspace();
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+  };
+  const save = () => {
+    playground.getCurrentTab().generate();
+  };
+
   // Add XMl Import action (only available on the XML tab).
   editor.addAction({
     id: 'import-xml',
@@ -387,11 +399,7 @@ function registerEditorCommands(editor, playground) {
     precondition: 'isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 0,
-    run: () => {
-      const xml = editor.getModel().getValue();
-      const workspace = playground.getWorkspace();
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
-    },
+    run: load,
   });
   // Add XMl Export action (only available on the XML tab).
   editor.addAction({
@@ -403,9 +411,7 @@ function registerEditorCommands(editor, playground) {
     precondition: 'isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 1,
-    run: () => {
-      playground.getCurrentTab().generate();
-    },
+    run: save,
   });
   editor.addAction({
     id: 'clean-xml',
@@ -431,8 +437,18 @@ function registerEditorCommands(editor, playground) {
     precondition: '!isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 1,
-    run: () => {
-      playground.getCurrentTab().generate();
-    },
+    run: save,
+  });
+  document.addEventListener('keydown', (e) => {
+    const ctrlCmd = e.metaKey || e.ctrlKey;
+    if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.S) {
+      // Save.
+      save();
+      e.preventDefault();
+    } else if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.ENTER) {
+      // Load.
+      load();
+      e.preventDefault();
+    }
   });
 }
