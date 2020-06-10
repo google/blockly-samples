@@ -68,14 +68,14 @@ export function renderPlayground(container) {
   guiContainer.style.maxHeight = '50%';
   guiContainer.style.flex = '1';
   guiContainer.style.background = '#000';
-  guiContainer.style.overflow = 'scroll';
+  guiContainer.style.overflow = 'auto';
   playgroundDiv.appendChild(guiContainer);
 
   // Code area.
 
   const codeWrapper = document.createElement('div');
+  codeWrapper.style.maxHeight = '50%';
   codeWrapper.style.background = '#1E1E1E';
-  codeWrapper.style.height = '100%';
   codeWrapper.style.flex = '1';
   playgroundDiv.appendChild(codeWrapper);
 
@@ -88,7 +88,7 @@ export function renderPlayground(container) {
   codeWrapper.appendChild(tabContainer);
 
   const tabsDiv = document.createElement('div');
-  tabsDiv.style.overflow = 'scroll hidden';
+  tabsDiv.style.overflow = 'auto hidden';
   tabsDiv.style.width = 'calc(100% - 50px)';
   tabContainer.appendChild(tabsDiv);
 
