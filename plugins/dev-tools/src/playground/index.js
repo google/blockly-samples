@@ -276,7 +276,7 @@ export function createPlayground(container, createWorkspace,
       });
       return workspace;
     }, defaultOptions, {
-      disableResize: false,
+      disableResize: true,
       toolboxes: config.toolboxes,
     });
 
