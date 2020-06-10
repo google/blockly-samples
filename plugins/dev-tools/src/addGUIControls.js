@@ -155,7 +155,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     guiState.themeName = defaultThemeName;
 
     // Close all folders.
-    gui.__folders.forEach((f) => f.close());
+    Object.values(gui.__folders).forEach((f) => f.close());
 
     onChangeInternal();
   };
