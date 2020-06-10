@@ -79,11 +79,17 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     autoPlace: false,
     closeOnTop: true,
     width: 250,
+    load: guiState.guiObject || {},
   });
 
   const guiElement = gui.domElement;
   guiElement.style.position = 'absolute';
   guiElement.style.zIndex = '1000';
+  guiElement.onclick = () => {
+    // Save the GUI state locally.
+    guiState.guiObject = gui.getSaveObject();
+    saveGUIState(guiState, defaultToolboxName, defaultThemeName);
+  };
 
   const onResize = () => {
     const metrics = workspace.getMetrics();
@@ -124,6 +130,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
       onResize();
     }
     // Save the GUI state locally.
+    guiState.guiObject = gui.getSaveObject();
     saveGUIState(guiState, defaultToolboxName, defaultThemeName);
     // Update options.
     merge(options, workspace.options);
@@ -146,6 +153,10 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     // Reset toolbox selection.
     guiState.toolboxName = defaultToolboxName;
     guiState.themeName = defaultThemeName;
+
+    // Close all folders.
+    gui.__folders.forEach((f) => f.close());
+
     onChangeInternal();
   };
 
@@ -155,7 +166,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
 
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
-  openFolderIfOptionSelected(optionsFolder, guiState.options,
+  openFolderIfOptionSelected(optionsFolder, guiState, guiState.options,
       ['rtl', 'renderer', 'toolboxPosition', 'horizontalLayout']);
 
   optionsFolder.add(options, 'RTL').name('rtl').onChange((value) =>
@@ -181,21 +192,21 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   // Move options.
   const moveFolder = optionsFolder.addFolder('Move');
   populateMoveOptions(moveFolder, options, saveOptions, onChange);
-  openFolderIfOptionSelected(moveFolder, guiState.options, ['move']);
+  openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['move']);
 
   // Zoom options.
   const zoomFolder = optionsFolder.addFolder('Zoom');
   populateZoomOptions(zoomFolder, options, saveOptions, onChange);
-  openFolderIfOptionSelected(moveFolder, guiState.options, ['zoom']);
+  openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['zoom']);
 
   // Grid options.
   const gridFolder = optionsFolder.addFolder('Grid');
   populateGridOptions(gridFolder, options, saveOptions, onChange);
-  openFolderIfOptionSelected(moveFolder, guiState.options, ['grid']);
+  openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['grid']);
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
-  populateDebugOptions(debugFolder, guiState.debug, onChangeInternal);
+  populateDebugOptions(debugFolder, guiState, onChangeInternal);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
@@ -337,11 +348,16 @@ function loadGUIState() {
  * in the GUI state.
  * @param {dat.GUI} folder The GUI folder.
  * @param {Object} guiState GUI state.
+ * @param {Object} mainObj The main object to check options against.
  * @param {Array<string>} options The options to check.
  */
-function openFolderIfOptionSelected(folder, guiState, options) {
+function openFolderIfOptionSelected(folder, guiState, mainObj, options) {
+  if (guiState.guiObject) {
+    // The GUI state is controlling the folder state.
+    return;
+  }
   options.forEach((option) => {
-    if (guiState[option] != undefined) {
+    if (mainObj[option] != undefined) {
       folder.open();
       while (folder.parent) {
         folder = folder.parent;
@@ -397,7 +413,7 @@ function populateBasicOptions(basicFolder, options, guiState, onChange) {
   basicFolder.add(options, 'comments').onChange((value) =>
     onChange('comments', value));
 
-  openFolderIfOptionSelected(basicFolder, guiState.options,
+  openFolderIfOptionSelected(basicFolder, guiState, guiState.options,
       ['readOnly', 'trashcan', 'sounds', 'disable', 'collapse', 'comments']);
 }
 
@@ -435,7 +451,7 @@ function populateToolboxOption(folder, guiState, toolboxes, defaultToolboxName,
         onChange('toolbox', toolboxes[value]);
       });
   if (guiState.toolboxName !== defaultToolboxName) {
-    openFolderIfOptionSelected(folder, guiState.options, ['toolbox']);
+    openFolderIfOptionSelected(folder, guiState, guiState.options, ['toolbox']);
   }
 }
 
@@ -508,7 +524,7 @@ function populateThemeOption(folder, guiState, themes, defaultThemeName,
         onChange('theme', themes[value]);
       });
   if (guiState.themeName !== defaultThemeName) {
-    openFolderIfOptionSelected(folder, guiState.options, ['theme']);
+    openFolderIfOptionSelected(folder, guiState, guiState.options, ['theme']);
   }
 }
 
@@ -620,10 +636,11 @@ function initDebugRenderer(guiDebugState, reset) {
 /**
  * Populate debug options.
  * @param {dat.GUI} debugFolder The dat.GUI debug folder.
- * @param {Object.<string, boolean>} guiDebugState Saved GUI debug state.
+ * @param {Object} guiState The GUI state.
  * @param {function():void} onChangeInternal Internal on change method.
  */
-function populateDebugOptions(debugFolder, guiDebugState, onChangeInternal) {
+function populateDebugOptions(debugFolder, guiState, onChangeInternal) {
+  const guiDebugState = guiState.debug;
   Object.keys(DebugRenderer.config).map((key) => {
     debugFolder.add(guiDebugState, key, 0, 50).onChange((value) => {
       guiDebugState[key] = value;
@@ -631,7 +648,7 @@ function populateDebugOptions(debugFolder, guiDebugState, onChangeInternal) {
       onChangeInternal();
     });
   });
-  openFolderIfOptionSelected(debugFolder, guiDebugState,
+  openFolderIfOptionSelected(debugFolder, guiState, guiDebugState,
       Object.keys(DebugRenderer.config).filter((k) => !!guiDebugState[k]));
 }
 
