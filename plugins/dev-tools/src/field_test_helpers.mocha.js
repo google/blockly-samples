@@ -22,6 +22,13 @@ FieldValueTestCase.prototype.value = undefined;
  * @type {*} The expected value.
  */
 FieldValueTestCase.prototype.expectedValue = undefined;
+/**
+ * @type {*} The expected text (if not specified, default is
+ *    String(expectedValue).
+ */
+FieldValueTestCase.prototype.expectedText = undefined;
+
+
 
 /**
  * Field creation test case.
@@ -154,9 +161,11 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
  *    invalid values.
  * @param {*} invalidRunExpectedValue Expected value for field after invalid
  *    call to setValue.
+ * @param {string=} invalidRunExpectedText Expected text for field after invalid
+ *    call to setValue.
  */
 export function runSetValueTests(validValueTestCases, invalidValueTestCases,
-    invalidRunExpectedValue) {
+    invalidRunExpectedValue, invalidRunExpectedText) {
   /**
    * Creates test callback for invalid setValue test.
    * @param {FieldValueTestCase} testCase The test case information.
@@ -165,7 +174,8 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
   const createInvalidSetValueTestCallback = (testCase) => {
     return function() {
       this.field.setValue(testCase.value);
-      assertFieldValue(this.field, invalidRunExpectedValue);
+      assertFieldValue(
+          this.field, invalidRunExpectedValue, invalidRunExpectedText);
     };
   };
   /**
@@ -176,7 +186,8 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
   const createValidSetValueTestCallback = (testCase) => {
     return function() {
       this.field.setValue(testCase.value);
-      assertFieldValue(this.field, testCase.expectedValue);
+      assertFieldValue(
+          this.field, testCase.expectedValue, testCase.expectedText);
     };
   };
   runTestCases(invalidValueTestCases, createInvalidSetValueTestCallback);
