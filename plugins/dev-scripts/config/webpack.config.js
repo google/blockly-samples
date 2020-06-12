@@ -59,7 +59,7 @@ module.exports = (env) => {
     target,
     mode: isProduction ? 'production' : 'development',
     entry: entry,
-    devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
+    devtool: isProduction ? 'source-map' : 'eval-source-map',
     output: {
       path: isProduction ? resolveApp('dist') : resolveApp('build'),
       publicPath: isProduction ? '/dist/' : '/build/',
@@ -97,6 +97,12 @@ module.exports = (env) => {
             },
           ],
           include: [resolveApp('./src/'), resolveApp('./test/')],
+        },
+        // Load Blockly source maps.
+        {
+          test: /(blockly\/.*\.js)$/,
+          use: [require.resolve('source-map-loader')],
+          enforce: 'pre',
         },
         // Run babel to compile both JS and TS.
         {
