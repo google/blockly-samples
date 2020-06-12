@@ -23,10 +23,15 @@ FieldValueTestCase.prototype.value = undefined;
  */
 FieldValueTestCase.prototype.expectedValue = undefined;
 /**
- * @type {*} The expected text (if not specified, default is
+ * @type {string|undefined} Optional expected text (if not specified, default is
  *    String(expectedValue).
  */
 FieldValueTestCase.prototype.expectedText = undefined;
+/**
+ * @type {RegExp|string|undefined} Optional error message matcher if test case
+ *    is expected to throw.
+ */
+FieldValueTestCase.prototype.errMsgMatcher = undefined;
 
 
 
@@ -87,6 +92,30 @@ function runCreationTests_(testCases, assertion, creation) {
 }
 
 /**
+ * Runs provided creation test cases.
+ * @param {Array<FieldCreationTestCase>} testCases The test cases to run.
+ * @param {function(new:Blockly.Field,FieldCreationTestCase):Blockly.Field
+ *    } creation A function that returns an instance of the field based on the
+ *    provided test case.
+ * @private
+ */
+function runCreationTestsAssertThrows_(testCases, creation) {
+  /**
+   * Creates test callback for creation test.
+   * @param {FieldCreationTestCase} testCase The test case to use.
+   * @return {Function} The test callback.
+   */
+  const createTestFn = (testCase) => {
+    return function() {
+      assert.throws(function() {
+        creation(testCase);
+      }, testCase.errMsgMatcher);
+    };
+  };
+  runTestCases(testCases, createTestFn);
+}
+
+/**
  * Runs suite of tests for constructor for the specified field.
  * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
  *    being tested.
@@ -96,8 +125,9 @@ function runCreationTests_(testCases, assertion, creation) {
  *    invalid values for given field.
  * @param {function(Blockly.Field, FieldCreationTestCase)
  *    } validRunAssertField Asserts that field has expected values.
- * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
- *    default values.
+ * @param {function(Blockly.Field)=} assertFieldDefault Asserts that field has
+ *    default values. If undefined, tests will check that field throws when
+ *    invalid value is passed rather than asserting default.
  */
 export function runConstructorSuiteTests(TestedField, validValueTestCases,
     invalidValueTestCases, validRunAssertField, assertFieldDefault) {
@@ -114,7 +144,12 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
     const createWithJS = function(testCase) {
       return new TestedField(...testCase.args);
     };
-    runCreationTests_(invalidValueTestCases, assertFieldDefault, createWithJS);
+    if (assertFieldDefault) {
+      runCreationTests_(
+          invalidValueTestCases, assertFieldDefault, createWithJS);
+    } else {
+      runCreationTestsAssertThrows_(invalidValueTestCases, createWithJS);
+    }
     runCreationTests_(validValueTestCases, validRunAssertField, createWithJS);
   });
 }
@@ -129,8 +164,9 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
  *    invalid values for given field.
  * @param {function(Blockly.Field, FieldValueTestCase)
  *    } validRunAssertField Asserts that field has expected values.
- * @param {function(Blockly.Field)} assertFieldDefault Asserts that field has
- *    default values.
+ * @param {function(Blockly.Field)=} assertFieldDefault Asserts that field has
+ *    default values. If undefined, tests will check that field throws when
+ *    invalid value is passed rather than asserting default.
  */
 export function runFromJsonSuiteTests(TestedField, validValueTestCases,
     invalidValueTestCases, validRunAssertField, assertFieldDefault) {
@@ -147,8 +183,12 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
     const createWithJson = function(testCase) {
       return TestedField.fromJson(testCase.json);
     };
-    runCreationTests_(
-        invalidValueTestCases, assertFieldDefault, createWithJson);
+    if (assertFieldDefault) {
+      runCreationTests_(
+          invalidValueTestCases, assertFieldDefault, createWithJson);
+    } else {
+      runCreationTestsAssertThrows_(invalidValueTestCases, createWithJson);
+    }
     runCreationTests_(validValueTestCases, validRunAssertField, createWithJson);
   });
 }
