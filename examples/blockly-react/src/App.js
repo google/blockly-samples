@@ -40,7 +40,9 @@ class App extends React.Component {
   }
 
   generateCode = () => {
-    var code = BlocklyJS.workspaceToCode(this.simpleWorkspace.workspace);
+    var code = BlocklyJS.workspaceToCode(
+      this.simpleWorkspace.current.workspace
+    );
     console.log(code);
   }
 
