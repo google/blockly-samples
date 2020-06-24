@@ -47,7 +47,7 @@
     "sinon": "7.5.0"
   },
   "peerDependencies": {
-    "blockly": ">3.20200123.0 <4"
+    "blockly": ">3.20200625.0 <4"
   },
   "dependencies": {
     "@blockly/plugin-modal": "^1.20200427.4"

@@ -173,7 +173,7 @@ export class TypedVariableModal extends Modal {
     const type = this.getSelectedType_() || '';
     if (text) {
       const existing =
-          Blockly.Variables.nameUsedWithAnyType_(text, this.workspace_);
+          Blockly.Variables.nameUsedWithAnyType(text, this.workspace_);
       if (existing) {
         let msg = '';
         if (existing.type === type) {
