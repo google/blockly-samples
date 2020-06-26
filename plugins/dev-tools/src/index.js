@@ -10,6 +10,7 @@ import * as testHelpers from './test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
+import {downloadWorkspaceScreenshot} from './screenshot';
 
 let addGUIControls;
 let addCodeEditor;
@@ -21,11 +22,12 @@ if (typeof window !== 'undefined') {
 }
 
 export {
-  addGUIControls,
-  DebugRenderer,
-  generateFieldTestBlocks,
-  createPlayground,
   addCodeEditor,
+  addGUIControls,
+  createPlayground,
+  DebugRenderer,
+  downloadWorkspaceScreenshot,
+  generateFieldTestBlocks,
   populateRandom,
   testHelpers,
   toolboxCategories,
