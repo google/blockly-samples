@@ -55,8 +55,7 @@ suite('Procedure blocks', function() {
         });
       });
 
-      // TODO(#301): Remove skip after bug is fixed.
-      suite.skip('Code generation', function() {
+      suite('Code generation', function() {
         const createBlockFn = (numArgs) => {
           return (workspace) => {
             const block = createProcDefBlock(workspace, testSuite.hasReturn);
