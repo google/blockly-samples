@@ -56,7 +56,7 @@ suite('List create block', function() {
     assertListBlockStructure(this.block, 3);
   });
 
-  suite('blockToCode', function() {
+  suite('Code generation', function() {
     const trivialCreateBlock = (workspace) => {
       return workspace.newBlock('lists_create_with');
     };

@@ -56,7 +56,7 @@ suite('Text join block', function() {
     assertTextJoinBlockStructure(this.block, 2);
   });
 
-  suite('blockToCode', function() {
+  suite('Code generation', function() {
     const trivialCreateBlock = (workspace) => {
       return workspace.newBlock('text_join');
     };
