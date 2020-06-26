@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-typed-variable-modal",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "A Blockly plugin to create a modal for creating typed variables.",
   "scripts": {
     "build": "blockly-scripts build",
