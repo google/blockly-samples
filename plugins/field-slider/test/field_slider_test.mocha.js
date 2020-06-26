@@ -117,7 +117,7 @@ suite('FieldSlider', function() {
         });
       });
       const setValueBoundsTestFn = (testCase) => {
-        return function () {
+        return function() {
           const sliderField = FieldSlider.fromJson(testCase.json);
           testCase.values.forEach(function(value, i) {
             sliderField.setValue(value);
