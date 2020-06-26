@@ -39,13 +39,13 @@
     "devDependencies": {
         "@blockly/dev-scripts": "^1.0.2",
         "@blockly/dev-tools": "^1.0.2",
-        "blockly": "^3.20200123.1",
+        "blockly": "^3.20200625.0",
         "chai": "^4.2.0",
         "mocha": "^7.1.0",
         "sinon": "^9.0.1"
     },
     "peerDependencies": {
-        "blockly": ">=3.20200123.0"
+        "blockly": ">=3.20202625.0"
     },
     "publishConfig": {
         "access": "public",
