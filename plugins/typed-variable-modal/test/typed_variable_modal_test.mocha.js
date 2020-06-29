@@ -125,7 +125,7 @@ suite('TypedVariableModal', () => {
       assert(this.workspace.createVariable.calledOnce);
     });
     test('Variable with different type already exists', () => {
-      Blockly.Variables.nameUsedWithAnyType_ = sinon.fake.returns({
+      Blockly.Variables.nameUsedWithAnyType = sinon.fake.returns({
         'type': 'Penguin',
         'name': 'varName',
       });
@@ -135,7 +135,7 @@ suite('TypedVariableModal', () => {
         'exists for another type: \'Giraffe\'.'));
     });
     test('Variable with same type already exits', () => {
-      Blockly.Variables.nameUsedWithAnyType_ = sinon.fake.returns({
+      Blockly.Variables.nameUsedWithAnyType = sinon.fake.returns({
         'type': 'Giraffe',
         'name': 'varName',
       });
