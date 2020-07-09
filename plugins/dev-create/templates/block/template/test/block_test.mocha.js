@@ -38,7 +38,7 @@ suite('BlockTemplate', function() {
     // assertBlockStructure(block);
   });
 
-  suite('blockToCode', function() {
+  suite('Code generation', function() {
     const trivialCreateBlock = (workspace) => {
       // TODO implement.
       // return workspace.newBlock('block_type');

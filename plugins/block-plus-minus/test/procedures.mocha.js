@@ -55,10 +55,15 @@ suite('Procedure blocks', function() {
         });
       });
 
-      // TODO(#301): Remove skip after bug is fixed.
-      suite.skip('blockToCode', function() {
-        const trivial = (workspace) => {
-          return createProcDefBlock(workspace, testSuite.hasReturn);
+      suite('Code generation', function() {
+        const createBlockFn = (numArgs) => {
+          return (workspace) => {
+            const block = createProcDefBlock(workspace, testSuite.hasReturn);
+            for (let i = 0; i < numArgs; i++) {
+              block.plus();
+            }
+            return block;
+          };
         };
 
         /**
@@ -68,48 +73,86 @@ suite('Procedure blocks', function() {
         const codeGenerationTestSuites = [
           {title: 'Dart', generator: Blockly.Dart,
             testCases: [
-              {title: 'Trivial',
+              {title: 'No arguments',
+                useWorkspaceToCode: true,
                 expectedCode:
-                    '// Describe this function...\n' +
                     'void proc_name() {\n' +
+                    '}\n\n\n' +
+                    'main() {\n' +
                     '}',
-                createBlock: trivial},
+                createBlock: createBlockFn(0)},
+              {title: 'One argument',
+                useWorkspaceToCode: true,
+                expectedCode:
+                    'var x;\n\n' +
+                    'void proc_name(x) {\n' +
+                    '}\n\n\n' +
+                    'main() {\n' +
+                    '}',
+                createBlock: createBlockFn(1)},
             ]},
           {title: 'JavaScript', generator: Blockly.JavaScript,
             testCases: [
-              {title: 'Trivial',
+              {title: 'No arguments',
+                useWorkspaceToCode: true,
                 expectedCode:
-                    '// Describe this function...\n' +
                     'function proc_name() {\n' +
-                    '}',
-                createBlock: trivial},
+                    '}\n',
+                createBlock: createBlockFn(0)},
+              {title: 'One argument',
+                useWorkspaceToCode: true,
+                expectedCode:
+                    'var x;\n\n' +
+                    'function proc_name(x) {\n' +
+                    '}\n',
+                createBlock: createBlockFn(1)},
             ]},
           {title: 'Lua', generator: Blockly.Lua,
             testCases: [
-              {title: 'Trivial',
+              {title: 'No arguments',
+                useWorkspaceToCode: true,
                 expectedCode:
-                    '-- Describe this function...\n' +
                     'function proc_name()\n' +
-                    'end',
-                createBlock: trivial},
+                    'end\n',
+                createBlock: createBlockFn(0)},
+              {title: 'One argument',
+                useWorkspaceToCode: true,
+                expectedCode:
+                    'function proc_name(x)\n' +
+                    'end\n',
+                createBlock: createBlockFn(1)},
             ]},
           {title: 'PHP', generator: Blockly.PHP,
             testCases: [
-              {title: 'Trivial',
+              {title: 'No arguments',
+                useWorkspaceToCode: true,
                 expectedCode:
-                    '// Describe this function...\n' +
                     'function proc_name() {\n' +
-                    '}',
-                createBlock: trivial},
+                    '}\n',
+                createBlock: createBlockFn(0)},
+              {title: 'One argument',
+                useWorkspaceToCode: true,
+                expectedCode:
+                    '$x;\n\n' +
+                    'function proc_name($x) {\n' +
+                    '}\n',
+                createBlock: createBlockFn(1)},
             ]},
           {title: 'Python', generator: Blockly.Python,
             testCases: [
-              {title: 'Trivial',
+              {title: 'No arguments',
+                useWorkspaceToCode: true,
                 expectedCode:
-                    '# Describe this function...\n' +
                     'def proc_name():\n' +
-                    '  pass',
-                createBlock: trivial},
+                    '  pass\n',
+                createBlock: createBlockFn(0)},
+              {title: 'One argument',
+                useWorkspaceToCode: true,
+                expectedCode:
+                    'x = None\n\n' +
+                    'def proc_name(x):\n' +
+                    '  pass\n',
+                createBlock: createBlockFn(1)},
             ]},
         ];
 

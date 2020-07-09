@@ -32,6 +32,11 @@ CodeGenerationTestCase.prototype.expectedCode = '';
  */
 CodeGenerationTestCase.prototype.expectedInnerOrder = undefined;
 /**
+ * @type {boolean|undefined} Whether to use workspaceToCode instead of
+ * blockToCode for test.
+ */
+CodeGenerationTestCase.prototype.useWorkspaceToCode = false;
+/**
  * A function that creates the block for the test.
  * @param {Blockly.Workspace} workspace The workspace context for this test.
  * @return {Blockly.Block}
@@ -84,21 +89,24 @@ SerializationTestCase.prototype.assertBlockStructure = undefined;
 const createCodeGenerationTestFn_ = (generator) => {
   return (testCase) => {
     return function() {
-      generator.init(this.workspace);
       const block = testCase.createBlock(this.workspace);
-      const tuple = generator.blockToCode(block);
       let code;
       let innerOrder;
-      if (Array.isArray(tuple)) {
-        innerOrder = tuple[1];
-        code = tuple[0];
+      if (testCase.useWorkspaceToCode) {
+        code = generator.workspaceToCode(this.workspace);
       } else {
-        code = tuple;
+        generator.init(this.workspace);
+        code = generator.blockToCode(block);
+        if (Array.isArray(code)) {
+          innerOrder = code[1];
+          code = code[0];
+        }
       }
       const assertFunc = (typeof testCase.expectedCode === 'string') ?
           assert.equal : assert.match;
       assertFunc(code, testCase.expectedCode);
-      if (testCase.expectedInnerOrder !== undefined) {
+      if (!testCase.useWorkspaceToCode &&
+          testCase.expectedInnerOrder !== undefined) {
         assert.equal(innerOrder, testCase.expectedInnerOrder);
       }
     };
