@@ -22,7 +22,7 @@
     "bugs": {
         "url": "https://github.com/google/blockly-samples/issues"
     },
-    "respository": {
+    "repository": {
         "type": "git",
         "url": "https://github.com/google/blockly-samples.git",
         "directory": "plugins/block-plus-minus"
