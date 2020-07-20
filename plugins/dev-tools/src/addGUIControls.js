@@ -14,6 +14,7 @@ import * as Blockly from 'blockly/core';
 import {DebugRenderer} from './debugRenderer';
 import {HashState} from './playground/hash_state';
 import {populateRandom} from './populateRandom';
+import {enableLogger, disableLogger} from './logger';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
 
@@ -701,6 +702,15 @@ function addActions(gui, workspace) {
   gui.addAction('Random Blocks', (workspace) => {
     populateRandom(workspace, 100);
   }, 'Stress Test');
+
+  // Logging.
+  gui.addCheckboxAction('Log Events', function(workspace, value) {
+    if (value) {
+      enableLogger(workspace);
+    } else {
+      disableLogger(workspace);
+    }
+  }, 'Logging');
 
   // Accessibility actions.
   gui.addCheckboxAction('Keyboard Nav', (_workspace, value) => {
