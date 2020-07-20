@@ -14,6 +14,7 @@ import * as Blockly from 'blockly/core';
 import {DebugRenderer} from './debugRenderer';
 import {HashState} from './playground/hash_state';
 import {populateRandom} from './populateRandom';
+import {spaghetti} from './spaghetti';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
 
@@ -700,6 +701,9 @@ function addActions(gui, workspace) {
   // Stress Test.
   gui.addAction('Random Blocks', (workspace) => {
     populateRandom(workspace, 100);
+  }, 'Stress Test');
+  gui.addAction('Spaghetti!', (workspace) => {
+    spaghetti(workspace, 8);
   }, 'Stress Test');
 
   // Accessibility actions.
