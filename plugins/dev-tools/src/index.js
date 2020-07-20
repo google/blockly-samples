@@ -10,6 +10,7 @@ import * as testHelpers from './test_helpers.mocha';
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
+import * as logger from './logger';
 import {downloadWorkspaceScreenshot} from './screenshot';
 
 let addGUIControls;
@@ -29,6 +30,7 @@ export {
   downloadWorkspaceScreenshot,
   generateFieldTestBlocks,
   populateRandom,
+  logger,
   testHelpers,
   toolboxCategories,
   toolboxSimple,
