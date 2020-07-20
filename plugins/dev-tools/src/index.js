@@ -5,16 +5,16 @@
  */
 
 import * as Blockly from 'blockly/core';
-import toolboxCategories from './toolboxCategories';
-import toolboxSimple from './toolboxSimple';
-import * as testHelpers from './test_helpers.mocha';
+
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
-import {spaghetti} from './spaghetti';
-import {toolbox as toolboxTestBlocks,
-  onInit as toolboxTestBlocksInit} from './blocks/';
 import {downloadWorkspaceScreenshot} from './screenshot';
+import {spaghetti} from './spaghetti';
+import * as testHelpers from './test_helpers.mocha';
+import {onInit as toolboxTestBlocksInit, toolbox as toolboxTestBlocks} from './testblocks/';
+import toolboxCategories from './toolboxCategories';
+import toolboxSimple from './toolboxSimple';
 
 let addGUIControls;
 let addCodeEditor;

@@ -24,7 +24,7 @@ import {LocalStorageState} from './state';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
 import {toolbox as toolboxTestBlocks,
-  onInit as toolboxTestBlocksInit} from '../blocks';
+  onInit as toolboxTestBlocksInit} from '../testblocks';
 
 
 /**
