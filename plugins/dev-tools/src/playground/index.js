@@ -21,6 +21,11 @@ import {addCodeEditor} from './monaco';
 import {addGUIControls} from '../addGUIControls';
 import {LocalStorageState} from './state';
 
+import toolboxCategories from '../toolboxCategories';
+import toolboxSimple from '../toolboxSimple';
+import {toolbox as toolboxTestBlocks,
+  onInit as toolboxTestBlocksInit} from '../testblocks';
+
 
 /**
  * @typedef {function(!HTMLElement,!Blockly.BlocklyOptions):Blockly.Workspace}
@@ -280,7 +285,12 @@ export function createPlayground(container, createWorkspace,
       return workspace;
     }, defaultOptions, {
       disableResize: true,
-      toolboxes: config.toolboxes,
+      toolboxes: config.toolboxes || {
+        'categories': toolboxCategories,
+        'simple': toolboxSimple,
+        // TODO (#210): Enable this once the test toolbox has stabalized.
+        // 'test blocks': toolboxTestBlocks,
+      },
     });
 
     // Move the GUI Element to the gui container.
