@@ -49,12 +49,14 @@ function checkLicenses() {
 function publish(dryRun) {
   return (done) => {
     // Login to npm.
+    console.log('Logging in to npm.');
     execSync(`npm login --registry https://wombat-dressing-room.appspot.com`,
         {stdio: 'inherit'});
 
     const releaseDir = 'dist';
     // Delete the release directory if it exists.
     if (fs.existsSync(releaseDir)) {
+      console.log('Removing previous `dist/` directory.');
       rimraf.sync(releaseDir);
     }
 

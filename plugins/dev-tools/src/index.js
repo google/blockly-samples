@@ -11,6 +11,7 @@ import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
 import * as logger from './logger';
+import {spaghetti} from './spaghetti';
 import {downloadWorkspaceScreenshot} from './screenshot';
 
 let addGUIControls;
@@ -31,6 +32,7 @@ export {
   generateFieldTestBlocks,
   populateRandom,
   logger,
+  spaghetti,
   testHelpers,
   toolboxCategories,
   toolboxSimple,
