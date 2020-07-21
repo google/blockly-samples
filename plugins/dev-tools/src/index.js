@@ -4,14 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import toolboxCategories from './toolboxCategories';
-import toolboxSimple from './toolboxSimple';
-import * as testHelpers from './test_helpers.mocha';
+import * as Blockly from 'blockly/core';
+
 import {DebugRenderer} from './debugRenderer';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
-import {spaghetti} from './spaghetti';
 import {downloadWorkspaceScreenshot} from './screenshot';
+import {spaghetti} from './spaghetti';
+import * as testHelpers from './test_helpers.mocha';
+import {onInit as toolboxTestBlocksInit, toolbox as toolboxTestBlocks} from './testblocks/';
+import toolboxCategories from './toolboxCategories';
+import toolboxSimple from './toolboxSimple';
 
 let addGUIControls;
 let addCodeEditor;
@@ -21,6 +24,9 @@ if (typeof window !== 'undefined') {
   addCodeEditor = require('./playground/monaco').addCodeEditor;
   createPlayground = require('./playground/').createPlayground;
 }
+
+// Export Blockly into the global namespace to make it easier to debug.
+Blockly.utils.global.Blockly = Blockly;
 
 export {
   addCodeEditor,
@@ -34,4 +40,6 @@ export {
   testHelpers,
   toolboxCategories,
   toolboxSimple,
+  toolboxTestBlocks,
+  toolboxTestBlocksInit,
 };
