@@ -13,19 +13,20 @@
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
-  "author": "",
+  "author": "Rachel Fenichel",
+  "private": true,
   "keywords": [
     "blockly",
     "blockly-plugin",
     "strict-type-checker"
   ],
-  "homepage": "https://github.com/rachel-fenichel/blockly-samples/tree/master/plugins/strict-type-checker#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/strict-type-checker#readme",
   "bugs": {
-    "url": "https://github.com/rachel-fenichel/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rachel-fenichel/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/strict-type-checker"
   },
   "license": "Apache 2.0",
@@ -53,8 +54,6 @@
     "node": ">=8.17.0"
   },
   "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
+    "defaults"
   ]
 }

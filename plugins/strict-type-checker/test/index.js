@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {StrictTypeChecker} from '../src/index';
+import {pluginInfo as StrictTypesPluginInfo} from '../src/index';
 
 /**
  * Create a workspace.
@@ -19,15 +19,14 @@ import {StrictTypeChecker} from '../src/index';
  * @return {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
-  return workspace;
+  return Blockly.inject(blocklyDiv, options);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
-      'connectionChecker': StrictTypeChecker,
+      ...StrictTypesPluginInfo,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,

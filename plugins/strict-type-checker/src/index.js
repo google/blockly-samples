@@ -4,28 +4,28 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit plugin overview.
 /**
- * @fileoverview Plugin overview.
+ * @fileoverview A Blockly plugin that makes connection type checks strict.
  */
 
 import * as Blockly from 'blockly/core';
-// TODO: Rename plugin and edit plugin description.
+
 /**
- * Plugin description.
+ * A connection checker that imposes stricter typing rules than the default
+ * checker in Blockly, but uses the same rules for dragging and safety.
+ * This checker still expects nullable arrays of string for connection
+ * type checks, and still looks for intersections in the arrays. Unlike the
+ * default checker, null checks arrays are only compatible with other null
+ * arrays.
+ * @implements {Blockly.IConnectionChecker}
  */
 export class StrictTypeChecker extends Blockly.ConnectionChecker {
   /**
-   * Constructor for TODO.
+   * Constructor for the type checker.
    */
   constructor() {
     super();
   }
-
-  /**
-   * Initialize.
-   */
-  init() { }
 
   /**
    * Type check arrays must either intersect or both be null.
@@ -50,3 +50,14 @@ export class StrictTypeChecker extends Blockly.ConnectionChecker {
     return false;
   }
 }
+
+export const registrationType = Blockly.registry.Type.CONNECTION_CHECKER;
+export const registrationKey = 'StrictTypeChecker';
+
+// Register the checker so that it can be used by name.
+Blockly.registry.register(registrationType, registrationKey, StrictTypeChecker);
+
+export const pluginInfo = {
+  [registrationType]: registrationKey,
+};
+
