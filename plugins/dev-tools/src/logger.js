@@ -11,7 +11,7 @@
 
 
 /**
- * Enable console logging of workspace events.
+ * Enables console logging of workspace events.
  * @param {!Blockly.Workspace} workspace The Blockly workspace.
  */
 export function enableLogger(workspace) {
@@ -19,7 +19,7 @@ export function enableLogger(workspace) {
 }
 
 /**
- * Disable console logging of workspace events.
+ * Disables console logging of workspace events.
  * @param {!Blockly.Workspace} workspace The Blockly workspace.
  */
 export function disableLogger(workspace) {
@@ -27,7 +27,7 @@ export function disableLogger(workspace) {
 }
 
 /**
- * Log a Blockly event directory to the console.
+ * Logs a Blockly event directory to the console.
  * @param {!Blockly.Events.Abstract} e The Blockly event.
  */
 function log(e) {
