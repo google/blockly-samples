@@ -1,6 +1,6 @@
 # blockly-plugin-strict-type-checker [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) plugin imposes stricter typing rules than the default checker in Blockly, but uses the same rules for dragging and safety.
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that imposes stricter typing rules than the default checker in Blockly, but uses the same rules for dragging and safety.
 
 This checker still expects nullable arrays of string for connection type checks, and still looks for intersections in the arrays. Unlike the default checker, null checks arrays are only compatible with other null arrays.
 
