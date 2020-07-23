@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Test playground for the strict type checker.
+ * @fileoverview Test playground for the strict connection checker.
  */
 
 import * as Blockly from 'blockly';

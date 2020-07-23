@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Unit tests for a strict type checker that extends
+ * @fileoverview Unit tests for a strict connection checker that extends
  * Blockly.ConnectionChecker. Based on blockly's connection_checker_tests.js.
  * @author fenichel@google.com (Rachel Fenichel)
  */
@@ -13,11 +13,12 @@
 const chai = require('chai');
 const Blockly = require('blockly/node');
 
-const StrictTypeChecker = require('../src/index.js').StrictTypeChecker;
+const StrictConnectionChecker =
+    require('../src/index.js').StrictConnectionChecker;
 
-suite('StrictTypeChecker', function() {
+suite('StrictConnectionChecker', function() {
   suiteSetup(function() {
-    this.checker = new StrictTypeChecker();
+    this.checker = new StrictConnectionChecker();
   });
   /**
    * Make a block stub that implements only `isShadow` and returns the given

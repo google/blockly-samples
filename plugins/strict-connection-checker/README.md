@@ -1,6 +1,6 @@
-# blockly-plugin-strict-type-checker [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-strict-connection-checker [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that imposes stricter typing rules than the default checker in Blockly, but uses the same rules for dragging and safety.
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that imposes stricter rules for connection check arrays than the default checker in Blockly, but uses the same rules for dragging and safety.
 
 This checker still expects nullable arrays of string for connection type checks, and still looks for intersections in the arrays. Unlike the default checker, null checks arrays are only compatible with other null arrays.
 
@@ -8,12 +8,12 @@ This checker still expects nullable arrays of string for connection type checks,
 
 ### Yarn
 ```
-yarn add blockly-plugin-strict-type-checker
+yarn add @blockly/plugin-strict-connection-checker
 ```
 
 ### npm
 ```
-npm install blockly-plugin-strict-type-checker --save
+npm install @blockly/plugin-strict-connection-checker --save
 ```
 
 ## Usage
@@ -22,13 +22,13 @@ The plugin exports a `pluginInfo` object for use in the options struct.
 
 ```js
 import * as Blockly from 'blockly';
-import {pluginInfo as StrictTypesPluginInfo} from 'blockly-plugin-strict-type-checker';
+import {pluginInfo as StrictConnectionsPluginInfo} from '@blockly/plugin-strict-connection-checker';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
-      ...StrictTypesPluginInfo,
+      ...StrictConnectionsPluginInfo,
     },
 });
 ```
@@ -37,7 +37,7 @@ Note that this uses the [spread operator](https://developer.mozilla.org/en-US/do
 
 ## API
 
-This plugin exports a class, `StrictTypeChecker`, and registers it as a connection checker with Blockly. You should not need to instantiate it directly.
+This plugin exports a class, `StrictConnectionChecker`, and registers it as a connection checker with Blockly. You should not need to instantiate it directly.
 
 ## License
 Apache 2.0

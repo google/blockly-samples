@@ -19,9 +19,9 @@ import * as Blockly from 'blockly/core';
  * arrays.
  * @implements {Blockly.IConnectionChecker}
  */
-export class StrictTypeChecker extends Blockly.ConnectionChecker {
+export class StrictConnectionChecker extends Blockly.ConnectionChecker {
   /**
-   * Constructor for the type checker.
+   * Constructor for the connection checker.
    */
   constructor() {
     super();
@@ -52,12 +52,13 @@ export class StrictTypeChecker extends Blockly.ConnectionChecker {
 }
 
 export const registrationType = Blockly.registry.Type.CONNECTION_CHECKER;
-export const registrationKey = 'StrictTypeChecker';
+export const registrationName = 'StrictConnectionChecker';
 
 // Register the checker so that it can be used by name.
-Blockly.registry.register(registrationType, registrationKey, StrictTypeChecker);
+Blockly.registry.register(
+    registrationType, registrationName, StrictConnectionChecker);
 
 export const pluginInfo = {
-  [registrationType]: registrationKey,
+  [registrationType]: registrationName,
 };
 
