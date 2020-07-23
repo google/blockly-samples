@@ -1,0 +1,60 @@
+{
+  "name": "@blockly/plugin-strict-connection-checker",
+  "version": "0.0.0",
+  "description": "A Blockly plugin that makes connection checks strict.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "private": true,
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "strict-connection-checker",
+    "connection-checker"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/strict-type-checker#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/strict-connection-checker"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.0.2",
+    "@blockly/dev-tools": "^1.1.0",
+    "blockly": "^3.20200625.2",
+    "chai": "^4.2.0"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {},
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}
