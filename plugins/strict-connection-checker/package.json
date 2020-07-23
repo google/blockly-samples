@@ -1,14 +1,13 @@
 {
-  "name": "blockly-plugin-strict-type-checker",
+  "name": "@blockly/plugin-strict-connection-checker",
   "version": "0.0.0",
-  "description": "A Blockly plugin that makes connection type checks strict.",
+  "description": "A Blockly plugin that makes connection checks strict.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start",
-    "test": "blockly-scripts test"
+    "start": "blockly-scripts start"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
@@ -18,7 +17,8 @@
   "keywords": [
     "blockly",
     "blockly-plugin",
-    "strict-type-checker"
+    "strict-connection-checker",
+    "connection-checker"
   ],
   "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/strict-type-checker#readme",
   "bugs": {
@@ -27,7 +27,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/strict-type-checker"
+    "directory": "plugins/strict-connection-checker"
   },
   "license": "Apache 2.0",
   "directories": {
