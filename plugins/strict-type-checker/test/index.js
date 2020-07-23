@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Test playground for the strict type checker.
  */
 
 import * as Blockly from 'blockly';
