@@ -61,7 +61,7 @@ module.exports = (env) => {
   const blocklyDependencyJson = resolveApp('node_modules/blockly');
   if (fs.existsSync(blocklyDependencyJson)) {
     const blocklyJson = require(blocklyDependencyJson);
-    if (blocklyJson['_from'].indexOf('git://') === 0) {
+    if (blocklyJson && blocklyJson['_from'].indexOf('git://') === 0) {
       blocklyAliasSuffix = '/dist';
     }
   }

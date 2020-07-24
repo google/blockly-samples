@@ -30,7 +30,7 @@ if (!fs.existsSync(blocklyPackageJson)) {
 }
 
 const blocklyJson = require(blocklyPackageJson);
-if (blocklyJson['_from'].indexOf('git://') < 0) {
+if (!blocklyJson || blocklyJson['_from'].indexOf('git://') < 0) {
   return;
 }
 
