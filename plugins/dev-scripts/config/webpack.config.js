@@ -61,7 +61,7 @@ module.exports = (env) => {
   // blockly from git instead of npm.
   let blocklyAliasSuffix = '';
   const blocklyDependency =
-    (packageJson.dependencies && packageJson.dependencies['blockly']) || 
+    (packageJson.dependencies && packageJson.dependencies['blockly']) ||
     (packageJson.devDependencies && packageJson.devDependencies['blockly']);
   if (blocklyDependency && blocklyDependency.indexOf('git://') === 0) {
     blocklyAliasSuffix = '/dist';

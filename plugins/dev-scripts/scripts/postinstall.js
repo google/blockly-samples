@@ -25,7 +25,7 @@ const blocklyNodeModulesPath = resolveApp('node_modules/blockly');
 
 // Check if we have installed blockly from git instead of npm.
 const blocklyDependency =
-  (packageJson.dependencies && packageJson.dependencies['blockly']) || 
+  (packageJson.dependencies && packageJson.dependencies['blockly']) ||
   (packageJson.devDependencies && packageJson.devDependencies['blockly']);
 
 if (!blocklyDependency) {
