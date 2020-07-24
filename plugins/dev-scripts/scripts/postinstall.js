@@ -21,7 +21,7 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
-const blocklyPath = resolveApp('node_modules/blockly');
+const blocklyNodeModulesPath = resolveApp('node_modules/blockly');
 
 // Check if we have installed blockly from git instead of npm.
 const blocklyDependency =
@@ -40,10 +40,10 @@ if (blocklyDependency.indexOf('git://') !== 0) {
 console.log(`Running postinstall steps for ${packageJson.name}`);
 
 // Run npm install.
-execSync(`npm install`, {cwd: blocklyPath, stdio: [0, 1, 2]});
+execSync(`npm install`, {cwd: blocklyNodeModulesPath, stdio: [0, 1, 2]});
 
 // Build.
-execSync(`npm run build`, {cwd: blocklyPath, stdio: [0, 1, 2]});
+execSync(`npm run build`, {cwd: blocklyNodeModulesPath, stdio: [0, 1, 2]});
 
 // Package.
-execSync(`npm run package`, {cwd: blocklyPath, stdio: [0, 1, 2]});
+execSync(`npm run package`, {cwd: blocklyNodeModulesPath, stdio: [0, 1, 2]});
