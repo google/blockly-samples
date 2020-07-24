@@ -55,6 +55,17 @@ module.exports = (env) => {
     target = 'node';
   }
 
+  // Add 'dist' to the end of the blockly module alias if we have acquired
+  // Blockly from git instead of npm.
+  let blocklyAliasSuffix = '';
+  const blocklyDependencyJson = resolveApp('node_modules/blockly');
+  if (fs.existsSync(blocklyDependencyJson)) {
+    const blocklyJson = require(blocklyDependencyJson);
+    if (blocklyJson['_from'].indexOf('git://') === 0) {
+      blocklyAliasSuffix = '/dist';
+    }
+  }
+
   return {
     target,
     mode: isProduction ? 'production' : 'development',
@@ -69,7 +80,7 @@ module.exports = (env) => {
     },
     resolve: {
       alias: {
-        'blockly': resolveApp('node_modules/blockly'),
+        'blockly': resolveApp(`node_modules/blockly${blocklyAliasSuffix}`),
       },
       extensions: ['.ts', '.js']
           .filter((ext) => isTypescript || !ext.includes('ts')),
