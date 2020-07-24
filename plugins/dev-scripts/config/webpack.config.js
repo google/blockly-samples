@@ -56,9 +56,9 @@ module.exports = (env) => {
   }
 
   // Add 'dist' to the end of the blockly module alias if we have acquired
-  // Blockly from git instead of npm.
+  // blockly from git instead of npm.
   let blocklyAliasSuffix = '';
-  const blocklyDependencyJson = resolveApp('node_modules/blockly');
+  const blocklyDependencyJson = resolveApp('node_modules/blockly/package.json');
   if (fs.existsSync(blocklyDependencyJson)) {
     const blocklyJson = require(blocklyDependencyJson);
     if (blocklyJson && blocklyJson['_from'].indexOf('git://') === 0) {
