@@ -18,6 +18,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
+const packageJson = require(resolveApp('package.json'));
+
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -58,12 +60,11 @@ module.exports = (env) => {
   // Add 'dist' to the end of the blockly module alias if we have acquired
   // blockly from git instead of npm.
   let blocklyAliasSuffix = '';
-  const blocklyDependencyJson = resolveApp('node_modules/blockly/package.json');
-  if (fs.existsSync(blocklyDependencyJson)) {
-    const blocklyJson = require(blocklyDependencyJson);
-    if (blocklyJson && blocklyJson['_from'].indexOf('git://') === 0) {
-      blocklyAliasSuffix = '/dist';
-    }
+  const blocklyDependency =
+    (packageJson.dependencies && packageJson.dependencies['blockly']) || 
+    (packageJson.devDependencies && packageJson.devDependencies['blockly']);
+  if (blocklyDependency && blocklyDependency.indexOf('git://') === 0) {
+    blocklyAliasSuffix = '/dist';
   }
 
   return {

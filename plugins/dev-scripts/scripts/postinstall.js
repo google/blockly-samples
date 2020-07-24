@@ -22,16 +22,17 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
 const blocklyPath = resolveApp('node_modules/blockly');
-const blocklyPackageJson = path.join(blocklyPath, 'package.json');
 
 // Check if we have installed blockly from git instead of npm.
+const blocklyDependency =
+  (packageJson.dependencies && packageJson.dependencies['blockly']) || 
+  (packageJson.devDependencies && packageJson.devDependencies['blockly']);
 
-if (!fs.existsSync(blocklyPackageJson)) {
+if (!blocklyDependency) {
   return;
 }
 
-const blocklyJson = require(blocklyPackageJson);
-if (!blocklyJson || blocklyJson['_from'].indexOf('git://') < 0) {
+if (blocklyDependency.indexOf('git://') !== 0) {
   return;
 }
 
