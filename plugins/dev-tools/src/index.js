@@ -11,6 +11,7 @@ import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
 import {downloadWorkspaceScreenshot} from './screenshot';
 import {spaghetti} from './spaghetti';
+import * as logger from './logger';
 import * as testHelpers from './test_helpers.mocha';
 import {onInit as toolboxTestBlocksInit, toolbox as toolboxTestBlocks} from './testblocks/';
 import toolboxCategories from './toolboxCategories';
@@ -36,6 +37,7 @@ export {
   downloadWorkspaceScreenshot,
   generateFieldTestBlocks,
   populateRandom,
+  logger,
   spaghetti,
   testHelpers,
   toolboxCategories,

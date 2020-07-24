@@ -14,6 +14,7 @@ import * as Blockly from 'blockly/core';
 import {DebugRenderer} from './debugRenderer';
 import {HashState} from './playground/hash_state';
 import {populateRandom} from './populateRandom';
+import {enableLogger, disableLogger} from './logger';
 import {spaghetti} from './spaghetti';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
@@ -705,6 +706,26 @@ function addActions(gui, workspace) {
   gui.addAction('Spaghetti!', (workspace) => {
     spaghetti(workspace, 8);
   }, 'Stress Test');
+
+  // Logging.
+  gui.addCheckboxAction('Log Events', function(workspace, value) {
+    if (value) {
+      enableLogger(workspace);
+    } else {
+      disableLogger(workspace);
+    }
+  }, 'Logging');
+  gui.addCheckboxAction('Log Flyout Events', function(workspace, value) {
+    if (value) {
+      if (workspace.getFlyout()) {
+        enableLogger(workspace.getFlyout().getWorkspace());
+      }
+    } else {
+      if (workspace.getFlyout()) {
+        disableLogger(workspace.getFlyout().getWorkspace());
+      }
+    }
+  }, 'Logging');
 
   // Accessibility actions.
   gui.addCheckboxAction('Keyboard Nav', (_workspace, value) => {
