@@ -1,0 +1,59 @@
+{
+  "name": "blockly-plugin-continuous-toolbox",
+  "version": "0.20200806.0",
+  "description": "A Blockly plugin.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "continuous-toolbox"
+  ],
+  "homepage": "https://github.com/alschmiedt/blockly-samples/tree/master/plugins/continuous-toolbox#readme",
+  "bugs": {
+    "url": "https://github.com/alschmiedt/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alschmiedt/blockly-samples.git",
+    "directory": "plugins/continuous-toolbox"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.0.3",
+    "@blockly/dev-tools": "^1.1.2",
+    "blockly": "^3.20200625.2"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {},
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
+  ]
+}
