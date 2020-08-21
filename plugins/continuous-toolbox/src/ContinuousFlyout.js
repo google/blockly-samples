@@ -18,7 +18,10 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   constructor(workspaceOptions) {
     super(workspaceOptions);
 
-    /** @type {!Array<{name: string, position: Object}>} */
+    /**
+     * List of scroll positions for each category.
+     * @type {!Array<{name: string, position: Object}>}
+     */
     this.scrollPositions = [];
 
     /**
@@ -31,6 +34,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     /**
      * The percentage of the distance to the scrollTarget that should be
      * scrolled at a time. Lower values will produce a smoother, slower scroll.
+     * @type {number}
      */
     this.scrollAnimationFraction = 0.3;
   }

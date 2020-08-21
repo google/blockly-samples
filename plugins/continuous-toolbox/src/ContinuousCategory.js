@@ -25,7 +25,7 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
     const label = document.createElement('div');
     label.setAttribute('id', this.getId() + '.label');
     label.textContent = name;
-    label.classList.add('blocklyTreeLabel');
+    label.classList.add(this.cssConfig_['label']);
     return label;
   }
 
@@ -56,8 +56,6 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
   }
 }
 
-Blockly.registry.unregister(Blockly.registry.Type.TOOLBOX_ITEM,
-    Blockly.ToolboxCategory.registrationName);
 Blockly.registry.register(
     Blockly.registry.Type.TOOLBOX_ITEM,
     Blockly.ToolboxCategory.registrationName,
