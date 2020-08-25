@@ -346,6 +346,8 @@ export function createPlayground(container, createWorkspace,
           (ws) => generator.workspaceToCode(ws), true);
       if (activeTab === label) {
         // Set the new generator as the current tab if it is currently active.
+        // This occurs when a dynamically added generator is active and the page
+        // is reloaded.
         setActiveTab(tabs[label]);
       }
     };
