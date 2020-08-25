@@ -202,7 +202,9 @@ export function createPlayground(container, createWorkspace,
           }
         }
 
-        currentGenerate();
+        if (currentGenerate) {
+          currentGenerate();
+        }
 
         let code = '';
         try {
@@ -265,9 +267,12 @@ export function createPlayground(container, createWorkspace,
     });
 
     // Set the initial tab as active.
-    let currentTab = tabs[playgroundState.get('activeTab')];
+    const activeTab = playgroundState.get('activeTab');
+    let currentTab = tabs[activeTab];
     let currentGenerate;
-    setActiveTab(currentTab);
+    if (currentTab) {
+      setActiveTab(currentTab);
+    }
 
     // Load the GUI controls.
     const gui = addGUIControls((options) => {
@@ -339,6 +344,10 @@ export function createPlayground(container, createWorkspace,
       }
       tabs[label] = registerGenerator(label, language || 'javascript',
           (ws) => generator.workspaceToCode(ws), true);
+      if (activeTab === label) {
+        // Set the new generator as the current tab if it is currently active.
+        setActiveTab(tabs[label]);
+      }
     };
 
     const playground = {
