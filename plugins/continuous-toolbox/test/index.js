@@ -10,7 +10,9 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {ContinuousToolbox} from '../src/index';
+import '../src/ContinuousCategory';
+import {ContinuousToolbox} from '../src/ContinuousToolbox';
+import {ContinuousFlyout} from '../src/ContinuousFlyout';
 
 /**
  * Create a workspace.
@@ -28,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
-      toolbox: ContinuousToolbox,
+      'toolbox': ContinuousToolbox,
+      'flyoutsVerticalToolbox': ContinuousFlyout,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,
