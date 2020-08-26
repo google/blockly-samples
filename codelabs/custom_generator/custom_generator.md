@@ -153,7 +153,7 @@ A language generator has a single entry point: `workspaceToCode`. This function 
 
 The first step is to define and call your language generator.
 
-A custom language generator is simply an instance of `Blockly.Generator`. Call the constructor, passing in your generator's name, and store the result.
+A custom language generator is simply an instance of `Blockly.Generator`. In `custom_generator.js` call the constructor, passing in your generator's name, and store the result.
 
 ```js
 const codelabGenerator = new Blockly.Generator('JSON');
@@ -161,35 +161,20 @@ const codelabGenerator = new Blockly.Generator('JSON');
 
 ### Generate code
 
-Add a button to the playground to generate JSON:
-
-```html
-<input type="button" value="To JSON" onclick="toJSON()">
-```
-
-Implement `toJSON` so that it generates code and outputs it to two places: the console, and the playground's text area.
+Next, register your new generator with the playground. Find the `configurePlayground` function in `advanced_playground.html` and add this line:
 
 ```js
-function toJSON() {
-  const output = document.getElementById('importExport');
-  const generatedCode = codelabGenerator.workspaceToCode(workspace);
-  output.value = generatedCode;
-  console.log(generatedCode);
-  taChange();
-}
+playground.addGenerator('Codelab', codelabGenerator)
 ```
+
+This will add a new tab named `Codelab` to the bottom right quadrant of the screen. Click the tab to select it. Make sure that you have checked the box next to Auto. The generator will now run on every workspace change, and the output will display in the bottom right quadrant of the screen.
 
 ### Test it
 
-Put a number block on the workspace, then click your button to call your generator.
-
-Check the console for the output. You should see an error:
+Put a number block on the workspace and check the generator output area. You should see an error:
 
 ```
-generator.js:182 Uncaught Error: Language "JSON" does not know how to generate  code for block type "math_number".
-    at Blockly.Generator.blockToCode (generator.js:182)
-    at Blockly.Generator.workspaceToCode (generator.js:94)
-    at <anonymous>:1:18
+Language "JSON" does not know how to generate  code for block type "math_number".
 ```
 
 This error occurs because you need to write a block generator for each type of block. Read the next section for more details.
