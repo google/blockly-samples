@@ -24,6 +24,16 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     super.init();
 
     // Populate the flyout with all blocks and show it immediately.
+    this.flyout_.show(this.getInitialFlyoutContents());
+    this.flyout_.recordScrollPositions();
+  }
+
+  /**
+   * Gets the contents that should be shown in the flyout immediately.
+   * This includes all blocks and labels for each category of block.
+   * @return {Array<Blockly.utils.toolbox.FlyoutItem>} Flyout contents.
+   */
+  getInitialFlyoutContents() {
     let contents = [];
     for (const toolboxItem of this.contents_) {
       if (toolboxItem.isSelectable()) {
@@ -42,8 +52,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
         contents = contents.concat(itemContents);
       }
     }
-    this.flyout_.show(contents);
-    this.flyout_.recordScrollPositions();
+    return contents;
   }
 
   /** @override */
