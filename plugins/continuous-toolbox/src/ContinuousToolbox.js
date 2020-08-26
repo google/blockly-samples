@@ -31,7 +31,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   /**
    * Gets the contents that should be shown in the flyout immediately.
    * This includes all blocks and labels for each category of block.
-   * @return {Array<Blockly.utils.toolbox.FlyoutItem>} Flyout contents.
+   * @return {!Array<!Blockly.utils.toolbox.FlyoutItem>} Flyout contents.
    */
   getInitialFlyoutContents() {
     let contents = [];
