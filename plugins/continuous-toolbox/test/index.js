@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     toolbox: toolboxCategories,
     plugins: {
       'toolbox': ContinuousToolbox,
-      'flyouts-vertical-toolbox': ContinuousFlyout,
+      'flyoutsVerticalToolbox': ContinuousFlyout,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,

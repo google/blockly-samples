@@ -34,7 +34,10 @@ export class ContinuousToolbox extends Blockly.Toolbox {
 
         // Handle cutom categories (e.g. variables and functions)
         if (typeof itemContents === 'string') {
-          itemContents = {custom: itemContents};
+          itemContents = {
+            custom: itemContents,
+            kind: 'CATEGORY',
+          };
         }
         contents = contents.concat(itemContents);
       }
@@ -60,14 +63,16 @@ Blockly.Css.register([
       border: 1px solid;
       width: 1.25rem;
       height: 1.25rem;
-      }
-      .blocklyTreeRow {
+    }
+    .blocklyTreeRow {
       height: initial;
+      padding: 3px 0;
+    }
+    .blocklyTreeRowContentContainer {
       display: flex;
       flex-direction: column;
-      padding: 3px 0;
-      }
-      .blocklyTreeLabel {
+    }
+    .blocklyTreeLabel {
       margin: auto;
-      }`,
+    }`,
 ]);

@@ -37,6 +37,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
      * @type {number}
      */
     this.scrollAnimationFraction = 0.3;
+
+    this.autoClose = false;
   }
 
   /**
@@ -46,10 +48,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   recordScrollPositions() {
     for (const button of this.buttons_) {
-      // TODO: Need to add a getter for these properties or change visibility.
-      if (button.isLabel_) {
+      if (button.isLabel()) {
         this.scrollPositions.push({
-          name: button.text_,
+          name: button.getButtonText(),
           position: button.getPosition(),
         });
       }
