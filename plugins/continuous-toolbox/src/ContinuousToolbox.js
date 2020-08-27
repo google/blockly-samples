@@ -63,6 +63,15 @@ export class ContinuousToolbox extends Blockly.Toolbox {
       this.flyout_.stepScrollAnimation();
     }
   }
+
+  /** @override */
+  getClientRect() {
+    // If the flyout never closes, it should be the deletable area.
+    if (this.flyout_ && !this.flyout_.autoClose) {
+      return this.flyout_.getClientRect();
+    }
+    return super.getClientRect();
+  }
 }
 
 Blockly.Css.register([
