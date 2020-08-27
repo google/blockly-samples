@@ -59,9 +59,14 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   updateFlyout_(_oldItem, newItem) {
     if (newItem) {
       const target = this.flyout_.getCategoryScrollPosition(newItem.name_).y;
-      this.flyout_.scrollTarget = target;
-      this.flyout_.stepScrollAnimation();
+      this.flyout_.scrollTo(target);
     }
+  }
+
+  /** @override */
+  shouldDeSelectItem_(oldItem, newItem) {
+    // Should not deselect if the same category is clicked again.
+    return (oldItem && oldItem !== newItem);
   }
 }
 

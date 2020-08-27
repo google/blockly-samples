@@ -73,6 +73,20 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   }
 
   /**
+   * Scrolls flyout to given position.
+   * @param {number} position The x coordinate to scroll to.
+   */
+  scrollTo(position) {
+    // Set the scroll target to either the scaled position or the lowest
+    // possible scroll point, whichever is smaller
+    const metrics = this.workspace_.getMetrics();
+    this.scrollTarget = Math.min(position * this.workspace_.scale,
+        metrics.contentHeight - metrics.viewHeight);
+
+    this.stepScrollAnimation();
+  }
+
+  /**
    * Step the scrolling animation by scrolling a fraction of the way to
    * a scroll target, and request the next frame if necessary.
    * @package
