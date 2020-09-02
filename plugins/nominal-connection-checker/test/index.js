@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Test playground for the nominal connection checker.
  */
 
 import * as Blockly from 'blockly';
@@ -16,10 +16,18 @@ import {renderPlayground, renderCodeTab} from
 import {Plugin} from '../src/index';
 
 /**
- * Create a workspace.
- * @param {!HTMLElement} blocklyDiv
- * @param {!Object} typeHierarchy
- * @param {!Array<!Object>} blocks
+ * @typedef {{
+ *     state: !Object,
+ *     tabElement: !HTMLElement,
+ * }}
+ */
+let PlaygroundTab;
+
+/**
+ * Creates a workspace.
+ * @param {HTMLElement} blocklyDiv The blockly container div.
+ * @param {!Object} typeHierarchy The type hierarchy.
+ * @param {!Array<!Object>} blocks The array of json block definitions.
  * @return {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, typeHierarchy, blocks) {
@@ -61,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const tabsDiv = components.tabsDiv;
   const guiContainer = components.guiContainer;
 
+  // Hide the guiContainer since we don't need it for now.
   guiContainer.style.flex = '0';
   monacoDiv.parentElement.style.maxHeight = '100%';
 
@@ -74,6 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
     scrollBeyondLastLine: false,
     automaticLayout: true,
   }).then((editor) => {
+    /**
+     * Adds a new tab with the given name and language to the monaco editor.
+     * @param {!string} name The display name for the tab.
+     * @param {!string} language The language for the tab.
+     * @return {!PlaygroundTab} The newly added tab.
+     */
     function addCodeTab(name, language) {
       const tabElement = renderCodeTab(name);
       tabElement.setAttribute('data-tab', name);
@@ -95,6 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
       };
     }
 
+    /**
+     * Sets the currently selected/active tab.
+     * @param {!string} tab The name of the tab to select.
+     */
     function setActiveTab(tab) {
       currentTab = tab;
       editor.setModel(currentTab.state.model);
@@ -108,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
       playgroundState.save();
     }
 
+    // Selects the given tab when it is clicked.
     tabsDiv.addEventListener('click', (e) => {
       const target = /** @type {HTMLElement} */ (e.target);
       const tabName = target.getAttribute('data-tab');
@@ -127,6 +147,11 @@ document.addEventListener('DOMContentLoaded', function() {
       editor.focus();
     });
 
+    /**
+     * Loads the saved data for the given tab and adds a change listener to it
+     * that saves its state.
+     * @param {!string} name The name of the tab to load.
+     */
     function loadTab(name) {
       const model = tabs[name].state.model;
       model.setValue(playgroundState.get(name));
@@ -136,6 +161,16 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
+    /**
+     * Loads the saved xml into the workspace.
+     *
+     * If the deserialization fails, it gives the user the option to clear the
+     * saved xml. If the user chooses not to clear it then the user gets a
+     * chance to fix whatever they messed up, and the next time they load the
+     * page the same xml will be loaded again.
+     *
+     * @param {!Blockly.Workspace} workspace The workspace to load the xml into.
+     */
     function loadXml(workspace) {
       let addListener = true;
       try {
