@@ -74,8 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
   monacoDiv.parentElement.style.maxHeight = '100%';
 
   return addCodeEditor(monacoDiv, {
-    model: null,
-    language: 'xml',
     minimap: {
       enabled: false,
     },
@@ -95,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tabsDiv.appendChild(tabElement);
 
       const model = window.monaco.editor.createModel('', language);
+      model.updateOptions({tabSize: 2});
       editor.setModel(model);
 
       const state = {
@@ -211,12 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const playgroundState = new LocalStorageState('playgroundState', {
       workspaceXml: '',
       activeTab: typesTabName,
-      [typesTabName]: '{\n    \n}',
+      [typesTabName]: '{\n  \n}',
       [blocksTabName]:
           '[\n' +
-          '    {\n' +
-          '        "type": "my_block_type"\n' +
-          '    }\n' +
+          '  {\n' +
+          '    "type": "my_block_type"\n' +
+          '  }\n' +
           ']',
     });
     playgroundState.load();
