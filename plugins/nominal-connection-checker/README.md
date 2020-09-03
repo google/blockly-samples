@@ -1,20 +1,23 @@
-# blockly-plugin-blockly-plugin-nominal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-nominal-connection-checker [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that allows you to create more advanced connection checks.
+
+This project is targeted at helping Blockly model languages with complex nominal typing systems, like C++, Java, or Rust.
+It can also be used for modeling subsets of structurally typed languages like TypeScript, Golang, or Haskell. Or it
+can be used to create a type-safe blocks languages that generates a dynamically typed language like JavaScript.
+
+It includes support for modeling subtyping, generic functions/blocks, and parameterized types.
 
 ## Installation
 
 ### Yarn
 ```
-yarn add blockly-plugin-blockly-plugin-nominal
+yarn add blockly-plugin-nominal
 ```
 
 ### npm
 ```
-npm install blockly-plugin-blockly-plugin-nominal --save
+npm install blockly-plugin-nominal --save
 ```
 
 ## Usage
@@ -24,7 +27,7 @@ npm install blockly-plugin-blockly-plugin-nominal --save
   -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-blockly-plugin-nominal';
+import {Plugin} from 'blockly-plugin-nominal-connection-checker';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
