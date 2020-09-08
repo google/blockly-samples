@@ -1,11 +1,12 @@
 {
-  "name": "blockly-plugin-nominal-connection-checker",
-  "version": "0.20200902.0",
+  "name": "@blockly/plugin-nominal-connection-checker",
+  "version": "0.0.1",
   "description": "A Blockly plugin for creating more advanced connection checks, targeted at nominally typed languages.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
+    "postinstall": "blockly-scripts postinstall",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start"
   },
@@ -13,6 +14,7 @@
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "",
+  "private": true,
   "keywords": [
     "blockly",
     "blockly-plugin",
@@ -26,7 +28,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "blockly-plugin-nominal"
+    "directory": "plugins/nominal-connection-checker"
   },
   "license": "Apache 2.0",
   "directories": {
@@ -40,7 +42,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.0.3",
     "@blockly/dev-tools": "^1.1.3",
-    "blockly": "^3.20200625.2"
+    "blockly": "git://github.com/google/blockly.git#develop"
   },
   "peerDependencies": {
     "blockly": ">=3"

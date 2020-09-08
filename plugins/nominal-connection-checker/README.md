@@ -27,7 +27,7 @@ npm install blockly-plugin-nominal --save
   -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-nominal-connection-checker';
+import {NominalConnectionChecker} from 'nominal-connection-checker';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -35,8 +35,7 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 // Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
+workspace.connectionChecker = new NominalConnectionChecker(hierarchyDef);
 ```
 
 ## API

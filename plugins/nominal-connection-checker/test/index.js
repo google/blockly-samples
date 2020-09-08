@@ -32,16 +32,18 @@ let PlaygroundTab;
  */
 function createWorkspace(blocklyDiv, typeHierarchy, blocks) {
   Blockly.defineBlocksWithJsonArray(blocks);
-  const toolbox = [];
+  const toolboxContents = [];
   blocks.forEach((def) => {
-    toolbox.push({
+    toolboxContents.push({
       kind: 'BLOCK',
       type: def.type,
     });
   });
-
   const options = {
-    toolbox: toolbox,
+    toolbox: {
+      'kind': Blockly.utils.toolbox.FLYOUT_TOOLBOX_KIND,
+      'contents': toolboxContents,
+    },
     move: {
       scrollbars: true,
       drag: true,
