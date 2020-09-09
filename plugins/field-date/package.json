@@ -5,6 +5,7 @@
     "scripts": {
         "build": "gulp build",
         "clean": "blockly-scripts clean",
+        "predeploy": "npm run build && blockly-scripts predeploy",
         "prepublishOnly": "npm run clean && npm run build",
         "start": "npm run build && blockly-scripts start",
         "test": "npm run build && blockly-scripts test"
