@@ -24,15 +24,17 @@ import {category as styleCategory, onInit as initStyle} from './style';
 /**
  * The Test blocks toolbox.
  */
-export const toolbox = [
-  alignCategory,
-  basicCategory,
-  connectionsCategory,
-  dragCategory,
-  fieldsCategory,
-  mutatorsCategory,
-  styleCategory,
-];
+export const toolbox = {
+  'contents': [
+    alignCategory,
+    basicCategory,
+    connectionsCategory,
+    dragCategory,
+    fieldsCategory,
+    mutatorsCategory,
+    styleCategory,
+  ]
+};
 
 /**
  * Initialize this toolbox.
