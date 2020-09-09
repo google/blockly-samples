@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Blockly Plus/Minus Mutators Test</title>
+    <style>
+      html, body {
+        margin: 0;
+      }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+        <category name="Others" categorystyle="logic_category">
+            <block type="controls_if"></block>
+            <block type="controls_if">
+                <mutation else="1"></mutation>
+            </block>
+            <block type="controls_ifelse"></block>
+            <block type="text_join"></block>
+            <block type="lists_create_with">
+                <mutation items="0"></mutation>
+            </block>
+            <block type="lists_create_with"></block>
+        </category>
+        <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
+        <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+    </xml>
+
+    <script src="../build/test_bundle.js"></script>
+</body>
+
+</html>

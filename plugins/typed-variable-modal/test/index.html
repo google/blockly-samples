@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Typed Variable Playground</title>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            background-color: #fff;
+            font-family: sans-serif;
+        }
+        h1 {
+            font-weight: normal;
+            font-size: 140%;
+        }
+
+        #octaweb {
+            width: 100%;
+        }
+        #octaweb th {
+            padding-top: 1em;
+            width: 50%;
+        }
+        #octaweb td {
+            width: 50%;
+        }
+        #octaweb td >div {
+            height: 480px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h1>Blockly Workspace Search Playground</h1>
+
+<form id="options">
+    <select name="toolbox" onchange="document.forms.options.submit()">
+        <option value="categories">Categories</option>
+        <option value="simple">Simple</option>
+    </select>
+</form>
+
+<table id="octaweb">
+    <tr>
+        <th>LTR, Vertical, Start</th>
+        <th>RTL, Vertical, Start</th>
+    </tr>
+    <tr>
+        <td><div id="blocklyDivVertStartLTR"></div></td>
+        <td><div id="blocklyDivVertStartRTL"></div></td>
+    </tr>
+    <tr>
+        <th>LTR, Vertical, End</th>
+        <th>RTL, Vertical, End</th>
+    </tr>
+    <tr>
+        <td><div id="blocklyDivVertEndLTR"></div></td>
+        <td><div id="blocklyDivVertEndRTL"></div></td>
+    </tr>
+    <tr>
+        <th>LTR, Horizontal, Start</th>
+        <th>RTL, Horizontal, Start</th>
+    </tr>
+    <tr>
+        <td><div id="blocklyDivHorizontalStartLTR"></div></td>
+        <td><div id="blocklyDivHorizontalStartRTL"></div></td>
+    </tr>
+    <tr>
+        <th>LTR, Horizontal, End</th>
+        <th>RTL, Horizontal, End</th>
+    </tr>
+    <tr>
+        <td><div id="blocklyDivHorizontalEndLTR"></div></td>
+        <td><div id="blocklyDivHorizontalEndRTL"></div></td>
+    </tr>
+</table>
+
+<script src="../build/test_bundle.js"></script>
+</body>
+</html>
