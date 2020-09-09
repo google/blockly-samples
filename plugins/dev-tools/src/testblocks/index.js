@@ -25,7 +25,7 @@ import {category as styleCategory, onInit as initStyle} from './style';
  * The Test blocks toolbox.
  */
 export const toolbox = {
-  "contents": [
+  'contents': [
     alignCategory,
     basicCategory,
     connectionsCategory,
