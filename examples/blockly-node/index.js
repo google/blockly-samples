@@ -45,5 +45,5 @@ try {
   console.log(code);
 }
 catch (e) {
-  console.log(e);
+  throw new Error("An error occured")
 }
