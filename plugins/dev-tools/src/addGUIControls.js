@@ -18,6 +18,7 @@ import {enableLogger, disableLogger} from './logger';
 import {spaghetti} from './spaghetti';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
+import tippy from 'tippy.js';
 
 const assign = require('lodash.assign');
 const merge = require('lodash.merge');
@@ -168,6 +169,11 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
 
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
+  //my-code
+  tippy('Option',{
+    content: "Option folder",
+    position: "left"
+  });
   openFolderIfOptionSelected(optionsFolder, guiState, guiState.options,
       ['rtl', 'renderer', 'toolboxPosition', 'horizontalLayout']);
 
@@ -208,10 +214,20 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
+  //my-code
+  tippy('Debug',{
+    content: "Debug folder",
+    position: "left"
+  });
   populateDebugOptions(debugFolder, guiState, onChangeInternal);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
+  //my-code
+  tippy('Actions',{
+    content: "Actions folder",
+    position: "left"
+  });
   const actionSubFolders = {};
   const actions = {};
 

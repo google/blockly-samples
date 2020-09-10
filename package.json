@@ -1,37 +1,49 @@
 {
-    "name": "blockly-samples",
-    "version": "0.0.0",
-    "description": "Samples for using Blockly",
-    "author": "Blockly Team",
-    "license": "Apache-2.0",
-    "scripts": {
-        "boot": "lerna bootstrap",
-        "build": "lerna run build",
-        "clean": "lerna run clean",
-        "clean:node": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
-        "license": "gulp checkLicenses",
-        "lint": "lerna run lint",
-        "postinstall": "npm run boot",
-        "test": "lerna run test",
-        "publish:check": "lerna changed",
-        "publish:release": "lerna publish",
-        "publish:dryrun": "gulp publishDryRun",
-        "publish": "gulp publish"
-    },
-    "devDependencies": {
-        "@blockly/eslint-config": "^2.0.0",
-        "eslint": "^6.8.0",
-        "gulp": "^4.0.2",
-        "js-green-licenses": "^1.1.0",
-        "lerna": "^3.20.2",
-        "rimraf": "^3.0.2",
-        "typescript": "^3.8.3"
-    },
-    "publishConfig": {
-        "access": "public",
-        "registry": "https://wombat-dressing-room.appspot.com"
-    },
-    "eslintConfig": {
-        "extends": "@blockly/eslint-config"
-    }
+  "name": "blockly-samples",
+  "version": "0.0.0",
+  "description": "Samples for using Blockly",
+  "author": "Blockly Team",
+  "license": "Apache-2.0",
+  "scripts": {
+    "boot": "lerna bootstrap",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "clean:node": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
+    "license": "gulp checkLicenses",
+    "lint": "lerna run lint",
+    "postinstall": "npm run boot",
+    "test": "lerna run test",
+    "publish:check": "lerna changed",
+    "publish:release": "lerna publish",
+    "publish:dryrun": "gulp publishDryRun",
+    "publish": "gulp publish"
+  },
+  "devDependencies": {
+    "@blockly/eslint-config": "^2.0.0",
+    "eslint": "^6.8.0",
+    "gulp": "^4.0.2",
+    "js-green-licenses": "^1.1.0",
+    "lerna": "^3.20.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "main": "gulpfile.js",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pakya-1909/blockly-samples.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pakya-1909/blockly-samples/issues"
+  },
+  "homepage": "https://github.com/pakya-1909/blockly-samples#readme"
 }
