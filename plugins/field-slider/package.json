@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-slider",
-  "version": "2.0.7",
+  "version": "2.1.0",
   "description": "A Blockly slider field.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -39,8 +39,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.0.3",
-    "@blockly/dev-tools": "^1.1.3",
+    "@blockly/dev-scripts": "^1.1.0",
+    "@blockly/dev-tools": "^2.0.0",
     "blockly": "^3.20200123.1",
     "chai": "^4.2.0",
     "sinon": "^9.0.1"
