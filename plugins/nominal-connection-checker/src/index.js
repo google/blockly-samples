@@ -49,15 +49,12 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   doTypeChecks(a, b) {
     const {superior, inferior} = this.getSupAndSubConnections_(a, b);
-    const supCheck = superior.getCheck();
-    const subCheck = inferior.getCheck();
+    // Checks should only contain a single type.
+    const supType = superior.getCheck()[0];
+    const subType = inferior.getCheck()[0];
     const typeHierarchy = this.getTypeHierarchy_();
 
-    return supCheck.some((supType) => {
-      return subCheck.some((subType) => {
-        return typeHierarchy.typeIsSuperOfType(supType, subType);
-      });
-    });
+    return typeHierarchy.typeIsSuperOfType(supType, subType);
   }
 
   /**

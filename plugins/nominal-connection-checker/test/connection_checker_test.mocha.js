@@ -168,14 +168,14 @@ suite('NominalConnectionChecker', function() {
       const dogOut = this.getBlockOutput('static_dog');
       dogOut.setCheck(['Random', 'Dog']);
       const trainDogIn = this.getBlockInput('static_train_dog');
-      chai.assert.isTrue(this.checker.doTypeChecks(dogOut, trainDogIn));
+      chai.assert.isFalse(this.checker.doTypeChecks(dogOut, trainDogIn));
     });
 
     test('Multiple input checks', function() {
       const dogOut = this.getBlockOutput('static_dog');
       const trainDogIn = this.getBlockInput('static_train_dog');
       trainDogIn.setCheck(['Random', 'Dog']);
-      chai.assert.isTrue(this.checker.doTypeChecks(dogOut, trainDogIn));
+      chai.assert.isFalse(this.checker.doTypeChecks(dogOut, trainDogIn));
     });
 
     test('Unrelated types', function() {
