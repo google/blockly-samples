@@ -48,7 +48,7 @@ export class PriorityQueueMap {
    */
   getBindings(key) {
     const bindings = this.map_[key];
-    if (!bindings) {
+    if (!bindings || !bindings.length) {
       return undefined;
     }
     let highestBindings = [bindings[0]];
