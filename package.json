@@ -33,17 +33,5 @@
   },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
-  },
-  "main": "gulpfile.js",
-  "directories": {
-    "example": "examples"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pakya-1909/blockly-samples.git"
-  },
-  "bugs": {
-    "url": "https://github.com/pakya-1909/blockly-samples/issues"
-  },
-  "homepage": "https://github.com/pakya-1909/blockly-samples#readme"
+  }
 }

@@ -43,8 +43,7 @@
     "lodash.assign": "^4.2.0",
     "lodash.merge": "^4.6.2",
     "monaco-editor": "^0.20.0",
-    "sinon": "^9.0.2",
-    "tippy.js": "^6.2.6"
+    "sinon": "^9.0.2"
   },
   "devDependencies": {
     "@blockly/dev-scripts": "^1.0.3",

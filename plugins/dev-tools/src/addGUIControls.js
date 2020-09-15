@@ -163,9 +163,9 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   };
 
   // Tooltip Function definition
-  const addTooltip = (folder,tooltip)=>{
+  const setTooltip = (folder, tooltip)=>{
     const parentElement = folder.domElement.parentElement;
-    parentElement.setAttribute('title',tooltip);
+    parentElement.setAttribute('title', tooltip);
   }
 
   gui.add({
@@ -174,8 +174,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
 
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
-  //my-code
-  addTooltip(optionsFolder,'Contains the options to change the layout of the workspace');
+  setTooltip(optionsFolder, 'Contains the options to change the layout of the workspace');
 
   openFolderIfOptionSelected(optionsFolder, guiState, guiState.options,
       ['rtl', 'renderer', 'toolboxPosition', 'horizontalLayout']);
@@ -198,39 +197,35 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
 
   // Basic options.
   const basicFolder = optionsFolder.addFolder('Basic');
-  //my-code
-  addTooltip(basicFolder,'Basic options like sound, comment etc...');
+  setTooltip(basicFolder, 'Basic options like sound, comment etc...');
   populateBasicOptions(basicFolder, options, guiState, onChange);
 
   // Move options.
   const moveFolder = optionsFolder.addFolder('Move');
-  //my-code
-  addTooltip(moveFolder,'Move options like scrollbars, drag etc...');
+  setTooltip(moveFolder, 'Move options like scrollbars, drag etc...');
   populateMoveOptions(moveFolder, options, saveOptions, onChange);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['move']);
 
   // Zoom options.
   const zoomFolder = optionsFolder.addFolder('Zoom');
-  addTooltip(zoomFolder,'Zoom options like controls, start_Scale etc...');
+  setTooltip(zoomFolder, 'Zoom options like controls, start_Scale etc...');
   populateZoomOptions(zoomFolder, options, saveOptions, onChange);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['zoom']);
 
   // Grid options.
   const gridFolder = optionsFolder.addFolder('Grid');
-  addTooltip(gridFolder,'Contains the options like spacing, length etc...');
+  setTooltip(gridFolder, 'Contains the options like spacing, length etc...');
   populateGridOptions(gridFolder, options, saveOptions, onChange);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['grid']);
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
-  //my-code
-  addTooltip(debugFolder,'How to debug the programe');
+  setTooltip(debugFolder, 'How to debug the programe');
   populateDebugOptions(debugFolder, guiState, onChangeInternal);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
-  //my-code
-  addTooltip(actionsFolder,'Actions in the workspace');
+  setTooltip(actionsFolder, 'Actions in the workspace');
   const actionSubFolders = {};
   const actions = {};
 
@@ -248,9 +243,10 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
    * @param {function(!Blockly.Workspace):void} callback The callback to call
    *     when the action is clicked.
    * @param {string=} folderName Optional folder to place the action under.
+   * @param {string=} tooltip Optional tooltip to set.
    * @return {dat.GUIController} The GUI controller.
    */
-  const addAction = (name, tooltip, callback, folderName) => {
+  const addAction = (name, callback, folderName, tooltip) => {
     actions[name] = () => {
       callback(workspace);
     };
@@ -260,8 +256,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
         folder = actionSubFolders[folderName];
       } else {
         folder = actionsFolder.addFolder(folderName);
-        //my-code
-        addTooltip(folder,tooltip);
+        setTooltip(folder,tooltip);
         folder.open();
         actionSubFolders[folderName] = folder;
       }
@@ -280,9 +275,10 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
    *     call when the action is clicked.
    * @param {string=} folderName Optional folder to place the action under.
    * @param {boolean=} defaultValue Default value.
+   * @param {string=} tooltip Optional tooltip to set.
    * @return {dat.GUIController} The GUI controller.
    */
-  const addCheckboxAction = (name, tooltip, callback, folderName, defaultValue) => {
+  const addCheckboxAction = (name, callback, folderName, defaultValue, tooltip) => {
     actions[name] = !!defaultValue;
     let folder = actionsFolder;
     if (folderName) {
@@ -290,8 +286,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
         folder = actionSubFolders[folderName];
       } else {
         folder = actionsFolder.addFolder(folderName);
-        //my-code
-        addTooltip(folder,tooltip);
+        setTooltip(folder,tooltip);
         folder.open();
         actionSubFolders[folderName] = folder;
       }
@@ -684,61 +679,61 @@ function populateDebugOptions(debugFolder, guiState, onChangeInternal) {
  */
 function addActions(gui, workspace) {
   // Visibility actions.
-  gui.addAction('Show','Set the visibility to Show/Hide', (workspace) => {
+  gui.addAction('Show', (workspace) => {
     workspace.setVisible(true);
-  }, 'Visibility');
-  gui.addAction('Hide','Set the visibility to Show/Hide', (workspace) => {
+  }, 'Visibility',  'Set the visibility to Show/Hide');
+  gui.addAction('Hide', (workspace) => {
     workspace.setVisible(false);
-  }, 'Visibility');
+  }, 'Visibility', 'Set the visibility to Show/Hide');
 
   // Block actions.
-  gui.addAction('Clear','Clear/Format the workspace', (workspace) => {
+  gui.addAction('Clear', (workspace) => {
     workspace.clear();
-  }, 'Blocks');
-  gui.addAction('Format','Clear/Format the worspace', (workspace) => {
+  }, 'Blocks', 'Clear/Format the workspace');
+  gui.addAction('Format', (workspace) => {
     workspace.cleanUp();
-  }, 'Blocks');
+  }, 'Blocks', 'Clear/Format the worspace');
 
   // Undo/Redo actions.
-  gui.addAction('Undo','Undo/Redo in the workspace', (workspace) => {
+  gui.addAction('Undo', (workspace) => {
     workspace.undo();
-  }, 'Undo/Redo');
-  gui.addAction('Redo','Undo/Redo in the workspace', (workspace) => {
+  }, 'Undo/Redo', 'Undo/Redo in the workspace');
+  gui.addAction('Redo', (workspace) => {
     workspace.undo(true);
-  }, 'Undo/Redo');
-  gui.addAction('Clear Undo Stack','Undo/Redo in the workspace', (workspace) => {
+  }, 'Undo/Redo', 'Undo/Redo in the workspace');
+  gui.addAction('Clear Undo Stack', (workspace) => {
     workspace.clearUndo();
-  }, 'Undo/Redo');
+  }, 'Undo/Redo', 'Undo/Redo in the workspace');
 
   // Scale actions.
-  gui.addAction('Zoom reset','Reset/Center/ to fit the workspace', (workspace) => {
+  gui.addAction('Zoom reset', (workspace) => {
     workspace.setScale(workspace.options.zoomOptions.startScale);
     workspace.scrollCenter();
-  }, 'Scale');
-  gui.addAction('Zoom center','Reset/Center/ to fit the workspace', (workspace) => {
+  }, 'Scale', 'Reset/Center/ to fit the workspace');
+  gui.addAction('Zoom center', (workspace) => {
     workspace.scrollCenter();
-  }, 'Scale');
-  gui.addAction('Zoom to Fit','Reset/Center/ to fit the workspace', (workspace) => {
+  }, 'Scale', 'Reset/Center/ to fit the workspace');
+  gui.addAction('Zoom to Fit', (workspace) => {
     workspace.zoomToFit();
-  }, 'Scale');
+  }, 'Scale', 'Reset/Center/ to fit the workspace');
 
   // Stress Test.
-  gui.addAction('Random Blocks','Display all the blocks', (workspace) => {
+  gui.addAction('Random Blocks', (workspace) => {
     populateRandom(workspace, 100);
-  }, 'Stress Test');
-  gui.addAction('Spaghetti!','Display all the blocks', (workspace) => {
+  }, 'Stress Test', 'Plolulate workspace with a long list of connected blocks');
+  gui.addAction('Spaghetti!', (workspace) => {
     spaghetti(workspace, 8);
-  }, 'Stress Test');
+  }, 'Stress Test', 'Plolulate workspace with a long list of connected blocks');
 
   // Logging.
-  gui.addCheckboxAction('Log Events','Log/Flyout the events', function(workspace, value) {
+  gui.addCheckboxAction('Log Events', function(workspace, value) {
     if (value) {
       enableLogger(workspace);
     } else {
       disableLogger(workspace);
     }
-  }, 'Logging');
-  gui.addCheckboxAction('Log Flyout Events','Log/Flyout the events', function(workspace, value) {
+  }, 'Logging', 'Log the events');
+  gui.addCheckboxAction('Log Flyout Events', function(workspace, value) {
     if (value) {
       if (workspace.getFlyout()) {
         enableLogger(workspace.getFlyout().getWorkspace());
@@ -748,17 +743,17 @@ function addActions(gui, workspace) {
         disableLogger(workspace.getFlyout().getWorkspace());
       }
     }
-  }, 'Logging');
+  }, 'Logging', 'Log the events');
 
   // Accessibility actions.
-  gui.addCheckboxAction('Keyboard Nav','Enable navigation', (_workspace, value) => {
+  gui.addCheckboxAction('Keyboard Nav', (_workspace, value) => {
     if (value) {
       Blockly.navigation.enableKeyboardAccessibility();
     } else {
       Blockly.navigation.disableKeyboardAccessibility();
     }
-  }, 'Accessibility', workspace.keyboardAccessibilityMode);
-  gui.addCheckboxAction('Navigate All','Enable navigation', (_workspace, value) => {
+  }, 'Accessibility', workspace.keyboardAccessibilityMode, 'Toggle navigation to all fields');
+  gui.addCheckboxAction('Navigate All', (_workspace, value) => {
     Blockly.ASTNode.NAVIGATE_ALL_FIELDS = value;
-  }, 'Accessibility', Blockly.ASTNode.NAVIGATE_ALL_FIELDS);
+  }, 'Accessibility', Blockly.ASTNode.NAVIGATE_ALL_FIELDS, 'Toggle navigation to all fields');
 }
