@@ -720,10 +720,10 @@ function addActions(gui, workspace) {
   // Stress Test.
   gui.addAction('Random Blocks', (workspace) => {
     populateRandom(workspace, 100);
-  }, 'Stress Test', 'Plolulate workspace with a long list of connected blocks');
+  }, 'Stress Test', 'Populate workspace with random blocks');
   gui.addAction('Spaghetti!', (workspace) => {
     spaghetti(workspace, 8);
-  }, 'Stress Test', 'Plolulate workspace with a long list of connected blocks');
+  }, 'Stress Test', 'Populate workspace with a long list of connected blocks');
 
   // Logging.
   gui.addCheckboxAction('Log Events', function(workspace, value) {
