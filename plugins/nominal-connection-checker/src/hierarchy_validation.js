@@ -23,6 +23,7 @@ export function validateHierarchy(hierarchyDef) {
   }
 
   checkConflictingTypes(hierarchyDef);
+  checkSupersDefined(hierarchyDef);
 }
 
 /**
@@ -53,5 +54,32 @@ function checkConflictingTypes(hierarchyDef) {
 
   for (const [type, conflicts] of conflictingTypes) {
     console.error(conflictMsg, type, conflicts);
+  }
+}
+
+/**
+ * Checks the hierarchy def for any super types (eg 'fulfills': ['type]) which
+ * are not defined as top-level types.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkSupersDefined(hierarchyDef) {
+  const errorMsg = 'The type %s says it fulfills the type %s, but that type' +
+      ' is not defined';
+
+  const types = new Set();
+  const keys = Object.keys(hierarchyDef);
+  for (const type of keys) {
+    types.add(type.toLowerCase());
+  }
+  for (const type of keys) {
+    const typeInfo = hierarchyDef[type];
+    if (!typeInfo.fulfills) {
+      continue;
+    }
+    for (const superType of typeInfo.fulfills) {
+      if (!types.has(superType.toLowerCase())) {
+        console.error(errorMsg, type, superType);
+      }
+    }
   }
 }

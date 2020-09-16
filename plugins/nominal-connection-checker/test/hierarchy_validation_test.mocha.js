@@ -93,4 +93,52 @@ suite('Hierarchy Validation', function() {
           this.conflictMsg, 'typeB', ['TypeB']));
     });
   });
+
+  suite('Defined supers', function() {
+    setup(function() {
+      this.errorMsg = 'The type %s says it fulfills the type %s, but that' +
+          ' type is not defined';
+    });
+
+    test('Defined before', function() {
+      validateHierarchy({
+        'typeB': { },
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Defined after', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+        'typeB': { },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Not defined', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          this.errorMsg, 'typeA', 'typeB'));
+    });
+
+    test('Case', function() {
+      validateHierarchy({
+        'typeB': { },
+        'typeA': {
+          'fulfills': ['TypeB'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+  });
 });
