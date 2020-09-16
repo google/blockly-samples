@@ -44,7 +44,8 @@
     "@blockly/dev-scripts": "^1.0.3",
     "@blockly/dev-tools": "^1.1.3",
     "blockly": "git://github.com/google/blockly.git#develop",
-    "chai": "^4.2.0"
+    "chai": "^4.2.0",
+    "sinon": "^9.0.3"
   },
   "peerDependencies": {
     "blockly": ">=3"
