@@ -39,9 +39,10 @@ export class TypeHierarchy {
     // NOTE: This does not do anything to stop a developer from creating a
     // cyclic type hierarchy (eg Dog <: Mammal <: Dog). They are expected to
     // not do that.
-    const typeNames = Object.keys(hierarchyDef);
-    for (let i = 0, typeName; (typeName = typeNames[i]); i++) {
-      this.types_[typeName] = new TypeDef(typeName, hierarchyDef[typeName]);
+    for (const typeName of Object.keys(hierarchyDef)) {
+      const lowerCaseName = typeName.toLowerCase();
+      this.types_[lowerCaseName] = new TypeDef(
+          lowerCaseName, hierarchyDef[typeName]);
     }
   }
 
@@ -53,7 +54,7 @@ export class TypeHierarchy {
    * otherwise.
    */
   typeExists(name) {
-    return !!this.types_[name];
+    return !!this.types_[name.toLowerCase()];
   }
 
   /**
@@ -64,7 +65,7 @@ export class TypeHierarchy {
    *     otherwise.
    */
   typeIsExactlyType(name1, name2) {
-    return name1 == name2;
+    return name1.toLowerCase() == name2.toLowerCase();
   }
 
   /**
@@ -78,15 +79,17 @@ export class TypeHierarchy {
    *     in the type hierarchy definition. False otherwise.
    */
   typeFulfillsType(subName, superName) {
-    if (this.typeIsExactlyType(subName, superName)) {
+    const caselessSub = subName.toLowerCase();
+    const caselessSup = superName.toLowerCase();
+    if (this.typeIsExactlyType(caselessSub, caselessSup)) {
       return true;
     }
-    const subType = this.types_[subName];
-    if (subType.hasDirectSuper(superName)) {
+    const subType = this.types_[caselessSub];
+    if (subType.hasDirectSuper(caselessSup)) {
       return true;
     }
     return subType.someSuper(
-        (name) => this.typeFulfillsType(name, superName), this);
+        (name) => this.typeFulfillsType(name, caselessSup), this);
   }
 }
 
@@ -126,7 +129,7 @@ class TypeDef {
   init_(info) {
     if (info.fulfills && info.fulfills.length) {
       // Shallow copy should be fine since it just holds strings.
-      this.fulfills_ = info.fulfills.slice();
+      this.fulfills_ = info.fulfills.map((val) => val.toLowerCase());
     }
   }
 

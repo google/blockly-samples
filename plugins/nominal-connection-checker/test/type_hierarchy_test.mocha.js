@@ -25,8 +25,8 @@ suite('TypeHierarchy', function() {
       const hierarchy = new TypeHierarchy({
         'A': { },
       });
-      chai.assert.isFalse(hierarchy.typeExists('a'),
-          'Expected TypeHierarchy to be case-sensitive.');
+      chai.assert.isTrue(hierarchy.typeExists('a'),
+          'Expected TypeHierarchy to be case-insensitive.');
     });
 
     test('Padding', function() {
@@ -60,8 +60,10 @@ suite('TypeHierarchy', function() {
       const hierarchy = new TypeHierarchy({
         'A': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('A', 'a'),
-          'Expected TypeHierarchy to be case-sensitive.');
+      chai.assert.isTrue(hierarchy.typeIsExactlyType('A', 'a'),
+          'Expected TypeHierarchy to be case-insensitive.');
+      chai.assert.isTrue(hierarchy.typeIsExactlyType('a', 'A'),
+          'Expected TypeHierarchy to be case-insensitive.');
     });
 
     test('Padding', function() {
@@ -160,6 +162,19 @@ suite('TypeHierarchy', function() {
       chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
       chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'C'));
       chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'D'));
+    });
+
+    test('Case', function() {
+      const hierarchy = new TypeHierarchy({
+        'A': {
+          'fulfills': ['B'],
+        },
+        'b': { },
+      });
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'b'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('a', 'b'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('a', 'B'));
     });
   });
 });
