@@ -22,10 +22,10 @@ export class TypeHierarchy {
   constructor(hierarchyDef) {
     /**
      * Map of type names to TypeDefs.
-     * @type {!Object<!string, !TypeDef>}
+     * @type {!Map<string, !TypeDef>}
      * @private
      */
-    this.types_ = Object.create(null);
+    this.types_ = new Map();
 
     this.init_(hierarchyDef);
   }
@@ -41,8 +41,8 @@ export class TypeHierarchy {
     // not do that.
     for (const typeName of Object.keys(hierarchyDef)) {
       const lowerCaseName = typeName.toLowerCase();
-      this.types_[lowerCaseName] = new TypeDef(
-          lowerCaseName, hierarchyDef[typeName]);
+      this.types_.set(lowerCaseName,
+          new TypeDef(lowerCaseName, hierarchyDef[typeName]));
     }
   }
 
@@ -54,7 +54,7 @@ export class TypeHierarchy {
    * otherwise.
    */
   typeExists(name) {
-    return !!this.types_[name.toLowerCase()];
+    return this.types_.has(name.toLowerCase());
   }
 
   /**
@@ -84,7 +84,7 @@ export class TypeHierarchy {
     if (this.typeIsExactlyType(caselessSub, caselessSup)) {
       return true;
     }
-    const subType = this.types_[caselessSub];
+    const subType = this.types_.get(caselessSub);
     if (subType.hasDirectSuper(caselessSup)) {
       return true;
     }
