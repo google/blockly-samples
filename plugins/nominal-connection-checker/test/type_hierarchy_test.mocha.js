@@ -93,21 +93,21 @@ suite('TypeHierarchy', function() {
     });
   });
 
-  suite('typeIsSuperOfType', function() {
+  suite('typeFulfillsType', function() {
     test('Empty fulfills', function() {
       const hierarchy = new TypeHierarchy({
         'A': {
           'fulfills': [],
         },
       });
-      chai.assert.isFalse(hierarchy.typeIsSuperOfType('B', 'A'));
+      chai.assert.isFalse(hierarchy.typeFulfillsType('A', 'B'));
     });
 
     test('Undefined fulfills', function() {
       const hierarchy = new TypeHierarchy({
         'A': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsSuperOfType('B', 'A'));
+      chai.assert.isFalse(hierarchy.typeFulfillsType('A', 'B'));
     });
 
     test('Super defined first', function() {
@@ -117,7 +117,7 @@ suite('TypeHierarchy', function() {
           'fulfills': ['B'],
         },
       });
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('B', 'A'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
     });
 
     test('Super defined second', function() {
@@ -127,7 +127,7 @@ suite('TypeHierarchy', function() {
         },
         'B': { },
       });
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('B', 'A'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
     });
 
     test('Super not defined', function() {
@@ -136,7 +136,7 @@ suite('TypeHierarchy', function() {
           'fulfills': ['B'],
         },
       });
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('B', 'A'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
     });
 
     test('Multiple supers', function() {
@@ -145,9 +145,9 @@ suite('TypeHierarchy', function() {
           'fulfills': ['B', 'C', 'D'],
         },
       });
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('B', 'A'));
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('C', 'A'));
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('D', 'A'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'C'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'D'));
     });
 
     test('Deep super', function() {
@@ -163,85 +163,9 @@ suite('TypeHierarchy', function() {
         },
         'D': { },
       });
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('B', 'A'));
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('C', 'A'));
-      chai.assert.isTrue(hierarchy.typeIsSuperOfType('D', 'A'));
-    });
-  });
-
-  suite('typeIsSubOfType', function() {
-    test('Empty fulfills', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': [],
-        },
-      });
-      chai.assert.isFalse(hierarchy.typeIsSubOfType('A', 'B'));
-    });
-
-    test('Undefined fulfills', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': { },
-      });
-      chai.assert.isFalse(hierarchy.typeIsSubOfType('A', 'B'));
-    });
-
-    test('Super defined first', function() {
-      const hierarchy = new TypeHierarchy({
-        'B': { },
-        'A': {
-          'fulfills': ['B'],
-        },
-      });
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'B'));
-    });
-
-    test('Super defined second', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
-        },
-        'B': { },
-      });
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'B'));
-    });
-
-    test('Super not defined', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
-        },
-      });
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'B'));
-    });
-
-    test('Multiple supers', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B', 'C', 'D'],
-        },
-      });
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'B'));
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'C'));
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'D'));
-    });
-
-    test('Deep super', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
-        },
-        'B': {
-          'fulfills': ['C'],
-        },
-        'C': {
-          'fulfills': ['D'],
-        },
-        'D': { },
-      });
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'B'));
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'C'));
-      chai.assert.isTrue(hierarchy.typeIsSubOfType('A', 'D'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'C'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'D'));
     });
   });
 });

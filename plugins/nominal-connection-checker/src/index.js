@@ -48,13 +48,13 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @override
    */
   doTypeChecks(a, b) {
-    const {superior, inferior} = this.getSupAndSubConnections_(a, b);
+    const {parent, child} = this.getParentAndChildConnections_(a, b);
     // Checks should only contain a single type.
-    const supType = superior.getCheck()[0];
-    const subType = inferior.getCheck()[0];
+    const parentType = parent.getCheck()[0];
+    const childType = child.getCheck()[0];
     const typeHierarchy = this.getTypeHierarchy_();
 
-    return typeHierarchy.typeIsSuperOfType(supType, subType);
+    return typeHierarchy.typeFulfillsType(childType, parentType);
   }
 
   /**
@@ -77,21 +77,21 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * which is inferior.
    * @param {!Blockly.Connection} a The first connection.
    * @param {!Blockly.Connection} b The second connection.
-   * @return {{superior: !Blockly.Connection, inferior: !Blockly.Connection}} An
+   * @return {{parent: !Blockly.Connection, child: !Blockly.Connection}} An
    *     object containing the connections, which are now correctly assigned to
    *     either 'superior' or 'inferior'.
    * @private
    */
-  getSupAndSubConnections_(a, b) {
+  getParentAndChildConnections_(a, b) {
     if (a.isSuperior()) {
       return {
-        superior: a,
-        inferior: b,
+        parent: a,
+        child: b,
       };
     } else {
       return {
-        superior: b,
-        inferior: a,
+        parent: b,
+        child: a,
       };
     }
   }

@@ -68,36 +68,25 @@ export class TypeHierarchy {
   }
 
   /**
-   * Returns true if the first type is a super type of the second type. False
-   * otherwise.
-   * @param {string} superName The name of the possible super type.
+   * Returns true if the types are identical, or if the first type fulfills the
+   * second type (directly or via one of its super types), as specified in the
+   * type hierarchy definition. False otherwise.
    * @param {string} subName The name of the possible sub type.
-   * @return {boolean} True if the first type is a super type of the second
-   *     type. False otherwise.
+   * @param {string} superName The name of the possible super type.
+   * @return {boolean} True if the types are identical, or if the first type
+   *     fulfills the second type (directly or via its super types) as specified
+   *     in the type hierarchy definition. False otherwise.
    */
-  typeIsSuperOfType(superName, subName) {
-    if (this.typeIsExactlyType(superName, subName)) {
+  typeFulfillsType(subName, superName) {
+    if (this.typeIsExactlyType(subName, superName)) {
       return true;
     }
     const subType = this.types_[subName];
     if (subType.hasDirectSuper(superName)) {
       return true;
     }
-    return subType.someSuper(function(name) {
-      return this.typeIsSuperOfType(superName, name);
-    }, this);
-  }
-
-  /**
-   * Returns true if the first type is a subt type of the second type. False
-   * otherwise.
-   * @param {string} subName The name of the possible sub type.
-   * @param {string} superName The name of the possible super type.
-   * @return {boolean} True if the first type is a sub type of the second type.
-   *     False otherwise.
-   */
-  typeIsSubOfType(subName, superName) {
-    return this.typeIsSuperOfType(superName, subName);
+    return subType.someSuper(
+        (name) => this.typeFulfillsType(name, superName), this);
   }
 }
 
