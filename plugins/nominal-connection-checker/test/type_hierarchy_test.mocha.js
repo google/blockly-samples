@@ -130,20 +130,14 @@ suite('TypeHierarchy', function() {
       chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
     });
 
-    test('Super not defined', function() {
-      const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
-        },
-      });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
-    });
-
     test('Multiple supers', function() {
       const hierarchy = new TypeHierarchy({
         'A': {
           'fulfills': ['B', 'C', 'D'],
         },
+        'B': { },
+        'C': { },
+        'D': { },
       });
       chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
       chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'C'));
