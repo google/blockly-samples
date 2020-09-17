@@ -73,13 +73,13 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
 
   /**
    * Returns an object which has the two given connections correctly assigned
-   * to either 'superior' or 'inferior' depending on which is superior and
-   * which is inferior.
+   * to either 'parent' or 'child' depending on which is the parent connection
+   * and which is the child connection.
    * @param {!Blockly.Connection} a The first connection.
    * @param {!Blockly.Connection} b The second connection.
    * @return {{parent: !Blockly.Connection, child: !Blockly.Connection}} An
    *     object containing the connections, which are now correctly assigned to
-   *     either 'superior' or 'inferior'.
+   *     either 'parent' or 'child'.
    * @private
    */
   getParentAndChildConnections_(a, b) {

@@ -16,34 +16,34 @@ suite('TypeHierarchy', function() {
   suite('typeExists', function() {
     test('Simple', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isTrue(hierarchy.typeExists('A'));
+      chai.assert.isTrue(hierarchy.typeExists('typeA'));
     });
 
     test('Case', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isTrue(hierarchy.typeExists('a'),
+      chai.assert.isTrue(hierarchy.typeExists('typea'),
           'Expected TypeHierarchy to be case-insensitive.');
     });
 
     test('Padding', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isFalse(hierarchy.typeExists(' A '),
+      chai.assert.isFalse(hierarchy.typeExists(' typeA '),
           'Expected TypeHierarchy to respect padding.');
     });
 
     test('Super but not defined', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
+        'typeA': {
+          'fulfills': ['typeB'],
         },
       });
-      chai.assert.isFalse(hierarchy.typeExists('B'),
+      chai.assert.isFalse(hierarchy.typeExists('typeB'),
           'Expected only top-level types to exist.');
     });
   });
@@ -53,73 +53,73 @@ suite('TypeHierarchy', function() {
       const hierarchy = new TypeHierarchy({
         'A': { },
       });
-      chai.assert.isTrue(hierarchy.typeIsExactlyType('A', 'A'));
+      chai.assert.isTrue(hierarchy.typeIsExactlyType('typeA', 'typeA'));
     });
 
     test('Case', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isTrue(hierarchy.typeIsExactlyType('A', 'a'),
+      chai.assert.isTrue(hierarchy.typeIsExactlyType('typeA', 'typea'),
           'Expected TypeHierarchy to be case-insensitive.');
-      chai.assert.isTrue(hierarchy.typeIsExactlyType('a', 'A'),
+      chai.assert.isTrue(hierarchy.typeIsExactlyType('typea', 'typeA'),
           'Expected TypeHierarchy to be case-insensitive.');
     });
 
     test('Padding', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('A', ' A '),
+      chai.assert.isFalse(hierarchy.typeIsExactlyType('typeA', ' typeA '),
           'Expected TypeHierarchy to respect padding.');
     });
 
     test('Super', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
+        'typeA': {
+          'fulfills': ['typeB'],
         },
-        'B': { },
+        'typeB': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('A', 'B'));
+      chai.assert.isFalse(hierarchy.typeIsExactlyType('typeA', 'typeB'));
     });
 
     test('Sub', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
-        'B': {
-          'fulfills': ['A'],
+        'typeA': { },
+        'typeB': {
+          'fulfills': ['typeA'],
         },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('A', 'B'));
+      chai.assert.isFalse(hierarchy.typeIsExactlyType('typeA', 'typeB'));
     });
   });
 
   suite('typeFulfillsType', function() {
     test('Empty fulfills', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
+        'typeA': {
           'fulfills': [],
         },
       });
-      chai.assert.isFalse(hierarchy.typeFulfillsType('A', 'B'));
+      chai.assert.isFalse(hierarchy.typeFulfillsType('typeA', 'typeB'));
     });
 
     test('Undefined fulfills', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isFalse(hierarchy.typeFulfillsType('A', 'B'));
+      chai.assert.isFalse(hierarchy.typeFulfillsType('typeA', 'typeB'));
     });
 
     test('Super defined first', function() {
       const hierarchy = new TypeHierarchy({
-        'B': { },
-        'A': {
-          'fulfills': ['B'],
+        'typeB': { },
+        'typeA': {
+          'fulfills': ['typeB'],
         },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
     });
 
     test('Super defined second', function() {
@@ -134,47 +134,47 @@ suite('TypeHierarchy', function() {
 
     test('Multiple supers', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B', 'C', 'D'],
+        'typeA': {
+          'fulfills': ['typeB', 'typeC', 'typeD'],
         },
-        'B': { },
-        'C': { },
-        'D': { },
+        'typeB': { },
+        'typeC': { },
+        'typeD': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'C'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'D'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeC'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeD'));
     });
 
     test('Deep super', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
+        'typeA': {
+          'fulfills': ['typeB'],
         },
-        'B': {
-          'fulfills': ['C'],
+        'typeB': {
+          'fulfills': ['typeC'],
         },
-        'C': {
-          'fulfills': ['D'],
+        'typeC': {
+          'fulfills': ['typeD'],
         },
-        'D': { },
+        'typeD': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'C'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'D'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeC'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeD'));
     });
 
     test('Case', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
+        'typeA': {
+          'fulfills': ['typeB'],
         },
-        'b': { },
+        'typeb': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'b'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('a', 'b'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('a', 'B'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeb'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typea', 'typeb'));
+      chai.assert.isTrue(hierarchy.typeFulfillsType('typea', 'typeB'));
     });
   });
 });

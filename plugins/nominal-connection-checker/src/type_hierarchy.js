@@ -100,7 +100,7 @@ class TypeDef {
   /**
    * Constructs a TypeDef with the given name. Uses the given info for further
    * initialization (eg defining super types).
-   * @param {!string} name The name of the type.
+   * @param {string} name The name of the type.
    * @param {!Object} info The info about the type.
    */
   constructor(name, info) {
@@ -128,7 +128,6 @@ class TypeDef {
    */
   init_(info) {
     if (info.fulfills && info.fulfills.length) {
-      // Shallow copy should be fine since it just holds strings.
       this.fulfills_ = info.fulfills.map((val) => val.toLowerCase());
     }
   }
