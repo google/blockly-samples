@@ -24,6 +24,7 @@ export function validateHierarchy(hierarchyDef) {
 
   checkConflictingTypes(hierarchyDef);
   checkSupersDefined(hierarchyDef);
+  checkCircularDependencies(hierarchyDef);
 }
 
 /**
@@ -80,6 +81,88 @@ function checkSupersDefined(hierarchyDef) {
       if (!types.has(superType.toLowerCase())) {
         console.error(errorMsg, type, superType);
       }
+    }
+  }
+}
+
+/**
+ * Checks for any circular dependencies between types. Eg:
+ * 'typeA': {
+ *   'fulfills': ['typeB']
+ * },
+ * 'typeB': {
+ *   'fulfills': ['typeA']
+ * }
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkCircularDependencies(hierarchyDef) {
+  /**
+   * Logs an informative error about a cyclic dependency.
+   * @param {!Array<string>} cycleArray An array of all the types that have been
+   *     visited since our entry node.
+   */
+  function logCycle(cycleArray) {
+    const lastType = cycleArray[cycleArray.length - 1].toLowerCase();
+    const index = cycleArray.findIndex((elem) =>
+      elem.toLowerCase() == lastType);
+    const firstType = cycleArray[index];
+
+    let errorMsg = `The type ${firstType} creates a circular dependency: `;
+    errorMsg += firstType;
+    for (let i = index + 1; i < cycleArray.length; i++) {
+      errorMsg += ' fulfills ' + cycleArray[i];
+    }
+    console.error(errorMsg);
+  }
+
+  /**
+   * Searches cycles in the type hierarchy recursively.
+   * @param {string} typeName The name of the current type being examined.
+   * @param {!Set<string>} currentTraversalSet The set of all of the type types
+   *    we have visited. This set is caseless, whereas the currentTraversal is
+   *    not.
+   * @param {!Array<string>} currentTraversal An array of all the types that
+   *     have been visited since our entry node.
+   */
+  function searchForCyclesRec(typeName, currentTraversalSet, currentTraversal) {
+    const caselessName = typeName.toLowerCase();
+    const typeInfo = types.get(caselessName);
+    if (!typeInfo) {
+      return;
+    }
+    visitedTypes.add(caselessName);
+    if (currentTraversalSet.has(caselessName)) {
+      currentTraversal.push(typeName);
+      logCycle(currentTraversal);
+      currentTraversal.pop();
+      return;
+    }
+
+    currentTraversalSet.add(caselessName);
+    currentTraversal.push(typeName);
+
+    if (typeInfo.fulfills) {
+      for (const superType of typeInfo.fulfills) {
+        searchForCyclesRec(superType, currentTraversalSet, currentTraversal);
+      }
+    }
+
+    currentTraversalSet.delete(caselessName);
+    currentTraversal.pop();
+  }
+
+  const visitedTypes = new Set();
+
+  // Maps caseless type names to their type info. Allows for case differences.
+  const types = new Map();
+  for (const type of Object.keys(hierarchyDef)) {
+    types.set(type.toLowerCase(), hierarchyDef[type]);
+  }
+
+  for (const type of Object.keys(hierarchyDef)) {
+    const caselessName = type.toLowerCase();
+    if (!visitedTypes.has(caselessName)) {
+      searchForCyclesRec(type, new Set(), []);
     }
   }
 }

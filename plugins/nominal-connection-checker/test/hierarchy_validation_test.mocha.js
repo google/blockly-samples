@@ -141,4 +141,158 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.notCalled);
     });
   });
+
+  suite('Circular Dependencies', function() {
+    test('No cycles', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+        'typeB': {
+          'fulfills': ['typeC'],
+        },
+        'typeC': {
+          'fulfills': ['typeD'],
+        },
+        'typeD': {
+          'fulfills': ['typeE'],
+        },
+        'typeE': { },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Direct cycle', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeA'));
+    });
+
+    test('Indirect cycle', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+        'typeB': {
+          'fulfills': ['typeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeB fulfills typeA'));
+    });
+
+    test('Really indirect cycle', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB', 'typeC', 'typeD'],
+        },
+        'typeB': {
+          'fulfills': ['typeE'],
+        },
+        'typeC': {
+          'fulfills': ['typeF', 'typeG'],
+        },
+        'typeD': {
+          'fulfills': ['typeH', 'typeJ'],
+        },
+        'typeE': { },
+        'typeF': { },
+        'typeG': { },
+        'typeH': { },
+        'typeJ': {
+          'fulfills': ['typeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeD fulfills typeJ fulfills typeA'));
+    });
+
+    test('Two divergent cycles', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB', 'typeC'],
+        },
+        'typeB': {
+          'fulfills': ['typeA'],
+        },
+        'typeC': {
+          'fulfills': ['typeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledTwice);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeB fulfills typeA'));
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeC fulfills typeA'));
+    });
+
+    test('Two convergent cycles', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeC'],
+        },
+        'typeB': {
+          'fulfills': ['typeC'],
+        },
+        'typeC': {
+          'fulfills': ['typeA', 'typeB'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledTwice);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeC fulfills typeA'));
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeC creates a circular dependency: ' +
+          'typeC fulfills typeB fulfills typeC'));
+    });
+
+    test('Two independent cycles', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+        'typeB': {
+          'fulfills': ['typeA'],
+        },
+        'typeC': {
+          'fulfills': ['typeD'],
+        },
+        'typeD': {
+          'fulfills': ['typeC'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledTwice);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeB fulfills typeA'));
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeC creates a circular dependency: ' +
+          'typeC fulfills typeD fulfills typeC'));
+    });
+
+    test('Case', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['TypeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills TypeA'));
+    });
+  });
 });
