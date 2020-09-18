@@ -293,8 +293,7 @@ export function createPlayground(container, createWorkspace,
       toolboxes: config.toolboxes || {
         'categories': toolboxCategories,
         'simple': toolboxSimple,
-        // TODO (#210): Enable this once the test toolbox has stabalized.
-        // 'test blocks': toolboxTestBlocks,
+        'test blocks': toolboxTestBlocks,
       },
     });
 
