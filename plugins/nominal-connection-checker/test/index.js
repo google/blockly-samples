@@ -13,7 +13,7 @@ import {addCodeEditor} from '@blockly/dev-tools/src/playground/monaco';
 import {LocalStorageState} from '@blockly/dev-tools/src/playground/state';
 import {renderPlayground, renderCodeTab} from
   '@blockly/dev-tools/src/playground/ui.js';
-import {Plugin} from '../src/index';
+import {pluginInfo as NominalConnectionCheckerPluginInfo} from '../src/index';
 
 /**
  * @typedef {{
@@ -40,6 +40,9 @@ function createWorkspace(blocklyDiv, typeHierarchy, blocks) {
     });
   });
   const options = {
+    plugins: {
+      ...NominalConnectionCheckerPluginInfo,
+    },
     toolbox: {
       'kind': Blockly.utils.toolbox.FLYOUT_TOOLBOX_KIND,
       'contents': toolboxContents,
@@ -55,10 +58,7 @@ function createWorkspace(blocklyDiv, typeHierarchy, blocks) {
   };
 
   const workspace = Blockly.inject(blocklyDiv, options);
-
-  // TODO: Initialize your plugin here.
-  const plugin = new Plugin(workspace);
-  plugin.init();
+  workspace.connectionChecker.init(typeHierarchy);
 
   return workspace;
 }
