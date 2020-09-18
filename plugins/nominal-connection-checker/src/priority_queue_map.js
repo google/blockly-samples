@@ -85,14 +85,16 @@ export class PriorityQueueMap {
    * @param {*} value The value to unbind from the key.
    * @param {number} priority The priority of the binding.
    */
-  unBind(key, value, priority) {
+  unbind(key, value, priority) {
     const bindings = this.map_[key];
     if (!bindings) {
       return;
     }
     const index = bindings.findIndex((binding) =>
-      binding.value == value && binding.priority == priority);
-    bindings.splice(index, 1);
+      binding.value === value && binding.priority === priority);
+    if (index != -1) {
+      bindings.splice(index, 1);
+    }
   }
 }
 
@@ -106,6 +108,10 @@ class Binding {
    * @param {number} priority The priority of the binding.
    */
   constructor(value, priority) {
+    // We cannot allow stringified numbers because we do comparison tests.
+    if (isNaN(priority) || typeof priority != 'number') {
+      throw Error('A binding\'s priority must be a number.');
+    }
     this.value = value;
     this.priority = priority;
   }
