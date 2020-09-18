@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-strict-connection-checker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Blockly plugin that makes connection checks strict.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -43,7 +43,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.1.0",
-    "@blockly/dev-tools": "^2.0.0",
+    "@blockly/dev-tools": "^2.0.1",
     "blockly": "git://github.com/google/blockly.git#develop",
     "chai": "^4.2.0"
   },
