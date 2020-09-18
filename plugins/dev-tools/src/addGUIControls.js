@@ -163,7 +163,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   };
 
   // Tooltip Function definition
-  const setTooltip = (folder, tooltip)=>{
+  const setTooltip = (folder, tooltip) => {
     const parentElement = folder.domElement.parentElement;
     parentElement.setAttribute('title', tooltip);
   }
@@ -203,19 +203,19 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   // Move options.
   const moveFolder = optionsFolder.addFolder('Move');
   setTooltip(moveFolder, 'Move options like scrollbars, drag etc...');
-  populateMoveOptions(moveFolder, options, saveOptions, onChange);
+  populateMoveOptions(moveFolder, options, saveOptions, onChange, setTooltip);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['move']);
 
   // Zoom options.
   const zoomFolder = optionsFolder.addFolder('Zoom');
   setTooltip(zoomFolder, 'Zoom options like controls, start_Scale etc...');
-  populateZoomOptions(zoomFolder, options, saveOptions, onChange);
+  populateZoomOptions(zoomFolder, options, saveOptions, onChange, setTooltip);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['zoom']);
 
   // Grid options.
   const gridFolder = optionsFolder.addFolder('Grid');
   setTooltip(gridFolder, 'Contains the options like spacing, length etc...');
-  populateGridOptions(gridFolder, options, saveOptions, onChange);
+  populateGridOptions(gridFolder, options, saveOptions, onChange, setTooltip);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['grid']);
 
   // Debug renderer.
@@ -555,22 +555,25 @@ function populateThemeOption(folder, guiState, themes, defaultThemeName,
  * @param {Blockly.Options} saveOptions Saved Blockly options.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateMoveOptions(moveFolder, options, saveOptions, onChange) {
-  moveFolder.add(options.moveOptions, 'scrollbars').onChange((value) =>
+function populateMoveOptions(moveFolder, options, saveOptions, onChange, setTooltip) {
+  const scrollbar = moveFolder.add(options.moveOptions, 'scrollbars').onChange((value) =>
     onChange('move', {
       ...saveOptions.move,
       scrollbars: value,
     }));
-  moveFolder.add(options.moveOptions, 'wheel').onChange((value) =>
+    setTooltip(scrollbar, 'remove scrollbar from workspace');
+  const wheel = moveFolder.add(options.moveOptions, 'wheel').onChange((value) =>
     onChange('move', {
       ...saveOptions.move,
       wheel: value,
     }));
-  moveFolder.add(options.moveOptions, 'drag').onChange((value) =>
+    setTooltip(wheel, 'take you near to the trash');
+  const drag = moveFolder.add(options.moveOptions, 'drag').onChange((value) =>
     onChange('move', {
       ...saveOptions.move,
       drag: value,
     }));
+    setTooltip(drag, 'Enable dragging');
 }
 
 /**
@@ -580,32 +583,37 @@ function populateMoveOptions(moveFolder, options, saveOptions, onChange) {
  * @param {Blockly.Options} saveOptions Saved Blockly options.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateZoomOptions(zoomFolder, options, saveOptions, onChange) {
-  zoomFolder.add(options.zoomOptions, 'controls').onChange((value) =>
+function populateZoomOptions(zoomFolder, options, saveOptions, onChange, setTooltip) {
+  const controls = zoomFolder.add(options.zoomOptions, 'controls').onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
       controls: value,
     }));
-  zoomFolder.add(options.zoomOptions, 'wheel').onChange((value) =>
+    setTooltip(controls, 'controls zoomIN and zoomOut and reset');
+  const wheel = zoomFolder.add(options.zoomOptions, 'wheel').onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
       wheel: value,
     }));
-  zoomFolder.add(options.zoomOptions, 'startScale', 0.1, 4).onChange((value) =>
+    setTooltip(wheel, 'take you near to the trash');
+  const stratScale = zoomFolder.add(options.zoomOptions, 'startScale', 0.1, 4).onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
       startScale: value,
     }));
-  zoomFolder.add(options.zoomOptions, 'maxScale', 1, 20).onChange((value) =>
+    setTooltip(stratScale, 'makes the point bigger and smaller');
+  const maxScale = zoomFolder.add(options.zoomOptions, 'maxScale', 1, 20).onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
       maxScale: value,
     })).step(1);
-  zoomFolder.add(options.zoomOptions, 'minScale', 0.1, 1).onChange((value) =>
+    setTooltip(maxScale, 'Max size of the Scale');
+  const minSacle = zoomFolder.add(options.zoomOptions, 'minScale', 0.1, 1).onChange((value) =>
     onChange('zoom', {
       ...saveOptions.zoom,
       minScale: value,
     })).step(0.05);
+    setTooltip(minSacle, 'Min size of the scale');
 }
 
 /**
@@ -615,27 +623,31 @@ function populateZoomOptions(zoomFolder, options, saveOptions, onChange) {
  * @param {Blockly.Options} saveOptions Saved Blockly options.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateGridOptions(gridFolder, options, saveOptions, onChange) {
-  gridFolder.add(options.gridOptions, 'spacing', 0, 50).onChange((value) =>
+function populateGridOptions(gridFolder, options, saveOptions, onChange, setTooltip) {
+  const spacing = gridFolder.add(options.gridOptions, 'spacing', 0, 50).onChange((value) =>
     onChange('grid', {
       ...saveOptions.grid,
       spacing: value,
     }));
-  gridFolder.add(options.gridOptions, 'length', 0, 30).onChange((value) =>
+    setTooltip(spacing, 'spacing between points');
+  const lenght = gridFolder.add(options.gridOptions, 'length', 0, 30).onChange((value) =>
     onChange('grid', {
       ...saveOptions.grid,
       length: value,
     }));
-  gridFolder.addColor(options.gridOptions, 'colour').onChange((value) =>
+    setTooltip(length, 'lenght of the point');
+  const colour = gridFolder.addColor(options.gridOptions, 'colour').onChange((value) =>
     onChange('grid', {
       ...saveOptions.grid,
       colour: value,
     }));
-  gridFolder.add(options.gridOptions, 'snap').onChange((value) =>
+    setTooltip(colour, 'clolour of the point');
+  const snap = gridFolder.add(options.gridOptions, 'snap').onChange((value) =>
     onChange('grid', {
       ...saveOptions.grid,
       snap: value,
     }));
+    setTooltip(snap, 'Screenshot of the workspace');
 }
 
 /**
