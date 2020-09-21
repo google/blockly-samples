@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Defines functions for validation a type hierarchy definition.
+ * @fileoverview Defines functions for validating a type hierarchy definition.
  */
 'use strict';
 
