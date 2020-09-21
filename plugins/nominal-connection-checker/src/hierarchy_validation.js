@@ -97,25 +97,6 @@ function checkSupersDefined(hierarchyDef) {
  */
 function checkCircularDependencies(hierarchyDef) {
   /**
-   * Logs an informative error about a cyclic dependency.
-   * @param {!Array<string>} cycleArray An array of all the types that have been
-   *     visited since our entry node.
-   */
-  function logCycle(cycleArray) {
-    const lastType = cycleArray[cycleArray.length - 1].toLowerCase();
-    const index = cycleArray.findIndex((elem) =>
-      elem.toLowerCase() == lastType);
-    const firstType = cycleArray[index];
-
-    let errorMsg = `The type ${firstType} creates a circular dependency: `;
-    errorMsg += firstType;
-    for (let i = index + 1; i < cycleArray.length; i++) {
-      errorMsg += ' fulfills ' + cycleArray[i];
-    }
-    console.error(errorMsg);
-  }
-
-  /**
    * Searches cycles in the type hierarchy recursively.
    * @param {string} typeName The name of the current type being examined.
    * @param {!Set<string>} currentTraversalSet The set of all of the type types
@@ -133,7 +114,7 @@ function checkCircularDependencies(hierarchyDef) {
     visitedTypes.add(caselessName);
     if (currentTraversalSet.has(caselessName)) {
       currentTraversal.push(typeName);
-      logCycle(currentTraversal);
+      logCircularDependency(currentTraversal);
       currentTraversal.pop();
       return;
     }
@@ -165,4 +146,22 @@ function checkCircularDependencies(hierarchyDef) {
       searchForCyclesRec(type, new Set(), []);
     }
   }
+}
+
+/**
+ * Logs an informative error about a cyclic dependency.
+ * @param {!Array<string>} cycleArray An array of all the types that have been
+ *     visited since our entry node.
+ */
+function logCircularDependency(cycleArray) {
+  const lastType = cycleArray[cycleArray.length - 1].toLowerCase();
+  const index = cycleArray.findIndex((elem) => elem.toLowerCase() == lastType);
+  const firstType = cycleArray[index];
+
+  let errorMsg = `The type ${firstType} creates a circular dependency: `;
+  errorMsg += firstType;
+  for (let i = index + 1; i < cycleArray.length; i++) {
+    errorMsg += ' fulfills ' + cycleArray[i];
+  }
+  console.error(errorMsg);
 }
