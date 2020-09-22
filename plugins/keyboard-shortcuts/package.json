@@ -1,0 +1,65 @@
+{
+  "name": "@blockly/plugin-keyboard-shortcuts",
+  "version": "0.20200619.0",
+  "description": "A Blockly plugin.",
+  "scripts": {
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "keyboard-shortcuts"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/keyboard-shortcuts#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/keyboard-shortcuts"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@blockly/plugin-modal": "^2.0.2"
+  },
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.0.2",
+    "@blockly/dev-tools": "^1.0.2",
+    "blockly": "^3.20200402.1"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
+  ]
+}
