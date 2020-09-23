@@ -216,6 +216,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   isGeneric_(connection) {
     const check = this.getCheck_(connection);
+    // If you ever update this, be sure to update hierarchy_validation.js too.
     return typeof check == 'string' && check.length == 1;
   }
 
