@@ -36,8 +36,6 @@ export class GenericMap {
    *     to.
    */
   constructor(workspace) {
-    // TODO: Move to maps.
-
     /**
      * The workspace this GenericMap belongs to.
      * @type {!Blockly.Workspace}
