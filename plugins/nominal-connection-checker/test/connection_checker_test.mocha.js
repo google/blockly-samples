@@ -259,6 +259,47 @@ suite('NominalConnectionChecker', function() {
     });
   });
 
+  suite('isGeneric_', function() {
+    setup(function() {
+      this.assertGeneric = function(check, boolVal) {
+        const mockConn = {
+          getCheck: function() {
+            return [check];
+          },
+        };
+        chai.assert.equal(this.checker.isGeneric_(mockConn), boolVal);
+      };
+    });
+
+    test('"a"', function() {
+      this.assertGeneric('a', true);
+    });
+
+    test('"A"', function() {
+      this.assertGeneric('A', true);
+    });
+
+    test('"*"', function() {
+      this.assertGeneric('*', true);
+    });
+
+    test('"1"', function() {
+      this.assertGeneric('1', true);
+    });
+
+    test('1', function() {
+      this.assertGeneric(1, false);
+    });
+
+    test('"LongCheck"', function() {
+      this.assertGeneric('LongCheck', false);
+    });
+
+    test('"\uD83D\uDE00" (emoji)', function() {
+      this.assertGeneric('\uD83D\uDE00', false);
+    });
+  });
+
   suite('Simple generics', function() {
     // Both explicit is the other suite.
 

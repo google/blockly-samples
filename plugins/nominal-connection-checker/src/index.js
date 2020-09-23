@@ -217,8 +217,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   isGeneric_(connection) {
     const check = this.getCheck_(connection);
-    return check.length == 1 && check == check.toUpperCase() &&
-        check != check.toLowerCase();
+    return typeof check == 'string' && check.length == 1;
   }
 
   /**
