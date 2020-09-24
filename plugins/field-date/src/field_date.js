@@ -55,6 +55,14 @@ Blockly.FieldDate.fromJson = function(options) {
 };
 
 /**
+ * The default value for this field.
+ * @type {*}
+ * @protected
+ */
+Blockly.FieldDate.prototype.DEFAULT_VALUE =
+    new Date().toISOString().substring(0, 10);
+
+/**
  * Serializable fields are saved by the XML renderer, non-serializable fields
  * are not. Editable fields should also be serializable.
  * @type {boolean}
