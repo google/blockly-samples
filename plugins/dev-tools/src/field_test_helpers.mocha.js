@@ -33,8 +33,6 @@ FieldValueTestCase.prototype.expectedText = undefined;
  */
 FieldValueTestCase.prototype.errMsgMatcher = undefined;
 
-
-
 /**
  * Field creation test case.
  * @extends {FieldValueTestCase}
