@@ -21,10 +21,10 @@ export class PriorityQueueMap {
   constructor() {
     /**
      * Maps the keys to an array of Bindings.
-     * @type {!Object<*, !Array<Binding>>}
+     * @type {!Map<*, !Array<Binding>>}
      * @private
      */
-    this.map_ = Object.create(null);
+    this.map_ = new Map();
   }
 
   /**
@@ -47,7 +47,7 @@ export class PriorityQueueMap {
    *     given key. Or undefined if the key is not bound.
    */
   getBindings(key) {
-    const bindings = this.map_[key];
+    const bindings = this.map_.get(key);
     if (!bindings || !bindings.length) {
       return undefined;
     }
@@ -72,10 +72,12 @@ export class PriorityQueueMap {
    * @param {number} priority The priority of the binding.
    */
   bind(key, value, priority) {
-    if (!this.map_[key]) {
-      this.map_[key] = [];
+    let bindings = this.map_.get(key);
+    if (!bindings) {
+      bindings = [];
+      this.map_.set(key, bindings);
     }
-    this.map_[key].push(new Binding(value, priority));
+    bindings.push(new Binding(value, priority));
   }
 
   /**
@@ -86,7 +88,7 @@ export class PriorityQueueMap {
    * @param {number} priority The priority of the binding.
    */
   unbind(key, value, priority) {
-    const bindings = this.map_[key];
+    const bindings = this.map_.get(key);
     if (!bindings) {
       return;
     }

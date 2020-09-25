@@ -84,11 +84,6 @@ suite('PriorityQueueMap', function() {
       this.assertBindings(NaN, {value: 'test', priority: 0});
     });
 
-    test('Object key', function() {
-      this.priorityQueueMap.bind({test: 'test'}, 'test', 0);
-      this.assertBindings({test: 'test'}, {value: 'test', priority: 0});
-    });
-
     test('Undefined value', function() {
       this.priorityQueueMap.bind('test', undefined, 0);
       this.assertBindings('test', {value: undefined, priority: 0});
