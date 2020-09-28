@@ -38,6 +38,16 @@ suite('PriorityQueueMap', function() {
       this.priorityQueueMap.bind('test', 'test2', 0);
       this.assertValues('test', 'test', 'test2');
     });
+
+    test('Bad key', function() {
+      chai.assert.isUndefined(this.priorityQueueMap.getValues('test'));
+    });
+
+    test('No values', function() {
+      this.priorityQueueMap.bind('test', 'test', 0);
+      this.priorityQueueMap.unbind('test', 'test', 0);
+      chai.assert.isUndefined(this.priorityQueueMap.getValues('test'));
+    });
   });
 
   suite('getBindings', function() {
@@ -52,6 +62,16 @@ suite('PriorityQueueMap', function() {
       this.assertBindings('test',
           {value: 'test', priority: 0},
           {value: 'test2', priority: 0});
+    });
+
+    test('Bad key', function() {
+      chai.assert.isUndefined(this.priorityQueueMap.getBindings('test'));
+    });
+
+    test('No values', function() {
+      this.priorityQueueMap.bind('test', 'test', 0);
+      this.priorityQueueMap.unbind('test', 'test', 0);
+      chai.assert.isUndefined(this.priorityQueueMap.getBindings('test'));
     });
   });
 
