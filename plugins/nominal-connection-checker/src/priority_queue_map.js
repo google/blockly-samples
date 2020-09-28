@@ -72,7 +72,7 @@ export class PriorityQueueMap {
    *     the given key.
    */
   getAllValues(key) {
-    const bindings = this.getAllBindings();
+    const bindings = this.getAllBindings(key);
     return bindings && bindings.map((binding) => binding.value);
   }
 
@@ -110,12 +110,12 @@ export class PriorityQueueMap {
    * a matching priority.
    * @param {*} key The key to unbind the value from.
    * @param {*} value The value to unbind from the key.
-   * @param {number=} opt_priority The priority of the binding.
+   * @param {number=} priority The priority of the binding.
    * @return {boolean} True if the binding existed, false otherwise.
    */
-  unbind(key, value, opt_priority) {
+  unbind(key, value, priority = undefined) {
     return this.unbindMatching(
-        key, this.createSimpleMatcher_(value, opt_priority));
+        key, this.createSimpleMatcher_(value, priority));
   }
 
   /**
@@ -124,17 +124,16 @@ export class PriorityQueueMap {
    * matching priority.
    * @param {*} key The key to remove bindings from.
    * @param {*} value The value to unbind from the key.
-   * @param {number=} opt_priority The priority of the bindings.
+   * @param {number=} priority The priority of the bindings.
    */
-  unbindAll(key, value, opt_priority) {
+  unbindAll(key, value, priority = undefined) {
     this.unbindAllMatching(
-        key, this.createSimpleMatcher_(value, opt_priority));
+        key, this.createSimpleMatcher_(value, priority));
   }
 
   /**
-   * Removes the first binding associated with the given key that has the given
-   * priority, and that will make the matcher return true from the key's
-   * priority queue of values.
+   * Removes the first binding associated with the given key that  will make the
+   * matcher return true from the key's priority queue of values.
    * @param {*} key The key to unbind a value from.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each binding. Takes in the binding's value and priority.
@@ -157,7 +156,7 @@ export class PriorityQueueMap {
   /**
    * Removes all bindings associate with the given key that make the matcher
    * return true.
-   * @param {string} key The key to remove bindings from.
+   * @param {*} key The key to remove bindings from.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each element.
    */
@@ -168,19 +167,30 @@ export class PriorityQueueMap {
   }
 
   /**
+   * Returns true if the PriorityQueueMap contains any bindings for the given
+   * key. False otherwise.
+   * @param {*} key The key to search for.
+   * @return {boolean} True if the PriorityQueueMap contains any bindings for
+   *     the given key. False otherwise.
+   */
+  has(key) {
+    return !!this.getAllBindings(key);
+  }
+
+  /**
    * Returns true if the key's priority queue contains the given value. If a
    * priority is provided this will only return true if the value also has the
    * given priority.
    * @param {*} key The key we want to examine the values of.
    * @param {*} value The value to search for.
-   * @param {number=} opt_priority The priority the value should have.
+   * @param {number=} priority The priority the value should have.
    * @return {boolean} True if key's priority queue contains the given value,
    *     and in the case that a priority is provided the priority matches. False
    *     otherwise.
    */
-  has(key, value, opt_priority) {
-    return this.hasMatching(
-        key, this.createSimpleMatcher_(value, opt_priority));
+  hasValue(key, value, priority = undefined) {
+    return this.hasMatchingValue(
+        key, this.createSimpleMatcher_(value, priority));
   }
 
   /**
@@ -192,7 +202,7 @@ export class PriorityQueueMap {
    * @return {boolean} True if there is at least one binding associated with the
    *     given key that will make the the matcher return true. False otherwise.
    */
-  hasMatching(key, matcher) {
+  hasMatchingValue(key, matcher) {
     const bindings = this.getAllBindings(key);
     if (!bindings) {
       return false;
@@ -205,7 +215,7 @@ export class PriorityQueueMap {
   /**
    * Returns an array of all bindings that pass the test implemented by the
    * matcher function.
-   * @param {string} key The key to filter the bindings of.
+   * @param {*} key The key to filter the bindings of.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each element.
    * @return {!Array<!Binding>} An array of matching bindings. If no bindings
@@ -227,12 +237,12 @@ export class PriorityQueueMap {
   /**
    * Executes the callback once for each binding on each key. Order is not
    * guaranteed.
-   * @param {function(string, *, number)} callback The callback to execute on
+   * @param {function(*, *, number)} callback The callback to execute on
    *     each binding of each key. Takes in the key, and the value, and the
    *     priority of the binding.
    */
   forEach(callback) {
-    this.map_.forEach((key, bindings) => {
+    this.map_.forEach((bindings, key) => {
       bindings.forEach((binding) => {
         callback(key, binding.value, binding.priority);
       });
@@ -242,7 +252,7 @@ export class PriorityQueueMap {
   /**
    * Executes the callback once for each binding associated with the given key.
    * Order is not guaranteed.
-   * @param {string} key The key to enumerate over the bindings of.
+   * @param {*} key The key to enumerate over the bindings of.
    * @param {function(*, number)} callback The callback to execute on each
    *     binding associated with the given key. Tkaes in the value and the
    *     priority of the binding.
@@ -262,14 +272,14 @@ export class PriorityQueueMap {
    * priority is also provided it only returns true if the priority matches as
    * well.
    * @param {*} value The value to match.
-   * @param {number} opt_priority The priority to match.
+   * @param {number=} priority The priority to match.
    * @return {function(*, number): boolean} A simple matcher function.
    * @private
    */
-  createSimpleMatcher_(value, opt_priority) {
-    return (val, priority) => {
-      return (opt_priority === undefined || priority === opt_priority) &&
-          val === value;
+  createSimpleMatcher_(value, priority) {
+    return (elemValue, elemPriority) => {
+      return (priority === undefined || elemPriority === priority) &&
+          elemValue === value;
     };
   }
 }
