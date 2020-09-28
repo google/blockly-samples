@@ -60,7 +60,6 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   init(hierarchyDef) {
     this.typeHierarchy_ = new TypeHierarchy(hierarchyDef);
-    // TODO: Check if we need to release this.
     this.workspace_.addChangeListener(this.onChangeListener_.bind(this));
   }
 
