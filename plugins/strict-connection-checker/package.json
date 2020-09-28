@@ -47,7 +47,7 @@
     "chai": "^4.2.0"
   },
   "peerDependencies": {
-    "blockly": ">=3"
+    "blockly": ">=3.20200924.1"
   },
   "publishConfig": {},
   "eslintConfig": {
