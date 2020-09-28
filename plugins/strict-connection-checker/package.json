@@ -16,7 +16,6 @@
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
-  "private": true,
   "keywords": [
     "blockly",
     "blockly-plugin",
@@ -44,7 +43,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.1.0",
     "@blockly/dev-tools": "^2.0.1",
-    "blockly": "git://github.com/google/blockly.git#develop",
+    "blockly": "^3.20200924.1",
     "chai": "^4.2.0"
   },
   "peerDependencies": {
