@@ -23,8 +23,7 @@ import {LocalStorageState} from './state';
 
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
-import {toolbox as toolboxTestBlocks,
-  onInit as toolboxTestBlocksInit} from '../testblocks';
+import {toolboxTestBlocks, toolboxTestBlocksInit} from '@blockly/block-test';
 
 
 /**

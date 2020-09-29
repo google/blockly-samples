@@ -1,7 +1,7 @@
 {
-  "name": "@blockly/dev-tools",
-  "version": "2.0.1",
-  "description": "A library of common utilities for Blockly extension development.",
+  "name": "@blockly/block-test",
+  "version": "1.0.0",
+  "description": "A set of Blockly test blocks.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
@@ -9,26 +9,26 @@
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start"
   },
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
-  "types": "./src/index.d.ts",
   "author": "Blockly Team",
   "keywords": [
     "blockly",
-    "dev",
-    "tools"
+    "blockly-plugin",
+    "blockly-block",
+    "test"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-tools#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-test#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/dev-tools"
+    "directory": "plugins/block-test"
   },
-  "license": "Apache-2.0",
+  "license": "Apache 2.0",
   "directories": {
     "dist": "dist",
     "src": "src"
@@ -37,22 +37,13 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-    "chai": "^4.2.0",
-    "dat.gui": "^0.7.7",
-    "lodash.assign": "^4.2.0",
-    "lodash.merge": "^4.6.2",
-    "monaco-editor": "^0.20.0",
-    "sinon": "^9.0.2"
-  },
   "devDependencies": {
     "@blockly/dev-scripts": "^1.1.0",
-    "@blockly/block-test": "^1.0.0",
-    "@types/dat.gui": "^0.7.5",
+    "@blockly/dev-tools": "^2.0.1",
     "blockly": "^3.20200924.1"
   },
   "peerDependencies": {
-    "blockly": ">=3.20191014.4"
+    "blockly": ">=2"
   },
   "publishConfig": {
     "access": "public",
@@ -62,7 +53,7 @@
     "extends": "@blockly/eslint-config"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.17.0"
   },
   "browserslist": [
     "defaults",

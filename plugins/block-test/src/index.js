@@ -24,7 +24,7 @@ import {category as styleCategory, onInit as initStyle} from './style';
 /**
  * The Test blocks toolbox.
  */
-export const toolbox = {
+export const toolboxTestBlocks = {
   'contents': [
     alignCategory,
     basicCategory,
@@ -40,7 +40,7 @@ export const toolbox = {
  * Initialize this toolbox.
  * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
  */
-export function onInit(workspace) {
+export function toolboxTestBlocksInit(workspace) {
   initAlign(workspace);
   initBasic(workspace);
   initConnections(workspace);
