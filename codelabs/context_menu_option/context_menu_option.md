@@ -53,7 +53,7 @@ Each folder contains:
 
 To run the code, simple open `starter-code/index.html` in a browser. You should see a Blockly workspace with an always-open flyout.
 
-[TODO: rachel-fenichel: add a screenshot]
+![A web page with the text "Context Menu Codelab" and a simple Blockly workspace.](starter_workspace.png)
 
 ## Add a context menu option to the workspace
 
@@ -77,10 +77,10 @@ We will discuss these in detail in later sections of the codelab.
 
 ### Make a RegistryItem
 
-Add a function to `index.js` named `makeWorkspaceContextMenuOption`. Create a new registry item in your function:
+Add a function to `index.js` named `registerFirstContextMenuOptions`. Create a new registry item in your function:
 
 ```js
-function makeWorkspaceContextMenuOption() {
+function registerFirstContextMenuOptions() {
     const workspaceItem = {
       displayText: 'Hello World',
       preconditionFn: function(scope) {
@@ -90,7 +90,7 @@ function makeWorkspaceContextMenuOption() {
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
       id: 'hello_world',
-      weight: 0,
+      weight: 100,
     };
 }
 ```
@@ -99,7 +99,7 @@ Call your function from `start`:
 
 ```js
 function start() {
-  registerContextMenuOption();
+  registerFirstContextMenuOptions();
   // Create main workspace.
   workspace = Blockly.inject('blocklyDiv',
     {
@@ -113,7 +113,7 @@ function start() {
 Next, register your item with Blockly:
 
 ```js
-function registerContextMenuOption() {
+function registerFirstContextMenuOptions() {
   const workspaceItem = {
     // ...
   };
@@ -121,9 +121,14 @@ function registerContextMenuOption() {
 }
 ```
 
+Note: you will never need to make a new `ContextMenuRegistry`. Always use the singleton `Blockly.ContextMenuRegistry.registry`.
+
 ### Test it
 
-Reload your web page and right-click on the workspace. You should see a new item labeled 'Hello World' at the bottom of the context menu.
+Reload your web page and right-click on the workspace. You should see a new item labeled "Hello World" at the bottom of the context menu.
+
+
+![A context menu. The last item says "Hello World".](hello_world.png)
 
 ## Scope type
 
@@ -135,7 +140,7 @@ Every context menu option is registered with a **scope type**, which is either `
 ### Add to block scope
 You registered your context menu option on the workspace scope but not the block scope. As a result, you will see it when you right-click on the workspace but not when you right-click on a block.
 
-If you want your option to be shown for both workspaces and blocks, you must register it once for each scope type.
+If you want your option to be shown for both workspaces and blocks, you must register it once for each scope type. Add code to `registerFirstContextMenuOptions` to copy and reregister the workspace item:
 
 ```js
   let blockItem = {...workspaceItem}
@@ -155,7 +160,7 @@ Drag a block into the workspace and right-click it. You should see a "Hello worl
 ## Precondition
 
 Each registry item has a `preconditionFn`. This function takes in a scope and returns a string
-indicating whether and how to display the context menu option.
+indicating whether and how to display the context menu option. We will discuss the scope in the next section.
 
 ### Return value
 
@@ -179,15 +184,16 @@ preconditionFn: function(scope) {
 
 Reload your workspace, grab a stopwatch, and right-click to confirm the timing. The item will always be in the menu, but will sometimes be greyed out.
 
+![A context menu. The last item says "Hello World" but the text is grey, indicating that it cannot be selected.](hello_world_grey.png)
+
 ## Scope
 
 Disabling your context menu options half of the time is not useful, but you may want to show or hide an option based on what the user is doing in the workspace.
 
-To do that you'll need to use the `scope` argument to `preconditionFn`. `scope` is a `Blockly.ContextMenuRegistry.Scope` object. It contains two properties, `workspace` and `block`, but only one is set at any time.
+To do that you'll need to use the `scope` argument to `preconditionFn`. `scope` is a `Blockly.ContextMenuRegistry.Scope` object. It contains two properties, `workspace` and `block`, but only one is set at any time:
 
-If your item is registered under the `WORKSPACE` scope type you can access the `workspace` property, which is an instance of `Blockly.WorkspaceSvg`.
-
-If registered under the `BLOCK` scope type you can access the `block` property, which is an instance of `Blockly.BlockSvg`.
+- If your item is registered under the `WORKSPACE` scope type you can access the `workspace` property, which is an instance of `Blockly.WorkspaceSvg`.
+- If registered under the `BLOCK` scope type you can access the `block` property, which is an instance of `Blockly.BlockSvg`.
 
 ### Workspace scope
 
@@ -197,21 +203,23 @@ For example, let's show a **Help** option in the context menu if the user doesn'
 function registerHelpOption() {
   const helpItem = {
     displayText: 'Help! There are no blocks',
-    preconditionFn: function (scope) {
+    preconditionFn: function(scope) {
       if (!scope.workspace.getTopBlocks().length) {
         return 'enabled';
       }
       return 'hidden';
     },
-    callback: function (scope) {
+    callback: function(scope) {
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     id: 'help_no_blocks',
-    weight: 0,
+    weight: 100,
   };
   Blockly.ContextMenuRegistry.registry.register(helpItem);
 }
 ```
+
+The precondition function accesses `scope.workspace` and uses it to check whether there are any blocks on the workspace.
 
 ### Block scope
 
@@ -227,17 +235,17 @@ function registerOutputOption() {
       }
       return 'hidden';
     },
-    callback: function (scope) {
+    callback: function(scope) {
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: 'block_has_output',
-    weight: 0,
+    weight: 100,
   };
   Blockly.ContextMenuRegistry.registry.register(outputOption);
 }
 ```
 
-Don't forget to call `registerHelpOption` and `registerOutputOption` from your `start()` function.
+Don't forget to call `registerHelpOption` and `registerOutputOption` from your `start` function.
 
 ### Test it
 
@@ -253,16 +261,16 @@ The callback function determines what happens when you click on the context menu
 As an example, update the help item's `callback` to add a block to the workspace when clicked:
 
 ```js
- callback: function(scope) {
-      const domText = Blockly.Xml.textToDom(`
-      <xml xmlns="https://developers.google.com/blockly/xml">
-        <block type="text">
-          <field name="TEXT">Now there is a block</field>
-        </block>
-        </xml>
-      `);
-      Blockly.Xml.domToWorkspace(domText, scope.workspace);
-    },
+callback: function(scope) {
+  const domText = Blockly.Xml.textToDom(`
+  <xml xmlns="https://developers.google.com/blockly/xml">
+    <block type="text">
+      <field name="TEXT">Now there is a block</field>
+    </block>
+    </xml>
+  `);
+  Blockly.Xml.domToWorkspace(domText, scope.workspace);
+}
 ```
 
 ### Test it
@@ -271,13 +279,16 @@ As an example, update the help item's `callback` to add a block to the workspace
 - Click the **Help** option.
 - A text block should appear in the top left of the workspace.
 
+
+![A text block containing the text "Now there is a block".](there_is_a_block.png)
+
 ## Display text
 
 So far the `displayText` has always been a simple string, but it can also be a function that returns a string. This can be useful when you want a context-dependent message.
 
 When defined as a function `displayText` accepts a `scope` argument, just like `callback` and `preconditionFn`.
 
-As an example, this context menu option's display text depends on the block type.
+As an example, add this context menu optio. The display text depends on the block type.
 
 ```js
 function registerDisplayOption() {
@@ -291,14 +302,14 @@ function registerDisplayOption() {
         return 'Some other block';
       }
     },
-    preconditionFn: function (scope) {
+    preconditionFn: function(scope) {
       return 'enabled';
     },
-    callback: function (scope) {
+    callback: function(scope) {
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: 'display_text_example',
-    weight: 0,
+    weight: 100,
   };
   Blockly.ContextMenuRegistry.registry.register(displayOption);
 }
@@ -317,7 +328,11 @@ The last two properties of a registry item are `weight` and `id`.
 
 ### Weight
 
-The `weight` property is a number that determines the order of the items in the context menu. A higher number means your option will be lower in the list. All of the default context menu options provided by Blockly have a `weight` of 0.
+The `weight` property is a number that determines the order of the items in the context menu. A higher number means your option will be lower in the list.
+
+Test this by updating the `weight` property on one of your new context menu options and confirming that the item moves to the top or bottom of the list.
+
+Note that weight does not have to be positive or integer-valued.
 
 ### Id
 
@@ -329,7 +344,9 @@ For instance, you can remove the option that deletes all blocks on the workspace
 Blockly.ContextMenuRegistry.registry.unregister('workspaceDelete');
 ```
 
-For a list of the default options that Blockly provides, look at [contextmenu_items.js](https://github.com/google/blockly/blob/master/core/contextmenu_items.js).
+### Default options
+
+For a list of the default options that Blockly provides, look at [contextmenu_items.js](https://github.com/google/blockly/blob/master/core/contextmenu_items.js). Each entry contains both the `id` and the `weight`.
 
 ## Summary
 
