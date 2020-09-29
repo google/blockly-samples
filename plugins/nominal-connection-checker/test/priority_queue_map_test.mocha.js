@@ -345,6 +345,14 @@ suite('PriorityQueueMap', function() {
           'test', (value, priority) => value.objKey == 'value');
       this.assertBindings('test', {value: 'test1', priority: 10});
     });
+
+    test('this', function() {
+      this.priorityQueueMap.bind('test', 'test1', 0);
+      const thisArg = {};
+      this.priorityQueueMap.unbindMatching('test', function(value, priority) {
+        chai.assert.equal(this, thisArg);
+      }, thisArg);
+    });
   });
 
   suite('unbindAllMatching', function() {
@@ -381,6 +389,14 @@ suite('PriorityQueueMap', function() {
       this.priorityQueueMap.unbindAllMatching(
           'test', (value, priority) => value.objKey == 'value');
       this.assertBindings('test', {value: 'test1', priority: 10});
+    });
+
+    test('this', function() {
+      this.priorityQueueMap.bind('test', 'test1', 0);
+      const thisArg = {};
+      this.priorityQueueMap.unbindAllMatching('test', function(value, priority) {
+        chai.assert.equal(this, thisArg);
+      }, thisArg);
     });
   });
 
@@ -488,6 +504,14 @@ ${priority !== undefined ? priority : 'any'}}.`);
       chai.assert.isTrue(this.priorityQueueMap.hasMatchingValue(
           'test', (value, priority) => value.objKey == 'value'));
     });
+
+    test('this', function() {
+      this.priorityQueueMap.bind('test', 'test1', 0);
+      const thisArg = {};
+      this.priorityQueueMap.hasMatchingValue('test', function(value, priority) {
+        chai.assert.equal(this, thisArg);
+      }, thisArg);
+    });
   });
 
   suite('filter', function() {
@@ -522,6 +546,14 @@ ${priority !== undefined ? priority : 'any'}}.`);
       this.priorityQueueMap.bind('test', {objKey: 'value'}, 20);
       this.assertFilter('test', (value, priority) => value.objKey == 'value',
           {value: {objKey: 'value'}, priority: 20});
+    });
+
+    test('this', function() {
+      this.priorityQueueMap.bind('test', 'test1', 0);
+      const thisArg = {};
+      this.priorityQueueMap.filter('test', function(value, priority) {
+        chai.assert.equal(this, thisArg);
+      }, thisArg);
     });
   });
 
@@ -558,6 +590,14 @@ ${priority !== undefined ? priority : 'any'}}.`);
       this.priorityQueueMap.forEach(spy);
       chai.assert.isTrue(spy.notCalled);
     });
+
+    test('this', function() {
+      this.priorityQueueMap.bind('test', 'test1', 0);
+      const thisArg = {};
+      this.priorityQueueMap.forEach(function(value, priority) {
+        chai.assert.equal(this, thisArg);
+      }, thisArg);
+    });
   });
 
   suite('forEachBinding', function() {
@@ -592,6 +632,14 @@ ${priority !== undefined ? priority : 'any'}}.`);
       const spy = sinon.spy();
       this.priorityQueueMap.forEachBinding('test', spy);
       chai.assert.isTrue(spy.notCalled);
+    });
+
+    test('this', function() {
+      this.priorityQueueMap.bind('test', 'test1', 0);
+      const thisArg = {};
+      this.priorityQueueMap.forEachBinding('test', function(value, priority) {
+        chai.assert.equal(this, thisArg);
+      }, thisArg);
     });
   });
 
