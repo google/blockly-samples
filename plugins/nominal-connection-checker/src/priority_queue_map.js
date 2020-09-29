@@ -137,15 +137,16 @@ export class PriorityQueueMap {
    * @param {*} key The key to unbind a value from.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each binding. Takes in the binding's value and priority.
+   * @param {!Object=} thisArg The value to use as `this` inside the matcher.
    * @return {boolean} True if a matching binding existed, false otherwise.
    */
-  unbindMatching(key, matcher) {
+  unbindMatching(key, matcher, thisArg = undefined) {
     const bindings = this.getAllBindings(key);
     if (!bindings) {
       return false;
     }
     const index = bindings.findIndex((binding) => {
-      return matcher(binding.value, binding.priority);
+      return matcher.call(thisArg, binding.value, binding.priority);
     });
     if (index != -1) {
       bindings.splice(index, 1);
@@ -159,10 +160,11 @@ export class PriorityQueueMap {
    * @param {*} key The key to remove bindings from.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each element.
+   * @param {!Object=} thisArg The value to use as `this` inside the matcher.
    */
-  unbindAllMatching(key, matcher) {
-    if (this.unbindMatching(key, matcher)) {
-      this.unbindAllMatching(key, matcher);
+  unbindAllMatching(key, matcher, thisArg = undefined) {
+    if (this.unbindMatching(key, matcher, thisArg)) {
+      this.unbindAllMatching(key, matcher, thisArg);
     }
   }
 
@@ -199,16 +201,17 @@ export class PriorityQueueMap {
    * @param {*} key The key we want to examine the bindings of.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each element.
+   * @param {!Object=} thisArg The value to use as `this` inside the matcher.
    * @return {boolean} True if there is at least one binding associated with the
    *     given key that will make the the matcher return true. False otherwise.
    */
-  hasMatchingValue(key, matcher) {
+  hasMatchingValue(key, matcher, thisArg = undefined) {
     const bindings = this.getAllBindings(key);
     if (!bindings) {
       return false;
     }
     return bindings.some((binding) => {
-      return matcher(binding.value, binding.priority);
+      return matcher.call(thisArg, binding.value, binding.priority);
     });
   }
 
@@ -218,15 +221,16 @@ export class PriorityQueueMap {
    * @param {*} key The key to filter the bindings of.
    * @param {function(*, number):boolean} matcher The callback function used to
    *     test each element.
+   * @param {!Object=} thisArg The value to use as `this` inside the matcher.
    * @return {!Array<!Binding>} An array of matching bindings. If no bindings
    *     match an empty array will be returned.
    */
-  filter(key, matcher) {
+  filter(key, matcher, thisArg = undefined) {
     const array = [];
     const bindings = this.getAllBindings(key);
     if (bindings) {
       bindings.forEach((binding) => {
-        if (matcher(binding.value, binding.priority)) {
+        if (matcher.call(thisArg, binding.value, binding.priority)) {
           array.push(binding);
         }
       });
@@ -240,11 +244,12 @@ export class PriorityQueueMap {
    * @param {function(*, *, number)} callback The callback to execute on
    *     each binding of each key. Takes in the key, and the value, and the
    *     priority of the binding.
+   * @param {!Object=} thisArg The value to use as `this` inside the matcher.
    */
-  forEach(callback) {
+  forEach(callback, thisArg = undefined) {
     this.map_.forEach((bindings, key) => {
       bindings.forEach((binding) => {
-        callback(key, binding.value, binding.priority);
+        callback.call(thisArg, key, binding.value, binding.priority);
       });
     });
   }
@@ -256,14 +261,15 @@ export class PriorityQueueMap {
    * @param {function(*, number)} callback The callback to execute on each
    *     binding associated with the given key. Tkaes in the value and the
    *     priority of the binding.
+   * @param {!Object=} thisArg The value to use as `this` inside the matcher.
    */
-  forEachBinding(key, callback) {
+  forEachBinding(key, callback, thisArg = undefined) {
     const bindings = this.getAllBindings(key);
     if (!bindings) {
       return;
     }
     bindings.forEach((binding) => {
-      callback(binding.value, binding.priority);
+      callback.call(thisArg, binding.value, binding.priority);
     });
   }
 
