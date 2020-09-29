@@ -288,7 +288,7 @@ So far the `displayText` has always been a simple string, but it can also be a f
 
 When defined as a function `displayText` accepts a `scope` argument, just like `callback` and `preconditionFn`.
 
-As an example, add this context menu optio. The display text depends on the block type.
+As an example, add this context menu option. The display text depends on the block type.
 
 ```js
 function registerDisplayOption() {
