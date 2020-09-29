@@ -19,8 +19,16 @@ npm install @blockly/block-test --save
 ### Import
 ```js
 import * as Blockly from 'blockly';
-import '@blockly/block-test';
+import {toolboxTestBlocks, toolboxTestBlocksInit} from '@blockly/block-test';
 
+// Configure the Blockly workspace to use the test block's toolbox.
+const workspace = Blockly.inject('blocklyDiv', {
+  ...options
+  toolbox: toolboxTestBlocks,
+});
+
+// Initalize the test block's toolbox.
+toolboxTestBlocksInit(workspace);
 ```
 
 ## License
