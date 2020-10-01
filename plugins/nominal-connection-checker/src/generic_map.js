@@ -26,6 +26,18 @@ export const INPUT_PRIORITY = 100;
 export const OUTPUT_PRIORITY = 200;
 
 /**
+ * The minimum priority that can/should be passed to the GenericMap.
+ * @type {number}
+ */
+export const MIN_PRIORITY = 0;
+
+/**
+ * The maximum priority that can/should be passed to the GenericMap.
+ * @type {number}
+ */
+export const MAX_PRIORITY = Number.MAX_SAFE_INTEGER;
+
+/**
  * Defines a map where generic types can be bound to explicit types in
  * a given environment.
  */
