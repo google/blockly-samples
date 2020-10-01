@@ -13,7 +13,7 @@ import {downloadWorkspaceScreenshot} from './screenshot';
 import {spaghetti} from './spaghetti';
 import * as logger from './logger';
 import * as testHelpers from './test_helpers.mocha';
-import {onInit as toolboxTestBlocksInit, toolbox as toolboxTestBlocks} from './testblocks/';
+import {onInit as toolboxTestBlocksInit, toolbox as toolboxTestBlocks} from '@blockly/block-test';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
 
