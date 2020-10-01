@@ -1,7 +1,7 @@
 {
   "name": "@blockly/block-test",
   "version": "1.0.0",
-  "description": "A set of Blockly test blocks.",
+  "description": "A group of Blockly test blocks.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
