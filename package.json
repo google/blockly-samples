@@ -16,10 +16,10 @@
         "lint": "lerna run lint",
         "postinstall": "npm run boot",
         "test": "lerna run test",
+        "publish": "gulp publish",
         "publish:check": "lerna changed",
-        "publish:release": "lerna publish",
         "publish:dryrun": "gulp publishDryRun",
-        "publish": "gulp publish"
+        "publish:_internal": "lerna publish"
     },
     "devDependencies": {
         "@blockly/eslint-config": "^2.0.0",
