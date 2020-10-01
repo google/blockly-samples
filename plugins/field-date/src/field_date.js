@@ -49,7 +49,7 @@ Blockly.FieldDate = function(opt_value, opt_validator) {
   Blockly.FieldDate.superClass_.constructor.call(this, opt_value,
       opt_validator);
 };
-Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.Field);
+Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.FieldTextInput);
 
 /**
  * Construct a FieldDate from a JSON arg object.
@@ -167,10 +167,22 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
 };
 
 /**
- * Create and show the date field's editor.
- * @private
+ * Show the inline free-text editor on top of the text along with the date
+ *    editor.
+ * @param {Event=} opt_e Optional mouse event that triggered the field to
+ *     open, or undefined if triggered programmatically.
+ * @param {boolean=} _opt_quietInput Quiet input.
+ * @protected
+ * @override
  */
-Blockly.FieldDate.prototype.showEditor_ = function() {
+Blockly.FieldDate.prototype.showEditor_ = function(opt_e, _opt_quietInput) {
+  // Mobile browsers have issues with in-line textareas (focus & keyboards).
+  const noFocus =
+      Blockly.utils.userAgent.MOBILE ||
+      Blockly.utils.userAgent.ANDROID ||
+      Blockly.utils.userAgent.IPAD;
+  Blockly.FieldDate.superClass_.showEditor_.call(this, opt_e, noFocus);
+  // Build the DOM.
   this.picker_ = this.dropdownCreate_();
   this.picker_.render(Blockly.DropDownDiv.getContentDiv());
   Blockly.utils.dom.addClass(this.picker_.getElement(), 'blocklyDatePicker');
@@ -231,7 +243,7 @@ Blockly.FieldDate.prototype.dropdownDispose_ = function() {
  */
 Blockly.FieldDate.prototype.onDateSelected_ = function(event) {
   var date = event.date ? event.date.toIsoString(true) : '';
-  this.setValue(date);
+  this.setEditorValue_(date);
   Blockly.DropDownDiv.hideIfOwner(this);
 };
 
