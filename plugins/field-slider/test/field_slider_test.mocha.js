@@ -61,22 +61,12 @@ suite('FieldSlider', function() {
         field, testCase.value, testCase.value, testCase.value, testCase.value);
   };
 
-
-  // TODO(https://github.com/google/blockly/issues/3903): Re-enable test cases
-  //  after fixing
-  invalidValueTestCases[3].skip = true;
-
   runConstructorSuiteTests(
       FieldSlider, validValueTestCases, invalidValueTestCases,
       validTestCaseAssertField, assertSliderFieldDefault);
 
   runFromJsonSuiteTests(FieldSlider, validValueTestCases, invalidValueTestCases,
       validTestCaseAssertField, assertSliderFieldDefault);
-
-
-  // TODO(https://github.com/google/blockly/issues/3903): Remove skip=false
-  //  after removing skip=true.
-  invalidValueTestCases[3].skip = false;
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {
