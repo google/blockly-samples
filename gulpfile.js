@@ -23,8 +23,8 @@ const rimraf = require('rimraf');
  */
 function checkLicenses() {
   const checker = new jsgl.LicenseChecker({
-      // dev: true,
-      // verbose: false,
+    // dev: true,
+    // verbose: false,
   });
   checker.setDefaultHandlers();
   const pluginsDir = 'plugins';
@@ -77,7 +77,7 @@ function publish(dryRun) {
 
     // Run npm publish.
     execSync(
-        `npm run publish:${dryRun ? 'check' : 'release'}`,
+        `npm run publish:${dryRun ? 'check' : '_internal'}`,
         {cwd: releaseDir, stdio: 'inherit'});
 
     done();
@@ -111,7 +111,7 @@ function prepareToDeployToGhPages() {
       .src([
         './plugins/*/test/index.html',
         './plugins/*/build/test_bundle.js'],
-          {base: './plugins/'})
+      {base: './plugins/'})
       .pipe(gulp.dest('./gh-pages/plugins/'));
 }
 
