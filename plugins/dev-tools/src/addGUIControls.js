@@ -37,15 +37,15 @@ const merge = require('lodash.merge');
 
 /**
  * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
- * @param {!function(!Blockly.Options):Blockly.Workspace} createWorkspace
+ * @param {function(!Blockly.BlocklyOptions):Blockly.WorkspaceSvg} genWorkspace
  *     A workspace creation method called every time the toolbox is
  *     re-configured.
- * @param {Blockly.Options} defaultOptions The default workspace options
+ * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
  *     to use.
  * @param {GUIConfig=} config Optional GUI config.
  * @return {dat.GUI} The dat.GUI instance.
  */
-export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
+export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   // Initialize state.
   const guiState = loadGUIState();
 
@@ -62,19 +62,19 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
 
   // Initialize themes.
   const themes = getThemes(defaultOptions);
-  const defaultThemeName =
-      defaultOptions.theme ? defaultOptions.theme.name : 'classic';
+  const defaultThemeName = defaultOptions.theme ?
+      /** @type {!Blockly.Theme} */ (defaultOptions.theme).name : 'classic';
   guiState.themeName = guiState.themeName || defaultThemeName;
   guiState.options.theme = themes[guiState.themeName];
 
   // Merge default and saved state.
-  const saveOptions = {
+  const saveOptions = /** @type {!Blockly.BlocklyOptions} */ ({
     ...defaultOptions,
     ...guiState.options,
-  };
+  });
   initDebugRenderer(guiState.debug);
 
-  let workspace = createWorkspace(saveOptions);
+  let workspace = genWorkspace(saveOptions);
   const resizeEnabled = !config.disableResize;
 
   const gui = new dat.GUI({
@@ -112,7 +112,8 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     onResize();
   }
 
-  const container = workspace.getInjectionDiv().parentNode;
+  const container =
+    /** @type {!HTMLElement} */ (workspace.getInjectionDiv().parentNode);
   container.style.position = 'relative';
   container.appendChild(guiElement);
 
@@ -124,7 +125,7 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     // Dispose of the current workspace
     workspace.dispose();
     // Create a new workspace with options.
-    workspace = createWorkspace(saveOptions);
+    workspace = genWorkspace(saveOptions);
     // Deserialize state into workspace.
     Blockly.Xml.domToWorkspace(state, workspace);
     // Resize the gui.
@@ -385,7 +386,7 @@ function openFolderIfOptionSelected(folder, guiState, mainObj, options) {
 /**
  * Initialize the default toolbox.  If the default toolbox is not in the list of
  * toolboxes, add a "default" option to the toolbox list.
- * @param {Blockly.Options} defaultOptions Default Blockly options.
+ * @param {Blockly.BlocklyOptions} defaultOptions Default Blockly options.
  * @param {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
  *     registered toolboxes.
  * @return {string} The default toolbox name.
@@ -412,7 +413,7 @@ function initDefaultToolbox(defaultOptions, toolboxes) {
  * @param {dat.GUI} basicFolder The dat.GUI basic folder.
  * @param {Blockly.Options} options Blockly options.
  * @param {Object} guiState The GUI state.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateBasicOptions(basicFolder, options, guiState, onChange) {
   setTooltip(
@@ -452,7 +453,7 @@ function populateBasicOptions(basicFolder, options, guiState, onChange) {
  * Populate the renderer option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Blockly.Options} options Blockly options.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateRendererOption(folder, options, onChange) {
   // Get the list of renderers. Previous versions of Blockly used the
@@ -473,7 +474,7 @@ function populateRendererOption(folder, options, onChange) {
  * @param {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
  *     registered toolboxes.
  * @param {string} defaultToolboxName The default toolbox name.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateToolboxOption(
     folder, guiState, toolboxes, defaultToolboxName, onChange) {
@@ -495,7 +496,7 @@ function populateToolboxOption(
  * Populate the toolbox sides option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Blockly.Options} options Blockly options.
- * @param {Blockly.Options} saveOptions Saved Blockly options.
+ * @param {Blockly.BlocklyOptions} saveOptions Saved Blockly options.
  * @param {Object} guiState GUI state.
  * @param {function():void} onChangeInternal Internal on change method.
  */
@@ -522,7 +523,7 @@ function populateToolboxSidesOption(
 
 /**
  * Get the list of Blockly themes.
- * @param {Blockly.Options} defaultOptions Default Blockly options.
+ * @param {Blockly.BlocklyOptions} defaultOptions Default Blockly options.
  * @return {Object<string,Blockly.Theme>} The list of registered themes.
  */
 function getThemes(defaultOptions) {
@@ -540,7 +541,8 @@ function getThemes(defaultOptions) {
       'tritanopia': Blockly.Themes.Tritanopia,
     };
     if (defaultOptions.theme) {
-      themes[defaultOptions.theme.name] = defaultOptions.theme;
+      themes[(/** @type {!Blockly.Theme} */ (defaultOptions.theme)).name] =
+          defaultOptions.theme;
     }
   }
   return themes;
@@ -553,7 +555,7 @@ function getThemes(defaultOptions) {
  * @param {Object<string,Blockly.Theme>} themes The list of
  *     themes.
  * @param {string} defaultThemeName Default Theme name.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateThemeOption(
     folder, guiState, themes, defaultThemeName, onChange) {
@@ -575,8 +577,8 @@ function populateThemeOption(
  * Populate move options.
  * @param {dat.GUI} moveFolder The dat.GUI move options folder.
  * @param {Blockly.Options} options Blockly options.
- * @param {Blockly.Options} saveOptions Saved Blockly options.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {Blockly.BlocklyOptions} saveOptions Saved Blockly options.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateMoveOptions(moveFolder, options, saveOptions, onChange) {
   setTooltip(
@@ -606,8 +608,8 @@ function populateMoveOptions(moveFolder, options, saveOptions, onChange) {
  * Populate zoom options.
  * @param {dat.GUI} zoomFolder The dat.GUI zoom options folder.
  * @param {Blockly.Options} options Blockly options.
- * @param {Blockly.Options} saveOptions Saved Blockly options.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {Blockly.BlocklyOptions} saveOptions Saved Blockly options.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateZoomOptions(zoomFolder, options, saveOptions, onChange) {
   setTooltip(
@@ -655,8 +657,8 @@ function populateZoomOptions(zoomFolder, options, saveOptions, onChange) {
  * Populate grid options.
  * @param {dat.GUI} gridFolder The dat.GUI grid options folder.
  * @param {Blockly.Options} options Blockly options.
- * @param {Blockly.Options} saveOptions Saved Blockly options.
- * @param {function(string, string):void} onChange On Change method.
+ * @param {Blockly.BlocklyOptions} saveOptions Saved Blockly options.
+ * @param {function(string, *):void} onChange On Change method.
  */
 function populateGridOptions(gridFolder, options, saveOptions, onChange) {
   setTooltip(
