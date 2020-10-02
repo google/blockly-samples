@@ -9,12 +9,13 @@
  * workspace options.
  * @author samelh@google.com (Sam El-Husseini)
  */
-import * as dat from 'dat.gui';
 import * as Blockly from 'blockly/core';
+import * as dat from 'dat.gui';
+
 import {DebugRenderer} from './debugRenderer';
+import {disableLogger, enableLogger} from './logger';
 import {HashState} from './playground/hash_state';
 import {populateRandom} from './populateRandom';
-import {enableLogger, disableLogger} from './logger';
 import {spaghetti} from './spaghetti';
 import toolboxCategories from './toolboxCategories';
 import toolboxSimple from './toolboxSimple';
@@ -36,10 +37,10 @@ const merge = require('lodash.merge');
 
 /**
  * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
- * @param {!function(!Blockly.BlocklyOptions):Blockly.Workspace} createWorkspace
+ * @param {!function(!Blockly.Options):Blockly.Workspace} createWorkspace
  *     A workspace creation method called every time the toolbox is
  *     re-configured.
- * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
+ * @param {Blockly.Options} defaultOptions The default workspace options
  *     to use.
  * @param {GUIConfig=} config Optional GUI config.
  * @return {dat.GUI} The dat.GUI instance.
@@ -55,15 +56,14 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
         'categories': toolboxCategories,
         'simple': toolboxSimple,
       });
-  const defaultToolboxName =
-      initDefaultToolbox(defaultOptions, toolboxes);
+  const defaultToolboxName = initDefaultToolbox(defaultOptions, toolboxes);
   guiState.toolboxName = guiState.toolboxName || defaultToolboxName;
   guiState.options.toolbox = toolboxes[guiState.toolboxName];
 
   // Initialize themes.
   const themes = getThemes(defaultOptions);
-  const defaultThemeName = defaultOptions.theme ? defaultOptions.theme.name :
-      'classic';
+  const defaultThemeName =
+      defaultOptions.theme ? defaultOptions.theme.name : 'classic';
   guiState.themeName = guiState.themeName || defaultThemeName;
   guiState.options.theme = themes[guiState.themeName];
 
@@ -162,37 +162,38 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
     onChangeInternal();
   };
 
-  // Tooltip Function definition
-  const setTooltip = (folder, tooltip) => {
-    const parentElement = folder.domElement.parentElement;
-    parentElement.setAttribute('title', tooltip);
-  }
-
-  gui.add({
-    'Reset': reset,
-  }, 'Reset');
+  gui.add(
+      {
+        'Reset': reset,
+      },
+      'Reset');
 
   // Options folder.
   const optionsFolder = gui.addFolder('Options');
-  setTooltip(optionsFolder, 'Contains the options to change the layout of the workspace');
-  openFolderIfOptionSelected(optionsFolder, guiState, guiState.options,
+  setTooltip(
+      optionsFolder, 'Options that affect the appearance of the workspace.');
+  openFolderIfOptionSelected(
+      optionsFolder, guiState, guiState.options,
       ['rtl', 'renderer', 'toolboxPosition', 'horizontalLayout']);
 
-  optionsFolder.add(options, 'RTL').name('rtl').onChange((value) =>
-    onChange('rtl', value));
+  setTooltip(
+      optionsFolder.add(options, 'RTL')
+          .name('rtl')
+          .onChange((value) => onChange('rtl', value)),
+      'If true, mirror the editor (for Arabic or Hebrew locales).');
 
   // Renderer.
   populateRendererOption(optionsFolder, options, onChange);
 
   // Theme.
-  populateThemeOption(optionsFolder, guiState, themes, defaultThemeName,
-      onChange);
+  populateThemeOption(
+      optionsFolder, guiState, themes, defaultThemeName, onChange);
 
   // Toolbox.
-  populateToolboxOption(optionsFolder, guiState, toolboxes, defaultToolboxName,
-      onChange);
-  populateToolboxSidesOption(optionsFolder, options, saveOptions, guiState,
-      onChangeInternal);
+  populateToolboxOption(
+      optionsFolder, guiState, toolboxes, defaultToolboxName, onChange);
+  populateToolboxSidesOption(
+      optionsFolder, options, saveOptions, guiState, onChangeInternal);
 
   // Basic options.
   const basicFolder = optionsFolder.addFolder('Basic');
@@ -202,29 +203,28 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
   // Move options.
   const moveFolder = optionsFolder.addFolder('Move');
   setTooltip(moveFolder, 'Move options like scrollbars, drag etc...');
-  populateMoveOptions(moveFolder, options, saveOptions, onChange, setTooltip);
+  populateMoveOptions(moveFolder, options, saveOptions, onChange);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['move']);
 
   // Zoom options.
   const zoomFolder = optionsFolder.addFolder('Zoom');
-  setTooltip(zoomFolder, 'Zoom options like controls, start_Scale etc...');
-  populateZoomOptions(zoomFolder, options, saveOptions, onChange, setTooltip);
+  setTooltip(zoomFolder, 'Zoom options like controls, startScale etc...');
+  populateZoomOptions(zoomFolder, options, saveOptions, onChange);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['zoom']);
 
   // Grid options.
   const gridFolder = optionsFolder.addFolder('Grid');
-  setTooltip(gridFolder, 'Contains the options like spacing, length etc...');
-  populateGridOptions(gridFolder, options, saveOptions, onChange, setTooltip);
+  setTooltip(gridFolder, 'Grid options like spacing, length etc...');
+  populateGridOptions(gridFolder, options, saveOptions, onChange);
   openFolderIfOptionSelected(moveFolder, guiState, guiState.options, ['grid']);
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
-  setTooltip(debugFolder, 'How to debug the programe');
+  setTooltip(debugFolder, 'Rendering debug configuration.');
   populateDebugOptions(debugFolder, guiState, onChangeInternal);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
-  setTooltip(actionsFolder, 'Actions in the workspace')
   const actionSubFolders = {};
   const actions = {};
 
@@ -255,15 +255,13 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
         folder = actionSubFolders[folderName];
       } else {
         folder = actionsFolder.addFolder(folderName);
-        setTooltip(folder, tooltip);
         folder.open();
         actionSubFolders[folderName] = folder;
       }
     }
     const controller = folder.add(actions, name);
-    if (name) {
-      controller.name(name);
-    }
+    tooltip && setTooltip(controller, tooltip);
+    name && controller.name(name);
     return controller;
   };
 
@@ -277,30 +275,28 @@ export function addGUIControls(createWorkspace, defaultOptions, config = {}) {
    * @param {string=} tooltip Optional tooltip to set.
    * @return {dat.GUIController} The GUI controller.
    */
-  const addCheckboxAction = (name, callback, folderName, defaultValue, tooltip) => {
-    actions[name] = !!defaultValue;
-    let folder = actionsFolder;
-    if (folderName) {
-      if (actionSubFolders[folderName]) {
-        folder = actionSubFolders[folderName];
-      } else {
-        folder = actionsFolder.addFolder(folderName);
-        setTooltip(folder, tooltip)
-        folder.open();
-        actionSubFolders[folderName] = folder;
-      }
-    }
-    const controller = folder.add(actions, name);
-    if (name) {
-      controller.name(name);
-    }
-    controller.listen()
-        .onFinishChange((value) => {
+  const addCheckboxAction =
+      (name, callback, folderName, defaultValue, tooltip) => {
+        actions[name] = !!defaultValue;
+        let folder = actionsFolder;
+        if (folderName) {
+          if (actionSubFolders[folderName]) {
+            folder = actionSubFolders[folderName];
+          } else {
+            folder = actionsFolder.addFolder(folderName);
+            folder.open();
+            actionSubFolders[folderName] = folder;
+          }
+        }
+        const controller = folder.add(actions, name);
+        tooltip && setTooltip(controller, tooltip);
+        name && controller.name(name);
+        controller.listen().onFinishChange((value) => {
           callback(workspace, value);
         });
 
-    return controller;
-  };
+        return controller;
+      };
 
   const devGui = /** @type {?} */ (gui);
   devGui.addCheckboxAction = addCheckboxAction;
@@ -419,20 +415,36 @@ function initDefaultToolbox(defaultOptions, toolboxes) {
  * @param {function(string, string):void} onChange On Change method.
  */
 function populateBasicOptions(basicFolder, options, guiState, onChange) {
-  basicFolder.add(options, 'readOnly').onChange((value) =>
-    onChange('readOnly', value));
-  basicFolder.add(options, 'hasTrashcan').name('trashCan').onChange((value) =>
-    onChange('trashcan', value));
-  basicFolder.add(options, 'hasSounds').name('sounds').onChange((value) =>
-    onChange('sounds', value));
-  basicFolder.add(options, 'disable').onChange((value) =>
-    onChange('disable', value));
-  basicFolder.add(options, 'collapse').onChange((value) =>
-    onChange('collapse', value));
-  basicFolder.add(options, 'comments').onChange((value) =>
-    onChange('comments', value));
+  setTooltip(
+      basicFolder.add(options, 'readOnly')
+          .onChange((value) => onChange('readOnly', value)),
+      'If true, prevent the user from editing. Suppresses the toolbox and' +
+      ' trashcan.');
+  setTooltip(
+      basicFolder.add(options, 'hasTrashcan')
+          .name('trashCan')
+          .onChange((value) => onChange('trashcan', value)),
+      'Displays or hides the trashcan.');
+  setTooltip(
+      basicFolder.add(options, 'hasSounds')
+          .name('sounds')
+          .onChange((value) => onChange('sounds', value)),
+      `If false, don't play sounds (e.g. click and delete).`);
+  setTooltip(
+      basicFolder.add(options, 'disable')
+          .onChange((value) => onChange('disable', value)),
+      'Allows blocks to be disabled. ');
+  setTooltip(
+      basicFolder.add(options, 'collapse')
+          .onChange((value) => onChange('collapse', value)),
+      'Allows blocks to be collapsed or expanded.');
+  setTooltip(
+      basicFolder.add(options, 'comments')
+          .onChange((value) => onChange('comments', value)),
+      'Allows blocks to have comments.');
 
-  openFolderIfOptionSelected(basicFolder, guiState, guiState.options,
+  openFolderIfOptionSelected(
+      basicFolder, guiState, guiState.options,
       ['readOnly', 'trashcan', 'sounds', 'disable', 'collapse', 'comments']);
 }
 
@@ -448,8 +460,10 @@ function populateRendererOption(folder, options, onChange) {
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
       (Blockly.registry && Blockly.registry.typeMap_['renderer']);
-  folder.add(options, 'renderer', Object.keys(renderers))
-      .onChange((value) => onChange('renderer', value));
+  setTooltip(
+      folder.add(options, 'renderer', Object.keys(renderers))
+          .onChange((value) => onChange('renderer', value)),
+      'The renderer used by Blockly.');
 }
 
 /**
@@ -461,14 +475,17 @@ function populateRendererOption(folder, options, onChange) {
  * @param {string} defaultToolboxName The default toolbox name.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateToolboxOption(folder, guiState, toolboxes, defaultToolboxName,
-    onChange) {
-  folder.add(guiState, 'toolboxName')
-      .options(Object.keys(toolboxes)).name('toolbox')
-      .onChange((value) => {
-        guiState.toolboxName = value;
-        onChange('toolbox', toolboxes[value]);
-      });
+function populateToolboxOption(
+    folder, guiState, toolboxes, defaultToolboxName, onChange) {
+  setTooltip(
+      folder.add(guiState, 'toolboxName')
+          .options(Object.keys(toolboxes))
+          .name('toolbox')
+          .onChange((value) => {
+            guiState.toolboxName = value;
+            onChange('toolbox', toolboxes[value]);
+          }),
+      'The toolbox used by Blockly.');
   if (guiState.toolboxName !== defaultToolboxName) {
     openFolderIfOptionSelected(folder, guiState, guiState.options, ['toolbox']);
   }
@@ -482,21 +499,25 @@ function populateToolboxOption(folder, guiState, toolboxes, defaultToolboxName,
  * @param {Object} guiState GUI state.
  * @param {function():void} onChangeInternal Internal on change method.
  */
-function populateToolboxSidesOption(folder, options, saveOptions, guiState,
-    onChangeInternal) {
+function populateToolboxSidesOption(
+    folder, options, saveOptions, guiState, onChangeInternal) {
   const toolboxSides = {top: 0, bottom: 1, left: 2, right: 3};
-  folder.add(options, 'toolboxPosition', toolboxSides)
-      .name('toolboxPosition')
-      .onChange((value) => {
-        const side = Object.keys(toolboxSides).find((key) =>
-          toolboxSides[key] == value);
-        saveOptions['horizontalLayout'] = side == 'top' || side == 'bottom';
-        saveOptions['toolboxPosition'] = side == 'top' || side == 'left' ?
-          'start' : 'end';
-        guiState.options['toolboxPosition'] = saveOptions['toolboxPosition'];
-        guiState.options['horizontalLayout'] = saveOptions['horizontalLayout'];
-        onChangeInternal();
-      });
+  setTooltip(
+      folder.add(options, 'toolboxPosition', toolboxSides)
+          .name('toolboxPosition')
+          .onChange((value) => {
+            const side = Object.keys(toolboxSides)
+                .find((key) => toolboxSides[key] == value);
+            saveOptions['horizontalLayout'] = side == 'top' || side == 'bottom';
+            saveOptions['toolboxPosition'] =
+                side == 'top' || side == 'left' ? 'start' : 'end';
+            guiState.options['toolboxPosition'] =
+                saveOptions['toolboxPosition'];
+            guiState.options['horizontalLayout'] =
+                saveOptions['horizontalLayout'];
+            onChangeInternal();
+          }),
+      'The toolbox position.');
 }
 
 /**
@@ -534,14 +555,17 @@ function getThemes(defaultOptions) {
  * @param {string} defaultThemeName Default Theme name.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateThemeOption(folder, guiState, themes, defaultThemeName,
-    onChange) {
-  folder.add(guiState, 'themeName')
-      .options(Object.keys(themes)).name('theme')
-      .onChange((value) => {
-        guiState.themeName = value;
-        onChange('theme', themes[value]);
-      });
+function populateThemeOption(
+    folder, guiState, themes, defaultThemeName, onChange) {
+  setTooltip(
+      folder.add(guiState, 'themeName')
+          .options(Object.keys(themes))
+          .name('theme')
+          .onChange((value) => {
+            guiState.themeName = value;
+            onChange('theme', themes[value]);
+          }),
+      'The theme used by Blockly.');
   if (guiState.themeName !== defaultThemeName) {
     openFolderIfOptionSelected(folder, guiState, guiState.options, ['theme']);
   }
@@ -554,25 +578,28 @@ function populateThemeOption(folder, guiState, themes, defaultThemeName,
  * @param {Blockly.Options} saveOptions Saved Blockly options.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateMoveOptions(moveFolder, options, saveOptions, onChange, setTooltip) {
-  const scrollbar = moveFolder.add(options.moveOptions, 'scrollbars').onChange((value) =>
-    onChange('move', {
-      ...saveOptions.move,
-      scrollbars: value,
-    }));
-    setTooltip(scrollbar, 'Remove scrollbars in the workspace');
-  const wheel = moveFolder.add(options.moveOptions, 'wheel').onChange((value) =>
-    onChange('move', {
-      ...saveOptions.move,
-      wheel: value,
-    }));
-    setTooltip(wheel, 'Helps in zooming');
-  const drag = moveFolder.add(options.moveOptions, 'drag').onChange((value) =>
-    onChange('move', {
-      ...saveOptions.move,
-      drag: value,
-    }));
-    setTooltip(drag, 'Drag towards the trash');
+function populateMoveOptions(moveFolder, options, saveOptions, onChange) {
+  setTooltip(
+      moveFolder.add(options.moveOptions, 'scrollbars')
+          .onChange((value) => onChange('move', {
+            ...saveOptions.move,
+            scrollbars: value,
+          })),
+      'True if the workspace has scrollbars.');
+  setTooltip(
+      moveFolder.add(options.moveOptions, 'wheel')
+          .onChange((value) => onChange('move', {
+            ...saveOptions.move,
+            wheel: value,
+          })),
+      'True if the workspace can be scrolled with the mouse wheel.');
+  setTooltip(
+      moveFolder.add(options.moveOptions, 'drag')
+          .onChange((value) => onChange('move', {
+            ...saveOptions.move,
+            drag: value,
+          })),
+      'True if the workspace can be dragged with the mouse.');
 }
 
 /**
@@ -582,37 +609,46 @@ function populateMoveOptions(moveFolder, options, saveOptions, onChange, setTool
  * @param {Blockly.Options} saveOptions Saved Blockly options.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateZoomOptions(zoomFolder, options, saveOptions, onChange, setTooltip) {
-  const controls = zoomFolder.add(options.zoomOptions, 'controls').onChange((value) =>
-    onChange('zoom', {
-      ...saveOptions.zoom,
-      controls: value,
-    }));
-    setTooltip(controls, 'Controls the zoom options in the workspace');
-  const wheel = zoomFolder.add(options.zoomOptions, 'wheel').onChange((value) =>
-    onChange('zoom', {
-      ...saveOptions.zoom,
-      wheel: value,
-    }));
-    setTooltip(wheel, 'Helps in zooming');
-  const starScale = zoomFolder.add(options.zoomOptions, 'startScale', 0.1, 4).onChange((value) =>
-    onChange('zoom', {
-      ...saveOptions.zoom,
-      startScale: value,
-    }));
-    setTooltip(starScale, 'Set the size of the points');
-  const maxSclae = zoomFolder.add(options.zoomOptions, 'maxScale', 1, 20).onChange((value) =>
-    onChange('zoom', {
-      ...saveOptions.zoom,
-      maxScale: value,
-    })).step(1);
-    setTooltip(maxSclae, 'Set the max_Scale');
-  const minScale = zoomFolder.add(options.zoomOptions, 'minScale', 0.1, 1).onChange((value) =>
-    onChange('zoom', {
-      ...saveOptions.zoom,
-      minScale: value,
-    })).step(0.05);
-    setTooltip(minScale, 'Set the min_Scale');
+function populateZoomOptions(zoomFolder, options, saveOptions, onChange) {
+  setTooltip(
+      zoomFolder.add(options.zoomOptions, 'controls')
+          .onChange((value) => onChange('zoom', {
+            ...saveOptions.zoom,
+            controls: value,
+          })),
+      'Set to true to show zoom-centre, zoom-in, and zoom-out buttons.');
+  setTooltip(
+      zoomFolder.add(options.zoomOptions, 'wheel')
+          .onChange((value) => onChange('zoom', {
+            ...saveOptions.zoom,
+            wheel: value,
+          })),
+      'Set to true to allow the mouse wheel to zoom.');
+  setTooltip(
+      zoomFolder.add(options.zoomOptions, 'startScale', 0.1, 4)
+          .onChange((value) => onChange('zoom', {
+            ...saveOptions.zoom,
+            startScale: value,
+          })),
+      'Initial magnification factor. For applications with multiple levels,' +
+      ' startScale is often set to a higher value on the first level, then' +
+      ' incrementally decreased as subsequent levels become more complex.');
+  setTooltip(
+      zoomFolder.add(options.zoomOptions, 'maxScale', 1, 20)
+          .onChange((value) => onChange('zoom', {
+            ...saveOptions.zoom,
+            maxScale: value,
+          }))
+          .step(1),
+      'Maximum multiplication factor for how far one can zoom in.');
+  setTooltip(
+      zoomFolder.add(options.zoomOptions, 'minScale', 0.1, 1)
+          .onChange((value) => onChange('zoom', {
+            ...saveOptions.zoom,
+            minScale: value,
+          }))
+          .step(0.05),
+      'Minimum multiplication factor for how far one can zoom out.');
 }
 
 /**
@@ -622,31 +658,49 @@ function populateZoomOptions(zoomFolder, options, saveOptions, onChange, setTool
  * @param {Blockly.Options} saveOptions Saved Blockly options.
  * @param {function(string, string):void} onChange On Change method.
  */
-function populateGridOptions(gridFolder, options, saveOptions, onChange, setTooltip) {
-  const spacing = gridFolder.add(options.gridOptions, 'spacing', 0, 50).onChange((value) =>
-    onChange('grid', {
-      ...saveOptions.grid,
-      spacing: value,
-    }));
-    setTooltip(spacing, 'Spacing between the points');
-  const length = gridFolder.add(options.gridOptions, 'length', 0, 30).onChange((value) =>
-    onChange('grid', {
-      ...saveOptions.grid,
-      length: value,
-    }));
-    setTooltip(length, 'Set length of the points');
-  const colour = gridFolder.addColor(options.gridOptions, 'colour').onChange((value) =>
-    onChange('grid', {
-      ...saveOptions.grid,
-      colour: value,
-    }));
-    setTooltip(colour, 'Set colour of the points');
-  const snap = gridFolder.add(options.gridOptions, 'snap').onChange((value) =>
-    onChange('grid', {
-      ...saveOptions.grid,
-      snap: value,
-    }));
-    setTooltip(snap , 'take screenshot of the workspace');
+function populateGridOptions(gridFolder, options, saveOptions, onChange) {
+  setTooltip(
+      gridFolder.add(options.gridOptions, 'spacing', 0, 50)
+          .onChange((value) => onChange('grid', {
+            ...saveOptions.grid,
+            spacing: value,
+          })),
+      `The distance between the grid's points.`);
+  setTooltip(
+      gridFolder.add(options.gridOptions, 'length', 0, 30)
+          .onChange((value) => onChange('grid', {
+            ...saveOptions.grid,
+            length: value,
+          })),
+      'The shape of the grid points. A length of 0 results in an invisible' +
+      ' grid (but still one that may be snapped to), a length of 1 (the' +
+      ' default value) results in dots, a longer length results in crosses, ' +
+      'and a length equal or greater than the spacing results in graph paper.');
+  setTooltip(
+      gridFolder.addColor(options.gridOptions, 'colour')
+          .onChange((value) => onChange('grid', {
+            ...saveOptions.grid,
+            colour: value,
+          })),
+      'The colour of the grid points.');
+  setTooltip(
+      gridFolder.add(options.gridOptions, 'snap')
+          .onChange((value) => onChange('grid', {
+            ...saveOptions.grid,
+            snap: value,
+          })),
+      'Whether blocks should snap to the nearest grid point when placed on' +
+      ' the workspace.');
+}
+
+/**
+ * Set a tooltip on a GUI folder or controller.
+ * @param {dat.GUI|dat.GUIController} controller GUI folder or controller.
+ * @param {string} tooltip Tooltip string.
+ */
+function setTooltip(controller, tooltip) {
+  const parentElement = controller.domElement.parentElement;
+  parentElement.setAttribute('title', tooltip);
 }
 
 /**
@@ -679,7 +733,8 @@ function populateDebugOptions(debugFolder, guiState, onChangeInternal) {
       onChangeInternal();
     });
   });
-  openFolderIfOptionSelected(debugFolder, guiState, guiDebugState,
+  openFolderIfOptionSelected(
+      debugFolder, guiState, guiDebugState,
       Object.keys(DebugRenderer.config).filter((k) => !!guiDebugState[k]));
 }
 
@@ -692,49 +747,57 @@ function addActions(gui, workspace) {
   // Visibility actions.
   gui.addAction('Show', (workspace) => {
     workspace.setVisible(true);
-  }, 'Visibility', 'Set the visibility to Show/Hide');
+  }, 'Visibility', 'Show the workspace.');
   gui.addAction('Hide', (workspace) => {
     workspace.setVisible(false);
-  }, 'Visibility', 'Set the visibility to Show/Hide');
+  }, 'Visibility', 'Hide the workspace.');
 
   // Block actions.
   gui.addAction('Clear', (workspace) => {
     workspace.clear();
-  }, 'Blocks', 'Clear/Format the workspace');
+  }, 'Blocks', 'Clear all the blocks from the workspace.');
   gui.addAction('Format', (workspace) => {
     workspace.cleanUp();
-  }, 'Blocks', 'Clear/Format the workspace');
+  }, 'Blocks', 'Format the blocks on the workspace.');
 
   // Undo/Redo actions.
   gui.addAction('Undo', (workspace) => {
     workspace.undo();
-  }, 'Undo/Redo', 'Undo/Redo in the workspace');
+  }, 'Undo/Redo', 'Undo last action.');
   gui.addAction('Redo', (workspace) => {
     workspace.undo(true);
-  }, 'Undo/Redo', 'Undo/Redo in the workspace');
+  }, 'Undo/Redo', 'Redo last action.');
   gui.addAction('Clear Undo Stack', (workspace) => {
     workspace.clearUndo();
-  }, 'Undo/Redo', 'Undo/Redo in the workspace');
+  }, 'Undo/Redo', 'Clear the undo stack.');
 
   // Scale actions.
   gui.addAction('Zoom reset', (workspace) => {
     workspace.setScale(workspace.options.zoomOptions.startScale);
     workspace.scrollCenter();
-  }, 'Scale', 'Reset/Center/ to fit the workspace');
+  }, 'Scale', 'Reset zoom.');
   gui.addAction('Zoom center', (workspace) => {
     workspace.scrollCenter();
-  }, 'Scale', 'Reset/Center/ to fit the workspace');
+  }, 'Scale', 'Center the workspace.');
   gui.addAction('Zoom to Fit', (workspace) => {
     workspace.zoomToFit();
-  }, 'Scale', 'Reset/Center/ to fit the workspace');
+  }, 'Scale', 'Zoom the blocks to fit in the workspace if possible.');
 
   // Stress Test.
-  gui.addAction('Random Blocks', (workspace) => {
-    populateRandom(workspace, 100);
-  }, 'Stress Test', 'Populate workspace with random blocks');
-  gui.addAction('Spaghetti!', (workspace) => {
-    spaghetti(workspace, 8);
-  }, 'Stress Test', 'Populate workspace with a long list of connected blocks');
+  gui.addAction(
+      'Random Blocks',
+      (workspace) => {
+        populateRandom(workspace, 100);
+      },
+      'Stress Test',
+      'Populate the workspace with a random set of blocks, for testing.');
+  gui.addAction(
+      'Spaghetti!',
+      (workspace) => {
+        spaghetti(workspace, 8);
+      },
+      'Stress Test',
+      'Populate the workspace with nested if-statement blocks, for testing.');
 
   // Logging.
   gui.addCheckboxAction('Log Events', function(workspace, value) {
@@ -743,7 +806,7 @@ function addActions(gui, workspace) {
     } else {
       disableLogger(workspace);
     }
-  }, 'Logging', 'Log the events');
+  }, 'Logging', false, 'Toggle console logging of workspace events.');
   gui.addCheckboxAction('Log Flyout Events', function(workspace, value) {
     if (value) {
       if (workspace.getFlyout()) {
@@ -754,17 +817,26 @@ function addActions(gui, workspace) {
         disableLogger(workspace.getFlyout().getWorkspace());
       }
     }
-  }, 'Logging', 'Log the events');
+  }, 'Logging', false, 'Toggle console logging of flyout events.');
 
   // Accessibility actions.
-  gui.addCheckboxAction('Keyboard Nav', (_workspace, value) => {
-    if (value) {
-      Blockly.navigation.enableKeyboardAccessibility();
-    } else {
-      Blockly.navigation.disableKeyboardAccessibility();
-    }
-  }, 'Accessibility', workspace.keyboardAccessibilityMode), 'Toggle navigation to all fields';
-  gui.addCheckboxAction('Navigate All', (_workspace, value) => {
-    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = value;
-  }, 'Accessibility', Blockly.ASTNode.NAVIGATE_ALL_FIELDS, 'Toggle navigation to all fields');
+  gui.addCheckboxAction(
+      'Keyboard Nav',
+      (_workspace, value) => {
+        if (value) {
+          Blockly.navigation.enableKeyboardAccessibility();
+        } else {
+          Blockly.navigation.disableKeyboardAccessibility();
+        }
+      },
+      'Accessibility', workspace.keyboardAccessibilityMode,
+      'Toggle keyboard accessibility mode');
+  gui.addCheckboxAction(
+      'Navigate All',
+      (_workspace, value) => {
+        Blockly.ASTNode.NAVIGATE_ALL_FIELDS = value;
+      },
+      'Accessibility', Blockly.ASTNode.NAVIGATE_ALL_FIELDS,
+      'Toggle navigating to all fields. False to only navigate to clickable' +
+      ' fields.');
 }
