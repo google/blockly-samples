@@ -40,11 +40,10 @@
         "@blockly/dev-scripts": "^1.2.0",
         "@blockly/dev-tools": "^2.0.2",
         "blockly": "^3.20200924.1",
-        "google-closure-compiler": "^20200224.0.0",
-        "google-closure-library": "^20200224.0.0",
+        "google-closure-compiler": "^20200920.0.0",
+        "google-closure-library": "^20200830.0.0",
         "gulp": "^4.0.2",
-        "gulp-replace": "^1.0.0",
-        "gulp-umd": "^2.0.0"
+        "gulp-sourcemaps": "^2.6.5"
     },
     "peerDependencies": {
         "blockly": ">=3.20200924.1"
