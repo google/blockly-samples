@@ -115,7 +115,7 @@ Blockly.FieldDate.prototype.doClassValidation_ = function(opt_newValue) {
  */
 Blockly.FieldDate.prototype.render_ = function() {
   Blockly.FieldDate.superClass_.render_.call(this);
-  if (this.picker_) {
+  if (this.picker_ && this.isTextValid_) {
     this.picker_.setDate(goog.date.Date.fromIsoString(this.getValue()));
     this.updateEditor_();
   }
@@ -183,12 +183,24 @@ Blockly.FieldDate.prototype.showEditor_ = function(opt_e, _opt_quietInput) {
       Blockly.utils.userAgent.IPAD;
   Blockly.FieldDate.superClass_.showEditor_.call(this, opt_e, noFocus);
   // Build the DOM.
+  this.showDropdown_();
+};
+
+/**
+ * Shows the date dropdown editor.
+ * @private
+ */
+Blockly.FieldDate.prototype.showDropdown_ = function() {
+  if (this.picker_) {
+    // Already visible.
+    return;
+  }
+
   this.picker_ = this.dropdownCreate_();
   this.picker_.render(Blockly.DropDownDiv.getContentDiv());
   Blockly.utils.dom.addClass(this.picker_.getElement(), 'blocklyDatePicker');
   Blockly.DropDownDiv.setColour(
       this.DROPDOWN_BACKGROUND_COLOUR, this.DROPDOWN_BORDER_COLOUR);
-
   Blockly.DropDownDiv.showPositionedByField(
       this, this.dropdownDispose_.bind(this));
 
@@ -227,11 +239,50 @@ Blockly.FieldDate.prototype.dropdownCreate_ = function() {
 };
 
 /**
+ * Handle a click on the text input.
+ * @param {!MouseEvent} e Mouse event.
+ * @private
+ */
+Blockly.FieldDate.prototype.onClick_ = function(e) {
+  if (this.isTextValid_) {
+    this.showDropdown_();
+  }
+};
+
+/**
+ * Bind handlers for user input on the text input field's editor.
+ * @param {!HTMLElement} htmlInput The htmlInput to which event
+ *    handlers will be bound.
+ * @protected
+ * @override
+ */
+Blockly.FieldDate.prototype.bindInputEvents_ = function(htmlInput) {
+  Blockly.FieldDate.superClass_.bindInputEvents_.call(this, htmlInput);
+
+  this.onClickWrapper_ = Blockly.bindEventWithChecks_(htmlInput,
+      'click', this, this.onClick_, true);
+};
+
+/**
+ * Unbind handlers for user input and workspace size changes.
+ * @private
+ * @override
+ */
+Blockly.FieldDate.prototype.unbindInputEvents_ = function() {
+  Blockly.FieldDate.superClass_.unbindInputEvents_.call(this);
+  if (this.onClickWrapper_) {
+    Blockly.unbindEvent_(this.onClickWrapper_);
+    this.onClickWrapper_ = null;
+  }
+};
+
+/**
  * Dispose of references to DOM elements and events belonging
  * to the date editor.
  * @private
  */
 Blockly.FieldDate.prototype.dropdownDispose_ = function() {
+  this.picker_ = null;
   goog.events.unlistenByKey(this.changeEventKey_);
   goog.events.unlistenByKey(this.activeMonthEventKey_);
 };
@@ -242,8 +293,13 @@ Blockly.FieldDate.prototype.dropdownDispose_ = function() {
  * @private
  */
 Blockly.FieldDate.prototype.onDateSelected_ = function(event) {
+  if (this.isDirty_) {
+    // Ignores date changes triggered during text edit.
+    return;
+  }
   var date = event.date ? event.date.toIsoString(true) : '';
   this.setEditorValue_(date);
+  Blockly.WidgetDiv.hide();
   Blockly.DropDownDiv.hideIfOwner(this);
 };
 
