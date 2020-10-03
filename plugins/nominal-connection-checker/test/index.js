@@ -181,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
             workspace);
       } catch (e) {
         // Xml load failed, ask if they want to clear the workspace.
+        console.error(e);
         const msg = `Xml load failed with error: ${e}
             Clear workspace and continue?`;
         if (confirm(msg)) {
