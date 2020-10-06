@@ -15,8 +15,17 @@ import '../dist/date_compressed';
 
 const toolbox = generateFieldTestBlocks('field_date', [
   {
+    'label': 'Simple',
     'args': {
       'date': '2020-02-20',
+      'textEdit': 'false',
+    },
+  },
+  {
+    'label': 'Text Edit',
+    'args': {
+      'date': '2020-02-20',
+      'textEdit': 'true',
     },
   },
 ]);

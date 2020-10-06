@@ -34,10 +34,11 @@ goog.require('goog.ui.DatePicker');
  * @param {Function=} opt_validator A function that is called to validate
  *    changes to the field's value. Takes in a date string & returns a
  *    validated date string ('YYYY-MM-DD' format), or null to abort the change.
+ * @param {?(boolean|string)=} opt_textEdit Whether to enable text editor.
  * @extends {Blockly.Field}
  * @constructor
  */
-Blockly.FieldDate = function(opt_value, opt_validator) {
+Blockly.FieldDate = function(opt_value, opt_validator, opt_textEdit = false) {
   /**
    * The default value for this field (current date).
    * @type {*}
@@ -48,6 +49,13 @@ Blockly.FieldDate = function(opt_value, opt_validator) {
 
   Blockly.FieldDate.superClass_.constructor.call(this, opt_value,
       opt_validator);
+
+  /**
+   * Whether text editing is enabled on this field.
+   * @type {boolean}
+   * @private
+   */
+  this.textEditEnabled_ = opt_textEdit == true || opt_textEdit == 'true';
 };
 Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.FieldTextInput);
 
@@ -59,7 +67,7 @@ Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.FieldTextInput);
  * @nocollapse
  */
 Blockly.FieldDate.fromJson = function(options) {
-  return new Blockly.FieldDate(options['date']);
+  return new Blockly.FieldDate(options['date'], undefined, options['textEdit']);
 };
 
 /**
@@ -176,12 +184,14 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
  * @override
  */
 Blockly.FieldDate.prototype.showEditor_ = function(opt_e, _opt_quietInput) {
-  // Mobile browsers have issues with in-line textareas (focus & keyboards).
-  const noFocus =
-      Blockly.utils.userAgent.MOBILE ||
-      Blockly.utils.userAgent.ANDROID ||
-      Blockly.utils.userAgent.IPAD;
-  Blockly.FieldDate.superClass_.showEditor_.call(this, opt_e, noFocus);
+  if (this.textEditEnabled_) {
+    // Mobile browsers have issues with in-line textareas (focus & keyboards).
+    const noFocus =
+        Blockly.utils.userAgent.MOBILE ||
+        Blockly.utils.userAgent.ANDROID ||
+        Blockly.utils.userAgent.IPAD;
+    Blockly.FieldDate.superClass_.showEditor_.call(this, opt_e, noFocus);
+  }
   // Build the DOM.
   this.showDropdown_();
 };
