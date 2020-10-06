@@ -60,7 +60,7 @@ Blockly.FieldDate = function(opt_value, opt_validator, opt_textEdit = false) {
 Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.FieldTextInput);
 
 /**
- * Construct a FieldDate from a JSON arg object.
+ * Constructs a FieldDate from a JSON arg object.
  * @param {!Object} options A JSON object with options (date).
  * @return {!Blockly.FieldDate} The new field instance.
  * @package
@@ -99,7 +99,7 @@ Blockly.FieldDate.prototype.DROPDOWN_BORDER_COLOUR = 'silver';
 Blockly.FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
 
 /**
- * Ensure that the input value is a valid date.
+ * Ensures that the input value is a valid date.
  * @param {*=} opt_newValue The input value.
  * @return {?string} A valid date, or null if invalid.
  * @protected
@@ -117,7 +117,7 @@ Blockly.FieldDate.prototype.doClassValidation_ = function(opt_newValue) {
 };
 
 /**
- * Render the field. If the picker is shown make sure it has the current
+ * Renders the field. If the picker is shown make sure it has the current
  * date selected.
  * @protected
  */
@@ -175,7 +175,7 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
 };
 
 /**
- * Show the inline free-text editor on top of the text along with the date
+ * Shows the inline free-text editor on top of the text along with the date
  *    editor.
  * @param {Event=} opt_e Optional mouse event that triggered the field to
  *     open, or undefined if triggered programmatically.
@@ -218,7 +218,7 @@ Blockly.FieldDate.prototype.showDropdown_ = function() {
 };
 
 /**
- * Create the date dropdown editor.
+ * Creates the date dropdown editor.
  * @return {!goog.ui.DatePicker} The newly created date picker.
  * @private
  */
@@ -249,7 +249,7 @@ Blockly.FieldDate.prototype.dropdownCreate_ = function() {
 };
 
 /**
- * Handle a click on the text input.
+ * Handles a click on the text input.
  * @param {!MouseEvent} e Mouse event.
  * @private
  */
@@ -260,7 +260,7 @@ Blockly.FieldDate.prototype.onClick_ = function(e) {
 };
 
 /**
- * Bind handlers for user input on the text input field's editor.
+ * Binds handlers for user input on the text input field's editor.
  * @param {!HTMLElement} htmlInput The htmlInput to which event
  *    handlers will be bound.
  * @protected
@@ -274,7 +274,7 @@ Blockly.FieldDate.prototype.bindInputEvents_ = function(htmlInput) {
 };
 
 /**
- * Unbind handlers for user input and workspace size changes.
+ * Unbinds handlers for user input and workspace size changes.
  * @private
  * @override
  */
@@ -287,7 +287,7 @@ Blockly.FieldDate.prototype.unbindInputEvents_ = function() {
 };
 
 /**
- * Dispose of references to DOM elements and events belonging
+ * Disposes of references to DOM elements and events belonging
  * to the date editor.
  * @private
  */
@@ -298,7 +298,7 @@ Blockly.FieldDate.prototype.dropdownDispose_ = function() {
 };
 
 /**
- * Handle a CHANGE event in the date picker.
+ * Handles a CHANGE event in the date picker.
  * @param {!Event} event The CHANGE event.
  * @private
  */
@@ -314,7 +314,7 @@ Blockly.FieldDate.prototype.onDateSelected_ = function(event) {
 };
 
 /**
- * Load the best language pack by scanning the Blockly.Msg object for a
+ * Loads the best language pack by scanning the Blockly.Msg object for a
  * language that matches the available languages in Closure.
  * @private
  */
