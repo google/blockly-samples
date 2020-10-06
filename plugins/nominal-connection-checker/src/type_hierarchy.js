@@ -35,13 +35,14 @@ export class TypeHierarchy {
      * A least common ancestor of two types u and v is defined as:
      * A super type of both u and v that has no descendant which is also an
      * ancestor of both u and v.
-     * @type {!Map<!Map<Set<string>>>}
+     * @type {!Map<string, !Map<string, Array<string>>>}
      * @private
      */
     this.leastCommonAncestors_ = new Map();
 
     this.initTypes_(hierarchyDef);
     this.initLeastCommonAncestors_();
+    console.log(this.leastCommonAncestors_);
   }
 
   /**
@@ -105,12 +106,44 @@ export class TypeHierarchy {
     }
 
     unvisitedTypes = new Set(this.types_.keys());
-    while(unvisitedTypes.size) {
+    while (unvisitedTypes.size) {
       for (const [typeName, type] of this.types_) {
         const unvisitedSupers = type.supers().filter(
             unvisitedTypes.has, unvisitedTypes);
-        if (!unvisitedSupers.length) {
+        if (unvisitedSupers.length) {
+          continue;
+        }
+        unvisitedTypes.delete(typeName);
 
+        const map = new Map();
+        this.leastCommonAncestors_.set(typeName, map);
+        const descendants = descendantsMap.get(typeName);
+        for (const [otherTypeName] of this.types_) {
+          let leastCommonAncestors = [];
+          if (descendants.has(otherTypeName)) {
+            leastCommonAncestors.push(typeName);
+          } else {
+            // Get all the least common ancestors this type's direct
+            // ancestors have with the otherType.
+            type.forEachSuper((superTypeName) => {
+              leastCommonAncestors.push(
+                  ...this.leastCommonAncestors_.get(superTypeName)
+                      .get(otherTypeName));
+            });
+            // Only include types that have no descendants in the array.
+            leastCommonAncestors = leastCommonAncestors.filter(
+                (typeName, i, array) => {
+                  return !array.some((otherTypeName) => {
+                    // Don't match the type against itself, but do match against
+                    // duplicates.
+                    if (array.indexOf(otherTypeName) == i) {
+                      return false;
+                    }
+                    return descendantsMap.get(typeName).has(otherTypeName);
+                  });
+                });
+          }
+          map.set(otherTypeName, leastCommonAncestors);
         }
       }
     }
