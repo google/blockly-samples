@@ -38,7 +38,11 @@ suite('FieldDate', function() {
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);
-  const defaultFieldValue = new Date().toISOString().substring(0, 10);
+  // Construct ISO string using current timezone.
+  // Cannot use toISOString() because it returns in UTC.
+  const defaultFieldValue = new Date().toLocaleDateString()
+      .replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2")
+      .replace(/-(\d)(?!\d)/g, '-0$1');
   const assertFieldDefault = function(field) {
     assertFieldValue(field, defaultFieldValue);
   };
@@ -52,12 +56,6 @@ suite('FieldDate', function() {
     assertFieldValue(field, testCase.value);
   };
 
-  // TODO(https://github.com/google/blockly/issues/3903): Re-enable test cases
-  //  after fixing.
-  invalidValueTestCases[3].skip = true;
-  invalidValueTestCases[4].skip = true;
-  invalidValueTestCases[5].skip = true;
-
   runConstructorSuiteTests(
       FieldDate, validValueTestCases, invalidValueTestCases,
       validTestCaseAssertField, assertFieldDefault);
@@ -65,12 +63,6 @@ suite('FieldDate', function() {
   runFromJsonSuiteTests(
       FieldDate, validValueTestCases, invalidValueTestCases,
       validTestCaseAssertField, assertFieldDefault);
-
-  // TODO(https://github.com/google/blockly/issues/3903): Remove skip=false
-  //  after removing skip=true.
-  invalidValueTestCases[3].skip = false;
-  invalidValueTestCases[4].skip = false;
-  invalidValueTestCases[5].skip = false;
 
   suite('setValue', function() {
     suite('Empty -> New Value', function() {

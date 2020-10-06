@@ -33,8 +33,6 @@ FieldValueTestCase.prototype.expectedText = undefined;
  */
 FieldValueTestCase.prototype.errMsgMatcher = undefined;
 
-
-
 /**
  * Field creation test case.
  * @extends {FieldValueTestCase}
@@ -61,7 +59,9 @@ export function assertFieldValue(field, expectedValue,
     expectedText = undefined) {
   const actualValue = field.getValue();
   const actualText = field.getText();
-  expectedText = expectedText || String(expectedValue);
+  if (expectedText === undefined) {
+    expectedText = String(expectedValue);
+  }
   assert.equal(actualValue, expectedValue, 'Value');
   assert.equal(actualText, expectedText, 'Text');
 }
@@ -132,10 +132,19 @@ function runCreationTestsAssertThrows_(testCases, creation) {
 export function runConstructorSuiteTests(TestedField, validValueTestCases,
     invalidValueTestCases, validRunAssertField, assertFieldDefault) {
   suite('Constructor', function() {
-    test('Empty', function() {
-      const field = new TestedField();
-      assertFieldDefault(field);
-    });
+    if (assertFieldDefault) {
+      test('Empty', function() {
+        const field = new TestedField();
+        assertFieldDefault(field);
+      });
+    } else {
+      test('Empty', function() {
+        assert.throws(function() {
+          new TestedField();
+        });
+      });
+    }
+
     /**
      * Creates a field using its constructor and the provided test case.
      * @param {FieldCreationTestCase} testCase The test case information.
@@ -171,10 +180,19 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
 export function runFromJsonSuiteTests(TestedField, validValueTestCases,
     invalidValueTestCases, validRunAssertField, assertFieldDefault) {
   suite('fromJson', function() {
-    test('Empty', function() {
-      const field = TestedField.fromJson({});
-      assertFieldDefault(field);
-    });
+    if (assertFieldDefault) {
+      test('Empty', function() {
+        const field = TestedField.fromJson({});
+        assertFieldDefault(field);
+      });
+    } else {
+      test('Empty', function() {
+        assert.throws(function() {
+          TestedField.fromJson({});
+        });
+      });
+    }
+
     /**
      * Creates a field using fromJson and the provided test case.
      * @param {FieldCreationTestCase} testCase The test case information.
