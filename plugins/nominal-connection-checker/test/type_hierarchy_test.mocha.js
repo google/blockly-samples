@@ -13,6 +13,19 @@ const chai = require('chai');
 const {TypeHierarchy} = require('../src/type_hierarchy');
 
 suite('TypeHierarchy', function() {
+  test('Super not defined', function() {
+    chai.assert.throws(
+        function() {
+          new TypeHierarchy({
+            'typeA': {
+              'fulfills': ['typeB'],
+            },
+          });
+        },
+        'The type typea says it fulfills the type typeb, but that type is not' +
+        ' defined');
+  });
+
   suite('typeExists', function() {
     test('Simple', function() {
       const hierarchy = new TypeHierarchy({
@@ -35,16 +48,6 @@ suite('TypeHierarchy', function() {
       });
       chai.assert.isFalse(hierarchy.typeExists(' typeA '),
           'Expected TypeHierarchy to respect padding.');
-    });
-
-    test('Super but not defined', function() {
-      const hierarchy = new TypeHierarchy({
-        'typeA': {
-          'fulfills': ['typeB'],
-        },
-      });
-      chai.assert.isFalse(hierarchy.typeExists('typeB'),
-          'Expected only top-level types to exist.');
     });
   });
 
