@@ -221,10 +221,10 @@ export class TypeHierarchy {
    *     given types.
    */
   getNearestCommonParents(...types) {
-    types = types.map((type) => type.toLowerCase());
-    if (types.length < 2) {
-      return types;
+    if (!types.length) {
+      return [];
     }
+    types = types.map((type) => type.toLowerCase());
     return types.reduce((accumulator, currType) => {
       const nearestCommonParentsMap = this.nearestCommonParents_.get(currType);
       // Note: neither flatMap() nor flat() work on Node 10. See #431.
