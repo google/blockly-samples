@@ -180,4 +180,6 @@ suite('TypeHierarchy', function() {
       chai.assert.isTrue(hierarchy.typeFulfillsType('typea', 'typeB'));
     });
   });
+
+  suite('')
 });

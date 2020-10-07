@@ -53,13 +53,22 @@ export class TypeHierarchy {
     // NOTE: This does not do anything to stop a developer from creating a
     // cyclic type hierarchy (eg Dog <: Mammal <: Dog). They are expected to
     // not do that.
+
+    // Init types, and direct supers.
     for (const typeName of Object.keys(hierarchyDef)) {
       const lowerCaseName = typeName.toLowerCase();
-      this.types_.set(lowerCaseName,
-          new TypeDef(lowerCaseName, hierarchyDef[typeName]));
+      const type = new TypeDef(lowerCaseName);
+      const info = hierarchyDef[typeName];
+      if (info.fulfills && info.fulfills.length) {
+        info.fulfills.forEach(
+            (superType) => type.addSuper(superType.toLowerCase()));
+      }
+      this.types_.set(lowerCaseName, type);
     }
+
+    // Init direct subs.
     for (const [typeName, type] of this.types_) {
-      type.forEachSuper((superName) => {
+      type.supers().forEach((superName) => {
         const superType = this.types_.get(superName);
         if (!superType) {
           throw Error('The type ' + typeName + ' says it fulfills the type ' +
@@ -67,6 +76,40 @@ export class TypeHierarchy {
         }
         superType.addSub(typeName);
       });
+    }
+
+    // Init ancestors.
+    let unvisitedTypes = new Set(this.types_.keys());
+    while (unvisitedTypes.size) {
+      for (const typeName of unvisitedTypes) {
+        const type = this.types_.get(typeName);
+        const unvisitedSupers = type.supers().filter(
+            unvisitedTypes.has, unvisitedTypes);
+        if (!unvisitedSupers.length) {
+          type.supers().forEach((superName) => {
+            const superType = this.types_.get(superName);
+            superType.ancestors().forEach(type.addAncestor, type);
+          });
+          unvisitedTypes.delete(typeName);
+        }
+      }
+    }
+
+    // Init descendants.
+    unvisitedTypes = new Set(this.types_.keys());
+    while (unvisitedTypes.size) {
+      for (const typeName of unvisitedTypes) {
+        const type = this.types_.get(typeName);
+        const unvisitedSubs = type.subs().filter(
+            unvisitedTypes.has, unvisitedTypes);
+        if (!unvisitedSubs.length) {
+          type.subs().forEach((subName) => {
+            const subType = this.types_.get(subName);
+            subType.descendants().forEach(type.addDescendant, type);
+          });
+          unvisitedTypes.delete(typeName);
+        }
+      }
     }
   }
 
@@ -78,35 +121,17 @@ export class TypeHierarchy {
    * Czumaj, Artur, Miroslaw Kowaluk and and Andrzej Lingas. "Faster algorithms
    * for finding lowest common ancestors in directed acyclic graphs."
    * Theoretical Computer Science, 380.1-2 (2007): 37-46.
-   *https://bit.ly/2SrCRs5
+   * https://bit.ly/2SrCRs5
    *
    * Operates in O(nm) where n is the number of nodes and m is the number of
    * edges.
    * @private
    */
   initNearestCommonParents_() {
-    // Maps each type to a set of all of the descendants of that type.
-    const descendantsMap = new Map();
-    let unvisitedTypes = new Set(this.types_.keys());
-
+    const unvisitedTypes = new Set(this.types_.keys());
     while (unvisitedTypes.size) {
-      for (const [typeName, type] of this.types_) {
-        const unvisitedSubs = type.subs().filter(
-            unvisitedTypes.has, unvisitedTypes);
-        if (!unvisitedSubs.length) {
-          const descendants = new Set([typeName]);
-          type.forEachSub((subName) => {
-            descendantsMap.get(subName).forEach(descendants.add, descendants);
-          });
-          descendantsMap.set(typeName, descendants);
-          unvisitedTypes.delete(typeName);
-        }
-      }
-    }
-
-    unvisitedTypes = new Set(this.types_.keys());
-    while (unvisitedTypes.size) {
-      for (const [typeName, type] of this.types_) {
+      for (const typeName of unvisitedTypes) {
+        const type = this.types_.get(typeName);
         const unvisitedSupers = type.supers().filter(
             unvisitedTypes.has, unvisitedTypes);
         if (unvisitedSupers.length) {
@@ -116,15 +141,14 @@ export class TypeHierarchy {
 
         const map = new Map();
         this.nearestCommonParents_.set(typeName, map);
-        const descendants = descendantsMap.get(typeName);
         for (const [otherTypeName] of this.types_) {
           let leastCommonAncestors = [];
-          if (descendants.has(otherTypeName)) {
+          if (type.hasDescendant(otherTypeName)) {
             leastCommonAncestors.push(typeName);
           } else {
             // Get all the least common ancestors this type's direct
             // ancestors have with the otherType.
-            type.forEachSuper((superTypeName) => {
+            type.supers().forEach((superTypeName) => {
               leastCommonAncestors.push(
                   ...this.nearestCommonParents_.get(superTypeName)
                       .get(otherTypeName));
@@ -138,7 +162,8 @@ export class TypeHierarchy {
                     if (array.indexOf(otherTypeName) == i) {
                       return false;
                     }
-                    return descendantsMap.get(typeName).has(otherTypeName);
+                    return this.types_.get(typeName)
+                        .hasDescendant(otherTypeName);
                   });
                 });
           }
@@ -181,17 +206,8 @@ export class TypeHierarchy {
    *     in the type hierarchy definition. False otherwise.
    */
   typeFulfillsType(subName, superName) {
-    const caselessSub = subName.toLowerCase();
-    const caselessSup = superName.toLowerCase();
-    if (this.typeIsExactlyType(caselessSub, caselessSup)) {
-      return true;
-    }
-    const subType = this.types_.get(caselessSub);
-    if (subType.hasDirectSuper(caselessSup)) {
-      return true;
-    }
-    return subType.someSuper(
-        (name) => this.typeFulfillsType(name, caselessSup), this);
+    return this.types_.get(subName.toLowerCase())
+        .hasAncestor(superName.toLowerCase());
   }
 
   /**
@@ -227,71 +243,100 @@ export class TypeHierarchy {
  */
 class TypeDef {
   /**
-   * Constructs a TypeDef with the given name. Uses the given info for further
+   * Constructs a TypeDef with the given name. Uses the hierarchy for further
    * initialization (eg defining supertypes).
    * @param {string} name The name of the type.
-   * @param {!Object} info The info about the type.
    */
-  constructor(name, info) {
+  constructor(name) {
     /**
      * The name of this type.
      * @type {string}
      * @public
      */
-    this.name = name;
+    this.name = name.toLowerCase();
 
     /**
      * The caseless names of the direct supertypes of this type.
-     * @type {!Array<string>}
+     * @type {!Set<string>}
      * @private
      */
-    this.fulfills_ = [];
+    this.supers_ = new Set();
 
     /**
      * The caseless names of the direct subtypes of this type.
-     * @type {!Array<string>}
+     * @type {!Set<string>}
      * @private
      */
-    this.fulfillsThis_ = [];
+    this.subs_ = new Set();
 
-    this.init_(info);
+    /**
+     * The caseless names of the ancestors of this type.
+     * @type {!Set<string>}
+     * @private
+     */
+    this.ancestors_ = new Set();
+    this.ancestors_.add(this.name);
+
+    /**
+     * The caseless names of the descendants of this type.
+     * @type {!Set<string>}
+     * @private
+     */
+    this.descendants_ = new Set(this.name);
+    this.descendants_.add(this.name);
   }
 
   /**
-   * Initializes the TypeDef's data.
-   * @param {!Object} info The info about the type.
-   * @private
+   * Adds the given type to the list of direct supertypes of this type.
+   * @param {string} superName The caseless name of the type to add to the list
+   *     of supertypes of this type.
    */
-  init_(info) {
-    if (info.fulfills && info.fulfills.length) {
-      this.fulfills_ = info.fulfills.map((val) => val.toLowerCase());
-    }
+  addSuper(superName) {
+    this.supers_.add(superName);
   }
 
   /**
    * Adds the given type to the list of direct subtypes of this type.
-   * @param {string} subType The name of the type to add to the list of subtypes
-   *     of this type.
+   * @param {string} subName The caseless name of the type to add to the list of
+   *     subtypes of this type.
    */
-  addSub(subType) {
-    this.fulfillsThis_.push(subType.toLowerCase());
+  addSub(subName) {
+    this.subs_.add(subName);
   }
 
   /**
-   * Returns a new set of all types that are direct supertypes of this type.
+   * Adds the given type to the list of ancestors of this type.
+   * @param {string} ancestorName The caseless name of the type to add to the
+   *     list of ancestors of this type.
+   */
+  addAncestor(ancestorName) {
+    this.ancestors_.add(ancestorName);
+  }
+
+  /**
+   * Adds the given type to the list of descendants of this type.
+   * @param {string} descendantName The caseless name of the type to add to the
+   *     list of descendants of this type.
+   */
+  addDescendant(descendantName) {
+    this.descendants_.add(descendantName);
+  }
+
+  /**
+   * Returns a new array of all types that are direct supertypes of this type.
    * @return {!Array<string>} A new set of all types that are direct supertypes
    *     of this type.
    */
   supers() {
-    return [...this.fulfills_];
+    return [...this.supers_];
   }
 
   /**
-   * Returns true if this type has any supertypes. False otherwise.
+   * Returns true if this type has any direct supertypes. False otherwise.
    * @return {boolean} True if this type has any supertypes. False otherwise.
    */
   hasSupers() {
-    return !!this.fulfills_.length;
+    return !!this.supers_.size;
   }
 
   /**
@@ -303,31 +348,7 @@ class TypeDef {
    *     name. False otherwise.
    */
   hasDirectSuper(superName) {
-    return this.fulfills_.includes(superName);
-  }
-
-  /**
-   * Returns true if the given function returns a truthy value for at least one
-   * supertype of this type. False otherwise.
-   * @param {function(string, number=, !Array=):boolean} callback A function
-   *     used to test each supertype.
-   * @param {!Object=} thisArg A value to use as `this` when executing callback.
-   * @return {boolean} True if the given function returns a truthy value for
-   *     at least one supertype of this type. False otherwise.
-   */
-  someSuper(callback, thisArg) {
-    return this.fulfills_.some(callback, thisArg);
-  }
-
-  /**
-   * Executes the provided function once for each direct supertype of this
-   * type.
-   * @param {function(string)} callback The function to execute on each direct
-   *     supertype of this type.
-   * @param {!Object=} thisArg Value to use as `this` when executing callback.
-   */
-  forEachSuper(callback, thisArg) {
-    this.fulfills_.forEach(callback, thisArg);
+    return this.supers_.has(superName);
   }
 
   /**
@@ -336,15 +357,15 @@ class TypeDef {
    *     this type.
    */
   subs() {
-    return [...this.fulfillsThis_];
+    return [...this.subs_];
   }
 
   /**
-   * Returns true if this type has any subtypes. False otherwise.
+   * Returns true if this type has any direct subtypes. False otherwise.
    * @return {boolean} True if this type has any subtypes. False otherwise.
    */
   hasSubs() {
-    return !!this.fulfillsThis_.length;
+    return !!this.subs_.size;
   }
 
   /**
@@ -355,30 +376,63 @@ class TypeDef {
    *     name. False otherwise.
    */
   hasDirectSub(subName) {
-    return this.fulfillsThis_.includes(subName);
+    return this.subs_.has(subName);
   }
 
   /**
-   * Returns true if the given function returns a truthy value for at least one
-   * subtype of this type. False otherwise.
-   * @param {function(string, number=, !Array=):boolean} callback A function
-   *     used to test each subtype.
-   * @param {!Object=} thisArg A value to use as `this` when executing callback.
-   * @return {boolean} True if the given function returns a truthy value for
-   *     at least one subtype of this type. False otherwise.
+   * Returns a new set of all types that are ancestors of this type.
+   * @return {!Array<string>} A new set of all types that are ancestors of this
+   *     type.
    */
-  someSub(callback, thisArg) {
-    return this.fulfillsThis_.some(callback, thisArg);
+  ancestors() {
+    return [...this.ancestors_];
   }
 
   /**
-   * Executes the provided function once for each direct subtype of this
-   * type.
-   * @param {function(string)} callback The function to execute on each direct
-   *     subtype of this type.
-   * @param {!Object=} thisArg Value to use as `this` when executing callback.
+   * Returns true if this type has any ancestors. False otherwise.
+   * @return {boolean} True if this type has any ancestors. False otherwise.
    */
-  forEachSub(callback, thisArg) {
-    this.fulfillsThis_.forEach(callback, thisArg);
+  hasAncestors() {
+    return !!this.ancestors_.size;
+  }
+
+  /**
+   * Returns true if this type has an ancestor with the given name. False
+   * otherwise.
+   * @param {string} ancestorName The caseless name of the possible ancestor.
+   * @return {boolean} True if this type has an ancestor with the given name.
+   *     False otherwise.
+   */
+  hasAncestor(ancestorName) {
+    return this.ancestors_.has(ancestorName);
+  }
+
+  /**
+   * Returns a new set of all types that are descendants of this type.
+   * @return {!Array<string>} A new set of all types that are descendants of
+   *     this type.
+   */
+  descendants() {
+    return [...this.descendants_];
+  }
+
+  /**
+   * Returns true if this type has any descendants. False otherwise.
+   * @return {boolean} True if this type has any descendants. False otherwise.
+   */
+  hasDescedants() {
+    return !!this.descendants_.size;
+  }
+
+  /**
+   * Returns true if this type has a descendant with the given name. False
+   * otherwise.
+   * @param {string} descendantName The caseless name of the possible
+   *     descendant.
+   * @return {boolean} True if this type has a descendant with the given name.
+   *     False otherwise.
+   */
+  hasDescendant(descendantName) {
+    return this.descendants_.has(descendantName);
   }
 }
