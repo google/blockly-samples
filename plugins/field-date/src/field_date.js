@@ -176,7 +176,7 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
 
 /**
  * Shows the inline free-text editor on top of the text along with the date
- *    editor.
+ * editor.
  * @param {Event=} opt_e Optional mouse event that triggered the field to
  *     open, or undefined if triggered programmatically.
  * @param {boolean=} _opt_quietInput Quiet input.
