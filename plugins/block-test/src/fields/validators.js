@@ -41,8 +41,8 @@ Blockly.Blocks['test_validators_text_null'] = {
     this.setColour(230);
     this.setCommentText(
         'All input validates to null (invalid). The display' +
-        ' text will remain the input text, but the value should be the default' +
-        ' text. The input should be red after the first keystroke.');
+        ' text will remain the input text, but the value should be the' +
+        ' default text. The input should be red after the first keystroke.');
   },
 
   validate: function(newValue) {
@@ -75,9 +75,9 @@ Blockly.Blocks['test_validators_text_B'] = {
     this.setColour(230);
     this.setCommentText(
         'Upon detecting a \'b\' character the input will' +
-        ' validated to null (invalid). Upon removal it should revert to being' +
-        ' valid. The display text will remain the input text, but if the input' +
-        ' text is invalid the value should be the default text.');
+        ' validated to null (invalid). Upon removal it should revert to' +
+        ' being valid. The display text will remain the input text, but if' +
+        ' the input text is invalid the value should be the default text.');
   },
 
   validate: function(newValue) {

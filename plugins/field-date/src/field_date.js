@@ -38,8 +38,16 @@ goog.require('goog.ui.DatePicker');
  * @constructor
  */
 Blockly.FieldDate = function(opt_value, opt_validator) {
-  Blockly.FieldDate.superClass_.constructor.call(this,
-      opt_value || new goog.date.Date().toIsoString(true), opt_validator);
+  /**
+   * The default value for this field (current date).
+   * @type {*}
+   * @protected
+   */
+  Blockly.FieldDate.prototype.DEFAULT_VALUE =
+      new goog.date.Date().toIsoString(true);
+
+  Blockly.FieldDate.superClass_.constructor.call(this, opt_value,
+      opt_validator);
 };
 Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.Field);
 

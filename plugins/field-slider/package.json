@@ -1,11 +1,12 @@
 {
   "name": "@blockly/field-slider",
-  "version": "2.0.6",
+  "version": "2.1.3",
   "description": "A Blockly slider field.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
@@ -38,14 +39,14 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.0.3",
-    "@blockly/dev-tools": "^1.1.2",
-    "blockly": "^3.20200123.1",
+    "@blockly/dev-scripts": "^1.2.0",
+    "@blockly/dev-tools": "^2.0.2",
+    "blockly": "^3.20200924.1",
     "chai": "^4.2.0",
     "sinon": "^9.0.1"
   },
   "peerDependencies": {
-    "blockly": ">=3.20191014.4"
+    "blockly": ">=3.20200924.1"
   },
   "publishConfig": {
     "access": "public",
