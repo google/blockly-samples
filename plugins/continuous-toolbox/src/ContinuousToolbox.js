@@ -26,7 +26,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
 
     // Populate the flyout with all blocks and show it immediately.
     const flyout = this.getFlyout();
-    flyout.show(this.getInitialFlyoutContents());
+    flyout.show(this.getInitialFlyoutContents_());
     flyout.recordScrollPositions();
   }
 
@@ -39,9 +39,10 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * Gets the contents that should be shown in the flyout immediately.
    * This includes all blocks and labels for each category of block.
    * @return {!Blockly.utils.toolbox.FlyoutItemInfoArray} Flyout contents.
+   * @private
    */
-  getInitialFlyoutContents() {
-    /** @type {!Array<!Blockly.utils.toolbox.FlyoutItemInfo>} */
+  getInitialFlyoutContents_() {
+    /** @type {!Blockly.utils.toolbox.FlyoutItemInfoArray} */
     let contents = [];
     for (const toolboxItem of this.contents_) {
       if (toolboxItem instanceof Blockly.ToolboxCategory) {
@@ -87,6 +88,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * @param {string} name Name of category to get.
    * @return {?Blockly.ToolboxCategory} Category, or null if not
    *    found.
+   * @package
    */
   getCategoryByName(name) {
     const category = this.contents_.find(
@@ -103,6 +105,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * Similar to setSelectedItem, but importantly, does not call updateFlyout
    * because this is called while the flyout is being scrolled.
    * @param {string} name Name of category to select.
+   * @package
    */
   selectCategoryByName(name) {
     const newItem = this.getCategoryByName(name);

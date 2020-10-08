@@ -48,7 +48,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @return {!ContinuousToolbox} Toolbox that owns this flyout.
    * @private
    */
-  getParentToolbox() {
+  getParentToolbox_() {
     const toolbox = this.targetWorkspace.getToolbox();
     return /** @type {!ContinuousToolbox} */ (toolbox);
   }
@@ -57,10 +57,11 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * Records scroll position for each category in the toolbox.
    * The scroll position is determined by the coordinates of each category's
    * label after the entire flyout has been rendered.
+   * @package
    */
   recordScrollPositions() {
     const categoryLabels = this.buttons_.filter((button) => button.isLabel() &&
-        this.getParentToolbox().getCategoryByName(button.getButtonText()));
+        this.getParentToolbox_().getCategoryByName(button.getButtonText()));
     for (const button of categoryLabels) {
       if (button.isLabel()) {
         this.scrollPositions.push({
@@ -75,6 +76,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * Returns the scroll position for the given category name.
    * @param {string} name Category name.
    * @return {?Object} Scroll position for given category, or null if not found.
+   * @package
    */
   getCategoryScrollPosition(name) {
     for (const scrollInfo of this.scrollPositions) {
@@ -89,8 +91,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   /**
    * Selects an item in the toolbox based on the scroll position of the flyout.
    * @param {number} position Current scroll position of the workspace.
+   * @private
    */
-  selectCategoryByScrollPosition(position) {
+  selectCategoryByScrollPosition_(position) {
     // If we are currently auto-scrolling, due to selecting a category by
     // clicking on it, do not update the category selection.
     if (this.scrollTarget) {
@@ -102,7 +105,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     for (let i = this.scrollPositions.length - 1; i >= 0; i--) {
       const category = this.scrollPositions[i];
       if (scaledPosition >= category.position.y) {
-        this.getParentToolbox().selectCategoryByName(category.name);
+        this.getParentToolbox_().selectCategoryByName(category.name);
         return;
       }
     }
@@ -114,20 +117,20 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   scrollTo(position) {
     // Set the scroll target to either the scaled position or the lowest
-    // possible scroll point, whichever is smaller
+    // possible scroll point, whichever is smaller.
     const metrics = this.workspace_.getMetrics();
     this.scrollTarget = Math.min(position * this.workspace_.scale,
         metrics.contentHeight - metrics.viewHeight);
 
-    this.stepScrollAnimation();
+    this.stepScrollAnimation_();
   }
 
   /**
    * Step the scrolling animation by scrolling a fraction of the way to
    * a scroll target, and request the next frame if necessary.
-   * @package
+   * @private
    */
-  stepScrollAnimation() {
+  stepScrollAnimation_() {
     if (!this.scrollTarget) {
       return;
     }
@@ -141,7 +144,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     }
     this.scrollbar.set(currentScrollPos + diff * this.scrollAnimationFraction);
 
-    requestAnimationFrame(this.stepScrollAnimation.bind(this));
+    requestAnimationFrame(this.stepScrollAnimation_.bind(this));
   }
 
   /**
@@ -179,7 +182,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   setMetrics_(xyRatio) {
     super.setMetrics_(xyRatio);
     if (this.scrollPositions) {
-      this.selectCategoryByScrollPosition(-this.workspace_.scrollY);
+      this.selectCategoryByScrollPosition_(-this.workspace_.scrollY);
     }
   }
 }
