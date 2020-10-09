@@ -1,6 +1,6 @@
 {
   "name": "@blockly/block-test",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A group of Blockly test blocks.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -39,7 +39,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.0",
-    "@blockly/dev-tools": "^2.0.2",
+    "@blockly/dev-tools": "^2.0.3",
     "blockly": "^3.20200924.1"
   },
   "peerDependencies": {
