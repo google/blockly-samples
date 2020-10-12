@@ -126,8 +126,9 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   /** @override */
   getClientRect() {
     // If the flyout never closes, it should be the deletable area.
-    if (this.flyout_ && !this.flyout_.autoClose) {
-      return this.flyout_.getClientRect();
+    const flyout = this.getFlyout();
+    if (flyout && !flyout.autoClose) {
+      return flyout.getClientRect();
     }
     return super.getClientRect();
   }
