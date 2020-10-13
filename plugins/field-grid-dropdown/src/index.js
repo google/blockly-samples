@@ -34,7 +34,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   constructor(menuGenerator, opt_validator, opt_config) {
     super(menuGenerator, opt_validator, opt_config);
 
-    // TODO: Set columns from constructor and use in CSS.
+    // TODO(373): Set columns from constructor and use in CSS.
     this.NUM_COLUMNS = 3;
   }
 
@@ -84,7 +84,7 @@ Blockly.Css.register([
   .fieldGridDropDownContainer .blocklyMenu {
       display: grid;
       grid-gap: 7px;
-      /* TODO: set number of columns using property on field */
+      /* TODO(373): set number of columns using property on field */
       grid-template-columns: repeat(3, min-content);
     }
   /* Change look of cells (add border, sizing, padding, and text color) */

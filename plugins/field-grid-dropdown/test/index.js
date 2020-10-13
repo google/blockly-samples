@@ -12,7 +12,7 @@ import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
 import '../src/index';
 
-// TODO: Add regular dropdown field to test playground to allow for checking
+// TODO(373): Add regular dropdown field to test playground to allow for checking
 // that styling of grid dropdown does not affect regular dropdowns.
 const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
   {
