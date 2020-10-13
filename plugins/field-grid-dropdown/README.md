@@ -1,9 +1,9 @@
 # blockly-field-grid-dropdown [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
+A [Blockly](https://www.npmjs.com/package/blockly) dropdown field with grid layout.
 <!--
-  - TODO: Add field description.
+  - TODO: Add field image.
   -->
-A [Blockly](https://www.npmjs.com/package/blockly) ... field.
 
 ## Installation
 
@@ -19,19 +19,17 @@ npm install blockly-field-grid-dropdown --save
 
 ## Usage
 
-<!--
-  - TODO: Update usage and rename field.
-  -->
-
 ### JavaScript
 ```js
 import * as Blockly from 'blockly';
-import {FieldTemplate} from 'blockly-field-grid-dropdown';
-Blockly.Blocks["test_field_template"] = {
+import {FieldGridDropdown} from 'blockly-field-grid-dropdown'; import {FieldGridDropdown} from './index';
+Blockly.Blocks["test_field_grid_dropdown"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("template: ")
-      .appendField(new FieldTemplate(...), "FIELDNAME")
+      .appendField("grid dropdown: ")
+      .appendField(new FieldGridDropdown([
+          ["A", "A"],["B", "B"], ["C", "C"],["D", "D"], ["E", "E"], ["F", "F"],
+          ["G", "G"], ["H", "H"], ["I", "I"]]), "FIELDNAME");
   }
 };
 ```
@@ -42,13 +40,17 @@ import * as Blockly from 'blockly';
 import 'blockly-field-grid-dropdown';
 Blockly.defineBlocksWithJsonArray([
     {
-        "type": "test_field_template",
+        "type": "test_field_grid_dropdown",
         "message0": "template: %1",
         "args0": [
             {
-                "type": "field_template",
+                "type": "test_field_grid_dropdown",
                 "name": "FIELDNAME",
-                "value": ...
+                "options": [
+                        ["A", "A"],["B", "B"], ["C", "C"],["D", "D"],
+                        ["E", "E"], ["F", "F"], ["G", "G"], ["H", "H"],
+                        ["I", "I"]
+                ]
             }
         ]
     }]);
