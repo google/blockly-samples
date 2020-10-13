@@ -1,9 +1,8 @@
 # blockly-field-grid-dropdown [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) dropdown field with grid layout.
-<!--
-  - TODO: Add field image.
-  -->
+
+![](https://github.com/google/blockly-samples/raw/master/plugins/field-grid-dropdown/readme-media/dropdown.png)
 
 ## Installation
 

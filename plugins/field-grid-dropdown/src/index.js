@@ -106,6 +106,10 @@ Blockly.Css.register([
   .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
     box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
   }
+  .fieldGridDropDownContainer .blocklyMenuItemHighlight {
+    /* Uses less selectors so as to not affect blocklyMenuItemSelected */
+    background-color: inherit;
+  }
   .fieldGridDropDownContainer.blocklyDropDownContent {
     padding: 7px; /* needed for highlight */
   }`,
