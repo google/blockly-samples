@@ -179,7 +179,7 @@ function checkGenerics(hierarchyDef) {
       'connection check, because it is a single character.';
 
   for (const type of Object.keys(hierarchyDef)) {
-    if (typeof type == 'string' && type.length == 1) {
+    if (isGeneric(type)) {
       console.error(error, type);
     }
   }
