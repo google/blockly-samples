@@ -1,4 +1,4 @@
-# blockly-field-grid-dropdown [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/field-grid-dropdown [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) dropdown field with grid layout.
 
@@ -8,12 +8,12 @@ A [Blockly](https://www.npmjs.com/package/blockly) dropdown field with grid layo
 
 ### Yarn
 ```
-yarn add blockly-field-grid-dropdown
+yarn add @blockly/field-grid-dropdown
 ```
 
 ### npm
 ```
-npm install blockly-field-grid-dropdown --save
+npm install @blockly/field-grid-dropdown --save
 ```
 
 ## Usage
@@ -43,7 +43,7 @@ Blockly.defineBlocksWithJsonArray([
         "message0": "template: %1",
         "args0": [
             {
-                "type": "test_field_grid_dropdown",
+                "type": "field_grid_dropdown",
                 "name": "FIELDNAME",
                 "options": [
                         ["A", "A"],["B", "B"], ["C", "C"],["D", "D"],
