@@ -9,6 +9,8 @@
  */
 'use strict';
 
+import {isGeneric} from './utils';
+
 /**
  * Validates the given hierarchy definition. Does checks for duplicate types,
  * circular dependencies, etc. Errors are logged to the console (not thrown).

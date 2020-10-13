@@ -12,6 +12,7 @@
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
 import {GenericMap, INPUT_PRIORITY, OUTPUT_PRIORITY} from './generic_map';
+import {getCheck, isGenericConnection, isExplicitConnection} from './utils';
 
 // TODO: Fix the version of Blockly being required in package.json.
 
@@ -116,13 +117,13 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
       return;
     }
 
-    const childCheck = this.getCheck_(childCon);
-    const parentCheck = this.getCheck_(parentCon);
-    if (this.isExplicit_(parentCon)) {
-      if (this.isGeneric_(childCon)) {
+    const childCheck = getCheck(childCon);
+    const parentCheck = getCheck(parentCon);
+    if (isExplicitConnection(parentCon)) {
+      if (isGenericConnection(childCon)) {
         explicitFn(childBlock.id, childCheck, parentCheck, OUTPUT_PRIORITY);
       }
-    } else if (this.isExplicit_(childCon)) {
+    } else if (isExplicitConnection(childCon)) {
       explicitFn(parentBlock.id, parentCheck, childCheck, INPUT_PRIORITY);
     } else {
       const parentIsBound = !!this.getBoundType_(parentCon);
@@ -194,46 +195,6 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
   }
 
   /**
-   * Returns the type name (which could be generic) associated with the
-   * connection.
-   * @param {!Blockly.Connection} connection The connection to find the check
-   *     of.
-   * @return {string} The type name associated with the connection.
-   * @private
-   */
-  getCheck_(connection) {
-    return connection.getCheck()[0];
-  }
-
-  /**
-   * Returns true if the connection has a generic connection check. False
-   * otherwise.
-   * @param {!Blockly.Connection} connection The connection to check for
-   *     generic-ness.
-   * @return {boolean} True if the connection has a generic connection check.
-   *     False otherwise.
-   * @private
-   */
-  isGeneric_(connection) {
-    const check = this.getCheck_(connection);
-    // If you ever update this, be sure to update hierarchy_validation.js too.
-    return typeof check == 'string' && check.length == 1;
-  }
-
-  /**
-   * Returns true if the connection has an explicit connection check. False
-   * otherwise.
-   * @param {!Blockly.Connection} connection The connection check to check for
-   *     explicit-ness.
-   * @return {boolean} True if the connection has an explicit connection check.
-   *     False otherwise.
-   * @private
-   */
-  isExplicit_(connection) {
-    return !this.isGeneric_(connection);
-  }
-
-  /**
    * Returns the explicit type bound to the connection's connection check if one
    * exists. This will return undefined if the connection's connection check is
    * explicit, or if it is generic and not bound.
@@ -245,7 +206,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   getBoundType_(connection) {
     return this.getGenericMap().getExplicitType(
-        connection.getSourceBlock().id, this.getCheck_(connection));
+        connection.getSourceBlock().id, getCheck(connection));
   }
 
   /**
@@ -259,8 +220,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @private
    */
   getExplicitType_(connection) {
-    const typeName = this.getCheck_(connection);
-    return this.isExplicit_(connection) ? typeName :
+    const typeName = getCheck(connection);
+    return isExplicitConnection(connection) ? typeName :
         this.getGenericMap().getExplicitType(
             connection.getSourceBlock().id, typeName);
   }
