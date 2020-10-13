@@ -5,6 +5,7 @@
     "author": "Blockly Team",
     "license": "Apache-2.0",
     "scripts": {
+        "audit:fix": "lerna run audit:fix",
         "boot": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna run clean",

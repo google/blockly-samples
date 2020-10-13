@@ -3,6 +3,7 @@
   "version": "2.1.3",
   "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
+    "audit:fix": "npm install && npm audit fix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
