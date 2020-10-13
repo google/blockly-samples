@@ -58,10 +58,12 @@ CustomCategory.prototype.setSelected = function(isSelected) {
  * @override
  */
 CustomCategory.prototype.createIconDom_ = function() {
-  var icon = document.createElement('i');
-  // Add the class set in the toolbox definition.
-  Blockly.utils.dom.addClass(icon, this.cssConfig_['icon']);
-  return icon;
+  var iconImg = document.createElement('img');
+  iconImg.src = './logo_only.svg';
+  iconImg.alt = 'Blockly Logo';
+  iconImg.width = '25';
+  iconImg.height = '25';
+  return iconImg;
 };
 
 Blockly.registry.register(

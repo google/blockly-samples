@@ -20,4 +20,7 @@
 # Examples
 
 ## Context Menus
-* [Context Menus](examples/context-menu-codelab/complete-code/index.html))
+* [Context Menus](examples/context-menu-codelab/complete-code/index.html)
+
+## Toolbox
+* [Context Toolbox](examples/custom-toolbox-codelab/complete-code/index.html)

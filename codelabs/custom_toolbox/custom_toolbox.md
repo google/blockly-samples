@@ -22,39 +22,57 @@ In this codelab you will learn:
 ### What you'll build
 
 Over the course of this codelab you will customize your toolbox categories as well
-create a custom toolbox item.
+as create a custom toolbox item.
 The resulting toolbox is shown below.
 
-![](./finalized_toolbox.png)
+![A toolbox with colored background and the blockly label above the category text.](./final_toolbox.png)
 
-The code samples are written in ES6 syntax. You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/codelabs/custom_toolbox/final_src) on GitHub, in both ES5 and ES6 syntax.
+The code samples are written in ES6 syntax. You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/examples/custom-toolbox-codelab/complete-code/index.html) on GitHub, in both ES5 and ES6 syntax.
 
 ### What you'll need
-
-This codelab assumes that you are already comfortable using the Blockly
-playground locally.  You can find it in `tests/playground.html`.
-It also assumes you have a basic understanding of the
-[Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolbox).
+- A browser.
+- A text editor.
+- Basic knowledge of HTML, CSS, and JavaScript.
+- Basic understanding of the [Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolbox).
 
 Throughout various parts of this codelab we will be talking about [toolbox definitions](https://developers.google.com/blockly/guides/configure/web/toolbox#xml).
-The toolbox definition can now be written in either XML or JSON. We will be using the
-[default XML toolbox definition](https://github.com/google/blockly/blob/11987dc6d6aa16138b36237e8959f2a3f91eb4e2/tests/playground.html#L471) that can be found in `playground.html`.
+The toolbox definition can be written in XML or JSON. We will be using an XML
+toolbox definition that can be found in the provided code.
 
 ## Setup
 
-In this codelab you will customize a toolbox category and create a new toolbox item.
-We will be using the Blockly playground to test out our changes as we go.
-You can find the playground at `tests/playground.html`.
+### Download the sample code
+You can get the sample code for this codelab by either downloading the zip here:
 
-To start, create a file named `custom_category.js` in the same folder as
-`playground.html`. Include your new file with a script tag:
+[Download zip](https://github.com/google/blockly-samples/archive/master.zip)
+
+or by cloning this git repo:
+
+```bash
+git clone https://github.com/google/blockly-samples.git
 ```
+
+If you downloaded the source as a zip, unpacking it should give you a root folder named `blockly-samples-master`.
+
+The relevant files are in `examples/custom-toolbox-codelab`. There are two versions of the app:
+- `starter-code/`: The starter code that you'll build upon in this codelab.
+- `complete-code/`: The code after completing the codelab, in case you get lost or want to compare to your version.
+
+Each folder contains:
+- `index.js` - The codelab's logic. To start, it just injects a simple workspace.
+- `index.html` - A web page containing a simple blockly workspace.
+
+To run the code, simply open `starter-code/index.html` in a browser. You should see a Blockly workspace with a toolbox.
+
+![A web page with the text "Toolbox Customization Codelab" and a Blockly workspace.](starter_workspace.png)
+
+### Define and register a custom category
+To start, create a file named `custom_category.js` in the `starter-code`
+directory. Include your new file by adding a script tag to `index.html`.
+
+```html
 <script src="custom_category.js"></script>
 ```
-
-Note: you must include your custom code *after* including the Blockly library.
-
-## Define and register a custom category
 
 In order to create a custom category we will create a new category that extends 
 the default `Blockly.ToolboxCategory` class. Add the following code to your
@@ -87,10 +105,10 @@ an error because we are overriding an existing class.
 
 ### The result
 
-To test, open the playground in your browser. Your toolbox should look the
-same as it did before.
+To test, open `index.html` in a browser. Your toolbox should look the same as it
+did before.
 
-![](./base_toolbox.png)
+![The default toolbox. A list of categories with a strip of colour to the left.](./base_toolbox.png)
  
 However, if you run the below commands in your console you will see that
 your toolbox is now using the `CustomCategory` class.
@@ -104,8 +122,8 @@ toolbox.getToolboxItems()[0];
 
 ### Change the background of the category
 
-Now that everything is set up, we are going to expand the color of the category
-to cover the entire category div. To do this we are going to override the `addColourBorder_` method.
+In the default `ToolboxCategory` class, the `addColourBorder_` method adds a strip of color next
+to the category name. We can override this method in order to add colour to the entire category div.
 
 Add the following code to your `CustomCategory` class.
 ```js
@@ -124,17 +142,26 @@ For example, the "Logic" category definition looks like:
 </category>
 ```
 
+The logic_category style looks like:
+
+```json
+"logic_category": {
+    "colour": "210"
+  }
+```
+For more information on Blockly styles please visit the [themes documentation](https://developers.google.com/blockly/guides/configure/web/themes#category_style).
+
 ### Add some CSS
 
-Open `playground.html` to see your updated toolbox. Your toolbox should look
+Open `index.html` to see your updated toolbox. Your toolbox should look
 similar to the below toolbox.
 
-![](./colored_toolbox.png)
+![A toolbox with colors that expand the across the entire category.](./colored_toolbox.png)
 
 We are going to add some CSS to make it easier to read, and to space out our categories.
 
-Create a file named `toolbox_style.css` in the same directory as `playground.html`
-and include it in `playground.html`:
+Create a file named `toolbox_style.css` in the same directory as `index.html`
+and include it in `index.html`:
  
 ```
 <link rel="stylesheet" href="toolbox_style.css">
@@ -160,18 +187,20 @@ Copy and paste the following CSS into your `toolbox_style.css` file.
 
 ### The result
 
-Open `playground.html` to see your toolbox.
+Open `index.html` to see your toolbox.
 
-![](./styled_toolbox.png)
+![Toolbox with category corners that are rounded and white text.](./styled_toolbox.png)
 
 ## Change the look of a selected category
 
-Open your `playground.html` and click on a category. You will see that it
+Open your `index.html` and click on a category. You will see that it
 doesn't give any indication that it has been clicked. Worse than that, if you
 click on the category a second time the background color will disappear.
 
 To fix this, we are going to override the `setSelected` method to change the look
-of a category when it has been clicked. We are going to change the background
+of a category when it has been clicked. In the default category class this method
+adds a colour to the entire row when a category is selected. Since we have already
+expanded the colour over our entire div, we are going to change the background
 color of the div to white, and the text to the color of the category when it has
 been selected.
 
@@ -198,26 +227,24 @@ setSelected(isSelected){
 ```
 
 ### The result
-Open your playground and click on the "Logic" category. You should see a white
+Open `index.html` and click on the "Logic" category. You should now see a white
 category with a colored label.
 
-![](./category_selected.png)
+![A toolbox with all categories colored except for the first category that has a white background.](./category_selected.png)
 
 ## Add an icon to your category
 
 We are going to add an icon to our "Logic" category by adding an icon library to
-our playground, and then setting the appropriate CSS class on our category definition.
+our `index.html` file, and  setting the appropriate CSS class on our category definition.
 
-To start, we are going to grab an icon library and add it to `playground.html`:
-
+To start, we are going to grab an icon library and add it to `index.html`:
 ```
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 ```
 We are going to add a cog icon from this library to the "Logic" category.
 To do this, we will add the appropriate CSS classes to our category definition.
 
-In `playground.html` scroll down to your toolbox definition where the id equals
-"toolbox-categories". Change the below line:
+In `index.html` scroll down to your toolbox definition and change the below line:
 ```xml
 <category name="Logic" categorystyle="logic_category">
 ```
@@ -229,9 +256,10 @@ All the classes used to create a category can be set similar to how we set the
 icon class above. See the [Blockly toolbox documentation](https://developers.google.com/blockly/guides/configure/web/toolbox#category_css) for more information.
 
 ### Add some CSS
-If you open `playground.html` you will notice that the gear icon is positioned
+If you open `index.html` you will notice that the gear icon is positioned
 incorrectly and is a bit difficult to see. We will use the `customIcon` class to
-position the icon above the label and change the color.
+change the color of the icon and use the `blocklyTreeRowContentContainer` class
+to position the icon above the text.
 
 In your `toolbox_style.css` file add:
 ```css
@@ -251,11 +279,11 @@ In your `toolbox_style.css` file add:
 ```
 
 ### Update setSelected
-If you open `playground.html` and click on the "Logic" category you will notice
+If you open `index.html` and click on the "Logic" category you will notice
 that the white icon now blends into the white background.
 
 In order to fix this, we are going to update our `setSelected` method to set the
-color of the icon to the color of the category when it is selected.
+color of the icon to the category color when the category has been selected.
 
 Inside `custom_category.js` add the below line to `setSelected` if the category
 has been selected:
@@ -294,51 +322,52 @@ Your `setSelected` method should look similar to below:
   }
 ```
 ### The result
-If you open your playground, you should see a white gear above your "Logic"
+If you open your `index.html` file, you should see a white gear above your "Logic"
 label, and it should change to blue when the category has been selected.
 
-![](./category_gear.png)
+![A white gear above the word "Logic" on a blue background.](./category_gear.png)
 
-![](./category_gear_selected.png)
+![A blue gear above the word "Logic" on a white background.](./category_gear_selected.png)
 
 ## Change the category HTML
-Currently, the element for the icon on the category is a `<span>` element. For a
-variety of reasons someone might want to change this to a different element.
-For example purposes we are going to change this `<span>` element to an `<i>` element.
-The pattern described in this section can be used to change any element in the
-category. It is simply a matter of finding the correct method to override. 
+If you only need to change the CSS, like we did in the previous section, then using the cssConfig is a great choice.
+However, if you need to change the html, maybe to add text, an image, or anything else, you can override
+the corresponding method that creates the dom. In this example, we'll add an `<img>`
+to our category by overriding the `createIconDom_` method.
 
 ### Change the element for our icon
-In order to make the icon a `<i>` element instead of a `<span>` element we can override
-the `createIconDom_` method.
+By default, the `createIconDom_` method adds a `<span>` element for the category
+icon. We can override this to return an `<img>` element.
 
 Add the following methods to `custom_category.js`:
-
 ```js
 /** @override */
 createIconDom_() {
-   const icon = document.createElement('i');
-   // Add the class set in the toolbox definition.
-   Blockly.utils.dom.addClass(icon, this.cssConfig_['icon']);
-   return icon;
+  const img = document.createElement('img');
+  img.src = './logo_only.svg';
+  img.alt = 'Lamp';
+  img.width='15';
+  img.height='15';
+  return img;
 }
 ```
 
 ### The result
-If you open the playground you should see no difference in your toolbox, however
-if you inspect the icon you will find that it is now an `<i>` element.
+If you open `index.html` you should now see the blockly logo on top of all your
+categories
+
+![A toolbox with the blockly logo on top of the category label.](./image_toolbox.png)
 
 ## Adding a custom toolbox item
 In the previous sections we modified the toolbox by extending the base category class. 
 In this section we will make a completely new toolbox item and add it to our toolbox.
 
-For this example, we are going to create a toolbox label that we can add to our
-toolbox.
+For this example, we are going to create a toolbox label.
 
 ### Setup
-In the same directory as `playground.html` create a new file named `toolbox_label.js`.
+In the same directory as `index.html` create a new file named `toolbox_label.js`.
 
-Include this file in `playground.html`:
+Include this file in `index.html`:
 ```html
 <script src="toolbox_label.js"></script>
 ```
@@ -361,9 +390,8 @@ Blockly.registry.register(
 By registering this toolbox item with the name "toolboxlabel" we can now use this
 name in our toolbox definition to add our custom item to the toolbox.
 
-Navigate to `playground.html`, scroll down to the toolbox definition with
-the id `toolbox-categories` and add a `<toolboxlabel>` element as the first item in your
-toolbox definition:
+Navigate to `index.html`, and scroll down to the toolbox definition. Add a
+`<toolboxlabel>` element as the first item in your toolbox definition:
 ```xml
 <toolboxlabel></toolboxlabel>
 ```
@@ -383,7 +411,7 @@ In order to create a toolbox item we must implement one of the toolbox item inte
 For this example, we will be implementing the basic `IToolboxItem` interface.
 There are three different types of toolbox item interfaces:
 `IToolboxItem`, `ISelectableToobloxItem` and `ICollapsibleToolboxItem`.
-Since we do not need our label to be selectable or collapsable, we can implement
+Since we do not need our label to be selectable or collapsible, we can implement
 the basic `IToolboxItem` interface.
 
 First, we are going to add an init method that will create the dom for our toolbox label:
@@ -406,9 +434,9 @@ Next, we are going to return this element:
   }
 ```
 
-If you open the playground you should see a label above your first category.
+If you open the `index.html` file you should see a label above your first category.
 
-![](./toolbox_label.png)
+![The toolbox with a label at the top.](./toolbox_label.png)
 
 ### Add attributes to the toolbox definition
 The above code is rather limiting since it only allows us to create a toolbox
@@ -416,7 +444,7 @@ label with the text "Label".
 To make it possible to create different labels with different text and colour we
 are going to add `name` and `colour` attributes to our toolbox definition.
 
-Open `playground.html` and navigate to the toolbox definition. Change your
+Open `index.html` and navigate to the toolbox definition. Change your
 `toolboxlabel` element to look like the below line: 
 ```xml
 <toolboxlabel name="Custom Toolbox" colour="darkslategrey"></toolboxlabel>
@@ -440,14 +468,14 @@ this.label.textContent = 'Label';
 All attributes on our toolbox definition get added to the `toolboxItemDef_`.
 `this.toolboxItemDef_` is set in the `Blockly.ToolboxItem` constructor.
 
-Open your playground to see the updated label.
+Open your `index.html` in a browser to see the updated label.
 
-![](./custom_label.png)
+![The toolbox with a label that now says "Custom Toolbox".](./custom_label.png)
 ### Add some CSS
 Similar to how we added `colour` and `name` above, we are going to add a custom
 class to our label.
 
-Navigate to your toolbox definition in `playground.html` and modify it to look
+Navigate to your toolbox definition in `index.html` and modify it to look
 like the below line.
 
 ```xml
@@ -464,11 +492,13 @@ your init method.
 // Any attributes that begin with css- will get added to a cssconfig object.
 const cssConfig = this.toolboxItemDef_['cssconfig'];
 // Add the class.
-this.label.classList.add(cssConfig['label']);
+if (cssConfig) {
+  this.label.classList.add(cssConfig['label']);
+}
 ```
 
-The above code will add the class to the label. Now, add the below CSS to make
-the label bold.
+The above code will add the class to the label. Now, in `toolbox_style.css` add
+the below CSS to make the label bold.
 ```css
 .customLabel {
    font-weight: bold;
@@ -476,10 +506,10 @@ the label bold.
 ```
 
 ### The result
-If you open `playground.html` you should now see a bold dark gray label at the
+If you open `index.html` you should now see a bold dark gray label at the
 top of your toolbox.
 
-![](./finalized_toolbox.png)
+![A toolbox with colored background and the blockly label above the category text.](./final_toolbox.png)
 ## Summary
 
 The toolbox can be customized in a variety of ways to make it work for your application. In this codelab you learned:

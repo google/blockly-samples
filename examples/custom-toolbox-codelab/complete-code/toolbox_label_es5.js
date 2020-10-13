@@ -42,7 +42,9 @@ ToolboxLabel.prototype.init = function(colour) {
   // Any attributes that begin with css- will get added to a cssconfig.
   const cssConfig = this.toolboxItemDef_['cssconfig'];
   // Add the class.
-  this.label.classList.add(cssConfig['label']);
+  if (cssConfig) {
+    this.label.classList.add(cssConfig['label']);
+  }
 };
 
 /**
