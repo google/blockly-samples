@@ -1,5 +1,5 @@
 {
-  "name": "blockly-field-grid-dropdown",
+  "name": "@blockly/field-grid-dropdown",
   "private": true,
   "version": "0.20201007.0",
   "description": "A Blockly dropdown field with grid layout.",
@@ -14,20 +14,20 @@
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
-  "author": "",
+  "author": "Blockly Team",
   "keywords": [
     "blockly",
     "blockly-plugin",
     "blockly-field",
     "grid-dropdown"
   ],
-  "homepage": "https://github.com/moniika/blockly-samples/tree/master/plugins/field-grid-dropdown#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/field-grid-dropdown#readme",
   "bugs": {
-    "url": "https://github.com/moniika/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/moniika/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/field-grid-dropdown"
   },
   "license": "Apache 2.0",

@@ -21,7 +21,7 @@ npm install blockly-field-grid-dropdown --save
 ### JavaScript
 ```js
 import * as Blockly from 'blockly';
-import {FieldGridDropdown} from 'blockly-field-grid-dropdown'; import {FieldGridDropdown} from './index';
+import {FieldGridDropdown} from '@blockly/field-grid-dropdown';
 Blockly.Blocks["test_field_grid_dropdown"] = {
   init: function () {
     this.appendDummyInput()
@@ -36,7 +36,7 @@ Blockly.Blocks["test_field_grid_dropdown"] = {
 
 ```js
 import * as Blockly from 'blockly';
-import 'blockly-field-grid-dropdown';
+import '@blockly/field-grid-dropdown';
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "test_field_grid_dropdown",
