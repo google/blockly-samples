@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "A group of Blockly test blocks.",
   "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",

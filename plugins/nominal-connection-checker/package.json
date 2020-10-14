@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Blockly plugin for creating more advanced connection checks, targeted at nominally typed languages.",
   "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
