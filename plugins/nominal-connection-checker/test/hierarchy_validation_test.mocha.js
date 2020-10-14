@@ -44,10 +44,8 @@ suite('Hierarchy Validation', function() {
   });
 
   suite('Conflicts', function() {
-    setup(function() {
-      this.conflictMsg =
-          'The type name \'%s\' conflicts with the type name(s) %s';
-    });
+    const conflictMsg =
+        'The type name \'%s\' conflicts with the type name(s) %s';
 
     test('No conflicts', function() {
       validateHierarchy({
@@ -65,7 +63,7 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(this.errorStub.calledWith(
-          this.conflictMsg, 'typeA', ['TypeA']));
+          conflictMsg, 'typeA', ['TypeA']));
     });
 
     test('Type conflicts multiple', function() {
@@ -76,7 +74,7 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(this.errorStub.calledWith(
-          this.conflictMsg, 'typeA', ['TypeA', 'Typea']));
+          conflictMsg, 'typeA', ['TypeA', 'Typea']));
     });
 
     test('Multiple conflicts', function() {
@@ -88,17 +86,15 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledTwice);
       chai.assert.isTrue(this.errorStub.calledWith(
-          this.conflictMsg, 'typeA', ['TypeA']));
+          conflictMsg, 'typeA', ['TypeA']));
       chai.assert.isTrue(this.errorStub.calledWith(
-          this.conflictMsg, 'typeB', ['TypeB']));
+          conflictMsg, 'typeB', ['TypeB']));
     });
   });
 
   suite('Defined supers', function() {
-    setup(function() {
-      this.errorMsg = 'The type %s says it fulfills the type %s, but that' +
-          ' type is not defined';
-    });
+    const errorMsg = 'The type %s says it fulfills the type %s, but that' +
+        ' type is not defined';
 
     test('Defined before', function() {
       validateHierarchy({
@@ -127,8 +123,7 @@ suite('Hierarchy Validation', function() {
         },
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
-      chai.assert.isTrue(this.errorStub.calledWith(
-          this.errorMsg, 'typeA', 'typeB'));
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'typeA', 'typeB'));
     });
 
     test('Case', function() {
@@ -293,6 +288,50 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.calledWith(
           'The type typeA creates a circular dependency: ' +
           'typeA fulfills TypeA'));
+    });
+  });
+
+  suite('Generics', function() {
+    const errorMsg = 'The type %s will act like a generic type if used as a ' +
+        'connection check, because it is a single character.';
+
+    test('"valid"', function() {
+      validateHierarchy({
+        'valid': { },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('"a"', function() {
+      validateHierarchy({
+        'a': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'a'));
+    });
+
+    test('"A"', function() {
+      validateHierarchy({
+        'A': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'A'));
+    });
+
+    test('"*"', function() {
+      validateHierarchy({
+        '*': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, '*'));
+    });
+
+    test('"1"', function() {
+      validateHierarchy({
+        '1': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, '1'));
     });
   });
 });
