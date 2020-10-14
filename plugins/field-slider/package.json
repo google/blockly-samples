@@ -3,7 +3,7 @@
   "version": "2.1.4",
   "description": "A Blockly slider field.",
   "scripts": {
-    "audit:fix": "npm install && npm audit fix",
+    "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
