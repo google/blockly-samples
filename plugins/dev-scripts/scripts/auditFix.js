@@ -25,7 +25,7 @@ const packageJson = require(resolveApp('package.json'));
 console.log(`Running npm audit fix steps for ${packageJson.name}`);
 
 // Run npm install.
-execSync(`npm install`, {stdio: [0, 1, 2] });
+execSync(`npm install`, {stdio: [0, 1, 2]});
 
 // Audit fix.
-execSync(`npm audit fix`, {stdio: [0, 1, 2] });
+execSync(`npm audit fix`, {stdio: [0, 1, 2]});
