@@ -28,7 +28,7 @@ Blockly.Blocks["test_field_grid_dropdown"] = {
       .appendField("grid dropdown: ")
       .appendField(new FieldGridDropdown([
           ["A", "A"],["B", "B"], ["C", "C"],["D", "D"], ["E", "E"], ["F", "F"],
-          ["G", "G"], ["H", "H"], ["I", "I"]]), "FIELDNAME");
+          ["G", "G"], ["H", "H"]]), "FIELDNAME");
   }
 };
 ```
@@ -47,8 +47,7 @@ Blockly.defineBlocksWithJsonArray([
                 "name": "FIELDNAME",
                 "options": [
                         ["A", "A"],["B", "B"], ["C", "C"],["D", "D"],
-                        ["E", "E"], ["F", "F"], ["G", "G"], ["H", "H"],
-                        ["I", "I"]
+                        ["E", "E"], ["F", "F"], ["G", "G"], ["H", "H"]
                 ]
             }
         ]
