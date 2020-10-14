@@ -174,7 +174,7 @@ const procedureContextMenu = {
 
     // Add options to create getters for each parameter.
     const varModels = this.getVarModels();
-    for (let i = 0, model; (model = varModels); i++) {
+    for (let i = 0, model; (model = varModels[i]); i++) {
       const text = Blockly.Msg['VARIABLES_SET_CREATE_GET']
           .replace('%1', model.name);
 
@@ -198,15 +198,15 @@ Blockly.Extensions.registerMixin(
 const procedureDefMutator = {
   /**
    * Create XML to represent the argument inputs.
-   * @param {boolean=} opt_isForCaller If true include the procedure name and
+   * @param {boolean=} isForCaller If true include the procedure name and
    *     argument IDs. Used by Blockly.Procedures.mutateCallers for
    *     reconnection.
    * @return {!Element} XML storage element.
    * @this Blockly.Block
    */
-  mutationToDom: function(opt_isForCaller) {
+  mutationToDom: function(isForCaller = false) {
     const container = Blockly.utils.xml.createElement('mutation');
-    if (opt_isForCaller) {
+    if (isForCaller) {
       container.setAttribute('name', this.getFieldValue('NAME'));
     }
     this.argData_.forEach((element) => {
@@ -214,7 +214,7 @@ const procedureDefMutator = {
       const argModel = element.model;
       argument.setAttribute('name', argModel.name);
       argument.setAttribute('varid', argModel.getId());
-      if (opt_isForCaller) {
+      if (isForCaller) {
         argument.setAttribute('paramid', element.argId);
       }
       container.appendChild(argument);
@@ -309,12 +309,12 @@ const procedureDefMutator = {
   /**
    * Adds an argument to the block and updates the block's parallel tracking
    * arrays as appropriate.
-   * @param {string} opt_name An optional name for the argument.
-   * @param {string} opt_varId An optional variable ID for the argument.
+   * @param {?string=} name An optional name for the argument.
+   * @param {?string=} varId An optional variable ID for the argument.
    * @this Blockly.Block
    * @private
    */
-  addArg_: function(opt_name, opt_varId) {
+  addArg_: function(name = null, varId = null) {
     if (!this.argData_.length) {
       const withField = new Blockly.FieldLabel(
           Blockly.Msg['PROCEDURES_BEFORE_PARAMS']);
@@ -323,10 +323,10 @@ const procedureDefMutator = {
     }
 
     const argNames = this.argData_.map((elem) => elem.model.name);
-    const name = opt_name || Blockly.Variables.generateUniqueNameFromOptions(
+    name = name || Blockly.Variables.generateUniqueNameFromOptions(
         Blockly.Procedures.DEFAULT_ARG, argNames);
     const variable = Blockly.Variables.getOrCreateVariablePackage(
-        this.workspace, opt_varId, name, '');
+        this.workspace, varId, name, '');
     const argId = Blockly.utils.genUid();
 
     this.addVarInput_(name, argId);
@@ -348,16 +348,12 @@ const procedureDefMutator = {
    * @private
    */
   removeArg_: function(argId) {
-    // TODO: Refactor after blockly/#3803 is completed.
-    if (!this.getInput(argId)) {
-      return;
+    if (this.removeInput(argId, true)) {
+      if (this.argData_.length == 1) { // Becoming argumentless.
+        this.getInput('TOP').removeField('WITH');
+      }
+      this.argData_ = this.argData_.filter((element) => element.argId != argId);
     }
-    this.removeInput(argId);
-    if (this.argData_.length == 1) { // Becoming argumentless.
-      this.getInput('TOP').removeField('WITH');
-    }
-
-    this.argData_ = this.argData_.filter((element) => element.argId != argId);
   },
 
   /**
@@ -398,7 +394,8 @@ const procedureDefMutator = {
     /**
      * Checks that all of the args (that aren't this arg) have a different
      * name than this arg.
-     * @param {{model: Blockly.VariableModel, argId:string}} element
+     * @param {{model: Blockly.VariableModel, argId:string}} element The element
+     *     we want to make sure is different from this element.
      * @return {boolean} True if the other name is not a match.
      * @this Blockly.FieldTextInput
      */
@@ -480,10 +477,10 @@ const procedureDefHelper = function() {
   /**
    * An array of objects containing data about the args belonging to the
    * procedure definition.
-   * @type {{
+   * @type {!Array<{
    *          model:Blockly.VariableModel,
    *          argId: string
-   *       }}
+   *       }>}
    * @private
    */
   this.argData_ = [];
