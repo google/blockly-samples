@@ -13,7 +13,14 @@
  */
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const execSync = require('child_process').execSync;
+
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+
+const packageJson = require(resolveApp('package.json'));
 
 console.log(`Running npm audit fix steps for ${packageJson.name}`);
 
