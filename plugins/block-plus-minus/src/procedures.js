@@ -174,7 +174,7 @@ const procedureContextMenu = {
 
     // Add options to create getters for each parameter.
     const varModels = this.getVarModels();
-    for (let i = 0, model; (model = varModels[i]); i++) {
+    for (const model of varModels) {
       const text = Blockly.Msg['VARIABLES_SET_CREATE_GET']
           .replace('%1', model.name);
 
@@ -244,7 +244,7 @@ const procedureDefMutator = {
 
     const names = [];
     const ids = [];
-    for (let i = 0, childNode; (childNode = xmlElement.childNodes[i]); i++) {
+    for (const childNode of xmlElement.childNodes) {
       if (childNode.nodeName.toLowerCase() == 'arg') {
         names.push(childNode.getAttribute('name'));
         ids.push(childNode.getAttribute('varid') ||
