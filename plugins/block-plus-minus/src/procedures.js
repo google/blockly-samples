@@ -367,7 +367,8 @@ const procedureDefMutator = {
   addVarInput_: function(name, argId) {
     const nameField = new Blockly.FieldTextInput(name, this.validator_);
     nameField.onFinishEditing_ = this.finishEditing_.bind(nameField);
-    nameField.createdVarIds_ = [];
+    nameField.varIdsToDelete_ = [];
+    nameField.preEditVarModel_ = null;
 
     this.appendDummyInput(argId)
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -384,66 +385,75 @@ const procedureDefMutator = {
    */
   validator_: function(newName) {
     const sourceBlock = this.getSourceBlock();
-    // Replaces all whitespace (including non-breaking) with normal spaces.
-    // Then removes spaces at the beginning or end of the string.
-    newName = newName.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
-    if (!newName) {
-      return null;
-    }
+    const workspace = sourceBlock.workspace;
+    const argData = sourceBlock.argData_;
+    const argDatum = sourceBlock.argData_.find(
+        (element) => element.argId == this.name);
+    const currId = argDatum.model.getId();
+
+    // Replace all whitespace with normal spaces, then trim.
+    newName = newName.replace(/[\s\xa0]+/g, ' ').trim();
+    const caselessName = newName.toLowerCase();
 
     /**
-     * Checks that all of the args (that aren't this arg) have a different
-     * name than this arg.
-     * @param {{model: Blockly.VariableModel, argId:string}} element The element
-     *     we want to make sure is different from this element.
-     * @return {boolean} True if the other name is not a match.
+     * Returns true if the given argDatum is the argDatum associated with this
+     * field, or has a different caseless name than the argDatum associated
+     * with this field. False otherwise.
+     * @param {{model: Blockly.VariableModel, argId:string}} argDatum The
+     *     argDatum we want to make sure is different from the argDatum
+     *     associated with this field.
+     * @return {boolean} True if the given datum does not conflict with the
+     *     datum associated with this field.
      * @this Blockly.FieldTextInput
      */
-    const hasDifName = (element) => {
+    const hasDifName = (argDatum) => {
       // The field name (aka id) is always equal to the arg id.
-      return element.argId == this.name ||
-          caselessName != element.model.name.toLowerCase();
+      return argDatum.argId == this.name ||
+          caselessName != argDatum.model.name.toLowerCase();
     };
-    const caselessName = newName.toLowerCase();
-    if (!sourceBlock.argData_.every(hasDifName, this)) {
+    /**
+     * Returns true if the variable associated with this field is only used
+     * by this block, or callers of this procedure.
+     * @return {boolean} True if the variable associated with this field is only
+     *     used by this block, or callers of this procedure.
+     */
+    const varOnlyUsedHere = () => {
+      return workspace.getVariableUsesById(currId).every((block) => {
+        return block.id == sourceBlock.id ||
+            (block.getProcedureCall &&
+                block.getProcedureCall() == sourceBlock.getProcedureDef()[0]);
+      });
+    };
+
+    if (!newName || !argData.every(hasDifName)) {
+      if (this.preEditVarModel_) {
+        argDatum.model = this.preEditVarModel_;
+        this.preEditVarModel_ = null;
+      }
+      Blockly.Procedures.mutateCallers(sourceBlock);
       return null;
     }
 
-    const workspace = sourceBlock.workspace;
-    const argData = sourceBlock.argData_.find(
-        (element) => element.argId == this.name);
-    const id = argData.model.getId();
-
-    /**
-     * Checks that every block is either this block (the def) or a caller of
-     * this procedure.
-     * @param {Blockly.Block} element The block to check.
-     * @return {boolean} Whether the block is associated with this procedure.
-     */
-    const isThisProcedure = (element) => {
-      return element.id == sourceBlock.id ||
-          (element.getProcedureCall &&
-              element.getProcedureCall() == sourceBlock.getProcedureDef()[0]);
-    };
-    if (!this.createdVarIds_.length &&
-        workspace.getVariableUsesById(id).every(isThisProcedure)) {
-      // If this is our first edit and the pre-edit var is only used here.
-      this.createdVarIds_.push(id);
+    if (!this.varIdsToDelete_.length) {
+      this.preEditVarModel_ = argDatum.model;
+      if (varOnlyUsedHere()) {
+        this.varIdsToDelete_.push(currId);
+      }
     }
 
-    // We want to create new vars instead of renaming the old ones, so that
-    // users don't accidentally rename/coalesce vars they don't want to.
+    // Create new vars instead of renaming the old ones, so users can't
+    // accidentally rename/coalesce vars.
     let model = workspace.getVariable(newName, '');
     if (!model) {
       model = workspace.createVariable(newName, '');
-      this.createdVarIds_.push(model.getId());
+      this.varIdsToDelete_.push(model.getId());
     } else if (model.name != newName) {
-      // Ideally we would create a new var. But Blockly is case-insensitive so
-      // we update the var to reflect the latest case instead.
+      // Blockly is case-insensitive so we have to update the var instead of
+      // creating a new one.
       workspace.renameVariableById(model.getId(), newName);
     }
-    if (model.getId() != id) {
-      argData.model = model;
+    if (model.getId() != currId) {
+      argDatum.model = model;
     }
     Blockly.Procedures.mutateCallers(sourceBlock);
     return newName;
@@ -456,16 +466,16 @@ const procedureDefMutator = {
    */
   finishEditing_: function(_finalName) {
     const source = this.getSourceBlock();
-    const argData = source.argData_.find(
+    const argDatum = source.argData_.find(
         (element) => element.argId == this.name);
 
-    const currentVarId = argData.model.getId();
-    this.createdVarIds_.forEach((id) => {
+    const currentVarId = argDatum.model.getId();
+    this.varIdsToDelete_.forEach((id) => {
       if (id != currentVarId) {
         source.workspace.deleteVariableById(id);
       }
     });
-    this.createdVarIds_.length = 0;
+    this.varIdsToDelete_.length = 0;
   },
 };
 
