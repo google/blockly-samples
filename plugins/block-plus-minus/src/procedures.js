@@ -476,6 +476,7 @@ const procedureDefMutator = {
       }
     });
     this.varIdsToDelete_.length = 0;
+    this.preEditVarModel_ = null;
   },
 };
 
