@@ -5,7 +5,7 @@
 In this directory, you can run:
 
 ### `npm run audit:fix`
-This script runs `npm audit --fix` on each of the Blockly plugins in this repo.
+This script runs `npm audit fix` on each of the Blockly plugins in this repo.
 
 ### `npm run boot`
 This script runs `lerna bootstrap` which will run `npm install` in each plugin
