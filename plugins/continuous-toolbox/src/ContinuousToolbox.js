@@ -69,6 +69,11 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   }
 
   /** @override */
+  refreshSelection() {
+    this.getFlyout().show(this.getInitialFlyoutContents_());
+  }
+
+  /** @override */
   updateFlyout_(_oldItem, newItem) {
     if (newItem) {
       const target = this.getFlyout()
