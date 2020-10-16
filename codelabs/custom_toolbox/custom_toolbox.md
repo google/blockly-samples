@@ -204,6 +204,7 @@ expanded the colour over our entire div, we are going to change the background
 color of the div to white, and the text to the color of the category when it has
 been selected.
 
+Add the following code to `custom_category.js`:
 ```js
 /** @override */
 setSelected(isSelected){
@@ -451,7 +452,7 @@ Open `index.html` and navigate to the toolbox definition. Change your
 ```
 
 These values will get passed in to our `ToolboxLabel` class through the `toolboxItemDef`.
-Navigate to `toolbox_label.js` and add the following lines to your init method:
+Navigate to `toolbox_label.js` and add the following lines to your `init` method:
 
 ```js
 // Set the name.
@@ -486,7 +487,7 @@ Any item that begins with `css-` will be added to a `cssconfig` object stored on
 the `toolboxItemDef`.
 
 To use this value navigate to `toolbox_label.js` and add the following lines to
-your init method.
+your `init` method.
 
 ```js
 // Any attributes that begin with css- will get added to a cssconfig object.
