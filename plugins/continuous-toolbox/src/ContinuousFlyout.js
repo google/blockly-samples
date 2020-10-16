@@ -338,8 +338,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /**
    * Puts a previously created block into the recycle bin and moves it to the
-   * top or the workspace. Used during large workspace swaps to limit the number
-   * of new dom elements we need to create.
+   * top of the workspace. Used during large workspace swaps to limit the number
+   * of new DOM elements we need to create.
    * @param {!Blockly.BlockSvg} block The block to recycle.
    * @protected
    */
