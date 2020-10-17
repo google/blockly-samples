@@ -1,2 +1,10 @@
 theme: jekyll-theme-slate
 show_downloads: false
+
+defaults:
+  -
+    scope:
+      path: "plugins/*/test/index.html" # an empty string here means all files in the project
+      type: "pages"
+    values:
+      layout: "plugin_index"

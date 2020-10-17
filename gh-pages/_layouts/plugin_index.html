@@ -1,0 +1,25 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="screen"
+    href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+
+  <link rel="stylesheet" href="{{ 'css/button.css' | relative_url }}" />
+  <title>{{ page.dir | remove: "/plugins/" | remove: "/test/" }}</title>
+</head>
+
+<body>
+  <nav>
+    <a href="../README" class="button1">View readme</a>
+    <a href="{{ 'https://github.com/google/blockly-samples/blob/master/'
+      | append: page.dir | remove: '/test/' }}" class="button1">View code</a>
+  </nav>
+  <section>
+    {{ content }}
+  </section>
+</body>
+{% include footer.html %}
+</html>
