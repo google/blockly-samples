@@ -12,7 +12,6 @@
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
 import {getCheck, isExplicitConnection} from './utils';
-import {PriorityQueueMap} from './priority_queue_map';
 
 // TODO: Fix the version of Blockly being required in package.json.
 
@@ -48,7 +47,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
     /**
      * A map of block ids to priority queue maps that associated generic types
      * with explicit types.
-     * @type {Map<string, PriorityQueueMap<string, string>>}
+     * @type {Map<string, Map<string, string>>}
      * @private
      */
     this.explicitBindings_ = new Map();
@@ -121,48 +120,67 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
 
   /**
    * Binds the genericType to the explicitType in the context of the given
-   * block. Higher priority explicit types override lower priority types.
+   * block.
    * @param {!Blockly.Block} block The block that provides context for the
    *     generic type binding.
    * @param {string} genericType The generic type that we want to bind.
    * @param {string} explicitType The explicit type we want to bind the generic
    *     type to.
-   * @param {number} priority The priority of the binding.
    */
-  bindType(block, genericType, explicitType, priority) {
+  bindType(block, genericType, explicitType) {
     genericType = genericType.toLowerCase();
     explicitType = explicitType.toLowerCase();
-    let queueMap = this.explicitBindings_.get(block.id);
-    if (!queueMap) {
-      queueMap = new PriorityQueueMap();
-      this.explicitBindings_.set(block.id, queueMap);
+    let map = this.explicitBindings_.get(block.id);
+    if (!map) {
+      map = new Map();
+      this.explicitBindings_.set(block.id, map);
     }
-    queueMap.bind(genericType, explicitType, priority);
-    // TODO: Add checking that connections are still valid.
+    map.set(genericType, explicitType);
+
+    const parent = block.outputConnection &&
+        block.outputConnection.targetConnection;
+    if (parent) {
+      block.outputConnection.disconnect();
+    }
+    const childMap = new Map();
+    for (const input of block.inputList) {
+      const connection = input.connection;
+      if (input.type == Blockly.INPUT_VALUE && connection.isConnected()) {
+        childMap.set(input.name, connection.targetConnection);
+        connection.disconnect();
+      }
+    }
+
+    if (parent) {
+      parent.connect(block.outputConnection);
+    }
+    for (const input of block.inputList) {
+      if (childMap.has(input.name)) {
+        input.connection.connect(childMap.get(input.name));
+      }
+    }
+
+    // Note: Using .rendered may cause issues. See blockly/#1676.
+    if (block.rendered) {
+      block.bumpNeighbours();
+    }
   }
 
   /**
-   * Unbinds the genericType from the explicitType in the context of the given
-   * block. Only unbinds if the priority of the binding associated with the
-   * given explicitType is the same as the provided priority.
+   * Unbinds the genericType from its explicit type in the context of the given
+   * block.
    * @param {!Blockly.Block} block The block that provides context for the
    *     generic type binding.
    * @param {string} genericType The generic type that we want to unbind.
-   * @param {string} explicitType The explicit type that we want to unbind the
-   *     genericType from.
-   * @param {number} priority The priority of the binding to unbind.
    * @return {boolean} True if the binding existed previously, false if it did
    *     not.
    */
-  unbindType(block, genericType, explicitType, priority) {
+  unbindType(block, genericType) {
     genericType = genericType.toLowerCase();
-    explicitType = explicitType.toLowerCase();
     if (this.explicitBindings_.has(block.id)) {
-      return this.explicitBindings_.get(block.id).unbind(
-          genericType, explicitType, priority);
+      return this.explicitBindings_.get(block.id).delete(genericType);
     }
     return false;
-    // TODO: Add checking that connections are still valid.
   }
 
   /**
@@ -222,13 +240,21 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   getBoundTypes_(block, genericType, connectionToSkip = undefined) {
     genericType = genericType.toLowerCase();
-    const {types} = this.getExternalBinding_(block, genericType);
+    const types = [];
+
+    const type = this.getExternalBinding_(block, genericType);
+    if (type) {
+      types.push(type);
+    }
+
     types.push(...this.getConnectionTypes_(
         block.outputConnection, genericType, connectionToSkip));
+
     for (const input of block.inputList) {
       types.push(...this.getConnectionTypes_(
           input.connection, genericType, connectionToSkip));
     }
+
     if (types.length) {
       return this.getTypeHierarchy_().getNearestCommonParents(...types);
     }
@@ -236,35 +262,20 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
   }
 
   /**
-   * Returns the externally bound explicit type(s) associated with the given
-   * genericType in the context of the given block.
+   * Returns the externally bound explicit type associated with the given
+   * genericType in the context of the given block, if one exists.
    * @param {!Blockly.Block} block The block that provides context for the
    *     explicit binding.
    * @param {string} genericType The generic type we want to get the externally
    *     bound explicit type of.
-   * @return {{type: !Array<string>, priority: number}} An object containing the
-   *     externally bound explicit type(s) associated with the generic type, and
-   *     the priority of that external binding, if one exists. If one does
-   *     not exist, this returns an object containing a priority of 0 and an
-   *     empty string.
+   * @return {string} The externally bound explicit type, if one exists.
    * @private
    */
   getExternalBinding_(block, genericType) {
-    let externalTypes = [];
-    let externalPriority = 0;
     if (this.explicitBindings_.has(block.id)) {
-      const externalBindings = this.explicitBindings_.get(block.id)
-          .getBindings(genericType);
-      if (externalBindings) {
-        // All priorities are identical.
-        externalPriority = externalBindings[0].priority;
-        externalTypes = externalBindings.map((binding) => binding.value);
-      }
+      return this.explicitBindings_.get(block.id).get(genericType);
     }
-    return {
-      types: externalTypes,
-      priority: externalPriority,
-    };
+    return '';
   }
 
   /**
@@ -311,29 +322,3 @@ Blockly.registry.register(
 export const pluginInfo = {
   [registrationType]: registrationName,
 };
-
-/**
- * The priority for binding an explicit type to a generic type based on an input
- * of the block with the generic type.
- * @type {number}
- */
-export const INPUT_PRIORITY = 100;
-
-/**
- * The priority for binding an explicit type to a generic type based on the
- * output of the block with the generic type.
- * @type {number}
- */
-export const OUTPUT_PRIORITY = 200;
-
-/**
- * The minimum priority that can/should be passed to the bindType function.
- * @type {number}
- */
-export const MIN_PRIORITY = 0;
-
-/**
- * The maximum priority that can/should be passed to the bindType function.
- * @type {number}
- */
-export const MAX_PRIORITY = Number.MAX_SAFE_INTEGER;

@@ -64,6 +64,7 @@ function createWorkspace(blocklyDiv, typeHierarchy, blocks) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  window.Blockly = Blockly;
   const container = document.getElementById('root');
   const components = renderPlayground(container);
   const blocklyDiv = components.blocklyDiv;
