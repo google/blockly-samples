@@ -90,6 +90,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    *     one can be found. Undefined otherwise.
    */
   getExplicitType(block, genericType) {
+    genericType = genericType.toLowerCase();
     return this.getBoundType_(block, genericType);
   }
 
@@ -120,6 +121,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @param {number} priority The priority of the binding.
    */
   bindType(block, genericType, explicitType, priority) {
+    genericType = genericType.toLowerCase();
+    explicitType = explicitType.toLowerCase();
     let queueMap = this.explicitBindings_.get(block.id);
     if (!queueMap) {
       queueMap = new PriorityQueueMap();
@@ -143,6 +146,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    *     not.
    */
   unbindType(block, genericType, explicitType, priority) {
+    genericType = genericType.toLowerCase();
+    explicitType = explicitType.toLowerCase();
     if (this.explicitBindings_.has(block.id)) {
       return this.explicitBindings_.get(block.id).unbind(
           genericType, explicitType, priority);
@@ -204,11 +209,14 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @private
    */
   getBoundType_(block, genericType, connectionToSkip = undefined) {
-    let externalBinding;
+    let externalBinding = {priority: 0};
     if (this.explicitBindings_.has(block.id)) {
       // TODO: Do type unification.
-      externalBinding = this.explicitBindings_.get(block.id)
-          .getBindings(genericType)[0];
+      const externalBindings = this.explicitBindings_.get(block.id)
+          .getBindings(genericType);
+      if (externalBindings) {
+        externalBinding = externalBindings[0];
+      }
       if (externalBinding.priority > OUTPUT_PRIORITY) {
         return externalBinding.value;
       }
@@ -239,7 +247,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
       return boundTypes[0];
     }
 
-    return externalBinding ? externalBinding.value : undefined;
+    return externalBinding.priority ? externalBinding.value : undefined;
   }
 
   /**
