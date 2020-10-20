@@ -224,6 +224,14 @@ suite('NominalConnectionChecker', function() {
       this.assertCanConnect(dogOut, milkMammalIn);
     });
 
+    test('Simple super - statement input', function() {
+
+    });
+
+    test('Simple super - next and prev connections', function() {
+
+    });
+
     test('Multiple supers', function() {
       const [batOut] = this.getBlockOutput('static_bat');
       const [milkMammalIn] = this.getBlockInput('static_milk_mammal');
@@ -525,7 +533,7 @@ suite('NominalConnectionChecker', function() {
       Blockly.defineBlocksWithJsonArray([
         {
           'type': 'static_statement',
-          'message0': 'statement %1',
+          'message0': 'Statement %1',
           'args0': [
             {
               'type': 'input_statement',
@@ -536,8 +544,14 @@ suite('NominalConnectionChecker', function() {
           'style': 'math_blocks',
         },
         {
-          'type': 'static_stack',
-          'message0': 'stack',
+          'type': 'static_generic_stack',
+          'message0': 'Stack',
+          'previousStatement': 'T',
+          'nextStatement': 'T',
+        },
+        {
+          'type': 'static_dog_stack',
+          'message0': 'Dog Stack',
           'previousStatement': 'Dog',
           'nextStatement': 'Dog',
         },
@@ -546,10 +560,11 @@ suite('NominalConnectionChecker', function() {
 
     teardown(function() {
       delete Blockly.Blocks['static_statement'];
-      delete Blockly.Blocks['static_stack'];
+      delete Blockly.Blocks['static_generic_stack'];
+      delete Blockly.Blocks['static_dog_stack'];
     });
 
-    test('Parent valid', function() {
+    test('Output parent valid', function() {
       const [milkMammalIn] = this.getBlockInput('static_milk_mammal');
       const [identityOut, identity] = this.getBlockOutput('static_identity');
       milkMammalIn.connect(identityOut);
@@ -557,7 +572,11 @@ suite('NominalConnectionChecker', function() {
       chai.assert.isTrue(milkMammalIn.isConnected());
     });
 
-    test('Child valid', function() {
+    test('Prev parent valid', function () {
+
+    });
+
+    test('Value child valid', function() {
       const [identityIn, identity] = this.getBlockInput('static_identity');
       const [mammalOut] = this.getBlockOutput('static_mammal');
       identityIn.connect(mammalOut);
@@ -565,21 +584,19 @@ suite('NominalConnectionChecker', function() {
       chai.assert.isTrue(identityIn.isConnected());
     });
 
-    test('Both valid', function() {
-      const [milkMammalIn] = this.getBlockInput('static_milk_mammal');
-      const [identityIn, identity] = this.getBlockInput('static_identity');
-      const identityOut = identity.outputConnection;
-      const [mammalOut] = this.getBlockOutput('static_mammal');
+    test('Statement child valid', function() {
 
-      milkMammalIn.connect(identityOut);
-      identityIn.connect(mammalOut);
-      this.checker.bindType(identity, 'T', 'Mammal');
-
-      chai.assert.isTrue(identityOut.isConnected());
-      chai.assert.isTrue(identityIn.isConnected());
     });
 
-    test('Some children valid', function() {
+    test('Next child valid', function() {
+
+    });
+
+    test('Prev and next valid', function() {
+
+    });
+
+    test('Some value children valid', function() {
       const [selectRandomIn1, selectRandom] =
           this.getBlockInput('static_select_random');
       const selectRandomIn2 = selectRandom.getInput('INPUT2').connection;
@@ -596,7 +613,11 @@ suite('NominalConnectionChecker', function() {
       chai.assert.isFalse(selectRandomIn2.isConnected());
     });
 
-    test('Parent invalid', function() {
+    test('Some statement children valid', function() {
+
+    });
+
+    test('Output parent invalid', function() {
       const [milkMammalIn] = this.getBlockInput('static_milk_mammal');
       const [identityOut, identity] = this.getBlockOutput('static_identity');
       milkMammalIn.connect(identityOut);
@@ -604,7 +625,11 @@ suite('NominalConnectionChecker', function() {
       chai.assert.isFalse(milkMammalIn.isConnected());
     });
 
-    test('Child invalid', function() {
+    test('Prev parent invalid', function() {
+
+    });
+
+    test('Value child invalid', function() {
       const [identityIn, identity] = this.getBlockInput('static_identity');
       const [mammalOut] = this.getBlockOutput('static_mammal');
       identityIn.connect(mammalOut);
@@ -612,54 +637,12 @@ suite('NominalConnectionChecker', function() {
       chai.assert.isFalse(identityIn.isConnected());
     });
 
-    test('Both invalid', function() {
-      const [milkMammalIn] = this.getBlockInput('static_milk_mammal');
-      const [identityIn, identity] = this.getBlockInput('static_identity');
-      const identityOut = identity.outputConnection;
-      const [mammalOut] = this.getBlockOutput('static_mammal');
+    test('Statement child invalid', function() {
 
-      milkMammalIn.connect(identityOut);
-      identityIn.connect(mammalOut);
-      this.checker.bindType(identity, 'T', 'reptile');
-
-      chai.assert.isFalse(identityOut.isConnected());
-      chai.assert.isFalse(identityIn.isConnected());
     });
 
-    test('No output', function() {
-      const [, identity] = this.getBlockOutput('static_identity');
-      identity.setOutput(false);
-      chai.assert.doesNotThrow(() => {
-        this.checker.bindType(identity, 'T', 'mammal');
-      });
-    });
+    test('Next child invalid', function() {
 
-    test('Statement input', function() {
-      const [statementIn, statement] = this.getBlockInput('static_statement');
-      const stackPrev = this.workspace.newBlock('static_stack')
-          .previousConnection;
-      statementIn.connect(stackPrev);
-      this.checker.bindType(statement, 'T', 'reptile');
-      chai.assert.isTrue(statementIn.isConnected());
-    });
-
-    test('Next connection', function() {
-      const stackTop = this.workspace.newBlock('static_stack');
-      const stackNext = stackTop.nextConnection;
-      const stackPrev = this.workspace.newBlock('static_stack')
-          .previousConnection;
-      stackNext.connect(stackPrev);
-      this.checker.bindType(stackTop, 'T', 'reptile');
-      chai.assert.isTrue(stackNext.isConnected());
-    });
-
-    test('Prev connection', function() {
-      const stackBottom = this.workspace.newBlock('static_stack');
-      const stackPrev = stackBottom.previousConnection;
-      const stackNext = this.workspace.newBlock('static_stack').nextConnection;
-      stackNext.connect(stackPrev);
-      this.checker.bindType(stackBottom, 'T', 'reptile');
-      chai.assert.isTrue(stackPrev.isConnected());
     });
   });
 
@@ -681,7 +664,7 @@ suite('NominalConnectionChecker', function() {
     });
 
     suite('Simple, Two blocks', function() {
-      test('Parent explicit, child explicit', function() {
+      test('Output parent explicit, value child explicit', function() {
         const [trainDogIn] = this.getBlockInput('static_train_dog');
         const [dogOut] = this.getBlockOutput('static_dog');
 
@@ -853,6 +836,7 @@ suite('NominalConnectionChecker', function() {
     });
 
     suite('Flow through connections', function() {
+      console.log(this);
       test('A unbound, B unbound, C explicit', function() {
         const [aIn] = this.getBlockInput('static_identity');
         const [bIn, b] = this.getBlockInput('static_identity');
