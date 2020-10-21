@@ -15,6 +15,7 @@ const gulp = require('gulp');
 const jsgl = require('js-green-licenses');
 const path = require('path');
 const rimraf = require('rimraf');
+const header = require('gulp-header');
 
 
 /**
@@ -108,11 +109,16 @@ function publishDryRun(done) {
  */
 function prepareToDeployToGhPages() {
   return gulp
-      .src([
-        './plugins/*/test/index.html',
-        './plugins/*/build/test_bundle.js'],
-      {base: './plugins/'})
-      .pipe(gulp.dest('./gh-pages/plugins/'));
+    .src([
+      './plugins/*/test/index.html',
+      './plugins/*/README.md'
+    ], { base: './plugins/' })
+    // Add front matter tags to index and readme pages for jekyll processing.
+    .pipe(header('---\n---\n'))
+    .pipe(gulp.src([
+      './plugins/*/build/test_bundle.js',
+    ], { base: './plugins/' }))
+    .pipe(gulp.dest('./gh-pages/plugins/'));
 }
 
 /**
