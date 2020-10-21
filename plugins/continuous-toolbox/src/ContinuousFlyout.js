@@ -185,4 +185,66 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       this.selectCategoryByScrollPosition_(-this.workspace_.scrollY);
     }
   }
+
+  /**
+   * Overrides the position function solely to change the x coord in rtl mode.
+   * The base function allows the workspace to go "under" the flyout, so
+   * to calculate the left edge of the flyout in rtl you would just subtract
+   * the flyout width from the total viewWidth to get x. However, in our
+   * flyout, the workspace already starts at the left edge of the flyout, so
+   * we don't need to subtract the flyout width again.
+   * Ideally there would be a smaller method for us to override instead,
+   * but for now we copy/paste this method and make our fixes.
+   *  @override
+   */
+  position() {
+    if (!this.isVisible()) {
+      return;
+    }
+    const targetWorkspaceMetrics = this.targetWorkspace.getMetrics();
+    if (!targetWorkspaceMetrics) {
+      // Hidden components will return null.
+      return;
+    }
+    // Record the height for Blockly.Flyout.getMetrics_
+    this.height_ = targetWorkspaceMetrics.viewHeight;
+
+    const edgeWidth = this.width_ - this.CORNER_RADIUS;
+    const edgeHeight =
+        targetWorkspaceMetrics.viewHeight - 2 * this.CORNER_RADIUS;
+    this.setBackgroundPath_(edgeWidth, edgeHeight);
+
+    // Y is always 0 since this is a vertical flyout.
+    const y = 0;
+    let x = 0;
+    // If this flyout is the toolbox flyout.
+    if (this.targetWorkspace.toolboxPosition == this.toolboxPosition_) {
+      // If there is a category toolbox.
+      if (targetWorkspaceMetrics.toolboxWidth) {
+        if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
+          x = targetWorkspaceMetrics.toolboxWidth;
+        } else {
+          x = targetWorkspaceMetrics.viewWidth;
+        }
+      } else {
+        if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
+          x = 0;
+        } else {
+          x = targetWorkspaceMetrics.viewWidth;
+        }
+      }
+    } else {
+      if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
+        x = 0;
+      } else {
+        // Because the anchor point of the flyout is on the left, but we want
+        // to align the right edge of the flyout with the right edge of the
+        // blocklyDiv, we calculate the full width of the div minus the width
+        // of the flyout.
+        x = targetWorkspaceMetrics.viewWidth +
+            targetWorkspaceMetrics.absoluteLeft - this.width_;
+      }
+    }
+    this.positionAt_(this.width_, this.height_, x, y);
+  }
 }
