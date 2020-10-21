@@ -151,7 +151,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * @return {!Blockly.utils.Metrics} Contains size and position metrics of a
    *     top level workspace.
    * @private
-   * @this Blockly.WorkspaceSvg
+   * @this {Blockly.WorkspaceSvg}
    */
   workspaceGetMetrics_() {
     const toolboxDimensions =
