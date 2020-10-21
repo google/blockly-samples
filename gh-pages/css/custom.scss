@@ -1,36 +1,36 @@
 ---
 ---
 a.button1 {
-  display:inline-block;
-  padding:0.35em 1.2em;
+  display: inline-block;
+  padding: 0.35em 1.2em;
   background-color: #4285F4;
   margin: 1em 0.5em;
-  border-radius:0.12em;
+  border-radius: 0.12em;
   box-sizing: border-box;
-  text-decoration:none;
+  text-decoration: none;
   font-family: 'Google Sans', Roboto, Arial, sans-serif;
-  font-weight:300;
-  color:#FFFFFF;
-  text-align:center;
+  font-weight: 300;
+  color: #FFFFFF;
+  text-align: center;
   transition: all 0.2s;
 }
 
-a.button1:hover{
-  color:#000000;
-  background-color:#FFFFFF;
+a.button1:hover {
+  color: #000000;
+  background-color: #FFFFFF;
 }
 
 span.pluginName {
-  padding:0.35em 1.2em;
+  padding: 0.35em 1.2em;
   display: inline-block;
   margin: 1em 0.5em;
-  border-radius:0.12em;
+  border-radius: 0.12em;
   box-sizing: border-box;
-  text-decoration:none;
+  text-decoration: none;
   font-family: 'Google Sans', Roboto, Arial, sans-serif;
   font-weight: bold;
-  color:#FFFFFF;
-  text-align:center;
+  color: #FFFFFF;
+  text-align: center;
   transition: all 0.2s;
   margin-right: auto;
 }
