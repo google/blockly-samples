@@ -396,11 +396,10 @@ const procedureDefMutator = {
     const caselessName = newName.toLowerCase();
 
     /**
-     * Returns true if the given argDatum is the argDatum associated with this
-     * field, or has a different caseless name than the argDatum associated
-     * with this field. False otherwise.
+     * Returns true if the given argDatum is associated with this field, or has
+     * a different caseless name than the argDatum associated with this field.
      * @param {{model: Blockly.VariableModel, argId:string}} argDatum The
-     *     argDatum we want to make sure is different from the argDatum
+     *     argDatum we want to make sure does not conflict with the argDatum
      *     associated with this field.
      * @return {boolean} True if the given datum does not conflict with the
      *     datum associated with this field.
