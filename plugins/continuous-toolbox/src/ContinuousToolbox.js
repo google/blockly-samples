@@ -29,9 +29,11 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     flyout.show(this.getInitialFlyoutContents_());
     flyout.recordScrollPositions();
 
-    // Replace workspace.getMetrics with a version that measures the flyout
+    // Replace workspace.getMetrics with a version that measures the flyout.
     // Ideally this would be set using the workspace options struct but that
     // is not currently possible.
+    // TODO(https://github.com/google/blockly/issues/4377): Replace via
+    // options struct when possible.
     this.workspace_.getMetrics =
         this.workspaceGetMetrics_.bind(this.workspace_);
   }
@@ -148,6 +150,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * Gets adjusted metrics for the workspace, accounting for the flyout width.
    * This will be set as the WorkspaceSvg's getMetrics function, as there
    * is currently no way to set this using the options struct.
+   * TODO(https://github.com/google/blockly/issues/4377): Replace via options.
    * @return {!Blockly.utils.Metrics} Contains size and position metrics of a
    *     top level workspace.
    * @private

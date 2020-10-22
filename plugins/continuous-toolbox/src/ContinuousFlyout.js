@@ -239,6 +239,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
         if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
           x = targetWorkspaceMetrics.toolboxWidth;
         } else {
+          // TODO(https://github.com/google/blockly/issues/4396): Use a better
+          // API to adjust this value.
+          // This is the only line that changed from the original.
           x = targetWorkspaceMetrics.viewWidth;
         }
       } else {
