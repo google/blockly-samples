@@ -28,6 +28,14 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     const flyout = this.getFlyout();
     flyout.show(this.getInitialFlyoutContents_());
     flyout.recordScrollPositions();
+
+    // Replace workspace.getMetrics with a version that measures the flyout.
+    // Ideally this would be set using the workspace options struct but that
+    // is not currently possible.
+    // TODO(https://github.com/google/blockly/issues/4377): Replace via
+    // options struct when possible.
+    this.workspace_.getMetrics =
+        this.workspaceGetMetrics_.bind(this.workspace_);
   }
 
   /** @override */
@@ -136,6 +144,80 @@ export class ContinuousToolbox extends Blockly.Toolbox {
       return flyout.getClientRect();
     }
     return super.getClientRect();
+  }
+
+  /**
+   * Gets adjusted metrics for the workspace, accounting for the flyout width.
+   * This will be set as the WorkspaceSvg's getMetrics function, as there
+   * is currently no way to set this using the options struct.
+   * TODO(https://github.com/google/blockly/issues/4377): Replace via options.
+   * @return {!Blockly.utils.Metrics} Contains size and position metrics of a
+   *     top level workspace.
+   * @private
+   * @this {Blockly.WorkspaceSvg}
+   */
+  workspaceGetMetrics_() {
+    const toolboxDimensions =
+      Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_);
+    const flyoutDimensions =
+      Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_.getFlyout());
+
+
+    // Contains height and width in CSS pixels.
+    // svgSize is equivalent to the size of the injectionDiv at this point.
+    const svgSize = Blockly.svgSize(this.getParentSvg());
+    const viewSize = {height: svgSize.height, width: svgSize.width};
+    if (this.toolbox_) {
+    // Note: Not actually supported at this time due to ContinunousToolbox
+    // only supporting a vertical flyout. But included for completeness.
+      if (this.toolboxPosition == Blockly.TOOLBOX_AT_TOP ||
+          this.toolboxPosition == Blockly.TOOLBOX_AT_BOTTOM) {
+        viewSize.height -= (toolboxDimensions.height + flyoutDimensions.height);
+      } else if (this.toolboxPosition == Blockly.TOOLBOX_AT_LEFT ||
+          this.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
+        viewSize.width -= (toolboxDimensions.width + flyoutDimensions.width);
+      }
+    }
+
+    // svgSize is now the space taken up by the Blockly workspace, not including
+    // the toolbox.
+    const contentDimensions =
+      Blockly.WorkspaceSvg.getContentDimensions_(this, viewSize);
+
+    let absoluteLeft = 0;
+    if (this.toolbox_ && this.toolboxPosition == Blockly.TOOLBOX_AT_LEFT) {
+      absoluteLeft = toolboxDimensions.width + flyoutDimensions.width;
+    }
+    let absoluteTop = 0;
+    if (this.toolbox_ && this.toolboxPosition == Blockly.TOOLBOX_AT_TOP) {
+      absoluteTop = toolboxDimensions.height + flyoutDimensions.height;
+    }
+
+    const metrics = {
+      contentHeight: contentDimensions.height,
+      contentWidth: contentDimensions.width,
+      contentTop: contentDimensions.top,
+      contentLeft: contentDimensions.left,
+
+      viewHeight: viewSize.height,
+      viewWidth: viewSize.width,
+      viewTop: -this.scrollY,
+      viewLeft: -this.scrollX,
+
+      absoluteTop: absoluteTop,
+      absoluteLeft: absoluteLeft,
+
+      svgHeight: svgSize.height,
+      svgWidth: svgSize.width,
+
+      toolboxWidth: toolboxDimensions.width,
+      toolboxHeight: toolboxDimensions.height,
+      toolboxPosition: this.toolboxPosition,
+
+      flyoutWidth: flyoutDimensions.width,
+      flyoutHeight: flyoutDimensions.height,
+    };
+    return metrics;
   }
 }
 
