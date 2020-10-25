@@ -66,13 +66,6 @@ suite('NominalConnectionChecker', function() {
     this.unbindConnection = function(conn) {
       this.checker.unbindType(conn.getSourceBlock(), 'T');
     };
-
-    this.assertCanConnect = function(conn1, conn2) {
-      chai.assert.isTrue(this.checker.doTypeChecks(conn1, conn2));
-    };
-    this.assertCannotConnect = function(conn1, conn2) {
-      chai.assert.isFalse(this.checker.doTypeChecks(conn1, conn2));
-    };
   });
 
   teardown(function() {
@@ -81,371 +74,391 @@ suite('NominalConnectionChecker', function() {
     }
   });
 
-  suite('Simple subtyping', function() {
-    clearTwoBlockTests();
-
-    twoBlockTest('Exact types', function() {
-      const dogIn = this.getOuterInput('dog');
-      const dogOut = this.getInnerOutput('dog');
-      this.assertCanConnect(dogIn, dogOut);
-    });
-
-    twoBlockTest('Simple super', function() {
-      const mammalIn = this.getOuterInput('mammal');
-      const dogOut = this.getInnerOutput('dog');
-      this.assertCanConnect(mammalIn, dogOut);
-    });
-
-    twoBlockTest('Multiple supers', function() {
-      const mammalIn = this.getOuterInput('mammal');
-      const flyingAnimalIn = this.getOuterInput('flyinganimal');
-      const batOut = this.getInnerOutput('bat');
-      this.assertCanConnect(mammalIn, batOut);
-      this.assertCanConnect(flyingAnimalIn, batOut);
-    });
-
-    twoBlockTest('Deep supers', function() {
-      const animalIn = this.getOuterInput('animal');
-      const dogOut = this.getInnerOutput('dog');
-      this.assertCanConnect(animalIn, dogOut);
-    });
-
-    twoBlockTest('Unrelated types', function() {
-      const dogIn = this.getOuterInput('dog');
-      const batOut = this.getInnerOutput('bat');
-      this.assertCannotConnect(dogIn, batOut);
-    });
-
-    twoBlockTest('Backwards types', function() {
-      const dogIn = this.getOuterInput('dog');
-      const mammalOut = this.getInnerOutput('mammal');
-      this.assertCannotConnect(dogIn, mammalOut);
-    });
-
-    runTwoBlockTests();
-  });
-
-  suite('Simple generics', function() {
-    // Both explicit is the other suite.
-
-    clearTwoBlockTests();
-
-    twoBlockTest('Outer explicit, inner unbound', function() {
-      const dogIn = this.getOuterInput('dog');
-      const genericOut = this.getInnerOutput('t');
-      this.assertCanConnect(dogIn, genericOut);
-    });
-
-    twoBlockTest('Outer explicit, inner bound sub', function() {
-      const mammalIn = this.getOuterInput('mammal');
-      const genericOut = this.getInnerOutput('t');
-      this.bindConnection(genericOut, 'dog');
-      this.assertCanConnect(mammalIn, genericOut);
-    });
-
-    twoBlockTest('Outer explicit, inner bound super', function() {
-      const dogIn = this.getOuterInput('dog');
-      const genericOut = this.getInnerOutput('t');
-      this.bindConnection(genericOut, 'mammal');
-      this.assertCannotConnect(dogIn, genericOut);
-    });
-
-    twoBlockTest('Outer unbound, inner explicit', function() {
-      const genericIn = this.getOuterInput('t');
-      const dogOut = this.getInnerOutput('dog');
-      this.assertCanConnect(genericIn, dogOut);
-    });
-
-    twoBlockTest('Outer unbound, inner unbound', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
-      this.assertCanConnect(genericIn, genericOut);
-    });
-
-    twoBlockTest('Outer unbound, inner bound', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
-      this.bindConnection(genericOut, 'dog');
-      this.assertCanConnect(genericIn, genericOut);
-    });
-
-    twoBlockTest('Outer bound, child explicit sub', function() {
-      const genericIn = this.getOuterInput('t');
-      const dogOut = this.getInnerOutput('dog');
-      this.bindConnection(genericIn, 'mammal');
-      this.assertCanConnect(genericIn, dogOut);
-    });
-
-    twoBlockTest('Outer bound, child explicit super', function() {
-      const genericIn = this.getOuterInput('t');
-      const dogOut = this.getInnerOutput('mammal');
-      this.bindConnection(genericIn, 'dog');
-      this.assertCannotConnect(genericIn, dogOut);
-    });
-
-    twoBlockTest('Outer bound, child unbound', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
-      this.bindConnection(genericIn, 'dog');
-      this.assertCanConnect(genericIn, genericOut);
-    });
-
-    twoBlockTest('Outer bound, child bound sub', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
-      this.bindConnection(genericIn, 'mammal');
-      this.bindConnection(genericIn, 'dog');
-      this.assertCanConnect(genericIn, genericOut);
-    });
-
-    twoBlockTest('Outer bound, child bound super', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
-      this.bindConnection(genericIn, 'dog');
-      this.bindConnection(genericIn, 'mammal');
-      this.assertCanConnect(genericIn, genericOut);
-    });
-
-    runTwoBlockTests();
-  });
-
-  suite('Multiple explicit types on generics', function() {
+  suite('doTypeChecks', function() {
     setup(function() {
-      const hierarchy = {
-        'typeA': {},
-        'typeB': {},
-        'typeC': {
-          'fulfills': ['typeB', 'typeA'],
-        },
-        'typeD': {
-          'fulfills': ['typeB', 'typeA'],
-        },
-        'typeE': {},
-        'typeF': {},
-        'typeG': {
-          'fulfills': ['typeE', 'typeF'],
-        },
-        'typeH': {
-          'fulfills': ['typeE', 'typeF'],
-        },
+      this.assertCanConnect = function(conn1, conn2) {
+        chai.assert.isTrue(this.checker.doTypeChecks(conn1, conn2),
+            'Expected to be able to connect ' + conn2.name + ' to ' +
+            conn1.name);
       };
-
-      const types = Object.keys(hierarchy);
-      this.multiTypeBlocks = createBlockDefs(types);
-      Blockly.defineBlocksWithJsonArray(this.multiTypeBlocks);
-
-      this.checker.init(hierarchy);
+      this.assertCannotConnect = function(conn1, conn2) {
+        chai.assert.isFalse(this.checker.doTypeChecks(conn1, conn2),
+            'Expected to be unable to connect ' + conn2.name + ' to ' +
+             conn1.name);
+      };
     });
 
-    teardown(function() {
-      for (const block of this.multiTypeBlocks) {
-        delete Blockly.Blocks[block.type];
-      }
+    suite('Simple subtyping', function() {
+      clearTwoBlockTests();
+
+      twoBlockTest('Exact types', function() {
+        const dogIn = this.getOuterInput('dog');
+        const dogOut = this.getInnerOutput('dog');
+        this.assertCanConnect(dogIn, dogOut);
+      });
+
+      twoBlockTest('Simple super', function() {
+        const mammalIn = this.getOuterInput('mammal');
+        const dogOut = this.getInnerOutput('dog');
+        this.assertCanConnect(mammalIn, dogOut);
+      });
+
+      twoBlockTest('Multiple supers', function() {
+        const mammalIn = this.getOuterInput('mammal');
+        const flyingAnimalIn = this.getOuterInput('flyinganimal');
+        const batOut = this.getInnerOutput('bat');
+        this.assertCanConnect(mammalIn, batOut);
+        this.assertCanConnect(flyingAnimalIn, batOut);
+      });
+
+      twoBlockTest('Deep supers', function() {
+        const animalIn = this.getOuterInput('animal');
+        const dogOut = this.getInnerOutput('dog');
+        this.assertCanConnect(animalIn, dogOut);
+      });
+
+      twoBlockTest('Unrelated types', function() {
+        const dogIn = this.getOuterInput('dog');
+        const batOut = this.getInnerOutput('bat');
+        this.assertCannotConnect(dogIn, batOut);
+      });
+
+      twoBlockTest('Backwards types', function() {
+        const dogIn = this.getOuterInput('dog');
+        const mammalOut = this.getInnerOutput('mammal');
+        this.assertCannotConnect(dogIn, mammalOut);
+      });
+
+      runTwoBlockTests();
     });
 
-    clearSiblingTests();
+    suite('Simple generics', function() {
+      // Both explicit is the other suite.
 
-    siblingTest('Multi main, compat inner', function() {
-      const main = this.getMain('t');
-      const typeCOut = this.getInnerOutput('typeC');
-      const typeDOut = this.getInnerOutput('typeD');
-      const typeAOut = this.getInnerOutput('typeA');
+      clearTwoBlockTests();
 
-      this.bindConnection(main.out, 'typeA');
-      main.in1.connect(typeCOut);
-      main.in2.connect(typeDOut);
-      this.unbindConnection(main.out);
+      twoBlockTest('Outer explicit, inner unbound', function() {
+        const dogIn = this.getOuterInput('dog');
+        const tOut = this.getInnerOutput('t');
+        this.assertCanConnect(dogIn, tOut);
+      });
 
-      this.assertCanConnect(main.in3, typeAOut);
+      twoBlockTest('Outer explicit, inner bound sub', function() {
+        const mammalIn = this.getOuterInput('mammal');
+        const tOut = this.getInnerOutput('t');
+        this.bindConnection(tOut, 'dog');
+        this.assertCanConnect(mammalIn, tOut);
+      });
+
+      twoBlockTest('Outer explicit, inner bound super', function() {
+        const dogIn = this.getOuterInput('dog');
+        const tOut = this.getInnerOutput('t');
+        this.bindConnection(tOut, 'mammal');
+        this.assertCannotConnect(dogIn, tOut);
+      });
+
+      twoBlockTest('Outer unbound, inner explicit', function() {
+        const tIn = this.getOuterInput('t');
+        const dogOut = this.getInnerOutput('dog');
+        this.assertCanConnect(tIn, dogOut);
+      });
+
+      twoBlockTest('Outer unbound, inner unbound', function() {
+        const tIn = this.getOuterInput('t');
+        const tOut = this.getInnerOutput('t');
+        this.assertCanConnect(tIn, tOut);
+      });
+
+      twoBlockTest('Outer unbound, inner bound', function() {
+        const tIn = this.getOuterInput('t');
+        const tOut = this.getInnerOutput('t');
+        this.bindConnection(tOut, 'dog');
+        this.assertCanConnect(tIn, tOut);
+      });
+
+      twoBlockTest('Outer bound, child explicit sub', function() {
+        const tIn = this.getOuterInput('t');
+        const dogOut = this.getInnerOutput('dog');
+        this.bindConnection(tIn, 'mammal');
+        this.assertCanConnect(tIn, dogOut);
+      });
+
+      twoBlockTest('Outer bound, child explicit super', function() {
+        const tIn = this.getOuterInput('t');
+        const dogOut = this.getInnerOutput('mammal');
+        this.bindConnection(tIn, 'dog');
+        this.assertCannotConnect(tIn, dogOut);
+      });
+
+      twoBlockTest('Outer bound, child unbound', function() {
+        const tIn = this.getOuterInput('t');
+        const tOut = this.getInnerOutput('t');
+        this.bindConnection(tIn, 'dog');
+        this.assertCanConnect(tIn, tOut);
+      });
+
+      twoBlockTest('Outer bound, child bound sub', function() {
+        const tIn = this.getOuterInput('t');
+        const tOut = this.getInnerOutput('t');
+        this.bindConnection(tIn, 'mammal');
+        this.bindConnection(tIn, 'dog');
+        this.assertCanConnect(tIn, tOut);
+      });
+
+      twoBlockTest('Outer bound, child bound super', function() {
+        const tIn = this.getOuterInput('t');
+        const tOut = this.getInnerOutput('t');
+        this.bindConnection(tIn, 'dog');
+        this.bindConnection(tIn, 'mammal');
+        this.assertCanConnect(tIn, tOut);
+      });
+
+      runTwoBlockTests();
     });
 
-    siblingTest('Multi main, incompat inner', function() {
-      const main = this.getMain('t');
-      const typeCOut = this.getInnerOutput('typeC');
-      const typeDOut = this.getInnerOutput('typeD');
-      const typeEOut = this.getInnerOutput('typeE');
+    suite('Multiple explicit types on generics', function() {
+      setup(function() {
+        const hierarchy = {
+          'typeA': {},
+          'typeB': {},
+          'typeC': {
+            'fulfills': ['typeB', 'typeA'],
+          },
+          'typeD': {
+            'fulfills': ['typeB', 'typeA'],
+          },
+          'typeE': {},
+          'typeF': {},
+          'typeG': {
+            'fulfills': ['typeE', 'typeF'],
+          },
+          'typeH': {
+            'fulfills': ['typeE', 'typeF'],
+          },
+        };
 
-      this.bindConnection(main.out, 'typeA');
-      main.in1.connect(typeCOut);
-      main.in2.connect(typeDOut);
-      this.unbindConnection(main.out);
+        const types = Object.keys(hierarchy);
+        this.multiTypeBlocks = createBlockDefs(types);
+        Blockly.defineBlocksWithJsonArray(this.multiTypeBlocks);
 
-      this.assertCannotConnect(main.in3, typeEOut);
+        this.checker.init(hierarchy);
+      });
+
+      teardown(function() {
+        for (const block of this.multiTypeBlocks) {
+          delete Blockly.Blocks[block.type];
+        }
+      });
+
+      clearSiblingTests();
+
+      siblingTest('Multi main, compat inner', function() {
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+        const typeAOut = this.getInnerOutput('typeA');
+
+        this.bindConnection(t.out, 'typeA');
+        t.in1.connect(typeCOut);
+        t.in2.connect(typeDOut);
+        this.unbindConnection(t.out);
+
+        this.assertCanConnect(t.in3, typeAOut);
+      });
+
+      siblingTest('Multi main, incompat inner', function() {
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+        const typeEOut = this.getInnerOutput('typeE');
+
+        this.bindConnection(t.out, 'typeA');
+        t.in1.connect(typeCOut);
+        t.in2.connect(typeDOut);
+        this.unbindConnection(t.out);
+
+        this.assertCannotConnect(t.in3, typeEOut);
+      });
+
+      siblingTest('Compat outer, multi main', function() {
+        const typeAIn = this.getOuterInput('typeA');
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        this.bindConnection(t.out, 'typeA');
+        t.in1.connect(typeCOut);
+        t.in2.connect(typeDOut);
+        this.unbindConnection(t.out);
+
+        this.assertCanConnect(typeAIn, t.out);
+      });
+
+      siblingTest('Incompat outer, multi main', function() {
+        const typeEIn = this.getOuterInput('typeE');
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        this.bindConnection(t.out, 'typeA');
+        t.in1.connect(typeCOut);
+        t.in2.connect(typeDOut);
+        this.unbindConnection(t.out);
+
+        this.assertCannotConnect(typeEIn, t.out);
+      });
+
+      siblingTest('2 multi mains, compatible', function() {
+        const t1 = this.getMain('t', 't1');
+        const t2 = this.getMain('t', 't2');
+        const typeCOut1 = this.getInnerOutput('typeC');
+        const typeDOut1 = this.getInnerOutput('typeD');
+        const typeCOut2 = this.getInnerOutput('typeC');
+        const typeDOut2 = this.getInnerOutput('typeD');
+
+        this.bindConnection(t1.out, 'typeA');
+        t1.in1.connect(typeCOut1);
+        t1.in2.connect(typeDOut1);
+        this.unbindConnection(t1.out);
+
+        this.bindConnection(t2.out, 'typeA');
+        t2.in1.connect(typeCOut2);
+        t2.in2.connect(typeDOut2);
+        this.unbindConnection(t2.out);
+
+        this.assertCanConnect(t1.in3, t2.out);
+      });
+
+      siblingTest('2 multi mains, incompatible', function() {
+        const t1 = this.getMain('t', 't1');
+        const t2 = this.getMain('t', 't2');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+        const typeGOut = this.getInnerOutput('typeG');
+        const typeHOut = this.getInnerOutput('typeH');
+
+        this.bindConnection(t1.out, 'typeA');
+        t1.in1.connect(typeCOut);
+        t1.in2.connect(typeDOut);
+        this.unbindConnection(t1.out);
+
+        this.bindConnection(t2.out, 'typeE');
+        t2.in1.connect(typeGOut);
+        t2.in2.connect(typeHOut);
+        this.unbindConnection(t2.out);
+
+        this.assertCannotConnect(t1.in3, t2.out);
+      });
+
+      runSiblingTests();
     });
-
-    siblingTest('Compat outer, multi main', function() {
-      const typeAIn = this.getOuterInput('typeA');
-      const main = this.getMain('t');
-      const typeCOut = this.getInnerOutput('typeC');
-      const typeDOut = this.getInnerOutput('typeD');
-
-      this.bindConnection(main.out, 'typeA');
-      main.in1.connect(typeCOut);
-      main.in2.connect(typeDOut);
-      this.unbindConnection(main.out);
-
-      this.assertCanConnect(typeAIn, main.out);
-    });
-
-    siblingTest('Incompat outer, multi main', function() {
-      const typeEIn = this.getOuterInput('typeE');
-      const main = this.getMain('t');
-      const typeCOut = this.getInnerOutput('typeC');
-      const typeDOut = this.getInnerOutput('typeD');
-
-      this.bindConnection(main.out, 'typeA');
-      main.in1.connect(typeCOut);
-      main.in2.connect(typeDOut);
-      this.unbindConnection(main.out);
-
-      this.assertCannotConnect(typeEIn, main.out);
-    });
-
-    siblingTest('2 multi mains, compatible', function() {
-      const main1 = this.getMain('t');
-      const main2 = this.getMain('t');
-      const typeCOut1 = this.getInnerOutput('typeC');
-      const typeDOut1 = this.getInnerOutput('typeD');
-      const typeCOut2 = this.getInnerOutput('typeC');
-      const typeDOut2 = this.getInnerOutput('typeD');
-
-      this.bindConnection(main1.out, 'typeA');
-      main1.in1.connect(typeCOut1);
-      main1.in2.connect(typeDOut1);
-      this.unbindConnection(main1.out);
-
-      this.bindConnection(main2.out, 'typeA');
-      main2.in1.connect(typeCOut2);
-      main2.in2.connect(typeDOut2);
-      this.unbindConnection(main2.out);
-
-      this.assertCanConnect(main1.in3, main2.out);
-    });
-
-    siblingTest('2 multi mains, incompatible', function() {
-      const main1 = this.getMain('t');
-      const main2 = this.getMain('t');
-      const typeCOut = this.getInnerOutput('typeC');
-      const typeDOut = this.getInnerOutput('typeD');
-      const typeGOut = this.getInnerOutput('typeG');
-      const typeHOut = this.getInnerOutput('typeH');
-
-      this.bindConnection(main1.out, 'typeA');
-      main1.in1.connect(typeCOut);
-      main1.in2.connect(typeDOut);
-      this.unbindConnection(main1.out);
-
-      this.bindConnection(main2.out, 'typeE');
-      main2.in1.connect(typeGOut);
-      main2.in2.connect(typeHOut);
-      this.unbindConnection(main2.out);
-
-      this.assertCannotConnect(main1.in3, main2.out);
-    });
-
-    runSiblingTests();
   });
 
-  suite('Kicking children on programmatic bind', function() {
-    setup(function() {
-      this.assertIsConnected = function(connection) {
-        chai.assert.isTrue(connection.isConnected());
-      };
-      this.assertIsNotConnected = function(connection) {
-        chai.assert.isFalse(connection.isConnected());
-      };
+  suite('bindType', function() {
+    suite('Disconnect connections', function() {
+      setup(function() {
+        this.assertIsConnected = function(conn) {
+          chai.assert.isTrue(conn.isConnected(),
+              'Expected ' + conn.name + ' to be connected.');
+        };
+        this.assertIsNotConnected = function(conn) {
+          chai.assert.isFalse(conn.isConnected(),
+              'Expected ' + conn.name + ' to be unconnected.');
+        };
+      });
+
+      clearThreeBlockTests();
+
+      threeBlockTest('Outer valid, bind main, inner valid', function() {
+        const dogIn = this.getOuterInput('dog');
+        const t = this.getMain('t');
+        const dogOut = this.getInnerOutput('dog');
+
+        dogIn.connect(t.out);
+        t.in.connect(dogOut);
+        this.bindConnection(t.out, 'dog');
+
+        this.assertIsConnected(t.out);
+        this.assertIsConnected(t.in);
+      });
+
+      threeBlockTest('Outer valid, bind main, inner invalid', function() {
+        const mammalIn = this.getOuterInput('mammal');
+        const t = this.getMain('t');
+        const catOut = this.getInnerOutput('cat');
+
+        mammalIn.connect(t.out);
+        t.in.connect(catOut);
+        this.bindConnection(t.out, 'dog');
+
+        this.assertIsConnected(t.out);
+        this.assertIsNotConnected(t.in);
+      });
+
+      threeBlockTest('Outer invalid, bind main, inner valid', function() {
+        const mammalIn = this.getOuterInput('mammal');
+        const t = this.getMain('t');
+        const batOut = this.getInnerOutput('bat');
+
+        mammalIn.connect(t.out);
+        t.in.connect(batOut);
+        this.bindConnection(t.out, 'flyinganimal');
+
+        this.assertIsNotConnected(t.out);
+        this.assertIsConnected(t.in);
+      });
+
+      threeBlockTest('Outer invalid, bind main, inner invalid', function() {
+        const dogIn = this.getOuterInput('dog');
+        const t = this.getMain('t');
+        const dogOut = this.getInnerOutput('dog');
+
+        dogIn.connect(t.out);
+        t.in.connect(dogOut);
+        this.bindConnection(t.out, 'cat');
+
+        this.assertIsNotConnected(t.out);
+        this.assertIsNotConnected(t.in);
+      });
+
+      runThreeBlockTests();
+
+      clearSiblingTests();
+
+      siblingTest('Bind main, some inners valid', function() {
+        const t = this.getMain('t');
+        const dogOut = this.getInnerOutput('dog');
+        const catOut = this.getInnerOutput('cat');
+
+        this.bindConnection(t.out, 'mammal');
+        t.in1.connect(dogOut);
+        t.in2.connect(catOut);
+        this.unbindConnection(t.out);
+        this.bindConnection(t.out, 'dog');
+
+        this.assertIsConnected(t.in1);
+        this.assertIsNotConnected(t.in2);
+      });
+
+      runSiblingTests();
     });
-
-    clearThreeBlockTests();
-
-    threeBlockTest('Outer valid, bind main, inner valid', function() {
-      const dogIn = this.getOuterInput('dog');
-      const main = this.getMain('t');
-      const dogOut = this.getInnerOutput('dog');
-
-      dogIn.connect(main.out);
-      main.in.connect(dogOut);
-      this.bindConnection(main.out, 'dog');
-
-      this.assertIsConnected(main.out);
-      this.assertIsConnected(main.in);
-    });
-
-    threeBlockTest('Outer valid, bind main, inner invalid', function() {
-      const mammalIn = this.getOuterInput('mammal');
-      const main = this.getMain('t');
-      const catOut = this.getInnerOutput('cat');
-
-      mammalIn.connect(main.out);
-      main.in.connect(catOut);
-      this.bindConnection(main.out, 'dog');
-
-      this.assertIsConnected(main.out);
-      this.assertIsNotConnected(main.in);
-    });
-
-    threeBlockTest('Outer invalid, bind main, inner valid', function() {
-      const mammalIn = this.getOuterInput('mammal');
-      const main = this.getMain('t');
-      const batOut = this.getInnerOutput('bat');
-
-      mammalIn.connect(main.out);
-      main.in.connect(batOut);
-      this.bindConnection(main.out, 'flyinganimal');
-
-      this.assertIsNotConnected(main.out);
-      this.assertIsConnected(main.in);
-    });
-
-    threeBlockTest('Outer invalid, bind main, inner invalid', function() {
-      const dogIn = this.getOuterInput('dog');
-      const main = this.getMain('t');
-      const dogOut = this.getInnerOutput('dog');
-
-      dogIn.connect(main.out);
-      main.in.connect(dogOut);
-      this.bindConnection(main.out, 'cat');
-
-      this.assertIsNotConnected(main.out);
-      this.assertIsNotConnected(main.in);
-    });
-
-    runThreeBlockTests();
-
-    clearSiblingTests();
-
-    siblingTest('Bind main, some inners valid', function() {
-      const main = this.getMain('t');
-      const dogOut = this.getInnerOutput('dog');
-      const catOut = this.getInnerOutput('cat');
-
-      this.bindConnection(main.out, 'mammal');
-      main.in1.connect(dogOut);
-      main.in2.connect(catOut);
-      this.unbindConnection(main.out);
-      this.bindConnection(main.out, 'dog');
-
-      this.assertIsConnected(main.in1);
-      this.assertIsNotConnected(main.in2);
-    });
-
-    runSiblingTests();
   });
 
-  // This suite checks that bindings get updated correctly. It doesn't have
-  // anything to do with compatibility.
   suite('getExplicitTypes', function() {
     setup(function() {
       this.assertNoType = function(conn) {
         const explicitTypes = this.checker.getExplicitTypes(
             conn.getSourceBlock(), 'T');
-        chai.assert.isArray(explicitTypes);
-        chai.assert.isEmpty(explicitTypes);
+        chai.assert.isArray(explicitTypes,
+            'Expected getExplicitTypes to return an array.');
+        chai.assert.isEmpty(explicitTypes,
+            'Expected ' + conn.name + ' to not have a type.');
       };
-      this.assertHasType = function(conn, binding) {
+      this.assertHasType = function(conn, type) {
         const explicitTypes = this.checker.getExplicitTypes(
             conn.getSourceBlock(), 'T');
-        chai.assert.include(explicitTypes, binding);
+        chai.assert.include(explicitTypes, type,
+            'Expected ' + conn.name + ' to have type ' + type + '.');
       };
     });
 
@@ -481,16 +494,16 @@ suite('NominalConnectionChecker', function() {
 
         twoBlockTest('Outer explicit, inner bound', function() {
           const mammalIn = this.getOuterInput('mammal');
-          const genericOut = this.getInnerOutput('t');
-          this.bindConnection(genericOut, 'dog');
+          const tOut = this.getInnerOutput('t');
+          this.bindConnection(tOut, 'dog');
 
-          mammalIn.connect(genericOut);
+          mammalIn.connect(tOut);
           this.assertNoType(mammalIn);
-          this.assertHasType(genericOut, 'dog');
+          this.assertHasType(tOut, 'dog');
 
           mammalIn.disconnect();
           this.assertNoType(mammalIn);
-          this.assertHasType(genericOut, 'dog');
+          this.assertHasType(tOut, 'dog');
         });
 
         twoBlockTest('Outer unbound, inner explicit', function() {
@@ -811,92 +824,92 @@ suite('NominalConnectionChecker', function() {
 
         siblingTest('Flow to sibling, explicit', function() {
           const main = this.getMain('t');
-          const genericOut = this.getInnerOutput('t');
+          const tOut = this.getInnerOutput('t');
           const dogOut = this.getInnerOutput('dog');
 
-          main.in1.connect(genericOut);
+          main.in1.connect(tOut);
           this.assertNoType(main.in1);
-          this.assertNoType(genericOut);
+          this.assertNoType(tOut);
 
           main.in2.connect(dogOut);
           this.assertHasType(main.in2, 'dog');
-          this.assertHasType(genericOut, 'dog');
+          this.assertHasType(tOut, 'dog');
 
           main.in2.disconnect();
           this.assertNoType(main.in2);
-          this.assertNoType(genericOut);
+          this.assertNoType(tOut);
         });
 
         siblingTest('Flow to sibling, bound', function() {
           const main = this.getMain('t');
-          const genericOut1 = this.getInnerOutput('t');
-          const genericOut2 = this.getInnerOutput('t');
-          this.bindConnection(genericOut2, 'dog');
+          const tOut1 = this.getInnerOutput('t');
+          const tOut2 = this.getInnerOutput('t');
+          this.bindConnection(tOut2, 'dog');
 
-          main.in1.connect(genericOut1);
+          main.in1.connect(tOut1);
           this.assertNoType(main.in1);
-          this.assertNoType(genericOut1);
+          this.assertNoType(tOut1);
 
-          main.in2.connect(genericOut2);
+          main.in2.connect(tOut2);
           this.assertHasType(main.in2, 'dog');
-          this.assertHasType(genericOut1, 'dog');
+          this.assertHasType(tOut1, 'dog');
 
           main.in2.disconnect();
           this.assertNoType(main.in1);
-          this.assertNoType(genericOut1);
+          this.assertNoType(tOut1);
         });
 
         siblingTest('Flow to parsib, explicit', function() {
           const main1 = this.getMain('t');
           const main2 = this.getMain('t');
-          const genericOut = this.getInnerOutput('t');
+          const tOut = this.getInnerOutput('t');
           const dogOut = this.getInnerOutput('dog');
 
-          main1.in1.connect(genericOut);
+          main1.in1.connect(tOut);
           this.assertNoType(main1.in1);
-          this.assertNoType(genericOut);
+          this.assertNoType(tOut);
 
           main1.in2.connect(main2.out);
           this.assertNoType(main1.in1);
           this.assertNoType(main2.out);
-          this.assertNoType(genericOut);
+          this.assertNoType(tOut);
 
           main2.in1.connect(dogOut);
           this.assertHasType(main1.in1, 'dog', 'main1.in1');
           this.assertHasType(main2.in1, 'dog', 'main2.in2');
-          this.assertHasType(genericOut, 'dog', 'genericOut');
+          this.assertHasType(tOut, 'dog', 'tOut');
 
           main2.in1.disconnect();
           this.assertNoType(main1.in1);
           this.assertNoType(main2.in1);
-          this.assertNoType(genericOut);
+          this.assertNoType(tOut);
         });
 
         siblingTest('Flow to parsib, bound', function() {
           const main1 = this.getMain('t');
           const main2 = this.getMain('t');
-          const genericOut1 = this.getInnerOutput('t');
-          const genericOut2 = this.getInnerOutput('t');
-          this.bindConnection(genericOut2, 'dog');
+          const tOut1 = this.getInnerOutput('t');
+          const tOut2 = this.getInnerOutput('t');
+          this.bindConnection(tOut2, 'dog');
 
-          main1.in1.connect(genericOut1);
+          main1.in1.connect(tOut1);
           this.assertNoType(main1.in1);
-          this.assertNoType(genericOut1);
+          this.assertNoType(tOut1);
 
           main1.in2.connect(main2.out);
           this.assertNoType(main1.in1);
           this.assertNoType(main2.out);
-          this.assertNoType(genericOut1);
+          this.assertNoType(tOut1);
 
-          main2.in1.connect(genericOut2);
+          main2.in1.connect(tOut2);
           this.assertHasType(main1.in1, 'dog');
           this.assertHasType(main2.in1, 'dog');
-          this.assertHasType(genericOut1, 'dog');
+          this.assertHasType(tOut1, 'dog');
 
           main2.in1.disconnect();
           this.assertNoType(main1.in1);
           this.assertNoType(main2.in1);
-          this.assertNoType(genericOut1);
+          this.assertNoType(tOut1);
         });
 
         runSiblingTests();
@@ -962,15 +975,15 @@ suite('NominalConnectionChecker', function() {
           const main = this.getMain('t');
           const dogOut = this.getInnerOutput('dog');
           const catOut = this.getInnerOutput('cat');
-          const genericOut = this.getInnerOutput('t');
+          const tOut = this.getInnerOutput('t');
 
           this.bindConnection(main.out, 'mammal');
           main.in1.connect(dogOut);
           main.in2.connect(catOut);
-          main.in3.connect(genericOut);
+          main.in3.connect(tOut);
           this.unbindConnection(main.out);
 
-          this.assertHasType(genericOut, 'mammal');
+          this.assertHasType(tOut, 'mammal');
         });
 
         siblingTest('Parsibs', function() {
@@ -978,16 +991,16 @@ suite('NominalConnectionChecker', function() {
           const main2 = this.getMain('t');
           const dogOut = this.getInnerOutput('dog');
           const catOut = this.getInnerOutput('cat');
-          const genericOut = this.getInnerOutput('t');
+          const tOut = this.getInnerOutput('t');
 
           this.bindConnection(main1.out, 'mammal');
           main1.in1.connect(dogOut);
           main1.in2.connect(catOut);
           main1.in3.connect(main2.out);
-          main2.in1.connect(genericOut);
+          main2.in1.connect(tOut);
           this.unbindConnection(main1.out);
 
-          this.assertHasType(genericOut, 'mammal');
+          this.assertHasType(tOut, 'mammal');
         });
 
         siblingTest('Siblings and parsibs', function() {
@@ -995,16 +1008,16 @@ suite('NominalConnectionChecker', function() {
           const main2 = this.getMain('t');
           const dogOut = this.getInnerOutput('dog');
           const catOut = this.getInnerOutput('cat');
-          const genericOut = this.getInnerOutput('t');
+          const tOut = this.getInnerOutput('t');
 
           this.bindConnection(main1.out, 'mammal');
           main1.in1.connect(dogOut);
           main1.in2.connect(main2.out);
           main2.in1.connect(catOut);
-          main2.in2.connect(genericOut);
+          main2.in2.connect(tOut);
           this.unbindConnection(main1.out);
 
-          this.assertHasType(genericOut, 'mammal');
+          this.assertHasType(tOut, 'mammal');
         });
 
         runSiblingTests();
@@ -1016,12 +1029,15 @@ suite('NominalConnectionChecker', function() {
     setup(function() {
       this.assertNoType = function(conn) {
         const explicitTypes = this.checker.getExplicitTypesOfConnection(conn);
-        chai.assert.isArray(explicitTypes);
-        chai.assert.isEmpty(explicitTypes);
+        chai.assert.isArray(explicitTypes,
+            'Expected getExplicitTypesOfConnection to return an array.');
+        chai.assert.isEmpty(explicitTypes,
+            'Expected ' + conn.name + ' to not have a type.');
       };
       this.assertHasType = function(conn, type) {
         chai.assert.include(
-            this.checker.getExplicitTypesOfConnection(conn), type);
+            this.checker.getExplicitTypesOfConnection(conn), type,
+            'Expected ' + conn.name + ' to have type ' + type + '.');
       };
     });
 
@@ -1036,40 +1052,40 @@ suite('NominalConnectionChecker', function() {
     });
 
     twoBlockTest('Unbound generic', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
+      const tIn = this.getOuterInput('t');
+      const tOut = this.getInnerOutput('t');
 
-      this.assertNoType(genericIn);
-      this.assertNoType(genericOut);
+      this.assertNoType(tIn);
+      this.assertNoType(tOut);
     });
 
     twoBlockTest('Programmatically bound', function() {
-      const genericIn = this.getOuterInput('t');
-      const genericOut = this.getInnerOutput('t');
+      const tIn = this.getOuterInput('t');
+      const tOut = this.getInnerOutput('t');
 
-      this.bindConnection(genericIn, 'dog');
-      this.bindConnection(genericOut, 'dog');
+      this.bindConnection(tIn, 'dog');
+      this.bindConnection(tOut, 'dog');
 
-      this.assertHasType(genericIn, 'dog');
-      this.assertHasType(genericOut, 'dog');
+      this.assertHasType(tIn, 'dog');
+      this.assertHasType(tOut, 'dog');
     });
 
     twoBlockTest('Explicit inner', function() {
-      const genericIn = this.getOuterInput('t');
+      const tIn = this.getOuterInput('t');
       const dogOut = this.getInnerOutput('dog');
 
-      genericIn.connect(dogOut);
+      tIn.connect(dogOut);
 
-      this.assertHasType(genericIn, 'dog');
+      this.assertHasType(tIn, 'dog');
     });
 
     twoBlockTest('Explicit outer', function() {
       const dogIn = this.getOuterInput('dog');
-      const genericOut = this.getInnerOutput('t');
+      const tOut = this.getInnerOutput('t');
 
-      dogIn.connect(genericOut);
+      dogIn.connect(tOut);
 
-      this.assertHasType(genericOut, 'dog');
+      this.assertHasType(tOut, 'dog');
     });
 
     runTwoBlockTests();
