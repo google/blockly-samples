@@ -386,7 +386,7 @@ suite('NominalConnectionChecker', function() {
       this.assertIsConnected(main.in);
     });
 
-    threeBlockTest.skip('Outer valid, bind main, inner invalid', function() {
+    threeBlockTest('Outer valid, bind main, inner invalid', function() {
       const mammalIn = this.getOuterInput('mammal');
       const main = this.getMain('t');
       const catOut = this.getInnerOutput('cat');
@@ -496,16 +496,16 @@ suite('NominalConnectionChecker', function() {
 
         twoBlockTest('Outer explicit, inner bound', function() {
           const mammalIn = this.getOuterInput('mammal');
-          const identityOut = this.getInnerOutput('t');
-          this.bindConnection(identityOut, 'dog');
+          const genericOut = this.getInnerOutput('t');
+          this.bindConnection(genericOut, 'dog');
 
-          mammalIn.connect(identityOut);
+          mammalIn.connect(genericOut);
           this.assertNoType(mammalIn);
-          this.assertHasType(identityOut, 'mammal');
+          this.assertHasType(genericOut, 'dog');
 
           mammalIn.disconnect();
           this.assertNoType(mammalIn);
-          this.assertHasType(identityOut, 'dog');
+          this.assertHasType(genericOut, 'dog');
         });
 
         twoBlockTest('Outer unbound, inner explicit', function() {
@@ -584,7 +584,7 @@ suite('NominalConnectionChecker', function() {
 
           identityIn.connect(identityOut);
           this.assertHasType(identityIn, 'mammal');
-          this.assertHasType(identityOut, 'mammal');
+          this.assertHasType(identityOut, 'dog');
 
           identityIn.disconnect();
           this.assertHasType(identityIn, 'mammal');

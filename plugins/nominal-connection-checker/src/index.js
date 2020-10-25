@@ -246,7 +246,7 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
 
     const type = this.getExternalBinding_(block, genericType);
     if (type) {
-      types.push(type);
+      return [type];
     }
 
     types.push(...this.getConnectionTypes_(
