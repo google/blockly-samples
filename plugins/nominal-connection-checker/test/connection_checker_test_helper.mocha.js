@@ -8,6 +8,13 @@
  * @fileoverview Helpers for tests of the NominalConnectionChecker.
  */
 
+/**
+ * Returns an array of JSON block definitions based on the given types. This
+ * creates nine blocks for each type, each representing a different
+ * configuration of connections.
+ * @param {!Array<string>} types The types to create blocks for.
+ * @return {!Array<!Object>} Blockly block definitions.
+ */
 export function createBlockDefs(types) {
   const blocks = [];
   for (let type of types) {
@@ -155,20 +162,42 @@ export function createBlockDefs(types) {
   return blocks;
 }
 
+
 const twoBlockTests = [];
 
+/**
+ * Creates a two block test. Two block tests have the .getOuterInput and
+ * .getInnerOutput functions available. They are run through 5 suites comprising
+ * all of the possible valid combinations of input and output connections.
+ * @param {string} name The name for the test.
+ * @param {function()} fn The test function to run.
+ */
 export function twoBlockTest(name, fn) {
   twoBlockTests.push({name: name, fn: fn, skip: false});
 }
 
+/**
+ * Creates a skipped two block test. Skipped tests are not run, but they are
+ * listed as pending in test output.
+ * @param {string} name The name of the test.
+ * @param {function()} fn The test function.
+ */
 twoBlockTest.skip = function(name, fn) {
   twoBlockTests.push({name: name, fn: fn, skip: true});
 };
 
+/**
+ * Clears all of the two block tests that are in the array to be run. Should be
+ * called before starting a new suite of two block tests.
+ */
 export function clearTwoBlockTests() {
   twoBlockTests.length = 0;
 }
 
+/**
+ * Runs all of the two block tests in the array of tests to be run. Should be
+ * called at the end of a suite of two block tests.
+ */
 export function runTwoBlockTests() {
   suite('Outer value, inner out', function() {
     setup(function() {
@@ -231,18 +260,40 @@ export function runTwoBlockTests() {
 
 const threeBlockTests = [];
 
+/**
+ * Creates a three block test. Three block tests have the .getOuterInput
+ * .getMain and .getInnerOutput functions available. They are run through 9
+ * suites comprising all of the possible valid combinations of input and output
+ * connections for three blocks.
+ * @param {string} name The name for the test.
+ * @param {function()} fn The test function to run.
+ */
 export function threeBlockTest(name, fn) {
   threeBlockTests.push({name: name, fn: fn});
 }
 
+/**
+ * Creates a skipped three block test. Skipped tests are not run, but they are
+ * listed as pending in test output.
+ * @param {string} name The name of the test.
+ * @param {function()} fn The test function.
+ */
 threeBlockTest.skip = function(name, fn) {
   threeBlockTests.push({name: name, fn: fn, skip: true});
 };
 
+/**
+ * Clears all of the three block tests that are in the array to be run. Should
+ * be called before starting a new suite of three block tests.
+ */
 export function clearThreeBlockTests() {
   threeBlockTests.length = 0;
 }
 
+/**
+ * Runs all of the three block tests in the array of tests to be run. Should be
+ * called at the end of a suite of three block tests.
+ */
 export function runThreeBlockTests() {
   suite('Outer value, main value, inner out', function() {
     setup(function() {
@@ -518,18 +569,41 @@ export function runThreeBlockTests() {
 
 const siblingTests = [];
 
+/**
+ * Creates a sibbling test. Sibling tests have the .getOuterInput
+ * .getMain and .getInnerOutput functions available. They are run through 3
+ * suites comprising all combinations of connections where the main block
+ * has multiple inputs. This means that there are no tests where the main block
+ * has a next connection as its input connection.
+ * @param {string} name The name for the test.
+ * @param {function()} fn The test function to run.
+ */
 export function siblingTest(name, fn) {
   siblingTests.push({name: name, fn: fn});
 }
 
+/**
+ * Creates a skipped sibling test. Skipped tests are not run, but they are
+ * listed as pending in test output.
+ * @param {string} name The name of the test.
+ * @param {function()} fn The test function.
+ */
 siblingTest.skip = function(name, fn) {
   siblingTests.push({name: name, fn: fn, skip: true});
 };
 
+/**
+ * Clears all of the sibling tests that are in the array to be run. Should
+ * be called before starting a new suite of sibling tests.
+ */
 export function clearSiblingTests() {
   siblingTests.length = 0;
 }
 
+/**
+ * Runs all of the sibling tests in the array of tests to be run. Should be
+ * called at the end of a suite of sibling tests.
+ */
 export function runSiblingTests() {
   suite('Outer value, main value, inner out', function() {
     setup(function() {
@@ -629,6 +703,11 @@ export function runSiblingTests() {
 }
 
 
+/**
+ * Runs a suite of tests.
+ * @param {!Array<{name: string, fn: function, skip: boolean}>} tests The tests
+ *     to run.
+ */
 function runTests(tests) {
   for (const {name, fn, skip} of tests) {
     if (skip) {
