@@ -60,21 +60,6 @@ suite('NominalConnectionChecker', function() {
     this.workspace.connectionChecker.init(hierarchyDef);
     this.checker = this.workspace.connectionChecker;
 
-    this.getBlockOutput = function(blockType) {
-      const block = this.workspace.newBlock(blockType);
-      return [
-        block.outputConnection,
-        block,
-      ];
-    };
-    this.getBlockInput = function(blockType) {
-      const block = this.workspace.newBlock(blockType);
-      return [
-        block.getInput('INPUT').connection,
-        block,
-      ];
-    };
-
     this.bindConnection = function(conn, binding) {
       this.checker.bindType(conn.getSourceBlock(), 'T', binding);
     };
