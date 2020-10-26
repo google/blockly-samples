@@ -1,5 +1,5 @@
 {
-  "name": "blockly-plugin-continuous-toolbox",
+  "name": "@blockly/continuous-toolbox",
   "version": "0.0.0",
   "description": "A Blockly plugin that adds a continous-scrolling style toolbox and flyout",
   "scripts": {
@@ -27,7 +27,7 @@
     "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/continuous-toolbox"
   },
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "directories": {
     "dist": "dist",
     "src": "src"
