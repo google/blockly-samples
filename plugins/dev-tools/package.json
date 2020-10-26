@@ -39,6 +39,7 @@
     "src"
   ],
   "dependencies": {
+    "@blockly/block-test": "^1.0.2",
     "chai": "^4.2.0",
     "dat.gui": "^0.7.7",
     "lodash.assign": "^4.2.0",
@@ -47,7 +48,6 @@
     "sinon": "^9.0.2"
   },
   "devDependencies": {
-    "@blockly/block-test": "^1.0.2",
     "@blockly/dev-scripts": "^1.2.1",
     "@types/dat.gui": "^0.7.5",
     "blockly": "^3.20200924.1"
