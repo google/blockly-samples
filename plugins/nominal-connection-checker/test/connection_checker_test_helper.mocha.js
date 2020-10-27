@@ -18,7 +18,6 @@
 export function createBlockDefs(types) {
   const blocks = [];
   for (let type of types) {
-    type = type.toLowerCase();
     blocks.push({
       'type': 'static_' + type + '_outer_value',
       'message0': '%1',
@@ -207,7 +206,6 @@ export function runTwoBlockTests() {
    */
   function createGetOuterInput(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const block = this.workspace.newBlock('static_' + type + suffix);
       const inConn = block.nextConnection ||
           block.getInput('INPUT1').connection;
@@ -224,7 +222,6 @@ export function runTwoBlockTests() {
    */
   function createGetInnerOutput(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const block = this.workspace.newBlock('static_' + type + suffix);
       const outConn = block.outputConnection || block.previousConnection;
       outConn.name = name || type + 'Out';
@@ -306,7 +303,6 @@ export function runThreeBlockTests() {
    */
   function createGetOuterInput(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const block = this.workspace.newBlock('static_' + type + suffix);
       const inConn = block.nextConnection ||
           block.getInput('INPUT1').connection;
@@ -326,7 +322,6 @@ export function runThreeBlockTests() {
    */
   function createGetMain(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const prefix = name || type;
 
       const block = this.workspace.newBlock('static_' + type + suffix);
@@ -350,7 +345,6 @@ export function runThreeBlockTests() {
    */
   function createGetInnerOutput(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const block = this.workspace.newBlock('static_' + type + suffix);
       const outConn = block.outputConnection || block.previousConnection;
       outConn.name = name || type + 'Out';
@@ -496,7 +490,6 @@ export function runSiblingTests() {
    */
   function createGetOuterInput(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const block = this.workspace.newBlock('static_' + type + suffix);
       const inConn = block.nextConnection ||
           block.getInput('INPUT1').connection;
@@ -519,7 +512,6 @@ export function runSiblingTests() {
    */
   function createGetMain(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const prefix = name || type;
       const block = this.workspace.newBlock('static_' + type + suffix);
       const outConn = block.outputConnection || block.previousConnection;
@@ -547,7 +539,6 @@ export function runSiblingTests() {
    */
   function createGetInnerOutput(suffix) {
     return function(type, name) {
-      type = type.toLowerCase();
       const block = this.workspace.newBlock('static_' + type + suffix);
       const outConn = block.outputConnection || block.previousConnection;
       outConn.name = name || type + 'Out';
