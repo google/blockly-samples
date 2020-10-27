@@ -1,0 +1,45 @@
+<h1 id="blocklyplugin-nominal-connection-checker-">@blockly/plugin-nominal-connection-checker <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that allows you to create more advanced connection checks.</p>
+
+<p>This project is targeted at helping Blockly model languages with complex nominal typing systems, like C++, Java, or Rust.
+It can also be used for modeling subsets of structurally typed languages like TypeScript, Golang, or Haskell. Or it
+can be used to create a type-safe blocks languages that generates a dynamically typed language like JavaScript.</p>
+
+<p>It includes support for modeling subtyping, generic functions/blocks, and parameterized types.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add blockly-plugin-nominal
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install blockly-plugin-nominal --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">pluginInfo</span> <span class="k">as</span> <span class="nx">NominalConnectionCheckerPluginInfo</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/plugin-nominal-connection-checker</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Inject Blockly.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span><span class="p">,</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">{</span>
+      <span class="p">...</span><span class="nx">NominalConnectionCheckerPluginInfo</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="c1">// Initialize plugin.</span>
+<span class="nx">workspace</span><span class="p">.</span><span class="nx">connectionChecker</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">hierarchyDef</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="api">API</h2>
+
+<!--
+  - TODO: describe the API.
+  -->
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>

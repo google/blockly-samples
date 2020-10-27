@@ -1,0 +1,32 @@
+<h1 id="blocklyblock-test-">@blockly/block-test <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A set of <a href="https://www.npmjs.com/package/blockly">Blockly</a> test blocks.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/block-test
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/block-test --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="import">Import</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">toolboxTestBlocks</span><span class="p">,</span> <span class="nx">toolboxTestBlocksInit</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/block-test</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Configure the Blockly workspace to use the test block's toolbox.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="p">...</span><span class="nx">options</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxTestBlocks</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// Initalize the test block's toolbox.</span>
+<span class="nx">toolboxTestBlocksInit</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
