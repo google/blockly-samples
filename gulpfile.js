@@ -33,14 +33,14 @@ function checkLicenses() {
   // Check root package.json.
   promises.push(checker.checkLocalDirectory('.'));
   fs.readdirSync(pluginsDir)
-      .filter((file) => {
-        return fs.statSync(path.join(pluginsDir, file)).isDirectory();
-      })
-      .forEach((plugin) => {
-        const pluginDir = path.join(pluginsDir, plugin);
-        // Check each plugin package.json.
-        promises.push(checker.checkLocalDirectory(pluginDir));
-      });
+    .filter((file) => {
+      return fs.statSync(path.join(pluginsDir, file)).isDirectory();
+    })
+    .forEach((plugin) => {
+      const pluginDir = path.join(pluginsDir, plugin);
+      // Check each plugin package.json.
+      promises.push(checker.checkLocalDirectory(pluginDir));
+    });
   return Promise.all(promises);
 }
 
@@ -55,8 +55,8 @@ function publish(dryRun) {
     // Login to npm.
     console.log('Logging in to npm.');
     execSync(
-        `npm login --registry https://wombat-dressing-room.appspot.com`,
-        {stdio: 'inherit'});
+      `npm login --registry https://wombat-dressing-room.appspot.com`,
+      { stdio: 'inherit' });
 
     const releaseDir = 'dist';
     // Delete the release directory if it exists.
@@ -69,17 +69,17 @@ function publish(dryRun) {
     console.log(`Checking out a fresh copy of blockly-samples under\
  ${path.resolve(releaseDir)}`);
     execSync(
-        `git clone https://github.com/google/blockly-samples ${releaseDir}`,
-        {stdio: 'pipe'});
+      `git clone https://github.com/google/blockly-samples ${releaseDir}`,
+      { stdio: 'pipe' });
 
     // Run npm install.
     console.log('Running npm install.');
-    execSync(`npm install`, {cwd: releaseDir, stdio: 'inherit'});
+    execSync(`npm install`, { cwd: releaseDir, stdio: 'inherit' });
 
     // Run npm publish.
     execSync(
-        `npm run publish:${dryRun ? 'check' : '_internal'}`,
-        {cwd: releaseDir, stdio: 'inherit'});
+      `npm run publish:${dryRun ? 'check' : '_internal'}`,
+      { cwd: releaseDir, stdio: 'inherit' });
 
     done();
   };
@@ -101,6 +101,41 @@ function publishRelease(done) {
  */
 function publishDryRun(done) {
   return publish(true)(done);
+}
+
+function preparePlugin(pluginDir) {
+
+  return gulp
+    .src([
+      pluginDir + '/test/index.html',
+      pluginDir + '/README.md'
+    ], { base: './plugins/' })
+    // Add front matter tags to index and readme pages for jekyll processing.
+    .pipe(header('---\n---\n'))
+    .pipe(gulp.src([
+      pluginDir + '/build/test_bundle.js',
+    ], { base: './plugins/' }))
+    .pipe(gulp.dest('./gh-pages/plugins/'));
+}
+
+
+
+function getFolders(dir) {
+  return fs.readdirSync(dir)
+    .filter(function (file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
+}
+
+function preparePlugins() {
+  const pluginsDir = 'plugins';
+  const promises = [];
+  var folders = getFolders(pluginsDir);
+  var tasks = folders.map(function(folder) {
+    return preparePlugin(folder);
+  });
+
+  return merge(tasks);
 }
 
 /**
