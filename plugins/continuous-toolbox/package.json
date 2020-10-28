@@ -1,7 +1,7 @@
 {
-  "name": "blockly-plugin-continuous-toolbox",
-  "version": "0.20200806.0",
-  "description": "A Blockly plugin.",
+  "name": "@blockly/continuous-toolbox",
+  "version": "0.0.0",
+  "description": "A Blockly plugin that adds a continous-scrolling style toolbox and flyout",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
@@ -18,16 +18,16 @@
     "blockly-plugin",
     "continuous-toolbox"
   ],
-  "homepage": "https://github.com/alschmiedt/blockly-samples/tree/master/plugins/continuous-toolbox#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/continuous-toolbox#readme",
   "bugs": {
-    "url": "https://github.com/alschmiedt/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alschmiedt/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/continuous-toolbox"
   },
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "directories": {
     "dist": "dist",
     "src": "src"
@@ -38,7 +38,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.0.3",
-    "@blockly/dev-tools": "^1.1.2",
+    "@blockly/dev-tools": "^2.0.5",
     "blockly": "^3.20200924.3"
   },
   "peerDependencies": {
