@@ -1,8 +1,9 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "2.0.2",
+  "version": "2.0.5",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
@@ -38,6 +39,7 @@
     "src"
   ],
   "dependencies": {
+    "@blockly/block-test": "^1.0.3",
     "chai": "^4.2.0",
     "dat.gui": "^0.7.7",
     "lodash.assign": "^4.2.0",
@@ -46,8 +48,7 @@
     "sinon": "^9.0.2"
   },
   "devDependencies": {
-    "@blockly/block-test": "^1.0.0",
-    "@blockly/dev-scripts": "^1.2.0",
+    "@blockly/dev-scripts": "^1.2.1",
     "@types/dat.gui": "^0.7.5",
     "blockly": "^3.20200924.1"
   },

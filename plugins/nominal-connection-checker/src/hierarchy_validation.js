@@ -9,6 +9,8 @@
  */
 'use strict';
 
+import {isGeneric} from './utils';
+
 /**
  * Validates the given hierarchy definition. Does checks for duplicate types,
  * circular dependencies, etc. Errors are logged to the console (not thrown).
@@ -25,6 +27,7 @@ export function validateHierarchy(hierarchyDef) {
   checkConflictingTypes(hierarchyDef);
   checkSupersDefined(hierarchyDef);
   checkCircularDependencies(hierarchyDef);
+  checkGenerics(hierarchyDef);
 }
 
 /**
@@ -92,7 +95,7 @@ function checkSupersDefined(hierarchyDef) {
  * },
  * 'typeB': {
  *   'fulfills': ['typeA']
- * }
+ * }.
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
 function checkCircularDependencies(hierarchyDef) {
@@ -164,4 +167,20 @@ function logCircularDependency(cycleArray) {
     errorMsg += ' fulfills ' + cycleArray[i];
   }
   console.error(errorMsg);
+}
+
+/**
+ * Checks for any type names that also fulfill the properties of being generic
+ * type names. Eg 'A', 'a', '*', '1', etc.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkGenerics(hierarchyDef) {
+  const error = 'The type %s will act like a generic type if used as a ' +
+      'connection check, because it is a single character.';
+
+  for (const type of Object.keys(hierarchyDef)) {
+    if (isGeneric(type)) {
+      console.error(error, type);
+    }
+  }
 }

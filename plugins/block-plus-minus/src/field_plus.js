@@ -37,6 +37,10 @@ function onClick_(plusField) {
   // TODO: This is a dupe of the mutator code, anyway to unify?
   const block = plusField.getSourceBlock();
 
+  if (block.isInFlyout) {
+    return;
+  }
+
   Blockly.Events.setGroup(true);
 
   const oldMutationDom = block.mutationToDom();
