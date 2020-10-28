@@ -1,4 +1,6 @@
 ---
+packageName: "@blockly/plugin-workspace-search"
+description: "A Blockly plugin that adds workspace search support."
 ---
 # @blockly/plugin-workspace-search [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

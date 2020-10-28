@@ -1,4 +1,6 @@
 ---
+packageName: "@blockly/plugin-strict-connection-checker"
+description: "A Blockly plugin that makes connection checks strict."
 ---
 # @blockly/plugin-strict-connection-checker [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

@@ -1,4 +1,6 @@
 ---
+packageName: "@blockly/plugin-nominal-connection-checker"
+description: "A Blockly plugin for creating more advanced connection checks, targeted at nominally typed languages."
 ---
 # @blockly/plugin-nominal-connection-checker [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

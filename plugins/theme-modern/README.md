@@ -1,4 +1,6 @@
 ---
+packageName: "@blockly/theme-modern"
+description: "A Blockly modern theme with darker block borders."
 ---
 # @blockly/theme-modern [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

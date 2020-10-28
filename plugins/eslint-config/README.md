@@ -1,4 +1,6 @@
 ---
+packageName: "@blockly/eslint-config"
+description: "ESlint configuration used by Blockly plugins."
 ---
 # @blockly/eslint-config [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
