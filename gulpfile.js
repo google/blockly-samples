@@ -116,11 +116,12 @@ function buildFrontMatter(pluginDir) {
   const packageJson = require(resolveApp('./plugins/' + pluginDir + '/package.json'));
   console.log(`Preparing plugin for ${packageJson.name}`);
 
-  let frontMatter = '---\n' +
-    // Escape the package name: @ is not a valid character in Jekyll's YAML.
-    'packageName: "' + packageJson.name + '"\n' +
-    'description: "' + packageJson.description + '"\n' +
-    '---\n';
+  // Escape the package name: @ is not a valid character in Jekyll's YAML.
+  let frontMatter = `---
+packageName: "${packageJson.name}"
+description: "${packageJson.description}"
+---
+`;
   return frontMatter;
 }
 
