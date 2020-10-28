@@ -104,21 +104,63 @@ function publishDryRun(done) {
 }
 
 /**
- * Prepare gh-pages for deployment.  Copy over the relevant files from each of
- * the plugins and move them under gh-pages.
+ * Build the front matter string for a plugin's demo and readme pages based on the contents
+ * of the plugin's package.json.
+ * @param {string} pluginDir The subdirectory (inside plugins/) for this plugin.
+ * @return {string} The front matter string, including leading and following dashes.
  */
-function prepareToDeployToGhPages() {
+function buildFrontMatter(pluginDir) {
+  const appDirectory = fs.realpathSync(process.cwd());
+  const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+
+  const packageJson = require(resolveApp('./plugins/' + pluginDir + '/package.json'));
+  console.log(`Preparing plugin for ${packageJson.name}`);
+
+  // Escape the package name: @ is not a valid character in Jekyll's YAML.
+  let frontMatter = `---
+packageName: "${packageJson.name}"
+description: "${packageJson.description}"
+---
+`;
+  return frontMatter;
+}
+
+/**
+ * Copy over the test page (index.html and bundled js) and the readme for
+ * this plugin. Add variables as needed for Jekyll.
+ * The resulting code lives in gh-pages/plugins/<pluginName>
+ * @param {string} pluginDir The subdirectory (inside plugins/) for this plugin.
+ */
+function preparePlugin(pluginDir) {
   return gulp
     .src([
-      './plugins/*/test/index.html',
-      './plugins/*/README.md'
-    ], { base: './plugins/' })
-    // Add front matter tags to index and readme pages for jekyll processing.
-    .pipe(header('---\n---\n'))
+      './plugins/' + pluginDir + '/test/index.html',
+      './plugins/' + pluginDir + '/README.md'
+    ], {base: './plugins/', allowEmpty: true})
+    // Add front matter tags to index and readme pages for Jekyll processing.
+    .pipe(header(buildFrontMatter(pluginDir)))
     .pipe(gulp.src([
-      './plugins/*/build/test_bundle.js',
-    ], { base: './plugins/' }))
+      './plugins/' + pluginDir + '/build/test_bundle.js',
+    ], {base: './plugins/', allowEmpty: true}))
     .pipe(gulp.dest('./gh-pages/plugins/'));
+}
+
+/**
+ * Prepare plugins for deployment to gh-pages.
+ *
+ * For each plugin, copy relevant files to the gh-pages directory.
+ */
+function prepareToDeployPlugins(done) {
+  const dir = './plugins';
+  var folders = fs.readdirSync(dir)
+    .filter(function (file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
+  return gulp.parallel(folders.map(function(folder) {
+    return function () {
+      return preparePlugin(folder);
+    }
+  }))(done);
 }
 
 /**
@@ -158,7 +200,7 @@ module.exports = {
   checkLicenses: checkLicenses,
   deploy: deployToGhPagesOrigin,
   deployUpstream: deployToGhPagesUpstream,
-  predeploy: prepareToDeployToGhPages,
+  predeploy: prepareToDeployPlugins,
   publish: publishRelease,
-  publishDryRun: publishDryRun,
+  publishDryRun: publishDryRun
 };
