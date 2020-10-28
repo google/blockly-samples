@@ -33,14 +33,14 @@ function checkLicenses() {
   // Check root package.json.
   promises.push(checker.checkLocalDirectory('.'));
   fs.readdirSync(pluginsDir)
-    .filter((file) => {
-      return fs.statSync(path.join(pluginsDir, file)).isDirectory();
-    })
-    .forEach((plugin) => {
-      const pluginDir = path.join(pluginsDir, plugin);
-      // Check each plugin package.json.
-      promises.push(checker.checkLocalDirectory(pluginDir));
-    });
+      .filter((file) => {
+        return fs.statSync(path.join(pluginsDir, file)).isDirectory();
+      })
+      .forEach((plugin) => {
+        const pluginDir = path.join(pluginsDir, plugin);
+        // Check each plugin package.json.
+        promises.push(checker.checkLocalDirectory(pluginDir));
+      });
   return Promise.all(promises);
 }
 
@@ -55,8 +55,8 @@ function publish(dryRun) {
     // Login to npm.
     console.log('Logging in to npm.');
     execSync(
-      `npm login --registry https://wombat-dressing-room.appspot.com`,
-      { stdio: 'inherit' });
+        `npm login --registry https://wombat-dressing-room.appspot.com`,
+        {stdio: 'inherit'});
 
     const releaseDir = 'dist';
     // Delete the release directory if it exists.
@@ -69,17 +69,17 @@ function publish(dryRun) {
     console.log(`Checking out a fresh copy of blockly-samples under\
  ${path.resolve(releaseDir)}`);
     execSync(
-      `git clone https://github.com/google/blockly-samples ${releaseDir}`,
-      { stdio: 'pipe' });
+        `git clone https://github.com/google/blockly-samples ${releaseDir}`,
+        {stdio: 'pipe'});
 
     // Run npm install.
     console.log('Running npm install.');
-    execSync(`npm install`, { cwd: releaseDir, stdio: 'inherit' });
+    execSync(`npm install`, {cwd: releaseDir, stdio: 'inherit'});
 
     // Run npm publish.
     execSync(
-      `npm run publish:${dryRun ? 'check' : '_internal'}`,
-      { cwd: releaseDir, stdio: 'inherit' });
+        `npm run publish:${dryRun ? 'check' : '_internal'}`,
+        {cwd: releaseDir, stdio: 'inherit'});
 
     done();
   };
@@ -135,17 +135,13 @@ function preparePlugin(pluginDir) {
     .src([
       './plugins/' + pluginDir + '/test/index.html',
       './plugins/' + pluginDir + '/README.md'
-    ], { base: './plugins/', allowEmpty: true })
+    ], {base: './plugins/', allowEmpty: true})
     // Add front matter tags to index and readme pages for Jekyll processing.
     .pipe(header(buildFrontMatter(pluginDir)))
     .pipe(gulp.src([
       './plugins/' + pluginDir + '/build/test_bundle.js',
-    ], { base: './plugins/', allowEmpty: true }))
+    ], {base: './plugins/', allowEmpty: true}))
     .pipe(gulp.dest('./gh-pages/plugins/'));
-}
-
-function getFolders(dir) {
-  return
 }
 
 /**
