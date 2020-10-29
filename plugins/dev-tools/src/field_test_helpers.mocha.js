@@ -84,7 +84,7 @@ function runCreationTests_(testCases, assertion, creation) {
    */
   const createTestFn = (testCase) => {
     return function() {
-      const field = creation(testCase);
+      const field = creation.call(this, testCase);
       assertion(field, testCase);
     };
   };
@@ -108,7 +108,7 @@ function runCreationTestsAssertThrows_(testCases, creation) {
   const createTestFn = (testCase) => {
     return function() {
       assert.throws(function() {
-        creation(testCase);
+        creation.call(this, testCase);
       }, testCase.errMsgMatcher);
     };
   };
@@ -128,19 +128,24 @@ function runCreationTestsAssertThrows_(testCases, creation) {
  * @param {function(Blockly.Field)=} assertFieldDefault Asserts that field has
  *    default values. If undefined, tests will check that field throws when
  *    invalid value is passed rather than asserting default.
+ * @param {function(FieldCreationTestCase=)=} customCreateWithJs Custom creation
+ *    function to use in tests.
  */
 export function runConstructorSuiteTests(TestedField, validValueTestCases,
-    invalidValueTestCases, validRunAssertField, assertFieldDefault) {
+    invalidValueTestCases, validRunAssertField, assertFieldDefault,
+    customCreateWithJs) {
   suite('Constructor', function() {
     if (assertFieldDefault) {
       test('Empty', function() {
-        const field = new TestedField();
+        const field = customCreateWithJs ? customCreateWithJs.call(this) :
+            new TestedField();
         assertFieldDefault(field);
       });
     } else {
       test('Empty', function() {
         assert.throws(function() {
-          new TestedField();
+          customCreateWithJs ? customCreateWithJs.call(this) :
+              new TestedField();
         });
       });
     }
@@ -150,16 +155,17 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
      * @param {FieldCreationTestCase} testCase The test case information.
      * @return {Blockly.Field} The instantiated field.
      */
-    const createWithJS = function(testCase) {
-      return new TestedField(...testCase.args);
+    const createWithJs = function(testCase) {
+      return customCreateWithJs ? customCreateWithJs.call(this, testCase) :
+          new TestedField(...testCase.args);
     };
     if (assertFieldDefault) {
       runCreationTests_(
-          invalidValueTestCases, assertFieldDefault, createWithJS);
+          invalidValueTestCases, assertFieldDefault, createWithJs);
     } else {
-      runCreationTestsAssertThrows_(invalidValueTestCases, createWithJS);
+      runCreationTestsAssertThrows_(invalidValueTestCases, createWithJs);
     }
-    runCreationTests_(validValueTestCases, validRunAssertField, createWithJS);
+    runCreationTests_(validValueTestCases, validRunAssertField, createWithJs);
   });
 }
 
@@ -176,19 +182,24 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
  * @param {function(Blockly.Field)=} assertFieldDefault Asserts that field has
  *    default values. If undefined, tests will check that field throws when
  *    invalid value is passed rather than asserting default.
+ * @param {function(FieldCreationTestCase=)=} customCreateWithJson Custom
+ *    creation function to use in tests.
  */
 export function runFromJsonSuiteTests(TestedField, validValueTestCases,
-    invalidValueTestCases, validRunAssertField, assertFieldDefault) {
+    invalidValueTestCases, validRunAssertField, assertFieldDefault,
+    customCreateWithJson) {
   suite('fromJson', function() {
     if (assertFieldDefault) {
       test('Empty', function() {
-        const field = TestedField.fromJson({});
+        const field = customCreateWithJson ? customCreateWithJson.call(this) :
+            TestedField.fromJson({});
         assertFieldDefault(field);
       });
     } else {
       test('Empty', function() {
         assert.throws(function() {
-          TestedField.fromJson({});
+          customCreateWithJson ? customCreateWithJson.call(this) :
+              TestedField.fromJson({});
         });
       });
     }
@@ -199,7 +210,8 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
      * @return {Blockly.Field} The instantiated field.
      */
     const createWithJson = function(testCase) {
-      return TestedField.fromJson(testCase.json);
+      return customCreateWithJson ? customCreateWithJson.call(this, testCase) :
+          TestedField.fromJson(testCase.json);
     };
     if (assertFieldDefault) {
       runCreationTests_(
