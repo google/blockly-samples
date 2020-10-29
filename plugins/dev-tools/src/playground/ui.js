@@ -15,8 +15,10 @@
  * @param {HTMLElement} container The container to render the playground in.
  * @return {{
  *     blocklyDiv: HTMLElement,
+ *     minimizeButton: HTMLElement,
  *     monacoDiv: HTMLElement,
  *     guiContainer: HTMLElement,
+ *     playgroundDiv: HTMLElement,
  *     tabsDiv: HTMLElement,
  *     tabButtons: HTMLElement,
  * }} An object with the various playground components.
@@ -42,6 +44,19 @@ export function renderPlayground(container) {
   blocklyArea.appendChild(blocklyDiv);
 
   // Playground area.
+
+  // Minimize button
+  const minimizeButton = document.createElement('div');
+  minimizeButton.style.width = '18px';
+  minimizeButton.style.background = 'black';
+  minimizeButton.style.color = 'white';
+  minimizeButton.style.font = `12px 'Lucida Grande', sans-serif`;
+  minimizeButton.style.writingMode = 'vertical-lr';
+  minimizeButton.style.textOrientation = 'mixed';
+  minimizeButton.style.textAlign = 'center';
+  minimizeButton.textContent = 'Collapse';
+  container.appendChild(minimizeButton);
+
 
   const playgroundDiv = document.createElement('div');
   playgroundDiv.style.flex = '1 1 1';
@@ -112,8 +127,10 @@ export function renderPlayground(container) {
 
   return {
     blocklyDiv,
+    minimizeButton,
     monacoDiv: editorContainer,
     guiContainer,
+    playgroundDiv,
     tabsDiv,
     tabButtons,
   };

@@ -80,7 +80,7 @@ let PlaygroundAPI;
  */
 export function createPlayground(container, createWorkspace,
     defaultOptions, config = {}, vsEditorPath) {
-  const {blocklyDiv, monacoDiv, guiContainer, tabButtons, tabsDiv} =
+  const {blocklyDiv, minimizeButton, monacoDiv, guiContainer, playgroundDiv, tabButtons, tabsDiv} =
     renderPlayground(container);
 
   // Load the code editor.
@@ -302,6 +302,19 @@ export function createPlayground(container, createWorkspace,
     guiElement.style.position = 'relative';
     guiElement.style.minWidth = '100%';
     guiContainer.appendChild(guiElement);
+
+    // Create minimize button
+    minimizeButton.addEventListener('click', (e) => {
+      if (playgroundDiv.style.display === 'none') {
+        playgroundDiv.style.display = 'flex';
+        minimizeButton.textContent = 'Collapse';
+      } else {
+        playgroundDiv.style.display = 'none';
+        minimizeButton.textContent = 'Expand';
+      }
+
+      Blockly.svgResize(workspace);
+    });
 
     // Playground API.
 
