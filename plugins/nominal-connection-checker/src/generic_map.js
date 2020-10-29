@@ -85,6 +85,7 @@ export class GenericMap {
    *     type is not bound.
    */
   getExplicitType(blockId, genericType) {
+    genericType = genericType.toLowerCase();
     const priorityMap = this.dependenciesMap_.get(blockId);
     if (!priorityMap) {
       return undefined;
@@ -160,6 +161,8 @@ export class GenericMap {
    *     bindings ovveride lower priority bindings.
    */
   bindTypeToExplicit(blockId, genericType, explicitType, priority) {
+    genericType = genericType.toLowerCase();
+    explicitType = explicitType.toLowerCase();
     let queueMap = this.dependenciesMap_.get(blockId);
     if (!queueMap) {
       queueMap = new PriorityQueueMap();
@@ -220,6 +223,8 @@ export class GenericMap {
    * @param {number} priority The priority of the binding to remove.
    */
   unbindTypeFromExplicit(blockId, genericType, explicitType, priority) {
+    genericType = genericType.toLowerCase();
+    explicitType = explicitType.toLowerCase();
     if (this.dependenciesMap_.has(blockId)) {
       this.dependenciesMap_.get(blockId).unbind(
           genericType, explicitType, priority);

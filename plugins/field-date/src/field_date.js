@@ -34,10 +34,11 @@ goog.require('goog.ui.DatePicker');
  * @param {Function=} opt_validator A function that is called to validate
  *    changes to the field's value. Takes in a date string & returns a
  *    validated date string ('YYYY-MM-DD' format), or null to abort the change.
+ * @param {?(boolean|string)=} opt_textEdit Whether to enable text editor.
  * @extends {Blockly.Field}
  * @constructor
  */
-Blockly.FieldDate = function(opt_value, opt_validator) {
+Blockly.FieldDate = function(opt_value, opt_validator, opt_textEdit = false) {
   /**
    * The default value for this field (current date).
    * @type {*}
@@ -48,18 +49,25 @@ Blockly.FieldDate = function(opt_value, opt_validator) {
 
   Blockly.FieldDate.superClass_.constructor.call(this, opt_value,
       opt_validator);
+
+  /**
+   * Whether text editing is enabled on this field.
+   * @type {boolean}
+   * @private
+   */
+  this.textEditEnabled_ = opt_textEdit == true || opt_textEdit == 'true';
 };
-Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.Field);
+Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.FieldTextInput);
 
 /**
- * Construct a FieldDate from a JSON arg object.
+ * Constructs a FieldDate from a JSON arg object.
  * @param {!Object} options A JSON object with options (date).
  * @return {!Blockly.FieldDate} The new field instance.
  * @package
  * @nocollapse
  */
 Blockly.FieldDate.fromJson = function(options) {
-  return new Blockly.FieldDate(options['date']);
+  return new Blockly.FieldDate(options['date'], undefined, options['textEdit']);
 };
 
 /**
@@ -91,7 +99,7 @@ Blockly.FieldDate.prototype.DROPDOWN_BORDER_COLOUR = 'silver';
 Blockly.FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
 
 /**
- * Ensure that the input value is a valid date.
+ * Ensures that the input value is a valid date.
  * @param {*=} opt_newValue The input value.
  * @return {?string} A valid date, or null if invalid.
  * @protected
@@ -101,7 +109,7 @@ Blockly.FieldDate.prototype.doClassValidation_ = function(opt_newValue) {
     return null;
   }
   // Check if the new value is parsable or not.
-  var date = goog.date.Date.fromIsoString(opt_newValue);
+  const date = goog.date.Date.fromIsoString(opt_newValue);
   if (!date || date.toIsoString(true) != opt_newValue) {
     return null;
   }
@@ -109,13 +117,13 @@ Blockly.FieldDate.prototype.doClassValidation_ = function(opt_newValue) {
 };
 
 /**
- * Render the field. If the picker is shown make sure it has the current
+ * Renders the field. If the picker is shown make sure it has the current
  * date selected.
  * @protected
  */
 Blockly.FieldDate.prototype.render_ = function() {
   Blockly.FieldDate.superClass_.render_.call(this);
-  if (this.picker_) {
+  if (this.picker_ && this.isTextValid_) {
     this.picker_.setDate(goog.date.Date.fromIsoString(this.getValue()));
     this.updateEditor_();
   }
@@ -147,7 +155,7 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
     this.oldTodayElement_.style.backgroundColor = null;
     this.oldTodayElement_.style.color = null;
   }
-  var today = this.picker_.getElementByClass('goog-date-picker-today');
+  const today = this.picker_.getElementByClass('goog-date-picker-today');
   this.oldTodayElement_ = today;
   if (today) {
     today.style.backgroundColor = this.todayColour_;
@@ -158,7 +166,7 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
     this.oldSelectedElement_.style.backgroundColor = null;
     this.oldSelectedElement_.style.color = null;
   }
-  var selected = this.picker_.getElementByClass('goog-date-picker-selected');
+  const selected = this.picker_.getElementByClass('goog-date-picker-selected');
   this.oldSelectedElement_ = selected;
   if (selected) {
     selected.style.backgroundColor = this.selectedColour_;
@@ -167,16 +175,42 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
 };
 
 /**
- * Create and show the date field's editor.
+ * Shows the inline free-text editor on top of the text along with the date
+ * editor.
+ * @param {Event=} opt_e Optional mouse event that triggered the field to
+ *     open, or undefined if triggered programmatically.
+ * @param {boolean=} _opt_quietInput Quiet input.
+ * @protected
+ * @override
+ */
+Blockly.FieldDate.prototype.showEditor_ = function(opt_e, _opt_quietInput) {
+  if (this.textEditEnabled_) {
+    // Mobile browsers have issues with in-line textareas (focus & keyboards).
+    const noFocus =
+        Blockly.utils.userAgent.MOBILE ||
+        Blockly.utils.userAgent.ANDROID ||
+        Blockly.utils.userAgent.IPAD;
+    Blockly.FieldDate.superClass_.showEditor_.call(this, opt_e, noFocus);
+  }
+  // Build the DOM.
+  this.showDropdown_();
+};
+
+/**
+ * Shows the date dropdown editor.
  * @private
  */
-Blockly.FieldDate.prototype.showEditor_ = function() {
+Blockly.FieldDate.prototype.showDropdown_ = function() {
+  if (this.picker_) {
+    // Already visible.
+    return;
+  }
+
   this.picker_ = this.dropdownCreate_();
   this.picker_.render(Blockly.DropDownDiv.getContentDiv());
   Blockly.utils.dom.addClass(this.picker_.getElement(), 'blocklyDatePicker');
   Blockly.DropDownDiv.setColour(
       this.DROPDOWN_BACKGROUND_COLOUR, this.DROPDOWN_BORDER_COLOUR);
-
   Blockly.DropDownDiv.showPositionedByField(
       this, this.dropdownDispose_.bind(this));
 
@@ -184,14 +218,14 @@ Blockly.FieldDate.prototype.showEditor_ = function() {
 };
 
 /**
- * Create the date dropdown editor.
+ * Creates the date dropdown editor.
  * @return {!goog.ui.DatePicker} The newly created date picker.
  * @private
  */
 Blockly.FieldDate.prototype.dropdownCreate_ = function() {
   // Create the date picker using Closure.
   Blockly.FieldDate.loadLanguage_();
-  var picker = new goog.ui.DatePicker();
+  const picker = new goog.ui.DatePicker();
   picker.setAllowNone(false);
   picker.setShowWeekNum(false);
   picker.setUseNarrowWeekdayNames(true);
@@ -215,35 +249,79 @@ Blockly.FieldDate.prototype.dropdownCreate_ = function() {
 };
 
 /**
- * Dispose of references to DOM elements and events belonging
+ * Handles a click on the text input.
+ * @param {!MouseEvent} e Mouse event.
+ * @private
+ */
+Blockly.FieldDate.prototype.onClick_ = function(e) {
+  if (this.isTextValid_) {
+    this.showDropdown_();
+  }
+};
+
+/**
+ * Binds handlers for user input on the text input field's editor.
+ * @param {!HTMLElement} htmlInput The htmlInput to which event
+ *    handlers will be bound.
+ * @protected
+ * @override
+ */
+Blockly.FieldDate.prototype.bindInputEvents_ = function(htmlInput) {
+  Blockly.FieldDate.superClass_.bindInputEvents_.call(this, htmlInput);
+
+  this.onClickWrapper_ = Blockly.bindEventWithChecks_(htmlInput,
+      'click', this, this.onClick_, true);
+};
+
+/**
+ * Unbinds handlers for user input and workspace size changes.
+ * @private
+ * @override
+ */
+Blockly.FieldDate.prototype.unbindInputEvents_ = function() {
+  Blockly.FieldDate.superClass_.unbindInputEvents_.call(this);
+  if (this.onClickWrapper_) {
+    Blockly.unbindEvent_(this.onClickWrapper_);
+    this.onClickWrapper_ = null;
+  }
+};
+
+/**
+ * Disposes of references to DOM elements and events belonging
  * to the date editor.
  * @private
  */
 Blockly.FieldDate.prototype.dropdownDispose_ = function() {
+  this.picker_ = null;
   goog.events.unlistenByKey(this.changeEventKey_);
   goog.events.unlistenByKey(this.activeMonthEventKey_);
 };
 
 /**
- * Handle a CHANGE event in the date picker.
+ * Handles a CHANGE event in the date picker.
  * @param {!Event} event The CHANGE event.
  * @private
  */
 Blockly.FieldDate.prototype.onDateSelected_ = function(event) {
-  var date = event.date ? event.date.toIsoString(true) : '';
-  this.setValue(date);
+  if (this.isDirty_) {
+    // Ignores date changes triggered during text edit.
+    return;
+  }
+  const date = event.date ? event.date.toIsoString(true) : '';
+  this.setEditorValue_(date);
+  Blockly.WidgetDiv.hide();
   Blockly.DropDownDiv.hideIfOwner(this);
 };
 
 /**
- * Load the best language pack by scanning the Blockly.Msg object for a
+ * Loads the best language pack by scanning the Blockly.Msg object for a
  * language that matches the available languages in Closure.
  * @private
  */
 Blockly.FieldDate.loadLanguage_ = function() {
-  for (var prop in goog.i18n) {
+  for (const prop in goog.i18n) {
     if (Blockly.utils.string.startsWith(prop, 'DateTimeSymbols_')) {
-      var lang = prop.substr(16).toLowerCase().replace('_', '.');
+      const lang = prop.substr(16).toLowerCase().replace('_', '.');
       // E.g. 'DateTimeSymbols_pt_BR' -> 'pt.br'
       if (goog.getObjectByName(lang, Blockly.Msg)) {
         goog.i18n.DateTimeSymbols = goog.i18n[prop];
@@ -313,7 +391,7 @@ Blockly.Css.register([
   '.blocklyDatePicker button:hover,',
   '.blocklyDatePicker .goog-date-picker-date:hover {',
     'background-color: rgb(218, 220, 224, .5);',
-  '}'
+  '}',
   /* eslint-enable indent */
 ]);
 
@@ -336,7 +414,7 @@ goog.getMsgOrig = goog.getMsg;
  * @suppress {duplicate}
  */
 goog.getMsg = function(str, opt_values) {
-  var key = goog.getMsg.blocklyMsgMap[str];
+  const key = goog.getMsg.blocklyMsgMap[str];
   if (key) {
     str = Blockly.Msg[key];
   }
@@ -347,5 +425,5 @@ goog.getMsg = function(str, opt_values) {
  * Mapping of Closure messages to Blockly.Msg names.
  */
 goog.getMsg.blocklyMsgMap = {
-  'Today': 'TODAY'
+  'Today': 'TODAY',
 };

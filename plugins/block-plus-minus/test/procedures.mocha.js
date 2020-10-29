@@ -164,7 +164,8 @@ suite('Procedure blocks', function() {
        * @type {Array<SerializationTestCase>}
        */
       const testCases = [
-        {title: 'Empty XML definition',
+        {
+          title: 'Minimal definition',
           xml: '<block type="' + testSuite.defType + '"/>',
           expectedXml:
               '<block xmlns="https://developers.google.com/blockly/xml" ' +
@@ -176,7 +177,68 @@ suite('Procedure blocks', function() {
                 assertDefBlockStructure(block, testSuite.hasReturn);
               },
         },
-        {title: 'Empty XML caller',
+        {
+          title: 'Common definition',
+          xml:
+              '<block type="' + testSuite.defType + '">' +
+              '  <field name="NAME">do something</field>' +
+              '</block>',
+          expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="' + testSuite.defType + '" id="1">\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+          assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, testSuite.hasReturn);
+              },
+        },
+        {
+          title: 'With vars definition',
+          xml:
+              '<block type="' + testSuite.defType + '">\n' +
+              '  <mutation>\n' +
+              '    <arg name="x" varid="arg1"></arg>\n' +
+              '    <arg name="y" varid="arg2"></arg>\n' +
+              '  </mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+          expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="' + testSuite.defType + '" id="1">\n' +
+              '  <mutation>\n' +
+              '    <arg name="x" varid="arg1"></arg>\n' +
+              '    <arg name="y" varid="arg2"></arg>\n' +
+              '  </mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '  <field name="1">x</field>\n' + // Because genUID is stubbed.
+              '  <field name="1">y</field>\n' +
+              '</block>',
+          assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, testSuite.hasReturn, ['x', 'y']);
+              },
+        },
+        {
+          title: 'No statements definition',
+          xml:
+              '<block type="procedures_defreturn">\n' +
+              '  <mutation statements="false"></mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+          expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_defreturn" id="1">\n' +
+              '  <mutation statements="false"></mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+          assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, true, [], false);
+              },
+        },
+        {
+          title: 'Minimal caller',
           xml: '<block type="' + testSuite.callType + '"/>',
           expectedXml:
               '<block xmlns="https://developers.google.com/blockly/xml" ' +
@@ -189,6 +251,44 @@ suite('Procedure blocks', function() {
           assertBlockStructure:
               (block) => {
                 assertCallBlockStructure(block);
+              },
+        },
+        {
+          title: 'Common caller',
+          xml:
+              '<block type="' + testSuite.callType + '">\n' +
+              '  <mutation name="do something"/>\n' +
+              '</block>',
+          expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="' + testSuite.callType + '" id="1">\n' +
+              '  <mutation name="do something"></mutation>\n' +
+              '</block>',
+          assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(block);
+              },
+        },
+        {
+          title: 'With vars caller',
+          xml:
+              '<block type="' + testSuite.callType + '">\n' +
+              '  <mutation name="do something">\n' +
+              '    <arg name="x"></arg>\n' +
+              '    <arg name="y"></arg>\n' +
+              '  </mutation>\n' +
+              '</block>',
+          expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="' + testSuite.callType + '" id="1">\n' +
+              '  <mutation name="do something">\n' +
+              '    <arg name="x"></arg>\n' +
+              '    <arg name="y"></arg>\n' +
+              '  </mutation>\n' +
+              '</block>',
+          assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(block, ['x', 'y']);
               },
         },
       ];
