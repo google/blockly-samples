@@ -307,7 +307,7 @@ Blockly.FieldDate.prototype.onDateSelected_ = function(event) {
     // Ignores date changes triggered during text edit.
     return;
   }
-  const date = event.date ? event.date.toIsoString(true) : '';
+  var date = event.date ? event.date.toIsoString(true) : '';
   this.setEditorValue_(date);
   Blockly.WidgetDiv.hide();
   Blockly.DropDownDiv.hideIfOwner(this);

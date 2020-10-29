@@ -95,7 +95,7 @@ function checkSupersDefined(hierarchyDef) {
  * },
  * 'typeB': {
  *   'fulfills': ['typeA']
- * }.
+ * }
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
 function checkCircularDependencies(hierarchyDef) {

@@ -117,7 +117,7 @@ function buildFrontMatter(pluginDir) {
   console.log(`Preparing plugin for ${packageJson.name}`);
 
   // Escape the package name: @ is not a valid character in Jekyll's YAML.
-  const frontMatter = `---
+  let frontMatter = `---
 packageName: "${packageJson.name}"
 description: "${packageJson.description}"
 ---
@@ -128,39 +128,38 @@ description: "${packageJson.description}"
 /**
  * Copy over the test page (index.html and bundled js) and the readme for
  * this plugin. Add variables as needed for Jekyll.
- * The resulting code lives in gh-pages/plugins/<pluginName>.
+ * The resulting code lives in gh-pages/plugins/<pluginName>
  * @param {string} pluginDir The subdirectory (inside plugins/) for this plugin.
  */
 function preparePlugin(pluginDir) {
   return gulp
-      .src([
-        './plugins/' + pluginDir + '/test/index.html',
-        './plugins/' + pluginDir + '/README.md',
-      ], {base: './plugins/', allowEmpty: true})
-  // Add front matter tags to index and readme pages for Jekyll processing.
-      .pipe(header(buildFrontMatter(pluginDir)))
-      .pipe(gulp.src([
-        './plugins/' + pluginDir + '/build/test_bundle.js',
-      ], {base: './plugins/', allowEmpty: true}))
-      .pipe(gulp.dest('./gh-pages/plugins/'));
+    .src([
+      './plugins/' + pluginDir + '/test/index.html',
+      './plugins/' + pluginDir + '/README.md'
+    ], {base: './plugins/', allowEmpty: true})
+    // Add front matter tags to index and readme pages for Jekyll processing.
+    .pipe(header(buildFrontMatter(pluginDir)))
+    .pipe(gulp.src([
+      './plugins/' + pluginDir + '/build/test_bundle.js',
+    ], {base: './plugins/', allowEmpty: true}))
+    .pipe(gulp.dest('./gh-pages/plugins/'));
 }
 
 /**
  * Prepare plugins for deployment to gh-pages.
  *
  * For each plugin, copy relevant files to the gh-pages directory.
- * @param done
  */
 function prepareToDeployPlugins(done) {
   const dir = './plugins';
-  const folders = fs.readdirSync(dir)
-      .filter(function(file) {
-        return fs.statSync(path.join(dir, file)).isDirectory();
-      });
+  var folders = fs.readdirSync(dir)
+    .filter(function (file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
   return gulp.parallel(folders.map(function(folder) {
-    return function() {
+    return function () {
       return preparePlugin(folder);
-    };
+    }
   }))(done);
 }
 
@@ -203,5 +202,5 @@ module.exports = {
   deployUpstream: deployToGhPagesUpstream,
   predeploy: prepareToDeployPlugins,
   publish: publishRelease,
-  publishDryRun: publishDryRun,
+  publishDryRun: publishDryRun
 };
