@@ -1,0 +1,205 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Customizing your themes</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="theme-extension-identifier"
+                  title="Customizing your themes"
+                  environment="web"
+                  feedback-link="https://github.com/google/blockly-samples/issues/new">
+    
+      <google-codelab-step label="Codelab overview" duration="0">
+        <h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<p>In this codelab you will learn how to:</p>
+<ul>
+<li>Add a theme to the workspace</li>
+<li>Add a colory theme to a category</li>
+<li>Add a color theme to a block</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll build</h2>
+<p>A very simple Blockly workspace with customized themes</p>
+<h2 is-upgraded>What you&#39;ll need</h2>
+<ul>
+<li>A browser</li>
+<li>Basic knowledge of HTML, CSS, and JavaScript.</li>
+</ul>
+<p>This codelab is focused on Blockly&#39;s theme extension. Non-relevant concepts are glossed over and provided for you to simple copy and paste.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Setup" duration="0">
+        <h2 is-upgraded>Download the sample code</h2>
+<p>You can get the sample code for this code by either downloading the zip here:</p>
+<p><a href="https://github.com/google/blockly-samples/archive/master.zip" target="_blank">Download zip</a></p>
+<p>or by cloning this git repo:</p>
+<pre><code language="language-bash" class="language-bash">git clone https://github.com/google/blockly-samples.git
+</code></pre>
+<p>If you downloaded the source as a zip, unpacking it should give you a root folder named <code>blockly-samples-master</code>.</p>
+<p>The relevant files are in <code>examples/theme-extension-codelab</code>. There are two versions of the app:</p>
+<ul>
+<li><code>starter-code/</code>: The starter code that you&#39;ll build upon in this codelab.</li>
+<li><code>complete-code/</code>: The code after completing the codelab, in case you get lost or want to compare to your version.</li>
+</ul>
+<p>Each folder contains:</p>
+<ul>
+<li><code>index.js</code> - The codelab&#39;s logic. To start, it just injects a simple workspace.</li>
+<li><code>index.html</code> - A web page containing a simple blockly workspace.</li>
+</ul>
+<p>To run the code, simple open <code>starter-code/index.html</code> in a browser. You should see a Blockly workspace with a flyout.</p>
+<p class="image-container"><img alt="A web page with the text “Theme Extension Codelab” and a Blockly workspace." src="img/27407554ddce7459.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Workspace Theme" duration="0">
+        <p>In this section you will create a very basic <code>Blockly.Themes.Halloween</code>, then inject it to display in the workspace.</p>
+<h2 is-upgraded>Themes</h2>
+<p>Themes are a way to customize the look and feel of Blockly. Currently, we support customizing block colours, category colours and certain components through the Themes class</p>
+<p>A theme can be created using the constructor or by using defineTheme. Using defineTheme makes it easy to extend a pre existing theme and set all values with a single object.</p>
+<p>Add the below code in <code>index.js</code> right before function start()</p>
+<pre><code language="language-js" class="language-js">Blockly.Theme.Halloween = Blockly.Theme.defineTheme(&#39;halloween&#39;, {
+  &#39;base&#39;: Blockly.Themes.Classic,
+});
+</code></pre>
+<p>And then add a line to inject this theme in function start() in <code>index.js</code></p>
+<pre><code language="language-js" class="language-js">function start() {
+    // Create main workspace.
+    workspace = Blockly.inject(&#39;blocklyDiv&#39;,
+      {
+        toolbox: toolboxCategories,
+        theme: Blockly.Themes.Halloween,
+      });
+ } 
+</code></pre>
+<p>Note: At this point, we have just created a new theme. But it does not have any customizations. We will do that next.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Customize Components" duration="0">
+        <p>Within the Halloween theme definition, you can override colours of multiple components:</p>
+<pre><code language="language-js" class="language-js">Blockly.Themes.Halloween = Blockly.Theme.defineTheme(&#39;halloween&#39;, {
+  &#39;base&#39;: Blockly.Themes.Classic,
+  &#39;componentStyles&#39;: {
+    &#39;workspaceBackgroundColour&#39;: &#39;#ff7518&#39;,
+    &#39;toolboxBackgroundColour&#39;: &#39;#F9C10E&#39;,
+    &#39;toolboxForegroundColour&#39;: &#39;#fff&#39;,
+    &#39;flyoutBackgroundColour&#39;: &#39;#252526&#39;,
+    &#39;flyoutForegroundColour&#39;: &#39;#ccc&#39;,
+    &#39;flyoutOpacity&#39;: 1,
+    &#39;scrollbarColour&#39;: &#39;#ff0000&#39;,
+    &#39;insertionMarkerColour&#39;: &#39;#fff&#39;,
+    &#39;insertionMarkerOpacity&#39;: 0.3,
+    &#39;scrollbarOpacity&#39;: 0.4,
+    &#39;cursorColour&#39;: &#39;#d0d0d0&#39;,
+    &#39;blackBackground&#39;: &#39;#333&#39;
+  }
+});
+</code></pre>
+<h2 is-upgraded>Test it</h2>
+<p>Reload your web page. You should see a themed workspace!</p>
+<p class="image-container"><img alt="Fun with colours." src="img/c26f260178b86787.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Customize Category Styles" duration="0">
+        <p>A category style currently only holds a colour property. It is the colour of the category on the flyout. This value can either be defined as a hex value or as a hue. Usually these colours should be the same as the colourPrimary on the majority of blocks in the category making it easy for users to tell what blocks belong in what category.</p>
+<p>Update the Theme definition to have the category styles as below.</p>
+<pre><code language="language-js" class="language-js">Blockly.Themes.Halloween = Blockly.Theme.defineTheme(&#39;halloween&#39;, {
+  &#39;base&#39;: Blockly.Themes.Classic,
+  &#39;categoryStyles&#39;: {
+  &#39;list_category&#39;: {
+     &#39;colour&#39;: &#34;#4a148c&#34;
+   },
+   &#39;logic_category&#39;: {
+     &#39;colour&#39;: &#34;#8b4513&#34;,
+   }
+  },
+  &#39;blockStyles&#39;: {
+   &#39;list_blocks&#39;: {
+     &#39;colourPrimary&#39;: &#34;#4a148c&#34;,
+     &#39;colourSecondary&#39;:&#34;#AD7BE9&#34;,
+     &#39;colourTertiary&#39;:&#34;#CDB6E9&#34;
+   },
+   &#39;logic_blocks&#39;: {
+     &#39;colourPrimary&#39;: &#34;#8b4513&#34;,
+     &#39;colourSecondary&#39;:&#34;#ff0000&#34;,
+     &#39;colourTertiary&#39;:&#34;#C5EAFF&#34;
+   },
+   &#39;loop_blocks&#39;: {
+     &#39;colourPrimary&#39;: &#34;#85E21F&#34;,
+     &#39;colourSecondary&#39;:&#34;#ff0000&#34;,
+     &#39;colourTertiary&#39;:&#34;#C5EAFF&#34;
+   },
+   &#39;text_blocks&#39;: {
+     &#39;colourPrimary&#39;: &#34;#FE9B13&#34;,
+     &#39;colourSecondary&#39;:&#34;#ff0000&#34;,
+     &#39;colourTertiary&#39;:&#34;#C5EAFF&#34;
+   }
+  },
+  &#39;componentStyles&#39;: {
+    &#39;workspaceBackgroundColour&#39;: &#39;#ff7518&#39;,
+    &#39;toolboxBackgroundColour&#39;: &#39;#F9C10E&#39;,
+    &#39;toolboxForegroundColour&#39;: &#39;#fff&#39;,
+    &#39;flyoutBackgroundColour&#39;: &#39;#252526&#39;,
+    &#39;flyoutForegroundColour&#39;: &#39;#ccc&#39;,
+    &#39;flyoutOpacity&#39;: 1,
+    &#39;scrollbarColour&#39;: &#39;#ff0000&#39;,
+    &#39;insertionMarkerColour&#39;: &#39;#fff&#39;,
+    &#39;insertionMarkerOpacity&#39;: 0.3,
+    &#39;scrollbarOpacity&#39;: 0.4,
+    &#39;cursorColour&#39;: &#39;#d0d0d0&#39;,
+    &#39;blackBackground&#39;: &#39;#333&#39;
+  }
+});
+
+</code></pre>
+<h2 is-upgraded>Test it</h2>
+<p>Click on different blocks in the component and you should see the colours that you applied show up.</p>
+<p class="image-container"><img alt="Customized Block colors on the components" src="img/ebcbe7baa405d675.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Summary" duration="0">
+        <p>In this codelab you have learned how to extend and customize themes for the blocks component.</p>
+<h2 is-upgraded>Additional information</h2>
+<ul>
+<li><a href="https://developers.google.com/blockly/guides/configure/web/themes" target="_blank">Themes documentation</a></li>
+<li>You can also customize the font styles. Details are available in the documentation.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

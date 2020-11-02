@@ -1,0 +1,24 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2020-10-29T14:48:45-07:00",
+  "id": "theme-extension-identifier",
+  "duration": 0,
+  "title": "Customizing your themes",
+  "summary": "How to extend a theme in Blockly.",
+  "source": "theme_extension.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "blockly",
+    "codelab",
+    "theme"
+  ],
+  "tags": [],
+  "feedback": "https://github.com/google/blockly-samples/issues/new",
+  "url": "theme-extension-identifier"
+}
