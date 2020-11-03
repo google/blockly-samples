@@ -28,7 +28,7 @@ FieldValueTestCase.prototype.expectedValue = undefined;
  */
 FieldValueTestCase.prototype.expectedText = undefined;
 /**
- * @type {RegExp|string|undefined} Optional error message matcher if test case
+ * @type {!RegExp|string|undefined} Optional error message matcher if test case
  *    is expected to throw.
  */
 FieldValueTestCase.prototype.errMsgMatcher = undefined;
@@ -51,7 +51,7 @@ FieldCreationTestCase.prototype.json = undefined;
 
 /**
  * Assert a field's value is the same as the expected value.
- * @param {Blockly.Field} field The field.
+ * @param {!Blockly.Field} field The field.
  * @param {*} expectedValue The expected value.
  * @param {string=} expectedText The expected text.
  */
@@ -68,10 +68,10 @@ export function assertFieldValue(field, expectedValue,
 
 /**
  * Runs provided creation test cases.
- * @param {Array<FieldCreationTestCase>} testCases The test cases to run.
- * @param {function(Blockly.Field, FieldCreationTestCase)} assertion The
+ * @param {!Array<!FieldCreationTestCase>} testCases The test cases to run.
+ * @param {function(!Blockly.Field, !FieldCreationTestCase)} assertion The
  *    assertion to use.
- * @param {function(new:Blockly.Field,FieldCreationTestCase):Blockly.Field
+ * @param {function(new:Blockly.Field,!FieldCreationTestCase):Blockly.Field
  *    } creation A function that returns an instance of the field based on the
  *    provided test case.
  * @private
@@ -93,8 +93,8 @@ function runCreationTests_(testCases, assertion, creation) {
 
 /**
  * Runs provided creation test cases.
- * @param {Array<FieldCreationTestCase>} testCases The test cases to run.
- * @param {function(new:Blockly.Field,FieldCreationTestCase):Blockly.Field
+ * @param {!Array<!FieldCreationTestCase>} testCases The test cases to run.
+ * @param {function(new:Blockly.Field,!FieldCreationTestCase):Blockly.Field
  *    } creation A function that returns an instance of the field based on the
  *    provided test case.
  * @private
@@ -102,8 +102,8 @@ function runCreationTests_(testCases, assertion, creation) {
 function runCreationTestsAssertThrows_(testCases, creation) {
   /**
    * Creates test callback for creation test.
-   * @param {FieldCreationTestCase} testCase The test case to use.
-   * @return {Function} The test callback.
+   * @param {!FieldCreationTestCase} testCase The test case to use.
+   * @return {!Function} The test callback.
    */
   const createTestFn = (testCase) => {
     return function() {
@@ -119,17 +119,17 @@ function runCreationTestsAssertThrows_(testCases, creation) {
  * Runs suite of tests for constructor for the specified field.
  * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
  *    being tested.
- * @param {Array<FieldCreationTestCase>} validValueTestCases Test cases with
+ * @param {Array<!FieldCreationTestCase>} validValueTestCases Test cases with
  *    valid values for given field.
- * @param {Array<FieldCreationTestCase>} invalidValueTestCases Test cases with
+ * @param {Array<!FieldCreationTestCase>} invalidValueTestCases Test cases with
  *    invalid values for given field.
- * @param {function(Blockly.Field, FieldCreationTestCase)
+ * @param {function(!Blockly.Field, !FieldCreationTestCase)
  *    } validRunAssertField Asserts that field has expected values.
- * @param {function(Blockly.Field)=} assertFieldDefault Asserts that field has
+ * @param {function(!Blockly.Field)=} assertFieldDefault Asserts that field has
  *    default values. If undefined, tests will check that field throws when
  *    invalid value is passed rather than asserting default.
- * @param {function(FieldCreationTestCase=)=} customCreateWithJs Custom creation
- *    function to use in tests.
+ * @param {function(!FieldCreationTestCase=)=} customCreateWithJs Custom
+ *    creation function to use in tests.
  */
 export function runConstructorSuiteTests(TestedField, validValueTestCases,
     invalidValueTestCases, validRunAssertField, assertFieldDefault,
@@ -152,8 +152,8 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
 
     /**
      * Creates a field using its constructor and the provided test case.
-     * @param {FieldCreationTestCase} testCase The test case information.
-     * @return {Blockly.Field} The instantiated field.
+     * @param {!FieldCreationTestCase} testCase The test case information.
+     * @return {!Blockly.Field} The instantiated field.
      */
     const createWithJs = function(testCase) {
       return customCreateWithJs ? customCreateWithJs.call(this, testCase) :
@@ -173,16 +173,16 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
  * Runs suite of tests for fromJson creation of specified field.
  * @param {function(new:Blockly.Field, *=)} TestedField The class of the field
  *    being tested.
- * @param {Array<FieldCreationTestCase>} validValueTestCases Test cases with
+ * @param {!Array<!FieldCreationTestCase>} validValueTestCases Test cases with
  *    valid values for given field.
- * @param {Array<FieldCreationTestCase>} invalidValueTestCases Test cases with
+ * @param {!Array<!FieldCreationTestCase>} invalidValueTestCases Test cases with
  *    invalid values for given field.
- * @param {function(Blockly.Field, FieldValueTestCase)
+ * @param {function(!Blockly.Field, !FieldValueTestCase)
  *    } validRunAssertField Asserts that field has expected values.
- * @param {function(Blockly.Field)=} assertFieldDefault Asserts that field has
+ * @param {function(!Blockly.Field)=} assertFieldDefault Asserts that field has
  *    default values. If undefined, tests will check that field throws when
  *    invalid value is passed rather than asserting default.
- * @param {function(FieldCreationTestCase=)=} customCreateWithJson Custom
+ * @param {function(!FieldCreationTestCase=)=} customCreateWithJson Custom
  *    creation function to use in tests.
  */
 export function runFromJsonSuiteTests(TestedField, validValueTestCases,
@@ -206,8 +206,8 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
 
     /**
      * Creates a field using fromJson and the provided test case.
-     * @param {FieldCreationTestCase} testCase The test case information.
-     * @return {Blockly.Field} The instantiated field.
+     * @param {!FieldCreationTestCase} testCase The test case information.
+     * @return {!Blockly.Field} The instantiated field.
      */
     const createWithJson = function(testCase) {
       return customCreateWithJson ? customCreateWithJson.call(this, testCase) :
@@ -225,9 +225,9 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
 
 /**
  * Runs tests for setValue calls.
- * @param {Array<FieldValueTestCase>} validValueTestCases Test cases with
+ * @param {!Array<!FieldValueTestCase>} validValueTestCases Test cases with
  *    valid values.
- * @param {Array<FieldValueTestCase>} invalidValueTestCases Test cases with
+ * @param {!Array<!FieldValueTestCase>} invalidValueTestCases Test cases with
  *    invalid values.
  * @param {*} invalidRunExpectedValue Expected value for field after invalid
  *    call to setValue.
@@ -238,8 +238,8 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
     invalidRunExpectedValue, invalidRunExpectedText) {
   /**
    * Creates test callback for invalid setValue test.
-   * @param {FieldValueTestCase} testCase The test case information.
-   * @return {Function} The test callback.
+   * @param {!FieldValueTestCase} testCase The test case information.
+   * @return {!Function} The test callback.
    */
   const createInvalidSetValueTestCallback = (testCase) => {
     return function() {
@@ -250,8 +250,8 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
   };
   /**
    * Creates test callback for valid setValue test.
-   * @param {FieldValueTestCase} testCase The test case information.
-   * @return {Function} The test callback.
+   * @param {!FieldValueTestCase} testCase The test case information.
+   * @return {!Function} The test callback.
    */
   const createValidSetValueTestCallback = (testCase) => {
     return function() {

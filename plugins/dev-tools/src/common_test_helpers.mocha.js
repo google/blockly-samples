@@ -45,19 +45,19 @@ TestSuite.prototype.skip = false;
  */
 TestSuite.prototype.only = false;
 /**
- * @type {Array<T>} The associated test cases.
+ * @type {!Array<T>} The associated test cases.
  */
 TestSuite.prototype.testCases = [];
 
 /**
  * Runs provided test cases.
  * @template {TestCase} T
- * @param {Array<T>} testCases The test cases to run.
+ * @param {!Array<T>} testCases The test cases to run.
  * @param {function(T):Function} createTestCallback Creates test
  *    callback using given test case.
  */
 export function runTestCases(testCases, createTestCallback) {
-  testCases.forEach(/** @type {TestCase} */(testCase) => {
+  testCases.forEach(/** @type {!TestCase} */(testCase) => {
     let testCall = (testCase.skip ? test.skip : test);
     testCall = (testCase.only ? test.only : testCall);
     testCall(testCase.title, createTestCallback(testCase));
@@ -67,13 +67,13 @@ export function runTestCases(testCases, createTestCallback) {
 /**
  * Runs provided test suite.
  * @template {TestCase} T
- * @param {Array<TestSuite<T>>} testSuites The test suites to run.
- * @param {function(TestSuite<T>):(function(T):Function)
+ * @param {Array<!TestSuite<T>>} testSuites The test suites to run.
+ * @param {function(!TestSuite<T>):(function(T):!Function)
  *    } createTestCaseCallback Creates test case callback using given test
  *    suite.
  */
 export function runTestSuites(testSuites, createTestCaseCallback) {
-  testSuites.forEach(/** @type {TestSuite} */(testSuite) => {
+  testSuites.forEach(/** @type {!TestSuite} */(testSuite) => {
     let suiteCall = (testSuite.skip ? suite.skip : suite);
     suiteCall = (testSuite.only ? suite.only : suiteCall);
     suiteCall(testSuite.title, function() {

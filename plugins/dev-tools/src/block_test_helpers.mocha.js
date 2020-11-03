@@ -38,8 +38,8 @@ CodeGenerationTestCase.prototype.expectedInnerOrder = undefined;
 CodeGenerationTestCase.prototype.useWorkspaceToCode = false;
 /**
  * A function that creates the block for the test.
- * @param {Blockly.Workspace} workspace The workspace context for this test.
- * @return {Blockly.Block}
+ * @param {!Blockly.Workspace} workspace The workspace context for this test.
+ * @return {!Blockly.Block}
  */
 CodeGenerationTestCase.prototype.createBlock = undefined;
 
@@ -74,15 +74,15 @@ SerializationTestCase.prototype.expectedXml = '';
 /**
  * A function that asserts tests has the expected structure after converting to
  *    block from given xml.
- * @param {Blockly.Block} block The block to check.
+ * @param {!Blockly.Block} block The block to check.
  */
 SerializationTestCase.prototype.assertBlockStructure = undefined;
 
 /**
  * Returns mocha test callback for code generation based on provided
  *    generator.
- * @param {Blockly.Generator} generator The generator to use in test.
- * @return {function(CodeGenerationTestCase):Function} Function that
+ * @param {!Blockly.Generator} generator The generator to use in test.
+ * @return {function(!CodeGenerationTestCase):!Function} Function that
  *    returns mocha test callback based on test case.
  * @private
  */
@@ -115,13 +115,13 @@ const createCodeGenerationTestFn_ = (generator) => {
 
 /**
  * Runs blockToCode test suites.
- * @param {Array<CodeGenerationTestSuite>} testSuites The test suites to run.
+ * @param {!Array<!CodeGenerationTestSuite>} testSuites The test suites to run.
  */
 export const runCodeGenerationTestSuites = (testSuites) => {
   /**
    * Creates function used to generate mocha test callback.
-   * @param {CodeGenerationTestSuite} suiteInfo The test suite information.
-   * @return {function(CodeGenerationTestCase):Function} Function that
+   * @param {!CodeGenerationTestSuite} suiteInfo The test suite information.
+   * @return {function(!CodeGenerationTestCase):!Function} Function that
    *    creates mocha test callback.
    */
   const createTestFn = (suiteInfo) => {
@@ -133,13 +133,13 @@ export const runCodeGenerationTestSuites = (testSuites) => {
 
 /**
  * Runs serialization test suite.
- * @param {Array<SerializationTestCase>} testCases The test cases to run.
+ * @param {!Array<!SerializationTestCase>} testCases The test cases to run.
  */
 export const runSerializationTestSuite = (testCases) => {
   /**
    * Creates test callback for xmlToBlock test.
-   * @param {SerializationTestCase} testCase The test case information.
-   * @return {Function} The test callback.
+   * @param {!SerializationTestCase} testCase The test case information.
+   * @return {!Function} The test callback.
    */
   const createXmlToBlockTestCallback = (testCase) => {
     return function() {
@@ -150,8 +150,8 @@ export const runSerializationTestSuite = (testCases) => {
   };
   /**
    * Creates test callback for xml round trip test.
-   * @param {SerializationTestCase} testCase The test case information.
-   * @return {Function} The test callback.
+   * @param {!SerializationTestCase} testCase The test case information.
+   * @return {!Function} The test callback.
    */
   const createXmlRoundTripTestCallback = (testCase) => {
     return function() {
