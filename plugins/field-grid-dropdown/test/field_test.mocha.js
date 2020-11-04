@@ -8,75 +8,137 @@ const {testHelpers} = require('@blockly/dev-tools');
 const {FieldGridDropdown} = require('../src/index');
 
 const {
-  FieldCreationTestCase, FieldValueTestCase, runConstructorSuiteTests,
-  runFromJsonSuiteTests, runSetValueTests,
+  assertFieldValue, FieldCreationTestCase, FieldValueTestCase,
+  runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
 } = testHelpers;
 
-suite.skip('FieldGridDropdown', function() {
+suite('FieldGridDropdown', function() {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
    */
-  const invalidValueTestCases = [
-    // TODO
+  const invalidValueCreationTestCases = [
+    {title: 'Undefined', args: [undefined]},
+    {title: 'Array Items not Arrays', args: [undefined]},
+    {title: 'Array Items with Invalid IDs',
+      args: [[['1', 1], ['2', 2], ['3', 3]]]},
+    {title: 'Array Items with Invalid Content',
+      args: [[[1, '1'], [2, '2'], [3, '3']]]},
   ];
   /**
    * Configuration for field tests with valid values.
    * @type {Array<FieldCreationTestCase>}
    */
-  const validValueTestCases = [
-    // TODO
+  const validValueCreationTestCases = [
+    {title: 'Text Dropdown', value: 'A', expectedValue: 'A', expectedText: 'a',
+      args: [[['a', 'A'], ['b', 'B'], ['c', 'C']]]},
+    {title: 'Image Dropdown', value: 'A', expectedValue: 'A', expectedText: 'a',
+      args: [[
+        [{src: 'scrA', alt: 'a'}, 'A'],
+        [{src: 'scrB', alt: 'b'}, 'B'],
+        [{src: 'scrC', alt: 'c'}, 'C']]]},
+    {title: 'Dynamic Text Dropdown', value: 'A', expectedValue: 'A',
+      expectedText: 'a',
+      args: [() => {
+        return [['a', 'A'], ['b', 'B'], ['c', 'C']];
+      }]},
+    {title: 'Dynamic Image Dropdown', value: 'A', expectedValue: 'A',
+      expectedText: 'a',
+      args: [() => {
+        return [
+          [{src: 'scrA', alt: 'a'}, 'A'],
+          [{src: 'scrB', alt: 'b'}, 'B'],
+          [{src: 'scrC', alt: 'c'}, 'C']];
+      }]},
   ];
-  /**
-   * The expected default value for the field being tested.
-   * @type {*}
-   */
-  const defaultFieldValue = 0; // TODO update with default value
-  /**
-   * Asserts that the field property values are set to default.
-   * @param {FieldGridDropdown} field The field to check.
-   */
-  const assertFieldDefault = function(field) {
-    // TODO Recommend use of assertFieldValue from testHelpers
+  const addJson = function(testCase) {
+    testCase.json = {'options': testCase.args[0]};
   };
+  invalidValueCreationTestCases.forEach(addJson);
+  validValueCreationTestCases.forEach(addJson);
+
   /**
    * Asserts that the field properties are correct based on the test case.
-   * @param {FieldGridDropdown} field The field to check.
-   * @param {FieldValueTestCase} testCase The test case.
+   * @param {!FieldGridDropdown} field The field to check.
+   * @param {!FieldValueTestCase} testCase The test case.
    */
   const validTestCaseAssertField = function(field, testCase) {
-    // TODO
+    assertFieldValue(field, testCase.expectedValue, testCase.expectedText);
   };
 
   runConstructorSuiteTests(
-      FieldGridDropdown, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+      FieldGridDropdown, validValueCreationTestCases,
+      invalidValueCreationTestCases, validTestCaseAssertField);
 
   runFromJsonSuiteTests(
-      FieldGridDropdown, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+      FieldGridDropdown, validValueCreationTestCases,
+      invalidValueCreationTestCases, validTestCaseAssertField);
+
+  /**
+   * Configuration for field tests with invalid values.
+   * @type {!Array<!FieldCreationTestCase>}
+   */
+  const invalidValueSetValueTestCases = [
+    {title: 'Null', value: null},
+    {title: 'Undefined', value: undefined},
+    {title: 'Invalid ID', value: 'bad'},
+  ];
+  /**
+   * Configuration for field tests with valid values.
+   * @type {!Array<!FieldValueTestCase>}
+   */
+  const validValueSetValueTestCases = [
+    {title: 'Valid ID', value: 'B', expectedValue: 'B', expectedText: 'b'},
+  ];
 
   suite('setValue', function() {
-    suite('Empty -> New Value', function() {
-      setup(function() {
-        this.field = new FieldGridDropdown();
-      });
-      runSetValueTests(
-          validValueTestCases, invalidValueTestCases, defaultFieldValue);
+    setup(function() {
+      this.field = new FieldGridDropdown(
+          [['a', 'A'], ['b', 'B'], ['c', 'C']]);
     });
-    suite('Value -> New Value', function() {
-      const initialValue = 1; // TODO update with initial value for test.
-      setup(function() {
-        this.field = new FieldGridDropdown(initialValue);
-      });
-      runSetValueTests(
-          validValueTestCases, invalidValueTestCases, initialValue);
-    });
+    runSetValueTests(
+        validValueSetValueTestCases, invalidValueSetValueTestCases, 'A', 'a');
   });
 
   suite('Validators', function() {
-    // TODO
+    setup(function() {
+      this.dropdownField = new FieldGridDropdown([
+        ['1a','1A'], ['1b','1B'], ['1c','1C'],
+        ['2a','2A'], ['2b','2B'], ['2c','2C']]);
+    });
+    teardown(function() {
+      this.dropdownField.setValidator(null);
+    });
+    suite('Null Validator', function() {
+      setup(function() {
+        this.dropdownField.setValidator(function() {
+          return null;
+        });
+      });
+      test('New Value', function() {
+        this.dropdownField.setValue('1B');
+        assertFieldValue(this.dropdownField, '1A', '1a');
+      });
+    });
+    suite('Force 1s Validator', function() {
+      setup(function() {
+        this.dropdownField.setValidator(function(newValue) {
+          return '1' + newValue.charAt(1);
+        });
+      });
+      test('New Value', function() {
+        this.dropdownField.setValue('2B');
+        assertFieldValue(this.dropdownField, '1B', '1b');
+      });
+    });
+    suite('Returns Undefined Validator', function() {
+      setup(function() {
+        this.dropdownField.setValidator(function() {});
+      });
+      test('New Value', function() {
+        this.dropdownField.setValue('1B');
+        assertFieldValue(this.dropdownField, '1B', '1b');
+      });
+    });
   });
-
-  // TODO add any other relevant tests
 });
