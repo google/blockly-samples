@@ -14,14 +14,12 @@ import {registerTooltipExtension} from '../src/index';
 
 
 // Register the tooltip extension.
-registerTooltipExtension((block: Blockly.Block) => {
+registerTooltipExtension((block: Blockly.BlockSvg) => {
   // Custom tooltip render function.
   const tooltip = document.createElement('div');
   tooltip.className = 'custom-tooltip';
-
-  const blockId = document.createElement('div');
-  blockId.textContent = block.id;
-  tooltip.appendChild(blockId);
+  tooltip.style.backgroundColor = block.getColour();
+  tooltip.style.borderColor = block.getColourTertiary();
 
   const blockTooltipText = document.createElement('div');
   blockTooltipText.textContent = block.getTooltip();
@@ -38,13 +36,11 @@ Blockly.Css.register([
       box-shadow: none !important;
       background-color: transparent !important;
       opacity: 1 !important;
-      /* wrap the JS text inside a blockly Tooltip */
-      overflow-wrap: break-word;
     }
     .custom-tooltip {
-      background: #000;
       color: #fff;
-      border-radius: 8px;
+      border: 1px solid #000;
+      border-radius: 4px;
       padding: 1rem;
     }
   `,

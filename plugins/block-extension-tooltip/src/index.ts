@@ -10,9 +10,9 @@
 import * as Blockly from 'blockly/core';
 import './tooltip_monkey_patch';
 
-type TooltipRender = (block: Blockly.Block) => HTMLElement;
+type TooltipRender = (block: Blockly.BlockSvg) => HTMLElement;
 
-interface TooltipBlock extends Blockly.Block {
+interface TooltipBlock extends Blockly.BlockSvg {
   customTooltip: () => HTMLElement;
 }
 
@@ -24,7 +24,6 @@ interface TooltipBlock extends Blockly.Block {
  */
 export const registerTooltipExtension = (tooltipRender: TooltipRender,
     extensionName = 'custom-tooltip-extension') => {
-  
   // Register the tooltip extension.
   Blockly.Extensions.register(extensionName, function() {
     const block = this as TooltipBlock;

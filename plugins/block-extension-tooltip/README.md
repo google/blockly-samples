@@ -17,6 +17,8 @@ npm install @blockly/block-extension-tooltip --save
 
 ## Usage
 
+![](https://github.com/google/blockly-samples/raw/master/plugins/block-extension-tooltip/readme-media/CustomTooltip.png)
+
 ### Register
 
 Register the tooltip extension:
