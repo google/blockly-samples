@@ -117,7 +117,7 @@ Reload your web page. You should see a themed workspace!
 ![Fun with colours.](theme_components_workspace.png)
 
 ## Customize Category Styles 
-A category style currently only holds a colour property. It is the colour of the category on the flyout.
+A category style currently only holds a colour property. It is the colour of the category on the toolbox.
 This value can either be defined as a hex value or as a hue. Usually these colours should be the same as 
 the colourPrimary on the majority of blocks in the category making it easy for users to tell what blocks 
 belong in what category.
@@ -133,6 +133,62 @@ Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
    },
    'logic_category': {
      'colour': "#8b4513",
+   }
+   'loop_category': {
+     'colour': "#85E21F",
+   }
+   'text_category': {
+     'colour': "#FE9B13",
+   }
+  },
+  'componentStyles': {
+    'workspaceBackgroundColour': '#ff7518',
+    'toolboxBackgroundColour': '#F9C10E',
+    'toolboxForegroundColour': '#fff',
+    'flyoutBackgroundColour': '#252526',
+    'flyoutForegroundColour': '#ccc',
+    'flyoutOpacity': 1,
+    'scrollbarColour': '#ff0000',
+    'insertionMarkerColour': '#fff',
+    'insertionMarkerOpacity': 0.3,
+    'scrollbarOpacity': 0.4,
+    'cursorColour': '#d0d0d0',
+    'blackBackground': '#333'
+  }
+});
+
+```
+
+### Test it
+
+Click on different blocks in the component and you should see the colours that you applied show up.
+
+![Customized Block colors on the components](customized_categories.png)
+
+
+## Customize Block Styles 
+A block style currently only holds three different colour properties. They are 'colourPrimary', 
+'colourSecondary' and 'colourTertiary'. 
+This value can either be defined as a hex value or as a hue.
+
+Update the Theme definition to have the category styles as below.
+
+
+```js
+Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
+  'base': Blockly.Themes.Classic,
+  'categoryStyles': {
+  'list_category': {
+     'colour': "#4a148c"
+   },
+   'logic_category': {
+     'colour': "#8b4513",
+   }
+   'loop_category': {
+     'colour': "#85E21F",
+   }
+   'text_category': {
+     'colour': "#FE9B13",
    }
   },
   'blockStyles': {
@@ -173,6 +229,7 @@ Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
   }
 });
 
+
 ```
 
 ### Test it
@@ -181,12 +238,13 @@ Click on different blocks in the component and you should see the colours that y
 
 ![Customized Block colors on the components](customized_categories.png)
 
+
 ## Summary
 
 In this codelab you have learned how to extend and customize themes for the blocks component. 
 
 ### Additional information
 
-- [Themes documentation](https://developers.google.com/blockly/guides/configure/web/themes#font_styles)
+- [Themes documentation](https://developers.google.com/blockly/guides/configure/web/themes)
 
-- You can also customize the font styles. Details are available in the documentation.
+- You can also customize the font styles. Details are available in the [documentation](https://developers.google.com/blockly/guides/configure/web/themes#font_styles).
