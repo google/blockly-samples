@@ -14,7 +14,6 @@ import {registerTooltipExtension} from '../src/index';
 
 
 // Register the tooltip extension.
-const tooltipExtensionId = 'tooltip-extension';
 registerTooltipExtension((block: Blockly.Block) => {
   // Custom tooltip render function.
   const tooltip = document.createElement('div');
@@ -29,9 +28,9 @@ registerTooltipExtension((block: Blockly.Block) => {
   tooltip.appendChild(blockTooltipText);
 
   return tooltip;
-}, tooltipExtensionId);
+}, 'tooltip-extension');
 
-// Customize the CSS.
+// Customize the tooltip CSS.
 Blockly.Css.register([
   `
     div.blocklyTooltipDiv {
@@ -51,7 +50,7 @@ Blockly.Css.register([
   `,
 ]);
 
-// Add the extension to all blocks.
+// Add the tooltip extension to all blocks.
 Object.keys(Blockly.Blocks).forEach((blockId) => {
   const block = Blockly.Blocks[blockId] as Blockly.Block;
   if (block.init) {
@@ -60,7 +59,7 @@ Object.keys(Blockly.Blocks).forEach((blockId) => {
     block.init = function() {
       if (oldInit) oldInit.call(this);
       this.jsonInit({
-        'extensions': [tooltipExtensionId],
+        'extensions': ['tooltip-extension'],
       });
     };
   }
