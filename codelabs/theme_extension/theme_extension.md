@@ -12,12 +12,12 @@ feedback link: https://github.com/google/blockly-samples/issues/new
 ### What you'll learn
  
 In this codelab you will learn how to:
-- Add a theme to the workspace 
-- Add a colory theme to a category
-- Add a color theme to a block
+- Add a category style.
+- Add a block style.
  
+
 ### What you'll build
-A very simple Blockly workspace with customized themes
+A very simple Blockly workspace with customized themes.
  
 ### What you'll need
 - A browser
@@ -56,13 +56,13 @@ To run the code, simple open `starter-code/index.html` in a browser. You should 
 
 ## Workspace Theme
 
-In this section you will create a very basic `Blockly.Themes.Halloween`, then inject it to display in the workspace.
+In this section you will create a very basic halloween theme, then inject it to display in the workspace.
 
 ### Themes
 
-Themes are a way to customize the look and feel of Blockly. Currently, we support customizing block colours, category colours and certain components through the Themes class
+Themes are a way to customize the look and feel of Blockly. Currently, we support customizing block colours, category colours and certain components through the Themes class.
 
-A theme can be created using the constructor or by using defineTheme. Using defineTheme makes it easy to extend a pre existing theme and set all values with a single object.
+A theme can be created using the constructor or by using defineTheme. Using `defineTheme` makes it easy to extend a pre existing theme and set all values with a single object.
 
 Add the below code in `index.js` right before function start()
 ```js
@@ -117,7 +117,10 @@ Reload your web page. You should see a themed workspace!
 ![Fun with colours.](theme_components_workspace.png)
 
 ## Customize Category Styles 
-A category style currently only holds a colour property. It is the colour of the category on the flyout. This value can either be defined as a hex value or as a hue. Usually these colours should be the same as the colourPrimary on the majority of blocks in the category making it easy for users to tell what blocks belong in what category.
+A category style currently only holds a colour property. It is the colour of the category on the flyout.
+This value can either be defined as a hex value or as a hue. Usually these colours should be the same as 
+the colourPrimary on the majority of blocks in the category making it easy for users to tell what blocks 
+belong in what category.
 
 Update the Theme definition to have the category styles as below.
 
@@ -184,6 +187,6 @@ In this codelab you have learned how to extend and customize themes for the bloc
 
 ### Additional information
 
-- [Themes documentation](https://developers.google.com/blockly/guides/configure/web/themes)
+- [Themes documentation](https://developers.google.com/blockly/guides/configure/web/themes#font_styles)
 
 - You can also customize the font styles. Details are available in the documentation.

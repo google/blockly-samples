@@ -11,6 +11,12 @@ Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
    },
    'logic_category': {
      'colour': "#8b4513",
+   },
+   'loop_category': {
+     'colour': "#85E21F",
+   },
+   'text_category': {
+     'colour': "#FE9B13",
    }
   },
   'blockStyles': {
