@@ -54,7 +54,7 @@ or add the extension to your block definition using JavaScript:
 ```js
 Blockly.Blocks['my-block'] = {
   init: function() {
-    Blockly.Extensions.apply('custom-tooltip-extension', this, true);
+    Blockly.Extensions.apply('custom-tooltip-extension', this, false);
   },
 };
 ```
