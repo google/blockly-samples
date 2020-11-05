@@ -114,7 +114,7 @@ const gitPluginPath =
 
 const packageJson = {
   name: pluginPackageName,
-  version: `0.${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.0`,
+  version: `0.0.0`,
   description: templateJson.description || `A Blockly ${pluginType}.`,
   scripts: templateJson.scripts || {
     'build': 'blockly-scripts build',
@@ -142,7 +142,7 @@ const packageJson = {
     'url': `${gitURL}.git`,
     'directory': gitPluginPath,
   } : {},
-  license: 'Apache 2.0',
+  license: 'Apache-2.0',
   directories: {
     'dist': 'dist',
     'src': 'src',
