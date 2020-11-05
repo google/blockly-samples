@@ -33,7 +33,7 @@ registerTooltipExtension((block) => {
   el.className = 'my-custom-tooltip';
   el.textContent = block.getTooltip();
   return el;
-});
+}, 'custom-tooltip-extension');
 ```
 
 ### Block definition
