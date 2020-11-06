@@ -227,12 +227,14 @@ export class TypeHierarchy {
     }
     return types.reduce((accumulator, currType) => {
       const nearestCommonParentsMap = this.nearestCommonParents_.get(currType);
-      // Note: flatMap() doesn't work on Node 10. See #431.
+      // Note: neither flatMap() nor flat() work on Node 10. See #431.
       return accumulator
           .map((type) => {
             return nearestCommonParentsMap.get(type);
           })
-          .flat()
+          .reduce((flat, toFlatten) => {
+            return [...flat, ...toFlatten];
+          }, [])
           .filter((type, i, array) => {
             return array.indexOf(type) == i;
           });
