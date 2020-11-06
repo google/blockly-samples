@@ -171,7 +171,7 @@ Clicking on a category will highlight the row with your new colour.
 ## Customize Block Styles 
 A block style currently only holds three different colour properties. They are 'colourPrimary', 
 'colourSecondary' and 'colourTertiary'. This value can either be defined as a hex value or as a hue.
-For more information on block styles visit our themes [documentation](https://developers.google.com/blockly/guides/configure/web/themes)
+For more information on block styles visit our themes [documentation](https://developers.google.com/blockly/guides/configure/web/themes#block_style)
 
 Update the Theme definition to have the block styles as below.
 
