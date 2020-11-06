@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+const chai = require('chai');
+const Blockly = require('blockly/node');
 const {testHelpers} = require('@blockly/dev-tools');
 const {FieldGridDropdown} = require('../src/index');
 
@@ -139,6 +141,41 @@ suite('FieldGridDropdown', function() {
         this.dropdownField.setValue('1B');
         assertFieldValue(this.dropdownField, '1B', '1b');
       });
+    });
+  });
+  suite.only('Css', function() {
+    setup(function() {
+      this.jsdomCleanup =
+          require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
+      Blockly.defineBlocksWithJsonArray([
+        {
+          'type': 'grid_dropdown_test_block',
+          'message0': 'block %1',
+          'args0': [
+            {
+              'type': 'field_grid_dropdown',
+              'name': 'FIELDNAME',
+              'options': [['a', 'A'], ['b', 'B'], ['c', 'C']],
+            },
+          ],
+          'output': null,
+          'style': 'math_blocks',
+        }]);
+      this.workspace = Blockly.inject('blocklyDiv');
+      this.block = this.workspace.newBlock('grid_dropdown_test_block');
+      this.field = this.block.getField('FIELDNAME');
+    });
+    teardown(function() {
+      this.jsdomCleanup();
+    });
+    test('Grid has fieldGridDropDownContainer class', function() {
+      this.field.showEditor_();
+      const contentDiv = Blockly.DropDownDiv.getContentDiv();
+      const gridElQuery =
+          contentDiv.querySelectorAll('.fieldGridDropDownContainer');
+      chai.assert.isDefAndNotNull(gridElQuery);
+      chai.assert.lengthOf(gridElQuery, 2,
+          'class is only added to one element');
     });
   });
 });
