@@ -12,6 +12,7 @@ feedback link: https://github.com/google/blockly-samples/issues/new
 ### What you'll learn
  
 In this codelab you will learn how to:
+- Add component styles.
 - Add a category style.
 - Add a block style.
  
@@ -161,17 +162,18 @@ Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
 
 ### Test it
 
-Click on different blocks in the component and you should see the colours that you applied show up.
+The colour displayed next to the toolbox category should display your new colours.
+Clicking on a category will highlight the row with your new colour.
 
 ![Customized Block colors on the components](customized_categories.png)
 
 
 ## Customize Block Styles 
 A block style currently only holds three different colour properties. They are 'colourPrimary', 
-'colourSecondary' and 'colourTertiary'. 
-This value can either be defined as a hex value or as a hue.
+'colourSecondary' and 'colourTertiary'. This value can either be defined as a hex value or as a hue.
+For more information on block styles visit our themes [documentation](https://developers.google.com/blockly/guides/configure/web/themes)
 
-Update the Theme definition to have the category styles as below.
+Update the Theme definition to have the block styles as below.
 
 
 ```js
