@@ -1,0 +1,67 @@
+{
+  "name": "blockly-plugin-keyboard-accessibility",
+  "version": "0.20201105.0",
+  "description": "A Blockly plugin.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "keyboard-accessibility"
+  ],
+  "homepage": "https://github.com/alschmiedt/blockly-samples/tree/master/examples/keyboard-accessibility#readme",
+  "bugs": {
+    "url": "https://github.com/alschmiedt/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alschmiedt/blockly-samples.git",
+    "directory": "examples/keyboard-accessibility"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.2.1",
+    "@blockly/dev-tools": "^2.0.5",
+    "blockly": "^3.20200924.4"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {},
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
+    "micromodal": "^0.4.6",
+    "popper.js": "^1.16.1",
+    "tone": "^14.7.58"
+  }
+}
