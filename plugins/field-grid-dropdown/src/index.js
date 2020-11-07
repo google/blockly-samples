@@ -35,8 +35,8 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     super(menuGenerator, opt_validator, opt_config);
 
     /**
-     * The number of columns in the dropdown grid.
-     * Defaults to 3.
+     * The number of columns in the dropdown grid. Must be an integer value
+     * greater than 0. Defaults to 3.
      * @type {number}
      * @private
      */
@@ -57,7 +57,9 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
   /**
    * Sets the number of columns on the grid. Updates the styling to reflect.
-   * @param {?(string|number|undefined)} columns A JSON object with options.
+   * @param {number} columns The number of columns. Is rounded to
+   *    an integer value and must be greater than 0. Invalid
+   *    values are ignored.
    * @private
    */
   setColumns(columns) {
@@ -66,9 +68,10 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   }
 
   /**
-   * Sets the number of columns on the grid. Called internally to avoid
-   * value updates.
-   * @param {?(string|number|undefined)} columns A JSON object with options.
+   * Sets the number of columns on the grid.
+   * @param {?(string|number|undefined)} columns The number of columns. Is
+   *    rounded to an integer value and must be greater than 0. Invalid
+   *    values are ignored.
    * @private
    */
   setColumnsInternal_(columns) {
