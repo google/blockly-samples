@@ -214,32 +214,3 @@ FieldPitch.NOTES = 'C3 D3 E3 F3 G3 A3 B3 C4 D4 E4 F4 G4 A4'.split(/ /);
 
 
 Blockly.fieldRegistry.register('field_pitch', FieldPitch);
-
-
-/* eslint-disable quotes */
-Blockly.defineBlocksWithJsonArray([
-  {
-    "type": "pitch_test",
-    "message0": 'pitch test: %1',
-    "args0": [
-      {
-        "type": "field_pitch",
-        "name": "PITCH",
-      },
-    ],
-    "output": null,
-    "colour": 160,
-  },
-]);
-
-export const toolboxPitch = {
-  "kind": "flyoutToolbox",
-  "contents": [
-    {
-      "kind": "block",
-      "type": "pitch_test",
-    },
-  ],
-};
-
-/* eslint-enable quotes */
