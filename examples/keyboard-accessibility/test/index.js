@@ -23,6 +23,7 @@ import MicroModal from 'micromodal';
  */
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
+  workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
   return workspace;
 }
 
