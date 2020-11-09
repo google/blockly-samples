@@ -9,9 +9,10 @@
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
+import {createPlayground} from '@blockly/dev-tools';
 import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
+import {toolboxPitch} from '../src/field_pitch';
 import MicroModal from 'micromodal';
 
 /**
@@ -27,7 +28,7 @@ function createWorkspace(blocklyDiv, options) {
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
-    toolbox: toolboxCategories,
+    toolbox: toolboxPitch,
   };
   MicroModal.init();
 
