@@ -12,7 +12,7 @@ import * as Blockly from 'blockly';
 import {createPlayground} from '@blockly/dev-tools';
 import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
-import {toolboxPitch} from '../src/field_pitch';
+import {toolboxPitch} from '../src/music_blocks';
 import MicroModal from 'micromodal';
 
 /**
