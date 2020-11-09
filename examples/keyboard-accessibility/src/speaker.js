@@ -100,7 +100,7 @@ export class Speaker {
    * Speaks out text if the event is of type marker or cursor move.
    * @param {!Blockly.Events} event The event to speak out.
    */
-  eventToSpeach(event) {
+  nodeToSpeech(event) {
     // TODO: Update this if we link to the current version of blockly.
     if (event.element === 'cursorMove' || event.element === 'markerMove') {
       let nodeText = this.nodeToText_(event.newValue,
