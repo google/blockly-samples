@@ -3,7 +3,19 @@ show_downloads: false
 defaults:
   -
     scope:
-      path: "plugins/*/test/index.html"
+      path: "**/*.md"
       type: "pages"
     values:
-      layout: "plugin_index"
+      article: true
+  -
+    scope:
+      path: "plugins/**/*.html"
+      type: "pages"
+    values:
+      layout: "default"
+  -
+    scope:
+      path: "examples/**/*.html"
+      type: "pages"
+    values:
+      layout: "default"
