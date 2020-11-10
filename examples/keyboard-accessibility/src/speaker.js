@@ -251,7 +251,16 @@ export class Speaker {
    * @protected
    */
   stackNodeToText_(node) {
-    return Blockly.Msg['STACK'];
+    const srcBlock = node.getSourceBlock();
+    let finalText = '';
+
+    if (srcBlock && srcBlock.workspace.isFlyout) {
+      finalText = this.getBlockText_(node);
+      finalText += ' . . To add this block to the workspace press Enter.';
+    } else if (srcBlock) {
+      finalText = Blockly.Msg['STACK'];
+    }
+    return finalText;
   }
 
   /**

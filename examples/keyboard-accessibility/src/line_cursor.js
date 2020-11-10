@@ -136,15 +136,16 @@ export class LineCursor extends Blockly.BasicCursor {
     const location = node.getLocation();
     const type = node && node.getType();
     if (type == Blockly.ASTNode.types.PREVIOUS) {
-      // if (location.outputConnection === null) {
-      //   isValid = true;
-      // }
       isValid = true;
     } else if (type == Blockly.ASTNode.types.INPUT &&
         location.type == Blockly.NEXT_STATEMENT) {
       isValid = true;
     } else if (type == Blockly.ASTNode.types.NEXT) {
       isValid = true;
+    } else if (type === Blockly.ASTNode.types.OUTPUT) {
+      if (!location.targetConnection) {
+        isValid = true;
+      }
     }
     return isValid;
   }
@@ -162,10 +163,13 @@ export class LineCursor extends Blockly.BasicCursor {
     let isValid = false;
     const location = node.getLocation();
     const type = node && node.getType();
-    if (type == Blockly.ASTNode.types.FIELD) {
+    if (type === Blockly.ASTNode.types.FIELD) {
       isValid = true;
-    } else if (type == Blockly.ASTNode.types.INPUT &&
-        location.type == Blockly.INPUT_VALUE) {
+    } else if (type === Blockly.ASTNode.types.INPUT && location.type === Blockly.INPUT_VALUE) {
+      isValid = true;
+    } else if (type == Blockly.ASTNode.types.OUTPUT) {
+      isValid = true;
+    } else if (type == Blockly.ASTNode.types.STACK) {
       isValid = true;
     }
     return isValid;
