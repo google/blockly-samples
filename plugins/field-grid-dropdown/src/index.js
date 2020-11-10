@@ -41,7 +41,9 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
      * @private
      */
     this.columns_ = 3;
-    this.setColumnsInternal_(opt_config['columns']);
+    if (opt_config && opt_config['columns']) {
+      this.setColumnsInternal_(opt_config['columns']);
+    }
   }
 
   /**
