@@ -14,6 +14,7 @@ import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
 import {toolboxPitch} from '../src/music_blocks';
 import MicroModal from 'micromodal';
+import {LineCursor} from '../src/line_cursor';
 
 /**
  * Create a workspace.
@@ -23,6 +24,8 @@ import MicroModal from 'micromodal';
  */
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
+  Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
+  workspace.getMarkerManager().setCursor(new LineCursor());
   workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
   return workspace;
 }
