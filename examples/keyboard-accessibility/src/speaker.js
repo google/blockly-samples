@@ -105,6 +105,20 @@ export class Speaker {
   }
 
   /**
+   * Pauses speaking.
+   */
+  pause() {
+    window.speechSynthesis.pause();
+  }
+
+  /**
+   * Resumes speaking.
+   */
+  resume() {
+    window.speechSynthesis.resume();
+  }
+
+  /**
    * Speaks out text if the event is of type marker or cursor move.
    * @param {!Blockly.Events} event The event to speak out.
    */
@@ -125,10 +139,12 @@ export class Speaker {
    * @public
    */
   modalToText(modal) {
-    const headerText = modal.querySelector('header').textContent.trim();
+    const header = modal.querySelector('header');
+    const headerText = header.textContent.trim();
     if (headerText !== '') {
       this.speak(headerText);
     }
+    this.addButtonListeners_(header.querySelectorAll('button'));
 
     const mainText = modal.querySelector('main').textContent.trim();
 
@@ -137,16 +153,42 @@ export class Speaker {
     }
 
     const footerBtns = modal.querySelector('footer').querySelectorAll('button');
+    this.addButtonListeners_(footerBtns);
+  }
 
-    for (const btn of footerBtns) {
+  /**
+   * Adds listeners for when the button is focused.
+   * @param {!NodeList} btns The buttons to add listeners to.
+   * @private
+   */
+  addButtonListeners_(btns) {
+    for (const btn of btns) {
       btn.addEventListener('focus', () => {
-        this.speak('Hit enter to ', true);
-        this.speak(btn.textContent);
+        this.buttonToSpeech_(btns, btn, true);
       });
       if (document.activeElement === btn) {
-        this.speak('Hit enter to ', false);
-        this.speak(btn.textContent);
+        this.buttonToSpeech_(btns, btn, false);
       }
+    }
+  }
+
+  /**
+   * Speaks out information about a button.
+   * @param {NodeList} btns The list of buttons on the modal.
+   * @param {Element} btn The button.
+   * @param {boolean} shouldCancel True if this should cancel the previous
+   *     utterance.
+   * @private
+   */
+  buttonToSpeech_(btns, btn, shouldCancel) {
+    this.speak('Hit enter to ', shouldCancel);
+    if (btn.textContent === '') {
+      this.speak(btn.getAttribute('aria-label'));
+    } else {
+      this.speak(btn.textContent);
+    }
+    if (btns.length > 0) {
+      this.speak('Hit tab to go to your next option');
     }
   }
 
