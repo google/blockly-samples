@@ -39,20 +39,25 @@ document.addEventListener('DOMContentLoaded', function() {
       'input', function(event) {
         game.loadLevel(this.value);
       });
+  const registerArrowKeys = function(register) {
+    const keyCodeMappings = [
+      [Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS],
+      [Blockly.utils.KeyCodes.DOWN, Blockly.navigation.actionNames.NEXT],
+      [Blockly.utils.KeyCodes.RIGHT, Blockly.navigation.actionNames.IN],
+      [Blockly.utils.KeyCodes.LEFT, Blockly.navigation.actionNames.OUT]];
+    keyCodeMappings.forEach((mapping) => {
+      if (register) {
+        Blockly.ShortcutRegistry.registry.addKeyMapping(...mapping);
+      } else {
+        Blockly.ShortcutRegistry.registry.removeKeyMapping(...mapping);
+      }
+    });
+  };
+  // Initial state has arrow keys turned on.
+  registerArrowKeys(true);
   document.getElementById('enableArrowKeys').addEventListener('click',
       (event) => {
-        const keyCodeMappings = [
-          [Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS],
-          [Blockly.utils.KeyCodes.DOWN, Blockly.navigation.actionNames.NEXT],
-          [Blockly.utils.KeyCodes.RIGHT, Blockly.navigation.actionNames.IN],
-          [Blockly.utils.KeyCodes.LEFT, Blockly.navigation.actionNames.OUT]];
-        keyCodeMappings.forEach((mapping) => {
-          if (event.currentTarget.checked) {
-            Blockly.ShortcutRegistry.registry.addKeyMapping(...mapping);
-          } else {
-            Blockly.ShortcutRegistry.registry.removeKeyMapping(...mapping);
-          }
-        });
+        registerArrowKeys(event.currentTarget.checked);
       });
   document.getElementById('modalButton').addEventListener('click',
       function() {
