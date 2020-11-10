@@ -2,7 +2,7 @@
   "name": "blockly-fixed-demo",
   "version": "0.0.0",
   "private": true,
-  "demoConfig": {
+  "blocklyDemoConfig": {
     "title": "Fixed Blockly",
     "description": "Inject Blockly into a page as a fixed element.",
     "files": [

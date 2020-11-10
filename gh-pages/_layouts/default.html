@@ -9,7 +9,7 @@
 
 <body class="root">
   <nav id="toolbar">
-    <a href="{{ site.url }}" id="arrow-back">
+    <a href="{{ site.baseurl }}" id="arrow-back">
       <i class="material-icons">close</i>
       <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
         alt="Blockly logo" />
@@ -35,7 +35,7 @@
       <ul id="tabs">
         {% for file in page.pages %}
           <li>
-            <a href="/{{ page.pageRoot }}/{{ file.link }}">
+            <a href="{{ site.baseurl }}/{{ page.pageRoot }}/{{ file.link }}">
               {{ file.label }}
             </a>
           </li>
