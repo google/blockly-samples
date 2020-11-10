@@ -147,7 +147,7 @@ function preparePlugin(pluginDir) {
           link: 'test/index',
         }, {
           label: 'README',
-          link: 'readme',
+          link: 'README',
         }],
       })))
       .pipe(gulp.src([
