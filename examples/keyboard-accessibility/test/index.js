@@ -13,6 +13,8 @@ import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
 import {Music} from '../src/music';
 import MicroModal from 'micromodal';
+import {HelpModal} from '../src/help_modal';
+import {KeyPressModal} from '../src/key_press_modal';
 
 document.addEventListener('DOMContentLoaded', function() {
   MicroModal.init({
@@ -20,6 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   const game = new Music();
   game.loadLevel(1);
+  const helpModal = new HelpModal('modal-1', 'modalButton');
+  helpModal.init();
+  const keyPressModal = new KeyPressModal();
+  keyPressModal.init();
+
   document.getElementById('playNote').addEventListener(
       'click', function() {
         notePlayer.playNote('C4', '8n');
@@ -35,6 +42,19 @@ document.addEventListener('DOMContentLoaded', function() {
           notePlayer.playNote('C4', '8n');
         });
       });
+  document.getElementById('setLevel').addEventListener(
+      'input', function(event) {
+        game.loadLevel(this.value);
+      });
+
+  document.addEventListener('visibilitychange', (event) => {
+    if (document.visibilityState === 'visible') {
+      console.log('tab is activate');
+    } else {
+      speaker.cancel();
+    }
+  });
+
   document.getElementById('setLevel').addEventListener(
       'input', function(event) {
         game.loadLevel(this.value);
