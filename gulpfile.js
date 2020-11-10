@@ -179,8 +179,8 @@ function prepareToDeployPlugins(done) {
 
 
 /**
- * Copy over the test page (index.html and bundled js) and the readme for
- * this plugin. Add variables as needed for Jekyll.
+ * Copy over files listed in the blocklyDemoConfig.files section of the
+ * package.json. Add variables needed for Jekyll processing.
  * The resulting code lives in gh-pages/examples/<exampleName>.
  * @param {string} baseDir The base directory to use, eg: ./examples.
  * @param {string} exampleDir The subdirectory (inside examples/) for this
@@ -191,17 +191,17 @@ function prepareToDeployPlugins(done) {
 function prepareExample(baseDir, exampleDir, done) {
   const packageJson =
     require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
-  const {demoConfig} = packageJson;
-  if (!demoConfig) {
+  const {blocklyDemoConfig} = packageJson;
+  if (!blocklyDemoConfig) {
     done();
     return;
   }
   console.log(`Preparing ${exampleDir} example for deployment.`);
-  demoConfig.pageRoot = `${baseDir}/${exampleDir}`;
+  blocklyDemoConfig.pageRoot = `${baseDir}/${exampleDir}`;
   return gulp
-      .src(demoConfig.files.map((f) => path.join(baseDir, exampleDir, f)),
+      .src(blocklyDemoConfig.files.map((f) => path.join(baseDir, exampleDir, f)),
           {base: baseDir, allowEmpty: true})
-      .pipe(gulp.header(buildFrontMatter(demoConfig)))
+      .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)))
       .pipe(gulp.dest('./gh-pages/examples/'));
 }
 

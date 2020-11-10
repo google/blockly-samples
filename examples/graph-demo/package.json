@@ -2,7 +2,7 @@
   "name": "blockly-graph-demo",
   "version": "0.0.0",
   "private": true,
-  "demoConfig": {
+  "blocklyDemoConfig": {
     "title": "Graph",
     "description": "Instant updates when blocks are changed.",
     "files": [
