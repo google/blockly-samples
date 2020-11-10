@@ -15,26 +15,13 @@ import {notePlayer} from '../src/note_player';
 import {toolboxPitch} from '../src/music_blocks';
 import MicroModal from 'micromodal';
 
-/**
- * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
- */
-function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
-  workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
-  return workspace;
-}
 
 document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
-    toolbox: toolboxPitch,
-  };
-  MicroModal.init();
-
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  MicroModal.init({
+    onClose: () => speaker.cancel(),
+  });
+  const game = new Music();
+  game.setGoalText('Play c4 d4 e4 c4');
 
   document.getElementById('playNote').addEventListener(
       'click', function() {
@@ -51,4 +38,18 @@ document.addEventListener('DOMContentLoaded', function() {
           notePlayer.playNote('C4', '8n');
         });
       });
+  document.getElementById('modalButton').addEventListener('click',
+      function() {
+        speaker.modalToText(document.getElementById('modal-1'));
+  });
+
+  document.getElementById('modalButton').addEventListener('focus',
+  function(e) {
+        speaker.speak('Hit enter to open the help menu');
+  });
+  document.getElementById('replayButton').addEventListener('click',
+      function() {
+        speaker.modalToText(document.getElementById('modal-1'));
+  });
+
 });

@@ -97,6 +97,14 @@ export class Speaker {
   }
 
   /**
+   * Clears out the queue of text to speak.
+   * @public
+   */
+  cancel() {
+    window.speechSynthesis.cancel();
+  }
+
+  /**
    * Speaks out text if the event is of type marker or cursor move.
    * @param {!Blockly.Events} event The event to speak out.
    */
@@ -109,6 +117,37 @@ export class Speaker {
         nodeText = 'Marker moved to location, ' + nodeText;
       }
       this.speak(nodeText, true);
+    }
+  }
+
+  /**
+   * Speaks out the text for a modal.
+   * @param {Element} modal The modal to collect the text to read out.
+   * @public
+   */
+  modalToText(modal) {
+    const headerText = modal.querySelector('header').textContent.trim();
+    if (headerText !== '') {
+      this.speak(headerText);
+    }
+
+    const mainText = modal.querySelector('main').textContent.trim();
+
+    if (mainText !== '') {
+      this.speak(mainText);
+    }
+
+    const footerBtns = modal.querySelector('footer').querySelectorAll('button');
+
+    for (const btn of footerBtns) {
+      btn.addEventListener('focus', () => {
+        this.speak('Hit enter to ', true);
+        this.speak(btn.textContent);
+      });
+      if (document.activeElement === btn) {
+        this.speak('Hit enter to ', false);
+        this.speak(btn.textContent);
+      }
     }
   }
 

@@ -16,17 +16,26 @@
 
 <body>
   <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
+    Navbar
+<!--    <a class="navbar-brand" href="#">Navbar</a>-->
+    <button type="button" class="btn btn-primary" data-micromodal-trigger="modal-1" id="modalButton">Help</button>
   </nav>
 
   <button class="btn btn-light-primary" id="playNoteAndText">Speak and Play Note</button>
   <button class="btn btn-light" id="playNote">Play Note</button>
   <textarea id="textInput"></textarea>
   <button class="btn btn-light" id="playText">Play Text</button>
-  <button type="button" class="btn btn-primary" data-micromodal-trigger="modal-1" id="modalButton">
-    Launch demo modal
-  </button>
-  <div id="root"></div>
+
+  <div class="root">
+    <div class="sidebar">
+      <h4>Goal</h4>
+      <p id="goalText"class="textInfo"></p>
+    </div>
+    <div class="blocklyArea">
+      <div id="blocklyDiv"></div>
+    </div>
+  </div>
+
   <script src="../build/test_bundle.js"></script>
 
   <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
@@ -34,18 +43,18 @@
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
         <header class="modal__header">
           <h2 class="modal__title" id="modal-1-title">
-            Micromodal
+            Help Menu
           </h2>
           <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
         </header>
         <main class="modal__content" id="modal-1-content">
           <p>
-            Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
+            This is the help menu. This can be accessed at any time by hitting H.
+            To close the menu press escape.
           </p>
         </main>
         <footer class="modal__footer">
-          <button class="modal__btn modal__btn-primary">Continue</button>
-          <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+          <button class="modal__btn modal__btn-primary" id="replayButton">Replay</button>
         </footer>
       </div>
     </div>
