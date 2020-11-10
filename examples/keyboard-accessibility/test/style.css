@@ -145,3 +145,36 @@
 .micromodal-slide .modal__overlay {
   will-change: transform;
 }
+
+.root {
+  display: flex;
+  height: calc(100vh - 125px);
+  overflow: hidden;
+  padding-top: 10px;
+  user-select: none;
+  width: 100vw;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 10px;
+  width: 300px;
+}
+
+.blocklyArea {
+  flex: 2 1 0;
+}
+
+#blocklyDiv {
+  height: 100%;
+  maxHeight: 100%;
+  width: 100%;
+}
+
+.textInfo {
+  border: 1px solid rgb(118, 118, 118);
+  min-height: 30px;
+  padding: 15px;
+}

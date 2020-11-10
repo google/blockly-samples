@@ -17,15 +17,17 @@
 <body>
   <nav class="navbar navbar-light bg-light">
     Navbar
-<!--    <a class="navbar-brand" href="#">Navbar</a>-->
     <button type="button" class="btn btn-primary" data-micromodal-trigger="modal-1" id="modalButton">Help</button>
   </nav>
 
-  <button class="btn btn-light-primary" id="playNoteAndText">Speak and Play Note</button>
-  <button class="btn btn-light" id="playNote">Play Note</button>
-  <textarea id="textInput"></textarea>
-  <button class="btn btn-light" id="playText">Play Text</button>
-
+  <div>
+    <button class="btn btn-light-primary" id="playNoteAndText">Speak and Play Note</button>
+    <button class="btn btn-light" id="playNote">Play Note</button>
+    <textarea id="textInput"></textarea>
+    <button class="btn btn-light" id="playText">Play Text</button>
+    <label for="setLevel">Set level (between 1 and 10):</label>
+    <input type="number" id="setLevel" min="1" max="10" value="1">
+  </div>
   <div class="root">
     <div class="sidebar">
       <h4>Goal</h4>
@@ -35,7 +37,6 @@
       <div id="blocklyDiv"></div>
     </div>
   </div>
-
   <script src="../build/test_bundle.js"></script>
 
   <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
