@@ -39,6 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
       'input', function(event) {
         game.loadLevel(this.value);
       });
+  document.getElementById('logGeneratedCode').addEventListener(
+      'click', function(event) {
+        game.logGeneratedCode();
+      });
+
   const registerArrowKeys = function(register) {
     const keyCodeMappings = [
       [Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS],

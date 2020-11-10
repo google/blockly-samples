@@ -12,6 +12,8 @@ import Blockly from 'blockly/core';
 import {speaker} from './speaker';
 import {toolboxPitch} from './music_blocks';
 import {LineCursor} from './line_cursor';
+import './music_block_generators';
+
 
 /**
  * Game logic for music game.
@@ -131,7 +133,7 @@ export class Music {
     if (this.level < 6) {
       levelXml =
           `<xml>
-            <block type="music_start" deletable="${this.level > 6}" x="180" 
+            <block type="music_start" deletable="${this.level > 6}" x="180"
             y="50"></block>
           </xml>`;
     }
@@ -159,5 +161,13 @@ export class Music {
   checkAnswer() {
     // TODO
     return true;
+  }
+
+  /**
+   * Generates code and logs it to the console.
+   */
+  logGeneratedCode() {
+    const codeJs = Blockly.JavaScript.workspaceToCode(this.workspace);
+    console.log(codeJs);
   }
 }
