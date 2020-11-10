@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('modalButton').addEventListener('click',
       function() {
         speaker.modalToText(document.getElementById('modal-1'));
-  });
+      });
 
   document.getElementById('modalButton').addEventListener('focus',
-  function(e) {
+      function(e) {
         speaker.speak('Hit enter to open the help menu');
-  });
+      });
   document.getElementById('replayButton').addEventListener('click',
       function() {
         speaker.modalToText(document.getElementById('modal-1'));
-  });
+      });
   document.getElementById('setLevel').addEventListener(
       'input', function(event) {
         game.loadLevel(this.value);
