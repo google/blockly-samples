@@ -9,7 +9,7 @@
  * @fileoverview Speaker used for speaking out text.
  */
 
-import * as Blockly from 'blockly';
+import Blockly from 'blockly/core';
 
 /**
  * Convenience methods for speaking out text.
@@ -102,10 +102,9 @@ export class Speaker {
    */
   nodeToSpeech(event) {
     // TODO: Update this if we link to the current version of blockly.
-    if (event.element === 'cursorMove' || event.element === 'markerMove') {
-      let nodeText = this.nodeToText_(event.newValue,
-          event.element === 'markerMove');
-      if (event.element === 'markerMove') {
+    if (event.type === Blockly.Events.MARKER_MOVE) {
+      let nodeText = this.nodeToText_(event.newNode, event.isCursor);
+      if (!event.isCursor) {
         nodeText = 'Marker moved to location, ' + nodeText;
       }
       this.speak(nodeText, true);

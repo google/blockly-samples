@@ -12,7 +12,6 @@ import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
 import {Music} from '../src/music';
 import MicroModal from 'micromodal';
-import {LineCursor} from '../src/line_cursor';
 
 document.addEventListener('DOMContentLoaded', function() {
   MicroModal.init();

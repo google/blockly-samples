@@ -11,6 +11,7 @@
 import Blockly from 'blockly/core';
 import {speaker} from './speaker';
 import {toolboxPitch} from './music_blocks';
+import {LineCursor} from './line_cursor';
 
 /**
  * Game logic for music game.
@@ -45,6 +46,8 @@ export class Music {
     const workspace = Blockly.inject(blocklyDiv, {
       toolbox: toolboxPitch,
     });
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
+    workspace.getMarkerManager().setCursor(new LineCursor());
     workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
     return workspace;
   }
