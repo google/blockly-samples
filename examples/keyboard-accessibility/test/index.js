@@ -14,10 +14,11 @@ import {Music} from '../src/music';
 import MicroModal from 'micromodal';
 
 document.addEventListener('DOMContentLoaded', function() {
-  MicroModal.init();
+  MicroModal.init({
+    onClose: () => speaker.cancel(),
+  });
   const game = new Music();
   game.loadLevel(1);
-
   document.getElementById('playNote').addEventListener(
       'click', function() {
         notePlayer.playNote('C4', '8n');
@@ -32,6 +33,19 @@ document.addEventListener('DOMContentLoaded', function() {
         speaker.speak('C4', false, function() {
           notePlayer.playNote('C4', '8n');
         });
+      });
+  document.getElementById('modalButton').addEventListener('click',
+      function() {
+        speaker.modalToText(document.getElementById('modal-1'));
+      });
+
+  document.getElementById('modalButton').addEventListener('focus',
+      function(e) {
+        speaker.speak('Hit enter to open the help menu');
+      });
+  document.getElementById('replayButton').addEventListener('click',
+      function() {
+        speaker.modalToText(document.getElementById('modal-1'));
       });
   document.getElementById('setLevel').addEventListener(
       'input', function(event) {

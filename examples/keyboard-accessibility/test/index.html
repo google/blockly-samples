@@ -16,7 +16,8 @@
 
 <body>
   <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
+    Navbar
+    <button type="button" class="btn btn-primary" data-micromodal-trigger="modal-1" id="modalButton">Help</button>
   </nav>
 
   <div>
@@ -24,9 +25,6 @@
     <button class="btn btn-light" id="playNote">Play Note</button>
     <textarea id="textInput"></textarea>
     <button class="btn btn-light" id="playText">Play Text</button>
-    <button type="button" class="btn btn-primary" data-micromodal-trigger="modal-1" id="modalButton">
-      Launch demo modal
-    </button>
     <label for="setLevel">Set level (between 1 and 10):</label>
     <input type="number" id="setLevel" min="1" max="10" value="1">
   </div>
@@ -46,18 +44,18 @@
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
         <header class="modal__header">
           <h2 class="modal__title" id="modal-1-title">
-            Micromodal
+            Help Menu
           </h2>
           <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
         </header>
         <main class="modal__content" id="modal-1-content">
           <p>
-            Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
+            This is the help menu. This can be accessed at any time by hitting H.
+            To close the menu press escape.
           </p>
         </main>
         <footer class="modal__footer">
-          <button class="modal__btn modal__btn-primary">Continue</button>
-          <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+          <button class="modal__btn modal__btn-primary" id="replayButton">Replay</button>
         </footer>
       </div>
     </div>
