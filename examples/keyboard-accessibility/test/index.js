@@ -13,7 +13,7 @@ import {notePlayer} from '../src/note_player';
 import {Music} from '../src/music';
 import MicroModal from 'micromodal';
 import {HelpModal} from '../src/help_modal';
-import {WelcomeModal} from '../src/welcome_modal';
+import {KeyPressModal} from '../src/key_press_modal';
 
 document.addEventListener('DOMContentLoaded', function() {
   MicroModal.init({
@@ -23,9 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
   game.loadLevel(1);
   const helpModal = new HelpModal('modal-1', 'modalButton');
   helpModal.init();
-  const welcomeModal = new WelcomeModal();
-  welcomeModal.init();
-  // MicroModal.show('modal-1');
+  const keyPressModal = new KeyPressModal();
+  keyPressModal.init();
 
   document.getElementById('playNote').addEventListener(
       'click', function() {

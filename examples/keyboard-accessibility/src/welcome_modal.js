@@ -30,33 +30,16 @@ export class WelcomeModal {
         () => {
           speaker.modalToText(document.getElementById(this.modalId));
         });
-    document.getElementById('welcomeCloseButton').addEventListener('blur', () => speaker.cancel());
+    document.getElementById('welcomeCloseButton').addEventListener(
+        'blur', () => speaker.cancel());
     MicroModal.show(this.modalId);
 
-    this.listener = this.onKeyPress_.bind(this);
-    document.getElementById(this.modalId)
-        .addEventListener('keydown', this.listener);
     document.getElementById('welcomeButtonReplay').addEventListener('click',
         () => {
           speaker.cancel();
           speaker.modalToText(document.getElementById(this.modalId));
         });
-  }
-
-  /**
-   * Handles the first key press event on the page. Removes itself after the
-   * first key press.
-   * @param {Event} e The key press event.
-   * @private
-   */
-  onKeyPress_(e) {
-    const modal = document.getElementById(this.modalId);
-    console.log(modal);
-    speaker.modalToText(modal);
-    speaker.resume();
-    document.getElementById(this.modalId)
-        .removeEventListener('keydown', this.listener);
-    e.preventDefault();
+    speaker.modalToText(document.getElementById(this.modalId));
   }
 
   /**
@@ -79,9 +62,9 @@ export class WelcomeModal {
           </p>
         </main>
         <footer class="modal__footer">
-          <button class="modal__btn modal__btn-primary" id="tutorialButton">Go To The Tutorial</button>
-          <button class="modal__btn modal__btn-primary" id="gameButton">Go To The Game</button>
-          <button class="modal__btn modal__btn-primary" id="welcomeButtonReplay">Replay</button>
+          <button class="modal__btn modal__btn-primary" id="tutorialButton">Go to the tutorial</button>
+          <button class="modal__btn modal__btn-primary" id="gameButton">Go to the game</button>
+          <button class="modal__btn modal__btn-primary" id="welcomeButtonReplay">Replay Instructions</button>
         </footer>
       </div>
     </div>`;
