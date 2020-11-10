@@ -7,7 +7,7 @@ pages:
   - label: "Playground"
     link: "test/index"
   - label: "README"
-    link: "readme"
+    link: "README"
 
 ---
 # @blockly/plugin-workspace-search [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)

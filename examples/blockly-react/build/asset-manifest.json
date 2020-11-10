@@ -1,0 +1,35 @@
+---
+title: "Blockly in React"
+description: "Load Blockly in a React project."
+files:
+  - "build/**/*"
+pageRoot: "examples/blockly-react"
+
+---
+{
+  "files": {
+    "main.css": "./static/css/main.cceb6860.chunk.css",
+    "main.js": "./static/js/main.841a4092.chunk.js",
+    "main.js.map": "./static/js/main.841a4092.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.d9081955.js",
+    "runtime-main.js.map": "./static/js/runtime-main.d9081955.js.map",
+    "static/css/2.2a60accc.chunk.css": "./static/css/2.2a60accc.chunk.css",
+    "static/js/2.4d9df274.chunk.js": "./static/js/2.4d9df274.chunk.js",
+    "static/js/2.4d9df274.chunk.js.map": "./static/js/2.4d9df274.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.aa3566615f58334f3d4ad937f688885b.js": "./precache-manifest.aa3566615f58334f3d4ad937f688885b.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/2.2a60accc.chunk.css.map": "./static/css/2.2a60accc.chunk.css.map",
+    "static/css/main.cceb6860.chunk.css.map": "./static/css/main.cceb6860.chunk.css.map",
+    "static/js/2.4d9df274.chunk.js.LICENSE.txt": "./static/js/2.4d9df274.chunk.js.LICENSE.txt",
+    "static/js/main.841a4092.chunk.js.LICENSE.txt": "./static/js/main.841a4092.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "./static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d9081955.js",
+    "static/css/2.2a60accc.chunk.css",
+    "static/js/2.4d9df274.chunk.js",
+    "static/css/main.cceb6860.chunk.css",
+    "static/js/main.841a4092.chunk.js"
+  ]
+}
