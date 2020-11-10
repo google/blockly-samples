@@ -1,0 +1,22 @@
+{
+  "name": "blockly-interpreter-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "JS Interpreter",
+    "files": [
+      "index.html",
+      "async-execution.html",
+      "step-execution.html",
+      "acorn_interpreter.js",
+      "wait_block.js"
+    ],
+    "pages": [{
+      "label": "Step Execution",
+      "link": "step-execution.html"
+    }, {
+      "label": "Async Execution",
+      "link": "async-execution.html"
+    }]
+  }
+}
