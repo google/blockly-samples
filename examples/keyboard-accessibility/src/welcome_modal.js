@@ -30,6 +30,7 @@ export class WelcomeModal {
         () => {
           speaker.modalToText(document.getElementById(this.modalId));
         });
+    document.getElementById('welcomeCloseButton').addEventListener('blur', () => speaker.cancel());
     MicroModal.show(this.modalId);
 
     this.listener = this.onKeyPress_.bind(this);
@@ -69,7 +70,7 @@ export class WelcomeModal {
           <h2 class="modal__title" id="modal-1-title">
             Welcome To Blockly Games Music!
           </h2>
-          <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+          <button class="modal__close" aria-label="Close modal" id="welcomeCloseButton" data-micromodal-close></button>
         </header>
         <main class="modal__content" id="modal-1-content">
           <p>
