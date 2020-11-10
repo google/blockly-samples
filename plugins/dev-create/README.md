@@ -1,6 +1,14 @@
 ---
+title: "@blockly/create-package Demo"
 packageName: "@blockly/create-package"
 description: "A tool for creating a Blockly plugin based on a template."
+pageRoot: "plugins/dev-create"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/create-package [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

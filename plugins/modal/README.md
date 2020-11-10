@@ -1,6 +1,14 @@
 ---
+title: "@blockly/plugin-modal Demo"
 packageName: "@blockly/plugin-modal"
 description: "A Blockly plugin that creates a modal."
+pageRoot: "plugins/modal"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/plugin-modal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

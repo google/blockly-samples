@@ -1,6 +1,14 @@
 ---
+title: "@blockly/dev-tools Demo"
 packageName: "@blockly/dev-tools"
 description: "A library of common utilities for Blockly extension development."
+pageRoot: "plugins/dev-tools"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/dev-tools [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

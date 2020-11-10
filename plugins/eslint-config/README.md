@@ -1,6 +1,14 @@
 ---
+title: "@blockly/eslint-config Demo"
 packageName: "@blockly/eslint-config"
 description: "ESlint configuration used by Blockly plugins."
+pageRoot: "plugins/eslint-config"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/eslint-config [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

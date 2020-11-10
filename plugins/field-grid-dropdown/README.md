@@ -1,6 +1,14 @@
 ---
+title: "@blockly/field-grid-dropdown Demo"
 packageName: "@blockly/field-grid-dropdown"
 description: "A Blockly dropdown field with grid layout."
+pageRoot: "plugins/field-grid-dropdown"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/field-grid-dropdown [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

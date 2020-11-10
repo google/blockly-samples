@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  {% include head.html %}
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+</head>
+
+<body class="root">
+  <!-- HEADER -->
+  <nav id="toolbar">
+    <div class="site-width layout horizontal">
+      <a href="{{ site.url }}"><img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+          alt="Blockly logo" /></a>
+      <div id="searchbar">
+        <div class="input-container">
+          <div prefix="" icon="search" role="button" tabindex="0" aria-disabled="false" class="icon">
+            <div class="icon-search">
+              <i class="material-icons">search</i>
+            </div>
+          </div>
+          <input is="iron-input" autofocus id="search-box" placeholder="Search" />
+        </div>
+      </div>
+    </div>
+
+    {% if site.github.is_project_page %}
+    <a class="button" href="{{ site.github.repository_url }}">View on GitHub</a>
+    {% endif %}
+  </nav>
+  <main id="main" class="index">
+    <div class="drop-shadow"></div>
+    <header id="banner">
+      <div class="site-width">
+        <h2 class="banner-title">Welcome to {{ site.title | default: site.github.repository_name }}!</h2>
+        <p>
+          {{ site.description | default: site.github.project_tagline }}
+        </p>
+      </div>
+    </header>
+    <div class="site-width">
+      <div class="container">
+        {{ content }}
+      </div>
+    </div>
+  </main>
+
+  {% include footer.html %}
+
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

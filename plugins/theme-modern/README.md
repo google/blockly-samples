@@ -1,6 +1,14 @@
 ---
+title: "@blockly/theme-modern Demo"
 packageName: "@blockly/theme-modern"
 description: "A Blockly modern theme with darker block borders."
+pageRoot: "plugins/theme-modern"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/theme-modern [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

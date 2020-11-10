@@ -1,6 +1,14 @@
 ---
+title: "@blockly/block-test Demo"
 packageName: "@blockly/block-test"
 description: "A group of Blockly test blocks."
+pageRoot: "plugins/block-test"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/block-test [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

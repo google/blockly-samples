@@ -1,6 +1,14 @@
 ---
+title: "@blockly/dev-scripts Demo"
 packageName: "@blockly/dev-scripts"
 description: "Configuration and scripts for Blockly plugins."
+pageRoot: "plugins/dev-scripts"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/dev-scripts [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

@@ -1,6 +1,14 @@
 ---
+title: "@blockly/plugin-typed-variable-modal Demo"
 packageName: "@blockly/plugin-typed-variable-modal"
 description: "A Blockly plugin to create a modal for creating typed variables."
+pageRoot: "plugins/typed-variable-modal"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/plugin-typed-variable-modal [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 

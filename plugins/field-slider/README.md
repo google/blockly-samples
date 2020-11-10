@@ -1,6 +1,14 @@
 ---
+title: "@blockly/field-slider Demo"
 packageName: "@blockly/field-slider"
 description: "A Blockly slider field."
+pageRoot: "plugins/field-slider"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "readme"
+
 ---
 # @blockly/field-slider [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
