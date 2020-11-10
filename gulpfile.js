@@ -198,11 +198,20 @@ function prepareExample(baseDir, exampleDir, done) {
   }
   console.log(`Preparing ${exampleDir} example for deployment.`);
   blocklyDemoConfig.pageRoot = `${baseDir}/${exampleDir}`;
-  return gulp
-      .src(blocklyDemoConfig.files.map((f) => path.join(baseDir, exampleDir, f)),
+  const pageRegex = /.*\.(html|htm|md)$/i;
+  const pages = blocklyDemoConfig.files.filter((f) => pageRegex.test(f));
+  const assets = blocklyDemoConfig.files.filter((f) => !pageRegex.test(f));
+
+  let stream = gulp
+      .src(pages.map((f) => path.join(baseDir, exampleDir, f)),
           {base: baseDir, allowEmpty: true})
-      .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)))
-      .pipe(gulp.dest('./gh-pages/examples/'));
+      .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
+  if (assets.length) {
+    stream = stream
+        .pipe(gulp.src(assets.map((f) => path.join(baseDir, exampleDir, f)),
+            {base: baseDir, allowEmpty: true}));
+  }
+  return stream.pipe(gulp.dest('./gh-pages/examples/'));
 }
 
 /**
