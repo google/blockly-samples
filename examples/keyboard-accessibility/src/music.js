@@ -36,6 +36,12 @@ class Stave {
     this.stateStack = stateStack;
 
     /**
+     * Whether all the notes have ben played.
+     * @type {boolean}
+     */
+    this.done = false;
+
+    /**
      * The time to pause till.
      * @type {number}
      * @private
@@ -47,7 +53,7 @@ class Stave {
      * @type {Array<string|number>}
      * @private
      */
-    this.transcript = [];
+    this.transcript_ = [];
 
     /**
      * Currently playing note.
@@ -55,17 +61,12 @@ class Stave {
      * @private
      */
     this.note_ = '';
-
-    /**
-     * Whether all the notes have ben played.
-     * @type {boolean}
-     */
-    this.done = false;
   }
 
   /**
    * Whether this stave is currently paused.
    * @param {number} clock64ths Number of 1/64ths notes since the start.
+   * @return {boolean} Whether this stave is paused.
    */
   isPaused(clock64ths) {
     return this.pauseUntil64ths_ > clock64ths;
@@ -83,7 +84,7 @@ class Stave {
     notePlayer.triggerAttack(pitch);
     this.pauseUntil64ths_ = duration * 64 + clock64ths;
     // Make a record of this note.
-    this.transcript.push(pitch, duration);
+    this.transcript_.push(pitch, duration);
   }
 
   /**
@@ -95,12 +96,12 @@ class Stave {
     this.stopSound();
     this.pauseUntil64ths_ = duration * 64 + clock64ths;
     // Make a record of this rest.
-    if (this.transcript.length > 1 &&
-        this.transcript [this.transcript.length - 2] === REST) {
+    const transcriptLen = this.transcript_.length;
+    if (transcriptLen > 1 && this.transcript_[transcriptLen - 2] === REST) {
       // Concatenate this rest with previous one.
-      this.transcript[this.transcript.length - 1] += duration;
+      this.transcript_[transcriptLen - 1] += duration;
     } else {
-      this.transcript.push(REST, duration);
+      this.transcript_.push(REST, duration);
     }
   }
 
@@ -121,7 +122,7 @@ class Stave {
    */
   checkTranscript(expectedTranscript) {
     return JSON.stringify(
-        expectedTranscript) === JSON.stringify(this.transcript);
+        expectedTranscript) === JSON.stringify(this.transcript_);
   }
 }
 
@@ -141,16 +142,16 @@ export class Music {
     this.workspace = this.createWorkspace_();
 
     /**
+     * The currently loaded level. 0 if no level loaded.
+     */
+    this.level = 0;
+
+    /**
      * The HTML element containing the goal text for the game.
      * @type {HTMLElement}
      * @private
      */
     this.goalTextElement_ = document.getElementById('goalText');
-
-    /**
-     * The currently loaded level. 0 if no level loaded.
-     */
-    this.level = 0;
 
     /**
      * The expected answer.
@@ -293,7 +294,7 @@ export class Music {
   loadLevelBlocks_() {
     this.workspace.clear();
     let levelXml = '';
-    if (this.level === 1) {
+    if (this.level === 2) {
       levelXml =
           `<xml>
             <block type="music_start" deletable="false" x="180"
@@ -390,7 +391,7 @@ export class Music {
   /**
    * Play one note.
    * @param {number} duration Fraction of a whole note length to play.
-   * @param {number} pitch Note number to play (0-12).
+   * @param {string} pitch Note play.
    */
   play_(duration, pitch) {
     this.activeStave_.play(duration, pitch, this.clock64ths_);
@@ -404,35 +405,32 @@ export class Music {
     this.activeStave_.rest(duration, this.clock64ths_);
   }
 
-  createInterpreterInitFunc_() {
-    /**
-     * Inject the Music API into a JavaScript interpreter.
-     * @param {!Interpreter} interpreter The JS-Interpreter.
-     * @param {!Interpreter.Object} globalObject Global object.
-     */
-    return (interpreter, globalObject) => {
-      // API
-      let wrapper;
-      wrapper = (duration, pitch, _id) => {
-        this.play_(duration, pitch);
-      };
-      interpreter.setProperty(globalObject, 'play',
-          interpreter.createNativeFunction(wrapper));
-      wrapper = (duration, _id) => {
-        this.rest_(duration);
-      };
-      interpreter.setProperty(globalObject, 'rest',
-          interpreter.createNativeFunction(wrapper));
+  /**
+   * Inject the Music API into a JavaScript interpreter.
+   * @param {!Interpreter} interpreter The JS-Interpreter.
+   * @param {!Interpreter.Object} globalObject Global object.
+   */
+  interpreterInit_(interpreter, globalObject) {
+    // API
+    let wrapper;
+    wrapper = (duration, pitch, _id) => {
+      this.play_(duration, pitch);
+    };
+    interpreter.setProperty(globalObject, 'play',
+        interpreter.createNativeFunction(wrapper));
+    wrapper = (duration, _id) => {
+      this.rest_(duration);
+    };
+    interpreter.setProperty(globalObject, 'rest',
+        interpreter.createNativeFunction(wrapper));
 
-      // TODO implement changing instrument.
-      // wrapper = function(instrument, id) {
-      //   Music.setInstrument(instrument, id);
-      // };
-      // interpreter.setProperty(globalObject, 'setInstrument',
-      //     interpreter.createNativeFunction(wrapper));
-    }
+    // TODO implement changing instrument.
+    // wrapper = function(instrument, id) {
+    //   Music.setInstrument(instrument, id);
+    // };
+    // interpreter.setProperty(globalObject, 'setInstrument',
+    //     interpreter.createNativeFunction(wrapper));
   }
-
 
   /**
    * Execute a bite-sized chunk of the user's code.
@@ -542,8 +540,7 @@ export class Music {
     const code = Blockly.JavaScript.workspaceToCode(this.workspace);
 
     // Run user code.
-    this.interpreter_ = new Interpreter(
-        code, this.createInterpreterInitFunc_());
+    this.interpreter_ = new Interpreter(code, this.interpreterInit_.bind(this));
     // TODO support multiple threads
     // Assume only one thread.
     const interpreter = new Interpreter('');
