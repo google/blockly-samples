@@ -11,22 +11,29 @@
 import Blockly from 'blockly/core';
 import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
-import {Music} from '../src/music';
-import MicroModal from 'micromodal';
-import {HelpModal} from '../src/help_modal';
-import {KeyPressModal} from '../src/key_press_modal';
+import {MusicGameController} from '../src/music_game_controller';
 
 document.addEventListener('DOMContentLoaded', function() {
-  MicroModal.init({
-    onClose: () => speaker.cancel(),
-  });
-  const game = new Music();
-  game.loadLevel(1);
-  const helpModal = new HelpModal('modal-1', 'modalButton');
-  helpModal.init();
-  const keyPressModal = new KeyPressModal();
-  keyPressModal.init();
+  const controller = new MusicGameController();
 
+  document.getElementById('setLevel').addEventListener(
+      'input', function(event) {
+        controller.getGame().loadLevel(this.value);
+      });
+  document.getElementById('logGeneratedCode').addEventListener(
+      'click', function(event) {
+        controller.getGame().logGeneratedCode();
+      });
+
+  // Initial state has arrow keys turned on.
+  registerArrowKeys(true);
+  addTestButtons();
+});
+
+/**
+ * Add buttons for testing basic functionality (speaker, etc).
+ */
+function addTestButtons() {
   document.getElementById('playNote').addEventListener(
       'click', function() {
         notePlayer.playNote('C4', '8n');
@@ -42,11 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
           notePlayer.playNote('C4', '8n');
         });
       });
-  document.getElementById('setLevel').addEventListener(
-      'input', function(event) {
-        game.loadLevel(this.value);
-      });
-
   document.addEventListener('visibilitychange', (event) => {
     if (document.visibilityState === 'visible') {
       console.log('tab is activate');
@@ -55,31 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  document.getElementById('setLevel').addEventListener(
-      'input', function(event) {
-        game.loadLevel(this.value);
-      });
-  document.getElementById('logGeneratedCode').addEventListener(
-      'click', function(event) {
-        game.logGeneratedCode();
-      });
-
-  const registerArrowKeys = function(register) {
-    const keyCodeMappings = [
-      [Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS],
-      [Blockly.utils.KeyCodes.DOWN, Blockly.navigation.actionNames.NEXT],
-      [Blockly.utils.KeyCodes.RIGHT, Blockly.navigation.actionNames.IN],
-      [Blockly.utils.KeyCodes.LEFT, Blockly.navigation.actionNames.OUT]];
-    keyCodeMappings.forEach((mapping) => {
-      if (register) {
-        Blockly.ShortcutRegistry.registry.addKeyMapping(...mapping);
-      } else {
-        Blockly.ShortcutRegistry.registry.removeKeyMapping(...mapping);
-      }
-    });
-  };
-  // Initial state has arrow keys turned on.
-  registerArrowKeys(true);
   document.getElementById('enableArrowKeys').addEventListener('click',
       (event) => {
         registerArrowKeys(event.currentTarget.checked);
@@ -97,4 +74,22 @@ document.addEventListener('DOMContentLoaded', function() {
       function() {
         speaker.modalToText(document.getElementById('modal-1'));
       });
-});
+}
+/**
+ * Register the arrow keys to do keyboard navigation actions.
+ * @param {boolean} register True if the arrow keys should be used for nav.
+ */
+function registerArrowKeys(register) {
+  const keyCodeMappings = [
+    [Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS],
+    [Blockly.utils.KeyCodes.DOWN, Blockly.navigation.actionNames.NEXT],
+    [Blockly.utils.KeyCodes.RIGHT, Blockly.navigation.actionNames.IN],
+    [Blockly.utils.KeyCodes.LEFT, Blockly.navigation.actionNames.OUT]];
+  keyCodeMappings.forEach((mapping) => {
+    if (register) {
+      Blockly.ShortcutRegistry.registry.addKeyMapping(...mapping);
+    } else {
+      Blockly.ShortcutRegistry.registry.removeKeyMapping(...mapping);
+    }
+  });
+}

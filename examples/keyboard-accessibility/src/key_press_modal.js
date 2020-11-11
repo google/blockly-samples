@@ -11,7 +11,6 @@
 
 import {speaker} from './speaker';
 import MicroModal from 'micromodal';
-import {WelcomeModal} from './welcome_modal';
 
 /**
  * A modal that prompts the user to press a key, which enables the speaker.
@@ -19,14 +18,18 @@ import {WelcomeModal} from './welcome_modal';
 export class KeyPressModal {
   /**
    * Constructor for the key press modal.
+   * @param {Function} onKeyPressCb A function to call when the key is
+   *     pressed, in addition to any cleanup this class chooses to do.
    * @constructor
    */
-  constructor() {
+  constructor(onKeyPressCb) {
     /**
      * The id of the modal.
      * @type {string}
      */
     this.modalId = 'keyPressModal';
+
+    this.onKeyPressCb = onKeyPressCb;
   }
 
   /**
@@ -54,7 +57,7 @@ export class KeyPressModal {
     speaker.resume();
     document.getElementById(this.modalId)
         .removeEventListener('keydown', this.listener);
-    new WelcomeModal().init();
+    this.onKeyPressCb();
     e.preventDefault();
   }
 

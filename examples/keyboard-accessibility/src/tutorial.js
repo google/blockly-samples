@@ -37,7 +37,13 @@ export class Tutorial {
      * The id of the next step button.
      * @type {string}
      */
-    this.stepButtonId = this.modalId + 'Btn';
+    this.stepButtonId = this.modalId + 'StepBtn';
+
+    /**
+     * The id of the hide modal button.
+     * @type {string}
+     */
+    this.hideButtonId = this.modalId + 'HideBtn';
 
     /**
      * An array of steps in the tutorial.
@@ -98,6 +104,10 @@ export class Tutorial {
         () => {
           this.nextStep();
         });
+    document.getElementById(this.hideButtonId).addEventListener('click',
+        () => {
+          MicroModal.close(this.modalId);
+        });
   }
 
   /**
@@ -115,6 +125,7 @@ export class Tutorial {
           <h2 class="modal__title" id="${this.stepTextId}"></h2>
         </main>
         <footer class="modal__footer">
+          <button class="modal__btn modal__btn-primary" aria-label="Hide modal" id="${this.hideButtonId}">Hide modal</button>
           <button class="modal__btn modal__btn-primary" aria-label="Next step" id="${this.stepButtonId}">Next step</button>
         </footer>
       </div>
