@@ -13,6 +13,8 @@ import MicroModal from 'micromodal';
 import {Music} from './music';
 import {HelpModal} from './help_modal';
 import {KeyPressModal} from './key_press_modal';
+import {WelcomeModal} from './welcome_modal';
+import {speaker} from './speaker';
 
 /**
  * Class for a controller for the music game, which handles
@@ -38,15 +40,22 @@ export class MusicGameController {
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();
 
-    const keyPressModal = new KeyPressModal();
-    keyPressModal.init();
+    // Start by showing the key press modal.
+    new KeyPressModal(this.showWelcomeModal).init();
   }
 
   /**
    * Get the current game object.
-   * @return {Music}
+   * @return {Music} The current game object.
    */
   getGame() {
     return this.game;
+  }
+
+  /**
+   * Show the welcome modal.
+   */
+  showWelcomeModal() {
+    new WelcomeModal().init();
   }
 }
