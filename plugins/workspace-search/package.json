@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-workspace-search",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "A Blockly plugin that adds workspace search support.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.1",
-    "@blockly/dev-tools": "^2.0.5",
+    "@blockly/dev-tools": "^2.0.6",
     "blockly": "^3.20200123.1",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",

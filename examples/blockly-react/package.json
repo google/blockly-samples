@@ -13,6 +13,7 @@
     "audit": "npm audit fix",
     "update": "npm update",
     "postinstall": "cp -r node_modules/blockly/media public/media",
+    "predeploy": "npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -31,6 +32,15 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "homepage": "./",
+  "blocklyDemoConfig": {
+    "title": "Blockly in React",
+    "description": "Load Blockly in a React project.",
+    "files": [
+      "build/index.html",
+      "build/**/*"
     ]
   }
 }

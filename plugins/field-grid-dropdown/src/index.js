@@ -68,8 +68,9 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
         this.sourceBlock_.style.colourTertiary;
     Blockly.DropDownDiv.setColour(primaryColour, borderColour);
 
-    Blockly.utils.dom.addClass(
-        Blockly.DropDownDiv.getContentDiv(), 'fieldGridDropDownContainer');
+    const contentDiv = Blockly.DropDownDiv.getContentDiv();
+    const menuEl = contentDiv.querySelectorAll('.blocklyMenu')[0];
+    Blockly.utils.dom.addClass(menuEl, 'fieldGridDropDownContainer');
   }
 }
 
@@ -81,14 +82,14 @@ Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
 Blockly.Css.register([
   /* eslint-disable indent */
   `/** Setup grid layout of DropDown */
-  .fieldGridDropDownContainer .blocklyMenu {
+  .fieldGridDropDownContainer.blocklyMenu {
       display: grid;
       grid-gap: 7px;
       /* TODO(373): set number of columns using property on field */
       grid-template-columns: repeat(3, min-content);
     }
   /* Change look of cells (add border, sizing, padding, and text color) */
-  .fieldGridDropDownContainer .blocklyMenu .blocklyMenuItem {
+  .fieldGridDropDownContainer.blocklyMenu .blocklyMenuItem {
     border: 1px solid rgba(1, 1, 1, 0.5);
     border-radius: 4px;
     color: white;
@@ -110,8 +111,8 @@ Blockly.Css.register([
     /* Uses less selectors so as to not affect blocklyMenuItemSelected */
     background-color: inherit;
   }
-  .fieldGridDropDownContainer.blocklyDropDownContent {
-    padding: 7px; /* needed for highlight */
+  .fieldGridDropDownContainer {
+    margin: 7px; /* needed for highlight */
   }`,
   /* eslint-enable indent */
 ]);

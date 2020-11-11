@@ -10,7 +10,9 @@
         "build": "lerna run build",
         "clean": "lerna run clean",
         "clean:node": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
-        "deploy:prepare": "npm run clean && lerna run predeploy && gulp predeploy",
+        "deploy:prepare": "npm run deploy:prepare:plugins && npm run deploy:prepare:examples && gulp predeploy",
+        "deploy:prepare:examples": "cd examples && npm run predeploy",
+        "deploy:prepare:plugins": "npm run clean && lerna run predeploy",
         "deploy": "npm run deploy:prepare && gulp deploy",
         "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
         "license": "gulp checkLicenses",
@@ -31,7 +33,8 @@
         "js-green-licenses": "^1.1.0",
         "lerna": "^3.20.2",
         "rimraf": "^3.0.2",
-        "typescript": "^3.8.3"
+        "typescript": "^3.8.3",
+        "json-to-pretty-yaml": "^1.2.2"
     },
     "publishConfig": {
         "access": "public",
