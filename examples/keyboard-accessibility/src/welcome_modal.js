@@ -11,8 +11,16 @@
 
 import {speaker} from './speaker';
 import MicroModal from 'micromodal';
+import {Tutorial} from './tutorial';
 
+/**
+ * A class for a modal that welcomes the users and helps them get oriented.
+ */
 export class WelcomeModal {
+  /**
+   * Constructor for the welcome modal.
+   * @constructor
+   */
   constructor() {
     /**
      * The id of the modal.
@@ -40,12 +48,26 @@ export class WelcomeModal {
           speaker.modalToText(document.getElementById(this.modalId));
         });
     speaker.modalToText(document.getElementById(this.modalId));
+    this.registerTutorialButton();
+  }
+
+  /**
+   * Adds a callback to the tutorial button.
+   */
+  registerTutorialButton() {
+    document.getElementById('tutorialButton').addEventListener('click',
+        () => {
+          MicroModal.close(this.modalId);
+          const tutorial = new Tutorial();
+          tutorial.init();
+        });
   }
 
   /**
    * Creates the dom for the modal.
    */
   createDom() {
+    /* eslint-disable max-len */
     document.getElementById(this.modalId).innerHTML = `
      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
@@ -68,6 +90,6 @@ export class WelcomeModal {
         </footer>
       </div>
     </div>`;
+    /* eslint-enable max-len */
   }
-
 }

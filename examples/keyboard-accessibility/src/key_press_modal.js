@@ -13,7 +13,14 @@ import {speaker} from './speaker';
 import MicroModal from 'micromodal';
 import {WelcomeModal} from './welcome_modal';
 
+/**
+ * A modal that prompts the user to press a key, which enables the speaker.
+ */
 export class KeyPressModal {
+  /**
+   * Constructor for the key press modal.
+   * @constructor
+   */
   constructor() {
     /**
      * The id of the modal.
@@ -55,6 +62,7 @@ export class KeyPressModal {
    * Creates the dom for the modal.
    */
   createDom() {
+    /* eslint-disable max-len */
     document.getElementById(this.modalId).innerHTML = `
      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
@@ -66,6 +74,6 @@ export class KeyPressModal {
         </header>
       </div>
     </div>`;
+    /* eslint-enable max-len */
   }
-
 }

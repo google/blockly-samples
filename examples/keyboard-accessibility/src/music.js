@@ -56,7 +56,8 @@ export class Music {
     Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
     workspace.getMarkerManager().setCursor(new LineCursor());
     workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
-    workspace.getFlyout().getWorkspace().addChangeListener((event) => speaker.nodeToSpeech(event));
+    workspace.getFlyout().getWorkspace().addChangeListener(
+        (event) => speaker.nodeToSpeech(event));
     return workspace;
   }
 
