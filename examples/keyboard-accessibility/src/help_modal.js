@@ -11,7 +11,16 @@
 
 import {speaker} from './speaker';
 
+/**
+ * Modal to show a help menu to the user.
+ */
 export class HelpModal {
+  /**
+   * Constructor for the help modal.
+   * @param {string} modalId The id of the modal.
+   * @param {string} modalButtonId The id of the button that opens the modal.
+   * @constructor
+   */
   constructor(modalId, modalButtonId) {
     /**
      * The id of the modal.
@@ -49,6 +58,7 @@ export class HelpModal {
    * Creates the dom for the modal.
    */
   createDom() {
+    /* eslint-disable max-len */
     document.getElementById(this.modalId).innerHTML = `
      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
@@ -69,6 +79,6 @@ export class HelpModal {
         </footer>
       </div>
     </div>`;
+    /* eslint-enable max-len */
   }
-
 }

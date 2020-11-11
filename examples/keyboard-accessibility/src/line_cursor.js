@@ -83,7 +83,8 @@ export class LineCursor extends Blockly.BasicCursor {
 
   /**
    * For a basic cursor we only have the ability to go next and previous, so
-   * in will also allow the user to get to the next node in the pre order traversal.
+   * in will also allow the user to get to the next node in the pre order
+   * traversal.
    * @return {Blockly.ASTNode} The next node, or null if the current node is
    *     not set or there is no next value.
    * @override
@@ -103,9 +104,10 @@ export class LineCursor extends Blockly.BasicCursor {
 
   /**
    * For a basic cursor we only have the ability to go next and previous, so
-   * out will allow the user to get to the previous node in the pre order traversal.
-   * @return {Blockly.ASTNode} The previous node, or null if the current node is
-   *     not set or there is no previous value.
+   * out will allow the user to get to the previous node in the pre order
+   * traversal.
+   * @return {Blockly.ASTNode} The previous node, or null if the current
+   *     node is not set or there is no previous value.
    * @override
    */
   out() {
@@ -165,7 +167,8 @@ export class LineCursor extends Blockly.BasicCursor {
     const type = node && node.getType();
     if (type === Blockly.ASTNode.types.FIELD) {
       isValid = true;
-    } else if (type === Blockly.ASTNode.types.INPUT && location.type === Blockly.INPUT_VALUE) {
+    } else if (type === Blockly.ASTNode.types.INPUT &&
+        location.type === Blockly.INPUT_VALUE) {
       isValid = true;
     } else if (type == Blockly.ASTNode.types.OUTPUT) {
       isValid = true;
