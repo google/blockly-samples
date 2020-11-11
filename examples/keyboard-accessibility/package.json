@@ -61,6 +61,7 @@
   "dependencies": {
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
+    "js-interpreter": "^2.2.0",
     "micromodal": "^0.4.6",
     "popper.js": "^1.16.1",
     "tone": "^14.7.58"

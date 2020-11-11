@@ -32,6 +32,20 @@ export class NotePlayer {
   playNote(note, duration) {
     this.synth.triggerAttackRelease(note, duration);
   }
+
+  /**
+   * Triggers attack for specified note.
+   * @param {string} note The note to start.
+   */
+  triggerAttack(note) {
+    this.synth.triggerAttack(note, Tone.now());
+  }
+  /**
+   * Triggers release of note.
+   */
+  triggerRelease() {
+    this.synth.triggerRelease(Tone.now());
+  }
 }
 
 export const notePlayer = new NotePlayer();

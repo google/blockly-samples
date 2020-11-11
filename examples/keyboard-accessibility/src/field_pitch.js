@@ -113,7 +113,7 @@ export class FieldPitch extends Blockly.FieldTextInput {
     const dy = e.clientY - bBox.top;
     const note = Blockly.utils.math.clamp(Math.round(13.5 - dy / 7.5), 0, 12);
     this.imageElement_.style.backgroundPosition = (-note * 37) + 'px 0';
-    this.setEditorValue_(note);
+    this.setEditorValue_(this.valueToNote(note));
   }
 
   /**
@@ -137,38 +137,6 @@ export class FieldPitch extends Blockly.FieldTextInput {
   }
 
   /**
-   * Get the text to be displayed on the field node.
-   * @return {?string} The HTML value if we're editing, otherwise null. Null
-   *   means the super class will handle it, likely a string cast of value.
-   * @protected
-   */
-  getText_() {
-    if (this.isBeingEdited_) {
-      return super.getText_();
-    }
-    return this.valueToNote(this.getValue()) || null;
-  }
-
-  /**
-   * Transform the provided value into a text to show in the HTML input.
-   * @param {*} value The value stored in this field.
-   * @return {string} The text to show on the HTML input.
-   */
-  getEditorText_(value) {
-    return this.valueToNote(value);
-  }
-
-  /**
-   * Transform the text received from the HTML input (note) into a value
-   * to store in this field.
-   * @param {string} text Text received from the HTML input.
-   * @return {*} The value to store.
-   */
-  getValueFromEditorText_(text) {
-    return this.noteToValue(text);
-  }
-
-  /**
    * Updates the graph when the field rerenders.
    * @private
    * @override
@@ -186,7 +154,7 @@ export class FieldPitch extends Blockly.FieldTextInput {
     if (!this.imageElement_) {
       return;
     }
-    const i = this.getValue();
+    const i = this.noteToValue(this.getValue());
     this.imageElement_.style.backgroundPosition = (-i * 37) + 'px 0';
   }
 
@@ -199,8 +167,8 @@ export class FieldPitch extends Blockly.FieldTextInput {
     if (opt_newValue === null || opt_newValue === undefined) {
       return null;
     }
-    const note = this.valueToNote(opt_newValue);
-    if (note) {
+    const noteNum = this.noteToValue(opt_newValue);
+    if (noteNum && this.valueToNote(noteNum) == opt_newValue) {
       return opt_newValue;
     }
     return null;

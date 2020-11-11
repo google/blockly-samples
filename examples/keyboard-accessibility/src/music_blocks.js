@@ -37,7 +37,7 @@ Blockly.defineBlocksWithJsonArray([
         "name": "PITCH",
       },
     ],
-    "output": "Number",
+    "output": "String",
     "colourPrimary": 160,
   },
   {
@@ -73,7 +73,7 @@ Blockly.defineBlocksWithJsonArray([
       {
         "type": "input_value",
         "name": "PITCH",
-        "check": "Number",
+        "check": "String",
       },
     ],
     "inputsInline": true,

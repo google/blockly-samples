@@ -24,6 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
       'click', function(event) {
         controller.getGame().logGeneratedCode();
       });
+  document.getElementById('executeCode').addEventListener(
+      'click', function(event) {
+        controller.getGame().execute();
+      });
+  document.getElementById('speedSlider').addEventListener(
+      'input', function(event) {
+        controller.getGame().setSpeed(this.value/100);
+      });
 
   // Initial state has arrow keys turned on.
   registerArrowKeys(true);

@@ -11,13 +11,13 @@
 import Blockly from 'blockly/core';
 
 Blockly.JavaScript['music_pitch'] = function(block) {
-  return [Number(block.getFieldValue('PITCH')),
-    Blockly.JavaScript.ORDER_ATOMIC];
+  const code = Blockly.JavaScript.quote_(block.getFieldValue('PITCH'));
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['music_note'] = function(block) {
   const pitch = Blockly.JavaScript.valueToCode(block, 'PITCH',
-      Blockly.JavaScript.ORDER_COMMA) || '7';
+      Blockly.JavaScript.ORDER_NONE) || 'C4';
   return 'play(' + Number(block.getFieldValue('DURATION')) + ', ' + pitch +
       ', \'block_id_' + block.id + '\');\n';
 };
