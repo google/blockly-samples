@@ -30,22 +30,25 @@ document.addEventListener('DOMContentLoaded', function() {
   addTestButtons();
 });
 
+/**
+ * Add buttons for testing basic functionality (speaker, etc).
+ */
 function addTestButtons() {
   document.getElementById('playNote').addEventListener(
-    'click', function () {
-      notePlayer.playNote('C4', '8n');
-    });
-  document.getElementById('playText').addEventListener(
-    'click', function () {
-      const textContent = document.getElementById('textInput').value;
-      speaker.speak(textContent);
-    });
-  document.getElementById('playNoteAndText').addEventListener(
-    'click', function () {
-      speaker.speak('C4', false, function () {
+      'click', function() {
         notePlayer.playNote('C4', '8n');
       });
-    });
+  document.getElementById('playText').addEventListener(
+      'click', function() {
+        const textContent = document.getElementById('textInput').value;
+        speaker.speak(textContent);
+      });
+  document.getElementById('playNoteAndText').addEventListener(
+      'click', function() {
+        speaker.speak('C4', false, function() {
+          notePlayer.playNote('C4', '8n');
+        });
+      });
   document.addEventListener('visibilitychange', (event) => {
     if (document.visibilityState === 'visible') {
       console.log('tab is activate');
@@ -55,25 +58,28 @@ function addTestButtons() {
   });
 
   document.getElementById('enableArrowKeys').addEventListener('click',
-    (event) => {
-      registerArrowKeys(event.currentTarget.checked);
-    });
+      (event) => {
+        registerArrowKeys(event.currentTarget.checked);
+      });
   document.getElementById('modalButton').addEventListener('click',
-    function () {
-      speaker.modalToText(document.getElementById('modal-1'));
-    });
+      function() {
+        speaker.modalToText(document.getElementById('modal-1'));
+      });
 
   document.getElementById('modalButton').addEventListener('focus',
-    function (e) {
-      speaker.speak('Hit enter to open the help menu');
-    });
+      function(e) {
+        speaker.speak('Hit enter to open the help menu');
+      });
   document.getElementById('replayButton').addEventListener('click',
-    function () {
-      speaker.modalToText(document.getElementById('modal-1'));
-    });
+      function() {
+        speaker.modalToText(document.getElementById('modal-1'));
+      });
 }
-
-function registerArrowKeys (register) {
+/**
+ * Register the arrow keys to do keyboard navigation actions.
+ * @param {boolean} register True if the arrow keys should be used for nav.
+ */
+function registerArrowKeys(register) {
   const keyCodeMappings = [
     [Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS],
     [Blockly.utils.KeyCodes.DOWN, Blockly.navigation.actionNames.NEXT],
@@ -86,4 +92,4 @@ function registerArrowKeys (register) {
       Blockly.ShortcutRegistry.registry.removeKeyMapping(...mapping);
     }
   });
-};
+}
