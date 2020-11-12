@@ -91,6 +91,29 @@ export class Tutorial {
     this.addCallbacks();
     MicroModal.show(this.modalId);
     this.curStep.show();
+    this.registerPlayHelpText();
+  }
+
+  /**
+   * Registers shortcut to replay the current tutorial step.
+   */
+  registerPlayHelpText() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const playHelpText = {
+      name: 'playHelpText',
+      preconditionFn: function(workspace) {
+        return workspace.keyboardAccessibilityMode && !workspace.options.readOnly;
+      },
+      callback: () => {
+        speaker.speak(this.curStep.text, true);
+      },
+    };
+
+    Blockly.ShortcutRegistry.registry.register(playHelpText);
+    const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.H);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        shiftW, playHelpText.name);
   }
 
   /**
@@ -178,22 +201,29 @@ export class Tutorial {
       </div>
     </div>`;
   }
+
+  getCurrentLocation(event) {
+    const curNode = event.newNode;
+    if (curNode) {
+      return curNode.getLocation();
+    }
+    return null;
+  }
 }
 
 Tutorial.STEP_OBJECTS = [
   {
-    text:
-      `Hit enter to go to the workspace and hear
-      a description of the first block.`,
+    text: `In this tutorial you will write code that plays musical notes. If at any
+      point you are confused about what to do, press H to replay the goal for
+      the current step. Press Enter to go to the next step.`,
     onStart: function(tutorial) {
-      window.setTimeout(() => {
-        tutorial.nextStep();
-      }, 2000);
+      setTimeout(()=> tutorial.nextStep(), 100);
     },
   },
   {
-    text:
-      'Press the down arrow key to go to the first connection on the block.',
+    text: `You can move around the blocks of code with the up and down arrows. You will hear descriptions as you move around the blocks. . 
+      All blocks have connection points, which are places where you can add more code. . 
+       Use the down arrow to move to a connection point. Hit enter to begin. `,
     onStart: function(tutorial) {
       const workspace = tutorial.workspace;
       const listener = function(event) {
@@ -204,8 +234,10 @@ Tutorial.STEP_OBJECTS = [
           if (curNode) {
             const location = curNode.getLocation();
             if (location === correctLocation) {
-              workspace.removeChangeListener(wrapper);
-              tutorial.nextStep();
+              setTimeout(()=>{
+                workspace.removeChangeListener(wrapper);
+                tutorial.nextStep();
+              }, 4700);
             }
           }
         }
@@ -216,8 +248,84 @@ Tutorial.STEP_OBJECTS = [
     },
   },
   {
-    text: 'Last step',
+    text:
+      `Great! You moved to a connection point. .
+      To add more code, you first mark a location and then select the block you want to add. . 
+      Navigate to the connection point, then press enter to mark it.`,
     onStart: function(tutorial) {
+      const workspace = tutorial.workspace;
+      const listener = function(event) {
+        if (event.type === Blockly.Events.MARKER_MOVE) {
+          const currentLocation = tutorial.getCurrentLocation(event);
+          if (currentLocation && !event.isCursor) {
+            const correctLocation =
+                workspace.getTopBlocks()[0].inputList[1].connection;
+            if (currentLocation === correctLocation) {
+              setTimeout(()=>{
+                workspace.removeChangeListener(wrapper);
+                tutorial.nextStep();
+              }, 3000);
+            }
+          }
+        }
+      };
+
+      // Add a shortcut in place of the down arrow shortcut.
+      const wrapper = workspace.addChangeListener(listener);
     },
+  },
+  {
+    text: `Great! You marked a connection point. Now you can add more code blocks. . 
+    The toolbox is a list of code blocks that you can add to the workspace. You can always open the toolbox by pressing T. .
+    Press T to open the toolbox, then use the up and down arrows to explore it. . 
+    Press ??? when you are ready for the next step.`,
+    onStart: function(tutorial) {
+      /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+      const finishStep = {
+        name: 'finishStep',
+        preconditionFn: function(workspace) {
+          return workspace.keyboardAccessibilityMode && !workspace.options.readOnly;
+        },
+        callback: () => {
+          tutorial.nextStep();
+        },
+      };
+
+      Blockly.ShortcutRegistry.registry.register(finishStep);
+      const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+          Blockly.utils.KeyCodes.F);
+      Blockly.ShortcutRegistry.registry.addKeyMapping(
+          shiftW, finishStep.name);
+    },
+  },
+  {
+    text: `Great! You have now successfully marked a connection point and navigated to a list of blocks that you can insert. . 
+    Now it’s time to put it all together. . 
+    Navigate to the connection and mark it, then press T to open the toolbox. Find the block that says “play whole note c4” and press enter to add it at the marked location.`,
+    onStart: function(tutorial) {
+      const workspace = tutorial.workspace;
+      const listener = function(event) {
+        if (event.type === Blockly.Events.MARKER_MOVE) {
+          const currentLocation = tutorial.getCurrentLocation(event);
+          if (currentLocation && event.isCursor && workspace.getAllBlocks().length > 1) {
+            const correctLocation =
+                workspace.getAllBlocks()[1].previousConnection;
+            if (currentLocation === correctLocation) {
+              setTimeout(()=>{
+                workspace.removeChangeListener(wrapper);
+                tutorial.nextStep();
+              }, 4000);
+            }
+          }
+        }
+      };
+
+      // Add a shortcut in place of the down arrow shortcut.
+      const wrapper = workspace.addChangeListener(listener);
+    },
+  },
+  {
+    text: 'Great! You can now press Shift and P at the same time to run your code. You should hear a note play!',
+    onStart: function(tutorial) {},
   },
 ];

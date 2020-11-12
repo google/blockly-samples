@@ -201,6 +201,30 @@ export class Music {
      * @private
      */
     this.speed_ = 0.5;
+    this.registerPlayShortcut();
+  }
+
+  /**
+   * Registers a shortcut to play the notes on the workspace.
+   */
+  registerPlayShortcut() {
+    const newFunction = function() {
+      this.execute();
+    }.bind(this);
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const playShortcut = {
+      name: 'playShortcut',
+      preconditionFn: function(workspace) {
+        return workspace.keyboardAccessibilityMode && !workspace.options.readOnly;
+      },
+      callback: newFunction,
+    };
+
+    Blockly.ShortcutRegistry.registry.register(playShortcut);
+    const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.P, [Blockly.utils.KeyCodes.SHIFT]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        shiftW, playShortcut.name);
   }
 
   /**

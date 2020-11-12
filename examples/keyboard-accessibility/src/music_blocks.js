@@ -182,6 +182,10 @@ export const toolboxPitch = {
   "contents": [
     {
       "kind": "block",
+      "blockxml": "<block type='music_note'><value name='PITCH'><shadow type='music_pitch'></shadow></value></block>",
+    },
+    {
+      "kind": "block",
       "type": "pitch_test",
     },
 
