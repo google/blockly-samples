@@ -260,7 +260,7 @@ export class Speaker {
       case Blockly.ASTNode.types.PREVIOUS:
         return this.getConnectionOptions_(node, isMarker);
       case Blockly.ASTNode.types.STACK:
-        return '';
+        return this.getStackOptions_(node);
       case Blockly.ASTNode.types.WORKSPACE:
         return '';
       default:
@@ -313,6 +313,22 @@ export class Speaker {
   }
 
   /**
+   * Gets the options for a user on a  stack of blocks.
+   * @return {string} The text explaining the next options when a user is on a
+   *     stack of blocks.
+   * @private
+   */
+  getStackOptions_(node) {
+    let finalText = '';
+    if (node.prev()) {
+      finalText += `To go to the last block in the previous group of blocks, 
+      press previous.`;
+    }
+    finalText += ` To go to the first block in the stack hit next.`;
+    return finalText;
+  }
+
+  /**
    * Get the text for the source block of the node.
    * @param {!Blockly.BlockSvg} srcBlock The block to get the text for.
    * @param {string=} opt_emptyToken The optional empty token.
@@ -356,7 +372,7 @@ export class Speaker {
       const parentBlockText = this.getBlockText_(block.getSurroundParent());
       finalText += `You are inside of block ${parentBlockText}. . `;
     }
-    finalText += `You are on block, ${blockText}. . `;
+    finalText += `You are on , ${blockText}. . `;
     return finalText;
   }
 
@@ -461,7 +477,6 @@ export class Speaker {
       } else {
         finalText += `You are on a group of blocks. `;
       }
-      finalText += Blockly.Msg['STACK'];
     }
     return finalText;
   }
