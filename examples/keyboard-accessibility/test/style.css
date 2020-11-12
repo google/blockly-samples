@@ -148,11 +148,11 @@
 
 .root {
   display: flex;
-  height: calc(100vh - 125px);
+  height: calc(100vh - 175px);
   overflow: hidden;
   padding-top: 10px;
   user-select: none;
-  width: 100vw;
+  width: 100%;
 }
 
 .sidebar {
