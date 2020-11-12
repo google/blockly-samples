@@ -170,7 +170,7 @@ export class FieldPitch extends Blockly.FieldTextInput {
       return null;
     }
     const noteNum = this.noteToValue(opt_newValue);
-    if (noteNum && this.valueToNote(noteNum) == opt_newValue) {
+    if (noteNum !== undefined && this.valueToNote(noteNum) == opt_newValue) {
       return opt_newValue;
     }
     return null;
@@ -180,16 +180,20 @@ export class FieldPitch extends Blockly.FieldTextInput {
    * Select a note one higher than current, or stay at the highest note.
    */
   selectHigherNote() {
-    const note = Math.min(this.getValue() + 1, 12);
-    this.setEditorValue_(note);
+    let currentNote = this.noteToValue(this.getValue());
+    currentNote = currentNote === undefined ? 12 : currentNote;
+    const note = Math.min(currentNote + 1, 12);
+    this.setEditorValue_(this.valueToNote(note));
   }
 
   /**
    * Select a note one lower than current, or stay at the lowest note.
    */
   selectLowerNote() {
-    const note = Math.max(this.getValue() - 1, 0);
-    this.setEditorValue_(note);
+    let currentNote = this.noteToValue(this.getValue());
+    currentNote = currentNote === undefined ? 0 : currentNote;
+    const note = Math.max(currentNote - 1, 0);
+    this.setEditorValue_(this.valueToNote(note));
   }
 
   /**
