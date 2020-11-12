@@ -165,5 +165,3 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
   }
   return text;
 };
-
-

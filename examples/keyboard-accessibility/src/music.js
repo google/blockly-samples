@@ -223,6 +223,13 @@ export class Music {
   }
 
   /**
+   * @return {Blockly.WorkspaceSvg} The workspace belonging to this game.
+   */
+  getWorkspace() {
+    return this.workspace;
+  }
+
+  /**
    * Sets the goal text.
    * @param {string} text The text to set the goal to.
    */
