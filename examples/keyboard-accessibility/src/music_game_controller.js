@@ -15,6 +15,7 @@ import {HelpModal} from './help_modal';
 import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
 import {speaker} from './speaker';
+import {Tutorial} from './tutorial';
 
 /**
  * Class for a controller for the music game, which handles
@@ -41,7 +42,7 @@ export class MusicGameController {
     helpModal.init();
 
     // Start by showing the key press modal.
-    new KeyPressModal(this.showWelcomeModal).init();
+    new KeyPressModal(() => this.showWelcomeModal()).init();
   }
 
   /**
@@ -53,9 +54,16 @@ export class MusicGameController {
   }
 
   /**
+   * Start the tutorial.
+   */
+  runTutorial() {
+    new Tutorial(this.game.getWorkspace()).init();
+  }
+
+  /**
    * Show the welcome modal.
    */
   showWelcomeModal() {
-    new WelcomeModal().init();
+    new WelcomeModal(() => this.runTutorial()).init();
   }
 }

@@ -11,7 +11,6 @@
 
 import {speaker} from './speaker';
 import MicroModal from 'micromodal';
-import {Tutorial} from './tutorial';
 
 /**
  * A class for a modal that welcomes the users and helps them get oriented.
@@ -19,14 +18,22 @@ import {Tutorial} from './tutorial';
 export class WelcomeModal {
   /**
    * Constructor for the welcome modal.
+   * @param {Function} tutorialButtonCb A function to call when the tutorial
+   *     button is pressed, in addition to any cleanup this class chooses to do.
    * @constructor
    */
-  constructor() {
+  constructor(tutorialButtonCb) {
     /**
      * The id of the modal.
      * @type {string}
      */
     this.modalId = 'welcomeModal';
+
+    /**
+     * A function to call when the tutorial button is pressed.
+     * @type {Function}
+     */
+    this.tutorialButtonCb = tutorialButtonCb;
   }
 
   /**
@@ -58,8 +65,7 @@ export class WelcomeModal {
     document.getElementById('tutorialButton').addEventListener('click',
         () => {
           MicroModal.close(this.modalId);
-          const tutorial = new Tutorial();
-          tutorial.init();
+          this.tutorialButtonCb();
         });
   }
 
