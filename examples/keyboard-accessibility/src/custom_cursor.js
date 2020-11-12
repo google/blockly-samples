@@ -70,11 +70,11 @@ export class CustomCursor extends Blockly.BasicCursor {
     }
     let newNode = this.getPreviousNode_(curNode, this.validLineNode_);
 
-    if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-      newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-      newNode.getLocation().targetBlock()) {
-      newNode = this.getPreviousNode_(newNode, this.validLineNode_);
-    }
+    // if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
+    //   newNode.getType() == Blockly.ASTNode.types.NEXT) &&
+    //   newNode.getLocation().targetBlock()) {
+    //   newNode = this.getPreviousNode_(newNode, this.validLineNode_);
+    // }
 
     if (newNode) {
       this.setCurNode(newNode);
@@ -139,12 +139,16 @@ export class CustomCursor extends Blockly.BasicCursor {
     var location = node.getLocation();
     var type = node && node.getType();
     if (type === Blockly.ASTNode.types.BLOCK) {
-      // if (location.outputConnection === null) {
-      //   isValid = true;
-      // }
-      isValid = true;
+      if (!location.outputConnection && !location.previousConnection) {
+        isValid = true;
+      }
     } else if (type === Blockly.ASTNode.types.INPUT) {
-      isValid = true;
+      const location = node.getLocation();
+      if (location.targetConnection) {
+        isValid = false;
+      } else {
+        isValid = true;
+      }
     } else if (type === Blockly.ASTNode.types.NEXT) {
       isValid = true;
     } else if (type === Blockly.ASTNode.types.OUTPUT) {

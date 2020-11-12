@@ -11,7 +11,6 @@
 import Blockly from 'blockly/core';
 import {speaker} from './speaker';
 import {toolboxPitch} from './music_blocks';
-import {LineCursor} from './line_cursor';
 import {CustomCursor} from './custom_cursor';
 import './music_block_generators';
 import Interpreter from 'js-interpreter';

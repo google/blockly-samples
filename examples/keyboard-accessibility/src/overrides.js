@@ -17,47 +17,13 @@
 import Blockly from 'blockly/core';
 import {speaker} from './speaker';
 
-Blockly.navigation.insertFromFlyout = function(workspace) {
-  var flyout = workspace.getFlyout();
-  if (!flyout || !flyout.isVisible()) {
-    Blockly.navigation.warn_('Trying to insert from the flyout when the flyout does not ' +
-      ' exist or is not visible');
-    return;
-  }
-
-  var curBlock = /** @type {!Blockly.BlockSvg} */ (
-    Blockly.navigation.getFlyoutCursor_().getCurNode().getLocation());
-  if (!curBlock.isEnabled()) {
-    Blockly.navigation.warn_('Can\'t insert a disabled block.');
-    return;
-  }
-
-  var newBlock = flyout.createBlock(curBlock);
-  // Render to get the sizing right.
-  newBlock.render();
-  // Connections are not tracked when the block is first created.  Normally
-  // there's enough time for them to become tracked in the user's mouse
-  // movements, but not here.
-  newBlock.setConnectionTracking(true);
-  workspace.getCursor().setCurNode(
-      Blockly.ASTNode.createBlockNode(newBlock));
-  if (!Blockly.navigation.modify_()) {
-    Blockly.navigation.warn_('Something went wrong while inserting a block from the flyout.');
-  }
-
-  Blockly.navigation.focusWorkspace_(workspace);
-  // If we are in edit mode, change the current block to the new block.
-  // workspace.getCursor().setNode(Blockly.ASTNode.createTopNode(newBlock));
-  workspace.getCursor().setCurNode(Blockly.ASTNode.createTopNode(newBlock));
-  Blockly.navigation.removeMark_();
-};
-
 
 Blockly.navigation.handleEnterForWS_ = function(workspace) {
   var cursor = workspace.getCursor();
   var curNode = cursor.getCurNode();
   var nodeType = curNode.getType();
   if (nodeType == Blockly.ASTNode.types.FIELD) {
+    // TODO: Had to override so I could add this speaker in.
     speaker.speak('Use next and previous to read off your options.');
     (/** @type {!Blockly.Field} */(curNode.getLocation())).showEditor();
   } else if (curNode.isConnection() ||
@@ -72,15 +38,19 @@ Blockly.navigation.handleEnterForWS_ = function(workspace) {
 
 
 Blockly.FieldDropdown.prototype.onBlocklyAction = function(action) {
+  const fieldNextOptions = 'To select this option hit enter';
   if (this.menu_) {
     switch (action.name) {
       case Blockly.navigation.actionNames.PREVIOUS:
         this.menu_.highlightPrevious();
         speaker.speak(this.menu_.highlightedItem_.content_.alt, true);
+        speaker.speak(fieldNextOptions);
         return true;
       case Blockly.navigation.actionNames.NEXT:
         this.menu_.highlightNext();
+        // TODO: Needed to override so that I could speak out the location when it changes.
         speaker.speak(this.menu_.highlightedItem_.content_.alt, true);
+        speaker.speak(fieldNextOptions);
         return true;
       default:
         return false;
@@ -133,6 +103,7 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
   }
 
   // Traverse the AST building up our text string.
+  // TODO: Had to override to add node.getSourceBlock() === this.
   while (node && node.getSourceBlock() === this) {
     switch (node.getType()) {
       case Blockly.ASTNode.types.INPUT:
