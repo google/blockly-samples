@@ -15,6 +15,8 @@
 'use strict';
 
 import * as Blockly from 'blockly';
+import {speaker} from './speaker';
+import {notePlayer} from './note_player';
 
 /**
  * Class for a line cursor.
@@ -23,12 +25,13 @@ import * as Blockly from 'blockly';
  * @constructor
  * @extends {Blockly.BasicCursor}
  */
-export class LineCursor extends Blockly.BasicCursor {
+export class CustomCursor extends Blockly.BasicCursor {
   /**
    * Constructor for a line cursor.
    */
   constructor() {
     super();
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
   }
   /**
    * Find the next node in the pre order traversal.
@@ -41,16 +44,13 @@ export class LineCursor extends Blockly.BasicCursor {
     if (!curNode) {
       return null;
     }
-    let newNode = this.getNextNode_(curNode, this.validLineNode_);
+    const newNode = this.getNextNode_(curNode, this.validLineNode_);
 
-    // Skip the input or next value if there is a connected block.
-    if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-        newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-        newNode.getLocation().targetBlock()) {
-      newNode = this.getNextNode_(newNode, this.validLineNode_);
-    }
     if (newNode) {
       this.setCurNode(newNode);
+    } else {
+      speaker.speak(speaker.nodeToText_(this.getCurNode(), this.getCurNode(), false), true);
+      notePlayer.playNote('c4', '16n');
     }
     return newNode;
   }
@@ -67,16 +67,13 @@ export class LineCursor extends Blockly.BasicCursor {
     if (!curNode) {
       return null;
     }
-    let newNode = this.getPreviousNode_(curNode, this.validLineNode_);
-
-    if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-      newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-      newNode.getLocation().targetBlock()) {
-      newNode = this.getPreviousNode_(newNode, this.validLineNode_);
-    }
+    const newNode = this.getPreviousNode_(curNode, this.validLineNode_);
 
     if (newNode) {
       this.setCurNode(newNode);
+    } else {
+      speaker.speak(speaker.nodeToText_(this.getCurNode(), this.getCurNode(), false), true);
+      notePlayer.playNote('c4', '16n');
     }
     return newNode;
   }
@@ -85,43 +82,17 @@ export class LineCursor extends Blockly.BasicCursor {
    * For a basic cursor we only have the ability to go next and previous, so
    * in will also allow the user to get to the next node in the pre order
    * traversal.
-   * @return {Blockly.ASTNode} The next node, or null if the current node is
-   *     not set or there is no next value.
    * @override
    */
-  in() {
-    const curNode = this.getCurNode();
-    if (!curNode) {
-      return null;
-    }
-    const newNode = this.getNextNode_(curNode, this.validInLineNode_);
-
-    if (newNode) {
-      this.setCurNode(newNode);
-    }
-    return newNode;
-  }
+  in() {}
 
   /**
    * For a basic cursor we only have the ability to go next and previous, so
    * out will allow the user to get to the previous node in the pre order
    * traversal.
-   * @return {Blockly.ASTNode} The previous node, or null if the current
-   *     node is not set or there is no previous value.
    * @override
    */
-  out() {
-    const curNode = this.getCurNode();
-    if (!curNode) {
-      return null;
-    }
-    const newNode = this.getPreviousNode_(curNode, this.validInLineNode_);
-
-    if (newNode) {
-      this.setCurNode(newNode);
-    }
-    return newNode;
-  }
+  out() {}
 
   /**
    * Meant to traverse by lines of code. This is blocks, statement inputs and
@@ -137,17 +108,27 @@ export class LineCursor extends Blockly.BasicCursor {
     let isValid = false;
     const location = node.getLocation();
     const type = node && node.getType();
-    if (type == Blockly.ASTNode.types.PREVIOUS) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.INPUT &&
-        location.type == Blockly.NEXT_STATEMENT) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.NEXT) {
-      isValid = true;
-    } else if (type === Blockly.ASTNode.types.OUTPUT) {
-      if (!location.targetConnection) {
+    if (type === Blockly.ASTNode.types.BLOCK) {
+      if (!location.outputConnection && !location.previousConnection) {
         isValid = true;
       }
+    } else if (type === Blockly.ASTNode.types.INPUT) {
+      const location = node.getLocation();
+      if (location.targetConnection) {
+        isValid = false;
+      } else {
+        isValid = true;
+      }
+    } else if (type === Blockly.ASTNode.types.NEXT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.OUTPUT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.PREVIOUS) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.STACK) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.FIELD) {
+      isValid = true;
     }
     return isValid;
   }
@@ -159,22 +140,6 @@ export class LineCursor extends Blockly.BasicCursor {
    * @private
    */
   validInLineNode_(node) {
-    if (!node) {
-      return false;
-    }
-    let isValid = false;
-    const location = node.getLocation();
-    const type = node && node.getType();
-    if (type === Blockly.ASTNode.types.FIELD) {
-      isValid = true;
-    } else if (type === Blockly.ASTNode.types.INPUT &&
-        location.type === Blockly.INPUT_VALUE) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.OUTPUT) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.STACK) {
-      isValid = true;
-    }
-    return isValid;
+    return false;
   }
 }

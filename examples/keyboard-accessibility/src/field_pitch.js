@@ -15,12 +15,12 @@ import Blockly from 'blockly/core';
 
 /**
  * Pitch field from Blockly Games music.
+ * @extends {Blockly.FieldTextInput}
  */
 export class FieldPitch extends Blockly.FieldTextInput {
   /**
    * Class for an editable pitch field.
    * @param {string} text The initial content of the field.
-   * @extends {Blockly.FieldTextInput}
    * @constructor
    */
   constructor(text) {
@@ -70,6 +70,8 @@ export class FieldPitch extends Blockly.FieldTextInput {
     this.moveWrapper_ =
       Blockly.bindEvent_(this.imageElement_, 'mousemove', this,
           this.onMouseMove);
+
+    this.bindAdditionalInputEvents_(this.htmlInput_);
 
     this.updateGraph_();
   }
@@ -168,10 +170,87 @@ export class FieldPitch extends Blockly.FieldTextInput {
       return null;
     }
     const noteNum = this.noteToValue(opt_newValue);
-    if (noteNum && this.valueToNote(noteNum) == opt_newValue) {
+    if (noteNum !== undefined && this.valueToNote(noteNum) == opt_newValue) {
       return opt_newValue;
     }
     return null;
+  }
+
+  /**
+   * Select a note one higher than current, or stay at the highest note.
+   */
+  selectHigherNote() {
+    let currentNote = this.noteToValue(this.getValue());
+    currentNote = currentNote === undefined ? 12 : currentNote;
+    const note = Math.min(currentNote + 1, 12);
+    this.setEditorValue_(this.valueToNote(note));
+  }
+
+  /**
+   * Select a note one lower than current, or stay at the lowest note.
+   */
+  selectLowerNote() {
+    let currentNote = this.noteToValue(this.getValue());
+    currentNote = currentNote === undefined ? 0 : currentNote;
+    const note = Math.max(currentNote - 1, 0);
+    this.setEditorValue_(this.valueToNote(note));
+  }
+
+  /**
+   * Handles next/previous key presses on the input event.
+   * OnBlocklyAction would normally receive next/previous actions,
+   * but the html input element is capturing the keypresses.
+   * We bind our own event that only handles keys registered to next/previous.
+   * If we handle it, we stop other handlers from firing.
+   * This does not clobber the events registered by FieldTextInput, so
+   * esc and enter presses are still handled by that.
+   * @param {!Event} e Keyboard event.
+   */
+  handleKeyPress_(e) {
+    const action =
+        Blockly.ShortcutRegistry.registry.getKeyboardShortcuts(e.keyCode);
+    let handled = false;
+    if (action.includes('next')) {
+      this.selectLowerNote();
+      handled = true;
+    } else if (action.includes('previous')) {
+      this.selectHigherNote();
+      handled = true;
+    }
+    if (handled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  /**
+   * Bind handler for keypresses on input.
+   * @param {!HTMLElement} htmlInput Input element.
+   */
+  bindAdditionalInputEvents_(htmlInput) {
+    this.additionalOnKeyDownWrapper_ =
+        Blockly.bindEventWithChecks_(
+            htmlInput, 'keydown', this, this.handleKeyPress_);
+  }
+
+  /**
+   * Unbind handler for user input.
+   * @private
+   */
+  unbindAdditionalInputEvents_() {
+    if (this.additionalOnKeyDownWrapper_) {
+      Blockly.unbindEvent_(this.additionalOnKeyDownWrapper_);
+      this.additionalOnKeyDownWrapper_ = null;
+    }
+  }
+
+  /**
+   * Dispose of event handlers.
+   * @override
+   */
+  dispose() {
+    this.unbindAdditionalInputEvents_();
+    super.dispose();
   }
 }
 

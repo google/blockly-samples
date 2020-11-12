@@ -11,7 +11,7 @@
 import Blockly from 'blockly/core';
 import {speaker} from './speaker';
 import {toolboxPitch} from './music_blocks';
-import {LineCursor} from './line_cursor';
+import {CustomCursor} from './custom_cursor';
 import './music_block_generators';
 import Interpreter from 'js-interpreter';
 import {notePlayer} from './note_player';
@@ -23,6 +23,12 @@ import {notePlayer} from './note_player';
 const REST = 'REST';
 
 class Transcript {
+  /**
+   * Class for holding transcript of notes that were played. Expects
+   * notesAndRests and durations to have a matching length.
+   * @param {Array<string>} notesAndRests The notes and rests.
+   * @param {Array<number>} durations The durations of the notes and rests.
+   */
   constructor(notesAndRests = [], durations = []) {
     if (notesAndRests.length !== durations.length) {
       console.error('Transcript length mismatch.');
@@ -36,7 +42,13 @@ class Transcript {
     }
   }
 
-  static getDurationText(duration) {
+  /**
+   * Converts duration number into approriate string.
+   * @param {number} duration The duration.
+   * @return {string} The string version of duration.
+   * @private
+   */
+  static getDurationText_(duration) {
     let durationText = 'unknown';
     switch (duration) {
       case 1:
@@ -55,6 +67,11 @@ class Transcript {
     return durationText;
   }
 
+  /**
+   * Internal method for appending text to transcript text.
+   * @param {string} text The text to append.
+   * @private
+   */
   appendReadableText_(text) {
     if (this.readableText) {
       this.readableText += ', ';
@@ -62,19 +79,27 @@ class Transcript {
     this.readableText += text;
   }
 
+  /**
+   * Appends note to transcript.
+   * @param {string} note The pitch of note to append.
+   * @param {number} duration The duration of the note.
+   */
   appendNote(note, duration) {
     this.notesAndRests.push(note);
     this.durations.push(duration);
     this.appendReadableText_(
-        `play ${Transcript.getDurationText(duration)} note ${note}`);
+        `play ${Transcript.getDurationText_(duration)} note ${note}`);
     this.size++;
   }
-
+  /**
+   * Appends rest to transcript.
+   * @param {number} duration The duration of the rest.
+   */
   appendRest(duration) {
     this.notesAndRests.push(REST);
     this.durations.push(duration);
     this.appendReadableText_(
-        `${Transcript.getDurationText(duration)} rest`);
+        `${Transcript.getDurationText_(duration)} rest`);
     this.size++;
   }
 }
@@ -197,7 +222,6 @@ class Stave {
         hasIncorrectDuration = true;
       }
     }
-
     if (hasIncorrectNotes) {
       feedback +=
           `Some of the notes ${sizeMismatch ? 'may be' : 'are'} incorrect.\n`;
@@ -339,11 +363,19 @@ export class Music {
       toolbox: toolboxPitch,
     });
     Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
-    workspace.getMarkerManager().setCursor(new LineCursor());
+    workspace.getMarkerManager().setCursor(new CustomCursor());
     workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
     workspace.getFlyout().getWorkspace().addChangeListener(
         (event) => speaker.nodeToSpeech(event));
     return workspace;
+  }
+
+  /**
+   * Returns the workspace belonging to this game.
+   * @return {Blockly.WorkspaceSvg} The workspace belonging to this game.
+   */
+  getWorkspace() {
+    return this.workspace;
   }
 
   /**
@@ -365,7 +397,7 @@ export class Music {
   /**
    * Sets the behaviour on success.
    * @param {function()} onSuccessCallback The on success callback. The level
-   *    code is passed in as parameter
+   *    code is passed in as parameter.
    */
   setOnSuccessCallback(onSuccessCallback) {
     this.onSuccessCallback_ = onSuccessCallback;
@@ -401,7 +433,7 @@ export class Music {
   }
 
   /**
-   * Update the goal based on the current level.
+   * Updates the goal based on the current level.
    * @private
    */
   updateLevelGoal_() {
@@ -417,7 +449,7 @@ export class Music {
   }
 
   /**
-   * Update the toolbox based on the current level.
+   * Updates the toolbox based on the current level.
    * @private
    */
   updateLevelToolbox_() {

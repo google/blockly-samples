@@ -12,6 +12,7 @@ import Blockly from 'blockly/core';
 import {speaker} from '../src/speaker';
 import {notePlayer} from '../src/note_player';
 import {MusicGameController} from '../src/music_game_controller';
+import '../src/overrides';
 
 document.addEventListener('DOMContentLoaded', function() {
   const controller = new MusicGameController();
@@ -83,6 +84,7 @@ function addTestButtons() {
         speaker.modalToText(document.getElementById('modal-1'));
       });
 }
+
 /**
  * Register the arrow keys to do keyboard navigation actions.
  * @param {boolean} register True if the arrow keys should be used for nav.
