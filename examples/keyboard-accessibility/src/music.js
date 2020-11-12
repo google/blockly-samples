@@ -22,6 +22,9 @@ import {notePlayer} from './note_player';
  */
 const REST = 'REST';
 
+/**
+ * Class representing transcript of notes played.
+ */
 class Transcript {
   /**
    * Class for holding transcript of notes that were played. Expects
@@ -104,6 +107,9 @@ class Transcript {
   }
 }
 
+/**
+ * Class representing musical stave.
+ */
 class Stave {
   constructor(id, stateStack) {
     /**
