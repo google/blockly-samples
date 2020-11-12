@@ -15,12 +15,12 @@ import Blockly from 'blockly/core';
 
 /**
  * Pitch field from Blockly Games music.
+ * @extends {Blockly.FieldTextInput}
  */
 export class FieldPitch extends Blockly.FieldTextInput {
   /**
    * Class for an editable pitch field.
    * @param {string} text The initial content of the field.
-   * @extends {Blockly.FieldTextInput}
    * @constructor
    */
   constructor(text) {
@@ -71,6 +71,8 @@ export class FieldPitch extends Blockly.FieldTextInput {
       Blockly.bindEvent_(this.imageElement_, 'mousemove', this,
           this.onMouseMove);
 
+    this.bindAdditionalInputEvents_(this.htmlInput_);
+
     this.updateGraph_();
   }
 
@@ -113,7 +115,7 @@ export class FieldPitch extends Blockly.FieldTextInput {
     const dy = e.clientY - bBox.top;
     const note = Blockly.utils.math.clamp(Math.round(13.5 - dy / 7.5), 0, 12);
     this.imageElement_.style.backgroundPosition = (-note * 37) + 'px 0';
-    this.setEditorValue_(note);
+    this.setEditorValue_(this.valueToNote(note));
   }
 
   /**
@@ -137,38 +139,6 @@ export class FieldPitch extends Blockly.FieldTextInput {
   }
 
   /**
-   * Get the text to be displayed on the field node.
-   * @return {?string} The HTML value if we're editing, otherwise null. Null
-   *   means the super class will handle it, likely a string cast of value.
-   * @protected
-   */
-  getText_() {
-    if (this.isBeingEdited_) {
-      return super.getText_();
-    }
-    return this.valueToNote(this.getValue()) || null;
-  }
-
-  /**
-   * Transform the provided value into a text to show in the HTML input.
-   * @param {*} value The value stored in this field.
-   * @return {string} The text to show on the HTML input.
-   */
-  getEditorText_(value) {
-    return this.valueToNote(value);
-  }
-
-  /**
-   * Transform the text received from the HTML input (note) into a value
-   * to store in this field.
-   * @param {string} text Text received from the HTML input.
-   * @return {*} The value to store.
-   */
-  getValueFromEditorText_(text) {
-    return this.noteToValue(text);
-  }
-
-  /**
    * Updates the graph when the field rerenders.
    * @private
    * @override
@@ -186,7 +156,7 @@ export class FieldPitch extends Blockly.FieldTextInput {
     if (!this.imageElement_) {
       return;
     }
-    const i = this.getValue();
+    const i = this.noteToValue(this.getValue());
     this.imageElement_.style.backgroundPosition = (-i * 37) + 'px 0';
   }
 
@@ -199,11 +169,88 @@ export class FieldPitch extends Blockly.FieldTextInput {
     if (opt_newValue === null || opt_newValue === undefined) {
       return null;
     }
-    const note = this.valueToNote(opt_newValue);
-    if (note) {
+    const noteNum = this.noteToValue(opt_newValue);
+    if (noteNum !== undefined && this.valueToNote(noteNum) == opt_newValue) {
       return opt_newValue;
     }
     return null;
+  }
+
+  /**
+   * Select a note one higher than current, or stay at the highest note.
+   */
+  selectHigherNote() {
+    let currentNote = this.noteToValue(this.getValue());
+    currentNote = currentNote === undefined ? 12 : currentNote;
+    const note = Math.min(currentNote + 1, 12);
+    this.setEditorValue_(this.valueToNote(note));
+  }
+
+  /**
+   * Select a note one lower than current, or stay at the lowest note.
+   */
+  selectLowerNote() {
+    let currentNote = this.noteToValue(this.getValue());
+    currentNote = currentNote === undefined ? 0 : currentNote;
+    const note = Math.max(currentNote - 1, 0);
+    this.setEditorValue_(this.valueToNote(note));
+  }
+
+  /**
+   * Handles next/previous key presses on the input event.
+   * OnBlocklyAction would normally receive next/previous actions,
+   * but the html input element is capturing the keypresses.
+   * We bind our own event that only handles keys registered to next/previous.
+   * If we handle it, we stop other handlers from firing.
+   * This does not clobber the events registered by FieldTextInput, so
+   * esc and enter presses are still handled by that.
+   * @param {!Event} e Keyboard event.
+   */
+  handleKeyPress_(e) {
+    const action =
+        Blockly.ShortcutRegistry.registry.getKeyboardShortcuts(e.keyCode);
+    let handled = false;
+    if (action.includes('next')) {
+      this.selectLowerNote();
+      handled = true;
+    } else if (action.includes('previous')) {
+      this.selectHigherNote();
+      handled = true;
+    }
+    if (handled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+  /**
+   * Bind handler for keypresses on input.
+   * @param {!HTMLElement} htmlInput Input element.
+   */
+  bindAdditionalInputEvents_(htmlInput) {
+    this.additionalOnKeyDownWrapper_ =
+        Blockly.bindEventWithChecks_(
+            htmlInput, 'keydown', this, this.handleKeyPress_);
+  }
+
+  /**
+   * Unbind handler for user input.
+   * @private
+   */
+  unbindAdditionalInputEvents_() {
+    if (this.additionalOnKeyDownWrapper_) {
+      Blockly.unbindEvent_(this.additionalOnKeyDownWrapper_);
+      this.additionalOnKeyDownWrapper_ = null;
+    }
+  }
+
+  /**
+   * Dispose of event handlers.
+   * @override
+   */
+  dispose() {
+    this.unbindAdditionalInputEvents_();
+    super.dispose();
   }
 }
 
