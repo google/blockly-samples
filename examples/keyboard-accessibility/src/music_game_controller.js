@@ -36,6 +36,12 @@ export class MusicGameController {
      */
     this.game = new Music();
     this.game.loadLevel(1);
+    this.game.setOnSuccessCallback(() => {
+      this.game.setFeedbackText('Congratulations. You did it!');
+    });
+    this.game.setOnFailureCallback((feedback) => {
+      this.game.setFeedbackText(feedback.replaceAll('\n', '<br>'));
+    });
 
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();

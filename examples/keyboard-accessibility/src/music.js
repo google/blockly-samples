@@ -29,9 +29,9 @@ class Transcript {
     }
     this.notesAndRests = [];
     this.durations = [];
-    this.size = notesAndRests.length;
+    this.size = 0;
     this.readableText = '';
-    for (let i = 0; i < this.size; i++) {
+    for (let i = 0; i < notesAndRests.length; i++) {
       this.appendNote(notesAndRests[i], durations[i]);
     }
   }
@@ -67,6 +67,7 @@ class Transcript {
     this.durations.push(duration);
     this.appendReadableText_(
         `play ${Transcript.getDurationText(duration)} note ${note}`);
+    this.size++;
   }
 
   appendRest(duration) {
@@ -74,6 +75,7 @@ class Transcript {
     this.durations.push(duration);
     this.appendReadableText_(
         `${Transcript.getDurationText(duration)} rest`);
+    this.size++;
   }
 }
 
@@ -207,7 +209,7 @@ class Stave {
 
     // Append the actual and expected notes played.
     if (sizeMismatch || hasIncorrectNotes || hasIncorrectDuration) {
-      feedback += `\n\nYour solution: ${this.transcript_.readableText}\n`;
+      feedback += `\nYour solution: ${this.transcript_.readableText}\n`;
       feedback += `Expected solution: ${expectedTranscript.readableText}`;
     }
     return feedback;
@@ -240,6 +242,13 @@ export class Music {
      * @private
      */
     this.goalTextElement_ = document.getElementById('goalText');
+
+    /**
+     * The HTML element containing the feedback text for the game.
+     * @type {HTMLElement}
+     * @private
+     */
+    this.feedbackTextElement_ = document.getElementById('feedbackText');
 
     /**
      * The expected answer.
@@ -343,6 +352,14 @@ export class Music {
    */
   setGoalText(text) {
     this.goalTextElement_.innerHTML = text;
+  }
+
+  /**
+   * Sets the feedback text.
+   * @param {string} text The text to set the feedback to.
+   */
+  setFeedbackText(text) {
+    this.feedbackTextElement_.innerHTML = text;
   }
 
   /**
@@ -487,6 +504,7 @@ export class Music {
     this.staves_.length = 0;
     this.clock64ths_ = 0;
     this.startTime_ = 0;
+    this.setFeedbackText('');
   }
 
   /**
