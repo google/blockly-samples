@@ -15,6 +15,8 @@
 'use strict';
 
 import * as Blockly from 'blockly';
+import {speaker} from './speaker';
+import {notePlayer} from './note_player';
 
 /**
  * Class for a line cursor.
@@ -52,6 +54,9 @@ export class CustomCursor extends Blockly.BasicCursor {
     // }
     if (newNode) {
       this.setCurNode(newNode);
+    } else {
+      speaker.speak(speaker.nodeToText_(this.getCurNode(), this.getCurNode(), false), true);
+      notePlayer.playNote('c4', '16n');
     }
     return newNode;
   }
@@ -78,6 +83,9 @@ export class CustomCursor extends Blockly.BasicCursor {
 
     if (newNode) {
       this.setCurNode(newNode);
+    } else {
+      speaker.speak(speaker.nodeToText_(this.getCurNode(), this.getCurNode(), false), true);
+      notePlayer.playNote('c4', '16n');
     }
     return newNode;
   }
