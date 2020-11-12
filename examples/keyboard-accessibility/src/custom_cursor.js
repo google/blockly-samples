@@ -23,12 +23,13 @@ import * as Blockly from 'blockly';
  * @constructor
  * @extends {Blockly.BasicCursor}
  */
-export class LineCursor extends Blockly.BasicCursor {
+export class CustomCursor extends Blockly.BasicCursor {
   /**
    * Constructor for a line cursor.
    */
   constructor() {
     super();
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
   }
   /**
    * Find the next node in the pre order traversal.
@@ -44,11 +45,11 @@ export class LineCursor extends Blockly.BasicCursor {
     let newNode = this.getNextNode_(curNode, this.validLineNode_);
 
     // Skip the input or next value if there is a connected block.
-    if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-        newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-        newNode.getLocation().targetBlock()) {
-      newNode = this.getNextNode_(newNode, this.validLineNode_);
-    }
+    // if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
+    //     newNode.getType() == Blockly.ASTNode.types.NEXT) &&
+    //     newNode.getLocation().targetBlock()) {
+    //   newNode = this.getNextNode_(newNode, this.validLineNode_);
+    // }
     if (newNode) {
       this.setCurNode(newNode);
     }
@@ -69,11 +70,11 @@ export class LineCursor extends Blockly.BasicCursor {
     }
     let newNode = this.getPreviousNode_(curNode, this.validLineNode_);
 
-    if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-      newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-      newNode.getLocation().targetBlock()) {
-      newNode = this.getPreviousNode_(newNode, this.validLineNode_);
-    }
+    // if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
+    //   newNode.getType() == Blockly.ASTNode.types.NEXT) &&
+    //   newNode.getLocation().targetBlock()) {
+    //   newNode = this.getPreviousNode_(newNode, this.validLineNode_);
+    // }
 
     if (newNode) {
       this.setCurNode(newNode);
@@ -134,20 +135,30 @@ export class LineCursor extends Blockly.BasicCursor {
     if (!node) {
       return false;
     }
-    let isValid = false;
-    const location = node.getLocation();
-    const type = node && node.getType();
-    if (type == Blockly.ASTNode.types.PREVIOUS) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.INPUT &&
-        location.type == Blockly.NEXT_STATEMENT) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.NEXT) {
-      isValid = true;
-    } else if (type === Blockly.ASTNode.types.OUTPUT) {
-      if (!location.targetConnection) {
+    var isValid = false;
+    var location = node.getLocation();
+    var type = node && node.getType();
+    if (type === Blockly.ASTNode.types.BLOCK) {
+      if (!location.outputConnection && !location.previousConnection) {
         isValid = true;
       }
+    } else if (type === Blockly.ASTNode.types.INPUT) {
+      const location = node.getLocation();
+      if (location.targetConnection) {
+        isValid = false;
+      } else {
+        isValid = true;
+      }
+    } else if (type === Blockly.ASTNode.types.NEXT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.OUTPUT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.PREVIOUS) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.STACK) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.FIELD) {
+      isValid = true;
     }
     return isValid;
   }
@@ -159,22 +170,24 @@ export class LineCursor extends Blockly.BasicCursor {
    * @private
    */
   validInLineNode_(node) {
-    if (!node) {
-      return false;
-    }
-    let isValid = false;
-    const location = node.getLocation();
-    const type = node && node.getType();
-    if (type === Blockly.ASTNode.types.FIELD) {
-      isValid = true;
-    } else if (type === Blockly.ASTNode.types.INPUT &&
-        location.type === Blockly.INPUT_VALUE) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.OUTPUT) {
-      isValid = true;
-    } else if (type == Blockly.ASTNode.types.STACK) {
-      isValid = true;
-    }
-    return isValid;
+    return false;
   }
+  //   if (!node) {
+  //     return false;
+  //   }
+  //   let isValid = false;
+  //   const location = node.getLocation();
+  //   const type = node && node.getType();
+  //   if (type === Blockly.ASTNode.types.FIELD) {
+  //     isValid = true;
+  //   } else if (type === Blockly.ASTNode.types.INPUT &&
+  //       location.type === Blockly.INPUT_VALUE) {
+  //     isValid = true;
+  //   } else if (type == Blockly.ASTNode.types.OUTPUT) {
+  //     isValid = true;
+  //   } else if (type == Blockly.ASTNode.types.STACK) {
+  //     isValid = true;
+  //   }
+  //   return isValid;
+  // }
 }

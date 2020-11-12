@@ -42,7 +42,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "music_note",
-    "message0": 'Music_playNote %1 %2',
+    "message0": 'play %1 note %2',
     "args0": [
       {
         "type": "field_dropdown",
@@ -84,7 +84,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "music_rest_whole",
-    "message0": 'Music_rest %1',
+    "message0": 'rest %1',
     "args0": [
       {
         "type": "field_image",
@@ -102,7 +102,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "music_rest",
-    "message0": 'Music_rest %1',
+    "message0": 'rest %1',
     "args0": [
       {
         "type": "field_dropdown",
@@ -139,7 +139,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "music_instrument",
-    "message0": 'Music_setInstrument %1',
+    "message0": 'set instrument to %1',
     "args0": [
       {
         "type": "field_dropdown",
@@ -164,16 +164,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     "type": "music_start",
-    "message0": 'Music_start %1',
-    "args0": [
-      {
-        "type": "field_image",
-        "src": mediaPrefix + "music/play.png",
-        "width": 17,
-        "height": 17,
-        "alt": "▶",
-      },
-    ],
+    "message0": 'when shift p pressed',
     "message1": "%1",
     "args1": [
       {
