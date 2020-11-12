@@ -22,6 +22,61 @@ import {notePlayer} from './note_player';
  */
 const REST = 'REST';
 
+class Transcript {
+  constructor(notesAndRests = [], durations = []) {
+    if (notesAndRests.length !== durations.length) {
+      console.error('Transcript length mismatch.');
+    }
+    this.notesAndRests = [];
+    this.durations = [];
+    this.size = notesAndRests.length;
+    this.readableText = '';
+    for (let i = 0; i < this.size; i++) {
+      this.appendNote(notesAndRests[i], durations[i]);
+    }
+  }
+
+  static getDurationText(duration) {
+    let durationText = 'unknown';
+    switch (duration) {
+      case 1:
+        durationText = 'whole';
+        break;
+      case 0.5:
+        durationText = 'half';
+        break;
+      case 0.25:
+        durationText = 'quarter';
+        break;
+      case 0.125:
+        durationText = 'eight';
+        break;
+    }
+    return durationText;
+  }
+
+  appendReadableText_(text) {
+    if (this.readableText) {
+      this.readableText += ', ';
+    }
+    this.readableText += text;
+  }
+
+  appendNote(note, duration) {
+    this.notesAndRests.push(note);
+    this.durations.push(duration);
+    this.appendReadableText_(
+        `play ${Transcript.getDurationText(duration)} note ${note}`);
+  }
+
+  appendRest(duration) {
+    this.notesAndRests.push(REST);
+    this.durations.push(duration);
+    this.appendReadableText_(
+        `${Transcript.getDurationText(duration)} rest`);
+  }
+}
+
 class Stave {
   constructor(id, stateStack) {
     /**
@@ -50,10 +105,10 @@ class Stave {
 
     /**
      * The transcript of notes played.
-     * @type {Array<string|number>}
+     * @type {Transcript}
      * @private
      */
-    this.transcript_ = [];
+    this.transcript_ = new Transcript();
 
     /**
      * Currently playing note.
@@ -84,7 +139,7 @@ class Stave {
     notePlayer.triggerAttack(pitch);
     this.pauseUntil64ths_ = duration * 64 + clock64ths;
     // Make a record of this note.
-    this.transcript_.push(pitch, duration);
+    this.transcript_.appendNote(pitch, duration);
   }
 
   /**
@@ -96,13 +151,7 @@ class Stave {
     this.stopSound();
     this.pauseUntil64ths_ = duration * 64 + clock64ths;
     // Make a record of this rest.
-    const transcriptLen = this.transcript_.length;
-    if (transcriptLen > 1 && this.transcript_[transcriptLen - 2] === REST) {
-      // Concatenate this rest with previous one.
-      this.transcript_[transcriptLen - 1] += duration;
-    } else {
-      this.transcript_.push(REST, duration);
-    }
+    this.transcript_.appendRest(duration);
   }
 
   /**
@@ -116,13 +165,52 @@ class Stave {
   }
 
   /**
-   * Returns whether the transcript matched expected.
-   * @param {Array<string|number>} expectedTranscript The expected transcript.
-   * @return {boolean} Whether the transcript matches.
+   * Returns feedback on what is different between the loaded transcript and the
+   * expected one, or empty string if they are equal.
+   * @param {Transcript} expectedTranscript The expected transcript.
+   * @return {string} The feedback.
    */
-  checkTranscript(expectedTranscript) {
-    return JSON.stringify(
-        expectedTranscript) === JSON.stringify(this.transcript_);
+  getFeedback(expectedTranscript) {
+    let feedback = '';
+
+    // There could be extra or missing notes.
+    const actualSize = this.transcript_.size;
+    const expectedSize = expectedTranscript.size;
+    const sizeMismatch = actualSize !== expectedSize;
+    if (actualSize < expectedSize) {
+      feedback += 'Your solution is missing notes.\n';
+    } else if (actualSize > expectedSize) {
+      feedback += 'Your solution has extra notes.\n';
+    }
+
+    // The notes played could be wrong (duration or note).
+    let hasIncorrectNotes = false;
+    let hasIncorrectDuration = false;
+    for (let i = 0; i < actualSize && i < expectedSize; i++) {
+      if (this.transcript_.notesAndRests[i] !==
+          expectedTranscript.notesAndRests[i]) {
+        hasIncorrectNotes = true;
+      }
+      if (this.transcript_.durations[i] !== expectedTranscript.durations[i]) {
+        hasIncorrectDuration = true;
+      }
+    }
+
+    if (hasIncorrectNotes) {
+      feedback +=
+          `Some of the notes ${sizeMismatch ? 'may be' : 'are'} incorrect.\n`;
+    }
+    if (hasIncorrectDuration) {
+      feedback += `Some of the note durations ` +
+          `${sizeMismatch ? 'may be' : 'are'} incorrect.\n`;
+    }
+
+    // Append the actual and expected notes played.
+    if (sizeMismatch || hasIncorrectNotes || hasIncorrectDuration) {
+      feedback += `\n\nYour solution: ${this.transcript_.readableText}\n`;
+      feedback += `Expected solution: ${expectedTranscript.readableText}`;
+    }
+    return feedback;
   }
 }
 
@@ -155,10 +243,10 @@ export class Music {
 
     /**
      * The expected answer.
-     * @type {Array<Array<string|number>>}
+     * @type {Array<Transcript>}
      * @private
      */
-    this.expectedAnswer_ = [[]];
+    this.expectedAnswer_ = [];
 
     /**
      * The interpreter.
@@ -201,6 +289,33 @@ export class Music {
      * @private
      */
     this.speed_ = 0.5;
+
+    /**
+     * The id of the last setTimeout call. Used for game reset.
+     * @type {number}
+     * @private
+     */
+    this.pid_ = 0;
+
+    /**
+     * The callback function on level success.
+     * @type {function()}
+     * @private
+     */
+    this.onSuccessCallback_ = () => {
+      console.log('SUCCESS');
+    };
+
+    /**
+     * The callback function on level failure.
+     * @type {function(string)}
+     * @param {string} feedback The level feedback.
+     * @private
+     */
+    this.onFailureCallback_ = (feedback) => {
+      console.log('FAILURE');
+      console.log(feedback);
+    };
   }
 
   /**
@@ -231,16 +346,54 @@ export class Music {
   }
 
   /**
+   * Sets the behaviour on success.
+   * @param {function()} onSuccessCallback The on success callback. The level
+   *    code is passed in as parameter
+   */
+  setOnSuccessCallback(onSuccessCallback) {
+    this.onSuccessCallback_ = onSuccessCallback;
+  }
+
+  /**
+   * Sets the behaviour on failure.
+   * @param {function(string)} onFailureCallback The on failure callback. Level
+   *    feedback is passed in as parameter.
+   */
+  setOnFailureCallback(onFailureCallback) {
+    this.onFailureCallback_ = onFailureCallback;
+  }
+
+  /**
+   * Clears the workspace and loads the specified blocks.
+   * @param {string} blockXml The xml text string of blocks.
+   */
+  loadWorkspaceBlocks(blockXml) {
+    this.workspace.clear();
+    Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom(blockXml), this.workspace);
+  }
+
+  /**
+   * Updates the currently loaded toolbox.
+   * @param {?Blockly.utils.toolbox.ToolboxDefinition} toolboxDef
+   *    DOM tree of toolbox contents, string of toolbox contents, or JSON
+   *    representing toolbox definition.
+   */
+  updateToolbox(toolboxDef) {
+    this.workspace.updateToolbox(toolboxDef);
+  }
+
+  /**
    * Update the goal based on the current level.
    * @private
    */
-  updateGoal_() {
+  updateLevelGoal_() {
     let goalText = '';
     switch (this.level) {
       case 1:
         goalText = 'Play c4 d4 e4 c4';
         this.expectedAnswer_ =
-            [['C4', 0.25, 'D4', 0.25, 'E4', 0.25, 'C4', 0.25]];
+            [new Transcript(['C4', 'D4', 'E4', 'C4'], Array(4).fill(0.25))];
         break;
     }
     this.setGoalText(goalText);
@@ -250,41 +403,28 @@ export class Music {
    * Update the toolbox based on the current level.
    * @private
    */
-  updateToolbox_() {
-    let toolboxJson = toolboxPitch; // Use toolboxPitch as default.
-    if (this.level < 6) {
-      toolboxJson = {
-        'kind': 'flyoutToolbox',
-        'contents': [
-          {
-            'kind': 'block',
-            'type': 'pitch_test',
-          },
-
-          {
-            'kind': 'block',
-            'type': 'music_pitch',
-          },
-          {
-            'kind': 'block',
-            'type': 'music_note',
-          },
-          {
-            'kind': 'block',
-            'type': 'music_rest_whole',
-          },
-          {
-            'kind': 'block',
-            'type': 'music_rest',
-          },
-          {
-            'kind': 'block',
-            'type': 'music_instrument',
-          },
-        ],
-      };
-    }
-    this.workspace.updateToolbox(toolboxJson);
+  updateLevelToolbox_() {
+    const toolboxJson = {
+      'kind': 'flyoutToolbox',
+      'contents': [
+        {
+          'kind': 'block',
+          'blockxml': `<block type="music_note">
+                        <field name="DURATION">0.25</field>
+                        <value name="PITCH">
+                          <shadow type="music_pitch">
+                            <field name="PITCH">C4</field>
+                          </shadow>
+                        </value>
+                      </block>`,
+        },
+        {
+          'kind': 'block',
+          'type': 'music_rest',
+        },
+      ],
+    };
+    this.updateToolbox(toolboxJson);
   }
 
   /**
@@ -292,66 +432,12 @@ export class Music {
    * @private
    */
   loadLevelBlocks_() {
-    this.workspace.clear();
-    let levelXml = '';
-    if (this.level === 2) {
-      levelXml =
-          `<xml>
+    const levelXml =
+        `<xml>
             <block type="music_start" deletable="false" x="180"
-            y="50">
-              <statement name="STACK">
-                <block type="music_note">
-                  <field name="DURATION">0.25</field>
-                  <value name="PITCH">
-                    <shadow type="music_pitch">
-                      <field name="PITCH">C4</field>
-                    </shadow>
-                  </value>
-                  <next>
-                    <block type="music_note">
-                      <field name="DURATION">0.25</field>
-                      <value name="PITCH">
-                        <shadow type="music_pitch">
-                          <field name="PITCH">D4</field>
-                        </shadow>
-                      </value>
-                      <next>
-                        <block type="music_note">
-                          <field name="DURATION">0.25</field>
-                          <value name="PITCH">
-                            <shadow type="music_pitch">
-                              <field name="PITCH">E4</field>
-                            </shadow>
-                          </value>
-                          <next>
-                            <block type="music_note">
-                              <field name="DURATION">0.25</field>
-                              <value name="PITCH">
-                                <shadow type="music_pitch">
-                                  <field name="PITCH">C4</field>
-                                </shadow>
-                              </value>
-                            </block>
-                          </next>
-                        </block>
-                      </next>
-                    </block>
-                  </next>
-                </block>
-              </statement>
-            </block>
-          </xml>`;
-    } else if (this.level < 6) {
-      levelXml =
-          `<xml>
-            <block type="music_start" deletable="${this.level > 6}" x="180"
             y="50"></block>
           </xml>`;
-    }
-    if (levelXml) {
-      Blockly.Xml.domToWorkspace(
-          Blockly.Xml.textToDom(levelXml), this.workspace);
-    }
+    this.loadWorkspaceBlocks(levelXml);
   }
 
   /**
@@ -360,9 +446,22 @@ export class Music {
    */
   loadLevel(level) {
     this.level = Number(level);
-    this.updateGoal_();
-    this.updateToolbox_();
+    this.updateLevelGoal_();
+    this.updateLevelToolbox_();
     this.loadLevelBlocks_();
+  }
+
+  /**
+   * Set the speed (Number between 0 and 1).
+   * @param {number} speed The speed to set to.
+   */
+  setSpeed(speed) {
+    if (speed <= 0 || speed > 1) {
+      console.error('Invalid speed');
+      return;
+    }
+    this.speed_ = speed;
+    this.startTime_ = 0;
   }
 
   /**
@@ -374,41 +473,48 @@ export class Music {
   }
 
   /**
-   * Evaluates whether the answer for the currently loaded level is correct.
-   * @return {boolean} Whether the answer is correct.
+   * Reset the music to the start position, clear the display, and kill any
+   * pending tasks.
    */
-  checkAnswer_() {
-    let correct = true;
-    for (let i = 0; i < this.expectedAnswer_.length; i++) {
-      if (!this.staves_[i].checkTranscript(this.expectedAnswer_[i])) {
-        correct = false;
-        break;
-      }
-    }
-    return correct;
+  reset() {
+    // Kill any task.
+    clearTimeout(this.pid_);
+    this.staves_.forEach((stave) => {
+      stave.stopSound();
+    });
+    this.interpreter_ = null;
+    this.activeStave_ = null;
+    this.staves_.length = 0;
+    this.clock64ths_ = 0;
+    this.startTime_ = 0;
   }
 
   /**
-   * Play one note.
-   * @param {number} duration Fraction of a whole note length to play.
-   * @param {string} pitch Note play.
+   * Plays music based on the blocks on the workspace.
    */
-  play_(duration, pitch) {
-    this.activeStave_.play(duration, pitch, this.clock64ths_);
-  }
+  execute() {
+    this.reset();
+    // Get generated code from workspace
+    const code = Blockly.JavaScript.workspaceToCode(this.workspace);
 
-  /**
-   * Wait one rest.
-   * @param {number} duration Fraction of a whole note length to rest.
-   */
-  rest_(duration) {
-    this.activeStave_.rest(duration, this.clock64ths_);
+    // Run user code.
+    this.interpreter_ = new Interpreter(code, this.interpreterInit_.bind(this));
+    // TODO add support for multiple threads.
+    const interpreter = new Interpreter('');
+    // Replace this thread's global scope with the cross-thread global.
+    interpreter.stateStack[0].scope = this.interpreter_.globalScope;
+    // Add start call.
+    interpreter.appendCode('start();\n');
+    this.staves_.push(new Stave(0, interpreter.stateStack));
+
+    this.pid_ = setTimeout(() => this.tick_(), 100);
   }
 
   /**
    * Inject the Music API into a JavaScript interpreter.
    * @param {!Interpreter} interpreter The JS-Interpreter.
    * @param {!Interpreter.Object} globalObject Global object.
+   * @private
    */
   interpreterInit_(interpreter, globalObject) {
     // API
@@ -424,17 +530,69 @@ export class Music {
     interpreter.setProperty(globalObject, 'rest',
         interpreter.createNativeFunction(wrapper));
 
-    // TODO implement changing instrument.
-    // wrapper = function(instrument, id) {
-    //   Music.setInstrument(instrument, id);
-    // };
-    // interpreter.setProperty(globalObject, 'setInstrument',
-    //     interpreter.createNativeFunction(wrapper));
+    // TODO implement setInstrument API.
+  }
+
+  /**
+   * Play one note.
+   * @param {number} duration Fraction of a whole note length to play.
+   * @param {string} pitch Note play.
+   * @private
+   */
+  play_(duration, pitch) {
+    this.activeStave_.play(duration, pitch, this.clock64ths_);
+  }
+
+  /**
+   * Wait one rest.
+   * @param {number} duration Fraction of a whole note length to rest.
+   * @private
+   */
+  rest_(duration) {
+    this.activeStave_.rest(duration, this.clock64ths_);
+  }
+  /**
+   * Execute a 1/64th tick of the program.
+   * @private
+   */
+  tick_() {
+    // Delay between start of each beat (1/64ths of a whole note).
+    // Reminder: The startTime_ should be reset after the slider is adjusted.
+    const scaleDuration = 1000 * (2.5 - 2 * this.speed_) / 64;
+    if (!this.startTime_) {
+      // Either the first tick, or first tick after slider was adjusted.
+      this.startTime_ = Date.now() - this.clock64ths_ * scaleDuration;
+    }
+    let done = true;
+    this.staves_.forEach((stave) => {
+      if (!stave.done) {
+        done = false;
+        if (!stave.isPaused(this.clock64ths_)) {
+          this.executeChunk_(stave);
+        }
+      }
+    });
+
+    if (done) {
+      // Program complete.
+      const feedback = this.checkAnswer_();
+      if (feedback) {
+        this.onFailureCallback_(feedback);
+      } else {
+        this.onSuccessCallback_();
+      }
+    } else {
+      this.clock64ths_++;
+      const ms =
+          (this.startTime_ + this.clock64ths_ * scaleDuration) - Date.now();
+      this.pid_ = setTimeout(() => this.tick_(), ms);
+    }
   }
 
   /**
    * Execute a bite-sized chunk of the user's code.
    * @param {Stave} stave The stave to execute.
+   * @private
    */
   executeChunk_(stave) {
     this.activeStave_ = stave;
@@ -465,91 +623,20 @@ export class Music {
   }
 
   /**
-   * Set the speed (Number between 0 and 1).
-   * @param {number} speed The speed to set to.
-   */
-  setSpeed(speed) {
-    if (speed <= 0 || speed > 1) {
-      console.error('Invalid speed');
-      return;
-    }
-    this.speed_ = speed;
-    this.startTime_ = 0;
-  }
-
-  /**
-   * Execute a 1/64th tick of the program.
+   * Evaluates whether the answer for the currently loaded level is correct.
+   * Returns level feedback if correct or empty string if correct.
+   * @return {string} Level feedback or empty string.
    * @private
    */
-  tick_() {
-    // Delay between start of each beat (1/64ths of a whole note).
-    // Reminder: The startTime_ should be reset after the slider is adjusted.
-    const scaleDuration = 1000 * (2.5 - 2 * this.speed_) / 64;
-    if (!this.startTime_) {
-      // Either the first tick, or first tick after slider was adjusted.
-      this.startTime_ = Date.now() - this.clock64ths_ * scaleDuration;
-    }
-    let done = true;
-    this.staves_.forEach((stave) => {
-      if (!stave.done) {
-        done = false;
-        if (!stave.isPaused(this.clock64ths_)) {
-          this.executeChunk_(stave);
-        }
+  checkAnswer_() {
+    let feedback = '';
+    for (let i = 0; i < this.expectedAnswer_.length; i++) {
+      const staveFeedback =
+          this.staves_[i].getFeedback(this.expectedAnswer_[i]);
+      if (staveFeedback) {
+        feedback += staveFeedback;
       }
-    });
-
-    if (done) {
-      // Program complete.
-      if (this.checkAnswer_()) {
-        console.log('CORRECT');
-      } else {
-        console.log('INCORRECT');
-      }
-    } else {
-      this.clock64ths_++;
-      const ms =
-          (this.startTime_ + this.clock64ths_ * scaleDuration) - Date.now();
-      this.pid = setTimeout(() => this.tick_(), ms);
     }
-  }
-
-  /**
-   * Reset the music to the start position, clear the display, and kill any
-   * pending tasks.
-   */
-  reset() {
-    // Kill any task.
-    clearTimeout(this.pid);
-    this.staves_.forEach((stave) => {
-      stave.stopSound();
-    });
-    this.interpreter_ = null;
-    this.activeStave_ = null;
-    this.staves_.length = 0;
-    this.clock64ths_ = 0;
-    this.startTime_ = 0;
-  }
-
-  /**
-   * Plays music based on the blocks on the workspace.
-   */
-  execute() {
-    this.reset();
-    // Get generated code from workspace
-    const code = Blockly.JavaScript.workspaceToCode(this.workspace);
-
-    // Run user code.
-    this.interpreter_ = new Interpreter(code, this.interpreterInit_.bind(this));
-    // TODO support multiple threads
-    // Assume only one thread.
-    const interpreter = new Interpreter('');
-    // Replace this thread's global scope with the cross-thread global.
-    interpreter.stateStack[0].scope = this.interpreter_.globalScope;
-    // Add start call.
-    interpreter.appendCode('start();\n');
-    this.staves_.push(new Stave(0, interpreter.stateStack));
-
-    setTimeout(() => this.tick_(), 100);
+    return feedback;
   }
 }
