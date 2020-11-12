@@ -15,6 +15,9 @@ import {Music} from '../src/music';
 import MicroModal from 'micromodal';
 import {HelpModal} from '../src/help_modal';
 import {KeyPressModal} from '../src/key_press_modal';
+import {Shortcuts} from '../src/shortcuts';
+import '../src/overrides';
+import {CustomCursor} from '../src/custom_cursor';
 
 document.addEventListener('DOMContentLoaded', function() {
   MicroModal.init({
@@ -26,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
   helpModal.init();
   const keyPressModal = new KeyPressModal();
   keyPressModal.init();
+  new Shortcuts().init();
 
   document.getElementById('playNote').addEventListener(
       'click', function() {
@@ -97,4 +101,5 @@ document.addEventListener('DOMContentLoaded', function() {
       function() {
         speaker.modalToText(document.getElementById('modal-1'));
       });
+
 });

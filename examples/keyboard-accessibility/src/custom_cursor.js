@@ -23,12 +23,13 @@ import * as Blockly from 'blockly';
  * @constructor
  * @extends {Blockly.BasicCursor}
  */
-export class LineCursor extends Blockly.BasicCursor {
+export class CustomCursor extends Blockly.BasicCursor {
   /**
    * Constructor for a line cursor.
    */
   constructor() {
     super();
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
   }
   /**
    * Find the next node in the pre order traversal.
@@ -44,11 +45,11 @@ export class LineCursor extends Blockly.BasicCursor {
     let newNode = this.getNextNode_(curNode, this.validLineNode_);
 
     // Skip the input or next value if there is a connected block.
-    if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-        newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-        newNode.getLocation().targetBlock()) {
-      newNode = this.getNextNode_(newNode, this.validLineNode_);
-    }
+    // if (newNode && (newNode.getType() == Blockly.ASTNode.types.INPUT ||
+    //     newNode.getType() == Blockly.ASTNode.types.NEXT) &&
+    //     newNode.getLocation().targetBlock()) {
+    //   newNode = this.getNextNode_(newNode, this.validLineNode_);
+    // }
     if (newNode) {
       this.setCurNode(newNode);
     }
@@ -134,18 +135,25 @@ export class LineCursor extends Blockly.BasicCursor {
     if (!node) {
       return false;
     }
-    let isValid = false;
-    const location = node.getLocation();
-    const type = node && node.getType();
+    var isValid = false;
+    var location = node.getLocation();
+    var type = node && node.getType();
     if (type === Blockly.ASTNode.types.BLOCK) {
-      if (location.outputConnection &&
-          location.outputConnection.targetConnection) {
-        // Don't navigate to the block if it is connected.
-        isValid = false;
-      } else {
-        isValid = true;
-      }
+      // if (location.outputConnection === null) {
+      //   isValid = true;
+      // }
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.INPUT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.NEXT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.OUTPUT) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.PREVIOUS) {
+      isValid = true;
     } else if (type === Blockly.ASTNode.types.STACK) {
+      isValid = true;
+    } else if (type === Blockly.ASTNode.types.FIELD) {
       isValid = true;
     }
     return isValid;

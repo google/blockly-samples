@@ -25,17 +25,16 @@ export class Speaker {
     const messages = {
       'MAIN_WS': 'On the main workspace',
       'STACK':
-          'On a stack of blocks. Use the in key to navigate to the top block',
+          'To go to the last block in the previous group of blocks, press up. To go to the first block in the stack hit next.',
       'PREVIOUS': 'On a connection before block, ',
       'NEXT': 'On a connection after, ',
-      'OUTPUT': 'On an output connection',
-      'CONNECTION':
-          'At a connection point. Mark this connection to' +
-          'add a block to this position',
+      'OUTPUT': 'On an output connection. ',
+      'CONNECTION': 'At a connection point.',
       'BLOCK': 'On a block of type',
       'CLICKABLE_FIELD': 'To interact with the field hit enter.',
       'EMPTY_TOKEN': 'blank',
-      'MARK_CONNECTION': 'To mark the block press enter',
+      'MARK_CONNECTION': 'To mark the block press enter. ',
+      'EXIT_EDIT_MODE': 'To exit edit mode hit escape. ',
     };
 
     Blockly.utils.object.mixin(messages, optMessages);
@@ -125,9 +124,9 @@ export class Speaker {
   nodeToSpeech(event) {
     // TODO: Update this if we link to the current version of blockly.
     if (event.type === Blockly.Events.MARKER_MOVE) {
-      let nodeText = this.nodeToText_(event.newNode, event.isCursor);
+      let nodeText = this.nodeToText_(event.newNode, event.oldNode, !event.isCursor);
       if (!event.isCursor) {
-        nodeText = 'Marker moved to location, ' + nodeText;
+        nodeText = `You have marked a location. To find a block to connect to this location hit T. ! . To insert a block on the workspace, find the location of the block and hit I. `;
       }
       this.speak(nodeText, true);
     }
@@ -195,44 +194,111 @@ export class Speaker {
   /**
    * Speaks out an audio representation of the given node.
    * @param {Blockly.ASTNode} node The node to speak out.
+   * @param {Blockly.ASTNode} oldNode The previous node to speak out.
    * @param {boolean} isMarker True to get the text for a marker,
    *     false otherwise.
    * @return {string} The text representation of the node.
    * @public
    */
-  nodeToText_(node, isMarker) {
+  nodeToText_(node, oldNode, isMarker) {
+    let finalText = '';
     switch (node.getType()) {
       case Blockly.ASTNode.types.FIELD:
-        return this.fieldNodeToText_(node);
+        finalText = this.fieldNodeToText_(node);
+        break;
       case Blockly.ASTNode.types.BLOCK:
-        return this.blockNodeToText_(node);
+        finalText = this.blockNodeToText_(node);
+        break;
       case Blockly.ASTNode.types.INPUT:
-        return this.inputNodeToText_(node);
+        finalText = this.inputNodeToText_(node, isMarker);
+        break;
       case Blockly.ASTNode.types.OUTPUT:
-        return this.outputNodeToText_(node);
+        finalText = this.outputNodeToText_(node, isMarker);
+        break;
       case Blockly.ASTNode.types.NEXT:
-        return this.nextNodeToText_(node);
+        finalText = this.nextNodeToText_(node, isMarker);
+        break;
       case Blockly.ASTNode.types.PREVIOUS:
-        return this.previousNodeToText_(node, isMarker);
+        finalText = this.previousNodeToText_(node, isMarker);
+        break;
       case Blockly.ASTNode.types.STACK:
-        return this.stackNodeToText_(node);
+        finalText = this.stackNodeToText_(node, oldNode);
+        break;
       case Blockly.ASTNode.types.WORKSPACE:
-        return this.workspaceNodeToText_(node);
+        finalText = this.workspaceNodeToText_(node);
+        break;
+      default:
+        return node.toString();
+    }
+    finalText += this.getNextOptions_(node, oldNode, isMarker);
+    return finalText;
+  }
+
+  /**
+   *
+   * @param node
+   * @param oldNode
+   * @param isMarker
+   * @private
+   */
+  getNextOptions_(node, oldNode, isMarker) {
+    switch (node.getType()) {
+      case Blockly.ASTNode.types.FIELD:
+        return this.getFieldOptions_(node);
+      case Blockly.ASTNode.types.BLOCK:
+        return this.getBlockOptions_(node);
+      case Blockly.ASTNode.types.INPUT:
+        return this.getConnectionOptions_(node, isMarker);
+      case Blockly.ASTNode.types.OUTPUT:
+        return this.getConnectionOptions_(node, isMarker);
+      case Blockly.ASTNode.types.NEXT:
+        return this.getConnectionOptions_(node, isMarker);
+      case Blockly.ASTNode.types.PREVIOUS:
+        return this.getConnectionOptions_(node, isMarker);
+      case Blockly.ASTNode.types.STACK:
+        return '';
+      case Blockly.ASTNode.types.WORKSPACE:
+        return '';
       default:
         return node.toString();
     }
   }
 
+  getFieldOptions_(node) {
+    const field = node.getLocation();
+    if (field.isClickable()) {
+      return 'To interact with the field hit enter. ';
+    }
+    return '';
+  }
+
+  getBlockOptions_() {
+    return ` To edit this block press, e. To go to the next block press next.`;
+  }
+
+  getConnectionOptions_(node, isMarker) {
+    const markerText = '. To connect a block to this location, hit enter. ';
+    let finalText = '';
+    if (!isMarker) {
+      finalText += `${markerText}`;
+    }
+    // finalText += `${Blockly.Msg['EXIT_EDIT_MODE']}`;
+    return finalText;
+  }
+
   /**
    * Get the text for the source block of the node.
-   * @param {!Blockly.ASTNode} node The node to get the text for.
+   * @param {!Blockly.BlockSvg} srcBlock The block to get the text for.
    * @return {string} The text describing the source block of the node.
    * @private
    */
-  getBlockText_(node) {
-    const srcBlock = node.getSourceBlock();
+  getBlockText_(srcBlock) {
+    let emptyToken = Blockly.Msg['EMPTY_TOKEN'];
     if (srcBlock) {
-      return srcBlock.toString(null, Blockly.Msg['EMPTY_TOKEN']);
+      if (srcBlock.statementInputCount > 0) {
+        emptyToken = ' do blank ';
+      }
+      return srcBlock.toString(null, emptyToken);
     } else {
       return '';
     }
@@ -246,12 +312,7 @@ export class Speaker {
    */
   fieldNodeToText_(node) {
     const field = node.getLocation();
-    let text = field.getText();
-    if (field.isClickable()) {
-      // TODO: This should get the mark key from the keymap.
-      text += '. To interact with the field hit enter.';
-    }
-    return text;
+    return field.getText() + '. ';
   }
 
   /**
@@ -262,7 +323,14 @@ export class Speaker {
    */
   blockNodeToText_(node) {
     const block = /** @type{Blockly.BlockSvg} */ (node.getLocation());
-    return `${Blockly.Msg['BLOCK']} ${block.type}`;
+    const blockText = this.getBlockText_(block);
+    let finalText = '';
+    if (block.getSurroundParent()) {
+      const parentBlockText = this.getBlockText_(block.getSurroundParent());
+      finalText += `You are inside of block ${parentBlockText}. . `;
+    }
+    finalText += `You are on block, ${blockText}. . `;
+    return finalText;
   }
 
   /**
@@ -271,14 +339,17 @@ export class Speaker {
    * @return {string} The text for the screen reader to read out.
    * @protected
    */
-  inputNodeToText_(node) {
-    const blockText = this.getBlockText_(node);
+  inputNodeToText_(node, isMarker) {
+    const blockText = this.getBlockText_(node.getSourceBlock());
     const inputConnection = /** @type{Blockly.Input} */ (node.getLocation());
-    if (inputConnection.type == Blockly.NEXT_STATEMENT) {
-      return `Inside ${blockText}. ${Blockly.Msg['CONNECTION']}`;
-    } else if (inputConnection.type == Blockly.INPUT_VALUE) {
-      return Blockly.Msg['CONNECTION'];
+    const connectionText = `You are on a connection. `;
+    let finalText = '';
+    if (inputConnection.type === Blockly.NEXT_STATEMENT) {
+      finalText = `Inside ${blockText}. ${connectionText}`;
+    } else if (inputConnection.type === Blockly.INPUT_VALUE) {
+      finalText = `${connectionText}`;
     }
+    return finalText;
   }
 
   /**
@@ -300,11 +371,8 @@ export class Speaker {
    * @protected
    */
   nextNodeToText_(node, isMarker) {
-    const blockText = this.getBlockText_(node);
+    const blockText = this.getBlockText_(node.getSourceBlock());
     let finalText = `${Blockly.Msg['NEXT']} ${blockText}`;
-    if (!isMarker) {
-      finalText += `! . ${Blockly.Msg['MARK_CONNECTION']}`;
-    }
     return finalText;
   }
 
@@ -317,29 +385,38 @@ export class Speaker {
    * @protected
    */
   previousNodeToText_(node, isMarker) {
-    const blockText = this.getBlockText_(node);
+    const blockText = this.getBlockText_(node.getSourceBlock());
     let finalText = `${Blockly.Msg['PREVIOUS']} ${blockText}`;
-    if (!isMarker) {
-      finalText += `! . ${Blockly.Msg['MARK_CONNECTION']}`;
-    }
     return finalText;
   }
 
   /**
    * Creates text for a stack of blocks.
    * @param {!Blockly.ASTNode} node The node to create text for.
+   * @param {!Blockly.ASTNode} oldNode The previous node.
    * @return {string} The text for the screen reader to read out.
    * @protected
    */
-  stackNodeToText_(node) {
+  stackNodeToText_(node, oldNode) {
     const srcBlock = node.getSourceBlock();
+    const newNodeTopBlock = srcBlock.getTopStackBlock();
+    let oldNodeTopBlock = null;
+    if (oldNode && oldNode.getSourceBlock()) {
+      oldNodeTopBlock = oldNode.getSourceBlock().getTopStackBlock();
+    }
+
     let finalText = '';
 
     if (srcBlock && srcBlock.workspace.isFlyout) {
-      finalText = this.getBlockText_(node);
-      finalText += ' . . To add this block to the workspace press Enter.';
+      finalText = this.getBlockText_(node.getSourceBlock());
+      finalText += ' . . To add this block to the workspace press Enter. . To go to the next block hit next. . To go back to the workspace hit escape. ';
     } else if (srcBlock) {
-      finalText = Blockly.Msg['STACK'];
+      if (oldNodeTopBlock !== newNodeTopBlock) {
+        finalText += `You are on a new group of blocks. `;
+      } else {
+        finalText += `You are on a group of blocks. `;
+      }
+      finalText += Blockly.Msg['STACK'];
     }
     return finalText;
   }
