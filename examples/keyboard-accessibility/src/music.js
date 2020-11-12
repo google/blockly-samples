@@ -258,6 +258,10 @@ export class Music {
         'contents': [
           {
             'kind': 'block',
+            'blockxml': "<block type='music_note'><value name='PITCH'><shadow type='music_pitch'><field name='PITCH'>C4</field></shadow></value></block>",
+          },
+          {
+            'kind': 'block',
             'type': 'pitch_test',
           },
 
