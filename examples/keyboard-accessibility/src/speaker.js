@@ -316,7 +316,7 @@ export class Speaker {
    */
   getConnectionOptions_(node, isMarker) {
     const markerText = `. To mark this location, hit enter.
-    To change locations use the up or down errors`;
+    To change locations use the up or down arrows`;
     let finalText = '';
     if (!isMarker) {
       finalText += `${markerText}`;
