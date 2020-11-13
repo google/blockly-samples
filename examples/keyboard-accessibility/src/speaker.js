@@ -135,7 +135,14 @@ export class Speaker {
         to this location hit T. ! . To insert a block on the workspace,
         find the location of the block and hit I. `;
       }
-      this.speak(nodeText, true);
+      let onStart;
+      if (event.newNode && event.newNode.getLocation() &&
+          event.newNode.getLocation().actionBeforeSpeaker) {
+        const location = event.newNode.getLocation();
+        onStart = location.actionBeforeSpeaker.bind(location);
+      }
+
+      this.speak(nodeText, true, undefined, onStart);
     }
   }
 
