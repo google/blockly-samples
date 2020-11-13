@@ -61,7 +61,7 @@ export class Transcript {
         durationText = 'quarter';
         break;
       case 0.125:
-        durationText = 'eight';
+        durationText = 'eighth';
         break;
     }
     return durationText;
