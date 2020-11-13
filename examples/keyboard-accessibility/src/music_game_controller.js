@@ -17,7 +17,6 @@ import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
 import {speaker} from './speaker';
 import {Tutorial} from './tutorial';
-import {toolboxPitch} from './music_blocks';
 import {CustomCursor} from './custom_cursor';
 
 /**
