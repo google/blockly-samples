@@ -96,7 +96,6 @@ export class MusicGameController {
   setFeedbackText(text) {
     const feedbackTextEl = document.getElementById('feedbackText');
     feedbackTextEl.innerHTML = text.replaceAll('\n', '<br>');
-    speaker.speak(text, true);
   }
 
   /**
@@ -131,17 +130,18 @@ export class MusicGameController {
    */
   runGame() {
     new MusicGame(this.workspace, this.music_,
-        (goalText) => {
+        (goalText, gameRef) => {
           this.setGoalText(goalText);
-          speaker.speak(goalText, true, () => {
+          gameRef.speakGoal(() => {
             Blockly.navigation.enableKeyboardAccessibility();
           });
         },
         () => {
           this.setFeedbackText('Congratulations. You did it!');
         },
-        (feedback) => {
+        (feedback, gameRef) => {
           this.setFeedbackText(feedback);
+          gameRef.speakFeedback();
         }).init();
   }
 
