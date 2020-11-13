@@ -23,7 +23,7 @@ export class TutorialStep {
    *     by the user.
    * @constructor
    */
-  constructor(text, textId, doneCb) {
+  constructor(text, textId, doneCb, goalText) {
     /**
      * The text being displayed to the user.
      * @type {string}
@@ -41,6 +41,12 @@ export class TutorialStep {
      * @type {Function}
      */
     this.doneCb = doneCb;
+
+    /**
+     * The goal text.
+     * @type {string}
+     */
+    this.goalText = goalText;
   }
 
   /**

@@ -60,7 +60,7 @@ export class Tutorial {
      * @type {Array<!TutorialStep>}
      */
     this.steps = Tutorial.STEP_OBJECTS.map(
-        (obj) => new TutorialStep(obj.text, this.stepTextId, this.nextStep)
+        (obj) => new TutorialStep(obj.text, this.stepTextId, this.nextStep, obj.goalText)
     );
 
     /**
@@ -169,7 +169,7 @@ export class Tutorial {
         return !workspace.options.readOnly;
       },
       callback: () => {
-        speaker.speak(this.curStep.text, true);
+        speaker.speak('Goal: ' + this.curStep.goalText, true);
       },
     };
 
@@ -289,9 +289,9 @@ export class Tutorial {
 
 Tutorial.STEP_OBJECTS = [
   {
-    text: `In this tutorial you will write code that plays musical notes. If at
-      any point you are confused about what to do, press H to replay the goal
-      for the current step. Press Enter to go to the next step.`,
+    text: `In this tutorial you will write code that plays musical notes. Press
+    H to replay the goal for the current step. Press Enter to go to the next
+    step.`,
     goalText: `Press Enter to go to the next step.`,
     onStart: function(tutorial) {
       setTimeout(()=> tutorial.nextStep(), 10);
@@ -317,7 +317,7 @@ Tutorial.STEP_OBJECTS = [
               setTimeout(()=>{
                 workspace.removeChangeListener(wrapper);
                 tutorial.nextStep();
-              }, 4700);
+              }, 4300);
             }
           }
         }
@@ -332,7 +332,7 @@ Tutorial.STEP_OBJECTS = [
       `Great! You moved to a connection point. .
       To add more code, you first mark a location and then select the block you
       want to add. .
-      Navigate to the connection point, then press enter to mark it. .
+      Your goal: Navigate to the connection point, then press enter to mark it.
       Hit enter to begin. `,
     goalText: `Navigate to the connection point, then press enter to mark it.`,
     onStart: function(tutorial) {
@@ -362,9 +362,8 @@ Tutorial.STEP_OBJECTS = [
     blocks. .
     The toolbox is a list of code blocks that you can add to the workspace.
     You can always open the toolbox by pressing T. .
-    Press T to open the toolbox, then use the up and down arrows to explore
-    it. .
-    Press F when you are finished exploring.`,
+    Your goal: Press T to open the toolbox, then use the up and down arrows to
+    explore it. . Press F when you are finished exploring.`,
     goalText: `Press T to open the toolbox, then use the up and down arrows to
       explore it. . Press F when you are finished exploring.`,
     onStart: function(tutorial) {
@@ -390,7 +389,7 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text: `Great! Now it’s time to put it all together.
-    Navigate to the connection and mark it, then press T to open the
+    Your goal: Navigate to the connection and mark it, then press T to open the
     toolbox. Find the block that says “play whole note c4” and press
     enter to add it at the marked location.`,
     goalText: `Navigate to the connection and mark it, then press T to open the
@@ -420,7 +419,7 @@ Tutorial.STEP_OBJECTS = [
     },
   },
   {
-    text: `Great! You can now press Shift and P at the same time to run your
+    text: `Great! Your goal: Press Shift and P at the same time to run your
     code. You should hear a note play!`,
     goalText: `Press Shift and P at the same time to run your code.`,
     onStart: function(tutorial) {
@@ -449,7 +448,7 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text: `Congratulations! You have finished the tutorial! In the game use
-    H to give you tips and Shift and P to play your solution. .
+    H to give you tips and Shift and P to play your solution. !
     Hit enter to start the game.`,
     goalText: `Start the game.`,
     onStart: function(tutorial) {
