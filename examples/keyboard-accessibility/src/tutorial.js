@@ -92,6 +92,42 @@ export class Tutorial {
     MicroModal.show(this.modalId);
     this.curStep.show();
     this.registerPlayHelpText();
+    this.loadWorkspace();
+  }
+
+  /**
+   * Load the workspace for the tutorial.
+   */
+  loadWorkspace() {
+    const toolboxJson = {
+      'kind': 'flyoutToolbox',
+      'contents': [
+        {
+          'kind': 'block',
+          'blockxml': `<block type="music_note">
+                        <field name="DURATION">0.25</field>
+                        <value name="PITCH">
+                          <shadow type="music_pitch">
+                            <field name="PITCH">C4</field>
+                          </shadow>
+                        </value>
+                      </block>`,
+        },
+        {
+          'kind': 'block',
+          'type': 'music_rest',
+        },
+      ],
+    };
+    this.workspace.updateToolbox(toolboxJson);
+    const starterXml =
+        `<xml>
+            <block type="music_start" deletable="false" x="180"
+            y="50"></block>
+          </xml>`;
+    this.workspace.clear();
+    Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom(starterXml), this.workspace);
   }
 
   /**

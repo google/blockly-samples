@@ -63,7 +63,26 @@ export class MusicGameController {
     // Initialize Blockly workspace.
     const blocklyDiv = document.getElementById('blocklyDiv');
     const workspace = Blockly.inject(blocklyDiv, {
-      toolbox: toolboxPitch,
+      toolbox: {
+        'kind': 'flyoutToolbox',
+        'contents': [
+          {
+            'kind': 'block',
+            'blockxml': `<block type="music_note">
+                          <field name="DURATION">0.25</field>
+                          <value name="PITCH">
+                            <shadow type="music_pitch">
+                              <field name="PITCH">C4</field>
+                            </shadow>
+                          </value>
+                        </block>`,
+          },
+          {
+            'kind': 'block',
+            'type': 'music_rest',
+          },
+        ],
+      },
     });
     Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
     workspace.getMarkerManager().setCursor(new CustomCursor());
