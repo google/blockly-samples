@@ -173,10 +173,10 @@ export class Tutorial {
     };
 
     Blockly.ShortcutRegistry.registry.register(playHelpText);
-    const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+    const shiftH = Blockly.ShortcutRegistry.registry.createSerializedKey(
         Blockly.utils.KeyCodes.H);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
-        shiftW, playHelpText.name);
+        shiftH, playHelpText.name);
   }
 
   /**
@@ -375,10 +375,10 @@ Tutorial.STEP_OBJECTS = [
       };
 
       Blockly.ShortcutRegistry.registry.register(finishStep);
-      const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+      const shiftF = Blockly.ShortcutRegistry.registry.createSerializedKey(
           Blockly.utils.KeyCodes.F);
       Blockly.ShortcutRegistry.registry.addKeyMapping(
-          shiftW, finishStep.name);
+          shiftF, finishStep.name);
     },
   },
   {

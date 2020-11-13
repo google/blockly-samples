@@ -157,10 +157,10 @@ export class MusicGame {
     };
 
     Blockly.ShortcutRegistry.registry.register(playHelpText);
-    const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+    const shiftH = Blockly.ShortcutRegistry.registry.createSerializedKey(
         Blockly.utils.KeyCodes.H);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
-        shiftW, playHelpText.name);
+        shiftH, playHelpText.name);
   }
 
   /**

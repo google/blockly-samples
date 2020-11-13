@@ -150,10 +150,10 @@ export class MusicGameController {
     };
 
     Blockly.ShortcutRegistry.registry.register(playShortcut);
-    const shiftW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+    const shiftP = Blockly.ShortcutRegistry.registry.createSerializedKey(
         Blockly.utils.KeyCodes.P, [Blockly.utils.KeyCodes.SHIFT]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
-        shiftW, playShortcut.name);
+        shiftP, playShortcut.name);
   }
 
 
