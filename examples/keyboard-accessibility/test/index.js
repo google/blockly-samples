@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   document.getElementById('playOnly').addEventListener(
       'input', function(event) {
-        controller.playOnly = this.checked;
+        controller.getGame().setPlayOnly(this.checked);
       });
 
   // Initial state has arrow keys turned on.
