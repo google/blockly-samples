@@ -131,13 +131,18 @@ export class MusicGameController {
   runGame() {
     new MusicGame(this.workspace, this.music_,
         (goalText, gameRef) => {
+          this.setFeedbackText('');
           this.setGoalText(goalText);
           gameRef.speakGoal(() => {
             Blockly.navigation.enableKeyboardAccessibility();
           });
         },
-        () => {
-          this.setFeedbackText('Congratulations. You did it!');
+        (gameRef) => {
+          const successText = 'Congratulations. You did it!';
+          this.setFeedbackText(successText);
+          speaker.speak(successText, true, () => {
+            setTimeout(() => gameRef.loadNextLevel(), 1000);
+          });
         },
         (feedback, gameRef) => {
           this.setFeedbackText(feedback);

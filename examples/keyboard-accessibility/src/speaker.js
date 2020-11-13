@@ -94,7 +94,9 @@ export class Speaker {
     if (onStart) {
       audio.onstart = onStart;
     }
-    window.speechSynthesis.speak(audio);
+    // Putting on timeout fixes some weird issues with onend being called too
+    // early.
+    setTimeout(() => window.speechSynthesis.speak(audio), 1);
   }
 
   /**

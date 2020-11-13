@@ -48,6 +48,13 @@ export class MusicGame {
     this.level = 0;
 
     /**
+     * The total supported levels.
+     * @type {number}
+     * @const
+     */
+    this.TOTAL_LEVELS = 2;
+
+    /**
      * The expected answer.
      * @type {Array<Transcript>}
      * @private
@@ -117,7 +124,32 @@ export class MusicGame {
     speaker.speak(this.currentFeedback_, true, onEnd);
   }
 
-  //
+  /**
+   * Load the specified level.
+   * @param {number|string} level The level to load.
+   */
+  loadLevel(level) {
+    this.level = Number(level);
+    this.loadLevelWorkspace_();
+    this.updateLevelGoal_();
+  }
+
+  /**
+   * Whether there is a next level.
+   * @return {boolean} Whether there is a next level.
+   */
+  hasNextLevel() {
+    return this.level <= this.TOTAL_LEVELS;
+  }
+
+  /**
+   * Loads the next level, if available.
+   */
+  loadNextLevel() {
+    if (this.hasNextLevel()) {
+      this.loadLevel(this.level + 1);
+    }
+  }
 
   /**
    * Updates the goal based on the current level.
@@ -129,6 +161,13 @@ export class MusicGame {
       case 1:
         this.expectedAnswer_ =
             [new Transcript(['C4', 'D4', 'E4', 'C4'], Array(4).fill(0.25))];
+        this.currentGoal_ = this.expectedAnswer_[0].getReadableText();
+        goalText = this.expectedAnswer_[0].getReadableText();
+        break;
+      case 2:
+        this.expectedAnswer_ =
+            [new Transcript(
+                ['D4', 'F4', 'D4', 'C4'], [0.25, 0.125, 0.25, 0.25])];
         this.currentGoal_ = this.expectedAnswer_[0].getReadableText();
         goalText = this.expectedAnswer_[0].getReadableText();
         break;
@@ -170,16 +209,6 @@ export class MusicGame {
     this.workspace.clear();
     Blockly.Xml.domToWorkspace(
         Blockly.Xml.textToDom(levelXml), this.workspace);
-  }
-
-  /**
-   * Load the specified level.
-   * @param {number|string} level The level to load.
-   */
-  loadLevel(level) {
-    this.level = Number(level);
-    this.loadLevelWorkspace_();
-    this.updateLevelGoal_();
   }
 
   /**
