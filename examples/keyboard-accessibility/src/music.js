@@ -9,13 +9,13 @@
  */
 
 import Blockly from 'blockly/core';
+// import './music_blocks';
 import {speaker} from './speaker';
 import {toolboxPitch} from './music_blocks';
 import {CustomCursor} from './custom_cursor';
 import './music_block_generators';
 import Interpreter from 'js-interpreter';
 import {notePlayer} from './note_player';
-
 
 /**
  * Constant denoting a rest.
@@ -39,7 +39,7 @@ class Transcript {
     this.notesAndRests = [];
     this.durations = [];
     this.size = 0;
-    this.readableText = '';
+    this.readableText_ = '';
     for (let i = 0; i < notesAndRests.length; i++) {
       this.appendNote(notesAndRests[i], durations[i]);
     }
@@ -76,10 +76,27 @@ class Transcript {
    * @private
    */
   appendReadableText_(text) {
-    if (this.readableText) {
-      this.readableText += ', ';
+    if (this.readableText_) {
+      this.readableText_ += ', ';
+    } else {
+      text = text.charAt(0).toUpperCase() + text.slice(1);
     }
-    this.readableText += text;
+    this.readableText_ += text;
+  }
+
+  /**
+   * Returns sentence representing the notes played in this transcript.
+   * @return {string} The sentence.
+   */
+  getReadableText() {
+    if (!this.readableText_) {
+      return 'Empty.';
+    }
+    const items = this.readableText_.split(',');
+    if (items.length > 1) {
+      items[items.length - 1] = ' and ' + items[items.length - 1];
+    }
+    return items.join(',') + '.';
   }
 
   /**
@@ -111,6 +128,12 @@ class Transcript {
  * Class representing musical stave.
  */
 class Stave {
+  /**
+   * Class holding code for music to play.
+   * @param {number} id The unique id of this stave.
+   * @param {Array<Interpreter.State>} stateStack The stateStack containing code
+   *    for this stave.
+   */
   constructor(id, stateStack) {
     /**
      * The id.
@@ -239,8 +262,9 @@ class Stave {
 
     // Append the actual and expected notes played.
     if (sizeMismatch || hasIncorrectNotes || hasIncorrectDuration) {
-      feedback += `\nYour solution: ${this.transcript_.readableText}\n`;
-      feedback += `Expected solution: ${expectedTranscript.readableText}`;
+      feedback +=
+          `\nYour solution: ${this.transcript_.getReadableText() || 'empty'}\n`;
+      feedback += `Expected solution: ${expectedTranscript.getReadableText()}`;
     }
     return feedback;
   }
@@ -252,14 +276,20 @@ class Stave {
 export class Music {
   /**
    * Class for a music game.
+   * @param {Blockly.WorkspaceSvg} workspace The Blockly workspace.
+   * @param {function(string)} onGoalUpdateCb The callback function for goal
+   *    change.
+   * @param {function()} onSuccessCb The callback function for on success event.
+   * @param {function(string)} onFailureCb The callback function for on failure
+   *    event.
    * @constructor
    */
-  constructor() {
+  constructor(workspace, onGoalUpdateCb, onSuccessCb, onFailureCb) {
     /**
      * The Blockly workspace associated with this game.
      * @type {!Blockly.WorkspaceSvg}
      */
-    this.workspace = this.createWorkspace_();
+    this.workspace = workspace;
 
     /**
      * The currently loaded level. 0 if no level loaded.
@@ -267,18 +297,10 @@ export class Music {
     this.level = 0;
 
     /**
-     * The HTML element containing the goal text for the game.
-     * @type {HTMLElement}
-     * @private
+     * Callback function for goal update.
+     * @param {string} text The text to set the goal to.
      */
-    this.goalTextElement_ = document.getElementById('goalText');
-
-    /**
-     * The HTML element containing the feedback text for the game.
-     * @type {HTMLElement}
-     * @private
-     */
-    this.feedbackTextElement_ = document.getElementById('feedbackText');
+    this.onGoalUpdate = onGoalUpdateCb;
 
     /**
      * The expected answer.
@@ -341,9 +363,7 @@ export class Music {
      * @type {function()}
      * @private
      */
-    this.onSuccessCallback_ = () => {
-      console.log('SUCCESS');
-    };
+    this.onSuccessCallback_ = onSuccessCb;
 
     /**
      * The callback function on level failure.
@@ -351,10 +371,8 @@ export class Music {
      * @param {string} feedback The level feedback.
      * @private
      */
-    this.onFailureCallback_ = (feedback) => {
-      console.log('FAILURE');
-      console.log(feedback);
-    };
+    this.onFailureCallback_ = onFailureCb;
+
     this.registerPlayShortcut();
   }
 
@@ -380,67 +398,6 @@ export class Music {
         Blockly.utils.KeyCodes.P, [Blockly.utils.KeyCodes.SHIFT]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
         shiftW, playShortcut.name);
-  }
-
-  /**
-   * Initializes the Blockly workspace.
-   * @return {!Blockly.WorkspaceSvg} The Blockly workspace.
-   * @private
-   */
-  createWorkspace_() {
-    // Initialize Blockly workspace.
-    const blocklyDiv = document.getElementById('blocklyDiv');
-    const workspace = Blockly.inject(blocklyDiv, {
-      toolbox: toolboxPitch,
-    });
-    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
-    workspace.getMarkerManager().setCursor(new CustomCursor());
-    workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
-    workspace.getFlyout().getWorkspace().addChangeListener(
-        (event) => speaker.nodeToSpeech(event));
-    return workspace;
-  }
-
-  /**
-   * Returns the workspace belonging to this game.
-   * @return {Blockly.WorkspaceSvg} The workspace belonging to this game.
-   */
-  getWorkspace() {
-    return this.workspace;
-  }
-
-  /**
-   * Sets the goal text.
-   * @param {string} text The text to set the goal to.
-   */
-  setGoalText(text) {
-    this.goalTextElement_.innerHTML = text;
-  }
-
-  /**
-   * Sets the feedback text.
-   * @param {string} text The text to set the feedback to.
-   */
-  setFeedbackText(text) {
-    this.feedbackTextElement_.innerHTML = text;
-  }
-
-  /**
-   * Sets the behaviour on success.
-   * @param {function()} onSuccessCallback The on success callback. The level
-   *    code is passed in as parameter.
-   */
-  setOnSuccessCallback(onSuccessCallback) {
-    this.onSuccessCallback_ = onSuccessCallback;
-  }
-
-  /**
-   * Sets the behaviour on failure.
-   * @param {function(string)} onFailureCallback The on failure callback. Level
-   *    feedback is passed in as parameter.
-   */
-  setOnFailureCallback(onFailureCallback) {
-    this.onFailureCallback_ = onFailureCallback;
   }
 
   /**
@@ -471,12 +428,12 @@ export class Music {
     let goalText = '';
     switch (this.level) {
       case 1:
-        goalText = 'Play c4 d4 e4 c4';
         this.expectedAnswer_ =
             [new Transcript(['C4', 'D4', 'E4', 'C4'], Array(4).fill(0.25))];
+        goalText = this.expectedAnswer_[0].getReadableText();
         break;
     }
-    this.setGoalText(goalText);
+    this.onGoalUpdate(goalText);
   }
 
   /**
@@ -567,7 +524,6 @@ export class Music {
     this.staves_.length = 0;
     this.clock64ths_ = 0;
     this.startTime_ = 0;
-    this.setFeedbackText('');
   }
 
   /**

@@ -9,6 +9,7 @@
  */
 
 
+import Blockly from 'blockly/core';
 import MicroModal from 'micromodal';
 import {Music} from './music';
 import {HelpModal} from './help_modal';
@@ -16,6 +17,8 @@ import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
 import {speaker} from './speaker';
 import {Tutorial} from './tutorial';
+import {toolboxPitch} from './music_blocks';
+import {CustomCursor} from './custom_cursor';
 
 /**
  * Class for a controller for the music game, which handles
@@ -31,24 +34,64 @@ export class MusicGameController {
       onClose: () => speaker.cancel(),
     });
 
+    this.workspace = this.createWorkspace_();
+
     /**
      * The actual game object.
      * @type {Music}
      */
-    this.game = new Music();
-    this.game.loadLevel(1);
-    this.game.setOnSuccessCallback(() => {
-      this.game.setFeedbackText('Congratulations. You did it!');
-    });
-    this.game.setOnFailureCallback((feedback) => {
-      this.game.setFeedbackText(feedback.replaceAll('\n', '<br>'));
-    });
+    this.game = new Music(this.workspace, (text) => this.setGoalText(text),
+        () => {
+          this.setFeedbackText('Congratulations. You did it!');
+        }, (feedback) => {
+          this.setFeedbackText(feedback);
+        });
 
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();
 
     // Start by showing the key press modal.
     new KeyPressModal(() => this.showWelcomeModal()).init();
+  }
+
+  /**
+   * Initializes the Blockly workspace.
+   * @return {!Blockly.WorkspaceSvg} The Blockly workspace.
+   * @private
+   */
+  createWorkspace_() {
+    // Initialize Blockly workspace.
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    const workspace = Blockly.inject(blocklyDiv, {
+      toolbox: toolboxPitch,
+    });
+    Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
+    workspace.getMarkerManager().setCursor(new CustomCursor());
+    workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
+    workspace.getFlyout().getWorkspace().addChangeListener(
+        (event) => speaker.nodeToSpeech(event));
+    return workspace;
+  }
+
+
+  /**
+   * Sets the feedback text.
+   * @param {string} text The text to set the feedback to.
+   */
+  setFeedbackText(text) {
+    const feedbackTextEl = document.getElementById('feedbackText');
+    feedbackTextEl.innerHTML = text.replaceAll('\n', '<br>');
+    speaker.speak(text, true);
+  }
+
+  /**
+   * Sets the goal text.
+   * @param {string} text The text to set the goal to.
+   */
+  setGoalText(text) {
+    const feedbackTextEl = document.getElementById('goalText');
+    feedbackTextEl.innerHTML = text;
+    speaker.speak(text, true);
   }
 
   /**
@@ -63,13 +106,20 @@ export class MusicGameController {
    * Start the tutorial.
    */
   runTutorial() {
-    new Tutorial(this.game.getWorkspace()).init();
+    new Tutorial(this.workspace).init();
+  }
+
+  /**
+   * Start the Game.
+   */
+  runGame() {
+    this.game.loadLevel(1);
   }
 
   /**
    * Show the welcome modal.
    */
   showWelcomeModal() {
-    new WelcomeModal(() => this.runTutorial()).init();
+    new WelcomeModal(() => this.runTutorial(), () => this.runGame()).init();
   }
 }
