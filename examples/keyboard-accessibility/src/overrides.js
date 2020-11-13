@@ -19,10 +19,11 @@ import {speaker} from './speaker';
 
 
 Blockly.navigation.handleEnterForWS_ = function(workspace) {
-  var cursor = workspace.getCursor();
-  var curNode = cursor.getCurNode();
-  var nodeType = curNode.getType();
-  if (nodeType == Blockly.ASTNode.types.FIELD && curNode.getLocation().isClickable()) {
+  const cursor = workspace.getCursor();
+  const curNode = cursor.getCurNode();
+  const nodeType = curNode.getType();
+  if (nodeType == Blockly.ASTNode.types.FIELD &&
+      curNode.getLocation().isClickable()) {
     // TODO: Had to override so I could add this speaker in.
     speaker.speak('Use next and previous to read off your options.');
     (/** @type {!Blockly.Field} */(curNode.getLocation())).showEditor();
@@ -48,7 +49,8 @@ Blockly.FieldDropdown.prototype.onBlocklyAction = function(action) {
         return true;
       case Blockly.navigation.actionNames.NEXT:
         this.menu_.highlightNext();
-        // TODO: Needed to override so that I could speak out the location when it changes.
+        // TODO: Needed to override so that I could speak out the location when
+        // it changes.
         speaker.speak(this.menu_.highlightedItem_.content_.alt, true);
         speaker.speak(fieldNextOptions);
         return true;
@@ -61,15 +63,15 @@ Blockly.FieldDropdown.prototype.onBlocklyAction = function(action) {
 
 
 Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
-  var text = [];
-  var emptyFieldPlaceholder = opt_emptyToken || '?';
+  let text = [];
+  const emptyFieldPlaceholder = opt_emptyToken || '?';
 
   // Temporarily set flag to navigate to all fields.
-  var prevNavigateFields = Blockly.ASTNode.NAVIGATE_ALL_FIELDS;
+  const prevNavigateFields = Blockly.ASTNode.NAVIGATE_ALL_FIELDS;
   Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
 
-  var node = Blockly.ASTNode.createBlockNode(this);
-  var rootNode = node;
+  let node = Blockly.ASTNode.createBlockNode(this);
+  const rootNode = node;
 
   /**
    * Whether or not to add parentheses around an input.
@@ -77,7 +79,7 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
    * @return {boolean} True if we should add parentheses around the input.
    */
   function shouldAddParentheses(connection) {
-    var checks = connection.getCheck();
+    let checks = connection.getCheck();
     if (!checks && connection.targetConnection) {
       checks = connection.targetConnection.getCheck();
     }
@@ -94,12 +96,14 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
       node = null;
     }
   }
+  let connection = null;
+  let field = null;
 
   // Traverse the AST building up our text string.
   while (node) {
     switch (node.getType()) {
       case Blockly.ASTNode.types.INPUT:
-        var connection = /** @type {!Blockly.Connection} */ (node.getLocation());
+        connection = /** @type {!Blockly.Connection} */ (node.getLocation());
         if (!node.in()) {
           text.push(emptyFieldPlaceholder);
         } else if (shouldAddParentheses(connection)) {
@@ -107,17 +111,19 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
         }
         break;
       case Blockly.ASTNode.types.FIELD:
-        var field = /** @type {Blockly.Field} */ (node.getLocation());
+        field = /** @type {Blockly.Field} */ (node.getLocation());
         if (field.name != Blockly.Block.COLLAPSED_FIELD_NAME) {
           text.push(field.getText());
         }
         break;
     }
 
-    var current = node;
+    const current = node;
     node = current.in() || current.next();
-    // TODO: This only works in our specific use case of having a block with a single statement connection.
-    if (node && node.getType() == Blockly.ASTNode.types.INPUT && node.getLocation().type === Blockly.NEXT_STATEMENT) {
+    // TODO: This only works in our specific use case of having a block with a
+    // single statement connection.
+    if (node && node.getType() == Blockly.ASTNode.types.INPUT &&
+        node.getLocation().type === Blockly.NEXT_STATEMENT) {
       node = null;
     }
     if (!node) {
@@ -145,7 +151,7 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
 
   // Run through our text array and simplify expression to remove parentheses
   // around single field blocks.
-  for (var i = 2, l = text.length; i < l; i++) {
+  for (let i = 2, l = text.length; i < l; i++) {
     if (text[i - 2] == '(' && text[i] == ')') {
       text[i - 2] = text[i - 1];
       text.splice(i - 1, 2);
@@ -158,7 +164,7 @@ Blockly.Block.prototype.toString = function(opt_maxLength, opt_emptyToken) {
   if (opt_maxLength) {
     // TODO: Improve truncation so that text from this block is given priority.
     // E.g. "1+2+3+4+5+6+7+8+9=0" should be "...6+7+8+9=0", not "1+2+3+4+5...".
-    // E.g. "1+2+3+4+5=6+7+8+9+0" should be "...4+5=6+7...".
+  // E.g. "1+2+3+4+5=6+7+8+9+0" should be "...4+5=6+7...".
     if (text.length > opt_maxLength) {
       text = text.substring(0, opt_maxLength - 3) + '...';
     }
