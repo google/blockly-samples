@@ -90,7 +90,7 @@ export class MusicGameController {
 
 
   /**
-   * Sets the feedback text.
+   * Sets the feedback text and speaks it out.
    * @param {string} text The text to set the feedback to.
    */
   setFeedbackText(text) {
@@ -102,13 +102,10 @@ export class MusicGameController {
   /**
    * Sets the goal text.
    * @param {string} text The text to set the goal to.
-   * @param {function=} onEndSpeak The function to run after the text has been
-   *     spoken.
    */
-  setGoalText(text, onEndSpeak) {
-    const feedbackTextEl = document.getElementById('goalText');
-    feedbackTextEl.innerHTML = text;
-    speaker.speak(text, true, onEndSpeak);
+  setGoalText(text) {
+    const goalTextEl = document.getElementById('goalText');
+    goalTextEl.innerHTML = text.replaceAll('\n', '<br>');
   }
 
   /**
@@ -135,7 +132,8 @@ export class MusicGameController {
   runGame() {
     new MusicGame(this.workspace, this.music_,
         (goalText) => {
-          this.setGoalText(goalText, () => {
+          this.setGoalText(goalText);
+          speaker.speak(goalText, true, () => {
             Blockly.navigation.enableKeyboardAccessibility();
           });
         },
