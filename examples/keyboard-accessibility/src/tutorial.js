@@ -9,8 +9,9 @@
  */
 'use strict';
 
-import {TutorialStep} from './tutorial_step';
 import Blockly from 'blockly/core';
+import {Music} from './music';
+import {TutorialStep} from './tutorial_step';
 import MicroModal from 'micromodal';
 import {speaker} from './speaker';
 
@@ -22,9 +23,10 @@ export class Tutorial {
    * Class for a tutorial.
    * @param {Blockly.WorkspaceSvg} workspace The workspace the user
    *     will interact with.
+   * @param {Music} music A reference to the music logic object.
    * @constructor
    */
-  constructor(workspace) {
+  constructor(workspace, music) {
     /**
      * The id of the modal.
      * @type {string}
@@ -76,6 +78,12 @@ export class Tutorial {
     this.workspace = workspace;
 
     /**
+     * The Music logic object.
+     * @type {Music}
+     */
+    this.music = music;
+
+    /**
      * The node that was selected on the workspace when the modal
      * opened.
      * @type {Blockly.ASTNode}
@@ -93,6 +101,7 @@ export class Tutorial {
     this.curStep.show();
     this.registerPlayHelpText();
     this.loadWorkspace();
+    this.music.setOnFinishPlayCallback(null);
   }
 
   /**

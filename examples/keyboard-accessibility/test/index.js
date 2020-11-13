@@ -19,19 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('setLevel').addEventListener(
       'input', function(event) {
-        controller.getGame().loadLevel(this.value);
+        controller.getMusic().loadLevel(this.value);
       });
   document.getElementById('logGeneratedCode').addEventListener(
       'click', function(event) {
-        controller.getGame().logGeneratedCode();
+        controller.getMusic().logGeneratedCode();
       });
   document.getElementById('executeCode').addEventListener(
       'click', function(event) {
-        controller.getGame().execute();
+        controller.getMusic().execute();
       });
   document.getElementById('speedSlider').addEventListener(
       'input', function(event) {
-        controller.getGame().setSpeed(this.value/100);
+        controller.getMusic().setSpeed(this.value/100);
       });
 
   // Initial state has arrow keys turned on.

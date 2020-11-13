@@ -12,6 +12,7 @@
 import Blockly from 'blockly/core';
 import MicroModal from 'micromodal';
 import {Music} from './music';
+import {MusicGame} from './game';
 import {HelpModal} from './help_modal';
 import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
@@ -37,15 +38,11 @@ export class MusicGameController {
     this.workspace = this.createWorkspace_();
 
     /**
-     * The actual game object.
+     * The music logic object.
      * @type {Music}
+     * @private
      */
-    this.game = new Music(this.workspace, (text) => this.setGoalText(text),
-        () => {
-          this.setFeedbackText('Congratulations. You did it!');
-        }, (feedback) => {
-          this.setFeedbackText(feedback);
-        });
+    this.music_ = new Music(this.workspace);
 
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();
@@ -117,22 +114,28 @@ export class MusicGameController {
    * Get the current game object.
    * @return {Music} The current game object.
    */
-  getGame() {
-    return this.game;
+  getMusic() {
+    return this.music_;
   }
 
   /**
    * Start the tutorial.
    */
   runTutorial() {
-    new Tutorial(this.workspace).init();
+    new Tutorial(this.workspace, this.music_).init();
   }
 
   /**
    * Start the Game.
    */
   runGame() {
-    this.game.loadLevel(1);
+    new MusicGame(this.workspace, this.music_,
+        (goalText) => this.setGoalText(goalText),
+        () => {
+          this.setFeedbackText('Congratulations. You did it!');
+        }, (feedback) => {
+          this.setFeedbackText(feedback);
+        }).init();
   }
 
   /**

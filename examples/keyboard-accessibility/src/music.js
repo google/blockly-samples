@@ -9,7 +9,6 @@
  */
 
 import Blockly from 'blockly/core';
-// import './music_blocks';
 import {speaker} from './speaker';
 import {toolboxPitch} from './music_blocks';
 import {CustomCursor} from './custom_cursor';
@@ -25,7 +24,7 @@ const REST = 'REST';
 /**
  * Class representing transcript of notes played.
  */
-class Transcript {
+export class Transcript {
   /**
    * Class for holding transcript of notes that were played. Expects
    * notesAndRests and durations to have a matching length.
@@ -46,7 +45,7 @@ class Transcript {
   }
 
   /**
-   * Converts duration number into approriate string.
+   * Converts duration number into appropriate string.
    * @param {number} duration The duration.
    * @return {string} The string version of duration.
    * @private
@@ -125,21 +124,15 @@ class Transcript {
 }
 
 /**
- * Class representing musical stave.
+ * Class representing musical stave (staff) of notes to play.
  */
 class Stave {
   /**
    * Class holding code for music to play.
-   * @param {number} id The unique id of this stave.
    * @param {Array<Interpreter.State>} stateStack The stateStack containing code
    *    for this stave.
    */
-  constructor(id, stateStack) {
-    /**
-     * The id.
-     * @type {number}
-     */
-    this.id = id;
+  constructor(stateStack) {
     /**
      * The state stack.
      * @type {Array<Interpreter.State>}
@@ -172,6 +165,14 @@ class Stave {
      * @private
      */
     this.note_ = '';
+  }
+
+  /**
+   * Returns the transcript for this stave.
+   * @return {Transcript} The transcript.
+   */
+  getTranscript() {
+    return this.transcript_;
   }
 
   /**
@@ -219,95 +220,23 @@ class Stave {
       this.note_ = '';
     }
   }
-
-  /**
-   * Returns feedback on what is different between the loaded transcript and the
-   * expected one, or empty string if they are equal.
-   * @param {Transcript} expectedTranscript The expected transcript.
-   * @return {string} The feedback.
-   */
-  getFeedback(expectedTranscript) {
-    let feedback = '';
-
-    // There could be extra or missing notes.
-    const actualSize = this.transcript_.size;
-    const expectedSize = expectedTranscript.size;
-    const sizeMismatch = actualSize !== expectedSize;
-    if (actualSize < expectedSize) {
-      feedback += 'Your solution is missing notes.\n';
-    } else if (actualSize > expectedSize) {
-      feedback += 'Your solution has extra notes.\n';
-    }
-
-    // The notes played could be wrong (duration or note).
-    let hasIncorrectNotes = false;
-    let hasIncorrectDuration = false;
-    for (let i = 0; i < actualSize && i < expectedSize; i++) {
-      if (this.transcript_.notesAndRests[i] !==
-          expectedTranscript.notesAndRests[i]) {
-        hasIncorrectNotes = true;
-      }
-      if (this.transcript_.durations[i] !== expectedTranscript.durations[i]) {
-        hasIncorrectDuration = true;
-      }
-    }
-    if (hasIncorrectNotes) {
-      feedback +=
-          `Some of the notes ${sizeMismatch ? 'may be' : 'are'} incorrect.\n`;
-    }
-    if (hasIncorrectDuration) {
-      feedback += `Some of the note durations ` +
-          `${sizeMismatch ? 'may be' : 'are'} incorrect.\n`;
-    }
-
-    // Append the actual and expected notes played.
-    if (sizeMismatch || hasIncorrectNotes || hasIncorrectDuration) {
-      feedback +=
-          `\nYour solution: ${this.transcript_.getReadableText() || 'empty'}\n`;
-      feedback += `Expected solution: ${expectedTranscript.getReadableText()}`;
-    }
-    return feedback;
-  }
 }
 
 /**
- * Game logic for music game.
+ * Logic for playing music.
  */
 export class Music {
   /**
    * Class for a music game.
    * @param {Blockly.WorkspaceSvg} workspace The Blockly workspace.
-   * @param {function(string)} onGoalUpdateCb The callback function for goal
-   *    change.
-   * @param {function()} onSuccessCb The callback function for on success event.
-   * @param {function(string)} onFailureCb The callback function for on failure
-   *    event.
    * @constructor
    */
-  constructor(workspace, onGoalUpdateCb, onSuccessCb, onFailureCb) {
+  constructor(workspace) {
     /**
      * The Blockly workspace associated with this game.
      * @type {!Blockly.WorkspaceSvg}
      */
     this.workspace = workspace;
-
-    /**
-     * The currently loaded level. 0 if no level loaded.
-     */
-    this.level = 0;
-
-    /**
-     * Callback function for goal update.
-     * @param {string} text The text to set the goal to.
-     */
-    this.onGoalUpdate = onGoalUpdateCb;
-
-    /**
-     * The expected answer.
-     * @type {Array<Transcript>}
-     * @private
-     */
-    this.expectedAnswer_ = [];
 
     /**
      * The interpreter.
@@ -359,27 +288,31 @@ export class Music {
     this.pid_ = 0;
 
     /**
-     * The callback function on level success.
-     * @type {function()}
+     * Callback function for on finish playing.
+     * @param {Array<Transcript>} transcripts The transcripts for the notes
+     *    played.
      * @private
      */
-    this.onSuccessCallback_ = onSuccessCb;
+    this.onFinishPlayCb_ = null;
 
-    /**
-     * The callback function on level failure.
-     * @type {function(string)}
-     * @param {string} feedback The level feedback.
-     * @private
-     */
-    this.onFailureCallback_ = onFailureCb;
+    this.registerPlayShortcut_();
+  }
 
-    this.registerPlayShortcut();
+  /**
+   * Sets the callback for on finish playing.
+   * @param {function(Array<Transcript>)} onFinishPlayCb The call back to set
+   *    for calling after code has finished playing.
+   */
+  setOnFinishPlayCallback(onFinishPlayCb) {
+    this.onFinishPlayCb_ = onFinishPlayCb;
   }
 
   /**
    * Registers a shortcut to play the notes on the workspace.
+   * @private
    */
-  registerPlayShortcut() {
+  registerPlayShortcut_() {
+    // TODO update4 to use arrow function
     const newFunction = function() {
       this.execute();
     }.bind(this);
@@ -398,94 +331,6 @@ export class Music {
         Blockly.utils.KeyCodes.P, [Blockly.utils.KeyCodes.SHIFT]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
         shiftW, playShortcut.name);
-  }
-
-  /**
-   * Clears the workspace and loads the specified blocks.
-   * @param {string} blockXml The xml text string of blocks.
-   */
-  loadWorkspaceBlocks(blockXml) {
-    this.workspace.clear();
-    Blockly.Xml.domToWorkspace(
-        Blockly.Xml.textToDom(blockXml), this.workspace);
-  }
-
-  /**
-   * Updates the currently loaded toolbox.
-   * @param {?Blockly.utils.toolbox.ToolboxDefinition} toolboxDef
-   *    DOM tree of toolbox contents, string of toolbox contents, or JSON
-   *    representing toolbox definition.
-   */
-  updateToolbox(toolboxDef) {
-    this.workspace.updateToolbox(toolboxDef);
-  }
-
-  /**
-   * Updates the goal based on the current level.
-   * @private
-   */
-  updateLevelGoal_() {
-    let goalText = '';
-    switch (this.level) {
-      case 1:
-        this.expectedAnswer_ =
-            [new Transcript(['C4', 'D4', 'E4', 'C4'], Array(4).fill(0.25))];
-        goalText = this.expectedAnswer_[0].getReadableText();
-        break;
-    }
-    this.onGoalUpdate(goalText);
-  }
-
-  /**
-   * Updates the toolbox based on the current level.
-   * @private
-   */
-  updateLevelToolbox_() {
-    const toolboxJson = {
-      'kind': 'flyoutToolbox',
-      'contents': [
-        {
-          'kind': 'block',
-          'blockxml': `<block type="music_note">
-                        <field name="DURATION">0.25</field>
-                        <value name="PITCH">
-                          <shadow type="music_pitch">
-                            <field name="PITCH">C4</field>
-                          </shadow>
-                        </value>
-                      </block>`,
-        },
-        {
-          'kind': 'block',
-          'type': 'music_rest',
-        },
-      ],
-    };
-    this.updateToolbox(toolboxJson);
-  }
-
-  /**
-   * Update the workspace blocks based on the current level.
-   * @private
-   */
-  loadLevelBlocks_() {
-    const levelXml =
-        `<xml>
-            <block type="music_start" deletable="false" x="180"
-            y="50"></block>
-          </xml>`;
-    this.loadWorkspaceBlocks(levelXml);
-  }
-
-  /**
-   * Load the specified level.
-   * @param {number|string} level The level to load.
-   */
-  loadLevel(level) {
-    this.level = Number(level);
-    this.updateLevelGoal_();
-    this.updateLevelToolbox_();
-    this.loadLevelBlocks_();
   }
 
   /**
@@ -536,13 +381,13 @@ export class Music {
 
     // Run user code.
     this.interpreter_ = new Interpreter(code, this.interpreterInit_.bind(this));
-    // TODO add support for multiple threads.
+    // TODO add support for multiple threads (staves).
     const interpreter = new Interpreter('');
     // Replace this thread's global scope with the cross-thread global.
     interpreter.stateStack[0].scope = this.interpreter_.globalScope;
     // Add start call.
     interpreter.appendCode('start();\n');
-    this.staves_.push(new Stave(0, interpreter.stateStack));
+    this.staves_.push(new Stave(interpreter.stateStack));
 
     this.pid_ = setTimeout(() => this.tick_(), 100);
   }
@@ -611,12 +456,10 @@ export class Music {
     });
 
     if (done) {
-      // Program complete.
-      const feedback = this.checkAnswer_();
-      if (feedback) {
-        this.onFailureCallback_(feedback);
-      } else {
-        this.onSuccessCallback_();
+      if (this.onFinishPlayCb_) {
+        const finishedTranscripts =
+            Array.from(this.staves_, (stave) => stave.getTranscript());
+        this.onFinishPlayCb_(finishedTranscripts);
       }
     } else {
       this.clock64ths_++;
@@ -657,23 +500,5 @@ export class Music {
     // Thread complete.  Wrap up.
     stave.stopSound(stave);
     stave.done = true;
-  }
-
-  /**
-   * Evaluates whether the answer for the currently loaded level is correct.
-   * Returns level feedback if correct or empty string if correct.
-   * @return {string} Level feedback or empty string.
-   * @private
-   */
-  checkAnswer_() {
-    let feedback = '';
-    for (let i = 0; i < this.expectedAnswer_.length; i++) {
-      const staveFeedback =
-          this.staves_[i].getFeedback(this.expectedAnswer_[i]);
-      if (staveFeedback) {
-        feedback += staveFeedback;
-      }
-    }
-    return feedback;
   }
 }
