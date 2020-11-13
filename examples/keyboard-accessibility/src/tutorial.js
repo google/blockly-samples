@@ -301,7 +301,7 @@ Tutorial.STEP_OBJECTS = [
     text: `You can move around the blocks of code with the up and down arrows.
     You will hear descriptions as you move around the blocks. .
     All blocks have connection points, which are places where you can add more
-    code. . Use the down arrow to move to a connection point.
+    code. . Your goal: Use the down arrow to move to a connection point.
     Hit enter to begin. `,
     goalText: `Use the down arrow to move to a connection point.`,
     onStart: function(tutorial) {
