@@ -34,6 +34,11 @@ export class MusicGameController {
       onClose: () => speaker.cancel(),
     });
 
+    /**
+     * The shared Blockly Workspace.
+     * @type {!Blockly.WorkspaceSvg}
+     * @private
+     */
     this.workspace = this.createWorkspace_();
 
     /**
@@ -42,6 +47,14 @@ export class MusicGameController {
      * @private
      */
     this.music_ = new Music(this.workspace);
+    this.registerPlayShortcut_();
+
+    /**
+     * The music game object.
+     * @type {MusicGame}
+     * @private
+     */
+    this.game_ = this.createGame();
 
     /**
      * Whether to only play goal text.
@@ -54,6 +67,33 @@ export class MusicGameController {
 
     // Start by showing the key press modal.
     new KeyPressModal(() => this.showWelcomeModal()).init();
+  }
+
+  /**
+   * Creates a MusicGame object with the appropriate callbacks.
+   * @return {!MusicGame} The Blockly workspace.
+   * @private
+   */
+  createGame() {
+    return new MusicGame(this.workspace, this.music_,
+        (goalText, gameRef) => {
+          this.setFeedbackText('');
+          this.setGoalText(goalText);
+          gameRef.speakGoal(() => {
+            Blockly.navigation.enableKeyboardAccessibility();
+          });
+        },
+        (gameRef) => {
+          const successText = 'Congratulations. You did it!';
+          this.setFeedbackText(successText);
+          speaker.speak(successText, true, () => {
+            setTimeout(() => gameRef.loadNextLevel(), 1000);
+          });
+        },
+        (feedback, gameRef) => {
+          this.setFeedbackText(feedback);
+          gameRef.speakFeedback();
+        });
   }
 
   /**
@@ -94,6 +134,28 @@ export class MusicGameController {
     return workspace;
   }
 
+  /**
+   * Registers a shortcut to play the notes on the workspace.
+   * @private
+   */
+  registerPlayShortcut_() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const playShortcut = {
+      name: 'playShortcut',
+      preconditionFn: function(workspace) {
+        return workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly;
+      },
+      callback: () => this.music_.execute(),
+    };
+
+    Blockly.ShortcutRegistry.registry.register(playShortcut);
+    const shiftP = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.P, [Blockly.utils.KeyCodes.SHIFT]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        shiftP, playShortcut.name);
+  }
+
 
   /**
    * Sets the feedback text and speaks it out.
@@ -114,11 +176,19 @@ export class MusicGameController {
   }
 
   /**
-   * Get the current game object.
+   * Get the music object.
    * @return {Music} The current game object.
    */
   getMusic() {
     return this.music_;
+  }
+
+  /**
+   * Get the game object.
+   * @return {Music} The current game object.
+   */
+  getGame() {
+    return this.game_;
   }
 
   /**
@@ -135,25 +205,7 @@ export class MusicGameController {
    * Start the Game.
    */
   runGame() {
-    new MusicGame(this.workspace, this.music_,
-        (goalText, gameRef) => {
-          this.setFeedbackText('');
-          this.setGoalText(goalText);
-          gameRef.speakGoal(this.playOnly, () => {
-            Blockly.navigation.enableKeyboardAccessibility();
-          });
-        },
-        (gameRef) => {
-          const successText = 'Congratulations. You did it!';
-          this.setFeedbackText(successText);
-          speaker.speak(successText, true, () => {
-            setTimeout(() => gameRef.loadNextLevel(), 1000);
-          });
-        },
-        (feedback, gameRef) => {
-          this.setFeedbackText(feedback);
-          gameRef.speakFeedback(this.playOnly);
-        }).init();
+    this.game_.init();
   }
 
   /**

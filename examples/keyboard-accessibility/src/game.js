@@ -109,6 +109,14 @@ export class MusicGame {
      * @private
      */
     this.feedback_ = '';
+
+    /**
+     * Whether to only play notes in feedback and goal, instead of reading them
+     * out.
+     * @type {boolean}
+     * @private
+     */
+    this.playOnly_ = false;
   }
 
   /**
@@ -118,18 +126,52 @@ export class MusicGame {
     this.music_.setOnFinishPlayCallback(
         (transcripts) => this.onFinishPlay_(transcripts));
     this.loadLevel(1);
+    this.registerPlayHelpText();
+  }
+
+  /**
+   * Sets play only state for feedback and goal.
+   */
+  setPlayOnly(playOnly) {
+    this.playOnly_ = playOnly;
+  }
+
+  /**
+   * Registers shortcut to replay the current tutorial step.
+   */
+  registerPlayHelpText() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const playHelpText = {
+      name: 'playHelpText',
+      preconditionFn: function(workspace) {
+        return workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly;
+      },
+      callback: () => {
+        if (this.feedback_) {
+          this.speakFeedback();
+        } else {
+          this.speakGoal();
+        }
+      }
+    };
+
+    Blockly.ShortcutRegistry.registry.register(playHelpText);
+    const shiftH = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.H);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        shiftH, playHelpText.name);
   }
 
   /**
    * Speaks the current goal.
-   * @param {boolean} playOnly Whether to only play notes.
    * @param {function=} onEnd The function to run after the text has been
    *     spoken.
    */
-  speakGoal(playOnly, onEnd) {
+  speakGoal(onEnd) {
     speaker.speak('The goal is:', true, (event) => {
       this.expectedAnswer_[0].playback(this.music_.getBpm(), () => {
-        if (!playOnly) {
+        if (!this.playOnly_) {
           speaker.speak(this.goalText_, true, onEnd);
         }
       });
@@ -138,12 +180,11 @@ export class MusicGame {
 
   /**
    * Speaks the current feedback.
-   * @param {boolean} playOnly Whether to only play notes.
    * @param {function=} onEnd The function to run after the text has been
    *     spoken.
    */
-  speakFeedback(playOnly, onEnd) {
-    if (playOnly) {
+  speakFeedback(onEnd) {
+    if (this.playOnly_) {
       speaker.speak(this.feedback_, true, () => {
         speaker.speak('Your solution: ', true, () => {
           this.answer_[0].playback(this.music_.getBpm(), () => {
