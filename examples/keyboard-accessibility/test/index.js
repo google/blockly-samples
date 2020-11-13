@@ -16,11 +16,6 @@ import '../src/overrides';
 
 document.addEventListener('DOMContentLoaded', function() {
   const controller = new MusicGameController();
-
-  document.getElementById('setLevel').addEventListener(
-      'input', function(event) {
-        controller.getMusic().loadLevel(this.value);
-      });
   document.getElementById('logGeneratedCode').addEventListener(
       'click', function(event) {
         controller.getMusic().logGeneratedCode();
