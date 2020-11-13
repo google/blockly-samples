@@ -40,20 +40,19 @@ Blockly.navigation.handleEnterForWS_ = function(workspace) {
 
 
 Blockly.FieldDropdown.prototype.onBlocklyAction = function(action) {
-  const fieldNextOptions = 'To select this option hit enter';
   if (this.menu_) {
     switch (action.name) {
       case Blockly.navigation.actionNames.PREVIOUS:
         this.menu_.highlightPrevious();
         speaker.speak(this.menu_.highlightedItem_.content_.alt, true);
-        speaker.speak(fieldNextOptions);
+        speaker.speak('Press enter to select this option. ');
         return true;
       case Blockly.navigation.actionNames.NEXT:
         this.menu_.highlightNext();
         // TODO: Needed to override so that I could speak out the location when
         // it changes.
         speaker.speak(this.menu_.highlightedItem_.content_.alt, true);
-        speaker.speak(fieldNextOptions);
+        speaker.speak('Press enter to select this option. ');
         return true;
       default:
         return false;

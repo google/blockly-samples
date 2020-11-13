@@ -290,10 +290,10 @@ export class Speaker {
   getFieldOptions_(node) {
     const field = node.getLocation();
     if (field.isClickable()) {
-      return `To interact with the field hit enter. Use the next or previous
-      keys to change locations. `;
+      return `To interact with the field hit enter. Use the up or down
+      arrows to change locations. `;
     } else {
-      return 'Use the next or previous keys to change locations. ';
+      return 'Use the up or down arrows to change locations. ';
     }
   }
 
@@ -303,7 +303,7 @@ export class Speaker {
    * @private
    */
   getBlockOptions_() {
-    return `Use the next or previous keys to change locations. `;
+    return `Use the up or down arrows to change locations. `;
   }
 
   /**
@@ -316,7 +316,7 @@ export class Speaker {
    */
   getConnectionOptions_(node, isMarker) {
     const markerText = `. To mark this location, hit enter.
-    To change locations use the next or previous keys`;
+    To change locations use the up or down errors`;
     let finalText = '';
     if (!isMarker) {
       finalText += `${markerText}`;
