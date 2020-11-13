@@ -62,6 +62,13 @@ export class MusicGame {
     this.expectedAnswer_ = [];
 
     /**
+     * The last played answer.
+     * @type {Array<Transcript>}
+     * @private
+     */
+    this.answer_ = [];
+
+    /**
      * Callback function for goal update.
      * @param {string} text The text to set the goal to.
      * @type {function(string, MusicGame)}
@@ -88,13 +95,20 @@ export class MusicGame {
      * The current level goal.
      * @private
      */
-    this.currentGoal_ = '';
+    this.goalText_ = '';
 
     /**
-     * The current level feedback. Empty if nothing has been played yet.
+     * The current level feedback. Does not include transcript of actual and
+     * expected solution. Empty if nothing has been played yet.
      * @private
      */
-    this.currentFeedback_ = '';
+    this.feedback_ = '';
+
+    /**
+     * The full current level feedback. Empty if nothing has been played yet.
+     * @private
+     */
+    this.feedback_ = '';
   }
 
   /**
@@ -108,24 +122,40 @@ export class MusicGame {
 
   /**
    * Speaks the current goal.
+   * @param {boolean} playOnly Whether to only play notes.
    * @param {function=} onEnd The function to run after the text has been
    *     spoken.
    */
-  speakGoal(onEnd) {
+  speakGoal(playOnly, onEnd) {
     speaker.speak('The goal is:', true, (event) => {
       this.expectedAnswer_[0].playback(this.music_.getBpm(), () => {
-        speaker.speak(this.currentGoal_, true, onEnd);
+        if (!playOnly) {
+          speaker.speak(this.goalText_, true, onEnd);
+        }
       });
     });
   }
 
   /**
    * Speaks the current feedback.
+   * @param {boolean} playOnly Whether to only play notes.
    * @param {function=} onEnd The function to run after the text has been
    *     spoken.
    */
-  speakFeedback(onEnd) {
-    speaker.speak(this.currentFeedback_, true, onEnd);
+  speakFeedback(playOnly, onEnd) {
+    if (playOnly) {
+      speaker.speak(this.feedback_, true, () => {
+        speaker.speak('Your solution: ', true, () => {
+          this.answer_[0].playback(this.music_.getBpm(), () => {
+            speaker.speak('Expected solution: ', true, () => {
+              this.expectedAnswer_[0].playback(this.music_.getBpm(), onEnd);
+            });
+          });
+        });
+      });
+    } else {
+      speaker.speak(this.fullFeedback_, true, onEnd);
+    }
   }
 
   /**
@@ -165,14 +195,14 @@ export class MusicGame {
       case 1:
         this.expectedAnswer_ =
             [new Transcript(['C4', 'D4', 'E4', 'C4'], Array(4).fill(0.25))];
-        this.currentGoal_ = this.expectedAnswer_[0].getReadableText();
+        this.goalText_ = this.expectedAnswer_[0].getReadableText();
         goalText = this.expectedAnswer_[0].getReadableText();
         break;
       case 2:
         this.expectedAnswer_ =
             [new Transcript(
                 ['D4', 'F4', 'D4', 'C4'], [0.25, 0.125, 0.25, 0.25])];
-        this.currentGoal_ = this.expectedAnswer_[0].getReadableText();
+        this.goalText_ = this.expectedAnswer_[0].getReadableText();
         goalText = this.expectedAnswer_[0].getReadableText();
         break;
     }
@@ -240,18 +270,29 @@ export class MusicGame {
    * @private
    */
   checkAnswer_(transcripts) {
+    this.answer_ = transcripts;
     let feedback = '';
+    let fullFeedback = '';
     if (transcripts.length !== this.expectedAnswer_.length) {
       console.warn('Multiple play blocks not fully supported');
       return `Expected ${this.expectedAnswer_.length} play blocks, but found ` +
           transcripts.length;
     }
     transcripts.forEach((transcript, i) => {
-      feedback +=
+      const transcriptFeedback =
           MusicGame.getFeedback_(transcript, this.expectedAnswer_[i]);
+      feedback += transcriptFeedback;
+      fullFeedback += transcriptFeedback;
+      if (transcriptFeedback) {
+        fullFeedback +=
+            `\nYour solution: ${transcript.getReadableText() || 'empty'}\n`;
+        fullFeedback +=
+            `Expected solution: ${this.expectedAnswer_[i].getReadableText()}`;
+      }
     });
-    this.currentFeedback_ = feedback;
-    return feedback;
+    this.feedback_ = feedback;
+    this.fullFeedback_ = fullFeedback;
+    return fullFeedback;
   }
 
   /**
@@ -292,13 +333,6 @@ export class MusicGame {
     if (hasIncorrectDuration) {
       feedback += `Some of the note durations ` +
           `${sizeMismatch ? 'may be' : 'are'} incorrect.\n`;
-    }
-
-    // Append the actual and expected notes played.
-    if (sizeMismatch || hasIncorrectNotes || hasIncorrectDuration) {
-      feedback +=
-          `\nYour solution: ${actual.getReadableText() || 'empty'}\n`;
-      feedback += `Expected solution: ${expected.getReadableText()}`;
     }
     return feedback;
   }

@@ -43,6 +43,12 @@ export class MusicGameController {
      */
     this.music_ = new Music(this.workspace);
 
+    /**
+     * Whether to only play goal text.
+     * @type {boolean}
+     */
+    this.playOnly = false;
+
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();
 
@@ -133,7 +139,7 @@ export class MusicGameController {
         (goalText, gameRef) => {
           this.setFeedbackText('');
           this.setGoalText(goalText);
-          gameRef.speakGoal(() => {
+          gameRef.speakGoal(this.playOnly, () => {
             Blockly.navigation.enableKeyboardAccessibility();
           });
         },
@@ -146,7 +152,7 @@ export class MusicGameController {
         },
         (feedback, gameRef) => {
           this.setFeedbackText(feedback);
-          gameRef.speakFeedback();
+          gameRef.speakFeedback(this.playOnly);
         }).init();
   }
 

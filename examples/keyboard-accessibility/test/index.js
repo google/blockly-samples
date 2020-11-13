@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
       'input', function(event) {
         controller.getMusic().setBpm(this.value);
       });
+  document.getElementById('playOnly').addEventListener(
+      'input', function(event) {
+        controller.playOnly = this.checked;
+      });
 
   // Initial state has arrow keys turned on.
   registerArrowKeys(true);
