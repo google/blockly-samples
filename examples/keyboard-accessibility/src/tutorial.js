@@ -22,9 +22,11 @@ export class Tutorial {
    * Class for a tutorial.
    * @param {Blockly.WorkspaceSvg} workspace The workspace the user
    *     will interact with.
+   * @param {function(string)} onGoalUpdateCb The callback function for goal
+   *    change.
    * @constructor
    */
-  constructor(workspace) {
+  constructor(workspace, onGoalUpdateCb) {
     /**
      * The id of the modal.
      * @type {string}
@@ -81,6 +83,12 @@ export class Tutorial {
      * @type {Blockly.ASTNode}
      */
     this.curNode = null;
+
+    /**
+     * Callback function for goal update.
+     * @param {string} text The text to set the goal to.
+     */
+    this.onGoalUpdateCb = onGoalUpdateCb;
   }
 
   /**
@@ -162,6 +170,7 @@ export class Tutorial {
       this.curStep = this.steps[this.curStepIndex];
       MicroModal.show(this.modalId);
       this.curStep.show();
+      this.onGoalUpdateCb(Tutorial.STEP_OBJECTS[this.curStepIndex].goalText);
       this.stashCursor();
     } else {
       this.done();
@@ -230,10 +239,10 @@ export class Tutorial {
           <h2 class="modal__title" id="${this.stepTextId}"></h2>
         </main>
         <footer class="modal__footer">
-          <button class="modal__btn modal__btn-primary" aria-label="Hide modal"
-            id="${this.hideButtonId}">Hide modal</button>
-          <button class="modal__btn modal__btn-primary" aria-label="Next step"
-            id="${this.stepButtonId}">Next step</button>
+          <button class="modal__btn modal__btn-primary" aria-label="Start step"
+            id="${this.hideButtonId}">Start step</button>
+          <button class="modal__btn modal__btn-primary" aria-label="Skip step"
+            id="${this.stepButtonId}">Skip step</button>
         </footer>
       </div>
     </div>`;

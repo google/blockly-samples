@@ -124,7 +124,7 @@ export class MusicGameController {
    * Start the tutorial.
    */
   runTutorial() {
-    new Tutorial(this.workspace).init();
+    new Tutorial(this.workspace, (text) => this.setGoalText(text)).init();
   }
 
   /**
