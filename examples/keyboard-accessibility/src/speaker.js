@@ -25,7 +25,8 @@ export class Speaker {
     const messages = {
       'MAIN_WS': 'On the main workspace',
       'STACK':
-          'To go to the last block in the previous group of blocks, press previous. To go to the first block in the stack hit next.',
+          'To go to the last block in the previous group of blocks, press' +
+          'previous. To go to the first block in the stack hit next.',
       'PREVIOUS': 'You are on a connection before, ',
       'NEXT': 'On a connection after, ',
       'OUTPUT': 'On an output connection. ',
@@ -125,10 +126,11 @@ export class Speaker {
   nodeToSpeech(event) {
     // TODO: Update this if we link to the current version of blockly.
     if (event.type === Blockly.Events.MARKER_MOVE) {
-      let nodeText = this.nodeToText_(event.newNode, event.oldNode, !event.isCursor);
+      let nodeText =
+          this.nodeToText_(event.newNode, event.oldNode, !event.isCursor);
       if (!event.isCursor) {
-        nodeText = `You have marked a location. To find a new block to connect 
-        to this location hit T. ! . To insert a block on the workspace, 
+        nodeText = `You have marked a location. To find a new block to connect
+        to this location hit T. ! . To insert a block on the workspace,
         find the location of the block and hit I. `;
       }
       this.speak(nodeText, true);
@@ -279,7 +281,7 @@ export class Speaker {
   getFieldOptions_(node) {
     const field = node.getLocation();
     if (field.isClickable()) {
-      return `To interact with the field hit enter. Use the next or previous 
+      return `To interact with the field hit enter. Use the next or previous
       keys to change locations. `;
     } else {
       return 'Use the next or previous keys to change locations. ';
@@ -304,7 +306,8 @@ export class Speaker {
    * @private
    */
   getConnectionOptions_(node, isMarker) {
-    const markerText = `. To mark this location, hit enter. To change locations use the next or previous keys`;
+    const markerText = `. To mark this location, hit enter.
+    To change locations use the next or previous keys`;
     let finalText = '';
     if (!isMarker) {
       finalText += `${markerText}`;
@@ -314,6 +317,7 @@ export class Speaker {
 
   /**
    * Gets the options for a user on a  stack of blocks.
+   * @param {Blockly.ASTNode} node The stack node.
    * @return {string} The text explaining the next options when a user is on a
    *     stack of blocks.
    * @private
@@ -321,7 +325,7 @@ export class Speaker {
   getStackOptions_(node) {
     let finalText = '';
     if (node.prev()) {
-      finalText += `To go to the last block in the previous group of blocks, 
+      finalText += `To go to the last block in the previous group of blocks,
       press previous.`;
     }
     finalText += ` To go to the first block in the stack hit next.`;
@@ -468,8 +472,8 @@ export class Speaker {
 
     if (srcBlock && srcBlock.workspace.isFlyout) {
       finalText = this.getBlockText_(node.getSourceBlock());
-      finalText += ` . . To add this block to the workspace press Enter. . 
-      To go to the next block hit next. . To go back to the workspace 
+      finalText += ` . . To add this block to the workspace press Enter. .
+      To go to the next block hit next. . To go back to the workspace
       hit escape. `;
     } else if (srcBlock) {
       if (oldNodeTopBlock !== newNodeTopBlock) {

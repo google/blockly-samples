@@ -139,8 +139,8 @@ export class MusicGame {
    */
   loadLevel(level) {
     this.level = Number(level);
-    this.updateLevelGoal_();
     this.loadLevelWorkspace_();
+    this.updateLevelGoal_();
   }
 
   /**

@@ -24,9 +24,13 @@ export class Tutorial {
    * @param {Blockly.WorkspaceSvg} workspace The workspace the user
    *     will interact with.
    * @param {Music} music A reference to the music logic object.
+   * @param {function(string)} goalUpdateCb The callback function for goal
+   *    change.
+   * @param {function} endTutorialCb The function to call at the end of the
+   *     tutorial.
    * @constructor
    */
-  constructor(workspace, music) {
+  constructor(workspace, music, goalUpdateCb, endTutorialCb) {
     /**
      * The id of the modal.
      * @type {string}
@@ -89,6 +93,19 @@ export class Tutorial {
      * @type {Blockly.ASTNode}
      */
     this.curNode = null;
+
+    /**
+     * Callback function for goal update, which accepts a string
+     *     with the text to set the goal to.
+     * @type {function(string)}
+     */
+    this.goalUpdateCb = goalUpdateCb;
+
+    /**
+     * Callback function for the end of the tutorial.
+     * @type {function}
+     */
+    this.endTutorialCb = endTutorialCb;
   }
 
   /**
@@ -147,7 +164,8 @@ export class Tutorial {
     const playHelpText = {
       name: 'playHelpText',
       preconditionFn: function(workspace) {
-        return workspace.keyboardAccessibilityMode && !workspace.options.readOnly;
+        return workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly;
       },
       callback: () => {
         speaker.speak(this.curStep.text, true);
@@ -170,6 +188,7 @@ export class Tutorial {
       this.curStep = this.steps[this.curStepIndex];
       MicroModal.show(this.modalId);
       this.curStep.show();
+      this.goalUpdateCb(Tutorial.STEP_OBJECTS[this.curStepIndex].goalText);
       this.stashCursor();
     } else {
       this.done();
@@ -181,6 +200,7 @@ export class Tutorial {
    */
   done() {
     MicroModal.close(this.modalId);
+    this.endTutorialCb();
   }
 
   /**
@@ -238,15 +258,21 @@ export class Tutorial {
           <h2 class="modal__title" id="${this.stepTextId}"></h2>
         </main>
         <footer class="modal__footer">
-          <button class="modal__btn modal__btn-primary" aria-label="Hide modal"
-            id="${this.hideButtonId}">Hide modal</button>
-          <button class="modal__btn modal__btn-primary" aria-label="Next step"
-            id="${this.stepButtonId}">Next step</button>
+          <button class="modal__btn modal__btn-primary" aria-label="Start step"
+            id="${this.hideButtonId}">Start step</button>
+          <button class="modal__btn modal__btn-primary" aria-label="Skip step"
+            id="${this.stepButtonId}">Skip step</button>
         </footer>
       </div>
     </div>`;
   }
 
+  /**
+   * Get the current location, based on the event.
+   * @param {Blockly.Event} event An event to inspect for a cursor location.
+   * @return {Blockly.ASTNode} The current cursor location, or null if the event
+   *     didn't have one.
+   */
   getCurrentLocation(event) {
     const curNode = event.newNode;
     if (curNode) {
@@ -258,17 +284,21 @@ export class Tutorial {
 
 Tutorial.STEP_OBJECTS = [
   {
-    text: `In this tutorial you will write code that plays musical notes. If at any
-      point you are confused about what to do, press H to replay the goal for
-      the current step. Press Enter to go to the next step.`,
+    text: `In this tutorial you will write code that plays musical notes. If at
+      any point you are confused about what to do, press H to replay the goal
+      for the current step. Press Enter to go to the next step.`,
+    goalText: `Press Enter to go to the next step.`,
     onStart: function(tutorial) {
       setTimeout(()=> tutorial.nextStep(), 100);
     },
   },
   {
-    text: `You can move around the blocks of code with the up and down arrows. You will hear descriptions as you move around the blocks. . 
-      All blocks have connection points, which are places where you can add more code. . 
-       Use the down arrow to move to a connection point. Hit enter to begin. `,
+    text: `You can move around the blocks of code with the up and down arrows.
+    You will hear descriptions as you move around the blocks. .
+    All blocks have connection points, which are places where you can add more
+    code. . Use the down arrow to move to a connection point.
+    Hit enter to begin. `,
+    goalText: `Use the down arrow to move to a connection point.`,
     onStart: function(tutorial) {
       const workspace = tutorial.workspace;
       const listener = function(event) {
@@ -295,8 +325,10 @@ Tutorial.STEP_OBJECTS = [
   {
     text:
       `Great! You moved to a connection point. .
-      To add more code, you first mark a location and then select the block you want to add. . 
+      To add more code, you first mark a location and then select the block you
+      want to add. .
       Navigate to the connection point, then press enter to mark it.`,
+    goalText: `Navigate to the connection point, then press enter to mark it.`,
     onStart: function(tutorial) {
       const workspace = tutorial.workspace;
       const listener = function(event) {
@@ -320,16 +352,22 @@ Tutorial.STEP_OBJECTS = [
     },
   },
   {
-    text: `Great! You marked a connection point. Now you can add more code blocks. . 
-    The toolbox is a list of code blocks that you can add to the workspace. You can always open the toolbox by pressing T. .
-    Press T to open the toolbox, then use the up and down arrows to explore it. . 
+    text: `Great! You marked a connection point. Now you can add more code
+    blocks. .
+    The toolbox is a list of code blocks that you can add to the workspace.
+    You can always open the toolbox by pressing T. .
+    Press T to open the toolbox, then use the up and down arrows to explore
+    it. .
     Press ??? when you are ready for the next step.`,
+    goalText: `Press T to open the toolbox, then use the up and down arrows to
+      explore it. . Press ??? when you are ready for the next step.`,
     onStart: function(tutorial) {
       /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
       const finishStep = {
         name: 'finishStep',
         preconditionFn: function(workspace) {
-          return workspace.keyboardAccessibilityMode && !workspace.options.readOnly;
+          return workspace.keyboardAccessibilityMode &&
+              !workspace.options.readOnly;
         },
         callback: () => {
           tutorial.nextStep();
@@ -344,15 +382,22 @@ Tutorial.STEP_OBJECTS = [
     },
   },
   {
-    text: `Great! You have now successfully marked a connection point and navigated to a list of blocks that you can insert. . 
-    Now it’s time to put it all together. . 
-    Navigate to the connection and mark it, then press T to open the toolbox. Find the block that says “play whole note c4” and press enter to add it at the marked location.`,
+    text: `Great! You have now successfully marked a connection point and
+    navigated to a list of blocks that you can insert. .
+    Now it’s time to put it all together. .
+    Navigate to the connection and mark it, then press T to open the
+    toolbox. Find the block that says “play whole note c4” and press
+    enter to add it at the marked location.`,
+    goalText: `Navigate to the connection and mark it, then press T to open the
+    toolbox. Find the block that says “play whole note c4” and press
+    enter to add it at the marked location.`,
     onStart: function(tutorial) {
       const workspace = tutorial.workspace;
       const listener = function(event) {
         if (event.type === Blockly.Events.MARKER_MOVE) {
           const currentLocation = tutorial.getCurrentLocation(event);
-          if (currentLocation && event.isCursor && workspace.getAllBlocks().length > 1) {
+          if (currentLocation && event.isCursor &&
+              workspace.getAllBlocks().length > 1) {
             const correctLocation =
                 workspace.getAllBlocks()[1].previousConnection;
             if (currentLocation === correctLocation) {
@@ -370,7 +415,9 @@ Tutorial.STEP_OBJECTS = [
     },
   },
   {
-    text: 'Great! You can now press Shift and P at the same time to run your code. You should hear a note play!',
+    text: `Great! You can now press Shift and P at the same time to run your
+    code. You should hear a note play!`,
+    goalText: `Press Shift and P at the same time to run your code.`,
     onStart: function(tutorial) {},
   },
 ];

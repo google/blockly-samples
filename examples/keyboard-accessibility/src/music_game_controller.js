@@ -18,7 +18,6 @@ import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
 import {speaker} from './speaker';
 import {Tutorial} from './tutorial';
-import {toolboxPitch} from './music_blocks';
 import {CustomCursor} from './custom_cursor';
 
 /**
@@ -103,11 +102,13 @@ export class MusicGameController {
   /**
    * Sets the goal text.
    * @param {string} text The text to set the goal to.
+   * @param {function=} onEndSpeak The function to run after the text has been
+   *     spoken.
    */
-  setGoalText(text) {
+  setGoalText(text, onEndSpeak) {
     const feedbackTextEl = document.getElementById('goalText');
     feedbackTextEl.innerHTML = text;
-    speaker.speak(text, true);
+    speaker.speak(text, true, onEndSpeak);
   }
 
   /**
@@ -122,7 +123,10 @@ export class MusicGameController {
    * Start the tutorial.
    */
   runTutorial() {
-    new Tutorial(this.workspace, this.music_).init();
+    new Tutorial(this.workspace, this.music_,
+        (text) => this.setGoalText(text),
+        () => this.runGame()
+    ).init();
   }
 
   /**
@@ -130,10 +134,15 @@ export class MusicGameController {
    */
   runGame() {
     new MusicGame(this.workspace, this.music_,
-        (goalText) => this.setGoalText(goalText),
+        (goalText) => {
+          this.setGoalText(goalText, () => {
+            Blockly.navigation.enableKeyboardAccessibility();
+          });
+        },
         () => {
           this.setFeedbackText('Congratulations. You did it!');
-        }, (feedback) => {
+        },
+        (feedback) => {
           this.setFeedbackText(feedback);
         }).init();
   }

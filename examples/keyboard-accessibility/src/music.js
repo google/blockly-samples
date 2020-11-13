@@ -9,9 +9,7 @@
  */
 
 import Blockly from 'blockly/core';
-import {speaker} from './speaker';
-import {toolboxPitch} from './music_blocks';
-import {CustomCursor} from './custom_cursor';
+import './music_blocks';
 import './music_block_generators';
 import Interpreter from 'js-interpreter';
 import {notePlayer} from './note_player';

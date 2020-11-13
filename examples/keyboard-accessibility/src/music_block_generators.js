@@ -8,7 +8,7 @@
  * @fileoverview JavaScript generators for music blocks.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly';
 
 Blockly.JavaScript['music_pitch'] = function(block) {
   const code = Blockly.JavaScript.quote_(block.getFieldValue('PITCH'));
