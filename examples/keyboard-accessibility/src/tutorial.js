@@ -389,9 +389,7 @@ Tutorial.STEP_OBJECTS = [
     },
   },
   {
-    text: `Great! You have now successfully marked a connection point and
-    navigated to a list of blocks that you can insert. .
-    Now it’s time to put it all together. .
+    text: `Great! Now it’s time to put it all together.
     Navigate to the connection and mark it, then press T to open the
     toolbox. Find the block that says “play whole note c4” and press
     enter to add it at the marked location.`,
