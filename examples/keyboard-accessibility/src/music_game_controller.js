@@ -124,7 +124,10 @@ export class MusicGameController {
    * Start the tutorial.
    */
   runTutorial() {
-    new Tutorial(this.workspace, (text) => this.setGoalText(text)).init();
+    new Tutorial(this.workspace,
+        (text) => this.setGoalText(text),
+        () => this.runGame()
+    ).init();
   }
 
   /**
@@ -132,6 +135,8 @@ export class MusicGameController {
    */
   runGame() {
     this.game.loadLevel(1);
+    this.workspace.getCursor().setCurNode(null);
+    Blockly.navigation.enableKeyboardAccessibility();
   }
 
   /**
