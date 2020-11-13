@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   document.getElementById('speedSlider').addEventListener(
       'input', function(event) {
-        controller.getMusic().setSpeed(this.value/100);
+        controller.getMusic().setBpm(this.value);
       });
 
   // Initial state has arrow keys turned on.

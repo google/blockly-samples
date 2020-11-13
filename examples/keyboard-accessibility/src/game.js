@@ -112,7 +112,11 @@ export class MusicGame {
    *     spoken.
    */
   speakGoal(onEnd) {
-    speaker.speak(this.currentGoal_, true, onEnd);
+    speaker.speak('The goal is:', true, (event) => {
+      this.expectedAnswer_[0].playback(this.music_.getBpm(), () => {
+        speaker.speak(this.currentGoal_, true, onEnd);
+      });
+    });
   }
 
   /**

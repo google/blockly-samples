@@ -27,10 +27,11 @@ export class NotePlayer {
   /**
    * Plays the given note for the given duration.
    * @param {string} note The note to play.
-   * @param {string} duration The duration of the note (ex: 8n, 4n, 2n).
+   * @param {Tone.Time} duration The duration of the note (ex: 8n, 4n, 2n).
+   * @param {Tone.Time=} time When the note should be triggered.
    */
-  playNote(note, duration) {
-    this.synth.triggerAttackRelease(note, duration);
+  playNote(note, duration, time) {
+    this.synth.triggerAttackRelease(note, duration, time);
   }
 
   /**
