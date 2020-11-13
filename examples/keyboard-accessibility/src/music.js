@@ -13,6 +13,7 @@ import './music_blocks';
 import './music_block_generators';
 import Interpreter from 'js-interpreter';
 import {notePlayer} from './note_player';
+import * as Tone from 'tone';
 
 /**
  * Constant denoting a rest.
@@ -108,6 +109,7 @@ export class Transcript {
         `play ${Transcript.getDurationText_(duration)} note ${note}`);
     this.size++;
   }
+
   /**
    * Appends rest to transcript.
    * @param {number} duration The duration of the rest.
@@ -118,6 +120,25 @@ export class Transcript {
     this.appendReadableText_(
         `${Transcript.getDurationText_(duration)} rest`);
     this.size++;
+  }
+
+  /**
+   * Plays the notes in this transcript.
+   * @param {number} bpm The speed to play at in bpm.
+   * @param {function()} callback Callback after playback has completed.
+   */
+  playback(bpm = 100, callback) {
+    const speedMod = 60 / bpm;
+    const startTime = Tone.now();
+    let lastTimestamp = startTime;
+    this.notesAndRests.forEach((note, i) => {
+      const duration = this.durations[i] * speedMod;
+      if (note !== REST) {
+        notePlayer.playNote(note, duration, lastTimestamp);
+      }
+      lastTimestamp += duration;
+    });
+    setTimeout(callback, (lastTimestamp - startTime + 0.5) * 1000);
   }
 }
 
@@ -271,12 +292,11 @@ export class Music {
     this.clock64ths_ = 0;
 
     /**
-     * The speed at which to play notes. Between 0 and 1, with 0 being slow,
-     * 0.5 being normal speed, and 1 being fast.
+     * The speed at which to play notes in beats per minute.
      * @type {number}
      * @private
      */
-    this.speed_ = 0.5;
+    this.bpm_ = 100;
 
     /**
      * The id of the last setTimeout call. Used for game reset.
@@ -332,16 +352,24 @@ export class Music {
   }
 
   /**
-   * Set the speed (Number between 0 and 1).
-   * @param {number} speed The speed to set to.
+   * Set the speed (in beats per minute).
+   * @param {number} bpm The speed to set to.
    */
-  setSpeed(speed) {
-    if (speed <= 0 || speed > 1) {
-      console.error('Invalid speed');
+  setBpm(bpm) {
+    if (bpm <= 0) {
+      console.error('Invalid bpm');
       return;
     }
-    this.speed_ = speed;
+    this.bpm_ = bpm;
     this.startTime_ = 0;
+  }
+
+  /**
+   * Returns the BPM.
+   * @return {number} The current bpm set.
+   */
+  getBpm() {
+    return this.bpm_;
   }
 
   /**
@@ -437,8 +465,7 @@ export class Music {
    */
   tick_() {
     // Delay between start of each beat (1/64ths of a whole note).
-    // Reminder: The startTime_ should be reset after the slider is adjusted.
-    const scaleDuration = 1000 * (2.5 - 2 * this.speed_) / 64;
+    const scaleDuration = 60000 / (this.bpm_ * 64);
     if (!this.startTime_) {
       // Either the first tick, or first tick after slider was adjusted.
       this.startTime_ = Date.now() - this.clock64ths_ * scaleDuration;
