@@ -20,9 +20,11 @@ export class WelcomeModal {
    * Constructor for the welcome modal.
    * @param {Function} tutorialButtonCb A function to call when the tutorial
    *     button is pressed, in addition to any cleanup this class chooses to do.
+   * @param {Function} gameButtonCb A function to call when the game button is
+   *     pressed, in addition to any cleanup this class chooses to do.
    * @constructor
    */
-  constructor(tutorialButtonCb) {
+  constructor(tutorialButtonCb, gameButtonCb) {
     /**
      * The id of the modal.
      * @type {string}
@@ -34,6 +36,13 @@ export class WelcomeModal {
      * @type {Function}
      */
     this.tutorialButtonCb = tutorialButtonCb;
+
+
+    /**
+     * A function to call when the game button is pressed.
+     * @type {Function}
+     */
+    this.gameButtonCb = gameButtonCb;
   }
 
   /**
@@ -56,6 +65,7 @@ export class WelcomeModal {
         });
     speaker.modalToText(document.getElementById(this.modalId));
     this.registerTutorialButton();
+    this.registerGameButton();
   }
 
   /**
@@ -66,6 +76,17 @@ export class WelcomeModal {
         () => {
           MicroModal.close(this.modalId);
           this.tutorialButtonCb();
+        });
+  }
+
+  /**
+   * Adds a callback to the tutorial button.
+   */
+  registerGameButton() {
+    document.getElementById('gameButton').addEventListener('click',
+        () => {
+          MicroModal.close(this.modalId);
+          this.gameButtonCb();
         });
   }
 
