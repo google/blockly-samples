@@ -12,6 +12,7 @@
 'use strict';
 
 import Blockly from 'blockly/core';
+import {notePlayer} from './note_player';
 
 /**
  * Pitch field from Blockly Games music.
@@ -251,6 +252,13 @@ export class FieldPitch extends Blockly.FieldTextInput {
   dispose() {
     this.unbindAdditionalInputEvents_();
     super.dispose();
+  }
+
+  /**
+   * Play the tone when the field is read aloud.
+   */
+  actionBeforeSpeaker() {
+    notePlayer.playNote(this.getValue(), '4n');
   }
 }
 
