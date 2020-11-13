@@ -10,6 +10,7 @@
 
 import Blockly from 'blockly/core';
 import {Music, Transcript} from './music';
+import {speaker} from './speaker';
 
 /**
  * Game logic for music game.
@@ -19,11 +20,12 @@ export class MusicGame {
    * Class for a music game.
    * @param {Blockly.WorkspaceSvg} workspace The Blockly workspace.
    * @param {Music} music A reference to the music object.
-   * @param {function(string)} onGoalUpdateCb The callback function for goal
-   *    change.
-   * @param {function()} onSuccessCb The callback function for on success event.
-   * @param {function(string)} onFailureCb The callback function for on failure
-   *    event.
+   * @param {function(string, MusicGame)} onGoalUpdateCb The callback function
+   *    for goal change.
+   * @param {function(MusicGame)} onSuccessCb The callback function for on
+   *    success event.
+   * @param {function(string, MusicGame)} onFailureCb The callback function for
+   *    on failure event.
    * @constructor
    */
   constructor(workspace, music, onGoalUpdateCb, onSuccessCb, onFailureCb) {
@@ -46,13 +48,6 @@ export class MusicGame {
     this.level = 0;
 
     /**
-     * Callback function for goal update.
-     * @param {string} text The text to set the goal to.
-     * @type {function(string)}
-     */
-    this.onGoalUpdate = onGoalUpdateCb;
-
-    /**
      * The expected answer.
      * @type {Array<Transcript>}
      * @private
@@ -60,26 +55,69 @@ export class MusicGame {
     this.expectedAnswer_ = [];
 
     /**
+     * Callback function for goal update.
+     * @param {string} text The text to set the goal to.
+     * @type {function(string, MusicGame)}
+     * @private
+     */
+    this.onGoalUpdateCallback_ = onGoalUpdateCb;
+
+    /**
      * The callback function on level success.
-     * @type {function()}
+     * @type {function(MusicGame)}
      * @private
      */
     this.onSuccessCallback_ = onSuccessCb;
 
     /**
      * The callback function on level failure.
-     * @type {function(string)}
+     * @type {function(string, MusicGame)}
      * @param {string} feedback The level feedback.
      * @private
      */
     this.onFailureCallback_ = onFailureCb;
+
+    /**
+     * The current level goal.
+     * @private
+     */
+    this.currentGoal_ = '';
+
+    /**
+     * The current level feedback. Empty if nothing has been played yet.
+     * @private
+     */
+    this.currentFeedback_ = '';
   }
 
+  /**
+   * Initializes the game and loads the first level.
+   */
   init() {
     this.music_.setOnFinishPlayCallback(
         (transcripts) => this.onFinishPlay_(transcripts));
     this.loadLevel(1);
   }
+
+  /**
+   * Speaks the current goal.
+   * @param {function=} onEnd The function to run after the text has been
+   *     spoken.
+   */
+  speakGoal(onEnd) {
+    speaker.speak(this.currentGoal_, true, onEnd);
+  }
+
+  /**
+   * Speaks the current feedback.
+   * @param {function=} onEnd The function to run after the text has been
+   *     spoken.
+   */
+  speakFeedback(onEnd) {
+    speaker.speak(this.currentFeedback_, true, onEnd);
+  }
+
+  //
 
   /**
    * Updates the goal based on the current level.
@@ -91,10 +129,11 @@ export class MusicGame {
       case 1:
         this.expectedAnswer_ =
             [new Transcript(['C4', 'D4', 'E4', 'C4'], Array(4).fill(0.25))];
+        this.currentGoal_ = this.expectedAnswer_[0].getReadableText();
         goalText = this.expectedAnswer_[0].getReadableText();
         break;
     }
-    this.onGoalUpdate(goalText);
+    this.onGoalUpdateCallback_(goalText, this);
   }
 
   /**
@@ -145,16 +184,17 @@ export class MusicGame {
 
   /**
    * Callback on finish playing user code.
-   * @param {Array<Transcript>} transcripts
+   * @param {Array<Transcript>} transcripts The transcripts of the notes
+   *    played.
    * @private
    */
   onFinishPlay_(transcripts) {
     // Program complete.
     const feedback = this.checkAnswer_(transcripts);
     if (feedback) {
-      this.onFailureCallback_(feedback);
+      this.onFailureCallback_(feedback, this);
     } else {
-      this.onSuccessCallback_();
+      this.onSuccessCallback_(this);
     }
   }
 
@@ -177,6 +217,7 @@ export class MusicGame {
       feedback +=
           MusicGame.getFeedback_(transcript, this.expectedAnswer_[i]);
     });
+    this.currentFeedback_ = feedback;
     return feedback;
   }
 

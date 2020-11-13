@@ -287,7 +287,7 @@ export class Music {
 
     /**
      * Callback function for on finish playing.
-     * @param {Array<Transcript>} transcripts The transcripts for the notes
+     * @param {Array<Transcript>} transcripts The transcripts of the notes
      *    played.
      * @private
      */
