@@ -12,6 +12,7 @@
 import Blockly from 'blockly/core';
 import MicroModal from 'micromodal';
 import {Music} from './music';
+import {MusicGame} from './game';
 import {HelpModal} from './help_modal';
 import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
@@ -36,15 +37,11 @@ export class MusicGameController {
     this.workspace = this.createWorkspace_();
 
     /**
-     * The actual game object.
+     * The music logic object.
      * @type {Music}
+     * @private
      */
-    this.game = new Music(this.workspace, (text) => this.setGoalText(text),
-        () => {
-          this.setFeedbackText('Congratulations. You did it!');
-        }, (feedback) => {
-          this.setFeedbackText(feedback);
-        });
+    this.music_ = new Music(this.workspace);
 
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();
@@ -105,26 +102,28 @@ export class MusicGameController {
   /**
    * Sets the goal text.
    * @param {string} text The text to set the goal to.
+   * @param {function=} onEndSpeak The function to run after the text has been
+   *     spoken.
    */
-  setGoalText(text) {
+  setGoalText(text, onEndSpeak) {
     const feedbackTextEl = document.getElementById('goalText');
     feedbackTextEl.innerHTML = text;
-    speaker.speak(text, true);
+    speaker.speak(text, true, onEndSpeak);
   }
 
   /**
    * Get the current game object.
    * @return {Music} The current game object.
    */
-  getGame() {
-    return this.game;
+  getMusic() {
+    return this.music_;
   }
 
   /**
    * Start the tutorial.
    */
   runTutorial() {
-    new Tutorial(this.workspace,
+    new Tutorial(this.workspace, this.music_,
         (text) => this.setGoalText(text),
         () => this.runGame()
     ).init();
@@ -134,9 +133,18 @@ export class MusicGameController {
    * Start the Game.
    */
   runGame() {
-    this.game.loadLevel(1);
-    this.workspace.getCursor().setCurNode(null);
-    Blockly.navigation.enableKeyboardAccessibility();
+    new MusicGame(this.workspace, this.music_,
+        (goalText) => {
+          this.setGoalText(goalText, () => {
+            Blockly.navigation.enableKeyboardAccessibility();
+          });
+        },
+        () => {
+          this.setFeedbackText('Congratulations. You did it!');
+        },
+        (feedback) => {
+          this.setFeedbackText(feedback);
+        }).init();
   }
 
   /**
