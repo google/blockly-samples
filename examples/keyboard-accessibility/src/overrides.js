@@ -25,7 +25,8 @@ Blockly.navigation.handleEnterForWS_ = function(workspace) {
   if (nodeType == Blockly.ASTNode.types.FIELD &&
       curNode.getLocation().isClickable()) {
     // TODO: Had to override so I could add this speaker in.
-    speaker.speak('Use next and previous to read off your options.');
+
+    speaker.speak('Use next and previous to read off your options.', true);
     (/** @type {!Blockly.Field} */(curNode.getLocation())).showEditor();
   } else if (curNode.isConnection() ||
       nodeType == Blockly.ASTNode.types.WORKSPACE) {

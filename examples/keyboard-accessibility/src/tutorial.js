@@ -114,7 +114,9 @@ export class Tutorial {
   init() {
     this.createDom();
     this.addCallbacks();
-    MicroModal.show(this.modalId);
+    MicroModal.show(this.modalId, {
+      onClose: () => speaker.cancel(),
+    });
     this.curStep.show();
     this.registerPlayHelpText();
     this.loadWorkspace();
@@ -164,8 +166,7 @@ export class Tutorial {
     const playHelpText = {
       name: 'playHelpText',
       preconditionFn: function(workspace) {
-        return workspace.keyboardAccessibilityMode &&
-            !workspace.options.readOnly;
+        return !workspace.options.readOnly;
       },
       callback: () => {
         speaker.speak(this.curStep.text, true);
@@ -173,10 +174,8 @@ export class Tutorial {
     };
 
     Blockly.ShortcutRegistry.registry.register(playHelpText);
-    const shiftH = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.H);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
-        shiftH, playHelpText.name);
+        Blockly.utils.KeyCodes.H, playHelpText.name);
   }
 
   /**
@@ -186,7 +185,9 @@ export class Tutorial {
     this.curStepIndex++;
     if (this.curStepIndex < this.steps.length) {
       this.curStep = this.steps[this.curStepIndex];
-      MicroModal.show(this.modalId);
+      MicroModal.show(this.modalId, {
+        onClose: () => speaker.cancel(),
+      });
       this.curStep.show();
       this.goalUpdateCb(Tutorial.STEP_OBJECTS[this.curStepIndex].goalText);
       this.stashCursor();
@@ -199,7 +200,11 @@ export class Tutorial {
    * End the tutorial.
    */
   done() {
-    MicroModal.close(this.modalId);
+    MicroModal.close(this.modalId, {
+      onClose: () => speaker.cancel(),
+    });
+    Blockly.navigation.disableKeyboardAccessibility();
+    Blockly.ShortcutRegistry.registry.unregister('playHelpText');
     this.endTutorialCb();
   }
 
@@ -219,8 +224,8 @@ export class Tutorial {
   popCursor() {
     Blockly.navigation.enableKeyboardAccessibility();
     if (this.curNode) {
-      this.workspace.getCursor().setCurNode(this.curNode);
-      speaker.cancel();
+      // this.workspace.getCursor().setCurNode(this.curNode);
+      // speaker.cancel();
     }
   }
 
@@ -289,7 +294,7 @@ Tutorial.STEP_OBJECTS = [
       for the current step. Press Enter to go to the next step.`,
     goalText: `Press Enter to go to the next step.`,
     onStart: function(tutorial) {
-      setTimeout(()=> tutorial.nextStep(), 100);
+      setTimeout(()=> tutorial.nextStep(), 10);
     },
   },
   {
@@ -327,7 +332,8 @@ Tutorial.STEP_OBJECTS = [
       `Great! You moved to a connection point. .
       To add more code, you first mark a location and then select the block you
       want to add. .
-      Navigate to the connection point, then press enter to mark it.`,
+      Navigate to the connection point, then press enter to mark it. .
+      Hit enter to begin. `,
     goalText: `Navigate to the connection point, then press enter to mark it.`,
     onStart: function(tutorial) {
       const workspace = tutorial.workspace;
@@ -341,7 +347,7 @@ Tutorial.STEP_OBJECTS = [
               setTimeout(()=>{
                 workspace.removeChangeListener(wrapper);
                 tutorial.nextStep();
-              }, 3000);
+              }, 2000);
             }
           }
         }
@@ -358,9 +364,9 @@ Tutorial.STEP_OBJECTS = [
     You can always open the toolbox by pressing T. .
     Press T to open the toolbox, then use the up and down arrows to explore
     it. .
-    Press ??? when you are ready for the next step.`,
+    Press F when you are finished exploring.`,
     goalText: `Press T to open the toolbox, then use the up and down arrows to
-      explore it. . Press ??? when you are ready for the next step.`,
+      explore it. . Press F when you are finished exploring.`,
     onStart: function(tutorial) {
       /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
       const finishStep = {
@@ -371,6 +377,7 @@ Tutorial.STEP_OBJECTS = [
         },
         callback: () => {
           tutorial.nextStep();
+          Blockly.ShortcutRegistry.registry.unregister('finishStep');
         },
       };
 
@@ -404,7 +411,7 @@ Tutorial.STEP_OBJECTS = [
               setTimeout(()=>{
                 workspace.removeChangeListener(wrapper);
                 tutorial.nextStep();
-              }, 4000);
+              }, 5400);
             }
           }
         }
@@ -418,6 +425,37 @@ Tutorial.STEP_OBJECTS = [
     text: `Great! You can now press Shift and P at the same time to run your
     code. You should hear a note play!`,
     goalText: `Press Shift and P at the same time to run your code.`,
-    onStart: function(tutorial) {},
+    onStart: function(tutorial) {
+      const workspace = tutorial.workspace;
+      const starterXml =
+        `<xml>
+            <block type="music_note">
+                    <field name="DURATION">0.25</field>
+                    <value name="PITCH">
+                      <shadow type="music_pitch">
+                        <field name="PITCH">C4</field>
+                      </shadow>
+                    </value>
+                  </block>
+          </xml>`;
+      Blockly.Xml.domToWorkspace(
+          Blockly.Xml.textToDom(starterXml), workspace);
+      const musicNote = workspace.getBlocksByType('music_note')[0];
+      const musicStart = workspace.getBlocksByType('music_start')[0];
+      musicStart.inputList[1].connection.connect(musicNote.previousConnection);
+
+      tutorial.music.setOnFinishPlayCallback(()=>{
+        tutorial.nextStep();
+      });
+    },
+  },
+  {
+    text: `Congratulations! You have finished the tutorial! In the game use
+    H to give you tips and Shift and P to play your solution. .
+    Hit enter to start the game.`,
+    goalText: `Start the game.`,
+    onStart: function(tutorial) {
+      setTimeout(() => tutorial.nextStep(), 100);
+    },
   },
 ];
