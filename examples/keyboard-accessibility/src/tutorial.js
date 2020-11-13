@@ -22,11 +22,13 @@ export class Tutorial {
    * Class for a tutorial.
    * @param {Blockly.WorkspaceSvg} workspace The workspace the user
    *     will interact with.
-   * @param {function(string)} onGoalUpdateCb The callback function for goal
+   * @param {function(string)} goalUpdateCb The callback function for goal
    *    change.
+   * @param {function} endTutorialCb The function to call at the end of the
+   *     tutorial.
    * @constructor
    */
-  constructor(workspace, onGoalUpdateCb) {
+  constructor(workspace, goalUpdateCb, endTutorialCb) {
     /**
      * The id of the modal.
      * @type {string}
@@ -85,10 +87,17 @@ export class Tutorial {
     this.curNode = null;
 
     /**
-     * Callback function for goal update.
-     * @param {string} text The text to set the goal to.
+     * Callback function for goal update, which accepts a string
+     *     with the text to set the goal to.
+     * @type {function(string)}
      */
-    this.onGoalUpdateCb = onGoalUpdateCb;
+    this.goalUpdateCb = goalUpdateCb;
+
+    /**
+     * Callback function for the end of the tutorial.
+     * @type {function}
+     */
+    this.endTutorialCb = endTutorialCb;
   }
 
   /**
@@ -170,7 +179,7 @@ export class Tutorial {
       this.curStep = this.steps[this.curStepIndex];
       MicroModal.show(this.modalId);
       this.curStep.show();
-      this.onGoalUpdateCb(Tutorial.STEP_OBJECTS[this.curStepIndex].goalText);
+      this.goalUpdateCb(Tutorial.STEP_OBJECTS[this.curStepIndex].goalText);
       this.stashCursor();
     } else {
       this.done();
@@ -182,6 +191,7 @@ export class Tutorial {
    */
   done() {
     MicroModal.close(this.modalId);
+    this.endTutorialCb();
   }
 
   /**
