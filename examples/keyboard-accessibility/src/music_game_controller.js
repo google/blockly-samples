@@ -56,12 +56,6 @@ export class MusicGameController {
      */
     this.game_ = this.createGame();
 
-    /**
-     * Whether to only play goal text.
-     * @type {boolean}
-     */
-    this.playOnly = false;
-
     const helpModal = new HelpModal('modal-1', 'modalButton');
     helpModal.init();
 
@@ -129,6 +123,7 @@ export class MusicGameController {
     Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
     workspace.getMarkerManager().setCursor(new CustomCursor());
     workspace.addChangeListener((event) => speaker.nodeToSpeech(event));
+    workspace.addChangeListener(Blockly.Events.disableOrphans);
     workspace.getFlyout().getWorkspace().addChangeListener(
         (event) => speaker.nodeToSpeech(event));
     return workspace;
