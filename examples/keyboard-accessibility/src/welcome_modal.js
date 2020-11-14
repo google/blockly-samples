@@ -43,6 +43,13 @@ export class WelcomeModal {
      * @type {Function}
      */
     this.gameButtonCb = gameButtonCb;
+
+    /**
+     * Whether the close of the modal was triggered programmatically.
+     * @type {boolean}
+     * @private
+     */
+    this.codeTriggeredClose_ = false;
   }
 
   /**
@@ -55,8 +62,18 @@ export class WelcomeModal {
           speaker.modalToText(document.getElementById(this.modalId));
         });
     document.getElementById('welcomeCloseButton').addEventListener(
-        'blur', () => speaker.cancel());
-    MicroModal.show(this.modalId);
+        'blur', () => {
+          speaker.cancel();
+        });
+
+    MicroModal.show(this.modalId, {
+      onClose: () => {
+        speaker.cancel();
+        if (!this.codeTriggeredClose_) {
+          this.gameButtonCb();
+        }
+      },
+    });
 
     document.getElementById('welcomeButtonReplay').addEventListener('click',
         () => {
@@ -68,13 +85,18 @@ export class WelcomeModal {
     this.registerGameButton();
   }
 
+  triggerClose_() {
+    this.codeTriggeredClose_ = true;
+    MicroModal.close(this.modalId);
+  }
+
   /**
    * Adds a callback to the tutorial button.
    */
   registerTutorialButton() {
     document.getElementById('tutorialButton').addEventListener('click',
         () => {
-          MicroModal.close(this.modalId);
+          this.triggerClose_();
           this.tutorialButtonCb();
         });
   }
@@ -85,7 +107,7 @@ export class WelcomeModal {
   registerGameButton() {
     document.getElementById('gameButton').addEventListener('click',
         () => {
-          MicroModal.close(this.modalId);
+          this.triggerClose_();
           this.gameButtonCb();
         });
   }
