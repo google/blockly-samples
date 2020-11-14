@@ -115,7 +115,7 @@ export class Tutorial {
     this.createDom();
     this.addCallbacks();
     MicroModal.show(this.modalId, {
-      onClose: () => speaker.cancel(),
+      onClose: () => this.onModalClose(),
     });
     this.curStep.show();
     this.registerPlayHelpText();
@@ -178,6 +178,17 @@ export class Tutorial {
         Blockly.utils.KeyCodes.H, playHelpText.name);
   }
 
+  onModalClose() {
+    speaker.cancel();
+    this.startStep();
+  }
+
+  startStep() {
+    // MicroModal.close(this.modalId);
+    this.popCursor();
+    Tutorial.STEP_OBJECTS[this.curStepIndex].onStart(this);
+  }
+
   /**
    * Display the next step, or end the tutorial if there are no more steps.
    */
@@ -186,7 +197,7 @@ export class Tutorial {
     if (this.curStepIndex < this.steps.length) {
       this.curStep = this.steps[this.curStepIndex];
       MicroModal.show(this.modalId, {
-        onClose: () => speaker.cancel(),
+        onClose: () => this.onModalClose(),
       });
       this.curStep.show();
       this.goalUpdateCb(Tutorial.STEP_OBJECTS[this.curStepIndex].goalText);
@@ -233,17 +244,14 @@ export class Tutorial {
    * Add necessary handlers for any buttons on the modal.
    */
   addCallbacks() {
+    document.getElementById(this.hideButtonId).addEventListener('click',
+        () => {
+          // Closing the modal should trigger start step.
+          MicroModal.close(this.modalId);
+        });
     document.getElementById(this.stepButtonId).addEventListener('click',
         () => {
           this.nextStep();
-        });
-    document.getElementById(this.hideButtonId).addEventListener('click',
-        (e) => {
-          MicroModal.close(this.modalId);
-          this.popCursor();
-          Tutorial.STEP_OBJECTS[this.curStepIndex].onStart(this);
-          e.stopPropagation();
-          e.preventDefault();
         });
   }
 
@@ -252,12 +260,10 @@ export class Tutorial {
    */
   createDom() {
     document.getElementById(this.modalId).innerHTML = `
-     <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+     <div class="modal__overlay" tabindex="-1">
       <div class="modal__container" role="dialog" aria-modal="true"
         aria-labelledby="modal-1-title">
         <header class="modal__header">
-          <button class="modal__close" aria-label="Close modal"
-            id="tutorialCloseBtn" data-micromodal-close></button>
         </header>
         <main class="modal__content" id="modal-1-content">
           <h2 class="modal__title" id="${this.stepTextId}"></h2>
@@ -265,7 +271,7 @@ export class Tutorial {
         <footer class="modal__footer">
           <button class="modal__btn modal__btn-primary" aria-label="Start step"
             id="${this.hideButtonId}">Start step</button>
-          <button class="modal__btn modal__btn-primary" aria-label="Skip step"
+          <button class="modal__btn modal__btn-secondary" aria-label="Skip step"
             id="${this.stepButtonId}">Skip step</button>
         </footer>
       </div>
