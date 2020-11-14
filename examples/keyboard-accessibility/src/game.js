@@ -127,10 +127,13 @@ export class MusicGame {
         (transcripts) => this.onFinishPlay_(transcripts));
     this.loadLevel(1);
     this.registerPlayHelpText();
+    this.registerTogglePlayOnly();
   }
 
   /**
    * Sets play only state for feedback and goal.
+   * @param {boolean} playOnly Whether to play notes only instead of reading the
+   *    literal (eg: play quarter note C4).
    */
   setPlayOnly(playOnly) {
     this.playOnly_ = playOnly;
@@ -153,15 +156,41 @@ export class MusicGame {
         } else {
           this.speakGoal();
         }
-      }
+      },
     };
 
     Blockly.ShortcutRegistry.registry.register(playHelpText);
     const shiftH = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.H);
+        Blockly.utils.KeyCodes.H, [Blockly.utils.KeyCodes.SHIFT]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
         shiftH, playHelpText.name);
   }
+
+  /**
+   * Registers a shortcut to toggle play only mode for reading goal and feedback
+   * text.
+   * @private
+   */
+  registerTogglePlayOnly() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const togglePlayOnlyShortcut = {
+      name: 'togglePlayOnlyShortcut',
+      preconditionFn: function(workspace) {
+        return workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly;
+      },
+      callback: () => {
+        this.setPlayOnly(!this.playOnly_);
+      },
+    };
+
+    Blockly.ShortcutRegistry.registry.register(togglePlayOnlyShortcut);
+    const shiftL = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.L, [Blockly.utils.KeyCodes.SHIFT]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        shiftL, togglePlayOnlyShortcut.name);
+  }
+
 
   /**
    * Speaks the current goal.

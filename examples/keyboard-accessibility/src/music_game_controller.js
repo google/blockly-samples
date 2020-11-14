@@ -151,7 +151,6 @@ export class MusicGameController {
         shiftP, playShortcut.name);
   }
 
-
   /**
    * Sets the feedback text and speaks it out.
    * @param {string} text The text to set the feedback to.

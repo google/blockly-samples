@@ -174,8 +174,10 @@ export class Tutorial {
     };
 
     Blockly.ShortcutRegistry.registry.register(playHelpText);
+    const shiftH = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.H, [Blockly.utils.KeyCodes.SHIFT]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(
-        Blockly.utils.KeyCodes.H, playHelpText.name);
+        shiftH, playHelpText.name);
   }
 
   onModalClose() {
@@ -296,8 +298,8 @@ export class Tutorial {
 Tutorial.STEP_OBJECTS = [
   {
     text: `In this tutorial you will write code that plays musical notes. Press
-    H to replay the goal for the current step. Press Enter to go to the next
-    step.`,
+    Shift and H to replay the goal for the current step. Press Enter to go to
+    the next step.`,
     goalText: `Press Enter to go to the next step.`,
     onStart: function(tutorial) {
       setTimeout(()=> tutorial.nextStep(), 10);
@@ -454,7 +456,7 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text: `Congratulations! You have finished the tutorial! In the game use
-    H to give you tips and Shift and P to play your solution. !
+    Shift and H to give you tips and Shift and P to play your solution. !
     Hit enter to start the game.`,
     goalText: `Start the game.`,
     onStart: function(tutorial) {
