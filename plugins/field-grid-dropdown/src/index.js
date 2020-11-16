@@ -34,8 +34,16 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   constructor(menuGenerator, opt_validator, opt_config) {
     super(menuGenerator, opt_validator, opt_config);
 
-    // TODO(373): Set columns from constructor and use in CSS.
-    this.NUM_COLUMNS = 3;
+    /**
+     * The number of columns in the dropdown grid. Must be an integer value
+     * greater than 0. Defaults to 3.
+     * @type {number}
+     * @private
+     */
+    this.columns_ = 3;
+    if (opt_config && opt_config['columns']) {
+      this.setColumnsInternal_(opt_config['columns']);
+    }
   }
 
   /**
@@ -47,6 +55,32 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    */
   static fromJson(options) {
     return new FieldGridDropdown(options['options'], undefined, options);
+  }
+
+  /**
+   * Sets the number of columns on the grid. Updates the styling to reflect.
+   * @param {number} columns The number of columns. Is rounded to
+   *    an integer value and must be greater than 0. Invalid
+   *    values are ignored.
+   * @private
+   */
+  setColumns(columns) {
+    this.setColumnsInternal_(columns);
+    this.updateColumnsStyling_();
+  }
+
+  /**
+   * Sets the number of columns on the grid.
+   * @param {?(string|number|undefined)} columns The number of columns. Is
+   *    rounded to an integer value and must be greater than 0. Invalid
+   *    values are ignored.
+   * @private
+   */
+  setColumnsInternal_(columns) {
+    columns = parseInt(columns);
+    if (!isNaN(columns) && columns >= 1) {
+      this.columns_ = columns;
+    }
   }
 
   /**
@@ -68,9 +102,21 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
         this.sourceBlock_.style.colourTertiary;
     Blockly.DropDownDiv.setColour(primaryColour, borderColour);
 
-    const contentDiv = Blockly.DropDownDiv.getContentDiv();
-    const menuEl = contentDiv.querySelectorAll('.blocklyMenu')[0];
-    Blockly.utils.dom.addClass(menuEl, 'fieldGridDropDownContainer');
+    Blockly.utils.dom.addClass(
+        this.menu_.getElement(), 'fieldGridDropDownContainer');
+    this.updateColumnsStyling_();
+  }
+
+  /**
+   * Updates the styling for number of columns on the dropdown.
+   * @private
+   */
+  updateColumnsStyling_() {
+    const menuElement = this.menu_ ? this.menu_.getElement() : null;
+    if (menuElement) {
+      menuElement.style.gridTemplateColumns =
+          `repeat(${this.columns_}, min-content)`;
+    }
   }
 }
 
@@ -85,8 +131,6 @@ Blockly.Css.register([
   .fieldGridDropDownContainer.blocklyMenu {
       display: grid;
       grid-gap: 7px;
-      /* TODO(373): set number of columns using property on field */
-      grid-template-columns: repeat(3, min-content);
     }
   /* Change look of cells (add border, sizing, padding, and text color) */
   .fieldGridDropDownContainer.blocklyMenu .blocklyMenuItem {

@@ -198,6 +198,22 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
       ],
     },
   },
+  {
+    'label': '4 columns',
+    'args': {
+      'columns': '4',
+      'options': [
+        ['A', 'A'],
+        ['B', 'B'],
+        ['C', 'C'],
+        ['D', 'D'],
+        ['E', 'E'],
+        ['F', 'F'],
+        ['G', 'G'],
+        ['H', 'H'],
+      ],
+    },
+  },
 ]);
 
 /**
