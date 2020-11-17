@@ -72,7 +72,7 @@ cd examples && npm install
 cd ..
 ```
 
-Build and push to your personal gh-pages site:
+Build and push to the blockly-samples gh-pages site
 
 ```
 npm run deploy:upstream
