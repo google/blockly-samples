@@ -62,7 +62,7 @@ Build and push to your personal gh-pages site:
 npm run deploy
 ```
 
-Test at https://<your username>.github.io/blockly-samples/.
+Test at `<your username>.github.io/blockly-samples/`.
 
 ## To blockly-samples gh-pages
 
