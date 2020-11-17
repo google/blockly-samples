@@ -109,7 +109,7 @@ Blockly.FieldDate.prototype.doClassValidation_ = function(opt_newValue) {
     return null;
   }
   // Check if the new value is parsable or not.
-  const date = goog.date.Date.fromIsoString(opt_newValue);
+  var date = goog.date.Date.fromIsoString(opt_newValue);
   if (!date || date.toIsoString(true) != opt_newValue) {
     return null;
   }
@@ -155,7 +155,7 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
     this.oldTodayElement_.style.backgroundColor = null;
     this.oldTodayElement_.style.color = null;
   }
-  const today = this.picker_.getElementByClass('goog-date-picker-today');
+  var today = this.picker_.getElementByClass('goog-date-picker-today');
   this.oldTodayElement_ = today;
   if (today) {
     today.style.backgroundColor = this.todayColour_;
@@ -166,7 +166,7 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
     this.oldSelectedElement_.style.backgroundColor = null;
     this.oldSelectedElement_.style.color = null;
   }
-  const selected = this.picker_.getElementByClass('goog-date-picker-selected');
+  var selected = this.picker_.getElementByClass('goog-date-picker-selected');
   this.oldSelectedElement_ = selected;
   if (selected) {
     selected.style.backgroundColor = this.selectedColour_;
@@ -225,7 +225,7 @@ Blockly.FieldDate.prototype.showDropdown_ = function() {
 Blockly.FieldDate.prototype.dropdownCreate_ = function() {
   // Create the date picker using Closure.
   Blockly.FieldDate.loadLanguage_();
-  const picker = new goog.ui.DatePicker();
+  var picker = new goog.ui.DatePicker();
   picker.setAllowNone(false);
   picker.setShowWeekNum(false);
   picker.setUseNarrowWeekdayNames(true);
@@ -319,9 +319,9 @@ Blockly.FieldDate.prototype.onDateSelected_ = function(event) {
  * @private
  */
 Blockly.FieldDate.loadLanguage_ = function() {
-  for (const prop in goog.i18n) {
+  for (var prop in goog.i18n) {
     if (Blockly.utils.string.startsWith(prop, 'DateTimeSymbols_')) {
-      const lang = prop.substr(16).toLowerCase().replace('_', '.');
+      var lang = prop.substr(16).toLowerCase().replace('_', '.');
       // E.g. 'DateTimeSymbols_pt_BR' -> 'pt.br'
       if (goog.getObjectByName(lang, Blockly.Msg)) {
         goog.i18n.DateTimeSymbols = goog.i18n[prop];
@@ -391,7 +391,7 @@ Blockly.Css.register([
   '.blocklyDatePicker button:hover,',
   '.blocklyDatePicker .goog-date-picker-date:hover {',
     'background-color: rgb(218, 220, 224, .5);',
-  '}',
+  '}'
   /* eslint-enable indent */
 ]);
 
@@ -414,7 +414,7 @@ goog.getMsgOrig = goog.getMsg;
  * @suppress {duplicate}
  */
 goog.getMsg = function(str, opt_values) {
-  const key = goog.getMsg.blocklyMsgMap[str];
+  var key = goog.getMsg.blocklyMsgMap[str];
   if (key) {
     str = Blockly.Msg[key];
   }
@@ -425,5 +425,5 @@ goog.getMsg = function(str, opt_values) {
  * Mapping of Closure messages to Blockly.Msg names.
  */
 goog.getMsg.blocklyMsgMap = {
-  'Today': 'TODAY',
+  'Today': 'TODAY'
 };
