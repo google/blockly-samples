@@ -202,9 +202,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   }
 
   /**
-   * Overrides the position function solely to change the x coord in rtl mode.
+   * Overrides the position function solely to change the x coord in RTL mode.
    * The base function allows the workspace to go "under" the flyout, so
-   * to calculate the left edge of the flyout in rtl you would just subtract
+   * to calculate the left edge of the flyout in RTL you would just subtract
    * the flyout width from the total viewWidth to get x. However, in our
    * flyout, the workspace already starts at the left edge of the flyout, so
    * we don't need to subtract the flyout width again.

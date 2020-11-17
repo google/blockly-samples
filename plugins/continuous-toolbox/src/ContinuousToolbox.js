@@ -59,10 +59,10 @@ export class ContinuousToolbox extends Blockly.Toolbox {
         /**
          * @type {string|Blockly.utils.toolbox.FlyoutItemInfoArray|
          *    Blockly.utils.toolbox.FlyoutItemInfo}
-         * */
+         */
         let itemContents = toolboxItem.getContents();
 
-        // Handle cutom categories (e.g. variables and functions)
+        // Handle custom categories (e.g. variables and functions)
         if (typeof itemContents === 'string') {
           itemContents =
             /** @type {!Blockly.utils.toolbox.DynamicCategoryInfo} */ ({

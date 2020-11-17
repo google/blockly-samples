@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Continuous toolbox plugin test.
  */
 
 import * as Blockly from 'blockly';

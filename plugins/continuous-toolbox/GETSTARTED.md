@@ -1,5 +1,3 @@
-This package was bootstrapped with [@blockly/create-package](https://www.npmjs.com/package/@blockly/create-package).
-
 ## Available Scripts
 
 In this directory, you can run:
