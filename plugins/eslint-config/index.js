@@ -43,6 +43,7 @@ module.exports = {
       tagNamePreference: {
         'returns': 'return',
       },
+      mode: 'closure',
     },
   },
 
@@ -82,12 +83,6 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.mocha.js'],
-      settings: {
-        jsdoc: {
-          mode: 'closure',
-        },
-      },
-
       env: {
         mocha: true,
       },
