@@ -16,6 +16,7 @@ layout: index
 * [Typed Variable Modal](plugins/typed-variable-modal/test/index.html)
 * [Workspace Search](plugins/workspace-search/test/index.html)
 * [Strict Connection Checker](plugins/strict-connection-checker/test/index.html)
+* [Continuous Toolbox](plugins/continuous-toolbox/test/index.html)
 
 ## Themes
 * [Theme Modern](plugins/theme-modern/test/index.html)
