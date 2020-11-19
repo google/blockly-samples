@@ -418,6 +418,28 @@ Blockly.Blocks['test_dropdowns_dynamic_random'] = {
   },
 };
 
+Blockly.Blocks['test_dropdowns_dynamic_parent_dependant'] = {
+  init: function() {
+    const dropdown = new Blockly.FieldDropdown(this.dynamicOptions);
+    this.appendDummyInput()
+        .appendField('dynamic parent-dependant')
+        .appendField(dropdown, 'OPTIONS');
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
+  },
+
+  dynamicOptions: function() {
+    if (this.sourceBlock_ && this.sourceBlock_.getSurroundParent()) {
+      const parent = this.sourceBlock_.getSurroundParent();
+      return [
+        [parent.type, parent.type + '_key'], [parent.id, parent.id + '_key'],
+        ['a', 'b'], ['connected', 'CONNECTED_KEY']];
+    } else {
+      return [['unconnected', 'UNCONNECTED_KEY']];
+    }
+  },
+};
+
 /**
  * Mutator methods added to the test_dropdowns_in_mutator block.
  * @mixin
