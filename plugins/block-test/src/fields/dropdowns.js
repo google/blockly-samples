@@ -431,9 +431,16 @@ Blockly.Blocks['test_dropdowns_dynamic_parent_dependant'] = {
   dynamicOptions: function() {
     if (this.sourceBlock_ && this.sourceBlock_.getSurroundParent()) {
       const parent = this.sourceBlock_.getSurroundParent();
-      return [
-        [parent.type, parent.type + '_key'], [parent.id, parent.id + '_key'],
-        ['a', 'b'], ['connected', 'CONNECTED_KEY']];
+      const options = [
+        ['connected', 'CONNECTED_KEY'],
+        [`surroundParent: ${parent.type}`, parent.type + '_key'],
+        [`surroundParent: ${parent.id}`, parent.id + '_key']];
+      const top = this.sourceBlock_.getTopStackBlock();
+      if (top.id !== parent.id) {
+        options.push([`topStack: ${top.type}`, top.type + '_key']);
+        options.push([`topStack: ${top.id}`, top.id + '_key']);
+      }
+      return options;
     } else {
       return [['unconnected', 'UNCONNECTED_KEY']];
     }
