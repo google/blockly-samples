@@ -418,11 +418,11 @@ Blockly.Blocks['test_dropdowns_dynamic_random'] = {
   },
 };
 
-Blockly.Blocks['test_dropdowns_dynamic_parent_dependant'] = {
+Blockly.Blocks['test_dropdowns_dynamic_connect_dependant'] = {
   init: function() {
     const dropdown = new Blockly.FieldDropdown(this.dynamicOptions);
     this.appendDummyInput()
-        .appendField('dynamic parent-dependant')
+        .appendField('dynamic connect-dependant')
         .appendField(dropdown, 'OPTIONS');
     this.setNextStatement(true);
     this.setPreviousStatement(true);
@@ -433,12 +433,12 @@ Blockly.Blocks['test_dropdowns_dynamic_parent_dependant'] = {
       const parent = this.sourceBlock_.getSurroundParent();
       const options = [
         ['connected', 'CONNECTED_KEY'],
-        [`surroundParent: ${parent.type}`, parent.type + '_key'],
-        [`surroundParent: ${parent.id}`, parent.id + '_key']];
+        [`surroundParent: ${parent.type}`, `${parent.id}_type_key`],
+        [`surroundParent: ${parent.id}`, `${parent.id}_key`]];
       const top = this.sourceBlock_.getTopStackBlock();
       if (top.id !== parent.id) {
-        options.push([`topStack: ${top.type}`, top.type + '_key']);
-        options.push([`topStack: ${top.id}`, top.id + '_key']);
+        options.push([`topStack: ${top.type}`, `${top.id}_type_key`]);
+        options.push([`topStack: ${top.id}`, `${top.id}_key`]);
       }
       return options;
     } else {
