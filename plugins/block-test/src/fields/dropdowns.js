@@ -545,6 +545,10 @@ export const category = {
       'type': 'test_dropdowns_dynamic_random',
     },
     {
+      'kind': 'BLOCK',
+      'type': 'test_dropdowns_dynamic_connect_dependant',
+    },
+    {
       'kind': 'LABEL',
       'text': 'Other',
     },
