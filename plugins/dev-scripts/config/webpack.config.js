@@ -134,6 +134,10 @@ module.exports = (env) => {
       ],
     },
     plugins: [
+      // Add package name.
+      new webpack.DefinePlugin({
+        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+      }),
       // Typecheck TS.
       isTypescript &&
       new ForkTsCheckerWebpackPlugin({

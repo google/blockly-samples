@@ -12,13 +12,14 @@
 import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
-import {DebugRenderer} from './debugRenderer';
-import {disableLogger, enableLogger} from './logger';
-import {HashState} from './playground/hash_state';
-import {populateRandom} from './populateRandom';
-import {spaghetti} from './spaghetti';
-import toolboxCategories from './toolboxCategories';
-import toolboxSimple from './toolboxSimple';
+import {DebugRenderer} from '../debugRenderer';
+import {disableLogger, enableLogger} from '../logger';
+import {HashState} from './hash_state';
+import {populateRandom} from '../populateRandom';
+import {spaghetti} from '../spaghetti';
+import {id} from './id';
+import toolboxCategories from '../toolboxCategories';
+import toolboxSimple from '../toolboxSimple';
 
 const assign = require('lodash.assign');
 const merge = require('lodash.merge');
@@ -321,7 +322,8 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   delete guiState.options['theme'];
 
   // Save GUI control options to local storage.
-  localStorage.setItem('guiState', JSON.stringify(guiState));
+  const guiStateKey = `guiState_${id}`;
+  localStorage.setItem(guiStateKey, JSON.stringify(guiState));
 
   // Save GUI state into the URL:
   const hashGuiState = Object.assign({}, guiState.options);
@@ -340,7 +342,8 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
  */
 function loadGUIState() {
   const defaultState = {options: {}, debug: {}};
-  const guiState = JSON.parse(localStorage.getItem('guiState')) || defaultState;
+  const guiStateKey = `guiState_${id}`;
+  const guiState = JSON.parse(localStorage.getItem(guiStateKey)) || defaultState;
   if (window.location.hash) {
     HashState.parse(window.location.hash, guiState.options);
   }
