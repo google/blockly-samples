@@ -18,8 +18,9 @@ import * as BlocklyPHP from 'blockly/php';
 
 import {renderPlayground, renderCheckbox, renderCodeTab} from './ui';
 import {addCodeEditor} from './monaco';
-import {addGUIControls} from '../addGUIControls';
+import {addGUIControls} from './options';
 import {LocalStorageState} from './state';
+import {id} from './id';
 
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
@@ -101,7 +102,7 @@ export function createPlayground(container, createWorkspace,
     const editorXmlContextKey = editor.createContextKey('isEditorXml', true);
 
     // Load / Save playground state.
-    const playgroundState = new LocalStorageState('playgroundState', {
+    const playgroundState = new LocalStorageState(`playgroundState_${id}`, {
       activeTab: 'XML',
       autoGenerate: config && config.auto != undefined ? config.auto : true,
       workspaceXml: '',
