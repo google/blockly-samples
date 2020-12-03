@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-nominal-connection-checker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Blockly plugin for creating more advanced connection checks, targeted at nominally typed languages.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -42,7 +42,7 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.1",
+    "@blockly/dev-scripts": "^1.2.2",
     "@blockly/dev-tools": "^1.1.3",
     "blockly": "git://github.com/google/blockly.git#develop",
     "chai": "^4.2.0",
