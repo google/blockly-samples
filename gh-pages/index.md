@@ -7,6 +7,9 @@ layout: index
 ## Blocks
 * [Blocks Plus Minus](plugins/block-plus-minus/test/index.html)
 
+## Block Extensions
+* [Block Extension Tooltip](plugins/block-extension-tooltip/test/index.html)
+
 ## Fields
 * [Field Date](plugins/field-date/test/index.html)
 * [Field Slider](plugins/field-slider/test/index.html)

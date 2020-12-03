@@ -6,6 +6,7 @@
 
 /**
  * @fileoverview Custom tooltip block extension.
+ * @author samelh@google.com (Sam El-Husseini)
  */
 import * as Blockly from 'blockly/core';
 import './tooltip_monkey_patch';

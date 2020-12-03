@@ -8,6 +8,7 @@
     "clean": "blockly-scripts clean",
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
+    "predeploy": "npm run build && blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run dist",
     "start": "blockly-scripts start"
   },
@@ -58,8 +59,6 @@
     "node": ">=8.17.0"
   },
   "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
+    "defaults"
   ]
 }

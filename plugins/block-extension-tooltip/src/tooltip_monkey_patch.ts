@@ -5,13 +5,14 @@
  */
 
 /**
- * @fileoverview A monkey-patch in Blockly to support custom tooltip rendering.
+ * @fileoverview A monkeypatch in Blockly to support custom tooltip rendering.
+ * @author samelh@google.com (Sam El-Husseini)
  */
 import * as Blockly from 'blockly/core';
 
 
-// TODO: We have no way to do this currently without monkey-patching Blockly.
-// Add support extending the tooltip in Blockly.
+// TODO(google/blockly#4444): We have no way to do this currently without
+// monkeypatching Blockly. Add support extending the tooltip in Blockly.
 (() => {
   const renderStandardTooltip = (el: HTMLElement, tooltipDiv: HTMLElement) => {
     let tip = BlocklyTooltip.getTooltipOfObject(el);
