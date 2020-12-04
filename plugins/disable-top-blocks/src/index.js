@@ -3,33 +3,62 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-
-// TODO: Edit plugin overview.
 /**
- * @fileoverview Plugin overview.
+ * @fileoverview Plugin for changing the context menu to match the
+ * `disableOrphans` event handler.
  */
 
-// TODO: Rename plugin and edit plugin description.
+import * as Blockly from 'blockly/core';
+
 /**
- * Plugin description.
+ * This plugin changes the logic of the enable/disable context menu item. It is
+ * enabled for all blocks except top-level blocks that have output or
+ * previous connections. In other words, the option is disabled for orphan
+ * blocks. Using this plugin allows users to disable valid non-orphan blocks,
+ * but not re-enable blocks that have been automatically disabled by
+ * `disableOrphans`.
  */
-export class Plugin {
+export class DisableTopBlocks {
   /**
-   * Constructor for ...
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
-   *     be added to.
+   * Modifies the context menu 'disable' option as described above.
    */
-  constructor(workspace) {
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
-    this.workspace_ = workspace;
+  init() {
+    const disableMenuItem =
+        Blockly.ContextMenuRegistry.registry.getItem('blockDisable');
+    this.oldPreconditionFn = disableMenuItem.preconditionFn;
+    disableMenuItem.preconditionFn =
+        function(/** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+          const block = scope.block;
+          if (!block.isInFlyout && block.workspace.options.disable &&
+              block.isEditable()) {
+            if (block.getInheritedDisabled() || isOrphan(block)) {
+              return 'disabled';
+            }
+            return 'enabled';
+          }
+          return 'hidden';
+        };
   }
 
   /**
-   * Initialize.
+   * Turn off the effects of this plugin and restore the initial behavior.
+   * This is never required to be called. It is optional in case you need to
+   * disable the plugin.
    */
-  init() { }
+  dispose() {
+    const disableMenuItem =
+        Blockly.ContextMenuRegistry.registry.getItem('blockDisable');
+    disableMenuItem.preconditionFn = this.oldPreconditionFn;
+  }
+}
+
+/**
+ * A block is an orphan if it doesn't have a parent, but it does have
+ * a previous or next connection (so it expects to be attached to something).
+ * @param {!Blockly.BlockSvg} block Block to check.
+ * @return {boolean} Whether the block is an orphan.
+ */
+function isOrphan(block) {
+  return !block.getParent() &&
+      !!(block.outputConnection || block.previousConnection);
 }

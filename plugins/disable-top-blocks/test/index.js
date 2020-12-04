@@ -5,12 +5,12 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Disable top blocks plugin test.
  */
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Plugin} from '../src/index';
+import {DisableTopBlocks} from '../src/index';
 
 /**
  * Create a workspace.
@@ -21,9 +21,13 @@ import {Plugin} from '../src/index';
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
-  // TODO: Initialize your plugin here.
-  const plugin = new Plugin(workspace);
-  plugin.init();
+  // Add the disableOrphans event handler. This is not done automatically by
+  // the plugin and should be handled by your application.
+  workspace.addChangeListener(Blockly.Events.disableOrphans);
+
+  // The plugin must be initialized before it has any effect.
+  const disableTopBlocksPlugin = new DisableTopBlocks();
+  disableTopBlocksPlugin.init();
 
   return workspace;
 }
