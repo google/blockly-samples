@@ -44,7 +44,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.2",
     "@blockly/dev-tools": "^1.1.3",
-    "blockly": "git://github.com/google/blockly.git#develop",
+    "blockly": "^3.20200924.0",
     "chai": "^4.2.0",
     "sinon": "^9.0.3"
   },
