@@ -243,7 +243,7 @@
     // Load the interpreter now, and upon future changes.
     generateCodeAndLoadIntoInterpreter();
     demoWorkspace.addChangeListener(function(event) {
-      if (!(event instanceof Blockly.Events.Ui)) {
+      if (!event.isUiEvent) {
         // Something changed. Parser needs to be reloaded.
         generateCodeAndLoadIntoInterpreter();
       }
