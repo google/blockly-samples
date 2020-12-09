@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
       {
         toolbox: document.getElementById('toolbox'),
-        media: 'media/'
+        media: 'media/',
       });
   const workspaceClient = new WorkspaceClient(
       workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
@@ -47,25 +47,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   await userDataManager.start();
 
   workspace.addChangeListener((event) => {
-    if (event instanceof Blockly.Events.Ui) {
-      if (event.element == 'selected') {
-        userDataManager.handleEvent(event);
-      };
-      return;
-    };
-    if (event instanceof Blockly.Events.Change && event.element == 'field') {
+    if (event.type === Blockly.Events.SELECTED ||
+        (event.type === Blockly.Events.CHANGE && event.element === 'field')) {
       userDataManager.handleEvent(event);
-    };
+    }
+    if (event.isUiEvent) {
+      return;
+    }
     workspaceClient.activeChanges.push(event);
     if (!Blockly.Events.getGroup()) {
       workspaceClient.flushEvents();
-    };
+    }
   });
 
   /**
    * Run a series of events that allow the order of events on the workspace
    * to converge with the order of events on the database.
-   * @param {<!Array.<!WorkspaceAction>>} eventQueue An array of events and the
+   * @param {!Array.<!WorkspaceAction>} eventQueue An array of events and the
    * direction they should be run.
    * @private
    */

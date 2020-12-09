@@ -71,7 +71,8 @@ export default class UserDataManager {
 
   /**
    * Create a PositionUpdate from a Blockly event and send it to the server.
-   * @param {!Blockly.Event} event The event for which to create a PositionUpdate.
+   * @param {!Blockly.Events.Abstract} event The event for which to create a
+   *    PositionUpdate.
    * @public
    */
   async handleEvent(event) {
