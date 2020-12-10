@@ -54,7 +54,7 @@ export class DisableTopBlocks {
 
 /**
  * A block is an orphan if it doesn't have a parent, but it does have
- * a previous or next connection (so it expects to be attached to something).
+ * a previous or output connection (so it expects to be attached to something).
  * @param {!Blockly.BlockSvg} block Block to check.
  * @return {boolean} Whether the block is an orphan.
  */
