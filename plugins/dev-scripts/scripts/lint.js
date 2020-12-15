@@ -26,11 +26,15 @@ console.log(`Running lint for ${packageJson.name}`);
 
 // Create the eslint engine.
 const eslintConfig = require('@blockly/eslint-config');
+
+const args = process.argv.slice(2);
+const shouldFix = args.includes('--fix');
 const linter = new ESLint({
   extensions: ['.js', '.ts'],
   baseConfig: eslintConfig,
   useEslintrc: false,
   resolvePluginsRelativeTo: __dirname,
+  fix: shouldFix,
 });
 
 /**
@@ -43,7 +47,11 @@ const linter = new ESLint({
 async function lintDir(dir, linter) {
   const resolvePath = resolveApp(dir);
   if (fs.existsSync(resolvePath)) {
-    return await linter.lintFiles([dir]);
+    const results = await linter.lintFiles([dir]);
+    if (shouldFix) {
+      await ESLint.outputFixes(results);
+    }
+    return results;
   }
   return null;
 }
