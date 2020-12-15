@@ -26,7 +26,7 @@ console.log(`Running lint for ${packageJson.name}`);
 
 // Create the eslint engine.
 const eslintConfig = require('@blockly/eslint-config');
-const cli = new ESLint({
+const linter = new ESLint({
   extensions: ['.js', '.ts'],
   baseConfig: eslintConfig,
   useEslintrc: false,
@@ -48,15 +48,15 @@ async function lintDir(dir, linter) {
   return null;
 }
 
-cli.loadFormatter('stylish').then((formatter) => {
+linter.loadFormatter('stylish').then((formatter) => {
   // Run eslint for both the src and test directories.
   // The eslint engine will use the .eslintrc under plugins/ for configuration.
-  lintDir('src', cli).then((result) => {
+  lintDir('src', linter).then((result) => {
     if (result) {
       console.log(formatter.format(result));
     }
   });
-  lintDir('test', cli).then((result) => {
+  lintDir('test', linter).then((result) => {
     if (result) {
       console.log(formatter.format(result));
     }
