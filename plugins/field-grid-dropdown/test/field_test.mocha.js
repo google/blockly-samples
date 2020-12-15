@@ -103,8 +103,8 @@ suite('FieldGridDropdown', function() {
   suite('Validators', function() {
     setup(function() {
       this.dropdownField = new FieldGridDropdown([
-        ['1a','1A'], ['1b','1B'], ['1c','1C'],
-        ['2a','2A'], ['2b','2B'], ['2c','2C']]);
+        ['1a', '1A'], ['1b', '1B'], ['1c', '1C'],
+        ['2a', '2A'], ['2b', '2B'], ['2c', '2C']]);
     });
     teardown(function() {
       this.dropdownField.setValidator(null);

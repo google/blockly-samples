@@ -122,7 +122,7 @@ const controlsIfMutator = {
   /**
    * Appears to remove the input at the given index. Actually shifts attached
    * blocks and then removes the input at the bottom of the block. This is to
-   * make sure the inputs are always IF0, IF1, etc. with no gaps.
+   * make sure the inputs are always IF0, IF1, etc with no gaps.
    * @param {number?} opt_index The index of the input to "remove", or undefined
    *     to remove the last input.
    * @this Blockly.Block

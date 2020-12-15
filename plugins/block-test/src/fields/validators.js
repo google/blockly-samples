@@ -207,7 +207,7 @@ Blockly.Blocks['test_validators_colour_null'] = {
     colourField.setColours([
       '#ffffff', '#ffdcdc', '#ffb4b4', '#ff8c8c', '#ff6464', '#ff3c3c',
       '#ff1414', '#00ffff', '#00dcdc', '#00b4b4', '#008c8c', '#006464',
-      '#003c3c', '#001414'
+      '#003c3c', '#001414',
     ]);
 
     this.appendDummyInput()
@@ -229,7 +229,7 @@ Blockly.Blocks['test_validators_colour_force_red'] = {
     colourField.setColours([
       '#ffffff', '#ffdcdc', '#ffb4b4', '#ff8c8c', '#ff6464', '#ff3c3c',
       '#ff1414', '#00ffff', '#00dcdc', '#00b4b4', '#008c8c', '#006464',
-      '#003c3c', '#001414'
+      '#003c3c', '#001414',
     ]);
 
     this.appendDummyInput()
@@ -251,7 +251,7 @@ Blockly.Blocks['test_validators_colour_red_null'] = {
     colourField.setColours([
       '#ffffff', '#ffdcdc', '#ffb4b4', '#ff8c8c', '#ff6464', '#ff3c3c',
       '#ff1414', '#00ffff', '#00dcdc', '#00b4b4', '#008c8c', '#006464',
-      '#003c3c', '#001414'
+      '#003c3c', '#001414',
     ]);
 
     this.appendDummyInput()
@@ -279,7 +279,7 @@ Blockly.Blocks['test_validators_dropdown_null'] = {
             new Blockly.FieldDropdown(
                 [
                   ['1a', '1A'], ['1b', '1B'], ['1c', '1C'], ['2a', '2A'],
-                  ['2b', '2B'], ['2c', '2C']
+                  ['2b', '2B'], ['2c', '2C'],
                 ],
                 this.validate),
             'INPUT');
@@ -301,7 +301,7 @@ Blockly.Blocks['test_validators_dropdown_force_1s'] = {
             new Blockly.FieldDropdown(
                 [
                   ['1a', '1A'], ['1b', '1B'], ['1c', '1C'], ['2a', '2A'],
-                  ['2b', '2B'], ['2c', '2C']
+                  ['2b', '2B'], ['2c', '2C'],
                 ],
                 this.validate),
             'INPUT');
@@ -323,7 +323,7 @@ Blockly.Blocks['test_validators_dropdown_1s_null'] = {
             new Blockly.FieldDropdown(
                 [
                   ['1a', '1A'], ['1b', '1B'], ['1c', '1C'], ['2a', '2A'],
-                  ['2b', '2B'], ['2c', '2C']
+                  ['2b', '2B'], ['2c', '2C'],
                 ],
                 this.validate),
             'INPUT');

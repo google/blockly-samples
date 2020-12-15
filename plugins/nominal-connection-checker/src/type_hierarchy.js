@@ -121,7 +121,7 @@ export class TypeHierarchy {
    * Czumaj, Artur, Miroslaw Kowaluk and and Andrzej Lingas. "Faster algorithms
    * for finding lowest common ancestors in directed acyclic graphs."
    * Theoretical Computer Science, 380.1-2 (2007): 37-46.
-   * https://bit.ly/2SrCRs5
+   * https://bit.ly/2SrCRs5.
    *
    * Operates in O(nm) where n is the number of nodes and m is the number of
    * edges.

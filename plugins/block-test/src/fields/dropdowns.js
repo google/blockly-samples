@@ -22,22 +22,22 @@ Blockly.defineBlocksWithJsonArray([
         'type': 'field_dropdown',
         'name': 'FIELDNAME',
         'options': [
-          ['first item', 'ITEM1'],           ['second item', 'ITEM2'],
-          ['third item', 'ITEM3'],           ['fourth item', 'ITEM4'],
-          ['fifth item', 'ITEM5'],           ['sixth item', 'ITEM6'],
-          ['seventh item', 'ITEM7'],         ['eighth item', 'ITEM8'],
-          ['ninth item', 'ITEM9'],           ['tenth item', 'ITEM10'],
-          ['eleventh item', 'ITEM11'],       ['twelfth item', 'ITEM12'],
-          ['thirteenth item', 'ITEM13'],     ['fourteenth item', 'ITEM14'],
-          ['fifteenth item', 'ITEM15'],      ['sixteenth item', 'ITEM16'],
-          ['seventeenth item', 'ITEM17'],    ['eighteenth item', 'ITEM18'],
-          ['nineteenth item', 'ITEM19'],     ['twentieth item', 'ITEM20'],
-          ['twenty-first item', 'ITEM21'],   ['twenty-second item', 'ITEM22'],
-          ['twenty-third item', 'ITEM23'],   ['twenty-fourth item', 'ITEM24'],
-          ['twenty-fifth item', 'ITEM25'],   ['twenty-sixth item', 'ITEM26'],
+          ['first item', 'ITEM1'], ['second item', 'ITEM2'],
+          ['third item', 'ITEM3'], ['fourth item', 'ITEM4'],
+          ['fifth item', 'ITEM5'], ['sixth item', 'ITEM6'],
+          ['seventh item', 'ITEM7'], ['eighth item', 'ITEM8'],
+          ['ninth item', 'ITEM9'], ['tenth item', 'ITEM10'],
+          ['eleventh item', 'ITEM11'], ['twelfth item', 'ITEM12'],
+          ['thirteenth item', 'ITEM13'], ['fourteenth item', 'ITEM14'],
+          ['fifteenth item', 'ITEM15'], ['sixteenth item', 'ITEM16'],
+          ['seventeenth item', 'ITEM17'], ['eighteenth item', 'ITEM18'],
+          ['nineteenth item', 'ITEM19'], ['twentieth item', 'ITEM20'],
+          ['twenty-first item', 'ITEM21'], ['twenty-second item', 'ITEM22'],
+          ['twenty-third item', 'ITEM23'], ['twenty-fourth item', 'ITEM24'],
+          ['twenty-fifth item', 'ITEM25'], ['twenty-sixth item', 'ITEM26'],
           ['twenty-seventh item', 'ITEM27'], ['twenty-eighth item', 'ITEM28'],
-          ['twenty-ninth item', 'ITEM29'],   ['thirtieth item', 'ITEM30'],
-          ['thirty-first item', 'ITEM31'],   ['thirty-second item', 'ITEM32'],
+          ['twenty-ninth item', 'ITEM29'], ['thirtieth item', 'ITEM30'],
+          ['thirty-first item', 'ITEM31'], ['thirty-second item', 'ITEM32'],
         ],
       },
     ],
@@ -57,9 +57,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/a.png',
               'width': 32,
               'height': 32,
-              'alt': 'A'
+              'alt': 'A',
             },
-            'A'
+            'A',
           ],
           [
             {
@@ -67,9 +67,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/b.png',
               'width': 32,
               'height': 32,
-              'alt': 'B'
+              'alt': 'B',
             },
-            'B'
+            'B',
           ],
           [
             {
@@ -77,9 +77,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/c.png',
               'width': 32,
               'height': 32,
-              'alt': 'C'
+              'alt': 'C',
             },
-            'C'
+            'C',
           ],
           [
             {
@@ -87,9 +87,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/d.png',
               'width': 32,
               'height': 32,
-              'alt': 'D'
+              'alt': 'D',
             },
-            'D'
+            'D',
           ],
           [
             {
@@ -97,9 +97,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/e.png',
               'width': 32,
               'height': 32,
-              'alt': 'E'
+              'alt': 'E',
             },
-            'E'
+            'E',
           ],
           [
             {
@@ -107,9 +107,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/f.png',
               'width': 32,
               'height': 32,
-              'alt': 'F'
+              'alt': 'F',
             },
-            'F'
+            'F',
           ],
           [
             {
@@ -117,9 +117,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/g.png',
               'width': 32,
               'height': 32,
-              'alt': 'G'
+              'alt': 'G',
             },
-            'G'
+            'G',
           ],
           [
             {
@@ -127,9 +127,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/h.png',
               'width': 32,
               'height': 32,
-              'alt': 'H'
+              'alt': 'H',
             },
-            'H'
+            'H',
           ],
           [
             {
@@ -137,9 +137,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/i.png',
               'width': 32,
               'height': 32,
-              'alt': 'I'
+              'alt': 'I',
             },
-            'I'
+            'I',
           ],
           [
             {
@@ -147,9 +147,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/j.png',
               'width': 32,
               'height': 32,
-              'alt': 'J'
+              'alt': 'J',
             },
-            'J'
+            'J',
           ],
           [
             {
@@ -157,9 +157,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/k.png',
               'width': 32,
               'height': 32,
-              'alt': 'K'
+              'alt': 'K',
             },
-            'K'
+            'K',
           ],
           [
             {
@@ -167,9 +167,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/l.png',
               'width': 32,
               'height': 32,
-              'alt': 'L'
+              'alt': 'L',
             },
-            'L'
+            'L',
           ],
           [
             {
@@ -177,9 +177,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/m.png',
               'width': 32,
               'height': 32,
-              'alt': 'M'
+              'alt': 'M',
             },
-            'M'
+            'M',
           ],
         ],
       },
@@ -200,9 +200,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/a.png',
               'width': 32,
               'height': 32,
-              'alt': 'A'
+              'alt': 'A',
             },
-            'A'
+            'A',
           ],
           [
             {
@@ -210,9 +210,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/b.png',
               'width': 32,
               'height': 32,
-              'alt': 'B'
+              'alt': 'B',
             },
-            'B'
+            'B',
           ],
           [
             {
@@ -220,9 +220,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/c.png',
               'width': 32,
               'height': 32,
-              'alt': 'C'
+              'alt': 'C',
             },
-            'C'
+            'C',
           ],
           [
             {
@@ -230,9 +230,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/d.png',
               'width': 32,
               'height': 32,
-              'alt': 'D'
+              'alt': 'D',
             },
-            'D'
+            'D',
           ],
           [
             {
@@ -240,9 +240,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/e.png',
               'width': 32,
               'height': 32,
-              'alt': 'E'
+              'alt': 'E',
             },
-            'E'
+            'E',
           ],
           [
             {
@@ -250,9 +250,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/f.png',
               'width': 32,
               'height': 32,
-              'alt': 'F'
+              'alt': 'F',
             },
-            'F'
+            'F',
           ],
           [
             {
@@ -260,9 +260,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/g.png',
               'width': 32,
               'height': 32,
-              'alt': 'G'
+              'alt': 'G',
             },
-            'G'
+            'G',
           ],
           [
             {
@@ -270,9 +270,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/h.png',
               'width': 32,
               'height': 32,
-              'alt': 'H'
+              'alt': 'H',
             },
-            'H'
+            'H',
           ],
           ['xyz', 'LMNOP'],
           [
@@ -281,9 +281,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/i.png',
               'width': 32,
               'height': 32,
-              'alt': 'I'
+              'alt': 'I',
             },
-            'I'
+            'I',
           ],
           [
             {
@@ -291,9 +291,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/j.png',
               'width': 32,
               'height': 32,
-              'alt': 'J'
+              'alt': 'J',
             },
-            'J'
+            'J',
           ],
           [
             {
@@ -301,9 +301,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/k.png',
               'width': 32,
               'height': 32,
-              'alt': 'K'
+              'alt': 'K',
             },
-            'K'
+            'K',
           ],
           [
             {
@@ -311,9 +311,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/l.png',
               'width': 32,
               'height': 32,
-              'alt': 'L'
+              'alt': 'L',
             },
-            'L'
+            'L',
           ],
           [
             {
@@ -321,9 +321,9 @@ Blockly.defineBlocksWithJsonArray([
                   'https://blockly-demo.appspot.com/static/tests/media/m.png',
               'width': 32,
               'height': 32,
-              'alt': 'M'
+              'alt': 'M',
             },
-            'M'
+            'M',
           ],
         ],
       },
