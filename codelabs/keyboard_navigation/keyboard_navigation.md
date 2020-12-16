@@ -358,51 +358,32 @@ connection and goes straight to the next block.
 ![](./new_cursor.gif)
 
 ## Add a shortcut
-In this section we add a shortcut to allow users to move their
-cursor to the top of the stack their cursor is currently on when they hit **ctrl + W**.
+In this section we will add a shortcut that will allow users to move their cursor
+to the top of their current stack by pressing **ctrl + W**.
 
-### Create and set an action
+### Create a shortcut
+First, we are going to create our shortcut.
 
-First, we must create a serialized key code from the primary key and the desired
-modifier keys. The possible modifier keys are: 
-1. `Blockly.user.keyMap.modifierKeys.SHIFT`
-1. `Blockly.user.keyMap.modifierKeys.CONTROL`
-1. `Blockly.user.keyMap.modifierKeys.ALT`
-1. `Blockly.user.keyMap.modifierKeys.META`
+A shortcut has several properties:
+- `name`: The name of the shortcut. This must be unique.
+- `preconditionFn`: A function that returns true if the shortcut should be run,
+false otherwise.
+- `callback`: A function called when the shortcut has been executed. This should
+return true if the shortcut has been handled. If a shortcut has been handled, no
+other shortcuts with the same key mapping will be handled.
 
-Add the below code to the `playground.html` file after we have set the cursor.
-
+Our below shortcut is set up to only run when the user is in keyboard navigation
+mode.
 ```js
-// Create a serialized key from the primary key and any modifiers.
-var ctrlW = Blockly.user.keyMap.createSerializedKey(
-    Blockly.utils.KeyCodes.W, [Blockly.user.keyMap.modifierKeys.CONTROL]);
-```
-
-Next, create an action. A `Blockly.Action` describes a users' intent.
-Give the action a name and a short description of what it does.
-
-```js
-var actionTopOfStack = new Blockly.Action('topOfStack', 'Move cursor to top of stack');
-```
-
-Finally, bind the action and the key code.
-
-```js
-Blockly.user.keyMap.setActionForKey(ctrlW, actionTopOfStack);
-```
-
-### Override onBlocklyAction 
-
-When the user hits **ctrl + W** and is in keyboard navigation mode we will get a
-'topOfStack' action. Override `onBlocklyAction` on our cursor to handle this action.
-Add the below code to the `custom_cursor.js` file.
-```js
-CustomCursor.prototype.onBlocklyAction = function(action) {
-  var handled = CustomCursor.superClass_.onBlocklyAction.call(this, action);
-  // Don't handle if the parent class has already handled the action.
-  if (!handled && action.name === 'topOfStack') {
+var moveToStack = {
+  name: 'moveToStack',
+  preconditionFn: function(workspace) {
+    return workspace.keyboardAccessibilityMode;
+  },
+  callback: function(workspace) {
+    var cursor = workspace.getCursor();
     // Gets the current node.
-    var currentNode = this.getCurNode();
+    var currentNode = cursor.getCurNode();
     // Gets the source block from the current node.
     var currentBlock = currentNode.getSourceBlock();
     // If we are on a workspace node there will be no source block.
@@ -411,12 +392,43 @@ CustomCursor.prototype.onBlocklyAction = function(action) {
       var rootBlock = currentBlock.getRootBlock();
       // Gets the top node on a block. This is either the previous connection,
       // output connection, or the block itself.
-      var topNode = Blockly.navigation.getTopNode(rootBlock);
+      var topNode = Blockly.ASTNode.createTopNode(rootBlock);
       // Update the location of the cursor.
-      this.setCurNode(topNode);
+      cursor.setCurNode(topNode);
+      return true;
     }
   }
 };
+```
+Once we have created the shortcut, we can now register it. This will allow us
+to assign it a key mapping.
+```js
+Blockly.ShortcutRegistry.registry.register(moveToStack);
+```
+
+### Adding a key mapping
+Once a shortcut has been registered we can add key mappings. A key mapping is
+a mapping from a key code or combination of key codes to a shortcut. When the
+key code or combination of key codes have been pressed the shortcut will run.
+
+We can combine primary keys with modifier keys by using the `createSerializedKey`
+method. A list of the available modifier keys are:
+1. `Blockly.ShortcutRegistry.modifierKeys.SHIFT`
+1. `Blockly.ShortcutRegistry.modifierKeys.CONTROL`
+1. `Blockly.ShortcutRegistry.modifierKeys.ALT`
+1. `Blockly.ShortcutRegistry.modifierKeys.META`
+
+For our example we are going to create a key code for control W.
+```js
+// Create a serialized key from the primary key and any modifiers.
+var ctrlW = Blockly.ShortcutRegistry.registry.createSerializedKey(
+    Blockly.utils.KeyCodes.W, [Blockly.ShortcutRegistry.modifierKeys.Control]);
+```
+
+Once the serialized key has been created, we can then add a key mapping for
+the 'moveToStack' shortcut.
+```js
+Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlW, 'moveToStack');
 ```
 
 ### Test it out
@@ -433,10 +445,17 @@ keys for our cursor instead of the **WASD** keys.
 In `playground.html` we set the keys for the next, previous, in
 and out actions. For a full list of built in actions see [here](https://github.com/google/blockly/blob/07762ff4da3c713f7592c80052b1fa7cadb461a2/core/keyboard_nav/navigation.js#L957).
 ```js
-Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.LEFT, Blockly.navigation.ACTION_OUT);
-Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.RIGHT, Blockly.navigation.ACTION_IN);
-Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.UP, Blockly.navigation.ACTION_PREVIOUS);
-Blockly.user.keyMap.setActionForKey(Blockly.utils.KeyCodes.DOWN, Blockly.navigation.ACTION_NEXT);
+Blockly.ShortcutRegistry.registry.removeAllKeyMappings(Blockly.navigation.actionNames.OUT);
+Blockly.ShortcutRegistry.registry.addKeyMapping(Blockly.utils.KeyCodes.LEFT, Blockly.navigation.actionNames.OUT);
+
+Blockly.ShortcutRegistry.registry.removeAllKeyMappings(Blockly.navigation.actionNames.IN);
+Blockly.ShortcutRegistry.registry.addKeyMapping(Blockly.utils.KeyCodes.RIGHT, Blockly.navigation.actionNames.IN);
+
+Blockly.ShortcutRegistry.registry.removeAllKeyMappings(Blockly.navigation.actionNames.PREVIOUS);
+Blockly.ShortcutRegistry.registry.addKeyMapping(Blockly.utils.KeyCodes.UP, Blockly.navigation.actionNames.PREVIOUS);
+
+Blockly.ShortcutRegistry.registry.removeAllKeyMappings(Blockly.navigation.actionNames.NEXT)
+Blockly.ShortcutRegistry.registry.addKeyMapping(Blockly.utils.KeyCodes.DOWN, Blockly.navigation.actionNames.NEXT)
 ```
 ### Test it out
 Open the playground and enter keyboard navigation mode (**ctrl + shift + k**). You can now use the arrow
