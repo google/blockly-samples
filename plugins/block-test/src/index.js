@@ -33,7 +33,7 @@ export const toolboxTestBlocks = {
     fieldsCategory,
     mutatorsCategory,
     styleCategory,
-  ]
+  ],
 };
 
 /**

@@ -111,7 +111,7 @@ Blockly.defineBlocksWithJsonArray([
         'colourOptions':
             ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
         'colourTitles': [
-          'dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue'
+          'dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue',
         ],
         'columns': 3,
       },
