@@ -16,6 +16,7 @@
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "",
+  "private": true,
   "keywords": [
     "blockly",
     "blockly-plugin",
