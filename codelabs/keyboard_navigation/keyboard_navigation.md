@@ -401,7 +401,7 @@ var moveToStack = {
 };
 ```
 Once we have created the shortcut, we can now register it. Add the below code
-to `playground.html` in order to register your shortcut.
+to your `playground.html` after you have created your shortcut.
 ```js
 Blockly.ShortcutRegistry.registry.register(moveToStack);
 ```
@@ -419,6 +419,7 @@ method. A list of the available modifier keys are:
 1. `Blockly.ShortcutRegistry.modifierKeys.META`
 
 For our example we will create a key code for control W by using the below code.
+Add the following code to your `playground.html`.
 ```js
 // Create a serialized key from the primary key and any modifiers.
 var ctrlW = Blockly.ShortcutRegistry.registry.createSerializedKey(
@@ -433,9 +434,10 @@ Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlW, 'moveToStack');
 ```
 
 ### Test it out
-Open the playground and create a stack of blocks. Move your cursor down a few
-blocks. And then press **ctrl + W**. Notice how the cursor jumps to the top of the
-stack of blocks.
+Open the playground and create a stack of blocks. Enter keyboard navigation
+mode by pressing **shift + control + K**. Move your cursor down a few
+blocks and then press **ctrl + W**. Notice how the cursor jumps to the top of
+the stack of blocks.
 
 ![](./skip_to_top.gif)
 
