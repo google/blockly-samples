@@ -45,12 +45,12 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
     this.typeHierarchy_ = null;
 
     /**
-     * A map of block ids to priority queue maps that associated generic types
-     * with explicit types.
-     * @type {Map<string, Map<string, string>>}
+     * A map of blocks to maps that associated generic types with explicit
+     * types.
+     * @type {WeakMap<!Blockly.Block, Map<string, string>>}
      * @private
      */
-    this.explicitBindings_ = new Map();
+    this.explicitBindings_ = new WeakMap();
   }
 
   /**
@@ -130,10 +130,10 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
   bindType(block, genericType, explicitType) {
     genericType = genericType.toLowerCase();
     explicitType = explicitType.toLowerCase();
-    let map = this.explicitBindings_.get(block.id);
+    let map = this.explicitBindings_.get(block);
     if (!map) {
       map = new Map();
-      this.explicitBindings_.set(block.id, map);
+      this.explicitBindings_.set(block, map);
     }
     map.set(genericType, explicitType);
 
@@ -177,8 +177,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   unbindType(block, genericType) {
     genericType = genericType.toLowerCase();
-    if (this.explicitBindings_.has(block.id)) {
-      return this.explicitBindings_.get(block.id).delete(genericType);
+    if (this.explicitBindings_.has(block)) {
+      return this.explicitBindings_.get(block).delete(genericType);
     }
     return false;
   }
@@ -272,8 +272,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @private
    */
   getExternalBinding_(block, genericType) {
-    if (this.explicitBindings_.has(block.id)) {
-      return this.explicitBindings_.get(block.id).get(genericType);
+    if (this.explicitBindings_.has(block)) {
+      return this.explicitBindings_.get(block).get(genericType);
     }
     return '';
   }
