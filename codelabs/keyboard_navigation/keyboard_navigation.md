@@ -407,7 +407,7 @@ Blockly.ShortcutRegistry.registry.register(moveToStack);
 ```
 
 ### Adding a key mapping
-Once a shortcut has been registered we can add key mappings. A key mapping is
+Now that we have registered our shortcut, we can add key mappings. A key mapping is
 a mapping from a key code or combination of key codes to a shortcut. When the
 key code or combination of key codes have been pressed the shortcut will run.
 
