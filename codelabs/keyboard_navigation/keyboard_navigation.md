@@ -362,7 +362,7 @@ In this section we will add a shortcut that will allow users to move their curso
 to the top of their current stack by pressing **ctrl + W**.
 
 ### Create a shortcut
-First, we are going to create our shortcut.
+First, we will create our shortcut.
 
 A shortcut has several properties:
 - `name`: The name of the shortcut. This must be unique.
@@ -373,7 +373,7 @@ return true if the shortcut has been handled. If a shortcut has been handled, no
 other shortcuts with the same key mapping will be handled.
 
 Our below shortcut is set up to only run when the user is in keyboard navigation
-mode.
+mode. Add the below code in `playground.html`.
 ```js
 var moveToStack = {
   name: 'moveToStack',
@@ -400,8 +400,8 @@ var moveToStack = {
   }
 };
 ```
-Once we have created the shortcut, we can now register it. This will allow us
-to assign it a key mapping.
+Once we have created the shortcut, we can now register it. Add the below code
+to `playground.html` in order to register your shortcut.
 ```js
 Blockly.ShortcutRegistry.registry.register(moveToStack);
 ```
@@ -418,7 +418,7 @@ method. A list of the available modifier keys are:
 1. `Blockly.ShortcutRegistry.modifierKeys.ALT`
 1. `Blockly.ShortcutRegistry.modifierKeys.META`
 
-For our example we are going to create a key code for control W.
+For our example we will create a key code for control W by using the below code.
 ```js
 // Create a serialized key from the primary key and any modifiers.
 var ctrlW = Blockly.ShortcutRegistry.registry.createSerializedKey(
@@ -426,7 +426,8 @@ var ctrlW = Blockly.ShortcutRegistry.registry.createSerializedKey(
 ```
 
 Once the serialized key has been created, we can then add a key mapping for
-the 'moveToStack' shortcut.
+the 'moveToStack' shortcut. Add the below code to
+the `playground.html` file after we have registered our shortcut.
 ```js
 Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlW, 'moveToStack');
 ```
