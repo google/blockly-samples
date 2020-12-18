@@ -13,6 +13,8 @@ layout: index
 ## Fields
 * [Field Date](plugins/field-date/test/index.html)
 * [Field Slider](plugins/field-slider/test/index.html)
+* [Field Grid Dropdown](plugins/field-grid-dropdown/test/index.html)
+
 
 ## Plugins
 * [Modal](plugins/modal/test/index.html)
