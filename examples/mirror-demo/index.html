@@ -70,7 +70,7 @@ pageRoot: "examples/mirror-demo"
     primaryWorkspace.addChangeListener(mirrorEvent);
 
     function mirrorEvent(primaryEvent) {
-      if (primaryEvent instanceof Blockly.Events.Ui) {
+      if (primaryEvent.isUiEvent) {
         return;  // Don't mirror UI events.
       }
       // Convert event to JSON.  This could then be transmitted across the net.
