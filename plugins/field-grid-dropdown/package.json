@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-grid-dropdown",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Blockly dropdown field with grid layout.",
   "scripts": {
     "build": "blockly-scripts build",
@@ -39,8 +39,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.3",
-    "@blockly/dev-tools": "^2.0.8",
+    "@blockly/dev-scripts": "^1.2.4",
+    "@blockly/dev-tools": "^2.0.9",
     "blockly": "^4.20201217.0"
   },
   "peerDependencies": {
