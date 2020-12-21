@@ -54,7 +54,7 @@ export class TypeHierarchy {
     // cyclic type hierarchy (eg Dog <: Mammal <: Dog). They are expected to
     // not do that.
 
-    // Init types, and direct supers.
+    // Init types, direct supers, and parameters.
     for (const typeName of Object.keys(hierarchyDef)) {
       const lowerCaseName = typeName.toLowerCase();
       const type = new TypeDef(lowerCaseName);
@@ -62,6 +62,12 @@ export class TypeHierarchy {
       if (info.fulfills && info.fulfills.length) {
         info.fulfills.forEach(
             (superType) => type.addSuper(superType.toLowerCase()));
+      }
+      if (info.params && info.params.length) {
+        info.params.forEach((param) => {
+          type.addParam(
+              param.name.toLowerCase(), stringToVariance(param.variance));
+        });
       }
       this.types_.set(lowerCaseName, type);
     }
@@ -199,15 +205,20 @@ export class TypeHierarchy {
    * Returns true if the types are identical, or if the first type fulfills the
    * second type (directly or via one of its supertypes), as specified in the
    * type hierarchy definition. False otherwise.
-   * @param {string} subName The name of the possible subtype.
-   * @param {string} superName The name of the possible supertype.
+   * @param {string} subType The stringified possible subtype.
+   * @param {string} superType The stringified possible supertype.
    * @return {boolean} True if the types are identical, or if the first type
    *     fulfills the second type (directly or via its supertypes) as specified
    *     in the type hierarchy definition. False otherwise.
    */
-  typeFulfillsType(subName, superName) {
-    return this.types_.get(subName.toLowerCase())
-        .hasAncestor(superName.toLowerCase());
+  typeFulfillsType(subType, superType) {
+    const subStructure = this.parseType_(subType);
+    const superStructure = this.parseType_(superType);
+
+    this.types_.get(subStructure.name).hasAncestor(superStructure.name);
+
+    // return this.types_.get(subName.toLowerCase())
+    //     .hasAncestor(superName.toLowerCase());
   }
 
   /**
@@ -239,6 +250,87 @@ export class TypeHierarchy {
             return array.indexOf(type) == i;
           });
     }, [types[0]]);
+  }
+
+  // TODO: Might be useful to look into how lexers do this.
+  parseType_(str) {
+    const typeStruct = {};
+    const bracketIndex = str.indexOf('[');
+    if (bracketIndex != -1) {
+      typeStruct.name = str.slice(0, bracketIndex);
+      typeStruct.params = this.parseParamsArray_(
+          str.slice(bracketIndex + 1, str.length - 1));
+    } else {
+      typeStruct.name = str;
+      typeStruct.params = [];
+    }
+    typeStruct.name = typeStruct.name.toLowerCase().trim();
+    return typeStruct;
+  }
+
+  parseParamsArray_(str) {
+    const params = [];
+    let latestIndex = 0;
+    let openBraceCount = 0;
+    [...str].forEach((c, i) => {
+      switch (c) {
+        case '[':
+          openBraceCount++;
+          break;
+        case ']':
+          openBraceCount--;
+          if (!openBraceCount) {
+            params.push(this.parseType_(str.slice(latestIndex, i + 1)));
+            latestIndex = -1;
+          }
+          break;
+        case ',':
+        case ' ':
+          if (!openBraceCount && latestIndex != -1) {
+            params.push(this.parseType_(str.slice(latestIndex, i)));
+            latestIndex = -1;
+          }
+          break;
+        default:
+          if (latestIndex == -1) {
+            latestIndex = i;
+          }
+          break;
+      }
+    });
+    if (latestIndex != -1) {
+      params.push(this.parseType_(str.slice(latestIndex)));
+    }
+    return params;
+  }
+}
+
+/**
+ * Represents different parameter variances.
+ * @enum {string}
+ */
+const Variance = {
+  CO: 'covariant',
+  CONTRA: 'contravariant',
+  INV: 'invariant',
+};
+
+/**
+ * Converts a variance string to an actual variance.
+ * @param {string} str The string to convert to a variance.
+ * @return {!Variance} The converted variance value.
+ */
+function stringToVariance(str) {
+  str = str.toLowerCase();
+  if (str.startsWith('inv')) {
+    return Variance.INV;
+  } else if (str.startsWith('contra')) {
+    return Variance.CONTRA;
+  } else if (str.startsWith('co')) {
+    return Variance.CO;
+  } else {
+    throw new Error('The variance "' + str + '" is not a valid variance. ' +
+        'Valid variances are: "co", "contra", and "inv".');
   }
 }
 
@@ -288,6 +380,13 @@ class TypeDef {
      */
     this.descendants_ = new Set(this.name);
     this.descendants_.add(this.name);
+
+    /**
+     * The caseless names of the parameters of this type.
+     * @type {!Array<Param>}
+     * @private
+     */
+    this.params_ = [];
   }
 
   /**
@@ -324,6 +423,15 @@ class TypeDef {
    */
   addDescendant(descendantName) {
     this.descendants_.add(descendantName);
+  }
+
+  /**
+   * Adds the given parameter info to the list of parameters of this type.
+   * @param {string} paramName The caseless name of the parameter.
+   * @param {!Variance} variance The variance of the parameter.
+   */
+  addParam(paramName, variance) {
+    this.params_.push(new Param(paramName, variance));
   }
 
   /**
@@ -438,5 +546,47 @@ class TypeDef {
    */
   hasDescendant(descendantName) {
     return this.descendants_.has(descendantName);
+  }
+}
+
+/**
+ * Represents a type parameter.
+ */
+class Param {
+  /**
+   * Constructs the type parameter given its name and variance.
+   * @param {string} name The caseless name of the type parameter.
+   * @param {!Variance} variance The variance of the type parameter.
+   */
+  constructor(name, variance) {
+    /**
+     * The caseless name of this type parameter.
+     * @type {string}
+     * @private
+     */
+    this.name_ = name;
+
+    /**
+     * The variance of this type parameter.
+     * @type {!Variance}
+     * @private
+     */
+    this.variance_ = variance;
+  }
+
+  /**
+   * Returns the name of this parameter.
+   * @return {string} The name of this parameter.
+   */
+  getName() {
+    return this.name_;
+  }
+
+  /**
+   * Returns the variance of this parameter.
+   * @return {!Variance} The variance of this parameter.
+   */
+  getVariance() {
+    return this.variance_;
   }
 }
