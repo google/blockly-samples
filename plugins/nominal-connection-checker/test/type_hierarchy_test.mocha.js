@@ -1128,26 +1128,26 @@ suite('TypeHierarchy', function() {
             ],
           },
       );
+    });
 
-      test('Nested generic param', function() {
-        this.assertStructure(
-            'typeA[typeA[B]]',
-            {
-              name: 'typea',
-              params: [
-                {
-                  name: 'typea',
-                  params: [
-                    {
-                      name: 'b',
-                      params: [],
-                    },
-                  ],
-                },
-              ],
-            },
-        );
-      });
+    test('Nested generic param', function() {
+      this.assertStructure(
+          'typeA[typeA[B]]',
+          {
+            name: 'typea',
+            params: [
+              {
+                name: 'typea',
+                params: [
+                  {
+                    name: 'b',
+                    params: [],
+                  },
+                ],
+              },
+            ],
+          },
+      );
     });
   });
 });

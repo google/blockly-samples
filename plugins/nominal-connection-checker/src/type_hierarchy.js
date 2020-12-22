@@ -250,8 +250,13 @@ export class TypeHierarchy {
     }, [types[0]]);
   }
 
-  // TODO: Might be useful to look into how lexers do this.
   // TODO: Move all the TypeStructure stuff into its own file in the next PR.
+  /**
+   * Parses a string into a TypeStructure.
+   * @param {string} str The string to parse into a TypeStructure.
+   * @return {!TypeStructure} The created TypeStructure.
+   * @private
+   */
   parseType_(str) {
     const typeStruct = {};
     const bracketIndex = str.indexOf('[');
@@ -267,6 +272,13 @@ export class TypeHierarchy {
     return typeStruct;
   }
 
+  /**
+   * Parses a string into an array of type structures.
+   * @param {string} str The string to parse into an array of type structures.
+   *     The string is expected to not be surrounded by brackets.
+   * @return {!Array<!TypeStructure>} The created TypeStructure array.
+   * @private
+   */
   parseParamsArray_(str) {
     const params = [];
     let latestIndex = 0;
@@ -362,7 +374,7 @@ class TypeDef {
 
     /**
      * The caseless names of the parameters of this type.
-     * @type {!Array<Param>}
+     * @type {!Array<ParamDef>}
      * @private
      */
     this.params_ = [];
@@ -574,10 +586,21 @@ class TypeDef {
     return this.paramsMap_.get(ancestorName);
   }
 
+  /**
+   * Returns the index of the parameter with the given name.
+   * @param {string} paramName The name of the parameter.
+   * @return {number} The index of hte parameter.
+   */
   getIndexOfParam(paramName) {
     return this.params_.findIndex((param) => param.name == paramName);
   }
 
+  /**
+   * Returns the parameter definition for the parameter at the given index.
+   * @param {number} index The index to get the parameter definition of.
+   * @return {!ParamDef} The parameter definition for the parameter at the
+   *     given index.
+   */
   getParamForIndex(index) {
     return this.params_[index];
   }
