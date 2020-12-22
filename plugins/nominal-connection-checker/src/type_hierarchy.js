@@ -587,7 +587,27 @@ class TypeDef {
   }
 
   /**
-   * Returns the index of the parameter with the given name.
+   * Returns true if this type has any parameters. False otherwise.
+   * @return {boolean} True if this type has any parameters. False otherwise.
+   */
+  hasParameters() {
+    return !!this.params_.length;
+  }
+
+  /**
+   * Returns true if this type has a parameter with the given name.
+   * False otherwise.
+   * @param {string} paramName The caseless name of the possible parameter.
+   * @return {boolean} True if this type has a parameter with the given name.
+   *     False otherwise.
+   */
+  hasParameter(paramName) {
+    return this.params_.some((param) => param.name == paramName);
+  }
+
+  /**
+   * Returns the index of the parameter with the given name, or -1 if the
+   * parameter does not exist..
    * @param {string} paramName The name of the parameter.
    * @return {number} The index of hte parameter.
    */
@@ -603,6 +623,17 @@ class TypeDef {
    */
   getParamForIndex(index) {
     return this.params_[index];
+  }
+
+  /**
+   * Returns the ParamDef with the given name, or undefined if not found.
+   * @param {string} paramName The name of the parameter to find the
+   *     ParamDef of.
+   * @return {!ParamDef|undefined} The parameter with the given name, or
+   *     undefined if not found.
+   */
+  getParamWithName(paramName) {
+    return this.params_.find((param) => param.name == paramName);
   }
 }
 
