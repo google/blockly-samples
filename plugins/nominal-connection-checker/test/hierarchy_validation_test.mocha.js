@@ -302,6 +302,13 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.notCalled);
     });
 
+    test('"123"', function() {
+      validateHierarchy({
+        '123': { },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
     test('"a"', function() {
       validateHierarchy({
         'a': { },

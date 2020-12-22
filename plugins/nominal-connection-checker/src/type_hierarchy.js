@@ -59,15 +59,15 @@ export class TypeHierarchy {
       const lowerCaseName = typeName.toLowerCase();
       const type = new TypeDef(lowerCaseName);
       const info = hierarchyDef[typeName];
-      if (info.fulfills && info.fulfills.length) {
-        info.fulfills.forEach(
-            (superType) => type.addSuper(superType.toLowerCase()));
-      }
       if (info.params && info.params.length) {
         info.params.forEach((param) => {
           type.addParam(
               param.name.toLowerCase(), stringToVariance(param.variance));
         });
+      }
+      if (info.fulfills && info.fulfills.length) {
+        info.fulfills.forEach(
+            (superType) => type.addSuper(this.parseType_(superType)));
       }
       this.types_.set(lowerCaseName, type);
     }
@@ -94,7 +94,8 @@ export class TypeHierarchy {
         if (!unvisitedSupers.length) {
           type.supers().forEach((superName) => {
             const superType = this.types_.get(superName);
-            superType.ancestors().forEach(type.addAncestor, type);
+            superType.ancestors().forEach(
+                (ancestor) => type.addAncestor(ancestor, superType));
           });
           unvisitedTypes.delete(typeName);
         }
@@ -215,7 +216,7 @@ export class TypeHierarchy {
     const subStructure = this.parseType_(subType);
     const superStructure = this.parseType_(superType);
 
-    this.types_.get(subStructure.name).hasAncestor(superStructure.name);
+    return this.types_.get(subStructure.name).hasAncestor(superStructure.name);
 
     // return this.types_.get(subName.toLowerCase())
     //     .hasAncestor(superName.toLowerCase());
@@ -253,6 +254,12 @@ export class TypeHierarchy {
   }
 
   // TODO: Might be useful to look into how lexers do this.
+  /**
+   *
+   * @param str
+   * @return {TypeStructure}
+   * @private
+   */
   parseType_(str) {
     const typeStruct = {};
     const bracketIndex = str.indexOf('[');
@@ -306,33 +313,13 @@ export class TypeHierarchy {
 }
 
 /**
- * Represents different parameter variances.
- * @enum {string}
+ * Represents the structure of a type, eg in a "fulfills" array.
+ * @typedef {{
+ *   name: string,
+ *   params: (!Array<!TypeStructure>)
+ * }}
  */
-const Variance = {
-  CO: 'covariant',
-  CONTRA: 'contravariant',
-  INV: 'invariant',
-};
-
-/**
- * Converts a variance string to an actual variance.
- * @param {string} str The string to convert to a variance.
- * @return {!Variance} The converted variance value.
- */
-function stringToVariance(str) {
-  str = str.toLowerCase();
-  if (str.startsWith('inv')) {
-    return Variance.INV;
-  } else if (str.startsWith('contra')) {
-    return Variance.CONTRA;
-  } else if (str.startsWith('co')) {
-    return Variance.CO;
-  } else {
-    throw new Error('The variance "' + str + '" is not a valid variance. ' +
-        'Valid variances are: "co", "contra", and "inv".');
-  }
-}
+let TypeStructure;
 
 /**
  * Represents a type.
@@ -387,15 +374,24 @@ class TypeDef {
      * @private
      */
     this.params_ = [];
+
+    /**
+     * A map of ancestor names to arrays of this type's parameters for
+     * that type.
+     * @type {!Map<string, !Array<TypeStructure>>}
+     * @private
+     */
+    this.paramsMap_ = new Map();
   }
 
   /**
-   * Adds the given type to the list of direct supertypes of this type.
-   * @param {string} superName The caseless name of the type to add to the list
-   *     of supertypes of this type.
+   * Adds the given type to the list of direct superTypes of this type.
+   * @param {!TypeStructure} superType The type structure representing the type
+   *     that is the supertype of this type.
    */
-  addSuper(superName) {
-    this.supers_.add(superName);
+  addSuper(superType) {
+    this.supers_.add(superType.name);
+    this.paramsMap_.set(superType.name, superType.params);
   }
 
   /**
@@ -411,9 +407,18 @@ class TypeDef {
    * Adds the given type to the list of ancestors of this type.
    * @param {string} ancestorName The caseless name of the type to add to the
    *     list of ancestors of this type.
+   * @param {!TypeDef} superType The superType that we get this ancestor from.
    */
-  addAncestor(ancestorName) {
+  addAncestor(ancestorName, superType) {
     this.ancestors_.add(ancestorName);
+    const superToAncestor = superType.getParamsForAncestor(ancestorName);
+    const thisToSuper = this.getParamsForAncestor(superType.name);
+    const thisToAncestor = [];
+    superToAncestor.forEach((typeStruct) => {
+      thisToAncestor.push(
+          thisToSuper[superType.getIndexOfParam(typeStruct.name)]);
+    });
+    this.paramsMap_.set(ancestorName, thisToAncestor);
   }
 
   /**
@@ -429,9 +434,16 @@ class TypeDef {
    * Adds the given parameter info to the list of parameters of this type.
    * @param {string} paramName The caseless name of the parameter.
    * @param {!Variance} variance The variance of the parameter.
+   * @param {number=} index The index to insert the parameter at. If undefined,
+   *     the parameter will be added at the end.
    */
-  addParam(paramName, variance) {
-    this.params_.push(new Param(paramName, variance));
+  addParam(paramName, variance, index = undefined) {
+    const param = new Param(paramName, variance);
+    if (index != undefined) {
+      this.params_.splice(index, param);
+    } else {
+      this.params_.push(param);
+    }
   }
 
   /**
@@ -546,6 +558,57 @@ class TypeDef {
    */
   hasDescendant(descendantName) {
     return this.descendants_.has(descendantName);
+  }
+
+  /**
+   * Returns an array of this type's parameters, in the order for its superType.
+   * @param {string} ancestorName The name of the ancestor to get the parameters
+   *     for.
+   * @param {!Array<!TypeStructure>=} explicitTypes Optional explicit types to
+   *     substitute for parameters.
+   * @return {!Array<!TypeStructure>} This type's parameters, in the order for
+   *     its superType.
+   */
+  getParamsForAncestor(ancestorName, explicitTypes = undefined) {
+    // TODO: Add support for the explicit types.
+    return this.paramsMap_.get(ancestorName);
+  }
+
+  getIndexOfParam(paramName) {
+    return this.params_.indexOf((param) => param.name == paramName);
+  }
+
+  getParamForIndex(index) {
+    return this.params_[index];
+  }
+}
+
+/**
+ * Represents different parameter variances.
+ * @enum {string}
+ */
+const Variance = {
+  CO: 'covariant',
+  CONTRA: 'contravariant',
+  INV: 'invariant',
+};
+
+/**
+ * Converts a variance string to an actual variance.
+ * @param {string} str The string to convert to a variance.
+ * @return {!Variance} The converted variance value.
+ */
+function stringToVariance(str) {
+  str = str.toLowerCase();
+  if (str.startsWith('inv')) {
+    return Variance.INV;
+  } else if (str.startsWith('contra')) {
+    return Variance.CONTRA;
+  } else if (str.startsWith('co')) {
+    return Variance.CO;
+  } else {
+    throw new Error('The variance "' + str + '" is not a valid variance. ' +
+        'Valid variances are: "co", "contra", and "inv".');
   }
 }
 

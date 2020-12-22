@@ -666,7 +666,7 @@ suite('TypeHierarchy', function() {
       });
 
       this.assertStructure = function(str, struct) {
-        chai.assert.deepEqual(hierarchy.getTypeStructure_(str), struct);
+        chai.assert.deepEqual(hierarchy.parseType_(str), struct);
       };
     });
 
