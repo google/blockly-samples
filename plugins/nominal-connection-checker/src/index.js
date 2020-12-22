@@ -13,7 +13,6 @@ import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
 import {getCheck, isExplicitConnection, isGenericConnection} from './utils';
 
-// TODO: Fix the version of Blockly being required in package.json.
 
 /**
  * A connection checker that is targeted at helping Blockly model languages with

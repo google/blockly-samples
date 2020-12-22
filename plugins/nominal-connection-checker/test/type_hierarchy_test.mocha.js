@@ -26,6 +26,234 @@ suite('TypeHierarchy', function() {
         ' defined');
   });
 
+  // TODO: Move this into typeFulfillsType once checking is added.
+  suite('Hierarchy parsing', function() {
+    suite('Parameter subtyping', function() {
+      setup(function() {
+        this.assertParams = function(hierarchy, sub, sup, structure) {
+          const type = hierarchy.types_.get(sub);
+          const params = type.getParamsForAncestor(sup);
+          chai.assert.deepEqual(structure, params);
+        };
+      });
+
+      test('Self params', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+        });
+        this.assertParams(hierarchy, 'typea', 'typea', [
+          {
+            'name': 'a',
+            'params': [],
+          },
+        ]);
+      });
+
+      test('No params super', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': { },
+          'typeB': {
+            'fulfills': ['typeA'],
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+        });
+        const type = hierarchy.types_.get('typeb');
+        const params = type.getParamsForAncestor('typea');
+        chai.assert.isArray(params);
+        chai.assert.isEmpty(params);
+      });
+
+      test('Single param', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeB': {
+            'fulfills': ['typeA[B]'],
+            'params': [
+              {
+                'name': 'B',
+                'variance': 'co',
+              },
+            ],
+          },
+        });
+        this.assertParams(hierarchy, 'typeb', 'typea', [
+          {
+            'name': 'b',
+            'params': [],
+          },
+        ]);
+      });
+
+      test('Swapped params', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+              {
+                'name': 'B',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeB': {
+            'fulfills': ['typeA[D, C]'],
+            'params': [
+              {
+                'name': 'C',
+                'variance': 'co',
+              },
+              {
+                'name': 'D',
+                'variance': 'co',
+              },
+            ],
+          },
+        });
+        this.assertParams(hierarchy, 'typeb', 'typea', [
+          {
+            'name': 'd',
+            'params': [],
+          },
+          {
+            'name': 'c',
+            'params': [],
+          },
+        ]);
+      });
+
+      test('Deep subtype', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeB': {
+            'fulfills': ['typeA[B]'],
+            'params': [
+              {
+                'name': 'B',
+                'variance': 'co',
+              },
+              {
+                'name': 'C',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeC': {
+            'fulfills': ['typeB[E, D]'],
+            'params': [
+              {
+                'name': 'D',
+                'variance': 'co',
+              },
+              {
+                'name': 'E',
+                'variance': 'co',
+              },
+            ],
+          },
+        });
+        this.assertParams(hierarchy, 'typec', 'typea', [
+          {
+            'name': 'e',
+            'params': [],
+          },
+        ]);
+      });
+
+      test('Explicit params', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeB': { },
+          'typeC': {
+            'fulfills': ['typeA[typeB]'],
+          },
+        });
+        this.assertParams(hierarchy, 'typec', 'typea', [
+          {
+            'name': 'typeb',
+            'params': [],
+          },
+        ]);
+      });
+
+      test('Explicit nested params', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeB': {
+            'params': [
+              {
+                'name': 'B',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeC': {
+            'fulfills': ['typeA[typeB[C]]'],
+            'params': [
+              {
+                'name': 'C',
+                'variance': 'co',
+              },
+            ],
+          },
+        });
+        this.assertParams(hierarchy, 'typec', 'typea', [
+          {
+            'name': 'typeb',
+            'params': [
+              {
+                'name': 'c',
+                'params': [],
+              },
+            ],
+          },
+        ]);
+      });
+    });
+  });
+
   suite('typeExists', function() {
     test('Simple', function() {
       const hierarchy = new TypeHierarchy({
@@ -885,6 +1113,41 @@ suite('TypeHierarchy', function() {
               },
             ],
           });
+    });
+
+    test('Generic param', function() {
+      this.assertStructure(
+          'typeA[B]',
+          {
+            name: 'typea',
+            params: [
+              {
+                name: 'b',
+                params: [],
+              },
+            ],
+          },
+      );
+
+      test('Nested generic param', function() {
+        this.assertStructure(
+            'typeA[typeA[B]]',
+            {
+              name: 'typea',
+              params: [
+                {
+                  name: 'typea',
+                  params: [
+                    {
+                      name: 'b',
+                      params: [],
+                    },
+                  ],
+                },
+              ],
+            },
+        );
+      });
     });
   });
 });
