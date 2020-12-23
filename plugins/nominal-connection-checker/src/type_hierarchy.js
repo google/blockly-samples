@@ -582,8 +582,19 @@ class TypeDef {
             return {name: param.name, params: []};
           }));
     }
-    // TODO: Add support for the explicit types.
-    return this.paramsMap_.get(ancestorName);
+    const params = this.paramsMap_.get(ancestorName);
+    if (explicitTypes) {
+      const replaceFn = (param, i, array) => {
+        const paramIndex = this.getIndexOfParam(param.name);
+        if (paramIndex != -1) {
+          array[i] = explicitTypes[paramIndex];
+        } else {
+          param.params.forEach(replaceFn, this);
+        }
+      };
+      params.forEach(replaceFn, this);
+    }
+    return params;
   }
 
   /**
