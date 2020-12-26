@@ -10,6 +10,9 @@
  */
 'use strict';
 
+import {TypeStructure, parseType} from './type_structure';
+
+
 /**
  * Defines a type hierarchy. Used for doing operations like telling if one type
  * is a subtype of another type.
@@ -67,7 +70,7 @@ export class TypeHierarchy {
       }
       if (info.fulfills && info.fulfills.length) {
         info.fulfills.forEach(
-            (superType) => type.addSuper(this.parseType_(superType)));
+            (superType) => type.addSuper(parseType(superType)));
       }
       this.types_.set(lowerCaseName, type);
     }
@@ -213,8 +216,8 @@ export class TypeHierarchy {
    *     in the type hierarchy definition. False otherwise.
    */
   typeFulfillsType(subType, superType) {
-    const subStructure = this.parseType_(subType);
-    const superStructure = this.parseType_(superType);
+    const subStructure = parseType(subType);
+    const superStructure = parseType(superType);
 
     return this.types_.get(subStructure.name).hasAncestor(superStructure.name);
   }
@@ -249,81 +252,7 @@ export class TypeHierarchy {
           });
     }, [types[0]]);
   }
-
-  // TODO: Move all the TypeStructure stuff into its own file in the next PR.
-  /**
-   * Parses a string into a TypeStructure.
-   * @param {string} str The string to parse into a TypeStructure.
-   * @return {!TypeStructure} The created TypeStructure.
-   * @private
-   */
-  parseType_(str) {
-    const typeStruct = {};
-    const bracketIndex = str.indexOf('[');
-    if (bracketIndex != -1) {
-      typeStruct.name = str.slice(0, bracketIndex);
-      typeStruct.params = this.parseParamsArray_(
-          str.slice(bracketIndex + 1, str.length - 1));
-    } else {
-      typeStruct.name = str;
-      typeStruct.params = [];
-    }
-    typeStruct.name = typeStruct.name.toLowerCase().trim();
-    return typeStruct;
-  }
-
-  /**
-   * Parses a string into an array of type structures.
-   * @param {string} str The string to parse into an array of type structures.
-   *     The string is expected to not be surrounded by brackets.
-   * @return {!Array<!TypeStructure>} The created TypeStructure array.
-   * @private
-   */
-  parseParamsArray_(str) {
-    const params = [];
-    let latestIndex = 0;
-    let openBraceCount = 0;
-    [...str].forEach((c, i) => {
-      switch (c) {
-        case '[':
-          openBraceCount++;
-          break;
-        case ']':
-          openBraceCount--;
-          if (!openBraceCount) {
-            params.push(this.parseType_(str.slice(latestIndex, i + 1)));
-            latestIndex = -1;
-          }
-          break;
-        case ',':
-        case ' ':
-          if (!openBraceCount && latestIndex != -1) {
-            params.push(this.parseType_(str.slice(latestIndex, i)));
-            latestIndex = -1;
-          }
-          break;
-        default:
-          if (latestIndex == -1) {
-            latestIndex = i;
-          }
-          break;
-      }
-    });
-    if (latestIndex != -1) {
-      params.push(this.parseType_(str.slice(latestIndex)));
-    }
-    return params;
-  }
 }
-
-/**
- * Represents the structure of a type, eg in a "fulfills" array.
- * @typedef {{
- *   name: string,
- *   params: (!Array<!TypeStructure>)
- * }}
- */
-let TypeStructure;
 
 /**
  * Represents a type.
