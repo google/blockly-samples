@@ -341,4 +341,45 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.calledWith(errorMsg, '1'));
     });
   });
+
+  suite('Characters', function() {
+    setup(function() {
+      const errorMsg = 'The type %s includes an illegal %s character (\'%s\').';
+
+      this.assertValid = function(hierarchy) {
+        validateHierarchy(hierarchy);
+        chai.assert.isTrue(this.errorStub.notCalled);
+      };
+      this.assertInvalid = function(hierarchy, type, char, charName) {
+        validateHierarchy(hierarchy);
+        chai.assert.isTrue(this.errorStub.calledOnce);
+        chai.assert.isTrue(
+            this.errorStub.calledWith(errorMsg, type, charName, char));
+      };
+    });
+
+    test('Comma', function() {
+      this.assertInvalid({
+        'type,type': { },
+      }, 'type,type', ',', 'comma');
+    });
+
+    test('Space', function() {
+      this.assertInvalid({
+        'type type': { },
+      }, 'type type', ' ', 'space');
+    });
+
+    test('Left bracket', function() {
+      this.assertInvalid({
+        'type[': { },
+      }, 'type[', '[', 'left bracket');
+    });
+
+    test('Right bracket', function() {
+      this.assertInvalid({
+        'type]': { },
+      }, 'type]', ']', 'right bracket');
+    });
+  });
 });

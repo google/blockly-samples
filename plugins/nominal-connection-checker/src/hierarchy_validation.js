@@ -28,6 +28,12 @@ export function validateHierarchy(hierarchyDef) {
   checkSupersDefined(hierarchyDef);
   checkCircularDependencies(hierarchyDef);
   checkGenerics(hierarchyDef);
+  checkCharacters(hierarchyDef, [
+    [',', 'comma'],
+    [' ', 'space'],
+    ['[', 'left bracket'],
+    [']', 'right bracket'],
+  ]);
 }
 
 /**
@@ -181,6 +187,23 @@ function checkGenerics(hierarchyDef) {
   for (const type of Object.keys(hierarchyDef)) {
     if (isGeneric(type)) {
       console.error(error, type);
+    }
+  }
+}
+
+/**
+ *
+ * @param hierarchyDef
+ * @param {!Array<!Array<string>>} chars
+ */
+function checkCharacters(hierarchyDef, chars) {
+  const error = 'The type %s includes an illegal %s character (\'%s\').';
+
+  for (const type of Object.keys(hierarchyDef)) {
+    for (const [char, charName] of chars) {
+      if (type.includes(char)) {
+        console.error(error, type, charName, char);
+      }
     }
   }
 }
