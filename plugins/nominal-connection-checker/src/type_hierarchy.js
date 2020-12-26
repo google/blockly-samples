@@ -568,12 +568,12 @@ class TypeDef {
    * Returns an array of this type's parameters, in the order for its superType.
    * @param {string} ancestorName The caseless name of the ancestor to get the
    *     parameters for.
-   * @param {!Array<!TypeStructure>=} explicitTypes Optional explicit types to
-   *     substitute for parameters.
+   * @param {!Array<!TypeStructure>=} actualTypes Optional actual types to
+   *     substitute for parameters. These types may be generic.
    * @return {!Array<!TypeStructure>} This type's parameters, in the order for
    *     its superType.
    */
-  getParamsForAncestor(ancestorName, explicitTypes = undefined) {
+  getParamsForAncestor(ancestorName, actualTypes = undefined) {
     if (ancestorName == this.name && !this.paramsMap_.has(this.name)) {
       // Convert this type's params to a type structure.
       this.paramsMap_.set(
@@ -583,11 +583,11 @@ class TypeDef {
           }));
     }
     const params = this.paramsMap_.get(ancestorName);
-    if (explicitTypes) {
+    if (actualTypes) {
       const replaceFn = (param, i, array) => {
         const paramIndex = this.getIndexOfParam(param.name);
         if (paramIndex != -1) {
-          array[i] = explicitTypes[paramIndex];
+          array[i] = actualTypes[paramIndex];
         } else {
           param.params.forEach(replaceFn, this);
         }
