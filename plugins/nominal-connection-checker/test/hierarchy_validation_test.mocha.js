@@ -135,6 +135,45 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.notCalled);
     });
+
+    test('Defined with params', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Undefined with params', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'typeA', 'typeB'));
+    });
   });
 
   suite('Circular Dependencies', function() {

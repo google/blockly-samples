@@ -10,6 +10,7 @@
 'use strict';
 
 import {isGeneric} from './utils';
+import {parseType} from './type_structure';
 
 /**
  * Validates the given hierarchy definition. Does checks for duplicate types,
@@ -87,8 +88,9 @@ function checkSupersDefined(hierarchyDef) {
       continue;
     }
     for (const superType of typeInfo.fulfills) {
-      if (!types.has(superType.toLowerCase())) {
-        console.error(errorMsg, type, superType);
+      const superName = parseType(superType, false).name;
+      if (!types.has(superName.toLowerCase())) {
+        console.error(errorMsg, type, superName);
       }
     }
   }
