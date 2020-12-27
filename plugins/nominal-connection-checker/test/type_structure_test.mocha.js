@@ -15,8 +15,8 @@ const {parseType} = require('../src/type_structure');
 suite('TypeStructure', function() {
   suite('parseType', function() {
     setup(function() {
-      this.assertStructure = function(str, struct) {
-        chai.assert.deepEqual(parseType(str), struct);
+      this.assertStructure = function(str, struct, caseless = true) {
+        chai.assert.deepEqual(parseType(str, caseless), struct);
       };
     });
 
@@ -269,6 +269,35 @@ suite('TypeStructure', function() {
               },
             ],
           },
+      );
+    });
+
+    test('Keep case', function() {
+      this.assertStructure(
+          'typeA[typeA[typeA, typeA], typeA]',
+          {
+            name: 'typeA',
+            params: [
+              {
+                name: 'typeA',
+                params: [
+                  {
+                    name: 'typeA',
+                    params: [],
+                  },
+                  {
+                    name: 'typeA',
+                    params: [],
+                  },
+                ],
+              },
+              {
+                name: 'typeA',
+                params: [],
+              },
+            ],
+          },
+          false
       );
     });
   });
