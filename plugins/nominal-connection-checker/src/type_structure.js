@@ -39,13 +39,16 @@ export class TypeStructure {
 /**
  * Parses a string into a TypeStructure.
  * @param {string} str The string to parse.
+ * @param {boolean=} caseless Whether we should convert names to lowercase
+ *     (caseless).
  * @return {TypeStructure} The created TypeStructure.
  */
-export function parseType(str) {
+export function parseType(str, caseless = true) {
   const tokens = str.match(/([^[]+)(?:\[(.+)])?/);
-  const typeStruct = new TypeStructure(tokens[1].toLowerCase());
+  const name = caseless ? tokens[1].toLowerCase() : tokens[1];
+  const typeStruct = new TypeStructure(name);
   if (tokens[2]) {
-    typeStruct.params = parseParams_(tokens[2]);
+    typeStruct.params = parseParams_(tokens[2], caseless);
   }
   return typeStruct;
 }
@@ -54,10 +57,12 @@ export function parseType(str) {
  * Parses a string into an array of type structures.
  * @param {string} str The string to parse into an array of type structures.
  *     The string is expected to not be surrounded by brackets.
+ * @param {boolean=} caseless Whether we should convert names to lowercase
+ *     (caseless).
  * @return {!Array<!TypeStructure>} The created TypeStructure array.
  * @private
  */
-function parseParams_(str) {
+function parseParams_(str, caseless) {
   const params = [];
   let latestIndex = 0;
   let openBraceCount = 0;
@@ -69,14 +74,14 @@ function parseParams_(str) {
       case ']':
         openBraceCount--;
         if (!openBraceCount) {
-          params.push(parseType(str.slice(latestIndex, i + 1)));
+          params.push(parseType(str.slice(latestIndex, i + 1), caseless));
           latestIndex = -1;
         }
         break;
       case ',':
       case ' ':
         if (!openBraceCount && latestIndex != -1) {
-          params.push(parseType(str.slice(latestIndex, i)));
+          params.push(parseType(str.slice(latestIndex, i), caseless));
           latestIndex = -1;
         }
         break;
@@ -88,7 +93,7 @@ function parseParams_(str) {
     }
   });
   if (latestIndex != -1) {
-    params.push(parseType(str.slice(latestIndex)));
+    params.push(parseType(str.slice(latestIndex), caseless));
   }
   return params;
 }
