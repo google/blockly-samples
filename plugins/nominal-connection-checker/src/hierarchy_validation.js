@@ -110,36 +110,29 @@ function checkCircularDependencies(hierarchyDef) {
   /**
    * Searches cycles in the type hierarchy recursively.
    * @param {string} typeName The name of the current type being examined.
-   * @param {!Set<string>} currentTraversalSet The set of all of the type types
-   *    we have visited. This set is caseless, whereas the currentTraversal is
-   *    not.
    * @param {!Array<string>} currentTraversal An array of all the types that
    *     have been visited since our entry node.
    */
-  function searchForCyclesRec(typeName, currentTraversalSet, currentTraversal) {
+  function searchForCyclesRec(typeName, currentTraversal) {
     const caselessName = typeName.toLowerCase();
     const typeInfo = types.get(caselessName);
     if (!typeInfo) {
       return;
     }
     visitedTypes.add(caselessName);
-    if (currentTraversalSet.has(caselessName)) {
-      currentTraversal.push(typeName);
-      logCircularDependency(currentTraversal);
-      currentTraversal.pop();
+    if (currentTraversal.some((type) => type.toLowerCase() == caselessName)) {
+      logCircularDependency([...currentTraversal, typeName]);
       return;
     }
 
-    currentTraversalSet.add(caselessName);
     currentTraversal.push(typeName);
 
     if (typeInfo.fulfills) {
       for (const superType of typeInfo.fulfills) {
-        searchForCyclesRec(superType, currentTraversalSet, currentTraversal);
+        searchForCyclesRec(superType, currentTraversal);
       }
     }
 
-    currentTraversalSet.delete(caselessName);
     currentTraversal.pop();
   }
 
@@ -154,7 +147,7 @@ function checkCircularDependencies(hierarchyDef) {
   for (const type of Object.keys(hierarchyDef)) {
     const caselessName = type.toLowerCase();
     if (!visitedTypes.has(caselessName)) {
-      searchForCyclesRec(type, new Set(), []);
+      searchForCyclesRec(type, []);
     }
   }
 }

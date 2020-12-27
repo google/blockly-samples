@@ -337,13 +337,7 @@ suite('TypeStructure', function() {
           return e instanceof MissingTypeNameError && e.index == 5;
         });
       });
-      test('type[[type]]', function() {
-        this.assertThrows(() => {
-          parseType('type[[type]]');
-        }, (e) => {
-          return e instanceof MissingTypeNameError && e.index == 5;
-        });
-      });
+
       test('type[type[type[[type]]]]', function() {
         this.assertThrows(() => {
           parseType('type[type[type[[type]]]]');
