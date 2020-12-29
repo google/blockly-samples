@@ -4,13 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+
 /**
  * @fileoverview Unit tests for TypeStructure.
  */
 
 const chai = require('chai');
 
-const {parseType} = require('../src/type_structure');
+const {parseType, MissingTypeNameError,
+  RightBracketError, LeftBracketError,
+  ExtraCharactersError} = require('../src/type_structure');
 
 suite('TypeStructure', function() {
   suite('parseType', function() {
@@ -299,6 +302,125 @@ suite('TypeStructure', function() {
           },
           false
       );
+    });
+  });
+
+  suite('Invalid type strings', function() {
+    setup(function() {
+      this.assertThrows = function(fn, testFn) {
+        let throws = false;
+        try {
+          fn();
+        } catch (e) {
+          throws = true;
+          chai.assert.isTrue(testFn(e), 'Got error: ' + e.message);
+        }
+        if (!throws) {
+          chai.assert.fail('Expected function to throw an error.');
+        }
+      };
+    });
+
+    suite('Missing type name', function() {
+      test('[type]', function() {
+        this.assertThrows(() => {
+          parseType('[type]');
+        }, (e) => {
+          return e instanceof MissingTypeNameError && e.index == 0;
+        });
+      });
+
+      test('type[[type]]', function() {
+        this.assertThrows(() => {
+          parseType('type[[type]]');
+        }, (e) => {
+          return e instanceof MissingTypeNameError && e.index == 5;
+        });
+      });
+      test('type[[type]]', function() {
+        this.assertThrows(() => {
+          parseType('type[[type]]');
+        }, (e) => {
+          return e instanceof MissingTypeNameError && e.index == 5;
+        });
+      });
+      test('type[type[type[[type]]]]', function() {
+        this.assertThrows(() => {
+          parseType('type[type[type[[type]]]]');
+        }, (e) => {
+          return e instanceof MissingTypeNameError && e.index == 15;
+        });
+      });
+    });
+
+    suite('Unmatched left', function() {
+      test('type[', function() {
+        this.assertThrows(() => {
+          parseType('type[');
+        }, (e) => {
+          return e instanceof LeftBracketError && e.index == 4;
+        });
+      });
+
+      test('type[type', function() {
+        this.assertThrows(() => {
+          parseType('type[type');
+        }, (e) => {
+          return e instanceof LeftBracketError && e.index == 4;
+        });
+      });
+
+      test('type[type[type]', function() {
+        this.assertThrows(() => {
+          parseType('type[type[type]');
+        }, (e) => {
+          return e instanceof LeftBracketError && e.index == 4;
+        });
+      });
+    });
+
+    suite('Unmatched right', function() {
+      test('type]', function() {
+        this.assertThrows(() => {
+          parseType('type]');
+        }, (e) => {
+          return e instanceof RightBracketError && e.index == 4;
+        });
+      });
+
+      test('type]type[type]]', function() {
+        this.assertThrows(() => {
+          parseType('type]type[type]]');
+        }, (e) => {
+          return e instanceof RightBracketError && e.index == 4;
+        });
+      });
+    });
+
+    suite('Extra characters', function() {
+      test('type[type], type', function() {
+        this.assertThrows(() => {
+          parseType('type[type], type');
+        }, (e) => {
+          return e instanceof ExtraCharactersError && e.index == 10;
+        });
+      });
+
+      test('type[type], type]', function() {
+        this.assertThrows(() => {
+          parseType('type[type], type');
+        }, (e) => {
+          return e instanceof ExtraCharactersError && e.index == 10;
+        });
+      });
+
+      test('type[type]]', function() {
+        this.assertThrows(() => {
+          parseType('type[type]]');
+        }, (e) => {
+          return e instanceof ExtraCharactersError && e.index == 10;
+        });
+      });
     });
   });
 });
