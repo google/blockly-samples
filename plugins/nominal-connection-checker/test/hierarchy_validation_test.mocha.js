@@ -97,7 +97,9 @@ suite('Hierarchy Validation', function() {
 
   suite('Defined supers', function() {
     const errorMsg = 'The type %s says it fulfills the type %s, but that' +
-        ' type is not defined';
+        ' type is not defined.';
+    const genericMsg = 'The type %s says it fulfills the type %s, but that ' +
+        'type appears to be generic, which is not allowed.';
 
     test('Defined before', function() {
       validateHierarchy({
@@ -120,6 +122,7 @@ suite('Hierarchy Validation', function() {
     });
 
     test('Not defined', function() {
+      this.errorStub.callsFake((params) => console.log(params));
       validateHierarchy({
         'typeA': {
           'fulfills': ['typeB'],
@@ -163,6 +166,7 @@ suite('Hierarchy Validation', function() {
     });
 
     test('Undefined with params', function() {
+      this.errorStub.callsFake((params) => console.log(params));
       validateHierarchy({
         'typeA': {
           'fulfills': ['typeB[A]'],
@@ -176,6 +180,18 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'typeA', 'typeB'));
+    });
+
+    test('Generic super', function() {
+      this.errorStub.callsFake((params) => console.log(params));
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['A'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(
+          this.errorStub.calledWith(genericMsg, 'typeA', 'A'));
     });
   });
 

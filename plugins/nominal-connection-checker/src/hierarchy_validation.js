@@ -78,7 +78,9 @@ function checkConflictingTypes(hierarchyDef) {
  */
 function checkSupersDefined(hierarchyDef) {
   const errorMsg = 'The type %s says it fulfills the type %s, but that type' +
-      ' is not defined';
+      ' is not defined.';
+  const genericMsg = 'The type %s says it fulfills the type %s, but that type' +
+      ' appears to be generic, which is not allowed.';
 
   const types = new Set();
   const keys = Object.keys(hierarchyDef);
@@ -94,7 +96,11 @@ function checkSupersDefined(hierarchyDef) {
       try {
         const superName = parseType(superType, false).name;
         if (!types.has(superName.toLowerCase())) {
-          console.error(errorMsg, type, superName);
+          if (isGeneric(superName)) {
+            console.error(genericMsg, type, superName);
+          } else {
+            console.error(errorMsg, type, superName);
+          }
         }
       } catch (e) {
         if (!(e instanceof TypeParseError)) {
