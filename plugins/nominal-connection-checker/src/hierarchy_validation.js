@@ -10,7 +10,7 @@
 'use strict';
 
 import {isGeneric} from './utils';
-import {parseType} from './type_structure';
+import {TypeStructure, parseType, structureToString} from './type_structure';
 
 /**
  * Validates the given hierarchy definition. Does checks for duplicate types,
@@ -25,16 +25,16 @@ export function validateHierarchy(hierarchyDef) {
     return;
   }
 
-  checkConflictingTypes(hierarchyDef);
-  checkSupersDefined(hierarchyDef);
-  checkCircularDependencies(hierarchyDef);
-  checkGenerics(hierarchyDef);
   checkCharacters(hierarchyDef, [
     [',', 'comma'],
     [' ', 'space'],
     ['[', 'left bracket'],
     [']', 'right bracket'],
   ]);
+  checkGenerics(hierarchyDef);
+  checkConflictingTypes(hierarchyDef);
+  checkSupersDefined(hierarchyDef);
+  checkCircularDependencies(hierarchyDef);
 }
 
 /**
@@ -110,26 +110,30 @@ function checkCircularDependencies(hierarchyDef) {
   /**
    * Searches cycles in the type hierarchy recursively.
    * @param {string} typeName The name of the current type being examined.
-   * @param {!Array<string>} currentTraversal An array of all the types that
-   *     have been visited since our entry node.
+   * @param {!Array<!TypeStructure>} currentTraversal An array of all the types
+   *     that have been visited since our entry node.
    */
   function searchForCyclesRec(typeName, currentTraversal) {
-    const caselessName = typeName.toLowerCase();
+    const typeStructure = parseType(typeName, false);
+    const caselessName = typeStructure.name.toLowerCase();
     const typeInfo = types.get(caselessName);
     if (!typeInfo) {
       return;
     }
     visitedTypes.add(caselessName);
-    if (currentTraversal.some((type) => type.toLowerCase() == caselessName)) {
-      logCircularDependency([...currentTraversal, typeName]);
+    if (currentTraversal.some(
+        (type) => type.name.toLowerCase() == caselessName)) {
+      logCircularDependency([...currentTraversal, typeStructure]);
       return;
     }
 
-    currentTraversal.push(typeName);
+    currentTraversal.push(typeStructure);
 
     if (typeInfo.fulfills) {
       for (const superType of typeInfo.fulfills) {
         searchForCyclesRec(superType, currentTraversal);
+        // searchForCyclesRec(
+        // parseType(superType, false).name, currentTraversal);
       }
     }
 
@@ -154,18 +158,19 @@ function checkCircularDependencies(hierarchyDef) {
 
 /**
  * Logs an informative error about a cyclic dependency.
- * @param {!Array<string>} cycleArray An array of all the types that have been
- *     visited since our entry node.
+ * @param {!Array<!TypeStructure>} cycleArray An array of all the types that
+ *     have been visited since our entry node.
  */
 function logCircularDependency(cycleArray) {
-  const lastType = cycleArray[cycleArray.length - 1].toLowerCase();
-  const index = cycleArray.findIndex((elem) => elem.toLowerCase() == lastType);
-  const firstType = cycleArray[index];
+  const lastType = cycleArray[cycleArray.length - 1].name.toLowerCase();
+  const index = cycleArray.findIndex(
+      (elem) => elem.name.toLowerCase() == lastType);
+  const firstType = cycleArray[index].name;
 
-  let errorMsg = `The type ${firstType} creates a circular dependency: `;
-  errorMsg += firstType;
+  let errorMsg = 'The type ' + firstType + ' creates a circular dependency: ' +
+      firstType;
   for (let i = index + 1; i < cycleArray.length; i++) {
-    errorMsg += ' fulfills ' + cycleArray[i];
+    errorMsg += ' fulfills ' + structureToString(cycleArray[i]);
   }
   console.error(errorMsg);
 }
@@ -187,9 +192,11 @@ function checkGenerics(hierarchyDef) {
 }
 
 /**
- *
- * @param hierarchyDef
- * @param {!Array<!Array<string>>} chars
+ * Checks that none of the types in the hierarchy contain any of the given
+ * characters.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ * @param {!Array<!Array<string>>} chars An array of tuples containing
+ *     characters and english character names. Eg [',', 'comma'].
  */
 function checkCharacters(hierarchyDef, chars) {
   const error = 'The type %s includes an illegal %s character (\'%s\').';

@@ -207,6 +207,36 @@ suite('Hierarchy Validation', function() {
           'The type typeA creates a circular dependency: ' +
           'typeA fulfills typeA'));
     });
+    test('Direct with case', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['TypeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills TypeA'));
+    });
+
+    test('Direct w/ params', function() {
+      this.errorStub.callsFake((...params) => console.log(params));
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeA[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeA[A]'));
+    });
 
     test('Indirect cycle', function() {
       validateHierarchy({
@@ -221,6 +251,55 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.calledWith(
           'The type typeA creates a circular dependency: ' +
           'typeA fulfills typeB fulfills typeA'));
+    });
+
+    test('Indirect cycle w/ params', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'fulfills': ['typeA[B]'],
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeB[A] fulfills typeA[B]'));
+    });
+
+    test('Indirect cycle w/ one param', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[typeC]'],
+        },
+        'typeB': {
+          'fulfills': ['typeA'],
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeC': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          'The type typeA creates a circular dependency: ' +
+          'typeA fulfills typeB[typeC] fulfills typeA'));
     });
 
     test('Really indirect cycle', function() {
@@ -315,18 +394,6 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.calledWith(
           'The type typeC creates a circular dependency: ' +
           'typeC fulfills typeD fulfills typeC'));
-    });
-
-    test('Case', function() {
-      validateHierarchy({
-        'typeA': {
-          'fulfills': ['TypeA'],
-        },
-      });
-      chai.assert.isTrue(this.errorStub.calledOnce);
-      chai.assert.isTrue(this.errorStub.calledWith(
-          'The type typeA creates a circular dependency: ' +
-          'typeA fulfills TypeA'));
     });
   });
 
