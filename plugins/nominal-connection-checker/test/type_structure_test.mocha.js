@@ -13,7 +13,7 @@ const chai = require('chai');
 
 const {parseType, MissingTypeNameError,
   RightBracketError, LeftBracketError,
-  ExtraCharactersError} = require('../src/type_structure');
+  ExtraCharactersError, structureToString} = require('../src/type_structure');
 
 suite('TypeStructure', function() {
   suite('parseType', function() {
@@ -421,6 +421,82 @@ suite('TypeStructure', function() {
           return e instanceof ExtraCharactersError && e.index == 10;
         });
       });
+    });
+  });
+
+  suite('structureToString', function() {
+    setup(function() {
+      this.assertString = function(struct, str) {
+        chai.assert.equal(structureToString(struct), str);
+      };
+    });
+
+    test('Just type', function() {
+      this.assertString({
+        name: 'type',
+        params: [],
+      }, 'type');
+    });
+
+    test('Single param', function() {
+      this.assertString(
+          {
+            name: 'typeA',
+            params: [
+              {
+                name: 'typeA',
+                params: [],
+              },
+            ],
+          },
+          'typeA[typeA]');
+    });
+
+    test('Multiple params', function() {
+      this.assertString(
+          {
+            name: 'typeA',
+            params: [
+              {
+                name: 'typeA',
+                params: [],
+              },
+              {
+                name: 'typeA',
+                params: [],
+              },
+            ],
+          },
+          'typeA[typeA, typeA]');
+    });
+
+    test('Deep nesting', function() {
+      this.assertString(
+          {
+            name: 'typeA',
+            params: [
+              {
+                name: 'typeA',
+                params: [
+                  {
+                    name: 'typeA',
+                    params: [
+                      {
+                        name: 'typeA',
+                        params: [
+                          {
+                            name: 'typeA',
+                            params: [],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          'typeA[typeA[typeA[typeA[typeA]]]]');
     });
   });
 });

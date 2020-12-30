@@ -236,3 +236,18 @@ export class MissingTypeNameError extends TypeParseError {
       'type name.');
   }
 }
+
+/**
+ * Converts a type structure into a string representing a type structure.
+ * @param {!TypeStructure} struct The structure to convert.
+ * @return {string} The converted type structure.
+ */
+export function structureToString(struct) {
+  let string = struct.name;
+  const params = struct.params.map(
+      (param) => structureToString(param)).join(', ');
+  if (params) {
+    string += '[' + params + ']';
+  }
+  return string;
+}
