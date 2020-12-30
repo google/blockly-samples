@@ -10,7 +10,8 @@
 'use strict';
 
 import {isGeneric} from './utils';
-import {TypeStructure, parseType, structureToString} from './type_structure';
+import {TypeStructure, parseType,
+  structureToString, TypeParseError} from './type_structure';
 
 /**
  * Validates the given hierarchy definition. Does checks for duplicate types,
@@ -33,6 +34,7 @@ export function validateHierarchy(hierarchyDef) {
   ]);
   checkGenerics(hierarchyDef);
   checkConflictingTypes(hierarchyDef);
+  checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
   checkCircularDependencies(hierarchyDef);
 }
@@ -88,9 +90,15 @@ function checkSupersDefined(hierarchyDef) {
       continue;
     }
     for (const superType of typeInfo.fulfills) {
-      const superName = parseType(superType, false).name;
-      if (!types.has(superName.toLowerCase())) {
-        console.error(errorMsg, type, superName);
+      try {
+        const superName = parseType(superType, false).name;
+        if (!types.has(superName.toLowerCase())) {
+          console.error(errorMsg, type, superName);
+        }
+      } catch (e) {
+        if (!(e instanceof TypeParseError)) {
+          throw e;
+        } // Otherwise it will have been handled by our specific check.
       }
     }
   }
@@ -114,30 +122,34 @@ function checkCircularDependencies(hierarchyDef) {
    *     that have been visited since our entry node.
    */
   function searchForCyclesRec(typeName, currentTraversal) {
-    const typeStructure = parseType(typeName, false);
-    const caselessName = typeStructure.name.toLowerCase();
-    const typeInfo = types.get(caselessName);
-    if (!typeInfo) {
-      return;
-    }
-    visitedTypes.add(caselessName);
-    if (currentTraversal.some(
-        (type) => type.name.toLowerCase() == caselessName)) {
-      logCircularDependency([...currentTraversal, typeStructure]);
-      return;
-    }
-
-    currentTraversal.push(typeStructure);
-
-    if (typeInfo.fulfills) {
-      for (const superType of typeInfo.fulfills) {
-        searchForCyclesRec(superType, currentTraversal);
-        // searchForCyclesRec(
-        // parseType(superType, false).name, currentTraversal);
+    try {
+      const typeStructure = parseType(typeName, false);
+      const caselessName = typeStructure.name.toLowerCase();
+      const typeInfo = types.get(caselessName);
+      if (!typeInfo) {
+        return;
       }
-    }
+      visitedTypes.add(caselessName);
+      if (currentTraversal.some(
+          (type) => type.name.toLowerCase() == caselessName)) {
+        logCircularDependency([...currentTraversal, typeStructure]);
+        return;
+      }
 
-    currentTraversal.pop();
+      currentTraversal.push(typeStructure);
+
+      if (typeInfo.fulfills) {
+        for (const superType of typeInfo.fulfills) {
+          searchForCyclesRec(superType, currentTraversal);
+        }
+      }
+
+      currentTraversal.pop();
+    } catch (e) {
+      if (!(e instanceof TypeParseError)) {
+        throw e;
+      } // Otherwise it will have been handled by our specific check.
+    }
   }
 
   const visitedTypes = new Set();
@@ -205,6 +217,29 @@ function checkCharacters(hierarchyDef, chars) {
     for (const [char, charName] of chars) {
       if (type.includes(char)) {
         console.error(error, type, charName, char);
+      }
+    }
+  }
+}
+
+/**
+ * Checks that all of the super types of a type parse correctly.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkSupersParsing(hierarchyDef) {
+  const error = 'The type %s fulfills the type %s, which threw the parsing ' +
+      'error: %s';
+
+  for (const typeName of Object.keys(hierarchyDef)) {
+    const type = hierarchyDef[typeName];
+    if (!type.fulfills) {
+      continue;
+    }
+    for (const superType of type.fulfills) {
+      try {
+        parseType(superType);
+      } catch (e) {
+        console.error(error, typeName, superType, e);
       }
     }
   }

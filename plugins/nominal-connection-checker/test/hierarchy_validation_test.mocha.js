@@ -12,6 +12,9 @@ const chai = require('chai');
 const sinon = require('sinon');
 
 const {validateHierarchy} = require('../src/hierarchy_validation.js');
+const {MissingTypeNameError, LeftBracketError,
+  RightBracketError, ExtraCharactersError} =
+    require('../src/type_structure.js');
 
 suite('Hierarchy Validation', function() {
   setup(function() {
@@ -486,6 +489,54 @@ suite('Hierarchy Validation', function() {
       this.assertInvalid({
         'type]': { },
       }, 'type]', ']', 'right bracket');
+    });
+  });
+
+  suite('Supers parsing', function() {
+    setup(function() {
+      this.assertInvalid = function(hierarchy, errorType) {
+        validateHierarchy(hierarchy);
+        chai.assert.isTrue(this.errorStub.calledOnce);
+        console.log(this.errorStub.getCall(0).args);
+        chai.assert.isTrue(
+            this.errorStub.getCall(0).args[3] instanceof errorType);
+      };
+    });
+
+    test('Missing type name', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['[typeB]'],
+        },
+        'typeB': { },
+      }, MissingTypeNameError);
+    });
+
+    test('Unmatched left', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB['],
+        },
+        'typeB': { },
+      }, LeftBracketError);
+    });
+
+    test('Unmatched right', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB]'],
+        },
+        'typeB': { },
+      }, RightBracketError);
+    });
+
+    test('Extra characters', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[typeB]test'],
+        },
+        'typeB': { },
+      }, ExtraCharactersError);
     });
   });
 });
