@@ -36,6 +36,7 @@ export function validateHierarchy(hierarchyDef) {
   checkConflictingTypes(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
+  checkSuperParamsDefined(hierarchyDef);
   checkCircularDependencies(hierarchyDef);
 }
 
@@ -71,7 +72,7 @@ function checkConflictingTypes(hierarchyDef) {
 }
 
 /**
- * Checks the hierarchy def for any super types (eg 'fulfills': ['type]) which
+ * Checks the hierarchy def for any super types (eg 'fulfills': ['type']) which
  * are not defined as top-level types.
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
@@ -95,6 +96,59 @@ function checkSupersDefined(hierarchyDef) {
         if (!types.has(superName.toLowerCase())) {
           console.error(errorMsg, type, superName);
         }
+      } catch (e) {
+        if (!(e instanceof TypeParseError)) {
+          throw e;
+        } // Otherwise it will have been handled by our specific check.
+      }
+    }
+  }
+}
+
+/**
+ * Checks that the hierarchy def for any parameterized super types
+ * (eg 'fulfills': ['typeA[A]', 'typeB[typeC]']) which are not defined as
+ * top-level types, or which are generic, and not defined in the type's params.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkSuperParamsDefined(hierarchyDef) {
+  const errorMsg = 'The type %s says it fulfills the type %s, but %s ' +
+      'is not defined.';
+  const genericErrorMsg = errorMsg + ' It appears to be generic, it should ' +
+      'probably be defined as part of the type\'s params array.';
+
+  function checkParamsRec(typeName, typeDef, superType, superStructure) {
+    for (const superParam of superStructure.params) {
+      if (isGeneric(superParam.name)) {
+        const defined = typeDef.params && typeDef.params.some((defParam) => {
+          return defParam.name.toLowerCase() == superParam.name.toLowerCase();
+        });
+        if (!defined) {
+          console.error(genericErrorMsg, typeName, superType, superParam.name);
+        }
+      } else {
+        if (!types.has(superParam.name.toLowerCase())) {
+          console.error(errorMsg, typeName, superType, superParam.name);
+        }
+      }
+      checkParamsRec(typeName, typeDef, superType, superParam);
+    }
+  }
+
+  const types = new Set();
+  const keys = Object.keys(hierarchyDef);
+  for (const type of keys) {
+    types.add(type.toLowerCase());
+  }
+  for (const type of keys) {
+    const typeInfo = hierarchyDef[type];
+    if (!typeInfo.fulfills) {
+      continue;
+    }
+    for (const superType of typeInfo.fulfills) {
+      try {
+        const superStructure = parseType(superType, false);
+        checkParamsRec(type, typeInfo, superType, superStructure);
       } catch (e) {
         if (!(e instanceof TypeParseError)) {
           throw e;

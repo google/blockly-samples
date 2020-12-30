@@ -210,6 +210,7 @@ suite('Hierarchy Validation', function() {
           'The type typeA creates a circular dependency: ' +
           'typeA fulfills typeA'));
     });
+
     test('Direct with case', function() {
       validateHierarchy({
         'typeA': {
@@ -223,7 +224,6 @@ suite('Hierarchy Validation', function() {
     });
 
     test('Direct w/ params', function() {
-      this.errorStub.callsFake((...params) => console.log(params));
       validateHierarchy({
         'typeA': {
           'fulfills': ['typeA[A]'],
@@ -497,7 +497,6 @@ suite('Hierarchy Validation', function() {
       this.assertInvalid = function(hierarchy, errorType) {
         validateHierarchy(hierarchy);
         chai.assert.isTrue(this.errorStub.calledOnce);
-        console.log(this.errorStub.getCall(0).args);
         chai.assert.isTrue(
             this.errorStub.getCall(0).args[3] instanceof errorType);
       };
@@ -537,6 +536,154 @@ suite('Hierarchy Validation', function() {
         },
         'typeB': { },
       }, ExtraCharactersError);
+    });
+  });
+
+  suite('Super params defined', function() {
+    setup(function() {
+      this.assertInvalid = function(hierarchyDef, generic, badParam) {
+        validateHierarchy(hierarchyDef);
+        chai.assert.isTrue(this.errorStub.calledOnce);
+        chai.assert.isTrue(this.errorStub.getCall(0).args[3] == badParam);
+        const includes = this.errorStub.getCall(0).args[0].includes('generic');
+        if (generic) {
+          chai.assert.isTrue(
+              includes, 'Expected the error to be for a generic param.');
+        } else {
+          chai.assert.isFalse(
+              includes, 'Expected the error to be for an explicit param.');
+        }
+      };
+      this.assertValid = function(hierarchyDef) {
+        validateHierarchy(hierarchyDef);
+        chai.assert.isTrue(this.errorStub.notCalled);
+      };
+    });
+
+    test('Undefined explicit', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[typeC]'],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      }, false, 'typeC');
+    });
+
+    test('Defined generic, case', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[TYPEC]'],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeC': { },
+      });
+    });
+
+    test('Undefined nested explicit', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[typeB[typeC]]'],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      }, false, 'typeC');
+    });
+
+    test('Undefined generic', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      }, true, 'A');
+    });
+
+    test('Undefined generic, no params', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      }, true, 'A');
+    });
+
+    test('Defined generic', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[TYPEC]'],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeC': { },
+      });
+    });
+
+    test('Undefined nested generic', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[typeB[A]]'],
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      }, true, 'A');
     });
   });
 });
