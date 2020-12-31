@@ -37,6 +37,7 @@ export function validateHierarchy(hierarchyDef) {
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
   checkSuperParamsDefined(hierarchyDef);
+  checkSuperNumParamsCorrect(hierarchyDef);
   checkCircularDependencies(hierarchyDef);
 }
 
@@ -112,7 +113,7 @@ function checkSupersDefined(hierarchyDef) {
 }
 
 /**
- * Checks that the hierarchy def for any parameterized super types
+ * Checks the hierarchy def for any parameterized super types
  * (eg 'fulfills': ['typeA[A]', 'typeB[typeC]']) which are not defined as
  * top-level types, or which are generic, and not defined in the type's params.
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
@@ -123,6 +124,20 @@ function checkSuperParamsDefined(hierarchyDef) {
   const genericErrorMsg = errorMsg + ' It appears to be generic, it should ' +
       'probably be defined as part of the type\'s params array.';
 
+  /**
+   * Checks that all parameter names are defined. In the case of explicit types,
+   * they must be defined in the type hierarchy. In the case of generic types,
+   * they must be defined in the type's params array.
+   * @param {string} typeName The name of the type we are checking the
+   *     supers of.
+   * @param {!Object} typeDef The definition of the type we are checking the
+   *     supers of.
+   * @param {string} superType The stringified super type structure we are
+   *     checking the parameters of.
+   * @param {!TypeStructure} superStructure The structure of the super type
+   *     we are checking the parameters of. May not match the superType, because
+   *     this function works recursively.
+   */
   function checkParamsRec(typeName, typeDef, superType, superStructure) {
     for (const superParam of superStructure.params) {
       if (isGeneric(superParam.name)) {
@@ -155,6 +170,80 @@ function checkSuperParamsDefined(hierarchyDef) {
       try {
         const superStructure = parseType(superType, false);
         checkParamsRec(type, typeInfo, superType, superStructure);
+      } catch (e) {
+        if (!(e instanceof TypeParseError)) {
+          throw e;
+        } // Otherwise it will have been handled by our specific check.
+      }
+    }
+  }
+}
+
+/**
+ * Checks the hierarchy def for any parameterized super types that are not
+ * provied the correct number of types. Also checks for cases where generic
+ * parameters are given type lists, which is not allowed.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkSuperNumParamsCorrect(hierarchyDef) {
+  const errorMsg = 'The type %s says it fulfills the type %s, but %s requires' +
+      ' %s type(s) while %s type(s) are provided.';
+  const genericErrorMsg = 'The type %s says it fulfills the type %s, but %s ' +
+      'appears to be generic and have parameters, which is not allowed.';
+  const keys = Object.keys(hierarchyDef);
+
+  // Maps caseless type names to their type info. Allows for case differences.
+  const types = new Map();
+  for (const type of keys) {
+    types.set(type.toLowerCase(), hierarchyDef[type]);
+  }
+
+  /**
+   * Checks that all parameterized types are given the correct number of
+   * parameters. Also logs an error if a generic type is given any parameters.
+   * @param {string} typeName The name of the type we are checking the
+   *     supers of.
+   * @param {string} superType The stringified super type structure we are
+   *     checking the parameters of.
+   * @param {!TypeStructure} superStructure The structure of the super type
+   *     we are checking the parameters of. May not match the superType, because
+   *     this function works recursively.
+   */
+  function checkNumParamsRec(typeName, superType, superStructure) {
+    const superName = superStructure.name;
+    if (isGeneric(superName)) {
+      if (superStructure.params.length) {
+        console.error(
+            genericErrorMsg, typeName, superType, superName);
+      }
+      return;
+    }
+
+    const superDef = types.get(superName.toLowerCase());
+    if (!superDef) {
+      // Super is not defined, this is handled elsewhere.
+      return;
+    }
+    const required = superDef.params ? superDef.params.length : 0;
+    const provided = superStructure.params.length;
+    if (required != provided) {
+      console.error(
+          errorMsg, typeName, superType, superName, required, provided);
+    }
+
+    superStructure.params.forEach((param) =>
+      checkNumParamsRec(typeName, superType, param));
+  }
+
+  for (const type of keys) {
+    const typeInfo = types.get(type.toLowerCase());
+    if (!typeInfo.fulfills) {
+      continue;
+    }
+    for (const superType of typeInfo.fulfills) {
+      try {
+        const superStructure = parseType(superType, false);
+        checkNumParamsRec(type, superType, superStructure);
       } catch (e) {
         if (!(e instanceof TypeParseError)) {
           throw e;

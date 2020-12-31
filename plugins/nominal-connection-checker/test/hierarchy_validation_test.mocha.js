@@ -122,7 +122,6 @@ suite('Hierarchy Validation', function() {
     });
 
     test('Not defined', function() {
-      this.errorStub.callsFake((params) => console.log(params));
       validateHierarchy({
         'typeA': {
           'fulfills': ['typeB'],
@@ -166,7 +165,6 @@ suite('Hierarchy Validation', function() {
     });
 
     test('Undefined with params', function() {
-      this.errorStub.callsFake((params) => console.log(params));
       validateHierarchy({
         'typeA': {
           'fulfills': ['typeB[A]'],
@@ -183,7 +181,6 @@ suite('Hierarchy Validation', function() {
     });
 
     test('Generic super', function() {
-      this.errorStub.callsFake((params) => console.log(params));
       validateHierarchy({
         'typeA': {
           'fulfills': ['A'],
@@ -195,7 +192,7 @@ suite('Hierarchy Validation', function() {
     });
   });
 
-  suite('Circular Dependencies', function() {
+  suite('Circular dependencies', function() {
     test('No cycles', function() {
       validateHierarchy({
         'typeA': {
@@ -592,7 +589,7 @@ suite('Hierarchy Validation', function() {
       }, false, 'typeC');
     });
 
-    test('Defined generic, case', function() {
+    test('Defined explicit, case', function() {
       this.assertValid({
         'typeA': {
           'fulfills': ['typeB[TYPEC]'],
@@ -666,7 +663,36 @@ suite('Hierarchy Validation', function() {
     test('Defined generic', function() {
       this.assertValid({
         'typeA': {
-          'fulfills': ['typeB[TYPEC]'],
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeC': { },
+      });
+    });
+
+    test('Defined generic, case', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[a]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
         },
         'typeB': {
           'params': [
@@ -700,6 +726,193 @@ suite('Hierarchy Validation', function() {
           ],
         },
       }, true, 'A');
+    });
+  });
+
+  suite('Super param numbers correct', function() {
+    const errorMsg = 'The type %s says it fulfills the type %s, but %s ' +
+        'requires %s type(s) while %s type(s) are provided.';
+    const genericErrorMsg = 'The type %s says it fulfills the type %s, but ' +
+        '%s appears to be generic and have parameters, which is not allowed.';
+
+    test('Too many params, 0', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg,
+          'typeA', 'typeB[A]', 'typeB', 0, 1));
+    });
+
+    test('Too many params, 1', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A, B]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'T',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg,
+          'typeA', 'typeB[A, B]', 'typeB', 1, 2));
+    });
+
+    test('Nested too many params', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[typeB[A, B]]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'T',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg,
+          'typeA', 'typeB[typeB[A, B]]', 'typeB', 1, 2));
+    });
+
+    test('Too few params, 0', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'T',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg,
+          'typeA', 'typeB', 'typeB', 1, 0));
+    });
+
+    test('Two few params, 1', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'T',
+              'variance': 'co',
+            },
+            {
+              'name': 'U',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg,
+          'typeA', 'typeB[A]', 'typeB', 2, 1));
+    });
+
+    test('Nested too few params', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[typeC, typeB[A]]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'T',
+              'variance': 'co',
+            },
+            {
+              'name': 'U',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeC': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg,
+          'typeA', 'typeB[typeC, typeB[A]]', 'typeB', 2, 1));
+    });
+
+    test('Generic param with params', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB[A[typeC]]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'T',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeC': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(genericErrorMsg,
+          'typeA', 'typeB[A[typeC]]', 'A'));
     });
   });
 });
