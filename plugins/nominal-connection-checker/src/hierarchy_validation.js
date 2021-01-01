@@ -35,7 +35,7 @@ export function validateHierarchy(hierarchyDef) {
   ]);
   checkGenerics(hierarchyDef);
   checkConflictingTypes(hierarchyDef);
-  checkVariances(hierarchyDef);
+  checkParamVariances(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
   checkSuperParamsDefined(hierarchyDef);
@@ -80,7 +80,7 @@ function checkConflictingTypes(hierarchyDef) {
  * valid.
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
-function checkVariances(hierarchyDef) {
+function checkParamVariances(hierarchyDef) {
   const noVarianceMsg = 'The parameter %s of %s does not declare a variance, ' +
       'which is required.';
   const errorMsg = 'The parameter %s of %s threw the following error: %s';

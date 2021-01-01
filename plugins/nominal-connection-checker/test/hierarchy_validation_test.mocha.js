@@ -1180,6 +1180,50 @@ suite('Hierarchy Validation', function() {
       chai.assert.isTrue(this.errorStub.notCalled);
     });
 
+    test('Valid, case', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'CO',
+            },
+            {
+              'name': 'B',
+              'variance': 'CONTRA',
+            },
+            {
+              'name': 'C',
+              'variance': 'INV',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Valid, extra', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'covariant',
+            },
+            {
+              'name': 'B',
+              'variance': 'contravariant',
+            },
+            {
+              'name': 'C',
+              'variance': 'invariant',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
     test('Not provided', function() {
       const noVarianceMsg = 'The parameter %s of %s does not declare a ' +
           'variance, which is required.';
