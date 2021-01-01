@@ -48,7 +48,7 @@ suite('Hierarchy Validation', function() {
 
   suite('Conflicts', function() {
     const conflictMsg =
-        'The type name \'%s\' conflicts with the type name(s) %s';
+        'The type name \'%s\' conflicts with the type name(s) [%s]';
 
     test('No conflicts', function() {
       validateHierarchy({
@@ -66,7 +66,7 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(this.errorStub.calledWith(
-          conflictMsg, 'typeA', ['TypeA']));
+          conflictMsg, 'typeA', 'TypeA'));
     });
 
     test('Type conflicts multiple', function() {
@@ -77,7 +77,7 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(this.errorStub.calledWith(
-          conflictMsg, 'typeA', ['TypeA', 'Typea']));
+          conflictMsg, 'typeA', 'TypeA, Typea'));
     });
 
     test('Multiple conflicts', function() {
@@ -89,9 +89,9 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledTwice);
       chai.assert.isTrue(this.errorStub.calledWith(
-          conflictMsg, 'typeA', ['TypeA']));
+          conflictMsg, 'typeA', 'TypeA'));
       chai.assert.isTrue(this.errorStub.calledWith(
-          conflictMsg, 'typeB', ['TypeB']));
+          conflictMsg, 'typeB', 'TypeB'));
     });
   });
 
@@ -1255,9 +1255,7 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(
-          this.errorStub.calledWith(errorMsg, 'A', 'typeA',
-              'The variance "test" is not a valid variance. Valid variances ' +
-              'are: "co", "contra", and "inv".'));
+          this.errorStub.calledWith(errorMsg, 'A', 'typeA'));
     });
   });
 
@@ -1293,6 +1291,55 @@ suite('Hierarchy Validation', function() {
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
       chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'test', 'typeA'));
+    });
+  });
+
+  suite('Conflicting param names', function() {
+    const conflictMsg = 'The param name %s in %s conflicts with the ' +
+        'param(s) [%s]';
+    test('Param conflicts once', function() {
+      this.errorStub.callsFake((...params) => console.log(params));
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+            {
+              'name': 'a',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(
+          this.errorStub.calledWith(conflictMsg, 'A', 'typeA', '#2 (a)'));
+    });
+
+    test('Param conflicts multiple', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+            {
+              'name': 'a',
+              'variance': 'co',
+            },
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(
+          conflictMsg, 'A', 'typeA', '#2 (a), #3 (A)'));
     });
   });
 });

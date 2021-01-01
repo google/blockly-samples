@@ -36,6 +36,7 @@ export function validateHierarchy(hierarchyDef) {
   checkGenerics(hierarchyDef);
   checkConflictingTypes(hierarchyDef);
   checkParamNames(hierarchyDef);
+  checkConflictingParams(hierarchyDef);
   checkParamVariances(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
@@ -50,7 +51,8 @@ export function validateHierarchy(hierarchyDef) {
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
 function checkConflictingTypes(hierarchyDef) {
-  const conflictMsg = 'The type name \'%s\' conflicts with the type name(s) %s';
+  const conflictMsg =
+      'The type name \'%s\' conflicts with the type name(s) [%s]';
 
   // Map of caseless names to cased names.
   const definedTypes = new Map();
@@ -72,7 +74,7 @@ function checkConflictingTypes(hierarchyDef) {
   }
 
   for (const [type, conflicts] of conflictingTypes) {
-    console.error(conflictMsg, type, conflicts);
+    console.error(conflictMsg, type, conflicts.join(', '));
   }
 }
 
@@ -103,8 +105,24 @@ function checkParamNames(hierarchyDef) {
         console.error(errorMsg, param.name, type);
       }
     }
+  }
+}
 
-    /*
+/**
+ * Checks the hierarchy definition for any type parameters with conflicting
+ * names.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkConflictingParams(hierarchyDef) {
+  const conflictMsg = 'The param name %s in %s conflicts with the ' +
+      'param(s) [%s]';
+
+  for (const type of Object.keys(hierarchyDef)) {
+    const typeDef = hierarchyDef[type];
+    if (!typeDef.params) {
+      continue;
+    }
+
     // Map of caseless names to cased names.
     const definedParamNames = new Map();
     // Map of original names to arrays of conflicting names.
@@ -112,15 +130,26 @@ function checkParamNames(hierarchyDef) {
     for (let i = 0; i < typeDef.params.length; i++) {
       const param = typeDef.params[i];
       if (!param.name) {
-        console.error(noNameMsg, i, type);
         continue;
       }
       const caselessName = param.name.toLowerCase();
       if (definedParamNames.has(caselessName)) {
         const originalParam = definedParamNames.get(caselessName);
-        if (!conflictingParamNames.has(originalParam))
+        if (!conflictingParamNames.has(originalParam)) {
+          conflictingParamNames.set(originalParam, [[i + 1, param.name]]);
+        } else {
+          conflictingParamNames.get(originalParam).push([i + 1, param.name]);
+        }
+      } else {
+        definedParamNames.set(caselessName, param.name);
       }
-    }*/
+    }
+
+    for (let [param, conflicts] of conflictingParamNames) {
+      conflicts = conflicts.map((tuple) =>
+        '#' + tuple[0] + ' (' + tuple[1] + ')');
+      console.error(conflictMsg, param, type, conflicts.join(', '));
+    }
   }
 }
 
@@ -148,7 +177,7 @@ function checkParamVariances(hierarchyDef) {
         stringToVariance(param.variance);
       } catch (e) {
         if (e instanceof VarianceError) {
-          console.error(errorMsg, param.name, type, e.message);
+          console.error(errorMsg, param.name, type, e);
         } else {
           throw e;
         }
