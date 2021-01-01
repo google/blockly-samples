@@ -915,4 +915,245 @@ suite('Hierarchy Validation', function() {
           'typeA', 'typeB[A[typeC]]', 'A'));
     });
   });
+
+  suite('Super param variances correct', function() {
+    setup(function() {
+      this.assertInvalid = function(hierarchy, ...includes) {
+        validateHierarchy(hierarchy);
+        chai.assert.isTrue(this.errorStub.calledOnce);
+        const arg = this.errorStub.getCall(0).args[0];
+        for (const str of includes) {
+          chai.assert.isTrue(arg.includes(str));
+        }
+      };
+      this.assertValid = function(hierarchy) {
+        validateHierarchy(hierarchy);
+        chai.assert.isTrue(this.errorStub.notCalled);
+      };
+    });
+
+    test('Bad variance', function() {
+
+    });
+
+    test('Co and co', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+    });
+
+    test('Co and contra', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'contra',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      }, 'covariant', 'contravariant');
+    });
+
+    test('Co and inv', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'inv',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+    });
+
+    test('Contra and co', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'contra',
+            },
+          ],
+        },
+      }, 'contravariant', 'covariant');
+    });
+
+    test('Contra and contra', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'contra',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'contra',
+            },
+          ],
+        },
+      });
+    });
+
+    test('Contra and inv', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'inv',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'contra',
+            },
+          ],
+        },
+      });
+    });
+
+    test('Inv and co', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'inv',
+            },
+          ],
+        },
+      }, 'invariant', 'covariant');
+    });
+
+    test('Inv and contra', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'contra',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'inv',
+            },
+          ],
+        },
+      }, 'invariant', 'contravariant');
+    });
+
+    test('Inv and inv', function() {
+      this.assertValid({
+        'typeA': {
+          'fulfills': ['typeB[A]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'inv',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'inv',
+            },
+          ],
+        },
+      });
+    });
+
+    test('Nested bad variance', function() {
+      this.assertInvalid({
+        'typeA': {
+          'fulfills': ['typeB[typeB[A]]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'params': [
+            {
+              'name': 'B',
+              'variance': 'inv',
+            },
+          ],
+        },
+      }, 'invariant', 'covariant');
+    });
+  });
 });
