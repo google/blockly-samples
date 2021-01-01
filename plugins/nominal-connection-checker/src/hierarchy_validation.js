@@ -35,6 +35,7 @@ export function validateHierarchy(hierarchyDef) {
   ]);
   checkGenerics(hierarchyDef);
   checkConflictingTypes(hierarchyDef);
+  checkParamNames(hierarchyDef);
   checkParamVariances(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
@@ -72,6 +73,54 @@ function checkConflictingTypes(hierarchyDef) {
 
   for (const [type, conflicts] of conflictingTypes) {
     console.error(conflictMsg, type, conflicts);
+  }
+}
+
+/**
+ * Checks the hierarchy definition for any parameters which do not have names,
+ * or have names which are not generic.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkParamNames(hierarchyDef) {
+  const noNameMsg = 'Parameter #%s of %s does not declare a name, which is ' +
+      'required.';
+  const errorMsg = 'The parameter name %s of %s is invalid. Parameter names ' +
+      'must be a single character.';
+
+  for (const type of Object.keys(hierarchyDef)) {
+    const typeDef = hierarchyDef[type];
+    if (!typeDef.params) {
+      continue;
+    }
+
+    for (let i = 0; i < typeDef.params.length; i++) {
+      const param = typeDef.params[i];
+      if (!param.name) {
+        console.error(noNameMsg, i + 1, type);
+        continue;
+      }
+      if (!isGeneric(param.name)) {
+        console.error(errorMsg, param.name, type);
+      }
+    }
+
+    /*
+    // Map of caseless names to cased names.
+    const definedParamNames = new Map();
+    // Map of original names to arrays of conflicting names.
+    const conflictingParamNames = new Map();
+    for (let i = 0; i < typeDef.params.length; i++) {
+      const param = typeDef.params[i];
+      if (!param.name) {
+        console.error(noNameMsg, i, type);
+        continue;
+      }
+      const caselessName = param.name.toLowerCase();
+      if (definedParamNames.has(caselessName)) {
+        const originalParam = definedParamNames.get(caselessName);
+        if (!conflictingParamNames.has(originalParam))
+      }
+    }*/
   }
 }
 

@@ -1260,4 +1260,39 @@ suite('Hierarchy Validation', function() {
               'are: "co", "contra", and "inv".'));
     });
   });
+
+  suite('Param names', function() {
+    test('Not provided', function() {
+      const noNameMsg = 'Parameter #%s of %s does not declare a name, which ' +
+          'is required.';
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(noNameMsg, 1, 'typeA'));
+    });
+
+    test('Invalid', function() {
+      const errorMsg = 'The parameter name %s of %s is invalid. Parameter ' +
+          'names must be a single character.';
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'test',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'test', 'typeA'));
+    });
+  });
 });
