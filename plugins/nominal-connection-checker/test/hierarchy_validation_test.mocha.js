@@ -1156,4 +1156,64 @@ suite('Hierarchy Validation', function() {
       }, 'invariant', 'covariant');
     });
   });
+
+  suite('Variances', function() {
+    test('Valid', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+            {
+              'name': 'B',
+              'variance': 'contra',
+            },
+            {
+              'name': 'C',
+              'variance': 'inv',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Not provided', function() {
+      const noVarianceMsg = 'The parameter %s of %s does not declare a ' +
+          'variance, which is required.';
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(
+          this.errorStub.calledWith(noVarianceMsg, 'A', 'typeA'));
+    });
+
+    test('Invalid', function() {
+      const errorMsg = 'The parameter %s of %s threw the following error: %s';
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'test',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(
+          this.errorStub.calledWith(errorMsg, 'A', 'typeA',
+              'The variance "test" is not a valid variance. Valid variances ' +
+              'are: "co", "contra", and "inv".'));
+    });
+  });
 });

@@ -10,7 +10,7 @@
 'use strict';
 
 import {isGeneric} from './utils';
-import {Variance, stringToVariance} from './type_hierarchy';
+import {Variance, stringToVariance, VarianceError} from './type_hierarchy';
 import {TypeStructure, parseType,
   structureToString, TypeParseError} from './type_structure';
 
@@ -35,6 +35,7 @@ export function validateHierarchy(hierarchyDef) {
   ]);
   checkGenerics(hierarchyDef);
   checkConflictingTypes(hierarchyDef);
+  checkVariances(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
   checkSuperParamsDefined(hierarchyDef);
@@ -71,6 +72,39 @@ function checkConflictingTypes(hierarchyDef) {
 
   for (const [type, conflicts] of conflictingTypes) {
     console.error(conflictMsg, type, conflicts);
+  }
+}
+
+/**
+ * Checks that the variances of all parameters in the hierarchy are provided and
+ * valid.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkVariances(hierarchyDef) {
+  const noVarianceMsg = 'The parameter %s of %s does not declare a variance, ' +
+      'which is required.';
+  const errorMsg = 'The parameter %s of %s threw the following error: %s';
+
+  for (const type of Object.keys(hierarchyDef)) {
+    const typeDef = hierarchyDef[type];
+    if (!typeDef.params) {
+      continue;
+    }
+    for (const param of typeDef.params) {
+      if (!param.variance) {
+        console.error(noVarianceMsg, param.name, type);
+        continue;
+      }
+      try {
+        stringToVariance(param.variance);
+      } catch (e) {
+        if (e instanceof VarianceError) {
+          console.error(errorMsg, param.name, type, e.message);
+        } else {
+          throw e;
+        }
+      }
+    }
   }
 }
 
@@ -373,7 +407,7 @@ function checkSuperParamVariancesCompatible(hierarchyDef) {
       }
       const typeParam = typeDef.params && typeDef.params.find((param) =>
         param.name.toLowerCase() == structureParam.name.toLowerCase());
-      if (!typeParam) {
+      if (!typeParam || !typeParam.variance || !superParam.variance) {
         continue;
       }
       const formalVariance = stringToVariance(superParam.variance);

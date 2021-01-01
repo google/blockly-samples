@@ -608,12 +608,25 @@ export function stringToVariance(str) {
   } else if (str.startsWith('co')) {
     return Variance.CO;
   } else {
-    throw new Error('The variance "' + str + '" is not a valid variance. ' +
-        'Valid variances are: "co", "contra", and "inv".');
+    throw new VarianceError('The variance "' + str + '" is not a valid ' +
+        'variance. Valid variances are: "co", "contra", and "inv".');
   }
 }
 
+/**
+ * Represents an error related to variances.
+ */
+export class VarianceError extends Error {
+  /**
+   * Constructs a VarianceError.
+   * @param {string} message The message that goes with this error.
+   */
+  constructor(message) {
+    super(message);
 
+    this.name = this.constructor.name;
+  }
+}
 
 /**
  * Represents a type parameter.
