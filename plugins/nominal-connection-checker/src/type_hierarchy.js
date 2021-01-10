@@ -201,30 +201,56 @@ export class TypeHierarchy {
 
   /**
    * Returns true if the types are exactly the same type. False otherwise.
-   * @param {string} name1 The name of the first type.
-   * @param {string} name2 The name of the second type.
+   * @param {!TypeStructure} type1 The name of the first type.
+   * @param {!TypeStructure} type2 The name of the second type.
    * @return {boolean} True if the types are exactly the same type. False
    *     otherwise.
    */
-  typeIsExactlyType(name1, name2) {
-    return name1.toLowerCase() == name2.toLowerCase();
+  typeIsExactlyType(type1, type2) {
+    if (type1.name != type2.name) {
+      return false;
+    }
+    return type1.params.every((type1Param, i) => {
+      this.typeIsExactlyType(type1Param, type2.params[i]);
+    });
   }
 
   /**
    * Returns true if the types are identical, or if the first type fulfills the
    * second type (directly or via one of its supertypes), as specified in the
    * type hierarchy definition. False otherwise.
-   * @param {string} subType The stringified possible subtype.
-   * @param {string} superType The stringified possible supertype.
+   * @param {!TypeStructure} subType The structure of the subtype.
+   * @param {!TypeStructure} superType The structure of the supertype.
    * @return {boolean} True if the types are identical, or if the first type
    *     fulfills the second type (directly or via its supertypes) as specified
    *     in the type hierarchy definition. False otherwise.
    */
   typeFulfillsType(subType, superType) {
-    const subStructure = parseType(subType);
-    const superStructure = parseType(superType);
+    const subDef = this.types_.get(subType.name);
+    const superDef = this.types_.get(superType.name);
 
-    return this.types_.get(subStructure.name).hasAncestor(superStructure.name);
+    if (!subDef.hasAncestor(superType.name)) {
+      // Not compatible.
+      return false;
+    }
+
+    // TODO: We need to add checks to make sure the number of actual params for
+    //  the subtype is correct. Here and in typeIsExactlyType.
+
+    const orderedSubParams = subDef.getParamsForAncestor(superType.name);
+    return superType.params.every((actualSuper, i) => {
+      const actualSub = orderedSubParams[i];
+      const paramDef = superDef.getParamForIndex(i);
+
+      switch (paramDef.variance) {
+        case Variance.CO:
+          return this.typeFulfillsType(actualSub, actualSuper);
+        case Variance.CONTRA:
+          return this.typeFulfillsType(actualSuper, actualSub);
+        case Variance.INV:
+          return this.typeIsExactlyType(actualSub, actualSuper);
+      }
+    });
   }
 
   /**
@@ -496,6 +522,10 @@ class TypeDef {
    */
   hasDescendant(descendantName) {
     return this.descendants_.has(descendantName);
+  }
+
+  params() {
+    return [...this.params_];
   }
 
   /**
