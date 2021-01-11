@@ -137,27 +137,29 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
     }
     map.set(genericType, explicitType);
 
-    const parent = block.outputConnection &&
-        block.outputConnection.targetConnection;
-    if (parent) {
-      block.outputConnection.disconnect();
-    }
-    const childMap = new Map();
-    for (const input of block.inputList) {
-      const connection = input.connection;
-      if (input.type == Blockly.INPUT_VALUE && connection.isConnected()) {
-        childMap.set(input.name, connection.targetConnection);
-        connection.disconnect();
+    const connectionMap = [];
+    /**
+     * If the given connection exists and it has a target connection, saves
+     * the connection and its target connection to the connectionMap and then
+     * disconnects the connections.
+     * @param {!Blockly.Connection} conn The connection to save and disconnect.
+     */
+    function saveAndDisconnect(conn) {
+      if (conn && conn.targetConnection) {
+        connectionMap.push([conn, conn.targetConnection]);
+        conn.disconnect();
       }
     }
 
-    if (parent) {
-      parent.connect(block.outputConnection);
-    }
+    saveAndDisconnect(block.outputConnection);
+    saveAndDisconnect(block.previousConnection);
     for (const input of block.inputList) {
-      if (childMap.has(input.name)) {
-        input.connection.connect(childMap.get(input.name));
-      }
+      saveAndDisconnect(input.connection);
+    }
+    saveAndDisconnect(block.nextConnection);
+
+    for (const [parent, child] of connectionMap) {
+      parent.connect(child);
     }
 
     // Note: Using .rendered may cause issues. See blockly/#1676.
@@ -244,16 +246,19 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
 
     const type = this.getExternalBinding_(block, genericType);
     if (type) {
-      types.push(type);
+      return [type];
     }
 
     types.push(...this.getConnectionTypes_(
         block.outputConnection, genericType, connectionToSkip));
-
+    types.push(...this.getConnectionTypes_(
+        block.previousConnection, genericType, connectionToSkip));
     for (const input of block.inputList) {
       types.push(...this.getConnectionTypes_(
           input.connection, genericType, connectionToSkip));
     }
+    types.push(...this.getConnectionTypes_(
+        block.nextConnection, genericType, connectionToSkip));
 
     if (types.length) {
       return this.getTypeHierarchy_().getNearestCommonParents(...types);
@@ -296,7 +301,6 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
   getConnectionTypes_(connection, genericType, connectionToSkip) {
     if (!connection ||
         connection == connectionToSkip ||
-        connection.type == Blockly.NEXT_STATEMENT ||
         getCheck(connection) != genericType ||
         !connection.targetConnection) {
       return [];
