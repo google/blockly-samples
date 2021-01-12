@@ -53,13 +53,20 @@ export class DisableTopBlocks {
 }
 
 /**
- * A block is an orphan if it doesn't have a parent (or its parent is disabled),
- * but it does have a previous or output connection (so it expects to be
- * attached to something).
+ * A block is an orphan if its parent is an orphan, or if it doesn't have a
+ * parent but it does have a previous or output connection (so it expects to be
+ * attached to something). This means all children of orphan blocks are also
+ * orphans and cannot be manually re-enabled.
  * @param {!Blockly.BlockSvg} block Block to check.
  * @return {boolean} Whether the block is an orphan.
  */
 function isOrphan(block) {
-  return (!block.getParent() || !block.getParent().isEnabled()) &&
+  // If the parent is an orphan block, this block should also be considered
+  // an orphan so it cannot be manually re-enabled.
+  if (block.getParent() &&
+      isOrphan(/** @type {Blockly.BlockSvg} */ (block.getParent()))) {
+    return true;
+  }
+  return !block.getParent() &&
       !!(block.outputConnection || block.previousConnection);
 }
