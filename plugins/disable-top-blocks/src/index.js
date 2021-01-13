@@ -63,10 +63,10 @@ export class DisableTopBlocks {
 function isOrphan(block) {
   // If the parent is an orphan block, this block should also be considered
   // an orphan so it cannot be manually re-enabled.
-  if (block.getParent() &&
-      isOrphan(/** @type {Blockly.BlockSvg} */ (block.getParent()))) {
+  const parent = /** @type {Blockly.BlockSvg} */ (block.getParent());
+  if (parent && isOrphan(parent)) {
     return true;
   }
-  return !block.getParent() &&
+  return !parent &&
       !!(block.outputConnection || block.previousConnection);
 }
