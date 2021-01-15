@@ -211,7 +211,7 @@ export class TypeHierarchy {
       return false;
     }
     return type1.params.every((type1Param, i) => {
-      this.typeIsExactlyType(type1Param, type2.params[i]);
+      return this.typeIsExactlyType(type1Param, type2.params[i]);
     });
   }
 
@@ -237,7 +237,8 @@ export class TypeHierarchy {
     // TODO: We need to add checks to make sure the number of actual params for
     //  the subtype is correct. Here and in typeIsExactlyType.
 
-    const orderedSubParams = subDef.getParamsForAncestor(superType.name);
+    const orderedSubParams = subDef.getParamsForAncestor(
+        superType.name, subType.params);
     return superType.params.every((actualSuper, i) => {
       const actualSub = orderedSubParams[i];
       const paramDef = superDef.getParamForIndex(i);
