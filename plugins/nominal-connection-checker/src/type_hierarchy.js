@@ -207,6 +207,9 @@ export class TypeHierarchy {
    *     otherwise.
    */
   typeIsExactlyType(type1, type2) {
+    this.validateTypeStructure_(type1);
+    this.validateTypeStructure_(type2);
+
     if (type1.name != type2.name) {
       return false;
     }
@@ -226,6 +229,9 @@ export class TypeHierarchy {
    *     in the type hierarchy definition. False otherwise.
    */
   typeFulfillsType(subType, superType) {
+    this.validateTypeStructure_(subType);
+    this.validateTypeStructure_(superType);
+
     const subDef = this.types_.get(subType.name);
     const superDef = this.types_.get(superType.name);
 
@@ -283,6 +289,25 @@ export class TypeHierarchy {
             return array.indexOf(type) == i;
           });
     }, [types[0]]);
+  }
+
+  /**
+   * Validates that the given type structure conforms to a definition known
+   * to the type hierarchy. Note that this *only* validates the "top level"
+   * type. It does *not* recursively validate parameters.
+   * @param {!TypeStructure} struct The type structure to validate.
+   * @private
+   */
+  validateTypeStructure_(struct) {
+    const def = this.types_.get(struct.name);
+
+    // TODO: Add throwing error if the def is not found. Note that there are
+    //   some tests that need to be unskipped after this is added.
+
+    if (struct.params.length != def.params().length) {
+      throw new ActualParamsCountError(
+          struct.name, struct.params.length, def.params().length);
+    }
   }
 }
 
@@ -525,6 +550,11 @@ class TypeDef {
     return this.descendants_.has(descendantName);
   }
 
+  /**
+   * Returns a new set of all the parameter definitions of this type.
+   * @return {!Array<ParamDef>} A new set of all the parameter definitions of
+   *     this type.
+   */
   params() {
     return [...this.params_];
   }
@@ -680,5 +710,44 @@ class ParamDef {
      * @type {!Variance}
      */
     this.variance = variance;
+  }
+}
+
+/**
+ * Represents an error where the number of params on an actual type does not
+ * match the number of types expected by the type definition.
+ */
+export class ActualParamsCountError extends Error {
+  /**
+   * Constructs an ActualParamsCountError.
+   * @param {string} type The type the parameters are associated with.
+   * @param {number} actualCount The number of parameters that were given.
+   * @param {number} expectedCount The number of parameters that were expected,
+   *     as defined by the type hierarchy definition.
+   */
+  constructor(type, actualCount, expectedCount) {
+    super('The number of parameters to ' + type + ' did not match the ' +
+        'expected number of parameters (as defined in the type hierarchy). ' +
+        'Expected: ' + expectedCount + ', Actual: ', actualCount);
+
+    /**
+     * The type the parameters were associated with.
+     * @type {string}
+     */
+    this.type = type;
+
+    /**
+     * The number of parameters that were given.
+     * @type {number}
+     */
+    this.actualCount = actualCount;
+
+    /**
+     * The number of parameters that were expected.
+     * @type {number}
+     */
+    this.expectedCount = expectedCount;
+
+    this.name = this.constructor.name;
   }
 }
