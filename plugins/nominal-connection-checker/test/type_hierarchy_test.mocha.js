@@ -1585,6 +1585,34 @@ suite('TypeHierarchy', function() {
           this.assertDoesNotFulfill(
               hierarchy, 'typeB[typeC, typeD]', 'typeA[typeC, typeD]');
         });
+
+        test('Fulfill super with less params', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+                {
+                  'name': 'B',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+          });
+          this.assertFulfills(hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
       });
 
       suite('Nested params', function() {
@@ -2344,9 +2372,6 @@ suite('TypeHierarchy', function() {
               this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
         });
       });
-
-      // TODO: Tests for:
-      //  * typeB[typeC, typeC] subtype of typeA[typeC] - is this possible?
     });
   });
 
