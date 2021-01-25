@@ -1,6 +1,6 @@
 {
   "name": "blockly-plugin-keyboard-navigation",
-  "version": "0.20201029.0",
+  "version": "0.1.0",
   "description": "A Blockly plugin.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -21,16 +21,16 @@
     "blockly-plugin",
     "keyboard-navigation"
   ],
-  "homepage": "https://github.com/alschmiedt/blockly-samples/tree/master/plugins/keyboard-navigation#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/keyboard-navigation#readme",
   "bugs": {
-    "url": "https://github.com/alschmiedt/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alschmiedt/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/keyboard-navigation"
   },
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "directories": {
     "dist": "dist",
     "src": "src"
@@ -40,8 +40,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.1",
-    "@blockly/dev-tools": "^2.0.6",
+    "@blockly/dev-scripts": "^1.2.4",
+    "@blockly/dev-tools": "^2.0.8",
     "blockly": "4.20210325.0-beta.0",
     "chai": "^4.2.0",
     "jsdom": "^16.4.0",
