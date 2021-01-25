@@ -42,7 +42,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.1",
     "@blockly/dev-tools": "^2.0.6",
-    "blockly": "^3.20200924.3",
+    "blockly": "4.20210325.0-beta.0",
     "chai": "^4.2.0",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
