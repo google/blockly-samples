@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -10,7 +10,7 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-import '../src/gesture_monkey_patch';
+import './gesture_monkey_patch';
 
 import * as Blockly from 'blockly/core';
 
@@ -61,6 +61,25 @@ export class NavigationController {
 
     if (Blockly.Toolbox) {
       Blockly.Toolbox.prototype.onShortcut = this.toolboxHandler;
+    }
+  }
+
+  /**
+   * Removes methods on core Blockly components that allows them to handle
+   * keyboard shortcuts.
+   * @protected
+   */
+  removeShortcutHandlers() {
+    if (Blockly.FieldColour) {
+      Blockly.FieldColour.prototype.onShortcut = null;
+    }
+
+    if (Blockly.FieldDropdown) {
+      Blockly.FieldDropdown.prototype.onShortcut = null;
+    }
+
+    if (Blockly.Toolbox) {
+      Blockly.Toolbox.prototype.onShortcut = null;
     }
   }
 
@@ -203,6 +222,7 @@ export class NavigationController {
     for (const name of shortcutNames) {
       Blockly.ShortcutRegistry.registry.unregister(name);
     }
+    this.removeShortcutHandlers();
     this.navigation.dispose();
   }
 }
