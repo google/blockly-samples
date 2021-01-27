@@ -213,6 +213,28 @@ export class NavigationController {
   }
 
   /**
+   * Gives the cursor to the field to handle if the cursor is on a field.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to check.
+   * @param {!Blockly.ShortcutRegistry.KeyboardShortcut} shortcut The shortcut
+   *     to give to the field.
+   * @return {boolean} True if the shortcut was handled by the field, false
+   *     otherwise.
+   * @protected
+   */
+  fieldShortcutHandler(workspace, shortcut) {
+    const cursor = workspace.getCursor();
+    if (!cursor || !cursor.getCurNode()) {
+      return;
+    }
+    const curNode = cursor.getCurNode();
+    if (curNode.getType() === Blockly.ASTNode.types.FIELD) {
+      return (/** @type {!Blockly.Field} */ (curNode.getLocation()))
+          .onShortcut(shortcut);
+    }
+    return false;
+  }
+
+  /**
    * Keyboard shortcut to go to the previous location when in keyboard
    * navigation mode.
    * @protected
@@ -667,7 +689,114 @@ export class NavigationController {
         shiftW, wsMoveDownShortcut.name);
   }
 
+  /**
+   * Keyboard shortcut to copy the block the cursor is currently on.
+   * @protected
+   */
+  registerCopy() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const copyShortcut = {
+      name: Constants.SHORTCUT_NAMES.COPY,
+      preconditionFn: (workspace) => {
+        if (workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly) {
+          const curNode = workspace.getCursor().getCurNode();
+          if (curNode && curNode.getSourceBlock()) {
+            const sourceBlock = curNode.getSourceBlock();
+            return !Blockly.Gesture.inProgress() && sourceBlock &&
+                sourceBlock.isDeletable() && sourceBlock.isMovable();
+          }
+        }
+        return false;
+      },
+      callback: (workspace) => {
+        const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
+        Blockly.hideChaff();
+        Blockly.copy(sourceBlock);
+      },
+    };
 
+    Blockly.ShortcutRegistry.registry.register(copyShortcut);
+
+    const ctrlC = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.CTRL]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        ctrlC, copyShortcut.name, true);
+
+    const altC = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.ALT]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        altC, copyShortcut.name, true);
+
+    const metaC = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.META]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        metaC, copyShortcut.name, true);
+  }
+
+  /**
+   * Register shortcut to paste the copied block to the marked location.
+   * @protected
+   */
+  registerPaste() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const pasteShortcut = {
+      name: Constants.SHORTCUT_NAMES.PASTE,
+      preconditionFn: (workspace) => {
+        return workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly && !Blockly.Gesture.inProgress();
+      },
+      callback: () => {
+        return this.navigation.paste();
+      },
+    };
+
+    Blockly.ShortcutRegistry.registry.register(pasteShortcut);
+
+    const ctrlV = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.CTRL]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        ctrlV, pasteShortcut.name, true);
+
+    const altV = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.ALT]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        altV, pasteShortcut.name, true);
+
+    const metaV = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.META]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        metaV, pasteShortcut.name, true);
+  }
+
+  /**
+   * Registers all default keyboard shortcut items for keyboard navigation. This
+   * should be called once per instance of KeyboardShortcutRegistry.
+   * @protected
+   */
+  registerDefaults() {
+    this.registerPrevious();
+    this.registerNext();
+    this.registerIn();
+    this.registerOut();
+
+    this.registerDisconnect();
+    this.registerExit();
+    this.registerInsert();
+    this.registerMark();
+    this.registerToolboxFocus();
+    this.registerToggleKeyboardNav();
+
+    this.registerWorkspaceMoveDown();
+    this.registerWorkspaceMoveLeft();
+    this.registerWorkspaceMoveUp();
+    this.registerWorkspaceMoveRight();
+
+    this.registerCopy();
+    this.registerPaste();
+    this.registerCut();
+    this.registerDelete();
+  }
 
   /**
    * Removes all the keyboard navigation shortcuts.
