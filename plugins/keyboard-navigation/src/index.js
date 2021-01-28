@@ -1,35 +1,24 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit plugin overview.
-/**
- * @fileoverview Plugin overview.
- */
+import * as Constants from '../src/constants';
 
-// TODO: Rename plugin and edit plugin description.
-/**
- * Plugin description.
- */
-export class Plugin {
-  /**
-   * Constructor for ...
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
-   *     be added to.
-   */
-  constructor(workspace) {
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
-    this.workspace_ = workspace;
-  }
+import {
+  FlyoutCursor,
+  pluginInfo as FlyoutCursorPluginInfo} from './flyout_cursor';
+import {LineCursor, pluginInfo as LineCursorPluginInfo} from './line_cursor';
+import {Navigation} from './navigation';
+import {NavigationController} from './navigation_controller';
 
-  /**
-   * Initialize.
-   */
-  init() { }
-}
+export {
+  Constants,
+  FlyoutCursor,
+  FlyoutCursorPluginInfo,
+  LineCursor,
+  LineCursorPluginInfo,
+  Navigation,
+  NavigationController,
+};

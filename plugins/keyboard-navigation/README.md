@@ -1,9 +1,9 @@
 # blockly-plugin-keyboard-navigation [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds keyboard
+navigation to Blockly. This allows users to use the keyboard to navigate the
+toolbox and the blocks. More information on keyboard navigation can be found
+on our [keyboard navigation documentation page](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
 
 ## Installation
 
@@ -18,29 +18,29 @@ npm install blockly-plugin-keyboard-navigation --save
 ```
 
 ## Usage
-
-<!--
-  - TODO: Update usage.
-  -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-keyboard-navigation';
-
+import {Register} from 'blockly-plugin-keyboard-navigation';
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
 });
-
 // Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
+const navigationController = new NavigationController();
+navigationController.init();
+navigationController.addWorkspace(workspace);
+// Turns on keyboard navigation.
+navigationController.enable(workspace);
 ```
 
 ## API
+This plugin exports the following classes:
+- `NavigationController`: Class in charge of registering all keyboard shortcuts.
+- `Navigation`: This holds all the functions necessary to navigate around Blockly using the keyboard.
+- `FlyoutCursor`: Cursor in charge of navigating the flyout.
+- `LineCursor`: Alternative cursor that tries to navigate blocks like lines of code.
 
-<!--
-  - TODO: describe the API.
-  -->
+You should only need to use these if you plan on changing the default functionality.
 
 ## License
 Apache 2.0
