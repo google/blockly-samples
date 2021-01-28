@@ -43,6 +43,7 @@ export class NavigationController {
    */
   init() {
     this.addShortcutHandlers();
+    this.registerDefaults();
   }
 
   /**
