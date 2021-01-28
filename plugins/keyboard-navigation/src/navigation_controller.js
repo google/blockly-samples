@@ -771,7 +771,7 @@ export class NavigationController {
   }
 
   /**
-   * Keyboard shortcut to copy and delete the block the cursor is on using on
+   * Keyboard shortcut to copy and delete the block the cursor is on using
    * ctrl+x, cmd+x, or alt+x.
    * @protected
    */
