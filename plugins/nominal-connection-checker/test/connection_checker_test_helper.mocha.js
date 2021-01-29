@@ -17,7 +17,7 @@
  */
 export function createBlockDefs(types) {
   const blocks = [];
-  for (let type of types) {
+  for (const type of types) {
     blocks.push({
       'type': 'static_' + type + '_outer_value',
       'message0': '%1',
@@ -199,10 +199,11 @@ export function clearTwoBlockTests() {
  */
 export function runTwoBlockTests() {
   /**
-   * Creates a function which returns the input of an outer block.
+   * Creates a function which creates a new block and returns its next
+   * connection or first input connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=): !Blockly.Connection} A function that
-   *     takes in a type name and returns an input connection.
+   *     takes in a type name and returns next connection or input connection.
    */
   function createGetOuterInput(suffix) {
     return function(type, name) {
@@ -215,10 +216,12 @@ export function runTwoBlockTests() {
   }
 
   /**
-   * Creates a function which returns the output of an inner block.
+   * Creates a function which creates a new block and returns its output
+   * connection or previous connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=): !Blockly.Connection} A function that
-   *     takes in a type name and returns an output connection.
+   *     takes in a type name and returns an output connection or
+   *     previous connection.
    */
   function createGetInnerOutput(suffix) {
     return function(type, name) {
@@ -296,10 +299,11 @@ export function clearThreeBlockTests() {
  */
 export function runThreeBlockTests() {
   /**
-   * Creates a function which returns the input of an outer block.
+   * Creates a function which creates a new block and returns its next
+   * connection or first input connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=): !Blockly.Connection} A function that
-   *     takes in a type name and returns an input connection.
+   *     takes in a type name and returns a next connection or input connection.
    */
   function createGetOuterInput(suffix) {
     return function(type, name) {
@@ -312,13 +316,14 @@ export function runThreeBlockTests() {
   }
 
   /**
-   * Creates a function which returns an object containing the input and output
+   * Creates a function which creates a new block and returns an object
+   * containing its next/input and previous/output connections.
    * of a main block.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=):
    *     {in: !Blockly.Connection, out: !Blockly.Connection}} A function that
-   *     takes in a type name and returns an object containing input and output
-   *     connections.
+   *     takes in a type name and returns an object containing next/input
+   *     connections and previous/output connections.
    */
   function createGetMain(suffix) {
     return function(type, name) {
@@ -338,10 +343,11 @@ export function runThreeBlockTests() {
   }
 
   /**
-   * Creates a function which returns the output of an inner block.
+   * Creates a function which creates a new block returns its output or previous
+   * connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=): !Blockly.Connection} A function that
-   *     takes in a type name and returns an output connection.
+   *     takes in a type name and returns an output/previous connection.
    */
   function createGetInnerOutput(suffix) {
     return function(type, name) {
@@ -483,7 +489,8 @@ export function clearSiblingTests() {
  */
 export function runSiblingTests() {
   /**
-   * Creates a function which returns the input of an outer block.
+   * Creates a function which creates a block and returns its next connection or
+   * first input connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=): !Blockly.Connection} A function that
    *     takes in a type name and returns an input connection.
@@ -499,8 +506,8 @@ export function runSiblingTests() {
   }
 
   /**
-   * Creates a function which returns an object containing the inputs and output
-   * of a main block.
+   * Creates a function which creates a block and returns an object containing
+   * the its three input connections, and its output/previous connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=):{
    *     out: !Blockly.Connection,
@@ -532,7 +539,8 @@ export function runSiblingTests() {
   }
 
   /**
-   * Creates a function which returns the output of an inner block.
+   * Creates a function which creates a block and returns its output/previous
+   * connection.
    * @param {string} suffix The suffix for the block type.
    * @return {function(string, string=): !Blockly.Connection} A function that
    *     takes in a type name and returns an output connection.
