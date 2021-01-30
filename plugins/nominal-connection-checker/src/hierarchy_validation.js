@@ -35,9 +35,11 @@ export function validateHierarchy(hierarchyDef) {
   ]);
   checkGenerics(hierarchyDef);
   checkConflictingTypes(hierarchyDef);
+  checkParamsIsArray(hierarchyDef);
   checkParamNames(hierarchyDef);
   checkConflictingParams(hierarchyDef);
   checkParamVariances(hierarchyDef);
+  checkFulfillsIsArray(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
   checkSuperParamsDefined(hierarchyDef);
@@ -91,7 +93,7 @@ function checkParamNames(hierarchyDef) {
 
   for (const type of Object.keys(hierarchyDef)) {
     const typeDef = hierarchyDef[type];
-    if (!typeDef.params) {
+    if (!typeDef.params || !Array.isArray(typeDef.params)) {
       continue;
     }
 
@@ -119,7 +121,7 @@ function checkConflictingParams(hierarchyDef) {
 
   for (const type of Object.keys(hierarchyDef)) {
     const typeDef = hierarchyDef[type];
-    if (!typeDef.params) {
+    if (!typeDef.params || !Array.isArray(typeDef.params)) {
       continue;
     }
 
@@ -165,7 +167,7 @@ function checkParamVariances(hierarchyDef) {
 
   for (const type of Object.keys(hierarchyDef)) {
     const typeDef = hierarchyDef[type];
-    if (!typeDef.params) {
+    if (!typeDef.params || !Array.isArray(typeDef.params)) {
       continue;
     }
     for (const param of typeDef.params) {
@@ -204,7 +206,7 @@ function checkSupersDefined(hierarchyDef) {
   }
   for (const type of keys) {
     const typeInfo = hierarchyDef[type];
-    if (!typeInfo.fulfills) {
+    if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
       continue;
     }
     for (const superType of typeInfo.fulfills) {
@@ -277,7 +279,7 @@ function checkSuperParamsDefined(hierarchyDef) {
   }
   for (const type of keys) {
     const typeInfo = hierarchyDef[type];
-    if (!typeInfo.fulfills) {
+    if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
       continue;
     }
     for (const superType of typeInfo.fulfills) {
@@ -338,7 +340,8 @@ function checkSuperNumParamsCorrect(hierarchyDef) {
       // Super is not defined, this is handled elsewhere.
       return;
     }
-    const required = superDef.params ? superDef.params.length : 0;
+    const required = superDef.params && Array.isArray(superDef.params) ?
+        superDef.params.length : 0;
     const provided = superStructure.params.length;
     if (required != provided) {
       console.error(
@@ -351,7 +354,7 @@ function checkSuperNumParamsCorrect(hierarchyDef) {
 
   for (const type of keys) {
     const typeInfo = types.get(type.toLowerCase());
-    if (!typeInfo.fulfills) {
+    if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
       continue;
     }
     for (const superType of typeInfo.fulfills) {
@@ -473,7 +476,7 @@ function checkSuperParamVariancesCompatible(hierarchyDef) {
 
     const typeDef = types.get(typeName.toLowerCase());
     const superDef = types.get(superStructure.name.toLowerCase());
-    if (!superDef || !superDef.params) {
+    if (!superDef || !superDef.params || !Array.isArray(superDef.params)) {
       return;
     }
 
@@ -503,7 +506,7 @@ function checkSuperParamVariancesCompatible(hierarchyDef) {
 
   for (const type of keys) {
     const typeInfo = types.get(type.toLowerCase());
-    if (!typeInfo.fulfills) {
+    if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
       continue;
     }
     for (const superType of typeInfo.fulfills) {
@@ -553,7 +556,7 @@ function checkCircularDependencies(hierarchyDef) {
 
       currentTraversal.push(typeStructure);
 
-      if (typeInfo.fulfills) {
+      if (typeInfo.fulfills && Array.isArray(typeInfo.fulfills)) {
         for (const superType of typeInfo.fulfills) {
           searchForCyclesRec(superType, currentTraversal);
         }
@@ -647,7 +650,7 @@ function checkSupersParsing(hierarchyDef) {
 
   for (const typeName of Object.keys(hierarchyDef)) {
     const type = hierarchyDef[typeName];
-    if (!type.fulfills) {
+    if (!type.fulfills || !Array.isArray(type.fulfills)) {
       continue;
     }
     for (const superType of type.fulfills) {
@@ -656,6 +659,38 @@ function checkSupersParsing(hierarchyDef) {
       } catch (e) {
         console.error(error, typeName, superType, e);
       }
+    }
+  }
+}
+
+/**
+ * Checks that if a fulfills property is provided, it is an array.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkFulfillsIsArray(hierarchyDef) {
+  const error = 'The type %s provides a `fulfills` property, but it is not an' +
+      ' array';
+
+  for (const typeName of Object.keys(hierarchyDef)) {
+    const type = hierarchyDef[typeName];
+    if (type.fulfills && !Array.isArray(type.fulfills)) {
+      console.error(error, typeName);
+    }
+  }
+}
+
+/**
+ * Checks that if a params property is provided, it is an array.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkParamsIsArray(hierarchyDef) {
+  const error = 'The type %s provides a `params` property, but it is not an' +
+      ' array';
+
+  for (const typeName of Object.keys(hierarchyDef)) {
+    const type = hierarchyDef[typeName];
+    if (type.params && !Array.isArray(type.params)) {
+      console.error(error, typeName);
     }
   }
 }

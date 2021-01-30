@@ -1342,4 +1342,101 @@ suite('Hierarchy Validation', function() {
           conflictMsg, 'A', 'typeA', '#2 (a), #3 (A)'));
     });
   });
+
+  suite('Fulfills is array', function() {
+    const error = 'The type %s provides a `fulfills` property, but it is not ' +
+        'an array';
+
+    test('Array', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+        'typeB': { },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Object', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': { },
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(error, 'typeA'));
+    });
+
+    test('String', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': 'typeB',
+        },
+        'typeB': { },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(error, 'typeA'));
+    });
+
+    test('Number', function() {
+      validateHierarchy({
+        'typeA': {
+          'fulfills': 1,
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(error, 'typeA'));
+    });
+  });
+
+  suite('Params is array', function() {
+    const error = 'The type %s provides a `params` property, but it is not an' +
+        ' array';
+
+    test('Array', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.notCalled);
+    });
+
+    test('Object', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': {
+            'A': 'co',
+          },
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(error, 'typeA'));
+    });
+
+    test('String', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': 'A:co',
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(error, 'typeA'));
+    });
+
+    test('Number', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': 1,
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(error, 'typeA'));
+    });
+  });
 });
