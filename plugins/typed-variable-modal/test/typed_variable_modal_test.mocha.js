@@ -88,6 +88,7 @@ suite('TypedVariableModal', () => {
           'blocklyModalBtn blocklyModalBtnClose');
       assert.equal(this.typedVarModal.lastFocusableEl_.className,
           'blocklyModalBtn');
+      assert.equal(true, false);
     });
   });
 
