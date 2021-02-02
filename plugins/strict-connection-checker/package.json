@@ -23,7 +23,7 @@
     "strict-connection-checker",
     "connection-checker"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/strict-type-checker#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/strict-connection-checker#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
