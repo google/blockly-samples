@@ -17,7 +17,7 @@ The playground is a tremendously useful tool for debugging your Blockly project.
 - Switch between different Blockly options (eg: rtl, renderer, readOnly, zoom and scroll)
 - Switch between different toolboxes and themes
 - Import and export programs, or generate code using one of the built-in generators
-- Trigger programatic actions (eg: Show/hide, Clear, Undo/Redo, Scale)
+- Trigger programmatic actions (eg: Show/hide, Clear, Undo/Redo, Scale)
 - A debug renderer
 - Stress tests for the renderer
 - Log all events in the console
