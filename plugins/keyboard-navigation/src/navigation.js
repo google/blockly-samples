@@ -90,6 +90,7 @@ export class Navigation {
     /**
      * The list of registered workspaces.
      * Used when removing change listeners in dispose.
+     * @type {!Array<!Blockly.WorkspaceSvg>}
      * @protected
      */
     this.workspaces = [];
@@ -145,7 +146,7 @@ export class Navigation {
   /**
    * Sets the state for the given workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to set the state on.
-   * @param {Constants.STATE} state The navigation state.
+   * @param {!Constants.STATE} state The navigation state.
    * @protected
    */
   setState(workspace, state) {
@@ -155,7 +156,7 @@ export class Navigation {
   /**
    * Gets the navigation state of the current workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get the state of.
-   * @return {Constants.STATE} The sate of the given workspace.
+   * @return {!Constants.STATE} The state of the given workspace.
    * @package
    */
   getState(workspace) {
@@ -166,7 +167,7 @@ export class Navigation {
    * Gets the marker created for keyboard navigation.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get the marker
    *     from.
-   * @return {Blockly.Marker} The marker created for keyboard navigation.
+   * @return {?Blockly.Marker} The marker created for keyboard navigation.
    * @protected
    */
   getMarker(workspace) {
@@ -261,7 +262,7 @@ export class Navigation {
    * Moves the cursor to the workspace if a block has been dragged from a simple
    * toolbox. For a category toolbox this is handled in
    * handleToolboxCategoryClick_.
-   * @param {Blockly.WorkspaceSvg} workspace The workspace the cursor belongs
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the cursor belongs
    *     to.
    * @param {!Blockly.Events.Abstract} e The Blockly event to process.
    * @protected
@@ -276,7 +277,7 @@ export class Navigation {
   /**
    * Moves the cursor to the block level when the block the cursor is on
    * mutates.
-   * @param {Blockly.WorkspaceSvg} workspace The workspace the cursor belongs
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the cursor belongs
    *     to.
    * @param {!Blockly.Events.BlockChange} e The Blockly event to process.
    * @protected
@@ -295,7 +296,7 @@ export class Navigation {
 
   /**
    * Moves the cursor to the workspace when a user clicks on the workspace.
-   * @param {Blockly.WorkspaceSvg} workspace The workspace the cursor belongs
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the cursor belongs
    *     to.
    * @param {!Blockly.Events.Click} e The Blockly event to process.
    * @protected
@@ -358,9 +359,9 @@ export class Navigation {
   /**
    * Handles when a user clicks on a block in the flyout by moving the cursor
    * to that stack of blocks and setting the state of navigation to the flyout.
-   * @param {Blockly.WorkspaceSvg} mainWorkspace The workspace the user clicked
+   * @param {!Blockly.WorkspaceSvg} mainWorkspace The workspace the user clicked
    *     on.
-   * @param {Blockly.BlockSvg} block The block the user clicked on.
+   * @param {?Blockly.BlockSvg} block The block the user clicked on.
    * @protected
    */
   handleBlockClickInFlyout(mainWorkspace, block) {
