@@ -385,7 +385,7 @@ export class WorkspaceSearch {
    * Selects the next block.
    */
   next() {
-    this.setCurrentBlock_(this.currentBlockIndex_ + 1);
+    this.setCurrentBlo ck_(this.currentBlockIndex_ + 1);
   }
 
   /**
