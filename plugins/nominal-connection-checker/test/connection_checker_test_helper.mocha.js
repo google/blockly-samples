@@ -17,8 +17,7 @@
  */
 export function createBlockDefs(types) {
   const blocks = [];
-  for (let type of types) {
-    type = type.toLowerCase();
+  for (const type of types) {
     blocks.push({
       'type': 'static_' + type + '_outer_value',
       'message0': '%1',
@@ -167,7 +166,7 @@ const twoBlockTests = [];
 
 /**
  * Creates a two block test. Two block tests have the .getOuterInput and
- * .getInnerOutput functions available. They are run through 5 suites comprising
+ * .getInnerOutput functions available. They are run through 3 suites comprising
  * all of the possible valid combinations of input and output connections.
  * @param {string} name The name for the test.
  * @param {function()} fn The test function to run.
@@ -199,20 +198,44 @@ export function clearTwoBlockTests() {
  * called at the end of a suite of two block tests.
  */
 export function runTwoBlockTests() {
+  /**
+   * Creates a function which creates a new block and returns its next
+   * connection or first input connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=): !Blockly.Connection} A function that
+   *     takes in a type name and returns next connection or input connection.
+   */
+  function createGetOuterInput(suffix) {
+    return function(type, name) {
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const inConn = block.nextConnection ||
+          block.getInput('INPUT1').connection;
+      inConn.name = name || type + 'In';
+      return inConn;
+    };
+  }
+
+  /**
+   * Creates a function which creates a new block and returns its output
+   * connection or previous connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=): !Blockly.Connection} A function that
+   *     takes in a type name and returns an output connection or
+   *     previous connection.
+   */
+  function createGetInnerOutput(suffix) {
+    return function(type, name) {
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const outConn = block.outputConnection || block.previousConnection;
+      outConn.name = name || type + 'Out';
+      return outConn;
+    };
+  }
+
   suite('Outer value, inner out', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_value');
-        return block.getInput('INPUT1').connection;
-      };
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_out');
-        return block.outputConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_value');
+      this.getInnerOutput = createGetInnerOutput('_inner_out');
     });
 
     runTests(twoBlockTests);
@@ -220,18 +243,8 @@ export function runTwoBlockTests() {
 
   suite('Outer statement, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_statement');
-        return block.getInput('INPUT1').connection;
-      };
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_statement');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(twoBlockTests);
@@ -239,18 +252,8 @@ export function runTwoBlockTests() {
 
   suite('Outer next, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_next');
-        return block.nextConnection;
-      };
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_next');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(twoBlockTests);
@@ -295,31 +298,71 @@ export function clearThreeBlockTests() {
  * called at the end of a suite of three block tests.
  */
 export function runThreeBlockTests() {
+  /**
+   * Creates a function which creates a new block and returns its next
+   * connection or first input connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=): !Blockly.Connection} A function that
+   *     takes in a type name and returns a next connection or input connection.
+   */
+  function createGetOuterInput(suffix) {
+    return function(type, name) {
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const inConn = block.nextConnection ||
+          block.getInput('INPUT1').connection;
+      inConn.name = name || type + 'In';
+      return inConn;
+    };
+  }
+
+  /**
+   * Creates a function which creates a new block and returns an object
+   * containing its next/input and previous/output connections.
+   * of a main block.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=):
+   *     {in: !Blockly.Connection, out: !Blockly.Connection}} A function that
+   *     takes in a type name and returns an object containing next/input
+   *     connections and previous/output connections.
+   */
+  function createGetMain(suffix) {
+    return function(type, name) {
+      const prefix = name || type;
+
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const outConn = block.outputConnection || block.previousConnection;
+      outConn.name = prefix + '.out';
+      const inConn = block.nextConnection ||
+          block.getInput('INPUT1').connection;
+      inConn.name = prefix + '.in';
+      return {
+        out: outConn,
+        in: inConn,
+      };
+    };
+  }
+
+  /**
+   * Creates a function which creates a new block returns its output or previous
+   * connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=): !Blockly.Connection} A function that
+   *     takes in a type name and returns an output/previous connection.
+   */
+  function createGetInnerOutput(suffix) {
+    return function(type, name) {
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const outConn = block.outputConnection || block.previousConnection;
+      outConn.name = name || type + 'Out';
+      return outConn;
+    };
+  }
+
   suite('Outer value, main value, inner out', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_value');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_out_value');
-        return {
-          out: block.outputConnection,
-          in: block.getInput('INPUT1').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_out');
-        return block.outputConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_value');
+      this.getMain = createGetMain('_main_out_value');
+      this.getInnerOutput = createGetInnerOutput('_inner_out');
     });
 
     runTests(threeBlockTests);
@@ -327,29 +370,9 @@ export function runThreeBlockTests() {
 
   suite('Outer value, main statement, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_value');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_out_statement');
-        return {
-          out: block.outputConnection,
-          in: block.getInput('INPUT1').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_value');
+      this.getMain = createGetMain('_main_out_statement');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(threeBlockTests);
@@ -357,29 +380,9 @@ export function runThreeBlockTests() {
 
   suite('Outer value, main next, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_value');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_out_next');
-        return {
-          out: block.outputConnection,
-          in: block.nextConnection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_value');
+      this.getMain = createGetMain('_main_out_next');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(threeBlockTests);
@@ -387,29 +390,9 @@ export function runThreeBlockTests() {
 
   suite('Outer statement, main input, inner out', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_statement');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_value');
-        return {
-          out: block.previousConnection,
-          in: block.getInput('INPUT1').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_out');
-        return block.outputConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_statement');
+      this.getMain = createGetMain('_main_prev_value');
+      this.getInnerOutput = createGetInnerOutput('_inner_out');
     });
 
     runTests(threeBlockTests);
@@ -417,29 +400,9 @@ export function runThreeBlockTests() {
 
   suite('Outer statement, main statement, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_statement');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_statement');
-        return {
-          out: block.previousConnection,
-          in: block.getInput('INPUT1').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_statement');
+      this.getMain = createGetMain('_main_prev_statement');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(threeBlockTests);
@@ -447,29 +410,9 @@ export function runThreeBlockTests() {
 
   suite('Outer statement, main next, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_statement');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_next');
-        return {
-          out: block.previousConnection,
-          in: block.nextConnection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_statement');
+      this.getMain = createGetMain('_main_prev_next');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(threeBlockTests);
@@ -477,29 +420,9 @@ export function runThreeBlockTests() {
 
   suite('Outer next, main input, inner out', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_next');
-        return block.nextConnection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_value');
-        return {
-          out: block.previousConnection,
-          in: block.getInput('INPUT1').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_out');
-        return block.outputConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_next');
+      this.getMain = createGetMain('_main_prev_value');
+      this.getInnerOutput = createGetInnerOutput('_inner_out');
     });
 
     runTests(threeBlockTests);
@@ -507,29 +430,9 @@ export function runThreeBlockTests() {
 
   suite('Outer next, main statement, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_next');
-        return block.nextConnection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_statement');
-        return {
-          out: block.previousConnection,
-          in: block.getInput('INPUT1').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_next');
+      this.getMain = createGetMain('_main_prev_statement');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(threeBlockTests);
@@ -537,29 +440,9 @@ export function runThreeBlockTests() {
 
   suite('Outer next, main next, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_next');
-        return block.nextConnection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_next');
-        return {
-          out: block.previousConnection,
-          in: block.nextConnection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_next');
+      this.getMain = createGetMain('_main_prev_next');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(threeBlockTests);
@@ -605,33 +488,77 @@ export function clearSiblingTests() {
  * called at the end of a suite of sibling tests.
  */
 export function runSiblingTests() {
+  /**
+   * Creates a function which creates a block and returns its next connection or
+   * first input connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=): !Blockly.Connection} A function that
+   *     takes in a type name and returns an input connection.
+   */
+  function createGetOuterInput(suffix) {
+    return function(type, name) {
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const inConn = block.nextConnection ||
+          block.getInput('INPUT1').connection;
+      inConn.name = name || type + 'In';
+      return inConn;
+    };
+  }
+
+  /**
+   * Creates a function which creates a block and returns an object containing
+   * the its three input connections, and its output/previous connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=):{
+   *     out: !Blockly.Connection,
+   *     in1: !Blockly.Connection,
+   *     in2: !Blockly.Connection,
+   *     in3: !Blockly.Connection}
+   *     } A function that takes in a type name and
+   *     returns an object containing input and output connections.
+   */
+  function createGetMain(suffix) {
+    return function(type, name) {
+      const prefix = name || type;
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const outConn = block.outputConnection || block.previousConnection;
+      outConn.name = prefix + '.out';
+      const inConn1 = block.getInput('INPUT1').connection;
+      inConn1.name = prefix + '.in1';
+      const inConn2 = block.getInput('INPUT2').connection;
+      inConn2.name = prefix + '.in2';
+      const inConn3 = block.getInput('INPUT3').connection;
+      inConn3.name = prefix + '.in3';
+      return {
+        out: outConn,
+        in1: inConn1,
+        in2: inConn2,
+        in3: inConn3,
+      };
+    };
+  }
+
+  /**
+   * Creates a function which creates a block and returns its output/previous
+   * connection.
+   * @param {string} suffix The suffix for the block type.
+   * @return {function(string, string=): !Blockly.Connection} A function that
+   *     takes in a type name and returns an output connection.
+   */
+  function createGetInnerOutput(suffix) {
+    return function(type, name) {
+      const block = this.workspace.newBlock('static_' + type + suffix);
+      const outConn = block.outputConnection || block.previousConnection;
+      outConn.name = name || type + 'Out';
+      return outConn;
+    };
+  }
+
   suite('Outer value, main value, inner out', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_value');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_out_value');
-        return {
-          out: block.outputConnection,
-          in1: block.getInput('INPUT1').connection,
-          in2: block.getInput('INPUT2').connection,
-          in3: block.getInput('INPUT3').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_out');
-        return block.outputConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_value');
+      this.getMain = createGetMain('_main_out_value');
+      this.getInnerOutput = createGetInnerOutput('_inner_out');
     });
 
     runTests(siblingTests);
@@ -639,31 +566,9 @@ export function runSiblingTests() {
 
   suite('Outer statement, main statement, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_statement');
-        return block.getInput('INPUT1').connection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_statement');
-        return {
-          out: block.previousConnection,
-          in1: block.getInput('INPUT1').connection,
-          in2: block.getInput('INPUT2').connection,
-          in3: block.getInput('INPUT3').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_statement');
+      this.getMain = createGetMain('_main_prev_statement');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(siblingTests);
@@ -671,31 +576,9 @@ export function runSiblingTests() {
 
   suite('Outer next, main statement, inner prev', function() {
     setup(function() {
-      this.getOuterInput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_outer_next');
-        return block.nextConnection;
-      };
-
-      this.getMain = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_main_prev_statement');
-        return {
-          out: block.previousConnection,
-          in1: block.getInput('INPUT1').connection,
-          in2: block.getInput('INPUT2').connection,
-          in3: block.getInput('INPUT3').connection,
-        };
-      };
-
-      this.getInnerOutput = function(name) {
-        name = name.toLowerCase();
-        const block = this.workspace.newBlock(
-            'static_' + name + '_inner_prev');
-        return block.previousConnection;
-      };
+      this.getOuterInput = createGetOuterInput('_outer_next');
+      this.getMain = createGetMain('_main_prev_statement');
+      this.getInnerOutput = createGetInnerOutput('_inner_prev');
     });
 
     runTests(siblingTests);
