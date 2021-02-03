@@ -771,6 +771,98 @@ export class NavigationController {
   }
 
   /**
+   * Keyboard shortcut to copy and delete the block the cursor is on using
+   * ctrl+x, cmd+x, or alt+x.
+   * @protected
+   */
+  registerCut() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const cutShortcut = {
+      name: Constants.SHORTCUT_NAMES.CUT,
+      preconditionFn: (workspace) => {
+        if (workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly) {
+          const curNode = workspace.getCursor().getCurNode();
+          if (curNode && curNode.getSourceBlock()) {
+            const sourceBlock = curNode.getSourceBlock();
+            return !Blockly.Gesture.inProgress() && sourceBlock &&
+                sourceBlock.isDeletable() && sourceBlock.isMovable() &&
+                !sourceBlock.workspace.isFlyout;
+          }
+        }
+        return false;
+      },
+      callback: (workspace) => {
+        const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
+        Blockly.copy(sourceBlock);
+        this.navigation.moveCursorOnBlockDelete(workspace, sourceBlock);
+        Blockly.deleteBlock(sourceBlock);
+        return true;
+      },
+    };
+
+    Blockly.ShortcutRegistry.registry.register(cutShortcut);
+
+    const ctrlX = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.CTRL]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        ctrlX, cutShortcut.name, true);
+
+    const altX = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.ALT]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        altX, cutShortcut.name, true);
+
+    const metaX = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.META]);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        metaX, cutShortcut.name, true);
+  }
+
+  /**
+   * Registers shortcut to delete the block the cursor is on using delete or
+   * backspace.
+   * @protected
+   */
+  registerDelete() {
+    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
+    const deleteShortcut = {
+      name: Constants.SHORTCUT_NAMES.DELETE,
+      preconditionFn: function(workspace) {
+        if (workspace.keyboardAccessibilityMode &&
+            !workspace.options.readOnly) {
+          const curNode = workspace.getCursor().getCurNode();
+          if (curNode && curNode.getSourceBlock()) {
+            const sourceBlock = curNode.getSourceBlock();
+            return sourceBlock && sourceBlock.isDeletable();
+          }
+        }
+        return false;
+      },
+      callback: (workspace, e) => {
+        const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
+        // Delete or backspace.
+        // Stop the browser from going back to the previous page.
+        // Do this first to prevent an error in the delete code from resulting
+        // in data loss.
+        e.preventDefault();
+        // Don't delete while dragging.  Jeez.
+        if (Blockly.Gesture.inProgress()) {
+          return false;
+        }
+        this.navigation.moveCursorOnBlockDelete(workspace, sourceBlock);
+        Blockly.deleteBlock(sourceBlock);
+        return true;
+      },
+    };
+    Blockly.ShortcutRegistry.registry.register(deleteShortcut);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        Blockly.utils.KeyCodes.DELETE, deleteShortcut.name, true);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(
+        Blockly.utils.KeyCodes.BACKSPACE, deleteShortcut.name, true);
+  }
+
+  /**
    * Registers all default keyboard shortcut items for keyboard navigation. This
    * should be called once per instance of KeyboardShortcutRegistry.
    * @protected
