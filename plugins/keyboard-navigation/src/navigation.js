@@ -13,7 +13,7 @@
 import * as Blockly from 'blockly/core';
 import * as Constants from './constants';
 import {
-  registrationName as cursorRegistrationName,
+  cleregistrationName as cursorRegistrationName,
   registrationType as cursorRegistrationType} from './flyout_cursor';
 
 /**
@@ -57,7 +57,8 @@ export class Navigation {
 
     /**
      * The default coordinate to use when focusing on the workspace and no
-     * blocks are present.
+     * blocks are present. In pixel coordinates, but will be converted to
+     * workspace coordinates when used to position the cursor.
      * @type {!Blockly.utils.Coordinate}
      * @public
      */
@@ -65,7 +66,8 @@ export class Navigation {
 
     /**
      * The default coordinate to use when moving the cursor to the workspace
-     * after a block has been deleted.
+     * after a block has been deleted. In pixel coordinates, but will be
+     * converted to workspace coordinates when used to position the cursor.
      * @type {!Blockly.utils.Coordinate}
      * @public
      */
@@ -246,6 +248,9 @@ export class Navigation {
     const mainWorkspace = flyoutWorkspace.targetWorkspace;
     const flyout = mainWorkspace.getFlyout();
 
+    // This is called for simple toolboxes and for toolboxes that have a flyout
+    // that does not close. Autoclosing flyouts close before we need to focus
+    // the cursor on the block that was clicked.
     if (mainWorkspace && mainWorkspace.keyboardAccessibilityMode &&
         !flyout.autoClose) {
       if ((e.type === Blockly.Events.CLICK && e.targetType === 'block')) {
