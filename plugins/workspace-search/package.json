@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.4",
-    "@blockly/dev-tools": "^2.0.8",
+    "@blockly/dev-tools": "^2.0.9",
     "blockly": "^3.20200123.1",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",
