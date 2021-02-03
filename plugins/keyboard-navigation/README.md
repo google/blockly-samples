@@ -20,7 +20,7 @@ npm install blockly-plugin-keyboard-navigation --save
 ## Usage
 ```js
 import * as Blockly from 'blockly';
-import {Register} from 'blockly-plugin-keyboard-navigation';
+import {NavigationController} from 'blockly-plugin-keyboard-navigation';
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
