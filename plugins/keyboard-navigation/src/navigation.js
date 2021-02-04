@@ -12,7 +12,9 @@
 
 import * as Blockly from 'blockly/core';
 import * as Constants from './constants';
-import {cleregistrationName as cursorRegistrationName, registrationType as cursorRegistrationType} from './flyout_cursor';
+import {
+  registrationName as cursorRegistrationName,
+  registrationType as cursorRegistrationType} from './flyout_cursor';
 
 /**
  * Class that holds all methods necessary for keyboard navigation to work.
@@ -606,7 +608,7 @@ export class Navigation {
   }
 
   /**
-   * Disconnect the block from its parent and move to the position of the
+   * Disconnects the block from its parent and moves it to the position of the
    * workspace node.
    * @param {?Blockly.BlockSvg} block The block to be moved to the workspace.
    * @param {!Blockly.ASTNode} wsNode The workspace node holding the position
@@ -699,8 +701,8 @@ export class Navigation {
   }
 
   /**
-   * If the given connection is superior find the inferior connection on the
-   * source block.
+   * Finds the inferior connection on the source block if the given connection
+   * is superior.
    * @param {?Blockly.RenderedConnection} connection The connection trying to be
    *     connected.
    * @return {?Blockly.RenderedConnection} The inferior connection or null if
@@ -721,8 +723,8 @@ export class Navigation {
   }
 
   /**
-   * If the given connection is inferior tries to find a superior connection to
-   * connect to.
+   * Finds a superior connection on the source block if the given connection is
+   * inferior.
    * @param {?Blockly.RenderedConnection} connection The connection trying to be
    *     connected.
    * @return {?Blockly.RenderedConnection} The superior connection or null if
@@ -772,7 +774,7 @@ export class Navigation {
 
   /**
    * Tries to connect the given block to the destination connection, making an
-   * intelligent guess about which connection to use to on the moving block.
+   * intelligent guess about which connection to use on the moving block.
    * @param {!Blockly.BlockSvg} block The block to move.
    * @param {!Blockly.RenderedConnection} destConnection The connection to
    *     connect to.
