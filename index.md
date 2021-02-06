@@ -70,3 +70,5 @@ layout: index
 
 ## Plane
 * [Plane](examples/plane-demo/index.html)
+
+Looking for the old demos site? [Click here](https://blockly-demo.appspot.com/static/demos/index.html)
