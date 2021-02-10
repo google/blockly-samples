@@ -366,7 +366,7 @@ export class Navigation {
    * to that stack of blocks and setting the state of navigation to the flyout.
    * @param {!Blockly.WorkspaceSvg} mainWorkspace The workspace the user clicked
    *     on.
-   * @param {?Blockly.BlockSvg} block The block the user clicked on.
+   * @param {!Blockly.BlockSvg} block The block the user clicked on.
    * @protected
    */
   handleBlockClickInFlyout(mainWorkspace, block) {
@@ -503,7 +503,7 @@ export class Navigation {
     const flyout = workspace.getFlyout();
     const cursor = flyout ? flyout.getWorkspace().getCursor() : null;
 
-    return /** @type {Blockly.FlyoutCursor} */ (cursor);
+    return /** @type {?Blockly.FlyoutCursor} */ (cursor);
   }
 
   /**
@@ -530,8 +530,8 @@ export class Navigation {
    *     wrong.
    * @protected
    */
-  modify(workspace, markerNode, cursorNode) {
-    if (!this.modifyWarn(markerNode, cursorNode)) {
+  tryToConnectMarkerAndCursor(workspace, markerNode, cursorNode) {
+    if (!this.logConnectionWarning(markerNode, cursorNode)) {
       return false;
     }
 
@@ -559,7 +559,7 @@ export class Navigation {
       return this.moveBlockToWorkspace(
           /** @type {Blockly.BlockSvg} */ (block), markerNode);
     }
-    this.warn('Unexpected state in setWorkspaceState.');
+    this.warn('Unexpected state in tryToConnectMarkerAndCursor.');
     return false;
   }
 
@@ -571,7 +571,7 @@ export class Navigation {
    *     otherwise.
    * @protected
    */
-  modifyWarn(markerNode, cursorNode) {
+  logConnectionWarning(markerNode, cursorNode) {
     if (!markerNode) {
       this.warn('Cannot insert with no marked node.');
       return false;
@@ -644,12 +644,19 @@ export class Navigation {
   disconnectChild(movingConnection, destConnection) {
     const movingBlock = movingConnection.getSourceBlock();
     const destBlock = destConnection.getSourceBlock();
+    let inferiorConnection;
 
     if (movingBlock.getRootBlock() === destBlock.getRootBlock()) {
       if (movingBlock.getDescendants(false).indexOf(destBlock) > -1) {
-        this.getInferiorConnection(destConnection).disconnect();
+        inferiorConnection = this.getInferiorConnection(destConnection);
+        if (inferiorConnection) {
+          inferiorConnection.disconnect();
+        }
       } else {
-        this.getInferiorConnection(movingConnection).disconnect();
+        inferiorConnection = this.getInferiorConnection(movingConnection);
+        if (inferiorConnection) {
+          inferiorConnection.disconnect();
+        }
       }
     }
   }
