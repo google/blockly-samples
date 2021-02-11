@@ -888,4 +888,124 @@ export class Navigation {
     marker.setCurNode(null);
     marker.hide();
   }
+
+  /**
+   * Enables accessibility mode.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to enable keyboard
+   *     accessibility mode on.
+   * @package
+   */
+  enableKeyboardAccessibility(workspace) {
+    if (this.workspaces.indexOf(workspace) > -1 &&
+        !workspace.keyboardAccessibilityMode) {
+      workspace.keyboardAccessibilityMode = true;
+      this.focusWorkspace(workspace);
+    }
+  }
+
+  /**
+   * Disables accessibility mode.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to disable keyboard
+   *     accessibility mode on.
+   * @package
+   */
+  disableKeyboardAccessibility(workspace) {
+    if (this.workspaces.indexOf(workspace) > -1 &&
+        workspace.keyboardAccessibilityMode) {
+      workspace.keyboardAccessibilityMode = false;
+      workspace.getCursor().hide();
+      this.getMarker(workspace).hide();
+      if (this.getFlyoutCursor(workspace)) {
+        this.getFlyoutCursor(workspace).hide();
+      }
+    }
+  }
+
+  /**
+   * Navigation log handler. If loggingCallback is defined, use it.
+   * Otherwise just log to the console.log.
+   * @param {string} msg The message to log.
+   * @protected
+   */
+  log(msg) {
+    if (this.loggingCallback) {
+      this.loggingCallback(Constants.LOGGING_MSG_TYPE.LOG, msg);
+    } else {
+      console.log(msg);
+    }
+  }
+
+  /**
+   * Navigation warning handler. If loggingCallback is defined, use it.
+   * Otherwise call console.warn.
+   * @param {string} msg The warning message.
+   * @protected
+   */
+  warn(msg) {
+    if (this.loggingCallback) {
+      this.loggingCallback(Constants.LOGGING_MSG_TYPE.WARN, msg);
+    } else {
+      console.warn(msg);
+    }
+  }
+
+  /**
+   * Navigation error handler. If loggingCallback is defined, use it.
+   * Otherwise call console.error.
+   * @param {string} msg The error message.
+   * @protected
+   */
+  error(msg) {
+    if (this.loggingCallback) {
+      this.loggingCallback(Constants.LOGGING_MSG_TYPE.ERROR, msg);
+    } else {
+      console.error(msg);
+    }
+  }
+
+  /**
+   * Moves the workspace cursor in the given direction.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the cursor is on.
+   * @param {number} xDirection -1 to move cursor left. 1 to move cursor right.
+   * @param {number} yDirection -1 to move cursor up. 1 to move cursor down.
+   * @return {boolean} True if the current node is a workspace, false otherwise.
+   * @package
+   */
+  moveWSCursor(workspace, xDirection, yDirection) {
+    const cursor = workspace.getCursor();
+    const curNode = workspace.getCursor().getCurNode();
+
+    if (curNode.getType() !== Blockly.ASTNode.types.WORKSPACE) {
+      return false;
+    }
+
+    const wsCoord = curNode.getWsCoordinate();
+    const newX = xDirection * this.WS_MOVE_DISTANCE + wsCoord.x;
+    const newY = yDirection * this.WS_MOVE_DISTANCE + wsCoord.y;
+
+    cursor.setCurNode(Blockly.ASTNode.createWorkspaceNode(
+        workspace, new Blockly.utils.Coordinate(newX, newY)));
+    return true;
+  }
+
+  /**
+   * Handles hitting the enter key on the workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace.
+   * @package
+   */
+  handleEnterForWS(workspace) {
+    const cursor = workspace.getCursor();
+    const curNode = cursor.getCurNode();
+    const nodeType = curNode.getType();
+    if (nodeType == Blockly.ASTNode.types.FIELD) {
+      (/** @type {!Blockly.Field} */ (curNode.getLocation())).showEditor();
+    } else if (
+        curNode.isConnection() || nodeType == Blockly.ASTNode.types.WORKSPACE) {
+      this.markAtCursor(workspace);
+    } else if (nodeType == Blockly.ASTNode.types.BLOCK) {
+      this.warn('Cannot mark a block.');
+    } else if (nodeType == Blockly.ASTNode.types.STACK) {
+      this.warn('Cannot mark a stack.');
+    }
+  }
 }
