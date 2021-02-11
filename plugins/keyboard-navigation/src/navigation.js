@@ -13,7 +13,7 @@
 import * as Blockly from 'blockly/core';
 import * as Constants from './constants';
 import {
-  cleregistrationName as cursorRegistrationName,
+  registrationName as cursorRegistrationName,
   registrationType as cursorRegistrationType} from './flyout_cursor';
 
 /**
@@ -366,7 +366,7 @@ export class Navigation {
    * to that stack of blocks and setting the state of navigation to the flyout.
    * @param {!Blockly.WorkspaceSvg} mainWorkspace The workspace the user clicked
    *     on.
-   * @param {?Blockly.BlockSvg} block The block the user clicked on.
+   * @param {!Blockly.BlockSvg} block The block the user clicked on.
    * @protected
    */
   handleBlockClickInFlyout(mainWorkspace, block) {
@@ -379,5 +379,513 @@ export class Navigation {
     this.getFlyoutCursor(mainWorkspace)
         .setCurNode(Blockly.ASTNode.createStackNode(block));
     this.setState(mainWorkspace, Constants.STATE.FLYOUT);
+  }
+
+  /**
+   * Moves the cursor to the appropriate location before a block is deleted.
+   * This is used when the user deletes a block using the delete or backspace
+   * key.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the block is being
+   *     deleted on.
+   * @param {!Blockly.BlockSvg} deletedBlock The block that is being deleted.
+   * @package
+   */
+  moveCursorOnBlockDelete(workspace, deletedBlock) {
+    if (!workspace || !workspace.getCursor()) {
+      return;
+    }
+    const cursor = workspace.getCursor();
+    const curNode = cursor.getCurNode();
+    const block = curNode ? curNode.getSourceBlock() : null;
+
+    if (block === deletedBlock) {
+      // If the block has a parent move the cursor to their connection point.
+      if (block.getParent()) {
+        const topConnection =
+            block.previousConnection || block.outputConnection;
+        if (topConnection) {
+          cursor.setCurNode(Blockly.ASTNode.createConnectionNode(
+              topConnection.targetConnection));
+        }
+      } else {
+        // If the block is by itself move the cursor to the workspace.
+        cursor.setCurNode(Blockly.ASTNode.createWorkspaceNode(
+            block.workspace, block.getRelativeToSurfaceXY()));
+      }
+      // If the cursor is on a block whose parent is being deleted, move the
+      // cursor to the workspace.
+    } else if (block && deletedBlock.getChildren(false).indexOf(block) > -1) {
+      cursor.setCurNode(Blockly.ASTNode.createWorkspaceNode(
+          block.workspace, block.getRelativeToSurfaceXY()));
+    }
+  }
+
+  /**
+   * Sets the navigation state to toolbox and selects the first category in the
+   * toolbox. No-op if a toolbox does not exist on the given workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to get the toolbox
+   *     on.
+   * @package
+   */
+  focusToolbox(workspace) {
+    const toolbox = workspace.getToolbox();
+    if (!toolbox) {
+      return;
+    }
+
+    this.setState(workspace, Constants.STATE.TOOLBOX);
+    this.resetFlyout(workspace, false /* shouldHide */);
+
+    if (!this.getMarker(workspace).getCurNode()) {
+      this.markAtCursor(workspace);
+    }
+
+    if (!toolbox.getSelectedItem()) {
+      // Find the first item that is selectable.
+      const toolboxItems = toolbox.getToolboxItems();
+      for (let i = 0, toolboxItem; (toolboxItem = toolboxItems[i]); i++) {
+        if (toolboxItem.isSelectable()) {
+          toolbox.selectItemByPosition(i);
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Sets the navigation state to flyout and moves the cursor to the first
+   * block in the flyout.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace the flyout is on.
+   * @package
+   */
+  focusFlyout(workspace) {
+    const flyout = workspace.getFlyout();
+
+    this.setState(workspace, Constants.STATE.FLYOUT);
+
+    if (!this.getMarker(workspace).getCurNode()) {
+      this.markAtCursor(workspace);
+    }
+
+    if (flyout && flyout.getWorkspace()) {
+      const topBlocks = flyout.getWorkspace().getTopBlocks(true);
+      if (topBlocks.length > 0) {
+        const astNode = Blockly.ASTNode.createStackNode(topBlocks[0]);
+        this.getFlyoutCursor(workspace).setCurNode(astNode);
+      }
+    }
+  }
+
+  /**
+   * Sets the navigation state to workspace and moves the cursor to either the
+   * top block on a workspace or to the workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to focus on.
+   * @package
+   */
+  focusWorkspace(workspace) {
+    Blockly.hideChaff();
+    const reset = !!workspace.getToolbox();
+
+    this.resetFlyout(workspace, reset);
+    this.setState(workspace, Constants.STATE.WORKSPACE);
+    this.setCursorOnWorkspaceFocus(workspace);
+  }
+
+  /**
+   * Gets the cursor on the flyout's workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The main workspace the flyout is
+   *     on.
+   * @return {?Blockly.FlyoutCursor} The flyout's cursor or null if no flyout
+   *     exists.
+   * @protected
+   */
+  getFlyoutCursor(workspace) {
+    const flyout = workspace.getFlyout();
+    const cursor = flyout ? flyout.getWorkspace().getCursor() : null;
+
+    return /** @type {?Blockly.FlyoutCursor} */ (cursor);
+  }
+
+  /**
+   * Hides the flyout cursor and optionally hides the flyout.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace.
+   * @param {boolean} shouldHide True if the flyout should be hidden.
+   * @protected
+   */
+  resetFlyout(workspace, shouldHide) {
+    if (this.getFlyoutCursor(workspace)) {
+      this.getFlyoutCursor(workspace).hide();
+      if (shouldHide) {
+        workspace.getFlyout().hide();
+      }
+    }
+  }
+
+  /**
+   * Tries to connect the given marker and cursor node.
+   * @param {!Blockly.WorkspaceSvg} workspace The main workspace.
+   * @param {!Blockly.ASTNode} markerNode The node to try to connect to.
+   * @param {!Blockly.ASTNode} cursorNode The node to connect to the markerNode.
+   * @return {boolean} True if the key was handled; false if something went
+   *     wrong.
+   * @protected
+   */
+  tryToConnectMarkerAndCursor(workspace, markerNode, cursorNode) {
+    if (!this.logConnectionWarning(markerNode, cursorNode)) {
+      return false;
+    }
+
+    const markerType = markerNode.getType();
+    const cursorType = cursorNode.getType();
+
+    const cursorLoc = cursorNode.getLocation();
+    const markerLoc = markerNode.getLocation();
+    if (markerNode.isConnection() && cursorNode.isConnection()) {
+      const cursorConnection =
+          /** @type {!Blockly.RenderedConnection} */ (cursorLoc);
+      const markerConnection =
+          /** @type {!Blockly.RenderedConnection} */ (markerLoc);
+      return this.connect(cursorConnection, markerConnection);
+    } else if (
+        markerNode.isConnection() &&
+        (cursorType == Blockly.ASTNode.types.BLOCK ||
+         cursorType == Blockly.ASTNode.types.STACK)) {
+      const cursorBlock = /** @type {!Blockly.BlockSvg} */ (cursorLoc);
+      const markerConnection =
+          /** @type {!Blockly.RenderedConnection} */ (markerLoc);
+      return this.insertBlock(cursorBlock, markerConnection);
+    } else if (markerType == Blockly.ASTNode.types.WORKSPACE) {
+      const block = cursorNode ? cursorNode.getSourceBlock() : null;
+      return this.moveBlockToWorkspace(
+          /** @type {Blockly.BlockSvg} */ (block), markerNode);
+    }
+    this.warn('Unexpected state in tryToConnectMarkerAndCursor.');
+    return false;
+  }
+
+  /**
+   * Warns the user if the given cursor or marker node can not be connected.
+   * @param {!Blockly.ASTNode} markerNode The node to try to connect to.
+   * @param {!Blockly.ASTNode} cursorNode The node to connect to the markerNode.
+   * @return {boolean} True if the marker and cursor are valid types, false
+   *     otherwise.
+   * @protected
+   */
+  logConnectionWarning(markerNode, cursorNode) {
+    if (!markerNode) {
+      this.warn('Cannot insert with no marked node.');
+      return false;
+    }
+
+    if (!cursorNode) {
+      this.warn('Cannot insert with no cursor node.');
+      return false;
+    }
+    const markerType = markerNode.getType();
+    const cursorType = cursorNode.getType();
+
+    // Check the marker for invalid types.
+    if (markerType == Blockly.ASTNode.types.FIELD) {
+      this.warn('Should not have been able to mark a field.');
+      return false;
+    } else if (markerType == Blockly.ASTNode.types.BLOCK) {
+      this.warn('Should not have been able to mark a block.');
+      return false;
+    } else if (markerType == Blockly.ASTNode.types.STACK) {
+      this.warn('Should not have been able to mark a stack.');
+      return false;
+    }
+
+    // Check the cursor for invalid types.
+    if (cursorType == Blockly.ASTNode.types.FIELD) {
+      this.warn('Cannot attach a field to anything else.');
+      return false;
+    } else if (cursorType == Blockly.ASTNode.types.WORKSPACE) {
+      this.warn('Cannot attach a workspace to anything else.');
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Disconnects the block from its parent and moves it to the position of the
+   * workspace node.
+   * @param {?Blockly.BlockSvg} block The block to be moved to the workspace.
+   * @param {!Blockly.ASTNode} wsNode The workspace node holding the position
+   *     the block will be moved to.
+   * @return {boolean} True if the block can be moved to the workspace,
+   *     false otherwise.
+   * @protected
+   */
+  moveBlockToWorkspace(block, wsNode) {
+    if (!block) {
+      return false;
+    }
+    if (block.isShadow()) {
+      this.warn('Cannot move a shadow block to the workspace.');
+      return false;
+    }
+    if (block.getParent()) {
+      block.unplug(false);
+    }
+    block.moveTo(wsNode.getWsCoordinate());
+    return true;
+  }
+
+  /**
+   * Disconnects the child block from its parent block. No-op if the two given
+   * connections are unrelated.
+   * @param {!Blockly.RenderedConnection} movingConnection The connection that
+   *     is being moved.
+   * @param {!Blockly.RenderedConnection} destConnection The connection to be
+   *     moved to.
+   * @protected
+   */
+  disconnectChild(movingConnection, destConnection) {
+    const movingBlock = movingConnection.getSourceBlock();
+    const destBlock = destConnection.getSourceBlock();
+    let inferiorConnection;
+
+    if (movingBlock.getRootBlock() === destBlock.getRootBlock()) {
+      if (movingBlock.getDescendants(false).indexOf(destBlock) > -1) {
+        inferiorConnection = this.getInferiorConnection(destConnection);
+        if (inferiorConnection) {
+          inferiorConnection.disconnect();
+        }
+      } else {
+        inferiorConnection = this.getInferiorConnection(movingConnection);
+        if (inferiorConnection) {
+          inferiorConnection.disconnect();
+        }
+      }
+    }
+  }
+
+  /**
+   * Tries to connect the  given connections.
+   *
+   * If the given connections are not compatible try finding compatible
+   * connections on the source blocks of the given connections.
+   *
+   * @param {?Blockly.RenderedConnection} movingConnection The connection that
+   *     is being moved.
+   * @param {?Blockly.RenderedConnection} destConnection The connection to be
+   *     moved to.
+   * @return {boolean} True if the two connections or their target connections
+   *     were connected, false otherwise.
+   * @protected
+   */
+  connect(movingConnection, destConnection) {
+    if (!movingConnection || !destConnection) {
+      return false;
+    }
+
+    const movingInferior = this.getInferiorConnection(movingConnection);
+    const destSuperior = this.getSuperiorConnection(destConnection);
+
+    const movingSuperior = this.getSuperiorConnection(movingConnection);
+    const destInferior = this.getInferiorConnection(destConnection);
+
+    if (movingInferior && destSuperior &&
+        this.moveAndConnect(movingInferior, destSuperior)) {
+      return true;
+      // Try swapping the inferior and superior connections on the blocks.
+    } else if (
+        movingSuperior && destInferior &&
+        this.moveAndConnect(movingSuperior, destInferior)) {
+      return true;
+    } else if (this.moveAndConnect(movingConnection, destConnection)) {
+      return true;
+    } else {
+      const checker = movingConnection.getConnectionChecker();
+      const reason =
+          checker.canConnectWithReason(movingConnection, destConnection, false);
+      this.warn(
+          'Connection failed with error: ' +
+          checker.getErrorMessage(reason, movingConnection, destConnection));
+      return false;
+    }
+  }
+
+  /**
+   * Finds the inferior connection on the source block if the given connection
+   * is superior.
+   * @param {?Blockly.RenderedConnection} connection The connection trying to be
+   *     connected.
+   * @return {?Blockly.RenderedConnection} The inferior connection or null if
+   *     none exists.
+   * @protected
+   */
+  getInferiorConnection(connection) {
+    const block = /** @type{!Blockly.BlockSvg} */ (connection.getSourceBlock());
+    if (!connection.isSuperior()) {
+      return connection;
+    } else if (block.previousConnection) {
+      return block.previousConnection;
+    } else if (block.outputConnection) {
+      return block.outputConnection;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Finds a superior connection on the source block if the given connection is
+   * inferior.
+   * @param {?Blockly.RenderedConnection} connection The connection trying to be
+   *     connected.
+   * @return {?Blockly.RenderedConnection} The superior connection or null if
+   *     none exists.
+   * @protected
+   */
+  getSuperiorConnection(connection) {
+    if (connection.isSuperior()) {
+      return connection;
+    } else if (connection.targetConnection) {
+      return connection.targetConnection;
+    }
+    return null;
+  }
+
+  /**
+   * Moves the moving connection to the target connection and connects them.
+   * @param {?Blockly.RenderedConnection} movingConnection The connection that
+   *     is being moved.
+   * @param {?Blockly.RenderedConnection} destConnection The connection to be
+   *     moved to.
+   * @return {boolean} True if the connections were connected, false otherwise.
+   * @protected
+   */
+  moveAndConnect(movingConnection, destConnection) {
+    if (!movingConnection || !destConnection) {
+      return false;
+    }
+    const movingBlock = movingConnection.getSourceBlock();
+    const checker = movingConnection.getConnectionChecker();
+
+    if (checker.canConnect(movingConnection, destConnection, false) &&
+        !destConnection.getSourceBlock().isShadow()) {
+      this.disconnectChild(movingConnection, destConnection);
+
+      // Position the root block near the connection so it does not move the
+      // other block when they are connected.
+      if (!destConnection.isSuperior()) {
+        const rootBlock = movingBlock.getRootBlock();
+        rootBlock.positionNearConnection(movingConnection, destConnection);
+      }
+      destConnection.connect(movingConnection);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Tries to connect the given block to the destination connection, making an
+   * intelligent guess about which connection to use on the moving block.
+   * @param {!Blockly.BlockSvg} block The block to move.
+   * @param {!Blockly.RenderedConnection} destConnection The connection to
+   *     connect to.
+   * @return {boolean} Whether the connection was successful.
+   * @protected
+   */
+  insertBlock(block, destConnection) {
+    switch (destConnection.type) {
+      case Blockly.PREVIOUS_STATEMENT:
+        if (this.connect(block.nextConnection, destConnection)) {
+          return true;
+        }
+        break;
+      case Blockly.NEXT_STATEMENT:
+        if (this.connect(block.previousConnection, destConnection)) {
+          return true;
+        }
+        break;
+      case Blockly.INPUT_VALUE:
+        if (this.connect(block.outputConnection, destConnection)) {
+          return true;
+        }
+        break;
+      case Blockly.OUTPUT_VALUE:
+        for (let i = 0; i < block.inputList.length; i++) {
+          const inputConnection = /** @type {Blockly.RenderedConnection} */ (
+              block.inputList[i].connection);
+          if (inputConnection && inputConnection.type === Blockly.INPUT_VALUE &&
+              this.connect(inputConnection, destConnection)) {
+            return true;
+          }
+        }
+        // If there are no input values pass the output and destination
+        // connections to connect_ to find a way to connect the two.
+        if (block.outputConnection &&
+            this.connect(block.outputConnection, destConnection)) {
+          return true;
+        }
+        break;
+    }
+    this.warn('This block can not be inserted at the marked location.');
+    return false;
+  }
+
+  /**
+   * Disconnects the connection that the cursor is pointing to, and bump blocks.
+   * This is a no-op if the connection cannot be broken or if the cursor is not
+   * pointing to a connection.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace.
+   * @package
+   */
+  disconnectBlocks(workspace) {
+    const curNode = workspace.getCursor().getCurNode();
+    if (!curNode.isConnection()) {
+      this.log(
+          'Cannot disconnect blocks when the cursor is not on a connection');
+      return;
+    }
+    const curConnection =
+        /** @type {!Blockly.RenderedConnection} */ (curNode.getLocation());
+    if (!curConnection.isConnected()) {
+      this.log('Cannot disconnect unconnected connection');
+      return;
+    }
+    const superiorConnection = curConnection.isSuperior() ?
+        curConnection :
+        curConnection.targetConnection;
+
+    const inferiorConnection = curConnection.isSuperior() ?
+        curConnection.targetConnection :
+        curConnection;
+
+    if (inferiorConnection.getSourceBlock().isShadow()) {
+      this.log('Cannot disconnect a shadow block');
+      return;
+    }
+    superiorConnection.disconnect();
+    inferiorConnection.bumpAwayFrom(superiorConnection);
+
+    const rootBlock = superiorConnection.getSourceBlock().getRootBlock();
+    rootBlock.bringToFront();
+
+    const connectionNode =
+        Blockly.ASTNode.createConnectionNode(superiorConnection);
+    workspace.getCursor().setCurNode(connectionNode);
+  }
+
+  /**
+   * Moves the marker to the cursor's current location.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace.
+   * @protected
+   */
+  markAtCursor(workspace) {
+    this.getMarker(workspace).setCurNode(workspace.getCursor().getCurNode());
+  }
+
+  /**
+   * Removes the marker from its current location and hide it.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace.
+   * @protected
+   */
+  removeMark(workspace) {
+    const marker = this.getMarker(workspace);
+    marker.setCurNode(null);
+    marker.hide();
   }
 }
