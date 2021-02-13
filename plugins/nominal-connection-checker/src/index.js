@@ -11,7 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
-import {parseType} from './type_structure';
+import {parseType, structureToString, TypeStructure} from './type_structure';
 import {getCheck, isExplicitConnection, isGenericConnection} from './utils';
 
 
@@ -85,8 +85,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
         this.typeIsOnlyBoundByParams_(parentSource, parentCheck)) {
       return childTypes.some((childType) => {
         return parentTypes.some((parentType) => {
-          return typeHierarchy
-              .getNearestCommonParents(childType, parentType).length;
+          return typeHierarchy.getNearestCommonParents(
+              parseType(childType), parseType(parentType)).length;
         });
       });
     }
@@ -278,7 +278,9 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
         block.nextConnection, genericType, connectionToSkip));
 
     if (types.length) {
-      return this.getTypeHierarchy_().getNearestCommonParents(...types);
+      return this.getTypeHierarchy_()
+          .getNearestCommonParents(...types.map((type) => parseType(type)))
+          .map((typeStruct) => structureToString(typeStruct));
     }
     return [];
   }
