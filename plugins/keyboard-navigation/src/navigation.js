@@ -492,8 +492,9 @@ export class Navigation {
   }
 
   /**
-   * Sets the cursor to the top connection point on a block or to the workspace
-   * if there are no blocks on the workspace.
+   * Moves the cursor to the top connection point on on the first top block.
+   * If the workspace is empty, moves the cursor to the default location on
+   * the workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The main Blockly workspace.
    * @protected
    */
@@ -529,9 +530,9 @@ export class Navigation {
 
   /**
    * Inserts a block from the flyout.
-   * If there is a marked connection try connecting the block from the flyout to
-   * that connection. If no connection has been marked then inserting it will
-   * place it on the workspace.
+   * Tries to find a connection on the block to connect to the marked
+   * location. If no connection has been marked, or there is not a compatible
+   * connection then the block is placed on the workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The main workspace. The workspace
    *     the block will be placed on.
    * @package
@@ -1147,7 +1148,9 @@ export class Navigation {
   }
 
   /**
-   * Inserts a block where the current marker is.
+   * Inserts the pasted block at the marked location if a compatible connection
+   * exists. If no connection has been marked, or there is not a compatible
+   * connection then the block is placed on the workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to paste the block
    *     on.
    * @param {!Blockly.BlockSvg} block The block to paste.
