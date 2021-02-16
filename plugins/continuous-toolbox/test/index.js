@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     plugins: {
       'toolbox': ContinuousToolbox,
       'flyoutsVerticalToolbox': ContinuousFlyout,
-      'metricsManager': ContinuousMetrics
+      'metricsManager': ContinuousMetrics,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,

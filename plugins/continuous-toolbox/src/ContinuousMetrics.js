@@ -5,28 +5,28 @@
  */
 
 /**
- * @fileoverview Toolbox category with styling for continuous toolbox.
+ * @fileoverview Overrides metrics to exclude the flyout from the viewport.
  */
 
 import * as Blockly from 'blockly/core';
 
 /** Computes metrics for a toolbox with an always open flyout. */
 export class ContinuousMetrics extends Blockly.MetricsManager {
-
   /** @override */
   constructor(workspace) {
     super(workspace);
   }
   /**
-   * Excludes the dimensions of the flyout from the dimensions of the viewport.
+   * Computes the viewport size to not include the toolbox and the flyout.
+   * The default viewport includes the flyout.
    * @override
    */
   getViewMetrics(opt_getWorkspaceCoordinates) {
-    var scale = opt_getWorkspaceCoordinates ? this.workspace_.scale : 1;
-    var svgMetrics = this.getSvgMetrics();
-    var toolboxMetrics = this.getToolboxMetrics();
-    var flyoutMetrics = this.getFlyoutMetrics(false);
-    var toolboxPosition = toolboxMetrics.position;
+    const scale = opt_getWorkspaceCoordinates ? this.workspace_.scale : 1;
+    const svgMetrics = this.getSvgMetrics();
+    const toolboxMetrics = this.getToolboxMetrics();
+    const flyoutMetrics = this.getFlyoutMetrics(false);
+    const toolboxPosition = toolboxMetrics.position;
 
     if (this.workspace_.getToolbox()) {
       // Note: Not actually supported at this time due to ContinunousToolbox
@@ -34,8 +34,7 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
       if (toolboxPosition == Blockly.TOOLBOX_AT_TOP ||
           toolboxPosition == Blockly.TOOLBOX_AT_BOTTOM) {
         svgMetrics.height -= (toolboxMetrics.height + flyoutMetrics.height);
-      } else if (
-          toolboxPosition == Blockly.TOOLBOX_AT_LEFT ||
+      } else if (toolboxPosition == Blockly.TOOLBOX_AT_LEFT ||
           toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
         svgMetrics.width -= (toolboxMetrics.width + flyoutMetrics.width);
       }
@@ -54,9 +53,9 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
    * @override
    */
   getAbsoluteMetrics() {
-    var toolboxMetrics = this.getToolboxMetrics();
-    var flyoutMetrics = this.getFlyoutMetrics(false);
-    var toolboxPosition = toolboxMetrics.position;
+    const toolboxMetrics = this.getToolboxMetrics();
+    const flyoutMetrics = this.getFlyoutMetrics(false);
+    const toolboxPosition = toolboxMetrics.position;
     let absoluteLeft = 0;
 
     if (this.workspace_.getToolbox() &&
