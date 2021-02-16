@@ -140,7 +140,7 @@ export class LineCursor extends Blockly.BasicCursor {
         isValid = true;
       }
     } else if (
-        type == Blockly.ASTNode.types.INPUT &&
+      type == Blockly.ASTNode.types.INPUT &&
         location.type == Blockly.NEXT_STATEMENT) {
       isValid = true;
     } else if (type == Blockly.ASTNode.types.NEXT) {
@@ -166,7 +166,7 @@ export class LineCursor extends Blockly.BasicCursor {
     if (type == Blockly.ASTNode.types.FIELD) {
       isValid = true;
     } else if (
-        type == Blockly.ASTNode.types.INPUT &&
+      type == Blockly.ASTNode.types.INPUT &&
         location.type == Blockly.INPUT_VALUE) {
       isValid = true;
     }
