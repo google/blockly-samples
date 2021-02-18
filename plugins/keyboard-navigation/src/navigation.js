@@ -492,6 +492,28 @@ export class Navigation {
   }
 
   /**
+   * Moves the cursor to the top connection point on on the first top block.
+   * If the workspace is empty, moves the cursor to the default location on
+   * the workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The main Blockly workspace.
+   * @protected
+   */
+  setCursorOnWorkspaceFocus(workspace) {
+    const topBlocks = workspace.getTopBlocks(true);
+    const cursor = workspace.getCursor();
+    const wsCoordinates = new Blockly.utils.Coordinate(
+        this.DEFAULT_WS_COORDINATE.x / workspace.scale,
+        this.DEFAULT_WS_COORDINATE.y / workspace.scale);
+    if (topBlocks.length > 0) {
+      cursor.setCurNode(Blockly.ASTNode.createTopNode(topBlocks[0]));
+    } else {
+      const wsNode =
+          Blockly.ASTNode.createWorkspaceNode(workspace, wsCoordinates);
+      cursor.setCurNode(wsNode);
+    }
+  }
+
+  /**
    * Gets the cursor on the flyout's workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The main workspace the flyout is
    *     on.
@@ -507,6 +529,65 @@ export class Navigation {
   }
 
   /**
+   * Inserts a block from the flyout.
+   * Tries to find a connection on the block to connect to the marked
+   * location. If no connection has been marked, or there is not a compatible
+   * connection then the block is placed on the workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The main workspace. The workspace
+   *     the block will be placed on.
+   * @package
+   */
+  insertFromFlyout(workspace) {
+    const newBlock = this.createNewBlock(workspace);
+    if (!newBlock) {
+      return;
+    }
+    const markerNode = this.getMarker(workspace).getCurNode();
+    if (!this.tryToConnectMarkerAndCursor(
+        workspace, markerNode, Blockly.ASTNode.createBlockNode(newBlock))) {
+      this.warn(
+          'Something went wrong while inserting a block from the flyout.');
+    }
+
+    this.focusWorkspace(workspace);
+    workspace.getCursor().setCurNode(Blockly.ASTNode.createTopNode(newBlock));
+    this.removeMark(workspace);
+  }
+
+  /**
+   * Creates a new block based on the current block the flyout cursor is on.
+   * @param {!Blockly.WorkspaceSvg} workspace The main workspace. The workspace
+   *     the block will be placed on.
+   * @return {?Blockly.BlockSvg} The newly created block.
+   * @protected
+   */
+  createNewBlock(workspace) {
+    const flyout = workspace.getFlyout();
+    if (!flyout || !flyout.isVisible()) {
+      this.warn(
+          'Trying to insert from the flyout when the flyout does not ' +
+          ' exist or is not visible');
+      return null;
+    }
+
+    const curBlock = /** @type {!Blockly.BlockSvg} */ (
+      this.getFlyoutCursor(workspace).getCurNode().getLocation());
+    if (!curBlock.isEnabled()) {
+      this.warn('Can\'t insert a disabled block.');
+      return null;
+    }
+
+    const newBlock = flyout.createBlock(curBlock);
+    // Render to get the sizing right.
+    newBlock.render();
+    // Connections are not tracked when the block is first created.  Normally
+    // there's enough time for them to become tracked in the user's mouse
+    // movements, but not here.
+    newBlock.setConnectionTracking(true);
+    return newBlock;
+  }
+
+  /**
    * Hides the flyout cursor and optionally hides the flyout.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace.
    * @param {boolean} shouldHide True if the flyout should be hidden.
@@ -519,6 +600,25 @@ export class Navigation {
         workspace.getFlyout().hide();
       }
     }
+  }
+
+  /**
+   * Connects the location of the marker and the location of the cursor.
+   * No-op if the marker or cursor node are null.
+   * @param {!Blockly.WorkspaceSvg} workspace The main workspace.
+   * @return {boolean} True if the cursor and marker locations were connected,
+   *     false otherwise.
+   * @package
+   */
+  connectMarkerAndCursor(workspace) {
+    const markerNode = this.getMarker(workspace).getCurNode();
+    const cursorNode = workspace.getCursor().getCurNode();
+
+    if (markerNode && cursorNode) {
+      return this.tryToConnectMarkerAndCursor(
+          workspace, markerNode, cursorNode);
+    }
+    return false;
   }
 
   /**
@@ -542,17 +642,17 @@ export class Navigation {
     const markerLoc = markerNode.getLocation();
     if (markerNode.isConnection() && cursorNode.isConnection()) {
       const cursorConnection =
-          /** @type {!Blockly.RenderedConnection} */ (cursorLoc);
+      /** @type {!Blockly.RenderedConnection} */ (cursorLoc);
       const markerConnection =
-          /** @type {!Blockly.RenderedConnection} */ (markerLoc);
+      /** @type {!Blockly.RenderedConnection} */ (markerLoc);
       return this.connect(cursorConnection, markerConnection);
     } else if (
-        markerNode.isConnection() &&
+      markerNode.isConnection() &&
         (cursorType == Blockly.ASTNode.types.BLOCK ||
          cursorType == Blockly.ASTNode.types.STACK)) {
       const cursorBlock = /** @type {!Blockly.BlockSvg} */ (cursorLoc);
       const markerConnection =
-          /** @type {!Blockly.RenderedConnection} */ (markerLoc);
+      /** @type {!Blockly.RenderedConnection} */ (markerLoc);
       return this.insertBlock(cursorBlock, markerConnection);
     } else if (markerType == Blockly.ASTNode.types.WORKSPACE) {
       const block = cursorNode ? cursorNode.getSourceBlock() : null;
@@ -691,7 +791,7 @@ export class Navigation {
       return true;
       // Try swapping the inferior and superior connections on the blocks.
     } else if (
-        movingSuperior && destInferior &&
+      movingSuperior && destInferior &&
         this.moveAndConnect(movingSuperior, destInferior)) {
       return true;
     } else if (this.moveAndConnect(movingConnection, destConnection)) {
@@ -808,7 +908,7 @@ export class Navigation {
       case Blockly.OUTPUT_VALUE:
         for (let i = 0; i < block.inputList.length; i++) {
           const inputConnection = /** @type {Blockly.RenderedConnection} */ (
-              block.inputList[i].connection);
+            block.inputList[i].connection);
           if (inputConnection && inputConnection.type === Blockly.INPUT_VALUE &&
               this.connect(inputConnection, destConnection)) {
             return true;
@@ -841,7 +941,7 @@ export class Navigation {
       return;
     }
     const curConnection =
-        /** @type {!Blockly.RenderedConnection} */ (curNode.getLocation());
+    /** @type {!Blockly.RenderedConnection} */ (curNode.getLocation());
     if (!curConnection.isConnected()) {
       this.log('Cannot disconnect unconnected connection');
       return;
@@ -1000,12 +1100,81 @@ export class Navigation {
     if (nodeType == Blockly.ASTNode.types.FIELD) {
       (/** @type {!Blockly.Field} */ (curNode.getLocation())).showEditor();
     } else if (
-        curNode.isConnection() || nodeType == Blockly.ASTNode.types.WORKSPACE) {
+      curNode.isConnection() || nodeType == Blockly.ASTNode.types.WORKSPACE) {
       this.markAtCursor(workspace);
     } else if (nodeType == Blockly.ASTNode.types.BLOCK) {
       this.warn('Cannot mark a block.');
     } else if (nodeType == Blockly.ASTNode.types.STACK) {
       this.warn('Cannot mark a stack.');
+    }
+  }
+
+  /**
+   * Pastes the coped block to the marked location.
+   * @return {boolean} True if the paste was sucessful, false otherwise.
+   * @package
+   */
+  paste() {
+    // TODO(google/blockly#4600):Need a way to get this value without using a
+    // private variable.
+    if (!Blockly.clipboardXml_) {
+      return false;
+    }
+    let workspace = Blockly.clipboardSource_;
+    let isHandled = false;
+
+    // Pasting always pastes to the main workspace, even if the copy
+    // started in a flyout workspace.
+    if (workspace.isFlyout) {
+      workspace = workspace.targetWorkspace;
+    }
+
+    // Handles paste for keyboard navigation.
+    if (Blockly.clipboardTypeCounts_ &&
+        workspace.isCapacityAvailable(Blockly.clipboardTypeCounts_)) {
+      Blockly.Events.setGroup(true);
+      const block = /** @type {Blockly.BlockSvg} */ (
+        Blockly.Xml.domToBlock(Blockly.clipboardXml_, workspace));
+      if (block) {
+        this.insertPastedBlock(workspace, block);
+        if (Blockly.Events.isEnabled() && !block.isShadow()) {
+          Blockly.Events.fire(new Blockly.Events.BlockCreate(block));
+        }
+        Blockly.Events.setGroup(false);
+        isHandled = true;
+      }
+    }
+    return isHandled;
+  }
+
+  /**
+   * Inserts the pasted block at the marked location if a compatible connection
+   * exists. If no connection has been marked, or there is not a compatible
+   * connection then the block is placed on the workspace.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace to paste the block
+   *     on.
+   * @param {!Blockly.BlockSvg} block The block to paste.
+   * @return {boolean} True if the block was pasted to the workspace, false
+   *     otherwise.
+   * @protected
+   */
+  insertPastedBlock(workspace, block) {
+    let isHandled = false;
+    const markedNode = workspace.getMarker(this.MARKER_NAME).getCurNode();
+    if (markedNode) {
+      isHandled = this.tryToConnectMarkerAndCursor(
+          workspace, markedNode, Blockly.ASTNode.createBlockNode(block));
+    }
+    return isHandled;
+  }
+
+  /**
+   * Removes the change listeners on all registered workspaces.
+   * @package
+   */
+  dispose() {
+    for (const workspace of this.workspaces) {
+      this.removeWorkspace(workspace);
     }
   }
 }
