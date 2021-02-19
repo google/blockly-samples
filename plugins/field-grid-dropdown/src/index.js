@@ -107,7 +107,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     this.updateColumnsStyling_();
 
     Blockly.DropDownDiv.showPositionedByField(
-            this, this.dropdownDispose_.bind(this));
+        this, this.dropdownDispose_.bind(this));
   }
 
   /**
