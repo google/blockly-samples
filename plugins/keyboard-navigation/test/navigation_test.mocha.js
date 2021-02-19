@@ -144,8 +144,6 @@ suite('Navigation', function() {
       chai.assert.equal(
           navigation.getState(this.workspace), Constants.STATE.WORKSPACE);
     });
-    // More tests:
-    // - nested categories
   });
 
   // Test that flyout key handlers call through to the right functions and
