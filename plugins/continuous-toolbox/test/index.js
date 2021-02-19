@@ -13,6 +13,8 @@ import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import '../src/ContinuousCategory';
 import {ContinuousToolbox} from '../src/ContinuousToolbox';
 import {ContinuousFlyout} from '../src/ContinuousFlyout';
+import {ContinuousMetrics} from '../src/ContinuousMetrics';
+
 
 /**
  * Create a workspace.
@@ -32,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     plugins: {
       'toolbox': ContinuousToolbox,
       'flyoutsVerticalToolbox': ContinuousFlyout,
+      'metricsManager': ContinuousMetrics,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,
