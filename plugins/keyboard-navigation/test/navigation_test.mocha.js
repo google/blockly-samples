@@ -869,7 +869,9 @@ suite('Navigation', function() {
       // Actions that happen when a block is deleted were causing problems.
       // Since this is not what we are trying to test and does not effect the
       // feature, disable events.
+      Blockly.Events.disable();
       Blockly.onKeyDown(mockEvent);
+      Blockly.Events.enable();
 
       chai.assert.equal(
           this.workspace.getCursor().getCurNode().getType(),
