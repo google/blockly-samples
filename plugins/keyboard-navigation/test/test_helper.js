@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 const {Constants} = require('../src/index');
 const {Navigation} = require('../src/index');
 const Blockly = require('blockly/node');
