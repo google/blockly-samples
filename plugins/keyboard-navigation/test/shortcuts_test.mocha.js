@@ -12,7 +12,7 @@ const {NavigationController} = require('../src/index');
 const {createNavigationWorkspace, createKeyDownEvent} =
     require('./test_helper');
 
-suite('Register', function() {
+suite('Shortcut Tests', function() {
   /**
    * Creates a test for not running keyDown events when the workspace is in read
    * only mode.
