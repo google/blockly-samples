@@ -105,6 +105,9 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     Blockly.utils.dom.addClass(
         this.menu_.getElement(), 'fieldGridDropDownContainer');
     this.updateColumnsStyling_();
+
+    Blockly.DropDownDiv.showPositionedByField(
+        this, this.dropdownDispose_.bind(this));
   }
 
   /**
