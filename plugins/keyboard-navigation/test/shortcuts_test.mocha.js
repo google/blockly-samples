@@ -16,12 +16,11 @@ suite('Shortcut Tests', function() {
   /**
    * Creates a test for not running keyDown events when the workspace is in read
    * only mode.
+   * @param {string} testCaseName The name of the test case.
    * @param {Object} keyEvent Mocked key down event. Use createKeyDownEvent.
-   * @param {string=} optName An optional name for the test case.
    */
-  function runReadOnlyTest(keyEvent, optName) {
-    const name = optName ? optName : 'Not called when readOnly is true';
-    test(name, function() {
+  function runReadOnlyTest(testCaseName, keyEvent) {
+    test(testCaseName, function() {
       this.workspace.options.readOnly = true;
       const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
       Blockly.onKeyDown(keyEvent);
@@ -198,7 +197,7 @@ suite('Shortcut Tests', function() {
       testCases.forEach(function(testCase) {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
-        runReadOnlyTest(keyEvent, testCaseName);
+        runReadOnlyTest(testCaseName, keyEvent);
       });
     });
 
@@ -261,7 +260,7 @@ suite('Shortcut Tests', function() {
       testCases.forEach(function(testCase) {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
-        runReadOnlyTest(keyEvent, testCaseName);
+        runReadOnlyTest(testCaseName, keyEvent);
       });
     });
   });
@@ -347,7 +346,7 @@ suite('Shortcut Tests', function() {
       testCases.forEach(function(testCase) {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
-        runReadOnlyTest(keyEvent, testCaseName);
+        runReadOnlyTest(testCaseName, keyEvent);
       });
     });
 
