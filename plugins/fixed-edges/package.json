@@ -1,0 +1,60 @@
+{
+  "name": "@blockly/fixed-edges",
+  "version": "0.0.0",
+  "description": "A Blockly plugin.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "fixed-edges"
+  ],
+  "homepage": "https://github.com/moniika/blockly-samples/tree/master/fixed-edges#readme",
+  "bugs": {
+    "url": "https://github.com/moniika/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moniika/blockly-samples.git",
+    "directory": "fixed-edges"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.2.4",
+    "@blockly/dev-tools": "^2.0.9",
+    "blockly": "^4.20201217.0"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {},
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults",
+    "IE 11",
+    "IE_Mob 11"
+  ]
+}
