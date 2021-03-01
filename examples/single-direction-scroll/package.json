@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "blocklyDemoConfig": {
-    "title": "Single-direction Scrollbars",
+    "title": "Single-direction Scrolling",
     "description": "Use Blockly with single-direction scrolling.",
     "files": [
       "index.html"
