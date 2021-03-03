@@ -192,6 +192,60 @@ suite('Hierarchy Validation', function() {
     });
   });
 
+  suite('Duplicate supers', function() {
+    const errorMsg = 'The type %s fulfills the type %s multiple times.';
+
+    test('Simple', function() {
+      validateHierarchy({
+        'typeA': { },
+        'typeB': {
+          'fulfills': ['typeA', 'typeA'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'typeB', 'typeA'));
+    });
+
+    test('Case', function() {
+      validateHierarchy({
+        'typeA': { },
+        'typeB': {
+          'fulfills': ['typeA', 'typea'],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'typeB', 'typeA'));
+    });
+
+    test('Params', function() {
+      validateHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            }
+          ]
+        },
+        'typeB': {
+          'fulfills': ['typeA[A]', 'typeA[B]'],
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+            {
+              'name': 'B',
+              'variance': 'co',
+            },
+          ],
+        },
+      });
+      chai.assert.isTrue(this.errorStub.calledOnce);
+      chai.assert.isTrue(this.errorStub.calledWith(errorMsg, 'typeB', 'typeA'));
+    });
+  });
+
   suite('Circular dependencies', function() {
     test('No cycles', function() {
       validateHierarchy({
