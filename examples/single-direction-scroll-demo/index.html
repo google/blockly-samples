@@ -3,9 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Single-direction Scrolling</title>
-  <!--  TODO: Change back to unpkg and remove relative path before merging -->
-  <script src="../../../web-moniika/blockly_compressed.js"></script>
-<!--  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>-->
+  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
   <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
   <script src="https://unpkg.com/blockly/msg/en.js"></script>
   <style>
@@ -58,7 +56,10 @@
                 snap: true
               },
           move: {
-            hasVerticalScrollbars: true
+            scrollbars: {
+              vertical: true,
+              horizontal: false
+            }
           }
         });
   </script>
