@@ -1,8 +1,5 @@
 # @blockly/fixed-edges [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that sets constant
 fixed edges of the main workspace.
 

@@ -17,7 +17,7 @@ let fixedEdges = {
 };
 
 /**
- * The manager for a workspace with fixed edges.
+ * The metrics manager for a workspace with fixed edges.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to calculate metrics
  *     for.
  * @implements {Blockly.IMetricsManager}
@@ -25,7 +25,7 @@ let fixedEdges = {
  */
 export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
   /**
-   * Constructor for ...
+   * Constructor for fixed edges workspace metrics manager.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
    *     be added to.
    */
