@@ -131,6 +131,24 @@ suite('NominalConnectionChecker', function() {
       });
 
       runTwoBlockTests();
+
+      clearSiblingTests();
+
+      siblingTest('Exact types multiple inputs', function() {
+        const dog = this.getMain('dog');
+        const dogOut = this.getInnerOutput('dog');
+
+        this.assertCanConnect(dog.in1, dogOut);
+      });
+
+      siblingTest('Sibling types multiple inputs', function() {
+        const dog = this.getMain('dog');
+        const catOut = this.getInnerOutput('cat');
+
+        this.assertCannotConnect(dog.in1, catOut);
+      });
+
+      runSiblingTests();
     });
 
     suite('Simple generics', function() {
@@ -231,6 +249,149 @@ suite('NominalConnectionChecker', function() {
       runTwoBlockTests();
     });
 
+    suite('Multiple inputs on generics', function() {
+      setup(function() {
+        const hierarchy = {
+          'typeA': {},
+          'typeB': {},
+          'typeC': {
+            'fulfills': ['typeB', 'typeA'],
+          },
+          'typeD': {
+            'fulfills': ['typeB', 'typeA'],
+          },
+          'typeE': {},
+        };
+
+        const types = Object.keys(hierarchy);
+        this.multiTypeBlocks = createBlockDefs(types);
+        Blockly.defineBlocksWithJsonArray(this.multiTypeBlocks);
+
+        this.checker.init(hierarchy);
+      });
+
+      teardown(function() {
+        for (const block of this.multiTypeBlocks) {
+          delete Blockly.Blocks[block.type];
+        }
+      });
+
+      clearSiblingTests();
+
+      siblingTest('No outer, compat inners', function() {
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        t.in1.connect(typeCOut);
+
+        this.assertCanConnect(t.in2, typeDOut);
+      });
+
+      siblingTest('No outer, half compat inners', function() {
+        const t = this.getMain('t');
+        const t2 = this.getMain('t');
+        const typeAOut = this.getInnerOutput('typeA');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        t.in1.connect(typeAOut);
+        t2.in1.connect(typeCOut);
+        t2.in2.connect(typeDOut);
+
+        this.assertCanConnect(t.in2, t2.out);
+      });
+
+      siblingTest('No outer, incompat inners', function() {
+        const t = this.getMain('t');
+        const typeAOut = this.getInnerOutput('typeA');
+        const typeEOut = this.getInnerOutput('typeE');
+
+        t.in1.connect(typeAOut);
+
+        this.assertCannotConnect(t.in2, typeEOut);
+      });
+
+      siblingTest('Outer unbound, compat inners', function() {
+        const tIn = this.getOuterInput('t');
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        tIn.connect(t.out);
+        t.in1.connect(typeCOut);
+
+        this.assertCanConnect(t.in2, typeDOut);
+      });
+
+      siblingTest('Outer unbound, half compat inners', function() {
+        const tIn = this.getOuterInput('t');
+        const t = this.getMain('t');
+        const t2 = this.getMain('t');
+        const typeAOut = this.getInnerOutput('typeA');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        tIn.connect(t.out);
+        t.in1.connect(typeAOut);
+        t2.in1.connect(typeCOut);
+        t2.in2.connect(typeDOut);
+
+        this.assertCanConnect(t.in2, t2.out);
+      });
+
+      siblingTest('Outer unbound, incompat inners', function() {
+        const tIn = this.getOuterInput('t');
+        const t = this.getMain('t');
+        const typeAOut = this.getInnerOutput('typeA');
+        const typeEOut = this.getInnerOutput('typeE');
+
+        tIn.connect(t.out);
+        t.in1.connect(typeAOut);
+
+        this.assertCannotConnect(t.in2, typeEOut);
+      });
+
+      // The following tests make sure the other branch is run.
+      siblingTest('Outer bound, second inner incompat', function() {
+        const tIn = this.getOuterInput('t');
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        this.bindConnection(tIn, 'typeC');
+        tIn.connect(t.out);
+        t.in1.connect(typeCOut);
+
+        this.assertCannotConnect(t.in2, typeDOut);
+      });
+
+      siblingTest('Outer explicit, second inner incompat', function() {
+        const typeCIn = this.getOuterInput('typeC');
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        typeCIn.connect(t.out);
+        t.in1.connect(typeCOut);
+
+        this.assertCannotConnect(t.in2, typeDOut);
+      });
+
+      siblingTest('Main bound, second inner incompat', function() {
+        const t = this.getMain('t');
+        const typeCOut = this.getInnerOutput('typeC');
+        const typeDOut = this.getInnerOutput('typeD');
+
+        this.bindConnection(t.out, 'typeC');
+        t.in1.connect(typeCOut);
+
+        this.assertCannotConnect(t.in2, typeDOut);
+      });
+
+      runSiblingTests();
+    });
+
     suite('Multiple explicit types on generics', function() {
       setup(function() {
         const hierarchy = {
@@ -301,10 +462,8 @@ suite('NominalConnectionChecker', function() {
         const typeCOut = this.getInnerOutput('typeC');
         const typeDOut = this.getInnerOutput('typeD');
 
-        this.bindConnection(t.out, 'typeA');
         t.in1.connect(typeCOut);
         t.in2.connect(typeDOut);
-        this.unbindConnection(t.out);
 
         this.assertCanConnect(typeAIn, t.out);
       });
@@ -315,10 +474,8 @@ suite('NominalConnectionChecker', function() {
         const typeCOut = this.getInnerOutput('typeC');
         const typeDOut = this.getInnerOutput('typeD');
 
-        this.bindConnection(t.out, 'typeA');
         t.in1.connect(typeCOut);
         t.in2.connect(typeDOut);
-        this.unbindConnection(t.out);
 
         this.assertCannotConnect(typeEIn, t.out);
       });
@@ -331,15 +488,11 @@ suite('NominalConnectionChecker', function() {
         const typeCOut2 = this.getInnerOutput('typeC');
         const typeDOut2 = this.getInnerOutput('typeD');
 
-        this.bindConnection(t1.out, 'typeA');
         t1.in1.connect(typeCOut1);
         t1.in2.connect(typeDOut1);
-        this.unbindConnection(t1.out);
 
-        this.bindConnection(t2.out, 'typeA');
         t2.in1.connect(typeCOut2);
         t2.in2.connect(typeDOut2);
-        this.unbindConnection(t2.out);
 
         this.assertCanConnect(t1.in3, t2.out);
       });
@@ -352,15 +505,11 @@ suite('NominalConnectionChecker', function() {
         const typeGOut = this.getInnerOutput('typeG');
         const typeHOut = this.getInnerOutput('typeH');
 
-        this.bindConnection(t1.out, 'typeA');
         t1.in1.connect(typeCOut);
         t1.in2.connect(typeDOut);
-        this.unbindConnection(t1.out);
 
-        this.bindConnection(t2.out, 'typeE');
         t2.in1.connect(typeGOut);
         t2.in2.connect(typeHOut);
-        this.unbindConnection(t2.out);
 
         this.assertCannotConnect(t1.in3, t2.out);
       });
