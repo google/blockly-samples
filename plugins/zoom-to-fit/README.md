@@ -22,7 +22,7 @@ npm install @blockly/zoom-to-fit --save
 
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from '@blockly/zoom-to-fit';
+import {ZoomToFitControl} from '@blockly/zoom-to-fit';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
