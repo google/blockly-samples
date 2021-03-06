@@ -36,7 +36,7 @@ workspace.getPluginManager().addPlugin({
   types: [Blockly.PluginManager.Type.POSITIONABLE],
 });
 
-// resize Blockly to position ui elements.
+// Resize Blockly to position ui elements.
 workspace.resize();
 ```
 
