@@ -1,8 +1,5 @@
 # @blockly/zoom-to-fit [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds a
 zoom-to-fit control to the workspace.
 
