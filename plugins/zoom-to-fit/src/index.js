@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -54,6 +54,7 @@ export class ZoomToFitControl {
     /**
      * Width of the zoom controls.
      * @type {number}
+     * @const
      * @private
      */
     this.WIDTH_ = 32;
@@ -61,6 +62,7 @@ export class ZoomToFitControl {
     /**
      * Height of the zoom controls.
      * @type {number}
+     * @const
      * @private
      */
     this.HEIGHT_ = 32;
@@ -75,6 +77,7 @@ export class ZoomToFitControl {
     /**
      * Distance between zoom controls and right edge of workspace.
      * @type {number}
+     * @const
      * @private
      */
     this.MARGIN_SIDE_ = 20;
@@ -82,14 +85,21 @@ export class ZoomToFitControl {
     /**
      * The starting vertical distance between the workspace edge and the
      * control. The value is initialized during `init`.
-     * @type {?number}
+     * @type {number}
      * @private
      */
-    this.verticalSpacing_ = null;
+    this.verticalSpacing_ = 0;
+
+    /**
+     * Whether this has been initialized.
+     * @type {boolean}
+     * @private
+     */
+    this.initialized_ = false;
   }
 
   /**
-   * Initialize.
+   * Initializes the zoom reset control.
    */
   init() {
     this.createDom_();
@@ -102,16 +112,9 @@ export class ZoomToFitControl {
    * to prevent memory leaks.
    */
   dispose() {
-    for (const event of this.boundEvents_) {
-      Blockly.unbindEvent_(event);
+    if (this.onZoomOutWrapper_) {
+      Blockly.unbindEvent_(this.onZoomOutWrapper_);
     }
-    this.boundEvents_ = null;
-    if (this.htmlDiv_) {
-      this.htmlDiv_.remove();
-      this.htmlDiv_ = null;
-    }
-    this.actionDiv_ = null;
-    this.inputElement_ = null;
   }
 
   /**
@@ -119,10 +122,6 @@ export class ZoomToFitControl {
    * @private
    */
   createDom_() {
-    // const parentSvg = this.workspace_.getParentSvg();
-    // this.svgGroup_ = Blockly.utils.dom.createSvgElement(
-    //     Blockly.utils.Svg.G, {'class': 'zoomToFit'}, parentSvg);
-
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT,
         {
@@ -171,8 +170,7 @@ export class ZoomToFitControl {
    *     are already on the workspace.
    */
   position(metrics, savedPositions) {
-    // Not yet initialized.
-    if (!this.verticalSpacing_) {
+    if (!this.initialized_) {
       return;
     }
     if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
@@ -219,12 +217,12 @@ export class ZoomToFitControl {
   }
 }
 
-// Blockly.Css.register([
-//   `.zoomToFit {
-//       position: absolute;
-//       border-radius: 100%;
-//       border: 1px solid;
-//       width: 1.25rem;
-//       height: 1.25rem;
-//     }`,
-// ]);
+Blockly.Css.register([
+  `.zoomToFit {
+      position: absolute;
+      border-radius: 100%;
+      border: 1px solid;
+      width: 1.25rem;
+      height: 1.25rem;
+    }`,
+]);
