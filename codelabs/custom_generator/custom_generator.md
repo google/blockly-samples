@@ -324,7 +324,7 @@ The member block has a text input field and a value input.
 
 ![](./member_block.png)
 
-The generated code looks like `"property name": "property value",`.
+The generated code looks like `"property name": "property value"`.
 
 ### Field value
 `a` is the value of the text input, which we get with `getFieldValue`:
@@ -351,12 +351,10 @@ If no block is attached, `valueToCode` returns `null`. In another generator you 
 The third argument is related to operator precedence, as discussed in a previous section.
 
 ### Build the code string
-Next, assemble the arguments `name` and `value` into the correct code, of the form `"name": value,`.
-
-To generate clean code, add a newline at the end of the statement.
+Next, assemble the arguments `name` and `value` into the correct code, of the form `"name": value`.
 
 ```js
-const code = '"' + name + '" : ' + value + ',\n'
+const code = '"' + name + '": ' + value
 ```
 
 ### Put it all together
@@ -368,7 +366,7 @@ codelabGenerator['member'] = function(block) {
   const name = block.getFieldValue('MEMBER_NAME');
   const value = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
       codelabGenerator.PRECEDENCE);
-  const code = '"' + name + '" : ' + value + ',\n';
+  const code = '"' + name + '": ' + value;
   return code;
 };
 ```
@@ -389,7 +387,7 @@ The generated code looks like:
   1,
   "two",
   false,
-  true,
+  true
 ]
 ```
 
@@ -494,7 +492,7 @@ The generated code looks like this:
 {
   "a": true,
   "b": "one",
-  "c": 1,
+  "c": 1
 }
 ```
 
@@ -514,12 +512,13 @@ const statement_members =
 
 ### Format and return
 
-Wrap the statements in brackets and return the code, using the default precedence:
+Wrap the statements in curly brackets and return the code, using the default precedence:
 
 ```js
-const code = '{\n' + statement_members + '}';
+const code = '{\n' + statement_members + '\n}';
 return [code, codelabGenerator.PRECEDENCE];
 ```
+Note that `statementToCode` handles the indentation automatically.
 
 ### Test it
 
@@ -529,7 +528,7 @@ Here is the full block generator:
 codelabGenerator['object'] = function(block) {
   const statement_members =
       codelabGenerator.statementToCode(block, 'MEMBERS');
-  const code = '{\n' + statement_members + '}';
+  const code = '{\n' + statement_members + '\n}';
   return [code, codelabGenerator.PRECEDENCE];
 };
 ```
@@ -553,25 +552,26 @@ The `scrub_` function is called on every block from `blockToCode`. It takes in t
 - `code` is the code generated for this block, which includes code from all attached value blocks.
 - `_opt_thisOnly` is an optional `boolean`. If true, code should be generated for this block but no subsequent blocks.
 
-By default, `scrub_` simply returns the passed-in code. A common pattern is to override the function to also generate code for any blocks that follow the current block in a stack:
+By default, `scrub_` simply returns the passed-in code. A common pattern is to override the function to also generate code for any blocks that follow the current block in a stack. In this case, we will add commas and newlines between object members:
 
 ```js
 codelabGenerator.scrub_ = function(block, code, opt_thisOnly) {
   const nextBlock =
       block.nextConnection && block.nextConnection.targetBlock();
-  const nextCode =
-      opt_thisOnly ? '' : codelabGenerator.blockToCode(nextBlock);
+  let nextCode = '';
+  if (nextBlock) {
+      nextCode =
+          opt_thisOnly ? '' : ',\n' + codelabGenerator.blockToCode(nextBlock);
+  }
   return code +  nextCode;
 };
 ```
 
-You do not need to add newlines in `scrub_` because the `member` block generator already adds them.
-
 ### Testing scrub_
 
-Create a stack of `member` blocks on the workspace and click "To JSON". You should see generated code for all of your blocks, not just the first one.
+Create a stack of `member` blocks on the workspace. You should see generated code for all of your blocks, not just the first one.
 
-Next, add an `object` block and drag your `member` blocks into it, then click "To JSON". This case tests `statementToCode`, and should still generated code for all of your blocks.
+Next, add an `object` block and drag your `member` blocks into it. This case tests `statementToCode`, and should generate code for all of your blocks.
 
 ## Summary
 
