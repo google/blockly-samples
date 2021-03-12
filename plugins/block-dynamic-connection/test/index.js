@@ -9,8 +9,8 @@
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Plugin} from '../src/index';
+import {createPlayground} from '@blockly/dev-tools';
+import '../src/index';
 
 /**
  * Create a workspace.
@@ -19,18 +19,12 @@ import {Plugin} from '../src/index';
  * @return {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
-
-  // TODO: Initialize your plugin here.
-  const plugin = new Plugin(workspace);
-  plugin.init();
-
-  return workspace;
+  return Blockly.inject(blocklyDiv, options);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
-    toolbox: toolboxCategories,
+    toolbox: document.getElementById('toolbox'),
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);

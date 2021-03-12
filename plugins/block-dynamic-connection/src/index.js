@@ -4,32 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit plugin overview.
-/**
- * @fileoverview Plugin overview.
- */
+import './insertion_marker_manager_monkey_patch';
 
-// TODO: Rename plugin and edit plugin description.
-/**
- * Plugin description.
- */
-export class Plugin {
-  /**
-   * Constructor for ...
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
-   *     be added to.
-   */
-  constructor(workspace) {
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
-    this.workspace_ = workspace;
-  }
-
-  /**
-   * Initialize.
-   */
-  init() { }
-}
+import './dynamic_text_join.js';
