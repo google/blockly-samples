@@ -13,7 +13,7 @@ import Blockly from 'blockly/core';
 /**
  * Dark theme.
  */
-export default Blockly.Theme.defineTheme('dark_theme', {
+export default Blockly.Theme.defineTheme('theme_dark', {
   'base': Blockly.Themes.Classic,
   'componentStyles': {
     'workspaceBackgroundColour': '#1e1e1e',

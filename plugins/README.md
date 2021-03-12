@@ -32,6 +32,11 @@ plugin development.
 - [``@blockly/dev-scripts``](dev-scripts/): Configuration and scripts for Blockly
 plugins.
 
+### Themes
+
+- [``@blockly/theme-modern``](theme-modern/): A Blockly modern theme.
+- [``@blockly/theme-dark``](theme-dark/): A Blockly dark theme.
+
 ### Other
 
 - [``@blockly/plugin-workspace-search``](workspace-search/): A plugin that adds
