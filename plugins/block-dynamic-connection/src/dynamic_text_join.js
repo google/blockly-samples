@@ -20,7 +20,9 @@ Blockly.Blocks['dynamic_text_join'] = {
    */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('items', this.inputList.length);
+    const inputNames = this.inputList.map((input) => input.name).join(',');
+    container.setAttribute('inputs', inputNames);
+    container.setAttribute('next', this.inputCounter);
     return container;
   },
   /**
@@ -29,10 +31,16 @@ Blockly.Blocks['dynamic_text_join'] = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
-    const targetCount = parseInt(xmlElement.getAttribute('items'), 10);
-    for (let i = 2; i < targetCount; i++) {
-      this.appendValueInput('ADD' + (this.inputCounter++));
+    const items = xmlElement.getAttribute('inputs');
+    if (items) {
+      const inputNames = items.split(',');
+      this.inputList = [];
+      inputNames.forEach((name) => this.appendValueInput(name));
+      this.inputList[0]
+          .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     }
+    const next = parseInt(xmlElement.getAttribute('next'));
+    this.inputCounter = next;
   },
 
   /**

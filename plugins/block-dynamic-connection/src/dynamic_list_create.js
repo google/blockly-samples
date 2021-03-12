@@ -20,7 +20,9 @@ Blockly.Blocks['dynamic_list_create'] = {
    */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('items', this.inputList.length);
+    const inputNames = this.inputList.map((input) => input.name).join(',');
+    container.setAttribute('inputs', inputNames);
+    container.setAttribute('next', this.inputCounter);
     return container;
   },
   /**
@@ -29,10 +31,16 @@ Blockly.Blocks['dynamic_list_create'] = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
-    const targetCount = parseInt(xmlElement.getAttribute('items'), 10);
-    for (let i = 2; i < targetCount; i++) {
-      this.appendValueInput('ADD' + (this.inputCounter++));
+    const items = xmlElement.getAttribute('inputs');
+    if (items) {
+      const inputNames = items.split(',');
+      this.inputList = [];
+      inputNames.forEach((name) => this.appendValueInput(name));
+      this.inputList[0]
+          .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
     }
+    const next = parseInt(xmlElement.getAttribute('next'));
+    this.inputCounter = next;
   },
 
   /**
