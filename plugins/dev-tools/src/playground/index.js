@@ -22,6 +22,7 @@ import {addGUIControls} from './options';
 import {LocalStorageState} from './state';
 import {id} from './id';
 
+import {downloadWorkspaceScreenshot} from '../screenshot';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
 import {toolboxTestBlocks, toolboxTestBlocksInit} from '@blockly/block-test';
@@ -226,7 +227,7 @@ export function createPlayground(container, createWorkspace,
           (ws) => (BlocklyJS || Blockly.JavaScript).workspaceToCode(ws), true),
       'Python': registerGenerator('Python', 'python',
           (ws) => (BlocklyPython || Blockly.Python).workspaceToCode(ws), true),
-      'Dart': registerGenerator('Dart', 'javascript',
+      'Dart': registerGenerator('Dart', 'dart',
           (ws) => (BlocklyDart || Blockly.Dart).workspaceToCode(ws), true),
       'Lua': registerGenerator('Lua', 'lua',
           (ws) => (BlocklyLua || Blockly.Lua).workspaceToCode(ws), true),
@@ -280,6 +281,21 @@ export function createPlayground(container, createWorkspace,
 
       // Initialize the test toolbox.
       toolboxTestBlocksInit(/** @type {!Blockly.WorkspaceSvg} */ (workspace));
+        
+      // Add download screenshot option.
+      const prevConfigureContextMenu = workspace.configureContextMenu;
+      workspace.configureContextMenu = (menuOptions, e) => {
+        prevConfigureContextMenu?.call(null, menuOptions, e);
+
+        const screenshotOption = {
+          text: 'Download Screenshot',
+          enabled: workspace.getTopBlocks().length,
+          callback: function() {
+            downloadWorkspaceScreenshot(workspace);
+          },
+        };
+        menuOptions.push(screenshotOption);
+      };
 
       updateEditor();
       workspace.addChangeListener((e) => {
