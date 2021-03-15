@@ -10,7 +10,7 @@
 
 const chai = require('chai');
 
-const {TypeHierarchy, ActualParamsCountError} =
+const {TypeHierarchy, ActualParamsCountError, TypeNotFoundError} =
     require('../src/type_hierarchy');
 const {parseType, structureToString} = require('../src/type_structure');
 
@@ -2771,13 +2771,22 @@ suite('TypeHierarchy', function() {
           'Expected TypeHierarchy to be case-insensitive.');
     });
 
-    // TODO: Fix and unskip this after we add an error for undefined types.
-    test.skip('Padding', function() {
+    test('Padding', function() {
       const hierarchy = new TypeHierarchy({
         'typeA': { },
       });
-      this.assertNoMatch(hierarchy, 'typeA', ' typeA ',
-          'Expected TypeHierarchy to respect padding.');
+      chai.assert.throws(() => {
+        hierarchy.typeIsExactlyType(parseType('typeA'), parseType('  typeA  '));
+      }, TypeNotFoundError);
+    });
+
+    test('Type not defined', function() {
+      const hierarchy = new TypeHierarchy({
+        'typeA': { },
+      });
+      chai.assert.throws(() => {
+        hierarchy.typeIsExactlyType(parseType('typeB'), parseType('typeB'));
+      }, TypeNotFoundError);
     });
 
     test('Parent and Child', function() {
@@ -2912,6 +2921,24 @@ suite('TypeHierarchy', function() {
         'typeB': { },
       });
       this.assertDoesNotFulfill(hierarchy, 'typeA', 'typeB');
+    });
+
+    test('Padding', function() {
+      const hierarchy = new TypeHierarchy({
+        'typeA': { },
+      });
+      chai.assert.throws(() => {
+        hierarchy.typeFulfillsType(parseType('typeA'), parseType('  typeA  '));
+      }, TypeNotFoundError);
+    });
+
+    test('Type not defined', function() {
+      const hierarchy = new TypeHierarchy({
+        'typeA': { },
+      });
+      chai.assert.throws(() => {
+        hierarchy.typeFulfillsType(parseType('typeB'), parseType('typeB'));
+      }, TypeNotFoundError);
     });
 
     test('Super defined first', function() {
@@ -4145,6 +4172,28 @@ suite('TypeHierarchy', function() {
       });
     });
 
+    suite('Type undefined', function() {
+      test('Padding', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': { },
+        });
+        chai.assert.throws(() => {
+          hierarchy.getNearestCommonParents(
+              parseType('typeA'), parseType('  typeA  '));
+        }, TypeNotFoundError);
+      });
+
+      test('Type not defined', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': { },
+        });
+        chai.assert.throws(() => {
+          hierarchy.getNearestCommonParents(
+              parseType('typeB'), parseType('typeB'));
+        }, TypeNotFoundError);
+      });
+    });
+
     suite('Simple tree unions', function() {
       test('Unify self', function() {
         const hierarchy = new TypeHierarchy({
@@ -4723,6 +4772,56 @@ suite('TypeHierarchy', function() {
        * In the context of this suite, "outer" refers to the parameterized type,
        * and "params" refers to the type parameters.
        */
+
+      suite('Correct number of params', function() {
+        setup(function() {
+          this.hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+          });
+
+          this.assertThrows = function(hierarchy, first, second) {
+            chai.assert.throws(() => {
+              hierarchy.getNearestCommonParents(
+                  parseType(first), parseType(second));
+            }, ActualParamsCountError);
+          };
+        });
+
+        test('First missing params', function() {
+          this.assertThrows(this.hierarchy, 'typeB', 'typeA[typeC]');
+        });
+
+        test('Second missing params', function() {
+          this.assertThrows(this.hierarchy, 'typeB[typeC]', 'typeA');
+        });
+
+        test('First extra params', function() {
+          this.assertThrows(
+              this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+
+        test('Second extra params', function() {
+          this.assertThrows(
+              this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+      });
 
       suite('Unifying parameters', function() {
         suite('Covariant', function() {
@@ -7406,6 +7505,28 @@ suite('TypeHierarchy', function() {
       });
     });
 
+    suite('Type undefined', function() {
+      test('Padding', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': { },
+        });
+        chai.assert.throws(() => {
+          hierarchy.getNearestCommonDescendants(
+              parseType('typeA'), parseType('  typeA  '));
+        }, TypeNotFoundError);
+      });
+
+      test('Type not defined', function() {
+        const hierarchy = new TypeHierarchy({
+          'typeA': { },
+        });
+        chai.assert.throws(() => {
+          hierarchy.getNearestCommonDescendants(
+              parseType('typeB'), parseType('typeB'));
+        }, TypeNotFoundError);
+      });
+    });
+
     suite('Simple tree unions', function() {
       test('Unify self', function() {
         const hierarchy = new TypeHierarchy({
@@ -7983,6 +8104,56 @@ suite('TypeHierarchy', function() {
        * In the context of this suite, "outer" refers to the parameterized type,
        * and "params" refers to the type parameters.
        */
+
+      suite('Correct number of params', function() {
+        setup(function() {
+          this.hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+          });
+
+          this.assertThrows = function(hierarchy, first, second) {
+            chai.assert.throws(() => {
+              hierarchy.getNearestCommonParents(
+                  parseType(first), parseType(second));
+            }, ActualParamsCountError);
+          };
+        });
+
+        test('First missing params', function() {
+          this.assertThrows(this.hierarchy, 'typeB', 'typeA[typeC]');
+        });
+
+        test('Second missing params', function() {
+          this.assertThrows(this.hierarchy, 'typeB[typeC]', 'typeA');
+        });
+
+        test('First extra params', function() {
+          this.assertThrows(
+              this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+
+        test('Second extra params', function() {
+          this.assertThrows(
+              this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+      });
 
       suite('Unifying parameters', function() {
         suite('Covariant', function() {

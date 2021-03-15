@@ -11,7 +11,7 @@
 const chai = require('chai');
 const Blockly = require('blockly/node');
 
-const {pluginInfo} = require('../src/index.js');
+const {pluginInfo, ConnectionCheckError} = require('../src/index.js');
 const {
   clearTwoBlockTests, twoBlockTest, runTwoBlockTests,
   clearThreeBlockTests, threeBlockTest, runThreeBlockTests,
@@ -43,12 +43,60 @@ suite('NominalConnectionChecker', function() {
       'Bat': {
         'fulfills': ['FlyingAnimal', 'Mammal'],
       },
+      'GetterList': {
+        'params': [
+          {
+            'name': 'A',
+            'variance': 'co',
+          },
+        ],
+      },
+      'AdderList': {
+        'params': [
+          {
+            'name': 'A',
+            'variance': 'contra',
+          },
+        ],
+      },
+      'List': {
+        'fulfills': ['GetterList[A]', 'AdderList[A]'],
+        'params': [
+          {
+            'name': 'A',
+            'variance': 'inv',
+          },
+        ],
+      },
     };
 
-    let types = Object.keys(hierarchyDef);
-    types.push('T');
-    types = types.map((type) => type.toLowerCase());
-    this.blocks = createBlockDefs(types);
+    const blockTypes = [
+      'random',
+      'animal',
+      'flyinganimal',
+      'mammal',
+      'reptile',
+      'dog',
+      'cat',
+      'bat',
+      't',
+      'getterlist[animal]',
+      'getterlist[mammal]',
+      'getterlist[flyinganimal]',
+      'getterlist[dog]',
+      'getterlist[bat]',
+      'adderlist[animal]',
+      'adderlist[mammal]',
+      'adderlist[flyinganimal]',
+      'adderlist[dog]',
+      'adderlist[bat]',
+      'list[animal]',
+      'list[mammal]',
+      'list[flyinganimal]',
+      'list[dog]',
+      'list[bat]',
+    ];
+    this.blocks = createBlockDefs(blockTypes);
     Blockly.defineBlocksWithJsonArray(this.blocks);
 
     const options = {
@@ -87,6 +135,48 @@ suite('NominalConnectionChecker', function() {
             'Expected to be unable to connect ' + conn2.name + ' to ' +
              conn1.name);
       };
+    });
+
+    suite('Bad types', function() {
+      setup(function() {
+        this.assertThrows = (conn1, conn2) => {
+          chai.assert.throws(() => {
+            this.checker.doTypeChecks(conn1, conn2);
+          }, ConnectionCheckError);
+        };
+      });
+
+      clearTwoBlockTests();
+
+      twoBlockTest('Padding', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['  dog  ']));
+        const dogIn = this.getOuterInput('dog');
+        const paddingOut = this.getOuterInput('  dog  ');
+        this.assertThrows(dogIn, paddingOut);
+      });
+
+      twoBlockTest('Type not defined', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['typeA']));
+        const aIn = this.getOuterInput('typeA');
+        const aOut = this.getInnerOutput('typeA');
+        this.assertThrows(aIn, aOut);
+      });
+
+      twoBlockTest('Missing params', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['list']));
+        const listIn = this.getOuterInput('list');
+        const listOut = this.getInnerOutput('list');
+        this.assertThrows(listIn, listOut);
+      });
+
+      twoBlockTest('Extra params', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['list[dog, dog]']));
+        const listIn = this.getOuterInput('list[dog, dog]');
+        const listOut = this.getInnerOutput('list[dog, dog]');
+        this.assertThrows(listIn, listOut);
+      });
+
+      runTwoBlockTests();
     });
 
     suite('Simple subtyping', function() {
@@ -624,6 +714,52 @@ suite('NominalConnectionChecker', function() {
         chai.assert.include(explicitTypes, type,
             'Expected ' + conn.name + ' to have type ' + type + '.');
       };
+    });
+
+    suite('Bad types', function() {
+      setup(function() {
+        this.assertThrows = (conn) => {
+          chai.assert.throws(() => {
+            this.checker.getExplicitTypes(conn.getSourceBlock(), 'T');
+          }, ConnectionCheckError);
+        };
+      });
+
+      clearTwoBlockTests();
+
+      twoBlockTest('Padding', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['  dog  ']));
+        const dogIn = this.getOuterInput('  dog  ');
+        const tOut = this.getInnerOutput('t');
+        dogIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      twoBlockTest('Type not defined', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['typeA']));
+        const aIn = this.getOuterInput('typeA');
+        const tOut = this.getInnerOutput('t');
+        aIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      twoBlockTest('Missing params', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['list']));
+        const listIn = this.getOuterInput('list');
+        const tOut = this.getInnerOutput('t');
+        listIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      twoBlockTest('Extra params', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['list[dog, dog]']));
+        const listIn = this.getOuterInput('list[dog, dog]');
+        const tOut = this.getInnerOutput('t');
+        listIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      runTwoBlockTests();
     });
 
     suite('Single blocks', function() {
@@ -1451,5 +1587,51 @@ suite('NominalConnectionChecker', function() {
     });
 
     runTwoBlockTests();
+
+    suite('Bad types', function() {
+      setup(function() {
+        this.assertThrows = (conn) => {
+          chai.assert.throws(() => {
+            this.checker.getExplicitTypesOfConnection(conn);
+          }, ConnectionCheckError);
+        };
+      });
+
+      clearTwoBlockTests();
+
+      twoBlockTest('Padding', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['  dog  ']));
+        const dogIn = this.getOuterInput('  dog  ');
+        const tOut = this.getInnerOutput('t');
+        dogIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      twoBlockTest('Type not defined', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['typeA']));
+        const aIn = this.getOuterInput('typeA');
+        const tOut = this.getInnerOutput('t');
+        aIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      twoBlockTest('Missing params', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['list']));
+        const listIn = this.getOuterInput('list');
+        const tOut = this.getInnerOutput('t');
+        listIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      twoBlockTest('Extra params', function() {
+        Blockly.defineBlocksWithJsonArray(createBlockDefs(['list[dog, dog]']));
+        const listIn = this.getOuterInput('list[dog, dog]');
+        const tOut = this.getInnerOutput('t');
+        listIn.connect(tOut);
+        this.assertThrows(tOut);
+      });
+
+      runTwoBlockTests();
+    });
   });
 });

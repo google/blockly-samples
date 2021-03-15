@@ -289,9 +289,6 @@ export class TypeHierarchy {
       return false;
     }
 
-    // TODO: We need to add checks to make sure the number of actual params for
-    //  the subtype is correct. Here and in typeIsExactlyType.
-
     const orderedSubParams = subDef.getParamsForAncestor(
         superType.name, subType.params);
     return superType.params.every((actualSuper, i) => {
@@ -323,6 +320,7 @@ export class TypeHierarchy {
     if (!types.length) {
       return [];
     }
+    types.forEach((type) => this.validateTypeStructure_(type));
 
     // Get the nearest common types for the "outer" types.
     const commonTypes = this.getNearestCommon_(
@@ -397,6 +395,7 @@ export class TypeHierarchy {
     if (!types.length) {
       return [];
     }
+    types.forEach((type) => this.validateTypeStructure_(type));
 
     const commonOuterTypes = this.getNearestCommon_(
         types.map((type) => type.name), this.nearestCommonDescendants_);
@@ -437,10 +436,9 @@ export class TypeHierarchy {
    */
   validateTypeStructure_(struct) {
     const def = this.types_.get(struct.name);
-
-    // TODO: Add throwing error if the def is not found. Note that there are
-    //   some tests that need to be unskipped after this is added.
-
+    if (!def) {
+      throw new TypeNotFoundError(struct.name);
+    }
     if (struct.params.length != def.params().length) {
       throw new ActualParamsCountError(
           struct.name, struct.params.length, def.params().length);
@@ -990,8 +988,7 @@ export function stringToVariance(str) {
   } else if (str.startsWith('co')) {
     return Variance.CO;
   } else {
-    throw new VarianceError('The variance "' + str + '" is not a valid ' +
-        'variance. Valid variances are: "co", "contra", and "inv".');
+    throw new VarianceError(str);
   }
 }
 
@@ -1001,10 +998,17 @@ export function stringToVariance(str) {
 export class VarianceError extends Error {
   /**
    * Constructs a VarianceError.
-   * @param {string} message The message that goes with this error.
+   * @param {string} variance The invalid variance.
    */
-  constructor(message) {
-    super(message);
+  constructor(variance) {
+    super('The variance "' + variance + '" is not a valid ' +
+        'variance. Valid variances are: "co", "contra", and "inv".');
+
+    /**
+     * The variance that is invalid.
+     * @type {string}
+     */
+    this.variance = variance;
 
     this.name = this.constructor.name;
   }
@@ -1068,6 +1072,28 @@ export class ActualParamsCountError extends Error {
      * @type {number}
      */
     this.expectedCount = expectedCount;
+
+    this.name = this.constructor.name;
+  }
+}
+
+/**
+ * Represents an error where a type passed to the type hierarchy was not
+ * included in the type hierarchy's definition.
+ */
+export class TypeNotFoundError extends Error {
+  /**
+   * Constructs a TypeNotFoundError.
+   * @param {string} type The type name that was not found.
+   */
+  constructor(type) {
+    super('The type ' + type + ' was not defined in the type hierarchy\'s ' +
+        'definition.');
+
+    /**
+     * The type name that was not found.
+     */
+    this.type = type;
 
     this.name = this.constructor.name;
   }
