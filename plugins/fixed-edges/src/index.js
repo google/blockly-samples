@@ -6,18 +6,34 @@
 
 
 /**
- * @fileoverview Plugin overview.
+ * @fileoverview A metrics manager that makes fixed edges more easily
+ * configurable.
  */
 
 import Blockly from 'blockly/core';
 
+/**
+ * @typedef {{
+ *   top: (boolean|undefined),
+ *   bottom: (boolean|undefined),
+ *   left: (boolean|undefined),
+ *   right: (boolean|undefined)
+ * }}
+ */
+let FixedEdgesConfig;
+
+/**
+ * The current configuration for fixed edges.
+ * @type {!FixedEdgesConfig}
+ */
 let fixedEdges = {
   top: true,
   left: true,
 };
 
 /**
- * The metrics manager for a workspace with fixed edges.
+ * The metrics manager for workspace metrics calculations with customizable
+ * fixed edges.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to calculate metrics
  *     for.
  * @implements {Blockly.IMetricsManager}
@@ -34,21 +50,19 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
   }
 
   /**
-   * Sets which edges are fixed.
-   * @param {{
-   *   top: (boolean|undefined),
-   *   bottom: (boolean|undefined),
-   *   left: (boolean|undefined),
-   *   right: (boolean|undefined)
-   * }} newFixedEdges The edges to set as fixed.
+   * Sets which edges are fixed. This does not prevent fixed edges set by
+   * no scrollbars or single-direction scrollbars.
+   * @param {!FixedEdgesConfig} updatedFixedEdges The edges to set as fixed.
+   * @public
    */
-  static setFixedEdges(newFixedEdges) {
-    fixedEdges = newFixedEdges;
+  static setFixedEdges(updatedFixedEdges) {
+    fixedEdges = updatedFixedEdges;
   }
 
   /**
    * Returns whether the scroll area has fixed edges.
    * @return {boolean} Whether the scroll area has fixed edges.
+   * @package
    * @override
    */
   hasFixedEdges() {
@@ -71,15 +85,26 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
 
     const viewMetrics = opt_viewMetrics || this.getViewMetrics(false);
 
+    const top = fixedEdges.top ? 0 : undefined;
+    let bottom = fixedEdges.bottom ? 0 : undefined;
+    if (fixedEdges.top && fixedEdges.bottom) {
+      bottom = viewMetrics.height;
+    }
+    const left = fixedEdges.left ? 0 : undefined;
+    let right = fixedEdges.right ? 0 : undefined;
+    if (fixedEdges.left && fixedEdges.right) {
+      right = viewMetrics.width;
+    }
+
     const edges = {
-      top: fixedEdges.top ? 0 : undefined,
-      bottom: fixedEdges.bottom ? 0 : undefined,
-      left: fixedEdges.left ? 0 : undefined,
-      right: fixedEdges.right ? 0 : undefined,
+      top: top,
+      bottom: bottom,
+      left: left,
+      right: right,
     };
     if (!vScrollEnabled) {
-      if (edges.top !== undefined) {
-        edges.bottom = edges.top + viewMetrics.height;
+      if (top !== undefined) {
+        edges.bottom = top + viewMetrics.height;
       } else if (edges.bottom !== undefined) {
         edges.top = edges.bottom - viewMetrics.height;
       } else {

@@ -1,7 +1,7 @@
 # @blockly/fixed-edges [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that sets constant
-fixed edges of the main workspace.
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that provides a 
+MetricsManager that makes fixed edges more easily configurable.
 
 ## Installation
 
@@ -38,7 +38,8 @@ const workspace = Blockly.inject('blocklyDiv', {
 
 ## API
 
-- `setFixedEdges`: Configures which edges are fixed.
+- `setFixedEdges`: Configures which edges are fixed. This does not prevent fixed
+edges set by no scrollbars or single-direction scrollbars.
 
 ## License
 Apache 2.0
