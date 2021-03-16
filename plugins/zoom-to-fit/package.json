@@ -43,7 +43,7 @@
     "blockly": "^4.20201217.0"
   },
   "peerDependencies": {
-    "blockly": ">=3"
+    "blockly": ">=4"
   },
   "publishConfig": {},
   "eslintConfig": {
