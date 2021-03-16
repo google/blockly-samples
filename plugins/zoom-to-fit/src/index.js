@@ -105,6 +105,7 @@ export class ZoomToFitControl {
     this.createDom_();
     this.verticalSpacing_ =
         Blockly.Scrollbar.scrollbarThickness + this.MARGIN_BOTTOM_;
+    this.initialized_ = true;
   }
   /**
    * Disposes of workspace search.
@@ -123,13 +124,14 @@ export class ZoomToFitControl {
    */
   createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.RECT,
-        {
+        Blockly.utils.Svg.IMAGE, {
+          'height': this.HEIGHT_ + 'px',
+          'width': this.WIDTH_ + 'px',
           'class': 'zoomToFit',
-          'width': this.WIDTH_,
-          'height': this.HEIGHT_,
-        },
-        null);
+        });
+    this.svgGroup_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
+        ZOOM_TO_FIT_SVG_DATAURI);
+
     Blockly.utils.dom.insertAfter(
         this.svgGroup_, this.workspace_.getBubbleCanvas());
 
@@ -217,12 +219,27 @@ export class ZoomToFitControl {
   }
 }
 
+/**
+ * Base64 encoded data uri for zoom to fit  icon.
+ * @type {string}
+ */
+const ZOOM_TO_FIT_SVG_DATAURI =
+    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
+    '9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCIgZm' +
+    'lsbD0iIzU0NkU3QSI+PHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+PH' +
+    'BhdGggZD0iTTUgNi40Mkw4LjA5IDkuNSA5LjUgOC4wOSA2LjQxIDVIOVYzSDN2Nmgyem0xMC' +
+    '0zLjQxdjJoMi41N0wxNC41IDguMDlsMS40MSAxLjQxTDE5IDYuNDFWOWgyVjMuMDF6bTQgMT' +
+    'QuNTdsLTMuMDktMy4wOC0xLjQxIDEuNDFMMTcuNTkgMTlIMTV2Mmg2di02aC0yek04LjA5ID' +
+    'E0LjVMNSAxNy41OVYxNUgzdjZoNnYtMkg2LjQybDMuMDgtMy4wOXoiLz48L3N2Zz4=';
+
 Blockly.Css.register([
   `.zoomToFit {
-      position: absolute;
-      border-radius: 100%;
-      border: 1px solid;
-      width: 1.25rem;
-      height: 1.25rem;
-    }`,
+    opacity: .4;
+  }
+  .zoomToFit:hover {
+    opacity: .6;
+  }
+  .zoomToFit:active {
+    opacity: .8;
+  }`,
 ]);
