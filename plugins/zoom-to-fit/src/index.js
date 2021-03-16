@@ -83,14 +83,6 @@ export class ZoomToFitControl {
     this.MARGIN_SIDE_ = 20;
 
     /**
-     * The starting vertical distance between the workspace edge and the
-     * control. The value is initialized during `init`.
-     * @type {number}
-     * @private
-     */
-    this.verticalSpacing_ = 0;
-
-    /**
      * Whether this has been initialized.
      * @type {boolean}
      * @private
@@ -103,8 +95,6 @@ export class ZoomToFitControl {
    */
   init() {
     this.createDom_();
-    this.verticalSpacing_ =
-        Blockly.Scrollbar.scrollbarThickness + this.MARGIN_BOTTOM_;
     this.initialized_ = true;
   }
   /**
@@ -175,23 +165,39 @@ export class ZoomToFitControl {
     if (!this.initialized_) {
       return;
     }
+    const hasVerticalScrollbars = this.workspace_.scrollbar &&
+        this.workspace_.scrollbar.canScrollHorizontally();
+    const hasHorizontalScrollbars = this.workspace_.scrollbar &&
+        this.workspace_.scrollbar.canScrollVertically();
+
     if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
         (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
       // Right corner placement.
-      this.left_ = metrics.viewMetrics.width + metrics.absoluteMetrics.left -
-          this.WIDTH_ - this.MARGIN_SIDE_ -
-          Blockly.Scrollbar.scrollbarThickness;
+      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
+          this.WIDTH_ - this.MARGIN_SIDE_;
+      if (hasVerticalScrollbars && !this.workspace_.RTL) {
+        this.left_ -= Blockly.Scrollbar.scrollbarThickness;
+      }
     } else {
       // Left corner placement.
-      this.left_ = this.MARGIN_SIDE_ + Blockly.Scrollbar.scrollbarThickness;
+      this.left_ = this.MARGIN_SIDE_;
+      if (hasVerticalScrollbars && this.workspace_.RTL) {
+        this.left_ += Blockly.Scrollbar.scrollbarThickness;
+      }
     }
 
     // Upper corner placement
-    const minTop = this.top_ =
-        metrics.absoluteMetrics.top + this.verticalSpacing_;
+    let minTop = metrics.absoluteMetrics.top + this.MARGIN_BOTTOM_;
+    if (hasHorizontalScrollbars) {
+      minTop += Blockly.Scrollbar.scrollbarThickness;
+    }
+
     // Bottom corner placement
     const maxTop = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-        this.HEIGHT_ - this.verticalSpacing_;
+        this.HEIGHT_ - this.MARGIN_BOTTOM_;
+    if (hasHorizontalScrollbars) {
+      minTop -= Blockly.Scrollbar.scrollbarThickness;
+    }
     const placeBottom =
         metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
     this.top_ = placeBottom ? maxTop : minTop;
