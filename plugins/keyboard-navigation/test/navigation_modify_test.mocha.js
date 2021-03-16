@@ -10,25 +10,7 @@ const {Navigation} = require('../src/navigation');
 const assert = chai.assert;
 
 suite('Insert/Modify', function() {
-  /**
-   * Captures the strings sent to console.warn() when calling a function.
-   * Copies from core.
-   * @param {function} innerFunc The function where warnings may called.
-   * @return {string[]} The warning messages (only the first arguments).
-   */
-  function captureWarnings(innerFunc) {
-    const msgs = [];
-    const nativeConsoleWarn = console.warn;
-    try {
-      console.warn = function(msg) {
-        msgs.push(msg);
-      };
-      innerFunc();
-    } finally {
-      console.warn = nativeConsoleWarn;
-    }
-    return msgs;
-  }
+
 
   /**
    * Check that modify failed.
