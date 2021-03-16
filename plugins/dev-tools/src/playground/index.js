@@ -80,8 +80,7 @@ let PlaygroundAPI;
  * @param {string=} vsEditorPath Optional editor path.
  * @return {Promise<PlaygroundAPI>} A promise to the playground API.
  */
-export function createPlayground(container, createWorkspace =
-    (blocklyDiv, options) => Blockly.inject(blocklyDiv, options),
+export function createPlayground(container, createWorkspace = Blockly.inject,
     defaultOptions = {toolbox: toolboxCategories}, config = {}, vsEditorPath) {
   const {blocklyDiv, minimizeButton, monacoDiv, guiContainer, playgroundDiv, tabButtons, tabsDiv} =
     renderPlayground(container);
