@@ -24,6 +24,8 @@ const {
 
 const {
   assertFieldValue,
+  FieldCreationTestCase,
+  FieldValueTestCase,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
@@ -33,6 +35,8 @@ export {
   assertFieldValue,
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
+  FieldCreationTestCase,
+  FieldValueTestCase,
   runCodeGenerationTestSuites,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
