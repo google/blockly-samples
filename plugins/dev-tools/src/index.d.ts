@@ -49,9 +49,9 @@ declare namespace DevTools {
   /**
    * Create the Blockly playground.
    */
-  function createPlayground(container: HTMLElement, createWorkspace:
+  function createPlayground(container: HTMLElement, createWorkspace?:
   (blocklyDiv: HTMLElement, options: Blockly.BlocklyOptions) =>
-  Blockly.Workspace, defaultOptions: Blockly.BlocklyOptions,
+  Blockly.Workspace, defaultOptions?: Blockly.BlocklyOptions,
     vsEditorPath?: string): Promise<PlaygroundAPI>;
 
   /**

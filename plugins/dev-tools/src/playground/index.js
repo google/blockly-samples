@@ -72,16 +72,17 @@ let PlaygroundAPI;
 /**
  * Create the Blockly playground.
  * @param {!HTMLElement} container Container element.
- * @param {CreateWorkspaceFn} createWorkspace A workspace creation method called
- *     every time the toolbox is re-configured.
- * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
+ * @param {CreateWorkspaceFn=} createWorkspace A workspace creation method
+ *     called every time the toolbox is re-configured.
+ * @param {Blockly.BlocklyOptions=} defaultOptions The default workspace options
  *     to use.
  * @param {PlaygroundConfig=} config Optional Playground config.
  * @param {string=} vsEditorPath Optional editor path.
  * @return {Promise<PlaygroundAPI>} A promise to the playground API.
  */
-export function createPlayground(container, createWorkspace,
-    defaultOptions, config = {}, vsEditorPath) {
+export function createPlayground(container, createWorkspace =
+    (blocklyDiv, options) => Blockly.inject(blocklyDiv, options),
+    defaultOptions = {toolbox: toolboxCategories}, config = {}, vsEditorPath) {
   const {blocklyDiv, minimizeButton, monacoDiv, guiContainer, playgroundDiv, tabButtons, tabsDiv} =
     renderPlayground(container);
 
