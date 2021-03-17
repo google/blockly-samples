@@ -27,10 +27,7 @@ let FixedEdgesConfig;
  * @type {!FixedEdgesConfig}
  * @private
  */
-let fixedEdges = {
-  top: true,
-  left: true,
-};
+const fixedEdges = {};
 
 /**
  * The metrics manager for workspace metrics calculations with customizable
@@ -57,7 +54,10 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
    * @public
    */
   static setFixedEdges(updatedFixedEdges) {
-    fixedEdges = updatedFixedEdges;
+    fixedEdges.top = !!updatedFixedEdges.top;
+    fixedEdges.bottom = !!updatedFixedEdges.bottom;
+    fixedEdges.left = !!updatedFixedEdges.left;
+    fixedEdges.right = !!updatedFixedEdges.right;
   }
 
   /**
