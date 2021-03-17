@@ -1,7 +1,7 @@
 # @blockly/fixed-edges [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that provides a 
-MetricsManager that makes fixed edges more easily configurable.
+A [Blockly](https://www.npmjs.com/package/blockly) MetricsManager that makes
+fixed edges more easily configurable.
 
 ## Installation
 

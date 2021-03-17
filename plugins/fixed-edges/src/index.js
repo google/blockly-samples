@@ -25,6 +25,7 @@ let FixedEdgesConfig;
 /**
  * The current configuration for fixed edges.
  * @type {!FixedEdgesConfig}
+ * @private
  */
 let fixedEdges = {
   top: true,
@@ -85,26 +86,22 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
 
     const viewMetrics = opt_viewMetrics || this.getViewMetrics(false);
 
-    const top = fixedEdges.top ? 0 : undefined;
-    let bottom = fixedEdges.bottom ? 0 : undefined;
-    if (fixedEdges.top && fixedEdges.bottom) {
-      bottom = viewMetrics.height;
+    const edges = {
+      top: fixedEdges.top ? 0 : undefined,
+      bottom: fixedEdges.bottom ? 0 : undefined,
+      left: fixedEdges.left ? 0 : undefined,
+      right: fixedEdges.right ? 0 : undefined,
+    };
+    if (fixedEdges.top !== undefined && fixedEdges.bottom !== undefined) {
+      edges.bottom = viewMetrics.height;
     }
-    const left = fixedEdges.left ? 0 : undefined;
-    let right = fixedEdges.right ? 0 : undefined;
-    if (fixedEdges.left && fixedEdges.right) {
-      right = viewMetrics.width;
+    if (fixedEdges.left !== undefined && fixedEdges.right !== undefined) {
+      edges.right = viewMetrics.width;
     }
 
-    const edges = {
-      top: top,
-      bottom: bottom,
-      left: left,
-      right: right,
-    };
     if (!vScrollEnabled) {
-      if (top !== undefined) {
-        edges.bottom = top + viewMetrics.height;
+      if (edges.top !== undefined) {
+        edges.bottom = edges.top + viewMetrics.height;
       } else if (edges.bottom !== undefined) {
         edges.top = edges.bottom - viewMetrics.height;
       } else {

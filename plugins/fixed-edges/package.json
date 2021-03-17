@@ -1,7 +1,7 @@
 {
   "name": "@blockly/fixed-edges",
   "version": "0.0.0",
-  "description": "A Blockly plugin.",
+  "description": "A Blockly MetricsManager for configuring fixed sides.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
@@ -19,13 +19,13 @@
     "blockly-plugin",
     "fixed-edges"
   ],
-  "homepage": "https://github.com/moniika/blockly-samples/tree/master/fixed-edges#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/fixed-edges#readme",
   "bugs": {
-    "url": "https://github.com/moniika/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/moniika/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "fixed-edges"
   },
   "license": "Apache-2.0",
@@ -40,10 +40,10 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.4",
     "@blockly/dev-tools": "^2.0.9",
-    "blockly": "^4.20201217.0"
+    "blockly": ">=4"
   },
   "peerDependencies": {
-    "blockly": ">=3"
+    "blockly": ">=4"
   },
   "publishConfig": {},
   "eslintConfig": {
