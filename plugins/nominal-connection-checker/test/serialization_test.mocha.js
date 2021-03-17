@@ -82,6 +82,7 @@ suite('Serialization', function() {
     for (const block of this.blocks) {
       delete Blockly.Blocks[block.type];
     }
+    this.workspace.dispose();
   });
 
   suite('Simple subtyping', function() {
