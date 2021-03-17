@@ -25,6 +25,7 @@ layout: index
 * [Disable Top Blocks](plugins/disable-top-blocks/test/index.html)
 
 ## Themes
+* [Theme Dark](plugins/theme-dark/test/index.html)
 * [Theme Modern](plugins/theme-modern/test/index.html)
 
 # Examples
