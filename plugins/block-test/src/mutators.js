@@ -35,7 +35,7 @@ const defineBlocks = blocksIds.map((t) => ({
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_mutators_many',
-    message0: 'long flyout mutator',
+    message0: 'test many blocks mutator',
     mutator: 'test_many_blocks_mutator',
     colour: '#000000',
   },
