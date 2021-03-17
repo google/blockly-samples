@@ -43,7 +43,7 @@ Blockly.defineBlocksWithJsonArray([
 ]);
 
 /**
- * Mutator methods added to the test_mutators_noflyout block.
+ * Mutator methods added to the test_mutators_many block.
  * @mixin
  * @augments Blockly.Block
  * @package
@@ -95,7 +95,7 @@ const MANY_BLOCKS_MUTATOR = {
 Blockly.Extensions.unregister('test_many_blocks_mutator');
 
 /**
- * Register custom mutator used by the test_mutators_noflyout block.
+ * Register custom mutator used by the test_mutators_many block.
  */
 Blockly.Extensions.registerMutator(
     'test_many_blocks_mutator',
