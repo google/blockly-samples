@@ -8,6 +8,9 @@
  * @fileoverview Helpers for tests of the NominalConnectionChecker.
  */
 
+
+const Blockly = require('blockly/node');
+
 /**
  * Returns an array of JSON block definitions based on the given types. This
  * creates nine blocks for each type, each representing a different
@@ -28,6 +31,7 @@ export function createBlockDefs(types) {
           'check': [type],
         },
       ],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_outer_statement',
@@ -39,22 +43,26 @@ export function createBlockDefs(types) {
           'check': [type],
         },
       ],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_outer_next',
       'message0': '',
       'nextStatement': [type],
+      'mutator': 'bind_type_mutator',
     });
 
     blocks.push({
       'type': 'static_' + type + '_inner_out',
       'message0': '',
       'output': [type],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_inner_prev',
       'message0': '',
       'previousStatement': [type],
+      'mutator': 'bind_type_mutator',
     });
 
     blocks.push({
@@ -78,6 +86,7 @@ export function createBlockDefs(types) {
         },
       ],
       'output': [type],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_main_out_statement',
@@ -100,12 +109,14 @@ export function createBlockDefs(types) {
         },
       ],
       'output': [type],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_main_out_next',
       'message0': '',
       'output': [type],
       'nextStatement': [type],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_main_prev_value',
@@ -128,6 +139,7 @@ export function createBlockDefs(types) {
         },
       ],
       'previousStatement': [type],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_main_prev_statement',
@@ -150,12 +162,14 @@ export function createBlockDefs(types) {
         },
       ],
       'previousStatement': [type],
+      'mutator': 'bind_type_mutator',
     });
     blocks.push({
       'type': 'static_' + type + '_main_prev_next',
       'message0': '',
       'previousStatement': [type],
       'nextStatement': [type],
+      'mutator': 'bind_type_mutator',
     });
   }
   return blocks;
@@ -600,3 +614,43 @@ function runTests(tests) {
     }
   }
 }
+
+
+const BIND_TYPE_MUTATOR = {
+  mutationToDom: function() {
+    if (!this.boundTypes_.size) {
+      return null;
+    }
+    const container = Blockly.utils.xml.createElement('mutation');
+    for (const [genericType, explicitType] of this.boundTypes_) {
+      const typeElem = Blockly.utils.xml.createElement('type');
+      typeElem.setAttribute('generictype', genericType);
+      typeElem.setAttribute('explicittype', explicitType);
+      container.appendChild(typeElem);
+    }
+    if (!container.childNodes.length) {
+      return null;
+    }
+    return container;
+  },
+
+  domToMutation: function(xmlElement) {
+    for (const childNode of xmlElement.childNodes) {
+      this.bindType(
+          childNode.getAttribute('generictype'),
+          childNode.getAttribute('explicittype'));
+    }
+  },
+
+  bindType: function(genericType, explicitType) {
+    this.workspace.connectionChecker.bindType(this, genericType, explicitType);
+    this.boundTypes_.set(genericType, explicitType);
+  },
+};
+
+const BIND_TYPE_HELPER = function() {
+  this.boundTypes_ = new Map();
+};
+
+Blockly.Extensions.registerMutator(
+    'bind_type_mutator', BIND_TYPE_MUTATOR, BIND_TYPE_HELPER);
