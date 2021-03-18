@@ -92,10 +92,10 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
       left: fixedEdges.left ? 0 : undefined,
       right: fixedEdges.right ? 0 : undefined,
     };
-    if (fixedEdges.top !== undefined && fixedEdges.bottom !== undefined) {
+    if (fixedEdges.top && fixedEdges.bottom) {
       edges.bottom = viewMetrics.height;
     }
-    if (fixedEdges.left !== undefined && fixedEdges.right !== undefined) {
+    if (fixedEdges.left && fixedEdges.right) {
       edges.right = viewMetrics.width;
     }
 
