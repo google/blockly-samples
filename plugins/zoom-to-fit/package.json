@@ -1,6 +1,6 @@
 {
   "name": "@blockly/zoom-to-fit",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A Blockly plugin.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
