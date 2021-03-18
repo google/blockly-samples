@@ -1,7 +1,7 @@
 {
   "name": "blockly-plugin-block-dynamic-connection",
   "version": "0.0.0",
-  "description": "A Blockly plugin.",
+  "description": "A group of blocks that add connections dynamically.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
@@ -19,13 +19,13 @@
     "blockly-plugin",
     "block-dynamic-connection"
   ],
-  "homepage": "https://github.com/ajpal/blockly-samples/tree/master/plugins/block-dynamic-connection#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-dynamic-connection#readme",
   "bugs": {
-    "url": "https://github.com/ajpal/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ajpal/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "plugins/block-dynamic-connection"
   },
   "license": "Apache-2.0",

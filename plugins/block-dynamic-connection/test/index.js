@@ -1,11 +1,11 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Dynamic block connection test playground.
  */
 
 import * as Blockly from 'blockly';

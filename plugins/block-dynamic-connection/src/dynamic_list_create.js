@@ -1,5 +1,17 @@
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
+ * @fileoverview Defines a version of the list_create block with dyanmic
+ *     inputs that appear when a block is dragged over inputs on the block.
+ */
+
 Blockly.Blocks['dynamic_list_create'] = {
   inputCounter: 2,
+  minInputs: 2,
   /**
    * Block for concatenating any number of strings.
    * @this {Blockly.Block}
@@ -45,10 +57,10 @@ Blockly.Blocks['dynamic_list_create'] = {
 
   /**
    * Check whether a new input should be added and determine where it should go.
-   * @param {Blockly.Connection} connection - The connection that has a
-   * pending connection.
-   * @return {Number} The index before which to insert a new input,
-   * or null if no input should be added.
+   * @param {!Blockly.Connection} connection The connection that has a
+   *     pending connection.
+   * @return {number} The index before which to insert a new input,
+   *     or null if no input should be added.
    */
   getIndexForNewInput: function(connection) {
     if (!connection.targetConnection) {
@@ -81,7 +93,7 @@ Blockly.Blocks['dynamic_list_create'] = {
 
   /**
    * Called when a block is dragged over one of the connections on this block.
-   * @param {Blockly.Connection} connection - The connection on this block that
+   * @param {!Blockly.Connection} connection The connection on this block that
    * has a pending connection.
    */
   onPendingConnection: function(connection) {
@@ -99,7 +111,7 @@ Blockly.Blocks['dynamic_list_create'] = {
    * away.
    */
   finalizeConnections: function() {
-    if (this.inputList.length > 2) {
+    if (this.inputList.length > this.minInputs) {
       let toRemove = [];
       this.inputList.forEach((input) => {
         const targetConnection = input.connection.targetConnection;
@@ -108,9 +120,9 @@ Blockly.Blocks['dynamic_list_create'] = {
         }
       });
 
-      if (this.inputList.length - toRemove.length < 2) {
+      if (this.inputList.length - toRemove.length < this.minInputs) {
         // Always show at least two inputs
-        toRemove = toRemove.slice(2);
+        toRemove = toRemove.slice(this.minInputs);
       }
       toRemove.forEach((inputName) => this.removeInput(inputName));
       // The first input should have the block text. If we removed the
