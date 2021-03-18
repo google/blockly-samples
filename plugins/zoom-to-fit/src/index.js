@@ -103,8 +103,8 @@ export class ZoomToFitControl {
    * to prevent memory leaks.
    */
   dispose() {
-    if (this.onZoomOutWrapper_) {
-      Blockly.unbindEvent_(this.onZoomOutWrapper_);
+    if (this.onZoomToFitWrapper_) {
+      Blockly.unbindEvent_(this.onZoomToFitWrapper_);
     }
   }
 
@@ -126,7 +126,7 @@ export class ZoomToFitControl {
         this.svgGroup_, this.workspace_.getBubbleCanvas());
 
     // Attach listener.
-    this.onZoomOutWrapper_ = Blockly.browserEvents.conditionalBind(
+    this.onZoomToFitWrapper_ = Blockly.browserEvents.conditionalBind(
         this.svgGroup_, 'mousedown', null, this.onClick_.bind(this));
   }
 
