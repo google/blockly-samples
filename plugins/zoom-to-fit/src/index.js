@@ -94,8 +94,15 @@ export class ZoomToFitControl {
    * Initializes the zoom reset control.
    */
   init() {
+    this.workspace_.getPluginManager().addPlugin({
+      id: 'zoomToFit',
+      plugin: this,
+      weight: 2,
+      types: [Blockly.PluginManager.Type.POSITIONABLE],
+    });
     this.createDom_();
     this.initialized_ = true;
+    this.workspace_.resize();
   }
   /**
    * Disposes of workspace search.
@@ -103,6 +110,9 @@ export class ZoomToFitControl {
    * to prevent memory leaks.
    */
   dispose() {
+    if (this.svgGroup_) {
+      Blockly.utils.dom.removeNode(this.svgGroup_);
+    }
     if (this.onZoomToFitWrapper_) {
       Blockly.unbindEvent_(this.onZoomToFitWrapper_);
     }

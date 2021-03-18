@@ -29,15 +29,6 @@ const workspace = Blockly.inject('blocklyDiv', {
 // Initialize plugin.
 const zoomToFit = new ZoomToFitControl(workspace);
 zoomToFit.init();
-workspace.getPluginManager().addPlugin({
-  id: 'zoomToFit',
-  plugin: zoomToFit,
-  weight: 1,
-  types: [Blockly.PluginManager.Type.POSITIONABLE],
-});
-
-// Resize Blockly to position ui elements.
-workspace.resize();
 ```
 
 ## API

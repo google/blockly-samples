@@ -23,13 +23,6 @@ function createWorkspace(blocklyDiv, options) {
 
   const zoomToFit = new ZoomToFitControl(workspace);
   zoomToFit.init();
-  workspace.getPluginManager().addPlugin({
-    id: 'zoomToFit',
-    plugin: zoomToFit,
-    weight: 2,
-    types: [Blockly.PluginManager.Type.POSITIONABLE],
-  });
-  workspace.resize();
 
   return workspace;
 }
