@@ -198,15 +198,15 @@ export class ZoomToFitControl {
     if (hasHorizontalScrollbars) {
       minTop -= Blockly.Scrollbar.scrollbarThickness;
     }
-    const placeBottom =
+    const bumpUp =
         metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
-    this.top_ = placeBottom ? maxTop : minTop;
+    this.top_ = bumpUp ? maxTop : minTop;
 
     // Check for collision and bump if needed.
     let boundingRect = this.getBoundingRectangle();
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
-        if (placeBottom) {
+        if (bumpUp) {
           // Bump up
           this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_BOTTOM_;
         } else {
