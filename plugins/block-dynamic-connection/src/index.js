@@ -10,5 +10,6 @@
  */
 
 import './insertion_marker_manager_monkey_patch';
+import './dynamic_if.js';
 import './dynamic_text_join.js';
 import './dynamic_list_create.js';
