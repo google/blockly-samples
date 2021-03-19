@@ -13,24 +13,8 @@
 
 import * as Blockly from 'blockly/core';
 
-const oldApplyConnections =
-  Blockly.InsertionMarkerManager.prototype.applyConnections;
-
-Blockly.InsertionMarkerManager.prototype.applyConnections = function() {
-  oldApplyConnections.call(this);
-
-  if (this.closestConnection_ &&
-      this.closestConnection_.sourceBlock_.finalizeConnections) {
-    this.closestConnection_.sourceBlock_.finalizeConnections();
-  }
-};
-
 Blockly.InsertionMarkerManager.prototype.update = function(dxy, deleteArea) {
   const candidate = this.getCandidate_(dxy);
-  // Begin monkey patch
-  const previousTargetBlock = this.closestConnection_ &&
-    this.closestConnection_.sourceBlock_;
-  // End monkey patch
 
   this.wouldDeleteBlock_ = this.shouldDelete_(candidate, deleteArea);
   const shouldUpdate = this.wouldDeleteBlock_ ||
@@ -41,6 +25,10 @@ Blockly.InsertionMarkerManager.prototype.update = function(dxy, deleteArea) {
     if (candidate.closest &&
         candidate.closest.sourceBlock_.onPendingConnection) {
       candidate.closest.sourceBlock_.onPendingConnection(candidate.closest);
+      if (!this.pendingBlocks) {
+        this.pendingBlocks = new Set();
+      }
+      this.pendingBlocks.add(candidate.closest.sourceBlock_);
     }
     // End monkey patch
     // Don't fire events for insertion marker creation or movement.
@@ -49,17 +37,16 @@ Blockly.InsertionMarkerManager.prototype.update = function(dxy, deleteArea) {
     this.maybeShowPreview_(candidate);
     Blockly.Events.enable();
   }
+};
 
-  // Begin monkey patch
-  const newTargetBlock = (
-    candidate &&
-    candidate.closest &&
-    candidate.closest.sourceBlock_
-  );
-  if (newTargetBlock != previousTargetBlock) {
-    if (previousTargetBlock && previousTargetBlock.finalizeConnections) {
-      previousTargetBlock.finalizeConnections();
-    }
+const oldDispose = Blockly.InsertionMarkerManager.prototype.dispose;
+Blockly.InsertionMarkerManager.prototype.dispose = function() {
+  if (this.pendingBlocks) {
+    this.pendingBlocks.forEach((block) => {
+      if (block.finalizeConnections) {
+        block.finalizeConnections();
+      }
+    });
   }
-  // End monkey patch
+  oldDispose.call(this);
 };
