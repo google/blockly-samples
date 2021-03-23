@@ -17,6 +17,39 @@ Blockly.Blocks['dynamic_if'] = {
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
   },
 
+  mutationToDom: function() {
+    const container = Blockly.utils.xml.createElement('mutation');
+    const inputNames = this.inputList
+        .filter((input) => input.name.includes('IF'))
+        .map((input) => input.name.slice(2)).join(',');
+    container.setAttribute('inputs', inputNames);
+    const hasElse = this.inputList[this.inputList.length - 1].name == 'ELSE';
+    container.setAttribute('else', hasElse);
+    container.setAttribute('next', this.inputCounter);
+    return container;
+  },
+
+  domToMutation: function(xmlElement) {
+    const inputs = xmlElement.getAttribute('inputs');
+    if (inputs) {
+      const inputNumbers = inputs.split(',');
+      this.inputList = [];
+      inputNumbers.forEach((n) => {
+        this.appendValueInput('IF' + n)
+            .setCheck('Boolean')
+            .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
+        this.appendStatementInput('DO' + n);
+      });
+    }
+    const hasElse = xmlElement.getAttribute('else');
+    if (hasElse == 'true') {
+      this.appendStatementInput('ELSE')
+          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
+    }
+    const next = parseInt(xmlElement.getAttribute('next'));
+    this.inputCounter = next;
+  },
+
   findInputIndexForConnection: function(connection) {
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
