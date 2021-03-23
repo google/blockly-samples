@@ -13,8 +13,6 @@ Blockly.Blocks['dynamic_if'] = {
         .setCheck('Boolean')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
     this.appendStatementInput('DO0');
-    this.appendStatementInput('ELSE')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
 
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
   },
@@ -87,7 +85,7 @@ Blockly.Blocks['dynamic_if'] = {
     }
 
     // Remove the If input if it is empty and there is at least one Else If
-    if (this.inputList.length > 2) {
+    if (this.inputList.length > 2 && this.inputList[2].name.includes('IF')) {
       if (!inputInfo[0].target && !inputInfo[1].target) {
         this.removeInput(inputInfo[0].name);
         this.removeInput(inputInfo[1].name);
