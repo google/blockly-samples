@@ -12,10 +12,7 @@ pages:
 ---
 # @blockly/dev-tools [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A library of common utilities for Blockly extension development.
-- `toolboxSimple`: XML for an always-open flyout with no categories.
-- `toolboxCategories`: XML for a toolbox with multiple categories and all of the default blocks.
-- `DebugRenderer`: A visualizer for debugging custom renderers.
+A library of helpful tools for Blockly development.
 
 ## Installation
 
@@ -24,6 +21,31 @@ npm install @blockly/dev-tools -D --save
 ```
 
 ## Usage
+
+### Playground
+The playground is a tremendously useful tool for debugging your Blockly project. As a preview, here is [one of the plugin playgrounds](https://google.github.io/blockly-samples/plugins/theme-modern/test/). The playground features are:
+- All the default blocks
+- All the language generators (JavaScript, Python, PHP, Lua, and Dart)
+- Switch between different Blockly options (eg: rtl, renderer, readOnly, zoom and scroll)
+- Switch between different toolboxes and themes
+- Import and export programs, or generate code using one of the built-in generators
+- Trigger programmatic actions (eg: Show/hide, Clear, Undo/Redo, Scale)
+- A debug renderer
+- Stress tests for the renderer
+- Log all events in the console
+
+```js
+import {createPlayground} from '@blockly/dev-tools';
+
+const defaultOptions = {
+  ...
+};
+createPlayground(document.getElementById('blocklyDiv'), (blocklyDiv, options) => {
+  return Blockly.inject(blocklyDiv, options);
+}, defaultOptions);
+```
+
+This package also exports pieces of the playground (addGUIControls, addCodeEditor) if you'd rather build your own playground.
 
 ### Toolboxes
 Blockly built-in Simple and Category toolboxes.
@@ -37,29 +59,13 @@ Blockly.inject('blocklyDiv', {
 });
 ```
 
-### Debug Renderer
-The debug renderer is a helpful tool to debug blocks when building a custom renderer.
+#### Test Toolbox
 
-```js
-import {DebugRenderer} from '@blockly/dev-tools';
-// Initialize the debug renderer.
-DebugRenderer.init();
-```
+The test toolbox is re-exported in this package, but can be imported as a stand-alone through [@blockly/block-test](https://www.npmjs.com/package/@blockly/block-test). See the README for details.
 
-### GUI Controls
-Add GUI controls to adjust Blockly workspace options with a dat.GUI interface.
+### Helpers
 
-```js
-import {addGUIControls} from '@blockly/dev-tools';
-const defaultOptions = {
-  ...
-};
-addGUIControls((options) => {
-  return Blockly.inject('blocklyDiv', options);
-}, defaultOptions);
-```
-
-### Populate Random
+#### `populateRandom`
 
 The `populateRandom` function adds random blocks to a workspace. Blocks are selected from the full set of defined blocks. Pass in a worskpace and how many blocks should be created.
 ```js
@@ -67,6 +73,58 @@ import {populateRandom} from '@blockly/dev-tools';
 // Add 10 random blocks to the workspace.
 populateRandom(workspace, 10);
 ```
+
+#### `spaghetti`
+
+The `spaghetti` function is a renderer stress test that populates the workspace with nested if-statements. Pass in a worskpace and how deep the nesting should be.
+```js
+import {spaghetti} from '@blockly/dev-tools';
+spaghetti(workspace, 8);
+```
+
+#### `generateFieldTestBlocks`
+
+The `generateFieldTestBlocks` function automatically generates a number of field testing blocks for the passed-in field. This is useful for testing field plugins.
+
+```js
+import {generateFieldTestBlocks} from '@blockly/dev-tools';
+
+const toolbox = generateFieldTestBlocks('field_template', [
+  {
+    'args': {
+      'value': 0, // default value
+    },
+  },
+]);
+```
+
+### Test Helpers
+
+This package is also used in mocha tests, and exports a suite of useful test helpers.
+You can find the full list of helpers [here](https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js).
+
+### Debug Renderer
+The debug renderer is a helpful tool to debug blocks when building a custom renderer. 
+
+```js
+import {DebugRenderer} from '@blockly/dev-tools';
+// Initialize the debug renderer.
+DebugRenderer.init();
+```
+
+The debug renderer is included by default in the playground.
+
+### Logger
+A lightweight workspace console logger. 
+
+```js
+import {logger} from '@blockly/dev-tools';
+
+logger.enableLogger(workspace);
+logger.disableLogger(workspace);
+```
+
+The logger is included by default in the playground.
 
 ## License
 Apache 2.0

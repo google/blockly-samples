@@ -34,7 +34,7 @@ workspaceSearch.init();
 ```
 ### Script Tag
 ```js
-<script src="./node_modules/@blockly/plugin-workspace-search/dist/workspace-search.umd.js"></script>
+<script src="./node_modules/@blockly/plugin-workspace-search/dist/index.js"></script>
 ```
 
 To open workspace search use either command + f or control + f. To close the search bar hit escape or the 'x' in the top right corner.

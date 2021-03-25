@@ -25,6 +25,7 @@ layout: index
 * [Disable Top Blocks](plugins/disable-top-blocks/test/index.html)
 
 ## Themes
+* [Theme Dark](plugins/theme-dark/test/index.html)
 * [Theme Modern](plugins/theme-modern/test/index.html)
 
 # Examples
@@ -44,6 +45,7 @@ layout: index
 ## Configuration
 * [Maximum Block Limit](examples/max-blocks-demo/index.html)
 * [RTL](examples/rtl-demo/index.html)
+* [Single-direction Scrolling](examples/single-direction-scroll-demo/index.html)
 
 ## Generator
 * [Generate JavaScript](examples/generator-demo/index.html)
@@ -70,5 +72,3 @@ layout: index
 
 ## Plane
 * [Plane](examples/plane-demo/index.html)
-
-Looking for the old demos site? [Click here](https://blockly-demo.appspot.com/static/demos/index.html)
