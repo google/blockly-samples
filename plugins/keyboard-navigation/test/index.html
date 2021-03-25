@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Plugin Test</title>
+  <style>
+    html, body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <p>Keyboard Navigation is our first step towards an accessible Blockly.<br />
+  For more information on how the default keyboard navigation works please see
+  the <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">documentation</a>.
+  <br />
+  <br />
+
+  <b>Cursors</b><br />
+  The cursor controls how the user navigates the blocks, inputs, fields and connections on a workspace.
+  This demo shows three different cursors:<br />
+  <b>Default Cursor:</b> This cursor uses previous, next, in, and out to navigate through the different
+  parts of a block. See the <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">developer documentation</a> for more information. <br />
+  <b>Basic Cursor:</b> Uses pre order traversal to allow users to navigate
+  through everything using only the previous and next command.<br />
+  <b>Line Cursor:</b> We tried to make this cursor mimic a text editor. Navigating
+  up and down will take the cursor to the next and previous "line" of code.
+  Navigating in and out will move the cursor through all the fields and inputs
+  in that "line" of code.
+  </p>
+  <label for="accessibilityModeCheck">Enable Accessibility Mode:</label>
+  <input type="checkbox" id="accessibilityModeCheck">
+  <select id="cursorChanger" name="cursor">
+    <option value="default">Default Cursor</option>
+    <option value="basic">Basic Cursor</option>
+    <option value="line">Line Cursor</option>
+  </select>
+  <div id="root"></div>
+  <script src="../build/test_bundle.js"></script>
+</body>
+
+</html>

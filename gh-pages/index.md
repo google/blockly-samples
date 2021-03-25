@@ -45,6 +45,7 @@ layout: index
 ## Configuration
 * [Maximum Block Limit](examples/max-blocks-demo/index.html)
 * [RTL](examples/rtl-demo/index.html)
+* [Single-direction Scrolling](examples/single-direction-scroll-demo/index.html)
 
 ## Generator
 * [Generate JavaScript](examples/generator-demo/index.html)

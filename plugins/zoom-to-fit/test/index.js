@@ -1,20 +1,16 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @fileoverview Continuous toolbox plugin test.
+ * @fileoverview ZoomToFitControl test.
  */
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import '../src/ContinuousCategory';
-import {ContinuousToolbox} from '../src/ContinuousToolbox';
-import {ContinuousFlyout} from '../src/ContinuousFlyout';
-import {ContinuousMetrics} from '../src/ContinuousMetrics';
-
+import {ZoomToFitControl} from '../src/index';
 
 /**
  * Create a workspace.
@@ -25,16 +21,17 @@ import {ContinuousMetrics} from '../src/ContinuousMetrics';
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
+  const zoomToFit = new ZoomToFitControl(workspace);
+  zoomToFit.init();
+
   return workspace;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: toolboxCategories,
-    plugins: {
-      'toolbox': ContinuousToolbox,
-      'flyoutsVerticalToolbox': ContinuousFlyout,
-      'metricsManager': ContinuousMetrics,
+    zoom: {
+      controls: true,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,

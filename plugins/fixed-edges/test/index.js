@@ -1,20 +1,16 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @fileoverview Continuous toolbox plugin test.
+ * @fileoverview Fixed sides test.
  */
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import '../src/ContinuousCategory';
-import {ContinuousToolbox} from '../src/ContinuousToolbox';
-import {ContinuousFlyout} from '../src/ContinuousFlyout';
-import {ContinuousMetrics} from '../src/ContinuousMetrics';
-
+import {FixedEdgesMetricsManager} from '../src/index';
 
 /**
  * Create a workspace.
@@ -23,8 +19,11 @@ import {ContinuousMetrics} from '../src/ContinuousMetrics';
  * @return {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
+  FixedEdgesMetricsManager.setFixedEdges({
+    top: true,
+    left: true,
+  });
   const workspace = Blockly.inject(blocklyDiv, options);
-
   return workspace;
 }
 
@@ -32,9 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
-      'toolbox': ContinuousToolbox,
-      'flyoutsVerticalToolbox': ContinuousFlyout,
-      'metricsManager': ContinuousMetrics,
+      metricsManager: FixedEdgesMetricsManager,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,

@@ -1,33 +1,32 @@
 {
-  "name": "@blockly/continuous-toolbox",
-  "version": "0.1.4",
-  "description": "A Blockly plugin that adds a continous-scrolling style toolbox and flyout",
+  "name": "@blockly/fixed-edges",
+  "version": "1.0.0",
+  "description": "A Blockly MetricsManager for configuring fixed sides.",
   "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start",
-    "audit:fix": "blockly-scripts auditFix",
-    "predeploy": "npm run build && blockly-scripts predeploy"
+    "start": "blockly-scripts start"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
-  "author": "Blockly Team",
+  "author": "",
   "keywords": [
     "blockly",
     "blockly-plugin",
-    "continuous-toolbox"
+    "fixed-edges"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/continuous-toolbox#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/fixed-edges#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/continuous-toolbox"
+    "directory": "fixed-edges"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -40,16 +39,13 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.4",
-    "@blockly/dev-tools": "^2.0.10",
+    "@blockly/dev-tools": "^2.0.9",
     "blockly": "^5.20210325.0"
   },
   "peerDependencies": {
     "blockly": ">=5.20210325.0"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://wombat-dressing-room.appspot.com"
-  },
+  "publishConfig": {},
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   },
