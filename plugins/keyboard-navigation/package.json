@@ -1,33 +1,34 @@
 {
-  "name": "@blockly/continuous-toolbox",
-  "version": "0.1.4",
-  "description": "A Blockly plugin that adds a continous-scrolling style toolbox and flyout",
+  "name": "blockly-plugin-keyboard-navigation",
+  "version": "0.1.0",
+  "description": "A Blockly plugin.",
   "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start",
-    "audit:fix": "blockly-scripts auditFix",
-    "predeploy": "npm run build && blockly-scripts predeploy"
+    "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
+  "private": true,
   "keywords": [
     "blockly",
     "blockly-plugin",
-    "continuous-toolbox"
+    "keyboard-navigation"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/continuous-toolbox#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/keyboard-navigation#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/continuous-toolbox"
+    "directory": "plugins/keyboard-navigation"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -40,16 +41,18 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.4",
-    "@blockly/dev-tools": "^2.0.10",
-    "blockly": "^4.20210325.0-beta.3"
+    "@blockly/dev-tools": "^2.0.8",
+    "blockly": "4.20210325.0-beta.3",
+    "chai": "^4.2.0",
+    "jsdom": "^16.4.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^7.1.0",
+    "sinon": "^9.0.1"
   },
   "peerDependencies": {
-    "blockly": ">=4.20210325.0"
+    "blockly": ">=3"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://wombat-dressing-room.appspot.com"
-  },
+  "publishConfig": {},
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   },

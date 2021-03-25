@@ -153,11 +153,12 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     const currentScrollPos = -this.workspace_.scrollY;
     const diff = this.scrollTarget - currentScrollPos;
     if (Math.abs(diff) < 1) {
-      this.scrollbar.set(this.scrollTarget);
+      this.workspace_.scrollbar.setY(this.scrollTarget);
       this.scrollTarget = null;
       return;
     }
-    this.scrollbar.set(currentScrollPos + diff * this.scrollAnimationFraction);
+    this.workspace_.scrollbar.setY(
+        currentScrollPos + diff * this.scrollAnimationFraction);
 
     requestAnimationFrame(this.stepScrollAnimation_.bind(this));
   }
