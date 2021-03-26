@@ -23,6 +23,8 @@ layout: index
 * [Strict Connection Checker](plugins/strict-connection-checker/test/index.html)
 * [Continuous Toolbox](plugins/continuous-toolbox/test/index.html)
 * [Disable Top Blocks](plugins/disable-top-blocks/test/index.html)
+* [Fixed Edges](plugins/fixed-edges/test/index.html)
+* [Zoom to Fit](plugins/zoom-to-fit/test/index.html)
 
 ## Themes
 * [Theme Dark](plugins/theme-dark/test/index.html)
