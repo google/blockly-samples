@@ -281,11 +281,12 @@ export function createPlayground(container, createWorkspace = Blockly.inject,
 
       // Initialize the test toolbox.
       toolboxTestBlocksInit(/** @type {!Blockly.WorkspaceSvg} */ (workspace));
-        
+
       // Add download screenshot option.
       const prevConfigureContextMenu = workspace.configureContextMenu;
       workspace.configureContextMenu = (menuOptions, e) => {
-        prevConfigureContextMenu && prevConfigureContextMenu.call(null, menuOptions, e);
+        prevConfigureContextMenu && prevConfigureContextMenu.call(null,
+            menuOptions, e);
 
         const screenshotOption = {
           text: 'Download Screenshot',
