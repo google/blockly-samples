@@ -1,6 +1,6 @@
 {
     "name": "@blockly/field-date",
-    "version": "4.2.8",
+    "version": "4.2.9",
     "description": "A Blockly date picker field that uses the Google Closure date picker.",
     "scripts": {
         "audit:fix": "blockly-scripts auditFix",
@@ -39,7 +39,7 @@
     ],
     "devDependencies": {
         "@blockly/dev-scripts": "^1.2.4",
-        "@blockly/dev-tools": "^2.1.1",
+        "@blockly/dev-tools": "^2.1.2",
         "blockly": "^3.20200924.1",
         "google-closure-compiler": "^20200920.0.0",
         "google-closure-library": "^20200830.0.0",

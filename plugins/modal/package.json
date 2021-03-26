@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-modal",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "A Blockly plugin that creates a modal.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.4",
-    "@blockly/dev-tools": "^2.1.1",
+    "@blockly/dev-tools": "^2.1.2",
     "blockly": "^3.20200402.0",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",
