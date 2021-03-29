@@ -14,6 +14,6 @@
     "typescript": "^3.8.0"
   },
   "peerDependencies": {
-    "blockly": ">=3.30300123.0"
+    "blockly": ">=3.20200123.0"
   }
 }
