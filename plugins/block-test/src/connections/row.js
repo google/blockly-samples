@@ -177,6 +177,7 @@ const insertConnectionRows = function(button) {
   const workspace = button.getTargetWorkspace();
   Blockly.Xml.domToWorkspace(
       Blockly.Xml.textToDom(
+          /* eslint-disable max-len */
           '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="test_connections_row_input">\n' +
           '    <value name="NAME">\n' +
@@ -199,7 +200,9 @@ const insertConnectionRows = function(button) {
           '      </block>\n' +
           '    </value>\n' +
           '  </block>\n' +
-          '</xml>'),
+          '</xml>'
+          /* eslint-enable max-len */
+      ),
       workspace);
 };
 
