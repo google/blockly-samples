@@ -52,9 +52,11 @@ function checkLicenses() {
  * Publish all plugins that have changed since the last release.
  * @param {boolean=} dryRun True for running through the publish script as a dry
  *     run.
+ * @param {boolean=} force True for forcing all plugins to publish, even ones
+ *     that have not changed.
  * @return {Function} Gulp task.
  */
-function publish(dryRun) {
+function publish(dryRun, force) {
   return (done) => {
     // Login to npm.
     console.log('Logging in to npm.');
@@ -82,7 +84,8 @@ function publish(dryRun) {
 
     // Run npm publish.
     execSync(
-        `npm run publish:${dryRun ? 'check' : '_internal'}`,
+        `npm run publish:${dryRun ? 'check' : '_internal'}` +
+        `${force ? ' -- --force-publish=*' : ''}`,
         {cwd: releaseDir, stdio: 'inherit'});
 
     done();
@@ -105,6 +108,16 @@ function publishRelease(done) {
  */
 function publishDryRun(done) {
   return publish(true)(done);
+}
+
+/**
+ * Forces all plugins to publish.
+ * Uses the built in lerna option --force-publish=*.
+ * @param {Function} done Completed callback.
+ * @return {Function} Gulp task.
+ */
+function forcePublish(done) {
+  return publish(false, true)(done);
 }
 
 /**
@@ -277,4 +290,5 @@ module.exports = {
   predeploy: gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
   publish: publishRelease,
   publishDryRun: publishDryRun,
+  forcePublish: forcePublish,
 };
