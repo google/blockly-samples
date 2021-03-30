@@ -12,6 +12,7 @@ const {
   TestCase,
   TestSuite,
   runTestCases,
+  captureWarnings,
 } = commonHelpers;
 
 const {
@@ -43,6 +44,7 @@ export {
   runSerializationTestSuite,
   runSetValueTests,
   runTestCases,
+  captureWarnings,
   SerializationTestCase,
   TestCase,
   TestSuite,
