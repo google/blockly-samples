@@ -5,8 +5,10 @@
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start"
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
   },
   "devDependencies": {
     "@blockly/dev-tools": "^1.0.0",
