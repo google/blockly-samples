@@ -47,7 +47,7 @@ block extension that adds support for custom tooltip rendering.
 ### Workspace
 
 - [``@blockly/continuous-toolbox``](continuous-toolbox/): A Blockly plugin
-that adds a continous-scrolling style toolbox and flyout
+that adds a continous-scrolling style toolbox and flyout.
 - [``@blockly/disable-top-blocks``](disable-top-blocks/):  A Blockly plugin that
 shows the 'disable' context menu option only on non-orphan blocks.
 - [``@blockly/fixed-edges``](fixed-edges/):  A Blockly MetricsManager for
@@ -56,7 +56,7 @@ configuring fixed sides.
 that adds keyboard navigation support.
 - [``plugin-nominal-connection-checker``](nominal-connection-checker/): A
 Blockly plugin for creating more advanced connection checks, targeted at
-nominally typed languages.
+nominally typed languages (private; in development).
 - [``@blockly/plugin-strict-connection-checker``](strict-connection-checker/): A
 Blockly plugin that makes connection checks strict.
 - [``@blockly/plugin-workspace-search``](workspace-search/): A plugin that adds
