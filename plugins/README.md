@@ -13,6 +13,8 @@ tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 - [``@blockly/field-date``](field-date/): A date picker field that uses the
 Google Closure date picker.
+- [``@blockly/field-grid-dropdown``](field-grid-dropdown/): A Blockly dropdown
+field with grid layout.
 - [``@blockly/field-slider``](field-slider/): A slider field.
 
 ### Blocks
@@ -37,13 +39,36 @@ plugins.
 - [``@blockly/theme-modern``](theme-modern/): A Blockly modern theme.
 - [``@blockly/theme-dark``](theme-dark/): A Blockly dark theme.
 
-### Other
+### Block Extension
 
+- [``@blockly/block-extension-tooltip``](block-extension-tooltip/): A Blockly
+block extension that adds support for custom tooltip rendering.
+
+### Workspace
+
+- [``@blockly/continuous-toolbox``](continuous-toolbox/): A Blockly plugin
+that adds a continous-scrolling style toolbox and flyout.
+- [``@blockly/disable-top-blocks``](disable-top-blocks/):  A Blockly plugin that
+shows the 'disable' context menu option only on non-orphan blocks.
+- [``@blockly/fixed-edges``](fixed-edges/):  A Blockly MetricsManager for
+configuring fixed sides.
+- [``@blockly/keyboard-navigation``](keyboard-navigation/): A Blockly plugin
+that adds keyboard navigation support.
+- [``plugin-nominal-connection-checker``](nominal-connection-checker/): A
+Blockly plugin for creating more advanced connection checks, targeted at
+nominally typed languages (private; in development).
+- [``@blockly/plugin-strict-connection-checker``](strict-connection-checker/): A
+Blockly plugin that makes connection checks strict.
 - [``@blockly/plugin-workspace-search``](workspace-search/): A plugin that adds
 workspace search support.
+- [``@blockly/zoom-to-fit``](zoom-to-fit/): A Blockly plugin that adds a
+zoom-to-fit control to the workspace.
+
+### Other
+
+- [``@blockly/plugin-modal``](modal/): A Blockly plugin that creates a modal.
 - [``@blockly/plugin-typed-variable-modal``](typed-variable-modal/): A plugin to
 create a modal for creating typed variables.
-
 
 ## Using Lerna
 
