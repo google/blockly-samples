@@ -444,7 +444,7 @@ class TypeDef {
   addParam(paramName, variance, index = undefined) {
     const param = new ParamDef(paramName, variance);
     if (index != undefined) {
-      this.params_.splice(index, param);
+      this.params_.splice(index, 0, param);
     } else {
       this.params_.push(param);
     }
@@ -582,7 +582,8 @@ class TypeDef {
             return {name: param.name, params: []};
           }));
     }
-    const params = this.paramsMap_.get(ancestorName);
+    // Copy array so that we don't have to worry about corruption.
+    const params = [...this.paramsMap_.get(ancestorName)];
     if (actualTypes) {
       const replaceFn = (param, i, array) => {
         const paramIndex = this.getIndexOfParam(param.name);
@@ -620,7 +621,7 @@ class TypeDef {
    * Returns the index of the parameter with the given name, or -1 if the
    * parameter does not exist..
    * @param {string} paramName The name of the parameter.
-   * @return {number} The index of hte parameter.
+   * @return {number} The index of the parameter.
    */
   getIndexOfParam(paramName) {
     return this.params_.findIndex((param) => param.name == paramName);
@@ -638,8 +639,8 @@ class TypeDef {
 
   /**
    * Returns the ParamDef with the given name, or undefined if not found.
-   * @param {string} paramName The name of the parameter to find the
-   *     ParamDef of.
+   * @param {string} paramName The name of the parameter to find
+   *     the ParamDef of.
    * @return {!ParamDef|undefined} The parameter with the given name, or
    *     undefined if not found.
    */
