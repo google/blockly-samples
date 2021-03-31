@@ -23,6 +23,7 @@
         "publish": "gulp publish",
         "publish:check": "lerna changed",
         "publish:dryrun": "gulp publishDryRun",
+        "publish:force": "gulp forcePublish",
         "publish:_internal": "lerna publish"
     },
     "devDependencies": {
