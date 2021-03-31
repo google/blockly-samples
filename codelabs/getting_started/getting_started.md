@@ -174,7 +174,7 @@ For this codelab we will inject into a div with the id `"blocklyDiv"`, which you
 
 ### Create the workspace
 
-Now open `scripts/main.js`. Just before the end of the main function, add code to inject Blockly editor:
+Now open `scripts/main.js`. Scroll to the end of the file and add code to inject Blockly editor just after the call to `enableMakerMode()`:
 
 ```js
 Blockly.inject('blocklyDiv', {
