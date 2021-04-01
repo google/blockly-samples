@@ -21,10 +21,13 @@ bundle install
 
 ### Install and build blockly-samples
 
+From the root directory, run:
+
 ```
 npm install
 cd examples && npm install
 cd ..
+# This copies necessary files to gh-pages folder. This is necessary to run gh-pages locally.
 npm run deploy:prepare
 ```
 

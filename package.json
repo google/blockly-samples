@@ -24,7 +24,8 @@
         "publish:check": "lerna changed",
         "publish:dryrun": "gulp publishDryRun",
         "publish:force": "gulp forcePublish",
-        "publish:_internal": "lerna publish"
+        "publish:_internal": "lerna publish",
+        "test:ghPages": "gulp testGhPagesLocally"
     },
     "devDependencies": {
         "@blockly/eslint-config": "^2.0.0",

@@ -266,6 +266,23 @@ function deployToGhPages(repo) {
 }
 
 /**
+ * Sets up github pages to be run locally, with the latest beta version of
+ * Blockly installed.
+ * @param {Function} done Completed callback.
+ */
+function testGhPagesLocally(done) {
+  const examplesDirectory = 'examples';
+
+  execSync(`npm install`, {stdio: 'inherit'});
+  execSync(`npm install`, {cwd: examplesDirectory, stdio: 'inherit'});
+
+  execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
+  execSync(`lerna exec -- npm install blockly@beta`,
+      {cwd: examplesDirectory, stdio: 'inherit'});
+  execSync(`npm run deploy:prepare`, {stdio: 'inherit'});
+}
+
+/**
  * Deploy all plugins to gh-pages on origin.
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
@@ -291,4 +308,5 @@ module.exports = {
   publish: publishRelease,
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
+  testGhPagesLocally: testGhPagesLocally,
 };
