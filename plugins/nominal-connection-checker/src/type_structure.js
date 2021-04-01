@@ -31,6 +31,21 @@ export class TypeStructure {
      */
     this.params = [];
   }
+
+  /**
+   * Returns true if the given type structure is deeply equivalent to this one.
+   * @param {!TypeStructure} otherStructure The type structure to compare to
+   *     this one.
+   * @return {boolean} True if the given type structure is deeply equal to this
+   *     one, false otherwise.
+   */
+  equals(otherStructure) {
+    return this.name == otherStructure.name &&
+        this.params.length == otherStructure.params.length &&
+        this.params.every((param, i) => {
+          return param.equals(otherStructure.params[i]);
+        });
+  }
 }
 
 // The below can be turned into a factory pattern if we ever want to allow for
