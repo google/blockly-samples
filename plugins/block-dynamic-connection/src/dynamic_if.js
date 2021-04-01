@@ -61,12 +61,18 @@ Blockly.Blocks['dynamic_if'] = {
       if (this.getInput('DO0')) {
         this.removeInput('DO0');
       }
-      inputNumbers.forEach((n) => {
-        this.appendValueInput('IF' + n)
+      const first = inputNumbers[0];
+      this.appendValueInput('IF' + first)
+          .setCheck('Boolean')
+          .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
+      this.appendStatementInput('DO' + first);
+
+      for (let i = 1; i < inputNumbers.length; i++) {
+        this.appendValueInput('IF' + inputNumbers[i])
             .setCheck('Boolean')
-            .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
-        this.appendStatementInput('DO' + n);
-      });
+            .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
+        this.appendStatementInput('DO' + inputNumbers[i]);
+      }
     }
     const hasElse = xmlElement.getAttribute('else');
     if (hasElse == 'true') {
