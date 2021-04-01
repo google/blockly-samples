@@ -9,8 +9,19 @@
  *    inputs that appear when a block is dragged over inputs on the block.
  */
 
+import * as Blockly from 'blockly/core';
+
 Blockly.Blocks['dynamic_text_join'] = {
+  /**
+   * Counter for the next input to add to this block.
+   * @type {number}
+   */
   inputCounter: 2,
+
+  /**
+   * Minimum number of inputs for this block.
+   * @type {number}
+   */
   minInputs: 2,
   /**
    * Block for concatenating any number of strings.

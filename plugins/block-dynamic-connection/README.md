@@ -1,46 +1,31 @@
-# blockly-plugin-block-dynamic-connection [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/block-dynamic-connection [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A group of [Blockly](https://www.npmjs.com/package/blockly) blocks that
+add and remove connections dynamically.
 
 ## Installation
-
-### Yarn
 ```
-yarn add blockly-plugin-block-dynamic-connection
-```
-
-### npm
-```
-npm install blockly-plugin-block-dynamic-connection --save
+npm install @blockly/block-dynamic-connection --save
 ```
 
 ## Usage
 
-<!--
-  - TODO: Update usage.
-  -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-block-dynamic-connection';
-
-// Inject Blockly.
-const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: toolboxCategories,
-});
-
-// Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
+import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';
 ```
 
 ## API
+- `overrideOldBlockDefinitions`: Replaces the Blockly default blocks with the
+  dynamic connection blocks. This enables projects to use the dynamic block
+  plugin without changing existing XML.
 
-<!--
-  - TODO: describe the API.
-  -->
+## XML
+```xml
+<block type="dynamic_text_join"></block>
+<block type="dynamic_list_create"></block>
+<block type="dynamic_if"></block>
+```
 
 ## License
 Apache 2.0

@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {createPlayground} from '@blockly/dev-tools';
-import '../src/index';
+import * as BlockDynamicConnection from '../src/index';
 
 /**
  * Create a workspace.
@@ -23,6 +23,8 @@ function createWorkspace(blocklyDiv, options) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  BlockDynamicConnection.overrideOldBlockDefinitions();
+
   const defaultOptions = {
     toolbox: document.getElementById('toolbox'),
   };
