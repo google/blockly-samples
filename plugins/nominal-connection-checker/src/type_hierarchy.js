@@ -61,22 +61,21 @@ export class TypeHierarchy {
      */
     this.nearestCommonDescendants_ = new Map();
 
-    this.initTypes_(hierarchyDef);
+    this.initBasicInfo_(hierarchyDef);
+    this.initDirectSubs_();
+    this.initAncestors_();
+    this.initDescendants_();
     this.initNearestCommonAncestors_();
     this.initNearestCommonDescendants_();
   }
 
   /**
-   * Initializes the TypeHierarchy's types_.
+   * Maps caseless type names to type definitions, adds parameters, and adds
+   * direct super types.
    * @param {!Object} hierarchyDef The definition of the type hierarchy.
    * @private
    */
-  initTypes_(hierarchyDef) {
-    // NOTE: This does not do anything to stop a developer from creating a
-    // cyclic type hierarchy (eg Dog <: Mammal <: Dog). They are expected to
-    // not do that.
-
-    // Init types, direct supers, and parameters.
+  initBasicInfo_(hierarchyDef) {
     for (const typeName of Object.keys(hierarchyDef)) {
       const lowerCaseName = typeName.toLowerCase();
       const type = new TypeDef(lowerCaseName);
@@ -93,8 +92,13 @@ export class TypeHierarchy {
       }
       this.types_.set(lowerCaseName, type);
     }
+  }
 
-    // Init direct subs.
+  /**
+   * Adds direct subtypes to the type definitions.
+   * @private
+   */
+  initDirectSubs_() {
     for (const [typeName, type] of this.types_) {
       type.supers().forEach((superName) => {
         const superType = this.types_.get(superName);
@@ -105,39 +109,56 @@ export class TypeHierarchy {
         superType.addSub(type);
       });
     }
+  }
 
-    // Init ancestors.
-    let unvisitedTypes = new Set(this.types_.keys());
+  /**
+   * Adds all ancestors to the type definitions. At this point the definitions
+   * should handle creating parameter maps.
+   * @private
+   */
+  initAncestors_() {
+    this.initDistantRelatives_(
+        (type) => type.supers(),
+        (type) => type.ancestors(),
+        (type, ancestor, superType) => type.addAncestor(ancestor, superType));
+  }
+
+  /**
+   * Adds all descendants to the type definitions.
+   * @private
+   */
+  initDescendants_() {
+    this.initDistantRelatives_(
+        (type) => type.subs(),
+        (type) => type.descendants(),
+        (type, descendant, sub) => type.addDescendant(descendant, sub));
+  }
+
+  /**
+   * Adds all distant relatives (ancestors/descendants) to types.
+   * @param {function(TypeDef): !Array<string>} getCloseRelatives Returns the
+   *     direct relatives of the give type.
+   * @param {function(TypeDef): !Array<string>} getDistantRelatives Returns the
+   *     all relatives of the given type.
+   * @param {function(TypeDef, TypeDef, TypeDef)} addRelative Adds a new distant
+   *     relative to the type.
+   * @private
+   */
+  initDistantRelatives_(getCloseRelatives, getDistantRelatives, addRelative) {
+    const unvisitedTypes = new Set(this.types_.keys());
     while (unvisitedTypes.size) {
       for (const typeName of unvisitedTypes) {
         const type = this.types_.get(typeName);
-        const unvisitedSupers = type.supers().filter(
+        const unvisitedCloseRelatives = getCloseRelatives(type).filter(
             unvisitedTypes.has, unvisitedTypes);
-        if (!unvisitedSupers.length) {
-          type.supers().forEach((superName) => {
-            const superType = this.types_.get(superName);
-            superType.ancestors().forEach((ancestor) => {
-              type.addAncestor(this.types_.get(ancestor), superType);
-            });
-          });
-          unvisitedTypes.delete(typeName);
-        }
-      }
-    }
-
-    // Init descendants.
-    unvisitedTypes = new Set(this.types_.keys());
-    while (unvisitedTypes.size) {
-      for (const typeName of unvisitedTypes) {
-        const type = this.types_.get(typeName);
-        const unvisitedSubs = type.subs().filter(
-            unvisitedTypes.has, unvisitedTypes);
-        if (!unvisitedSubs.length) {
-          type.subs().forEach((subName) => {
-            const subType = this.types_.get(subName);
-            subType.descendants().forEach((descendantName) => {
-              type.addDescendant(this.types_.get(descendantName), subType);
-            });
+        if (!unvisitedCloseRelatives.length) {
+          getCloseRelatives(type).forEach((closeRelativeName) => {
+            const closeRelative = this.types_.get(closeRelativeName);
+            getDistantRelatives(closeRelative).forEach(
+                (distantRelativeName) => {
+                  const distantRelative = this.types_.get(distantRelativeName);
+                  addRelative(type, distantRelative, closeRelative);
+                });
           });
           unvisitedTypes.delete(typeName);
         }
