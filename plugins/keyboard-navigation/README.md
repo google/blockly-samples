@@ -1,4 +1,4 @@
-# blockly-plugin-keyboard-navigation [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/keyboard-navigation [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds keyboard
 navigation to Blockly. This allows users to use the keyboard to navigate the
@@ -9,12 +9,12 @@ on our [keyboard navigation documentation page](https://developers.google.com/bl
 
 ### Yarn
 ```
-yarn add blockly-plugin-keyboard-navigation
+yarn add @blockly/keyboard-navigation
 ```
 
 ### npm
 ```
-npm install blockly-plugin-keyboard-navigation --save
+npm install @blockly/keyboard-navigation --save
 ```
 
 ## Usage

@@ -54,8 +54,8 @@ shows the 'disable' context menu option only on non-orphan blocks.
 configuring fixed sides.
 - [``@blockly/keyboard-navigation``](keyboard-navigation/): A Blockly plugin
 that adds keyboard navigation support.
-- [``plugin-nominal-connection-checker``](nominal-connection-checker/): A
-Blockly plugin for creating more advanced connection checks, targeted at
+- [``@blockly/plugin-nominal-connection-checker``](nominal-connection-checker/):
+A Blockly plugin for creating more advanced connection checks, targeted at
 nominally typed languages (private; in development).
 - [``@blockly/plugin-strict-connection-checker``](strict-connection-checker/): A
 Blockly plugin that makes connection checks strict.
