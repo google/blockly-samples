@@ -1,6 +1,6 @@
 {
   "name": "@blockly/disable-top-blocks",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A Blockly plugin that shows the 'disable' context menu option only on non-orphan blocks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -39,8 +39,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.4",
-    "@blockly/dev-tools": "^2.1.2",
+    "@blockly/dev-scripts": "^1.2.5",
+    "@blockly/dev-tools": "^2.2.0",
     "blockly": "^3.20200924.3"
   },
   "peerDependencies": {
