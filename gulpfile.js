@@ -266,22 +266,29 @@ function deployToGhPages(repo) {
 }
 
 /**
- * Sets up github pages to be run locally, with the latest beta version of
- * Blockly installed.
+ * Prepares plugins to be tested locally.
  * @param {Function} done Completed callback.
  */
-function testGhPagesLocally(done) {
-  const examplesDirectory = 'examples';
-
+function prepareToTestPlugins(done) {
   execSync(`npm install`, {stdio: 'inherit'});
-  execSync(`npm install`, {cwd: examplesDirectory, stdio: 'inherit'});
-
   execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
+  execSync(`npm run boot`, {stdio: 'inherit'});
+  execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
+  done();
+}
+
+/**
+ * Prepares examples to be tested locally.
+ * @param {Function} done Completed callback.
+ */
+function prepareToTestExamples(done) {
+  const examplesDirectory = 'examples';
+  execSync(`npm install`, {cwd: examplesDirectory, stdio: 'inherit'});
   execSync(`lerna exec -- npm install blockly@beta`,
       {cwd: examplesDirectory, stdio: 'inherit'});
-  execSync(`npm run boot`, {stdio: 'inherit'});
   execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
-  execSync(`npm run deploy:prepare`, {stdio: 'inherit'});
+  execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
+  done();
 }
 
 /**
@@ -310,5 +317,6 @@ module.exports = {
   publish: publishRelease,
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
-  testGhPagesLocally: testGhPagesLocally,
+  testGhPagesLocally: gulp.parallel(
+      prepareToTestPlugins, prepareToTestExamples),
 };
