@@ -6,7 +6,10 @@
     "title": "Single-direction Scrolling",
     "description": "Use Blockly with single-direction scrolling.",
     "files": [
-      "index.html"
+      "index.html",
+      "node_modules/blockly/blockly_compressed.js",
+      "node_modules/blockly/blocks_compressed.js",
+      "node_modules/blockly/msg/en.js"
     ]
   }
 }

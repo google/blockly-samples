@@ -9,7 +9,8 @@
       "field_turtle.js",
       "blocks.js",
       "turtle.css",
-      "media/*"
+      "media/*",
+      "node_modules/blockly/blockly_compressed.js"
     ]
   }
 }
