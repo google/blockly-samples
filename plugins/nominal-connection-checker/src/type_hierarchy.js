@@ -10,7 +10,11 @@
  */
 'use strict';
 
-import {TypeStructure, parseType, structureToString} from './type_structure';
+import {
+  TypeStructure,
+  parseType,
+  duplicateStructure
+} from './type_structure';
 
 
 /**
@@ -513,7 +517,7 @@ class TypeDef {
     }
     // Deep copy structure so that we don't have to worry about corruption.
     const params = this.paramsMap_.get(ancestorName)
-        .map((param) => parseType(structureToString(param)));
+        .map((param) => duplicateStructure(param));
     if (actualTypes) {
       const replaceFn = (param, i, array) => {
         const paramIndex = this.getIndexOfParam(param.name);

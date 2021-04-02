@@ -48,8 +48,28 @@ export class TypeStructure {
   }
 }
 
+/**
+ * Returns a deep copy of the given type structure.
+ * @param {!TypeStructure} struct The type structure to copy.
+ * @return {!TypeStructure} The duplicate type structure.
+ */
+export function duplicateStructure(struct) {
+  const newStruct = new TypeStructure(struct.name);
+  struct.params.forEach((param) => {
+    newStruct.params.push(duplicateStructure(param));
+  });
+  return newStruct;
+}
+
 // The below can be turned into a factory pattern if we ever want to allow for
 // different ways of writing type strings.
+
+/**
+ * A map of strings to parsed type structures. Used for caching.
+ * @type {Map<string, !TypeStructure>}
+ * @private
+ */
+const parseMap_ = new Map();
 
 /**
  * Parses a string into a TypeStructure.
@@ -106,6 +126,10 @@ function parseType_(str) {
     throw new MissingTypeNameError(str, 0);
   }
 
+  if (parseMap_.has(str)) {
+    return duplicateStructure(parseMap_.get(str));
+  }
+
   // Split the string into before brackets (type name), and inside (params).
   const tokens = str.match(/([^[]+)(?:\[(.+)])?/);
   const name = tokens[1];
@@ -119,7 +143,8 @@ function parseType_(str) {
       }
     }
   }
-  return typeStruct;
+  parseMap_.set(str, typeStruct);
+  return duplicateStructure(typeStruct);
 }
 
 /**
