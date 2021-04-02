@@ -60,7 +60,10 @@ export class TypeStructure {
  */
 export function parseType(str, caseless = true) {
   validateBrackets(str);
-  return parseType_(str, caseless);
+  if (caseless) {
+    str = str.toLowerCase();
+  }
+  return parseType_(str);
 }
 
 /**
@@ -94,27 +97,25 @@ function validateBrackets(str) {
 /**
  * Parses a string into a type structure. This is the internal implementation.
  * @param {string} str The string to parse.
- * @param {boolean} caseless Whether we should convert names to lowercase
- *     (caseless).
  * @return {!TypeStructure} The created TypeStructure.
  * @private
  * @throws {MissingTypeNameError}
  */
-function parseType_(str, caseless) {
+function parseType_(str) {
   if (str[0] == '[') {
     throw new MissingTypeNameError(str, 0);
   }
 
   // Split the string into before brackets (type name), and inside (params).
   const tokens = str.match(/([^[]+)(?:\[(.+)])?/);
-  const name = caseless ? tokens[1].toLowerCase() : tokens[1];
+  const name = tokens[1];
   const typeStruct = new TypeStructure(name);
   if (tokens[2]) {
     try {
-      typeStruct.params = parseParams_(tokens[2], caseless);
+      typeStruct.params = parseParams_(tokens[2]);
     } catch (e) {
       if (e instanceof MissingTypeNameError) {
-        throw new MissingTypeNameError(str, tokens[1].length + 1 + e.index);
+        throw new MissingTypeNameError(str, name.length + 1 + e.index);
       }
     }
   }
@@ -125,12 +126,10 @@ function parseType_(str, caseless) {
  * Parses a string into an array of type structures.
  * @param {string} str The string to parse into an array of type structures.
  *     The string is expected to not be surrounded by brackets.
- * @param {boolean=} caseless Whether we should convert names to lowercase
- *     (caseless).
  * @return {!Array<!TypeStructure>} The created TypeStructure array.
  * @private
  */
-function parseParams_(str, caseless) {
+function parseParams_(str) {
   const params = [];
   let latestIndex = 0;
   let openBraceCount = 0;
@@ -142,14 +141,14 @@ function parseParams_(str, caseless) {
       case ']':
         openBraceCount--;
         if (!openBraceCount) {
-          params.push(parseType_(str.slice(latestIndex, i + 1), caseless));
+          params.push(parseType_(str.slice(latestIndex, i + 1)));
           latestIndex = -1;
         }
         break;
       case ',':
       case ' ':
         if (!openBraceCount && latestIndex != -1) {
-          params.push(parseType_(str.slice(latestIndex, i), caseless));
+          params.push(parseType_(str.slice(latestIndex, i)));
           latestIndex = -1;
         }
         break;
@@ -161,7 +160,7 @@ function parseParams_(str, caseless) {
     }
   });
   if (latestIndex != -1) {
-    params.push(parseType_(str.slice(latestIndex), caseless));
+    params.push(parseType_(str.slice(latestIndex)));
   }
   return params;
 }
