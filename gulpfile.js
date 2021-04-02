@@ -279,6 +279,8 @@ function testGhPagesLocally(done) {
   execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
   execSync(`lerna exec -- npm install blockly@beta`,
       {cwd: examplesDirectory, stdio: 'inherit'});
+  execSync(`npm run boot`, {stdio: 'inherit'});
+  execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
   execSync(`npm run deploy:prepare`, {stdio: 'inherit'});
 }
 
