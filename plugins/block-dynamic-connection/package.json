@@ -1,5 +1,5 @@
 {
-  "name": "blockly-plugin-block-dynamic-connection",
+  "name": "@blockly/block-dynamic-connection",
   "version": "0.0.0",
   "description": "A group of blocks that add connections dynamically.",
   "scripts": {

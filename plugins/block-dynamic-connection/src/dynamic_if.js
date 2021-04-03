@@ -23,8 +23,10 @@ Blockly.Blocks['dynamic_if'] = {
    * @type {number}
    */
   minInputs: 1,
+
   /**
-   * Block for concatenating any number of strings.
+   * Block for if/elseif/else statements. Must have one if input.
+   * Can have any number of elseif inputs and optionally one else input.
    * @this {Blockly.Block}
    */
   init: function() {
@@ -34,11 +36,19 @@ Blockly.Blocks['dynamic_if'] = {
     this.appendValueInput('IF0')
         .setCheck('Boolean')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
-    this.appendStatementInput('DO0');
+    this.appendStatementInput('DO0')
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
 
+    this.setNextStatement(true);
+    this.setPreviousStatement(true);
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
   },
 
+  /**
+   * Create XML to represent if/elseif/else inputs.
+   * @return {!Element} XML storage element.
+   * @this {Blockly.Block}
+   */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
     const inputNames = this.inputList
@@ -51,6 +61,11 @@ Blockly.Blocks['dynamic_if'] = {
     return container;
   },
 
+  /**
+   * Parse XML to restore the inputs.
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
   domToMutation: function(xmlElement) {
     const inputs = xmlElement.getAttribute('inputs');
     if (inputs) {
@@ -65,13 +80,15 @@ Blockly.Blocks['dynamic_if'] = {
       this.appendValueInput('IF' + first)
           .setCheck('Boolean')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
-      this.appendStatementInput('DO' + first);
+      this.appendStatementInput('DO' + first)
+          .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
 
       for (let i = 1; i < inputNumbers.length; i++) {
         this.appendValueInput('IF' + inputNumbers[i])
             .setCheck('Boolean')
             .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
-        this.appendStatementInput('DO' + inputNumbers[i]);
+        this.appendStatementInput('DO' + inputNumbers[i])
+            .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
       }
     }
     const hasElse = xmlElement.getAttribute('else');
@@ -83,6 +100,12 @@ Blockly.Blocks['dynamic_if'] = {
     this.inputCounter = next;
   },
 
+  /**
+   * Finds the index of a connection. Used to determine where in the block to
+   * insert new inputs.
+   * @param {!Blockly.Connection} connection A connection on this block.
+   * @return {number} The index of the connection in the this.inputList.
+   */
   findInputIndexForConnection: function(connection) {
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
@@ -92,18 +115,28 @@ Blockly.Blocks['dynamic_if'] = {
     }
   },
 
+  /**
+   * Inserts a boolean value input and statement input at the specified index.
+   * @param {number} index Index of the input before which to add new inputs.
+   */
   insertElseIf: function(index) {
     const caseNumber = this.inputCounter;
     this
         .appendValueInput('IF' + caseNumber)
         .setCheck('Boolean')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
-    this.appendStatementInput('DO' + caseNumber);
+    this.appendStatementInput('DO' + caseNumber)
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
     this.moveInputBefore('IF' + caseNumber, this.inputList[index].name);
     this.moveInputBefore('DO' + caseNumber, this.inputList[index + 1].name);
     this.inputCounter++;
   },
 
+  /**
+   * Called when a block is dragged over one of the connections on this block.
+   * @param {!Blockly.Connection} connection The connection on this block that
+   * has a pending connection.
+   */
   onPendingConnection: function(connection) {
     if (connection.type === Blockly.NEXT_STATEMENT && !this.getInput('ELSE')) {
       this.appendStatementInput('ELSE')
@@ -128,10 +161,14 @@ Blockly.Blocks['dynamic_if'] = {
     }
   },
 
+  /**
+   * Called when a block drag ends if the dragged block had a pending connection
+   * with this block.
+   */
   finalizeConnections: function() {
     const toRemove = [];
     // Remove Else If inputs if neither the if nor the do has a connected block.
-    for (let i = 2; i < this.inputList.length - 2; i += 2) {
+    for (let i = 2; i < this.inputList.length - 1; i += 2) {
       const ifConnection = this.inputList[i];
       const doConnection = this.inputList[i + 1];
       if (!ifConnection.connection.targetConnection &&

@@ -23,6 +23,7 @@ Blockly.Blocks['dynamic_text_join'] = {
    * @type {number}
    */
   minInputs: 2,
+
   /**
    * Block for concatenating any number of strings.
    * @this {Blockly.Block}
@@ -36,6 +37,7 @@ Blockly.Blocks['dynamic_text_join'] = {
     this.setOutput(true, 'String');
     this.setTooltip(Blockly.Msg['TEXT_JOIN_TOOLTIP']);
   },
+
   /**
    * Create XML to represent number of text inputs.
    * @return {!Element} XML storage element.
@@ -48,6 +50,7 @@ Blockly.Blocks['dynamic_text_join'] = {
     container.setAttribute('next', this.inputCounter);
     return container;
   },
+
   /**
    * Parse XML to restore the text inputs.
    * @param {!Element} xmlElement XML storage element.
@@ -117,9 +120,8 @@ Blockly.Blocks['dynamic_text_join'] = {
   },
 
   /**
-   * Called when a block is dropped into one of the connections on this block,
-   * or when a block drags over connections on this block and then is dragged
-   * away.
+   * Called when a block drag ends if the dragged block had a pending connection
+   * with this block.
    */
   finalizeConnections: function() {
     if (this.inputList.length > this.minInputs) {

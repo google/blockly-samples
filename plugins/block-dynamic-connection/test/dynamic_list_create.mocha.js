@@ -14,7 +14,7 @@ const assert = chai.assert;
 
 suite('List create block', function() {
   /**
-   * Asserts that the text join block has the expected inputs.
+   * Asserts that the list create block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
    * @param {!Array<string>} expectedInputs The expected inputs.
    */
