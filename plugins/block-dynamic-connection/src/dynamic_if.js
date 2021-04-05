@@ -104,7 +104,7 @@ Blockly.Blocks['dynamic_if'] = {
    * Finds the index of a connection. Used to determine where in the block to
    * insert new inputs.
    * @param {!Blockly.Connection} connection A connection on this block.
-   * @return {number} The index of the connection in the this.inputList.
+   * @return {?number} The index of the connection in the this.inputList.
    */
   findInputIndexForConnection: function(connection) {
     for (let i = 0; i < this.inputList.length; i++) {
@@ -113,6 +113,7 @@ Blockly.Blocks['dynamic_if'] = {
         return i;
       }
     }
+    return null;
   },
 
   /**
@@ -143,6 +144,9 @@ Blockly.Blocks['dynamic_if'] = {
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
     }
     const inputIndex = this.findInputIndexForConnection(connection);
+    if (inputIndex === null) {
+      return;
+    }
     const input = this.inputList[inputIndex];
     if (connection.targetConnection && input.name.includes('IF')) {
       const nextIfInput = this.inputList[inputIndex + 2];
