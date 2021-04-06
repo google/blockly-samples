@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -13,7 +13,7 @@
 import {
   TypeStructure,
   parseType,
-  duplicateStructure
+  duplicateStructure,
 } from './type_structure';
 
 
@@ -131,11 +131,12 @@ export class TypeHierarchy {
    * Initializes the nearestCommonParents_ graph so the least common ancestors
    * of two types can be accessed in constant time.
    *
-   * Implements the pre-processing algorithm defined in:
-   * Czumaj, Artur, Miroslaw Kowaluk and and Andrzej Lingas. "Faster algorithms
-   * for finding lowest common ancestors in directed acyclic graphs."
+   * Implements the pre-processing algorithm defined
+   * in: Czumaj, Artur, Miroslaw Kowaluk and and Andrzej Lingas.
+   * "Faster algorithms for finding lowest common ancestors in directed acyclic
+   * graphs".
    * Theoretical Computer Science, 380.1-2 (2007): 37-46.
-   * https://bit.ly/2SrCRs5.
+   * Link: https://bit.ly/2SrCRs5 .
    *
    * Operates in O(nm) where n is the number of nodes and m is the number of
    * edges.
