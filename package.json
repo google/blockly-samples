@@ -25,7 +25,7 @@
         "publish:dryrun": "gulp publishDryRun",
         "publish:force": "gulp forcePublish",
         "publish:_internal": "lerna publish",
-        "test:ghPages": "gulp testGhPagesLocally"
+        "test:ghpages": "gulp testGhPagesLocally"
     },
     "devDependencies": {
         "@blockly/eslint-config": "^2.0.0",

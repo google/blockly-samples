@@ -269,7 +269,7 @@ function deployToGhPages(repo) {
  * Prepares plugins to be tested locally.
  * @param {Function} done Completed callback.
  */
-function prepareToTestPlugins(done) {
+function preparePluginsForBeta(done) {
   execSync(`npm install`, {stdio: 'inherit'});
   execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
   execSync(`npm run boot`, {stdio: 'inherit'});
@@ -281,7 +281,7 @@ function prepareToTestPlugins(done) {
  * Prepares examples to be tested locally.
  * @param {Function} done Completed callback.
  */
-function prepareToTestExamples(done) {
+function prepareExamplesForBeta(done) {
   const examplesDirectory = 'examples';
   execSync(`npm install`, {cwd: examplesDirectory, stdio: 'inherit'});
   execSync(`lerna exec -- npm install blockly@beta`,
@@ -318,5 +318,5 @@ module.exports = {
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
   testGhPagesLocally: gulp.parallel(
-      prepareToTestPlugins, prepareToTestExamples),
+      preparePluginsForBeta, prepareExamplesForBeta),
 };
