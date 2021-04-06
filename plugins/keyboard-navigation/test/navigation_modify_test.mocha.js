@@ -8,11 +8,10 @@ const chai = require('chai');
 const Blockly = require('blockly/node');
 const {Navigation} = require('../src/navigation');
 const assert = chai.assert;
-const { testHelpers } = require('@blockly/dev-tools');
-const { captureWarnings } = testHelpers;
+const {testHelpers} = require('@blockly/dev-tools');
+const {captureWarnings} = testHelpers;
 
 suite('Insert/Modify', function() {
-
   /**
    * Check that modify failed.
    * @param {Navigation} navigation The class under test.
