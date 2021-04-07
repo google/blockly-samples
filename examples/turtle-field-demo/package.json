@@ -12,5 +12,8 @@
       "media/*",
       "node_modules/blockly/blockly_compressed.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }

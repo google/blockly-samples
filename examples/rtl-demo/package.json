@@ -6,7 +6,13 @@
     "title": "RTL",
     "description": "See what Blockly looks like in right-to-left mode (for Arabic and Hebrew).",
     "files": [
-      "index.html"
+      "index.html",
+      "./node_modules/blockly/blockly_compressed.js",
+      "./node_modules/blockly/blocks_compressed.js",
+      "./node_modules/blockly/msg/ar.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }
