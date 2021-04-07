@@ -10,7 +10,8 @@
       "field_pitch.js",
       "pitch.css",
       "media/*",
-      "./node_modules/blockly/blockly_compressed.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
       "./node_modules/blockly/msg/en.js"
     ]
   },

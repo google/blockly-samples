@@ -10,9 +10,8 @@
       "step-execution.html",
       "acorn_interpreter.js",
       "wait_block.js",
-      "./node_modules/blockly/blockly_compressed.js",
-      "./node_modules/blockly/blocks_compressed.js",
-      "./node_modules/blockly/javascript_compressed.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
       "./node_modules/blockly/msg/en.js"
     ],
     "pages": [

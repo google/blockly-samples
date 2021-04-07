@@ -7,8 +7,8 @@
     "description": "Inject Blockly into a page as a fixed element.",
     "files": [
       "index.html",
-      "./node_modules/blockly/blockly_compressed.js",
-      "./node_modules/blockly/blocks_compressed.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
       "./node_modules/blockly/msg/en.js"
     ]
   },

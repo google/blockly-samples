@@ -7,9 +7,8 @@
     "description": "Generate code from XML without graphics.",
     "files": [
       "index.html",
-      "./node_modules/blockly/blockly_compressed.js",
-      "./node_modules/blockly/blocks_compressed.js",
-      "./node_modules/blockly/python_compressed.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
       "./node_modules/blockly/msg/en.js"
     ]
   },
