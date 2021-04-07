@@ -100,7 +100,7 @@ const getDefNoReturn = {
   /**
    * Returns info about this block to be used by the Blockly.Procedures.
    * @return {Array} An array of info.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   getProcedureDef: function() {
     const argNames = this.argData_.map((elem) => elem.model.name);
@@ -125,7 +125,7 @@ const getDefReturn = {
   /**
    * Returns info about this block to be used by the Blockly.Procedures.
    * @return {Array} An array of info.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   getProcedureDef: function() {
     const argNames = this.argData_.map((elem) => elem.model.name);
@@ -145,7 +145,7 @@ const procedureContextMenu = {
    * Adds an option to create a caller block.
    * Adds an option to create a variable getter for each variable included in
    * the procedure definition.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @param {!Array} options The current options for the context menu.
    */
   customContextMenu: function(options) {
@@ -202,7 +202,7 @@ const procedureDefMutator = {
    *     argument IDs. Used by Blockly.Procedures.mutateCallers for
    *     reconnection.
    * @return {!Element} XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   mutationToDom: function(isForCaller = false) {
     const container = Blockly.utils.xml.createElement('mutation');
@@ -232,7 +232,7 @@ const procedureDefMutator = {
   /**
    * Parse XML to restore the argument inputs.
    * @param {!Element} xmlElement XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
     // We have to handle this so that the user doesn't add blocks to the stack,
@@ -259,7 +259,7 @@ const procedureDefMutator = {
    * @param {!Array<string>} names An array of argument names to display.
    * @param {!Array<string>} varIds An array of variable IDs associated with
    *     those names.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   updateShape_: function(names, varIds) {
@@ -296,7 +296,7 @@ const procedureDefMutator = {
    * Callback for the minus image. Removes the argument associated with the
    * given argument ID and mutates the callers to match.
    * @param {string} argId The argId of the argument to remove.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   minus: function(argId) {
     if (!this.argData_.length) {
@@ -311,7 +311,7 @@ const procedureDefMutator = {
    * arrays as appropriate.
    * @param {?string=} name An optional name for the argument.
    * @param {?string=} varId An optional variable ID for the argument.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   addArg_: function(name = null, varId = null) {
@@ -361,7 +361,7 @@ const procedureDefMutator = {
    * block.
    * @param {string} name The name of the argument.
    * @param {string} argId The UUID of the argument (different from var ID).
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   addVarInput_: function(name, argId) {
@@ -481,7 +481,7 @@ const procedureDefMutator = {
 
 /**
  * Initializes some private variables for procedure blocks.
- * @this Blockly.Block
+ * @this {Blockly.Block}
  */
 const procedureDefHelper = function() {
   /**
@@ -509,7 +509,7 @@ Blockly.Extensions.registerMutator('procedure_def_mutator',
 
 /**
  * Sets the validator for the procedure's name field.
- * @this Blockly.Block
+ * @this {Blockly.Block}
  */
 const procedureRename = function() {
   this.getField('NAME').setValidator(Blockly.Procedures.rename);
@@ -519,7 +519,7 @@ Blockly.Extensions.register('procedure_rename', procedureRename);
 
 /**
  * Defines functions for dealing with variables and renaming variables.
- * @this Blockly.Block
+ * @this {Blockly.Block}
  */
 const procedureVars = function() {
   // This is a hack to get around the don't-override-builtins check.
@@ -527,7 +527,7 @@ const procedureVars = function() {
     /**
      * Return all variables referenced by this block.
      * @return {!Array.<string>} List of variable names.
-     * @this Blockly.Block
+     * @this {Blockly.Block}
      */
     getVars: function() {
       return this.argData_.map((elem) => elem.model.name);
@@ -536,7 +536,7 @@ const procedureVars = function() {
     /**
      * Return all variables referenced by this block.
      * @return {!Array.<!Blockly.VariableModel>} List of variable models.
-     * @this Blockly.Block
+     * @this {Blockly.Block}
      */
     getVarModels: function() {
       return this.argData_.map((elem) => elem.model);
@@ -572,7 +572,7 @@ const procedureVars = function() {
      * @param {!Blockly.VariableModel} variable The variable being renamed.
      * @package
      * @override
-     * @this Blockly.Block
+     * @this {Blockly.Block}
      */
     updateVarName: function(variable) {
       const id = variable.getId();
