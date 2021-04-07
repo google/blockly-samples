@@ -7,7 +7,13 @@
     "description": "Override Blockly browser dialogs with custom implementations.",
     "files": [
       "index.html",
-      "custom-dialog.js"
+      "custom-dialog.js",
+      "./node_modules/blockly/blockly_compressed.js",
+      "./node_modules/blockly/blocks_compressed.js",
+      "./node_modules/blockly/msg/en.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }

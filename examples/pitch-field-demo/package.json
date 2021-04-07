@@ -9,7 +9,12 @@
       "blocks.js",
       "field_pitch.js",
       "pitch.css",
-      "media/*"
+      "media/*",
+      "./node_modules/blockly/blockly_compressed.js",
+      "./node_modules/blockly/msg/en.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }

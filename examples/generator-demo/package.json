@@ -6,7 +6,14 @@
     "title": "Generate JavaScript",
     "description": "Turn blocks into code and execute it.",
     "files": [
-      "index.html"
+      "index.html",
+      "./node_modules/blockly/blockly_compressed.js",
+      "./node_modules/blockly/blocks_compressed.js",
+      "./node_modules/blockly/javascript_compressed.js",
+      "./node_modules/blockly/msg/en.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }
