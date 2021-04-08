@@ -67,59 +67,6 @@ module.exports = (env) => {
     blocklyAliasSuffix = '/dist';
   }
 
-
-  const rules = [];
-  // Run the linter. Skip if directed.
-  if (!env.skipLint) {
-    rules.push(
-        {
-          test: /\.(js|mjs|ts)$/,
-          enforce: 'pre',
-          use: [
-            {
-              options: {
-                cache: true,
-                formatter: 'stylish',
-                emitWarning: true,
-                eslintPath: require.resolve('eslint'),
-                resolvePluginsRelativeTo: __dirname,
-                useEslintrc: false,
-                baseConfig: {
-                  extends: [require.resolve('@blockly/eslint-config')],
-                },
-              },
-              loader: require.resolve('eslint-loader'),
-            },
-          ],
-          include: [resolveApp('./src/'), resolveApp('./test/')],
-        }
-    );
-  }
-  // The following rules are always in effect.
-  rules.push(
-      // Load Blockly source maps.
-      {
-        test: /(blockly\/.*\.js)$/,
-        use: [require.resolve('source-map-loader')],
-        enforce: 'pre',
-      },
-      // Run babel to compile both JS and TS.
-      {
-        test: /\.(js|mjs|ts)$/,
-        exclude: /(node_modules|build|dist)/,
-        loader: require.resolve('babel-loader'),
-        options: {
-          babelrc: false,
-          configFile: false,
-          presets: [
-            require.resolve('@babel/preset-env'),
-            isTypescript && require.resolve('@babel/preset-typescript'),
-          ].filter(Boolean),
-          compact: isProduction,
-        },
-      },
-  );
-
   return {
     target,
     mode: isProduction ? 'production' : 'development',
@@ -140,7 +87,51 @@ module.exports = (env) => {
           .filter((ext) => isTypescript || !ext.includes('ts')),
     },
     module: {
-      rules: rules,
+      rules: [
+        // Run the linter.
+        !env.skipLint && {
+          test: /\.(js|mjs|ts)$/,
+          enforce: 'pre',
+          use: [
+            {
+              options: {
+                cache: true,
+                formatter: 'stylish',
+                emitWarning: true,
+                eslintPath: require.resolve('eslint'),
+                resolvePluginsRelativeTo: __dirname,
+                useEslintrc: false,
+                baseConfig: {
+                  extends: [require.resolve('@blockly/eslint-config')],
+                },
+              },
+              loader: require.resolve('eslint-loader'),
+            },
+          ],
+          include: [resolveApp('./src/'), resolveApp('./test/')],
+        },
+        // Load Blockly source maps.
+        {
+          test: /(blockly\/.*\.js)$/,
+          use: [require.resolve('source-map-loader')],
+          enforce: 'pre',
+        },
+        // Run babel to compile both JS and TS.
+        {
+          test: /\.(js|mjs|ts)$/,
+          exclude: /(node_modules|build|dist)/,
+          loader: require.resolve('babel-loader'),
+          options: {
+            babelrc: false,
+            configFile: false,
+            presets: [
+              require.resolve('@babel/preset-env'),
+              isTypescript && require.resolve('@babel/preset-typescript'),
+            ].filter(Boolean),
+            compact: isProduction,
+          },
+        },
+      ].filter(Boolean),
     },
     plugins: [
       // Add package name.
