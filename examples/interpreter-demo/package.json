@@ -9,14 +9,23 @@
       "async-execution.html",
       "step-execution.html",
       "acorn_interpreter.js",
-      "wait_block.js"
+      "wait_block.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js"
     ],
-    "pages": [{
-      "label": "Step Execution",
-      "link": "step-execution.html"
-    }, {
-      "label": "Async Execution",
-      "link": "async-execution.html"
-    }]
+    "pages": [
+      {
+        "label": "Step Execution",
+        "link": "step-execution.html"
+      },
+      {
+        "label": "Async Execution",
+        "link": "async-execution.html"
+      }
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }

@@ -6,7 +6,13 @@
     "title": "Fixed Blockly",
     "description": "Inject Blockly into a page as a fixed element.",
     "files": [
-      "index.html"
+      "index.html",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }

@@ -9,7 +9,12 @@
       "field_turtle.js",
       "blocks.js",
       "turtle.css",
-      "media/*"
+      "media/*",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }
