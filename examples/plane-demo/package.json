@@ -12,7 +12,13 @@
       "plane.js",
       "slider.js",
       "style.css",
-      "generated/*.js"
+      "generated/*.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/*.js"
     ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
   }
 }

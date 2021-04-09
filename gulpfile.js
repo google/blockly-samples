@@ -266,6 +266,32 @@ function deployToGhPages(repo) {
 }
 
 /**
+ * Prepares plugins to be tested locally.
+ * @param {Function} done Completed callback.
+ */
+function preparePluginsForBeta(done) {
+  execSync(`npm install`, {stdio: 'inherit'});
+  execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
+  execSync(`npm run boot`, {stdio: 'inherit'});
+  execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
+  done();
+}
+
+/**
+ * Prepares examples to be tested locally.
+ * @param {Function} done Completed callback.
+ */
+function prepareExamplesForBeta(done) {
+  const examplesDirectory = 'examples';
+  execSync(`npm install`, {cwd: examplesDirectory, stdio: 'inherit'});
+  execSync(`lerna exec -- npm install blockly@beta`,
+      {cwd: examplesDirectory, stdio: 'inherit'});
+  execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
+  execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
+  done();
+}
+
+/**
  * Deploy all plugins to gh-pages on origin.
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
@@ -291,4 +317,6 @@ module.exports = {
   publish: publishRelease,
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
+  testGhPagesLocally: gulp.parallel(
+      preparePluginsForBeta, prepareExamplesForBeta),
 };
