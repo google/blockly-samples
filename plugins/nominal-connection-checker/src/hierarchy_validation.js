@@ -54,7 +54,7 @@ export function validateHierarchy(hierarchyDef) {
  */
 function checkConflictingTypes(hierarchyDef) {
   const conflictMsg =
-      'The type name \'%s\' conflicts with the type name(s) [%s]';
+      `The type name '%s' conflicts with the type name(s) [%s]`;
 
   // Map of caseless names to cased names.
   const definedTypes = new Map();
@@ -127,7 +127,7 @@ function checkConflictingParams(hierarchyDef) {
 
     // Map of caseless names to cased names.
     const definedParamNames = new Map();
-    // Map of original names to arrays of conflicting names.
+    // Map of original names to arrays of [position, conflicting name].
     const conflictingParamNames = new Map();
     for (let i = 0; i < typeDef.params.length; i++) {
       const param = typeDef.params[i];
@@ -376,132 +376,12 @@ function checkSuperNumParamsCorrect(hierarchyDef) {
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
 function checkSuperParamVariancesCompatible(hierarchyDef) {
-  /**
-   * Constructs an error message in the case that variances are not compatible.
-   * @param {string} type The name of the type subtyping the super.
-   * @param {string} superName The name of the specific super type that was
-   *     passed an incompatible parameter.
-   * @param {string} superType The full stringified super type structure the bad
-   *     parameter is a part of.
-   * @param {string} formalParam The parameter in the super type's definition
-   *     that was passed an incompatible parameter.
-   * @param {string} actualParam The parmater in the actual type's definition
-   *     that was incompatible.
-   * @param {!Variance} formalVariance The variance of the formal parameter.
-   * @param {!Variance} actualVariance The variance of the actual paramter.
-   * @return {string} An error message representing the given situation.
-   */
-  function constructErrorMsg(type, superName, superType, formalParam,
-      actualParam, formalVariance, actualVariance) {
-    /**
-     * Returns a stringified version of the given variance.
-     * @param {!Variance} variance The variance to stringify.
-     * @return {string} The stringified variance.
-     */
-    function varianceToString(variance) {
-      switch (variance) {
-        case Variance.CO:
-          return 'covariant';
-        case Variance.CONTRA:
-          return 'contravariant';
-        case Variance.INV:
-          return 'invariant';
-      }
-    }
-
-    /**
-     * Returns a string of all of the variances that are compatible with this
-     * variance.
-     * @param {!Variance} variance The variance to return the compatible
-     *     variances of.
-     * @return {string} A string of the compatible variances.
-     */
-    function compatibleVariancesString(variance) {
-      switch (variance) {
-        case Variance.CO:
-          return 'covariant and invariant';
-        case Variance.CONTRA:
-          return 'contravariant and invariant';
-        case Variance.INV:
-          return 'invariant';
-      }
-    }
-
-    return 'The type ' + type + ' says it fulfills the type ' + superType +
-        ', but the parameter ' + formalParam + ' of ' + superName + ' is ' +
-        varianceToString(formalVariance) + ' (which is only compatible with ' +
-        compatibleVariancesString(formalVariance) + ') while ' + actualParam +
-        ' is ' + varianceToString(actualVariance) + '.';
-  }
-
   const keys = Object.keys(hierarchyDef);
 
   // Maps caseless type names to their type info. Allows for case differences.
   const types = new Map();
   for (const type of keys) {
     types.set(type.toLowerCase(), hierarchyDef[type]);
-  }
-
-  /**
-   * Checks that the variances of the parameters passed to the super type are
-   * compatible with that type's definition of those paramters.
-   * @param {string} typeName The name of the type we are checking the
-   *     supers of.
-   * @param {string} superType The stringified super type structure we are
-   *     checking the parameters of.
-   * @param {!TypeStructure} superStructure The structure of the super type
-   *     we are checking the parameters of. May not match the superType, because
-   *     this function works recursively.
-   */
-  function checkParamVariancesRec(typeName, superType, superStructure) {
-    /**
-     * Returns true if the actual variance is compatible with the formal
-     * variance. False otherwise.
-     * @param {!Variance} formalVariance The of the parameter in the super's
-     *     definition.
-     * @param {!Variance} actualVariance The variance of the parameter in the
-     *     sub's definition.
-     * @return {boolean} Whether the two variances are compatible or not.
-     */
-    function variancesAreCompatible(formalVariance, actualVariance) {
-      switch (formalVariance) {
-        case Variance.CO:
-          return actualVariance != Variance.CONTRA;
-        case Variance.CONTRA:
-          return actualVariance != Variance.CO;
-        case Variance.INV:
-          return actualVariance == Variance.INV;
-      }
-    }
-
-    const typeDef = types.get(typeName.toLowerCase());
-    const superDef = types.get(superStructure.name.toLowerCase());
-    if (!superDef || !superDef.params || !Array.isArray(superDef.params)) {
-      return;
-    }
-
-    for (let i = 0; i < superDef.params.length; i++) {
-      const superParam = superDef.params[i];
-      const structureParam = superStructure.params[i];
-      if (!structureParam) {
-        continue;
-      }
-      const typeParam = typeDef.params && typeDef.params.find((param) =>
-        param.name.toLowerCase() == structureParam.name.toLowerCase());
-      if (!typeParam || !typeParam.variance || !superParam.variance) {
-        continue;
-      }
-      const formalVariance = stringToVariance(superParam.variance);
-      const actualVariance = stringToVariance(typeParam.variance);
-      if (!variancesAreCompatible(formalVariance, actualVariance)) {
-        console.error(constructErrorMsg(
-            typeName, superStructure.name, superType, superParam.name,
-            typeParam.name, formalVariance, actualVariance));
-      }
-    }
-
-    superStructure.params.forEach((param) =>
-      checkParamVariancesRec(typeName, superType, param));
   }
 
   for (const type of keys) {
@@ -512,7 +392,7 @@ function checkSuperParamVariancesCompatible(hierarchyDef) {
     for (const superType of typeInfo.fulfills) {
       try {
         const superStructure = parseType(superType, false);
-        checkParamVariancesRec(type, superType, superStructure);
+        checkParamVariancesRec(types, type, superType, superStructure);
       } catch (e) {
         if (!(e instanceof TypeParseError)) {
           throw e;
@@ -521,6 +401,129 @@ function checkSuperParamVariancesCompatible(hierarchyDef) {
     }
   }
 }
+
+/**
+ * Checks that the variances of the parameters passed to the super type are
+ * compatible with that type's definition of those parameters.
+ * @param {!Map<string, Object>} types A map of lowercase type names to their
+ *     definitions.
+ * @param {string} typeName The name of the type we are checking the
+ *     supers of.
+ * @param {string} superType The stringified super type structure we are
+ *     checking the parameters of.
+ * @param {!TypeStructure} superStructure The structure of the super type
+ *     we are checking the parameters of. May not match the superType, because
+ *     this function works recursively.
+ */
+function checkParamVariancesRec(types, typeName, superType, superStructure) {
+  const typeDef = types.get(typeName.toLowerCase());
+  const superDef = types.get(superStructure.name.toLowerCase());
+  if (!superDef || !superDef.params || !Array.isArray(superDef.params)) {
+    return;
+  }
+
+  for (let i = 0; i < superDef.params.length; i++) {
+    const superParam = superDef.params[i];
+    const structureParam = superStructure.params[i];
+    if (!structureParam) {
+      continue;
+    }
+    const typeParam = typeDef.params && typeDef.params.find((param) =>
+      param.name.toLowerCase() == structureParam.name.toLowerCase());
+    if (!typeParam || !typeParam.variance || !superParam.variance) {
+      continue;
+    }
+    const formalVariance = stringToVariance(superParam.variance);
+    const actualVariance = stringToVariance(typeParam.variance);
+    if (!variancesAreCompatible(formalVariance, actualVariance)) {
+      console.error(constructVarianceErrorMsg(
+          typeName, superStructure.name, superType, superParam.name,
+          typeParam.name, formalVariance, actualVariance));
+    }
+  }
+
+  superStructure.params.forEach((param) =>
+    checkParamVariancesRec(types, typeName, superType, param));
+}
+
+/**
+ * Returns true if the actual variance is compatible with the formal
+ * variance. False otherwise.
+ * @param {!Variance} formalVariance The of the parameter in the super's
+ *     definition.
+ * @param {!Variance} actualVariance The variance of the parameter in the
+ *     sub's definition.
+ * @return {boolean} Whether the two variances are compatible or not.
+ */
+function variancesAreCompatible(formalVariance, actualVariance) {
+  switch (formalVariance) {
+    case Variance.CO:
+      return actualVariance != Variance.CONTRA;
+    case Variance.CONTRA:
+      return actualVariance != Variance.CO;
+    case Variance.INV:
+      return actualVariance == Variance.INV;
+  }
+}
+
+/**
+ * Constructs an error message in the case that variances are not compatible.
+ * @param {string} type The name of the type subtyping the super.
+ * @param {string} superName The name of the specific super type that was
+ *     passed an incompatible parameter.
+ * @param {string} superType The full stringified super type structure the bad
+ *     parameter is a part of.
+ * @param {string} formalParam The parameter in the super type's definition
+ *     that was passed an incompatible parameter.
+ * @param {string} actualParam The parmater in the actual type's definition
+ *     that was incompatible.
+ * @param {!Variance} formalVariance The variance of the formal parameter.
+ * @param {!Variance} actualVariance The variance of the actual paramter.
+ * @return {string} An error message representing the given situation.
+ */
+function constructVarianceErrorMsg(type, superName, superType, formalParam,
+    actualParam, formalVariance, actualVariance) {
+  return 'The type ' + type + ' says it fulfills the type ' + superType +
+      ', but the parameter ' + formalParam + ' of ' + superName + ' is ' +
+      varianceToString(formalVariance) + ' (which is only compatible with ' +
+      compatibleVariancesString(formalVariance) + ') while ' + actualParam +
+      ' is ' + varianceToString(actualVariance) + '.';
+}
+
+/**
+ * Returns a stringified version of the given variance.
+ * @param {!Variance} variance The variance to stringify.
+ * @return {string} The stringified variance.
+ */
+function varianceToString(variance) {
+  switch (variance) {
+    case Variance.CO:
+      return 'covariant';
+    case Variance.CONTRA:
+      return 'contravariant';
+    case Variance.INV:
+      return 'invariant';
+  }
+}
+
+/**
+ * Returns a string of all of the variances that are compatible with this
+ * variance.
+ * @param {!Variance} variance The variance to return the compatible
+ *     variances of.
+ * @return {string} A string of the compatible variances.
+ */
+function compatibleVariancesString(variance) {
+  switch (variance) {
+    case Variance.CO:
+      return 'covariant and invariant';
+    case Variance.CONTRA:
+      return 'contravariant and invariant';
+    case Variance.INV:
+      return 'invariant';
+  }
+}
+
 
 /**
  * Checks for any circular dependencies between types. Eg:
@@ -535,11 +538,13 @@ function checkSuperParamVariancesCompatible(hierarchyDef) {
 function checkCircularDependencies(hierarchyDef) {
   /**
    * Searches cycles in the type hierarchy recursively.
+   * @param {!Map<string, Object>} types A map of lowercase type names to their
+   *     definitions.
    * @param {string} typeName The name of the current type being examined.
    * @param {!Array<!TypeStructure>} currentTraversal An array of all the types
    *     that have been visited since our entry node.
    */
-  function searchForCyclesRec(typeName, currentTraversal) {
+  function searchForCyclesRec(types, typeName, currentTraversal) {
     try {
       const typeStructure = parseType(typeName, false);
       const caselessName = typeStructure.name.toLowerCase();
@@ -581,7 +586,7 @@ function checkCircularDependencies(hierarchyDef) {
   for (const type of Object.keys(hierarchyDef)) {
     const caselessName = type.toLowerCase();
     if (!visitedTypes.has(caselessName)) {
-      searchForCyclesRec(type, []);
+      searchForCyclesRec(types, type, []);
     }
   }
 }
