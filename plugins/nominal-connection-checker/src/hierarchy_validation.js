@@ -563,7 +563,7 @@ function checkCircularDependencies(hierarchyDef) {
 
       if (typeInfo.fulfills && Array.isArray(typeInfo.fulfills)) {
         for (const superType of typeInfo.fulfills) {
-          searchForCyclesRec(superType, currentTraversal);
+          searchForCyclesRec(types, superType, currentTraversal);
         }
       }
 
