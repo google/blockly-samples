@@ -588,7 +588,7 @@ class TypeDef {
  * Represents different parameter variances.
  * @enum {string}
  */
-const Variance = {
+export const Variance = {
   CO: 'covariant',
   CONTRA: 'contravariant',
   INV: 'invariant',
@@ -599,7 +599,7 @@ const Variance = {
  * @param {string} str The string to convert to a variance.
  * @return {!Variance} The converted variance value.
  */
-function stringToVariance(str) {
+export function stringToVariance(str) {
   str = str.toLowerCase();
   if (str.startsWith('inv')) {
     return Variance.INV;
@@ -608,8 +608,23 @@ function stringToVariance(str) {
   } else if (str.startsWith('co')) {
     return Variance.CO;
   } else {
-    throw new Error('The variance "' + str + '" is not a valid variance. ' +
-        'Valid variances are: "co", "contra", and "inv".');
+    throw new VarianceError('The variance "' + str + '" is not a valid ' +
+        'variance. Valid variances are: "co", "contra", and "inv".');
+  }
+}
+
+/**
+ * Represents an error related to variances.
+ */
+export class VarianceError extends Error {
+  /**
+   * Constructs a VarianceError.
+   * @param {string} message The message that goes with this error.
+   */
+  constructor(message) {
+    super(message);
+
+    this.name = this.constructor.name;
   }
 }
 
