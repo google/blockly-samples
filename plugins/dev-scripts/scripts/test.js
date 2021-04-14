@@ -27,8 +27,11 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 const packageJson = require(resolveApp('package.json'));
 console.log(`Building tests for ${packageJson.name}`);
 
+const args = process.argv.slice(2);
+const skipLint = args.includes('--skip-lint');
 const config = webpackConfig({
   mode: 'test',
+  skipLint: skipLint,
 });
 if (!config.entry) {
   console.log(chalk.yellow(`Warning: No tests found`) + '\n' +

@@ -89,7 +89,7 @@ module.exports = (env) => {
     module: {
       rules: [
         // Run the linter.
-        {
+        !env.skipLint && {
           test: /\.(js|mjs|ts)$/,
           enforce: 'pre',
           use: [
@@ -131,7 +131,7 @@ module.exports = (env) => {
             compact: isProduction,
           },
         },
-      ],
+      ].filter(Boolean),
     },
     plugins: [
       // Add package name.
