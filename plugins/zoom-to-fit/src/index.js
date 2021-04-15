@@ -72,7 +72,7 @@ export class ZoomToFitControl {
      * @type {number}
      * @private
      */
-    this.MARGIN_VERTICAL_ = 10;
+    this.MARGIN_VERTICAL_ = 20;
 
     /**
      * Horizontal margin of zoom-to-fit control.
