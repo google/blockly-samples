@@ -343,7 +343,8 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
 function loadGUIState() {
   const defaultState = {options: {}, debug: {}};
   const guiStateKey = `guiState_${id}`;
-  const guiState = JSON.parse(localStorage.getItem(guiStateKey)) || defaultState;
+  const guiState = JSON.parse(localStorage.getItem(guiStateKey)) ||
+      defaultState;
   if (window.location.hash) {
     HashState.parse(window.location.hash, guiState.options);
   }

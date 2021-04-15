@@ -78,4 +78,3 @@ function checkFileExists(url) {
   }
   return http.status != 404;
 }
-
