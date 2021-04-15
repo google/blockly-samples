@@ -903,7 +903,7 @@ class TypeDef {
     }
 
     // Deep copy structure so that we don't have to worry about corruption.
-    const params = this.paramsMap_.get(ancestorName)
+    const params = this.ancestorParamsMap_.get(ancestorName)
         .map((param) => duplicateStructure(param));
     if (actualTypes) {
       const replaceFn = (param, i, array) => {
