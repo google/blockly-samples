@@ -31,28 +31,28 @@ export class ZoomToFitControl {
     this.workspace_ = workspace;
 
     /**
-     * The SVG group containing the zoom controls.
+     * The SVG group containing the zoom-to-fit control.
      * @type {SVGElement}
      * @private
      */
     this.svgGroup_ = null;
 
     /**
-     * Left coordinate of the zoom controls.
+     * Left coordinate of the zoom-to-fit control.
      * @type {number}
      * @private
      */
     this.left_ = 0;
 
     /**
-     * Top coordinate of the zoom controls.
+     * Top coordinate of the zoom-to-fit control.
      * @type {number}
      * @private
      */
     this.top_ = 0;
 
     /**
-     * Width of the zoom controls.
+     * Width of the zoom-to-fit control.
      * @type {number}
      * @const
      * @private
@@ -60,7 +60,7 @@ export class ZoomToFitControl {
     this.WIDTH_ = 32;
 
     /**
-     * Height of the zoom controls.
+     * Height of the zoom-to-fit control.
      * @type {number}
      * @const
      * @private
@@ -68,19 +68,19 @@ export class ZoomToFitControl {
     this.HEIGHT_ = 32;
 
     /**
-     * Distance between zoom controls and bottom edge of workspace.
+     * Vertical margin of zoom-to-fit control.
      * @type {number}
      * @private
      */
-    this.MARGIN_BOTTOM_ = 20;
+    this.MARGIN_VERTICAL_ = 10;
 
     /**
-     * Distance between zoom controls and right edge of workspace.
+     * Horizontal margin of zoom-to-fit control.
      * @type {number}
      * @const
      * @private
      */
-    this.MARGIN_SIDE_ = 20;
+    this.MARGIN_HORIZONTAL_ = 20;
 
     /**
      * Whether this has been initialized.
@@ -175,61 +175,48 @@ export class ZoomToFitControl {
     if (!this.initialized_) {
       return;
     }
-    const hasVerticalScrollbars = this.workspace_.scrollbar &&
-        this.workspace_.scrollbar.canScrollHorizontally();
-    const hasHorizontalScrollbars = this.workspace_.scrollbar &&
-        this.workspace_.scrollbar.canScrollVertically();
 
-    if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-        (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
-      // Right corner placement.
-      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH_ - this.MARGIN_SIDE_;
-      if (hasVerticalScrollbars && !this.workspace_.RTL) {
-        this.left_ -= Blockly.Scrollbar.scrollbarThickness;
+    const cornerPosition =
+        Blockly.utils.uiPosition.suggestCornerPosition(
+            this.workspace_, metrics);
+    const horizontalPosType = cornerPosition.horizontal;
+    const verticalPosType = cornerPosition.vertical;
+    const zoomControls = /** @type {Blockly.ZoomControls|undefined} */
+        this.workspace_.getPluginManager().getPlugin('zoomControls');
+    let startRect;
+    if (zoomControls) {
+      // Set start position relative to the existing zoom controls.
+      const zoomControlsRect = zoomControls.getBoundingRectangle();
+      const startLeft = (zoomControlsRect.left + zoomControlsRect.right) / 2 -
+          this.WIDTH_ / 2;
+      let startTop;
+      if (verticalPosType ===
+          Blockly.utils.uiPosition.verticalPositionType.TOP) {
+        startTop = zoomControlsRect.bottom + this.MARGIN_VERTICAL_;
+      } else { // verticalPosType == verticalPositionType.BOTTOM
+        startTop = zoomControlsRect.top - this.HEIGHT_ - this.MARGIN_VERTICAL_;
       }
+      startRect =
+          new Blockly.utils.Rect(startTop, startTop + this.HEIGHT_,
+              startLeft, startLeft + this.WIDTH_);
     } else {
-      // Left corner placement.
-      this.left_ = this.MARGIN_SIDE_;
-      if (hasVerticalScrollbars && this.workspace_.RTL) {
-        this.left_ += Blockly.Scrollbar.scrollbarThickness;
-      }
+      // Set start position in corner.
+      startRect = Blockly.utils.uiPosition.getStartPositionRect(
+          horizontalPosType, verticalPosType, this.WIDTH_, this.HEIGHT_,
+          this.MARGIN_HORIZONTAL_, this.MARGIN_VERTICAL_, metrics,
+          this.workspace_);
     }
 
-    // Upper corner placement
-    let minTop = metrics.absoluteMetrics.top + this.MARGIN_BOTTOM_;
-    if (hasHorizontalScrollbars) {
-      minTop += Blockly.Scrollbar.scrollbarThickness;
-    }
+    const bumpRule =
+        (cornerPosition.vertical ===
+            Blockly.utils.uiPosition.verticalPositionType.TOP) ?
+            Blockly.utils.uiPosition.bumpRule.BUMP_DOWN :
+            Blockly.utils.uiPosition.bumpRule.BUMP_UP;
+    const positionRect = Blockly.utils.uiPosition.bumpPositionRect(
+        startRect, this.MARGIN_VERTICAL_, bumpRule, savedPositions);
 
-    // Bottom corner placement
-    const maxTop = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-        this.HEIGHT_ - this.MARGIN_BOTTOM_;
-    if (hasHorizontalScrollbars) {
-      minTop -= Blockly.Scrollbar.scrollbarThickness;
-    }
-    const bumpUp =
-        metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
-    this.top_ = bumpUp ? maxTop : minTop;
-
-    // Check for collision and bump if needed.
-    let boundingRect = this.getBoundingRectangle();
-    for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
-      if (boundingRect.intersects(otherEl)) {
-        if (bumpUp) {
-          // Bump up
-          this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_BOTTOM_;
-        } else {
-          this.top_ = otherEl.bottom + this.MARGIN_BOTTOM_;
-        }
-        // Recheck other savedPositions
-        boundingRect = this.getBoundingRectangle();
-        i = -1;
-      }
-    }
-    // Clamp top value within valid range.
-    this.top_ = Blockly.utils.math.clamp(minTop, this.top_, maxTop);
-
+    this.top_ = positionRect.top;
+    this.left_ = positionRect.left;
     this.svgGroup_.setAttribute('transform',
         'translate(' + this.left_ + ',' + this.top_ + ')');
   }
