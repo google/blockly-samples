@@ -577,8 +577,9 @@ export class TypeHierarchy {
     if (!secondArray) {
       return firstArray;
     }
-    const combined = firstArray.flatMap((a) =>
-      secondArray.map((b) => [].concat(a, b)));
+    const combined = firstArray
+        .map((a) => secondArray.map((b) => [].concat(a, b)))
+        .reduce((flat, toFlatten) => [...flat, ...toFlatten], []);
     return this.combine_([combined, ...rest]);
   }
 
