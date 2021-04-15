@@ -201,8 +201,8 @@ export class TypeHierarchy {
 
   /**
    * Returns true if the types are exactly the same type. False otherwise.
-   * @param {!TypeStructure} type1 The name of the first type.
-   * @param {!TypeStructure} type2 The name of the second type.
+   * @param {!TypeStructure} type1 The structure of the first type.
+   * @param {!TypeStructure} type2 The structure of the second type.
    * @return {boolean} True if the types are exactly the same type. False
    *     otherwise.
    */
