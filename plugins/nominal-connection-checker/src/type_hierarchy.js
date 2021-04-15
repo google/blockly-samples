@@ -201,30 +201,63 @@ export class TypeHierarchy {
 
   /**
    * Returns true if the types are exactly the same type. False otherwise.
-   * @param {string} name1 The name of the first type.
-   * @param {string} name2 The name of the second type.
+   * @param {!TypeStructure} type1 The structure of the first type.
+   * @param {!TypeStructure} type2 The structure of the second type.
    * @return {boolean} True if the types are exactly the same type. False
    *     otherwise.
    */
-  typeIsExactlyType(name1, name2) {
-    return name1.toLowerCase() == name2.toLowerCase();
+  typeIsExactlyType(type1, type2) {
+    this.validateTypeStructure_(type1);
+    this.validateTypeStructure_(type2);
+
+    if (type1.name != type2.name) {
+      return false;
+    }
+    return type1.params.every((type1Param, i) => {
+      return this.typeIsExactlyType(type1Param, type2.params[i]);
+    });
   }
 
   /**
    * Returns true if the types are identical, or if the first type fulfills the
    * second type (directly or via one of its supertypes), as specified in the
    * type hierarchy definition. False otherwise.
-   * @param {string} subType The stringified possible subtype.
-   * @param {string} superType The stringified possible supertype.
+   * @param {!TypeStructure} subType The structure of the subtype.
+   * @param {!TypeStructure} superType The structure of the supertype.
    * @return {boolean} True if the types are identical, or if the first type
    *     fulfills the second type (directly or via its supertypes) as specified
    *     in the type hierarchy definition. False otherwise.
    */
   typeFulfillsType(subType, superType) {
-    const subStructure = parseType(subType);
-    const superStructure = parseType(superType);
+    this.validateTypeStructure_(subType);
+    this.validateTypeStructure_(superType);
 
-    return this.types_.get(subStructure.name).hasAncestor(superStructure.name);
+    const subDef = this.types_.get(subType.name);
+    const superDef = this.types_.get(superType.name);
+
+    if (!subDef.hasAncestor(superType.name)) {
+      // Not compatible.
+      return false;
+    }
+
+    // TODO: We need to add checks to make sure the number of actual params for
+    //  the subtype is correct. Here and in typeIsExactlyType.
+
+    const orderedSubParams = subDef.getParamsForAncestor(
+        superType.name, subType.params);
+    return superType.params.every((actualSuper, i) => {
+      const actualSub = orderedSubParams[i];
+      const paramDef = superDef.getParamForIndex(i);
+
+      switch (paramDef.variance) {
+        case Variance.CO:
+          return this.typeFulfillsType(actualSub, actualSuper);
+        case Variance.CONTRA:
+          return this.typeFulfillsType(actualSuper, actualSub);
+        case Variance.INV:
+          return this.typeIsExactlyType(actualSub, actualSuper);
+      }
+    });
   }
 
   /**
@@ -256,6 +289,25 @@ export class TypeHierarchy {
             return array.indexOf(type) == i;
           });
     }, [types[0]]);
+  }
+
+  /**
+   * Validates that the given type structure conforms to a definition known
+   * to the type hierarchy. Note that this *only* validates the "top level"
+   * type. It does *not* recursively validate parameters.
+   * @param {!TypeStructure} struct The type structure to validate.
+   * @private
+   */
+  validateTypeStructure_(struct) {
+    const def = this.types_.get(struct.name);
+
+    // TODO: Add throwing error if the def is not found. Note that there are
+    //   some tests that need to be unskipped after this is added.
+
+    if (struct.params.length != def.params().length) {
+      throw new ActualParamsCountError(
+          struct.name, struct.params.length, def.params().length);
+    }
   }
 }
 
@@ -499,6 +551,15 @@ class TypeDef {
   }
 
   /**
+   * Returns a new set of all the parameter definitions of this type.
+   * @return {!Array<ParamDef>} A new set of all the parameter definitions of
+   *     this type.
+   */
+  params() {
+    return [...this.params_];
+  }
+
+  /**
    * Returns an array of this type's parameters, in the order for its superType.
    * @param {string} ancestorName The caseless name of the ancestor to get the
    *     parameters for.
@@ -649,5 +710,44 @@ class ParamDef {
      * @type {!Variance}
      */
     this.variance = variance;
+  }
+}
+
+/**
+ * Represents an error where the number of params on an actual type does not
+ * match the number of types expected by the type definition.
+ */
+export class ActualParamsCountError extends Error {
+  /**
+   * Constructs an ActualParamsCountError.
+   * @param {string} type The type the parameters are associated with.
+   * @param {number} actualCount The number of parameters that were given.
+   * @param {number} expectedCount The number of parameters that were expected,
+   *     as defined by the type hierarchy definition.
+   */
+  constructor(type, actualCount, expectedCount) {
+    super('The number of parameters to ' + type + ' did not match the ' +
+        'expected number of parameters (as defined in the type hierarchy). ' +
+        'Expected: ' + expectedCount + ', Actual: ', actualCount);
+
+    /**
+     * The type the parameters were associated with.
+     * @type {string}
+     */
+    this.type = type;
+
+    /**
+     * The number of parameters that were given.
+     * @type {number}
+     */
+    this.actualCount = actualCount;
+
+    /**
+     * The number of parameters that were expected.
+     * @type {number}
+     */
+    this.expectedCount = expectedCount;
+
+    this.name = this.constructor.name;
   }
 }

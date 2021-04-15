@@ -10,7 +10,9 @@
 
 const chai = require('chai');
 
-const {TypeHierarchy} = require('../src/type_hierarchy');
+const {TypeHierarchy, ActualParamsCountError} =
+    require('../src/type_hierarchy');
+const {parseType} = require('../src/type_structure');
 
 suite('TypeHierarchy', function() {
   test('Super not defined', function() {
@@ -1011,67 +1013,175 @@ suite('TypeHierarchy', function() {
   });
 
   suite('typeIsExactlyType', function() {
+    setup(function() {
+      this.assertMatch = function(hierarchy, sub, sup, msg) {
+        chai.assert.isTrue(
+            hierarchy.typeIsExactlyType(parseType(sub), parseType(sup)), msg);
+      };
+      this.assertNoMatch = function(hierarchy, sub, sup, msg) {
+        chai.assert.isFalse(
+            hierarchy.typeIsExactlyType(parseType(sub), parseType(sup)), msg);
+      };
+    });
+
     test('Simple', function() {
       const hierarchy = new TypeHierarchy({
-        'A': { },
+        'typeA': { },
       });
-      chai.assert.isTrue(hierarchy.typeIsExactlyType('typeA', 'typeA'));
+      this.assertMatch(hierarchy, 'typeA', 'typeA');
     });
 
     test('Case', function() {
       const hierarchy = new TypeHierarchy({
         'typeA': { },
       });
-      chai.assert.isTrue(hierarchy.typeIsExactlyType('typeA', 'typea'),
+      this.assertMatch(hierarchy, 'typeA', 'typea',
           'Expected TypeHierarchy to be case-insensitive.');
-      chai.assert.isTrue(hierarchy.typeIsExactlyType('typea', 'typeA'),
+      this.assertMatch(hierarchy, 'typea', 'typeA',
           'Expected TypeHierarchy to be case-insensitive.');
     });
 
-    test('Padding', function() {
+    // TODO: Fix and unskip this after we add an error for undefined types.
+    test.skip('Padding', function() {
       const hierarchy = new TypeHierarchy({
         'typeA': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('typeA', ' typeA '),
+      this.assertNoMatch(hierarchy, 'typeA', ' typeA ',
           'Expected TypeHierarchy to respect padding.');
     });
 
-    test('Super', function() {
+    test('Parent and Child', function() {
       const hierarchy = new TypeHierarchy({
         'typeA': {
           'fulfills': ['typeB'],
         },
         'typeB': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('typeA', 'typeB'));
+      this.assertNoMatch(hierarchy, 'typeA', 'typeB');
+      this.assertNoMatch(hierarchy, 'typeB', 'typeA');
     });
 
-    test('Sub', function() {
+    test('Simple params', function() {
       const hierarchy = new TypeHierarchy({
-        'typeA': { },
-        'typeB': {
-          'fulfills': ['typeA'],
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
         },
+        'typeB': { },
       });
-      chai.assert.isFalse(hierarchy.typeIsExactlyType('typeA', 'typeB'));
+      this.assertMatch(hierarchy, 'typeA[typeB]', 'typeA[typeB]');
+    });
+
+    test('Case params', function() {
+      const hierarchy = new TypeHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': { },
+      });
+      this.assertMatch(hierarchy, 'typeA[typeB]', 'typea[typeB]');
+      this.assertMatch(hierarchy, 'typea[typeB]', 'typeA[typeB]');
+      this.assertMatch(hierarchy, 'typeA[typeB]', 'typeA[typeb]');
+      this.assertMatch(hierarchy, 'typeA[typeb]', 'typeA[typeB]');
+    });
+
+    test('Parent and child params', function() {
+      const hierarchy = new TypeHierarchy({
+        'typeA': {
+          'params': [
+            {
+              'name': 'A',
+              'variance': 'co',
+            },
+          ],
+        },
+        'typeB': {
+          'fulfills': ['typeC'],
+        },
+        'typeC': { },
+      });
+      this.assertNoMatch(hierarchy, 'typeA[typeC]', 'typeA[typeB]');
+      this.assertNoMatch(hierarchy, 'typeA[typeB]', 'typeA[typeC]');
+    });
+
+    suite('Correct number of params', function() {
+      setup(function() {
+        this.hierarchy = new TypeHierarchy({
+          'typeA': {
+            'params': [
+              {
+                'name': 'A',
+                'variance': 'co',
+              },
+            ],
+          },
+          'typeB': { },
+        });
+
+        this.assertThrows = function(hierarchy, sub, sup) {
+          chai.assert.throws(() => {
+            hierarchy.typeFulfillsType(parseType(sub), parseType(sup));
+          }, ActualParamsCountError);
+        };
+      });
+
+      test('First missing params', function() {
+        this.assertThrows(this.hierarchy, 'typeA', 'typeA[typeB]');
+      });
+
+      test('Second missing params', function() {
+        this.assertThrows(this.hierarchy, 'typeA[typeB]', 'typeA');
+      });
+
+      test('First extra params', function() {
+        this.assertThrows(
+            this.hierarchy, 'typeA[typeB, typeB]', 'typeA[typeB]');
+      });
+
+      test('Second extra params', function() {
+        this.assertThrows(
+            this.hierarchy, 'typeA[typeB]', 'typeA[typeB, typeB]');
+      });
     });
   });
 
   suite('typeFulfillsType', function() {
+    setup(function() {
+      this.assertFulfills = function(hierarchy, sub, sup, msg) {
+        chai.assert.isTrue(
+            hierarchy.typeFulfillsType(parseType(sub), parseType(sup)), msg);
+      };
+      this.assertDoesNotFulfill = function(hierarchy, sub, sup, msg) {
+        chai.assert.isFalse(
+            hierarchy.typeFulfillsType(parseType(sub), parseType(sup)), msg);
+      };
+    });
+
     test('Empty fulfills', function() {
       const hierarchy = new TypeHierarchy({
         'typeA': {
           'fulfills': [],
         },
+        'typeB': { },
       });
-      chai.assert.isFalse(hierarchy.typeFulfillsType('typeA', 'typeB'));
+      this.assertDoesNotFulfill(hierarchy, 'typeA', 'typeB');
     });
 
     test('Undefined fulfills', function() {
       const hierarchy = new TypeHierarchy({
         'typeA': { },
+        'typeB': { },
       });
-      chai.assert.isFalse(hierarchy.typeFulfillsType('typeA', 'typeB'));
+      this.assertDoesNotFulfill(hierarchy, 'typeA', 'typeB');
     });
 
     test('Super defined first', function() {
@@ -1081,17 +1191,27 @@ suite('TypeHierarchy', function() {
           'fulfills': ['typeB'],
         },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
+      this.assertFulfills(hierarchy, 'typeA', 'typeB');
     });
 
     test('Super defined second', function() {
       const hierarchy = new TypeHierarchy({
-        'A': {
-          'fulfills': ['B'],
+        'typeA': {
+          'fulfills': ['typeB'],
         },
-        'B': { },
+        'typeB': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('A', 'B'));
+      this.assertFulfills(hierarchy, 'typeA', 'typeB');
+    });
+
+    test('Backwards', function() {
+      const hierarchy = new TypeHierarchy({
+        'typeB': { },
+        'typeA': {
+          'fulfills': ['typeB'],
+        },
+      });
+      this.assertDoesNotFulfill(hierarchy, 'typeB', 'typeA');
     });
 
     test('Multiple supers', function() {
@@ -1103,9 +1223,9 @@ suite('TypeHierarchy', function() {
         'typeC': { },
         'typeD': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeC'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeD'));
+      this.assertFulfills(hierarchy, 'typeA', 'typeB');
+      this.assertFulfills(hierarchy, 'typeA', 'typeC');
+      this.assertFulfills(hierarchy, 'typeA', 'typeD');
     });
 
     test('Deep super', function() {
@@ -1121,9 +1241,9 @@ suite('TypeHierarchy', function() {
         },
         'typeD': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeC'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeD'));
+      this.assertFulfills(hierarchy, 'typeA', 'typeB');
+      this.assertFulfills(hierarchy, 'typeA', 'typeC');
+      this.assertFulfills(hierarchy, 'typeA', 'typeD');
     });
 
     test('Case', function() {
@@ -1133,10 +1253,1125 @@ suite('TypeHierarchy', function() {
         },
         'typeb': { },
       });
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeb'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typeA', 'typeB'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typea', 'typeb'));
-      chai.assert.isTrue(hierarchy.typeFulfillsType('typea', 'typeB'));
+      this.assertFulfills(hierarchy, 'typeA', 'typeb');
+      this.assertFulfills(hierarchy, 'typeA', 'typeB');
+      this.assertFulfills(hierarchy, 'typea', 'typeb');
+      this.assertFulfills(hierarchy, 'typea', 'typeB');
+    });
+
+    suite('Params', function() {
+      suite('Single params', function() {
+        suite('Covariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Same', function() {
+            this.assertFulfills(this.hierarchy, 'typeA[typeB]', 'typeA[typeB]');
+          });
+
+          test('Sub', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC]', 'typeA[typeB]');
+          });
+
+          test('Super', function() {
+            this.assertFulfills(this.hierarchy, 'typeA[typeB]', 'typeA[typeC]');
+          });
+        });
+
+        suite('Contravariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Same', function() {
+            this.assertFulfills(this.hierarchy, 'typeA[typeB]', 'typeA[typeB]');
+          });
+
+          test('Sub', function() {
+            this.assertFulfills(this.hierarchy, 'typeA[typeC]', 'typeA[typeB]');
+          });
+
+          test('Super', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB]', 'typeA[typeC]');
+          });
+        });
+
+        suite('Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Same', function() {
+            this.assertFulfills(this.hierarchy, 'typeA[typeB]', 'typeA[typeB]');
+          });
+
+          test('Sub', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC]', 'typeA[typeB]');
+          });
+
+          test('Super', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB]', 'typeA[typeC]');
+          });
+        });
+      });
+
+      suite('Multiple params', function() {
+        suite('Covariant, Covariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                  {
+                    'name': 'B',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB, typeB]', 'typeA[typeC, typeC]');
+          });
+
+          test('First bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC, typeB]', 'typeA[typeB, typeC]');
+          });
+
+          test('Second bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeC, typeB]');
+          });
+        });
+
+        suite('Covariant, Contravariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                  {
+                    'name': 'B',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeC, typeB]');
+          });
+
+          test('First bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC, typeC]', 'typeA[typeB, typeB]');
+          });
+
+          test('Second bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB, typeB]', 'typeA[typeC, typeC]');
+          });
+        });
+
+        suite('Covariant, Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                  {
+                    'name': 'B',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeC, typeC]');
+          });
+
+          test('First bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC, typeC]', 'typeA[typeB, typeC]');
+          });
+
+          test('Second bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB, typeB]', 'typeA[typeC, typeC]');
+          });
+        });
+
+        suite('Contravariant, Contravariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                  {
+                    'name': 'B',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeB, typeB]');
+          });
+
+          test('First bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeC, typeB]');
+          });
+
+          test('Second bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC, typeB]', 'typeA[typeB, typeC]');
+          });
+        });
+
+        suite('Contravariant, Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                  {
+                    'name': 'B',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeC, typeC]', 'typeA[typeB, typeC]');
+          });
+
+          test('First bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeC, typeC]');
+          });
+
+          test('Second bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC, typeB]', 'typeA[typeB, typeC]');
+          });
+        });
+
+        test('Mixed up params', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+                {
+                  'name': 'B',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[B, A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+                {
+                  'name': 'B',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+            'typeD': { },
+          });
+          this.assertFulfills(
+              hierarchy, 'typeB[typeD, typeC]', 'typeA[typeC, typeD]');
+          this.assertDoesNotFulfill(
+              hierarchy, 'typeB[typeC, typeD]', 'typeA[typeC, typeD]');
+        });
+
+        test('Fulfill super with less params', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+                {
+                  'name': 'B',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+          });
+          this.assertFulfills(hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+      });
+
+      suite('Nested params', function() {
+        suite('Invariant, Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                  {
+                    'name': 'B',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeC'],
+              },
+              'typeC': { },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeC, typeC]', 'typeA[typeC, typeC]');
+          });
+
+          test('First bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB, typeC]', 'typeA[typeC, typeC]');
+          });
+
+          test('Second bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC, typeB]', 'typeA[typeC, typeC]');
+          });
+        });
+
+        suite('Covariant -> Covariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeC': { },
+              'typeD': {
+                'fulfills': ['typeC'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeC]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeA[typeD]]', 'typeA[typeB[typeC]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeC]]', 'typeA[typeB[typeD]]');
+          });
+        });
+
+        suite('Covariant -> Contravariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contravariant',
+                  },
+                ],
+              },
+              'typeC': { },
+              'typeD': {
+                'fulfills': ['typeC'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeC]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeA[typeC]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeC]]');
+          });
+        });
+
+        suite('Covariant -> Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeC': { },
+              'typeD': {
+                'fulfills': ['typeC'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeA[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeC]]');
+          });
+        });
+
+        suite('Contravariant -> Covariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeC': {
+                'fulfills': ['typeB[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeD': { },
+              'typeE': {
+                'fulfills': ['typeD'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            // This may not look correct, but remember we evalulate the *whole*
+            // parameter when checking variance. So b/c typeA is contravariant
+            // typeC[typeE] must be a subtype of typeB[typeD], which it is
+            // because typeC and typeB are both covariant and typeE <: typeD
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeC[typeE]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC[typeE]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeE]]', 'typeA[typeC[typeD]]');
+          });
+        });
+
+        suite('Contravariant -> Contravariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contravariant',
+                  },
+                ],
+              },
+              'typeC': {
+                'fulfills': ['typeB[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contravariant',
+                  },
+                ],
+              },
+              'typeD': { },
+              'typeE': {
+                'fulfills': ['typeD'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeE]]', 'typeA[typeC[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC[typeD]]', 'typeA[typeB[typeE]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeC[typeE]]');
+          });
+        });
+
+        suite('Contravariant -> Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeC': {
+                'fulfills': ['typeB[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeD': { },
+              'typeE': {
+                'fulfills': ['typeD'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeC[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeE]]', 'typeA[typeC[typeD]]');
+          });
+        });
+
+        suite('Invariant -> Covariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeC': {
+                'fulfills': ['typeB[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'co',
+                  },
+                ],
+              },
+              'typeD': { },
+              'typeE': {
+                'fulfills': ['typeD'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            // This may look like it should be valid since typeE <: typeD and
+            // typeB is covariant, but remember that because typeA is invariant
+            // the *whole* parameter (including *its* parameters) needs to be
+            // identical.
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeE]]', 'typeA[typeB[typeD]]');
+          });
+        });
+
+        suite('Invariant -> Contravariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeC': {
+                'fulfills': ['typeB[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'contra',
+                  },
+                ],
+              },
+              'typeD': { },
+              'typeE': {
+                'fulfills': ['typeD'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeC[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeE]]');
+          });
+        });
+
+        suite('Invariant -> Invariant', function() {
+          setup(function() {
+            this.hierarchy = new TypeHierarchy({
+              'typeA': {
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeB': {
+                'fulfills': ['typeA[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeC': {
+                'fulfills': ['typeB[A]'],
+                'params': [
+                  {
+                    'name': 'A',
+                    'variance': 'inv',
+                  },
+                ],
+              },
+              'typeD': { },
+              'typeE': {
+                'fulfills': ['typeD'],
+              },
+            });
+          });
+
+          test('Both good', function() {
+            this.assertFulfills(
+                this.hierarchy, 'typeA[typeB[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Outer bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeC[typeD]]', 'typeA[typeB[typeD]]');
+          });
+
+          test('Inner bad', function() {
+            this.assertDoesNotFulfill(
+                this.hierarchy, 'typeA[typeB[typeE]]', 'typeA[typeB[typeD]]');
+          });
+        });
+      });
+
+      suite('Explicit params in def', function() {
+        test('Single explicit, covariant', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'co',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[typeD]'],
+            },
+            'typeC': { },
+            'typeD': {
+              'fulfills': ['typeC'],
+            },
+            'typeE': {
+              'fulfills': ['typeD'],
+            },
+          });
+          this.assertFulfills(hierarchy, 'typeB', 'typeA[typeD]');
+          this.assertFulfills(hierarchy, 'typeB', 'typeA[typeC]');
+          this.assertDoesNotFulfill(hierarchy, 'typeB', 'typeA[typeE]');
+        });
+
+        test('Single explicit, contravariant', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'contra',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[typeD]'],
+            },
+            'typeC': { },
+            'typeD': {
+              'fulfills': ['typeC'],
+            },
+            'typeE': {
+              'fulfills': ['typeD'],
+            },
+          });
+          this.assertFulfills(hierarchy, 'typeB', 'typeA[typeD]');
+          this.assertFulfills(hierarchy, 'typeB', 'typeA[typeE]');
+          this.assertDoesNotFulfill(hierarchy, 'typeB', 'typeA[typeC]');
+        });
+
+        test('Single explicit, invariant', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[typeD]'],
+            },
+            'typeC': { },
+            'typeD': {
+              'fulfills': ['typeC'],
+            },
+            'typeE': {
+              'fulfills': ['typeD'],
+            },
+          });
+          this.assertFulfills(hierarchy, 'typeB', 'typeA[typeD]');
+          this.assertDoesNotFulfill(hierarchy, 'typeB', 'typeA[typeC]');
+          this.assertDoesNotFulfill(hierarchy, 'typeB', 'typeA[typeE]');
+        });
+
+        test('Multiple explicit', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+                {
+                  'name': 'B',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[typeC, typeC]'],
+            },
+            'typeC': { },
+          });
+          this.assertFulfills(hierarchy, 'typeB', 'typeA[typeC, typeC]');
+        });
+
+        test('Explicit and generic', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+                {
+                  'name': 'B',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+              'fulfills': ['typeA[A, typeC]'],
+            },
+            'typeC': { },
+          });
+          this.assertFulfills(hierarchy, 'typeB[typeC]', 'typeA[typeC, typeC]');
+        });
+
+        test('Explicit with generic', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+              'fulfills': ['typeA[typeC[A]]'],
+            },
+            'typeC': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeD': { },
+          });
+          this.assertFulfills(hierarchy, 'typeB[typeD]', 'typeA[typeC[typeD]]');
+        });
+      });
+
+      suite('Variance inheritance', function() {
+        // This suite documents that it is the variance of the parent's
+        // parameters that matter, not the child's.
+        test('Covariant -> Invariant', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'co',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+            'typeD': {
+              'fulfills': ['typeC'],
+            },
+          });
+          this.assertFulfills(hierarchy, 'typeB[typeD]', 'typeA[typeC]');
+        });
+
+        test('Contravariant -> Invariant', function() {
+          const hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'contra',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+            'typeD': {
+              'fulfills': ['typeC'],
+            },
+          });
+          this.assertFulfills(hierarchy, 'typeB[typeC]', 'typeA[typeD]');
+        });
+      });
+
+      suite('Correct number of params', function() {
+        setup(function() {
+          this.hierarchy = new TypeHierarchy({
+            'typeA': {
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeB': {
+              'fulfills': ['typeA[A]'],
+              'params': [
+                {
+                  'name': 'A',
+                  'variance': 'inv',
+                },
+              ],
+            },
+            'typeC': { },
+          });
+
+          this.assertThrows = function(hierarchy, sub, sup) {
+            chai.assert.throws(() => {
+              hierarchy.typeFulfillsType(parseType(sub), parseType(sup));
+            }, ActualParamsCountError);
+          };
+        });
+
+        test('Sub missing params', function() {
+          this.assertThrows(this.hierarchy, 'typeB', 'typeA[typeC]');
+        });
+
+        test('Super missing params', function() {
+          this.assertThrows(this.hierarchy, 'typeB[typeC]', 'typeA');
+        });
+
+        test('Sub extra params', function() {
+          this.assertThrows(
+              this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+
+        test('Super extra params', function() {
+          this.assertThrows(
+              this.hierarchy, 'typeB[typeC, typeC]', 'typeA[typeC]');
+        });
+      });
     });
   });
 

@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
+import {parseType} from './type_structure';
 import {getCheck, isExplicitConnection, isGenericConnection} from './utils';
 
 
@@ -92,7 +93,8 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
 
     return childTypes.some((childType) => {
       return parentTypes.some((parentType) => {
-        return typeHierarchy.typeFulfillsType(childType, parentType);
+        return typeHierarchy.typeFulfillsType(
+            parseType(childType), parseType(parentType));
       });
     });
   }
