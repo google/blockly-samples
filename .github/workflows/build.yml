@@ -24,11 +24,27 @@ jobs:
     - name: Npm Install
       run: npm install
 
-    - name: Lint
-      run: npm run lint
-
     - name: Build
-      run: npm run build
+      run: npm run build -- --skip-lint
 
     - name: Test
-      run: npm run test
+      run: npm run test -- --skip-lint
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Npm Install Lerna
+      run: npm install -g lerna
+
+    - name: Npm Install
+      run: npm install
+
+    - name: Lint
+      run: npm run lint
