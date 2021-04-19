@@ -18,9 +18,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Npm Install Lerna
-      run: npm install -g lerna
-
     - name: Npm Install
       run: npm install
 
@@ -39,9 +36,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-
-    - name: Npm Install Lerna
-      run: npm install -g lerna
 
     - name: Npm Install
       run: npm install
