@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit plugin overview.
 /**
  * @fileoverview A plugin that highlights the content on the workspace.
  */
