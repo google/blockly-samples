@@ -22,7 +22,7 @@ const CONTENT_CHANGE_EVENTS_ = [
 ];
 
 /**
- * The default padding to use for the content highlight.
+ * The default padding to use for the content highlight in workspace units.
  * @type {number}
  * @private
  */
@@ -51,12 +51,54 @@ export class ContentHighlight {
      * @protected
      */
     this.workspace_ = workspace;
+
+    /**
+     * The width of the highlight rectangle in workspace units.
+     * @type {number}
+     * @private
+     */
+    this.width_ = 0;
+
+    /**
+     * The height of the highlight rectangle in workspace units.
+     * @type {number}
+     * @private
+     */
+    this.height_ = 0;
+
+    /**
+     * The top offset of the highlight rectangle in pixels.
+     * @type {number}
+     * @private
+     */
+    this.top_ = 0;
+
+    /**
+     * The left offset of the highlight rectangle in pixels.
+     * @type {number}
+     * @private
+     */
+    this.left_ = 0;
+
+    /**
+     * The cached content metrics for the workspace in workspace units.
+     * @type {!Blockly.MetricsManager.ContainerRegion|undefined}
+     * @private
+     */
+    this.cachedContentMetrics_ = undefined;
+
+    /**
+     * The last scale value since the content highlight was repositioned.
+     * @type {number|undefined}
+     * @private
+     */
+    this.lastScale_ = undefined;
   }
 
   /**
    * Initializes the plugin.
    * @param {number=} padding The padding to use for the content area highlight
-   *    rectangle.
+   *    rectangle, in workspace units.
    */
   init(padding) {
     padding = Number(padding);
@@ -90,8 +132,6 @@ export class ContentHighlight {
           'y': 0,
           'rx': Blockly.Bubble.BORDER_WIDTH,
           'ry': Blockly.Bubble.BORDER_WIDTH,
-          'width': 160,
-          'height': 80,
           'fill': 'black',
         }, mask);
     this.background_ = Blockly.utils.dom.createSvgElement(
@@ -104,18 +144,21 @@ export class ContentHighlight {
         }, this.svgGroup_);
 
     this.applyColor_();
-    this.position_();
+    const metricsManager = this.workspace_.getMetricsManager();
+    this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
+    this.resize_(this.cachedContentMetrics_);
+    const absoluteMetrics = metricsManager.getAbsoluteMetrics();
+    this.position_(this.cachedContentMetrics_, absoluteMetrics);
 
-    // TODO(kozbial) Insert on BlockDragSurface for performance improvement.
+    // Apply transition animation for opacity changes.
+    this.svgGroup_.style.transition = 'opacity ' + ANIMATION_TIME + 's';
+
     const parentSvg = this.workspace_.getParentSvg();
     if (parentSvg.firstChild) {
       parentSvg.insertBefore(this.svgGroup_, parentSvg.firstChild);
     } else {
       parentSvg.appendChild(this.svgGroup_);
     }
-
-    // Apply transition animation for opacity changes.
-    this.svgGroup_.style.transition = 'opacity ' + ANIMATION_TIME + 's';
 
     this.onChangeWrapper_ = this.onChange_.bind(this);
     this.workspace_.addChangeListener(this.onChangeWrapper_);
@@ -144,7 +187,14 @@ export class ContentHighlight {
     if (event.type === Blockly.Events.THEME_CHANGE) {
       this.applyColor_();
     } else if (CONTENT_CHANGE_EVENTS_.indexOf(event.type) !== -1) {
-      this.position_();
+      const metricsManager = this.workspace_.getMetricsManager();
+      if (event.type !== Blockly.Events.VIEWPORT_CHANGE) {
+        // The content metrics change when it's not a viewport change event.
+        this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
+        this.resize_(this.cachedContentMetrics_);
+      }
+      const absoluteMetrics = metricsManager.getAbsoluteMetrics();
+      this.position_(this.cachedContentMetrics_, absoluteMetrics);
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
       this.handleBlockDrag_(/** @type {!Blockly.Events.BlockDrag} */ event);
     }
@@ -180,27 +230,52 @@ export class ContentHighlight {
   }
 
   /**
-   * Positions the highlight on the workspace based on the workspace metrics.
+   * Resizes the content highlight.
+   * @param {!Blockly.MetricsManager.ContainerRegion} contentMetrics The content
+   *    metrics for the workspace in workspace coordinates.
    * @private
    */
-  position_() {
-    const metricsManager = this.workspace_.getMetricsManager();
-    const contentMetrics = metricsManager.getContentMetrics();
-    const viewMetrics = metricsManager.getViewMetrics();
-    const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-
+  resize_(contentMetrics) {
     const width = contentMetrics.width ? contentMetrics.width +
         2 * this.padding_ : 0;
     const height = contentMetrics.height ? contentMetrics.height +
         2 * this.padding_ : 0;
-    this.rect_.setAttribute('width', width);
-    this.rect_.setAttribute('height', height);
+    if (width !== this.width_) {
+      this.width_ = width;
+      this.rect_.setAttribute('width', width);
+    }
+    if (height !== this.height_) {
+      this.height_ = height;
+      this.rect_.setAttribute('height', height);
+    }
+  }
 
-    const top = absoluteMetrics.top + contentMetrics.top - viewMetrics.top -
-        this.padding_;
-    const left = absoluteMetrics.left + contentMetrics.left - viewMetrics.left -
-        this.padding_;
-    this.rect_.setAttribute('x', left);
-    this.rect_.setAttribute('y', top);
+  /**
+   * Positions the highlight on the workspace based on the workspace metrics.
+   * @param {!Blockly.MetricsManager.ContainerRegion} contentMetrics The content
+   *    metrics for the workspace in workspace coordinates.
+   * @param {!Blockly.MetricsManager.AbsoluteMetrics} absoluteMetrics The
+   *    absolute metrics for the workspace.
+   * @private
+   */
+  position_(contentMetrics, absoluteMetrics) {
+    // Compute top/left manually to avoid unnecessary extra computation.
+    const viewTop = -this.workspace_.scrollY;
+    const viewLeft = -this.workspace_.scrollX;
+    const scale = this.workspace_.scale;
+    const top = absoluteMetrics.top + contentMetrics.top * scale - viewTop -
+        this.padding_ * scale;
+    const left = absoluteMetrics.left + contentMetrics.left * scale - viewLeft -
+        this.padding_ * scale;
+
+    if (top !== this.top_ || left !== this.left_ ||
+        this.lastScale_ !== scale) {
+      this.top_ = top;
+      this.left_ = left;
+      this.lastScale_ = scale;
+      this.rect_.setAttribute(
+          'transform',
+          'translate(' + left + ',' + top + ') scale(' + scale +')');
+    }
   }
 }
