@@ -69,7 +69,7 @@ export class ContentHighlight {
     /** @type {SVGElement} */
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.G,
-        {'class': 'contentAreaHighlightContainer'}, null);
+        {'class': 'contentAreaHighlight'}, null);
 
     const rnd = String(Math.random()).substring(2);
     const mask = Blockly.utils.dom.createSvgElement(
@@ -96,7 +96,6 @@ export class ContentHighlight {
         }, mask);
     this.background_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT, {
-          'class': 'contentAreaHighlight',
           'x': 0,
           'y': 0,
           'width': '100%',
@@ -111,6 +110,7 @@ export class ContentHighlight {
         this.svgGroup_,
         parentSvg.firstChild);
     this.applyColor_();
+    this.position_();
 
     // Apply transition animation for opacity changes.
     this.svgGroup_.style.transition = 'opacity ' + ANIMATION_TIME + 's';
