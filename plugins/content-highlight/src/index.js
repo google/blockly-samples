@@ -81,18 +81,18 @@ export class ContentHighlight {
     this.left_ = 0;
 
     /**
+     * The last scale value applied on the content highlight.
+     * @type {number}
+     * @private
+     */
+    this.lastScale_ = 1;
+
+    /**
      * The cached content metrics for the workspace in workspace units.
      * @type {!Blockly.MetricsManager.ContainerRegion|undefined}
      * @private
      */
     this.cachedContentMetrics_ = undefined;
-
-    /**
-     * The last scale value since the content highlight was repositioned.
-     * @type {number|undefined}
-     * @private
-     */
-    this.lastScale_ = undefined;
   }
 
   /**
