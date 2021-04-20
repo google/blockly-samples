@@ -8,6 +8,8 @@
  * @fileoverview A plugin that highlights the content on the workspace.
  */
 
+import * as Blockly from 'blockly';
+
 /**
  * List of events that cause a change in content area size.
  * @const
