@@ -103,14 +103,15 @@ export class ContentHighlight {
           'mask': 'url(#contentAreaHighlightMask' + rnd + ')',
         }, this.svgGroup_);
 
+    this.applyColor_();
+    this.position_();
+
     // TODO(kozbial) I'm not sure about if this is safe.
     // TODO(kozbial) Insert on BlockDragSurface for performance improvement.
     const parentSvg = this.workspace_.getParentSvg();
     Blockly.utils.dom.insertAfter(
         this.svgGroup_,
         parentSvg.firstChild);
-    this.applyColor_();
-    this.position_();
 
     // Apply transition animation for opacity changes.
     this.svgGroup_.style.transition = 'opacity ' + ANIMATION_TIME + 's';
