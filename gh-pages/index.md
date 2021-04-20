@@ -21,6 +21,7 @@ layout: index
 * [Modal](plugins/modal/test/index.html)
 * [Typed Variable Modal](plugins/typed-variable-modal/test/index.html)
 * [Workspace Search](plugins/workspace-search/test/index.html)
+* [Workspace Content Highlight](plugins/content-highlight/test/index.html)
 * [Strict Connection Checker](plugins/strict-connection-checker/test/index.html)
 * [Continuous Toolbox](plugins/continuous-toolbox/test/index.html)
 * [Disable Top Blocks](plugins/disable-top-blocks/test/index.html)
