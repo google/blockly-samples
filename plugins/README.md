@@ -48,6 +48,8 @@ block extension that adds support for custom tooltip rendering.
 
 - [``@blockly/continuous-toolbox``](continuous-toolbox/): A Blockly plugin
 that adds a continous-scrolling style toolbox and flyout.
+- [``@blockly/workspace-content-highligt``](content-highlight/):  A Blockly
+plugin that highlights the content on the workspace.
 - [``@blockly/disable-top-blocks``](disable-top-blocks/):  A Blockly plugin that
 shows the 'disable' context menu option only on non-orphan blocks.
 - [``@blockly/fixed-edges``](fixed-edges/):  A Blockly MetricsManager for
