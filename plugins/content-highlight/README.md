@@ -4,7 +4,7 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that highlights the
 content on the workspace.
 
 <!-- TODO update path before merging into master -->
-![](https://github.com/google/blockly-samples/raw/q2_release_2021/plugins/content-highlight/readme-media/content-highlight.gif)
+![](https://github.com/google/blockly-samples/raw/q2_2021_release/plugins/content-highlight/readme-media/content-highlight.gif)
 
 ## Installation
 
