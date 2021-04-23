@@ -37,6 +37,10 @@ export class Plugin {
         dragSurface.getSvgRoot(), 'wheel', this, this.onMouseWheel_);
   }
 
+  /**
+   * Moves the currently dragged block as the user scrolls the workspace.
+   * @param {!Event} e Mouse wheel event.
+   */
   onMouseWheel_(e) {
     // Don't scroll or zoom anything if drag is in progress.
     const canWheelMove = this.workspace_.options.moveOptions &&

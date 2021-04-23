@@ -36,7 +36,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // Move the connections on the block. Workspace coordinates.
     this.draggingBlock_.moveConnections(-deltaXWs, -deltaYWs);
-    
+
     // As we scroll, show the insertion markers.
     // TODO: This is broken. So completely broken.
     this.draggedConnectionManager_.update(
