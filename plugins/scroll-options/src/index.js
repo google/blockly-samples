@@ -50,7 +50,7 @@ export class Plugin {
 
     // The location of the block dragger before we scroll the workspace.
     // TODO: Should this just be stored on the block drag surface?
-    const oldLocation = this.getCurrentScrollLocation(dragSurface);
+    const oldLocation = this.getDragSurfaceLocation_(dragSurface);
 
     // Figure out the desired location to scroll to.
     const scrollDelta = Blockly.utils.getScrollDeltaPixels(e);
@@ -64,25 +64,26 @@ export class Plugin {
 
     // Get the new location of the block dragger after scrolling the workspace.
     // TODO: is this more expensive than just calculating ourselves?
-    const newLocation = this.getCurrentScrollLocation(dragSurface);
+    const newLocation = this.getDragSurfaceLocation_(dragSurface);
 
     // How much we actually ended up scrolling.
     const deltaX = newLocation.x - oldLocation.x;
     const deltaY = newLocation.y - oldLocation.y;
 
     if (deltaX || deltaY) {
+      // TODO: Can not access private blockDragger.
       currentGesture.blockDragger_.moveBlockWhileDragging(deltaX, deltaY);
       e.preventDefault();
     }
   }
 
   /**
-   * Gets the current scroll location.
-   * TODO: Update all docs.
+   * Gets the current location of the drag surface.
    * @param {!Blockly.BlockDragSurface} dragSurface The block drag surface.
    * @return {Blockly.utils.Coordinate} The current coordinate.
+   * @private
    */
-  getCurrentScrollLocation(dragSurface) {
+  getDragSurfaceLocation_(dragSurface) {
     return new Blockly.utils.Coordinate(
         dragSurface.getGroup().transform.baseVal.consolidate().matrix.e,
         dragSurface.getGroup().transform.baseVal.consolidate().matrix.f);
