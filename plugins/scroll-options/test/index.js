@@ -11,6 +11,8 @@
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import {Plugin} from '../src/index';
+import {ScrollBlockDragger} from '../src/ScrollBlockDragger';
+
 
 /**
  * Create a workspace.
@@ -31,6 +33,9 @@ function createWorkspace(blocklyDiv, options) {
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: toolboxCategories,
+    plugins: {
+      'blockDragger': ScrollBlockDragger,
+    },
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
