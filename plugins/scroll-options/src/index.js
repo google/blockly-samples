@@ -41,7 +41,8 @@ export class Plugin {
     // Don't scroll or zoom anything if drag is in progress.
     const canWheelMove = this.workspace_.options.moveOptions &&
         this.workspace_.options.moveOptions.wheel;
-    if (!canWheelMove) {
+    const currentGesture = this.workspace_.getGesture(e);
+    if (!canWheelMove || !currentGesture || !currentGesture.isDraggingBlock_) {
       return;
     }
 
@@ -69,9 +70,7 @@ export class Plugin {
     const deltaX = newLocation.x - oldLocation.x;
     const deltaY = newLocation.y - oldLocation.y;
 
-    const currentGesture = this.workspace_.getGesture(e);
-    if (currentGesture &&
-      currentGesture.isDraggingBlock_) {
+    if (deltaX || deltaY) {
       currentGesture.blockDragger_.moveBlockWhileDragging(deltaX, deltaY);
       e.preventDefault();
     }
