@@ -41,7 +41,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.1",
     "@blockly/dev-tools": "^2.0.5",
-    "blockly": "git://github.com/google/blockly.git#develop"
+    "blockly": "4.20201217.0"
   },
   "peerDependencies": {
     "blockly": ">=3"

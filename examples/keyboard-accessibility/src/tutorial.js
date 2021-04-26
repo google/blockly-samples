@@ -307,9 +307,9 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text: `You can move around the blocks of code with the up and down arrows.
-    You will hear descriptions as you move around the blocks. .
+    You will hear descriptions as you move around the blocks.
     All blocks have connection points, which are places where you can add more
-    code. . Your goal: Use the down arrow to move to a connection point.
+    code. Your goal: Use the down arrow to move to a connection point.
     Hit enter to begin. `,
     goalText: `Use the down arrow to move to a connection point.`,
     onStart: function(tutorial) {
@@ -337,9 +337,9 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text:
-      `Great! You moved to a connection point. .
+      `Great! You moved to a connection point.
       To add more code, you first mark a location and then select the block you
-      want to add. .
+      want to add.
       Your goal: Navigate to the connection point, then press enter to mark it.
       Hit enter to begin. `,
     goalText: `Navigate to the connection point, then press enter to mark it.`,
@@ -367,13 +367,13 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text: `Great! You marked a connection point. Now you can add more code
-    blocks. .
+    blocks.
     The toolbox is a list of code blocks that you can add to the workspace.
-    You can always open the toolbox by pressing T. .
+    You can always open the toolbox by pressing T.
     Your goal: Press T to open the toolbox, then use the up and down arrows to
-    explore it. . Press F when you are finished exploring.`,
+    explore it.  Press F when you are finished exploring.`,
     goalText: `Press T to open the toolbox, then use the up and down arrows to
-      explore it. . Press F when you are finished exploring.`,
+      explore it.  Press F when you are finished exploring.`,
     onStart: function(tutorial) {
       /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
       const finishStep = {
@@ -456,7 +456,7 @@ Tutorial.STEP_OBJECTS = [
   },
   {
     text: `Congratulations! You have finished the tutorial! In the game use
-    Shift and H to give you tips and Shift and P to play your solution. !
+    Shift and H to give you tips and Shift and P to play your solution!
     Hit enter to start the game.`,
     goalText: `Start the game.`,
     onStart: function(tutorial) {

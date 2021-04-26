@@ -383,9 +383,9 @@ export class Speaker {
     let finalText = '';
     if (block.getSurroundParent()) {
       const parentBlockText = this.getBlockText_(block.getSurroundParent());
-      finalText += `You are inside of block ${parentBlockText}. . `;
+      finalText += `You are inside of block ${parentBlockText}. `;
     }
-    finalText += `You are on , ${blockText}. . `;
+    finalText += `You are on , ${blockText}. `;
     return finalText;
   }
 
@@ -435,7 +435,7 @@ export class Speaker {
     let finalText = '';
     if (block.getSurroundParent()) {
       const parentBlockText = this.getBlockText_(block.getSurroundParent());
-      finalText += `You are inside of block ${parentBlockText}. . `;
+      finalText += `You are inside of block ${parentBlockText}. `;
     }
     finalText += `${Blockly.Msg['NEXT']} ${blockText}`;
     return finalText;
@@ -455,7 +455,7 @@ export class Speaker {
     let finalText = '';
     if (block.getSurroundParent()) {
       const parentBlockText = this.getBlockText_(block.getSurroundParent());
-      finalText += `You are inside of block ${parentBlockText}. . `;
+      finalText += `You are inside of block ${parentBlockText}. `;
     }
 
     finalText += `${Blockly.Msg['PREVIOUS']} ${blockText}`;
@@ -481,8 +481,8 @@ export class Speaker {
 
     if (srcBlock && srcBlock.workspace.isFlyout) {
       finalText = this.getBlockText_(node.getSourceBlock());
-      finalText += ` . . To add this block to the workspace press Enter. .
-      To go to the next block hit next. . To go back to the workspace
+      finalText += ` . To add this block to the workspace press Enter. 
+      To go to the next block hit next. To go back to the workspace
       hit escape. `;
     } else if (srcBlock) {
       if (oldNodeTopBlock !== newNodeTopBlock) {

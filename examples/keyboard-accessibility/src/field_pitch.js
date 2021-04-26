@@ -208,13 +208,13 @@ export class FieldPitch extends Blockly.FieldTextInput {
    * @param {!Event} e Keyboard event.
    */
   handleKeyPress_(e) {
-    const action =
-        Blockly.ShortcutRegistry.registry.getKeyboardShortcuts(e.keyCode);
+    const shortcutName =
+        Blockly.ShortcutRegistry.registry.getShortcutNamesByKeyCode(e.keyCode);
     let handled = false;
-    if (action.includes('next')) {
+    if (shortcutName.includes('next')) {
       this.selectLowerNote();
       handled = true;
-    } else if (action.includes('previous')) {
+    } else if (shortcutName.includes('previous')) {
       this.selectHigherNote();
       handled = true;
     }
