@@ -22,7 +22,7 @@ const textJoinMutator = {
   /**
    * Creates XML to represent number of inputs.
    * @return {!Element} XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
@@ -32,7 +32,7 @@ const textJoinMutator = {
   /**
    * Parses XML to restore the inputs.
    * @param {!Element} xmlElement XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('items'), 10);
@@ -42,7 +42,7 @@ const textJoinMutator = {
   /**
    * Adds inputs to the block until the block reaches the target input count.
    * @param {number} targetCount The number of inputs the block should have.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   updateShape_: function(targetCount) {
@@ -58,7 +58,7 @@ const textJoinMutator = {
   /**
    * Callback for the plus image. Adds an input to the block and updates the
    * state of the minus.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   plus: function() {
     this.addPart_();
@@ -68,7 +68,7 @@ const textJoinMutator = {
   /**
    * Callback for the minus image. Removes the input at the end of the block and
    * updates the state of the minus.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   minus: function() {
     if (this.itemCount_ == 0) {
@@ -81,7 +81,7 @@ const textJoinMutator = {
   /**
    * Adds an input to the end of the block. If the block currently has no
    * inputs it updates the top 'EMPTY' input to receive a block.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   addPart_: function() {
@@ -102,7 +102,7 @@ const textJoinMutator = {
   /**
    * Removes an input from the end of the block. If we are removing the last
    * input this updates the block to have an 'EMPTY' top input.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   removePart_: function() {
@@ -133,7 +133,7 @@ const textJoinMutator = {
 /**
  * Adds the quotes mixin to the block. Also updates the shape so that if no
  * mutator is provided the block has two inputs.
- * @this Blockly.Block
+ * @this {Blockly.Block}
  */
 const textJoinHelper = function() {
   this.mixin(Blockly.Constants.Text.QUOTE_IMAGE_MIXIN);

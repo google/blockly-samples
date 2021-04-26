@@ -1,12 +1,12 @@
 {
   "name": "@blockly/field-grid-dropdown",
-  "private": true,
-  "version": "1.0.1",
+  "version": "1.0.12",
   "description": "A Blockly dropdown field with grid layout.",
   "scripts": {
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
+    "predeploy": "npm run build && blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
@@ -40,14 +40,17 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.1",
-    "@blockly/dev-tools": "^2.0.6",
-    "blockly": "^3.20200924.2"
+    "@blockly/dev-scripts": "^1.2.6",
+    "@blockly/dev-tools": "^2.2.1",
+    "blockly": "^4.20201217.0"
   },
   "peerDependencies": {
-    "blockly": ">=3"
+    "blockly": ">=4.20201217.0"
   },
-  "publishConfig": {},
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   },

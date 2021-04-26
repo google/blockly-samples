@@ -11,7 +11,8 @@
 import * as Blockly from 'blockly';
 import {createPlayground, toolboxCategories,
   toolboxSimple} from '@blockly/dev-tools';
-import {toolbox, onInit} from '../src/index';
+import {toolboxTestBlocks as toolbox,
+  toolboxTestBlocksInit as onInit} from '../src/index';
 
 
 /**

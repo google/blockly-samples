@@ -32,17 +32,18 @@ export default class Position {
   /**
    * Create a Position from an event. Currently supports creating Positions for
    * blocks from a 'selected' UI event.
-   * @param {!Blockly.Event} event The event that creates a Position.
+   * @param {!Blockly.Events.Abstract} event The event that creates a Position.
    * @return {!PositionUpdate} The Position representative of the event.
    * @public
-   */  
+   */
   static fromEvent(event) {
-    if (event instanceof Blockly.Events.Ui
-        && event.element == 'selected') {
-      return this.fromSelectedUiEvent_(event);
-    } else if (event instanceof Blockly.Events.Change
-        && event.element == 'field') {
-      return this.fromFieldChangeEvent_(event);
+    if (event.type === Blockly.Events.SELECTED) {
+      return this.fromSelectedUiEvent_(
+          /** @type {!Blockly.Events.Selected} */ (event));
+    } else if (event.type === Blockly.Events.CHANGE &&
+        event.element === 'field') {
+      return this.fromFieldChangeEvent_(
+          /** @type {!Blockly.Events.Change} */ (event));
     } else {
       throw Error('Cannot create position from this event.');
     }
@@ -50,15 +51,17 @@ export default class Position {
 
   /**
    * Create a Position from a Blockly UI event.
-   * @param {!Blockly.Event.Ui} event The event that creates a Position.
+   * @param {!Blockly.Events.Selected} event The event that creates a Position.
    * @return {!PositionUpdate} The Position representative of the event.
    * @private
-   */  
+   */
   static fromSelectedUiEvent_(event) {
+    // Assume this is a block selected event because workspace comments (also
+    // selectable) are disabled.
     const type = 'BLOCK';
-    const blockId = event.newValue;
+    const blockId = event.newElementId;
     const fieldName = null;
-    return new Position(type, blockId, fieldName);  
+    return new Position(type, blockId, fieldName);
   };
 
   /**
@@ -66,12 +69,12 @@ export default class Position {
    * @param {!Blockly.Event.Change} event The event that creates a Position.
    * @return {!PositionUpdate} The Position representative of the event.
    * @private
-   */  
+   */
   static fromFieldChangeEvent_(event) {
     const type = 'FIELD';
     const blockId = event.blockId;
     const fieldName = event.name;
-    return new Position(type, blockId, fieldName);  
+    return new Position(type, blockId, fieldName);
   };
 
   /**
@@ -88,7 +91,7 @@ export default class Position {
    * Check if the combination of Position properties describe a viable position.
    * @return {!Boolean} Whether the PositionUpdate has a viable position.
    * @public
-   */  
+   */
   hasValidPosition() {
     if (this.type == 'FIELD' && this.blockId && this.fieldName) {
       return true;
@@ -98,7 +101,7 @@ export default class Position {
       return false;
     };
   };
-  
+
   /**
    * Create a Marker at the Position.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
@@ -146,7 +149,7 @@ export default class Position {
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
    * @return {Blockly.ASTNode} An AST Node that points to a field.
    * @public
-   */  
+   */
   createFieldNode_(workspace) {
     const block = workspace.getBlockById(this.blockId);
     const field = block.getField(this.fieldName);

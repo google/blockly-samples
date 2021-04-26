@@ -12,8 +12,6 @@ import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
 import '../src/index';
 
-// TODO(373): Add regular dropdown field to test playground to allow for checking
-// that styling of grid dropdown does not affect regular dropdowns.
 const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
   {
     'label': 'Different text length',
@@ -197,6 +195,22 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
           },
           'M',
         ],
+      ],
+    },
+  },
+  {
+    'label': '4 columns',
+    'args': {
+      'columns': '4',
+      'options': [
+        ['A', 'A'],
+        ['B', 'B'],
+        ['C', 'C'],
+        ['D', 'D'],
+        ['E', 'E'],
+        ['F', 'F'],
+        ['G', 'G'],
+        ['H', 'H'],
       ],
     },
   },

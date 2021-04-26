@@ -1,0 +1,18 @@
+{
+  "name": "single-direction-scroll-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Single-direction Scrolling",
+    "description": "Use Blockly with single-direction scrolling.",
+    "files": [
+      "index.html",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "node_modules/blockly/msg/en.js"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
+  }
+}

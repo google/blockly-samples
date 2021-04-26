@@ -89,7 +89,7 @@ module.exports = (env) => {
     module: {
       rules: [
         // Run the linter.
-        {
+        !env.skipLint && {
           test: /\.(js|mjs|ts)$/,
           enforce: 'pre',
           use: [
@@ -97,7 +97,7 @@ module.exports = (env) => {
               options: {
                 cache: true,
                 formatter: 'stylish',
-                emitWarning: true,
+                emitWarning: isDevelopment,
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
                 useEslintrc: false,
@@ -131,9 +131,13 @@ module.exports = (env) => {
             compact: isProduction,
           },
         },
-      ],
+      ].filter(Boolean),
     },
     plugins: [
+      // Add package name.
+      new webpack.DefinePlugin({
+        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+      }),
       // Typecheck TS.
       isTypescript &&
       new ForkTsCheckerWebpackPlugin({

@@ -174,7 +174,7 @@ For this codelab we will inject into a div with the id `"blocklyDiv"`, which you
 
 ### Create the workspace
 
-Now open `scripts/main.js`. Just before the end of the main function, add code to inject Blockly editor:
+Now open `scripts/main.js`. Scroll to the end of the file and add code to inject Blockly editor just after the call to `enableMakerMode()`:
 
 ```js
 Blockly.inject('blocklyDiv', {
@@ -231,10 +231,7 @@ Blockly.defineBlocksWithJsonArray([
           ["D4", "sounds/d4.m4a"],
           ["E4", "sounds/e4.m4a"],
           ["F4", "sounds/f4.m4a"],
-          ["G4", "sounds/g4.m4a"],
-          ["A5", "sounds/a5.m4a"],
-          ["B5", "sounds/b5.m4a"],
-          ["C5", "sounds/c5.m4a"]
+          ["G4", "sounds/g4.m4a"]
         ]
       }
     ],

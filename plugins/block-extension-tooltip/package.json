@@ -1,0 +1,64 @@
+{
+  "name": "@blockly/block-extension-tooltip",
+  "version": "1.0.7",
+  "description": "A Blockly block extension that adds support for custom tooltip rendering.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "dist": "blockly-scripts build prod",
+    "lint": "blockly-scripts lint",
+    "predeploy": "npm run build && blockly-scripts predeploy",
+    "prepublishOnly": "npm run clean && npm run dist",
+    "start": "blockly-scripts start"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "block-extension-tooltip"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-extension-tooltip#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/block-extension-tooltip"
+  },
+  "license": "Apache 2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.2.6",
+    "@blockly/dev-tools": "^2.2.1",
+    "blockly": "^3.20200924.4",
+    "typescript": "^4.0.5"
+  },
+  "peerDependencies": {
+    "blockly": ">=3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}

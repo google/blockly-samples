@@ -11,10 +11,9 @@
 
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
-import {getCheck, isExplicitConnection} from './utils';
-import {PriorityQueueMap} from './priority_queue_map';
+import {parseType} from './type_structure';
+import {getCheck, isExplicitConnection, isGenericConnection} from './utils';
 
-// TODO: Fix the version of Blockly being required in package.json.
 
 /**
  * A connection checker that is targeted at helping Blockly model languages with
@@ -46,12 +45,12 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
     this.typeHierarchy_ = null;
 
     /**
-     * A map of block ids to priority queue maps that associated generic types
-     * with explicit types.
-     * @type {Map<string, PriorityQueueMap<string, string>>}
+     * A map of blocks to maps that associated generic types with explicit
+     * types.
+     * @type {WeakMap<!Blockly.Block, Map<string, string>>}
      * @private
      */
-    this.explicitBindings_ = new Map();
+    this.explicitBindings_ = new WeakMap();
   }
 
   /**
@@ -68,92 +67,139 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    */
   doTypeChecks(a, b) {
     const {parent, child} = this.getParentAndChildConnections_(a, b);
-    const parentType = this.getExplicitTypeOfConnection(parent);
-    const childType = this.getExplicitTypeOfConnection(child);
+    const parentTypes = this.getExplicitTypesOfConnection(parent);
+    const childTypes = this.getExplicitTypesOfConnection(child);
     const typeHierarchy = this.getTypeHierarchy_();
 
-    if (!parentType || !childType) {
+    if (!parentTypes.length || !childTypes.length) {
       // At least one is an unbound generic.
       return true;
     }
-    return typeHierarchy.typeFulfillsType(childType, parentType);
+
+    // If the parent is only bound by parameters, allow the child block to
+    // connect if any of its types share a common ancestor with any of the
+    // parent types.
+    const parentSource = parent.getSourceBlock();
+    const parentCheck = getCheck(parent);
+    if (isGenericConnection(parent) &&
+        this.typeIsOnlyBoundByParams_(parentSource, parentCheck)) {
+      return childTypes.some((childType) => {
+        return parentTypes.some((parentType) => {
+          return typeHierarchy
+              .getNearestCommonParents(childType, parentType).length;
+        });
+      });
+    }
+
+    return childTypes.some((childType) => {
+      return parentTypes.some((parentType) => {
+        return typeHierarchy.typeFulfillsType(
+            parseType(childType), parseType(parentType));
+      });
+    });
   }
 
   /**
-   * Returns the explicit type of the block generic type pair, if an explicit
-   * type can be found. If one cannot be found, this returns undefined.
+   * Returns the explicit type(s) of the block generic type pair, if an explicit
+   * type can be found.
+   *
+   * Note that we only get multiple types via type unification of types that
+   * are externally bound, or associated with input connections.
    * @param {!Blockly.Block} block The block that provides the context for the
    *     genericType.
    * @param {string} genericType The generic type we want to get the explicit
    *     type of.
-   * @return {undefined|string} The explicit type bound to the generic type, if
+   * @return {!Array<string>} The explicit type bound to the generic type, if
    *     one can be found. Undefined otherwise.
    */
-  getExplicitType(block, genericType) {
+  getExplicitTypes(block, genericType) {
     genericType = genericType.toLowerCase();
-    return this.getBoundType_(block, genericType);
+    return this.getBoundTypes_(block, genericType);
   }
 
   /**
-   * Returns the explicit type of the given connection. If the connection is
+   * Returns the explicit type(s) of the given connection. If the connection is
    * itself explicit, this just returns that type. If the connection is generic
-   * it attempts to find an explicit type bound to it. If one cannot be found,
-   * this returns undefined.
+   * it attempts to find the explicit type(s) bound to it.
+   *
+   * Note that we only get multiple types via type unification of types that
+   * are externally bound to generic types, or associated with generic
+   * input connections.
    * @param {!Blockly.Connection} connection The connection to find the explicit
    *     type of.
-   * @return {undefined|string} The explicit type of the connection, or
-   *     undefined if one cannot be found.
+   * @return {!Array<string>} The explicit type(s) of the connection.
    */
-  getExplicitTypeOfConnection(connection) {
+  getExplicitTypesOfConnection(connection) {
     const check = getCheck(connection);
-    return isExplicitConnection(connection) ? check:
-        this.getBoundType_(connection.getSourceBlock(), check);
+    return isExplicitConnection(connection) ? [check]:
+        this.getExplicitTypes(connection.getSourceBlock(), check);
   }
 
   /**
    * Binds the genericType to the explicitType in the context of the given
-   * block. Higher priority explicit types override lower priority types.
+   * block.
    * @param {!Blockly.Block} block The block that provides context for the
    *     generic type binding.
    * @param {string} genericType The generic type that we want to bind.
    * @param {string} explicitType The explicit type we want to bind the generic
    *     type to.
-   * @param {number} priority The priority of the binding.
    */
-  bindType(block, genericType, explicitType, priority) {
+  bindType(block, genericType, explicitType) {
     genericType = genericType.toLowerCase();
     explicitType = explicitType.toLowerCase();
-    let queueMap = this.explicitBindings_.get(block.id);
-    if (!queueMap) {
-      queueMap = new PriorityQueueMap();
-      this.explicitBindings_.set(block.id, queueMap);
+    let map = this.explicitBindings_.get(block);
+    if (!map) {
+      map = new Map();
+      this.explicitBindings_.set(block, map);
     }
-    queueMap.bind(genericType, explicitType, priority);
-    // TODO: Add checking that connections are still valid.
+    map.set(genericType, explicitType);
+
+    const connectionMap = [];
+    /**
+     * If the given connection exists and it has a target connection, saves
+     * the connection and its target connection to the connectionMap and then
+     * disconnects the connections.
+     * @param {!Blockly.Connection} conn The connection to save and disconnect.
+     */
+    function saveAndDisconnect(conn) {
+      if (conn && conn.targetConnection) {
+        connectionMap.push([conn, conn.targetConnection]);
+        conn.disconnect();
+      }
+    }
+
+    saveAndDisconnect(block.outputConnection);
+    saveAndDisconnect(block.previousConnection);
+    for (const input of block.inputList) {
+      saveAndDisconnect(input.connection);
+    }
+    saveAndDisconnect(block.nextConnection);
+
+    for (const [parent, child] of connectionMap) {
+      parent.connect(child);
+    }
+
+    // Note: Using .rendered may cause issues. See blockly/#1676.
+    if (block.rendered) {
+      block.bumpNeighbours();
+    }
   }
 
   /**
-   * Unbinds the genericType from the explicitType in the context of the given
-   * block. Only unbinds if the priority of the binding associated with the
-   * given explicitType is the same as the provided priority.
+   * Unbinds the genericType from its explicit type in the context of the given
+   * block.
    * @param {!Blockly.Block} block The block that provides context for the
    *     generic type binding.
    * @param {string} genericType The generic type that we want to unbind.
-   * @param {string} explicitType The explicit type that we want to unbind the
-   *     genericType from.
-   * @param {number} priority The priority of the binding to unbind.
    * @return {boolean} True if the binding existed previously, false if it did
    *     not.
    */
-  unbindType(block, genericType, explicitType, priority) {
+  unbindType(block, genericType) {
     genericType = genericType.toLowerCase();
-    explicitType = explicitType.toLowerCase();
-    if (this.explicitBindings_.has(block.id)) {
-      return this.explicitBindings_.get(block.id).unbind(
-          genericType, explicitType, priority);
+    if (this.explicitBindings_.has(block)) {
+      return this.explicitBindings_.get(block).delete(genericType);
     }
     return false;
-    // TODO: Add checking that connections are still valid.
   }
 
   /**
@@ -196,91 +242,114 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
   }
 
   /**
-   * Returns the explicit type bound to the block generic type pair if one
-   * exists. Returns undefined otherwise.
+   * Returns the explicit type(s) bound to the block generic type pair if one
+   * exists.
+   *
+   * Note that we only get multiple types via type unification of types that
+   * are externally bound, or associated with input connections.
    * @param {!Blockly.Block} block The block that provides the context for the
    *     explicit binding.
    * @param {string} genericType The generic type we want to get the bound
    *     explicit type of.
    * @param {!Blockly.Connection=} connectionToSkip The connection to skip. If
    *     the connection matches this connection, it will be ignored.
-   * @return {undefined|string} The explicit type bound to the connection's
-   *     connection check if one exists.
+   * @return {!Array<string>} The explicit type(s) bound to the generic type
+   *     if one exists.
    * @private
    */
-  getBoundType_(block, genericType, connectionToSkip = undefined) {
-    let externalBinding = {priority: 0};
-    if (this.explicitBindings_.has(block.id)) {
-      // TODO: Do type unification.
-      const externalBindings = this.explicitBindings_.get(block.id)
-          .getBindings(genericType);
-      if (externalBindings) {
-        externalBinding = externalBindings[0];
-      }
-      if (externalBinding.priority > OUTPUT_PRIORITY) {
-        return externalBinding.value;
-      }
+  getBoundTypes_(block, genericType, connectionToSkip = undefined) {
+    genericType = genericType.toLowerCase();
+    const types = [];
+
+    const type = this.getExternalBinding_(block, genericType);
+    if (type) {
+      return [type];
     }
 
-    const boundType = this.getConnectionType_(
-        block.outputConnection, genericType, connectionToSkip);
-    if (boundType) {
-      return boundType;
-    }
-
-    if (externalBinding && externalBinding.priority > INPUT_PRIORITY) {
-      return externalBinding.value;
-    }
-
-    // Inputs have equal priority, so we need to unify them.
-    const boundTypes = [];
+    types.push(...this.getConnectionTypes_(
+        block.outputConnection, genericType, connectionToSkip));
+    types.push(...this.getConnectionTypes_(
+        block.previousConnection, genericType, connectionToSkip));
     for (const input of block.inputList) {
-      const boundType = this.getConnectionType_(
-          input.connection, genericType, connectionToSkip);
-      if (boundType) {
-        boundTypes.push(boundType);
-      }
+      types.push(...this.getConnectionTypes_(
+          input.connection, genericType, connectionToSkip));
     }
+    types.push(...this.getConnectionTypes_(
+        block.nextConnection, genericType, connectionToSkip));
 
-    if (boundTypes.length) {
-      // TODO: Actually do unification.
-      return boundTypes[0];
+    if (types.length) {
+      return this.getTypeHierarchy_().getNearestCommonParents(...types);
     }
-
-    return externalBinding.priority ? externalBinding.value : undefined;
+    return [];
   }
 
   /**
-   * Acts as a helper for the getBoundType_ function *and should only be used
+   * Returns the externally bound explicit type associated with the given
+   * genericType in the context of the given block, if one exists.
+   * @param {!Blockly.Block} block The block that provides context for the
+   *     explicit binding.
+   * @param {string} genericType The generic type we want to get the externally
+   *     bound explicit type of.
+   * @return {string} The externally bound explicit type, if one exists.
+   * @private
+   */
+  getExternalBinding_(block, genericType) {
+    if (this.explicitBindings_.has(block)) {
+      return this.explicitBindings_.get(block).get(genericType);
+    }
+    return '';
+  }
+
+  /**
+   * Acts as a helper for the getBoundTypes_ function *and should only be used
    * as such*. Only operates on the connection if its check matches the passed
    * genericType, it is an input or output connection, and it is not the
-   * connectionToSkip. Returns the bound type associated with this connection,
-   * or undefined if one is not found.
+   * connectionToSkip. Returns the bound type(s) associated with this
+   * connection.
    * @param {!Blockly.Connection} connection The connection to get the bound
    *     type of.
    * @param {string} genericType The generic type to find the bound type of.
-   * @param {!Blockly.Connection} connectionToSkip The connection to skip. If
+   * @param {!Blockly.Connection=} connectionToSkip The connection to skip. If
    *     the connection matches this connection, it will be ignored.
-   * @return {undefined|string} The bound type associated with the passed
-   *     connection, or undefined if one is not found.
+   * @return {!Array<string>} The bound type(s) associated with the passed
+   *     connection.
    * @private
    */
-  getConnectionType_(connection, genericType, connectionToSkip) {
+  getConnectionTypes_(connection, genericType, connectionToSkip) {
     if (!connection ||
         connection == connectionToSkip ||
-        connection.type == Blockly.NEXT_STATEMENT ||
         getCheck(connection) != genericType ||
         !connection.targetConnection) {
-      return;
+      return [];
     }
 
     const target = connection.targetConnection;
     const check = getCheck(target);
     if (isExplicitConnection(target)) {
-      return check;
+      return [check];
     }
-    return this.getBoundType_(
+    return this.getBoundTypes_(
         target.getSourceBlock(), check, target);
+  }
+
+  /**
+   * Returns true if the given block generic type pair is only bound by input
+   * next connections. Returns false if it is bound by an explicit binding, or
+   * connections to the output or previous connections.
+   * @param {!Blockly.Block} block The block that provides the context for the
+   *     generic type.
+   * @param {string} genericType The generic type that we want to check the
+   *     state of.
+   * @return {boolean} True if the type is only bound by inputs, false
+   *     otherwise.
+   * @private
+   */
+  typeIsOnlyBoundByParams_(block, genericType) {
+    const typeisBoundByOther =
+        this.getExternalBinding_(block, genericType) ||
+        this.getConnectionTypes_(block.outputConnection, genericType).length ||
+        this.getConnectionTypes_(block.previousConnection, genericType).length;
+    return !typeisBoundByOther;
   }
 }
 
@@ -294,29 +363,3 @@ Blockly.registry.register(
 export const pluginInfo = {
   [registrationType]: registrationName,
 };
-
-/**
- * The priority for binding an explicit type to a generic type based on an input
- * of the block with the generic type.
- * @type {number}
- */
-export const INPUT_PRIORITY = 100;
-
-/**
- * The priority for binding an explicit type to a generic type based on the
- * output of the block with the generic type.
- * @type {number}
- */
-export const OUTPUT_PRIORITY = 200;
-
-/**
- * The minimum priority that can/should be passed to the bindType function.
- * @type {number}
- */
-export const MIN_PRIORITY = 0;
-
-/**
- * The maximum priority that can/should be passed to the bindType function.
- * @type {number}
- */
-export const MAX_PRIORITY = Number.MAX_SAFE_INTEGER;

@@ -15,7 +15,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const CLIEngine = require('eslint').CLIEngine;
+const ESLint = require('eslint').ESLint;
+const LintResult = require('eslint').LintResult;
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
@@ -25,21 +26,47 @@ console.log(`Running lint for ${packageJson.name}`);
 
 // Create the eslint engine.
 const eslintConfig = require('@blockly/eslint-config');
-const cli = new CLIEngine({
+
+const args = process.argv.slice(2);
+const shouldFix = args.includes('--fix');
+const linter = new ESLint({
   extensions: ['.js', '.ts'],
   baseConfig: eslintConfig,
   useEslintrc: false,
   resolvePluginsRelativeTo: __dirname,
+  fix: shouldFix,
 });
-const formatter = cli.getFormatter();
 
-// Run eslint for both the src and test directories.
-// The eslint engine will use the .eslintrc under plugins/ for configuration.
-const dirs = ['src', 'test'];
-dirs.forEach((dir) => {
+/**
+ * Lint this directory.
+ * @param {string} dir The directory to lint.
+ * @param {ESLint} linter The linter.
+ * @return {Promise<LintResult[]|null>} The results, which may be printed with
+ *   an approriate formatter.
+ */
+async function lintDir(dir, linter) {
   const resolvePath = resolveApp(dir);
   if (fs.existsSync(resolvePath)) {
-    const report = cli.executeOnFiles([dir]);
-    console.log(formatter(report.results));
+    const results = await linter.lintFiles([dir]);
+    if (shouldFix) {
+      await ESLint.outputFixes(results);
+    }
+    return results;
   }
+  return null;
+}
+
+linter.loadFormatter('stylish').then((formatter) => {
+  // Run eslint for both the src and test directories.
+  // The eslint engine will use the .eslintrc under plugins/ for configuration.
+  lintDir('src', linter).then((result) => {
+    if (result) {
+      console.log(formatter.format(result));
+    }
+  });
+  lintDir('test', linter).then((result) => {
+    if (result) {
+      console.log(formatter.format(result));
+    }
+  });
 });

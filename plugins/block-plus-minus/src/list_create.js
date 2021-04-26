@@ -42,7 +42,7 @@ const listCreateMutator = {
   /**
    * Creates XML to represent number of text inputs.
    * @return {!Element} XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
@@ -52,7 +52,7 @@ const listCreateMutator = {
   /**
    * Parses XML to restore the text inputs.
    * @param {!Element} xmlElement XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('items'), 10);
@@ -62,7 +62,7 @@ const listCreateMutator = {
   /**
    * Adds inputs to the block until it reaches the target number of inputs.
    * @param {number} targetCount The target number of inputs for the block.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   updateShape_: function(targetCount) {
@@ -103,7 +103,7 @@ const listCreateMutator = {
   /**
    * Adds an input to the end of the block. If the block currently has no
    * inputs it updates the top 'EMPTY' input to receive a block.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   addPart_: function() {
@@ -121,7 +121,7 @@ const listCreateMutator = {
   /**
    * Removes an input from the end of the block. If we are removing the last
    * input this updates the block to have an 'EMPTY' top input.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   removePart_: function() {
@@ -150,7 +150,7 @@ const listCreateMutator = {
 
 /**
  * Updates the shape of the block to have 3 inputs if no mutation is provided.
- * @this Blockly.Block
+ * @this {Blockly.Block}
  */
 const listCreateHelper = function() {
   this.getInput('EMPTY').insertFieldAt(0, createPlusField(), 'PLUS');

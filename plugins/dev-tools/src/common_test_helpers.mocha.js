@@ -57,7 +57,7 @@ TestSuite.prototype.testCases = [];
  *    callback using given test case.
  */
 export function runTestCases(testCases, createTestCallback) {
-  testCases.forEach(/** @type {!TestCase} */(testCase) => {
+  testCases.forEach((testCase) => {
     let testCall = (testCase.skip ? test.skip : test);
     testCall = (testCase.only ? test.only : testCall);
     testCall(testCase.title, createTestCallback(testCase));
@@ -66,18 +66,38 @@ export function runTestCases(testCases, createTestCallback) {
 
 /**
  * Runs provided test suite.
- * @template {TestCase} T
+ * @template {TestSuite} T
  * @param {Array<!TestSuite<T>>} testSuites The test suites to run.
  * @param {function(!TestSuite<T>):(function(T):!Function)
  *    } createTestCaseCallback Creates test case callback using given test
  *    suite.
  */
 export function runTestSuites(testSuites, createTestCaseCallback) {
-  testSuites.forEach(/** @type {!TestSuite} */(testSuite) => {
+  testSuites.forEach((testSuite) => {
     let suiteCall = (testSuite.skip ? suite.skip : suite);
     suiteCall = (testSuite.only ? suite.only : suiteCall);
     suiteCall(testSuite.title, function() {
       runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
     });
   });
+}
+
+/**
+ * Captures the strings sent to console.warn() when calling a function.
+ * Copies from core.
+ * @param {function} innerFunc The function where warnings may called.
+ * @return {string[]} The warning messages (only the first arguments).
+ */
+export function captureWarnings(innerFunc) {
+  const msgs = [];
+  const nativeConsoleWarn = console.warn;
+  try {
+    console.warn = function(msg) {
+      msgs.push(msg);
+    };
+    innerFunc();
+  } finally {
+    console.warn = nativeConsoleWarn;
+  }
+  return msgs;
 }

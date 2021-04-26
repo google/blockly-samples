@@ -63,7 +63,7 @@ Blockly.Blocks['test_validators_text_A'] = {
   },
 
   validate: function(newValue) {
-    return newValue.replace(/\a/g, '');
+    return newValue.replace(/a/g, '');
   },
 };
 Blockly.Blocks['test_validators_text_B'] = {
@@ -115,10 +115,10 @@ Blockly.Blocks['test_validators_angle_mult30_force'] = {
     this.setCommentText(
         'The input value will be rounded to the nearest' +
         ' multiple of 30. The field will display the input while the field is' +
-        ' being edited (this includes the text and the graphic), but the value' +
-        ' will be the validated (rounded) value. Note: If you want to do' +
-        ' rounding this is not the proper way, use the ROUND property of the' +
-        ' field angle instead.');
+        ' being edited (this includes the text and the graphic), but the' +
+        ' value will be the validated (rounded) value. Note: If you want to' +
+        ' do rounding this is not the proper way, use the ROUND property of' +
+        ' the field angle instead.');
   },
 
   validate: function(newValue) {
@@ -170,9 +170,9 @@ Blockly.Blocks['test_validators_checkbox_match'] = {
         .appendField(new Blockly.FieldCheckbox(true, this.validate), 'INPUT');
     this.setColour(230);
     this.setCommentText(
-        'The validator for this block only works on the' +
-        ' end-most checkbox. The validator will always return the value of the' +
-        ' start-most checkbox. Therefor they should always match.');
+        'The validator for this block only works on the end-most checkbox.' +
+        ' The validator will always return the value of the start-most' +
+        ' checkbox. Therefore they should always match.');
   },
 
   validate: function(newValue) {
@@ -207,7 +207,7 @@ Blockly.Blocks['test_validators_colour_null'] = {
     colourField.setColours([
       '#ffffff', '#ffdcdc', '#ffb4b4', '#ff8c8c', '#ff6464', '#ff3c3c',
       '#ff1414', '#00ffff', '#00dcdc', '#00b4b4', '#008c8c', '#006464',
-      '#003c3c', '#001414'
+      '#003c3c', '#001414',
     ]);
 
     this.appendDummyInput()
@@ -229,7 +229,7 @@ Blockly.Blocks['test_validators_colour_force_red'] = {
     colourField.setColours([
       '#ffffff', '#ffdcdc', '#ffb4b4', '#ff8c8c', '#ff6464', '#ff3c3c',
       '#ff1414', '#00ffff', '#00dcdc', '#00b4b4', '#008c8c', '#006464',
-      '#003c3c', '#001414'
+      '#003c3c', '#001414',
     ]);
 
     this.appendDummyInput()
@@ -251,7 +251,7 @@ Blockly.Blocks['test_validators_colour_red_null'] = {
     colourField.setColours([
       '#ffffff', '#ffdcdc', '#ffb4b4', '#ff8c8c', '#ff6464', '#ff3c3c',
       '#ff1414', '#00ffff', '#00dcdc', '#00b4b4', '#008c8c', '#006464',
-      '#003c3c', '#001414'
+      '#003c3c', '#001414',
     ]);
 
     this.appendDummyInput()
@@ -259,8 +259,8 @@ Blockly.Blocks['test_validators_colour_red_null'] = {
         .appendField(colourField, 'INPUT');
     this.setColour(230);
     this.setCommentText(
-        'If the input does not have full red, the input will' +
-        ' validate to null (invalid). Otherwise it will return the input value');
+        'If the input does not have full red, the input will validate to' +
+        ' null (invalid). Otherwise it will return the input value');
   },
 
   validate: function(newValue) {
@@ -279,7 +279,7 @@ Blockly.Blocks['test_validators_dropdown_null'] = {
             new Blockly.FieldDropdown(
                 [
                   ['1a', '1A'], ['1b', '1B'], ['1c', '1C'], ['2a', '2A'],
-                  ['2b', '2B'], ['2c', '2C']
+                  ['2b', '2B'], ['2c', '2C'],
                 ],
                 this.validate),
             'INPUT');
@@ -301,14 +301,13 @@ Blockly.Blocks['test_validators_dropdown_force_1s'] = {
             new Blockly.FieldDropdown(
                 [
                   ['1a', '1A'], ['1b', '1B'], ['1c', '1C'], ['2a', '2A'],
-                  ['2b', '2B'], ['2c', '2C']
+                  ['2b', '2B'], ['2c', '2C'],
                 ],
                 this.validate),
             'INPUT');
     this.setColour(230);
     this.setCommentText(
-        'The input\'s value will always change to start with' +
-        ' 1.');
+        'The input\'s value will always change to start with 1.');
   },
 
   validate: function(newValue) {
@@ -323,14 +322,14 @@ Blockly.Blocks['test_validators_dropdown_1s_null'] = {
             new Blockly.FieldDropdown(
                 [
                   ['1a', '1A'], ['1b', '1B'], ['1c', '1C'], ['2a', '2A'],
-                  ['2b', '2B'], ['2c', '2C']
+                  ['2b', '2B'], ['2c', '2C'],
                 ],
                 this.validate),
             'INPUT');
     this.setColour(230);
     this.setCommentText(
-        'If the input does not start with 1, the input will' +
-        ' validate to null (invalid). Otherwise it will return the input value.');
+        'If the input does not start with 1, the input will validate to' +
+        ' null (invalid). Otherwise it will return the input value.');
   },
 
   validate: function(newValue) {
@@ -350,9 +349,9 @@ Blockly.Blocks['test_validators_number_null'] = {
             'INPUT');
     this.setColour(230);
     this.setCommentText(
-        'All input validates to null (invalid). The field' +
-        ' will display the input while the field is being edited, but the value' +
-        ' should be the default value. The input should be red after the first' +
+        'All input validates to null (invalid). The field will display the' +
+        ' input while the field is being edited, but the value should be the' +
+        ' default value. The input should be red after the first' +
         ' keystroke.');
   },
 
@@ -371,9 +370,10 @@ Blockly.Blocks['test_validators_number_mult10_force'] = {
     this.setCommentText(
         'The input value will be rounded to the nearest' +
         ' multiple of 10. The field will display the input while the field is' +
-        ' being edited, but the value should be the validated (rounded) value.' +
-        ' Note: If you want to do rounding this is not the proper way, use the' +
-        ' precision option of the number field constructor instead.');
+        ' being edited, but the value should be the validated (rounded)' +
+        ' value. Note: If you want to do rounding this is not the proper' +
+        ' way, use the precision option of the number field constructor' +
+        ' instead.');
   },
 
   validate: function(newValue) {

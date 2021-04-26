@@ -1,0 +1,21 @@
+{
+  "name": "blockly-pitch-field-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Pitch Field",
+    "files": [
+      "index.html",
+      "blocks.js",
+      "field_pitch.js",
+      "pitch.css",
+      "media/*",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
+  }
+}

@@ -6,14 +6,16 @@
     "clean": "blockly-scripts clean",
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run dist",
-    "start": "blockly-scripts start"
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
   },
   "devDependencies": {
     "@blockly/dev-tools": "^1.0.0",
     "typescript": "^3.8.0"
   },
   "peerDependencies": {
-    "blockly": ">=3.30300123.0"
+    "blockly": ">=3.20200123.0"
   }
 }

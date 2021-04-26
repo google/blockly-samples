@@ -1,0 +1,20 @@
+{
+  "name": "blockly-turtle-field-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Turtle Field",
+    "files": [
+      "index.html",
+      "field_turtle.js",
+      "blocks.js",
+      "turtle.css",
+      "media/*",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
+  }
+}

@@ -16,7 +16,8 @@ import {category as fieldAngles, onInit as initAngles} from './angles';
 import {category as fieldDropdowns, onInit as initDropdowns} from './dropdowns';
 import {category as fieldImages, onInit as initImages} from './images';
 import {category as fieldEmoji, onInit as initEmoji} from './emojis';
-import {category as fieldValidators, onInit as initValidators} from './validators';
+import {
+  category as fieldValidators, onInit as initValidators} from './validators';
 
 /**
  * The fields category.

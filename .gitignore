@@ -12,7 +12,9 @@ node_modules/
 # Generated files
 dist/
 build/
+gh-pages/_site
 gh-pages/plugins
+gh-pages/examples
 
 # TypeScript cache
 *.tsbuildinfo

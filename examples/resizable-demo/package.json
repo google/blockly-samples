@@ -1,0 +1,19 @@
+{
+  "name": "blockly-resizable-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Resizable Blockly",
+    "description": "Inject Blockly into a page as a resizable element.",
+    "files": [
+      "index.html",
+      "overlay.html",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
+  }
+}

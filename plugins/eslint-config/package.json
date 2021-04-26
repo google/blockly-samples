@@ -1,6 +1,6 @@
 {
   "name": "@blockly/eslint-config",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "ESlint configuration used by Blockly plugins.",
   "files": [
     "index.js"
@@ -30,13 +30,13 @@
     "eslint-plugin-jsdoc": "^22.1.0"
   },
   "peerDependencies": {
-    "eslint": "6.x"
+    "eslint": "7.x"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   }
 }

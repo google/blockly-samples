@@ -1,0 +1,18 @@
+{
+  "name": "blockly-headless-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Headless",
+    "description": "Generate code from XML without graphics.",
+    "files": [
+      "index.html",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210325.0"
+  }
+}

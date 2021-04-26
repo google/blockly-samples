@@ -12,6 +12,7 @@ const {
   TestCase,
   TestSuite,
   runTestCases,
+  captureWarnings,
 } = commonHelpers;
 
 const {
@@ -24,6 +25,8 @@ const {
 
 const {
   assertFieldValue,
+  FieldCreationTestCase,
+  FieldValueTestCase,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSetValueTests,
@@ -33,12 +36,15 @@ export {
   assertFieldValue,
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
+  FieldCreationTestCase,
+  FieldValueTestCase,
   runCodeGenerationTestSuites,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
   runSerializationTestSuite,
   runSetValueTests,
   runTestCases,
+  captureWarnings,
   SerializationTestCase,
   TestCase,
   TestSuite,

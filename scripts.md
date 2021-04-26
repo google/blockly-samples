@@ -42,6 +42,10 @@ use packages with non-green licenses.
 ### `npm run lint`
 This script runs `npm run lint` on each of the Blockly plugins in this repo.
 
+### `npm run lint:fix`
+This script runs lint with the `--fix` option on each of the Blockly plugins in
+this repo.
+
 ### `npm run test`
 This script runs `npm run test` on each of the Blockly plugins in this repo.
 

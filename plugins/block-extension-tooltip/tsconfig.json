@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "target": "es5",
+    "allowJs": true,
+    "sourceMap": true,
+    "lib": ["es6", "dom"]
+  },
+  "include": [
+    "src", "test"
+  ],
+}

@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const playgroundState = new LocalStorageState('playgroundState', {
-      workspaceXml: '',
+      workspaceXml: '<xml></xml>',
       activeTab: typesTabName,
       [typesTabName]: '{\n  \n}',
       [blocksTabName]:

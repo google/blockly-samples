@@ -30,7 +30,7 @@ const controlsIfMutator = {
   /**
    * Creates XML to represent the number of else-if and else inputs.
    * @return {Element} XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   mutationToDom: function() {
     if (!this.elseIfCount_ && !this.hasElse_) {
@@ -48,7 +48,7 @@ const controlsIfMutator = {
   /**
    * Parses XML to restore the else-if and else inputs.
    * @param {!Element} xmlElement XML storage element.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
@@ -64,7 +64,7 @@ const controlsIfMutator = {
    * Adds else-if and do inputs to the block until the block matches the
    * target else-if count.
    * @param {number} targetCount The target number of else-if inputs.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   updateShape_: function(targetCount) {
@@ -88,7 +88,7 @@ const controlsIfMutator = {
    * index.
    * @see removeInput_
    * @param {number} index The index of the else-if input to "remove".
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   minus: function(index) {
     if (this.elseIfCount_ == 0) {
@@ -99,7 +99,7 @@ const controlsIfMutator = {
 
   /**
    * Adds an else-if and a do input to the bottom of the block.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   addElseIf_: function() {
@@ -122,10 +122,10 @@ const controlsIfMutator = {
   /**
    * Appears to remove the input at the given index. Actually shifts attached
    * blocks and then removes the input at the bottom of the block. This is to
-   * make sure the inputs are always IF0, IF1, etc. with no gaps.
+   * make sure the inputs are always IF0, IF1, etc with no gaps.
    * @param {number?} opt_index The index of the input to "remove", or undefined
    *     to remove the last input.
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    * @private
    */
   removeElseIf_: function(opt_index) {
@@ -169,7 +169,7 @@ const controlsIfMutator = {
 
 /**
  * Adds the initial plus button to the if block.
- * @this Blockly.Block
+ * @this {Blockly.Block}
  */
 const controlsIfHelper = function() {
   this.getInput('IF0').insertFieldAt(0, createPlusField(), 'PLUS');

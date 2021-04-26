@@ -82,6 +82,7 @@ const insertConnectionStacks = function(button) {
   const workspace = button.getTargetWorkspace();
   Blockly.Xml.domToWorkspace(
       Blockly.Xml.textToDom(
+          /* eslint-disable max-len */
           '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="test_connections_stack_next">\n' +
           '    <next>\n' +
@@ -104,7 +105,9 @@ const insertConnectionStacks = function(button) {
           '      </block>\n' +
           '    </next>\n' +
           '  </block>\n' +
-          '</xml>'),
+          '</xml>'
+          /* eslint-enable max-len */
+      ),
       workspace);
 };
 

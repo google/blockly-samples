@@ -16,6 +16,7 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Class for workspace search.
+ * @implements {Blockly.IPositionable}
  */
 export class WorkspaceSearch {
   /**
@@ -112,9 +113,17 @@ export class WorkspaceSearch {
    * Initializes the workspace search bar.
    */
   init() {
+    this.workspace_.getPluginManager().addPlugin({
+      id: 'workspaceSearch',
+      plugin: this,
+      weight: 0,
+      types: [Blockly.PluginManager.Type.POSITIONABLE],
+    });
     injectSearchCss();
     this.createDom_();
     this.setVisible_(false);
+
+    this.workspace_.resize();
   }
 
   /**
@@ -160,7 +169,6 @@ export class WorkspaceSearch {
 
     this.htmlDiv_ = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-ws-search');
-    this.positionSearchBar_();
 
     const searchContainer = document.createElement('div');
     Blockly.utils.dom.addClass(searchContainer, 'blockly-ws-search-container');
@@ -309,22 +317,37 @@ export class WorkspaceSearch {
   }
 
   /**
-   * Positions the search bar based on where the workspace's toolbox is.
-   * @protected
+   * Returns the bounding rectangle of the UI element in pixel units relative to
+   * the Blockly injection div.
+   * @return {!Blockly.utils.Rect} The plugin’s bounding box.
    */
-  positionSearchBar_() {
-    // TODO: Handle positioning search bar when window is resized.
-    const metrics = this.workspace_.getMetrics();
+  getBoundingRectangle() {
+    var top = this.htmlDiv_.style.top;
+    var left = this.htmlDiv_.style.left;
+    return new Blockly.utils.Rect(
+        top, top + this.htmlDiv_.style.height,
+        left, left + this.htmlDiv_.style.width);
+  }
+
+  /**
+   * Positions the zoom-to-fit control.
+   * It is positioned in the opposite corner to the corner the
+   * categories/toolbox starts at.
+   * @param {!Blockly.MetricsManager.UiMetrics} metrics The workspace metrics.
+   * @param {!Array<!Blockly.utils.Rect>} savedPositions List of rectangles that
+   *     are already on the workspace.
+   */
+  position(metrics, savedPositions) {
     if (this.workspace_.RTL) {
-      this.htmlDiv_.style.left = metrics.absoluteLeft + 'px';
+      this.htmlDiv_.style.left = metrics.absoluteMetrics.left + 'px';
     } else {
-      if (metrics.toolboxPosition === Blockly.TOOLBOX_AT_RIGHT) {
-        this.htmlDiv_.style.right = metrics.toolboxWidth + 'px';
+      if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_RIGHT) {
+        this.htmlDiv_.style.right = metrics.toolboxMetrics.width + 'px';
       } else {
         this.htmlDiv_.style.right = '0';
       }
     }
-    this.htmlDiv_.style.top = metrics.absoluteTop + 'px';
+    this.htmlDiv_.style.top = metrics.absoluteMetrics.top + 'px';
   }
 
   /**
@@ -419,7 +442,6 @@ export class WorkspaceSearch {
     currentBlock = this.blocks_[this.currentBlockIndex_];
 
     this.highlightCurrentSelection_(currentBlock);
-    this.updateCursor_(currentBlock);
     this.scrollToVisible_(currentBlock);
   }
 
@@ -428,23 +450,9 @@ export class WorkspaceSearch {
    */
   open() {
     this.setVisible_(true);
-    this.markCurrentPosition_();
     this.inputElement_.focus();
     if (this.searchText_) {
       this.searchAndHighlight(this.searchText_);
-    }
-  }
-
-  /**
-   * Marks the user's current position when opening the search bar.
-   * @private
-   */
-  markCurrentPosition_() {
-    const marker = this.workspace_.getMarker(Blockly.navigation.MARKER_NAME);
-    if (this.workspace_.keyboardAccessibilityMode && marker &&
-        !marker.getCurNode()) {
-      const curNode = this.workspace_.getCursor().getCurNode();
-      marker.setCurNode(curNode);
     }
   }
 
@@ -566,19 +574,6 @@ export class WorkspaceSearch {
     }
     this.currentBlockIndex_ = -1;
     this.blocks_ = [];
-  }
-
-  /**
-   * Updates the location of the cursor if the user is in keyboard accessibility
-   * mode.
-   * @param {!Blockly.BlockSvg} block The block to set the cursor to.
-   * @protected
-   */
-  updateCursor_(block) {
-    if (this.workspace_.keyboardAccessibilityMode) {
-      const currAstNode = Blockly.navigation.getTopNode(block);
-      this.workspace_.getCursor().setCurNode(currAstNode);
-    }
   }
 
   /**
