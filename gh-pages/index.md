@@ -27,6 +27,7 @@ layout: index
 * [Fixed Edges](plugins/fixed-edges/test/index.html)
 * [Zoom to Fit](plugins/zoom-to-fit/test/index.html)
 * [Keyboard Navigation](plugins/keyboard-navigation/test/index.html)
+* [Accessibility Experiment](plugins/keyboard-accessibility/test/index.html)
 
 ## Themes
 * [Theme Dark](plugins/theme-dark/test/index.html)
