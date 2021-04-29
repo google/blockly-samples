@@ -5,7 +5,7 @@
   "scripts": {
     "audit": "npm audit fix",
     "update": "npm update",
-    "serve": "parcel serve public/index.html",
+    "start": "parcel public/index.html",
     "build": "parcel build public/index.html"
   },
   "devDependencies": {
