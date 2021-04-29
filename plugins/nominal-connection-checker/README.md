@@ -24,12 +24,12 @@ It includes support for modeling subtyping, generic functions/blocks, and parame
 
 ### Yarn
 ```
-yarn add blockly-plugin-nominal
+yarn add @blockly/plugin-nominal-connection-checker
 ```
 
 ### npm
 ```
-npm install blockly-plugin-nominal --save
+npm install @blockly/plugin-nominal-connection-checker --save
 ```
 
 ## Usage

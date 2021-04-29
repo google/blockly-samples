@@ -1,0 +1,42 @@
+---
+title: "@blockly/block-dynamic-connection Demo"
+packageName: "@blockly/block-dynamic-connection"
+description: "A group of blocks that add connections dynamically."
+pageRoot: "plugins/block-dynamic-connection"
+pages:
+  - label: "Playground"
+    link: "test/index"
+  - label: "README"
+    link: "README"
+
+---
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Plugin Test</title>
+  <style>
+    html, body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="../build/test_bundle.js"></script>
+  
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <block type="text_join"></block>
+    <block type="list_create"></block>
+    <block type="controls_if"></block>
+    <block type="logic_boolean"><field name="BOOL">TRUE</field></block>
+    <block type="text"><field name="TEXT">abc</field></block>
+    <block type="math_number"><field name="NUM">123</field></block>
+    <block type="text_print"><value name="TEXT"><shadow type="text"><field name="TEXT">abc</field></shadow></value></block>
+  </xml>
+
+</body>
+
+</html>

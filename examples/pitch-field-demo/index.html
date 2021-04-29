@@ -6,6 +6,9 @@ files:
   - "field_pitch.js"
   - "pitch.css"
   - "media/*"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/msg/en.js"
 pageRoot: "examples/pitch-field-demo"
 
 ---
@@ -14,7 +17,7 @@ pageRoot: "examples/pitch-field-demo"
   <head>
     <meta charset="UTF-8">
     <title>Blockly Demo: Custom Pitch Field</title>
-    <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="blocks.js"></script>
     <script>
       var goog = {
@@ -23,7 +26,7 @@ pageRoot: "examples/pitch-field-demo"
       };
     </script>
     <script src="field_pitch.js"></script>
-    <script src="https://unpkg.com/blockly/msg/en.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
     <style>
       body {
         margin: 0 10%;

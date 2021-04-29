@@ -3,6 +3,9 @@ title: "Maximum Block Limit"
 description: "Limit the total number of blocks allowed (for academic exercises)."
 files:
   - "index.html"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/msg/en.js"
 pageRoot: "examples/max-blocks-demo"
 
 ---
@@ -11,9 +14,9 @@ pageRoot: "examples/max-blocks-demo"
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Maximum Block Limit</title>
-  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/msg/en.js"></script>
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
   <style>
     body {
       background-color: #fff;

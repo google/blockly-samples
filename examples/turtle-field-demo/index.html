@@ -6,6 +6,8 @@ files:
   - "blocks.js"
   - "turtle.css"
   - "media/*"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
 pageRoot: "examples/turtle-field-demo"
 
 ---
@@ -14,7 +16,7 @@ pageRoot: "examples/turtle-field-demo"
   <head>
     <meta charset="UTF-8">
     <title>Blockly Demo: Custom Turtle Field</title>
-    <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="blocks.js"></script>
     <script>
       var goog = {

@@ -3,6 +3,9 @@ title: "Generate JavaScript"
 description: "Turn blocks into code and execute it."
 files:
   - "index.html"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/msg/en.js"
 pageRoot: "examples/generator-demo"
 
 ---
@@ -11,10 +14,11 @@ pageRoot: "examples/generator-demo"
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Generating JavaScript</title>
-  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/msg/en.js"></script>
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/javascript_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
+
   <style>
     body {
       background-color: #fff;

@@ -3,6 +3,9 @@ title: "Fixed Blockly"
 description: "Inject Blockly into a page as a fixed element."
 files:
   - "index.html"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/msg/en.js"
 pageRoot: "examples/fixed-demo"
 
 ---
@@ -11,10 +14,10 @@ pageRoot: "examples/fixed-demo"
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Fixed Blockly</title>
-  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/msg/en.js"></script>
-  <style>
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
+    <style>
     body {
       background-color: #fff;
       font-family: sans-serif;

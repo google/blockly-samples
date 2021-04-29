@@ -3,6 +3,9 @@ title: "Graph"
 description: "Instant updates when blocks are changed."
 files:
   - "index.html"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/msg/en.js"
 pageRoot: "examples/graph-demo"
 
 ---
@@ -12,10 +15,11 @@ pageRoot: "examples/graph-demo"
   <meta charset="utf-8">
   <title>Blockly Demo: Graph</title>
   <script src="https://www.google.com/jsapi"></script>
-  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/msg/en.js"></script>
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/javascript_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
+
   <style>
     body {
       background-color: #fff;

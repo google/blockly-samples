@@ -6,6 +6,9 @@ files:
   - "step-execution.html"
   - "acorn_interpreter.js"
   - "wait_block.js"
+  - "./node_modules/blockly/*_compressed.js"
+  - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/msg/en.js"
 pages:
   - label: "Step Execution"
     link: "step-execution.html"
@@ -20,10 +23,11 @@ pageRoot: "examples/interpreter-demo"
   <meta charset="utf-8">
   <title>Blockly Demo: Asynchronous Execution with JS Interpreter</title>
   <script src="acorn_interpreter.js"></script>
-  <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
-  <script src="https://unpkg.com/blockly/msg/en.js"></script>
+
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/javascript_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>  
   <script src="wait_block.js"></script>
   <style>
     body {
