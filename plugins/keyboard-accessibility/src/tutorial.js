@@ -371,9 +371,9 @@ Tutorial.STEP_OBJECTS = [
     The toolbox is a list of code blocks that you can add to the workspace.
     You can always open the toolbox by pressing T.
     Your goal: Press T to open the toolbox, then use the up and down arrows to
-    explore it.  Press F when you are finished exploring.`,
+    explore it. Press F when you are finished exploring.`,
     goalText: `Press T to open the toolbox, then use the up and down arrows to
-      explore it.  Press F when you are finished exploring.`,
+      explore it. Press F when you are finished exploring.`,
     onStart: function(tutorial) {
       /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
       const finishStep = {

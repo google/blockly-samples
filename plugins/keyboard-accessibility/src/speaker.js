@@ -132,7 +132,7 @@ export class Speaker {
           this.nodeToText_(event.newNode, event.oldNode, !event.isCursor);
       if (!event.isCursor) {
         nodeText = `You have marked a location. To find a new block to connect
-        to this location hit T. ! . To insert a block on the workspace,
+        to this location hit T. To insert a block on the workspace,
         find the location of the block and hit I. `;
       }
       let onStart;
@@ -315,7 +315,7 @@ export class Speaker {
    * @private
    */
   getConnectionOptions_(node, isMarker) {
-    const markerText = `. To mark this location, hit enter.
+    const markerText = `To mark this location, hit enter.
     To change locations use the up or down arrows`;
     let finalText = '';
     if (!isMarker) {
