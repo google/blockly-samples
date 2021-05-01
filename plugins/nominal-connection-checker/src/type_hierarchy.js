@@ -36,9 +36,9 @@ export class TypeHierarchy {
     this.types_ = new Map();
 
     /**
-     * Map of type names to maps of type names to arrays of type names that are
-     * the nearest common ancestors of the two types. You can think of it like
-     * a two-dimensional array where both axes contain all of the type names.
+     * Acts as a map from pairs of type names to an array of the nearest common
+     * ancestors of those two types. Once initialized, this allows the nearest
+     * common ancestors to be accessed in constant time.
      *
      * A nearest common ancestor of two types u and v is defined as:
      * A super type of both u and v that has no descendant which is also an
@@ -49,9 +49,9 @@ export class TypeHierarchy {
     this.nearestCommonAncestors_ = new Map();
 
     /**
-     * Map of type names to maps of type names to arrays of type names that are
-     * the nearest common descendants of the two types. You can think of it like
-     * a two-dimensional array where both axes contain all of the type names.
+     * Acts as a map from pairs of type names to an array of the nearest common
+     * descendants of those two types. Once initialized, this allows the nearest
+     * common descendants to be accessed in constant time.
      *
      * A nearest common descendant of two types u and v is defined as:
      * A sub type of both U and v that has no ancestor which is also a
@@ -187,7 +187,7 @@ export class TypeHierarchy {
    * @param {!Map<string, !Map<string, Array<string>>>} nearestCommonMap The
    *      map of nearest common types (either ancestors or descendants) that we
    *     are initializing.
-   * @param {function(TypeDef):!Array<string>} relevantRelatives Returns the
+   * @param {function(TypeDef):!Array<string>} getRelevantRelatives Returns the
    *     relatives that are relevant to this procedure. In the case of
    *     ancestors, returns supertypes, and in the case of descendants, returns
    *     subtypes.
@@ -196,14 +196,13 @@ export class TypeHierarchy {
    *     type associated with the string name and the given type def.
    * @private
    */
-  initNearest_(nearestCommonMap, relevantRelatives, isNearest) {
+  initNearest_(nearestCommonMap, getRelevantRelatives, isNearest) {
     const unvisitedTypes = new Set(this.types_.keys());
     while (unvisitedTypes.size) {
       for (const typeName of unvisitedTypes) {
         const type = this.types_.get(typeName);
-        const hasUnvisited = !!relevantRelatives(type).filter(
-            unvisitedTypes.has, unvisitedTypes).length;
-        if (hasUnvisited) {
+        const relevantRelatives = getRelevantRelatives(type);
+        if (relevantRelatives.some(unvisitedTypes.has, unvisitedTypes)) {
           continue;
         }
         unvisitedTypes.delete(typeName);
@@ -215,23 +214,25 @@ export class TypeHierarchy {
           if (isNearest(type, otherTypeName)) {
             nearestCommon.push(typeName);
           } else {
-            // Get all the nearest common types this type's relevant relatives
-            // have with the otherType.
-            relevantRelatives(type).forEach((relTypeName) => {
+            // Get all the nearest common types that this type's relevant
+            // relatives share with the otherType.
+            relevantRelatives.forEach((relTypeName) => {
               nearestCommon.push(
                   ...nearestCommonMap.get(relTypeName)
                       .get(otherTypeName));
             });
-            // Remove types that have a nearer relative in the array.
+            // Only keep types that have no nearer relative in the array.
             nearestCommon = nearestCommon.filter(
-                (typeName, i, array) => {
-                  return !array.some((otherTypeName) => {
-                    // Don't match the type against itself, but do match against
-                    // duplicates.
-                    if (array.indexOf(otherTypeName) == i) {
+                (nearestTypeName, i, array) => {
+                  return array.every((otherNearestTypeName, j) => {
+                    if (i <= j) {
+                      return true;
+                    }
+                    if (nearestTypeName == otherTypeName) {
                       return false;
                     }
-                    return isNearest(this.types_.get(typeName), otherTypeName);
+                    return !isNearest(
+                        this.types_.get(nearestTypeName), otherNearestTypeName);
                   });
                 });
           }
@@ -336,7 +337,7 @@ export class TypeHierarchy {
           (type, ancestorName, actualTypes) =>
             type.getParamsForAncestor(ancestorName, actualTypes));
       if (!paramsLists.length) {
-        mappedTypes[i] = [new TypeStructure(commonType)];
+        mappedTypes.push([new TypeStructure(commonType)]);
         continue;
       }
       const commonDef = this.types_.get(commonType);
@@ -350,17 +351,16 @@ export class TypeHierarchy {
       if (!combinations.length) {
         // If this commonType didn't unify, maybe the parents of that type will.
         commonTypes.push(...commonDef.supers());
+        continue;
       }
-      mappedTypes[i] = combinations.map((combo) => {
+      mappedTypes.push(combinations.map((combo) => {
         const struct = new TypeStructure(commonType);
         struct.params = combo;
         return struct;
-      });
+      }));
     }
 
     return mappedTypes
-        // Remove empty arrays.
-        .filter((typeStructs) => !!typeStructs.length)
         // Remove duplicates.
         .filter((typeStructs, i, arrays) => {
           const typeName = typeStructs[0].name;
@@ -370,12 +370,12 @@ export class TypeHierarchy {
         // Remove non-nearest types.
         .filter((typeStructs, i, arrays) => {
           const typeName = typeStructs[0].name;
-          return !arrays.some((typeStructs2, j) => {
+          return arrays.every((typeStructs2, j) => {
             if (i == j) {
-              return false;
+              return true;
             }
             const typeName2 = typeStructs2[0].name;
-            return this.types_.get(typeName)
+            return !this.types_.get(typeName)
                 .hasDescendant(typeName2);
           });
         })
