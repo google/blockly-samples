@@ -85,6 +85,9 @@ export class WelcomeModal {
     this.registerGameButton();
   }
 
+  /**
+   * Closes the modal.
+   */
   triggerClose_() {
     this.codeTriggeredClose_ = true;
     MicroModal.close(this.modalId);
