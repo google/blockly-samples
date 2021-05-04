@@ -69,19 +69,6 @@ function addTestButtons() {
       (event) => {
         registerArrowKeys(event.currentTarget.checked);
       });
-  document.getElementById('modalButton').addEventListener('click',
-      function() {
-        speaker.modalToText(document.getElementById('modal-1'));
-      });
-
-  document.getElementById('modalButton').addEventListener('focus',
-      function(e) {
-        speaker.speak('Hit enter to open the help menu');
-      });
-  document.getElementById('replayButton').addEventListener('click',
-      function() {
-        speaker.modalToText(document.getElementById('modal-1'));
-      });
 }
 
 /**

@@ -5,11 +5,9 @@
  */
 
 /**
- * @fileoverview The class representing a line cursor.
- * A line cursor traverses the blocks as if they were
- * lines of code in a text editor.
- * Previous and next go up and down lines. In and out go
- * through the elements in a line.
+ * @fileoverview The class representing a cursor that traverses all inputs,
+ * fields, and connections on the workspace using next and previous. This is
+ * based off of the BasicCursor that does a pre order traversal of the AST.
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 'use strict';
@@ -19,7 +17,6 @@ import {speaker} from './speaker';
 import {notePlayer} from './note_player';
 
 /**
- * Class for a line cursor.
  * This will allow the user to get to all nodes in the AST by hitting next or
  * previous.
  * @constructor
@@ -27,12 +24,14 @@ import {notePlayer} from './note_player';
  */
 export class CustomCursor extends Blockly.BasicCursor {
   /**
-   * Constructor for a line cursor.
+   * Constructor for a custom cursor.
    */
   constructor() {
     super();
+    // Makes it so the ast contains all fields, not just editable fields.
     Blockly.ASTNode.NAVIGATE_ALL_FIELDS = true;
   }
+
   /**
    * Find the next node in the pre order traversal.
    * @return {Blockly.ASTNode} The next node, or null if the current node is
@@ -49,13 +48,13 @@ export class CustomCursor extends Blockly.BasicCursor {
     if (newNode) {
       this.setCurNode(newNode);
     } else {
-      speaker.speak(speaker.nodeToText_(
-              this.getCurNode(), this.getCurNode(), false), true);
+      speaker.speak(
+          speaker.nodeToText_(this.getCurNode(), this.getCurNode(), false),
+          true);
       notePlayer.playNote('c4', '16n');
     }
     return newNode;
   }
-
 
   /**
    * Find the previous node in the pre order traversal.
@@ -73,32 +72,30 @@ export class CustomCursor extends Blockly.BasicCursor {
     if (newNode) {
       this.setCurNode(newNode);
     } else {
-      speaker.speak(speaker.nodeToText_(
-          this.getCurNode(), this.getCurNode(), false), true);
+      speaker.speak(
+          speaker.nodeToText_(this.getCurNode(), this.getCurNode(), false),
+          true);
       notePlayer.playNote('c4', '16n');
     }
     return newNode;
   }
 
   /**
-   * For a basic cursor we only have the ability to go next and previous, so
-   * in will also allow the user to get to the next node in the pre order
-   * traversal.
+   * No-op. For this cursor, we do not have the ability to go in.
    * @override
    */
   in() {}
 
   /**
-   * For a basic cursor we only have the ability to go next and previous, so
-   * out will allow the user to get to the previous node in the pre order
-   * traversal.
+   * No-op. For this cursor, we do not have the ability to go out.
    * @override
    */
   out() {}
 
   /**
-   * Meant to traverse by lines of code. This is blocks, statement inputs and
-   * next connections.
+   * Valid nodes are all connections, fields, inputs that are not connected to
+   * another block, and blocks that do not have a previous output or previous
+   * connection.
    * @param {Blockly.ASTNode} node The AST node to check whether it is valid.
    * @return {boolean} True if the node should be visited, false otherwise.
    * @private

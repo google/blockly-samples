@@ -57,10 +57,6 @@ export class WelcomeModal {
    */
   init() {
     this.createDom();
-    document.getElementById('replayButton').addEventListener('click',
-        () => {
-          speaker.modalToText(document.getElementById(this.modalId));
-        });
     document.getElementById('welcomeCloseButton').addEventListener(
         'blur', () => {
           speaker.cancel();

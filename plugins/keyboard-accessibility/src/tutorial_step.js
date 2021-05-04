@@ -10,6 +10,8 @@
 'use strict';
 
 import {speaker} from './speaker';
+
+
 /**
  * A step in the tutorial.
  */
@@ -21,6 +23,8 @@ export class TutorialStep {
    *     displayed.
    * @param {Function} doneCb The function to call when the step is completed
    *     by the user.
+   * @param {string} goalText The text explaining what the goal of the current
+   *     step is.
    * @constructor
    */
   constructor(text, textId, doneCb, goalText) {

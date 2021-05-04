@@ -157,8 +157,7 @@
 }
 
 .root {
-  display: flex;
-  height: calc(100vh - 175px);
+  height: calc(100vh - 50px);
   overflow: hidden;
   padding-top: 10px;
   user-select: none;
@@ -198,6 +197,12 @@
   width: 100px;
 }
 
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
 </style>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   
@@ -205,36 +210,36 @@
 
 
 <body>
-  <nav class="navbar navbar-light bg-light">
+  <!-- <nav class="navbar navbar-light bg-light">
     Navbar
     <button type="button" class="btn btn-primary" data-micromodal-trigger="modal-1" id="modalButton">Help</button>
-  </nav>
+  </nav> -->
 
-  <div>
-    <button class="btn btn-light-primary" id="playNoteAndText">Speak and Play Note</button>
-    <button class="btn btn-light" id="playNote">Play Note</button>
-    <button class="btn btn-light" id="logGeneratedCode">Log Code</button>
-    <button class="btn btn-light" id="executeCode">Execute Code</button>
-    <textarea id="textInput"></textarea>
-    <button class="btn btn-light" id="playText">Play Text</button>
-    <input type="checkbox" id="enableArrowKeys" checked />
-    <label for="enableArrowKeys">Enable arrow key navigation</label>
-    <input type="checkbox" id="playOnly">
-    <label for="playOnly">Play don't say</label>
-    <label for="speedSlider">BPM:</label>
-    <input type="range" min="20" max="200" value="100" class="slider" id="speedSlider">
-
-    </div>
-  </div>
   <div class="root">
-    <div class="sidebar">
-      <h4>Goal</h4>
-      <p id="goalText"class="textInfo"></p>
-      <h4>Feedback</h4>
-      <p id="feedbackText"class="textInfo"></p>
+    <div>
+      <button class="btn btn-light-primary" id="playNoteAndText">Speak and Play Note</button>
+      <button class="btn btn-light" id="playNote">Play Note</button>
+      <button class="btn btn-light" id="logGeneratedCode">Log Code</button>
+      <button class="btn btn-light" id="executeCode">Execute Code</button>
+      <textarea id="textInput"></textarea>
+      <button class="btn btn-light" id="playText">Play Text</button>
+      <input type="checkbox" id="enableArrowKeys" checked />
+      <label for="enableArrowKeys">Enable arrow key navigation</label>
+      <input type="checkbox" id="playOnly">
+      <label for="playOnly">Play don't say</label>
+      <label for="speedSlider">BPM:</label>
+      <input type="range" min="20" max="200" value="100" class="slider" id="speedSlider">
     </div>
-    <div class="blocklyArea">
-      <div id="blocklyDiv"></div>
+    <div class="main-container">
+      <div class="sidebar">
+        <h4>Goal</h4>
+        <p id="goalText"class="textInfo"></p>
+        <h4>Feedback</h4>
+        <p id="feedbackText"class="textInfo"></p>
+      </div>
+      <div class="blocklyArea">
+        <div id="blocklyDiv"></div>
+      </div>  
     </div>
   </div>
   <script src="../build/test_bundle.js"></script>

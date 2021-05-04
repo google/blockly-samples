@@ -13,7 +13,6 @@ import Blockly from 'blockly/core';
 import MicroModal from 'micromodal';
 import {Music} from './music';
 import {MusicGame} from './game';
-import {HelpModal} from './help_modal';
 import {KeyPressModal} from './key_press_modal';
 import {WelcomeModal} from './welcome_modal';
 import {speaker} from './speaker';
@@ -55,9 +54,6 @@ export class MusicGameController {
      * @private
      */
     this.game_ = this.createGame();
-
-    const helpModal = new HelpModal('modal-1', 'modalButton');
-    helpModal.init();
 
     // Start by showing the key press modal.
     new KeyPressModal(() => this.showWelcomeModal()).init();
