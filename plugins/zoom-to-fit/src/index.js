@@ -197,22 +197,6 @@ export class ZoomToFitControl {
       }
     }
 
-    if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-        (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
-      // Right corner placement.
-      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH_ - this.MARGIN_HORIZONTAL_;
-      if (hasVerticalScrollbars && !this.workspace_.RTL) {
-        this.left_ -= Blockly.Scrollbar.scrollbarThickness;
-      }
-    } else {
-      // Left corner placement.
-      this.left_ = this.MARGIN_HORIZONTAL_;
-      if (hasVerticalScrollbars && this.workspace_.RTL) {
-        this.left_ += Blockly.Scrollbar.scrollbarThickness;
-      }
-    }
-
     const startAtBottom =
         metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
     if (startAtBottom) {
