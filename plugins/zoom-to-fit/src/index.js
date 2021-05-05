@@ -225,8 +225,6 @@ export class ZoomToFitControl {
         i = -1;
       }
     }
-    // Clamp top value within valid range.
-    this.top_ = Blockly.utils.math.clamp(minTop, this.top_, maxTop);
 
     this.svgGroup_.setAttribute('transform',
         'translate(' + this.left_ + ',' + this.top_ + ')');
