@@ -31,28 +31,28 @@ export class ZoomToFitControl {
     this.workspace_ = workspace;
 
     /**
-     * The SVG group containing the zoom controls.
+     * The SVG group containing the zoom-to-fit control.
      * @type {SVGElement}
      * @private
      */
     this.svgGroup_ = null;
 
     /**
-     * Left coordinate of the zoom controls.
+     * Left coordinate of the zoom-to-fit control.
      * @type {number}
      * @private
      */
     this.left_ = 0;
 
     /**
-     * Top coordinate of the zoom controls.
+     * Top coordinate of the zoom-to-fit control.
      * @type {number}
      * @private
      */
     this.top_ = 0;
 
     /**
-     * Width of the zoom controls.
+     * Width of the zoom-to-fit control.
      * @type {number}
      * @const
      * @private
@@ -60,7 +60,7 @@ export class ZoomToFitControl {
     this.WIDTH_ = 32;
 
     /**
-     * Height of the zoom controls.
+     * Height of the zoom-to-fit control.
      * @type {number}
      * @const
      * @private
@@ -68,19 +68,20 @@ export class ZoomToFitControl {
     this.HEIGHT_ = 32;
 
     /**
-     * Distance between zoom controls and bottom edge of workspace.
-     * @type {number}
-     * @private
-     */
-    this.MARGIN_BOTTOM_ = 20;
-
-    /**
-     * Distance between zoom controls and right edge of workspace.
+     * Distance between zoom-to-fit control and bottom or top edge of workspace.
      * @type {number}
      * @const
      * @private
      */
-    this.MARGIN_SIDE_ = 20;
+    this.MARGIN_VERTICAL_ = 20;
+
+    /**
+     * Distance between zoom-to-fit control and right or left edge of workspace.
+     * @type {number}
+     * @const
+     * @private
+     */
+    this.MARGIN_HORIZONTAL_ = 20;
 
     /**
      * Whether this has been initialized.
@@ -184,28 +185,26 @@ export class ZoomToFitControl {
         (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
       // Right corner placement.
       this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH_ - this.MARGIN_SIDE_;
+          this.WIDTH_ - this.MARGIN_HORIZONTAL_;
       if (hasVerticalScrollbars && !this.workspace_.RTL) {
         this.left_ -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Left corner placement.
-      this.left_ = this.MARGIN_SIDE_;
+      this.left_ = this.MARGIN_HORIZONTAL_;
       if (hasVerticalScrollbars && this.workspace_.RTL) {
         this.left_ += Blockly.Scrollbar.scrollbarThickness;
       }
     }
 
     // Upper corner placement
-    let minTop = metrics.absoluteMetrics.top + this.MARGIN_BOTTOM_;
-    if (hasHorizontalScrollbars) {
-      minTop += Blockly.Scrollbar.scrollbarThickness;
-    }
+    let minTop = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL_;
 
     // Bottom corner placement
     const maxTop = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-        this.HEIGHT_ - this.MARGIN_BOTTOM_;
+        this.HEIGHT_ - this.MARGIN_VERTICAL_;
     if (hasHorizontalScrollbars) {
+      // The horizontal scrollbars are always positioned on the bottom.
       minTop -= Blockly.Scrollbar.scrollbarThickness;
     }
     const bumpUp =
@@ -217,10 +216,9 @@ export class ZoomToFitControl {
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
         if (bumpUp) {
-          // Bump up
-          this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_BOTTOM_;
-        } else {
-          this.top_ = otherEl.bottom + this.MARGIN_BOTTOM_;
+          this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_VERTICAL_;
+        } else { // Bump down.
+          this.top_ = otherEl.bottom + this.MARGIN_VERTICAL_;
         }
         // Recheck other savedPositions
         boundingRect = this.getBoundingRectangle();
