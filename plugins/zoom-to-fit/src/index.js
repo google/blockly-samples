@@ -197,25 +197,42 @@ export class ZoomToFitControl {
       }
     }
 
-    // Upper corner placement
-    let minTop = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL_;
-
-    // Bottom corner placement
-    const maxTop = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-        this.HEIGHT_ - this.MARGIN_VERTICAL_;
-    if (hasHorizontalScrollbars) {
-      // The horizontal scrollbars are always positioned on the bottom.
-      minTop -= Blockly.Scrollbar.scrollbarThickness;
+    if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
+        (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
+      // Right corner placement.
+      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
+          this.WIDTH_ - this.MARGIN_HORIZONTAL_;
+      if (hasVerticalScrollbars && !this.workspace_.RTL) {
+        this.left_ -= Blockly.Scrollbar.scrollbarThickness;
+      }
+    } else {
+      // Left corner placement.
+      this.left_ = this.MARGIN_HORIZONTAL_;
+      if (hasVerticalScrollbars && this.workspace_.RTL) {
+        this.left_ += Blockly.Scrollbar.scrollbarThickness;
+      }
     }
-    const bumpUp =
+
+    const startAtBottom =
         metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
-    this.top_ = bumpUp ? maxTop : minTop;
+    if (startAtBottom) {
+      // Bottom corner placement
+      this.top_ = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
+          this.HEIGHT_ - this.MARGIN_VERTICAL_;
+      if (hasHorizontalScrollbars) {
+        // The horizontal scrollbars are always positioned on the bottom.
+        this.top_ -= Blockly.Scrollbar.scrollbarThickness;
+      }
+    } else {
+      // Upper corner placement
+      this.top_ = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL_;
+    }
 
     // Check for collision and bump if needed.
     let boundingRect = this.getBoundingRectangle();
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
-        if (bumpUp) {
+        if (startAtBottom) { // Bump up.
           this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_VERTICAL_;
         } else { // Bump down.
           this.top_ = otherEl.bottom + this.MARGIN_VERTICAL_;
