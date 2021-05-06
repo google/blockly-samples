@@ -151,8 +151,9 @@ export class TypeHierarchy {
   initNearestCommonAncestors_() {
     this.initNearest_(
         this.nearestCommonAncestors_,
-        (type) => type.supers(),
-        (type, otherTypeName) => type.hasDescendant(otherTypeName));
+        (type) => this.types_.get(type).supers(),
+        (typeName, otherType) =>
+          this.types_.get(otherType).hasAncestor(typeName));
   }
 
   /**
@@ -163,8 +164,9 @@ export class TypeHierarchy {
   initNearestCommonDescendants_() {
     this.initNearest_(
         this.nearestCommonDescendants_,
-        (type) => type.subs(),
-        (type, otherTypeName) => type.hasAncestor(otherTypeName));
+        (type) => this.types_.get(type).subs(),
+        (typeName, otherType) =>
+          this.types_.get(otherType).hasDescendant(typeName));
   }
 
   /**
@@ -187,56 +189,47 @@ export class TypeHierarchy {
    * @param {!Map<string, !Map<string, Array<string>>>} nearestCommonMap The
    *      map of nearest common types (either ancestors or descendants) that we
    *     are initializing.
-   * @param {function(TypeDef):!Array<string>} getRelevantRelatives Returns the
+   * @param {function(string):!Array<string>} getRelevantRelatives Returns the
    *     relatives that are relevant to this procedure. In the case of
    *     ancestors, returns supertypes, and in the case of descendants, returns
    *     subtypes.
-   * @param {function(TypeDef, string):boolean} isNearest Returns true if the
-   *     type associated with the string name is the nearest common X of the
-   *     type associated with the string name and the given type def.
+   * @param {function(string, string):boolean} isNearest Returns true if the
+   *     first type is the nearest common ancestor/descendant of itself and the
+   *     second type.
    * @private
    */
   initNearest_(nearestCommonMap, getRelevantRelatives, isNearest) {
     const unvisitedTypes = new Set(this.types_.keys());
     while (unvisitedTypes.size) {
-      for (const typeName of unvisitedTypes) {
-        const type = this.types_.get(typeName);
-        const relevantRelatives = getRelevantRelatives(type);
+      for (const type1 of unvisitedTypes) {
+        const relevantRelatives = getRelevantRelatives(type1);
         if (relevantRelatives.some(unvisitedTypes.has, unvisitedTypes)) {
           continue;
         }
-        unvisitedTypes.delete(typeName);
+        unvisitedTypes.delete(type1);
 
         const map = new Map();
-        nearestCommonMap.set(typeName, map);
-        for (const [otherTypeName] of this.types_) {
+        nearestCommonMap.set(type1, map);
+        for (const [type2] of this.types_) {
           let nearestCommon = [];
-          if (isNearest(type, otherTypeName)) {
-            nearestCommon.push(typeName);
+          if (isNearest(type1, type2)) {
+            nearestCommon.push(type1);
           } else {
             // Get all the nearest common types that this type's relevant
             // relatives share with the otherType.
             relevantRelatives.forEach((relTypeName) => {
               nearestCommon.push(
-                  ...nearestCommonMap.get(relTypeName)
-                      .get(otherTypeName));
+                  ...nearestCommonMap.get(relTypeName).get(type2));
             });
-            // Only keep types that have no nearer relative in the array.
-            nearestCommon = nearestCommon.filter(
-                (nearestTypeName, i, array) => {
-                  return array.every((otherNearestTypeName, j) => {
-                    if (i <= j) {
-                      return true;
-                    }
-                    if (nearestTypeName == otherTypeName) {
-                      return false;
-                    }
-                    return !isNearest(
-                        this.types_.get(nearestTypeName), otherNearestTypeName);
-                  });
-                });
+            nearestCommon = nearestCommon
+                // Remove duplicates.
+                .filter((elem, i, arr) => arr.indexOf(elem) == i)
+                // Only keep types that have no nearer relative in the array.
+                .filter((type3, i, array) =>
+                  array.every((type4, j) =>
+                    i == j || !isNearest(type3, type4)));
           }
-          map.set(otherTypeName, nearestCommon);
+          map.set(type2, nearestCommon);
         }
       }
     }
@@ -375,13 +368,11 @@ export class TypeHierarchy {
               return true;
             }
             const typeName2 = typeStructs2[0].name;
-            return !this.types_.get(typeName)
-                .hasDescendant(typeName2);
+            return !this.types_.get(typeName).hasDescendant(typeName2);
           });
         })
-        .reduce((flat, toFlatten) => {
-          return [...flat, ...toFlatten];
-        }, []);
+        // Flatten the array of arrays. See #431.
+        .reduce((flat, toFlatten) => [...flat, ...toFlatten], []);
   }
 
   /**
@@ -425,9 +416,8 @@ export class TypeHierarchy {
             return struct;
           });
         })
-        .reduce((flat, toFlatten) => {
-          return [...flat, ...toFlatten];
-        }, []);
+        // Flatten the array of arrays. See #431.
+        .reduce((flat, toFlatten) => [...flat, ...toFlatten], []);
   }
 
   /**
@@ -465,19 +455,13 @@ export class TypeHierarchy {
   getNearestCommon_(typeNames, nearestCommon) {
     return typeNames.reduce((accumulator, currType) => {
       const commonMap = nearestCommon.get(currType);
-      // Note: neither flatMap() nor flat() work on Node 10. See #431.
       return accumulator
-          .map((type) => {
-            return [...commonMap.get(type)]; // Create copy to avoid corruption.
-          })
-          .reduce((flat, toFlatten) => {
-            return [...flat, ...toFlatten];
-          }, [])
-          .filter((type, i, array) => { // Get rid of duplicates.
-            return array.every((type2, i2) => {
-              return i <= i2 || type != type2;
-            });
-          });
+          // Create copy to avoid corruption.
+          .map((type) => [...commonMap.get(type)])
+          // Flatten the array of arrays. See #431.
+          .reduce((flat, toFlatten) => [...flat, ...toFlatten], [])
+          // Remove duplicates.
+          .filter((elem, i, arr) => arr.indexOf(elem) == i);
     }, [typeNames[0]]);
   }
 
