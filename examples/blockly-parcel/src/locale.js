@@ -18,17 +18,17 @@ import * as Fr from 'blockly/msg/fr';
 Blockly.setLocale(Fr);
 
 document.addEventListener("DOMContentLoaded", function () {
-	const workspace = Blockly.inject('blocklyDiv',
-		{
-			toolbox: document.getElementById('toolbox'),
-			media: 'media/'
-		});
+  const workspace = Blockly.inject('blocklyDiv',
+    {
+      toolbox: document.getElementById('toolbox'),
+      media: 'media/'
+    });
 
-	const lang = 'JavaScript';
-	const button = document.getElementById('blocklyButton');
-	button.addEventListener('click', function () {
-		alert("Check the console for the generated output.");
-		const code = Blockly[lang].workspaceToCode(workspace);
-		console.log(code);
-	});
+  const lang = 'JavaScript';
+  const button = document.getElementById('blocklyButton');
+  button.addEventListener('click', function () {
+    alert("Check the console for the generated output.");
+    const code = Blockly[lang].workspaceToCode(workspace);
+    console.log(code);
+  });
 });
