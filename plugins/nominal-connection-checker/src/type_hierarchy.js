@@ -116,8 +116,9 @@ export class TypeHierarchy {
         if (!unvisitedSupers.length) {
           type.supers().forEach((superName) => {
             const superType = this.types_.get(superName);
-            superType.ancestors().forEach(
-                (ancestor) => type.addAncestor(ancestor, superType));
+            superType.ancestors().forEach((ancestor) => {
+              type.addAncestor(ancestor, superType);
+            });
           });
           unvisitedTypes.delete(typeName);
         }
@@ -134,8 +135,9 @@ export class TypeHierarchy {
         if (!unvisitedSubs.length) {
           type.subs().forEach((subName) => {
             const subType = this.types_.get(subName);
-            subType.descendants().forEach((descendantName) =>
-              type.addDescendant(this.types_.get(descendantName), subType));
+            subType.descendants().forEach((descendantName) => {
+              type.addDescendant(this.types_.get(descendantName), subType);
+            });
           });
           unvisitedTypes.delete(typeName);
         }
@@ -152,8 +154,10 @@ export class TypeHierarchy {
     this.initNearest_(
         this.nearestCommonAncestors_,
         (type) => this.types_.get(type).supers(),
-        (typeName, otherType) =>
-          this.types_.get(otherType).hasAncestor(typeName));
+        (typeName, otherType) => {
+          return this.types_.get(otherType).hasAncestor(typeName);
+        }
+    );
   }
 
   /**
@@ -165,8 +169,10 @@ export class TypeHierarchy {
     this.initNearest_(
         this.nearestCommonDescendants_,
         (type) => this.types_.get(type).subs(),
-        (typeName, otherType) =>
-          this.types_.get(otherType).hasDescendant(typeName));
+        (typeName, otherType) => {
+          return this.types_.get(otherType).hasDescendant(typeName);
+        }
+    );
   }
 
   /**
@@ -225,9 +231,11 @@ export class TypeHierarchy {
                 // Remove duplicates.
                 .filter((elem, i, arr) => arr.indexOf(elem) == i)
                 // Only keep types that have no nearer relative in the array.
-                .filter((type3, i, array) =>
-                  array.every((type4, j) =>
-                    i == j || !isNearest(type3, type4)));
+                .filter((type3, i, array) => {
+                  return array.every((type4, j) => {
+                    return i == j || !isNearest(type3, type4);
+                  });
+                });
           }
           map.set(type2, nearestCommon);
         }
