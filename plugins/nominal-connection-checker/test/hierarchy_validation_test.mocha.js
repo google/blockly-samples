@@ -224,8 +224,8 @@ suite('Hierarchy Validation', function() {
             {
               'name': 'A',
               'variance': 'co',
-            }
-          ]
+            },
+          ],
         },
         'typeB': {
           'fulfills': ['typeA[A]', 'typeA[B]'],

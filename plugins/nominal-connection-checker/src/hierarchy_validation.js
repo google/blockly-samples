@@ -239,7 +239,7 @@ function checkDupeSupers(hierarchyDef) {
 
   for (const type of Object.keys(hierarchyDef)) {
     const typeInfo = hierarchyDef[type];
-    if (!typeInfo.fulfills) {
+    if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
       continue;
     }
     const superOccurrences = new Map();
