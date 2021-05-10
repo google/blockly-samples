@@ -231,7 +231,7 @@ function checkSupersDefined(hierarchyDef) {
 
 /**
  * Checks the hierarchy def for any types which include the same type multiple
- * times in their fulfills array.
+ * times in their fulfills array. Logs an error to the console if found.
  * @param {!Object} hierarchyDef The definition of the type hierarchy.
  */
 function checkDupeSupers(hierarchyDef) {
@@ -242,20 +242,16 @@ function checkDupeSupers(hierarchyDef) {
     if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
       continue;
     }
-    const superOccurrences = new Map();
-    const superNames = new Map();
+    const supersSeen = new Set();
+    const supersSeenMultiple = new Map();
     for (const superType of typeInfo.fulfills) {
       try {
         const superName = parseType(superType, false).name;
         const lowerCaseName = superName.toLowerCase();
-        if (!superNames.has(lowerCaseName)) {
-          superNames.set(lowerCaseName, superName);
-        }
-        if (!superOccurrences.has(lowerCaseName)) {
-          superOccurrences.set(lowerCaseName, 1);
+        if (supersSeen.has(lowerCaseName)) {
+          supersSeenMultiple.set(lowerCaseName, superName);
         } else {
-          superOccurrences.set(
-              lowerCaseName, superOccurrences.get(lowerCaseName) + 1);
+          supersSeen.add(lowerCaseName);
         }
       } catch (e) {
         if (!(e instanceof TypeParseError)) {
@@ -263,10 +259,8 @@ function checkDupeSupers(hierarchyDef) {
         } // Otherwise it will have been handled by our specific check.
       }
     }
-    for (const [lowerCaseName, occurences] of superOccurrences) {
-      if (occurences > 1) {
-        console.error(errorMsg, type, superNames.get(lowerCaseName));
-      }
+    for (const [, casedName] of supersSeenMultiple) {
+      console.error(errorMsg, type, casedName);
     }
   }
 }

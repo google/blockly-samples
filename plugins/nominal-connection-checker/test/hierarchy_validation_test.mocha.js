@@ -210,7 +210,7 @@ suite('Hierarchy Validation', function() {
       validateHierarchy({
         'typeA': { },
         'typeB': {
-          'fulfills': ['typeA', 'typea'],
+          'fulfills': ['typea', 'typeA'],
         },
       });
       chai.assert.isTrue(this.errorStub.calledOnce);
