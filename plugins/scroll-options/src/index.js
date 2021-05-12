@@ -33,7 +33,7 @@ export class Plugin {
    */
   init() {
     const dragSurface = this.workspace_.getBlockDragSurface();
-    Blockly.bindEventWithChecks_(
+    Blockly.browserEvents.conditionalBind(
         dragSurface.getSvgRoot(), 'wheel', this, this.onMouseWheel_);
   }
 
@@ -63,16 +63,21 @@ export class Plugin {
 
     // Try to scroll to the desired location.
     this.workspace_.getMetricsManager().stopCalculating = true;
+    const absoluteMetrics =
+        this.workspace_.getMetricsManager().getAbsoluteMetrics();
+
     this.workspace_.scroll(x, y);
+
+    const newLocation = new Blockly.utils.Coordinate(
+        this.workspace_.scrollX + absoluteMetrics.left,
+        this.workspace_.scrollY + absoluteMetrics.top);
     this.workspace_.getMetricsManager().stopCalculating = false;
 
     // Get the new location of the block dragger after scrolling the workspace.
     // TODO: is this more expensive than just calculating ourselves?
-    const newLocation = this.getDragSurfaceLocation_(dragSurface);
-
     // How much we actually ended up scrolling.
-    const deltaX = newLocation.x - oldLocation.x;
-    const deltaY = newLocation.y - oldLocation.y;
+    const deltaX = newLocation.x.toFixed() - oldLocation.x;
+    const deltaY = newLocation.y.toFixed() - oldLocation.y;
 
     if (deltaX || deltaY) {
       // TODO: Can not access private blockDragger.
