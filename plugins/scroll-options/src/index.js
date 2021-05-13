@@ -50,51 +50,44 @@ export class Plugin {
       return;
     }
 
-    const dragSurface = this.workspace_.getBlockDragSurface();
-
-    // The location of the block dragger before we scroll the workspace.
-    // TODO: Should this just be stored on the block drag surface?
-    const oldLocation = this.getDragSurfaceLocation_(dragSurface);
-
     // Figure out the desired location to scroll to.
     const scrollDelta = Blockly.utils.getScrollDeltaPixels(e);
     const x = this.workspace_.scrollX - scrollDelta.x;
     const y = this.workspace_.scrollY - scrollDelta.y;
 
-    // Try to scroll to the desired location.
+    const oldLocation = this.getDragSurfaceLocation_();
+
     this.workspace_.getMetricsManager().stopCalculating = true;
-    const absoluteMetrics =
-        this.workspace_.getMetricsManager().getAbsoluteMetrics();
-
+    // Try to scroll to the desired location.
     this.workspace_.scroll(x, y);
-
-    const newLocation = new Blockly.utils.Coordinate(
-        this.workspace_.scrollX + absoluteMetrics.left,
-        this.workspace_.scrollY + absoluteMetrics.top);
     this.workspace_.getMetricsManager().stopCalculating = false;
 
+    const newLocation = this.getDragSurfaceLocation_();
+
     // Get the new location of the block dragger after scrolling the workspace.
-    // TODO: is this more expensive than just calculating ourselves?
     // How much we actually ended up scrolling.
-    const deltaX = newLocation.x.toFixed() - oldLocation.x;
-    const deltaY = newLocation.y.toFixed() - oldLocation.y;
+    const deltaX = newLocation.x - oldLocation.x;
+    const deltaY = newLocation.y - oldLocation.y;
 
     if (deltaX || deltaY) {
       // TODO: Can not access private blockDragger.
+      // TODO: Update block dragger with better documentation.
       currentGesture.blockDragger_.moveBlockWhileDragging(deltaX, deltaY);
+      // TODO: Is this preventDefault in the correct place?
       e.preventDefault();
     }
   }
 
   /**
    * Gets the current location of the drag surface.
-   * @param {!Blockly.BlockDragSurface} dragSurface The block drag surface.
    * @return {Blockly.utils.Coordinate} The current coordinate.
    * @private
    */
-  getDragSurfaceLocation_(dragSurface) {
+  getDragSurfaceLocation_() {
+    const dragSurface = this.workspace_.getBlockDragSurface();
+    // TODO: Double check that this can not fall out of
     return new Blockly.utils.Coordinate(
-        dragSurface.getGroup().transform.baseVal.consolidate().matrix.e,
-        dragSurface.getGroup().transform.baseVal.consolidate().matrix.f);
+        Math.round(dragSurface.dragSurfaceXY_.x),
+        Math.round(dragSurface.dragSurfaceXY_.y));
   }
 }
