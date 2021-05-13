@@ -29,7 +29,7 @@ export class Plugin {
   }
 
   /**
-   * Initialize.
+   * Adds a wheel listener on to the block drag surface.
    */
   init() {
     const dragSurface = this.workspace_.getBlockDragSurface();
@@ -42,11 +42,15 @@ export class Plugin {
    * @param {!Event} e Mouse wheel event.
    */
   onMouseWheel_(e) {
-    // Don't scroll or zoom anything if drag is in progress.
     const canWheelMove = this.workspace_.options.moveOptions &&
         this.workspace_.options.moveOptions.wheel;
     const currentGesture = this.workspace_.getGesture(e);
-    if (!canWheelMove || !currentGesture || !currentGesture.isDraggingBlock_) {
+
+    // Do not try to scroll if we are not dragging a block, or the workspace
+    // does not allow moving by wheel.
+    if (!canWheelMove || !currentGesture ||
+        currentGesture.getCurrentDraggingType() !==
+            Blockly.Gesture.DraggingType.BLOCK) {
       return;
     }
 
@@ -57,23 +61,20 @@ export class Plugin {
 
     const oldLocation = this.getDragSurfaceLocation_();
 
-    this.workspace_.getMetricsManager().stopCalculating = true;
     // Try to scroll to the desired location.
+    this.workspace_.getMetricsManager().stopCalculating = true;
     this.workspace_.scroll(x, y);
     this.workspace_.getMetricsManager().stopCalculating = false;
 
     const newLocation = this.getDragSurfaceLocation_();
 
-    // Get the new location of the block dragger after scrolling the workspace.
     // How much we actually ended up scrolling.
     const deltaX = newLocation.x - oldLocation.x;
     const deltaY = newLocation.y - oldLocation.y;
 
     if (deltaX || deltaY) {
-      // TODO: Can not access private blockDragger.
-      // TODO: Update block dragger with better documentation.
-      currentGesture.blockDragger_.moveBlockWhileDragging(deltaX, deltaY);
-      // TODO: Is this preventDefault in the correct place?
+      // TODO: Don't like these APIS. Figure out better ones.
+      currentGesture.getCurrentDragger().moveBlockWhileDragging(deltaX, deltaY);
       e.preventDefault();
     }
   }
@@ -85,9 +86,9 @@ export class Plugin {
    */
   getDragSurfaceLocation_() {
     const dragSurface = this.workspace_.getBlockDragSurface();
-    // TODO: Double check that this can not fall out of
+    const workspaceOffset = dragSurface.getCachedChildOffset();
+    // TODO: Double check that this can not fall out of sync.
     return new Blockly.utils.Coordinate(
-        Math.round(dragSurface.dragSurfaceXY_.x),
-        Math.round(dragSurface.dragSurfaceXY_.y));
+        Math.round(workspaceOffset.x), Math.round(workspaceOffset.y));
   }
 }
