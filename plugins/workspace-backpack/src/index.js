@@ -6,6 +6,7 @@
 
 /**
  * @fileoverview Backpack that lives on top of the workspace.
+ * @author kozbial@google.com (Monica Kozbial)
  */
 
 import * as Blockly from 'blockly/core';
