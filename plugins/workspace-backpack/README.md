@@ -1,9 +1,6 @@
 # @blockly/workspace-backpack [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds a Backpack to the workspace.
 
 ## Installation
 
@@ -19,12 +16,9 @@ npm install @blockly/workspace-backpack --save
 
 ## Usage
 
-<!--
-  - TODO: Update usage.
-  -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from '@blockly/workspace-backpack';
+import {Backpack} from '@blockly/workspace-backpack';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -32,15 +26,19 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 // Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
+const backpack = new Backpack(workspace);
+backpack.init();
 ```
 
 ## API
 
-<!--
-  - TODO: describe the API.
-  -->
+- `init`: Initializes the backpack.
+- `dispose`: Disposes of backpack.
+- `getBoundingRectangle`: Returns the bounding rectangle of the UI element in
+pixel units relative to the Blockly injection div.
+- `position`: Positions the backpack UI element.
+- `open`: Opens the backpack flyout.
+- `close`: Closes the backpack flyout.
 
 ## License
 Apache 2.0

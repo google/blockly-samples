@@ -319,7 +319,7 @@ export class Backpack {
   /**
    * Prevents a workspace scroll and click event if the backpack is openable.
    * @param {!Event} e A mouse down event.
-   * @private
+   * @protected
    */
   blockMouseDownWhenOpenable_(e) {
     // TODO: Allow for making backpack not-openable when it is empty.
