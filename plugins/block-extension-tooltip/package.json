@@ -42,7 +42,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.6",
     "@blockly/dev-tools": "^2.2.1",
-    "blockly": "^3.20200924.4",
+    "blockly": "^5.20210325.1",
     "typescript": "^4.0.5"
   },
   "peerDependencies": {
