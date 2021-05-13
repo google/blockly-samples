@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Backpack plugin test.
  */
 
 import * as Blockly from 'blockly';
@@ -21,9 +21,8 @@ import {Backpack} from '../src/index';
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
-  // TODO: Initialize your plugin here.
-  const plugin = new Backpack(workspace);
-  plugin.init();
+  const backpack = new Backpack(workspace);
+  backpack.init();
 
   return workspace;
 }
