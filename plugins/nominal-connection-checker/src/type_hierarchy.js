@@ -61,22 +61,21 @@ export class TypeHierarchy {
      */
     this.nearestCommonDescendants_ = new Map();
 
-    this.initTypes_(hierarchyDef);
+    this.initBasicInfo_(hierarchyDef);
+    this.initDirectSubs_();
+    this.initAncestors_();
+    this.initDescendants_();
     this.initNearestCommonAncestors_();
     this.initNearestCommonDescendants_();
   }
 
   /**
-   * Initializes the TypeHierarchy's types_.
+   * Maps caseless type names to type definitions, adds parameters, and adds
+   * direct super types.
    * @param {!Object} hierarchyDef The definition of the type hierarchy.
    * @private
    */
-  initTypes_(hierarchyDef) {
-    // NOTE: This does not do anything to stop a developer from creating a
-    // cyclic type hierarchy (eg Dog <: Mammal <: Dog). They are expected to
-    // not do that.
-
-    // Init types, direct supers, and parameters.
+  initBasicInfo_(hierarchyDef) {
     for (const typeName of Object.keys(hierarchyDef)) {
       const lowerCaseName = typeName.toLowerCase();
       const type = new TypeDef(lowerCaseName);
@@ -93,8 +92,13 @@ export class TypeHierarchy {
       }
       this.types_.set(lowerCaseName, type);
     }
+  }
 
-    // Init direct subs.
+  /**
+   * Adds direct subtypes to the type definitions.
+   * @private
+   */
+  initDirectSubs_() {
     for (const [typeName, type] of this.types_) {
       type.supers().forEach((superName) => {
         const superType = this.types_.get(superName);
@@ -105,39 +109,56 @@ export class TypeHierarchy {
         superType.addSub(type);
       });
     }
+  }
 
-    // Init ancestors.
-    let unvisitedTypes = new Set(this.types_.keys());
+  /**
+   * Adds all ancestors to the type definitions. At this point the definitions
+   * should handle creating parameter maps.
+   * @private
+   */
+  initAncestors_() {
+    this.initDistantRelatives_(
+        (type) => type.supers(),
+        (type) => type.ancestors(),
+        (type, ancestor, superType) => type.addAncestor(ancestor, superType));
+  }
+
+  /**
+   * Adds all descendants to the type definitions.
+   * @private
+   */
+  initDescendants_() {
+    this.initDistantRelatives_(
+        (type) => type.subs(),
+        (type) => type.descendants(),
+        (type, descendant, sub) => type.addDescendant(descendant, sub));
+  }
+
+  /**
+   * Adds all distant relatives (ancestors/descendants) to types.
+   * @param {function(TypeDef): !Array<string>} getCloseRelatives Returns the
+   *     direct relatives of the give type.
+   * @param {function(TypeDef): !Array<string>} getDistantRelatives Returns the
+   *     all relatives of the given type.
+   * @param {function(TypeDef, TypeDef, TypeDef)} addRelative Adds a new distant
+   *     relative to the type.
+   * @private
+   */
+  initDistantRelatives_(getCloseRelatives, getDistantRelatives, addRelative) {
+    const unvisitedTypes = new Set(this.types_.keys());
     while (unvisitedTypes.size) {
       for (const typeName of unvisitedTypes) {
         const type = this.types_.get(typeName);
-        const unvisitedSupers = type.supers().filter(
+        const unvisitedCloseRelatives = getCloseRelatives(type).filter(
             unvisitedTypes.has, unvisitedTypes);
-        if (!unvisitedSupers.length) {
-          type.supers().forEach((superName) => {
-            const superType = this.types_.get(superName);
-            superType.ancestors().forEach((ancestor) => {
-              type.addAncestor(ancestor, superType);
-            });
-          });
-          unvisitedTypes.delete(typeName);
-        }
-      }
-    }
-
-    // Init descendants.
-    unvisitedTypes = new Set(this.types_.keys());
-    while (unvisitedTypes.size) {
-      for (const typeName of unvisitedTypes) {
-        const type = this.types_.get(typeName);
-        const unvisitedSubs = type.subs().filter(
-            unvisitedTypes.has, unvisitedTypes);
-        if (!unvisitedSubs.length) {
-          type.subs().forEach((subName) => {
-            const subType = this.types_.get(subName);
-            subType.descendants().forEach((descendantName) => {
-              type.addDescendant(this.types_.get(descendantName), subType);
-            });
+        if (!unvisitedCloseRelatives.length) {
+          getCloseRelatives(type).forEach((closeRelativeName) => {
+            const closeRelative = this.types_.get(closeRelativeName);
+            getDistantRelatives(closeRelative).forEach(
+                (distantRelativeName) => {
+                  const distantRelative = this.types_.get(distantRelativeName);
+                  addRelative(type, distantRelative, closeRelative);
+                });
           });
           unvisitedTypes.delete(typeName);
         }
@@ -289,9 +310,6 @@ export class TypeHierarchy {
       return false;
     }
 
-    // TODO: We need to add checks to make sure the number of actual params for
-    //  the subtype is correct. Here and in typeIsExactlyType.
-
     const orderedSubParams = subDef.getParamsForAncestor(
         superType.name, subType.params);
     return superType.params.every((actualSuper, i) => {
@@ -323,6 +341,7 @@ export class TypeHierarchy {
     if (!types.length) {
       return [];
     }
+    types.forEach((type) => this.validateTypeStructure_(type));
 
     // Get the nearest common types for the "outer" types.
     const commonTypes = this.getNearestCommon_(
@@ -397,6 +416,7 @@ export class TypeHierarchy {
     if (!types.length) {
       return [];
     }
+    types.forEach((type) => this.validateTypeStructure_(type));
 
     const commonOuterTypes = this.getNearestCommon_(
         types.map((type) => type.name), this.nearestCommonDescendants_);
@@ -437,10 +457,9 @@ export class TypeHierarchy {
    */
   validateTypeStructure_(struct) {
     const def = this.types_.get(struct.name);
-
-    // TODO: Add throwing error if the def is not found. Note that there are
-    //   some tests that need to be unskipped after this is added.
-
+    if (!def) {
+      throw new TypeNotFoundError(struct.name);
+    }
     if (struct.params.length != def.params().length) {
       throw new ActualParamsCountError(
           struct.name, struct.params.length, def.params().length);
@@ -685,8 +704,6 @@ class TypeDef {
     this.ancestorParamsMap_ = new Map();
   }
 
-  // TODO: Make all of the adding more consistent (always take def)
-
   /**
    * Adds the given type to the list of direct superTypes of this type.
    * @param {!TypeStructure} superType The type structure representing the type
@@ -707,33 +724,33 @@ class TypeDef {
 
   /**
    * Adds the given type to the list of ancestors of this type.
-   * @param {string} ancestorName The caseless name of the type to add to the
+   * @param {!TypeDef} ancestorDef The type definition of the type to add to the
    *     list of ancestors of this type.
-   * @param {!TypeDef} superType The superType that we get this ancestor from.
+   * @param {!TypeDef} superDef The supertype that we get this ancestor from.
    */
-  addAncestor(ancestorName, superType) {
-    this.ancestors_.add(ancestorName);
-    const superToAncestor = superType.getParamsForAncestor(ancestorName);
-    const thisToSuper = this.getParamsForAncestor(superType.name);
+  addAncestor(ancestorDef, superDef) {
+    this.ancestors_.add(ancestorDef.name);
+    const superToAncestor = superDef.getParamsForAncestor(ancestorDef.name);
+    const thisToSuper = this.getParamsForAncestor(superDef.name);
     const thisToAncestor = [];
     superToAncestor.forEach((typeStruct) => {
       if (isGeneric(typeStruct.name)) {
         thisToAncestor.push(
-            thisToSuper[superType.getIndexOfParam(typeStruct.name)]);
+            thisToSuper[superDef.getIndexOfParam(typeStruct.name)]);
       } else {
         thisToAncestor.push(typeStruct);
       }
     });
-    this.ancestorParamsMap_.set(ancestorName, thisToAncestor);
+    this.ancestorParamsMap_.set(ancestorDef.name, thisToAncestor);
   }
 
   /**
    * Adds the given type to the list of descendants of this type.
    * @param {!TypeDef} descendantDef The type definition that defines the
    *     descendant.
-   * @param {!TypeDef} subType The subtype that we get this descendant from.
+   * @param {!TypeDef} subDef The subtype that we get this descendant from.
    */
-  addDescendant(descendantDef, subType) {
+  addDescendant(descendantDef, subDef) {
     this.descendants_.add(descendantDef.name);
   }
 
@@ -990,8 +1007,7 @@ export function stringToVariance(str) {
   } else if (str.startsWith('co')) {
     return Variance.CO;
   } else {
-    throw new VarianceError('The variance "' + str + '" is not a valid ' +
-        'variance. Valid variances are: "co", "contra", and "inv".');
+    throw new VarianceError(str);
   }
 }
 
@@ -1001,10 +1017,17 @@ export function stringToVariance(str) {
 export class VarianceError extends Error {
   /**
    * Constructs a VarianceError.
-   * @param {string} message The message that goes with this error.
+   * @param {string} variance The invalid variance.
    */
-  constructor(message) {
-    super(message);
+  constructor(variance) {
+    super('The variance "' + variance + '" is not a valid ' +
+        'variance. Valid variances are: "co", "contra", and "inv".');
+
+    /**
+     * The variance that is invalid.
+     * @type {string}
+     */
+    this.variance = variance;
 
     this.name = this.constructor.name;
   }
@@ -1068,6 +1091,28 @@ export class ActualParamsCountError extends Error {
      * @type {number}
      */
     this.expectedCount = expectedCount;
+
+    this.name = this.constructor.name;
+  }
+}
+
+/**
+ * Represents an error where a type passed to the type hierarchy was not
+ * included in the type hierarchy's definition.
+ */
+export class TypeNotFoundError extends Error {
+  /**
+   * Constructs a TypeNotFoundError.
+   * @param {string} type The type name that was not found.
+   */
+  constructor(type) {
+    super('The type ' + type + ' was not defined in the type hierarchy\'s ' +
+        'definition.');
+
+    /**
+     * The type name that was not found.
+     */
+    this.type = type;
 
     this.name = this.constructor.name;
   }
