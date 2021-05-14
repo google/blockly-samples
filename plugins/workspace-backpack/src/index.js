@@ -108,8 +108,7 @@ export class Backpack {
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array.<Array<?>>}
+     * @type {!Array<!Blockly.browserEvents.Data>}
      * @private
      */
     this.boundEvents_ = [];
