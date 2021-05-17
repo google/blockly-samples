@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {cleanBlockXML} from './backpack_helpers';
+import {BackpackChange, BackpackOpen} from './ui_events';
 import './backpack_monkey_patch';
 
 /**
@@ -40,7 +41,7 @@ export class Backpack {
     /**
      * The SVG group containing the backpack.
      * @type {SVGElement}
-     * @private
+     * @protected
      */
     this.svgGroup_ = null;
 
@@ -122,28 +123,28 @@ export class Backpack {
      * Array holding info needed to unbind events.
      * Used for disposing.
      * @type {!Array<!Blockly.browserEvents.Data>}
-     * @private
+     * @protected
      */
     this.boundEvents_ = [];
 
     /**
      * Whether this has been initialized.
      * @type {boolean}
-     * @private
+     * @protected
      */
     this.initialized_ = false;
 
     /**
      * A list of XML (stored as strings) representing blocks in the backpack.
      * @type {!Array<string>}
-     * @private
+     * @protected
      */
     this.contents_ = [];
 
     /**
      * The maximum items that can be stored on the backpack.
      * @type {number}
-     * @private
+     * @protected
      */
     this.maxItems_ = 32;
 
@@ -419,7 +420,7 @@ export class Backpack {
       return;
     }
     this.contents_.length = 0;
-    // TODO: Fire UI event for Backpack content change.
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
     this.close();
   }
 
@@ -438,15 +439,20 @@ export class Backpack {
    *     cleaned of all unnecessary attributes.
    */
   addItem(item) {
-    if (this.contents_.indexOf(item) !== -1) {
-      return;
-    }
+    this.addItems([item]);
+  }
 
-    this.contents_.unshift(item);
-    while (this.contents_.length > this.maxItems_) {
-      this.contents_.pop();
-    }
-    // TODO: Fire UI event for Backpack content change.
+  /**
+   * Adds multiple items to the backpack.
+   * @param {!Array<string>} items The backpack contents to add.
+   */
+  addItems(items) {
+    const filteredItems = items.filter((item) => {
+      return this.contents_.indexOf(item) === -1;
+    });
+    this.contents_.unshift(...filteredItems);
+    this.trimContents_();
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
@@ -454,27 +460,27 @@ export class Backpack {
    * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
-    this.contents_ = [...contents];
-    while (this.contents_.length > this.maxItems_) {
-      this.contents_.pop();
-    }
-    // TODO: Fire UI event for Backpack content change.
+    this.contents_ = contents.filter((item) => {
+      return this.contents_.indexOf(item) === -1;
+    });
+    this.trimContents_();
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
-   * Merges backpack contents XML.
-   * @param {!Array<string>} contents The backpack contents to merge.
+   * Trims the internal contents array so that it does not exceed max size.
+   * @private
    */
-  mergeContents(contents) {
-    contents.forEach((item) => {
-      this.addItem(item);
-    });
+  trimContents_() {
+    while (this.contents_.length > this.maxItems_) {
+      this.contents_.pop();
+    }
   }
 
   /**
    * Whether the backpack is open-able.
    * @return {boolean} Whether the backpack is open-able.
-   * @private
+   * @protected
    */
   isOpenable_() {
     return !this.isOpen();
@@ -497,7 +503,7 @@ export class Backpack {
     }
     const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
     this.flyout.show(xml);
-    // TODO: Fire UI event for Backpack open.
+    Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
   }
 
   /**
@@ -509,7 +515,7 @@ export class Backpack {
     }
 
     this.flyout.hide();
-    // TODO: Fire UI event for Backpack close.
+    Blockly.Events.fire(new BackpackOpen(false, this.workspace_.id));
   }
 
   /**
