@@ -31,6 +31,8 @@ import * as Blockly from 'blockly/core';
 
 class BlocklyReactField extends Blockly.Field {
 
+  SERIALIZABLE = true
+  
   static fromJson(options) {
     return new BlocklyReactField(options['text']);
   }
