@@ -5,13 +5,15 @@
  */
 
 /**
- * @fileoverview Plugin test.
+ * @fileoverview Test page for the ScrollOptions plugin.
  */
 
+import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
+
 import {Plugin} from '../src/index';
 import {ScrollBlockDragger} from '../src/ScrollBlockDragger';
+import {ScrollMetricsManager} from '../src/ScrollMetricsManager';
 
 
 /**
@@ -35,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     toolbox: toolboxCategories,
     plugins: {
       'blockDragger': ScrollBlockDragger,
+      'metricsManager': ScrollMetricsManager,
     },
   };
   createPlayground(document.getElementById('root'), createWorkspace,
