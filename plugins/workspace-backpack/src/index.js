@@ -415,9 +415,11 @@ export class Backpack {
    */
   setContents(contents) {
     this.contents_.length = 0;
-    contents.forEach((item) => {
-      this.addItem(item);
-    });
+    this.contents_ = [...contents];
+    while (this.contents_.length > this.maxItems_) {
+      this.contents_.pop();
+    }
+    // TODO: Fire UI event for Backpack content change.
   }
 
   /**
