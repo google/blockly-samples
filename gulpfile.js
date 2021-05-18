@@ -78,9 +78,9 @@ function publish(dryRun, force) {
         `git clone https://github.com/google/blockly-samples ${releaseDir}`,
         {stdio: 'pipe'});
 
-    // Run npm install.
-    console.log('Running npm install.');
-    execSync(`npm install`, {cwd: releaseDir, stdio: 'inherit'});
+    // Run npm ci.
+    console.log('Running npm ci to install.');
+    execSync(`npm ci`, {cwd: releaseDir, stdio: 'inherit'});
 
     // Run npm publish.
     execSync(
@@ -270,7 +270,9 @@ function deployToGhPages(repo) {
  * @param {Function} done Completed callback.
  */
 function preparePluginsForBeta(done) {
-  execSync(`npm install`, {stdio: 'inherit'});
+  // Install with npm ci, which will not update package-locks.
+  execSync(`npm ci`, {stdio: 'inherit'});
+  // npm ci cannot install individual packages.
   execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
   execSync(`npm run boot`, {stdio: 'inherit'});
   execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
@@ -283,7 +285,9 @@ function preparePluginsForBeta(done) {
  */
 function prepareExamplesForBeta(done) {
   const examplesDirectory = 'examples';
-  execSync(`npm install`, {cwd: examplesDirectory, stdio: 'inherit'});
+  // Install with npm ci, which will not update package-locks.
+  execSync(`npm ci`, {cwd: examplesDirectory, stdio: 'inherit'});
+  // npm ci cannot install individual packages.
   execSync(`lerna exec -- npm install blockly@beta`,
       {cwd: examplesDirectory, stdio: 'inherit'});
   execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
