@@ -322,8 +322,8 @@ export class WorkspaceSearch {
    * @return {!Blockly.utils.Rect} The plugin’s bounding box.
    */
   getBoundingRectangle() {
-    var top = this.htmlDiv_.style.top;
-    var left = this.htmlDiv_.style.left;
+    const top = this.htmlDiv_.style.top;
+    const left = this.htmlDiv_.style.left;
     return new Blockly.utils.Rect(
         top, top + this.htmlDiv_.style.height,
         left, left + this.htmlDiv_.style.width);
