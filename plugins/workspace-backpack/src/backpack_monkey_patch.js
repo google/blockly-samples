@@ -128,9 +128,8 @@ import * as Blockly from 'blockly/core';
 
     if (this.isOverBackpack_) {
       // Handle adding to Backpack
-      const blockXml = Blockly.Xml.blockToDomWithXY(this.draggingBlock_);
       const backpack = this.workspace_.backpack;
-      backpack.addItem(blockXml);
+      backpack.handleBlockDrop(this.draggingBlock_);
       this.draggingBlock_.setDragging(false);
       this.draggingBlock_.render();
       this.draggingBlock_.scheduleSnapAndBump();

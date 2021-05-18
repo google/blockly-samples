@@ -58,18 +58,25 @@ export class Backpack {
     this.top_ = 0;
 
     /**
+     * Extent of hotspot on all sides beyond the size of the image.
+     * @const {number}
+     * @private
+     */
+    this.HOTSPOT_MARGIN_ = 10;
+
+    /**
      * Top offset for backpack in svg.
      * @type {number}
      * @private
      */
-    this.SPRITE_TOP_ = -10;
+    this.SPRITE_TOP_ = 10;
 
     /**
      * Left offset for backpack in svg.
      * @type {number}
      * @private
      */
-    this.SPRITE_LEFT_ = -20;
+    this.SPRITE_LEFT_ = 20;
 
     /**
      * Width/Height of svg.
@@ -211,9 +218,9 @@ export class Backpack {
           'class': 'blocklyBackpack',
           'clip-path': 'url(#blocklyBackpackClipPath' + rnd + ')',
           'width': this.SPRITE_SIZE_ + 'px',
-          'x': this.SPRITE_LEFT_,
+          'x': -this.SPRITE_LEFT_,
           'height': this.SPRITE_SIZE_ + 'px',
-          'y': this.SPRITE_TOP_,
+          'y': -this.SPRITE_TOP_,
         },
         this.svgGroup_);
     this.svgImg_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
@@ -256,7 +263,16 @@ export class Backpack {
    * @return {!Blockly.utils.Rect} The plugin’s bounding box.
    */
   getTargetArea() {
-    return this.getBoundingRectangle();
+    if (!this.svgGroup_) {
+      return null;
+    }
+
+    const clientRect = this.svgGroup_.getBoundingClientRect();
+    const top = clientRect.top + this.SPRITE_TOP_ - this.HOTSPOT_MARGIN_;
+    const bottom = top + this.HEIGHT_ + 2 * this.HOTSPOT_MARGIN_;
+    const left = clientRect.left + this.SPRITE_LEFT_ - this.HOTSPOT_MARGIN_;
+    const right = left + this.WIDTH_ + 2 * this.HOTSPOT_MARGIN_;
+    return new Blockly.utils.Rect(top, bottom, left, right);
   }
 
   /**
@@ -363,44 +379,54 @@ export class Backpack {
       return;
     }
     this.contents_.length = 0;
+    // TODO: Fire UI event for Backpack content change.
     this.close();
   }
 
   /**
-   * Adds item to backpack.
-   * @param {!Element} blockXml An XML tree defining the block to add and any
-   *    connected child blocks.
+   * Handles a block drop on this backpack.
+   * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
    */
-  addItem(blockXml) {
-    const cleanXML = cleanBlockXML(blockXml);
-    if (this.contents_.indexOf(cleanXML) !== -1) {
+  handleBlockDrop(block) {
+    const blockXml = Blockly.Xml.blockToDomWithXY(block);
+    this.addItem(cleanBlockXML(blockXml));
+  }
+
+  /**
+   * Adds item to backpack.
+   * @param {string} item Text representing the XML tree of a block to add,
+   * cleaned of all unnecessary attributes.
+   */
+  addItem(item) {
+    if (this.contents_.indexOf(item) !== -1) {
       return;
     }
 
-    this.contents_.unshift(cleanXML);
+    this.contents_.unshift(item);
     while (this.contents_.length > this.maxItems_) {
       this.contents_.pop();
     }
+    // TODO: Fire UI event for Backpack content change.
   }
 
   /**
    * Sets backpack contents XML.
-   * @param {!Array<!Element>} contents The new backpack contents.
+   * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
     this.contents_.length = 0;
-    contents.forEach((blockXML) => {
-      this.addItem(blockXML);
+    contents.forEach((item) => {
+      this.addItem(item);
     });
   }
 
   /**
    * Merges backpack contents XML.
-   * @param {!Array<!Element>} contents The backpack contents to merge.
+   * @param {!Array<string>} contents The backpack contents to merge.
    */
   mergeContents(contents) {
-    contents.forEach((blockXML) => {
-      this.addItem(blockXML);
+    contents.forEach((item) => {
+      this.addItem(item);
     });
   }
 
