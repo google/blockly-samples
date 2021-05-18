@@ -131,8 +131,12 @@ import * as Blockly from 'blockly/core';
       const backpack = this.workspace_.backpack;
       backpack.handleBlockDrop(this.draggingBlock_);
       this.draggingBlock_.setDragging(false);
+      // Blocks dragged directly from a flyout may need to be bumped.
+      Blockly.bumpObjectIntoBounds_(
+          this.draggingBlock_.workspace,
+          this.workspace_.getMetricsManager()
+              .getScrollMetrics(true), this.draggingBlock_);
       this.draggingBlock_.render();
-      this.draggingBlock_.scheduleSnapAndBump();
     } else if (!this.maybeDeleteBlock_()) {
       // These are expensive and don't need to be done if we're deleting.
       this.draggingBlock_.moveConnections(delta.x, delta.y);
