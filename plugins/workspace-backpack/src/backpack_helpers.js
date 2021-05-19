@@ -10,6 +10,171 @@
  */
 
 import * as Blockly from 'blockly/core';
+import './msg';
+
+/**
+ * Registers a context menu option to empty the backpack when right-clicked.
+ * @param {!Blockly.WorkspaceSvg} workspace The workspace to register the
+ *   context menu option on.
+ */
+function registerEmptyBackpack(workspace) {
+  workspace.configureContextMenu = (menuOptions, e) => {
+    const backpack = workspace.backpack;
+    if (!backpack || !backpack.getTargetArea().contains(e.clientX, e.clientY)) {
+      return;
+    }
+    menuOptions.length = 0;
+    const backpackOptions = {
+      text: Blockly.Msg['EMPTY_BACKPACK'],
+      enabled: !!backpack.getCount(),
+      callback: function() {
+        backpack.empty();
+      },
+    };
+    menuOptions.push(backpackOptions);
+  };
+}
+
+/**
+ * Registers a context menu option to remove a block from a backpack flyout.
+ */
+function registerRemoveFromBackpack() {
+  const removeFromBackpack = {
+    displayText: Blockly.Msg['REMOVE_FROM_BACKPACK'],
+    preconditionFn: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const ws = scope.block.workspace;
+      if (ws.isFlyout && ws.targetWorkspace && !!ws.targetWorkspace.backpack) {
+        return 'enabled';
+      }
+      return 'hidden';
+    },
+    callback: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const backpack = scope.block.workspace.targetWorkspace.backpack;
+      const blockXml = Blockly.Xml.blockToDomWithXY(scope.block);
+      backpack.deleteItem(cleanBlockXML(blockXml));
+    },
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    id: 'remove_from_backpack',
+    // Use a larger weight to push the option lower on the context menu.
+    weight: 200,
+  };
+  Blockly.ContextMenuRegistry.registry.register(removeFromBackpack);
+}
+
+/**
+ * Registers context menu options for adding blocks to the backpack.
+ */
+function registerAddToBackpack() {
+  const copyToBackpack = {
+    displayText: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      if (!scope.block) {
+        return;
+      }
+      const backpackCount = scope.block.workspace.backpack.getCount();
+      return `${Blockly.Msg['COPY_TO_BACKPACK']} (${backpackCount})`;
+    },
+    preconditionFn: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const ws = scope.block.workspace;
+      if (!ws.isFlyout && !!ws.backpack) {
+        return 'enabled';
+      }
+      return 'hidden';
+    },
+    callback: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const backpack = scope.block.workspace.backpack;
+      const blockXml = Blockly.Xml.blockToDomWithXY(scope.block);
+      backpack.addItem(cleanBlockXML(blockXml));
+    },
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    id: 'copy_to_backpack',
+    // Use a larger weight to push the option lower on the context menu.
+    weight: 200,
+  };
+  Blockly.ContextMenuRegistry.registry.register(copyToBackpack);
+}
+
+/**
+ * Registers context menu options for adding blocks to the backpack.
+ */
+function registerCopyPasteAllBackpack() {
+  const copyAllToBackpack = {
+    displayText: Blockly.Msg['COPY_ALL_TO_BACKPACK'],
+    preconditionFn: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const ws = scope.workspace;
+      if (!ws.isFlyout && !!ws.backpack) {
+        return 'enabled';
+      }
+      return 'hidden';
+    },
+    callback: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const ws = scope.workspace;
+      const topBlocks = ws.getTopBlocks();
+      topBlocks.forEach((block) => {
+        ws.backpack.addItem(
+            cleanBlockXML(Blockly.Xml.blockToDomWithXY(block)));
+      });
+      // TODO: Fire UI event for Backpack content change.
+    },
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
+    id: 'copy_all_to_backpack',
+    // Use a larger weight to push the option lower on the context menu.
+    weight: 200,
+  };
+  Blockly.ContextMenuRegistry.registry.register(copyAllToBackpack);
+  const pasteAllFromBackpack = {
+    displayText: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      if (!scope.workspace) {
+        return;
+      }
+      const backpackCount = scope.workspace.backpack.getCount();
+      return `${Blockly.Msg['PASTE_ALL_FROM_BACKPACK']} (${backpackCount})`;
+    },
+    preconditionFn: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const ws = scope.workspace;
+      if (!ws.isFlyout && !!ws.backpack) {
+        return 'enabled';
+      }
+      return 'hidden';
+    },
+    callback: function(
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      const ws = scope.workspace;
+      const contents = ws.backpack.getContents();
+      contents.forEach((blockText) => {
+        const block =
+            Blockly.Xml.domToBlock(Blockly.Xml.textToDom(blockText), ws);
+        block.scheduleSnapAndBump();
+      });
+    },
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
+    id: 'paste_all_from_backpack',
+    // Use a larger weight to push the option lower on the context menu.
+    weight: 200,
+  };
+  Blockly.ContextMenuRegistry.registry.register(pasteAllFromBackpack);
+}
+
+/**
+ * Register all context menu options.
+ * @param {!Blockly.WorkspaceSvg} workspace The workspace to register the
+ *    context menu options.
+ */
+export function registerAllContextMenus(workspace) {
+  registerEmptyBackpack(workspace);
+  registerRemoveFromBackpack();
+  registerAddToBackpack();
+  registerCopyPasteAllBackpack();
+}
+
 
 /**
  * Converts XML representing a block into text that can be stored in the

@@ -30,15 +30,49 @@ const backpack = new Backpack(workspace);
 backpack.init();
 ```
 
+### Blockly Languages
+We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the messages
+can be translated by assigning the following properties of Blockly.Msg
+- `EMPTY_BACKPACK` (Default: "Empty") context menu - Empty the backpack.
+- `REMOVE_FROM_BACKPACK` (Default: "Remove from Backpack") context menu - Remove
+the selected Block from the backpack.
+- `COPY_TO_BACKPACK` (Default: "Add to Backpack") context menu - Add the
+selected block to the backpack.
+- `COPY_ALL_TO_BACKPACK` (Default: "Copy All Blocks to Backpack") Context menu -
+copy all Blocks on the workspace to the backpack.
+- `PASTE_ALL_FROM_BACKPACK` (Default: "Paste All Blocks from Backpack") context
+menu - Paste all Blocks from the backpack to the workspace.
+
+```javascript
+Blockly.Msg['EMPTY_BACKPACK'] = 'Opróżnij plecak';  // Polish 
+// Inject workspace, etc...
+```
+
 ## API
 
 - `init`: Initializes the backpack.
 - `dispose`: Disposes of backpack.
+
+- `isOpen`: Returns whether the backpack is open.
+- `open`: Opens the backpack flyout.
+- `close`: Closes the backpack flyout.
+
+- `getCount`: Returns the count of items in the backpack.
+- `getContents` Returns backpack contents.
+- `empty`: Empties the backpack's contents. If the contents-flyout is currently
+open it will be closed.
+- `addItem`: Adds item to backpack.
+- `deleteItem`: Deletes item from the backpack.
+- `setContents`: Sets backpack contents.
+
+- `handleBlockDrop`: Handles a block drop on this backpack.
+- `onDragEnter`: Handle mouse over.
+- `onDragExit`: Handle mouse exit.
+
 - `getBoundingRectangle`: Returns the bounding rectangle of the UI element in
 pixel units relative to the Blockly injection div.
 - `position`: Positions the backpack UI element.
-- `open`: Opens the backpack flyout.
-- `close`: Closes the backpack flyout.
 
 ## License
 Apache 2.0

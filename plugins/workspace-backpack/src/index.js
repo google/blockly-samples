@@ -10,7 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {cleanBlockXML} from './backpack_helpers';
+import {cleanBlockXML, registerAllContextMenus} from './backpack_helpers';
 import './backpack_monkey_patch';
 
 /**
@@ -169,6 +169,8 @@ export class Backpack {
     this.createDom_();
     this.initialized_ = true;
     this.workspace_.resize();
+    // TODO: Add customization for which context menus to register.
+    registerAllContextMenus(this.workspace_);
   }
 
   /**
@@ -402,7 +404,7 @@ export class Backpack {
   }
 
   /**
-   * Returns backpack contents XML.
+   * Returns backpack contents.
    * @return {!Array<string>} The backpack contents.
    */
   getContents() {
@@ -450,7 +452,21 @@ export class Backpack {
   }
 
   /**
-   * Sets backpack contents XML.
+   * Deletes item from the backpack.
+   * @param {string} item Text representing the XML tree of a block to remove,
+   * cleaned of all unnecessary attributes.
+   */
+  deleteItem(item) {
+    const itemIndex = this.contents_.indexOf(item);
+    if (itemIndex !== -1) {
+      this.contents_.splice(itemIndex, 1);
+      this.maybeRefreshFlyoutContents_();
+      // TODO: Fire UI event for Backpack content change.
+    }
+  }
+
+  /**
+   * Sets backpack contents.
    * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
@@ -458,6 +474,7 @@ export class Backpack {
     while (this.contents_.length > this.maxItems_) {
       this.contents_.pop();
     }
+    this.maybeRefreshFlyoutContents_();
     // TODO: Fire UI event for Backpack content change.
   }
 
@@ -469,10 +486,11 @@ export class Backpack {
     contents.forEach((item) => {
       this.addItem(item);
     });
+    this.maybeRefreshFlyoutContents_();
   }
 
   /**
-   * Whether the backpack is open-able.
+   * Returns whether the backpack is open-able.
    * @return {boolean} Whether the backpack is open-able.
    * @private
    */
@@ -481,7 +499,7 @@ export class Backpack {
   }
 
   /**
-   * Whether the backpack is open.
+   * Returns whether the backpack is open.
    * @return {boolean} Whether the backpack is open.
    */
   isOpen() {
@@ -501,6 +519,18 @@ export class Backpack {
   }
 
   /**
+   * Refreshes backpack flyout contents if the flyout is open.
+   * @protected
+   */
+  maybeRefreshFlyoutContents_() {
+    if (!this.isOpen()) {
+      return;
+    }
+    const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
+    this.flyout.show(xml);
+  }
+
+  /**
    * Closes the backpack flyout.
    */
   close() {
@@ -514,9 +544,13 @@ export class Backpack {
 
   /**
    * Handle click event.
+   * @param {!MouseEvent} e Mouse event.
    * @protected
    */
-  onClick_() {
+  onClick_(e) {
+    if (Blockly.utils.isRightButton(e)) {
+      return;
+    }
     this.open();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
         null, this.workspace_.id, 'backpack');
@@ -545,7 +579,7 @@ export class Backpack {
    * @protected
    */
   blockMouseDownWhenOpenable_(e) {
-    if (this.isOpenable_()) {
+    if (!Blockly.utils.isRightButton(e) && this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
