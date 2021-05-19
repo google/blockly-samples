@@ -10,7 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {createBackpackFlyout, cleanBlockXML} from './backpack_helpers';
+import {cleanBlockXML} from './backpack_helpers';
 import './backpack_monkey_patch';
 
 /**
@@ -146,11 +146,11 @@ export class Backpack {
     this.maxItems_ = 32;
 
     /**
-     * The backpack flyout.
-     * @type {Blockly.IFlyout}
+     * The backpack flyout. Initialized during init.
+     * @type {Blockly.IFlyout|undefined}
      * @package
      */
-    this.flyout = createBackpackFlyout(this.workspace_);
+    this.flyout = undefined;
   }
 
   /**
@@ -185,10 +185,47 @@ export class Backpack {
   }
 
   /**
-   * Initializes the flyout and inserts it into the dom.
+   * Creates and initializes the flyout and inserts it into the dom.
    * @protected
    */
   initFlyout_() {
+    // Create flyout options.
+    const flyoutWorkspaceOptions = new Blockly.Options(
+        /** @type {!Blockly.BlocklyOptions} */
+        ({
+          'scrollbars': true,
+          'parentWorkspace': this.workspace_,
+          'rtl': this.workspace_.RTL,
+          'oneBasedIndex': this.workspace_.options.oneBasedIndex,
+          'renderer': this.workspace_.options.renderer,
+          'rendererOverrides': this.workspace_.options.rendererOverrides,
+          'move': {
+            'scrollbars': true,
+          },
+        }));
+    // Create vertical or horizontal flyout.
+    if (this.workspace_.horizontalLayout) {
+      flyoutWorkspaceOptions.toolboxPosition =
+          (this.workspace_.toolboxPosition ===
+              Blockly.utils.toolbox.Position.TOP) ?
+              Blockly.utils.toolbox.Position.BOTTOM :
+              Blockly.utils.toolbox.Position.TOP;
+      const HorizontalFlyout = Blockly.registry.getClassFromOptions(
+          Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
+          this.workspace_.options, true);
+      this.flyout = new HorizontalFlyout(flyoutWorkspaceOptions);
+    } else {
+      flyoutWorkspaceOptions.toolboxPosition =
+          (this.workspace_.toolboxPosition ===
+              Blockly.utils.toolbox.Position.RIGHT) ?
+              Blockly.utils.toolbox.Position.LEFT :
+              Blockly.utils.toolbox.Position.RIGHT;
+      const VerticalFlyout = Blockly.registry.getClassFromOptions(
+          Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
+          this.workspace_.options, true);
+      this.flyout = new VerticalFlyout(flyoutWorkspaceOptions);
+    }
+    // Add flyout to DOM.
     const parentNode = this.workspace_.getParentSvg().parentNode;
     parentNode.appendChild(this.flyout.createDom(Blockly.utils.Svg.SVG));
     this.flyout.init(this.workspace_);

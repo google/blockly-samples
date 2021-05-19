@@ -12,50 +12,6 @@
 import * as Blockly from 'blockly/core';
 
 /**
- * Creates a backpack flyout.
- * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace for the
- *    backpack.
- * @return {!Blockly.IFlyout} The backpack flyout.
- */
-export function createBackpackFlyout(targetWorkspace) {
-  // Create flyout options.
-  const flyoutWorkspaceOptions = new Blockly.Options(
-      /** @type {!Blockly.BlocklyOptions} */
-      ({
-        'scrollbars': true,
-        'parentWorkspace': targetWorkspace,
-        'rtl': targetWorkspace.RTL,
-        'oneBasedIndex': targetWorkspace.options.oneBasedIndex,
-        'renderer': targetWorkspace.options.renderer,
-        'rendererOverrides': targetWorkspace.options.rendererOverrides,
-        'move': {
-          'scrollbars': true,
-        },
-      }));
-  // Create vertical or horizontal flyout.
-  if (targetWorkspace.horizontalLayout) {
-    flyoutWorkspaceOptions.toolboxPosition =
-        (targetWorkspace.toolboxPosition ===
-            Blockly.utils.toolbox.Position.TOP) ?
-            Blockly.utils.toolbox.Position.BOTTOM :
-            Blockly.utils.toolbox.Position.TOP;
-    const HorizontalFlyout = Blockly.registry.getClassFromOptions(
-        Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
-        targetWorkspace.options, true);
-    return new HorizontalFlyout(flyoutWorkspaceOptions);
-  }
-  flyoutWorkspaceOptions.toolboxPosition =
-      (targetWorkspace.toolboxPosition ===
-          Blockly.utils.toolbox.Position.RIGHT) ?
-          Blockly.utils.toolbox.Position.LEFT :
-          Blockly.utils.toolbox.Position.RIGHT;
-  const VerticalFlyout = Blockly.registry.getClassFromOptions(
-      Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
-      targetWorkspace.options, true);
-  return new VerticalFlyout(flyoutWorkspaceOptions);
-}
-
-/**
  * Converts XML representing a block into text that can be stored in the
  *    content array.
  * @param {!Element} xml An XML tree defining the block and any
