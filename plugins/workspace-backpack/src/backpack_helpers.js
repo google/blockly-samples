@@ -13,12 +13,11 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Converts XML representing a block into text that can be stored in the
- *    content array.
+ * content array.
  * @param {!Element} xml An XML tree defining the block and any
  *    connected child blocks.
  * @return {string} Text representing the XML tree, cleaned of all unnecessary
  * attributes.
- * @private
  */
 export function cleanBlockXML(xml) {
   const xmlBlock = xml.cloneNode(true);
