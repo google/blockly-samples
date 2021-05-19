@@ -273,9 +273,9 @@ export class Backpack {
     this.addEvent_(
         this.svgGroup_, 'mouseup', this, this.onClick_);
     this.addEvent_(
-        this.svgGroup_, 'mouseover', this, this.onDragOver_);
+        this.svgGroup_, 'mouseover', this, this.onDragEnter);
     this.addEvent_(
-        this.svgGroup_, 'mouseout', this, this.onDragExit_);
+        this.svgGroup_, 'mouseout', this, this.onDragExit);
   }
 
   /**
@@ -523,18 +523,16 @@ export class Backpack {
 
   /**
    * Handle mouse over.
-   * @protected
    */
-  onDragOver_() {
+  onDragEnter() {
     Blockly.utils.dom.addClass(
         /** @type {!SVGElement} */ (this.svgImg_), 'blocklyBackpackDarken');
   }
 
   /**
    * Handle mouse exit.
-   * @protected
    */
-  onDragExit_() {
+  onDragExit() {
     Blockly.utils.dom.removeClass(
         /** @type {!SVGElement} */ (this.svgImg_), 'blocklyBackpackDarken');
   }

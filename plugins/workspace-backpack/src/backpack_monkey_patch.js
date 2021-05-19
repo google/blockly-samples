@@ -43,34 +43,6 @@ import * as Blockly from 'blockly/core';
   };
 
   /**
-   * Update the cursor (and possibly the trash can lid) to reflect whether the
-   * dragging block would be deleted if released immediately.
-   * @private
-   */
-  Blockly.BlockDragger.prototype.updateCursorDuringBlockDrag_ = function() {
-    this.wouldDeleteBlock_ = this.draggedConnectionManager_.wouldDeleteBlock();
-    const trashcan = this.workspace_.trashcan;
-    if (this.wouldDeleteBlock_) {
-      this.draggingBlock_.setDeleteStyle(true);
-      if (this.deleteArea_ == Blockly.DELETE_AREA_TRASH && trashcan) {
-        trashcan.setLidOpen(true);
-      }
-    } else {
-      this.draggingBlock_.setDeleteStyle(false);
-      if (trashcan) {
-        trashcan.setLidOpen(false);
-      }
-    }
-    // start monkeypatch edit
-    if (this.isOverBackpack_) {
-      this.workspace_.backpack.onDragOver_();
-    } else {
-      this.workspace_.backpack.onDragExit_();
-    }
-    // end Monkeypatch edit
-  };
-
-  /**
    * Execute a step of block dragging, based on the given event.  Update the
    * display accordingly.
    * @param {!Event} e The most recent move event.
@@ -89,9 +61,15 @@ import * as Blockly from 'blockly/core';
     if (this.workspace_.backpack &&
         this.workspace_.backpack.getTargetArea()
             .contains(e.clientX, e.clientY)) {
+      if (!this.isOverBackpack_) {
+        this.workspace_.backpack.onDragEnter();
+      }
       this.isOverBackpack_ = true;
       this.deleteArea_ = Blockly.DELETE_AREA_NONE;
     } else {
+      if (this.isOverBackpack_) {
+        this.workspace_.backpack.onDragExit();
+      }
       this.isOverBackpack_ = false;
       this.deleteArea_ = this.workspace_.isDeleteArea(e);
     }
@@ -121,23 +99,26 @@ import * as Blockly from 'blockly/core';
     Blockly.blockAnimations.disconnectUiStop();
 
     // start monkeypatch edit
-    const delta = this.pixelsToWorkspaceUnits_(currentDragDeltaXY);
+    let delta = this.pixelsToWorkspaceUnits_(currentDragDeltaXY);
     const newLoc = this.isOverBackpack_ ?
         this.startXY_ : Blockly.utils.Coordinate.sum(this.startXY_, delta);
+    delta = Blockly.utils.Coordinate.difference(newLoc, this.startXY_);
     this.draggingBlock_.moveOffDragSurface(newLoc);
 
     if (this.isOverBackpack_) {
       // Handle adding to Backpack
       const backpack = this.workspace_.backpack;
       backpack.handleBlockDrop(this.draggingBlock_);
-      this.draggingBlock_.setDragging(false);
       // Blocks dragged directly from a flyout may need to be bumped.
       Blockly.bumpObjectIntoBounds_(
           this.draggingBlock_.workspace,
           this.workspace_.getMetricsManager()
               .getScrollMetrics(true), this.draggingBlock_);
-      this.draggingBlock_.render();
-    } else if (!this.maybeDeleteBlock_()) {
+    }
+    // end monkeypatch edit
+
+    const deleted = this.maybeDeleteBlock_();
+    if (!deleted) {
       // These are expensive and don't need to be done if we're deleting.
       this.draggingBlock_.moveConnections(delta.x, delta.y);
       this.draggingBlock_.setDragging(false);
@@ -150,8 +131,6 @@ import * as Blockly from 'blockly/core';
       }
       this.draggingBlock_.scheduleSnapAndBump();
     }
-    // end monkeypatch edit
-
     this.workspace_.setResizesEnabled(true);
 
     const toolbox = this.workspace_.getToolbox();
