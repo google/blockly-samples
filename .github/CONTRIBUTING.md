@@ -8,8 +8,8 @@
   - :arrow_right: Read up on how to [Add a Plugin](https://developers.google.com/blockly/guides/modify/contribute/add_a_plugin) or [Write a Codelab](https://developers.google.com/blockly/guides/modify/contribute/write_a_codelab)
 - [Report bugs](https://github.com/google/blockly-samples/issues/new?assignees=&labels=type%3A+bug%2C+triage&template=bug_report.md)
   - :arrow_right: Start by reading [How To Write A Good Issue](https://developers.google.com/blockly/guides/modify/contribute/write_a_good_issue)
-- [Fix bugs](https://developers.google.com/blockly/guides/modify/contribute/issue_labels)
-  - :arrow_right: Start by reading [Finding a Good Issue](https://github.com/google/blockly-samples/wiki/Finding-a-Good-Issue:-Labels)
+- Fix bugs
+  - :arrow_right: Start by reading [Finding a Good Issue](https://developers.google.com/blockly/guides/modify/contribute/issue_labels)
 
 ## Contributor License Agreement
 
@@ -28,7 +28,7 @@ again.
 All submissions, including submissions by project members, require review. We
 use GitHub pull requests for this purpose.
 
-:arrow_right: Read more about our [PR review process](https://developers.google.com/blockly/guides/modify/contribute/pr_review_process) in the wiki.
+:arrow_right: Read more about our [PR review process](https://developers.google.com/blockly/guides/modify/contribute/pr_review_process).
 
 ## Community guidelines
 
@@ -37,4 +37,4 @@ This project follows
 
 ## More information
 
-Head over to the [wiki](https://developers.google.com/blockly/guides/modify/contributing) for more information, including an [overview of the repository structure](https://developers.google.com/blockly/guides/modify/contribute/samples_repository_structure) and details of our [publishing process](https://developers.google.com/blockly/guides/modify/contribute/add_a_plugin#publishing).
+Head over to the [Developer Site](https://developers.google.com/blockly/guides/modify/contributing) for more information, including an [overview of the repository structure](https://developers.google.com/blockly/guides/modify/contribute/samples_repository_structure) and details of our [publishing process](https://developers.google.com/blockly/guides/modify/contribute/add_a_plugin#publishing).
