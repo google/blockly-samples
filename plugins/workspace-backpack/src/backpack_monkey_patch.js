@@ -154,18 +154,9 @@ import * as Blockly from 'blockly/core';
 
     this.workspace_.setResizesEnabled(true);
 
-    let toolbox = this.workspace_.getToolbox();
-    let style;
+    const toolbox = this.workspace_.getToolbox();
     if (toolbox && typeof toolbox.removeStyle == 'function') {
-      style = this.draggingBlock_.isDeletable() ? 'blocklyToolboxDelete' :
-          'blocklyToolboxGrab';
-      toolbox.removeStyle(style);
-    }
-    this.workspace_.setResizesEnabled(true);
-
-    toolbox = this.workspace_.getToolbox();
-    if (toolbox && typeof toolbox.removeStyle == 'function') {
-      style = this.draggingBlock_.isDeletable() ? 'blocklyToolboxDelete' :
+      const style = this.draggingBlock_.isDeletable() ? 'blocklyToolboxDelete' :
           'blocklyToolboxGrab';
       toolbox.removeStyle(style);
     }

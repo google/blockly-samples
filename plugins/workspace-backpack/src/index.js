@@ -14,7 +14,8 @@ import {createBackpackFlyout, cleanBlockXML} from './backpack_helpers';
 import './backpack_monkey_patch';
 
 /**
- * Class for backpack.
+ * Class for backpack that can be used save blocks from the workspace for
+ * future use.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
  * @implements {Blockly.IPositionable}
  */
@@ -355,7 +356,7 @@ export class Backpack {
 
   /**
    * Returns the count of items in the backpack.
-   * @return {number} The count.
+   * @return {number} The count of items.
    */
   getCount() {
     return this.contents_.length;
@@ -388,14 +389,14 @@ export class Backpack {
    * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
    */
   handleBlockDrop(block) {
-    const blockXml = Blockly.Xml.blockToDomWithXY(block);
+    const blockXml = Blockly.Xml.blockToDom(block);
     this.addItem(cleanBlockXML(blockXml));
   }
 
   /**
    * Adds item to backpack.
    * @param {string} item Text representing the XML tree of a block to add,
-   * cleaned of all unnecessary attributes.
+   *     cleaned of all unnecessary attributes.
    */
   addItem(item) {
     if (this.contents_.indexOf(item) !== -1) {
@@ -414,7 +415,6 @@ export class Backpack {
    * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
-    this.contents_.length = 0;
     this.contents_ = [...contents];
     while (this.contents_.length > this.maxItems_) {
       this.contents_.pop();
@@ -437,8 +437,8 @@ export class Backpack {
    * @return {boolean} Whether the backpack is open-able.
    * @private
    */
-  isOpenable() {
-    return this.isOpen() && !!this.getCount();
+  isOpenable_() {
+    return !this.isOpen();
   }
 
   /**
@@ -453,7 +453,7 @@ export class Backpack {
    * Opens the backpack flyout.
    */
   open() {
-    if (this.isOpenable()) {
+    if (!this.isOpenable_()) {
       return;
     }
     const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
@@ -508,7 +508,7 @@ export class Backpack {
    * @protected
    */
   blockMouseDownWhenOpenable_(e) {
-    if (this.isOpenable()) {
+    if (this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
