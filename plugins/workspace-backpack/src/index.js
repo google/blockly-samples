@@ -150,7 +150,7 @@ export class Backpack {
     /**
      * The backpack flyout. Initialized during init.
      * @type {!Blockly.IFlyout|undefined}
-     * @package
+     * @protected
      */
     this.flyout = undefined;
   }
