@@ -31,7 +31,7 @@ export function cleanBlockXML(xml) {
       node.removeAttribute('y');
       node.removeAttribute('id');
       node.removeAttribute('disabled');
-      if (node.nodeName == 'comment') { // Future proof just in case.
+      if (node.nodeName == 'comment') {
         node.removeAttribute('h');
         node.removeAttribute('w');
         node.removeAttribute('pinned');
