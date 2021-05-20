@@ -10,25 +10,32 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {cleanBlockXML} from './backpack_helpers';
+import './backpack_monkey_patch';
 
 /**
- * Class for backpack.
+ * Class for backpack that can be used save blocks from the workspace for
+ * future use.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
  * @implements {Blockly.IPositionable}
  */
 export class Backpack {
   /**
    * Constructor for a backpack.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
-   *     be added to.
+   * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace that
+   *     the plugin will be added to.
    */
-  constructor(workspace) {
+  constructor(targetWorkspace) {
     /**
      * The workspace.
      * @type {!Blockly.WorkspaceSvg}
      * @protected
      */
-    this.workspace_ = workspace;
+    this.workspace_ = targetWorkspace;
+
+    // This set is part of the monkeypatch, so that a reference to the backpack
+    // can be accessed on a given workspace.
+    this.workspace_.backpack = this;
 
     /**
      * The SVG group containing the backpack.
@@ -52,18 +59,25 @@ export class Backpack {
     this.top_ = 0;
 
     /**
+     * Extent of hotspot on all sides beyond the size of the image.
+     * @const {number}
+     * @private
+     */
+    this.HOTSPOT_MARGIN_ = 10;
+
+    /**
      * Top offset for backpack in svg.
      * @type {number}
      * @private
      */
-    this.SPRITE_TOP_ = -10;
+    this.SPRITE_TOP_ = 10;
 
     /**
      * Left offset for backpack in svg.
      * @type {number}
      * @private
      */
-    this.SPRITE_LEFT_ = -20;
+    this.SPRITE_LEFT_ = 20;
 
     /**
      * Width/Height of svg.
@@ -104,7 +118,6 @@ export class Backpack {
      * @private
      */
     this.MARGIN_HORIZONTAL_ = 20;
-
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
@@ -119,6 +132,27 @@ export class Backpack {
      * @private
      */
     this.initialized_ = false;
+
+    /**
+     * A list of XML (stored as strings) representing blocks in the backpack.
+     * @type {!Array<string>}
+     * @private
+     */
+    this.contents_ = [];
+
+    /**
+     * The maximum items that can be stored on the backpack.
+     * @type {number}
+     * @private
+     */
+    this.maxItems_ = 32;
+
+    /**
+     * The backpack flyout. Initialized during init.
+     * @type {!Blockly.IFlyout|undefined}
+     * @protected
+     */
+    this.flyout = undefined;
   }
 
   /**
@@ -131,6 +165,7 @@ export class Backpack {
       weight: 2,
       types: [Blockly.PluginManager.Type.POSITIONABLE],
     });
+    this.initFlyout_();
     this.createDom_();
     this.initialized_ = true;
     this.workspace_.resize();
@@ -152,8 +187,55 @@ export class Backpack {
   }
 
   /**
+   * Creates and initializes the flyout and inserts it into the dom.
+   * @protected
+   */
+  initFlyout_() {
+    // Create flyout options.
+    const flyoutWorkspaceOptions = new Blockly.Options(
+        /** @type {!Blockly.BlocklyOptions} */
+        ({
+          'scrollbars': true,
+          'parentWorkspace': this.workspace_,
+          'rtl': this.workspace_.RTL,
+          'oneBasedIndex': this.workspace_.options.oneBasedIndex,
+          'renderer': this.workspace_.options.renderer,
+          'rendererOverrides': this.workspace_.options.rendererOverrides,
+          'move': {
+            'scrollbars': true,
+          },
+        }));
+    // Create vertical or horizontal flyout.
+    if (this.workspace_.horizontalLayout) {
+      flyoutWorkspaceOptions.toolboxPosition =
+          (this.workspace_.toolboxPosition ===
+              Blockly.utils.toolbox.Position.TOP) ?
+              Blockly.utils.toolbox.Position.BOTTOM :
+              Blockly.utils.toolbox.Position.TOP;
+      const HorizontalFlyout = Blockly.registry.getClassFromOptions(
+          Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
+          this.workspace_.options, true);
+      this.flyout = new HorizontalFlyout(flyoutWorkspaceOptions);
+    } else {
+      flyoutWorkspaceOptions.toolboxPosition =
+          (this.workspace_.toolboxPosition ===
+              Blockly.utils.toolbox.Position.RIGHT) ?
+              Blockly.utils.toolbox.Position.LEFT :
+              Blockly.utils.toolbox.Position.RIGHT;
+      const VerticalFlyout = Blockly.registry.getClassFromOptions(
+          Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
+          this.workspace_.options, true);
+      this.flyout = new VerticalFlyout(flyoutWorkspaceOptions);
+    }
+    // Add flyout to DOM.
+    const parentNode = this.workspace_.getParentSvg().parentNode;
+    parentNode.appendChild(this.flyout.createDom(Blockly.utils.Svg.SVG));
+    this.flyout.init(this.workspace_);
+  }
+
+  /**
    * Creates DOM for ui element.
-   * @private
+   * @protected
    */
   createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
@@ -176,9 +258,9 @@ export class Backpack {
           'class': 'blocklyBackpack',
           'clip-path': 'url(#blocklyBackpackClipPath' + rnd + ')',
           'width': this.SPRITE_SIZE_ + 'px',
-          'x': this.SPRITE_LEFT_,
+          'x': -this.SPRITE_LEFT_,
           'height': this.SPRITE_SIZE_ + 'px',
-          'y': this.SPRITE_TOP_,
+          'y': -this.SPRITE_TOP_,
         },
         this.svgGroup_);
     this.svgImg_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
@@ -192,6 +274,10 @@ export class Backpack {
         this.svgGroup_, 'mousedown', this, this.blockMouseDownWhenOpenable_);
     this.addEvent_(
         this.svgGroup_, 'mouseup', this, this.onClick_);
+    this.addEvent_(
+        this.svgGroup_, 'mouseover', this, this.onDragEnter);
+    this.addEvent_(
+        this.svgGroup_, 'mouseout', this, this.onDragExit);
   }
 
   /**
@@ -209,6 +295,24 @@ export class Backpack {
     // See #4303
     const event = Blockly.bindEvent_(node, name, thisObject, func);
     this.boundEvents_.push(event);
+  }
+
+  /**
+   * Returns the bounding rectangle of the drag target area in pixel units
+   * relative to the Blockly injection div.
+   * @return {!Blockly.utils.Rect} The plugin’s bounding box.
+   */
+  getTargetArea() {
+    if (!this.svgGroup_) {
+      return null;
+    }
+
+    const clientRect = this.svgGroup_.getBoundingClientRect();
+    const top = clientRect.top + this.SPRITE_TOP_ - this.HOTSPOT_MARGIN_;
+    const bottom = top + this.HEIGHT_ + 2 * this.HOTSPOT_MARGIN_;
+    const left = clientRect.left + this.SPRITE_LEFT_ - this.HOTSPOT_MARGIN_;
+    const right = left + this.WIDTH_ + 2 * this.HOTSPOT_MARGIN_;
+    return new Blockly.utils.Rect(top, bottom, left, right);
   }
 
   /**
@@ -290,10 +394,109 @@ export class Backpack {
   }
 
   /**
+   * Returns the count of items in the backpack.
+   * @return {number} The count of items.
+   */
+  getCount() {
+    return this.contents_.length;
+  }
+
+  /**
+   * Returns backpack contents XML.
+   * @return {!Array<string>} The backpack contents.
+   */
+  getContents() {
+    // Return a shallow copy of the contents array.
+    return [...this.contents_];
+  }
+
+  /**
+   * Empties the backpack's contents. If the contents-flyout is currently open
+   * it will be closed.
+   */
+  empty() {
+    if (!this.getCount()) {
+      return;
+    }
+    this.contents_.length = 0;
+    // TODO: Fire UI event for Backpack content change.
+    this.close();
+  }
+
+  /**
+   * Handles a block drop on this backpack.
+   * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
+   */
+  handleBlockDrop(block) {
+    const blockXml = Blockly.Xml.blockToDom(block);
+    this.addItem(cleanBlockXML(blockXml));
+  }
+
+  /**
+   * Adds item to backpack.
+   * @param {string} item Text representing the XML tree of a block to add,
+   *     cleaned of all unnecessary attributes.
+   */
+  addItem(item) {
+    if (this.contents_.indexOf(item) !== -1) {
+      return;
+    }
+
+    this.contents_.unshift(item);
+    while (this.contents_.length > this.maxItems_) {
+      this.contents_.pop();
+    }
+    // TODO: Fire UI event for Backpack content change.
+  }
+
+  /**
+   * Sets backpack contents XML.
+   * @param {!Array<string>} contents The new backpack contents.
+   */
+  setContents(contents) {
+    this.contents_ = [...contents];
+    while (this.contents_.length > this.maxItems_) {
+      this.contents_.pop();
+    }
+    // TODO: Fire UI event for Backpack content change.
+  }
+
+  /**
+   * Merges backpack contents XML.
+   * @param {!Array<string>} contents The backpack contents to merge.
+   */
+  mergeContents(contents) {
+    contents.forEach((item) => {
+      this.addItem(item);
+    });
+  }
+
+  /**
+   * Whether the backpack is open-able.
+   * @return {boolean} Whether the backpack is open-able.
+   * @private
+   */
+  isOpenable_() {
+    return !this.isOpen();
+  }
+
+  /**
+   * Whether the backpack is open.
+   * @return {boolean} Whether the backpack is open.
+   */
+  isOpen() {
+    return this.flyout.isVisible();
+  }
+
+  /**
    * Opens the backpack flyout.
    */
   open() {
-    // TODO: Implement flyout open.
+    if (!this.isOpenable_()) {
+      return;
+    }
+    const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
+    this.flyout.show(xml);
     // TODO: Fire UI event for Backpack open.
   }
 
@@ -301,7 +504,11 @@ export class Backpack {
    * Closes the backpack flyout.
    */
   close() {
-    // TODO: Implement flyout close.
+    if (!this.isOpen()) {
+      return;
+    }
+
+    this.flyout.hide();
     // TODO: Fire UI event for Backpack close.
   }
 
@@ -317,13 +524,30 @@ export class Backpack {
   }
 
   /**
+   * Handle mouse over.
+   */
+  onDragEnter() {
+    Blockly.utils.dom.addClass(
+        /** @type {!SVGElement} */ (this.svgImg_), 'blocklyBackpackDarken');
+  }
+
+  /**
+   * Handle mouse exit.
+   */
+  onDragExit() {
+    Blockly.utils.dom.removeClass(
+        /** @type {!SVGElement} */ (this.svgImg_), 'blocklyBackpackDarken');
+  }
+
+  /**
    * Prevents a workspace scroll and click event if the backpack is openable.
    * @param {!Event} e A mouse down event.
    * @protected
    */
   blockMouseDownWhenOpenable_(e) {
-    // TODO: Allow for making backpack not-openable when it is empty.
-    e.stopPropagation(); // Don't start a workspace scroll.
+    if (this.isOpenable_()) {
+      e.stopPropagation(); // Don't start a workspace scroll.
+    }
   }
 }
 
@@ -349,7 +573,7 @@ Blockly.Css.register([
   `.blocklyBackpack {
     opacity: .4;
   }
-  .blocklyBackpack:hover {
+  .blocklyBackpack:hover, .blocklyBackpackDarken {
     opacity: .6;
   }
   .blocklyBackpack:active {
