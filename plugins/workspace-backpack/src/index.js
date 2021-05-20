@@ -142,12 +142,14 @@ export class Backpack {
 
     /**
      * The maximum items that can be stored on the backpack.
+     * @type {number}
+     * @private
      */
     this.maxItems_ = 32;
 
     /**
      * The backpack flyout. Initialized during init.
-     * @type {Blockly.IFlyout|undefined}
+     * @type {!Blockly.IFlyout|undefined}
      * @package
      */
     this.flyout = undefined;
