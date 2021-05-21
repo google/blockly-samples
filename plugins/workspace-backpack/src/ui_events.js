@@ -30,7 +30,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
   /**
    * Class for a backpack open event.
    * @param {boolean=} isOpen Whether the backpack flyout is opening (false
-   *    if opening). Undefined for a blank event.
+   *    if closing). Undefined for a blank event.
    * @param {string=} workspaceId The workspace identifier for this event.
    *    Undefined for a blank event.
    * @extends {Blockly.Events.UiBase}

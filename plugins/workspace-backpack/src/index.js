@@ -40,7 +40,7 @@ export class Backpack {
 
     /**
      * The SVG group containing the backpack.
-     * @type {SVGElement}
+     * @type {?SVGElement}
      * @protected
      */
     this.svgGroup_ = null;
@@ -140,13 +140,6 @@ export class Backpack {
      * @protected
      */
     this.contents_ = [];
-
-    /**
-     * The maximum items that can be stored on the backpack.
-     * @type {number}
-     * @protected
-     */
-    this.maxItems_ = 32;
 
     /**
      * The backpack flyout. Initialized during init.
@@ -447,11 +440,7 @@ export class Backpack {
    * @param {!Array<string>} items The backpack contents to add.
    */
   addItems(items) {
-    const filteredItems = items.filter((item) => {
-      return this.contents_.indexOf(item) === -1;
-    });
-    this.contents_.unshift(...filteredItems);
-    this.trimContents_();
+    this.contents_.unshift(...this.filterDuplicates_(items));
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
@@ -460,21 +449,21 @@ export class Backpack {
    * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
-    this.contents_ = contents.filter((item) => {
-      return this.contents_.indexOf(item) === -1;
-    });
-    this.trimContents_();
+    this.contents_ = this.filterDuplicates_(contents);
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
-   * Trims the internal contents array so that it does not exceed max size.
+   * Returns a filtered list without duplicates within itself and without any
+   * shared elements with this.contents_.
+   * @param {!Array<string>} array The array of items to filter.
+   * @return {!Array<string>} The filtered list.
    * @private
    */
-  trimContents_() {
-    while (this.contents_.length > this.maxItems_) {
-      this.contents_.pop();
-    }
+  filterDuplicates_(array) {
+    return array.filter((item, idx) => {
+      return array.indexOf(item) === idx && this.contents_.indexOf(item) === -1;
+    });
   }
 
   /**
