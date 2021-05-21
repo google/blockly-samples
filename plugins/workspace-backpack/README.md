@@ -74,5 +74,21 @@ open it will be closed.
 pixel units relative to the Blockly injection div.
 - `position`: Positions the backpack UI element.
 
+## Compatibility
+This plugin registers a custom context menu by overriding
+`Blockly.configureContextMenu` in `init` in order to support the context menu
+for emptying the Backpack.
+If you also override `Blockly.configureContextMenu` after initializing this
+plugin, you must also call the old `Blockly.configureContextMenu` function.
+Example:
+```
+const prevConfigureContextMenu = workspace.configureContextMenu;
+workspace.configureContextMenu = (menuOptions, e) => {
+  prevConfigureContextMenu &&
+      prevConfigureContextMenu.call(null, menuOptions, e);
+  ...
+}      
+```
+
 ## License
 Apache 2.0

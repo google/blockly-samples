@@ -18,9 +18,12 @@ import './msg';
  *   context menu option on.
  */
 function registerEmptyBackpack(workspace) {
+  const prevConfigureContextMenu = workspace.configureContextMenu;
   workspace.configureContextMenu = (menuOptions, e) => {
     const backpack = workspace.backpack;
     if (!backpack || !backpack.getTargetArea().contains(e.clientX, e.clientY)) {
+      prevConfigureContextMenu &&
+      prevConfigureContextMenu.call(null, menuOptions, e);
       return;
     }
     menuOptions.length = 0;
