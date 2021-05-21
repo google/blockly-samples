@@ -486,6 +486,7 @@ export class Backpack {
     this.addItems(cleanedBlocks);
   }
 
+
   /**
    * Removes the specified block from the backpack.
    * @param {!Blockly.Block} block The block to be removed from the backpack.

@@ -7,6 +7,8 @@
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
   <script src="./node_modules/@blockly/workspace-backpack/dist/index.js"></script>
+  <script src="./notification_backpack.js"></script>
+  <script src="./index.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -18,150 +20,91 @@
     }
   </style>
 </head>
-<body>
-<p>This is a simple demo of two Blockly instances sharing a common Backpack.</p>
+<body onload="init()">
+  <p>This is a demo of two Blockly instances with a custom Backpack "sharing" Backpack contents.</p>
 
-<table width="100%">
-  <tr>
-    <td>
-      <div id="primaryDiv" style="height: 480px; width: 600px;"></div>
-    </td>
-    <td>
-      <div id="secondaryDiv" style="height: 480px; width: 600px;"></div>
-    </td>
-  </tr>
-</table>
+  <table width="100%">
+    <tr>
+      <td>
+        <div id="primaryDiv" style="height: 480px; width: 600px;"></div>
+      </td>
+      <td>
+        <div id="secondaryDiv" style="height: 480px; width: 600px;"></div>
+      </td>
+    </tr>
+  </table>
 
-<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-  <category name="Logic" categorystyle="logic_category">
-    <block type="controls_if"></block>
-    <block type="logic_compare"></block>
-    <block type="logic_operation"></block>
-    <block type="logic_negate"></block>
-    <block type="logic_boolean"></block>
-  </category>
-  <category name="Loops" categorystyle="loop_category">
-    <block type="controls_repeat_ext">
-      <value name="TIMES">
-        <shadow type="math_number">
-          <field name="NUM">10</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="controls_flow_statements"></block>
-  </category>
-  <category name="Math" categorystyle="math_category">
-    <block type="math_number" gap="32">
-      <field name="NUM">123</field>
-    </block>
-    <block type="math_arithmetic">
-      <value name="A">
-        <shadow type="math_number">
-          <field name="NUM">1</field>
-        </shadow>
-      </value>
-      <value name="B">
-        <shadow type="math_number">
-          <field name="NUM">1</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_single">
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">9</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_number_property">
-      <value name="NUMBER_TO_CHECK">
-        <shadow type="math_number">
-          <field name="NUM">0</field>
-        </shadow>
-      </value>
-    </block>
-  </category>
-  <category name="Text" categorystyle="text_category">
-    <block type="text"></block>
-    <block type="text_multiline"></block>
-    <label text="Input/Output:" web-class="ioLabel"></label>
-    <block type="text_print">
-      <value name="TEXT">
-        <shadow type="text">
-          <field name="TEXT">abc</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="text_prompt_ext">
-      <value name="TEXT">
-        <shadow type="text">
-          <field name="TEXT">abc</field>
-        </shadow>
-      </value>
-    </block>
-  </category>
-  <sep></sep>
-  <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
-  <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
-</xml>
-
-<script>
-  // Inject primary workspace.
-  var primaryWorkspace = Blockly.inject('primaryDiv',
-      {
-        media: 'https://unpkg.com/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
-        trashcan: true,
-      });
-  // Inject secondary workspace.
-  var secondaryWorkspace = Blockly.inject('secondaryDiv',
-      {
-        media: 'https://unpkg.com/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
-        trashcan: true
-      });
-
-
-  const backpackOptions = {
-    contextMenu: {
-      emptyBackpack: true,
-      removeFromBackpack: true,
-      copyToBackpack: true,
-      copyAllToBackpack: true,
-      pasteAllToBackpack: true,
-      disablePreconditionChecks: false,
-    },
-  };
-  // Add backpacks
-  const primaryBackpack = new Backpack(primaryWorkspace, backpackOptions);
-  primaryBackpack.init();
-  const secondaryBackpack = new Backpack(secondaryWorkspace, backpackOptions);
-  secondaryBackpack.init();
-
-  // Listen to events on both workspace.
-  primaryWorkspace.addChangeListener(updateBackpack);
-  secondaryWorkspace.addChangeListener(updateBackpack);
-
-  function updateBackpack(event) {
-    if (event.type !== 'backpack_change') {
-      return;
-    }
-    Blockly.Events.disable();
-    let contents;
-    let targetBackpack;
-    if (primaryWorkspace.id === event.workspaceId) {
-      targetBackpack = secondaryBackpack;
-      contents = primaryBackpack.getContents();
-      console.log('second workspace backpack updated');
-    } else { // secondaryWorkspace.id === event.workspaceId
-      targetBackpack = primaryBackpack;
-      contents = secondaryBackpack.getContents();
-      console.log('first workspace backpack updated');
-    }
-    targetBackpack.setContents(contents);
-    Blockly.Events.enable();
-  }
-</script>
-
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <category name="Logic" categorystyle="logic_category">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+    </category>
+    <category name="Loops" categorystyle="loop_category">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category name="Math" categorystyle="math_category">
+      <block type="math_number" gap="32">
+        <field name="NUM">123</field>
+      </block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Text" categorystyle="text_category">
+      <block type="text"></block>
+      <block type="text_multiline"></block>
+      <label text="Input/Output:" web-class="ioLabel"></label>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <sep></sep>
+    <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+    <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
+  </xml>
 </body>
 </html>
