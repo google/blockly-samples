@@ -48,9 +48,12 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     // child drag surface. This makes the block stay under the cursor.
     this.workspace_.getBlockDragSurface().translateBy(-deltaX, -deltaY);
 
+
     // The total amount the block has moved since being picked up.
     const totalDelta =
         Blockly.utils.Coordinate.sum(this.scrollDelta_, this.dragDelta_);
+
+    this.dragIcons_(totalDelta);
 
     // As we scroll, show the insertion markers.
     this.draggedConnectionManager_.update(
@@ -73,53 +76,20 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    */
   dragBlock(e, currentDragDeltaXY) {
     const totalDelta =
-        Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
-    super.dragBlock(e, totalDelta);
+    Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
+    console.log(totalDelta);
+    super.dragBlock(e, currentDragDeltaXY);
     this.dragDelta_ = currentDragDeltaXY;
   }
 
-  /** @override */
   endBlockDrag(e, currentDragDeltaXY) {
-    // Make sure internal state is fresh.
-    // TODO: Figure out a way to call super here.
-    this.dragBlock(e, currentDragDeltaXY);
-    this.dragIconData_ = [];
-    this.fireDragEndEvent_();
-
-    Blockly.utils.dom.stopTextWidthCache();
-
-    Blockly.blockAnimations.disconnectUiStop();
-
-    // START CHANGE
-    const totalChange =
-        Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
-    const delta = this.pixelsToWorkspaceUnits_(totalChange);
-    const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, delta);
-    // END CHANGE
-    this.draggingBlock_.moveOffDragSurface(newLoc);
-
-    const deleted = this.maybeDeleteBlock_();
-    if (!deleted) {
-      // These are expensive and don't need to be done if we're deleting.
-      this.draggingBlock_.moveConnections(delta.x, delta.y);
-      this.draggingBlock_.setDragging(false);
-      this.fireMoveEvent_();
-      if (this.draggedConnectionManager_.wouldConnectBlock()) {
-        // Applying connections also rerenders the relevant blocks.
-        this.draggedConnectionManager_.applyConnections();
-      } else {
-        this.draggingBlock_.render();
-      }
-      this.draggingBlock_.scheduleSnapAndBump();
-    }
-    this.workspace_.setResizesEnabled(true);
-
-    const toolbox = this.workspace_.getToolbox();
-    if (toolbox && typeof toolbox.removeStyle == 'function') {
-      const style = this.draggingBlock_.isDeletable() ? 'blocklyToolboxDelete' :
-                                                        'blocklyToolboxGrab';
-      toolbox.removeStyle(style);
-    }
-    Blockly.Events.setGroup(false);
+    super.endBlockDrag(e, currentDragDeltaXY);
+    this.dragDelta_ = currentDragDeltaXY;
   }
+
+//   getDelta_(currentDragDeltaXY) {
+//     const totalDelta =
+//     Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
+//     return this.pixelsToWorkspaceUnits_(totalDelta);
+//   }
 }

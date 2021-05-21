@@ -49,8 +49,7 @@ export class Plugin {
     // Do not try to scroll if we are not dragging a block, or the workspace
     // does not allow moving by wheel.
     if (!canWheelMove || !currentGesture ||
-        currentGesture.getCurrentDraggingType() !==
-            Blockly.Gesture.DraggingType.BLOCK) {
+        !(currentGesture.isDraggingBlock_)) {
       return;
     }
 
@@ -74,7 +73,7 @@ export class Plugin {
 
     if (deltaX || deltaY) {
       // TODO: Don't like these APIS. Figure out better ones.
-      currentGesture.getCurrentDragger().moveBlockWhileDragging(deltaX, deltaY);
+      currentGesture.blockDragger_.moveBlockWhileDragging(deltaX, deltaY);
       e.preventDefault();
     }
   }
@@ -85,10 +84,8 @@ export class Plugin {
    * @private
    */
   getDragSurfaceLocation_() {
-    const dragSurface = this.workspace_.getBlockDragSurface();
-    const workspaceOffset = dragSurface.getCachedChildOffset();
     // TODO: Double check that this can not fall out of sync.
     return new Blockly.utils.Coordinate(
-        Math.round(workspaceOffset.x), Math.round(workspaceOffset.y));
+        this.workspace_.scrollX + 107, this.workspace_.scrollY);
   }
 }
