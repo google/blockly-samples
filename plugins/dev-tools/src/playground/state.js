@@ -42,8 +42,8 @@ export class LocalStorageState {
    * Load the state from local storage.
    */
   load() {
-    this.state_ = JSON.parse(localStorage.getItem(this.key_)) ||
-      this.defaultState_;
+    this.state_ =
+        JSON.parse(localStorage.getItem(this.key_)) || this.defaultState_;
   }
 
   /**

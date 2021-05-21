@@ -31,7 +31,21 @@ cd ..
 npm run deploy:prepare
 ```
 
-This runs `install` for all of the plugins and all of the examples, then runs the `deploy:prepare` script to copy over built files into the gh-pages directory. 
+This runs `install` for all of the plugins and all of the examples, then runs the `deploy:prepare` script to copy over built files into the gh-pages directory.
+
+### Test locally with beta
+
+From the root directory run:
+
+```
+npm install
+cd examples && npm install
+cd ..
+# This copies necessary files to gh-pages folder. This is necessary to run gh-pages locally.
+npm run test:ghpages
+```
+
+This runs `install` for all of the plugins and all of the examples, then directly installs the current beta release of Blockly, then runs the `deploy:prepare` script to copy over built files into the gh-pages directory.
 
 ### Serve
 
