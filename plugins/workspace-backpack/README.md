@@ -37,8 +37,8 @@ can be translated by assigning the following properties of Blockly.Msg
 - `EMPTY_BACKPACK` (Default: "Empty") context menu - Empty the backpack.
 - `REMOVE_FROM_BACKPACK` (Default: "Remove from Backpack") context menu - Remove
 the selected Block from the backpack.
-- `COPY_TO_BACKPACK` (Default: "Add to Backpack") context menu - Add the
-selected block to the backpack.
+- `COPY_TO_BACKPACK` (Default: "Copy to Backpack") context menu - Copy the
+selected Block to the backpack.
 - `COPY_ALL_TO_BACKPACK` (Default: "Copy All Blocks to Backpack") Context menu -
 copy all Blocks on the workspace to the backpack.
 - `PASTE_ALL_FROM_BACKPACK` (Default: "Paste All Blocks from Backpack") context
