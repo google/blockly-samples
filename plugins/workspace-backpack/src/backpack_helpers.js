@@ -58,8 +58,7 @@ function registerRemoveFromBackpack() {
     callback: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const backpack = scope.block.workspace.targetWorkspace.backpack;
-      const blockXml = Blockly.Xml.blockToDomWithXY(scope.block);
-      backpack.deleteItem(cleanBlockXML(blockXml));
+      backpack.removeBlock(scope.block);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: 'remove_from_backpack',
@@ -86,15 +85,14 @@ function registerAddToBackpack() {
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const ws = scope.block.workspace;
       if (!ws.isFlyout && !!ws.backpack) {
-        return 'enabled';
+        return ws.backpack.containsBlock(scope.block) ? 'disabled' : 'enabled';
       }
       return 'hidden';
     },
     callback: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const backpack = scope.block.workspace.backpack;
-      const blockXml = Blockly.Xml.blockToDomWithXY(scope.block);
-      backpack.addItem(cleanBlockXML(blockXml));
+      backpack.addBlock(scope.block);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: 'copy_to_backpack',
@@ -122,10 +120,7 @@ function registerCopyPasteAllBackpack() {
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const ws = scope.workspace;
       const topBlocks = ws.getTopBlocks();
-      topBlocks.forEach((block) => {
-        ws.backpack.addItem(
-            cleanBlockXML(Blockly.Xml.blockToDomWithXY(block)));
-      });
+      topBlocks.forEach((block) => ws.backpack.addBlock(block));
       // TODO: Fire UI event for Backpack content change.
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,

@@ -236,7 +236,7 @@ export class Backpack {
   }
 
   /**
-   * Creates DOM for ui element.
+   * Creates DOM for ui element and attaches event listeners.
    * @protected
    */
   createDom_() {
@@ -439,8 +439,44 @@ export class Backpack {
    * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
    */
   handleBlockDrop(block) {
-    const blockXml = Blockly.Xml.blockToDom(block);
-    this.addItem(cleanBlockXML(blockXml));
+    this.addBlock(block);
+  }
+
+  /**
+   * Converts the provided block into a cleaned XML string.
+   * @param {!Blockly.Block} block Block to convert.
+   * @return {string} The cleaned XML string.
+   * @private
+   */
+  blockToCleanXmlString_(block) {
+    return cleanBlockXML(Blockly.Xml.blockToDom(block));
+  }
+
+  /**
+   * Returns whether the backpack contains a duplicate of the provided Block.
+   * @param {!Blockly.Block} block Block to check.
+   * @return {boolean} Whether the backpack contains a duplicate of the provided
+   *     Block.
+   */
+  containsBlock(block) {
+    const cleanedBlockXml = this.blockToCleanXmlString_(block);
+    return this.contents_.indexOf(cleanedBlockXml) !== -1;
+  }
+
+  /**
+   * Adds Block to backpack.
+   * @param {!Blockly.Block} block Block to be added to the backpack.
+   */
+  addBlock(block) {
+    this.addItem(this.blockToCleanXmlString_(block));
+  }
+
+  /**
+   * Removes Block from the backpack.
+   * @param {!Blockly.Block} block Block to be removed from the backpack.
+   */
+  removeBlock(block) {
+    this.removeItem(this.blockToCleanXmlString_(block));
   }
 
   /**
@@ -461,11 +497,11 @@ export class Backpack {
   }
 
   /**
-   * Deletes item from the backpack.
+   * Removes item from the backpack.
    * @param {string} item Text representing the XML tree of a block to remove,
    * cleaned of all unnecessary attributes.
    */
-  deleteItem(item) {
+  removeItem(item) {
     const itemIndex = this.contents_.indexOf(item);
     if (itemIndex !== -1) {
       this.contents_.splice(itemIndex, 1);
