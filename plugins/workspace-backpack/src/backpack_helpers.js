@@ -47,8 +47,12 @@ function registerRemoveFromBackpack() {
     preconditionFn: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const ws = scope.block.workspace;
-      if (ws.isFlyout && ws.targetWorkspace && !!ws.targetWorkspace.backpack) {
-        return 'enabled';
+      if (ws.isFlyout && ws.targetWorkspace && !! ws.targetWorkspace.backpack) {
+        // If this is a flyout for a targetWorkpace with a backpack.
+        const backpack = ws.targetWorkspace.backpack;
+        if (backpack.getFlyout().getWorkspace().id === ws.id) {
+          return 'enabled';
+        }
       }
       return 'hidden';
     },

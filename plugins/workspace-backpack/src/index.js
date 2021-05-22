@@ -149,10 +149,10 @@ export class Backpack {
 
     /**
      * The backpack flyout. Initialized during init.
-     * @type {!Blockly.IFlyout|undefined}
+     * @type {?Blockly.IFlyout}
      * @protected
      */
-    this.flyout = undefined;
+    this.flyout_ = null;
   }
 
   /**
@@ -217,7 +217,7 @@ export class Backpack {
       const HorizontalFlyout = Blockly.registry.getClassFromOptions(
           Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
           this.workspace_.options, true);
-      this.flyout = new HorizontalFlyout(flyoutWorkspaceOptions);
+      this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
     } else {
       flyoutWorkspaceOptions.toolboxPosition =
           (this.workspace_.toolboxPosition ===
@@ -227,12 +227,12 @@ export class Backpack {
       const VerticalFlyout = Blockly.registry.getClassFromOptions(
           Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
           this.workspace_.options, true);
-      this.flyout = new VerticalFlyout(flyoutWorkspaceOptions);
+      this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
     }
     // Add flyout to DOM.
     const parentNode = this.workspace_.getParentSvg().parentNode;
-    parentNode.appendChild(this.flyout.createDom(Blockly.utils.Svg.SVG));
-    this.flyout.init(this.workspace_);
+    parentNode.appendChild(this.flyout_.createDom(Blockly.utils.Svg.SVG));
+    this.flyout_.init(this.workspace_);
   }
 
   /**
@@ -297,6 +297,15 @@ export class Backpack {
     // See #4303
     const event = Blockly.bindEvent_(node, name, thisObject, func);
     this.boundEvents_.push(event);
+  }
+
+  /**
+   * Returns the backpack flyout.
+   * @return {?Blockly.IFlyout} The backpack flyout.
+   * @public
+   */
+  getFlyout() {
+    return this.flyout_;
   }
 
   /**
@@ -503,7 +512,7 @@ export class Backpack {
    * @return {boolean} Whether the backpack is open.
    */
   isOpen() {
-    return this.flyout.isVisible();
+    return this.flyout_.isVisible();
   }
 
   /**
@@ -514,7 +523,7 @@ export class Backpack {
       return;
     }
     const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
-    this.flyout.show(xml);
+    this.flyout_.show(xml);
     // TODO: Fire UI event for Backpack open.
   }
 
@@ -527,7 +536,7 @@ export class Backpack {
       return;
     }
     const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
-    this.flyout.show(xml);
+    this.flyout_.show(xml);
   }
 
   /**
@@ -538,7 +547,7 @@ export class Backpack {
       return;
     }
 
-    this.flyout.hide();
+    this.flyout_.hide();
     // TODO: Fire UI event for Backpack close.
   }
 
