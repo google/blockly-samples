@@ -90,5 +90,7 @@ workspace.configureContextMenu = (menuOptions, e) => {
 }      
 ```
 
+This plugin also currently only supports one Backpack per Workspace.
+
 ## License
 Apache 2.0
