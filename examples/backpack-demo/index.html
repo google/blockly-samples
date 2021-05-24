@@ -122,10 +122,10 @@
       });
 
   // Add backpacks
-  const backpack1 = new Backpack(primaryWorkspace);
-  backpack1.init();
-  const backpack2 = new Backpack(secondaryWorkspace);
-  backpack2.init();
+  const primaryBackpack = new Backpack(primaryWorkspace);
+  primaryBackpack.init();
+  const secondaryBackpack = new Backpack(secondaryWorkspace);
+  secondaryBackpack.init();
 
   // Listen to events on both workspace.
   primaryWorkspace.addChangeListener(updateBackpack);
@@ -139,12 +139,12 @@
     let contents;
     let targetBackpack;
     if (primaryWorkspace.id === event.workspaceId) {
-      targetBackpack = secondaryWorkspace.backpack;
-      contents = primaryWorkspace.backpack.getContents();
+      targetBackpack = secondaryBackpack;
+      contents = primaryBackpack.getContents();
       console.log('second workspace backpack updated');
     } else { // secondaryWorkspace.id === event.workspaceId
-      targetBackpack = primaryWorkspace.backpack;
-      contents = secondaryWorkspace.backpack.getContents();
+      targetBackpack = primaryBackpack;
+      contents = secondaryBackpack.getContents();
       console.log('first workspace backpack updated');
     }
     targetBackpack.setContents(contents);
