@@ -313,6 +313,22 @@ function deployToGhPagesUpstream(done) {
   return deployToGhPages('https://github.com/google/blockly-samples.git')(done);
 }
 
+/**
+ * Runs an install on all plugin and examples, installs beta, bundles, copies
+ * to the gh-pages folder, and finally starts the jekyll server.
+ */
+const testGhPagesLocally = gulp.series(
+    gulp.parallel(preparePluginsForBeta, prepareExamplesForBeta),
+    gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+    function(done) {
+      console.log('Starting server using "bundle exec jekyll serve"');
+      const ghPagesDirectory = 'gh-pages';
+      execSync(`bundle exec jekyll serve`,
+          {cwd: ghPagesDirectory, stdio: 'inherit'});
+      done();
+    }
+);
+
 module.exports = {
   checkLicenses: checkLicenses,
   deploy: deployToGhPagesOrigin,
@@ -321,8 +337,5 @@ module.exports = {
   publish: publishRelease,
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
-  testGhPagesLocally: gulp.series(
-      gulp.parallel(preparePluginsForBeta, prepareExamplesForBeta),
-      gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
-  ),
+  testGhPagesLocally: testGhPagesLocally,
 };
