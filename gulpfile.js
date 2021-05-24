@@ -321,6 +321,8 @@ module.exports = {
   publish: publishRelease,
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
-  testGhPagesLocally: gulp.parallel(
-      preparePluginsForBeta, prepareExamplesForBeta),
+  testGhPagesLocally: gulp.series(
+      gulp.parallel(preparePluginsForBeta, prepareExamplesForBeta),
+      gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+  ),
 };
