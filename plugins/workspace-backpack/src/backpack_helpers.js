@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import './msg';
+import {BackpackChange} from './ui_events';
 
 /**
  * Registers a context menu option to empty the backpack when right-clicked.
@@ -119,9 +120,7 @@ function registerCopyPasteAllBackpack() {
     callback: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const ws = scope.workspace;
-      const topBlocks = ws.getTopBlocks();
-      topBlocks.forEach((block) => ws.backpack.addBlock(block));
-      // TODO: Fire UI event for Backpack content change.
+      ws.backpack.addBlocks(ws.getTopBlocks());
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     id: 'copy_all_to_backpack',

@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {cleanBlockXML, registerAllContextMenus} from './backpack_helpers';
+import {BackpackChange, BackpackOpen} from './ui_events';
 import './backpack_monkey_patch';
 
 /**
@@ -39,8 +40,8 @@ export class Backpack {
 
     /**
      * The SVG group containing the backpack.
-     * @type {SVGElement}
-     * @private
+     * @type {?SVGElement}
+     * @protected
      */
     this.svgGroup_ = null;
 
@@ -122,30 +123,23 @@ export class Backpack {
      * Array holding info needed to unbind events.
      * Used for disposing.
      * @type {!Array<!Blockly.browserEvents.Data>}
-     * @private
+     * @protected
      */
     this.boundEvents_ = [];
 
     /**
      * Whether this has been initialized.
      * @type {boolean}
-     * @private
+     * @protected
      */
     this.initialized_ = false;
 
     /**
      * A list of XML (stored as strings) representing blocks in the backpack.
      * @type {!Array<string>}
-     * @private
+     * @protected
      */
     this.contents_ = [];
-
-    /**
-     * The maximum items that can be stored on the backpack.
-     * @type {number}
-     * @private
-     */
-    this.maxItems_ = 32;
 
     /**
      * The backpack flyout. Initialized during init.
@@ -429,8 +423,8 @@ export class Backpack {
     if (!this.getCount()) {
       return;
     }
-    this.contents_.length = 0;
-    // TODO: Fire UI event for Backpack content change.
+    this.contents_ = [];
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
     this.close();
   }
 
@@ -471,6 +465,17 @@ export class Backpack {
     this.addItem(this.blockToCleanXmlString_(block));
   }
 
+
+  /**
+   * Adds Blocks to backpack.
+   * @param {!Array<!Blockly.Block>} blocks Blocks to be added to the backpack.
+   */
+  addBlocks(blocks) {
+    const cleanedBlocks = blocks.map(this.blockToCleanXmlString_);
+    this.addItems(cleanedBlocks);
+  }
+
+
   /**
    * Removes Block from the backpack.
    * @param {!Blockly.Block} block Block to be removed from the backpack.
@@ -485,15 +490,16 @@ export class Backpack {
    *     cleaned of all unnecessary attributes.
    */
   addItem(item) {
-    if (this.contents_.indexOf(item) !== -1) {
-      return;
-    }
+    this.addItems([item]);
+  }
 
-    this.contents_.unshift(item);
-    while (this.contents_.length > this.maxItems_) {
-      this.contents_.pop();
-    }
-    // TODO: Fire UI event for Backpack content change.
+  /**
+   * Adds multiple items to the backpack.
+   * @param {!Array<string>} items The backpack contents to add.
+   */
+  addItems(items) {
+    this.contents_.unshift(...this.filterDuplicates_(items));
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
@@ -506,7 +512,7 @@ export class Backpack {
     if (itemIndex !== -1) {
       this.contents_.splice(itemIndex, 1);
       this.maybeRefreshFlyoutContents_();
-      // TODO: Fire UI event for Backpack content change.
+      Blockly.Events.fire(new BackpackChange(this.workspace_.id));
     }
   }
 
@@ -515,29 +521,29 @@ export class Backpack {
    * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
-    this.contents_ = [...contents];
-    while (this.contents_.length > this.maxItems_) {
-      this.contents_.pop();
-    }
+    this.contents_ = [];
+    this.contents_ = this.filterDuplicates_(contents);
     this.maybeRefreshFlyoutContents_();
-    // TODO: Fire UI event for Backpack content change.
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
-   * Merges backpack contents XML.
-   * @param {!Array<string>} contents The backpack contents to merge.
+   * Returns a filtered list without duplicates within itself and without any
+   * shared elements with this.contents_.
+   * @param {!Array<string>} array The array of items to filter.
+   * @return {!Array<string>} The filtered list.
+   * @private
    */
-  mergeContents(contents) {
-    contents.forEach((item) => {
-      this.addItem(item);
+  filterDuplicates_(array) {
+    return array.filter((item, idx) => {
+      return array.indexOf(item) === idx && this.contents_.indexOf(item) === -1;
     });
-    this.maybeRefreshFlyoutContents_();
   }
 
   /**
    * Returns whether the backpack is open-able.
    * @return {boolean} Whether the backpack is open-able.
-   * @private
+   * @protected
    */
   isOpenable_() {
     return !this.isOpen();
@@ -560,7 +566,7 @@ export class Backpack {
     }
     const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
     this.flyout_.show(xml);
-    // TODO: Fire UI event for Backpack open.
+    Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
   }
 
   /**
@@ -582,9 +588,8 @@ export class Backpack {
     if (!this.isOpen()) {
       return;
     }
-
     this.flyout_.hide();
-    // TODO: Fire UI event for Backpack close.
+    Blockly.Events.fire(new BackpackOpen(false, this.workspace_.id));
   }
 
   /**
