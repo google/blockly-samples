@@ -140,7 +140,6 @@ function registerCopyAllBackpack() {
 }
 
 /**
- /**
  * Registers context menu options for pasting all blocks from the backpack to
  * the workspace.
  */
@@ -183,7 +182,6 @@ function registerPasteAllBackpack() {
   Blockly.ContextMenuRegistry.registry.register(pasteAllFromBackpack);
 }
 
-
 /**
  * Register all context menu options.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to register the
@@ -196,7 +194,6 @@ export function registerAllContextMenus(workspace) {
   registerCopyAllBackpack();
   registerPasteAllBackpack();
 }
-
 
 /**
  * Converts XML representing a block into text that can be stored in the
