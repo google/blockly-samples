@@ -10,7 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {cleanBlockXML} from './backpack_helpers';
+import {cleanBlockXML, registerAllContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
 import './backpack_monkey_patch';
 
@@ -40,7 +40,7 @@ export class Backpack {
 
     /**
      * The SVG group containing the backpack.
-     * @type {SVGElement}
+     * @type {?SVGElement}
      * @protected
      */
     this.svgGroup_ = null;
@@ -142,18 +142,11 @@ export class Backpack {
     this.contents_ = [];
 
     /**
-     * The maximum items that can be stored on the backpack.
-     * @type {number}
-     * @protected
-     */
-    this.maxItems_ = 32;
-
-    /**
      * The backpack flyout. Initialized during init.
-     * @type {!Blockly.IFlyout|undefined}
+     * @type {?Blockly.IFlyout}
      * @protected
      */
-    this.flyout = undefined;
+    this.flyout_ = null;
   }
 
   /**
@@ -170,6 +163,8 @@ export class Backpack {
     this.createDom_();
     this.initialized_ = true;
     this.workspace_.resize();
+    // TODO: Add customization for which context menus to register.
+    registerAllContextMenus(this.workspace_);
   }
 
   /**
@@ -216,7 +211,7 @@ export class Backpack {
       const HorizontalFlyout = Blockly.registry.getClassFromOptions(
           Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
           this.workspace_.options, true);
-      this.flyout = new HorizontalFlyout(flyoutWorkspaceOptions);
+      this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
     } else {
       flyoutWorkspaceOptions.toolboxPosition =
           (this.workspace_.toolboxPosition ===
@@ -226,16 +221,16 @@ export class Backpack {
       const VerticalFlyout = Blockly.registry.getClassFromOptions(
           Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
           this.workspace_.options, true);
-      this.flyout = new VerticalFlyout(flyoutWorkspaceOptions);
+      this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
     }
     // Add flyout to DOM.
     const parentNode = this.workspace_.getParentSvg().parentNode;
-    parentNode.appendChild(this.flyout.createDom(Blockly.utils.Svg.SVG));
-    this.flyout.init(this.workspace_);
+    parentNode.appendChild(this.flyout_.createDom(Blockly.utils.Svg.SVG));
+    this.flyout_.init(this.workspace_);
   }
 
   /**
-   * Creates DOM for ui element.
+   * Creates DOM for ui element and attaches event listeners.
    * @protected
    */
   createDom_() {
@@ -296,6 +291,15 @@ export class Backpack {
     // See #4303
     const event = Blockly.bindEvent_(node, name, thisObject, func);
     this.boundEvents_.push(event);
+  }
+
+  /**
+   * Returns the backpack flyout.
+   * @return {?Blockly.IFlyout} The backpack flyout.
+   * @public
+   */
+  getFlyout() {
+    return this.flyout_;
   }
 
   /**
@@ -403,7 +407,7 @@ export class Backpack {
   }
 
   /**
-   * Returns backpack contents XML.
+   * Returns backpack contents.
    * @return {!Array<string>} The backpack contents.
    */
   getContents() {
@@ -419,7 +423,7 @@ export class Backpack {
     if (!this.getCount()) {
       return;
     }
-    this.contents_.length = 0;
+    this.contents_ = [];
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
     this.close();
   }
@@ -429,8 +433,55 @@ export class Backpack {
    * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
    */
   handleBlockDrop(block) {
-    const blockXml = Blockly.Xml.blockToDom(block);
-    this.addItem(cleanBlockXML(blockXml));
+    this.addBlock(block);
+  }
+
+  /**
+   * Converts the provided block into a cleaned XML string.
+   * @param {!Blockly.Block} block Block to convert.
+   * @return {string} The cleaned XML string.
+   * @private
+   */
+  blockToCleanXmlString_(block) {
+    return cleanBlockXML(Blockly.Xml.blockToDom(block));
+  }
+
+  /**
+   * Returns whether the backpack contains a duplicate of the provided Block.
+   * @param {!Blockly.Block} block Block to check.
+   * @return {boolean} Whether the backpack contains a duplicate of the provided
+   *     Block.
+   */
+  containsBlock(block) {
+    const cleanedBlockXml = this.blockToCleanXmlString_(block);
+    return this.contents_.indexOf(cleanedBlockXml) !== -1;
+  }
+
+  /**
+   * Adds Block to backpack.
+   * @param {!Blockly.Block} block Block to be added to the backpack.
+   */
+  addBlock(block) {
+    this.addItem(this.blockToCleanXmlString_(block));
+  }
+
+
+  /**
+   * Adds Blocks to backpack.
+   * @param {!Array<!Blockly.Block>} blocks Blocks to be added to the backpack.
+   */
+  addBlocks(blocks) {
+    const cleanedBlocks = blocks.map(this.blockToCleanXmlString_);
+    this.addItems(cleanedBlocks);
+  }
+
+
+  /**
+   * Removes Block from the backpack.
+   * @param {!Blockly.Block} block Block to be removed from the backpack.
+   */
+  removeBlock(block) {
+    this.removeItem(this.blockToCleanXmlString_(block));
   }
 
   /**
@@ -447,38 +498,50 @@ export class Backpack {
    * @param {!Array<string>} items The backpack contents to add.
    */
   addItems(items) {
-    const filteredItems = items.filter((item) => {
-      return this.contents_.indexOf(item) === -1;
-    });
-    this.contents_.unshift(...filteredItems);
-    this.trimContents_();
+    this.contents_.unshift(...this.filterDuplicates_(items));
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
-   * Sets backpack contents XML.
-   * @param {!Array<string>} contents The new backpack contents.
+   * Removes item from the backpack.
+   * @param {string} item Text representing the XML tree of a block to remove,
+   * cleaned of all unnecessary attributes.
    */
-  setContents(contents) {
-    this.contents_ = contents.filter((item) => {
-      return this.contents_.indexOf(item) === -1;
-    });
-    this.trimContents_();
-    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
-  }
-
-  /**
-   * Trims the internal contents array so that it does not exceed max size.
-   * @private
-   */
-  trimContents_() {
-    while (this.contents_.length > this.maxItems_) {
-      this.contents_.pop();
+  removeItem(item) {
+    const itemIndex = this.contents_.indexOf(item);
+    if (itemIndex !== -1) {
+      this.contents_.splice(itemIndex, 1);
+      this.maybeRefreshFlyoutContents_();
+      Blockly.Events.fire(new BackpackChange(this.workspace_.id));
     }
   }
 
   /**
-   * Whether the backpack is open-able.
+   * Sets backpack contents.
+   * @param {!Array<string>} contents The new backpack contents.
+   */
+  setContents(contents) {
+    this.contents_ = [];
+    this.contents_ = this.filterDuplicates_(contents);
+    this.maybeRefreshFlyoutContents_();
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
+  }
+
+  /**
+   * Returns a filtered list without duplicates within itself and without any
+   * shared elements with this.contents_.
+   * @param {!Array<string>} array The array of items to filter.
+   * @return {!Array<string>} The filtered list.
+   * @private
+   */
+  filterDuplicates_(array) {
+    return array.filter((item, idx) => {
+      return array.indexOf(item) === idx && this.contents_.indexOf(item) === -1;
+    });
+  }
+
+  /**
+   * Returns whether the backpack is open-able.
    * @return {boolean} Whether the backpack is open-able.
    * @protected
    */
@@ -487,11 +550,11 @@ export class Backpack {
   }
 
   /**
-   * Whether the backpack is open.
+   * Returns whether the backpack is open.
    * @return {boolean} Whether the backpack is open.
    */
   isOpen() {
-    return this.flyout.isVisible();
+    return this.flyout_.isVisible();
   }
 
   /**
@@ -502,8 +565,20 @@ export class Backpack {
       return;
     }
     const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
-    this.flyout.show(xml);
+    this.flyout_.show(xml);
     Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
+  }
+
+  /**
+   * Refreshes backpack flyout contents if the flyout is open.
+   * @protected
+   */
+  maybeRefreshFlyoutContents_() {
+    if (!this.isOpen()) {
+      return;
+    }
+    const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
+    this.flyout_.show(xml);
   }
 
   /**
@@ -513,16 +588,19 @@ export class Backpack {
     if (!this.isOpen()) {
       return;
     }
-
-    this.flyout.hide();
+    this.flyout_.hide();
     Blockly.Events.fire(new BackpackOpen(false, this.workspace_.id));
   }
 
   /**
    * Handle click event.
+   * @param {!MouseEvent} e Mouse event.
    * @protected
    */
-  onClick_() {
+  onClick_(e) {
+    if (Blockly.utils.isRightButton(e)) {
+      return;
+    }
     this.open();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
         null, this.workspace_.id, 'backpack');
@@ -551,7 +629,7 @@ export class Backpack {
    * @protected
    */
   blockMouseDownWhenOpenable_(e) {
-    if (this.isOpenable_()) {
+    if (!Blockly.utils.isRightButton(e) && this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
