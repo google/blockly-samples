@@ -15,7 +15,7 @@ import * as Blockly from 'blockly/core';
 // context menu - Copy all Blocks on the workspace to the backpack.
 Blockly.Msg['COPY_ALL_TO_BACKPACK'] = 'Copy All Blocks to Backpack';
 /** @type {string} */
-// ontext menu - Copy the selected Block to the backpack.
+// context menu - Copy the selected Block to the backpack.
 Blockly.Msg['COPY_TO_BACKPACK'] = 'Copy to Backpack';
 /** @type {string} */
 // context menu - Empty the backpack.

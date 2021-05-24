@@ -54,17 +54,20 @@ Blockly.Msg['EMPTY_BACKPACK'] = 'Opróżnij plecak';  // Polish
 - `init`: Initializes the backpack.
 - `dispose`: Disposes of backpack.
 
-- `isOpen`: Returns whether the backpack is open.
-- `open`: Opens the backpack flyout.
-- `close`: Closes the backpack flyout.
-
 - `getCount`: Returns the count of items in the backpack.
 - `getContents` Returns backpack contents.
 - `empty`: Empties the backpack's contents. If the contents-flyout is currently
 open it will be closed.
+- `addBlock`: Adds Block to backpack.
+- `addBlocks`: Adds Blocks to backpack.
+- `removeBlock`: Removes Block to backpack.
 - `addItem`: Adds item to backpack.
-- `deleteItem`: Deletes item from the backpack.
+- `removeItem`: Removes item from the backpack.
 - `setContents`: Sets backpack contents.
+
+- `isOpen`: Returns whether the backpack is open.
+- `open`: Opens the backpack flyout.
+- `close`: Closes the backpack flyout.
 
 - `handleBlockDrop`: Handles a block drop on this backpack.
 - `onDragEnter`: Handle mouse over.
@@ -75,6 +78,11 @@ pixel units relative to the Blockly injection div.
 - `position`: Positions the backpack UI element.
 
 ## Compatibility
+
+### Multiple Backpacks per Workspace
+This plugin also currently only supports one Backpack per Workspace.
+
+### Blockly.configureContextMenu
 This plugin registers a custom context menu by overriding
 `Blockly.configureContextMenu` in `init` in order to support the context menu
 for emptying the Backpack.
@@ -90,7 +98,12 @@ workspace.configureContextMenu = (menuOptions, e) => {
 }      
 ```
 
-This plugin also currently only supports one Backpack per Workspace.
+### Backpack Flyout
+The Backpack Flyout uses the registered Flyout for either
+`Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX` or
+`Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX`, similar to the implementation
+for `Blockly.Trashcan`. If a custom class is registered for either of these
+types, then the Backpack Flyout may need to be tested for compatibility.
 
 ## License
 Apache 2.0
