@@ -449,6 +449,7 @@ export class Backpack {
    * @param {!Array<string>} contents The new backpack contents.
    */
   setContents(contents) {
+    this.contents_ = [];
     this.contents_ = this.filterDuplicates_(contents);
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
