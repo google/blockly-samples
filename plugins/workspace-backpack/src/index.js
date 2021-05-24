@@ -412,7 +412,7 @@ export class Backpack {
     if (!this.getCount()) {
       return;
     }
-    this.contents_.length = 0;
+    this.contents_ = [];
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
     this.close();
   }
