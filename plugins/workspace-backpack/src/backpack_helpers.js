@@ -11,7 +11,6 @@
 
 import * as Blockly from 'blockly/core';
 import './msg';
-import {BackpackChange} from './ui_events';
 
 /**
  * Registers a context menu option to empty the backpack when right-clicked.
@@ -43,6 +42,9 @@ function registerEmptyBackpack(workspace) {
  * Registers a context menu option to remove a block from a backpack flyout.
  */
 function registerRemoveFromBackpack() {
+  if (Blockly.ContextMenuRegistry.registry.getItem('remove_from_backpack')) {
+    return;
+  }
   const removeFromBackpack = {
     displayText: Blockly.Msg['REMOVE_FROM_BACKPACK'],
     preconditionFn: function(
@@ -73,6 +75,9 @@ function registerRemoveFromBackpack() {
  * Registers context menu options for adding blocks to the backpack.
  */
 function registerAddToBackpack() {
+  if (Blockly.ContextMenuRegistry.registry.getItem('copy_to_backpack')) {
+    return;
+  }
   const copyToBackpack = {
     displayText: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
@@ -104,9 +109,13 @@ function registerAddToBackpack() {
 }
 
 /**
- * Registers context menu options for adding blocks to the backpack.
+ * Registers context menu options for copying all blocks from the workspace to
+ * the backpack.
  */
-function registerCopyPasteAllBackpack() {
+function registerCopyAllBackpack() {
+  if (Blockly.ContextMenuRegistry.registry.getItem('copy_all_to_backpack')) {
+    return;
+  }
   const copyAllToBackpack = {
     displayText: Blockly.Msg['COPY_ALL_TO_BACKPACK'],
     preconditionFn: function(
@@ -128,6 +137,17 @@ function registerCopyPasteAllBackpack() {
     weight: 200,
   };
   Blockly.ContextMenuRegistry.registry.register(copyAllToBackpack);
+}
+
+/**
+ /**
+ * Registers context menu options for pasting all blocks from the backpack to
+ * the workspace.
+ */
+function registerPasteAllBackpack() {
+  if (Blockly.ContextMenuRegistry.registry.getItem('paste_all_from_backpack')) {
+    return;
+  }
   const pasteAllFromBackpack = {
     displayText: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
@@ -163,6 +183,7 @@ function registerCopyPasteAllBackpack() {
   Blockly.ContextMenuRegistry.registry.register(pasteAllFromBackpack);
 }
 
+
 /**
  * Register all context menu options.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to register the
@@ -172,7 +193,8 @@ export function registerAllContextMenus(workspace) {
   registerEmptyBackpack(workspace);
   registerRemoveFromBackpack();
   registerAddToBackpack();
-  registerCopyPasteAllBackpack();
+  registerCopyAllBackpack();
+  registerPasteAllBackpack();
 }
 
 
