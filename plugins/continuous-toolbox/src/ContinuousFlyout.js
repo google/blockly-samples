@@ -139,7 +139,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     // possible scroll point, whichever is smaller.
     const metrics = this.workspace_.getMetrics();
     this.scrollTarget = Math.min(position * this.workspace_.scale,
-        metrics.contentHeight - metrics.viewHeight);
+        metrics.scrollHeight - metrics.viewHeight);
 
     this.stepScrollAnimation_();
   }
@@ -187,17 +187,6 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       }
     }
     return 0;
-  }
-
-  /**
-   * @override
-   */
-  getMetrics_() {
-    const metrics = super.getMetrics_();
-    if (metrics) {
-      metrics.contentHeight += this.calculateBottomPadding_(metrics);
-    }
-    return metrics;
   }
 
   /** @override */

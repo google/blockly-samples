@@ -4,10 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * @fileoverview Overrides metrics to add extra padding, if needed to the
- * bottom of the flyout.
- */
 
 import * as Blockly from 'blockly/core';
 

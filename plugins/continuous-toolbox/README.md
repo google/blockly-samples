@@ -24,7 +24,6 @@ Note that this plugin uses APIs introduced in the `3.20200924.3` release of Bloc
 
 ```js
 import * as Blockly from 'blockly';
-import '../src/ContinuousCategory';
 import {ContinuousToolbox, ContinuousFlyout, ContinuousMetrics} from '@blockly/continuous-toolbox';
 
 // Inject Blockly.
