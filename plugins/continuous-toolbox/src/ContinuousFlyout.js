@@ -79,6 +79,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @package
    */
   recordScrollPositions() {
+    this.scrollPositions = [];
     const categoryLabels = this.buttons_.filter((button) => button.isLabel() &&
         this.getParentToolbox_().getCategoryByName(button.getButtonText()));
     for (const button of categoryLabels) {
@@ -268,6 +269,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   show(flyoutDef) {
     super.show(flyoutDef);
     this.emptyRecycleBlocks_();
+    this.recordScrollPositions();
+    this.workspace_.resizeContents();
   }
 
   /**
