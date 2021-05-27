@@ -14,6 +14,7 @@ to include and extend the [Blockly](http://github.com/google/blockly) library.
 - [``blockly-react-sample``](blockly-react/): Blockly in a React project, defines a React Blockly Component.
 - [``blockly-svelte-sample``](blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
 - [``blockly-vue-sample``](blockly-vue/): Blockly in a Vue project, defines a Vue Blockly Component.
+- [``blockly-parcel``](blockly-parcel/): Using Blockly with Parcel.
 
 ### Real-time Collaboration
 
