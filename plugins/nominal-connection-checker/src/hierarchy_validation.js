@@ -42,6 +42,7 @@ export function validateHierarchy(hierarchyDef) {
   checkFulfillsIsArray(hierarchyDef);
   checkSupersParsing(hierarchyDef);
   checkSupersDefined(hierarchyDef);
+  checkDupeSupers(hierarchyDef);
   checkSuperParamsDefined(hierarchyDef);
   checkSuperNumParamsCorrect(hierarchyDef);
   checkSuperParamVariancesCompatible(hierarchyDef);
@@ -224,6 +225,42 @@ function checkSupersDefined(hierarchyDef) {
           throw e;
         } // Otherwise it will have been handled by our specific check.
       }
+    }
+  }
+}
+
+/**
+ * Checks the hierarchy def for any types which include the same type multiple
+ * times in their fulfills array. Logs an error to the console if found.
+ * @param {!Object} hierarchyDef The definition of the type hierarchy.
+ */
+function checkDupeSupers(hierarchyDef) {
+  const errorMsg = 'The type %s fulfills the type %s multiple times.';
+
+  for (const type of Object.keys(hierarchyDef)) {
+    const typeInfo = hierarchyDef[type];
+    if (!typeInfo.fulfills || !Array.isArray(typeInfo.fulfills)) {
+      continue;
+    }
+    const supersSeen = new Set();
+    const supersSeenMultiple = new Map();
+    for (const superType of typeInfo.fulfills) {
+      try {
+        const superName = parseType(superType, false).name;
+        const lowerCaseName = superName.toLowerCase();
+        if (supersSeen.has(lowerCaseName)) {
+          supersSeenMultiple.set(lowerCaseName, superName);
+        } else {
+          supersSeen.add(lowerCaseName);
+        }
+      } catch (e) {
+        if (!(e instanceof TypeParseError)) {
+          throw e;
+        } // Otherwise it will have been handled by our specific check.
+      }
+    }
+    for (const [, casedName] of supersSeenMultiple) {
+      console.error(errorMsg, type, casedName);
     }
   }
 }

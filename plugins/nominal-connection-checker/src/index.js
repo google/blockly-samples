@@ -11,6 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
+import {parseType, structureToString, TypeStructure} from './type_structure';
 import {getCheck, isExplicitConnection, isGenericConnection} from './utils';
 
 
@@ -65,9 +66,31 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @override
    */
   doTypeChecks(a, b) {
+    try {
+      return this.doTypeChecksInternal_(a, b);
+    } catch (e) {
+      throw new ConnectionCheckError(
+          'Checking the compatibility of the ' + this.getInputName_(a) +
+          ' and ' + this.getInputName_(b) + ' connections on blocks ' +
+          a.getSourceBlock().toDevString() + ' and ' +
+          b.getSourceBlock().toDevString() + ' threw an error. ' +
+          'Error: ' + e.message, e);
+    }
+  }
+
+  /**
+   * Checks the compatibility of the two connections. This function is called
+   * from doTypeChecks, and its purpose is to separate business logic from
+   * error handling logic.
+   * @param {!Blockly.Connection} a The first connection.
+   * @param {!Blockly.Connection} b The second connection.
+   * @return {boolean} True if the connections are compatible, false otherwise.
+   * @private
+   */
+  doTypeChecksInternal_(a, b) {
     const {parent, child} = this.getParentAndChildConnections_(a, b);
-    const parentTypes = this.getExplicitTypesOfConnection(parent);
-    const childTypes = this.getExplicitTypesOfConnection(child);
+    const parentTypes = this.getExplicitTypesOfConnectionInternal_(parent);
+    const childTypes = this.getExplicitTypesOfConnectionInternal_(child);
     const typeHierarchy = this.getTypeHierarchy_();
 
     if (!parentTypes.length || !childTypes.length) {
@@ -84,15 +107,16 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
         this.typeIsOnlyBoundByParams_(parentSource, parentCheck)) {
       return childTypes.some((childType) => {
         return parentTypes.some((parentType) => {
-          return typeHierarchy
-              .getNearestCommonParents(childType, parentType).length;
+          return typeHierarchy.getNearestCommonParents(
+              parseType(childType), parseType(parentType)).length;
         });
       });
     }
 
     return childTypes.some((childType) => {
       return parentTypes.some((parentType) => {
-        return typeHierarchy.typeFulfillsType(childType, parentType);
+        return typeHierarchy.typeFulfillsType(
+            parseType(childType), parseType(parentType));
       });
     });
   }
@@ -111,8 +135,13 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    *     one can be found. Undefined otherwise.
    */
   getExplicitTypes(block, genericType) {
-    genericType = genericType.toLowerCase();
-    return this.getBoundTypes_(block, genericType);
+    try {
+      return this.getBoundTypes_(block, genericType.toLowerCase());
+    } catch (e) {
+      throw new ConnectionCheckError(
+          'Trying to find the explicit types of ' + genericType + ' on block ' +
+          block.toDevString() + ' threw an error. ' + 'Error: ' + e.mesage, e);
+    }
   }
 
   /**
@@ -128,9 +157,31 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
    * @return {!Array<string>} The explicit type(s) of the connection.
    */
   getExplicitTypesOfConnection(connection) {
+    try {
+      return this.getExplicitTypesOfConnectionInternal_(connection);
+    } catch (e) {
+      throw new ConnectionCheckError(
+          'Trying to find the explicit types of the ' +
+          this.getInputName_(connection) + ' on block ' +
+          connection.getSourceBlock().toDevString() + 'threw an error. ' +
+          'Error: ' + e.message, e);
+    }
+  }
+
+  /**
+   * Returns the explicit type(s) of the given connection. This function is
+   * called from getExplicitTypesOfConnection, and its purpose is to separate
+   * business logic from error handling logic. See getExplicitTypeOfConnection
+   * for more information.
+   * @param {!Blockly.Connection} connection The connection to find the explicit
+   *     type of.
+   * @return {!Array<string>} The explicit type(s) of the connection.
+   * @private
+   */
+  getExplicitTypesOfConnectionInternal_(connection) {
     const check = getCheck(connection);
     return isExplicitConnection(connection) ? [check]:
-        this.getExplicitTypes(connection.getSourceBlock(), check);
+        this.getBoundTypes_(connection.getSourceBlock(), check);
   }
 
   /**
@@ -276,7 +327,9 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
         block.nextConnection, genericType, connectionToSkip));
 
     if (types.length) {
-      return this.getTypeHierarchy_().getNearestCommonParents(...types);
+      return this.getTypeHierarchy_()
+          .getNearestCommonParents(...types.map((type) => parseType(type)))
+          .map((typeStruct) => structureToString(typeStruct));
     }
     return [];
   }
@@ -348,6 +401,50 @@ export class NominalConnectionChecker extends Blockly.ConnectionChecker {
         this.getConnectionTypes_(block.outputConnection, genericType).length ||
         this.getConnectionTypes_(block.previousConnection, genericType).length;
     return !typeisBoundByOther;
+  }
+
+  /**
+   * Returns the input name or location (output, prev, next) of the given
+   * connection. Used for informing developers of errors.
+   * @param {!Blockly.Connection} connection The connection to get the input
+   *     name of.
+   * @return {string} The input name or location of the connection.
+   * @private
+   */
+  getInputName_(connection) {
+    if (connection.getParentInput()) {
+      return connection.getParentInput().name;
+    } else {
+      switch (connection.type) {
+        case Blockly.OUTPUT_VALUE:
+          return 'output';
+        case Blockly.PREVIOUS_STATEMENT:
+          return 'previous';
+        case Blockly.NEXT_STATEMENT:
+          return 'next';
+      }
+    }
+  }
+}
+
+/**
+ * An error representing something going wrong with a connection check, or
+ * another public connection-check-y function.
+ */
+export class ConnectionCheckError extends Error {
+  /**
+   * Constructs a ConnectionCheckError.
+   * @param {string} msg The error message.
+   * @param {Error=} error The optional error being wrapped.
+   */
+  constructor(msg, error = undefined) {
+    super(msg);
+
+    /**
+     * The error this error is wrapping, or undefined.
+     * @type {Error}
+     */
+    this.wrappedError = error;
   }
 }
 
