@@ -12,6 +12,8 @@ import * as Blockly from 'blockly';
 import {toolboxTestBlocks as toolbox,
   toolboxTestBlocksInit as onInit} from '../src/index';
 
+// Do not use the advanced playground here because it will create a circular
+// dependency with the @blockly/dev-tools package.
 document.addEventListener('DOMContentLoaded', function() {
   const workspace = Blockly.inject('root', {
     toolbox: toolbox,
