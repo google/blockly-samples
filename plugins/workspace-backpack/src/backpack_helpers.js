@@ -10,6 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {BackpackContextMenuOptions} from './options';
 import './msg';
 
 /**
@@ -72,9 +73,11 @@ function registerRemoveFromBackpack() {
 }
 
 /**
- * Registers context menu options for adding blocks to the backpack.
+ * Registers context menu options for adding a block to the backpack.
+ * @param {boolean} disablePreconditionContainsCheck Whether to disable the
+ *   precondition check for whether the backpack contains the block.
  */
-function registerAddToBackpack() {
+function registerCopyToBackpack(disablePreconditionContainsCheck) {
   if (Blockly.ContextMenuRegistry.registry.getItem('copy_to_backpack')) {
     return;
   }
@@ -91,6 +94,9 @@ function registerAddToBackpack() {
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const ws = scope.block.workspace;
       if (!ws.isFlyout && !!ws.backpack) {
+        if (disablePreconditionContainsCheck) {
+          return 'enabled';
+        }
         return ws.backpack.containsBlock(scope.block) ? 'disabled' : 'enabled';
       }
       return 'hidden';
@@ -184,15 +190,28 @@ function registerPasteAllBackpack() {
 
 /**
  * Register all context menu options.
+ * @param {!BackpackContextMenuOptions} contextMenuOptions The backpack context
+ *    menu options.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to register the
  *    context menu options.
  */
-export function registerAllContextMenus(workspace) {
-  registerEmptyBackpack(workspace);
-  registerRemoveFromBackpack();
-  registerAddToBackpack();
-  registerCopyAllBackpack();
-  registerPasteAllBackpack();
+export function registerContextMenus(contextMenuOptions, workspace) {
+  if (contextMenuOptions.emptyBackpack) {
+    registerEmptyBackpack(workspace);
+  }
+  if (contextMenuOptions.removeFromBackpack) {
+    registerRemoveFromBackpack();
+  }
+  if (contextMenuOptions.copyToBackpack) {
+    registerCopyToBackpack(
+        contextMenuOptions.disablePreconditionChecks);
+  }
+  if (contextMenuOptions.copyAllToBackpack) {
+    registerCopyAllBackpack();
+  }
+  if (contextMenuOptions.pasteAllToBackpack) {
+    registerPasteAllBackpack();
+  }
 }
 
 /**

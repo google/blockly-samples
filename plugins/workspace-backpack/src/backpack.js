@@ -10,8 +10,11 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {cleanBlockXML, registerAllContextMenus} from './backpack_helpers';
+import {cleanBlockXML, registerContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
+import {
+  BackpackContextMenuOptions, BackpackOptions, parseOptions,
+} from './options';
 import './backpack_monkey_patch';
 
 /**
@@ -25,8 +28,9 @@ export class Backpack {
    * Constructor for a backpack.
    * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace that
    *     the plugin will be added to.
+   * @param {!BackpackOptions} backpackOptions The backpack options to use.
    */
-  constructor(targetWorkspace) {
+  constructor(targetWorkspace, backpackOptions) {
     /**
      * The workspace.
      * @type {!Blockly.WorkspaceSvg}
@@ -161,10 +165,11 @@ export class Backpack {
     });
     this.initFlyout_();
     this.createDom_();
+    registerContextMenus(
+        /** @type {!BackpackContextMenuOptions} */ this.options_.contextMenu,
+        this.workspace_);
     this.initialized_ = true;
     this.workspace_.resize();
-    // TODO: Add customization for which context menus to register.
-    registerAllContextMenus(this.workspace_);
   }
 
   /**
@@ -236,7 +241,7 @@ export class Backpack {
   createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.G, {}, null);
-    const rnd = String(Math.random()).substring(2);
+    const rnd = Blockly.utils.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.CLIPPATH,
         {'id': 'blocklyBackpackClipPath' + rnd},

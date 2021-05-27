@@ -121,10 +121,21 @@
         trashcan: true
       });
 
+
+  const backpackOptions = {
+    contextMenu: {
+      emptyBackpack: true,
+      removeFromBackpack: true,
+      copyToBackpack: true,
+      copyAllToBackpack: true,
+      pasteAllToBackpack: true,
+      disablePreconditionChecks: false,
+    },
+  };
   // Add backpacks
-  const primaryBackpack = new Backpack(primaryWorkspace);
+  const primaryBackpack = new Backpack(primaryWorkspace, backpackOptions);
   primaryBackpack.init();
-  const secondaryBackpack = new Backpack(secondaryWorkspace);
+  const secondaryBackpack = new Backpack(secondaryWorkspace, backpackOptions);
   secondaryBackpack.init();
 
   // Listen to events on both workspace.
