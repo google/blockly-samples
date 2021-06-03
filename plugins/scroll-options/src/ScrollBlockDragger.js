@@ -10,6 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {AutoScroll} from './AutoScroll';
 
 /**
  * A block dragger that adds the functionality for a block to be moved while
@@ -84,6 +85,12 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
         Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
     super.drag(e, totalDelta);
     this.dragDelta_ = currentDragDeltaXY;
+
+    // Calculate the location the block is being dragged to, in ws units.
+    // This same calculation is done in super.drag().
+    const deltaPx = this.pixelsToWorkspaceUnits_(totalDelta);
+    const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, deltaPx);
+    this.scrollWorkspaceWhileDragging(newLoc);
   }
 
   /**
@@ -121,5 +128,96 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.updateToolboxStyle_(true);
 
     this.dragDelta_ = currentDragDeltaXY;
+
+    // Added
+    this.stopAutoScrolling();
+  }
+
+  /**
+   * May scroll the workspace as a block is dragged.
+   * If a block is dragged near the edge of the workspace, this method will
+   * cause the workspace to scroll in the direction the block is being dragged.
+   * The workspace will not resize as the block is dragged. The workspace should
+   * appear to move out from under the block, i.e., the block should stay under
+   * the user's mouse.
+   * @param {!Blockly.utils.Coordinate} newLoc New coordinate the block is being
+   *     dragged to.
+   */
+  scrollWorkspaceWhileDragging(newLoc) {
+    const SCROLL_DIRECTION_VECTORS = {
+      top: new Blockly.utils.Coordinate(0, 1),
+      bottom: new Blockly.utils.Coordinate(0, -1),
+      left: new Blockly.utils.Coordinate(1, 0),
+      right: new Blockly.utils.Coordinate(-1, 0),
+    };
+    // TODO(maribethb): I just made this up, pick a better one
+    // and make this configurable.
+    const SCROLL_SPEED = 0.4;
+
+    const candidateScrolls = [];
+    let overallScrollVector = new Blockly.utils.Coordinate(0, 0);
+
+    // Get ViewMetrics in workspace coordinates.
+    const metrics = this.workspace_.getMetricsManager().getViewMetrics(true);
+
+    // TODO(maribethb): Add fancier logic based on how far out of bounds the
+    // block is held.
+
+    // See Blockly.MetricsManager for more information on the metrics used.
+    // In particular, it uses workspace coordinates where the top and left
+    // of the workspace are negative.
+    // More than one scroll vector may apply, for example if the block is
+    // dragged to a corner.
+    if (newLoc.y < metrics.top) {
+      const scrollVector = SCROLL_DIRECTION_VECTORS['top'].scale(SCROLL_SPEED);
+      candidateScrolls.push(scrollVector);
+    }
+    if (newLoc.y > metrics.top + metrics.height) {
+      const scrollVector =
+          SCROLL_DIRECTION_VECTORS['bottom'].scale(SCROLL_SPEED);
+      candidateScrolls.push(scrollVector);
+    }
+    if (newLoc.x < metrics.left) {
+      const scrollVector = SCROLL_DIRECTION_VECTORS['left'].scale(SCROLL_SPEED);
+      candidateScrolls.push(scrollVector);
+    }
+    if (newLoc.x > metrics.left + metrics.width) {
+      const scrollVector =
+          SCROLL_DIRECTION_VECTORS['right'].scale(SCROLL_SPEED);
+      candidateScrolls.push(scrollVector);
+    }
+
+    // Get the overall scroll direction vector (could scroll diagonally).
+    // Note: code.org reduces down to just one vector per direction from
+    // all the possible ones they generate. Currently we just have one per
+    // direction so we don't need to do anything else.
+    candidateScrolls.forEach(function(scroll) {
+      overallScrollVector =
+          Blockly.utils.Coordinate.sum(overallScrollVector, scroll);
+    });
+
+    // If the workspace should not be scrolled any longer, cancel the
+    // autoscroll.
+    if (Blockly.utils.Coordinate.equals(
+        overallScrollVector, new Blockly.utils.Coordinate(0, 0))) {
+      this.stopAutoScrolling();
+      return;
+    }
+
+    this.activeAutoScroll_ =
+        this.activeAutoScroll_ || new AutoScroll(this.workspace_);
+    this.activeAutoScroll_.updateProperties(overallScrollVector);
+  }
+
+  /**
+   * Cancel any AutoScroll. This must be called when there is no need to scroll
+   * further, e.g., when no longer dragging near the edge of the workspace, or
+   * when no longer dragging at all.
+   */
+  stopAutoScrolling() {
+    if (this.activeAutoScroll_) {
+      this.activeAutoScroll_.stopAndDestroy();
+    }
+    this.activeAutoScroll_ = null;
   }
 }
