@@ -5,6 +5,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {ScrollMetricsManager} from './ScrollMetricsManager';
 
 /**
  * AutoScroll is used to scroll/pan the workspace automatically. For example,
@@ -99,7 +100,56 @@ export class AutoScroll {
   scrollTick_(msPassed) {
     const scrollDx = this.activeScrollVector_.x * msPassed;
     const scrollDy = this.activeScrollVector_.y * msPassed;
-    this.workspace_.scrollDeltaWithAnySelectedBlock(scrollDx, scrollDy);
+    this.scrollWorkspaceWithBlock(scrollDx, scrollDy);
+  }
+
+  /**
+   * Scrolls the workspace the given amount during a block drag.
+   * Also updates the dragger based on the amount actually scrolled.
+   * @param {number} scrollDx Amount to scroll in horizontal direction.
+   * @param {number} scrollDy Amount to scroll in vertical direction.
+   */
+  scrollWorkspaceWithBlock(scrollDx, scrollDy) {
+    const oldLocation = this.getDragSurfaceLocation_();
+
+    // As we scroll, we shouldn't expand past the content area that existed
+    // before the block was picked up. Therefore, we use cached ContentMetrics
+    // so that the content area does not change as we scroll.
+    const metricsManager =
+    /** @type {ScrollMetricsManager} */ (
+        this.workspace_.getMetricsManager());
+    metricsManager.useCachedContentMetrics = true;
+    const newX = this.workspace_.scrollX + scrollDx;
+    const newY = this.workspace_.scrollY + scrollDy;
+    this.workspace_.scroll(newX, newY);
+    metricsManager.useCachedContentMetrics = false;
+
+    const newLocation = this.getDragSurfaceLocation_();
+
+    // How much we actually ended up scrolling.
+    const deltaX = newLocation.x - oldLocation.x;
+    const deltaY = newLocation.y - oldLocation.y;
+
+    // If we did scroll, we need to let the dragger know by how much.
+    // The dragger will update its values so that things like connection
+    // markers will stay consistent.
+    if (deltaX || deltaY) {
+      this.workspace_.currentGesture_.getCurrentDragger()
+          .moveBlockWhileDragging(deltaX, deltaY);
+    }
+  }
+
+  /**
+   * Gets the current location of the drag surface.
+   * This has to return a copy to work.
+   * TODO: Deduplicate with index.js.
+   * @return {!Blockly.utils.Coordinate} The current coordinate.
+   * @private
+   */
+  getDragSurfaceLocation_() {
+    const dragSurface = this.workspace_.getBlockDragSurface();
+    const workspaceOffset = dragSurface.getWsTranslation();
+    return new Blockly.utils.Coordinate(workspaceOffset.x, workspaceOffset.y);
   }
 
   /**
@@ -114,6 +164,6 @@ export class AutoScroll {
     this.lastTime_ = Date.now();
 
     // Start new animation
-    this.nextAnimationStep_(Date.now());
+    this.nextAnimationStep_(this.lastTime_);
   }
 }

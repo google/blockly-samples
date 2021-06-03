@@ -85,6 +85,12 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
         Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
     super.drag(e, totalDelta);
     this.dragDelta_ = currentDragDeltaXY;
+
+    // Calculate the location the block is being dragged to, in ws units.
+    // This same calculation is done in super.drag().
+    const deltaPx = this.pixelsToWorkspaceUnits_(totalDelta);
+    const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, deltaPx);
+    this.scrollWorkspaceWhileDragging(newLoc);
   }
 
   /**
@@ -122,6 +128,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.updateToolboxStyle_(true);
 
     this.dragDelta_ = currentDragDeltaXY;
+
+    // Added
+    this.stopAutoScrolling();
   }
 
   /**
@@ -141,38 +150,38 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       left: new Blockly.utils.Coordinate(1, 0),
       right: new Blockly.utils.Coordinate(-1, 0),
     };
-    // I just made this up, pick a better one
-    const SCROLL_SPEED = 0.2;
+    // TODO(maribethb): I just made this up, pick a better one
+    // and make this configurable.
+    const SCROLL_SPEED = 0.4;
 
     const candidateScrolls = [];
     let overallScrollVector = new Blockly.utils.Coordinate(0, 0);
 
-    this.workspace_.metricsManager_.stopCalculating = true;
-    const metrics = this.workspace_.getMetrics();
+    // Get ViewMetrics in workspace coordinates.
+    const metrics = this.workspace_.getMetricsManager().getViewMetrics(true);
 
     // TODO(maribethb): Add fancier logic based on how far out of bounds the
     // block is held.
-    // TODO(maribethb): This probably does not work if you change the zoom level
 
     // See Blockly.MetricsManager for more information on the metrics used.
-    // In particular, it uses pixel coordinates where the top and left
+    // In particular, it uses workspace coordinates where the top and left
     // of the workspace are negative.
     // More than one scroll vector may apply, for example if the block is
     // dragged to a corner.
-    if (newLoc.y < metrics.viewTop) {
+    if (newLoc.y < metrics.top) {
       const scrollVector = SCROLL_DIRECTION_VECTORS['top'].scale(SCROLL_SPEED);
       candidateScrolls.push(scrollVector);
     }
-    if (newLoc.y > metrics.viewTop + metrics.viewHeight) {
+    if (newLoc.y > metrics.top + metrics.height) {
       const scrollVector =
           SCROLL_DIRECTION_VECTORS['bottom'].scale(SCROLL_SPEED);
       candidateScrolls.push(scrollVector);
     }
-    if (newLoc.x < metrics.viewLeft) {
+    if (newLoc.x < metrics.left) {
       const scrollVector = SCROLL_DIRECTION_VECTORS['left'].scale(SCROLL_SPEED);
       candidateScrolls.push(scrollVector);
     }
-    if (newLoc.x > metrics.viewLeft + metrics.viewWidth) {
+    if (newLoc.x > metrics.left + metrics.width) {
       const scrollVector =
           SCROLL_DIRECTION_VECTORS['right'].scale(SCROLL_SPEED);
       candidateScrolls.push(scrollVector);
@@ -190,16 +199,14 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     // If the workspace should not be scrolled any longer, cancel the
     // autoscroll.
     if (Blockly.utils.Coordinate.equals(
-            overallScrollVector, new Blockly.utils.Coordinate(0, 0))) {
+        overallScrollVector, new Blockly.utils.Coordinate(0, 0))) {
       this.stopAutoScrolling();
       return;
     }
 
     this.activeAutoScroll_ =
         this.activeAutoScroll_ || new AutoScroll(this.workspace_);
-    this.activeAutoScroll_.update(overallScrollVector);
-
-    this.workspace_.metricsManager_.stopCalculating = false;
+    this.activeAutoScroll_.updateProperties(overallScrollVector);
   }
 
   /**
