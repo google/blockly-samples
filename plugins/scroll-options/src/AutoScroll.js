@@ -27,28 +27,28 @@ export class AutoScroll {
   constructor(workspace) {
     /**
      * Workspace to scroll.
-     * @private {!Blockly.WorkspaceSvg}
+     * @protected {!Blockly.WorkspaceSvg}
      */
     this.workspace_ = workspace;
 
     /**
      * Current active vector representing scroll velocity in pixels per
      * millisecond in each direction.
-     * @private {!Blockly.utils.Coordinate}
+     * @protected {!Blockly.utils.Coordinate}
      */
     this.activeScrollVector_ = new Blockly.utils.Coordinate(0, 0);
 
     /**
      * ID of active requestAnimationFrame callback key.
      * @type {number}
-     * @private
+     * @protected
      */
     this.animationFrameId_ = 0;
 
     /**
      * Time in ms last animation frame was run.
      * @type {number}
-     * @private
+     * @protected
      */
     this.lastTime_ = Date.now();
 
@@ -56,7 +56,7 @@ export class AutoScroll {
      * Whether the scroll animation should continue. If this is false, the next
      * animation frame will not be requested.
      * @type {boolean}
-     * @private
+     * @protected
      */
     this.shouldAnimate_ = false;
   }
@@ -75,27 +75,27 @@ export class AutoScroll {
    * frame request.
    * @param {number} now Current time in ms. This is usually passed
    *     automatically by `requestAnimationFrame`.
-   * @private
+   * @protected
    */
   nextAnimationStep_(now) {
     if (this.shouldAnimate_) {
-      const dt = now - this.lastTime_;
+      const delta = now - this.lastTime_;
       this.lastTime_ = now;
       // This method could be called multiple times per ms, and we only want to
       // scroll if we should actually move.
-      if (dt > 0) {
-        this.scrollTick_(dt);
+      if (delta > 0) {
+        this.scrollTick_(delta);
       }
 
       this.animationFrameId_ =
-          requestAnimationFrame(this.nextAnimationStep_.bind(this));
+          requestAnimationFrame(() => this.nextAnimationStep_);
     }
   }
 
   /**
    * Perform scroll given time passed.
    * @param {number} msPassed Number of ms since last scroll tick.
-   * @private
+   * @protected
    */
   scrollTick_(msPassed) {
     const scrollDx = this.activeScrollVector_.x * msPassed;
@@ -144,7 +144,7 @@ export class AutoScroll {
    * This has to return a copy to work.
    * TODO: Deduplicate with index.js.
    * @return {!Blockly.utils.Coordinate} The current coordinate.
-   * @private
+   * @protected
    */
   getDragSurfaceLocation_() {
     const dragSurface = this.workspace_.getBlockDragSurface();

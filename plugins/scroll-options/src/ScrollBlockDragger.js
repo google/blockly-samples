@@ -188,9 +188,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     }
 
     // Get the overall scroll direction vector (could scroll diagonally).
-    // CDO reduces down to just one vector per direction from all the possible
-    // ones they generate. Currently we just have one per direction so we don't
-    // need to do anything else.
+    // Note: code.org reduces down to just one vector per direction from
+    // all the possible ones they generate. Currently we just have one per
+    // direction so we don't need to do anything else.
     candidateScrolls.forEach(function(scroll) {
       overallScrollVector =
           Blockly.utils.Coordinate.sum(overallScrollVector, scroll);
