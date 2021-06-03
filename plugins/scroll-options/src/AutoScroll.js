@@ -68,6 +68,7 @@ export class AutoScroll {
     this.activeScrollVector_ = new Blockly.utils.Coordinate(0, 0);
     this.shouldAnimate_ = false;
     cancelAnimationFrame(this.animationFrameId_);
+    this.animationFrameId_ = 0;
   }
 
   /**
@@ -88,7 +89,7 @@ export class AutoScroll {
       }
 
       this.animationFrameId_ =
-          requestAnimationFrame(() => this.nextAnimationStep_);
+          requestAnimationFrame((time) => this.nextAnimationStep_(time));
     }
   }
 
@@ -154,16 +155,18 @@ export class AutoScroll {
 
   /**
    * Updates the scroll vector for the current autoscroll and begins the
-   * animation.
+   * animation if needed.
    * @param {!Blockly.utils.Coordinate} scrollVector New scroll velocity vector
    *     in pixels per ms.
    */
   updateProperties(scrollVector) {
     this.activeScrollVector_ = scrollVector;
     this.shouldAnimate_ = true;
-    this.lastTime_ = Date.now();
 
-    // Start new animation
-    this.nextAnimationStep_(this.lastTime_);
+    // Start new animation if there isn't one going.
+    if (this.animationFrameId_ == 0) {
+      this.lastTime_ = Date.now();
+      this.nextAnimationStep_(this.lastTime_);
+    }
   }
 }
