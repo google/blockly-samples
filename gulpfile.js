@@ -286,8 +286,8 @@ function prepareExamplesForBeta(done) {
   execSync(`lerna exec -- npm install blockly@beta`,
       {cwd: examplesDirectory, stdio: 'inherit'});
   execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
-  // // Bundles all the examples.
-  // execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
+  // Bundles any examples that define a predeploy script (ex. blockly-react).
+  execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
   done();
 }
 
