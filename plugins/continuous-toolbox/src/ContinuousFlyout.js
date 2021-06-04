@@ -10,6 +10,7 @@
 
 import * as Blockly from 'blockly/core';
 import {ContinuousToolbox} from './ContinuousToolbox';
+import {ContinuousFlyoutMetrics} from './ContinuousMetricsFlyout';
 
 /**
  * Class for continuous flyout.
@@ -54,6 +55,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
      */
     this.recyclingEnabled_ = true;
 
+    this.workspace_.setMetricsManager(
+        new ContinuousFlyoutMetrics(this.workspace_, this));
+
     this.autoClose = false;
   }
 
@@ -75,6 +79,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @package
    */
   recordScrollPositions() {
+    this.scrollPositions = [];
     const categoryLabels = this.buttons_.filter((button) => button.isLabel() &&
         this.getParentToolbox_().getCategoryByName(button.getButtonText()));
     for (const button of categoryLabels) {
@@ -135,7 +140,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     // possible scroll point, whichever is smaller.
     const metrics = this.workspace_.getMetrics();
     this.scrollTarget = Math.min(position * this.workspace_.scale,
-        metrics.contentHeight - metrics.viewHeight);
+        metrics.scrollHeight - metrics.viewHeight);
 
     this.stepScrollAnimation_();
   }
@@ -166,32 +171,23 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   /**
    * Add additional padding to the bottom of the flyout if needed,
    * in order to make it possible to scroll to the top of the last category.
-   * @param {!Blockly.utils.Metrics} metrics Default metrics for the flyout.
+   * @param {!Blockly.MetricsManager.ContainerRegion} contentMetrics Content
+   *    metrics for the flyout.
+   * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
+   *    for the flyout.
    * @return {number} Additional bottom padding.
-   * @private
    */
-  calculateBottomPadding_(metrics) {
+  calculateBottomPadding(contentMetrics, viewMetrics) {
     if (this.scrollPositions.length > 0) {
       const lastCategory =
           this.scrollPositions[this.scrollPositions.length - 1];
       const lastPosition = lastCategory.position.y * this.workspace_.scale;
-      const lastCategoryHeight = metrics.contentHeight - lastPosition;
-      if (lastCategoryHeight < metrics.viewHeight) {
-        return metrics.viewHeight - lastCategoryHeight;
+      const lastCategoryHeight = contentMetrics.height - lastPosition;
+      if (lastCategoryHeight < viewMetrics.height) {
+        return viewMetrics.height - lastCategoryHeight;
       }
     }
     return 0;
-  }
-
-  /**
-   * @override
-   */
-  getMetrics_() {
-    const metrics = super.getMetrics_();
-    if (metrics) {
-      metrics.contentHeight += this.calculateBottomPadding_(metrics);
-    }
-    return metrics;
   }
 
   /** @override */
@@ -273,6 +269,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   show(flyoutDef) {
     super.show(flyoutDef);
     this.emptyRecycleBlocks_();
+    this.recordScrollPositions();
+    this.workspace_.resizeContents();
   }
 
   /**
