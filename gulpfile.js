@@ -270,11 +270,9 @@ function deployToGhPages(repo) {
  * @param {Function} done Completed callback.
  */
 function preparePluginsForBeta(done) {
-  // Install with npm ci, which will not update package-locks.
-  execSync(`npm ci`, {stdio: 'inherit'});
-  // npm ci cannot install individual packages.
   execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
   execSync(`npm run boot`, {stdio: 'inherit'});
+  // Bundles all the plugins.
   execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
   done();
 }
@@ -285,13 +283,11 @@ function preparePluginsForBeta(done) {
  */
 function prepareExamplesForBeta(done) {
   const examplesDirectory = 'examples';
-  // Install with npm ci, which will not update package-locks.
-  execSync(`npm ci`, {cwd: examplesDirectory, stdio: 'inherit'});
-  // npm ci cannot install individual packages.
   execSync(`lerna exec -- npm install blockly@beta`,
       {cwd: examplesDirectory, stdio: 'inherit'});
   execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
-  execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
+  // // Bundles all the examples.
+  // execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
   done();
 }
 
