@@ -228,7 +228,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     this.getBlockCandidateScrolls_(candidateScrolls, metrics, mouse);
     this.getMouseCandidateScrolls_(candidateScrolls, metrics, mouse);
-    // Calculate the final scroll vector we should actually scroll to.
+    // Calculate the final scroll vector we should actually use.
     const overallScrollVector = this.getOverallScrollVector_(candidateScrolls);
 
     // If the workspace should not be scrolled any longer, cancel the
@@ -295,7 +295,8 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    */
   getBlockCandidateScrolls_(candidateScrolls, metrics, mouse) {
     const blockOverflows = this.getBlockBoundsOverflows_(metrics, mouse);
-    for (const [direction, overflow] of Object.entries(blockOverflows)) {
+    for (const direction of this.scrollDirections_) {
+      const overflow = blockOverflows[direction];
       if (overflow > this.options_.slowBlockStartDistance) {
         const speed = overflow > this.options_.fastBlockStartDistance ?
             this.options_.fastBlockSpeed :
