@@ -310,19 +310,24 @@ function deployToGhPagesUpstream(done) {
 }
 
 /**
- * Runs an install on all plugin and examples, installs beta, bundles, copies
- * to the gh-pages folder, and finally starts the jekyll server.
+ * Starts local server for testing GitHub pages.
+ * @param {Function} done Completed callback.
+ */
+function runGhPagesLocally(done) {
+  console.log('Starting server using "bundle exec jekyll serve"');
+  execSync(`bundle exec jekyll serve`, {cwd: 'gh-pages', stdio: 'inherit'});
+  done();
+}
+
+/**
+ * Does all the necessary tasks to run github pages locally with the beta
+ * version of Blockly installed. This is particularly helpful before we release
+ * core Blockly.
  */
 const testGhPagesLocally = gulp.series(
     gulp.parallel(preparePluginsForBeta, prepareExamplesForBeta),
     gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
-    function(done) {
-      console.log('Starting server using "bundle exec jekyll serve"');
-      const ghPagesDirectory = 'gh-pages';
-      execSync(`bundle exec jekyll serve`,
-          {cwd: ghPagesDirectory, stdio: 'inherit'});
-      done();
-    }
+    runGhPagesLocally
 );
 
 module.exports = {
