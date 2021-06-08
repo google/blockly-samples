@@ -15,22 +15,25 @@ import {BackpackChange, BackpackOpen} from './ui_events';
 import {
   BackpackContextMenuOptions, BackpackOptions, parseOptions,
 } from './options';
-import './backpack_monkey_patch';
 
 /**
  * Class for backpack that can be used save blocks from the workspace for
  * future use.
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
+ * @implements {Blockly.IAutoHideable}
  * @implements {Blockly.IPositionable}
+ * @extends {Blockly.DragTarget}
  */
-export class Backpack {
+export class Backpack extends Blockly.DragTarget {
   /**
    * Constructor for a backpack.
    * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace that
-   *     the plugin will be added to.
+   *     the backpack will be added to.
    * @param {!BackpackOptions=} backpackOptions The backpack options to use.
    */
   constructor(targetWorkspace, backpackOptions) {
+    super();
+
     /**
      * The workspace.
      * @type {!Blockly.WorkspaceSvg}
@@ -38,9 +41,11 @@ export class Backpack {
      */
     this.workspace_ = targetWorkspace;
 
-    // This set is part of the monkeypatch, so that a reference to the backpack
-    // can be accessed on a given workspace.
-    this.workspace_.backpack = this;
+    /**
+     * The unique id for this component.
+     * @type {string}
+     */
+    this.id = 'backpack';
 
     /**
      * The backpack options.
@@ -157,11 +162,14 @@ export class Backpack {
    * Initializes the backpack.
    */
   init() {
-    this.workspace_.getPluginManager().addPlugin({
-      id: 'backpack',
-      plugin: this,
+    this.workspace_.getComponentManager().addComponent({
+      component: this,
       weight: 2,
-      types: [Blockly.PluginManager.Type.POSITIONABLE],
+      capabilities: [
+        Blockly.ComponentManager.Capability.AUTOHIDEABLE,
+        Blockly.ComponentManager.Capability.DRAG_TARGET,
+        Blockly.ComponentManager.Capability.POSITIONABLE,
+      ],
     });
     this.initFlyout_();
     this.createDom_();
@@ -282,9 +290,9 @@ export class Backpack {
     this.addEvent_(
         this.svgGroup_, 'mouseup', this, this.onClick_);
     this.addEvent_(
-        this.svgGroup_, 'mouseover', this, this.onDragEnter);
+        this.svgGroup_, 'mouseover', this, this.onMouseOver_);
     this.addEvent_(
-        this.svgGroup_, 'mouseout', this, this.onDragExit);
+        this.svgGroup_, 'mouseout', this, this.onMouseOut_);
   }
 
   /**
@@ -296,11 +304,7 @@ export class Backpack {
    * @private
    */
   addEvent_(node, name, thisObject, func) {
-    // bindEventWithChecks_ quashes events too aggressively. See:
-    // https://groups.google.com/forum/#!topic/blockly/QF4yB9Wx00s
-    // Using bindEventWithChecks_ for blocking mousedown causes issue in mobile.
-    // See #4303
-    const event = Blockly.bindEvent_(node, name, thisObject, func);
+    const event = Blockly.browserEvents.bind(node, name, thisObject, func);
     this.boundEvents_.push(event);
   }
 
@@ -315,10 +319,10 @@ export class Backpack {
 
   /**
    * Returns the bounding rectangle of the drag target area in pixel units
-   * relative to the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The plugin’s bounding box.
+   * relative to viewport.
+   * @return {Blockly.utils.Rect} The component's bounding box.
    */
-  getTargetArea() {
+  getClientRect() {
     if (!this.svgGroup_) {
       return null;
     }
@@ -334,7 +338,7 @@ export class Backpack {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The plugin’s bounding box.
+   * @return {!Blockly.utils.Rect} The component’s bounding box.
    */
   getBoundingRectangle() {
     return new Blockly.utils.Rect(
@@ -427,11 +431,15 @@ export class Backpack {
   }
 
   /**
-   * Handles a block drop on this backpack.
-   * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
+   * Handles when a block or bubble is dropped on this component.
+   * Should not handle delete here.
+   * @param {!Blockly.IDraggable} dragElement The block or bubble currently
+   *   being dragged.
    */
-  handleBlockDrop(block) {
-    this.addBlock(block);
+  onDrop(dragElement) {
+    if (dragElement instanceof Blockly.BlockSvg) {
+      this.addBlock(/** @type {!Blockly.BlockSvg} */ (dragElement));
+    }
   }
   /**
    * Converts the provided block into a cleaned XML string.
@@ -509,7 +517,7 @@ export class Backpack {
    * cleaned of all unnecessary attributes.
    */
   removeItem(item) {
-    const itemIndex = this.contents_.indexOf(item);
+    const itemIndex = this.contents_on.indexOf(item);
     if (itemIndex !== -1) {
       this.contents_.splice(itemIndex, 1);
       this.onContentChange_();
@@ -616,6 +624,19 @@ export class Backpack {
   }
 
   /**
+   * Hides the component. Called in Blockly.hideChaff.
+   * @param {boolean} onlyClosePopups Whether only popups should be closed.
+   *     Flyouts should not be closed if this is true.
+   */
+  autoHide(onlyClosePopups) {
+    // The backpack flyout always autocloses because it overlays the backpack UI
+    // (no backpack to click to close it).
+    if (!onlyClosePopups) {
+      this.close();
+    }
+  }
+
+  /**
    * Handle click event.
    * @param {!MouseEvent} e Mouse event.
    * @protected
@@ -631,19 +652,70 @@ export class Backpack {
   }
 
   /**
-   * Handle mouse over.
+   * Handles when a cursor with a block or bubble enters this drag target.
+   * @param {!Blockly.IDraggable} dragElement The block or bubble currently being
+   *   dragged.
    */
-  onDragEnter() {
-    Blockly.utils.dom.addClass(
-        /** @type {!SVGElement} */ (this.svgImg_), 'blocklyBackpackDarken');
+  onDragEnter(dragElement) {
+    if (dragElement instanceof Blockly.BlockSvg) {
+      this.updateHoverStying_(true);
+    }
   }
 
   /**
-   * Handle mouse exit.
+   * Handles when a cursor with a block or bubble exits this drag target.
+   * @param {!Blockly.IDraggable} dragElement The block or bubble currently being
+   *   dragged.
    */
   onDragExit() {
-    Blockly.utils.dom.removeClass(
-        /** @type {!SVGElement} */ (this.svgImg_), 'blocklyBackpackDarken');
+    this.updateHoverStying_(false);
+  }
+
+  /**
+   * Handles a mouseover event.
+   * @private
+   */
+  onMouseOver_() {
+    if (this.isOpenable_()) {
+      this.updateHoverStying_(true);
+    }
+  }
+
+  /**
+   Handles a mouseout event.
+   * @private
+   */
+  onMouseOut_() {
+    this.updateHoverStying_(false);
+  }
+
+  /**
+   * Adds or removes styling to darken the backpack to show it is interactable.
+   * @param {addClass} addClass True to add styling, false to remove.
+   * @protected
+   */
+  updateHoverStying_(addClass) {
+    const backpackDarken = 'blocklyBackpackDarken';
+    if (addClass) {
+      Blockly.utils.dom.addClass(
+          /** @type {!SVGElement} */ (this.svgImg_), backpackDarken);
+    } else {
+      Blockly.utils.dom.removeClass(
+          /** @type {!SVGElement} */ (this.svgImg_), backpackDarken);
+    }
+  }
+
+  /**
+   * Returns whether the provided block or bubble should not be moved after being
+   * dropped on this component. If true, the element will return to where it was
+   * when the drag started.
+   * @param {!Blockly.IDraggable} dragElement The block or bubble currently being
+   *   dragged.
+   * @return {boolean} Whether the block or bubble provided should be returned to
+   *     drag start.
+   */
+  shouldPreventMove(dragElement) {
+    return dragElement instanceof Blockly.BlockSvg;
   }
 
   /**
@@ -680,7 +752,7 @@ Blockly.Css.register([
   `.blocklyBackpack {
     opacity: .4;
   }
-  .blocklyBackpack:hover, .blocklyBackpackDarken {
+  .blocklyBackpackDarken {
     opacity: .6;
   }
   .blocklyBackpack:active {
