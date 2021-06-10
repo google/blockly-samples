@@ -40,7 +40,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
      */
     this.dragDelta_ = new Blockly.utils.Coordinate(0, 0);
 
-    // TODO(maribethb): See if we can actually check this
+    // TODO(maribethb): Use `isMoveable` etc. to get this list
     /**
      * Possible directions the workspace could be scrolled.
      * @type {!Array<string>}
@@ -221,13 +221,14 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     };
 
     // Get ViewMetrics in workspace coordinates.
-    const metrics = this.workspace_.getMetricsManager().getViewMetrics(true);
+    const viewMetrics =
+        this.workspace_.getMetricsManager().getViewMetrics(true);
 
     // Get possible scroll velocities based on the location of both the block
     // and the mouse.
 
-    this.getBlockCandidateScrolls_(candidateScrolls, metrics, mouse);
-    this.getMouseCandidateScrolls_(candidateScrolls, metrics, mouse);
+    this.computeBlockCandidateScrolls_(candidateScrolls, viewMetrics, mouse);
+    this.computeMouseCandidateScrolls_(candidateScrolls, viewMetrics, mouse);
     // Calculate the final scroll vector we should actually use.
     const overallScrollVector = this.getOverallScrollVector_(candidateScrolls);
 
@@ -264,17 +265,18 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
   getOverallScrollVector_(candidateScrolls) {
     let overallScrollVector = new Blockly.utils.Coordinate(0, 0);
     for (const direction of this.scrollDirections_) {
-      const scroll = candidateScrolls[direction].reduce((fastest, current) => {
-        if (!fastest) {
-          return current;
-        }
-        return Blockly.utils.Coordinate.magnitude(fastest) >
-                Blockly.utils.Coordinate.magnitude(current) ?
-            fastest :
-            current;
-      }, new Blockly.utils.Coordinate(0, 0)); // Initial value
+      const fastestScroll =
+          candidateScrolls[direction].reduce((fastest, current) => {
+            if (!fastest) {
+              return current;
+            }
+            return Blockly.utils.Coordinate.magnitude(fastest) >
+                    Blockly.utils.Coordinate.magnitude(current) ?
+                fastest :
+                current;
+          }, new Blockly.utils.Coordinate(0, 0)); // Initial value
       overallScrollVector =
-          Blockly.utils.Coordinate.sum(overallScrollVector, scroll);
+          Blockly.utils.Coordinate.sum(overallScrollVector, fastestScroll);
     }
     return overallScrollVector;
   }
@@ -288,13 +290,13 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * third speed option.
    * @param {!CandidateScrolls} candidateScrolls Existing list of candidate
    *     scrolls. Will be modified in place.
-   * @param {!Blockly.MetricsManager.ContainerRegion} metrics View metrics for
-   *     the workspace.
+   * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
+   *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
    * @protected
    */
-  getBlockCandidateScrolls_(candidateScrolls, metrics, mouse) {
-    const blockOverflows = this.getBlockBoundsOverflows_(metrics, mouse);
+  computeBlockCandidateScrolls_(candidateScrolls, viewMetrics, mouse) {
+    const blockOverflows = this.getBlockBoundsOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = blockOverflows[direction];
       if (overflow > this.options_.slowBlockStartDistance) {
@@ -317,13 +319,13 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * third speed option.
    * @param {!CandidateScrolls} candidateScrolls Existing list of candidate
    *     scrolls. Will be modified in place.
-   * @param {!Blockly.MetricsManager.ContainerRegion} metrics View metrics for
-   *     the workspace.
+   * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
+   *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
    * @protected
    */
-  getMouseCandidateScrolls_(candidateScrolls, metrics, mouse) {
-    const mouseOverflows = this.getMouseOverflows_(metrics, mouse);
+  computeMouseCandidateScrolls_(candidateScrolls, viewMetrics, mouse) {
+    const mouseOverflows = this.getMouseOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = mouseOverflows[direction];
       if (overflow > this.options_.slowMouseStartDistance) {
@@ -352,20 +354,21 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * horizontal and vertical directions. These values can be configured in the
    * options for the plugin.
    *
-   * @param {!Blockly.MetricsManager.ContainerRegion} metrics View metrics for
-   *     the workspace.
+   * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
+   *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
    * @return {!Object<string, number>} An object describing the amount of
    *     overflow in each direction.
    * @protected
    */
-  getBlockBoundsOverflows_(metrics, mouse) {
+  getBlockBoundsOverflows_(viewMetrics, mouse) {
     const blockBounds = this.draggingBlock_.getBoundingRectangle();
 
     // Handle large blocks. If the block is nearly as tall as the viewport,
     // use a margin around the cursor rather than the height of the block.
     const blockHeight = blockBounds.bottom - blockBounds.top;
-    if (blockHeight > metrics.height * this.options_.oversizeBlockThreshold) {
+    if (blockHeight >
+        viewMetrics.height * this.options_.oversizeBlockThreshold) {
       blockBounds.top = Math.max(
           blockBounds.top, mouse.y - this.options_.oversizeBlockMargin);
       blockBounds.bottom = Math.min(
@@ -374,7 +377,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // Same logic, but for block width.
     const blockWidth = blockBounds.right - blockBounds.left;
-    if (blockWidth > metrics.width * this.options_.oversizeBlockThreshold) {
+    if (blockWidth > viewMetrics.width * this.options_.oversizeBlockThreshold) {
       blockBounds.left = Math.max(
           blockBounds.left, mouse.x - this.options_.oversizeBlockMargin);
       blockBounds.right = Math.min(
@@ -385,10 +388,10 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     // positive in the bottom and right directions. Therefore, the direction of
     // the comparison must be switched for bottom and right.
     return {
-      top: metrics.top - blockBounds.top,
-      bottom: -(metrics.top + metrics.height - blockBounds.bottom),
-      left: metrics.left - blockBounds.left,
-      right: -(metrics.left + metrics.width - blockBounds.right),
+      top: viewMetrics.top - blockBounds.top,
+      bottom: -(viewMetrics.top + viewMetrics.height - blockBounds.bottom),
+      left: viewMetrics.left - blockBounds.left,
+      right: -(viewMetrics.left + viewMetrics.width - blockBounds.right),
     };
   }
 
@@ -401,22 +404,22 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * the value will be positive. If the pointer is inside the viewport, the
    * value will be negative.
    *
-   * @param {!Blockly.MetricsManager.ContainerRegion} metrics View metrics for
-   *     the workspace.
+   * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
+   *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
    * @return {!Object<string, number>} An object describing the amount of
    *     overflow in each direction.
    * @protected
    */
-  getMouseOverflows_(metrics, mouse) {
+  getMouseOverflows_(viewMetrics, mouse) {
     // The coordinate system is negative in the top and left directions, and
     // positive in the bottom and right directions. Therefore, the direction of
     // the comparison must be switched for bottom and right.
     return {
-      top: metrics.top - mouse.y,
-      bottom: -(metrics.top + metrics.height - mouse.y),
-      left: metrics.left - mouse.x,
-      right: -(metrics.left + metrics.width - mouse.x),
+      top: viewMetrics.top - mouse.y,
+      bottom: -(viewMetrics.top + viewMetrics.height - mouse.y),
+      left: viewMetrics.left - mouse.x,
+      right: -(viewMetrics.left + viewMetrics.width - mouse.x),
     };
   }
 
