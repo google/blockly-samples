@@ -49,7 +49,7 @@ export function parseOptions(options) {
   if (!options) {
     return defaultOptions;
   }
-  const mergedOptions = {...defaultOptions, ...options};
+  const mergedOptions = {};
   mergedOptions.contextMenu = {
     ...defaultOptions.contextMenu, ...options.contextMenu};
   return mergedOptions;
