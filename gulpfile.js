@@ -28,8 +28,8 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
  */
 function checkLicenses() {
   const checker = new jsgl.LicenseChecker({
-    // dev: true,
-    // verbose: false,
+      // dev: true,
+      // verbose: false,
   });
   checker.setDefaultHandlers();
   const pluginsDir = 'plugins';
@@ -85,7 +85,7 @@ function publish(dryRun, force) {
     // Run npm publish.
     execSync(
         `npm run publish:${dryRun ? 'check' : '_internal'}` +
-        `${force ? ' -- --force-publish=*' : ''}`,
+            `${force ? ' -- --force-publish=*' : ''}`,
         {cwd: releaseDir, stdio: 'inherit'});
 
     done();
@@ -140,8 +140,7 @@ ${yaml.stringify(json)}
  * @return {Function} Gulp task.
  */
 function preparePlugin(pluginDir) {
-  const packageJson =
-    require(resolveApp(`plugins/${pluginDir}/package.json`));
+  const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
   const files = [
     `plugins/${pluginDir}/test/index.html`,
     `plugins/${pluginDir}/README.md`,
@@ -155,17 +154,22 @@ function preparePlugin(pluginDir) {
         packageName: packageJson.name,
         description: packageJson.description,
         pageRoot: `plugins/${pluginDir}`,
-        pages: [{
-          label: 'Playground',
-          link: 'test/index',
-        }, {
-          label: 'README',
-          link: 'README',
-        }],
+        pages: [
+          {
+            label: 'Playground',
+            link: 'test/index',
+          },
+          {
+            label: 'README',
+            link: 'README',
+          }
+        ],
       })))
-      .pipe(gulp.src([
-        './plugins/' + pluginDir + '/build/test_bundle.js',
-      ], {base: './plugins/', allowEmpty: true}))
+      .pipe(gulp.src(
+          [
+            './plugins/' + pluginDir + '/build/test_bundle.js',
+          ],
+          {base: './plugins/', allowEmpty: true}))
       .pipe(gulp.dest('./gh-pages/plugins/'));
 }
 
@@ -178,11 +182,10 @@ function preparePlugin(pluginDir) {
  */
 function prepareToDeployPlugins(done) {
   const dir = 'plugins';
-  const folders = fs.readdirSync(dir)
-      .filter(function(file) {
-        return fs.statSync(path.join(dir, file)).isDirectory() &&
-            fs.existsSync(path.join(dir, file, 'package.json'));
-      });
+  const folders = fs.readdirSync(dir).filter(function(file) {
+    return fs.statSync(path.join(dir, file)).isDirectory() &&
+        fs.existsSync(path.join(dir, file, 'package.json'));
+  });
   return gulp.parallel(folders.map(function(folder) {
     return function preDeployPlugin() {
       return preparePlugin(folder);
@@ -203,7 +206,7 @@ function prepareToDeployPlugins(done) {
  */
 function prepareExample(baseDir, exampleDir, done) {
   const packageJson =
-    require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
+      require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
   const {blocklyDemoConfig} = packageJson;
   if (!blocklyDemoConfig) {
     done();
@@ -215,14 +218,14 @@ function prepareExample(baseDir, exampleDir, done) {
   const pages = blocklyDemoConfig.files.filter((f) => pageRegex.test(f));
   const assets = blocklyDemoConfig.files.filter((f) => !pageRegex.test(f));
 
-  let stream = gulp
-      .src(pages.map((f) => path.join(baseDir, exampleDir, f)),
-          {base: baseDir, allowEmpty: true})
-      .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
+  let stream = gulp.src(
+                       pages.map((f) => path.join(baseDir, exampleDir, f)),
+                       {base: baseDir, allowEmpty: true})
+                   .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
   if (assets.length) {
-    stream = stream
-        .pipe(gulp.src(assets.map((f) => path.join(baseDir, exampleDir, f)),
-            {base: baseDir, allowEmpty: true}));
+    stream = stream.pipe(gulp.src(
+        assets.map((f) => path.join(baseDir, exampleDir, f)),
+        {base: baseDir, allowEmpty: true}));
   }
   return stream.pipe(gulp.dest('./gh-pages/examples/'));
 }
@@ -237,11 +240,10 @@ function prepareExample(baseDir, exampleDir, done) {
  */
 function prepareToDeployExamples(done) {
   const dir = 'examples';
-  const folders = fs.readdirSync(dir)
-      .filter((file) => {
-        return fs.statSync(path.join(dir, file)).isDirectory() &&
-          fs.existsSync(path.join(dir, file, 'package.json'));
-      });
+  const folders = fs.readdirSync(dir).filter((file) => {
+    return fs.statSync(path.join(dir, file)).isDirectory() &&
+        fs.existsSync(path.join(dir, file, 'package.json'));
+  });
   return gulp.parallel(folders.map(function(folder) {
     return function preDeployExample(done) {
       return prepareExample(dir, folder, done);
@@ -258,41 +260,72 @@ function deployToGhPages(repo) {
   return (done) => {
     const d = new Date();
     const m = `Deploying ${d.getMonth() + 1}-${d.getDate()}-${d.getFullYear()}`;
-    ghpages.publish('gh-pages', {
-      message: m,
-      repo,
-    }, done);
+    ghpages.publish(
+        'gh-pages', {
+          message: m,
+          repo,
+        },
+        done);
   };
 }
 
 /**
  * Prepares plugins to be tested locally.
- * @param {Function} done Completed callback.
+ * @param {boolean} isBeta True if we want to test gh pages with the beta
+ *     version of Blockly.
+ * @return {Function} Gulp task.
  */
-function preparePluginsForBeta(done) {
-  // Install with npm ci, which will not update package-locks.
-  execSync(`npm ci`, {stdio: 'inherit'});
-  // npm ci cannot install individual packages.
-  execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
-  execSync(`npm run boot`, {stdio: 'inherit'});
-  execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
-  done();
+function preparePluginsForLocal(isBeta) {
+  return (done) => {
+    if (isBeta) {
+      execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
+    }
+    execSync(`npm run boot`, {stdio: 'inherit'});
+    // Bundles all the plugins.
+    execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
+    done();
+  };
 }
 
 /**
  * Prepares examples to be tested locally.
- * @param {Function} done Completed callback.
+ * @param {boolean} isBeta True if we want to test gh pages with the beta
+ *     version of Blockly.
+ * @return {Function} Gulp task.
  */
-function prepareExamplesForBeta(done) {
-  const examplesDirectory = 'examples';
-  // Install with npm ci, which will not update package-locks.
-  execSync(`npm ci`, {cwd: examplesDirectory, stdio: 'inherit'});
-  // npm ci cannot install individual packages.
-  execSync(`lerna exec -- npm install blockly@beta`,
-      {cwd: examplesDirectory, stdio: 'inherit'});
-  execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
-  execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
-  done();
+function prepareExamplesForLocal(isBeta) {
+  return (done) => {
+    const examplesDirectory = 'examples';
+    if (isBeta) {
+      execSync(
+          `lerna exec -- npm install blockly@beta`,
+          {cwd: examplesDirectory, stdio: 'inherit'});
+    }
+    execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
+    // Bundles any examples that define a predeploy script (ex. blockly-react).
+    execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
+    done();
+  };
+}
+
+/**
+ * Does all the necessary tasks to run github pages locally.
+ * @param {boolean} isBeta True if we want to test gh pages with the beta
+ *     version of Blockly. This is particularly helpful for testing before we
+ *     release core.
+ * @return {Function} Gulp task.
+ */
+function testGhPagesLocally(isBeta) {
+  return gulp.series(
+      gulp.parallel(
+          preparePluginsForLocal(isBeta), prepareExamplesForLocal(isBeta)),
+      gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+      function(done) {
+        console.log('Starting server using "bundle exec jekyll serve"');
+        execSync(
+            `bundle exec jekyll serve`, {cwd: 'gh-pages', stdio: 'inherit'});
+        done();
+      });
 }
 
 /**
@@ -321,6 +354,6 @@ module.exports = {
   publish: publishRelease,
   publishDryRun: publishDryRun,
   forcePublish: forcePublish,
-  testGhPagesLocally: gulp.parallel(
-      preparePluginsForBeta, prepareExamplesForBeta),
+  testGhPagesBeta: testGhPagesLocally(true),
+  testGhPages: testGhPagesLocally(false),
 };
