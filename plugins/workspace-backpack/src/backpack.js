@@ -43,6 +43,12 @@ export class Backpack {
     this.workspace_.backpack = this;
 
     /**
+     * The backpack options.
+     * @type {!BackpackOptions}
+     */
+    this.options_ = parseOptions(backpackOptions);
+
+    /**
      * The SVG group containing the backpack.
      * @type {?SVGElement}
      * @protected
