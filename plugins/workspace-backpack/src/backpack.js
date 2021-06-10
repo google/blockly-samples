@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Backpack that lives on top of the workspace.
+ * @fileoverview A backpack that lives on top of the workspace.
  * @author kozbial@google.com (Monica Kozbial)
  */
 
@@ -231,7 +231,7 @@ export class Backpack {
   }
 
   /**
-   * Creates DOM for ui element and attaches event listeners.
+   * Creates DOM for UI element.
    * @protected
    */
   createDom_() {
@@ -441,10 +441,9 @@ export class Backpack {
   handleBlockDrop(block) {
     this.addBlock(block);
   }
-
   /**
    * Converts the provided block into a cleaned XML string.
-   * @param {!Blockly.Block} block Block to convert.
+   * @param {!Blockly.Block} block The block to convert.
    * @return {string} The cleaned XML string.
    * @private
    */
@@ -454,9 +453,9 @@ export class Backpack {
 
   /**
    * Returns whether the backpack contains a duplicate of the provided Block.
-   * @param {!Blockly.Block} block Block to check.
+   * @param {!Blockly.Block} block The block to check.
    * @return {boolean} Whether the backpack contains a duplicate of the provided
-   *     Block.
+   *     block.
    */
   containsBlock(block) {
     const cleanedBlockXml = this.blockToCleanXmlString_(block);
@@ -464,8 +463,8 @@ export class Backpack {
   }
 
   /**
-   * Adds Block to backpack.
-   * @param {!Blockly.Block} block Block to be added to the backpack.
+   * Adds the specified block to backpack.
+   * @param {!Blockly.Block} block The block to be added to the backpack.
    */
   addBlock(block) {
     this.addItem(this.blockToCleanXmlString_(block));
@@ -473,18 +472,18 @@ export class Backpack {
 
 
   /**
-   * Adds Blocks to backpack.
-   * @param {!Array<!Blockly.Block>} blocks Blocks to be added to the backpack.
+   * Adds the provided blocks to backpack.
+   * @param {!Array<!Blockly.Block>} blocks The blocks to be added to the
+   *     backpack.
    */
   addBlocks(blocks) {
     const cleanedBlocks = blocks.map(this.blockToCleanXmlString_);
     this.addItems(cleanedBlocks);
   }
 
-
   /**
-   * Removes Block from the backpack.
-   * @param {!Blockly.Block} block Block to be removed from the backpack.
+   * Removes the specified block from the backpack.
+   * @param {!Blockly.Block} block The block to be removed from the backpack.
    */
   removeBlock(block) {
     this.removeItem(this.blockToCleanXmlString_(block));
