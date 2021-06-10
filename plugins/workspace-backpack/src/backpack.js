@@ -161,6 +161,7 @@ export class Backpack {
     });
     this.initFlyout_();
     this.createDom_();
+    this.attachListeners_();
     this.initialized_ = true;
     this.workspace_.resize();
     // TODO: Add customization for which context menus to register.
@@ -264,8 +265,13 @@ export class Backpack {
 
     Blockly.utils.dom.insertAfter(
         this.svgGroup_, this.workspace_.getBubbleCanvas());
+  }
 
-    // Attach listeners.
+  /**
+   * Attaches event listeners.
+   * @protected
+   */
+  attachListeners_() {
     this.addEvent_(
         this.svgGroup_, 'mousedown', this, this.blockMouseDownWhenOpenable_);
     this.addEvent_(
