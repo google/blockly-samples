@@ -39,32 +39,92 @@ export class Backpack {
     this.workspace_.backpack = this;
 
     /**
-     * The SVG group containing the backpack.
-     * @type {?SVGElement}
+     * The backpack options.
+     * @type {!BackpackOptions}
+     */
+    this.options_ = parseOptions(backpackOptions);
+
+    /**
+     * The backpack flyout. Initialized during init.
+     * @type {?Blockly.IFlyout}
      * @protected
      */
-    this.svgGroup_ = null;
+    this.flyout_ = null;
+
+    /**
+     * A list of XML (stored as strings) representing blocks in the backpack.
+     * @type {!Array<string>}
+     * @protected
+     */
+    this.contents_ = [];
+
+    /**
+     * Array holding info needed to unbind events.
+     * Used for disposing.
+     * @type {!Array<!Blockly.browserEvents.Data>}
+     * @protected
+     */
+    this.boundEvents_ = [];
 
     /**
      * Left coordinate of the backpack.
      * @type {number}
-     * @private
+     * @protected
      */
     this.left_ = 0;
 
     /**
      * Top coordinate of the backpack.
      * @type {number}
-     * @private
+     * @protected
      */
     this.top_ = 0;
 
     /**
+     * Width of the backpack. Used for clip path.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.WIDTH_ = 40;
+
+    /**
+     * Height of the backpack. Used for clip path.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.HEIGHT_ = 60;
+
+    /**
+     * Distance between backpack and bottom or top edge of workspace.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.MARGIN_VERTICAL_ = 20;
+
+    /**
+     * Distance between backpack and right or left edge of workspace.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.MARGIN_HORIZONTAL_ = 20;
+
+    /**
      * Extent of hotspot on all sides beyond the size of the image.
      * @const {number}
-     * @private
+     * @protected
      */
     this.HOTSPOT_MARGIN_ = 10;
+
+    /**
+     * The SVG group containing the backpack.
+     * @type {?SVGElement}
+     * @protected
+     */
+    this.svgGroup_ = null;
 
     /**
      * Top offset for backpack in svg.
@@ -87,66 +147,6 @@ export class Backpack {
      * @private
      */
     this.SPRITE_SIZE_ = 80;
-
-    /**
-     * Width of the backpack. Used for clip path.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.WIDTH_ = 40;
-
-    /**
-     * Height of the backpack. Used for clip path.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.HEIGHT_ = 60;
-
-    /**
-     * Distance between backpack and bottom or top edge of workspace.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.MARGIN_VERTICAL_ = 20;
-
-    /**
-     * Distance between backpack and right or left edge of workspace.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.MARGIN_HORIZONTAL_ = 20;
-    /**
-     * Array holding info needed to unbind events.
-     * Used for disposing.
-     * @type {!Array<!Blockly.browserEvents.Data>}
-     * @protected
-     */
-    this.boundEvents_ = [];
-
-    /**
-     * Whether this has been initialized.
-     * @type {boolean}
-     * @protected
-     */
-    this.initialized_ = false;
-
-    /**
-     * A list of XML (stored as strings) representing blocks in the backpack.
-     * @type {!Array<string>}
-     * @protected
-     */
-    this.contents_ = [];
-
-    /**
-     * The backpack flyout. Initialized during init.
-     * @type {?Blockly.IFlyout}
-     * @protected
-     */
-    this.flyout_ = null;
   }
 
   /**
