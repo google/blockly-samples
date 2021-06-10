@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview UI events used for Backpack.
+ * @fileoverview UI events used for the backpack plugin.
  * @author kozbial@google.com (Monica Kozbial)
  */
 
@@ -18,7 +18,7 @@ import * as Blockly from 'blockly/core';
 export const BACKPACK_OPEN = 'backpack_open';
 
 /**
- * A UI event representing a change in the Backpack contents.
+ * A UI event representing a backpack opening or closing.
  */
 export class BackpackOpen extends Blockly.Events.UiBase {
   /**
@@ -75,7 +75,7 @@ Blockly.registry.register(Blockly.registry.Type.EVENT, BACKPACK_OPEN,
 export const BACKPACK_CHANGE = 'backpack_change';
 
 /**
- * A UI event representing a change in the Backpack contents.
+ * A UI event representing a change in a backpack's contents.
  */
 export class BackpackChange extends Blockly.Events.UiBase {
   /**
@@ -98,4 +98,3 @@ export class BackpackChange extends Blockly.Events.UiBase {
 
 Blockly.registry.register(Blockly.registry.Type.EVENT, BACKPACK_CHANGE,
     BackpackChange);
-
