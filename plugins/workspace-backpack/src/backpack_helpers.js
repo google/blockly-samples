@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Helper and utility methods for the Backpack plugin.
+ * @fileoverview Helper and utility methods for the backpack plugin.
  * @author kozbial@google.com (Monica Kozbial)
  */
 

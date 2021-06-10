@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Backpack that lives on top of the workspace.
+ * @fileoverview A backpack that lives on top of the workspace.
  * @author kozbial@google.com (Monica Kozbial)
  */
 
@@ -49,32 +49,86 @@ export class Backpack {
     this.options_ = parseOptions(backpackOptions);
 
     /**
-     * The SVG group containing the backpack.
-     * @type {?SVGElement}
+     * The backpack flyout. Initialized during init.
+     * @type {?Blockly.IFlyout}
      * @protected
      */
-    this.svgGroup_ = null;
+    this.flyout_ = null;
+
+    /**
+     * A list of XML (stored as strings) representing blocks in the backpack.
+     * @type {!Array<string>}
+     * @protected
+     */
+    this.contents_ = [];
+
+    /**
+     * Array holding info needed to unbind events.
+     * Used for disposing.
+     * @type {!Array<!Blockly.browserEvents.Data>}
+     * @protected
+     */
+    this.boundEvents_ = [];
 
     /**
      * Left coordinate of the backpack.
      * @type {number}
-     * @private
+     * @protected
      */
     this.left_ = 0;
 
     /**
      * Top coordinate of the backpack.
      * @type {number}
-     * @private
+     * @protected
      */
     this.top_ = 0;
 
     /**
+     * Width of the backpack. Used for clip path.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.WIDTH_ = 40;
+
+    /**
+     * Height of the backpack. Used for clip path.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.HEIGHT_ = 60;
+
+    /**
+     * Distance between backpack and bottom or top edge of workspace.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.MARGIN_VERTICAL_ = 20;
+
+    /**
+     * Distance between backpack and right or left edge of workspace.
+     * @type {number}
+     * @const
+     * @protected
+     */
+    this.MARGIN_HORIZONTAL_ = 20;
+
+    /**
      * Extent of hotspot on all sides beyond the size of the image.
      * @const {number}
-     * @private
+     * @protected
      */
     this.HOTSPOT_MARGIN_ = 10;
+
+    /**
+     * The SVG group containing the backpack.
+     * @type {?SVGElement}
+     * @protected
+     */
+    this.svgGroup_ = null;
 
     /**
      * Top offset for backpack in svg.
@@ -97,66 +151,6 @@ export class Backpack {
      * @private
      */
     this.SPRITE_SIZE_ = 80;
-
-    /**
-     * Width of the backpack. Used for clip path.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.WIDTH_ = 40;
-
-    /**
-     * Height of the backpack. Used for clip path.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.HEIGHT_ = 60;
-
-    /**
-     * Distance between backpack and bottom or top edge of workspace.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.MARGIN_VERTICAL_ = 20;
-
-    /**
-     * Distance between backpack and right or left edge of workspace.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.MARGIN_HORIZONTAL_ = 20;
-    /**
-     * Array holding info needed to unbind events.
-     * Used for disposing.
-     * @type {!Array<!Blockly.browserEvents.Data>}
-     * @protected
-     */
-    this.boundEvents_ = [];
-
-    /**
-     * Whether this has been initialized.
-     * @type {boolean}
-     * @protected
-     */
-    this.initialized_ = false;
-
-    /**
-     * A list of XML (stored as strings) representing blocks in the backpack.
-     * @type {!Array<string>}
-     * @protected
-     */
-    this.contents_ = [];
-
-    /**
-     * The backpack flyout. Initialized during init.
-     * @type {?Blockly.IFlyout}
-     * @protected
-     */
-    this.flyout_ = null;
   }
 
   /**
@@ -171,6 +165,7 @@ export class Backpack {
     });
     this.initFlyout_();
     this.createDom_();
+    this.attachListeners_();
     registerContextMenus(
         /** @type {!BackpackContextMenuOptions} */ this.options_.contextMenu,
         this.workspace_);
@@ -241,7 +236,7 @@ export class Backpack {
   }
 
   /**
-   * Creates DOM for ui element and attaches event listeners.
+   * Creates DOM for UI element.
    * @protected
    */
   createDom_() {
@@ -275,8 +270,13 @@ export class Backpack {
 
     Blockly.utils.dom.insertAfter(
         this.svgGroup_, this.workspace_.getBubbleCanvas());
+  }
 
-    // Attach listeners.
+  /**
+   * Attaches event listeners.
+   * @protected
+   */
+  attachListeners_() {
     this.addEvent_(
         this.svgGroup_, 'mousedown', this, this.blockMouseDownWhenOpenable_);
     this.addEvent_(
@@ -446,10 +446,9 @@ export class Backpack {
   handleBlockDrop(block) {
     this.addBlock(block);
   }
-
   /**
    * Converts the provided block into a cleaned XML string.
-   * @param {!Blockly.Block} block Block to convert.
+   * @param {!Blockly.Block} block The block to convert.
    * @return {string} The cleaned XML string.
    * @private
    */
@@ -459,9 +458,9 @@ export class Backpack {
 
   /**
    * Returns whether the backpack contains a duplicate of the provided Block.
-   * @param {!Blockly.Block} block Block to check.
+   * @param {!Blockly.Block} block The block to check.
    * @return {boolean} Whether the backpack contains a duplicate of the provided
-   *     Block.
+   *     block.
    */
   containsBlock(block) {
     const cleanedBlockXml = this.blockToCleanXmlString_(block);
@@ -469,8 +468,8 @@ export class Backpack {
   }
 
   /**
-   * Adds Block to backpack.
-   * @param {!Blockly.Block} block Block to be added to the backpack.
+   * Adds the specified block to backpack.
+   * @param {!Blockly.Block} block The block to be added to the backpack.
    */
   addBlock(block) {
     this.addItem(this.blockToCleanXmlString_(block));
@@ -478,18 +477,18 @@ export class Backpack {
 
 
   /**
-   * Adds Blocks to backpack.
-   * @param {!Array<!Blockly.Block>} blocks Blocks to be added to the backpack.
+   * Adds the provided blocks to backpack.
+   * @param {!Array<!Blockly.Block>} blocks The blocks to be added to the
+   *     backpack.
    */
   addBlocks(blocks) {
     const cleanedBlocks = blocks.map(this.blockToCleanXmlString_);
     this.addItems(cleanedBlocks);
   }
 
-
   /**
-   * Removes Block from the backpack.
-   * @param {!Blockly.Block} block Block to be removed from the backpack.
+   * Removes the specified block from the backpack.
+   * @param {!Blockly.Block} block The block to be removed from the backpack.
    */
   removeBlock(block) {
     this.removeItem(this.blockToCleanXmlString_(block));
