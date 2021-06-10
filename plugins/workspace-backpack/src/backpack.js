@@ -28,7 +28,7 @@ export class Backpack {
    * Constructor for a backpack.
    * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace that
    *     the plugin will be added to.
-   * @param {!BackpackOptions} backpackOptions The backpack options to use.
+   * @param {!BackpackOptions=} backpackOptions The backpack options to use.
    */
   constructor(targetWorkspace, backpackOptions) {
     /**

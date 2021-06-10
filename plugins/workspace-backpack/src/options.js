@@ -36,7 +36,7 @@ export let BackpackOptions;
  * @return {!BackpackOptions} The created options object.
  */
 export function parseOptions(options) {
-  const parsedOptions = {
+  const defaultOptions = {
     contextMenu: {
       emptyBackpack: true,
       removeFromBackpack: true,
@@ -47,32 +47,10 @@ export function parseOptions(options) {
     },
   };
   if (!options) {
-    return parsedOptions;
+    return defaultOptions;
   }
-  if (options.contextMenu !== undefined) {
-    if (options.contextMenu.emptyBackpack !== undefined) {
-      parsedOptions.contextMenu.emptyBackpack =
-          !!options.contextMenu.emptyBackpack;
-    }
-    if (options.contextMenu.removeFromBackpack !== undefined) {
-      parsedOptions.contextMenu.removeFromBackpack =
-          !!options.contextMenu.removeFromBackpack;
-    }
-    if (options.contextMenu.copyToBackpack !== undefined) {
-      parsedOptions.contextMenu.copyToBackpack =
-          !!options.contextMenu.copyToBackpack;
-    }
-    if (options.contextMenu.copyAllToBackpack !== undefined) {
-      parsedOptions.contextMenu.copyAllToBackpack =
-          !!options.contextMenu.copyAllToBackpack;
-    }
-    if (options.contextMenu.pasteAllToBackpack !== undefined) {
-      parsedOptions.contextMenu.pasteAllToBackpack =
-          !!options.contextMenu.pasteAllToBackpack;
-    }
-    if (options.contextMenu.disablePreconditionChecks !== undefined) {
-      parsedOptions.contextMenu.disablePreconditionChecks =
-          !!options.contextMenu.disablePreconditionChecks;
-    }
-  }
+  const mergedOptions = {...defaultOptions, ...options};
+  mergedOptions.contextMenu = {
+    ...defaultOptions.contextMenu, ...options.contextMenu};
+  return mergedOptions;
 }
