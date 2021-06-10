@@ -21,8 +21,7 @@ import {Backpack} from '../src/index';
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
-  const backpack = new Backpack(workspace,
-      {contextMenu: {copyAllToBackpack: true}});
+  const backpack = new Backpack(workspace);
   backpack.init();
 
   return workspace;
