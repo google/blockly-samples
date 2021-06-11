@@ -42,13 +42,13 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.6",
     "@blockly/dev-tools": "^2.3.0",
-    "blockly": "^5.20210325.0",
+    "blockly": "^5.20210624.0-beta.2",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",
     "sinon": "^9.0.1"
   },
   "peerDependencies": {
-    "blockly": ">=5.20210325.0"
+    "blockly": ">=5.20210624.0-beta.2"
   },
   "publishConfig": {
     "access": "public",
