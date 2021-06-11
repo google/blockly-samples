@@ -43,21 +43,47 @@ backpack.init();
 
 ### Configuration
 This plugin takes an optional configuration object.
+```
+{
+  contextMenu: {
+    emptyBackpack: (boolean|undefined),
+    removeFromBackpack: (boolean|undefined),
+    copyToBackpack: (boolean|undefined),
+    copyAllToBackpack: (boolean|undefined),
+    pasteAllToBackpack: (boolean|undefined),
+    disablePreconditionChecks: (boolean|undefined),
+  },
+}
+```
+
+The configuration options are passed in to the constructor. In this
+configuration object, you can currently configure which context menu options are
+registered at `init`.
 ```js
 const backpackOptions = {
-    contextMenu: {
-      emptyBackpack: true,
-      removeFromBackpack: true,
-      copyToBackpack: true,
-      copyAllToBackpack: true,
-      pasteAllToBackpack: true,
-      disablePreconditionChecks: false,
-    },
-  };
+  contextMenu: {
+    emptyBackpack: true,
+    removeFromBackpack: true,
+    copyToBackpack: false,
+  },
+};
 const backpack = new Backpack(workspace,  backpackOptions);
 ```
-In this configuration object, you can configure which context menu options are
-registered at `init`.
+
+The following options are the default values used for any property in the
+passed in options that is undefined:
+```js
+const defaultOptions = {
+  contextMenu: {
+    emptyBackpack: true,
+    removeFromBackpack: true,
+    copyToBackpack: true,
+    copyAllToBackpack: false,
+    pasteAllToBackpack: false,
+    disablePreconditionChecks: false,
+  },
+};
+```
 
 The `disablePreconditionChecks` property will prevent the "Copy to Backpack"
 context menu option from disabling the context menu option if the block is
