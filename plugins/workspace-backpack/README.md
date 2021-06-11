@@ -13,6 +13,17 @@ yarn add @blockly/workspace-backpack
 ```
 npm install @blockly/workspace-backpack --save
 ```
+## Features
+### Context Menus
+The following context menu options are available for the backpack:
+- "Copy all Blocks" to Backpack in main Workspace
+- "Paste all Blocks" from Backpack in main Workspace
+- "Remove from Backpack" on Block stack in Backpack Flyout
+- "Copy to Backpack" on a Block stack in main Workspace
+- "Empty" option when right clicking the Backpack that is disabled if the Backpack is empty
+
+![An animated picture of all the context menu options in use](
+https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu.gif)
 
 ## Usage
 
@@ -29,6 +40,61 @@ const workspace = Blockly.inject('blocklyDiv', {
 const backpack = new Backpack(workspace);
 backpack.init();
 ```
+
+### Configuration
+This plugin takes an optional configuration object.
+```
+{
+  contextMenu: {
+    emptyBackpack: (boolean|undefined),
+    removeFromBackpack: (boolean|undefined),
+    copyToBackpack: (boolean|undefined),
+    copyAllToBackpack: (boolean|undefined),
+    pasteAllToBackpack: (boolean|undefined),
+    disablePreconditionChecks: (boolean|undefined),
+  },
+}
+```
+
+The configuration options are passed in to the constructor. In this
+configuration object, you can currently configure which context menu options are
+registered at `init`.
+```js
+const backpackOptions = {
+  contextMenu: {
+    emptyBackpack: true,
+    removeFromBackpack: true,
+    copyToBackpack: false,
+  },
+};
+const backpack = new Backpack(workspace,  backpackOptions);
+```
+
+The following options are the default values used for any property in the
+passed in options that is undefined:
+```js
+const defaultOptions = {
+  contextMenu: {
+    emptyBackpack: true,
+    removeFromBackpack: true,
+    copyToBackpack: true,
+    copyAllToBackpack: false,
+    pasteAllToBackpack: false,
+    disablePreconditionChecks: false,
+  },
+};
+```
+
+The `disablePreconditionChecks` property will prevent the "Copy to Backpack"
+context menu option from disabling the context menu option if the block is
+already in the Backpack. Setting this flag to `true` to disable the check can be
+beneficial for performance if you expect blocks stacks to be very large.
+
+![An animated picture of the "Copy to Backpack" context menu](
+https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu-precondition.gif)
+
+Note: Currently the empty Backpack context menu is registered globally, while
+the others are registered per workspace.
 
 ### Blockly Languages
 We do not currently support translating the text in this plugin to different

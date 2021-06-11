@@ -6,3 +6,4 @@
 
 export {Backpack} from './backpack';
 export * from './ui_events';
+export {BackpackOptions, BackpackContextMenuOptions} from './options';
