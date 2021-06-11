@@ -8,6 +8,7 @@
  * @fileoverview Backpack with a notification.
  */
 
+
 class NotificationBackpack extends Backpack {
   /**
    * Constructor for a backpack.
@@ -48,19 +49,22 @@ class NotificationBackpack extends Backpack {
     this.countSvgTextColour_ = 'white';
 
     /**
-     * The backpack content since the backpack was last opened, stored as a list
-     * of XML (stored as strings) representing blocks in the backpack.
+     * The backpack content added externally since the backpack was last opened,
+     * stored as a list of XML (stored as strings) representing blocks.
+     * Cleared on backpack open.
      * @type {!Array<string>}
      * @protected
      */
-    this.cachedContents_ = [];
+    this.cachedAddedContent_ = [];
 
     /**
-     * Whether to disable caching contents.
-     * @type {boolean}
-     * @private
+     * The backpack content removed externally since the backpack was last
+     * opened, stored as a list of XML (stored as strings) representing blocks.
+     * Cleared on backpack open.
+     * @type {!Array<string>}
+     * @protected
      */
-    this.disableCaching_ = false;
+    this.cachedRemovedContent_ = [];
 
     /**
      * The notification count to display. Cleared on backpack open.
@@ -136,52 +140,17 @@ class NotificationBackpack extends Backpack {
   }
 
   /**
-   * Adds multiple items to the backpack.
-   * @param {!Array<string>} items The backpack contents to add.
-   * @override
-   */
-  addItems(items) {
-    super.addItems(items);
-    if (!this.disableCaching_) {
-      this.cachedContents_ = this.contents_;
-    }
-  }
-
-  /**
-   * Removes item from the backpack.
-   * @param {string} item Text representing the XML tree of a block to remove,
-   * cleaned of all unnecessary attributes.
-   * @override
-   */
-  removeItem(item) {
-    super.item(item);
-    if (!this.disableCaching_) {
-      this.cachedContents_ = this.contents_;
-    }
-  }
-
-  /**
-   * Sets backpack contents.
+   * Sets backpack contents and updates the notification.
    * @param {!Array<string>} contents The new backpack contents.
-   * @override
    */
-  setContents(contents) {
-    super.setContents(contents);
-    if (!this.disableCaching_) {
-      this.cachedContents_ = this.contents_;
+  setContentsAndNotify(contents) {
+    if (this.isOpen()) {
+      this.clearNotificationCount_();
+    } else {
+      this.updateNotificationCount_(contents);
     }
-  }
-
-  /**
-   * Empties the backpack's contents. If the contents-flyout is currently open
-   * it will be closed.
-   * @override
-   */
-  empty() {
-    super.empty();
-    if (!this.disableCaching_) {
-      this.cachedContents_ = this.contents_;
-    }
+    this.setContents(contents);
+    this.updateNotification_();
   }
 
   /**
@@ -190,47 +159,67 @@ class NotificationBackpack extends Backpack {
    */
   open() {
     super.open();
-    this.cachedContents_ = this.contents_;
-    this.notificationCount_ = 0;
+    this.clearNotificationCount_();
     this.updateNotification_();
+  }
+
+  /**
+   * Empties the backpack's contents. If the contents-flyout is currently open
+   * it will be closed.
+   */
+  empty() {
+    super.empty();
+    this.clearNotificationCount_();
+    this.updateNotification_();
+  }
+
+  /**
+   * Clears the notification count and cached content changes.
+   * @private
+   */
+  clearNotificationCount_() {
+    this.notificationCount_ = 0;
+    this.cachedAddedContent_ = [];
+    this.cachedRemovedContent_ = [];
   }
 
   /**
    * Updates the notification count based on the cached and new contents.
    * @param {!Array<string>} contents The new backpack contents.
+   * @private
    */
   updateNotificationCount_(contents) {
     // Count removed items.
-    let changeCount = this.cachedContents_.reduce((accumulator, currentItem
-    ) => {
-      if (contents.indexOf(currentItem) !== -1) {
-        return accumulator;
+    const removed = this.contents_.filter((item) => {
+      const isRemoved = contents.indexOf(item) === -1;
+      if (isRemoved) {
+        const addIdx = this.cachedAddedContent_.indexOf(item);
+        if (addIdx !== -1) {
+          // Ignore item removed after it was added.
+          this.cachedAddedContent_.splice(addIdx, 1);
+          return false;
+        }
+        return true;
       }
-      return accumulator + 1;
-    }, 0);
+      return false;
+    },);
     // Count added items.
-    changeCount = contents.reduce((accumulator, currentItem) => {
-      if (this.cachedContents_.indexOf(currentItem) !== -1) {
-        return accumulator;
+    const added = contents.filter((item) => {
+      const isAdded = this.contents_.indexOf(item) === -1;
+      if (isAdded) {
+        const rmIdx = this.cachedRemovedContent_.indexOf(item);
+        if (rmIdx !== -1) {
+          // Ignore item added after it was removed.
+          this.cachedRemovedContent_.splice(rmIdx, 1);
+          return false;
+        }
+        return true;
       }
-      return accumulator + 1;
-    }, changeCount);
-    this.notificationCount_ = changeCount;
-  }
-
-  /**
-   * Sets backpack contents and updates the notification.
-   * @param {!Array<string>} contents The new backpack contents.
-   */
-  setContentsAndNotify(contents) {
-    if (this.isOpen()) {
-      this.notificationCount_ = 0;
-    } else {
-      this.updateNotificationCount_(contents);
-    }
-    this.disableCaching_ = true;
-    this.setContents(contents);
-    this.disableCaching_ = false;
-    this.updateNotification_();
+      return false;
+    });
+    this.cachedRemovedContent_.push(...removed);
+    this.cachedAddedContent_.push(...added);
+    this.notificationCount_ =
+        this.cachedRemovedContent_.length + this.cachedAddedContent_.length;
   }
 }

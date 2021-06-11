@@ -427,19 +427,6 @@ export class Backpack {
   }
 
   /**
-   * Empties the backpack's contents. If the contents-flyout is currently open
-   * it will be closed.
-   */
-  empty() {
-    if (!this.getCount()) {
-      return;
-    }
-    this.contents_ = [];
-    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
-    this.close();
-  }
-
-  /**
    * Handles a block drop on this backpack.
    * @param {!Blockly.BlockSvg} block The block being dropped on the backpack.
    */
@@ -509,8 +496,11 @@ export class Backpack {
    * @param {!Array<string>} items The backpack contents to add.
    */
   addItems(items) {
-    this.contents_.unshift(...this.filterDuplicates_(items));
-    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
+    const addedItems = this.filterDuplicates_(items);
+    if (addedItems.length) {
+      this.contents_.unshift(...addedItems);
+      this.onContentChange_();
+    }
   }
 
   /**
@@ -522,8 +512,7 @@ export class Backpack {
     const itemIndex = this.contents_.indexOf(item);
     if (itemIndex !== -1) {
       this.contents_.splice(itemIndex, 1);
-      this.maybeRefreshFlyoutContents_();
-      Blockly.Events.fire(new BackpackChange(this.workspace_.id));
+      this.onContentChange_();
     }
   }
 
@@ -534,6 +523,29 @@ export class Backpack {
   setContents(contents) {
     this.contents_ = [];
     this.contents_ = this.filterDuplicates_(contents);
+    this.onContentChange_();
+  }
+
+  /**
+   * Empties the backpack's contents. If the contents-flyout is currently open
+   * it will be closed.
+   */
+  empty() {
+    if (!this.getCount()) {
+      return;
+    }
+    if (this.contents_.length) {
+      this.contents_ = [];
+      this.onContentChange_();
+    }
+    this.close();
+  }
+
+  /**
+   * Handles content change.
+   * @protected
+   */
+  onContentChange_() {
     this.maybeRefreshFlyoutContents_();
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
