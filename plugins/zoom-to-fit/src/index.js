@@ -31,6 +31,12 @@ export class ZoomToFitControl {
     this.workspace_ = workspace;
 
     /**
+     * The unique id for this component.
+     * @type {string}
+     */
+    this.id = 'zoomToFit';
+
+    /**
      * The SVG group containing the zoom-to-fit control.
      * @type {SVGElement}
      * @private
@@ -96,7 +102,6 @@ export class ZoomToFitControl {
    */
   init() {
     this.workspace_.getComponentManager().addComponent({
-      id: 'zoomToFit',
       component: this,
       weight: 2,
       capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],

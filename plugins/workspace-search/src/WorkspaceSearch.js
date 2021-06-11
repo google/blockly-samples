@@ -33,6 +33,12 @@ export class WorkspaceSearch {
     this.workspace_ = workspace;
 
     /**
+     * The unique id for this component.
+     * @type {string}
+     */
+    this.id = 'workspaceSearch';
+
+    /**
      * HTML container for the search bar.
      * @type {?HTMLElement}
      * @private
@@ -114,7 +120,6 @@ export class WorkspaceSearch {
    */
   init() {
     this.workspace_.getComponentManager().addComponent({
-      id: 'workspaceSearch',
       component: this,
       weight: 0,
       capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
