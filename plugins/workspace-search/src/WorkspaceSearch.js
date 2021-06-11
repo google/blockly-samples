@@ -526,9 +526,9 @@ export class WorkspaceSearch {
     let blockText = '';
     if (block.isCollapsed()) {
       // Search the whole string for collapsed blocks.
-      blockText = block.toString();
+      blockText = block.toString() + ' ' + block.id;
     } else {
-      const topBlockText = [];
+      const topBlockText = [block.id];
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
           topBlockText.push(field.getText());
