@@ -682,7 +682,7 @@ export class Backpack extends Blockly.DragTarget {
   }
 
   /**
-   Handles a mouseout event.
+   * Handles a mouseout event.
    * @private
    */
   onMouseOut_() {
