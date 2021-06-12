@@ -653,8 +653,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles when a cursor with a block or bubble enters this drag target.
-   * @param {!Blockly.IDraggable} dragElement The block or bubble currently being
-   *   dragged.
+   * @param {!Blockly.IDraggable} dragElement The block or bubble currently
+   *   being dragged.
    */
   onDragEnter(dragElement) {
     if (dragElement instanceof Blockly.BlockSvg) {
@@ -664,10 +664,10 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles when a cursor with a block or bubble exits this drag target.
-   * @param {!Blockly.IDraggable} dragElement The block or bubble currently being
-   *   dragged.
+   * @param {!Blockly.IDraggable} _dragElement The block or bubble currently
+   *   being dragged.
    */
-  onDragExit() {
+  onDragExit(_dragElement) {
     this.updateHoverStying_(false);
   }
 
@@ -691,7 +691,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Adds or removes styling to darken the backpack to show it is interactable.
-   * @param {addClass} addClass True to add styling, false to remove.
+   * @param {boolean} addClass True to add styling, false to remove.
    * @protected
    */
   updateHoverStying_(addClass) {
@@ -706,13 +706,13 @@ export class Backpack extends Blockly.DragTarget {
   }
 
   /**
-   * Returns whether the provided block or bubble should not be moved after being
-   * dropped on this component. If true, the element will return to where it was
-   * when the drag started.
-   * @param {!Blockly.IDraggable} dragElement The block or bubble currently being
-   *   dragged.
-   * @return {boolean} Whether the block or bubble provided should be returned to
-   *     drag start.
+   * Returns whether the provided block or bubble should not be moved after
+   * being dropped on this component. If true, the element will return to where
+   * it was when the drag started.
+   * @param {!Blockly.IDraggable} dragElement The block or bubble currently
+   *   being dragged.
+   * @return {boolean} Whether the block or bubble provided should be returned
+   *   to drag start.
    */
   shouldPreventMove(dragElement) {
     return dragElement instanceof Blockly.BlockSvg;
