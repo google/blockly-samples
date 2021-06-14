@@ -139,52 +139,37 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
   }
 
   /**
+   * @override
+   */
+  endDrag(e, currentDragDeltaXY) {
+    super.endDrag(e, currentDragDeltaXY);
+
+    this.stopAutoScrolling();
+  }
+
+  /**
    * Passes the total amount the block has moved (both from dragging and from
    * scrolling) since it was picked up.
    * @override
    */
-  endDrag(e, currentDragDeltaXY) {
-    // We cannot override this method similar to the others because we call
-    // drag here with the passed in value.
-    // Make sure internal state is fresh.
-    this.drag(e, currentDragDeltaXY);
-    this.dragIconData_ = [];
-    this.fireDragEndEvent_();
-
-    Blockly.utils.dom.stopTextWidthCache();
-
-    Blockly.blockAnimations.disconnectUiStop();
-    // Start Change
+  getNewLocationAfterDrag_(currentDragDeltaXY) {
+    const newValues = {};
     const totalDelta =
         Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
-    const delta = this.pixelsToWorkspaceUnits_(totalDelta);
-    // End Change
-    const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, delta);
-    this.draggingBlock_.moveOffDragSurface(newLoc);
+    newValues.delta = this.pixelsToWorkspaceUnits_(totalDelta);
+    newValues.newLocation =
+        Blockly.utils.Coordinate.sum(this.startXY_, newValues.delta);
 
-    const deleted = this.maybeDeleteBlock_();
-    if (!deleted) {
-      // Moving the block is expensive, so only do it if the block is not
-      // deleted.
-      this.updateBlockAfterMove_(delta);
-    }
-    this.workspace_.setResizesEnabled(true);
-
-    this.updateToolboxStyle_(true);
-
-    this.dragDelta_ = currentDragDeltaXY;
-
-    // Added
-    this.stopAutoScrolling();
+    return newValues;
   }
 
   /**
    * May scroll the workspace as a block is dragged.
    * If a block is dragged near the edge of the workspace, this method will
-   * cause the workspace to scroll in the direction the block is being dragged.
-   * The workspace will not resize as the block is dragged. The workspace should
-   * appear to move out from under the block, i.e., the block should stay under
-   * the user's mouse.
+   * cause the workspace to scroll in the direction the block is being
+   * dragged. The workspace will not resize as the block is dragged. The
+   * workspace should appear to move out from under the block, i.e., the block
+   * should stay under the user's mouse.
    * @param {!Event} e The mouse/touch event for the drag.
    * @protected
    */
@@ -255,8 +240,8 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * For example, we may have a fast block scroll and a slow
    * mouse scroll candidate in both the top and left directions. First, we
    * reduce to only the fast block scroll. Then, we sum the vectors in each
-   * direction to get a resulting fast scroll in a diagonal direction to the top
-   * left.
+   * direction to get a resulting fast scroll in a diagonal direction to the
+   * top left.
    * @param {!CandidateScrolls} candidateScrolls Existing lists of candidate
    *     scrolls. Will be modified in place.
    * @return {!Blockly.utils.Coordinate} Overall scroll vector.
@@ -286,8 +271,8 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * workspace. If the block is near/over the edge, a candidate scroll will be
    * added based on the options provided.
    *
-   * This method can be overridden to further customize behavior, e.g. To add a
-   * third speed option.
+   * This method can be overridden to further customize behavior, e.g. To add
+   * a third speed option.
    * @param {!CandidateScrolls} candidateScrolls Existing list of candidate
    *     scrolls. Will be modified in place.
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
@@ -304,7 +289,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
             this.options_.fastBlockSpeed :
             this.options_.slowBlockSpeed;
         const scrollVector =
-            this.SCROLL_DIRECTION_VECTORS_[direction].scale(speed);
+            this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
         candidateScrolls[direction].push(scrollVector);
       }
     }
@@ -312,11 +297,11 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
   /**
    * Gets the candidate scrolls based on the position of the mouse cursor
-   * relative to the workspace. If the mouse is near/over the edge, a candidate
-   * scroll will be added based on the options provided.
+   * relative to the workspace. If the mouse is near/over the edge, a
+   * candidate scroll will be added based on the options provided.
    *
-   * This method can be overridden to further customize behavior, e.g. To add a
-   * third speed option.
+   * This method can be overridden to further customize behavior, e.g. To add
+   * a third speed option.
    * @param {!CandidateScrolls} candidateScrolls Existing list of candidate
    *     scrolls. Will be modified in place.
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
@@ -333,7 +318,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
             this.options_.fastMouseSpeed :
             this.options_.slowMouseSpeed;
         const scrollVector =
-            this.SCROLL_DIRECTION_VECTORS_[direction].scale(speed);
+            this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
         candidateScrolls[direction].push(scrollVector);
       }
     }
@@ -343,9 +328,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * Gets the amount of overflow of a box relative to the workspace viewport.
    *
    * The value for each direction will be how far the given block edge is from
-   * the given edge of the viewport. If the block edge is outside the viewport,
-   * the value will be positive. If the block edge is inside the viewport, the
-   * value will be negative.
+   * the given edge of the viewport. If the block edge is outside the
+   * viewport, the value will be positive. If the block edge is inside the
+   * viewport, the value will be negative.
    *
    * This method also checks for oversized blocks. If the block is very large
    * relative to the viewport size, then we will actually use a small zone
@@ -385,8 +370,8 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     }
 
     // The coordinate system is negative in the top and left directions, and
-    // positive in the bottom and right directions. Therefore, the direction of
-    // the comparison must be switched for bottom and right.
+    // positive in the bottom and right directions. Therefore, the direction
+    // of the comparison must be switched for bottom and right.
     return {
       top: viewMetrics.top - blockBounds.top,
       bottom: -(viewMetrics.top + viewMetrics.height - blockBounds.bottom),
@@ -413,8 +398,8 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    */
   getMouseOverflows_(viewMetrics, mouse) {
     // The coordinate system is negative in the top and left directions, and
-    // positive in the bottom and right directions. Therefore, the direction of
-    // the comparison must be switched for bottom and right.
+    // positive in the bottom and right directions. Therefore, the direction
+    // of the comparison must be switched for bottom and right.
     return {
       top: viewMetrics.top - mouse.y,
       bottom: -(viewMetrics.top + viewMetrics.height - mouse.y),
@@ -424,9 +409,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
   }
 
   /**
-   * Cancel any AutoScroll. This must be called when there is no need to scroll
-   * further, e.g., when no longer dragging near the edge of the workspace, or
-   * when no longer dragging at all.
+   * Cancel any AutoScroll. This must be called when there is no need to
+   * scroll further, e.g., when no longer dragging near the edge of the
+   * workspace, or when no longer dragging at all.
    */
   stopAutoScrolling() {
     if (this.activeAutoScroll_) {

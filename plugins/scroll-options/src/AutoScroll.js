@@ -111,7 +111,8 @@ export class AutoScroll {
    * @param {number} scrollDy Amount to scroll in vertical direction.
    */
   scrollWorkspaceWithBlock(scrollDx, scrollDy) {
-    const oldLocation = this.getDragSurfaceLocation_();
+    const dragSurface = this.workspace_.getBlockDragSurface();
+    const oldLocation = dragSurface.getWsTranslation();
 
     // As we scroll, we shouldn't expand past the content area that existed
     // before the block was picked up. Therefore, we use cached ContentMetrics
@@ -125,7 +126,7 @@ export class AutoScroll {
     this.workspace_.scroll(newX, newY);
     metricsManager.useCachedContentMetrics = false;
 
-    const newLocation = this.getDragSurfaceLocation_();
+    const newLocation = dragSurface.getWsTranslation();
 
     // How much we actually ended up scrolling.
     const deltaX = newLocation.x - oldLocation.x;
@@ -138,19 +139,6 @@ export class AutoScroll {
       this.workspace_.currentGesture_.getCurrentDragger()
           .moveBlockWhileDragging(deltaX, deltaY);
     }
-  }
-
-  /**
-   * Gets the current location of the drag surface.
-   * This has to return a copy to work.
-   * TODO: Deduplicate with index.js.
-   * @return {!Blockly.utils.Coordinate} The current coordinate.
-   * @protected
-   */
-  getDragSurfaceLocation_() {
-    const dragSurface = this.workspace_.getBlockDragSurface();
-    const workspaceOffset = dragSurface.getWsTranslation();
-    return new Blockly.utils.Coordinate(workspaceOffset.x, workspaceOffset.y);
   }
 
   /**
