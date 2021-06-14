@@ -20,6 +20,7 @@ import {spaghetti} from '../spaghetti';
 import {id} from './id';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
+import darkTheme from '@blockly/theme-dark';
 
 const assign = require('lodash.assign');
 const merge = require('lodash.merge');
@@ -539,7 +540,7 @@ function getThemes(defaultOptions) {
     // Fall back to a pre-set list of themes.
     themes = {
       'classic': Blockly.Themes.Classic,
-      'dark': Blockly.Themes.Dark,
+      'dark': darkTheme,
       'deuteranopia': Blockly.Themes.Deuteranopia,
       'highcontrast': Blockly.Themes.HighContrast,
       'tritanopia': Blockly.Themes.Tritanopia,

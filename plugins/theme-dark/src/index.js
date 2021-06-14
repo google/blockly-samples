@@ -10,10 +10,15 @@
 
 import Blockly from 'blockly/core';
 
+
+// Temporarily required to ensure there's no conflict with
+// Blockly.Themes.Dark
+Blockly.registry.unregister('theme', 'dark');
+
 /**
  * Dark theme.
  */
-export default Blockly.Theme.defineTheme('theme_dark', {
+export default Blockly.Theme.defineTheme('dark', {
   'base': Blockly.Themes.Classic,
   'componentStyles': {
     'workspaceBackgroundColour': '#1e1e1e',
