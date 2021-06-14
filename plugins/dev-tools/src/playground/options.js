@@ -20,6 +20,7 @@ import {spaghetti} from '../spaghetti';
 import {id} from './id';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
+import themeTritanopia from '@blockly/theme-tritanopia';
 
 const assign = require('lodash.assign');
 const merge = require('lodash.merge');
@@ -542,7 +543,7 @@ function getThemes(defaultOptions) {
       'dark': Blockly.Themes.Dark,
       'deuteranopia': Blockly.Themes.Deuteranopia,
       'highcontrast': Blockly.Themes.HighContrast,
-      'tritanopia': Blockly.Themes.Tritanopia,
+      'tritanopia': themeTritanopia,
     };
     if (defaultOptions.theme) {
       themes[(/** @type {!Blockly.Theme} */ (defaultOptions.theme)).name] =
