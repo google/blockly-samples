@@ -517,7 +517,7 @@ export class Backpack extends Blockly.DragTarget {
    * cleaned of all unnecessary attributes.
    */
   removeItem(item) {
-    const itemIndex = this.contents_on.indexOf(item);
+    const itemIndex = this.contents_.indexOf(item);
     if (itemIndex !== -1) {
       this.contents_.splice(itemIndex, 1);
       this.onContentChange_();
