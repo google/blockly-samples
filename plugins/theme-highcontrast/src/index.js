@@ -82,6 +82,9 @@ const categoryStyles = {
 // Blockly.Themes.HighContrast
 Blockly.registry.unregister('theme', 'highcontrast');
 
+/**
+ * High contrast theme.
+ */
 export default Blockly.Theme.defineTheme('highcontrast', {
   'base': Blockly.Themes.Classic,
   'blockStyles': defaultBlockStyles,
