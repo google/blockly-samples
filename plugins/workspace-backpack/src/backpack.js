@@ -320,7 +320,8 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns the bounding rectangle of the drag target area in pixel units
    * relative to viewport.
-   * @return {Blockly.utils.Rect} The component's bounding box.
+   * @return {?Blockly.utils.Rect} The component's bounding box. Null if drag
+   *   target area should be ignored.
    */
   getClientRect() {
     if (!this.svgGroup_) {
