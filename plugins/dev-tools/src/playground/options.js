@@ -20,6 +20,7 @@ import {spaghetti} from '../spaghetti';
 import {id} from './id';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
+import deuteranopiaTheme from '@blockly/theme-deuteranopia';
 
 const assign = require('lodash.assign');
 const merge = require('lodash.merge');
@@ -540,7 +541,7 @@ function getThemes(defaultOptions) {
     themes = {
       'classic': Blockly.Themes.Classic,
       'dark': Blockly.Themes.Dark,
-      'deuteranopia': Blockly.Themes.Deuteranopia,
+      'deuteranopia': deuteranopiaTheme,
       'highcontrast': Blockly.Themes.HighContrast,
       'tritanopia': Blockly.Themes.Tritanopia,
     };
