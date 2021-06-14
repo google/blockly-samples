@@ -1,0 +1,20 @@
+{
+  "name": "blockly-backpack-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Blockly Backpack",
+    "description": "Two Blockly instances with a shared backpack.",
+    "files": [
+      "index.html",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js",
+      "./node_modules/@blockly/workspace-backpack/dist/index.js"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^5.20210624.0-beta.2",
+    "@blockly/workspace-backpack": "file:../../plugins/workspace-backpack"
+  }
+}
