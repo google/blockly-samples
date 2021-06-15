@@ -10,10 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import '../src/ContinuousCategory';
-import {ContinuousToolbox} from '../src/ContinuousToolbox';
-import {ContinuousFlyout} from '../src/ContinuousFlyout';
-import {ContinuousMetrics} from '../src/ContinuousMetrics';
+import {ContinuousToolbox, ContinuousFlyout, ContinuousMetrics} from '../src/index';
 
 
 /**

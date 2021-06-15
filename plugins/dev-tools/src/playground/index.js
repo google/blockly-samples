@@ -413,6 +413,28 @@ export function createPlayground(
           }
         };
 
+        /**
+         * Removes a generator tab.
+         * @param {string} label The label of the generator tab to remove.
+         */
+        const removeGenerator = function(label) {
+          if (!label) {
+            throw Error('usage: removeGenerator(label);');
+          }
+          if (!(label in tabs)) {
+            throw Error('removeGenerator called on invalid label: ' + label);
+          }
+          const tab = tabs[label];
+          tabsDiv.removeChild(tab.tabElement);
+          delete tabs[label];
+          const tabsKeys = Object.keys(tabs);
+          if (activeTab === label && tabsKeys.length) {
+            // Set the active tab to another tab if the active tab corresponded
+            // to a removed generator.
+            setActiveTab(tabs[tabsKeys[0]]);
+          }
+        };
+
         const playground = {
           state: playgroundState,
           addAction: (/** @type {?} */ (gui)).addAction,
@@ -421,6 +443,7 @@ export function createPlayground(
           getCurrentTab,
           getGUI,
           getWorkspace,
+          removeGenerator,
         };
 
         // Add tab buttons.
