@@ -22,12 +22,6 @@ export const BACKPACK_OPEN = 'backpack_open';
  */
 export class BackpackOpen extends Blockly.Events.UiBase {
   /**
-   * Type of this event.
-   * @type {string}
-   */
-  type = BACKPACK_OPEN;
-
-  /**
    * Class for a backpack open event.
    * @param {boolean=} isOpen Whether the backpack flyout is opening (false
    *    if closing). Undefined for a blank event.
@@ -38,11 +32,18 @@ export class BackpackOpen extends Blockly.Events.UiBase {
    */
   constructor(isOpen, workspaceId) {
     super(workspaceId);
+
     /**
      * Whether the backpack flyout is opening (false if closing).
      * @type {boolean|undefined}
      */
     this.isOpen = isOpen;
+
+    /**
+     * Type of this event.
+     * @type {string}
+     */
+    this.type = BACKPACK_OPEN;
   }
 
   /**
@@ -79,12 +80,6 @@ export const BACKPACK_CHANGE = 'backpack_change';
  */
 export class BackpackChange extends Blockly.Events.UiBase {
   /**
-   * Type of this event.
-   * @type {string}
-   */
-  type = BACKPACK_CHANGE;
-
-  /**
    * Class for a backpack change event.
    * @param {string=} workspaceId The workspace identifier for this event.
    *    Undefined for a blank event.
@@ -93,6 +88,12 @@ export class BackpackChange extends Blockly.Events.UiBase {
    */
   constructor(workspaceId) {
     super(workspaceId);
+
+    /**
+     * Type of this event.
+     * @type {string}
+     */
+    this.type = BACKPACK_CHANGE;
   }
 }
 
