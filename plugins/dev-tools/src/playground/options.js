@@ -20,6 +20,7 @@ import {spaghetti} from '../spaghetti';
 import {id} from './id';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
+import darkTheme from '@blockly/theme-dark';
 import deuteranopiaTheme from '@blockly/theme-deuteranopia';
 import themeTritanopia from '@blockly/theme-tritanopia';
 import highContrastTheme from '@blockly/theme-highcontrast';
@@ -542,7 +543,7 @@ function getThemes(defaultOptions) {
     // Fall back to a pre-set list of themes.
     themes = {
       'classic': Blockly.Themes.Classic,
-      'dark': Blockly.Themes.Dark,
+      'dark': darkTheme,
       'deuteranopia': deuteranopiaTheme,
       'tritanopia': themeTritanopia,
       'highcontrast': highContrastTheme,

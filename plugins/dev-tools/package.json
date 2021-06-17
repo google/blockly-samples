@@ -40,6 +40,7 @@
   ],
   "dependencies": {
     "@blockly/block-test": "^1.1.0",
+    "@blockly/theme-dark": "^1.0.0",
     "@blockly/theme-deuteranopia": "^1.0.0",
     "@blockly/theme-tritanopia": "^1.0.0",
     "@blockly/theme-highcontrast": "^1.0.0",
