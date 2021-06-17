@@ -21,6 +21,9 @@ import {id} from './id';
 import toolboxCategories from '../toolboxCategories';
 import toolboxSimple from '../toolboxSimple';
 import darkTheme from '@blockly/theme-dark';
+import deuteranopiaTheme from '@blockly/theme-deuteranopia';
+import themeTritanopia from '@blockly/theme-tritanopia';
+import highContrastTheme from '@blockly/theme-highcontrast';
 
 const assign = require('lodash.assign');
 const merge = require('lodash.merge');
@@ -541,9 +544,9 @@ function getThemes(defaultOptions) {
     themes = {
       'classic': Blockly.Themes.Classic,
       'dark': darkTheme,
-      'deuteranopia': Blockly.Themes.Deuteranopia,
-      'highcontrast': Blockly.Themes.HighContrast,
-      'tritanopia': Blockly.Themes.Tritanopia,
+      'deuteranopia': deuteranopiaTheme,
+      'tritanopia': themeTritanopia,
+      'highcontrast': highContrastTheme,
     };
     if (defaultOptions.theme) {
       themes[(/** @type {!Blockly.Theme} */ (defaultOptions.theme)).name] =

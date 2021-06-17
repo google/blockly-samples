@@ -1,33 +1,35 @@
 {
-  "name": "@blockly/dev-tools",
-  "version": "2.3.1",
-  "description": "A library of common utilities for Blockly extension development.",
+  "name": "@blockly/theme-highcontrast",
+  "version": "1.0.0",
+  "description": "A Blockly high contrast theme.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start"
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
   },
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
-  "types": "./src/index.d.ts",
   "author": "Blockly Team",
   "keywords": [
     "blockly",
-    "dev",
-    "tools"
+    "blockly-plugin",
+    "blockly-theme",
+    "highcontrast"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-tools#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/theme-highcontrast#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/dev-tools"
+    "directory": "plugins/theme-highcontrast"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -38,26 +40,13 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-    "@blockly/block-test": "^1.1.0",
-    "@blockly/theme-dark": "^1.0.0",
-    "@blockly/theme-deuteranopia": "^1.0.0",
-    "@blockly/theme-tritanopia": "^1.0.0",
-    "@blockly/theme-highcontrast": "^1.0.0",
-    "chai": "^4.2.0",
-    "dat.gui": "^0.7.7",
-    "lodash.assign": "^4.2.0",
-    "lodash.merge": "^4.6.2",
-    "monaco-editor": "^0.20.0",
-    "sinon": "^9.0.2"
-  },
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.6",
-    "@types/dat.gui": "^0.7.5",
-    "blockly": "^4.20201217.0"
+    "@blockly/dev-tools": "^2.3.1",
+    "blockly": "^5.20210325.1"
   },
   "peerDependencies": {
-    "blockly": ">=4.20201217.0"
+    "blockly": ">=3.20200123.0"
   },
   "publishConfig": {
     "access": "public",
@@ -67,7 +56,7 @@
     "extends": "@blockly/eslint-config"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=8.17.0"
   },
   "browserslist": [
     "defaults",
