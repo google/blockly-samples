@@ -2,7 +2,7 @@
 
 A [Blockly](https://www.npmjs.com/package/blockly) dark theme.
 
-![](https://github.com/google/blockly-samples/raw/master/plugins/theme-dark/readme-media/DarkTheme.png)
+![A Blockly workspace using the dark theme.](https://github.com/google/blockly-samples/raw/master/plugins/theme-dark/readme-media/DarkTheme.png)
 
 ## Installation
 

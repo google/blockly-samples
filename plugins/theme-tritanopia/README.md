@@ -3,6 +3,8 @@
 A [Blockly](https://www.npmjs.com/package/blockly) theme for people that have
 tritanopia (the inability to perceive blue light).
 
+![A Blockly workspace using the tritanopia theme.](https://github.com/google/blockly-samples/raw/master/plugins/theme-tritanopia/readme-media/TritanopiaTheme.png)
+
 ## Installation
 
 ### Yarn
