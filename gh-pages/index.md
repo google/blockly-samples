@@ -31,6 +31,9 @@ layout: index
 ## Themes
 * [Theme Dark](plugins/theme-dark/test/index.html)
 * [Theme Modern](plugins/theme-modern/test/index.html)
+* [Theme High Contrast](plugins/theme-dark/test/index.html)
+* [Theme Tritanopia](plugins/theme-modern/test/index.html)
+* [Theme Deuteranopia](plugins/theme-modern/test/index.html)
 
 # Examples
 
