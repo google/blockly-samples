@@ -72,7 +72,7 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
 
   /**
    * Computes the fixed edges of the scroll area.
-   * @param {!Blockly.MetricsManager.ContainerRegion=} opt_viewMetrics The view
+   * @param {!Blockly.MetricsManager.ContainerRegion=} viewMetricsParam The view
    *     metrics if they have been previously computed. Passing in null may
    *     cause the view metrics to be computed again, if it is needed.
    * @return {!Blockly.MetricsManager.FixedEdges} The fixed edges of the scroll
@@ -80,11 +80,11 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
    * @protected
    * @override
    */
-  getComputedFixedEdges_(opt_viewMetrics) {
+  getComputedFixedEdges_(viewMetricsParam = undefined) {
     const hScrollEnabled = this.workspace_.isMovableHorizontally();
     const vScrollEnabled = this.workspace_.isMovableVertically();
 
-    const viewMetrics = opt_viewMetrics || this.getViewMetrics(false);
+    const viewMetrics = viewMetricsParam || this.getViewMetrics(false);
 
     const edges = {
       top: fixedEdges.top ? 0 : undefined,

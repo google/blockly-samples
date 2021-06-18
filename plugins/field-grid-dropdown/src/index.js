@@ -20,19 +20,19 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param {(!Array.<!Array>|!Function)} menuGenerator A non-empty array of
    *     options for a dropdown list, or a function which generates these
    *     options.
-   * @param {Function=} opt_validator A function that is called to validate
+   * @param {Function=} validator A function that is called to validate
    *    changes to the field's value. Takes in a language-neutral dropdown
    *    option & returns a validated language-neutral dropdown option, or null
    *    to abort the change.
-   * @param {Object=} opt_config A map of options used to configure the field.
+   * @param {Object=} config A map of options used to configure the field.
    *    See the [field creation documentation]{@link https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation}
    *    for a list of properties this parameter supports.
    * @extends {Blockly.Field}
    * @constructor
    * @throws {TypeError} If `menuGenerator` options are incorrectly structured.
    */
-  constructor(menuGenerator, opt_validator, opt_config) {
-    super(menuGenerator, opt_validator, opt_config);
+  constructor(menuGenerator, validato = undefined, config = undefined) {
+    super(menuGenerator, validator, config);
 
     /**
      * The number of columns in the dropdown grid. Must be an integer value
@@ -41,8 +41,8 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
      * @private
      */
     this.columns_ = 3;
-    if (opt_config && opt_config['columns']) {
-      this.setColumnsInternal_(opt_config['columns']);
+    if (config && config['columns']) {
+      this.setColumnsInternal_(config['columns']);
     }
   }
 
@@ -85,13 +85,13 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
   /**
    * Create a dropdown menu under the text.
-   * @param {Event=} opt_e Optional mouse event that triggered the field to
+   * @param {Event=} e Optional mouse event that triggered the field to
    *    open, or undefined if triggered programmatically.
    * @protected
    * @override
    */
-  showEditor_(opt_e) {
-    super.showEditor_(opt_e);
+  showEditor_(e = undefined) {
+    super.showEditor_(e);
 
     // Grid dropdown is always colored.
     const primaryColour = (this.sourceBlock_.isShadow()) ?

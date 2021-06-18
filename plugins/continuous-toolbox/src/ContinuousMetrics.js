@@ -21,8 +21,8 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
    * The default viewport includes the flyout.
    * @override
    */
-  getViewMetrics(opt_getWorkspaceCoordinates) {
-    const scale = opt_getWorkspaceCoordinates ? this.workspace_.scale : 1;
+  getViewMetrics(getWorkspaceCoordinates) {
+    const scale = getWorkspaceCoordinates ? this.workspace_.scale : 1;
     const svgMetrics = this.getSvgMetrics();
     const toolboxMetrics = this.getToolboxMetrics();
     const flyoutMetrics = this.getFlyoutMetrics(false);
