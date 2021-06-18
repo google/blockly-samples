@@ -214,6 +214,7 @@ const procedureDefMutator = {
       const argModel = element.model;
       argument.setAttribute('name', argModel.name);
       argument.setAttribute('varid', argModel.getId());
+      argument.setAttribute('argid', element.argId);
       if (isForCaller) {
         argument.setAttribute('paramid', element.argId);
       }
@@ -243,15 +244,17 @@ const procedureDefMutator = {
     }
 
     const names = [];
-    const ids = [];
+    const varIds = [];
+    const argIds = [];
     for (const childNode of xmlElement.childNodes) {
       if (childNode.nodeName.toLowerCase() == 'arg') {
         names.push(childNode.getAttribute('name'));
-        ids.push(childNode.getAttribute('varid') ||
+        varIds.push(childNode.getAttribute('varid') ||
             childNode.getAttribute('varId'));
+        argIds.push(childNode.getAttribute('argid'));
       }
     }
-    this.updateShape_(names, ids);
+    this.updateShape_(names, varIds, argIds);
   },
 
   /**
@@ -259,10 +262,12 @@ const procedureDefMutator = {
    * @param {!Array<string>} names An array of argument names to display.
    * @param {!Array<string>} varIds An array of variable IDs associated with
    *     those names.
+   * @param {!Array<?string>} argIds An array of argument IDs associated with
+   *     those names.
    * @this {Blockly.Block}
    * @private
    */
-  updateShape_: function(names, varIds) {
+  updateShape_: function(names, varIds, argIds) {
     if (names.length != varIds.length) {
       throw Error('names and varIds must have the same length.');
     }
@@ -278,7 +283,7 @@ const procedureDefMutator = {
     this.argData_ = [];
     const length = varIds.length;
     for (let i = 0; i < length; i++) {
-      this.addArg_(names[i], varIds[i]);
+      this.addArg_(names[i], varIds[i], argIds[i]);
     }
     Blockly.Procedures.mutateCallers(this);
   },
@@ -311,10 +316,12 @@ const procedureDefMutator = {
    * arrays as appropriate.
    * @param {?string=} name An optional name for the argument.
    * @param {?string=} varId An optional variable ID for the argument.
+   * @param {?string=} argId An optional argument ID for the argument
+   *     (used to identify the argument across variable merges).
    * @this {Blockly.Block}
    * @private
    */
-  addArg_: function(name = null, varId = null) {
+  addArg_: function(name = null, varId = null, argId = null) {
     if (!this.argData_.length) {
       const withField = new Blockly.FieldLabel(
           Blockly.Msg['PROCEDURES_BEFORE_PARAMS']);
@@ -327,7 +334,7 @@ const procedureDefMutator = {
         Blockly.Procedures.DEFAULT_ARG, argNames);
     const variable = Blockly.Variables.getOrCreateVariablePackage(
         this.workspace, varId, name, '');
-    const argId = Blockly.utils.genUid();
+    argId = argId || Blockly.utils.genUid();
 
     this.addVarInput_(name, argId);
     if (this.getInput('STACK')) {
