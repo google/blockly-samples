@@ -31,7 +31,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @constructor
    * @throws {TypeError} If `menuGenerator` options are incorrectly structured.
    */
-  constructor(menuGenerator, validato = undefined, config = undefined) {
+  constructor(menuGenerator, validator = undefined, config = undefined) {
     super(menuGenerator, validator, config);
 
     /**
