@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-dark",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "description": "A Blockly dark theme.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -42,7 +42,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.6",
-    "@blockly/dev-tools": "^2.3.1",
+    "@blockly/dev-tools": "^2.4.0",
     "blockly": "^4.20201217.0"
   },
   "peerDependencies": {
