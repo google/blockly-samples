@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://localhost:4000/plugins/field-grid-dropdown/README.html" />
 <meta property="og:site_name" content="blockly-samples" />
 <script type="application/ld+json">
-{"@type":"WebPage","headline":"@blockly/field-grid-dropdown Demo","url":"http://localhost:4000/plugins/field-grid-dropdown/README.html","description":"A Blockly dropdown field with grid layout.","@context":"https://schema.org"}</script>
+{"description":"A Blockly dropdown field with grid layout.","headline":"@blockly/field-grid-dropdown Demo","url":"http://localhost:4000/plugins/field-grid-dropdown/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -82,6 +82,8 @@
 
 <p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-grid-dropdown/readme-media/dropdown.png" alt="" /></p>
 
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-grid-dropdown/readme-media/dropdown-images.png" alt="" /></p>
+
 <h2 id="installation">Installation</h2>
 
 <h3 id="yarn">Yarn</h3>
@@ -93,6 +95,11 @@
 </code></pre></div></div>
 
 <h2 id="usage">Usage</h2>
+
+<p>This field accepts the same parameters as the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation">Blockly.FieldDropdown</a>
+in Blockly core. The config object bag passed into this field accepts an
+additional parameter <code class="language-plaintext highlighter-rouge">"columns"</code> that can be used to specify the number of
+columns in the dropdown field (must be an integer greater than 0, default to 3).</p>
 
 <h3 id="javascript">JavaScript</h3>
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>

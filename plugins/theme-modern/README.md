@@ -17,6 +17,8 @@ same block colours as the [Classic theme](https://github.com/google/blockly/blob
 but with darker borders. This theme is mainly meant for use with the Thrasos or
 Zelos renderer.
 
+![A Blockly workspace using the modern theme.](https://github.com/google/blockly-samples/raw/master/plugins/theme-modern/readme-media/ModernTheme.png)
+
 ## Installation
 
 ### Yarn

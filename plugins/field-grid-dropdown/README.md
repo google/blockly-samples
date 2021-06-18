@@ -16,6 +16,8 @@ A [Blockly](https://www.npmjs.com/package/blockly) dropdown field with grid layo
 
 ![](https://github.com/google/blockly-samples/raw/master/plugins/field-grid-dropdown/readme-media/dropdown.png)
 
+![](https://github.com/google/blockly-samples/raw/master/plugins/field-grid-dropdown/readme-media/dropdown-images.png)
+
 ## Installation
 
 ### Yarn
@@ -29,6 +31,12 @@ npm install @blockly/field-grid-dropdown --save
 ```
 
 ## Usage
+
+This field accepts the same parameters as the [Blockly.FieldDropdown](
+https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation)
+in Blockly core. The config object bag passed into this field accepts an
+additional parameter `"columns"` that can be used to specify the number of
+columns in the dropdown field (must be an integer greater than 0, default to 3).
 
 ### JavaScript
 ```js

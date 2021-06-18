@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://localhost:4000/examples/fixed-demo/" />
 <meta property="og:site_name" content="blockly-samples" />
 <script type="application/ld+json">
-{"@type":"WebPage","headline":"Fixed Blockly","url":"http://localhost:4000/examples/fixed-demo/","description":"Inject Blockly into a page as a fixed element.","@context":"https://schema.org"}</script>
+{"description":"Inject Blockly into a page as a fixed element.","headline":"Fixed Blockly","url":"http://localhost:4000/examples/fixed-demo/","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -100,8 +100,7 @@
 
   <script>
     var demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: 'https://unpkg.com/blockly/media/',
-         toolbox: document.getElementById('toolbox')});
+        {toolbox: document.getElementById('toolbox')});
   </script>
 
 </body>
