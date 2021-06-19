@@ -17,22 +17,28 @@ import * as Blockly from 'blockly/core';
 export class FieldSlider extends Blockly.FieldNumber {
   /**
    * Class for an number slider field.
-   * @param {string|number=} value The initial value of the field. Should
+   * @param {?(string|number|undefined)=} value The initial value of the field. Should
    *    cast to a number. Defaults to 0.
-   * @param {?(string|number)=} min Minimum value.
-   * @param {?(string|number)=} max Maximum value.
-   * @param {?(string|number)=} precision Precision for value.
-   * @param {?Function=} validator A function that is called to validate
+   * @param {?(string|number|undefined)=} min Minimum value.
+   * @param {?(string|number|undefined)=} max Maximum value.
+   * @param {?(string|number|undefined)=} precision Precision for value.
+   * @param {?(string|number|undefined)=} validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
    *    number, or null to abort the change.
-   * @param {Object=} config A map of options used to configure the field.
+   * @param {?(Object|undefined)=} config A map of options used to configure the field.
    *    See the [field creation documentation]{@link https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
    *    for a list of properties this parameter supports.
    * @extends {Blockly.FieldNumber}
    * @constructor
    */
-  constructor(value = 0, min = undefined, max = undefined, precision = undefined,
-      validator = undefined, config = undefined) {
+  constructor(
+      value = undefined,
+      min = undefined,
+      max = undefined
+      precision = undefined,
+      validator = undefined,
+      config = undefined) {
+
     super(value, min, max, precision, validator,
         config);
 
@@ -69,13 +75,13 @@ export class FieldSlider extends Blockly.FieldNumber {
   /**
    * Show the inline free-text editor on top of the text along with the slider
    *    editor.
-   * @param {Event=} e Optional mouse event that triggered the field to
+   * @param {?(Event|undefined)=} e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
-   * @param {boolean=} quietInput Quiet input.
+   * @param {?(boolean|undefined)=} _quietInput Quiet input.
    * @protected
    * @override
    */
-  showEditor_(e = undefined, quietInput = undefined) {
+  showEditor_(e = undefined, _quietInput = undefined) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
     const noFocus =
         Blockly.utils.userAgent.MOBILE ||

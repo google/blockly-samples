@@ -20,11 +20,11 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param {(!Array.<!Array>|!Function)} menuGenerator A non-empty array of
    *     options for a dropdown list, or a function which generates these
    *     options.
-   * @param {Function=} validator A function that is called to validate
+   * @param {?(Function|undefined)=} validator A function that is called to validate
    *    changes to the field's value. Takes in a language-neutral dropdown
    *    option & returns a validated language-neutral dropdown option, or null
    *    to abort the change.
-   * @param {Object=} config A map of options used to configure the field.
+   * @param {?(Object|undefined)=} config A map of options used to configure the field.
    *    See the [field creation documentation]{@link https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation}
    *    for a list of properties this parameter supports.
    * @extends {Blockly.Field}
@@ -85,7 +85,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
   /**
    * Create a dropdown menu under the text.
-   * @param {Event=} e Optional mouse event that triggered the field to
+   * @param {?(Event|undefined)=} e Optional mouse event that triggered the field to
    *    open, or undefined if triggered programmatically.
    * @protected
    * @override

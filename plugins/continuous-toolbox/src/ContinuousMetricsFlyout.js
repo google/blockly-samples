@@ -19,12 +19,14 @@ export class ContinuousFlyoutMetrics extends Blockly.FlyoutMetricsManager {
    * @override
    */
   getScrollMetrics(
-      getWorkspaceCoordinates = undefined, viewMetricsParam = undefined, contentMetricsParam = undefined) {
+      getWorkspaceCoordinates = undefined,
+      cachedViewMetrics = undefined,
+      cachedContentMetrics = undefined) {
     const scrollMetrics = super.getScrollMetrics(
-        getWorkspaceCoordinates, viewMetricsParam, contentMetricsParam);
-    const contentMetrics = contentMetricsParam ||
+        getWorkspaceCoordinates, cachedViewMetrics, cachedContentMetrics);
+    const contentMetrics = cachedContentMetrics ||
         this.getContentMetrics(getWorkspaceCoordinates);
-    const viewMetrics = viewMetricsParam ||
+    const viewMetrics = cachedViewMetrics ||
         this.getViewMetrics(getWorkspaceCoordinates);
 
     if (scrollMetrics) {
