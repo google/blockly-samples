@@ -22,7 +22,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @param {?(string|number|undefined)=} min Minimum value.
    * @param {?(string|number|undefined)=} max Maximum value.
    * @param {?(string|number|undefined)=} precision Precision for value.
-   * @param {?(string|number|undefined)=} validator A function that is called to validate
+   * @param {?(Function|undefined)=} validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
    *    number, or null to abort the change.
    * @param {?(Object|undefined)=} config A map of options used to configure the field.
