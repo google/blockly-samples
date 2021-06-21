@@ -123,22 +123,22 @@ const controlsIfMutator = {
    * Appears to remove the input at the given index. Actually shifts attached
    * blocks and then removes the input at the bottom of the block. This is to
    * make sure the inputs are always IF0, IF1, etc with no gaps.
-   * @param {number?} opt_index The index of the input to "remove", or undefined
+   * @param {?number=} index The index of the input to "remove", or undefined
    *     to remove the last input.
    * @this {Blockly.Block}
    * @private
    */
-  removeElseIf_: function(opt_index) {
+  removeElseIf_: function(index = undefined) {
     // The strategy for removing a part at an index is to:
     //  - Kick any blocks connected to the relevant inputs.
     //  - Move all connect blocks from the other inputs up.
     //  - Remove the last input.
     // This makes sure all of our indices are correct.
 
-    if (opt_index !== undefined && opt_index!= this.elseIfCount_) {
+    if (index !== undefined && index!= this.elseIfCount_) {
       // Each else-if is two inputs on the block:
       // the else-if input and the do input.
-      const elseIfIndex = opt_index * 2;
+      const elseIfIndex = index * 2;
       const inputs = this.inputList;
       let connection = inputs[elseIfIndex].connection; // If connection.
       if (connection.isConnected()) {

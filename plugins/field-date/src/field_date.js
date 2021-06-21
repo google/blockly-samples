@@ -29,16 +29,16 @@ goog.require('goog.ui.DatePicker');
 
 /**
  * Class for a date input field.
- * @param {string=} opt_value The initial value of the field. Should be in
+ * @param {string=} value The initial value of the field. Should be in
  *    'YYYY-MM-DD' format. Defaults to the current date.
- * @param {Function=} opt_validator A function that is called to validate
+ * @param {Function=} validator A function that is called to validate
  *    changes to the field's value. Takes in a date string & returns a
  *    validated date string ('YYYY-MM-DD' format), or null to abort the change.
- * @param {?(boolean|string)=} opt_textEdit Whether to enable text editor.
+ * @param {?(boolean|string)=} textEdit Whether to enable text editor.
  * @extends {Blockly.Field}
  * @constructor
  */
-Blockly.FieldDate = function(opt_value, opt_validator, opt_textEdit = false) {
+Blockly.FieldDate = function(value = undefined, validator = undefined, textEdit = false) {
   /**
    * The default value for this field (current date).
    * @type {*}
@@ -47,15 +47,15 @@ Blockly.FieldDate = function(opt_value, opt_validator, opt_textEdit = false) {
   Blockly.FieldDate.prototype.DEFAULT_VALUE =
       new goog.date.Date().toIsoString(true);
 
-  Blockly.FieldDate.superClass_.constructor.call(this, opt_value,
-      opt_validator);
+  Blockly.FieldDate.superClass_.constructor.call(this, value,
+      validator);
 
   /**
    * Whether text editing is enabled on this field.
    * @type {boolean}
    * @private
    */
-  this.textEditEnabled_ = opt_textEdit == true || opt_textEdit == 'true';
+  this.textEditEnabled_ = textEdit == true || textEdit == 'true';
 };
 Blockly.utils.object.inherits(Blockly.FieldDate, Blockly.FieldTextInput);
 
@@ -100,20 +100,20 @@ Blockly.FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
 
 /**
  * Ensures that the input value is a valid date.
- * @param {*=} opt_newValue The input value.
+ * @param {*=} newValue The input value.
  * @return {?string} A valid date, or null if invalid.
  * @protected
  */
-Blockly.FieldDate.prototype.doClassValidation_ = function(opt_newValue) {
-  if (!opt_newValue) {
+Blockly.FieldDate.prototype.doClassValidation_ = function(newValue = undefined) {
+  if (!newValue) {
     return null;
   }
   // Check if the new value is parsable or not.
-  var date = goog.date.Date.fromIsoString(opt_newValue);
-  if (!date || date.toIsoString(true) != opt_newValue) {
+  var date = goog.date.Date.fromIsoString(newValue);
+  if (!date || date.toIsoString(true) != newValue) {
     return null;
   }
-  return opt_newValue;
+  return newValue;
 };
 
 /**
@@ -177,20 +177,20 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
 /**
  * Shows the inline free-text editor on top of the text along with the date
  * editor.
- * @param {Event=} opt_e Optional mouse event that triggered the field to
+ * @param {Event=} e Optional mouse event that triggered the field to
  *     open, or undefined if triggered programmatically.
- * @param {boolean=} _opt_quietInput Quiet input.
+ * @param {boolean=} _quietInput Quiet input.
  * @protected
  * @override
  */
-Blockly.FieldDate.prototype.showEditor_ = function(opt_e, _opt_quietInput) {
+Blockly.FieldDate.prototype.showEditor_ = function(e = undefined, _quietInput = undefined) {
   if (this.textEditEnabled_) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
     const noFocus =
         Blockly.utils.userAgent.MOBILE ||
         Blockly.utils.userAgent.ANDROID ||
         Blockly.utils.userAgent.IPAD;
-    Blockly.FieldDate.superClass_.showEditor_.call(this, opt_e, noFocus);
+    Blockly.FieldDate.superClass_.showEditor_.call(this, e, noFocus);
   }
   // Build the DOM.
   this.showDropdown_();
@@ -409,16 +409,16 @@ goog.getMsgOrig = goog.getMsg;
  * Overrides the default Closure function to check for a Blockly.Msg first.
  * Used infrequently, only known case is TODAY button in date picker.
  * @param {string} str Translatable string, places holders in the form {$foo}.
- * @param {Object.<string, string>=} opt_values Maps place holder name to value.
+ * @param {Object.<string, string>=} values Maps place holder name to value.
  * @return {string} Message with placeholders filled.
  * @suppress {duplicate}
  */
-goog.getMsg = function(str, opt_values) {
+goog.getMsg = function(str, values = undefined) {
   var key = goog.getMsg.blocklyMsgMap[str];
   if (key) {
     str = Blockly.Msg[key];
   }
-  return goog.getMsgOrig(str, opt_values);
+  return goog.getMsgOrig(str, values);
 };
 
 /**

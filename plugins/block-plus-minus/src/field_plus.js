@@ -13,18 +13,18 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Creates a plus image field used for mutation.
- * @param {Object=} opt_args Untyped args passed to block.minus when the field
+ * @param {Object=} args Untyped args passed to block.minus when the field
  *     is clicked.
  * @return {Blockly.FieldImage} The Plus field.
  */
-export function createPlusField(opt_args) {
+export function createPlusField(args = undefined) {
   const plus = new Blockly.FieldImage(plusImage, 15, 15, undefined, onClick_);
   /**
    * Untyped args passed to block.plus when the field is clicked.
-   * @type {Object}
+   * @type {?(Object|undefined)}
    * @private
    */
-  plus.args_ = opt_args;
+  plus.args_ = args;
   return plus;
 }
 
