@@ -13,7 +13,7 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Creates a minus image field used for mutation.
- * @param {?(Object|undefined)=} args Untyped args passed to block.minus when the field
+ * @param {Object=} args Untyped args passed to block.minus when the field
  *     is clicked.
  * @return {Blockly.FieldImage} The minus field.
  */

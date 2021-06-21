@@ -29,9 +29,9 @@ goog.require('goog.ui.DatePicker');
 
 /**
  * Class for a date input field.
- * @param {?(string|undefined)=} value The initial value of the field. Should be in
+ * @param {string=} value The initial value of the field. Should be in
  *    'YYYY-MM-DD' format. Defaults to the current date.
- * @param {?(Function|undefined)=} validator A function that is called to validate
+ * @param {Function=} validator A function that is called to validate
  *    changes to the field's value. Takes in a date string & returns a
  *    validated date string ('YYYY-MM-DD' format), or null to abort the change.
  * @param {?(boolean|string)=} textEdit Whether to enable text editor.
@@ -177,9 +177,9 @@ Blockly.FieldDate.prototype.updateEditor_ = function() {
 /**
  * Shows the inline free-text editor on top of the text along with the date
  * editor.
- * @param {?(Event|undefined)=} e Optional mouse event that triggered the field to
+ * @param {Event=} e Optional mouse event that triggered the field to
  *     open, or undefined if triggered programmatically.
- * @param {?(boolean|undefined)=} _quietInput Quiet input.
+ * @param {boolean=} _quietInput Quiet input.
  * @protected
  * @override
  */
@@ -409,7 +409,7 @@ goog.getMsgOrig = goog.getMsg;
  * Overrides the default Closure function to check for a Blockly.Msg first.
  * Used infrequently, only known case is TODAY button in date picker.
  * @param {string} str Translatable string, places holders in the form {$foo}.
- * @param {?(Object.<string, string>|undefined)=} values Maps place holder name to value.
+ * @param {Object.<string, string>=} values Maps place holder name to value.
  * @return {string} Message with placeholders filled.
  * @suppress {duplicate}
  */

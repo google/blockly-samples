@@ -41,7 +41,7 @@ suite('WorkspaceSearch', () => {
   /**
    * Assert that no extra styling is currently added to these blocks.
    * @param {Array.<Blockly.BlockSvg>} blocks The blocks to test.
-   * @param {?(Blockly.BlockSvg|undefined)=} expectedCurrent Optional, block that is
+   * @param {Blockly.BlockSvg=} expectedCurrent Optional, block that is
    *     expected.
    */
   function assertNoExtraCurrentStyling(blocks, expectedCurrent = undefined) {
