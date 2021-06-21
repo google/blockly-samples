@@ -21,7 +21,7 @@ export function createPlusField(args = undefined) {
   const plus = new Blockly.FieldImage(plusImage, 15, 15, undefined, onClick_);
   /**
    * Untyped args passed to block.plus when the field is clicked.
-   * @type {Object}
+   * @type {?(Object|undefined)}
    * @private
    */
   plus.args_ = args;

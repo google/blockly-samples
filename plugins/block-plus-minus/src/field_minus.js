@@ -21,7 +21,7 @@ export function createMinusField(args = undefined) {
   const minus = new Blockly.FieldImage(minusImage, 15, 15, undefined, onClick_);
   /**
    * Untyped args passed to block.minus when the field is clicked.
-   * @type {Object}
+   * @type {?(Object|undefined)}
    * @private
    */
   minus.args_ = args;
