@@ -34,7 +34,7 @@ export class FieldSlider extends Blockly.FieldNumber {
   constructor(
       value = undefined,
       min = undefined,
-      max = undefined
+      max = undefined,
       precision = undefined,
       validator = undefined,
       config = undefined) {
