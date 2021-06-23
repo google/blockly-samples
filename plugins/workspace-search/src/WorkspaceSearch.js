@@ -520,7 +520,7 @@ export class WorkspaceSearch {
    *    insensitive, this will be passed already converted to lowercase letters.
    * @param {boolean} caseSensitive Whether the search is caseSensitive.
    * @return {boolean} True if the block is a match, false otherwise.
-   * @private
+   * @protected
    */
   isBlockMatch_(block, searchText, caseSensitive) {
     let blockText = '';
