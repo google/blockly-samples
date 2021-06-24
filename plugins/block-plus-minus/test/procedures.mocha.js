@@ -9,6 +9,7 @@ const sinon = require('sinon');
 const Blockly = require('blockly/node');
 const {testHelpers} = require('@blockly/dev-tools');
 const procedureTestHelpers = require('./procedures_test_helpers.mocha');
+const { runTestSuites, TestSuite } = require('../../dev-tools/src/common_test_helpers.mocha');
 
 require('../src/index');
 
@@ -157,6 +158,38 @@ suite('Procedure blocks', function() {
         ];
 
         runCodeGenerationTestSuites(codeGenerationTestSuites);
+
+        const test = {
+          title: 'outer suite',
+          testSuites: [
+            {
+              title: 'inner suite 1',
+              testCases: [
+                {
+                  title: 'test 1',
+                },
+                {
+                  title: 'test 2',
+                },
+              ],
+            },
+            {
+              title: 'inner suite 2',
+              testCases: [
+                {
+                  title: 'test 3',
+                },
+              ],
+            },
+          ],
+        };
+
+        runTestSuites([test], function(suiteOrTest) {
+          if (suiteOrTest instanceof TestSuite) {
+            return this;
+          }
+          return function() {};
+        });
       });
 
       /**
