@@ -12,6 +12,7 @@ const {
   TestCase,
   TestSuite,
   runTestCases,
+  runTestSuites,
   captureWarnings,
 } = commonHelpers;
 
