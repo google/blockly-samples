@@ -46,11 +46,11 @@ TestSuite.prototype.skip = false;
  */
 TestSuite.prototype.only = false;
 /**
- * @type {!Array<T>} The associated test cases.
+ * @type {?Array<T>} The associated test cases.
  */
 TestSuite.prototype.testCases = [];
 /**
- * @type {!Array<U>} Optional inner test suites.
+ * @type {?Array<U>} Optional inner test suites.
  */
 TestSuite.prototype.testSuites = [];
 
