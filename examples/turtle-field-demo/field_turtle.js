@@ -468,7 +468,7 @@ CustomFields.FieldTurtle.prototype.applyColour = function() {
   // The getColourX functions are the best way to access the colours of a block.
   var isShadow = this.sourceBlock_.isShadow();
   var fillColour = isShadow  ?
-      this.sourceBlock_.getColourShadow() : this.sourceBlock_.getColour();
+      this.sourceBlock_.style.colourSecondary : this.sourceBlock_.getColour();
   // This is technically a package function, meaning it could change.
   var borderColour = isShadow ? fillColour :
       this.sourceBlock_.style.colourTertiary;
