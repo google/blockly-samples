@@ -42,7 +42,7 @@ class BlocklyReactField extends Blockly.Field {
     ReactDOM.render(this.render(),
       this.div_);
 
-    var border = this.sourceBlock_.getColourBorder();
+    var border = this.sourceBlock_.style.colourTertiary;
     border = border.colourBorder || border.colourLight;
     Blockly.DropDownDiv.setColour(this.sourceBlock_.getColour(), border);
 
