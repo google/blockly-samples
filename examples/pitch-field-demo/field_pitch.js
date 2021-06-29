@@ -29,6 +29,9 @@ var CustomFields = CustomFields || {};
 CustomFields.FieldPitch = function(text) {
   CustomFields.FieldPitch.superClass_.constructor.call(this, text);
 
+  // Disable spellcheck.
+  this.setSpellcheck(false);
+
   /**
    * Click event data.
    * @type {?Blockly.EventData}
