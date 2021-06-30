@@ -1,34 +1,27 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @fileoverview Theme test.
+ * @fileoverview Modern theme test.
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import Theme from '../src/index';
 
-
-/**
- * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
- */
-function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
-  return workspace;
-}
-
+// Do not use the advanced playground here because it will create a circular
+// dependency with the @blockly/dev-tools package.
 document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
-    toolbox: toolboxCategories,
+  Blockly.inject('root', {
     theme: Theme,
-  };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+    toolbox: document.getElementById('toolbox'),
+    grid: {
+      spacing: 25,
+      length: 3,
+      colour: '#ccc',
+      snap: true,
+    },
+  });
 });
