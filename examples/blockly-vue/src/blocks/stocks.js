@@ -115,9 +115,9 @@ Blockly.JavaScript["stock_fetch_price"] = function(block) {
     "Fetch",
     Blockly.JavaScript.ORDER_ATOMIC
   );
-  var variable_variable = Blockly.JavaScript.variableDB_.getName(
+  var variable_variable = Blockly.JavaScript.nameDB_.getName(
     block.getFieldValue("variable"),
-    Blockly.Variables.NAME_TYPE
+    Blockly.VARIABLE_CATEGORY_NAME
   );
   var code = `fetch_price(${value_fetch},${variable_variable});\n`;
   return code;
