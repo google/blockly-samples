@@ -17,7 +17,7 @@ if (goog.DEBUG) {
 
 
 planepage.start = function(opt_data, opt_ignored, opt_ijData) {
-  var output = planepage.messages(null, null, opt_ijData) + '<table width="100%"><tr><td><h1><a href="https://developers.google.com/blockly/">Blockly</a>&rlm; &gt; <a href="../index.html">Demos</a>&rlm; &gt; <span id="title">Calcolator \u00EBd sedij d\'avion</span> &nbsp; ';
+  var output = planepage.messages(null, null, opt_ijData) + '<table width="100%"><tr><td><h1><span id="title">Calcolator \u00EBd sedij d\'avion</span> &nbsp; ';
   var iLimit47 = opt_ijData.maxLevel + 1;
   for (var i47 = 1; i47 < iLimit47; i47++) {
     output += ' ' + ((i47 == opt_ijData.level) ? '<span class="tab" id="selected">' + soy.$$escapeHtml(i47) + '</span>' : (i47 < opt_ijData.level) ? '<a class="tab previous" href="?lang=' + soy.$$escapeHtml(opt_ijData.lang) + '&level=' + soy.$$escapeHtml(i47) + '">' + soy.$$escapeHtml(i47) + '</a>' : '<a class="tab" href="?lang=' + soy.$$escapeHtml(opt_ijData.lang) + '&level=' + soy.$$escapeHtml(i47) + '">' + soy.$$escapeHtml(i47) + '</a>');
@@ -34,7 +34,7 @@ planepage.start = function(opt_data, opt_ignored, opt_ijData) {
       output += 'N\'avion a l\'ha doi sedij ant la cabin-a \u00EBd pilotage (p\u00EBr \u00EBl pil\u00F2ta e \u00EBl c\u00F2-pil\u00F2ta) e un ch\u00E8ich n\u00F9mer \u00EBd file \u00EBd sedij pr\'ij passag\u00E9 \u00EBd prima e sconda classa. Minca fila \u00EBd prima classa a conten quatr sedij. Minca fila \u00EBd seconda classa a conten sinch sedij.';
       break;
   }
-  output += '</p><p>Fabrich\u00E9 na f\u00F3rmola (s\u00EC-sota) ch\'a fa \'l cont d\u00EBl n\u00F9mer total \u00EBd sedij ant l\'avion cand che \u00EBl n\u00F9mer dle file a cangia (s\u00EC-dzora).</p><script src="https://unpkg.com/blockly/blockly_compressed.js"><\/script><script src="https://unpkg.com/blockly/blocks_compressed.js"><\/script><script src="https://unpkg.com/blockly/javascript_compressed.js"><\/script><script src="https://unpkg.com/blockly/msg/' + soy.$$escapeHtml(opt_ijData.lang) + '.js"><\/script><script src="blocks.js"><\/script>' + planepage.toolbox(null, null, opt_ijData) + '<div id="blockly"></div>';
+  output += '</p><p>Fabrich\u00E9 na f\u00F3rmola (s\u00EC-sota) ch\'a fa \'l cont d\u00EBl n\u00F9mer total \u00EBd sedij ant l\'avion cand che \u00EBl n\u00F9mer dle file a cangia (s\u00EC-dzora).</p><script src="./node_modules/blockly/blockly_compressed.js"><\/script><script src="./node_modules/blockly/blocks_compressed.js"><\/script><script src="./node_modules/blockly/javascript_compressed.js"><\/script><script src="./node_modules/blockly/msg/' + soy.$$escapeHtml(opt_ijData.lang) + '.js"><\/script><script src="blocks.js"><\/script>' + planepage.toolbox(null, null, opt_ijData) + '<div id="blockly"></div>';
   return output;
 };
 if (goog.DEBUG) {
@@ -43,7 +43,7 @@ if (goog.DEBUG) {
 
 
 planepage.toolbox = function(opt_data, opt_ignored, opt_ijData) {
-  return '<xml id="toolbox" style="display: none"><block type="math_number"></block><block type="math_arithmetic"><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block>' + ((opt_ijData.level <= 2) ? '<block type="plane_get_rows"></block>' : '<block type="plane_get_rows1st"></block><block type="plane_get_rows2nd"></block>') + '</xml>';
+  return '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none"><block type="math_number"></block><block type="math_arithmetic"><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block>' + ((opt_ijData.level <= 2) ? '<block type="plane_get_rows"></block>' : '<block type="plane_get_rows1st"></block><block type="plane_get_rows2nd"></block>') + '</xml>';
 };
 if (goog.DEBUG) {
   planepage.toolbox.soyTemplateName = 'planepage.toolbox';
