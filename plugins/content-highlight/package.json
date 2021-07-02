@@ -1,7 +1,7 @@
 {
-  "name": "@blockly/plugin-workspace-search",
-  "version": "4.0.0",
-  "description": "A Blockly plugin that adds workspace search support.",
+  "name": "workspace-content-highlight",
+  "version": "1.0.0",
+  "description": "A Blockly workspace plugin that adds a highlight around the content area.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
@@ -18,17 +18,20 @@
   "author": "Blockly Team",
   "keywords": [
     "blockly",
-    "workspace",
-    "search"
+    "blockly-plugin",
+    "content",
+    "content-highlight",
+    "highlight",
+    "workspace"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/workspace-search#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/content-highlight#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/workspace-search"
+    "directory": "plugins/content-highlight"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -40,15 +43,12 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.6",
-    "@blockly/dev-tools": "^2.5.0",
-    "blockly": "^6.20210701.0",
-    "jsdom": "16.2.1",
-    "jsdom-global": "3.0.2",
-    "sinon": "^9.0.1"
+    "@blockly/dev-scripts": "^1.2.5",
+    "@blockly/dev-tools": "^2.2.0",
+    "blockly": "^5.20210325.1"
   },
   "peerDependencies": {
-    "blockly": "^6.20210701.0"
+    "blockly": ">=5.20210325.0"
   },
   "publishConfig": {
     "access": "public",

@@ -33,6 +33,12 @@ export class WorkspaceSearch {
     this.workspace_ = workspace;
 
     /**
+     * The unique id for this component.
+     * @type {string}
+     */
+    this.id = 'workspaceSearch';
+
+    /**
      * HTML container for the search bar.
      * @type {?HTMLElement}
      * @private
@@ -113,11 +119,10 @@ export class WorkspaceSearch {
    * Initializes the workspace search bar.
    */
   init() {
-    this.workspace_.getPluginManager().addPlugin({
-      id: 'workspaceSearch',
-      plugin: this,
+    this.workspace_.getComponentManager().addComponent({
+      component: this,
       weight: 0,
-      types: [Blockly.PluginManager.Type.POSITIONABLE],
+      capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
     });
     injectSearchCss();
     this.createDom_();
@@ -319,7 +324,7 @@ export class WorkspaceSearch {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The plugin’s bounding box.
+   * @return {!Blockly.utils.Rect} The component’s bounding box.
    */
   getBoundingRectangle() {
     const top = this.htmlDiv_.style.top;

@@ -20,7 +20,9 @@ layout: index
 ## Plugins
 * [Modal](plugins/modal/test/index.html)
 * [Typed Variable Modal](plugins/typed-variable-modal/test/index.html)
+* [Backpack](plugins/workspace-backpack/test/index.html)
 * [Workspace Search](plugins/workspace-search/test/index.html)
+* [Workspace Content Highlight](plugins/content-highlight/test/index.html)
 * [Strict Connection Checker](plugins/strict-connection-checker/test/index.html)
 * [Continuous Toolbox](plugins/continuous-toolbox/test/index.html)
 * [Disable Top Blocks](plugins/disable-top-blocks/test/index.html)
@@ -70,6 +72,9 @@ layout: index
 ## Custom Fields
 * [Pitch Field](examples/pitch-field-demo/index.html)
 * [Turtle Field](examples/turtle-field-demo/index.html)
+
+## Backpack
+* [Shared Backpacks](examples/backpack-demo/index.html)
 
 ## Graph
 * [Graph](examples/graph-demo/index.html)

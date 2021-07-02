@@ -19,8 +19,8 @@ import Blockly from 'blockly/core';
 export class ZoomToFitControl {
   /**
    * Constructor for zoom-to-fit control.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
-   *     be added to.
+   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the zoom-to-fit
+   *     control will be added to.
    */
   constructor(workspace) {
     /**
@@ -29,6 +29,12 @@ export class ZoomToFitControl {
      * @protected
      */
     this.workspace_ = workspace;
+
+    /**
+     * The unique id for this component.
+     * @type {string}
+     */
+    this.id = 'zoomToFit';
 
     /**
      * The SVG group containing the zoom-to-fit control.
@@ -95,11 +101,10 @@ export class ZoomToFitControl {
    * Initializes the zoom reset control.
    */
   init() {
-    this.workspace_.getPluginManager().addPlugin({
-      id: 'zoomToFit',
-      plugin: this,
+    this.workspace_.getComponentManager().addComponent({
+      component: this,
       weight: 2,
-      types: [Blockly.PluginManager.Type.POSITIONABLE],
+      capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
     });
     this.createDom_();
     this.initialized_ = true;
@@ -156,7 +161,7 @@ export class ZoomToFitControl {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The plugin’s bounding box.
+   * @return {!Blockly.utils.Rect} The component’s bounding box.
    */
   getBoundingRectangle() {
     return new Blockly.utils.Rect(
