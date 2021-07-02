@@ -207,8 +207,8 @@ suite('Procedure blocks', function() {
               '<block xmlns="https://developers.google.com/blockly/xml" ' +
               'type="' + testSuite.defType + '" id="1">\n' +
               '  <mutation>\n' +
-              '    <arg name="x" varid="arg1"></arg>\n' +
-              '    <arg name="y" varid="arg2"></arg>\n' +
+              '    <arg name="x" varid="arg1" argid="1"></arg>\n' +
+              '    <arg name="y" varid="arg2" argid="1"></arg>\n' +
               '  </mutation>\n' +
               '  <field name="NAME">do something</field>\n' +
               '  <field name="1">x</field>\n' + // Because genUID is stubbed.

@@ -1,6 +1,6 @@
 {
   "name": "@blockly/block-extension-tooltip",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A Blockly block extension that adds support for custom tooltip rendering.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.6",
-    "@blockly/dev-tools": "^2.3.1",
+    "@blockly/dev-tools": "^2.4.0",
     "blockly": "^5.20210325.1",
     "typescript": "^4.0.5"
   },

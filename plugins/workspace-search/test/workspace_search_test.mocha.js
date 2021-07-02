@@ -41,18 +41,18 @@ suite('WorkspaceSearch', () => {
   /**
    * Assert that no extra styling is currently added to these blocks.
    * @param {Array.<Blockly.BlockSvg>} blocks The blocks to test.
-   * @param {Blockly.BlockSvg=} opt_expectedCurrent Optional, block that is
+   * @param {Blockly.BlockSvg=} expectedCurrent Optional, block that is
    *     expected.
    */
-  function assertNoExtraCurrentStyling(blocks, opt_expectedCurrent) {
+  function assertNoExtraCurrentStyling(blocks, expectedCurrent = undefined) {
     for (let block, i = 0; (block = blocks[i]); i++) {
       const isCurrentStyled = isBlockCurrentStyled(block);
       if (isCurrentStyled) {
-        assert.equal(opt_expectedCurrent, block,
+        assert.equal(expectedCurrent, block,
             'Unexpected block [' + block.type +
             '] found styled as current.');
       } else {
-        assert.notEqual(block, opt_expectedCurrent,
+        assert.notEqual(block, expectedCurrent,
             'Expected block [' + block.type + '] to be styled as current.');
       }
     }

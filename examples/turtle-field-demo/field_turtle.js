@@ -236,9 +236,9 @@ CustomFields.FieldTurtle.prototype.render_ = function() {
       break;
     case 'Mask':
       this.mask_.style.display = '';
-      this.turtleGroup_.setAttribute('transform', 'translate(0,1.2)');
+      this.turtleGroup_.setAttribute('transform', 'translate(0,6)');
       this.textElement_.setAttribute('transform',
-          'translate(' + this.TEXT_OFFSET_X + ',4)');
+          'translate(' + this.TEXT_OFFSET_X + ',12)');
       break;
     case 'Propeller':
       this.propeller_.style.display = '';
@@ -468,7 +468,7 @@ CustomFields.FieldTurtle.prototype.applyColour = function() {
   // The getColourX functions are the best way to access the colours of a block.
   var isShadow = this.sourceBlock_.isShadow();
   var fillColour = isShadow  ?
-      this.sourceBlock_.getColourShadow() : this.sourceBlock_.getColour();
+      this.sourceBlock_.style.colourSecondary : this.sourceBlock_.getColour();
   // This is technically a package function, meaning it could change.
   var borderColour = isShadow ? fillColour :
       this.sourceBlock_.style.colourTertiary;
@@ -625,7 +625,7 @@ CustomFields.FieldTurtle.prototype.createView_ = function() {
   this.mask_ = Blockly.utils.dom.createSvgElement('image',
     {
       'width': '50',
-      'height': '14'
+      'height': '24'
     }, scaleGroup);
   this.mask_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
     'media/mask.svg');

@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-modern",
-  "version": "2.1.17",
+  "version": "2.1.18",
   "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -9,7 +9,8 @@
     "lint": "blockly-scripts lint",
     "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start"
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",
@@ -17,6 +18,7 @@
   "author": "Blockly Team",
   "keywords": [
     "blockly",
+    "blockly-plugin",
     "blockly-theme",
     "modern"
   ],
@@ -40,7 +42,6 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.6",
-    "@blockly/dev-tools": "^2.3.1",
     "blockly": "^3.20200402.1"
   },
   "peerDependencies": {

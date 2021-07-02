@@ -28,6 +28,7 @@ TestCase.prototype.only = false;
  * Test suite configuration information.
  * @record
  * @template {TestCase} T
+ * @template {TestSuite} U
  */
 export function TestSuite() {}
 /**
@@ -45,9 +46,13 @@ TestSuite.prototype.skip = false;
  */
 TestSuite.prototype.only = false;
 /**
- * @type {!Array<T>} The associated test cases.
+ * @type {?Array<T>} The associated test cases.
  */
 TestSuite.prototype.testCases = [];
+/**
+ * @type {?Array<U>} Optional inner test suites.
+ */
+TestSuite.prototype.testSuites = [];
 
 /**
  * Runs provided test cases.
@@ -77,7 +82,12 @@ export function runTestSuites(testSuites, createTestCaseCallback) {
     let suiteCall = (testSuite.skip ? suite.skip : suite);
     suiteCall = (testSuite.only ? suite.only : suiteCall);
     suiteCall(testSuite.title, function() {
-      runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
+      if (testSuite.testSuites && testSuite.testSuites.length) {
+        runTestSuites(testSuite.testSuites, createTestCaseCallback);
+      }
+      if (testSuite.testCases && testSuite.testCases.length) {
+        runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
+      }
     });
   });
 }

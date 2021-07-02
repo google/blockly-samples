@@ -2,8 +2,10 @@
 
 A [Blockly](https://www.npmjs.com/package/blockly) modern theme that uses the
 same block colours as the [Classic theme](https://github.com/google/blockly/blob/master/core/theme/classic.js)
-but with darker borders. This theme is mainly meant for use with the Thrasos or
+but with darker borders. This theme was designed to be used with the Thrasos or
 Zelos renderer.
+
+![A Blockly workspace using the modern theme.](https://github.com/google/blockly-samples/raw/master/plugins/theme-modern/readme-media/ModernTheme.png)
 
 ## Installation
 

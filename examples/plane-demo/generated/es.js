@@ -17,7 +17,7 @@ if (goog.DEBUG) {
 
 
 planepage.start = function(opt_data, opt_ignored, opt_ijData) {
-  var output = planepage.messages(null, null, opt_ijData) + '<table width="100%"><tr><td><h1><a href="https://developers.google.com/blockly/">Blockly</a>&rlm; &gt; <a href="../index.html">Demos</a>&rlm; &gt; <span id="title">Calculadora de asientos de avi\u00F3n</span> &nbsp; ';
+  var output = planepage.messages(null, null, opt_ijData) + '<table width="100%"><tr><td><h1><span id="title">Calculadora de asientos de avi\u00F3n</span> &nbsp; ';
   var iLimit47 = opt_ijData.maxLevel + 1;
   for (var i47 = 1; i47 < iLimit47; i47++) {
     output += ' ' + ((i47 == opt_ijData.level) ? '<span class="tab" id="selected">' + soy.$$escapeHtml(i47) + '</span>' : (i47 < opt_ijData.level) ? '<a class="tab previous" href="?lang=' + soy.$$escapeHtml(opt_ijData.lang) + '&level=' + soy.$$escapeHtml(i47) + '">' + soy.$$escapeHtml(i47) + '</a>' : '<a class="tab" href="?lang=' + soy.$$escapeHtml(opt_ijData.lang) + '&level=' + soy.$$escapeHtml(i47) + '">' + soy.$$escapeHtml(i47) + '</a>');
@@ -34,7 +34,7 @@ planepage.start = function(opt_data, opt_ignored, opt_ijData) {
       output += 'Un avi\u00F3n tiene dos asientos en la cabina de vuelo (para el piloto y co-piloto), y un n\u00FAmero de filas de asientos para pasajeros de primera y segunda clase. Cada fila de la primera clase contiene cuatro asientos. Cada fila de la segunda clase contiene cinco asientos.';
       break;
   }
-  output += '</p><p>Construir una f\u00F3rmula (abajo) que calcule el n\u00FAmero total de asientos en el avi\u00F3n cuando las filas sean cambiadas (arriba).</p><script src="https://unpkg.com/blockly/blockly_compressed.js"><\/script><script src="https://unpkg.com/blockly/blocks_compressed.js"><\/script><script src="https://unpkg.com/blockly/javascript_compressed.js"><\/script><script src="https://unpkg.com/blockly/msg/' + soy.$$escapeHtml(opt_ijData.lang) + '.js"><\/script><script src="blocks.js"><\/script>' + planepage.toolbox(null, null, opt_ijData) + '<div id="blockly"></div>';
+  output += '</p><p>Construir una f\u00F3rmula (abajo) que calcule el n\u00FAmero total de asientos en el avi\u00F3n cuando las filas sean cambiadas (arriba).</p><script src="./node_modules/blockly/blockly_compressed.js"><\/script><script src="./node_modules/blockly/blocks_compressed.js"><\/script><script src="./node_modules/blockly/javascript_compressed.js"><\/script><script src="./node_modules/blockly/msg/' + soy.$$escapeHtml(opt_ijData.lang) + '.js"><\/script><script src="blocks.js"><\/script>' + planepage.toolbox(null, null, opt_ijData) + '<div id="blockly"></div>';
   return output;
 };
 if (goog.DEBUG) {
@@ -43,7 +43,7 @@ if (goog.DEBUG) {
 
 
 planepage.toolbox = function(opt_data, opt_ignored, opt_ijData) {
-  return '<xml id="toolbox" style="display: none"><block type="math_number"></block><block type="math_arithmetic"><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block>' + ((opt_ijData.level <= 2) ? '<block type="plane_get_rows"></block>' : '<block type="plane_get_rows1st"></block><block type="plane_get_rows2nd"></block>') + '</xml>';
+  return '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none"><block type="math_number"></block><block type="math_arithmetic"><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block>' + ((opt_ijData.level <= 2) ? '<block type="plane_get_rows"></block>' : '<block type="plane_get_rows1st"></block><block type="plane_get_rows2nd"></block>') + '</xml>';
 };
 if (goog.DEBUG) {
   planepage.toolbox.soyTemplateName = 'planepage.toolbox';
