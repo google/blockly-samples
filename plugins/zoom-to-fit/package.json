@@ -1,6 +1,6 @@
 {
   "name": "@blockly/zoom-to-fit",
-  "version": "2.1.2",
+  "version": "2.0.0",
   "description": "A Blockly plugin that adds a zoom-to-fit control to the workspace.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
