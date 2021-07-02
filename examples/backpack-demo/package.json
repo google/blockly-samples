@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "blockly": "^5.20210624.0-beta.2",
-    "@blockly/workspace-backpack": "file:../../plugins/workspace-backpack"
+    "@blockly/workspace-backpack": "file:../../plugins/workspace-backpack",
+    "blockly": "^6.20210701.0"
   }
 }
