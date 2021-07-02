@@ -45,6 +45,7 @@ export {
   runSerializationTestSuite,
   runSetValueTests,
   runTestCases,
+  runTestSuites,
   captureWarnings,
   SerializationTestCase,
   TestCase,

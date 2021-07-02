@@ -72,8 +72,8 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
 
   /**
    * Computes the fixed edges of the scroll area.
-   * @param {!Blockly.MetricsManager.ContainerRegion=} cachedViewMetrics The view
-   *     metrics if they have been previously computed. Passing in null may
+   * @param {!Blockly.MetricsManager.ContainerRegion=} cachedViewMetrics The
+   *     view metrics if they have been previously computed. Passing in null may
    *     cause the view metrics to be computed again, if it is needed.
    * @return {!Blockly.MetricsManager.FixedEdges} The fixed edges of the scroll
    *     area.
