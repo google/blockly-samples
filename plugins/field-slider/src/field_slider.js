@@ -26,21 +26,16 @@ export class FieldSlider extends Blockly.FieldNumber {
    *    changes to the field's value. Takes in a number & returns a validated
    *    number, or null to abort the change.
    * @param {Object=} config A map of options used to configure the field.
-   *    See the [field creation documentation]{@link https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
+   *    See the [field creation documentation]{@link
+   * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
    *    for a list of properties this parameter supports.
    * @extends {Blockly.FieldNumber}
    * @constructor
    */
   constructor(
-      value = undefined,
-      min = undefined,
-      max = undefined,
-      precision = undefined,
-      validator = undefined,
-      config = undefined) {
-
-    super(value, min, max, precision, validator,
-        config);
+      value = undefined, min = undefined, max = undefined,
+      precision = undefined, validator = undefined, config = undefined) {
+    super(value, min, max, precision, validator, config);
 
     /**
      * Array holding info needed to unbind events.
@@ -68,8 +63,8 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldSlider(options['value'],
-        undefined, undefined, undefined, undefined, options);
+    return new FieldSlider(
+        options['value'], undefined, undefined, undefined, undefined, options);
   }
 
   /**
@@ -83,17 +78,16 @@ export class FieldSlider extends Blockly.FieldNumber {
    */
   showEditor_(e = undefined, _quietInput = undefined) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    const noFocus =
-        Blockly.utils.userAgent.MOBILE ||
-        Blockly.utils.userAgent.ANDROID ||
-        Blockly.utils.userAgent.IPAD;
+    const noFocus = Blockly.utils.userAgent.MOBILE ||
+        Blockly.utils.userAgent.ANDROID || Blockly.utils.userAgent.IPAD;
     super.showEditor_(e, noFocus);
     // Build the DOM.
     const editor = this.dropdownCreate_();
 
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
-    Blockly.DropDownDiv.setColour(this.sourceBlock_.style.colourPrimary,
+    Blockly.DropDownDiv.setColour(
+        this.sourceBlock_.style.colourPrimary,
         this.sourceBlock_.style.colourTertiary);
 
     Blockly.DropDownDiv.showPositionedByField(
@@ -172,7 +166,7 @@ Blockly.fieldRegistry.register('field_slider', FieldSlider);
  */
 Blockly.Css.register([
   /* eslint-disable indent */
-    `.fieldSliderContainer {
+  `.fieldSliderContainer {
       align-items: center;
       display: flex;
       height: 32px;
@@ -255,4 +249,3 @@ Blockly.Css.register([
     }`,
   /* eslint-enable indent */
 ]);
-
