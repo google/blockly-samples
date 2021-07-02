@@ -17,7 +17,7 @@ if (goog.DEBUG) {
 
 
 planepage.start = function(opt_data, opt_ignored, opt_ijData) {
-  var output = planepage.messages(null, null, opt_ijData) + '<table width="100%"><tr><td><h1><a href="https://developers.google.com/blockly/">Blockly</a>&rlm; &gt; <a href="../index.html">Demos</a>&rlm; &gt; <span id="title">\u98DE\u673A\u5EA7\u4F4D\u8BA1\u7B97\u5668</span> &nbsp; ';
+  var output = planepage.messages(null, null, opt_ijData) + '<table width="100%"><tr><td><h1><span id="title">\u98DE\u673A\u5EA7\u4F4D\u8BA1\u7B97\u5668</span> &nbsp; ';
   var iLimit47 = opt_ijData.maxLevel + 1;
   for (var i47 = 1; i47 < iLimit47; i47++) {
     output += ' ' + ((i47 == opt_ijData.level) ? '<span class="tab" id="selected">' + soy.$$escapeHtml(i47) + '</span>' : (i47 < opt_ijData.level) ? '<a class="tab previous" href="?lang=' + soy.$$escapeHtml(opt_ijData.lang) + '&level=' + soy.$$escapeHtml(i47) + '">' + soy.$$escapeHtml(i47) + '</a>' : '<a class="tab" href="?lang=' + soy.$$escapeHtml(opt_ijData.lang) + '&level=' + soy.$$escapeHtml(i47) + '">' + soy.$$escapeHtml(i47) + '</a>');
@@ -34,7 +34,7 @@ planepage.start = function(opt_data, opt_ignored, opt_ijData) {
       output += '\u4E00\u67B6\u98DE\u673A\u9664\u4E86\u6709\u4E24\u4E2A\u5EA7\u4F4D\u4F9B\u6B63\u526F\u9A7E\u9A76\u5458\uFF0C\u8FD8\u6709\u4E00\u5B9A\u91CF\u884C\u6570\u7684\u5934\u7B49\u53CA\u7ECF\u6D4E\u4E58\u5BA2\u5EA7\u4F4D\u3002\u5934\u7B49\u6BCF\u884C\u5171\u56DB\u5EA7\uFF0C\u7ECF\u6D4E\u6BCF\u884C\u5171\u4E94\u5EA7\u3002';
       break;
   }
-  output += '</p><p>\u4E8E\u4E0B\u65B9\u5199\u51FA\u4E00\u6761\u516C\u5F0F\u4EE5\u8BA1\u7B97\u98DE\u673A\u4E0A\u7684\u5EA7\u4F4D\u603B\u6570\u3002</p><script src="https://unpkg.com/blockly/blockly_compressed.js"><\/script><script src="https://unpkg.com/blockly/blocks_compressed.js"><\/script><script src="https://unpkg.com/blockly/javascript_compressed.js"><\/script><script src="https://unpkg.com/blockly/msg/' + soy.$$escapeHtml(opt_ijData.lang) + '.js"><\/script><script src="blocks.js"><\/script>' + planepage.toolbox(null, null, opt_ijData) + '<div id="blockly"></div>';
+  output += '</p><p>\u4E8E\u4E0B\u65B9\u5199\u51FA\u4E00\u6761\u516C\u5F0F\u4EE5\u8BA1\u7B97\u98DE\u673A\u4E0A\u7684\u5EA7\u4F4D\u603B\u6570\u3002</p><script src="./node_modules/blockly/blockly_compressed.js"><\/script><script src="./node_modules/blockly/blocks_compressed.js"><\/script><script src="./node_modules/blockly/javascript_compressed.js"><\/script><script src="./node_modules/blockly/msg/' + soy.$$escapeHtml(opt_ijData.lang) + '.js"><\/script><script src="blocks.js"><\/script>' + planepage.toolbox(null, null, opt_ijData) + '<div id="blockly"></div>';
   return output;
 };
 if (goog.DEBUG) {
@@ -43,7 +43,7 @@ if (goog.DEBUG) {
 
 
 planepage.toolbox = function(opt_data, opt_ignored, opt_ijData) {
-  return '<xml id="toolbox" style="display: none"><block type="math_number"></block><block type="math_arithmetic"><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block>' + ((opt_ijData.level <= 2) ? '<block type="plane_get_rows"></block>' : '<block type="plane_get_rows1st"></block><block type="plane_get_rows2nd"></block>') + '</xml>';
+  return '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none"><block type="math_number"></block><block type="math_arithmetic"><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="math_arithmetic"><field name="OP">MULTIPLY</field><value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value><value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block>' + ((opt_ijData.level <= 2) ? '<block type="plane_get_rows"></block>' : '<block type="plane_get_rows1st"></block><block type="plane_get_rows2nd"></block>') + '</xml>';
 };
 if (goog.DEBUG) {
   planepage.toolbox.soyTemplateName = 'planepage.toolbox';
