@@ -1,6 +1,6 @@
 {
   "name": "@blockly/workspace-content-highlight",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Blockly workspace plugin that adds a highlight around the content area.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -44,7 +44,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.5",
-    "@blockly/dev-tools": "^2.2.0",
+    "@blockly/dev-tools": "^2.5.1",
     "blockly": "^5.20210325.1"
   },
   "peerDependencies": {
