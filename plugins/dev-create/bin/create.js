@@ -156,7 +156,7 @@ const packageJson = {
   ],
   devDependencies: { },
   peerDependencies: templateJson.peerDependencies || {
-    'blockly': '>=3.20200123.0',
+    'blockly': '^6',
   },
   publishConfig: isFirstParty ? {
     'access': 'public',
