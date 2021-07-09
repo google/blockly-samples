@@ -27,27 +27,29 @@ const scriptName = scriptPackageJson.name;
 
 let pluginName;
 
-const program = new commander.Command(scriptName)
-    .version(scriptPackageJson.version)
-    .arguments('<plugin-name>')
-    .action((name) => {
-      pluginName = name;
-    })
-    .usage(`${chalk.green('<plugin-name>')} [options]`)
-    .option('-d, --dir <directory-name>',
-        `specify the directory name to use`)
-    .option('-t, --type <plugin-type>',
-        `specify the type of the plugin. One of ${pluginTypes.join(', ')}`)
-    .option('--typescript', 'use typescript')
-    .option('--author <author>', 'author, eg: Blockly Team')
-    .option('--skip-install')
-    .parse(process.argv);
+const program =
+    new commander.Command(scriptName)
+        .version(scriptPackageJson.version)
+        .arguments('<plugin-name>')
+        .action((name) => {
+          pluginName = name;
+        })
+        .usage(`${chalk.green('<plugin-name>')} [options]`)
+        .option(
+            '-d, --dir <directory-name>', `specify the directory name to use`)
+        .option(
+            '-t, --type <plugin-type>',
+            `specify the type of the plugin. One of ${pluginTypes.join(', ')}`)
+        .option('--typescript', 'use typescript')
+        .option('--author <author>', 'author, eg: Blockly Team')
+        .option('--skip-install')
+        .parse(process.argv);
 
 // Check package name.
 if (!pluginName) {
   console.error(`Please specify the plugin name:`);
   console.log(`  ${chalk.blue(scriptName)} ${chalk.green('<plugin-name>')}
- 
+
 For example:\n  ${chalk.blue(scriptName)}\
   ${chalk.green('my-blockly-plugin')}\n`);
   process.exit(1);
@@ -57,8 +59,10 @@ let gitRoot = '';
 let gitURL = '';
 try {
   gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
-  gitURL = execSync(`git config --get remote.origin.url`).toString().trim()
-      .replace(/\.git$/, '');
+  gitURL = execSync(`git config --get remote.origin.url`)
+               .toString()
+               .trim()
+               .replace(/\.git$/, '');
 } catch (err) {
   // NOP
 }
@@ -85,7 +89,7 @@ if (!pluginTypes.includes(pluginType)) {
 }
 
 // Check plugin directory doesn't already exist.
-if (pluginPath != root) { // Allow creating a plugin in current directory '.'.
+if (pluginPath != root) {  // Allow creating a plugin in current directory '.'.
   if (fs.existsSync(pluginPath)) {
     console.error(`Package directory already exists,\
    delete ${chalk.red(pluginDir)} and try again.`);
@@ -109,8 +113,10 @@ const templateJson = require(path.join(templateDir, 'template.json'));
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
 const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
 
-const gitPluginPath =
-  path.join(path.relative(gitRoot, root), pluginDir);
+const gitPluginPath = path.join(path.relative(gitRoot, root), pluginDir);
+
+var latestBlocklyVersion =
+    execSync('npm show blockly version').toString().trim();
 
 const packageJson = {
   name: pluginPackageName,
@@ -132,19 +138,20 @@ const packageJson = {
   unpkg: './dist/index.js',
   author: pluginAuthor,
   keywords: [
-    'blockly',
-    'blockly-plugin',
-    pluginType != 'plugin' && `blockly-${pluginType}`,
-    pluginName].filter(Boolean),
+    'blockly', 'blockly-plugin',
+    pluginType != 'plugin' && `blockly-${pluginType}`, pluginName
+  ].filter(Boolean),
   homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
   bugs: isGit ? {
     url: `${gitURL}/issues`,
-  } : {},
+  } :
+                {},
   repository: isGit ? {
     'type': 'git',
     'url': `${gitURL}.git`,
     'directory': gitPluginPath,
-  } : {},
+  } :
+                      {},
   license: 'Apache-2.0',
   directories: {
     'dist': 'dist',
@@ -154,14 +161,15 @@ const packageJson = {
     'dist',
     'src',
   ],
-  devDependencies: { },
-  peerDependencies: templateJson.peerDependencies || {
-    'blockly': '^6',
+  devDependencies: {},
+  peerDependencies: {
+    'blockly': `^${latestBlocklyVersion}`,
   },
   publishConfig: isFirstParty ? {
     'access': 'public',
     'registry': 'https://wombat-dressing-room.appspot.com',
-  } : {},
+  } :
+                                {},
   eslintConfig: {
     'extends': '@blockly/eslint-config',
   },
@@ -176,16 +184,16 @@ const packageJson = {
 };
 
 // Add dev dependencies.
-const devDependencies = ['blockly', '@blockly/dev-scripts']
-    .concat(Object.keys(templateJson.devDependencies));
+const devDependencies = ['blockly', '@blockly/dev-scripts'].concat(
+    Object.keys(templateJson.devDependencies));
 devDependencies.sort().forEach((dep) => {
   const latestVersion = execSync(`npm show ${dep} version`).toString();
   packageJson.devDependencies[dep] = `^${latestVersion.trim()}`;
 });
 
 // Write the README.md to the new package.
-let readme = fs.readFileSync(path.resolve(__dirname, templateDir, 'README.md'),
-    'utf-8');
+let readme =
+    fs.readFileSync(path.resolve(__dirname, templateDir, 'README.md'), 'utf-8');
 readme = readme.replace(/@blockly\/plugin/gmi, `${pluginPackageName}`);
 fs.writeFileSync(path.join(pluginPath, 'README.md'), readme, 'utf-8');
 
@@ -194,12 +202,12 @@ fs.copySync(path.resolve(__dirname, templateDir, 'template'), pluginPath);
 
 // Copy third party plugin files to the new package if third-party.
 if (!isFirstParty) {
-  fs.copySync(path.resolve(__dirname, templatesDir, 'third_party'),
-      pluginPath);
+  fs.copySync(path.resolve(__dirname, templatesDir, 'third_party'), pluginPath);
 }
 
 // Write the package.json to the new package.
-fs.writeFileSync(path.join(pluginPath, 'package.json'),
+fs.writeFileSync(
+    path.join(pluginPath, 'package.json'),
     JSON.stringify(packageJson, null, 2));
 
 // Run npm install.
