@@ -12,8 +12,5 @@
   },
   "devDependencies": {
     "@blockly/dev-tools": "^2.5.1"
-  },
-  "peerDependencies": {
-    "blockly": "^6"
   }
 }
