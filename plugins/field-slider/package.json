@@ -47,7 +47,7 @@
     "sinon": "^9.0.1"
   },
   "peerDependencies": {
-    "blockly": ">=3.20200924.1"
+    "blockly": "3.20200924.1 - 6"
   },
   "publishConfig": {
     "access": "public",

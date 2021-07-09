@@ -47,7 +47,7 @@
         "gulp-sourcemaps": "^2.6.5"
     },
     "peerDependencies": {
-        "blockly": ">=3.20200924.1"
+        "blockly": "3.20200924.1 - 6"
     },
     "publishConfig": {
         "access": "public",
