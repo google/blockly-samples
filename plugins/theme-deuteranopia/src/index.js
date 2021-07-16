@@ -88,10 +88,6 @@ const categoryStyles = {
   },
 };
 
-// Temporarily required to ensure there's no conflict with
-// Blockly.Themes.Deuteranopia
-Blockly.registry.unregister('theme', 'deuteranopia');
-
 /**
  * Deuteranopia theme.
  * A colour palette for people that have deuteranopia (the inability to perceive
