@@ -5,54 +5,65 @@
  */
 
 /**
- * Test case configuration information.
+ * Test case configuration.
  * @record
  */
-export function TestCase() {}
-/**
- * @type {string} The title for the test case.
- */
-TestCase.prototype.title = '';
-/**
- * @type {boolean|undefined} Whether this test case should be skipped. Used to
- *    skip buggy test case and should have an associated bug.
- */
-TestCase.prototype.skip = false;
-/**
- * @type {boolean|undefined} Whether this test case should be called as only.
- *    Used for debugging.
- */
-TestCase.prototype.only = false;
+export class TestCase {
+  /**
+   * Class for a test case configuration.
+   */
+  constructor() {
+    /**
+     * @type {string} The title for the test case.
+     */
+    this.title;
+    /**
+     * @type {boolean|undefined} Whether this test case should be skipped.
+     *   Used to skip buggy test case and should have an associated bug.
+     */
+    this.skip;
+    /**
+     * @type {boolean|undefined} Whether this test case should be called as
+     *   only. Used for debugging.
+     */
+    this.only;
+  }
+}
 
 /**
- * Test suite configuration information.
+ * Test suite configuration.
  * @record
  * @template {TestCase} T
- * @template {TestSuite} U
  */
-export function TestSuite() {}
-/**
- * @type {string} The title for the test case.
- */
-TestSuite.prototype.title = '';
-/**
- * @type {boolean} Whether this test suite should be skipped. Used to
- *    skip buggy test case and should have an associated bug.
- */
-TestSuite.prototype.skip = false;
-/**
- * @type {boolean} Whether this test suite should be called as only.
- *    Used for debugging.s
- */
-TestSuite.prototype.only = false;
-/**
- * @type {?Array<T>} The associated test cases.
- */
-TestSuite.prototype.testCases = [];
-/**
- * @type {?Array<U>} Optional inner test suites.
- */
-TestSuite.prototype.testSuites = [];
+export class TestSuite {
+  /**
+   * Class for a test suite configuration.
+   */
+  constructor() {
+    /**
+     * @type {string} The title for the test case.
+     */
+    this.title;
+    /**
+     * @type {?Array<T>} The associated test cases.
+     */
+    this.testCases;
+    /**
+     * @type {?Array<TestCase<T>>} Optional inner test suites.
+     */
+    this.testSuites;
+    /**
+     * @type {boolean|undefined} Whether this test suite should be skipped.
+     *   Used to skip buggy test case and should have an associated bug.
+     */
+    this.skip;
+    /**
+     * @type {boolean|undefined} Whether this test suite should be called as
+     *   only. Used for debugging.
+     */
+    this.only;
+  }
+}
 
 /**
  * Runs provided test cases.
@@ -71,7 +82,7 @@ export function runTestCases(testCases, createTestCallback) {
 
 /**
  * Runs provided test suite.
- * @template {TestSuite} T
+ * @template {TestCase} T
  * @param {Array<!TestSuite<T>>} testSuites The test suites to run.
  * @param {function(!TestSuite<T>):(function(T):!Function)
  *    } createTestCaseCallback Creates test case callback using given test
@@ -86,7 +97,8 @@ export function runTestSuites(testSuites, createTestCaseCallback) {
         runTestSuites(testSuite.testSuites, createTestCaseCallback);
       }
       if (testSuite.testCases && testSuite.testCases.length) {
-        runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
+        runTestCases(/** @type {!Array<TestCase>} */ (testSuite.testCases),
+            createTestCaseCallback(testSuite));
       }
     });
   });

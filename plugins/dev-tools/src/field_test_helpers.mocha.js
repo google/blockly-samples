@@ -9,45 +9,55 @@ import {runTestCases, TestCase} from './common_test_helpers.mocha';
 
 /**
  * Field value test case.
- * @extends {TestCase}
+ * @implements {TestCase}
  * @record
  */
-export function FieldValueTestCase() {}
-FieldValueTestCase.prototype = new TestCase();
-/**
- * @type {*} The value to use in test.
- */
-FieldValueTestCase.prototype.value = undefined;
-/**
- * @type {*} The expected value.
- */
-FieldValueTestCase.prototype.expectedValue = undefined;
-/**
- * @type {string|undefined} Optional expected text (if not specified, default is
- *    String(expectedValue).
- */
-FieldValueTestCase.prototype.expectedText = undefined;
-/**
- * @type {!RegExp|string|undefined} Optional error message matcher if test case
- *    is expected to throw.
- */
-FieldValueTestCase.prototype.errMsgMatcher = undefined;
+export class FieldValueTestCase {
+  /**
+   * Class for a a field value test case.
+   */
+  constructor() {
+    /**
+     * @type {*} The value to use in test.
+     */
+    this.value;
+    /**
+     * @type {*} The expected value.
+     */
+    this.expectedValue;
+    /**
+     * @type {string|undefined} The expected text value. Provided if different
+     *    from String(expectedValue).
+     */
+    this.expectedText;
+    /**
+     * @type {!RegExp|string|undefined} The optional error message matcher.
+     *    Provided if test case is expected to throw.
+     */
+    this.errMsgMatcher;
+  }
+}
 
 /**
  * Field creation test case.
  * @extends {FieldValueTestCase}
  * @record
  */
-export function FieldCreationTestCase() {}
-FieldCreationTestCase.prototype = new FieldValueTestCase();
-/**
- * @type {Array<*>} The arguments to pass to field constructor.
- */
-FieldCreationTestCase.prototype.args = [];
-/**
- * @type {string} The json to use in field creation.
- */
-FieldCreationTestCase.prototype.json = undefined;
+export class FieldCreationTestCase {
+  /**
+   * Class for a field creation test case.
+   */
+  constructor() {
+    /**
+     * @type {Array<*>} The arguments to pass to field constructor.
+     */
+    this.args;
+    /**
+     * @type {string} The json to use in field creation.
+     */
+    this.json;
+  }
+}
 
 /**
  * Assert a field's value is the same as the expected value.
