@@ -11,7 +11,7 @@
 import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
 
-import {Plugin} from '../src/index';
+import {ScrollOptions} from '../src/index';
 import {ScrollBlockDragger} from '../src/ScrollBlockDragger';
 import {ScrollMetricsManager} from '../src/ScrollMetricsManager';
 
@@ -26,7 +26,7 @@ function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   // TODO: Initialize your plugin here.
-  const plugin = new Plugin(workspace);
+  const plugin = new ScrollOptions(workspace);
   plugin.init();
 
   return workspace;

@@ -4,18 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit plugin overview.
-/**
- * @fileoverview Plugin overview.
- */
+import Blockly from 'blockly/blockly';
 
-// TODO: Rename plugin and edit plugin description.
+import {EdgeScrollOptions, ScrollBlockDragger} from './ScrollBlockDragger';
+
 /**
- * Plugin description.
+ * A Blockly plugin that adds additional features related to scrolling and
+ * dragging on workspaces. This plugin adds the ability to: a) use the
+ * mousewheel to scroll the workspace while a block is being dragged, and b)
+ * scroll the workspace automatically when a block is dragged near the edge.
+ *
+ * All behavior is customizable. See the README for more information.
  */
-export class Plugin {
+export class ScrollOptions {
   /**
-   * Constructor for ...
+   * Constructor for ScrollOptions plugin.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
    *     be added to.
    */
@@ -29,12 +32,80 @@ export class Plugin {
   }
 
   /**
-   * Initialize.
+   * Initialize plugin with optional options. If no options are provided, both
+   * plugin features are enabled with default settings. The plugin is configured
+   * here as a convenience. See the README for more information on configuring
+   * the plugin after initialization.
+   * @param {{enableWheelScroll: (boolean|undefined),
+   * enableEdgeScroll: (boolean|undefined),
+   * edgeScrollOptions: (!EdgeScrollOptions|undefined)}} options The
+   * configuration options for the plugin. `enableWheelScroll` and
+   * `enableEdgeScroll` are both true by default and control whether the
+   * behavior to scroll with the mouse wheel while dragging and scroll when a
+   * block is near the edge of the workspace are enabled, respectively.
+   * `edgeScrollOptions` is an optional configuration for the edge scrolling
+   * behavior. See `ScrollBlockDrager.updateOptions` for more details.
    */
-  init() {
+  init({
+    enableWheelScroll = true,
+    enableEdgeScroll = true,
+    edgeScrollOptions = null,
+  } = {}) {
+    if (enableWheelScroll) {
+      this.enableWheelScroll();
+    } else {
+      this.disableWheelScroll();
+    }
+
+    ScrollBlockDragger.edgeScrollEnabled = enableEdgeScroll;
+
+    if (edgeScrollOptions) {
+      ScrollBlockDragger.updateOptions(edgeScrollOptions);
+    }
+  }
+
+  /**
+   *
+   */
+  enableWheelScroll() {
+    if (this.wheelEvent_) {
+      // Already enabled.
+      return;
+    }
     const dragSurface = this.workspace_.getBlockDragSurface();
-    Blockly.bindEventWithChecks_(
+    this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
         dragSurface.getSvgRoot(), 'wheel', this, this.onMouseWheel_);
+  }
+
+  /**
+   *
+   */
+  disableWheelScroll() {
+    if (!this.wheelEvent_) {
+      // Already disabled.
+      return;
+    }
+    Blockly.browserEvents.unbind(this.wheelEvent_);
+  }
+
+  /** */
+  enableEdgeScroll() {
+    ScrollBlockDragger.edgeScrollEnabled = true;
+  }
+
+  /**
+   *
+   */
+  disableEdgeScroll() {
+    ScrollBlockDragger.edgeScrollEnabled = false;
+  }
+
+  /**
+   *
+   * @param {!EdgeScrollOptions} options
+   */
+  updateEdgeScrollOptions(options) {
+    ScrollBlockDragger.updateOptions(options);
   }
 
   /**
@@ -79,12 +150,11 @@ export class Plugin {
 
   /**
    * Gets the current location of the drag surface.
-   * @return {Blockly.utils.Coordinate} The current coordinate.
+   * @return {!Blockly.utils.Coordinate} The current coordinate.
    * @private
    */
   getDragSurfaceLocation_() {
     const dragSurface = this.workspace_.getBlockDragSurface();
-    const workspaceOffset = dragSurface.getWsTranslation();
-    return new Blockly.utils.Coordinate(workspaceOffset.x, workspaceOffset.y);
+    return dragSurface.getWsTranslation();
   }
 }
