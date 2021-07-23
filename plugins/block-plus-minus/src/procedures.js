@@ -14,6 +14,9 @@ import {createPlusField} from './field_plus';
 
 Blockly.Msg['PROCEDURE_VARIABLE'] = 'variable:';
 
+delete Blockly.Blocks['procedures_defnoreturn'];
+delete Blockly.Blocks['procedures_defreturn'];
+
 /* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {

@@ -12,6 +12,8 @@ import Blockly from 'blockly/core';
 import {createPlusField} from './field_plus';
 import {createMinusField} from './field_minus';
 
+delete Blockly.Blocks['lists_create_with'];
+
 /* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {
