@@ -14,7 +14,8 @@ import {createPlusField} from './field_plus';
 
 Blockly.Msg['PROCEDURE_VARIABLE'] = 'variable:';
 
-// Delete original blocks because there's no way to unregister them: https://github.com/google/blockly-samples/issues/768#issuecomment-885663394
+// Delete original blocks because there's no way to unregister them:
+// https://github.com/google/blockly-samples/issues/768#issuecomment-885663394
 delete Blockly.Blocks['procedures_defnoreturn'];
 delete Blockly.Blocks['procedures_defreturn'];
 
