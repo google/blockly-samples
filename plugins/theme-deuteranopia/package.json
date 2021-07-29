@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-deuteranopia",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Blockly theme for people that have deuteranopia.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.7",
+    "@blockly/dev-scripts": "^1.2.8",
     "blockly": "^5.20210325.1"
   },
   "peerDependencies": {
