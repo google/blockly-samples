@@ -63,32 +63,16 @@ let CandidateScrolls;
  */
 export let EdgeScrollOptions;
 
+/** @type {!EdgeScrollOptions} */
 const defaultOptions = {
-  // Pixels per ms to scroll based on how far the block is from the edge of
-  // the viewport.
   slowBlockSpeed: 0.28,
   fastBlockSpeed: 1.4,
-  // Distance in workspace units that the edge of the block is from the edge
-  // of the viewport before the corresponding scroll speed will be used. Can
-  // be negative to start scrolling before the block extends over the edge.
   slowBlockStartDistance: 0,
-  // Must be larger than slowBlockStartDistance.
   fastBlockStartDistance: 50,
-  // If a block takes up this percentage of the viewport or more, it will be
-  // considered oversized. Rather than using the block edge, we use the
-  // mouse cursor plus the given margin size to activate block-based
-  // scrolling.
   oversizeBlockThreshold: 0.85,
-  // A bigger value will cause the workspace to scroll sooner, i.e., the
-  // mouse can be further inward from the edge when scrolling begins.
   oversizeBlockMargin: 15,
-  // Pixels per ms to scroll based on how far the mouse is from the edge of
-  // the viewport.
   slowMouseSpeed: 0.5,
   fastMouseSpeed: 1.6,
-  // Distance in workspace units that the mouse is from the edge of the
-  // viewport before the corresponding scroll speed will be used. Can be
-  // negative to start scrolling before the mouse extends over the edge.
   slowMouseStartDistance: 0,
   fastMouseStartDistance: 35,
 };

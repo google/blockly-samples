@@ -11,10 +11,8 @@
 import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
 
-import {ScrollOptions} from '../src/index';
-import {ScrollBlockDragger} from '../src/ScrollBlockDragger';
-import {ScrollMetricsManager} from '../src/ScrollMetricsManager';
-
+/* eslint-disable-next-line max-len */
+import {ScrollBlockDragger, ScrollMetricsManager, ScrollOptions} from '../src/index';
 
 /**
  * Create a workspace.
@@ -25,9 +23,10 @@ import {ScrollMetricsManager} from '../src/ScrollMetricsManager';
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
-  // TODO: Initialize your plugin here.
-  const plugin = new ScrollOptions(workspace);
-  plugin.init();
+  const scrollOptionsPlugin = new ScrollOptions(workspace);
+  // Supply options if desired, or you can configure the plugin after
+  // initialization.
+  scrollOptionsPlugin.init();
 
   return workspace;
 }
@@ -36,10 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
+      // These are both required, even if you turn off edge scrolling.
       'blockDragger': ScrollBlockDragger,
       'metricsManager': ScrollMetricsManager,
     },
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+      document.getElementById('root'), createWorkspace, defaultOptions);
 });

@@ -38,7 +38,7 @@ export class ScrollOptions {
    * the plugin after initialization.
    * @param {{enableWheelScroll: (boolean|undefined),
    * enableEdgeScroll: (boolean|undefined),
-   * edgeScrollOptions: (!EdgeScrollOptions|undefined)}} options The
+   * edgeScrollOptions: (!EdgeScrollOptions|undefined)}=} options The
    * configuration options for the plugin. `enableWheelScroll` and
    * `enableEdgeScroll` are both true by default and control whether the
    * behavior to scroll with the mouse wheel while dragging and scroll when a
@@ -50,7 +50,11 @@ export class ScrollOptions {
     enableWheelScroll = true,
     enableEdgeScroll = true,
     edgeScrollOptions = null,
-  } = {}) {
+  } = {
+    enableWheelScroll: true,
+    enableEdgeScroll: true,
+    edgeScrollOptions: null,
+  }) {
     if (enableWheelScroll) {
       this.enableWheelScroll();
     } else {
@@ -65,7 +69,7 @@ export class ScrollOptions {
   }
 
   /**
-   *
+   * Enables scrolling with mousewheel during block drag.
    */
   enableWheelScroll() {
     if (this.wheelEvent_) {
@@ -78,7 +82,7 @@ export class ScrollOptions {
   }
 
   /**
-   *
+   * Disables scrolling with mousewheel during block drag.
    */
   disableWheelScroll() {
     if (!this.wheelEvent_) {
@@ -88,28 +92,34 @@ export class ScrollOptions {
     Blockly.browserEvents.unbind(this.wheelEvent_);
   }
 
-  /** */
+  /**
+   * Enables scrolling when block is dragged near edge.
+   */
   enableEdgeScroll() {
     ScrollBlockDragger.edgeScrollEnabled = true;
   }
 
   /**
-   *
+   * Disables scrolling when block is dragged near edge.
    */
   disableEdgeScroll() {
     ScrollBlockDragger.edgeScrollEnabled = false;
   }
 
   /**
-   *
-   * @param {!EdgeScrollOptions} options
+   * Updates edge scroll options. See ScrollBlockDragger for specific settings.
+   * Any values left unspecified will not be overwritten and will retain their
+   * previous values.
+   * @param {!EdgeScrollOptions} options Edge scroll options.
    */
   updateEdgeScrollOptions(options) {
     ScrollBlockDragger.updateOptions(options);
   }
 
   /**
-   * Moves the currently dragged block as the user scrolls the workspace.
+   * Scrolls the workspace with the mousewheel while a block is being dragged.
+   * Translates the currently dragged block as the user scrolls the workspace,
+   * so that the block does not appear to move.
    * @param {!Event} e Mouse wheel event.
    */
   onMouseWheel_(e) {
@@ -158,3 +168,6 @@ export class ScrollOptions {
     return dragSurface.getWsTranslation();
   }
 }
+
+export * from './ScrollBlockDragger';
+export * from './ScrollMetricsManager';
