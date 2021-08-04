@@ -18,48 +18,35 @@ import {AutoScroll} from './AutoScroll';
 let CandidateScrolls;
 
 /**
- * `slowBlockSpeed`, `fastBlockSpeed`: Pixels per ms to scroll based on how
- * far the block is from the edge of the viewport.
- *
- * `slowBlockStartDistance`: Distance in workspace units that the edge of the
- * block is from the edge of the viewport before the corresponding scroll
- * speed will be used. Can be negative to start scrolling before the block
+ * Configuration for edge scrolling behavior.
+ * @typedef {object} EdgeScrollOptions
+ * @property {number=} slowBlockSpeed Pixels per ms to scroll when the block is
+ * near the edge of the workspace.
+ * @property {number=}fastBlockSpeed Pixels per ms to scroll when the block is
+ * far past the edge of the workspace.
+ * @property {number=} slowBlockStartDistance Distance in workspace units that
+ * the edge of the block is from the edge of the viewport before the
+ * corresponding scroll speed will be used. Can be negative to start scrolling
+ * before the block extends over the edge.
+ * @property {number=} fastBlockStartDistance Same as above, for fast speed.
+ * Must be larger than `slowBlockStartDistance`.
+ * @property {number=} oversizeBlockThreshold If a block takes up this
+ * percentage of the viewport or more, it will be considered oversized. Rather
+ * than using the block edge, we use the mouse cursor plus the given margin size
+ * to activate block-based scrolling.
+ * @property {number=} oversizeBlockMargin Cursor margin to use for oversized
+ * blocks. A bigger value will cause the workspace to scroll sooner, i.e., the
+ * mouse can be further inward from the edge when scrolling begins.
+ * @property {number=} slowMouseSpeed Pixels per ms to
+ * scroll when the mouse is near the edge of the workspace.
+ * @property {number=} fastMouseSpeed Pixels per ms to
+ * scroll when the mouse is far past the edge of the workspace.
+ * @property {number=} slowMouseStartDistance Distance in workspace units that
+ * the mouse is from the edge of the viewport before the corresponding scroll
+ * speed will be used. Can be negative to start scrolling before the mouse
  * extends over the edge.
- *
- * `fastBlockStartDistance`: Same as above, for fast speed. Must be larger
- * than `slowBlockStartDistance`.
- *
- * `oversizeBlockThreshold`: If a block takes up this percentage of the
- * viewport or more, it will be considered oversized. Rather than using the
- * block edge, we use the mouse cursor plus the given margin size to activate
- * block-based scrolling.
- *
- * `oversizeBlockMargin`: Cursor margin to use for oversized blocks. A bigger
- * value will cause the workspace to scroll sooner, i.e., the mouse can be
- * further inward from the edge when scrolling begins.
- *
- * `slowMouseSpeed`, `fastMouseSpeed`: Pixels per ms to
- * scroll based on how far the mouse is from the edge of the viewport.
- *
- * `slowMouseStartDistance`: Distance in workspace units that the mouse is
- * from the edge of the viewport before the corresponding scroll speed will be
- * used. Can be negative to start scrolling before the mouse extends over the
- * edge.
- *
- * `fastMouseStartDistance`: Same as above, for fast speed. Must be larger
- * than `slowMouseStartDistance`.
- * @typedef {{
- * slowBlockSpeed: (number|undefined),
- * fastBlockSpeed: (number|undefined),
- * slowBlockStartDistance: (number|undefined),
- * fastBlockStartDistance: (number|undefined),
- * oversizeBlockThreshold: (number|undefined),
- * oversizeBlockMargin: (number|undefined),
- * slowMouseSpeed: (number|undefined),
- * fastMouseSpeed: (number|undefined),
- * slowMouseStartDistance: (number|undefined),
- * fastMouseStartDistance: (number|undefined)
- * }}
+ * @property {number=} fastMouseStartDistance Same as above, for fast speed.
+ * Must be larger than `slowMouseStartDistance`.
  */
 export let EdgeScrollOptions;
 
