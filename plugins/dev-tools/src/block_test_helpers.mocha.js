@@ -51,7 +51,7 @@ export class CodeGenerationTestCase {
 
 /**
  * Code generation test suite.
- * @extends {TestSuite<CodeGenerationTestCase>}
+ * @extends {TestSuite<CodeGenerationTestCase, CodeGenerationTestSuite>}
  * @record
  */
 export class CodeGenerationTestSuite {

@@ -34,6 +34,7 @@ export class TestCase {
  * Test suite configuration.
  * @record
  * @template {TestCase} T
+ * @template {TestSuite<T>} U
  */
 export class TestSuite {
   /**
@@ -49,7 +50,7 @@ export class TestSuite {
      */
     this.testCases;
     /**
-     * @type {?Array<TestCase<T>>} Optional inner test suites.
+     * @type {?Array<U>} List of nested inner test suites.
      */
     this.testSuites;
     /**
@@ -83,8 +84,8 @@ export function runTestCases(testCases, createTestCallback) {
 /**
  * Runs provided test suite.
  * @template {TestCase} T
- * @param {Array<!TestSuite<T>>} testSuites The test suites to run.
- * @param {function(!TestSuite<T>):(function(T):!Function)
+ * @param {Array<!TestSuite<T, ?>>} testSuites The test suites to run.
+ * @param {function(!TestSuite<T, ?>):(function(T):!Function)
  *    } createTestCaseCallback Creates test case callback using given test
  *    suite.
  */
@@ -97,8 +98,7 @@ export function runTestSuites(testSuites, createTestCaseCallback) {
         runTestSuites(testSuite.testSuites, createTestCaseCallback);
       }
       if (testSuite.testCases && testSuite.testCases.length) {
-        runTestCases(/** @type {!Array<TestCase>} */ (testSuite.testCases),
-            createTestCaseCallback(testSuite));
+        runTestCases(testSuite.testCases, createTestCaseCallback(testSuite));
       }
     });
   });
