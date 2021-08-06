@@ -34,7 +34,7 @@ export class TestCase {
  * Test suite configuration.
  * @record
  * @template {TestCase} T
- * @template {TestSuite<T>} U
+ * @template {TestSuite} U
  */
 export class TestSuite {
   /**
@@ -84,8 +84,9 @@ export function runTestCases(testCases, createTestCallback) {
 /**
  * Runs provided test suite.
  * @template {TestCase} T
- * @param {Array<!TestSuite<T, ?>>} testSuites The test suites to run.
- * @param {function(!TestSuite<T, ?>):(function(T):!Function)
+ * @template {TestSuite<T, U>} U
+ * @param {Array<!U>} testSuites The test suites to run.
+ * @param {function(!U):(function(T):!Function)
  *    } createTestCaseCallback Creates test case callback using given test
  *    suite.
  */

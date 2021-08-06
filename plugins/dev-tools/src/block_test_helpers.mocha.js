@@ -27,13 +27,6 @@ export class CodeGenerationTestCase {
    */
   constructor() {
     /**
-     * Creates the block to use for this test case.
-     * @param {!Blockly.Workspace} workspace The workspace context for this
-     *    test.
-     * @return {!Blockly.Block}
-     */
-    this.createBlock;
-    /**
      * @type {string} The expected code.
      */
     this.expectedCode;
@@ -47,6 +40,14 @@ export class CodeGenerationTestCase {
      */
     this.expectedInnerOrder;
   }
+
+  /**
+   * Creates the block to use for this test case.
+   * @param {!Blockly.Workspace} workspace The workspace context for this
+   *    test.
+   * @return {!Blockly.Block} The block to use for the test case.
+   */
+  createBlock(workspace) {}
 }
 
 /**
@@ -81,16 +82,16 @@ export class SerializationTestCase {
      */
     this.xml;
     /**
-     * Asserts that the block created from xml has the expected structure.
-     * @param {!Blockly.Block} block The block to check.
-     */
-    this.assertBlockStructure;
-    /**
      * @type {string|undefined} The expected xml after round trip. Provided if
      *    it different from xml that was passed in.
      */
     this.expectedXml;
   }
+  /**
+   * Asserts that the block created from xml has the expected structure.
+   * @param {!Blockly.Block} block The block to check.
+   */
+  assertBlockStructure(block) {}
 }
 
 /**
