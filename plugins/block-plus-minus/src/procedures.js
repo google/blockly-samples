@@ -263,6 +263,57 @@ const procedureDefMutator = {
   },
 
   /**
+   * Returns the state of this block as a JSON serializable object.
+   * @return {{params: (!Array<{name: string, id: string}>|undefined),
+   *     hasStatements: (boolean|undefined)}} The state of this block, eg the
+   *     parameters and statements.
+   */
+  saveExtraState: function() {
+    const state = Object.create(null);
+    if (this.argData_.length) {
+      state['params'] = [];
+      this.argData_.forEach((arg) => {
+        const model = arg.model;
+        state['params'].push({
+          'name': model.name,
+          'id': model.getId(),
+          'argId': model.argId,
+        });
+      });
+    }
+    if (!this.hasStatements_) {
+      state['hasStatements'] = false;
+    }
+    return state;
+  },
+
+  /**
+   * Applies the given state to this block.
+   * @param {*} state The state to apply to this block, eg the parameters and
+   *     statements.
+   */
+  loadExtraState: function(state) {
+    // We have to handle this so that the user doesn't add blocks to the stack,
+    // in which case it would be impossible to return to the old mutators.
+    if (!state['hasStatements']) {
+      this.removeInput('STACK');
+    }
+
+    const names = [];
+    const varIds = [];
+    const argIds = [];
+    if (state['params']) {
+      for (let i = 0; i < state['params'].length; i++) {
+        const param = state['params'][i];
+        names.push(param['name']);
+        varIds.push(param['id']);
+        argIds.push(param['argId']);
+      }
+    }
+    this.updateShape_(names, varIds, argIds);
+  },
+
+  /**
    * Adds arguments to the block until it matches the targets.
    * @param {!Array<string>} names An array of argument names to display.
    * @param {!Array<string>} varIds An array of variable IDs associated with
