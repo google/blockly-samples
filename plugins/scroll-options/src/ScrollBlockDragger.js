@@ -18,6 +18,53 @@ import {AutoScroll} from './AutoScroll';
 let CandidateScrolls;
 
 /**
+ * Configuration for edge scrolling behavior.
+ * @typedef {object} EdgeScrollOptions
+ * @property {number=} slowBlockSpeed Pixels per ms to scroll when the block is
+ * near the edge of the workspace.
+ * @property {number=}fastBlockSpeed Pixels per ms to scroll when the block is
+ * far past the edge of the workspace.
+ * @property {number=} slowBlockStartDistance Distance in workspace units that
+ * the edge of the block is from the edge of the viewport before the
+ * corresponding scroll speed will be used. Can be negative to start scrolling
+ * before the block extends over the edge.
+ * @property {number=} fastBlockStartDistance Same as above, for fast speed.
+ * Must be larger than `slowBlockStartDistance`.
+ * @property {number=} oversizeBlockThreshold If a block takes up this
+ * percentage of the viewport or more, it will be considered oversized. Rather
+ * than using the block edge, we use the mouse cursor plus the given margin size
+ * to activate block-based scrolling.
+ * @property {number=} oversizeBlockMargin Cursor margin to use for oversized
+ * blocks. A bigger value will cause the workspace to scroll sooner, i.e., the
+ * mouse can be further inward from the edge when scrolling begins.
+ * @property {number=} slowMouseSpeed Pixels per ms to
+ * scroll when the mouse is near the edge of the workspace.
+ * @property {number=} fastMouseSpeed Pixels per ms to
+ * scroll when the mouse is far past the edge of the workspace.
+ * @property {number=} slowMouseStartDistance Distance in workspace units that
+ * the mouse is from the edge of the viewport before the corresponding scroll
+ * speed will be used. Can be negative to start scrolling before the mouse
+ * extends over the edge.
+ * @property {number=} fastMouseStartDistance Same as above, for fast speed.
+ * Must be larger than `slowMouseStartDistance`.
+ */
+export let EdgeScrollOptions;
+
+/** @type {!EdgeScrollOptions} */
+const defaultOptions = {
+  slowBlockSpeed: 0.28,
+  fastBlockSpeed: 1.4,
+  slowBlockStartDistance: 0,
+  fastBlockStartDistance: 50,
+  oversizeBlockThreshold: 0.85,
+  oversizeBlockMargin: 15,
+  slowMouseSpeed: 0.5,
+  fastMouseSpeed: 1.6,
+  slowMouseStartDistance: 0,
+  fastMouseStartDistance: 35,
+};
+
+/**
  * A block dragger that adds the functionality for a block to be moved while
  * someone is dragging it.
  */
@@ -47,41 +94,53 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
      * @protected
      */
     this.scrollDirections_ = ['top', 'bottom', 'left', 'right'];
+  }
 
-    /**
-     * Configuration options for the scroll-options settings.
-     * @type {!Object<string, number>}
-     * @protected
-     */
-    this.options_ = {
-      // Pixels per ms to scroll based on how far the block is from the edge of
-      // the viewport.
-      slowBlockSpeed: 0.28,
-      fastBlockSpeed: 1.4,
-      // Distance in workspace units that the edge of the block is from the edge
-      // of the viewport before the corresponding scroll speed will be used. Can
-      // be negative to start scrolling before the block extends over the edge.
-      slowBlockStartDistance: 0,
-      // Must be larger than slowBlockStartDistance.
-      fastBlockStartDistance: 50,
-      // If a block takes up this percentage of the viewport or more, it will be
-      // considered oversized. Rather than using the block edge, we use the
-      // mouse cursor plus the given margin size to activate block-based
-      // scrolling.
-      oversizeBlockThreshold: 0.85,
-      // A bigger value will cause the workspace to scroll sooner, i.e., the
-      // mouse can be further inward from the edge when scrolling begins.
-      oversizeBlockMargin: 15,
-      // Pixels per ms to scroll based on how far the mouse is from the edge of
-      // the viewport.
-      slowMouseSpeed: 0.5,
-      fastMouseSpeed: 1.6,
-      // Distance in workspace units that the mouse is from the edge of the
-      // viewport before the corresponding scroll speed will be used. Can be
-      // negative to start scrolling before the mouse extends over the edge.
-      slowMouseStartDistance: 0,
-      fastMouseStartDistance: 35,
-    };
+  /**
+   * Whether the behavior to scroll the workspace when a block is dragged near
+   * the edge is enabled.
+   * @type {boolean}
+   * @public
+   */
+  static edgeScrollEnabled = true;
+
+  /**
+   * Configuration options for the scroll-options settings.
+   * @type {!EdgeScrollOptions}
+   * @protected
+   */
+  static options_ = defaultOptions;
+
+  /**
+   * Update the scroll options. Only the properties actually included in the
+   * `options` parameter will be set. Any unspecified options will use the
+   * previously set value (where the initial value is from `defaultOptions`).
+   * Therefore, do not pass in any options with explicit `undefined` or `null`
+   * values. The plugin will break. Just leave them out of the object if you
+   * don't want to change the default value.
+   *
+   * This method is safe to call multiple times. Subsequent calls will add onto
+   * previous calls, not completely overwrite them. That is, if you call this
+   * with:
+   *
+   *     `updateOptions({fastMouseSpeed: 5});
+   *     updateOptions({slowMouseSpeed: 2});`.
+   *
+   * Then the final options used will include both `fastMouseSpeed: 5` and
+   * `slowMouseSpeed: 2` with all other options being the default values.
+   * @param {!EdgeScrollOptions} options Object containing any or all of
+   *     the available options. Any properties not present will use the existing
+   *     value.
+   */
+  static updateOptions(options) {
+    ScrollBlockDragger.options_ = {...ScrollBlockDragger.options_, ...options};
+  }
+
+  /**
+   * Resets the options object to the default options.
+   */
+  static resetOptions() {
+    ScrollBlockDragger.options_ = defaultOptions;
   }
 
   /**
@@ -135,7 +194,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     super.drag(e, totalDelta);
     this.dragDelta_ = currentDragDeltaXY;
 
-    this.scrollWorkspaceWhileDragging_(e);
+    if (ScrollBlockDragger.edgeScrollEnabled) {
+      this.scrollWorkspaceWhileDragging_(e);
+    }
   }
 
   /**
@@ -284,10 +345,11 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     const blockOverflows = this.getBlockBoundsOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = blockOverflows[direction];
-      if (overflow > this.options_.slowBlockStartDistance) {
-        const speed = overflow > this.options_.fastBlockStartDistance ?
-            this.options_.fastBlockSpeed :
-            this.options_.slowBlockSpeed;
+      if (overflow > ScrollBlockDragger.options_.slowBlockStartDistance) {
+        const speed =
+            overflow > ScrollBlockDragger.options_.fastBlockStartDistance ?
+            ScrollBlockDragger.options_.fastBlockSpeed :
+            ScrollBlockDragger.options_.slowBlockSpeed;
         const scrollVector =
             this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
         candidateScrolls[direction].push(scrollVector);
@@ -313,10 +375,11 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     const mouseOverflows = this.getMouseOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = mouseOverflows[direction];
-      if (overflow > this.options_.slowMouseStartDistance) {
-        const speed = overflow > this.options_.fastMouseStartDistance ?
-            this.options_.fastMouseSpeed :
-            this.options_.slowMouseSpeed;
+      if (overflow > ScrollBlockDragger.options_.slowMouseStartDistance) {
+        const speed =
+            overflow > ScrollBlockDragger.options_.fastMouseStartDistance ?
+            ScrollBlockDragger.options_.fastMouseSpeed :
+            ScrollBlockDragger.options_.slowMouseSpeed;
         const scrollVector =
             this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
         candidateScrolls[direction].push(scrollVector);
@@ -352,21 +415,26 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     // Handle large blocks. If the block is nearly as tall as the viewport,
     // use a margin around the cursor rather than the height of the block.
     const blockHeight = blockBounds.bottom - blockBounds.top;
-    if (blockHeight >
-        viewMetrics.height * this.options_.oversizeBlockThreshold) {
+    if (blockHeight > viewMetrics.height *
+            ScrollBlockDragger.options_.oversizeBlockThreshold) {
       blockBounds.top = Math.max(
-          blockBounds.top, mouse.y - this.options_.oversizeBlockMargin);
+          blockBounds.top,
+          mouse.y - ScrollBlockDragger.options_.oversizeBlockMargin);
       blockBounds.bottom = Math.min(
-          blockBounds.bottom, mouse.y + this.options_.oversizeBlockMargin);
+          blockBounds.bottom,
+          mouse.y + ScrollBlockDragger.options_.oversizeBlockMargin);
     }
 
     // Same logic, but for block width.
     const blockWidth = blockBounds.right - blockBounds.left;
-    if (blockWidth > viewMetrics.width * this.options_.oversizeBlockThreshold) {
+    if (blockWidth > viewMetrics.width *
+            ScrollBlockDragger.options_.oversizeBlockThreshold) {
       blockBounds.left = Math.max(
-          blockBounds.left, mouse.x - this.options_.oversizeBlockMargin);
+          blockBounds.left,
+          mouse.x - ScrollBlockDragger.options_.oversizeBlockMargin);
       blockBounds.right = Math.min(
-          blockBounds.right, mouse.x + this.options_.oversizeBlockMargin);
+          blockBounds.right,
+          mouse.x + ScrollBlockDragger.options_.oversizeBlockMargin);
     }
 
     // The coordinate system is negative in the top and left directions, and
@@ -420,3 +488,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.activeAutoScroll_ = null;
   }
 }
+
+Blockly.registry.register(Blockly.registry.Type.BLOCK_DRAGGER,
+    'ScrollBlockDragger', ScrollBlockDragger);
