@@ -82,36 +82,46 @@ on `ScrollOptions`:
 -   `enableEdgeScroll`/`disableEdgeScroll`
 -   `updateEdgeScrollOptions`
 
-The edge scroll options are provided in an object with the following properties:
+**IMPORTANT**: Currently, the options to configure the edge scroll behavior are
+provided statically due to the way a BlockDragger is initialized. Thus, each
+instance of the plugin will share the same settings, even if you call
+`updateEdgeScrollOptions` on different instances of the plugin (i.e., on
+different workspaces). You can have some workspaces using the plugin and some
+not, but any that are using the plugin will share the settings. If this is a
+blocking issue for you, please file an issue on blockly-samples.
 
--   `slowBlockSpeed`, `fastBlockSpeed`: Pixels per ms to scroll based on how far
-    the block is from the edge of the viewport.
--   `slowBlockStartDistance`: Distance in workspace units that the edge of the
-    block is from the edge of the viewport before the corresponding scroll speed
-    will be used. Can be negative to start scrolling before the block extends
-    over the edge.
--   `fastBlockStartDistance`: Same as above, for fast speed. Must be larger than
-    `slowBlockStartDistance`.
--   `oversizeBlockThreshold`: If a block takes up this percentage of the
+The edge scroll options are provided in an object with the following properties
+(default values in parentheses):
+
+-   `slowBlockSpeed` (0.28), `fastBlockSpeed` (1.4): Pixels per ms to scroll
+    based on how far the block is from the edge of the viewport.
+-   `slowBlockStartDistance` (0): Distance in workspace units that the edge of
+    the block is from the edge of the viewport before the corresponding scroll
+    speed will be used. Can be negative to start scrolling before the block
+    extends over the edge.
+-   `fastBlockStartDistance` (50): Same as above, for fast speed. Must be larger
+    than `slowBlockStartDistance`.
+-   `oversizeBlockThreshold` (0.85): If a block takes up this percentage of the
     viewport or more, it will be considered oversized. Rather than using the
     block edge, we use the mouse cursor plus the given margin size to activate
     block-based scrolling.
--   `oversizeBlockMargin`: Cursor margin to use for oversized blocks. A bigger
-    value will cause the workspace to scroll sooner, i.e., the mouse can be
-    further inward from the edge when scrolling begins.
--   `slowMouseSpeed`, `fastMouseSpeed`: Pixels per ms to scroll based on how far
-    the mouse is from the edge of the viewport.
--   `slowMouseStartDistance`: Distance in workspace units that the mouse is from
-    the edge of the viewport before the corresponding scroll speed will be used.
-    Can be negative to start scrolling before the mouse extends over the edge.
--   `fastMouseStartDistance`: Same as above, for fast speed. Must be larger than
-    `slowMouseStartDistance`.
+-   `oversizeBlockMargin` (15): Cursor margin to use for oversized blocks. A
+    bigger value will cause the workspace to scroll sooner, i.e., the mouse can
+    be further inward from the edge when scrolling begins.
+-   `slowMouseSpeed` (0.5), `fastMouseSpeed` (1.6): Pixels per ms to scroll
+    based on how far the mouse is from the edge of the viewport.
+-   `slowMouseStartDistance` (0): Distance in workspace units that the mouse is
+    from the edge of the viewport before the corresponding scroll speed will be
+    used. Can be negative to start scrolling before the mouse extends over the
+    edge.
+-   `fastMouseStartDistance` (35): Same as above, for fast speed. Must be larger
+    than `slowMouseStartDistance`.
 
-Each of these options is configured with a default value specified in
-`ScrollBlockDragger.js`. When you call `updateEdgeScrollOptions`, only the
-properties actually included in the `options` parameter will be set. Any
-unspecified options will use the previously set value (where the initial value
-is from the default options). Therefore, do not pass in any options with
+Each of these options is configured with the default value shown, which is
+specified in `ScrollBlockDragger.js`. When you call `updateEdgeScrollOptions`,
+only the properties actually included in the `options` parameter will be set.
+Any unspecified options will use the previously set value (where the initial
+value is from the default options). Therefore, do not pass in any options with
 explicit `undefined` or `null` values. The plugin will break. Just leave them
 out of the object if you don't want to change the default value.
 
