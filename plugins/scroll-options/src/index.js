@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Blockly from 'blockly/blockly';
-
+import Blockly from 'blockly/core';
 import {EdgeScrollOptions, ScrollBlockDragger} from './ScrollBlockDragger';
 
 /**
@@ -90,6 +89,7 @@ export class ScrollOptions {
       return;
     }
     Blockly.browserEvents.unbind(this.wheelEvent_);
+    this.wheelEvent_ = null;
   }
 
   /**

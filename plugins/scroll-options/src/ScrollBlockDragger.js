@@ -488,3 +488,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.activeAutoScroll_ = null;
   }
 }
+
+Blockly.registry.register(Blockly.registry.Type.BLOCK_DRAGGER,
+    'ScrollBlockDragger', ScrollBlockDragger);
