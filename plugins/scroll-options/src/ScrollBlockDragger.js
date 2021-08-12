@@ -97,53 +97,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
   }
 
   /**
-   * Whether the behavior to scroll the workspace when a block is dragged near
-   * the edge is enabled.
-   * @type {boolean}
-   * @public
-   */
-  static edgeScrollEnabled = true;
-
-  /**
-   * Configuration options for the scroll-options settings.
-   * @type {!EdgeScrollOptions}
-   * @protected
-   */
-  static options_ = defaultOptions;
-
-  /**
-   * Update the scroll options. Only the properties actually included in the
-   * `options` parameter will be set. Any unspecified options will use the
-   * previously set value (where the initial value is from `defaultOptions`).
-   * Therefore, do not pass in any options with explicit `undefined` or `null`
-   * values. The plugin will break. Just leave them out of the object if you
-   * don't want to change the default value.
-   *
-   * This method is safe to call multiple times. Subsequent calls will add onto
-   * previous calls, not completely overwrite them. That is, if you call this
-   * with:
-   *
-   *     `updateOptions({fastMouseSpeed: 5});
-   *     updateOptions({slowMouseSpeed: 2});`.
-   *
-   * Then the final options used will include both `fastMouseSpeed: 5` and
-   * `slowMouseSpeed: 2` with all other options being the default values.
-   * @param {!EdgeScrollOptions} options Object containing any or all of
-   *     the available options. Any properties not present will use the existing
-   *     value.
-   */
-  static updateOptions(options) {
-    ScrollBlockDragger.options_ = {...ScrollBlockDragger.options_, ...options};
-  }
-
-  /**
-   * Resets the options object to the default options.
-   */
-  static resetOptions() {
-    ScrollBlockDragger.options_ = defaultOptions;
-  }
-
-  /**
    * Updates the location of the block that is being dragged.
    * @param {number} deltaX Horizontal offset in pixel units.
    * @param {number} deltaY Vertical offset in pixel units.
@@ -345,11 +298,11 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     const blockOverflows = this.getBlockBoundsOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = blockOverflows[direction];
-      if (overflow > ScrollBlockDragger.options_.slowBlockStartDistance) {
+      if (overflow > ScrollBlockDragger.options.slowBlockStartDistance) {
         const speed =
-            overflow > ScrollBlockDragger.options_.fastBlockStartDistance ?
-            ScrollBlockDragger.options_.fastBlockSpeed :
-            ScrollBlockDragger.options_.slowBlockSpeed;
+            overflow > ScrollBlockDragger.options.fastBlockStartDistance ?
+            ScrollBlockDragger.options.fastBlockSpeed :
+            ScrollBlockDragger.options.slowBlockSpeed;
         const scrollVector =
             this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
         candidateScrolls[direction].push(scrollVector);
@@ -375,11 +328,11 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     const mouseOverflows = this.getMouseOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = mouseOverflows[direction];
-      if (overflow > ScrollBlockDragger.options_.slowMouseStartDistance) {
+      if (overflow > ScrollBlockDragger.options.slowMouseStartDistance) {
         const speed =
-            overflow > ScrollBlockDragger.options_.fastMouseStartDistance ?
-            ScrollBlockDragger.options_.fastMouseSpeed :
-            ScrollBlockDragger.options_.slowMouseSpeed;
+            overflow > ScrollBlockDragger.options.fastMouseStartDistance ?
+            ScrollBlockDragger.options.fastMouseSpeed :
+            ScrollBlockDragger.options.slowMouseSpeed;
         const scrollVector =
             this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
         candidateScrolls[direction].push(scrollVector);
@@ -416,25 +369,25 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     // use a margin around the cursor rather than the height of the block.
     const blockHeight = blockBounds.bottom - blockBounds.top;
     if (blockHeight > viewMetrics.height *
-            ScrollBlockDragger.options_.oversizeBlockThreshold) {
+            ScrollBlockDragger.options.oversizeBlockThreshold) {
       blockBounds.top = Math.max(
           blockBounds.top,
-          mouse.y - ScrollBlockDragger.options_.oversizeBlockMargin);
+          mouse.y - ScrollBlockDragger.options.oversizeBlockMargin);
       blockBounds.bottom = Math.min(
           blockBounds.bottom,
-          mouse.y + ScrollBlockDragger.options_.oversizeBlockMargin);
+          mouse.y + ScrollBlockDragger.options.oversizeBlockMargin);
     }
 
     // Same logic, but for block width.
     const blockWidth = blockBounds.right - blockBounds.left;
     if (blockWidth > viewMetrics.width *
-            ScrollBlockDragger.options_.oversizeBlockThreshold) {
+            ScrollBlockDragger.options.oversizeBlockThreshold) {
       blockBounds.left = Math.max(
           blockBounds.left,
-          mouse.x - ScrollBlockDragger.options_.oversizeBlockMargin);
+          mouse.x - ScrollBlockDragger.options.oversizeBlockMargin);
       blockBounds.right = Math.min(
           blockBounds.right,
-          mouse.x + ScrollBlockDragger.options_.oversizeBlockMargin);
+          mouse.x + ScrollBlockDragger.options.oversizeBlockMargin);
     }
 
     // The coordinate system is negative in the top and left directions, and
@@ -488,6 +441,51 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.activeAutoScroll_ = null;
   }
 }
+
+/**
+ * Whether the behavior to scroll the workspace when a block is dragged near
+ * the edge is enabled.
+ * @type {boolean}
+ */
+ScrollBlockDragger.edgeScrollEnabled = true;
+
+/**
+ * Configuration options for the scroll-options settings.
+ * @type {!EdgeScrollOptions}
+ */
+ScrollBlockDragger.options = defaultOptions;
+
+/**
+ * Update the scroll options. Only the properties actually included in the
+ * `options` parameter will be set. Any unspecified options will use the
+ * previously set value (where the initial value is from `defaultOptions`).
+ * Therefore, do not pass in any options with explicit `undefined` or `null`
+ * values. The plugin will break. Just leave them out of the object if you
+ * don't want to change the default value.
+ *
+ * This method is safe to call multiple times. Subsequent calls will add onto
+ * previous calls, not completely overwrite them. That is, if you call this
+ * with:
+ *
+ *     `updateOptions({fastMouseSpeed: 5});
+ *     updateOptions({slowMouseSpeed: 2});`.
+ *
+ * Then the final options used will include both `fastMouseSpeed: 5` and
+ * `slowMouseSpeed: 2` with all other options being the default values.
+ * @param {!EdgeScrollOptions} options Object containing any or all of
+ *     the available options. Any properties not present will use the existing
+ *     value.
+ */
+ScrollBlockDragger.updateOptions = function(options) {
+  ScrollBlockDragger.options = {...ScrollBlockDragger.options, ...options};
+};
+
+/**
+ * Resets the options object to the default options.
+ */
+ScrollBlockDragger.resetOptions = function() {
+  ScrollBlockDragger.options = defaultOptions;
+};
 
 Blockly.registry.register(Blockly.registry.Type.BLOCK_DRAGGER,
     'ScrollBlockDragger', ScrollBlockDragger);
