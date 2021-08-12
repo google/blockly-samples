@@ -118,6 +118,8 @@ export function createPlayground(
         const errorModel = window.monaco.editor.createModel('');
         const editorXmlContextKey =
             editor.createContextKey('isEditorXml', true);
+        const editorJsonContextKey =
+            editor.createContextKey('isEditorJson', true);
 
         // Load / Save playground state.
         const playgroundState = new LocalStorageState(`playgroundState_${id}`, {
@@ -191,6 +193,7 @@ export function createPlayground(
           currentTab = tab;
           currentGenerate = tab.generate;
           const isXml = tab.state.name == 'XML';
+          const isJson = tab.state.name == 'JSON';
           editor.setModel(currentTab.state.model);
           editor.updateOptions({
             readOnly: !isXml,
@@ -203,6 +206,7 @@ export function createPlayground(
                   (t.tabElement == tab.tabElement) ? '#1E1E1E' : '#2D2D2D');
           // Update editor state.
           editorXmlContextKey.set(isXml);
+          editorJsonContextKey.set(isJson);
           playgroundState.set('activeTab', tab.state.name);
           playgroundState.save();
         };
@@ -242,29 +246,47 @@ export function createPlayground(
 
         // Register default tabs.
         const tabs = {
+          'JSON': registerGenerator(
+              'JSON',
+              'json',
+              (ws) => {
+                return JSON.stringify(
+                    Blockly.serialization.workspaces.save(ws), null, 2);
+              }
+          ),
           'XML': registerGenerator(
-              'XML', 'xml',
+              'XML',
+              'xml',
               (ws) => {
                 return Blockly.Xml.domToPrettyText(
                     Blockly.Xml.workspaceToDom(ws));
-              }),
+              }
+          ),
           'JavaScript': registerGenerator(
-              'JavaScript', 'javascript',
+              'JavaScript',
+              'javascript',
               (ws) => (BlocklyJS || Blockly.JavaScript).workspaceToCode(ws),
               true),
           'Python': registerGenerator(
-              'Python', 'python',
+              'Python',
+              'python',
               (ws) => (BlocklyPython || Blockly.Python).workspaceToCode(ws),
               true),
           'Dart': registerGenerator(
-              'Dart', 'dart',
-              (ws) => (BlocklyDart || Blockly.Dart).workspaceToCode(ws), true),
+              'Dart',
+              'dart',
+              (ws) => (BlocklyDart || Blockly.Dart).workspaceToCode(ws),
+              true),
           'Lua': registerGenerator(
-              'Lua', 'lua',
-              (ws) => (BlocklyLua || Blockly.Lua).workspaceToCode(ws), true),
+              'Lua',
+              'lua',
+              (ws) => (BlocklyLua || Blockly.Lua).workspaceToCode(ws),
+              true),
           'PHP': registerGenerator(
-              'PHP', 'php',
-              (ws) => (BlocklyPHP || Blockly.PHP).workspaceToCode(ws), true),
+              'PHP',
+              'php',
+              (ws) => (BlocklyPHP || Blockly.PHP).workspaceToCode(ws),
+              true),
         };
 
         // Handle tab click.
@@ -487,13 +509,23 @@ function registerTabButtons(editor, playground, tabButtons, updateEditor) {
  * @param {PlaygroundAPI} playground The current playground.
  */
 function registerEditorCommands(editor, playground) {
-  const load = () => {
-    if (playground.getCurrentTab().state.name !== 'XML') {
-      return;
-    }
+  const loadXml = () => {
     const xml = editor.getModel().getValue();
     const workspace = playground.getWorkspace();
-    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+    try {
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+    } catch(e) {
+      // If this fails that's fine.
+    }
+  };
+  const loadJson = () => {
+    const json = editor.getModel().getValue();
+    const workspace = playground.getWorkspace();
+    try {
+      Blockly.serialization.workspaces.load(JSON.parse(json), workspace);
+    } catch(e) {
+      // If this fails that's fine.
+    }
   };
   const save = () => {
     playground.getCurrentTab().generate();
@@ -509,7 +541,7 @@ function registerEditorCommands(editor, playground) {
     precondition: 'isEditorXml',
     contextMenuGroupId: 'playground',
     contextMenuOrder: 0,
-    run: load,
+    run: loadXml,
   });
   // Add XMl Export action (only available on the XML tab).
   editor.addAction({
@@ -523,6 +555,7 @@ function registerEditorCommands(editor, playground) {
     contextMenuOrder: 1,
     run: save,
   });
+  // Add Clean XML action (only available on thee JSON tab).
   editor.addAction({
     id: 'clean-xml',
     label: 'Clean XML',
@@ -536,6 +569,18 @@ function registerEditorCommands(editor, playground) {
           [], [{range: model.getFullModelRange(), text}], () => null);
       editor.setSelection(new window.monaco.Range(0, 0, 0, 0));
     },
+  });
+  // Add JSON Import action (only available on the XML tab).
+  editor.addAction({
+    id: 'import-json',
+    label: 'Import from JSON',
+    keybindings: [
+      window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.Enter,
+    ],
+    precondition: 'isEditorJson',
+    contextMenuGroupId: 'playground',
+    contextMenuOrder: 0,
+    run: loadJson,
   });
   // Add a Generator generate action.
   editor.addAction({
@@ -552,12 +597,11 @@ function registerEditorCommands(editor, playground) {
   document.addEventListener('keydown', (e) => {
     const ctrlCmd = e.metaKey || e.ctrlKey;
     if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.S) {
-      // Save.
       save();
       e.preventDefault();
     } else if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.ENTER) {
-      // Load.
-      load();
+      loadXml();
+      loadJson();
       e.preventDefault();
     }
   });
