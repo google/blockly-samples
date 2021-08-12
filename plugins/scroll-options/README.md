@@ -59,14 +59,14 @@ If you want to disable one (or both) behaviors from the start, you can pass
 options to `init`.
 
 ```js
-plugin.init({enableWheelScroll: false, enableEdgeScroll: false}):
+plugin.init({enableWheelScroll: false, enableEdgeScroll: false});
 ```
 
 If you want to supply custom configuration to the edge scrolling behavior, you
 can also pass in that option to `init`.
 
 ```js
-plugin.init({edgeScrollOptions: {slowBlockSpeed: 0.1}})
+plugin.init({edgeScrollOptions: {slowBlockSpeed: 0.1}});
 ```
 
 This can be combined with the previous example to disable wheel scroll at the
