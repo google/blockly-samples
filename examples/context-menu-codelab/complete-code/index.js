@@ -56,14 +56,12 @@ function registerHelpOption() {
     },
     // Use the workspace scope in the callback function to add a block to the workspace.
     callback: function(scope) {
-      const domText = Blockly.Xml.textToDom(`
-      <xml xmlns="https://developers.google.com/blockly/xml">
-        <block type="text">
-          <field name="TEXT">Now there is a block</field>
-        </block>
-        </xml>
-      `);
-      Blockly.Xml.domToWorkspace(domText, scope.workspace);
+      Blockly.serialization.blocks.load({
+        'type': 'text',
+        'fields': {
+          'TEXT': 'Now there is a block'
+        }
+      });
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     id: 'help_no_blocks',
