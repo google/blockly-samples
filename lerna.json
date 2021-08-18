@@ -11,5 +11,6 @@
     "publish": {
       "registry": "https://wombat-dressing-room.appspot.com"
     }
-  }
+  },
+  "ignoreChanges": ["plugins/**/package-lock.json"]
 }
