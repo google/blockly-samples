@@ -21,15 +21,15 @@
   }
 
   function loadWorkspace(button) {
-    let workspace = Blockly.getMainWorkspace();
-    workspace.clear();
-    if (button.blocklyXml) {
-      Blockly.Xml.domToWorkspace(button.blocklyXml, workspace);
+    const workspace = Blockly.getMainWorkspace();
+    if (button.blocklySave) {
+      Blockly.serialization.workspaces.load(button.blocklySave, workspace);
     }
   }
 
   function save(button) {
-    button.blocklyXml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+    button.blocklySave = Blockly.serialization.workspaces.save(
+        Blockly.getMainWorkspace());
   }
 
   function handleSave() {
@@ -65,8 +65,32 @@
 
   enableMakerMode();
 
+  const toolbox = {
+    'kind': 'flyoutToolbox',
+    'contents': [
+      {
+        'kind': 'block',
+        'type': 'controls_repeat_ext',
+        'inputs': {
+          'TIMES': {
+            'shadow': {
+              'type': 'math_number',
+              'fields': {
+                'NUM': 5,
+              },
+            },
+          },
+        },
+      },
+      {
+        'kind': 'block',
+        'type': 'play_sound',
+      },
+    ],
+  };
+
   Blockly.inject('blocklyDiv', {
-    toolbox: document.getElementById('toolbox'),
+    toolbox: toolbox,
     scrollbars: false,
   });
 })();
