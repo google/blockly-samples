@@ -31,7 +31,9 @@ const migrationMap = new Map();
 /**
  * Adds a migration to the collection of mmigrations.
  * @param {string} version The semver version this migration is associated with.
- * @param {string} name The name of the mmigration for use in -h and -l.
+ *    This should be the version that caused the breaking changes the callback
+ *    is fixing.
+ * @param {string} name The name of the migration for use in -h and -l.
  * @param {boolean} required Whether this is a required migration or not.
  * @param {string} description A description of what the migration does.
  * @param {function(function(...*))} callback A function that triggers the

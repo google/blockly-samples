@@ -1,7 +1,7 @@
 {
   "name": "@blockly/migrate",
   "version": "1.0.0",
-  "description": "A tool for migrating to newer blockly versions.",
+  "description": "A tool for migrating to newer Blockly versions.",
   "scripts": {
     "test": "mocha --ui tdd"
   },
@@ -13,7 +13,7 @@
     "migrate",
     "version"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-create#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-migrate#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
