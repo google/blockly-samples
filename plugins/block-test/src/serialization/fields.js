@@ -9,7 +9,16 @@
 import Blockly from 'blockly/core';
 
 
+/**
+ * Field that does not override any serialization hooks.
+ */
 class NoOverridesField extends Blockly.FieldLabel {
+  /**
+   * Constructor.
+   * @param {string=} value The value for the field to hold.
+   * @param {string=} cssClass The css class to apply to the field.
+   * @param {*} config The config for the field.
+   */
   constructor(value, cssClass, config) {
     super(value, cssClass, config);
 
@@ -18,6 +27,11 @@ class NoOverridesField extends Blockly.FieldLabel {
   }
 }
 
+/**
+ * Creates the field based on its JSON definition.
+ * @param {*} options Options for creating the field.
+ * @return {!NoOverridesField} The field that was created.
+ */
 NoOverridesField.fromJson = function(options) {
   const text = Blockly.utils.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
@@ -26,7 +40,16 @@ NoOverridesField.fromJson = function(options) {
 Blockly.fieldRegistry.register('field_no_overrides', NoOverridesField);
 
 
+/**
+ * Field that overrides XML serialization hooks.
+ */
 class XmlField extends Blockly.FieldLabel {
+  /**
+   * Constructor.
+   * @param {string=} value The value for the field to hold.
+   * @param {string=} cssClass The css class to apply to the field.
+   * @param {*} config The config for the field.
+   */
   constructor(value, cssClass, config) {
     super(value, cssClass, config);
 
@@ -34,16 +57,30 @@ class XmlField extends Blockly.FieldLabel {
     this.SERIALIZABLE = true;
   }
 
+  /**
+   * Saves the state of the field as XML.
+   * @param {!Element} element The element to add the state to.
+   * @return {!Element} The element with the state added.
+   */
   toXml(element) {
     element.setAttribute('value', this.getValue());
     return element;
   }
 
+  /**
+   * Applies the given state to the field.
+   * @param {!Element} element The element containing the state to apply.
+   */
   fromXml(element) {
     this.setValue(element.getAttribute('value'));
   }
 }
 
+/**
+ * Creates the field based on its JSON definition.
+ * @param {*} options Options for creating the field.
+ * @return {!XmlField} The field that was created.
+ */
 XmlField.fromJson = function(options) {
   const text = Blockly.utils.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
@@ -52,7 +89,16 @@ XmlField.fromJson = function(options) {
 Blockly.fieldRegistry.register('field_xml', XmlField);
 
 
+/**
+ * Field that overrides JSO serialization hooks.
+ */
 class JsoField extends Blockly.FieldLabel {
+  /**
+   * Constructor.
+   * @param {string=} value The value for the field to hold.
+   * @param {string=} cssClass The css class to apply to the field.
+   * @param {*} config The config for the field.
+   */
   constructor(value, cssClass, config) {
     super(value, cssClass, config);
 
@@ -60,17 +106,30 @@ class JsoField extends Blockly.FieldLabel {
     this.SERIALIZABLE = true;
   }
 
+  /**
+   * Saves the state of the field as a JSON serializable value.
+   * @return {*} The state of the field.
+   */
   saveState() {
     return {
       'value': this.getValue(),
     };
   }
 
+  /**
+   * Applies the given state to the field.
+   * @param {*} state The state to apply.
+   */
   loadState(state) {
     this.setValue(state['value']);
   }
 }
 
+/**
+ * Creates the field based on its JSON definition.
+ * @param {*} options Options for creating the field.
+ * @return {!JsoField} The field that was created.
+ */
 JsoField.fromJson = function(options) {
   const text = Blockly.utils.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
@@ -79,7 +138,16 @@ JsoField.fromJson = function(options) {
 Blockly.fieldRegistry.register('field_jso', JsoField);
 
 
+/**
+ * Field that overrides XML and JSO serialization hooks.
+ */
 class BothField extends Blockly.FieldLabel {
+  /**
+   * Constructor.
+   * @param {string=} value The value for the field to hold.
+   * @param {string=} cssClass The css class to apply to the field.
+   * @param {*} config The config for the field.
+   */
   constructor(value, cssClass, config) {
     super(value, cssClass, config);
 
@@ -87,26 +155,48 @@ class BothField extends Blockly.FieldLabel {
     this.SERIALIZABLE = true;
   }
 
+  /**
+   * Saves the state of the field as XML.
+   * @param {!Element} element The element to add the state to.
+   * @return {!Element} The element with the state added.
+   */
   toXml(element) {
     element.setAttribute('value', this.getValue());
     return element;
   }
 
+  /**
+   * Applies the given state to the field.
+   * @param {!Element} element The element containing the state to apply.
+   */
   fromXml(element) {
     this.setValue(element.getAttribute('value'));
   }
 
+  /**
+   * Saves the state of the field as a JSON serializable value.
+   * @return {*} The state of the field.
+   */
   saveState() {
     return {
       'value': this.getValue(),
     };
   }
 
+  /**
+   * Applies the given state to the field.
+   * @param {*} state The state to apply.
+   */
   loadState(state) {
     this.setValue(state['value']);
   }
 }
 
+/**
+ * Creates the field based on its JSON definition.
+ * @param {*} options Options for creating the field.
+ * @return {!BothField} The field that was created.
+ */
 BothField.fromJson = function(options) {
   const text = Blockly.utils.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
