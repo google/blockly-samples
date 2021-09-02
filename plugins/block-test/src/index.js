@@ -21,6 +21,8 @@ import {category as dragCategory, onInit as initDrag} from './drag';
 import {category as fieldsCategory, onInit as initFields} from './fields';
 import {category as mutatorsCategory, onInit as initMutators} from './mutators';
 import {category as styleCategory, onInit as initStyle} from './style';
+import {category as serializationCategory, onInit as initSerialization} from
+  './serialization/category';
 
 
 /**
@@ -35,6 +37,7 @@ export const toolboxTestBlocks = {
     fieldsCategory,
     mutatorsCategory,
     styleCategory,
+    serializationCategory,
   ],
 };
 
@@ -50,6 +53,7 @@ export function toolboxTestBlocksInit(workspace) {
   initFields(workspace);
   initMutators(workspace);
   initStyle(workspace);
+  initSerialization(workspace);
 
   const addAllBlocksToWorkspace = function(button) {
     const workspace = button.getTargetWorkspace();
