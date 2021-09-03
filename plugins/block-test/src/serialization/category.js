@@ -18,6 +18,15 @@ export const category = {
   'contents': [
     {
       'kind': 'BUTTON',
+      'text': 'add blocks to workspace',
+      'callbackkey': 'addAllBlocksToWorkspace',
+    },
+    {
+      'kind': 'SEP',
+      'gap': '8',
+    },
+    {
+      'kind': 'BUTTON',
       'text': 'randomize text',
       'callbackkey': 'randomizeText',
     },
@@ -38,7 +47,8 @@ export const category = {
       'type': 'test_field_serialization_both',
     },
     {
-      'kind': 'sep',
+      'kind': 'SEP',
+      'gap': 30,
     },
     {
       'kind': 'BLOCK',
@@ -60,6 +70,96 @@ export const category = {
         'itemCount': 2,
       },
     },
+    {
+      'kind': 'SEP',
+      'gap': 30,
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'text_print',
+      'inputs': {
+        'TEXT': {
+          'shadow': {
+            'type': 'test_field_serialization_no_overrides',
+          },
+        },
+      },
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'text_print',
+      'inputs': {
+        'TEXT': {
+          'shadow': {
+            'type': 'test_field_serialization_xml',
+          },
+        },
+      },
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'text_print',
+      'inputs': {
+        'TEXT': {
+          'shadow': {
+            'type': 'test_field_serialization_jso',
+          },
+        },
+      },
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'text_print',
+      'inputs': {
+        'TEXT': {
+          'shadow': {
+            'type': 'test_field_serialization_both',
+          },
+        },
+      },
+    },
+    {
+      'kind': 'SEP',
+      'gap': 30,
+    },
+    {
+      'kind': 'BLOCK',
+      'blockxml': '<block type="text_print">' +
+          '<value name="TEXT">' +
+          '<shadow type="test_extra_state_xml">' +
+          '<mutation items="2"></mutation>' +
+          '</shadow>' +
+          '</value>' +
+          '</block>',
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'text_print',
+      'inputs': {
+        'TEXT': {
+          'shadow': {
+            'type': 'test_extra_state_jso',
+            'extraState': {
+              'itemCount': 2,
+            },
+          },
+        },
+      },
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'text_print',
+      'inputs': {
+        'TEXT': {
+          'shadow': {
+            'type': 'test_extra_state_both',
+            'extraState': {
+              'itemCount': 2,
+            },
+          },
+        },
+      },
+    },
   ],
 };
 
@@ -69,14 +169,15 @@ export const category = {
  */
 export function onInit(workspace) {
   const randomizeText = function(button) {
+    const targetWorkspace = button.getTargetWorkspace();
     const blocks = [
-      ...button.workspace_.getBlocksByType(
+      ...targetWorkspace.getBlocksByType(
           'test_field_serialization_no_overrides'),
-      ...button.workspace_.getBlocksByType(
+      ...targetWorkspace.getBlocksByType(
           'test_field_serialization_xml'),
-      ...button.workspace_.getBlocksByType(
+      ...targetWorkspace.getBlocksByType(
           'test_field_serialization_jso'),
-      ...button.workspace_.getBlocksByType(
+      ...targetWorkspace.getBlocksByType(
           'test_field_serialization_both')];
     const possible = 'ABCDEF';
     for (let i = 0, block; block = blocks[i]; i++) {
