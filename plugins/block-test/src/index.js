@@ -59,9 +59,9 @@ export function toolboxTestBlocksInit(workspace) {
     const workspace = button.getTargetWorkspace();
     const blocks = button.workspace_.getTopBlocks();
     for (let i = 0, block; block = blocks[i]; i++) {
-      const xml = Blockly.utils.xml.createElement('xml');
-      xml.appendChild(Blockly.Xml.blockToDom(block));
-      Blockly.Xml.appendDomToWorkspace(xml, workspace);
+      const state = Blockly.serialization.blocks.save(
+          block, {addCoordinates: true});
+      Blockly.serialization.blocks.load(state, workspace);
     }
   };
   workspace.registerButtonCallback(
