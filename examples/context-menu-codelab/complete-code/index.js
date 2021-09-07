@@ -56,7 +56,7 @@ function registerHelpOption() {
     },
     // Use the workspace scope in the callback function to add a block to the workspace.
     callback: function(scope) {
-      Blockly.serialization.blocks.load({
+      Blockly.serialization.blocks.append({
         'type': 'text',
         'fields': {
           'TEXT': 'Now there is a block'

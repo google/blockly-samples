@@ -262,7 +262,7 @@ As an example, update the help item's `callback` to add a block to the workspace
 
 ```js
 callback: function(scope) {
-  Blockly.serialization.blocks.load({
+  Blockly.serialization.blocks.append({
     'type': 'text',
     'fields': {
       'TEXT': 'Now there is a block'
