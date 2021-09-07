@@ -30,7 +30,7 @@ suite('DisabledInteractionSerializer', function() {
       const state = Blockly.serialization.workspaces.save(this.workspace);
       chai.assert.isUndefined(state['disabledInteractions']);
     });
-  
+
     test('Not deletable', function() {
       const block = this.workspace.newBlock('controls_if');
       block.setDeletable(false);
@@ -40,9 +40,9 @@ suite('DisabledInteractionSerializer', function() {
       chai.assert.isUndefined(state['disabledInteractions']['notMovable']);
       chai.assert.isUndefined(state['disabledInteractions']['notEditable']);
       chai.assert.deepEqual(
-        state['disabledInteractions']['notDeletable'], [block.id])
+          state['disabledInteractions']['notDeletable'], [block.id]);
     });
-  
+
     test('Not movable', function() {
       const block = this.workspace.newBlock('controls_if');
       block.setMovable(false);
@@ -52,21 +52,21 @@ suite('DisabledInteractionSerializer', function() {
       chai.assert.isDefined(state['disabledInteractions']['notMovable']);
       chai.assert.isUndefined(state['disabledInteractions']['notEditable']);
       chai.assert.deepEqual(
-        state['disabledInteractions']['notMovable'], [block.id]);
+          state['disabledInteractions']['notMovable'], [block.id]);
     });
-  
+
     test('Not editable', function() {
       const block = this.workspace.newBlock('controls_if');
       block.setEditable(false);
       const state = Blockly.serialization.workspaces.save(this.workspace);
       chai.assert.isDefined(state['disabledInteractions']);
       chai.assert.isUndefined(state['disabledInteractions']['notDeltable']);
-      chai.assert.isUnDefined(state['disabledInteractions']['notMovable']);
+      chai.assert.isUndefined(state['disabledInteractions']['notMovable']);
       chai.assert.isDefined(state['disabledInteractions']['notEditable']);
       chai.assert.deepEqual(
-        state['disabledInteractions']['notEditable'], [block.id]);
+          state['disabledInteractions']['notEditable'], [block.id]);
     });
-  
+
     test('All', function() {
       const block = this.workspace.newBlock('controls_if');
       block.setDeletable(false);
@@ -74,15 +74,15 @@ suite('DisabledInteractionSerializer', function() {
       block.setEditable(false);
       const state = Blockly.serialization.workspaces.save(this.workspace);
       chai.assert.isDefined(state['disabledInteractions']);
-      chai.assert.isdefined(state['disabledInteractions']['notDeltable']);
+      chai.assert.isDefined(state['disabledInteractions']['notDeletable']);
       chai.assert.isDefined(state['disabledInteractions']['notMovable']);
       chai.assert.isDefined(state['disabledInteractions']['notEditable']);
       chai.assert.deepEqual(
-        state['disabledInteractions']['notDeletable'], [block.id]);
+          state['disabledInteractions']['notDeletable'], [block.id]);
       chai.assert.deepEqual(
-        state['disabledInteractions']['notMovable'], [block.id]);
+          state['disabledInteractions']['notMovable'], [block.id]);
       chai.assert.deepEqual(
-        state['disabledInteractions']['notEditable'], [block.id]);
+          state['disabledInteractions']['notEditable'], [block.id]);
     });
   });
 
@@ -94,11 +94,11 @@ suite('DisabledInteractionSerializer', function() {
           'blocks': [
             {
               'type': 'controls_if',
-              'id': 'test_id'
-            }
-          ]
-        }
-      });
+              'id': 'test_id',
+            },
+          ],
+        },
+      }, this.workspace);
       const block = this.workspace.getTopBlocks()[0];
       chai.assert.isTrue(block.isDeletable());
       chai.assert.isTrue(block.isMovable());
@@ -112,14 +112,14 @@ suite('DisabledInteractionSerializer', function() {
           'blocks': [
             {
               'type': 'controls_if',
-              'id': 'test_id'
-            }
-          ]
+              'id': 'test_id',
+            },
+          ],
         },
         'disabledInteractions': {
-          'notDeletable': ['test_id']
-        }
-      });
+          'notDeletable': ['test_id'],
+        },
+      }, this.workspace);
       const block = this.workspace.getTopBlocks()[0];
       chai.assert.isFalse(block.isDeletable());
       chai.assert.isTrue(block.isMovable());
@@ -133,14 +133,14 @@ suite('DisabledInteractionSerializer', function() {
           'blocks': [
             {
               'type': 'controls_if',
-              'id': 'test_id'
-            }
-          ]
+              'id': 'test_id',
+            },
+          ],
         },
         'disabledInteractions': {
-          'notMovable': ['test_id']
-        }
-      });
+          'notMovable': ['test_id'],
+        },
+      }, this.workspace);
       const block = this.workspace.getTopBlocks()[0];
       chai.assert.isTrue(block.isDeletable());
       chai.assert.isFalse(block.isMovable());
@@ -154,14 +154,14 @@ suite('DisabledInteractionSerializer', function() {
           'blocks': [
             {
               'type': 'controls_if',
-              'id': 'test_id'
-            }
-          ]
+              'id': 'test_id',
+            },
+          ],
         },
         'disabledInteractions': {
-          'notEditable': ['test_id']
-        }
-      });
+          'notEditable': ['test_id'],
+        },
+      }, this.workspace);
       const block = this.workspace.getTopBlocks()[0];
       chai.assert.isTrue(block.isDeletable());
       chai.assert.isTrue(block.isMovable());
@@ -175,20 +175,20 @@ suite('DisabledInteractionSerializer', function() {
           'blocks': [
             {
               'type': 'controls_if',
-              'id': 'test_id'
-            }
-          ]
+              'id': 'test_id',
+            },
+          ],
         },
         'disabledInteractions': {
           'notDeletable': ['test_id'],
           'notMovable': ['test_id'],
-          'notEditable': ['test_id']
-        }
-      });
+          'notEditable': ['test_id'],
+        },
+      }, this.workspace);
       const block = this.workspace.getTopBlocks()[0];
       chai.assert.isFalse(block.isDeletable());
       chai.assert.isFalse(block.isMovable());
       chai.assert.isFalse(block.isEditable());
-    })
+    });
   });
 });
