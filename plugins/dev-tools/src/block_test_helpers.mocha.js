@@ -172,7 +172,7 @@ export const runSerializationTestSuite = (testCases) => {
     return function() {
       let block;
       if (testCase.json) {
-        block = Blockly.serialization.blocks.load(
+        block = Blockly.serialization.blocks.append(
             testCase.json, this.workspace);
       } else {
         block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
@@ -189,7 +189,7 @@ export const runSerializationTestSuite = (testCases) => {
   const createXmlRoundTripTestCallback = (testCase) => {
     return function() {
       if (testCase.json) {
-        const block = Blockly.serialization.blocks.load(
+        const block = Blockly.serialization.blocks.append(
             testCase.json, this.workspace);
         const generatedJson = Blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
