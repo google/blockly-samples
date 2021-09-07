@@ -8,6 +8,3 @@
  * @fileoverview Requires for all of the migration files so we get side effects.
  */
 'use strict';
-
-require('./version7/required/json-hooks');
-require('./version7/required/renames');
