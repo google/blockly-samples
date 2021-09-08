@@ -13,6 +13,6 @@
 const {runCommand} = require('./utils');
 require('./migrations');
 
-runCommand(process.argv);
+runCommand(process.argv).then(() => console.log('really done'));
 
 process.exit(1);
