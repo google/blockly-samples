@@ -8,9 +8,7 @@ renamed.
 
 ## Example Usage
 ```
-npx @blockly/migrate 6 7.2
-npx @blockly/migrate 6 7.2 -r
-npx @blockly/migrate 6 7.2 -l blocks
+npx @blockly/migrate 7.20210930.0-renames
 ```
 
 Use the `--help` option for more info.
