@@ -8,3 +8,5 @@
  * @fileoverview Requires for all of the migration files so we get side effects.
  */
 'use strict';
+
+require('./7.20210930.0/json-hooks');

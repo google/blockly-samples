@@ -22,7 +22,6 @@ const command = new commander.Command(scriptName)
 
 const runCommand = async function(opts) {
   await command.parseAsync(opts);
-  console.log('done');
 };
 /** @package */
 exports.runCommand = runCommand;
@@ -35,17 +34,3 @@ const addMigration = function(version, name, description, configureCallback) {
 };
 /** @package */
 exports.addMigration = addMigration;
-
-function resolveAfter2Seconds() {
-  console.log('triggering');
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log('resolved');
-      resolve('resolved');
-    }, 2000);
-  });
-}
-
-addMigration('1', 'test', 'tes description', (command) => {
-  command.action(resolveAfter2Seconds);
-});
