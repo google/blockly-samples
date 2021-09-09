@@ -28,9 +28,11 @@ import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';
 ```
 
 ## API
-- `overrideOldBlockDefinitions`: Replaces the Blockly default blocks with the
+- ~~`overrideOldBlockDefinitions`: Replaces the Blockly default blocks with the
   dynamic connection blocks. This enables projects to use the dynamic block
-  plugin without changing existing XML.
+  plugin without changing existing XML.~~
+  Do not use this API unless you are already using it, because it does not
+  perform as intended. See #844 for context.
 
 ## XML
 ```xml
