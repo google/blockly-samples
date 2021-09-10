@@ -124,29 +124,8 @@ compiler.hooks.done.tap('done', async (stats) => {
     errors: true,
   });
 
-  if (isTypescript && statsData.errors.length === 0) {
-    const delayedMsg = setTimeout(() => {
-      console.log(chalk.yellow(
-          'Files successfully emitted, waiting for typecheck results...'));
-    }, 100);
-
-    const messages = await tsMessagesPromise;
-    clearTimeout(delayedMsg);
-
-    statsData.warnings.push(...messages.errors);
-    statsData.warnings.push(...messages.warnings);
-    stats.compilation.warnings.push(...messages.errors);
-    stats.compilation.warnings.push(...messages.warnings);
-
-    if (messages.errors.length > 0) {
-      devSocket.warnings(messages.errors);
-    } else if (messages.warnings.length > 0) {
-      devSocket.warnings(messages.warnings);
-    }
-  }
-
-  const formatWebpackMessage = (message) => {
-    return message.trim();
+  const formatWebpackMessage = (obj) => {
+    return obj.message.trim();
   };
 
   const messages = {
@@ -155,6 +134,25 @@ compiler.hooks.done.tap('done', async (stats) => {
     warnings: statsData.warnings
         .map(formatWebpackMessage),
   };
+
+  if (isTypescript && statsData.errors.length === 0) {
+    const delayedMsg = setTimeout(() => {
+      console.log(chalk.yellow(
+          'Files successfully emitted, waiting for typecheck results...'));
+    }, 100);
+
+    const tsMessages = await tsMessagesPromise;
+    clearTimeout(delayedMsg);
+
+    messages.warnings.push(...tsMessages.errors);
+    messages.warnings.push(...tsMessages.warnings);
+
+    if (tsMessages.errors.length > 0) {
+      devSocket.warnings(tsMessages.errors);
+    } else if (tsMessages.warnings.length > 0) {
+      devSocket.warnings(tsMessages.warnings);
+    }
+  }
 
   // Emit compile output.
   if (!messages.errors.length && !messages.warnings.length) {
@@ -173,12 +171,10 @@ compiler.hooks.done.tap('done', async (stats) => {
 
 // Read the webpack devServer configuration.
 const serverConfig = webpackDevServerConfig();
-const port = serverConfig.port;
-const host = serverConfig.host;
 
 // Start the dev server.
-const devServer = new WebpackDevServer(compiler, serverConfig);
-devServer.listen(port, host, (err) => {
+const devServer = new WebpackDevServer(serverConfig, compiler);
+devServer.startCallback((err) => {
   if (err) {
     return console.log(err);
   }
