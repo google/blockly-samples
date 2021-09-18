@@ -159,6 +159,8 @@ const textJoinHelper = function() {
   this.updateShape_(2);
 };
 
-Blockly.Extensions.unregister('text_join_mutator');
+if (Blockly.Extensions.isRegistered('text_join_mutator')) {
+  Blockly.Extensions.unregister('text_join_mutator');
+}
 Blockly.Extensions.registerMutator('text_join_mutator',
     textJoinMutator, textJoinHelper);
