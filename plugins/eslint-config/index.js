@@ -53,6 +53,9 @@ module.exports = {
     'no-warning-comments': 'warn',
     'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
     'no-invalid-this': 'off',
+    // valid-jsdoc does not work properly for interface methods.
+    // https://github.com/eslint/eslint/issues/9978
+    'valid-jsdoc': 'off',
 
     // https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules
     'require-jsdoc': 'off',
