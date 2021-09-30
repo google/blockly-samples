@@ -12,6 +12,10 @@ import Blockly from 'blockly/core';
 import {createPlusField} from './field_plus';
 import {createMinusField} from './field_minus';
 
+// Delete original block because there's no way to unregister it:
+// https://github.com/google/blockly-samples/issues/768#issuecomment-885663394
+delete Blockly.Blocks['lists_create_with'];
+
 /* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {

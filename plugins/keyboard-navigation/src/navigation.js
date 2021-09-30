@@ -1140,9 +1140,9 @@ export class Navigation {
         if (Blockly.Events.isEnabled() && !block.isShadow()) {
           Blockly.Events.fire(new Blockly.Events.BlockCreate(block));
         }
-        Blockly.Events.setGroup(false);
         isHandled = true;
       }
+      Blockly.Events.setGroup(false);
     }
     return isHandled;
   }

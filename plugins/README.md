@@ -67,6 +67,8 @@ Blockly plugin that makes connection checks strict.
 workspace search support.
 - [``@blockly/zoom-to-fit``](zoom-to-fit/): A Blockly plugin that adds a
 zoom-to-fit control to the workspace.
+- [``@blockly/plugin-scroll-options``](scroll-options/): A Blockly plugin that
+adds additional scrolling features.
 
 ### Other
 
