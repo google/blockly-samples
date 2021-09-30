@@ -536,9 +536,9 @@ function populateToolboxSidesOption(
  */
 function getThemes(defaultOptions) {
   let themes;
-  if (Blockly.registry && Blockly.registry.typeMap_['theme']) {
+  if (Blockly.registry && Blockly.registry.getAllItems('theme')) {
     // Using a version of Blockly that registers themes.
-    themes = Blockly.registry.typeMap_['theme'];
+    themes = Blockly.registry.getAllItems('theme');
   } else {
     // Fall back to a pre-set list of themes.
     themes = {
