@@ -17,66 +17,82 @@ const {
 } = commonTestHelpers;
 
 /**
- * Code generation test case.
- * @extends {TestCase}
+ * Code generation test case configuration.
+ * @implements {TestCase}
  * @record
  */
-export function CodeGenerationTestCase() {}
-CodeGenerationTestCase.prototype = new TestCase();
-/**
- * @type {string} The expected code.
- */
-CodeGenerationTestCase.prototype.expectedCode = '';
-/**
- * @type {number|undefined} The expected inner order.
- */
-CodeGenerationTestCase.prototype.expectedInnerOrder = undefined;
-/**
- * @type {boolean|undefined} Whether to use workspaceToCode instead of
- * blockToCode for test.
- */
-CodeGenerationTestCase.prototype.useWorkspaceToCode = false;
-/**
- * A function that creates the block for the test.
- * @param {!Blockly.Workspace} workspace The workspace context for this test.
- * @return {!Blockly.Block}
- */
-CodeGenerationTestCase.prototype.createBlock = undefined;
+export class CodeGenerationTestCase {
+  /**
+   * Class for a code generation test case.
+   */
+  constructor() {
+    /**
+     * @type {string} The expected code.
+     */
+    this.expectedCode;
+    /**
+     * @type {boolean|undefined} Whether to use workspaceToCode instead of
+     * blockToCode for test.
+     */
+    this.useWorkspaceToCode;
+    /**
+     * @type {number|undefined} The expected inner order.
+     */
+    this.expectedInnerOrder;
+  }
+
+  /**
+   * Creates the block to use for this test case.
+   * @param {!Blockly.Workspace} workspace The workspace context for this
+   *    test.
+   * @return {!Blockly.Block} The block to use for the test case.
+   */
+  createBlock(workspace) {}
+}
 
 /**
  * Code generation test suite.
- * @extends {TestSuite<CodeGenerationTestCase>}
+ * @extends {TestSuite<CodeGenerationTestCase, CodeGenerationTestSuite>}
  * @record
  */
-export function CodeGenerationTestSuite() {}
-CodeGenerationTestSuite.prototype = new TestSuite();
-/**
- * @type {!Blockly.Generator} The generator to use for running test cases.
- */
-CodeGenerationTestSuite.prototype.generator = undefined;
+export class CodeGenerationTestSuite {
+  /**
+   * Class for a code generation test suite.
+   */
+  constructor() {
+    /**
+     * @type {!Blockly.Generator} The generator to use for running test cases.
+     */
+    this.generator;
+  }
+}
 
 /**
  * Serialization test case.
- * @extends {TestCase}
+ * @implements {TestCase}
  * @record
  */
-export function SerializationTestCase() {}
-SerializationTestCase.prototype = new TestCase();
-/**
- * @type {string} The xml to use for test.
- */
-SerializationTestCase.prototype.xml = '';
-/**
- * @type {string|undefined} The expected xml after round trip. Provided if
- *    different from xml that is passed in.
- */
-SerializationTestCase.prototype.expectedXml = '';
-/**
- * A function that asserts tests has the expected structure after converting to
- *    block from given xml.
- * @param {!Blockly.Block} block The block to check.
- */
-SerializationTestCase.prototype.assertBlockStructure = undefined;
+export class SerializationTestCase {
+  /**
+   * Class for a block serialization test case.
+   */
+  constructor() {
+    /**
+     * @type {string} The block xml to use for test.
+     */
+    this.xml;
+    /**
+     * @type {string|undefined} The expected xml after round trip. Provided if
+     *    it different from xml that was passed in.
+     */
+    this.expectedXml;
+  }
+  /**
+   * Asserts that the block created from xml has the expected structure.
+   * @param {!Blockly.Block} block The block to check.
+   */
+  assertBlockStructure(block) {}
+}
 
 /**
  * Returns mocha test callback for code generation based on provided
@@ -170,7 +186,25 @@ export const runSerializationTestSuite = (testCases) => {
     });
     suite('xml round-trip', function() {
       setup(function() {
-        sinon.stub(Blockly.utils, 'genUid').returns('1');
+        // The genUid is undergoing change as part of the 2021Q3
+        // goog.module migration:
+        //
+        // - It is being moved from Blockly.utils to
+        //   Blockly.utils.idGenerator (which itself is being renamed
+        //   from IdGenerator).
+        // - For compatibility with changes to the module system (from
+        //   goog.provide to goog.module and in future to ES modules),
+        //   .genUid is now a wrapper around .TEST_ONLY.genUid, which
+        //   can be safely stubbed by sinon or other similar
+        //   frameworks in a way that will continue to work.
+        if (Blockly.utils.idGenerator &&
+            Blockly.utils.idGenerator.TEST_ONLY) {
+          sinon.stub(Blockly.utils.idGenerator.TEST_ONLY, 'genUid')
+              .returns('1');
+        } else {
+          // Fall back to stubbing original version on Blockly.utils.
+          sinon.stub(Blockly.utils, 'genUid').returns('1');
+        }
       });
 
       teardown(function() {

@@ -39,7 +39,7 @@ You will make all of your changes in the advanced playground, which you can find
 To start, create a file named `custom_generator.js` in the same folder as the playground.  Include it with a script tag.
 
 ```
-<script src="custom_generator.js"></script>
+<script src="./custom_generator.js"></script>
 ```
 
 Note: you must include your custom code *after* including the Blockly library.

@@ -1,62 +1,50 @@
 {
-    "name": "@blockly/block-plus-minus",
-    "version": "2.0.32",
-    "description": "A group of blocks that replace the built-in mutator UI with a +/- based UI.",
-    "scripts": {
-        "audit:fix": "blockly-scripts auditFix",
-        "build": "blockly-scripts build",
-        "clean": "blockly-scripts clean",
-        "lint": "blockly-scripts lint",
-        "predeploy": "blockly-scripts predeploy",
-        "prepublishOnly": "npm run clean && npm run build",
-        "start": "blockly-scripts start",
-        "test": "blockly-scripts test"
-    },
-    "main": "./dist/index.js",
-    "unpkg": "./dist/index.js",
-    "author": "Beka Westberg",
-    "keywords": [
-        "blockly",
-        "block",
-        "mutator"
-    ],
-    "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-plus-minus#readme",
-    "bugs": {
-        "url": "https://github.com/google/blockly-samples/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/google/blockly-samples.git",
-        "directory": "plugins/block-plus-minus"
-    },
-    "license": "Apache-2.0",
-    "directories": {
-        "dist": "dist",
-        "src": "src"
-    },
-    "files": [
-        "dist",
-        "src"
-    ],
-    "devDependencies": {
-        "@blockly/dev-scripts": "^1.2.6",
-        "@blockly/dev-tools": "^2.5.1",
-        "blockly": "^3.20200625.1",
-        "chai": "^4.2.0",
-        "mocha": "^7.1.0",
-        "sinon": "^9.0.1"
-    },
-    "peerDependencies": {
-        "blockly": "3.20202625.1 - 6"
-    },
-    "publishConfig": {
-        "access": "public",
-        "registry": "https://wombat-dressing-room.appspot.com"
-    },
-    "eslintConfig": {
-        "extends": "@blockly/eslint-config"
-    },
-    "engines": {
-        "node": ">=8.17.0"
-    }
+	"name": "@blockly/block-plus-minus",
+	"version": "2.0.39",
+	"description": "A group of blocks that replace the built-in mutator UI with a +/- based UI.",
+	"main": "./dist/index.js",
+	"unpkg": "./dist/index.js",
+	"author": "Beka Westberg",
+	"keywords": [
+		"blockly",
+		"block",
+		"mutator"
+	],
+	"homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-plus-minus#readme",
+	"bugs": {
+		"url": "https://github.com/google/blockly-samples/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/google/blockly-samples.git",
+		"directory": "plugins/block-plus-minus"
+	},
+	"license": "Apache-2.0",
+	"directories": {
+		"dist": "dist",
+		"src": "src"
+	},
+	"files": [
+		"dist",
+		"src"
+	],
+	"devDependencies": {
+		"blockly": "^3.20200625.1",
+		"chai": "^4.2.0",
+		"mocha": "^7.1.0",
+		"sinon": "^9.0.1"
+	},
+	"peerDependencies": {
+		"blockly": "3.20202625.1 - 6"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://wombat-dressing-room.appspot.com"
+	},
+	"eslintConfig": {
+		"extends": "@blockly/eslint-config"
+	},
+	"engines": {
+		"node": ">=8.17.0"
+	}
 }

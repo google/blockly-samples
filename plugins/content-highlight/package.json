@@ -1,68 +1,56 @@
 {
-  "name": "@blockly/workspace-content-highlight",
-  "version": "1.0.2",
-  "description": "A Blockly workspace plugin that adds a highlight around the content area.",
-  "scripts": {
-    "audit:fix": "blockly-scripts auditFix",
-    "build": "blockly-scripts build",
-    "clean": "blockly-scripts clean",
-    "lint": "blockly-scripts lint",
-    "predeploy": "blockly-scripts predeploy",
-    "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start",
-    "test": "blockly-scripts test"
-  },
-  "main": "./dist/index.js",
-  "module": "./src/index.js",
-  "unpkg": "./dist/index.js",
-  "author": "Blockly Team",
-  "keywords": [
-    "blockly",
-    "blockly-plugin",
-    "content",
-    "content-highlight",
-    "highlight",
-    "workspace"
-  ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/content-highlight#readme",
-  "bugs": {
-    "url": "https://github.com/google/blockly-samples/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/content-highlight"
-  },
-  "license": "Apache-2.0",
-  "directories": {
-    "dist": "dist",
-    "src": "src"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.5",
-    "@blockly/dev-tools": "^2.5.1",
-    "blockly": "^5.20210325.1"
-  },
-  "peerDependencies": {
-    "blockly": "5.20210325.0 - 6"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://wombat-dressing-room.appspot.com"
-  },
-  "eslintConfig": {
-    "extends": "@blockly/eslint-config"
-  },
-  "engines": {
-    "node": ">=8.17.0"
-  },
-  "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
-  ]
+	"name": "@blockly/workspace-content-highlight",
+	"version": "1.0.9",
+	"description": "A Blockly workspace plugin that adds a highlight around the content area.",
+	"main": "./dist/index.js",
+	"module": "./src/index.js",
+	"unpkg": "./dist/index.js",
+	"author": "Blockly Team",
+	"keywords": [
+		"blockly",
+		"blockly-plugin",
+		"content",
+		"content-highlight",
+		"highlight",
+		"workspace"
+	],
+	"homepage": "https://github.com/google/blockly-samples/tree/master/content-highlight#readme",
+	"bugs": {
+		"url": "https://github.com/google/blockly-samples/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/google/blockly-samples.git",
+		"directory": "plugins/content-highlight"
+	},
+	"license": "Apache-2.0",
+	"directories": {
+		"dist": "dist",
+		"src": "src"
+	},
+	"files": [
+		"dist",
+		"src"
+	],
+	"devDependencies": {
+		"blockly": "^5.20210325.1"
+	},
+	"peerDependencies": {
+		"blockly": "5.20210325.0 - 6"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://wombat-dressing-room.appspot.com"
+	},
+	"eslintConfig": {
+		"extends": "@blockly/eslint-config"
+	},
+	"engines": {
+		"node": ">=8.17.0"
+	},
+	"browserslist": [
+		"defaults",
+		"IE 11",
+		"IE_Mob 11"
+	]
 }
