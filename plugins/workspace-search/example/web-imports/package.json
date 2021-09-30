@@ -11,8 +11,8 @@
     "build": "build"
   },
   "dependencies": {
-    "@blockly/plugin-workspace-search": "1.20200312.2",
-    "blockly": "^3.20200123.1"
+    "@blockly/plugin-workspace-search": "^4",
+    "blockly": "6.20210701.0 - 7"
   },
   "devDependencies": {
     "source-map-loader": "^0.2.4",

@@ -45,10 +45,10 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.10",
     "@blockly/dev-tools": "^2.6.1",
-    "blockly": "^5.20210325.1"
+    "blockly": "^7.20210930.0-beta.4"
   },
   "peerDependencies": {
-    "blockly": "5.20210325.0 - 6"
+    "blockly": "5.20210325.0 - 7"
   },
   "publishConfig": {
     "access": "public",

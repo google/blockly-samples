@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "babel-eslint": "^10.1.0",
+    "blockly": "^7.20210930.0-beta.4",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^22.1.0"
   },

@@ -110,7 +110,7 @@ export class Navigation {
     this.workspaces.push(workspace);
     const flyout = workspace.getFlyout();
     workspace.getMarkerManager().registerMarker(
-        this.MARKER_NAME, new Blockly.Marker());
+        this.MARKER_NAME, new Blockly.Marker.Marker());
     workspace.addChangeListener(this.wsChangeWrapper);
 
     if (flyout) {
@@ -169,7 +169,7 @@ export class Navigation {
    * Gets the marker created for keyboard navigation.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get the marker
    *     from.
-   * @return {?Blockly.Marker} The marker created for keyboard navigation.
+   * @return {?Blockly.Marker.Marker} The marker created for keyboard navigation.
    * @protected
    */
   getMarker(workspace) {

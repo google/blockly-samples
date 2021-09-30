@@ -31,6 +31,7 @@
     "@babel/preset-typescript": "^7.9.0",
     "@blockly/eslint-config": "^2.1.4",
     "babel-loader": "^8.0.6",
+    "blockly": "^7.20210930.0-beta.4",
     "chalk": "^4.0.0",
     "eslint": "^7.15.0",
     "eslint-loader": "^4.0.0",

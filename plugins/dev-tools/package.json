@@ -57,7 +57,7 @@
     "blockly": "^7.20210930.0-beta.4"
   },
   "peerDependencies": {
-    "blockly": "7.20210930.0-beta.4"
+    "blockly": "^7.20210930.0-beta.4"
   },
   "publishConfig": {
     "access": "public",

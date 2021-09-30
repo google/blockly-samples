@@ -42,11 +42,11 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.10",
     "@blockly/dev-tools": "^2.6.1",
-    "blockly": "^5.20210325.1",
+    "blockly": "^7.20210930.0-beta.4",
     "typescript": "^4.0.5"
   },
   "peerDependencies": {
-    "blockly": "3 - 6"
+    "blockly": "3 - 7"
   },
   "publishConfig": {
     "access": "public",
