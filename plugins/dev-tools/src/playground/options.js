@@ -468,7 +468,7 @@ function populateRendererOption(folder, options, onChange) {
   // rendererMap_, whereas newer versions that use the global registry get their
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
-      (Blockly.registry && Blockly.registry.typeMap_['renderer']);
+      (Blockly.registry && Blockly.registry.getAllItems('renderer'));
   setTooltip(
       folder.add(options, 'renderer', Object.keys(renderers))
           .onChange((value) => onChange('renderer', value)),
@@ -536,9 +536,9 @@ function populateToolboxSidesOption(
  */
 function getThemes(defaultOptions) {
   let themes;
-  if (Blockly.registry && Blockly.registry.typeMap_['theme']) {
+  if (Blockly.registry && Blockly.registry.getAllItems('theme')) {
     // Using a version of Blockly that registers themes.
-    themes = Blockly.registry.typeMap_['theme'];
+    themes = Blockly.registry.getAllItems('theme');
   } else {
     // Fall back to a pre-set list of themes.
     themes = {
