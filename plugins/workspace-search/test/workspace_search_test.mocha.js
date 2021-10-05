@@ -279,8 +279,38 @@ suite('WorkspaceSearch', function() {
 
   suite('next()', function() {
     setup(function() {
+      Blockly.defineBlocksWithJsonArray([
+        {
+          'type': 'test_block',
+          'message0': 'test block',
+        },
+        {
+          'type': 'test_statement_block',
+          'message0': '%test %1',
+          'args0': [{
+            'type': 'input_value',
+            'name': 'INPUT0',
+            'check': 'String',
+          }],
+          'message1': '%block %1',
+          'args1': [{
+            'type': 'input_statement',
+            'name': 'INPUT1',
+          }],
+          'previousStatement': null,
+          'nextStatement': null,
+        },
+      ]);
+      this.testBlock = this.workspace.newBlock('test_block');
+      this.testStatementBlock = this.workspace.newBlock('test_statement_block');
       this.blocks = [this.testBlock, this.testStatementBlock];
       this.workspaceSearch.blocks_ = this.blocks;
+    });
+
+    teardown(function() {
+      delete Blockly.Blocks['test_block'];
+      delete Blockly.Blocks['test_statement_block'];
+      sinon.restore();
     });
 
     test('next() with unset current', function() {
@@ -305,8 +335,38 @@ suite('WorkspaceSearch', function() {
 
   suite('previous()', function() {
     setup(function() {
-      this.workspaceSearch.blocks_ =
-          [this.testBlock, this.testStatementBlock];
+      Blockly.defineBlocksWithJsonArray([
+        {
+          'type': 'test_block',
+          'message0': 'test block',
+        },
+        {
+          'type': 'test_statement_block',
+          'message0': '%test %1',
+          'args0': [{
+            'type': 'input_value',
+            'name': 'INPUT0',
+            'check': 'String',
+          }],
+          'message1': '%block %1',
+          'args1': [{
+            'type': 'input_statement',
+            'name': 'INPUT1',
+          }],
+          'previousStatement': null,
+          'nextStatement': null,
+        },
+      ]);
+      this.testBlock = this.workspace.newBlock('test_block');
+      this.testStatementBlock = this.workspace.newBlock('test_statement_block');
+      this.blocks = [this.testBlock, this.testStatementBlock];
+      this.workspaceSearch.blocks_ = this.blocks;
+    });
+
+    teardown(function() {
+      delete Blockly.Blocks['test_block'];
+      delete Blockly.Blocks['test_statement_block'];
+      sinon.restore();
     });
 
     test('previous() with unset current', function() {
