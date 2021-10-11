@@ -5,6 +5,7 @@
   <title>Blockly Demo: p5 Blocks</title>
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/javascript_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
   <script src="./node_modules/p5/lib/p5.min.js" ></script>
   <style>
@@ -30,20 +31,11 @@
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 
   <form>
-    <code>function(sketch) {<br>&nbsp;&nbsp;</code>
-    <textarea id="editor" style="height: 480px; width: 600px;"></textarea>
-    <br>
+    <input type="button" value="generate >>" id="generate"><br>
+    <code>function(sketch) {<br>&nbsp;</code>
+    <textarea id="code" style="height: 320px; width: 582px;"></textarea><br>
     <code>}</code><br>
     <input type="button" value="run >>" id="run">
-    <script>
-      const runButton = document.getElementById('run');
-      runButton.addEventListener('click', function run() {
-        const body = document.getElementById('editor').value;
-	const sketchFunction = eval(`(function(sketch){${body}})`);
-	const p5div = document.getElementById('p5sketch');
-	new p5(sketchFunction, p5div);
-      });
-    </script>
   </form>
 
   <div id="p5sketch">
@@ -113,9 +105,28 @@
 
 
 <script>
-  var demoWorkspace = Blockly.inject('blocklyDiv',
-      {media: 'https://unpkg.com/blockly/media/',
-        toolbox: document.getElementById('toolbox')});
+  const demoWorkspace = Blockly.inject('blocklyDiv', {
+    media: 'https://unpkg.com/blockly/media/',
+    toolbox: document.getElementById('toolbox')
+  });
+
+  const generateButton = document.getElementById('generate');
+  const codeArea = document.getElementById('code')
+  const runButton = document.getElementById('run');
+  const p5div = document.getElementById('p5sketch');
+
+  // Generate JavaScript code and display it in the textarea.
+  generateButton.addEventListener('click', function() {
+    Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+    const code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+    codeArea.value = code;
+  });
+  
+  // Eval and run generated code.
+  runButton.addEventListener('click', function() {
+    const code = `(function(sketch){${codeArea.value}})`;
+    new p5(eval(code), p5div);
+  });
 </script>
 
 </body>
