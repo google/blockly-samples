@@ -6,6 +6,7 @@
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
+  <script src="./node_modules/p5/lib/p5.min.js" ></script>
   <style>
     body {
       background-color: #fff;
@@ -27,6 +28,27 @@
   <p>&rarr; Based on the <a href="https://p5js.org/examples/simulate-snowflakes.html">Snowflake</a> example&hellip;</p>
 
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+  <form>
+    <code>function(sketch) {<br>&nbsp;&nbsp;</code>
+    <textarea id="editor" style="height: 480px; width: 600px;"></textarea>
+    <br>
+    <code>}</code><br>
+    <input type="button" value="run >>" id="run">
+    <script>
+      const runButton = document.getElementById('run');
+      runButton.addEventListener('click', function run() {
+        const body = document.getElementById('editor').value;
+	const sketchFunction = eval(`(function(sketch){${body}})`);
+	const p5div = document.getElementById('p5sketch');
+	new p5(sketchFunction, p5div);
+      });
+    </script>
+  </form>
+
+  <div id="p5sketch">
+    <!-- p5 instance will be created here -->
+  </div>
 </div>
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
   <category name="Loops" categorystyle="loop_category">
