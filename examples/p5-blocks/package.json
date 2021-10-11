@@ -1,0 +1,18 @@
+{
+  "name": "blockly-p5-blocks",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "p5 Blocks",
+    "description": "Recreate p5 example with Blockly.",
+    "files": [
+      "index.html",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js"
+    ]
+  },
+  "dependencies": {
+    "blockly": "^6.20210701.0"
+  }
+}
