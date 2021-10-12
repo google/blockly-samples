@@ -13,34 +13,71 @@
     body {
       background-color: #fff;
       font-family: sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     h1 {
       font-weight: normal;
       font-size: 140%;
     }
+    #blocklyDiv {
+      position: absolute;
+    }
+    #blocklyArea {
+      height: 100%;
+      width: 60%;
+    }
     .demo {
+      display: flex;
       padding: 1rem;
+      height: 100%;
+    }
+    .codeContainer {
+      display: flex;
+      flex-direction: column;
+      width: 40%;
+      height: 100%;
+      padding: 0.5rem;
+    }
+    .codeForm {
+      display: flex;
+      flex-direction: column;
+      height: 50%;
+      align-items: flex-start;
+    }
+    #code {
+      width: 100%;
+      height: 100%;
+    }
+    .p5sketch {
+      margin-top: 0.5rem;
+      flex: 1;
     }
   </style>
 </head>
 <body>
-<div class="demo">
   <p>This is a demo of p5 blocks.</p>
 
-  <p>&rarr; Based on the <a href="https://p5js.org/examples/simulate-snowflakes.html">Snowflake</a> example&hellip;</p>
+    <p>&rarr; Based on the <a href="https://p5js.org/examples/simulate-snowflakes.html">Snowflake</a> example&hellip;</p>
+<div class="demo">
+  
+    
+  <div id="blocklyArea">
+    <div id="blocklyDiv"></div>
+  </div>
 
-  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
-
-  <form>
-    <input type="button" value="generate >>" id="generate"><br>
-    <code>function(sketch) {<br>&nbsp;</code>
-    <textarea id="code" style="height: 320px; width: 582px;"></textarea><br>
-    <code>}</code><br>
-    <input type="button" value="run >>" id="run">
-  </form>
-
-  <div id="p5sketch">
-    <!-- p5 instance will be created here -->
+  <div class="codeContainer">
+    <form class="codeForm">
+      <input type="button" value="generate >>" id="generate"><br>
+      <code>function(sketch) {<br>&nbsp;</code>
+      <textarea id="code"></textarea><br>
+      <code>}</code><br>
+      <input type="button" value="run >>" id="run">
+    </form>
+    <div id="p5sketch">
+      <!-- p5 instance will be created here -->
+    </div>
   </div>
 </div>
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
@@ -262,18 +299,49 @@
 
 
 <script>
-  const demoWorkspace = Blockly.inject('blocklyDiv', {
+  const blocklyDiv = document.getElementById('blocklyDiv');
+  const blocklyArea = document.getElementById('blocklyArea');
+  const demoWorkspace = Blockly.inject(blocklyDiv, {
     media: 'https://unpkg.com/blockly/media/',
-    toolbox: document.getElementById('toolbox')
+    toolbox: document.getElementById('toolbox'),
+    zoom: {
+      controls: true,
+      wheel: true,
+    }
   });
+
+  // Dynamic-size Blockly
+  const onresize = function(e) {
+    // Compute the absolute coordinates and dimensions of blocklyArea.
+    let element = blocklyArea;
+    let x = 0;
+    let y = 0;
+    do {
+      x += element.offsetLeft;
+      y += element.offsetTop;
+      element = element.offsetParent;
+    } while (element);
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.left = x + 'px';
+    blocklyDiv.style.top = y + 'px';
+    blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+    blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+    Blockly.svgResize(demoWorkspace);
+  };
+  window.addEventListener('resize', onresize, false);
+  onresize();
+  Blockly.svgResize(demoWorkspace);
+
+
+const startDrawX = Blockly.mainWorkspace.getMetrics().viewWidth / 2;
   const startBlocks = `<xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
 <variables>
 <variable id="F@~^-bHSYZB|!r,d8KAv">sketch</variable>
 </variables>
-<block type="p5_setup" id="+h@z:yJxEBLT97zihM8z" x="15" y="20" deletable="false" max-instances="1">
+<block type="p5_setup" id="+h@z:yJxEBLT97zihM8z" x="15" y="10" deletable="false" max-instances="1">
 <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
 </block>
-<block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" x="300" y="20" deletable="false">
+<block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" x="${startDrawX}" y="10" deletable="false">
 <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
 </block>
 </xml>`;
