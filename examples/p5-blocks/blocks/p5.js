@@ -68,6 +68,16 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': '',
     'helpUrl': '',
   },
+  {
+    'type': 'p5_no_stroke',
+    'message0': 'No stroke',
+    'inputsInline': false,
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': 'Prevents drawing outlines around shapes',
+    'helpUrl': '',
+  },
 ]);
 
 Blockly.JavaScript['p5_setup'] = function(block) {
@@ -107,6 +117,12 @@ Blockly.JavaScript['p5_fill_color'] = function(block) {
       block, 'COLOUR', Blockly.JavaScript.ORDER_ATOMIC);
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.fill(${colour});\n`;
+  return code;
+};
+
+Blockly.JavaScript['p5_no_stroke'] = function(block) {
+  const canvasName = getCanvasName(block);
+  const code = `${canvasName}.noStroke();\n`;
   return code;
 };
 
