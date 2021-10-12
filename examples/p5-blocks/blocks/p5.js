@@ -58,6 +58,16 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': 'Creates an area to draw on',
     'helpUrl': '',
   },
+  {
+    'type': 'p5_fill_color',
+    'message0': 'Set shape fill to %1',
+    'args0': [{'type': 'input_value', 'name': 'COLOUR'}],
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
 ]);
 
 Blockly.JavaScript['p5_setup'] = function(block) {
@@ -90,6 +100,14 @@ Blockly.JavaScript['p5_create_canvas'] = function(block) {
   const height = Blockly.JavaScript.valueToCode(
       block, 'HEIGHT', Blockly.JavaScript.ORDER_ATOMIC);
   return `${canvasName}.createCanvas(${width}, ${height});\n`;
+};
+
+Blockly.JavaScript['p5_fill_color'] = function(block) {
+  const colour = Blockly.JavaScript.valueToCode(
+      block, 'COLOUR', Blockly.JavaScript.ORDER_ATOMIC);
+  const canvasName = getCanvasName(block);
+  const code = `${canvasName}.fill(${colour});\n`;
+  return code;
 };
 
 const getCanvasName = function(block) {

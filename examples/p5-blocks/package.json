@@ -2,6 +2,9 @@
   "name": "blockly-p5-blocks",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "start":  "http-server ./ -o index.html -c-1"
+  },
   "blocklyDemoConfig": {
     "title": "p5 Blocks",
     "description": "Recreate p5 example with Blockly.",
@@ -14,6 +17,7 @@
   },
   "dependencies": {
     "blockly": "^6.20210701.0",
-    "p5": "^1.4.0"
+    "p5": "^1.4.0",
+    "http-server": "^0.12.3"
   }
 }
