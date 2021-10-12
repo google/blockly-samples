@@ -44,6 +44,10 @@
   </div>
 </div>
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+  <category name="Logic" categorystyle="logic_category">
+    <block type="controls_if"></block>
+    <block type="logic_compare"></block>
+  </category>
   <category name="Loops" categorystyle="loop_category">
     <block type="controls_repeat_ext">
       <value name="TIMES">
@@ -83,18 +87,48 @@
         </shadow>
       </value>
     </block>
+    <block type="math_random_float">
+      <value name="FROM">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="TO">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block> 
+    <block type="math_constant"></block>
+    <block type="math_single"></block>
+    <block type="math_trig"></block>
+    <block type="math_arithmetic"></block>
   </category>
   <category name="Lists" categorystyle="list_category">
     <block type="lists_create_with">
       <mutation items="0"></mutation>
     </block>
     <block type="lists_create_with"></block>
+    <block type="lists_getIndex">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">list</field>
+        </block>
+      </value>      
+    </block>
     <block type="lists_setIndex">
       <value name="LIST">
         <block type="variables_get">
           <field name="VAR">list</field>
         </block>
       </value>
+    </block>
+    <block type="lists_indexOf">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">list</field>
+        </block>
+      </value>      
     </block>
   </category>
   <category name="Text" categorystyle="text_category">
