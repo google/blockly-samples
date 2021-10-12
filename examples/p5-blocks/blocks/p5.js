@@ -33,6 +33,31 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': '',
     'helpUrl': '',
   },
+  {
+    'type': 'p5_create_canvas',
+    'message0': 'Create canvas with %1 width %2 height %3',
+    'args0': [
+      {
+        'type': 'input_dummy',
+      },
+      {
+        'type': 'input_value',
+        'name': 'WIDTH',
+        'check': 'Number',
+      },
+      {
+        'type': 'input_value',
+        'name': 'HEIGHT',
+        'check': 'Number',
+      },
+    ],
+    'inputsInline': false,
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': 'Creates an area to draw on',
+    'helpUrl': '',
+  },
 ]);
 
 Blockly.JavaScript['p5_setup'] = function(block) {
@@ -56,6 +81,15 @@ Blockly.JavaScript['p5_background_color'] = function(block) {
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.background(${colour});\n`;
   return code;
+};
+
+Blockly.JavaScript['p5_create_canvas'] = function(block) {
+  const canvasName = getCanvasName(block);
+  const width = Blockly.JavaScript.valueToCode(
+      block, 'WIDTH', Blockly.JavaScript.ORDER_ATOMIC);
+  const height = Blockly.JavaScript.valueToCode(
+      block, 'HEIGHT', Blockly.JavaScript.ORDER_ATOMIC);
+  return `${canvasName}.createCanvas(${width}, ${height});\n`;
 };
 
 const getCanvasName = function(block) {
