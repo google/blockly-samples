@@ -33,6 +33,49 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': '',
     'helpUrl': '',
   },
+  {
+    'type': 'p5_coordinate',
+    'message0': 'x %1 , y %2',
+    'args0': [
+      {'type': 'input_value', 'name': 'X'},
+      {'type': 'input_value', 'name': 'Y'},
+    ],
+    'inputsInline': true,
+    'output': 'coordinate',
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
+  {
+    'type': 'p5_ellipse',
+    'message0':
+        'Create an ellipse with %1 center at x, y %2 width %3 height %4',
+    'args0': [
+      {
+        'type': 'input_dummy',
+      },
+      {
+        'type': 'input_value',
+        'name': 'CENTER',
+        'check': 'coordinate',
+      },
+      {
+        'type': 'input_value',
+        'name': 'WIDTH',
+        'check': 'Number',
+      },
+      {
+        'type': 'input_value',
+        'name': 'HEIGHT',
+        'check': 'Number',
+      },
+    ],
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
 ]);
 
 Blockly.JavaScript['p5_setup'] = function(block) {
@@ -55,6 +98,37 @@ Blockly.JavaScript['p5_background_color'] = function(block) {
       block, 'COLOUR', Blockly.JavaScript.ORDER_ATOMIC);
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.background(${colour});\n`;
+  return code;
+};
+
+Blockly.JavaScript['p5_coordinate'] = function(block) {
+  const valueX = Blockly.JavaScript.valueToCode(
+      block, 'X', Blockly.JavaScript.ORDER_NONE) ||
+      0;
+  const valueY = Blockly.JavaScript.valueToCode(
+      block, 'Y', Blockly.JavaScript.ORDER_NONE) ||
+      0;
+  const code = `{x: ${valueX}, y: ${valueY}}`;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['p5_ellipse'] = function(block) {
+  const center = Blockly.JavaScript.valueToCode(
+      block, 'CENTER', Blockly.JavaScript.ORDER_ATOMIC) ||
+      {x: 0, y: 0};
+  const width = Blockly.JavaScript.valueToCode(
+      block, 'WIDTH', Blockly.JavaScript.ORDER_ATOMIC) ||
+      0;
+  const height = Blockly.JavaScript.valueToCode(
+      block, 'HEIGHT', Blockly.JavaScript.ORDER_ATOMIC) ||
+      0;
+  const canvasName = getCanvasName(block);
+  var centerVar = Blockly.JavaScript.variableDB_.getDistinctName(
+    'center', Blockly.Variables.NAME_TYPE);
+  const code =
+      `var ${centerVar} = ${center};
+${canvasName}.ellipse(${centerVar}.x, ${centerVar}.y, ${width}, ${height})`;
   return code;
 };
 

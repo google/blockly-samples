@@ -157,13 +157,51 @@
   <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
   <sep></sep>
   <category name="p5" colour="50">
+    <block type="p5_coordinate">
+      <value name="X">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+      </value>
+      <value name="Y">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+      </value>
+    </block>
     <block type="p5_background_color">
       <value name="COLOUR">
-      <shadow type="colour_picker">
-      <field name="COLOUR">#ff0000</field>
-      </shadow>
+        <shadow type="colour_picker">
+          <field name="COLOUR">#ff0000</field>
+        </shadow>
       </value>
-      </block>
+    </block>
+    <block type="p5_ellipse">
+      <value name="CENTER">
+        <shadow type="p5_coordinate">
+          <value name="X">
+            <shadow type="math_number">
+              <field name="NUM">50</field>
+            </shadow>
+          </value>
+          <value name="Y">
+            <shadow type="math_number">
+              <field name="NUM">50</field>
+            </shadow>
+          </value>
+        </shadow>
+      </value>
+      <value name="HEIGHT">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+      <value name="WIDTH">
+        <shadow type="math_number">
+          <field name="NUM">20</field>
+        </shadow>
+      </value>
+    </block>
   </category>
 </xml>
 
