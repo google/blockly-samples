@@ -8,6 +8,7 @@
   <script src="./node_modules/blockly/javascript_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
   <script src="./node_modules/p5/lib/p5.min.js" ></script>
+  <script src="./blocks/p5.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -96,11 +97,76 @@
       </value>
     </block>
   </category>
+  <category name="Text" categorystyle="text_category">
+    <block type="text"></block>
+    <block type="text_print">
+      <value name="TEXT">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_prompt_ext">
+      <value name="TEXT">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="Colour" categorystyle="colour_category">
+    <block type="colour_picker"></block>
+    <block type="colour_random"></block>
+    <block type="colour_rgb">
+      <value name="RED">
+        <shadow type="math_number">
+          <field name="NUM">100</field>
+        </shadow>
+      </value>
+      <value name="GREEN">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+      </value>
+      <value name="BLUE">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="colour_blend">
+      <value name="COLOUR1">
+        <shadow type="colour_picker">
+          <field name="COLOUR">#ff0000</field>
+        </shadow>
+      </value>
+      <value name="COLOUR2">
+        <shadow type="colour_picker">
+          <field name="COLOUR">#3333ff</field>
+        </shadow>
+      </value>
+      <value name="RATIO">
+        <shadow type="math_number">
+          <field name="NUM">0.5</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
   <sep></sep>
   <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
   <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
   <sep></sep>
-  <category name="p5" colour="50"></category>
+  <category name="p5" colour="50">
+    <block type="p5_setup"></block>
+    <block type="p5_draw"></block>
+    <block type="p5_background_color">
+      <value name="COLOUR">
+      <shadow type="colour_picker">
+      <field name="COLOUR">#ff0000</field>
+      </shadow>
+      </value>
+      </block>
+  </category>
 </xml>
 
 
@@ -109,6 +175,7 @@
     media: 'https://unpkg.com/blockly/media/',
     toolbox: document.getElementById('toolbox')
   });
+  demoWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 
   const generateButton = document.getElementById('generate');
   const codeArea = document.getElementById('code')
@@ -124,7 +191,16 @@
   
   // Eval and run generated code.
   runButton.addEventListener('click', function() {
-    const code = `(function(sketch){${codeArea.value}})`;
+    // Use the canvas name from the first setup/draw block present, or else default.
+    const block = Blockly.mainWorkspace.getBlocksByType('p5_setup')[0] || Blockly.mainWorkspace.getBlocksByType('p5_draw')[0];
+    let canvasName = 'sketch';
+    if (block) {
+      // Need to init this to get the variable name.
+      Blockly.JavaScript.init(Blockly.mainWorkspace);
+      canvasName = Blockly.JavaScript.nameDB_.getName(
+        block.getFieldValue('CANVAS_NAME'), Blockly.Variables.NAME_TYPE);
+    }
+    const code = `(function(${canvasName}){${codeArea.value}})`;
     new p5(eval(code), p5div);
   });
 </script>
