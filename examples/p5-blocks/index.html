@@ -157,8 +157,6 @@
   <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
   <sep></sep>
   <category name="p5" colour="50">
-    <block type="p5_setup"></block>
-    <block type="p5_draw"></block>
     <block type="p5_background_color">
       <value name="COLOUR">
       <shadow type="colour_picker">
@@ -175,6 +173,18 @@
     media: 'https://unpkg.com/blockly/media/',
     toolbox: document.getElementById('toolbox')
   });
+  const startBlocks = `<xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
+<variables>
+<variable id="F@~^-bHSYZB|!r,d8KAv">sketch</variable>
+</variables>
+<block type="p5_setup" id="+h@z:yJxEBLT97zihM8z" x="15" y="20" deletable="false" max-instances="1">
+<field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
+</block>
+<block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" x="300" y="20" deletable="false">
+<field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
+</block>
+</xml>`;
+  Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(startBlocks), demoWorkspace);
   demoWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 
   const generateButton = document.getElementById('generate');
