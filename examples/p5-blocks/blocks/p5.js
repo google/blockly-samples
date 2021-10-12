@@ -69,6 +69,15 @@ Blockly.defineBlocksWithJsonArray([
     'helpUrl': '',
   },
   {
+    'type': 'p5_add_snowflake',
+    'message0': 'Add Snowflake',
+    'colour': 230,
+    'previousStatement': null,
+    'nextStatement': null,
+    'tooltip': '',
+    'helpUrl': '',
+  },
+  {
     'type': 'p5_no_stroke',
     'message0': 'No stroke',
     'inputsInline': false,
@@ -79,6 +88,40 @@ Blockly.defineBlocksWithJsonArray([
     'helpUrl': '',
   },
 ]);
+
+let snowflakes = [];
+
+function snowflake(sketch) {
+  // initialize coordinates
+  this.posX = 0;
+  this.posY = sketch.random(-50, 0);
+  this.initialangle = sketch.random(0, 2 * sketch.PI);
+  this.size = sketch.random(2, 5);
+
+  // radius of snowflake spiral
+  // chosen so the snowflakes are uniformly spread out in area
+  this.radius = sketch.sqrt(sketch.random(sketch.pow(sketch.width / 2, 2)));
+
+  this.update = function(time) {
+    // x position follows a circle
+    let w = 0.6; // angular speed
+    let angle = w * time + this.initialangle;
+    this.posX = sketch.width / 2 + this.radius * sketch.sin(angle);
+
+    // different size snowflakes fall at slightly different y speeds
+    this.posY += sketch.pow(this.size, 0.5);
+
+    // delete snowflake if past end of screen
+    if (this.posY > sketch.height) {
+      let index = snowflakes.indexOf(this);
+      snowflakes.splice(index, 1);
+    }
+  };
+
+  this.display = function() {
+    sketch.ellipse(this.posX, this.posY, this.size);
+  };
+}
 
 Blockly.JavaScript['p5_setup'] = function(block) {
   const canvasName = getCanvasName(block);
@@ -117,6 +160,11 @@ Blockly.JavaScript['p5_fill_color'] = function(block) {
       block, 'COLOUR', Blockly.JavaScript.ORDER_ATOMIC);
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.fill(${colour});\n`;
+  return code;
+};
+
+Blockly.JavaScript['p5_add_snowflake'] = function(block) {
+  const code = `snowflakes.push(new snowflake(sketch))`;
   return code;
 };
 
