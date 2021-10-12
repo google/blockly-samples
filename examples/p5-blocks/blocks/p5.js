@@ -225,9 +225,9 @@ ${canvasName}.ellipse(${centerVar}.x, ${centerVar}.y, ${width}, ${height});\n`;
 Blockly.JavaScript['p5_create_canvas'] = function(block) {
   const canvasName = getCanvasName(block);
   const width = Blockly.JavaScript.valueToCode(
-      block, 'WIDTH', Blockly.JavaScript.ORDER_ATOMIC);
+      block, 'WIDTH', Blockly.JavaScript.ORDER_NONE);
   const height = Blockly.JavaScript.valueToCode(
-      block, 'HEIGHT', Blockly.JavaScript.ORDER_ATOMIC);
+      block, 'HEIGHT', Blockly.JavaScript.ORDER_NONE);
   return `${canvasName}.createCanvas(${width}, ${height});\n`;
 };
 
