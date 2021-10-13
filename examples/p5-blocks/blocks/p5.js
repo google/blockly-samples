@@ -113,43 +113,80 @@ Blockly.defineBlocksWithJsonArray([
     'helpUrl': '',
   },
   {
-    'type': 'p5_add_snowflake',
-    'message0': 'Add Snowflake',
-    'colour': 230,
-    'previousStatement': null,
-    'nextStatement': null,
-    'tooltip': '',
-    'helpUrl': '',
+    "type": "create_snowflake",
+    "message0": "Add Snowflake",
+    "colour": 230,
+    'output': null,
+    "tooltip": "",
+    "helpUrl": ""
   },
   {
-    'type': 'p5_no_stroke',
-    'message0': 'No stroke',
-    'inputsInline': false,
-    'previousStatement': null,
-    'nextStatement': null,
-    'colour': 50,
-    'tooltip': 'Prevents drawing outlines around shapes',
-    'helpUrl': '',
+    "type": "display_snowflake",
+    "message0": "display %1 snowflake %2",
+    "args0": [
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_value",
+        "name": "Snowflake"
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 230,
+    "tooltip": "",
+    "helpUrl": ""
+  },
+  {
+    "type": "update_snowflake",
+    "message0": "Update %1 snowflake %2 snowflake list %3 time %4",
+    "args0": [
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_value",
+        "name": "snowflake"
+      },
+      {
+        "type": "input_value",
+        "name": "snowflake_list"
+      },
+      {
+        "type": "input_value",
+        "name": "time"
+      }
+    ],
+    "colour": 230,
+    "previousStatement": null,
+    "nextStatement": null,
+    "tooltip": "",
+    "helpUrl": ""
+  },
+  {
+    "type": "p5_get_frame_count",
+    "message0": "frame count",
+    "colour": 50,
+    'output': null,
+    "tooltip": "",
+    "helpUrl": ""
   },
 ]);
 
-const snowflakes = [];
-
-/**
- * @param sketch
- */
 function snowflake(sketch) {
   // initialize coordinates
   this.posX = 0;
   this.posY = sketch.random(-50, 0);
   this.initialangle = sketch.random(0, 2 * sketch.PI);
   this.size = sketch.random(2, 5);
+  this.name = sketch.random(0,100);
 
   // radius of snowflake spiral
   // chosen so the snowflakes are uniformly spread out in area
   this.radius = sketch.sqrt(sketch.random(sketch.pow(sketch.width / 2, 2)));
 
-  this.update = function(time) {
+  this.update = function(snowflakes, time) {
     // x position follows a circle
     const w = 0.6; // angular speed
     const angle = w * time + this.initialangle;
@@ -157,7 +194,7 @@ function snowflake(sketch) {
 
     // different size snowflakes fall at slightly different y speeds
     this.posY += sketch.pow(this.size, 0.5);
-
+    console.log(`name: ${this.name} position: ${this.posY}`);
     // delete snowflake if past end of screen
     if (this.posY > sketch.height) {
       const index = snowflakes.indexOf(this);
@@ -169,6 +206,8 @@ function snowflake(sketch) {
     sketch.ellipse(this.posX, this.posY, this.size);
   };
 }
+
+Blockly.JavaScript.addReservedWords('snowflake');
 
 Blockly.JavaScript['p5_setup'] = function(block) {
   const canvasName = getCanvasName(block);
@@ -247,6 +286,31 @@ Blockly.JavaScript['p5_add_snowflake'] = function(block) {
 Blockly.JavaScript['p5_no_stroke'] = function(block) {
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.noStroke();\n`;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['create_snowflake'] = function(block) {
+  var code = `new snowflake(sketch)`;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['p5_get_frame_count'] = function(block) {
+  var code = `sketch.frameCount`;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['update_snowflake'] = function(block) {
+  var value_snowflake = Blockly.JavaScript.valueToCode(block, 'snowflake', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_time = Blockly.JavaScript.valueToCode(block, 'time', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_snowflakes = Blockly.JavaScript.valueToCode(block, 'snowflake_list', Blockly.JavaScript.ORDER_ATOMIC);
+
+  var code = `${value_snowflake}.update(${value_snowflakes},${value_time});\n`;
+  return code;
+};
+
+Blockly.JavaScript['display_snowflake'] = function(block) {
+  var value_snowflake = Blockly.JavaScript.valueToCode(block, 'Snowflake', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = `${value_snowflake}.display();\n`;
   return code;
 };
 
