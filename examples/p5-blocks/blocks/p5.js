@@ -204,7 +204,6 @@ function snowflake(sketch) {
 
     // different size snowflakes fall at slightly different y speeds
     this.posY += sketch.pow(this.size, 0.5);
-    console.log(`name: ${this.name} position: ${this.posY}`);
     // delete snowflake if past end of screen
     if (this.posY > sketch.height) {
       const index = snowflakes.indexOf(this);

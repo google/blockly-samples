@@ -300,7 +300,135 @@
   </category>
 </xml>
 
-<script>
+  <xml id="snowflakeBlocks">
+    <variables>
+      <variable id="F@~^-bHSYZB|!r,d8KAv">sketch</variable>
+      <variable id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</variable>
+      <variable id="TOH3k_md|]N]RTS8Qw1W">snowflake</variable>
+    </variables>
+    <block type="p5_setup" id="+h@z:yJxEBLT97zihM8z" deletable="false" x="0" y="0">
+      <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
+      <statement name="SETUP">
+        <block type="p5_background_color" id="QkM3mj=848t/VTxfgP9n">
+          <value name="COLOUR">
+            <shadow type="colour_picker" id="-2:*UfCz-xTSFsl`kv8L">
+              <field name="COLOUR">#000099</field>
+            </shadow>
+          </value>
+          <next>
+            <block type="variables_set" id="0f*EDJH~J{^2w#yk1M~:">
+              <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
+              <value name="VALUE">
+                <block type="lists_create_with" id="bK6vZ^R-w*7rWK%i*].A">
+                  <mutation items="0" />
+                </block>
+              </value>
+            </block>
+          </next>
+        </block>
+      </statement>
+    </block>
+    <block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" deletable="false" x="0" y="89">
+      <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
+      <statement name="DRAW">
+        <block type="p5_background_color" id="]mLt9-ET-:N@%U25zU6^">
+          <value name="COLOUR">
+            <shadow type="colour_picker" id="TeV6s=tDDZPC4s3(]t5s">
+              <field name="COLOUR">#000099</field>
+            </shadow>
+          </value>
+          <next>
+            <block type="controls_repeat_ext" id=":35=5__=6=b7aHILyBAr">
+              <value name="TIMES">
+                <shadow type="math_number" id="e)#uD_3a|L*m!^d6[d$?">
+                  <field name="NUM">5</field>
+                </shadow>
+                <block type="math_random_int" id="@ZXYsXq%,}GAZ`-y{Ua^">
+                  <value name="FROM">
+                    <shadow type="math_number" id="LViZ.*rFdW#G?{M;T~(]">
+                      <field name="NUM">1</field>
+                    </shadow>
+                  </value>
+                  <value name="TO">
+                    <shadow type="math_number" id="{Bq=Q[)9%{L[IhBLclA:">
+                      <field name="NUM">5</field>
+                    </shadow>
+                  </value>
+                </block>
+              </value>
+              <statement name="DO">
+                <block type="lists_setIndex" id="=ffl5LKP$eW+J|V5TI]_">
+                  <mutation at="false" />
+                  <field name="MODE">INSERT</field>
+                  <field name="WHERE">LAST</field>
+                  <value name="LIST">
+                    <block type="variables_get" id="ZHve/(/F%=MT6lV[9y_}">
+                      <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
+                    </block>
+                  </value>
+                  <value name="TO">
+                    <block type="create_snowflake" id="*EKC8G+tPw-qm.NyJscQ" />
+                  </value>
+                </block>
+              </statement>
+              <next>
+                <block type="controls_forEach" id="!w#sTp(8ECR$_89im;n^">
+                  <field name="VAR" id="TOH3k_md|]N]RTS8Qw1W">snowflake</field>
+                  <value name="LIST">
+                    <block type="variables_get" id="J0t3z.a*U*}K_v2W.]J:">
+                      <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
+                    </block>
+                  </value>
+                  <statement name="DO">
+                    <block type="update_snowflake" id="=8dB!|-b3$gYUi)+4%na">
+                      <value name="snowflake">
+                        <block type="variables_get" id="$gjhaXg){$UFy}sQSNYi">
+                          <field name="VAR" id="TOH3k_md|]N]RTS8Qw1W">snowflake</field>
+                        </block>
+                      </value>
+                      <value name="snowflake_list">
+                        <block type="variables_get" id="=MnIx[OQa(GmB[2I]~ry">
+                          <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
+                        </block>
+                      </value>
+                      <value name="time">
+                        <block type="math_arithmetic" id="O=PF$Y)z:.jB[75fKPaM">
+                          <field name="OP">DIVIDE</field>
+                          <value name="A">
+                            <shadow type="math_number" id="_G;-_%eiN@Q8?*+?pey~">
+                              <field name="NUM">1</field>
+                            </shadow>
+                            <block type="p5_get_frame_count" id="C)SM3w+QeBKNlA/.S[*x" />
+                          </value>
+                          <value name="B">
+                            <shadow type="math_number" id="Fg8NNaFsfh.+oD2@z]cn">
+                              <field name="NUM">60</field>
+                            </shadow>
+                          </value>
+                        </block>
+                      </value>
+                      <next>
+                        <block type="display_snowflake" id="XV)irb^)2739M#ASSgSp">
+                          <value name="Snowflake">
+                            <block type="variables_get" id=",[g,ap0|p,1cv:o8G`lD">
+                              <field name="VAR" id="TOH3k_md|]N]RTS8Qw1W">snowflake</field>
+                            </block>
+                          </value>
+                        </block>
+                      </next>
+                    </block>
+                  </statement>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </statement>
+    </block>
+  </xml>
+
+
+  <script>
   const blocklyDiv = document.getElementById('blocklyDiv');
   const blocklyArea = document.getElementById('blocklyArea');
   const demoWorkspace = Blockly.inject(blocklyDiv, {
@@ -348,6 +476,8 @@ const startDrawX = Blockly.mainWorkspace.getMetrics().viewWidth / 2;
 </block>
 </xml>`;
   Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(startBlocks), demoWorkspace);
+  // TODO: Uncomment this line below.
+  // Blockly.Xml.domToWorkspace(document.getElementById('snowflakeBlocks'), demoWorkspace);
   demoWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 
   const generateButton = document.getElementById('generate');
