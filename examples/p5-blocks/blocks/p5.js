@@ -172,6 +172,16 @@ Blockly.defineBlocksWithJsonArray([
     "tooltip": "",
     "helpUrl": ""
   },
+  {
+    'type': 'p5_no_stroke',
+    'message0': 'No stroke',
+    'inputsInline': false,
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': 'Prevents drawing outlines around shapes',
+    'helpUrl': '',
+  },
 ]);
 
 function snowflake(sketch) {
@@ -208,6 +218,7 @@ function snowflake(sketch) {
 }
 
 Blockly.JavaScript.addReservedWords('snowflake');
+Blockly.JavaScript.addReservedWords('snowflakes');
 
 Blockly.JavaScript['p5_setup'] = function(block) {
   const canvasName = getCanvasName(block);
