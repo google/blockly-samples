@@ -9,6 +9,7 @@
   <script src="./node_modules/blockly/msg/en.js"></script>
   <script src="./node_modules/p5/lib/p5.min.js" ></script>
   <script src="./blocks/p5.js"></script>
+  <script src="./drawing.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -57,9 +58,12 @@
   </style>
 </head>
 <body>
-  <p>This is a demo of p5 blocks.</p>
+  <p>This is a demo of <a href="https://p5js.org/examples">p5 blocks</a>.</p>
 
-    <p>&rarr; Based on the <a href="https://p5js.org/examples/simulate-snowflakes.html">Snowflake</a> example&hellip;</p>
+  <div class="buttons">
+    <button id="snowflakeCode">Snowflakes</button>
+    <button id="drawingCode">Drawing</button>
+  </div>
 <div class="demo">
   
     
@@ -293,12 +297,18 @@
       </value>
     </block>
     <block type="p5_no_stroke"></block>
+    <block type="p5_mouse_x"></block>
+    <block type="p5_mouse_y"></block>
+    <block type="p5_mouse_is_pressed"></block>
+    <block type="p5_mouse_clicked_event"></block>
+    <block type="p5_dist"></block>
     <block type="create_snowflake"></block>
     <block type="display_snowflake"></block>
     <block type="update_snowflake"></block>
     <block type="p5_get_frame_count"></block>
   </category>
 </xml>
+
 
   <xml id="snowflakeBlocks" style="display: none;">
     <variables>
@@ -479,38 +489,50 @@
   onresize();
   Blockly.svgResize(demoWorkspace);
 
-
-const startDrawX = Blockly.mainWorkspace.getMetrics().viewWidth / 2;
-  const startBlocks = `<xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
-<variables>
-<variable id="F@~^-bHSYZB|!r,d8KAv">sketch</variable>
-</variables>
-<block type="p5_setup" id="+h@z:yJxEBLT97zihM8z" x="15" y="10" deletable="false" max-instances="1">
-<field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
-</block>
-<block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" x="${startDrawX}" y="10" deletable="false">
-<field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
-</block>
-</xml>`;
   // Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(startBlocks), demoWorkspace);
-  // TODO: Uncomment this line below.
-  Blockly.Xml.domToWorkspace(document.getElementById('snowflakeBlocks'), demoWorkspace);
+  
   demoWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 
   const generateButton = document.getElementById('generate');
   const codeArea = document.getElementById('code')
   const runButton = document.getElementById('run');
+  const snowflakeButton = document.getElementById('snowflakeCode');
+  const drawingButton = document.getElementById('drawingCode');
   const p5div = document.getElementById('p5sketch');
 
+  loadSnowflakeCode();
+
   // Generate JavaScript code and display it in the textarea.
-  generateButton.addEventListener('click', function() {
+  
+  function generateCode() {
     Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
     const code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
     codeArea.value = code;
-  });
+  };
+  generateButton.addEventListener('click', generateCode);
+
+
+  function loadSnowflakeCode() {
+    demoWorkspace.clear();
+    codeArea.value = '';
+    Blockly.Xml.domToWorkspace(document.getElementById('snowflakeBlocks'), demoWorkspace);
+    generateCode();
+    run();
+  }
+  snowflakeButton.addEventListener('click', loadSnowflakeCode);
+
+  function loadDrawingCode() {
+    demoWorkspace.clear();
+    codeArea.value = '';
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(drawingXml), demoWorkspace);
+    generateCode();
+    run();
+  }
+  drawingButton.addEventListener('click', loadDrawingCode);
+
   
   // Eval and run generated code.
-  runButton.addEventListener('click', function() {
+  function run() {
     p5div.innerHTML = '';
     // Use the canvas name from the first setup/draw block present, or else default.
     const block = Blockly.mainWorkspace.getBlocksByType('p5_setup')[0] || Blockly.mainWorkspace.getBlocksByType('p5_draw')[0];
@@ -523,7 +545,8 @@ const startDrawX = Blockly.mainWorkspace.getMetrics().viewWidth / 2;
     }
     const code = `(function(${canvasName}){${codeArea.value}})`;
     new p5(eval(code), p5div);
-  });
+  };
+  runButton.addEventListener('click', run);
 </script>
 
 </body>
