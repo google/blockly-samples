@@ -309,26 +309,43 @@
     <block type="p5_setup" id="+h@z:yJxEBLT97zihM8z" deletable="false" x="0" y="0">
       <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
       <statement name="SETUP">
-        <block type="p5_background_color" id="QkM3mj=848t/VTxfgP9n">
-          <value name="COLOUR">
-            <shadow type="colour_picker" id="-2:*UfCz-xTSFsl`kv8L">
-              <field name="COLOUR">#000099</field>
+        <block type="p5_create_canvas" id="tZ[WU*WNv)-%2[sFfdX+">
+          <value name="WIDTH">
+            <shadow type="math_number" id="x-ik?|.-!F5L5bX(jRd4">
+              <field name="NUM">500</field>
+            </shadow>
+          </value>
+          <value name="HEIGHT">
+            <shadow type="math_number" id="Q|tb?oGw4bTaT_:}P!:A">
+              <field name="NUM">500</field>
             </shadow>
           </value>
           <next>
-            <block type="variables_set" id="0f*EDJH~J{^2w#yk1M~:">
-              <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
-              <value name="VALUE">
-                <block type="lists_create_with" id="bK6vZ^R-w*7rWK%i*].A">
-                  <mutation items="0" />
-                </block>
+            <block type="p5_background_color" id="QkM3mj=848t/VTxfgP9n">
+              <value name="COLOUR">
+                <shadow type="colour_picker" id="-2:*UfCz-xTSFsl`kv8L">
+                  <field name="COLOUR">#000099</field>
+                </shadow>
               </value>
+              <next>
+                <block type="variables_set" id="0f*EDJH~J{^2w#yk1M~:">
+                  <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
+                  <value name="VALUE">
+                    <block type="lists_create_with" id="bK6vZ^R-w*7rWK%i*].A">
+                      <mutation items="0"></mutation>
+                    </block>
+                  </value>
+                  <next>
+                    <block type="p5_no_stroke" id="6A1GEzO]oVSAo4YiI[YJ"></block>
+                  </next>
+                </block>
+              </next>
             </block>
           </next>
         </block>
       </statement>
     </block>
-    <block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" deletable="false" x="0" y="89">
+    <block type="p5_draw" id="XHpxneww)x,b)Nt^1HlE" deletable="false" x="243" y="206">
       <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
       <statement name="DRAW">
         <block type="p5_background_color" id="]mLt9-ET-:N@%U25zU6^">
@@ -358,16 +375,16 @@
               </value>
               <statement name="DO">
                 <block type="lists_setIndex" id="=ffl5LKP$eW+J|V5TI]_">
-                  <mutation at="false" />
+                  <mutation at="false"></mutation>
                   <field name="MODE">INSERT</field>
                   <field name="WHERE">LAST</field>
                   <value name="LIST">
-                    <block type="variables_get" id="ZHve/(/F%=MT6lV[9y_}">
+                    <block type="variables_get" id="CAR-uQ5d8^]~/V[2jqsU">
                       <field name="VAR" id="A?:Lus]Zj[R6H-py`[#P">snowflake_list</field>
                     </block>
                   </value>
                   <value name="TO">
-                    <block type="create_snowflake" id="*EKC8G+tPw-qm.NyJscQ" />
+                    <block type="create_snowflake" id="w.i$vSO^lgmGz@/vm8at"></block>
                   </value>
                 </block>
               </statement>
@@ -398,7 +415,7 @@
                             <shadow type="math_number" id="_G;-_%eiN@Q8?*+?pey~">
                               <field name="NUM">1</field>
                             </shadow>
-                            <block type="p5_get_frame_count" id="C)SM3w+QeBKNlA/.S[*x" />
+                            <block type="p5_get_frame_count" id="C)SM3w+QeBKNlA/.S[*x"></block>
                           </value>
                           <value name="B">
                             <shadow type="math_number" id="Fg8NNaFsfh.+oD2@z]cn">
@@ -425,7 +442,7 @@
         </block>
       </statement>
     </block>
-  </xml>
+    </xml></xml>
 
 
   <script>
@@ -475,9 +492,9 @@ const startDrawX = Blockly.mainWorkspace.getMetrics().viewWidth / 2;
 <field name="CANVAS_NAME" id="F@~^-bHSYZB|!r,d8KAv">sketch</field>
 </block>
 </xml>`;
-  Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(startBlocks), demoWorkspace);
+  // Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(startBlocks), demoWorkspace);
   // TODO: Uncomment this line below.
-  // Blockly.Xml.domToWorkspace(document.getElementById('snowflakeBlocks'), demoWorkspace);
+  Blockly.Xml.domToWorkspace(document.getElementById('snowflakeBlocks'), demoWorkspace);
   demoWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 
   const generateButton = document.getElementById('generate');

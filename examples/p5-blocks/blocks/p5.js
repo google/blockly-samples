@@ -290,13 +290,13 @@ Blockly.JavaScript['p5_fill_color'] = function(block) {
 
 Blockly.JavaScript['p5_add_snowflake'] = function(block) {
   const code = `snowflakes.push(new snowflake(sketch))`;
-  return code;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 Blockly.JavaScript['p5_no_stroke'] = function(block) {
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.noStroke();\n`;
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return code;
 };
 
 Blockly.JavaScript['create_snowflake'] = function(block) {
