@@ -217,6 +217,22 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': '',
     'helpUrl': '',
   },
+  {
+    'type': 'p5_width',
+    'message0': 'canvas width',
+    'output': null,
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
+  {
+    'type': 'p5_height',
+    'message0': 'canvas height',
+    'output': null,
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
 ]);
 
 /**
@@ -411,10 +427,16 @@ Blockly.JavaScript['p5_dist'] = function(block) {
   return canvas.dist(pointA.x, pointA.y, pointB.x, pointB.y);
 }`]);
 
-  
-
   const code = `${functionName}(${pointA}, ${pointB}, ${canvasName})`;
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['p5_width'] = function(block) {
+  return ['sketch.width', Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['p5_height'] = function(block) {
+  return ['sketch.height', Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 const getCanvasName = function(block) {

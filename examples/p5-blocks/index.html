@@ -309,6 +309,8 @@
     <block type="display_snowflake"></block>
     <block type="update_snowflake"></block>
     <block type="p5_get_frame_count"></block>
+    <block type="p5_width"></block>
+    <block type="p5_height"></block>
   </category>
 </xml>
 <xml id="snowflakeBlocks" style="display: none;">
@@ -609,8 +611,19 @@
                                       <block type="math_arithmetic" id="OOtK:nosr9TjRbv=QinP">
                                         <field name="OP">POWER</field>
                                         <value name="A">
-                                          <block type="math_number" id="leUWjrJN}1.lIsT9evJ=">
-                                            <field name="NUM">250</field>
+                                          <block type="math_arithmetic" id="9yriSydQ~Um%qQhJS8P(">
+                                            <field name="OP">DIVIDE</field>
+                                            <value name="A">
+                                              <shadow type="math_number" id="Qvl0|D;eBtM+Hge8p9dH">
+                                                <field name="NUM">1</field>
+                                              </shadow>
+                                              <block type="p5_width" id="DL1cQ7DH~+7pAh3hAqi7"></block>
+                                            </value>
+                                            <value name="B">
+                                              <shadow type="math_number" id="`6~QW.hbzYJ]wV0qv6`1">
+                                                <field name="NUM">2</field>
+                                              </shadow>
+                                            </value>
                                           </block>
                                         </value>
                                         <value name="B">
@@ -637,7 +650,7 @@
       </block>
     </statement>
   </block>
-  <block type="procedures_defnoreturn" id="[@`*7#x-+1;6vQ;7v^97" x="0" y="953">
+  <block type="procedures_defnoreturn" id="[@`*7#x-+1;6vQ;7v^97" x="0" y="964">
     <mutation>
       <arg name="time" varid="d5.x0Ahi/e1!e,dO*KK]"></arg>
     </mutation>
@@ -779,6 +792,20 @@
                               <shadow type="math_number" id="3[m1-y@6K)GY%5bxhQ*4">
                                 <field name="NUM">250</field>
                               </shadow>
+                              <block type="math_arithmetic" id=")JzFnjapJ|B*J882v|k^">
+                                <field name="OP">DIVIDE</field>
+                                <value name="A">
+                                  <shadow type="math_number" id="i6uoRN}+ngB%=$Q@^Dtk">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                  <block type="p5_width" id=",WL}7nZSRfl[yY#OWJqk"></block>
+                                </value>
+                                <value name="B">
+                                  <shadow type="math_number" id=":Z27hb7V7%4~3RKD#WX`">
+                                    <field name="NUM">2</field>
+                                  </shadow>
+                                </value>
+                              </block>
                             </value>
                             <value name="B">
                               <shadow type="math_number" id="{RyF$!er401co*7]mZ{A">
@@ -898,7 +925,7 @@
       </block>
     </statement>
   </block>
-  <block type="procedures_defnoreturn" id="`lN0.A9veA{T@Ut,@7Ur" x="0" y="1308">
+  <block type="procedures_defnoreturn" id="`lN0.A9veA{T@Ut,@7Ur" x="0" y="1319">
     <field name="NAME">clean up snowflakes</field>
     <comment pinned="false" h="80" w="160">Describe this function...</comment>
     <statement name="STACK">
@@ -959,9 +986,7 @@
                   </block>
                 </value>
                 <value name="B">
-                  <block type="math_number" id="jS}t@:C7_sHs[W/EeIE%">
-                    <field name="NUM">500</field>
-                  </block>
+                  <block type="p5_height" id="g1Ndj0:2yu.cJk;YbPLD"></block>
                 </value>
               </block>
             </value>
@@ -1055,7 +1080,7 @@
       </block>
     </statement>
   </block>
-  <block type="procedures_defnoreturn" id="R~b81BauUMI}UmpKj)I|" x="0" y="1686">
+  <block type="procedures_defnoreturn" id="R~b81BauUMI}UmpKj)I|" x="0" y="1697">
     <field name="NAME">render snowflakes</field>
     <comment pinned="false" h="80" w="160">Describe this function...</comment>
     <statement name="STACK">
