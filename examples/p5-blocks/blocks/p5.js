@@ -29,7 +29,7 @@ Blockly.defineBlocksWithJsonArray([
     'args0': [{'type': 'input_value', 'name': 'COLOUR'}],
     'previousStatement': null,
     'nextStatement': null,
-    'colour': 50,
+    'colour': 100,
     'tooltip': '',
     'helpUrl': '',
   },
