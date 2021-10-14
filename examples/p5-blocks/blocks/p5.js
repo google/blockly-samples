@@ -78,6 +78,37 @@ Blockly.defineBlocksWithJsonArray([
     'helpUrl': '',
   },
   {
+    'type': 'p5_rect',
+    'message0':
+        'Create a rectangle with %1 upper left corner at x, y %2 width %3 height %4',
+    'args0': [
+      {
+        'type': 'input_dummy',
+      },
+      {
+        'type': 'input_value',
+        'name': 'CORNER',
+        'check': 'coordinate',
+      },
+      {
+        'type': 'input_value',
+        'name': 'WIDTH',
+        'check': 'Number',
+      },
+      {
+        'type': 'input_value',
+        'name': 'HEIGHT',
+        'check': 'Number',
+      },
+    ],
+    'inputsInline': false,
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
+  {
     'type': 'p5_create_canvas',
     'message0': 'Create canvas with %1 width %2 height %3',
     'args0': [
@@ -105,6 +136,16 @@ Blockly.defineBlocksWithJsonArray([
   {
     'type': 'p5_fill_color',
     'message0': 'Set shape fill to %1',
+    'args0': [{'type': 'input_value', 'name': 'COLOUR'}],
+    'previousStatement': null,
+    'nextStatement': null,
+    'colour': 50,
+    'tooltip': '',
+    'helpUrl': '',
+  },
+  {
+    'type': 'p5_stroke_color',
+    'message0': 'Set shape stroke to %1',
     'args0': [{'type': 'input_value', 'name': 'COLOUR'}],
     'previousStatement': null,
     'nextStatement': null,
@@ -325,6 +366,24 @@ ${canvasName}.ellipse(${centerVar}.x, ${centerVar}.y, ${width}, ${height});\n`;
   return code;
 };
 
+Blockly.JavaScript['p5_rect'] = function(block) {
+  const corner = Blockly.JavaScript.valueToCode(
+      block, 'CORNER', Blockly.JavaScript.ORDER_NONE) ||
+      {x: 0, y: 0};
+  const width = Blockly.JavaScript.valueToCode(
+      block, 'WIDTH', Blockly.JavaScript.ORDER_NONE) ||
+      0;
+  const height = Blockly.JavaScript.valueToCode(
+      block, 'HEIGHT', Blockly.JavaScript.ORDER_NONE) ||
+      0;
+  const canvasName = getCanvasName(block);
+  const cornerVar = Blockly.JavaScript.variableDB_.getDistinctName(
+      'corner', Blockly.Variables.NAME_TYPE);
+  const code = `var ${cornerVar} = ${corner};
+${canvasName}.rect(${cornerVar}.x, ${cornerVar}.y, ${width}, ${height});\n`;
+  return code;
+};
+
 Blockly.JavaScript['p5_create_canvas'] = function(block) {
   const canvasName = getCanvasName(block);
   const width = Blockly.JavaScript.valueToCode(
@@ -339,6 +398,14 @@ Blockly.JavaScript['p5_fill_color'] = function(block) {
       block, 'COLOUR', Blockly.JavaScript.ORDER_NONE);
   const canvasName = getCanvasName(block);
   const code = `${canvasName}.fill(${colour});\n`;
+  return code;
+};
+
+Blockly.JavaScript['p5_stroke_color'] = function(block) {
+  const colour = Blockly.JavaScript.valueToCode(
+      block, 'COLOUR', Blockly.JavaScript.ORDER_NONE);
+  const canvasName = getCanvasName(block);
+  const code = `${canvasName}.stroke(${colour});\n`;
   return code;
 };
 
