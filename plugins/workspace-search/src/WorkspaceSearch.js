@@ -30,7 +30,7 @@ export class WorkspaceSearch {
      * @type {!Blockly.WorkspaceSvg}
      * @private
      */
-    this.workspace_ = workspace;
+    this.workspace_ = workspace;   
 
     /**
      * The unique id for this component.
