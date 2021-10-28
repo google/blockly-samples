@@ -248,7 +248,8 @@ Add a script tag to `index.html` to include your new block definition:
 <script src="scripts/sound_blocks.js"></script>
 ```
 
-Your block definitions must come after importing Blockly, since you will use Blockly functions in this file.
+Your block definitions must come after importing Blockly and before the other imports, since you will use Blockly functions in this file, and you will be using functions from this file in later files.
+
 
 ### Add the sound block to the toolbox
 
