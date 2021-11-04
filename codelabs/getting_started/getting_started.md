@@ -282,33 +282,41 @@ You now have a Blockly workspace that appears when editing a button. The user ca
 
 Once the button behavior is defined by the user, it needs to be saved for later use. The saved code must be per button, since buttons can be programmed to play different sounds.
 
-### Add the save method
+### Finish the save method
 
-Open `scripts/main.js`. Add the following code to the `save()` method:
+Open `scripts/main.js`. The method `handleSave` has been started, but doesn't actually save anything yet.
+
+Add the following code to the `handleSave()` method:
 
 ```js
-button.blocklyXml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+currentButton.blocklyXml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
 ```
 
-`workspaceToDom` takes the Blockly workspace, exports it to an XML DOM structure and stores it in a `blocklyXml` property on the button. This way the exported XML for the block sequence gets associated with a particular button.
+`workspaceToDom` takes the Blockly workspace, exports it to an XML DOM structure and stores it in a `blocklyXml` property on the button. This way the exported XML for the block sequence gets associated with a particular button. Note that `currentButton` is a top-level variable that stores the most recently edited button.
 
 ### Add the load method
 
 Similarly, when a user opens the editor, the blocks previously associated with this button should get loaded into the workspace.
 
-In the `scripts/main.js `file, add `loadWorkspace` function:
+In the `scripts/main.js `file, add `loadMainWorkspace` helper function:
 
-```
-function loadWorkspace(button) {
+```js
+/**
+ * Loads the main Blockly workspace from provided XML.
+ * If there is no XML provided, it clears the workspace.
+ */
+function loadMainWorkspace(blocklyXml) {
   let workspace = Blockly.getMainWorkspace();
   workspace.clear();
-  if (button.blocklyXml) {
-    Blockly.Xml.domToWorkspace(button.blocklyXml, workspace);
+  if (blocklyXml) {
+    Blockly.Xml.domToWorkspace(blocklyXml, workspace);
   }
 }
 ```
 
-It clears the workspace from any blocks and then loads blocks from the XML stored on the button that was clicked.
+Blockly supports multiple workspaces, but for this project we only need to handle one at a time, so we use the default `Blockly.getMainWorkspace()`.
+
+It clears the workspace from any blocks and then loads blocks from the provided XML, if there is any.
 
 Call this function from `enableBlocklyMode`:
 
@@ -360,18 +368,59 @@ For more information on generators, read the [generating code](https://developer
 
 Most of your work so far has been in the **Edit** mode. Now you will update the **Play** mode to actually execute the custom code associated with each block.
 
-The function `handlePlay` is already defined in `scripts/main.js`, but it's empty. Load the workspace content associated with the pressed button:
+### Converting from XML
+
+In `scripts/main.js` we've already implemented a method that saves the Blockly blocks to XML, but we still need to convert that XML to Javascript code that the browser can run. Let's fill in the helper function `convertToCode`:
 
 ```js
-loadWorkspace(event.target);
+/** Converts Blockly XML to Javascript code. */
+function convertToCode(blocklyXml) {
+  // TODO: Implement this function
+}
+```
+
+To convert the XML, we'll need to load the block data into a Blockly workspace object (not to be confused with the block editing UI window).
+
+```js
+loadMainWorkspace(blocklyXml);
 ```
 
 Next, you need to generate the code out of that workspace, which you can do with a call to `Blockly.JavaScript.workspaceToCode`.
 
-The user's code will consist of many `MusicMaker.queueSound` calls. At the end of our generated script, add `MusicMaker.play `call to play all the sounds added to the queue.
+```js
+return Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+```
+
+All together, the function should look like this:
+```js
+/** Converts Blockly XML to Javascript code. */
+function convertToCode(blocklyXml) {
+  loadMainWorkspace(blocklyXml);
+  return Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+}
+```
+
+### Running the Javascript code
+
+The Javascript code we generate will run when one of the buttons is clicked while in the "play" mode. The click listener `handlePlay` is already defined in `scripts/main.js`, but it's empty. 
 
 ```js
-let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+/** Handles clicks on the main buttons when the page is in play mode. */
+function handlePlay(event) {
+  // TODO: Add code for playing sound.
+}
+```
+
+Start by calling our helper function to generate the user's code out of the block data stored in that button:
+
+```js
+const button = event.target;
+let code = convertToCode(button.blocklyXml);
+```
+
+The user's code from the block data will consist of many `MusicMaker.queueSound` calls. However, we still need to trigger MusicMaker to play those sounds. At the end of our generated script, add `MusicMaker.play `call to play all the sounds added to the queue.
+
+```js
 code += 'MusicMaker.play();';
 ```
 
@@ -385,14 +434,13 @@ try {
 }
 ```
 
-### The full code
-
 The end result should look like this:
 
 ```js
+/** Handles clicks on the main buttons when the page is in play mode. */
 function handlePlay(event) {
-  loadWorkspace(event.target);
-  let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+  const button = event.target;
+  let code = convertToCode(button.blocklyXml);
   code += 'MusicMaker.play();';
   try {
     eval(code);
