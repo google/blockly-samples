@@ -37,7 +37,7 @@
    * Loads the main Blockly workspace from provided XML.
    * If there is no XML provided, it clears the workspace.
    */
-   function loadMainWorkspace(blocklyXml) {
+  function loadMainWorkspace(blocklyXml) {
     let workspace = Blockly.getMainWorkspace();
     workspace.clear();
     if (blocklyXml) {

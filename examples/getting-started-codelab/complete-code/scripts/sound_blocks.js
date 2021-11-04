@@ -5,7 +5,6 @@
  */
 
 Blockly.defineBlocksWithJsonArray([
-  // Block for colour picker.
   {
     "type": "play_sound",
     "message0": "Play %1",
