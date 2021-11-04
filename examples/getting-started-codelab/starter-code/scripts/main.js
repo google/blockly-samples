@@ -53,7 +53,6 @@
   function enableBlocklyMode(e) {
     document.body.setAttribute('mode', 'blockly');
     currentButton = e.target;
-    loadMainWorkspace(currentButton.blocklyXml);
   }
 
   document.querySelector('#edit').addEventListener('click', enableEditMode);
