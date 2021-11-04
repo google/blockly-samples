@@ -320,18 +320,19 @@ It clears the workspace from any blocks and then loads blocks from the provided 
 
 Call this function from `enableBlocklyMode`:
 
-```
+```js
+/** Navigates to the Blockly editor to edit a button's code. */
 function enableBlocklyMode(e) {
   ...
-  loadWorkspace(currentButton);
+  loadMainWorkspace(currentButton.blocklyXml);
 }
 ```
 
-Now, test the code. Edit the workspace for one of the buttons, add some blocks, save it, and reopen it. The workspace should still contain the blocks you added.
+Now, test the code. Open the editor for one of the buttons, add some blocks, save it, and reopen it. The editor should still contain the blocks you added.
 
 ## Generate JavaScript code
 
-Now that each button can be configured with its own Blockly workspace, the next thing we want to do is to generate JavaScript code from each workspace.
+Now that each button can be configured with a set of Blockly blocks, the next thing we want to do is to generate JavaScript code from each workspace.
 
 This generated code will be run by the browser, effectively executing the blocks set up in the Blockly workspace.
 
