@@ -214,6 +214,23 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
       ],
     },
   },
+  {
+    'label': 'custom colours',
+    'args': {
+      'primaryColour': '#783105',
+      'borderColour': '#d6a587',
+      'options': [
+        ['A', 'A'],
+        ['B', 'B'],
+        ['C', 'C'],
+        ['D', 'D'],
+        ['E', 'E'],
+        ['F', 'F'],
+        ['G', 'G'],
+        ['H', 'H'],
+      ],
+    },
+  },
 ]);
 
 /**
