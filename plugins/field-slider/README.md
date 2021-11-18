@@ -27,6 +27,7 @@ npm install @blockly/field-slider --save
 ```
 
 ## Usage
+This field is an extension of the Blockly.FieldNumber field. See the [Blockly.FieldNumber documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation) on what parameters and configurations this field supports.
 
 ### JavaScript
 ```js
