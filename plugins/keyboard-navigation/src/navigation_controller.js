@@ -712,7 +712,7 @@ export class NavigationController {
       },
       callback: (workspace) => {
         const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
-        Blockly.hideChaff();
+        workspace.hideChaff();
         Blockly.copy(sourceBlock);
       },
     };
