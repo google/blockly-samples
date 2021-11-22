@@ -44,6 +44,14 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     if (config && config['columns']) {
       this.setColumnsInternal_(config['columns']);
     }
+
+    if (config && config['primaryColour']) {
+      this.primaryColour = config['primaryColour'];
+    }
+
+    if (config && config['borderColour']) {
+      this.borderColour = config['borderColour'];
+    }
   }
 
   /**
@@ -93,13 +101,16 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   showEditor_(e = undefined) {
     super.showEditor_(e);
 
-    // Grid dropdown is always colored.
-    const primaryColour = (this.sourceBlock_.isShadow()) ?
+    // Dropdown should match block colour unless other colours are specified
+    // in the config.
+    const blockPrimaryColour = (this.sourceBlock_.isShadow()) ?
         this.sourceBlock_.getParent().getColour() :
         this.sourceBlock_.getColour();
-    const borderColour = (this.sourceBlock_.isShadow()) ?
+    const blockBorderColour = (this.sourceBlock_.isShadow()) ?
         this.sourceBlock_.getParent().style.colourTertiary :
         this.sourceBlock_.style.colourTertiary;
+    const primaryColour = this.primaryColour || blockPrimaryColour;
+    const borderColour = this.borderColour || blockBorderColour;
     Blockly.DropDownDiv.setColour(primaryColour, borderColour);
 
     Blockly.utils.dom.addClass(
