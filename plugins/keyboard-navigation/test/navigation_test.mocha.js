@@ -21,6 +21,8 @@ const {createNavigationWorkspace, createKeyDownEvent} =
 
 suite('Navigation', function() {
   setup(function() {
+    console.log("HERE");
+    console.log(Blockly.utils.global.globalThis);
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
     Blockly.utils.dom.getFastTextWidthWithSizeString = function() {

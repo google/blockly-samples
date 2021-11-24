@@ -8,8 +8,8 @@
  * @fileoverview Plugin test.
  */
 
-import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
+import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 
 import {LineCursor, NavigationController} from '../src';
 
