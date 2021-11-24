@@ -246,7 +246,7 @@ suite('Shortcut Tests', function() {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
         test(testCaseName, function() {
-          const deleteSpy = sinon.spy(this.navigation, 'deleteBlock');
+          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
           const moveCursorSpy =
               sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
           Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
@@ -301,7 +301,7 @@ suite('Shortcut Tests', function() {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
         test(testCaseName, function() {
-          const deleteSpy = sinon.spy(this.navigation, 'deleteBlock');
+          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
           const copySpy = sinon.spy(Blockly, 'copy');
           const moveCursorSpy =
               sinon.spy(this.navigation, 'moveCursorOnBlockDelete');

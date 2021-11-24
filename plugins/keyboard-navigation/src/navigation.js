@@ -119,25 +119,6 @@ export class Navigation {
   }
 
   /**
-   * Delete the given block.
-   * @param {!Blockly.BlockSvg} selected The block to delete.
-   * @package
-   */
-  deleteBlock(selected) {
-    if (!selected.workspace.isFlyout) {
-      Blockly.Events.setGroup(true);
-      selected.workspace.hideChaff();
-      if (selected.outputConnection) {
-        // Do not attempt to heal rows (https://github.com/google/blockly/issues/4832)
-        selected.dispose(false, true);
-      } else {
-        selected.dispose(/* heal */ true, true);
-      }
-      Blockly.Events.setGroup(false);
-    }
-  }
-
-  /**
    * Removes all keyboard navigation change listeners and markers.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to remove keyboard
    *     navigation from.
