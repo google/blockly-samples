@@ -42,14 +42,14 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.10",
     "@blockly/dev-tools": "^2.6.1",
-    "blockly": "^6.20210701.0",
+    "blockly": "7.20211209.0-beta.1",
     "jsdom": "16.2.1",
     "jsdom-global": "3.0.2",
     "mocha": "^7.1.0",
     "sinon": "7.5.0"
   },
   "peerDependencies": {
-    "blockly": "3.20200402.0 - 6"
+    "blockly": "7.20211209.0-beta.1"
   },
   "publishConfig": {
     "access": "public",
