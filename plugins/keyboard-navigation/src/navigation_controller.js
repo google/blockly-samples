@@ -796,7 +796,7 @@ export class NavigationController {
         const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
         Blockly.copy(sourceBlock);
         this.navigation.moveCursorOnBlockDelete(workspace, sourceBlock);
-        this.navigation.deleteBlock(sourceBlock);
+        sourceBlock.checkAndDelete();
         return true;
       },
     };
@@ -851,7 +851,7 @@ export class NavigationController {
           return false;
         }
         this.navigation.moveCursorOnBlockDelete(workspace, sourceBlock);
-        this.navigation.deleteBlock(sourceBlock);
+        sourceBlock.checkAndDelete();
         return true;
       },
     };
