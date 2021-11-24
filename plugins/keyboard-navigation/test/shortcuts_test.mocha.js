@@ -22,8 +22,8 @@ suite('Shortcut Tests', function() {
   function runReadOnlyTest(testCaseName, keyEvent) {
     test(testCaseName, function() {
       this.workspace.options.readOnly = true;
-      const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
-      Blockly.onKeyDown(keyEvent);
+      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
       sinon.assert.notCalled(hideChaffSpy);
     });
   }
@@ -36,8 +36,8 @@ suite('Shortcut Tests', function() {
   function testGestureInProgress(testCaseName, keyEvent) {
     test(testCaseName, function() {
       sinon.stub(Blockly.Gesture, 'inProgress').returns(true);
-      Blockly.onKeyDown(keyEvent);
-      const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
+      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
       const copySpy = sinon.spy(Blockly, 'copy');
       sinon.assert.notCalled(copySpy);
       sinon.assert.notCalled(hideChaffSpy);
@@ -52,9 +52,9 @@ suite('Shortcut Tests', function() {
    */
   function testCursorOnShadowBlock(testCaseName, keyEvent) {
     test(testCaseName, function() {
-      const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
+      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
       const copySpy = sinon.spy(Blockly, 'copy');
-      Blockly.onKeyDown(keyEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
       sinon.assert.notCalled(copySpy);
       sinon.assert.notCalled(hideChaffSpy);
     });
@@ -68,8 +68,8 @@ suite('Shortcut Tests', function() {
   function testBlockIsNotDeletable(testCaseName, keyEvent) {
     test(testCaseName, function() {
       sinon.stub(this.basicBlock, 'isDeletable').returns(false);
-      Blockly.onKeyDown(keyEvent);
-      const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
+      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
       const copySpy = sinon.spy(Blockly, 'copy');
       sinon.assert.notCalled(copySpy);
       sinon.assert.notCalled(hideChaffSpy);
@@ -84,9 +84,9 @@ suite('Shortcut Tests', function() {
    */
   function testCursorIsNotOnBlock(testCaseName, keyEvent) {
     test(testCaseName, function() {
-      const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
+      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
       const copySpy = sinon.spy(Blockly, 'copy');
-      Blockly.onKeyDown(keyEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
       sinon.assert.notCalled(copySpy);
       sinon.assert.notCalled(hideChaffSpy);
     });
@@ -155,9 +155,9 @@ suite('Shortcut Tests', function() {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
         test(testCaseName, function() {
-          const hideChaffSpy = sinon.spy(Blockly, 'hideChaff');
+          const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
           const copySpy = sinon.spy(Blockly, 'copy');
-          Blockly.onKeyDown(keyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
           sinon.assert.calledOnce(copySpy);
           sinon.assert.calledOnce(hideChaffSpy);
         });
@@ -246,10 +246,10 @@ suite('Shortcut Tests', function() {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
         test(testCaseName, function() {
-          const deleteSpy = sinon.spy(Blockly, 'deleteBlock');
+          const deleteSpy = sinon.spy(this.navigation, 'deleteBlock');
           const moveCursorSpy =
               sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
-          Blockly.onKeyDown(keyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
           sinon.assert.calledOnce(moveCursorSpy);
           sinon.assert.calledOnce(deleteSpy);
         });
@@ -301,11 +301,11 @@ suite('Shortcut Tests', function() {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
         test(testCaseName, function() {
-          const deleteSpy = sinon.spy(Blockly, 'deleteBlock');
+          const deleteSpy = sinon.spy(this.navigation, 'deleteBlock');
           const copySpy = sinon.spy(Blockly, 'copy');
           const moveCursorSpy =
               sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
-          Blockly.onKeyDown(keyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
           sinon.assert.calledOnce(copySpy);
           sinon.assert.calledOnce(deleteSpy);
           sinon.assert.calledOnce(moveCursorSpy);
@@ -406,7 +406,7 @@ suite('Shortcut Tests', function() {
         const keyEvent = testCase[1];
         test(testCaseName, function() {
           const pasteSpy = sinon.stub(this.navigation, 'paste');
-          Blockly.onKeyDown(keyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
           sinon.assert.calledOnce(pasteSpy);
         });
       });
