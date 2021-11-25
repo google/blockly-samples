@@ -24,6 +24,7 @@ export let BackpackContextMenuOptions;
 
 /**
  * @typedef {{
+ *    allowEmptyBackpackOpen: (boolean|undefined),
  *    contextMenu:(!BackpackContextMenuOptions|undefined),
  * }}
  */
@@ -37,6 +38,7 @@ export let BackpackOptions;
  */
 export function parseOptions(options) {
   const defaultOptions = {
+    allowEmptyBackpackOpen: true,
     contextMenu: {
       emptyBackpack: true,
       removeFromBackpack: true,
@@ -52,5 +54,7 @@ export function parseOptions(options) {
   const mergedOptions = {};
   mergedOptions.contextMenu = {
     ...defaultOptions.contextMenu, ...options.contextMenu};
+  mergedOptions.allowEmptyBackpackOpen = options.allowEmptyBackpackOpen ??
+      defaultOptions.allowEmptyBackpackOpen;
   return mergedOptions;
 }
