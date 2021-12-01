@@ -92,7 +92,7 @@ suite('Navigation', function() {
         const toolbox = this.workspace.getToolbox();
         const selectStub = sinon.stub(toolbox, stubName);
         toolbox.selectedItem_ = toolbox.contents_[0];
-        Blockly.onKeyDown(mockEvent);
+        Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
         sinon.assert.called(selectStub);
       });
     });
@@ -104,7 +104,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -124,7 +124,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -138,7 +138,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -178,7 +178,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -206,7 +206,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -224,7 +224,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -242,7 +242,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -255,7 +255,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -275,7 +275,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -290,7 +290,7 @@ suite('Navigation', function() {
       const keyDownSpy =
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
@@ -330,7 +330,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const wEvent = createKeyDownEvent(Blockly.utils.KeyCodes.W, '');
 
-      Blockly.onKeyDown(wEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, wEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(prevSpy);
@@ -344,7 +344,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const sEvent = createKeyDownEvent(Blockly.utils.KeyCodes.S, '');
 
-      Blockly.onKeyDown(sEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, sEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(nextSpy);
@@ -358,7 +358,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const aEvent = createKeyDownEvent(Blockly.utils.KeyCodes.A, '');
 
-      Blockly.onKeyDown(aEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, aEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(outSpy);
@@ -372,7 +372,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const dEvent = createKeyDownEvent(Blockly.utils.KeyCodes.D, '');
 
-      Blockly.onKeyDown(dEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, dEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(inSpy);
@@ -392,7 +392,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const iEvent = createKeyDownEvent(Blockly.utils.KeyCodes.I, '');
 
-      Blockly.onKeyDown(iEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, iEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(modifyStub);
@@ -408,7 +408,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const enterEvent = createKeyDownEvent(Blockly.utils.KeyCodes.ENTER, '');
 
-      Blockly.onKeyDown(enterEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, enterEvent);
 
       const markedNode =
           this.workspace.getMarker(this.navigation.MARKER_NAME).getCurNode();
@@ -424,7 +424,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       const tEvent = createKeyDownEvent(Blockly.utils.KeyCodes.T, '');
 
-      Blockly.onKeyDown(tEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, tEvent);
 
       const firstCategory = this.workspace.getToolbox().contents_[0];
       chai.assert.isTrue(keyDownSpy.returned(true));
@@ -476,7 +476,7 @@ suite('Navigation', function() {
       this.workspace.getCursor().setCurNode(
           Blockly.ASTNode.createFieldNode(field));
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isFalse(keyDownSpy.returned(true));
       sinon.assert.notCalled(fieldSpy);
@@ -492,7 +492,7 @@ suite('Navigation', function() {
       this.workspace.getCursor().setCurNode(
           Blockly.ASTNode.createFieldNode(field));
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(fieldSpy);
@@ -508,7 +508,7 @@ suite('Navigation', function() {
       this.workspace.getCursor().setCurNode(
           Blockly.ASTNode.createFieldNode(field));
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       sinon.assert.calledOnce(fieldSpy);
@@ -522,7 +522,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       this.workspace.keyboardAccessibilityMode = true;
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.isFalse(this.workspace.keyboardAccessibilityMode);
@@ -536,7 +536,7 @@ suite('Navigation', function() {
           sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
       this.workspace.keyboardAccessibilityMode = false;
 
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.isTrue(this.workspace.keyboardAccessibilityMode);
@@ -570,8 +570,7 @@ suite('Navigation', function() {
           'helpUrl': '',
         }]);
         this.workspace = createNavigationWorkspace(this.navigation, true, true);
-
-        Blockly.mainWorkspace = this.workspace;
+        Blockly.common.setMainWorkspace(this.workspace);
         this.workspace.getCursor().drawer_ = null;
 
         this.fieldBlock1 = this.workspace.newBlock('field_block');
@@ -590,7 +589,7 @@ suite('Navigation', function() {
         const keyDownSpy =
             sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-        Blockly.onKeyDown(mockEvent);
+        Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
         chai.assert.isTrue(keyDownSpy.returned(true));
       });
@@ -602,7 +601,7 @@ suite('Navigation', function() {
         const keyDownSpy =
             sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-        Blockly.onKeyDown(mockEvent);
+        Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
         chai.assert.isTrue(keyDownSpy.returned(false));
       });
@@ -615,7 +614,7 @@ suite('Navigation', function() {
         const keyDownSpy =
             sinon.spy(Blockly.ShortcutRegistry.registry, 'onKeyDown');
 
-        Blockly.onKeyDown(mockEvent);
+        Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
 
         chai.assert.isTrue(keyDownSpy.returned(false));
       });
@@ -870,7 +869,7 @@ suite('Navigation', function() {
       // Since this is not what we are trying to test and does not effect the
       // feature, disable events.
       Blockly.Events.disable();
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
       Blockly.Events.enable();
 
       chai.assert.equal(
@@ -888,7 +887,7 @@ suite('Navigation', function() {
       // Since this is not what we are trying to test and does not effect the
       // feature, disable events.
       Blockly.Events.disable();
-      Blockly.onKeyDown(mockEvent);
+      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
       Blockly.Events.enable();
 
       chai.assert.equal(
