@@ -242,10 +242,7 @@ suite('Procedure blocks', function() {
           expectedXml:
               '<block xmlns="https://developers.google.com/blockly/xml" ' +
               'type="' + testSuite.callType + '" id="1">\n' +
-              // TODO(https://github.com/google/blockly/issues/3948): Update
-              //  test after this bug is addressed.
-              '  <mutation name="' +
-              ((testSuite.hasReturn) ? '' :'1') +'"></mutation>\n' +
+              '  <mutation name=""></mutation>\n' +
               '</block>',
           assertBlockStructure:
               (block) => {
