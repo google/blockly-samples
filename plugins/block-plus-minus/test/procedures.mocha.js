@@ -133,7 +133,6 @@ suite('Procedure blocks', function() {
               {title: 'One argument',
                 useWorkspaceToCode: true,
                 expectedCode:
-                    '$x;\n\n' +
                     'function proc_name($x) {\n' +
                     '}\n',
                 createBlock: createBlockFn(1)},
