@@ -339,7 +339,7 @@ const procedureDefMutator = {
         Blockly.Procedures.DEFAULT_ARG, argNames);
     const variable = Blockly.Variables.getOrCreateVariablePackage(
         this.workspace, varId, name, '');
-    argId = argId || Blockly.utils.genUid();
+    argId = argId || Blockly.utils.idGenerator.genUid();
 
     this.addVarInput_(name, argId);
     if (this.getInput('STACK')) {
@@ -393,7 +393,7 @@ const procedureDefMutator = {
    * Validates text entered into the argument name field.
    * @param {string} newName The new text entered into the field.
    * @return {?string} The field's new value.
-   * @this Blockly.FieldTextInput
+   * @this {Blockly.FieldTextInput}
    */
   validator_: function(newName) {
     const sourceBlock = this.getSourceBlock();
@@ -415,7 +415,7 @@ const procedureDefMutator = {
      *     associated with this field.
      * @return {boolean} True if the given datum does not conflict with the
      *     datum associated with this field.
-     * @this Blockly.FieldTextInput
+     * @this {Blockly.FieldTextInput}
      */
     const hasDifName = (argDatum) => {
       // The field name (aka id) is always equal to the arg id.
@@ -473,7 +473,7 @@ const procedureDefMutator = {
   /**
    * Removes any unused vars that were created as a result of editing.
    * @param {string} _finalName The final value of the field.
-   * @this Blockly.FieldTextInput
+   * @this {Blockly.FieldTextInput}
    */
   finishEditing_: function(_finalName) {
     const source = this.getSourceBlock();
