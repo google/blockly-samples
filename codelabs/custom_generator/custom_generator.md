@@ -558,12 +558,10 @@ By default, `scrub_` simply returns the passed-in code. A common pattern is to o
 codelabGenerator.scrub_ = function(block, code, opt_thisOnly) {
   const nextBlock =
       block.nextConnection && block.nextConnection.targetBlock();
-  let nextCode = '';
-  if (nextBlock) {
-      nextCode =
-          opt_thisOnly ? '' : ',\n' + codelabGenerator.blockToCode(nextBlock);
+  if (nextBlock && !opt_thisOnly){
+    return code + ',\n' + codelabGenerator.blockToCode(nextBlock)
   }
-  return code +  nextCode;
+  return code;
 };
 ```
 
