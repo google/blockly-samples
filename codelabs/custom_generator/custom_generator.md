@@ -286,9 +286,11 @@ The `math_number` block has a number field.
 
 Like the `text` block, you can use `getFieldValue`. Unlike the text block, you don't need to wrap it in additional quotation marks.
 
+As with `null`, we'll cast it as a string. This also helps the code generator not confuse it as an empty/false-y value.
+
 ```js
 codelabGenerator['math_number'] = function(block) {
-  const code = Number(block.getFieldValue('NUM'));
+  const code = String(block.getFieldValue('NUM'));
   return [code, codelabGenerator.PRECEDENCE];
 };
 ```
