@@ -21,7 +21,7 @@ export function createNavigationWorkspace(
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: `
       <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
-        <category colour="#FFFFFF" name="First" css-container="something">
+        <category name="First" css-container="something">
           <block type="basic_block">
             <field name="TEXT">FirstCategory-FirstBlock</field>
           </block>
@@ -29,7 +29,7 @@ export function createNavigationWorkspace(
             <field name="TEXT">FirstCategory-SecondBlock</field>
           </block>
         </category>
-        <category colour="#FFFFFF" name="Second">
+        <category name="Second">
           <block type="basic_block">
             <field name="TEXT">SecondCategory-FirstBlock</field>
           </block>
