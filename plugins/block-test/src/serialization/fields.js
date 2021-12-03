@@ -33,7 +33,7 @@ class NoOverridesField extends Blockly.FieldLabel {
  * @return {!NoOverridesField} The field that was created.
  */
 NoOverridesField.fromJson = function(options) {
-  const text = Blockly.utils.replaceMessageReferences(options['text']);
+  const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
 };
 
@@ -82,7 +82,7 @@ class XmlField extends Blockly.FieldLabel {
  * @return {!XmlField} The field that was created.
  */
 XmlField.fromJson = function(options) {
-  const text = Blockly.utils.replaceMessageReferences(options['text']);
+  const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
 };
 
@@ -131,7 +131,7 @@ class JsoField extends Blockly.FieldLabel {
  * @return {!JsoField} The field that was created.
  */
 JsoField.fromJson = function(options) {
-  const text = Blockly.utils.replaceMessageReferences(options['text']);
+  const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
 };
 
@@ -198,7 +198,7 @@ class BothField extends Blockly.FieldLabel {
  * @return {!BothField} The field that was created.
  */
 BothField.fromJson = function(options) {
-  const text = Blockly.utils.replaceMessageReferences(options['text']);
+  const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
   return new this(text, undefined, options);
 };
 

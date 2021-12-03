@@ -61,7 +61,7 @@ export function toolboxTestBlocksInit(workspace) {
     for (let i = 0, block; block = blocks[i]; i++) {
       const state = Blockly.serialization.blocks.save(
           block, {addCoordinates: true});
-      Blockly.serialization.blocks.load(state, workspace);
+      Blockly.serialization.blocks.append(state, workspace);
     }
   };
   workspace.registerButtonCallback(
