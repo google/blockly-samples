@@ -136,7 +136,7 @@ const textJoinMutator = {
  * @this {Blockly.Block}
  */
 const textJoinHelper = function() {
-  this.mixin(Blockly.Constants.Text.QUOTE_IMAGE_MIXIN);
+  Blockly.Extensions.apply('text_quotes', this, false);
   this.updateShape_(2);
 };
 
