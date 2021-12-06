@@ -54,10 +54,10 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.10",
     "@types/dat.gui": "^0.7.5",
-    "blockly": "^7.20210930.0-beta.4"
+    "blockly": "7.20211209.0-beta.4"
   },
   "peerDependencies": {
-    "blockly": "7.20210930.0-beta.4"
+    "blockly": "7.20211209.0-beta.4"
   },
   "publishConfig": {
     "access": "public",
