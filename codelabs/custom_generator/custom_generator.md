@@ -286,9 +286,11 @@ The `math_number` block has a number field.
 
 Like the `text` block, you can use `getFieldValue`. Unlike the text block, you don't need to wrap it in additional quotation marks.
 
+As with `null`, we'll cast it as a string. This also helps the code generator not confuse it as an empty/false-y value.
+
 ```js
 codelabGenerator['math_number'] = function(block) {
-  const code = Number(block.getFieldValue('NUM'));
+  const code = String(block.getFieldValue('NUM'));
   return [code, codelabGenerator.PRECEDENCE];
 };
 ```
@@ -558,12 +560,10 @@ By default, `scrub_` simply returns the passed-in code. A common pattern is to o
 codelabGenerator.scrub_ = function(block, code, opt_thisOnly) {
   const nextBlock =
       block.nextConnection && block.nextConnection.targetBlock();
-  let nextCode = '';
-  if (nextBlock) {
-      nextCode =
-          opt_thisOnly ? '' : ',\n' + codelabGenerator.blockToCode(nextBlock);
+  if (nextBlock && !opt_thisOnly){
+    return code + ',\n' + codelabGenerator.blockToCode(nextBlock)
   }
-  return code +  nextCode;
+  return code;
 };
 ```
 

@@ -15,29 +15,29 @@ const sinon = require('sinon');
 
 const Modal = require('../src/index.js').Modal;
 
-suite('Modal', () => {
-  setup(() => {
+suite('Modal', function() {
+  setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
     this.workspace = Blockly.inject('blocklyDiv', {});
     this.modal = new Modal('Title', this.workspace);
   });
 
-  teardown(() => {
+  teardown(function() {
     this.jsdomCleanup();
     sinon.restore();
   });
 
-  suite('init()', () => {
-    test('Calls render', () => {
+  suite('init()', function() {
+    test('Calls render', function() {
       this.modal.render = sinon.fake();
       this.modal.init();
       sinon.assert.calledOnce(this.modal.render);
     });
   });
 
-  suite('show()', () => {
-    test('Elements focused', () => {
+  suite('show()', function() {
+    test('Elements focused', function() {
       this.modal.init();
       this.modal.show();
       assert.equal('blocklyModalBtn blocklyModalBtnClose',
@@ -47,8 +47,8 @@ suite('Modal', () => {
     });
   });
 
-  suite('dispose()', () => {
-    test('Events and button callback removed', () => {
+  suite('dispose()', function() {
+    test('Events and button callback removed', function() {
       this.modal.init();
       const numEvents = this.modal.boundEvents_.length;
       Blockly.unbindEvent_ = sinon.fake();
@@ -59,8 +59,8 @@ suite('Modal', () => {
     });
   });
 
-  suite('handleKeyDown()', () => {
-    setup(() => {
+  suite('handleKeyDown()', function() {
+    setup(function() {
       this.modal.init();
       this.modal.show();
     });
@@ -80,19 +80,19 @@ suite('Modal', () => {
       event.preventDefault = sinon.fake();
       return event;
     }
-    test('Tab pressed with only one element', () => {
+    test('Tab pressed with only one element', function() {
       const event = makeEvent(Blockly.utils.KeyCodes.TAB, false);
       this.modal.handleForwardTab_ = sinon.fake();
       this.modal.handleKeyDown_(event);
       sinon.assert.notCalled(this.modal.handleForwardTab_);
     });
-    test('Shift tab pressed with only one element', () => {
+    test('Shift tab pressed with only one element', function() {
       const event = makeEvent(Blockly.utils.KeyCodes.TAB, true);
       this.modal.handleBackwardTab_ = sinon.fake();
       this.modal.handleKeyDown_(event);
       sinon.assert.notCalled(this.modal.handleBackwardTab_);
     });
-    test('Escape pressed', () => {
+    test('Escape pressed', function() {
       const event = makeEvent(Blockly.utils.KeyCodes.ESC, false);
       this.modal.hide = sinon.fake();
       this.modal.handleKeyDown_(event);
