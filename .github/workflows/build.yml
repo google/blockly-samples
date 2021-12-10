@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Use npm 7
+    - name: Use latest npm
       run: npm install -g npm@latest
 
     - name: Npm Install
