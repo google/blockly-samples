@@ -37,6 +37,9 @@ jobs:
       with:
         node-version: 16.x
 
+    - name: Use npm 7
+      run: npm install -g npm@latest
+
     - name: Npm Install
       run: npm install
 
