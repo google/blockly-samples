@@ -202,7 +202,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       left: new Blockly.utils.Coordinate(1, 0),
       right: new Blockly.utils.Coordinate(-1, 0),
     };
-    const mouse = Blockly.utils.screenToWsCoordinates(
+    const mouse = Blockly.utils.svgMath.screenToWsCoordinates(
         this.workspace_, new Blockly.utils.Coordinate(e.clientX, e.clientY));
 
     /**
