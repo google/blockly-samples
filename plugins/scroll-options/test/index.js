@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
       'blockDragger': ScrollBlockDragger,
       'metricsManager': ScrollMetricsManager,
     },
-    move:{
-      wheel: true
+    move: {
+      wheel: true,
     },
   };
   createPlayground(
