@@ -185,14 +185,14 @@ export class TypedVariableModal extends Modal {
           msg = msg.replace('%1', existing.name).replace('%2',
               this.getDisplayName_(existing.type));
         }
-        Blockly.alert(msg);
+        Blockly.dialog.alert(msg);
       } else {
         // No conflict
         this.workspace_.createVariable(text, type);
         this.hide();
       }
     } else {
-      Blockly.alert(Blockly.Msg['TYPED_VAR_MODAL_INVALID_NAME']);
+      Blockly.dialog.alert(Blockly.Msg['TYPED_VAR_MODAL_INVALID_NAME']);
     }
   }
 
