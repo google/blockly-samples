@@ -43,7 +43,7 @@
     "@blockly/dev-scripts": "^1.2.10",
     "@blockly/dev-tools": "^3.0.0",
     "blockly": "^7.20211209.0",
-    "jsdom": "16.2.1",
+    "jsdom": "^19.0.0",
     "jsdom-global": "3.0.2",
     "sinon": "^9.0.1"
   },
