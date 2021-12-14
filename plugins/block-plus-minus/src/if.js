@@ -13,9 +13,6 @@ import {createMinusField} from './field_minus';
 import {createPlusField} from './field_plus';
 
 const controlsIfMutator = {
-  // TODO: This should be its own extension. But that requires core changes.
-  suppressPrefixSuffix: true,
-
   /**
    * Number of else-if inputs on this block.
    * @type {number}

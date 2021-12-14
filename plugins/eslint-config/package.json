@@ -23,11 +23,11 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
-    "@typescript-eslint/parser": "^2.29.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "babel-eslint": "^10.1.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^22.1.0"
+    "eslint-plugin-jsdoc": "^36.1.1"
   },
   "peerDependencies": {
     "eslint": "7.x"

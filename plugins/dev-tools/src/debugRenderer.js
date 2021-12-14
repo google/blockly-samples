@@ -50,7 +50,9 @@ export class DebugRenderer {
    * @public
    */
   static init() {
-    Blockly.blockRendering.useDebugger = true;
+    Blockly.blockRendering.debug.startDebugger();
+    // TODO(google/blockly-samples##944): Remove this once #944 is complete.
+    Blockly.blockRendering.debug.stopDebugger();
     Blockly.blockRendering.Debug = DebugRenderer;
   }
 

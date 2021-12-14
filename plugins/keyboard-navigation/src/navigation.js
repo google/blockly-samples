@@ -483,7 +483,7 @@ export class Navigation {
    * @package
    */
   focusWorkspace(workspace) {
-    Blockly.hideChaff();
+    workspace.hideChaff();
     const reset = !!workspace.getToolbox();
 
     this.resetFlyout(workspace, reset);

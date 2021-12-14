@@ -107,7 +107,7 @@ suite('TypedVariableModal', function() {
 
   suite('onConfirm_()', function() {
     setup(function() {
-      Blockly.alert = sinon.fake();
+      this.alertStub = sinon.stub(Blockly.dialog, 'alert');
       this.typedVarModal.init();
       this.typedVarModal.getSelectedType_ = sinon.fake.returns('Giraffe');
       this.typedVarModal.getDisplayName_ = sinon.fake.returns('Giraffe');
@@ -115,7 +115,7 @@ suite('TypedVariableModal', function() {
     test('No text', function() {
       this.typedVarModal.getValidInput_ = sinon.fake.returns(null);
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert
+      assert(this.alertStub
           .calledWith('Name is not valid. Please choose a different name.'));
     });
     test('Valid name', function() {
@@ -131,7 +131,7 @@ suite('TypedVariableModal', function() {
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert.calledWith('A variable named \'varName\' already ' +
+      assert(this.alertStub.calledWith('A variable named \'varName\' already ' +
         'exists for another type: \'Giraffe\'.'));
     });
     test('Variable with same type already exits', function() {
@@ -141,7 +141,7 @@ suite('TypedVariableModal', function() {
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert.calledWith('A variable named \'varName\' already ' +
+      assert(this.alertStub.calledWith('A variable named \'varName\' already ' +
           'exists.'));
     });
   });
