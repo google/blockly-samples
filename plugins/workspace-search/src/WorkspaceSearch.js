@@ -324,14 +324,12 @@ export class WorkspaceSearch {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The component’s bounding box.
+   * @return {?Blockly.utils.Rect} The component’s bounding box. Null in this
+   *     case since we don't need other elements to avoid the workspace search
+   *     field.
    */
   getBoundingRectangle() {
-    const top = this.htmlDiv_.style.top;
-    const left = this.htmlDiv_.style.left;
-    return new Blockly.utils.Rect(
-        top, top + this.htmlDiv_.style.height,
-        left, left + this.htmlDiv_.style.width);
+    return null;
   }
 
   /**
