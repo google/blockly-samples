@@ -15,7 +15,7 @@ const sinon = require('sinon');
 
 const {WorkspaceSearch} = require('../src/index');
 
-suite('WorkspaceSearch', () => {
+suite('WorkspaceSearch', function() {
   /**
    * Check if a block is currently highlighted.
    * @param {Blockly.BlockSvg} block The block to test.
@@ -58,19 +58,19 @@ suite('WorkspaceSearch', () => {
     }
   }
 
-  setup(() => {
+  setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
     this.workspace = Blockly.inject('blocklyDiv');
     this.workspaceSearch = new WorkspaceSearch(this.workspace);
   });
 
-  teardown(() => {
+  teardown(function() {
     this.jsdomCleanup();
   });
 
-  suite('init()', () => {
-    test('CSS is injected at init()', () => {
+  suite('init()', function() {
+    test('CSS is injected at init()', function() {
       let searchStyle =
           document.getElementById('blockly-ws-search-style');
       assert.equal(!!searchStyle, false);
@@ -80,7 +80,7 @@ suite('WorkspaceSearch', () => {
     });
 
 
-    test('DOM is intialized at init()', () => {
+    test('DOM is intialized at init()', function() {
       let dom = document.querySelector('div.blockly-ws-search');
       assert.equal(!!dom, false);
       this.workspaceSearch.init();
@@ -89,8 +89,8 @@ suite('WorkspaceSearch', () => {
     });
   });
 
-  suite('dispose()', () => {
-    test('DOM is disposed', () => {
+  suite('dispose()', function() {
+    test('DOM is disposed', function() {
       this.workspaceSearch.init();
       let dom = document.querySelector('div.blockly-ws-search');
       assert.equal(!!dom, true);
@@ -100,7 +100,7 @@ suite('WorkspaceSearch', () => {
     });
   });
 
-  suite('searchAndHighlight()', () => {
+  suite('searchAndHighlight()', function() {
     /**
      * Assert blocks are equal to the search group of blocks.
      * @param {Array.<Blockly.BlockSvg>} allBlocks All blocks.
@@ -123,7 +123,7 @@ suite('WorkspaceSearch', () => {
         }
       }
     }
-    setup(() => {
+    setup(function() {
       Blockly.defineBlocksWithJsonArray([
         {
           'type': 'test_block',
@@ -187,14 +187,14 @@ suite('WorkspaceSearch', () => {
           'getAllBlocks').returns(Object.values(this.blocks));
     });
 
-    teardown(() => {
+    teardown(function() {
       delete Blockly.Blocks['test_block'];
       delete Blockly.Blocks['test_statement_block'];
       delete Blockly.Blocks['test_text'];
       sinon.restore();
     });
 
-    test('Match all blocks', () => {
+    test('Match all blocks', function() {
       this.workspaceSearch.searchAndHighlight('test', false);
       const expectedBlocks = [
         this.testBlock,
@@ -212,13 +212,13 @@ suite('WorkspaceSearch', () => {
           'Expected field within a collapsed block to not be highlighted.');
     });
 
-    test('Match no blocks', () => {
+    test('Match no blocks', function() {
       this.workspaceSearch.searchAndHighlight('none', false);
       assertEqualsSearchGroup(this.blocks, this.workspaceSearch.blocks_, []);
       assertNoExtraCurrentStyling(this.blocks);
     });
 
-    test('Match all non-fields', () => {
+    test('Match all non-fields', function() {
       this.workspaceSearch.searchAndHighlight('block', false);
       const expectedBlocks = [
         this.testBlock,
@@ -231,7 +231,7 @@ suite('WorkspaceSearch', () => {
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
 
-    test('Match all field and collapsed blocks', () => {
+    test('Match all field and collapsed blocks', function() {
       this.workspaceSearch.searchAndHighlight('string', false);
       const expectedBlocks = [
         this.testStatementBlockWithInputCollapsed,
@@ -243,7 +243,7 @@ suite('WorkspaceSearch', () => {
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
 
-    test('Preserve current, in results', () => {
+    test('Preserve current, in results', function() {
       this.workspaceSearch.searchAndHighlight('test');
       this.workspaceSearch.setCurrentBlock_(1);
       // this.testStatementBlock should be current.
@@ -261,7 +261,7 @@ suite('WorkspaceSearch', () => {
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[1]);
     });
 
-    test('Preserve current, not in results', () => {
+    test('Preserve current, not in results', function() {
       this.workspaceSearch.searchAndHighlight('test');
       this.workspaceSearch.setCurrentBlock_(1);
       // this.testStatementBlock should be current.
@@ -277,20 +277,50 @@ suite('WorkspaceSearch', () => {
     });
   });
 
-  suite('next()', () => {
-    setup(() => {
+  suite('next()', function() {
+    setup(function() {
+      Blockly.defineBlocksWithJsonArray([
+        {
+          'type': 'test_block',
+          'message0': 'test block',
+        },
+        {
+          'type': 'test_statement_block',
+          'message0': '%test %1',
+          'args0': [{
+            'type': 'input_value',
+            'name': 'INPUT0',
+            'check': 'String',
+          }],
+          'message1': '%block %1',
+          'args1': [{
+            'type': 'input_statement',
+            'name': 'INPUT1',
+          }],
+          'previousStatement': null,
+          'nextStatement': null,
+        },
+      ]);
+      this.testBlock = this.workspace.newBlock('test_block');
+      this.testStatementBlock = this.workspace.newBlock('test_statement_block');
       this.blocks = [this.testBlock, this.testStatementBlock];
       this.workspaceSearch.blocks_ = this.blocks;
     });
 
-    test('next() with unset current', () => {
+    teardown(function() {
+      delete Blockly.Blocks['test_block'];
+      delete Blockly.Blocks['test_statement_block'];
+      sinon.restore();
+    });
+
+    test('next() with unset current', function() {
       this.workspaceSearch.next();
       const currentIndex = this.workspaceSearch.currentBlockIndex_;
       assert.equal(currentIndex, 0);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
     });
 
-    test('next() wrap around', () => {
+    test('next() wrap around', function() {
       this.workspaceSearch.currentBlockIndex_ = 0;
       this.workspaceSearch.next();
       let currentIndex = this.workspaceSearch.currentBlockIndex_;
@@ -303,18 +333,48 @@ suite('WorkspaceSearch', () => {
     });
   });
 
-  suite('previous()', () => {
-    setup(() => {
-      this.workspaceSearch.blocks_ =
-          [this.testBlock, this.testStatementBlock];
+  suite('previous()', function() {
+    setup(function() {
+      Blockly.defineBlocksWithJsonArray([
+        {
+          'type': 'test_block',
+          'message0': 'test block',
+        },
+        {
+          'type': 'test_statement_block',
+          'message0': '%test %1',
+          'args0': [{
+            'type': 'input_value',
+            'name': 'INPUT0',
+            'check': 'String',
+          }],
+          'message1': '%block %1',
+          'args1': [{
+            'type': 'input_statement',
+            'name': 'INPUT1',
+          }],
+          'previousStatement': null,
+          'nextStatement': null,
+        },
+      ]);
+      this.testBlock = this.workspace.newBlock('test_block');
+      this.testStatementBlock = this.workspace.newBlock('test_statement_block');
+      this.blocks = [this.testBlock, this.testStatementBlock];
+      this.workspaceSearch.blocks_ = this.blocks;
     });
 
-    test('previous() with unset current', () => {
+    teardown(function() {
+      delete Blockly.Blocks['test_block'];
+      delete Blockly.Blocks['test_statement_block'];
+      sinon.restore();
+    });
+
+    test('previous() with unset current', function() {
       this.workspaceSearch.previous();
       // No expected current index, but should not throw.
     });
 
-    test('previous() wrap around', () => {
+    test('previous() wrap around', function() {
       this.workspaceSearch.currentBlockIndex_ = 1;
       this.workspaceSearch.previous();
       let currentIndex = this.workspaceSearch.currentBlockIndex_;

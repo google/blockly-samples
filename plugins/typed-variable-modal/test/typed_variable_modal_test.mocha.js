@@ -15,7 +15,7 @@ const sinon = require('sinon');
 
 const {TypedVariableModal} = require('../src/index.js');
 
-suite('TypedVariableModal', () => {
+suite('TypedVariableModal', function() {
   /**
    * Set up the workspace to test with typed variable modal.
    * @param {string} toolbox The toolbox.
@@ -58,7 +58,7 @@ suite('TypedVariableModal', () => {
     return toolbox;
   }
 
-  setup(() => {
+  setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
     const types = [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']];
@@ -67,21 +67,21 @@ suite('TypedVariableModal', () => {
         'CREATE_TYPED_VARIABLE', types);
   });
 
-  teardown(() => {
+  teardown(function() {
     this.jsdomCleanup();
     sinon.restore();
   });
 
-  suite('init()', () => {
-    test('Registers button', () => {
+  suite('init()', function() {
+    test('Registers button', function() {
       this.workspace.registerButtonCallback = sinon.fake();
       this.typedVarModal.init();
       sinon.assert.calledOnce(this.workspace.registerButtonCallback);
     });
   });
 
-  suite('show()', () => {
-    test('Elements focused', () => {
+  suite('show()', function() {
+    test('Elements focused', function() {
       this.typedVarModal.init();
       this.typedVarModal.show();
       assert.equal(this.typedVarModal.firstFocusableEl_.className,
@@ -91,8 +91,8 @@ suite('TypedVariableModal', () => {
     });
   });
 
-  suite('setLocale()', () => {
-    test('Messages added', () => {
+  suite('setLocale()', function() {
+    test('Messages added', function() {
       this.typedVarModal.init();
       const messages = {
         'TYPED_VAR_MODAL_CONFIRM_BUTTON': 'confirm_test',
@@ -105,85 +105,85 @@ suite('TypedVariableModal', () => {
     });
   });
 
-  suite('onConfirm_()', () => {
-    setup(() => {
-      Blockly.alert = sinon.fake();
+  suite('onConfirm_()', function() {
+    setup(function() {
+      this.alertStub = sinon.stub(Blockly.dialog, 'alert');
       this.typedVarModal.init();
       this.typedVarModal.getSelectedType_ = sinon.fake.returns('Giraffe');
       this.typedVarModal.getDisplayName_ = sinon.fake.returns('Giraffe');
     });
-    test('No text', () => {
+    test('No text', function() {
       this.typedVarModal.getValidInput_ = sinon.fake.returns(null);
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert
+      assert(this.alertStub
           .calledWith('Name is not valid. Please choose a different name.'));
     });
-    test('Valid name', () => {
+    test('Valid name', function() {
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.workspace.createVariable = sinon.fake();
       this.typedVarModal.onConfirm_();
       assert(this.workspace.createVariable.calledOnce);
     });
-    test('Variable with different type already exists', () => {
+    test('Variable with different type already exists', function() {
       Blockly.Variables.nameUsedWithAnyType = sinon.fake.returns({
         'type': 'Penguin',
         'name': 'varName',
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert.calledWith('A variable named \'varName\' already ' +
+      assert(this.alertStub.calledWith('A variable named \'varName\' already ' +
         'exists for another type: \'Giraffe\'.'));
     });
-    test('Variable with same type already exits', () => {
+    test('Variable with same type already exits', function() {
       Blockly.Variables.nameUsedWithAnyType = sinon.fake.returns({
         'type': 'Giraffe',
         'name': 'varName',
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
-      assert(Blockly.alert.calledWith('A variable named \'varName\' already ' +
+      assert(this.alertStub.calledWith('A variable named \'varName\' already ' +
           'exists.'));
     });
   });
 
-  suite('getDisplayName_()', () => {
-    test('Get display name', () => {
+  suite('getDisplayName_()', function() {
+    test('Get display name', function() {
       assert.equal(this.typedVarModal.getDisplayName_('GIRAFFE'), 'Giraffe');
     });
-    test('No display name', () => {
+    test('No display name', function() {
       assert.equal(this.typedVarModal.getDisplayName_('SOMETHING'), '');
     });
   });
 
-  suite('getValidInput_()', () => {
-    setup(() => {
+  suite('getValidInput_()', function() {
+    setup(function() {
       this.typedVarModal.init();
     });
-    test('Using rename variable name', () => {
+    test('Using rename variable name', function() {
       this.typedVarModal.variableNameInput_.value = 'Rename variable...';
       assert.equal(this.typedVarModal.getValidInput_(), null);
     });
-    test('Using new variable name', () => {
+    test('Using new variable name', function() {
       this.typedVarModal.variableNameInput_.value = 'Create variable...';
       assert.equal(this.typedVarModal.getValidInput_(), null);
     });
-    test('Valid variable name', () => {
+    test('Valid variable name', function() {
       this.typedVarModal.variableNameInput_.value = 'varName';
       assert.equal(this.typedVarModal.getValidInput_(), 'varName');
     });
   });
 
-  suite('render', () => {
-    setup(() => {
+  suite('render', function() {
+    setup(function() {
       this.typedVarModal.render();
     });
-    test('renderContent_()', () => {
+    test('renderContent_()', function() {
       const htmlDiv = this.typedVarModal.htmlDiv_;
       const modalContent = htmlDiv.querySelector('.blocklyModalContent');
       assert(modalContent.querySelector('.typedModalVariableNameInput'));
       assert(modalContent.querySelector('.typedModalTypes'));
     });
-    test('renderFooter_()', () => {
+    test('renderFooter_()', function() {
       const htmlDiv = this.typedVarModal.htmlDiv_;
       const modalFooter = htmlDiv.querySelector('.blocklyModalFooter');
       const allBtns = modalFooter.querySelectorAll('.blocklyModalBtn');
@@ -191,22 +191,22 @@ suite('TypedVariableModal', () => {
     });
   });
 
-  suite('create', () => {
-    test('createConfirmBtn_()', () => {
+  suite('create', function() {
+    test('createConfirmBtn_()', function() {
       const btn = this.typedVarModal.createConfirmBtn_();
       assert.equal(btn.className, 'blocklyModalBtn blocklyModalBtnPrimary');
     });
-    test('createCancelBtn_()', () => {
+    test('createCancelBtn_()', function() {
       const btn = this.typedVarModal.createCancelBtn_();
       assert.equal(btn.className, 'blocklyModalBtn');
     });
-    test('createVariableTypeContainer_()', () => {
+    test('createVariableTypeContainer_()', function() {
       const types = this.typedVarModal.types_;
       const typeList = this.typedVarModal.createVariableTypeContainer_(types);
       assert.equal(typeList.querySelectorAll('.typedModalTypes')
           .length, types.length);
     });
-    test('createVarNameContainer_()', () => {
+    test('createVarNameContainer_()', function() {
       const container = this.typedVarModal.createVarNameContainer_();
       const varNameInput = container
           .querySelector('.typedModalVariableNameInput');
