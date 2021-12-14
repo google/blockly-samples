@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
       'blockDragger': ScrollBlockDragger,
       'metricsManager': ScrollMetricsManager,
     },
+    move: {
+      wheel: true,
+    },
   };
   createPlayground(
       document.getElementById('root'), createWorkspace, defaultOptions);
