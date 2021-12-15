@@ -229,7 +229,8 @@ export class WorkspaceSearch {
    * @private
    */
   addEvent_(node, name, thisObject, func) {
-    const event = Blockly.bindEventWithChecks_(node, name, thisObject, func);
+    const event =
+        Blockly.browserEvents.conditionalBind(node, name, thisObject, func);
     this.boundEvents_.push(event);
   }
 

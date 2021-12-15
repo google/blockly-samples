@@ -122,7 +122,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     wrapper.appendChild(sliderInput);
     this.sliderInput_ = sliderInput;
 
-    this.boundEvents_.push(Blockly.bindEventWithChecks_(
+    this.boundEvents_.push(Blockly.browserEvents.conditionalBind(
         sliderInput, 'input', this, this.onSliderChange_));
 
     return wrapper;

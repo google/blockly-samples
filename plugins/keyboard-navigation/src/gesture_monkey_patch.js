@@ -29,7 +29,8 @@ Blockly.Gesture.prototype.doWorkspaceClick_ = function(e) {
   const ws = this.creatorWorkspace_;
   if (e.shiftKey && ws.keyboardAccessibilityMode) {
     const screenCoord = new Blockly.utils.Coordinate(e.clientX, e.clientY);
-    const wsCoord = Blockly.utils.screenToWsCoordinates(ws, screenCoord);
+    const wsCoord =
+        Blockly.utils.svgMath.screenToWsCoordinates(ws, screenCoord);
     const wsNode = Blockly.ASTNode.createWorkspaceNode(ws, wsCoord);
     ws.getCursor().setCurNode(wsNode);
   }
