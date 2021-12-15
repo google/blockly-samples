@@ -269,7 +269,7 @@ Blockly.FieldDate.prototype.onClick_ = function(e) {
 Blockly.FieldDate.prototype.bindInputEvents_ = function(htmlInput) {
   Blockly.FieldDate.superClass_.bindInputEvents_.call(this, htmlInput);
 
-  this.onClickWrapper_ = Blockly.bindEventWithChecks_(htmlInput,
+  this.onClickWrapper_ = Blockly.browserEvents.conditionalBind(htmlInput,
       'click', this, this.onClick_, true);
 };
 
