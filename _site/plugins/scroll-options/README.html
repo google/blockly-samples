@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/plugin-scroll-options Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/plugin-scroll-options Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/plugin-scroll-options Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block." />
+<meta property="og:description" content="A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block." />
+<link rel="canonical" href="http://localhost:4000/plugins/scroll-options/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/scroll-options/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block.","headline":"@blockly/plugin-scroll-options Demo","url":"http://localhost:4000/plugins/scroll-options/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-scroll-options Demo</div>
+      <div class="subtitle">A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/scroll-options/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/plugin-scroll-options" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/scroll-options/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/scroll-options/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklyplugin-scroll-options-">@blockly/plugin-scroll-options <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds additional
+scroll features.</p>
+
+<p>This plugin adds two features related to scrolling:</p>
+
+<ul>
+  <li>Users can scroll the workspace with the mousewheel while dragging a block
+(“wheel scroll”).</li>
+  <li>The workspace will automatically scroll when a block is dragged near the
+edge of the workspace (“edge scroll”).</li>
+</ul>
+
+<p>Each of these options can be enabled or disabled independently, if you only want
+one of these behaviors. The edge scrolling behavior can also be configured with
+options such as fast and slow scroll speeds and the distance from the edge of
+the workspace that the block should be before autoscrolling is activated. See
+the Usage and API sections for more details on how to configure these behaviors.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/plugin-scroll-options
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/plugin-scroll-options --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<p>Basic usage. If you don’t pass any options to <code class="language-plaintext highlighter-rouge">init</code>, then you will get the
+default behavior, which enables both scroll options and uses the default
+parameters for edge scrolling.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ScrollOptions</span><span class="p">,</span> <span class="nx">ScrollBlockDragger</span><span class="p">,</span> <span class="nx">ScrollMetricsManager</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/plugin-scroll-options</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Inject Blockly.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span><span class="p">,</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">{</span>
+      <span class="c1">// These are both required.</span>
+      <span class="dl">'</span><span class="s1">blockDragger</span><span class="dl">'</span><span class="p">:</span> <span class="nx">ScrollBlockDragger</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">metricsManager</span><span class="dl">'</span><span class="p">:</span> <span class="nx">ScrollMetricsManager</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+
+<span class="c1">// Initialize plugin.</span>
+<span class="kd">const</span> <span class="nx">plugin</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ScrollOptions</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="nx">plugin</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>If you want to disable one (or both) behaviors from the start, you can pass
+options to <code class="language-plaintext highlighter-rouge">init</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">plugin</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span><span class="na">enableWheelScroll</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="na">enableEdgeScroll</span><span class="p">:</span> <span class="kc">false</span><span class="p">});</span>
+</code></pre></div></div>
+
+<p>If you want to supply custom configuration to the edge scrolling behavior, you
+can also pass in that option to <code class="language-plaintext highlighter-rouge">init</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">plugin</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span><span class="na">edgeScrollOptions</span><span class="p">:</span> <span class="p">{</span><span class="na">slowBlockSpeed</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}});</span>
+</code></pre></div></div>
+
+<p>This can be combined with the previous example to disable wheel scroll at the
+same time. For more details on the edge scroll options, see the next section.</p>
+
+<h2 id="api">API</h2>
+
+<p>The plugin is configured during initialization for convenience. It can also be
+configured, or reconfigured, at any time afterwards using the following methods
+on <code class="language-plaintext highlighter-rouge">ScrollOptions</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">enableWheelScroll</code>/<code class="language-plaintext highlighter-rouge">disableWheelScroll</code></li>
+  <li><code class="language-plaintext highlighter-rouge">enableEdgeScroll</code>/<code class="language-plaintext highlighter-rouge">disableEdgeScroll</code></li>
+  <li><code class="language-plaintext highlighter-rouge">updateEdgeScrollOptions</code></li>
+</ul>
+
+<p><strong>IMPORTANT</strong>: Currently, the options to configure the edge scroll behavior are
+provided statically due to the way a BlockDragger is initialized. Thus, each
+instance of the plugin will share the same settings, even if you call
+<code class="language-plaintext highlighter-rouge">updateEdgeScrollOptions</code> on different instances of the plugin (i.e., on
+different workspaces). You can have some workspaces using the plugin and some
+not, but any that are using the plugin will share the settings. If this is a
+blocking issue for you, please file an issue on blockly-samples.</p>
+
+<p>The edge scroll options are provided in an object with the following properties
+(default values in parentheses):</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">slowBlockSpeed</code> (0.28), <code class="language-plaintext highlighter-rouge">fastBlockSpeed</code> (1.4): Pixels per ms to scroll
+based on how far the block is from the edge of the viewport.</li>
+  <li><code class="language-plaintext highlighter-rouge">slowBlockStartDistance</code> (0): Distance in workspace units that the edge of
+the block is from the edge of the viewport before the corresponding scroll
+speed will be used. Can be negative to start scrolling before the block
+extends over the edge.</li>
+  <li><code class="language-plaintext highlighter-rouge">fastBlockStartDistance</code> (50): Same as above, for fast speed. Must be larger
+than <code class="language-plaintext highlighter-rouge">slowBlockStartDistance</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">oversizeBlockThreshold</code> (0.85): If a block takes up this percentage of the
+viewport or more, it will be considered oversized. Rather than using the
+block edge, we use the mouse cursor plus the given margin size to activate
+block-based scrolling.</li>
+  <li><code class="language-plaintext highlighter-rouge">oversizeBlockMargin</code> (15): Cursor margin to use for oversized blocks. A
+bigger value will cause the workspace to scroll sooner, i.e., the mouse can
+be further inward from the edge when scrolling begins.</li>
+  <li><code class="language-plaintext highlighter-rouge">slowMouseSpeed</code> (0.5), <code class="language-plaintext highlighter-rouge">fastMouseSpeed</code> (1.6): Pixels per ms to scroll
+based on how far the mouse is from the edge of the viewport.</li>
+  <li><code class="language-plaintext highlighter-rouge">slowMouseStartDistance</code> (0): Distance in workspace units that the mouse is
+from the edge of the viewport before the corresponding scroll speed will be
+used. Can be negative to start scrolling before the mouse extends over the
+edge.</li>
+  <li><code class="language-plaintext highlighter-rouge">fastMouseStartDistance</code> (35): Same as above, for fast speed. Must be larger
+than <code class="language-plaintext highlighter-rouge">slowMouseStartDistance</code>.</li>
+</ul>
+
+<p>Each of these options is configured with the default value shown, which is
+specified in <code class="language-plaintext highlighter-rouge">ScrollBlockDragger.js</code>. When you call <code class="language-plaintext highlighter-rouge">updateEdgeScrollOptions</code>,
+only the properties actually included in the <code class="language-plaintext highlighter-rouge">options</code> parameter will be set.
+Any unspecified options will use the previously set value (where the initial
+value is from the default options). Therefore, do not pass in any options with
+explicit <code class="language-plaintext highlighter-rouge">undefined</code> or <code class="language-plaintext highlighter-rouge">null</code> values. The plugin will break. Just leave them
+out of the object if you don’t want to change the default value.</p>
+
+<p>This method is safe to call multiple times. Subsequent calls will add onto
+previous calls, not completely overwrite them. That is, if you call this with:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">updateEdgeScrollOptions</span><span class="p">({</span><span class="na">fastMouseSpeed</span><span class="p">:</span> <span class="mi">5</span><span class="p">});</span>
+<span class="nx">updateEdgeScrollOptions</span><span class="p">({</span><span class="na">slowMouseSpeed</span><span class="p">:</span> <span class="mi">2</span><span class="p">});</span>
+</code></pre></div></div>
+
+<p>Then the final options used will include both <code class="language-plaintext highlighter-rouge">fastMouseSpeed: 5</code> and
+<code class="language-plaintext highlighter-rouge">slowMouseSpeed: 2</code> with all other options being the default values.</p>
+
+<p>You can call <code class="language-plaintext highlighter-rouge">ScrollBlockDragger.resetOptions()</code> to restore all default options.</p>
+
+<h2 id="license">License</h2>
+
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

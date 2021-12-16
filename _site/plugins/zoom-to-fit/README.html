@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/zoom-to-fit Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/zoom-to-fit Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/zoom-to-fit Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds a zoom-to-fit control to the workspace." />
+<meta property="og:description" content="A Blockly plugin that adds a zoom-to-fit control to the workspace." />
+<link rel="canonical" href="http://localhost:4000/plugins/zoom-to-fit/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/zoom-to-fit/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds a zoom-to-fit control to the workspace.","headline":"@blockly/zoom-to-fit Demo","url":"http://localhost:4000/plugins/zoom-to-fit/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/zoom-to-fit Demo</div>
+      <div class="subtitle">A Blockly plugin that adds a zoom-to-fit control to the workspace.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/zoom-to-fit/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/zoom-to-fit" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/zoom-to-fit/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/zoom-to-fit/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklyzoom-to-fit-">@blockly/zoom-to-fit <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds a
+zoom-to-fit control to the workspace.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/zoom-to-fit
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/zoom-to-fit --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ZoomToFitControl</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/zoom-to-fit</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Inject Blockly.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// Initialize plugin.</span>
+<span class="kd">const</span> <span class="nx">zoomToFit</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ZoomToFitControl</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="nx">zoomToFit</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="api">API</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">init</code>: Initializes the zoom-to-fit control.</li>
+  <li><code class="language-plaintext highlighter-rouge">dispose</code>: Disposes of the zoom-to-fit control.</li>
+  <li><code class="language-plaintext highlighter-rouge">getBoundingRectangle</code>: Returns the bounding rectangle of the UI element in
+pixel units relative to the Blockly injection div.</li>
+  <li><code class="language-plaintext highlighter-rouge">position</code>: Positions the zoom-to-fit control.</li>
+</ul>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

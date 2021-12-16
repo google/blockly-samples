@@ -60,6 +60,9 @@ const workspace = Blockly.inject('blocklyDiv', {
       'blockDragger': ScrollBlockDragger,
       'metricsManager': ScrollMetricsManager,
     },
+  move: {
+    wheel: true, // Required for wheel scroll to work.
+  },
 });
 
 // Initialize plugin.

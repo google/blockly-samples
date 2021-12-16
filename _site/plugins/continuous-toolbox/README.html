@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/continuous-toolbox Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/continuous-toolbox Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/continuous-toolbox Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds a continous-scrolling style toolbox and flyout" />
+<meta property="og:description" content="A Blockly plugin that adds a continous-scrolling style toolbox and flyout" />
+<link rel="canonical" href="http://localhost:4000/plugins/continuous-toolbox/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/continuous-toolbox/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds a continous-scrolling style toolbox and flyout","headline":"@blockly/continuous-toolbox Demo","url":"http://localhost:4000/plugins/continuous-toolbox/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/continuous-toolbox Demo</div>
+      <div class="subtitle">A Blockly plugin that adds a continous-scrolling style toolbox and flyout</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/continuous-toolbox/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/continuous-toolbox" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/continuous-toolbox/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/continuous-toolbox/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklycontinuous-toolbox-">@blockly/continuous-toolbox <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that creates a continuous-scrolling style toolbox/flyout that is always open. All of the blocks from all categories are in the flyout together, and the user can either click a category name in the toolbox or scroll to the category they’re looking for. This flyout only works as a vertical flyout and it works in both left-to-right and right-to-left modes. Parts of the toolbox style have been changed already, but you can customize the style further by following the <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">toolbox documentation</a>.</p>
+
+<p><img src="https://github.com/google/blockly-samples/blob/master/plugins/continuous-toolbox/screenshot.png?raw=true" alt="Screenshot of continuous toolbox showing multiple categories of blocks in the flyout at once" />
+The continuous toolbox is shown here with the ‘Zelos’ theme, and the style can be further customized.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/continuous-toolbox
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/continuous-toolbox --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+<p>Include the toolbox, flyout, and metrics manager classes from the plugin in the options struct used when injecting Blockly. This style of flyout works best with a toolbox definition that does not use collapsible categories.</p>
+
+<p>Note that this plugin uses APIs introduced in the <code class="language-plaintext highlighter-rouge">3.20200924.3</code> release of Blockly, so you will need to use at least this version or higher.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">ContinuousToolbox</span><span class="p">,</span> <span class="nx">ContinuousFlyout</span><span class="p">,</span> <span class="nx">ContinuousMetrics</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/continuous-toolbox</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Inject Blockly.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">'</span><span class="s1">toolbox</span><span class="dl">'</span><span class="p">:</span> <span class="nx">ContinuousToolbox</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">flyoutsVerticalToolbox</span><span class="dl">'</span><span class="p">:</span> <span class="nx">ContinuousFlyout</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">metricsManager</span><span class="dl">'</span><span class="p">:</span> <span class="nx">ContinuousMetrics</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span><span class="p">,</span>
+  <span class="c1">// ... your other options here ...</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

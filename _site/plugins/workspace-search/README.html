@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/plugin-workspace-search Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/plugin-workspace-search Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/plugin-workspace-search Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds workspace search support." />
+<meta property="og:description" content="A Blockly plugin that adds workspace search support." />
+<link rel="canonical" href="http://localhost:4000/plugins/workspace-search/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/workspace-search/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds workspace search support.","headline":"@blockly/plugin-workspace-search Demo","url":"http://localhost:4000/plugins/workspace-search/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-workspace-search Demo</div>
+      <div class="subtitle">A Blockly plugin that adds workspace search support.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-search/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/plugin-workspace-search" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/workspace-search/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/workspace-search/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklyplugin-workspace-search-">@blockly/plugin-workspace-search <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds workspace search support.</p>
+
+<h2 id="installation">Installation</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/plugin-workspace-search --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="es6-imports">ES6 Imports</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">WorkspaceSearch</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/plugin-workspace-search</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">workspaceSearch</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WorkspaceSearch</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+
+<span class="nx">workspaceSearch</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</code></pre></div></div>
+<h3 id="script-tag">Script Tag</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="dl">"</span><span class="s2">./node_modules/@blockly/plugin-workspace-search/dist/index.js</span><span class="dl">"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>To open workspace search use either command + f or control + f. To close the search bar hit escape or the ‘x’ in the top right corner.</p>
+
+<h2 id="api">API</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">init</code>: Initializes the workspace search bar.</li>
+  <li><code class="language-plaintext highlighter-rouge">dispose</code>: Disposes of workspace search.</li>
+  <li><code class="language-plaintext highlighter-rouge">open</code>: Opens the search bar.</li>
+  <li><code class="language-plaintext highlighter-rouge">close</code>: Closes the search bar.</li>
+  <li><code class="language-plaintext highlighter-rouge">previous</code>: Selects the previous block.</li>
+  <li><code class="language-plaintext highlighter-rouge">next</code>: Selects the next block.</li>
+  <li><code class="language-plaintext highlighter-rouge">setSearchPlaceholder</code>: Sets the placeholder text for the search bar text input.</li>
+  <li><code class="language-plaintext highlighter-rouge">addActionBtn</code>: Add a button to the action div. This must be called after the init function has been called.</li>
+  <li><code class="language-plaintext highlighter-rouge">clearBlocks</code>: Clears the selection group and current block.</li>
+  <li><code class="language-plaintext highlighter-rouge">searchAndHighlight</code>: Searches the workspace for the current search term and highlights matching blocks.</li>
+</ul>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

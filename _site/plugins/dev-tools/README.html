@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/dev-tools Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/dev-tools Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/dev-tools Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A library of common utilities for Blockly extension development." />
+<meta property="og:description" content="A library of common utilities for Blockly extension development." />
+<link rel="canonical" href="http://localhost:4000/plugins/dev-tools/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/dev-tools/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A library of common utilities for Blockly extension development.","headline":"@blockly/dev-tools Demo","url":"http://localhost:4000/plugins/dev-tools/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/dev-tools Demo</div>
+      <div class="subtitle">A library of common utilities for Blockly extension development.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/dev-tools" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/dev-tools/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/dev-tools/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklydev-tools-">@blockly/dev-tools <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A library of helpful tools for Blockly development.</p>
+
+<h2 id="installation">Installation</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/dev-tools -D --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="playground">Playground</h3>
+<p>The playground is a tremendously useful tool for debugging your Blockly project. As a preview, here is <a href="https://google.github.io/blockly-samples/plugins/theme-modern/test/">one of the plugin playgrounds</a>. The playground features are:</p>
+<ul>
+  <li>All the default blocks</li>
+  <li>All the language generators (JavaScript, Python, PHP, Lua, and Dart)</li>
+  <li>Switch between different Blockly options (eg: rtl, renderer, readOnly, zoom and scroll)</li>
+  <li>Switch between different toolboxes and themes</li>
+  <li>Import and export programs, or generate code using one of the built-in generators</li>
+  <li>Trigger programmatic actions (eg: Show/hide, Clear, Undo/Redo, Scale)</li>
+  <li>A debug renderer</li>
+  <li>Stress tests for the renderer</li>
+  <li>Log all events in the console</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">createPlayground</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">defaultOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">};</span>
+<span class="nx">createPlayground</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">),</span> <span class="p">(</span><span class="nx">blocklyDiv</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="nx">blocklyDiv</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+<span class="p">},</span> <span class="nx">defaultOptions</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This package also exports pieces of the playground (addGUIControls, addCodeEditor) if you’d rather build your own playground.</p>
+
+<h3 id="toolboxes">Toolboxes</h3>
+<p>Blockly built-in Simple and Category toolboxes.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">toolboxSimple</span><span class="p">,</span> <span class="nx">toolboxCategories</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h4 id="test-toolbox">Test Toolbox</h4>
+
+<p>The test toolbox is re-exported in this package, but can be imported as a stand-alone through <a href="https://www.npmjs.com/package/@blockly/block-test">@blockly/block-test</a>. See the README for details.</p>
+
+<h3 id="helpers">Helpers</h3>
+
+<h4 id="populaterandom"><code class="language-plaintext highlighter-rouge">populateRandom</code></h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">populateRandom</code> function adds random blocks to a workspace. Blocks are selected from the full set of defined blocks. Pass in a worskpace and how many blocks should be created.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">populateRandom</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+<span class="c1">// Add 10 random blocks to the workspace.</span>
+<span class="nx">populateRandom</span><span class="p">(</span><span class="nx">workspace</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h4 id="spaghetti"><code class="language-plaintext highlighter-rouge">spaghetti</code></h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">spaghetti</code> function is a renderer stress test that populates the workspace with nested if-statements. Pass in a worskpace and how deep the nesting should be.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">spaghetti</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">spaghetti</span><span class="p">(</span><span class="nx">workspace</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h4 id="generatefieldtestblocks"><code class="language-plaintext highlighter-rouge">generateFieldTestBlocks</code></h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">generateFieldTestBlocks</code> function automatically generates a number of field testing blocks for the passed-in field. This is useful for testing field plugins.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">generateFieldTestBlocks</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">toolbox</span> <span class="o">=</span> <span class="nx">generateFieldTestBlocks</span><span class="p">(</span><span class="dl">'</span><span class="s1">field_template</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="dl">'</span><span class="s1">args</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">'</span><span class="s1">value</span><span class="dl">'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// default value</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">]);</span>
+</code></pre></div></div>
+
+<h3 id="test-helpers">Test Helpers</h3>
+
+<p>This package is also used in mocha tests, and exports a suite of useful test helpers.
+You can find the full list of helpers <a href="https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js">here</a>.</p>
+
+<h3 id="debug-renderer">Debug Renderer</h3>
+<p>The debug renderer is a helpful tool to debug blocks when building a custom renderer.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">DebugRenderer</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+<span class="c1">// Initialize the debug renderer.</span>
+<span class="nx">DebugRenderer</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>The debug renderer is included by default in the playground.</p>
+
+<h3 id="logger">Logger</h3>
+<p>A lightweight workspace console logger.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">logger</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/dev-tools</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">logger</span><span class="p">.</span><span class="nx">enableLogger</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="nx">logger</span><span class="p">.</span><span class="nx">disableLogger</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The logger is included by default in the playground.</p>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/keyboard-navigation Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/keyboard-navigation Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/keyboard-navigation Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds keyboard navigation support." />
+<meta property="og:description" content="A Blockly plugin that adds keyboard navigation support." />
+<link rel="canonical" href="http://localhost:4000/plugins/keyboard-navigation/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/keyboard-navigation/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds keyboard navigation support.","headline":"@blockly/keyboard-navigation Demo","url":"http://localhost:4000/plugins/keyboard-navigation/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/keyboard-navigation Demo</div>
+      <div class="subtitle">A Blockly plugin that adds keyboard navigation support.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/keyboard-navigation" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/keyboard-navigation/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/keyboard-navigation/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklykeyboard-navigation-">@blockly/keyboard-navigation <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds keyboard
+navigation to Blockly. This allows users to use the keyboard to navigate the
+toolbox and the blocks. More information on keyboard navigation can be found
+on our <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">keyboard navigation documentation page</a>.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/keyboard-navigation
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/keyboard-navigation --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">NavigationController</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly-plugin-keyboard-navigation</span><span class="dl">'</span><span class="p">;</span>
+<span class="c1">// Inject Blockly.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span><span class="p">,</span>
+<span class="p">});</span>
+<span class="c1">// Initialize plugin.</span>
+<span class="kd">const</span> <span class="nx">navigationController</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NavigationController</span><span class="p">();</span>
+<span class="nx">navigationController</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+<span class="nx">navigationController</span><span class="p">.</span><span class="nx">addWorkspace</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="c1">// Turns on keyboard navigation.</span>
+<span class="nx">navigationController</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="api">API</h2>
+<p>This plugin exports the following classes:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">NavigationController</code>: Class in charge of registering all keyboard shortcuts.</li>
+  <li><code class="language-plaintext highlighter-rouge">Navigation</code>: This holds all the functions necessary to navigate around Blockly using the keyboard.</li>
+  <li><code class="language-plaintext highlighter-rouge">FlyoutCursor</code>: Cursor in charge of navigating the flyout.</li>
+  <li><code class="language-plaintext highlighter-rouge">LineCursor</code>: Alternative cursor that tries to navigate blocks like lines of code.</li>
+</ul>
+
+<p>You should only need to use these if you plan on changing the default functionality.</p>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

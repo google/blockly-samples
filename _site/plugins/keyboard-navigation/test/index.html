@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/keyboard-navigation Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/keyboard-navigation Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/keyboard-navigation Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds keyboard navigation support." />
+<meta property="og:description" content="A Blockly plugin that adds keyboard navigation support." />
+<link rel="canonical" href="http://localhost:4000/plugins/keyboard-navigation/test/" />
+<meta property="og:url" content="http://localhost:4000/plugins/keyboard-navigation/test/" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds keyboard navigation support.","headline":"@blockly/keyboard-navigation Demo","url":"http://localhost:4000/plugins/keyboard-navigation/test/","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/keyboard-navigation Demo</div>
+      <div class="subtitle">A Blockly plugin that adds keyboard navigation support.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/test/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/keyboard-navigation" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/keyboard-navigation/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/keyboard-navigation/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Plugin Test</title>
+  <style>
+    html, body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <p>Keyboard Navigation is our first step towards an accessible Blockly.<br />
+  For more information on how the default keyboard navigation works please see
+  the <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">documentation</a>.
+  <br />
+  <br />
+
+  <b>Cursors</b><br />
+  The cursor controls how the user navigates the blocks, inputs, fields and connections on a workspace.
+  This demo shows three different cursors:<br />
+  <b>Default Cursor:</b> This cursor uses previous, next, in, and out to navigate through the different
+  parts of a block. See the <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">developer documentation</a> for more information. <br />
+  <b>Basic Cursor:</b> Uses pre order traversal to allow users to navigate
+  through everything using only the previous and next command.<br />
+  <b>Line Cursor:</b> We tried to make this cursor mimic a text editor. Navigating
+  up and down will take the cursor to the next and previous "line" of code.
+  Navigating in and out will move the cursor through all the fields and inputs
+  in that "line" of code.
+  </p>
+  <label for="accessibilityModeCheck">Enable Accessibility Mode:</label>
+  <input type="checkbox" id="accessibilityModeCheck">
+  <select id="cursorChanger" name="cursor">
+    <option value="default">Default Cursor</option>
+    <option value="basic">Basic Cursor</option>
+    <option value="line">Line Cursor</option>
+  </select>
+  <div id="root"></div>
+  <script src="../build/test_bundle.js"></script>
+</body>
+
+</html>
+
+</div>
+
+
+    
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

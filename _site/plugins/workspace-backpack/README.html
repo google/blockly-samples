@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/workspace-backpack Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/workspace-backpack Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/workspace-backpack Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that adds Backpack support." />
+<meta property="og:description" content="A Blockly plugin that adds Backpack support." />
+<link rel="canonical" href="http://localhost:4000/plugins/workspace-backpack/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/workspace-backpack/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"description":"A Blockly plugin that adds Backpack support.","headline":"@blockly/workspace-backpack Demo","url":"http://localhost:4000/plugins/workspace-backpack/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/workspace-backpack Demo</div>
+      <div class="subtitle">A Blockly plugin that adds Backpack support.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-backpack/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/workspace-backpack" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/workspace-backpack/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/workspace-backpack/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklyworkspace-backpack-">@blockly/workspace-backpack <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds a Backpack to the workspace.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/workspace-backpack
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/workspace-backpack --save
+</code></pre></div></div>
+<h2 id="features">Features</h2>
+<h3 id="context-menus">Context Menus</h3>
+<p>The following context menu options are available for the backpack:</p>
+<ul>
+  <li>“Copy all Blocks” to Backpack in main Workspace</li>
+  <li>“Paste all Blocks” from Backpack in main Workspace</li>
+  <li>“Remove from Backpack” on Block stack in Backpack Flyout</li>
+  <li>“Copy to Backpack” on a Block stack in main Workspace</li>
+  <li>“Empty” option when right clicking the Backpack that is disabled if the Backpack is empty</li>
+</ul>
+
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu.gif" alt="An animated picture of all the context menu options in use" /></p>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Backpack</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/workspace-backpack</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Inject Blockly.</span>
+<span class="kd">const</span> <span class="nx">workspace</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="dl">'</span><span class="s1">blocklyDiv</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">toolbox</span><span class="p">:</span> <span class="nx">toolboxCategories</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// Initialize plugin.</span>
+<span class="kd">const</span> <span class="nx">backpack</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backpack</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="nx">backpack</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h3 id="configuration">Configuration</h3>
+<p>This plugin takes an optional configuration object.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  contextMenu: {
+    emptyBackpack: (boolean|undefined),
+    removeFromBackpack: (boolean|undefined),
+    copyToBackpack: (boolean|undefined),
+    copyAllToBackpack: (boolean|undefined),
+    pasteAllToBackpack: (boolean|undefined),
+    disablePreconditionChecks: (boolean|undefined),
+  },
+}
+</code></pre></div></div>
+
+<p>The configuration options are passed in to the constructor. In this
+configuration object, you can currently configure which context menu options are
+registered at <code class="language-plaintext highlighter-rouge">init</code>.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">backpackOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">contextMenu</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">emptyBackpack</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">removeFromBackpack</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">copyToBackpack</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+<span class="kd">const</span> <span class="nx">backpack</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backpack</span><span class="p">(</span><span class="nx">workspace</span><span class="p">,</span>  <span class="nx">backpackOptions</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The following options are the default values used for any property in the
+passed in options that is undefined:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">defaultOptions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">contextMenu</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">emptyBackpack</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">removeFromBackpack</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">copyToBackpack</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">copyAllToBackpack</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="na">pasteAllToBackpack</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="na">disablePreconditionChecks</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">disablePreconditionChecks</code> property will prevent the “Copy to Backpack”
+context menu option from disabling the context menu option if the block is
+already in the Backpack. Setting this flag to <code class="language-plaintext highlighter-rouge">true</code> to disable the check can be
+beneficial for performance if you expect blocks stacks to be very large.</p>
+
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu-precondition.gif" alt="An animated picture of the &quot;Copy to Backpack&quot; context menu" /></p>
+
+<p>Note: Currently the empty Backpack context menu is registered globally, while
+the others are registered per workspace.</p>
+
+<h3 id="blockly-languages">Blockly Languages</h3>
+<p>We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the messages
+can be translated by assigning the following properties of Blockly.Msg</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">EMPTY_BACKPACK</code> (Default: “Empty”) context menu - Empty the backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">REMOVE_FROM_BACKPACK</code> (Default: “Remove from Backpack”) context menu - Remove
+the selected Block from the backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">COPY_TO_BACKPACK</code> (Default: “Copy to Backpack”) context menu - Copy the
+selected Block to the backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">COPY_ALL_TO_BACKPACK</code> (Default: “Copy All Blocks to Backpack”) Context menu -
+copy all Blocks on the workspace to the backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">PASTE_ALL_FROM_BACKPACK</code> (Default: “Paste All Blocks from Backpack”) context
+menu - Paste all Blocks from the backpack to the workspace.</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Blockly</span><span class="p">.</span><span class="nx">Msg</span><span class="p">[</span><span class="dl">'</span><span class="s1">EMPTY_BACKPACK</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Opróżnij plecak</span><span class="dl">'</span><span class="p">;</span>  <span class="c1">// Polish </span>
+<span class="c1">// Inject workspace, etc...</span>
+</code></pre></div></div>
+
+<h2 id="api">API</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">init</code>: Initializes the backpack.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">dispose</code>: Disposes of backpack.</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">getCount</code>: Returns the count of items in the backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">getContents</code> Returns backpack contents.</li>
+  <li><code class="language-plaintext highlighter-rouge">empty</code>: Empties the backpack’s contents. If the contents-flyout is currently
+open it will be closed.</li>
+  <li><code class="language-plaintext highlighter-rouge">addBlock</code>: Adds Block to backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">addBlocks</code>: Adds Blocks to backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">removeBlock</code>: Removes Block to backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">addItem</code>: Adds item to backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">removeItem</code>: Removes item from the backpack.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">setContents</code>: Sets backpack contents.</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">isOpen</code>: Returns whether the backpack is open.</li>
+  <li><code class="language-plaintext highlighter-rouge">open</code>: Opens the backpack flyout.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">close</code>: Closes the backpack flyout.</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">handleBlockDrop</code>: Handles a block drop on this backpack.</li>
+  <li><code class="language-plaintext highlighter-rouge">onDragEnter</code>: Handle mouse over.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">onDragExit</code>: Handle mouse exit.</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">getBoundingRectangle</code>: Returns the bounding rectangle of the UI element in
+pixel units relative to the Blockly injection div.</li>
+  <li><code class="language-plaintext highlighter-rouge">position</code>: Positions the backpack UI element.</li>
+</ul>
+
+<h2 id="compatibility">Compatibility</h2>
+
+<h3 id="multiple-backpacks-per-workspace">Multiple Backpacks per Workspace</h3>
+<p>This plugin also currently only supports one Backpack per Workspace.</p>
+
+<h3 id="blocklyconfigurecontextmenu">Blockly.configureContextMenu</h3>
+<p>This plugin registers a custom context menu by overriding
+<code class="language-plaintext highlighter-rouge">Blockly.configureContextMenu</code> in <code class="language-plaintext highlighter-rouge">init</code> in order to support the context menu
+for emptying the Backpack.
+If you also override <code class="language-plaintext highlighter-rouge">Blockly.configureContextMenu</code> after initializing this
+plugin, you must also call the old <code class="language-plaintext highlighter-rouge">Blockly.configureContextMenu</code> function.
+Example:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const prevConfigureContextMenu = workspace.configureContextMenu;
+workspace.configureContextMenu = (menuOptions, e) =&gt; {
+  prevConfigureContextMenu &amp;&amp;
+      prevConfigureContextMenu.call(null, menuOptions, e);
+  ...
+}      
+</code></pre></div></div>
+
+<h3 id="backpack-flyout">Backpack Flyout</h3>
+<p>The Backpack Flyout uses the registered Flyout for either
+<code class="language-plaintext highlighter-rouge">Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX</code> or
+<code class="language-plaintext highlighter-rouge">Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX</code>, similar to the implementation
+for <code class="language-plaintext highlighter-rouge">Blockly.Trashcan</code>. If a custom class is registered for either of these
+types, then the Backpack Flyout may need to be tested for compatibility.</p>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>
