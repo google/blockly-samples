@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const ESLint = require('eslint').ESLint;
+// eslint-disable-next-line no-unused-vars
 const LintResult = require('eslint').LintResult;
 
 const appDirectory = fs.realpathSync(process.cwd());
@@ -41,8 +42,8 @@ const linter = new ESLint({
  * Lint this directory.
  * @param {string} dir The directory to lint.
  * @param {ESLint} linter The linter.
- * @return {Promise<LintResult[]|null>} The results, which may be printed with
- *   an approriate formatter.
+ * @return {Promise<Array<LintResult>|null>} The results, which may be printed
+ *   with an approriate formatter.
  */
 async function lintDir(dir, linter) {
   const resolvePath = resolveApp(dir);

@@ -27,6 +27,13 @@ import {addGUIControls} from './options';
 import {LocalStorageState} from './state';
 import {renderCheckbox, renderCodeTab, renderPlayground} from './ui';
 
+/**
+ * @typedef {?} dat
+ */
+
+/**
+ * @typedef {?} monaco
+ */
 
 /**
  * @typedef {function(!HTMLElement,!Blockly.BlocklyOptions):

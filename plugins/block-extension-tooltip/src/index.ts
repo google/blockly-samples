@@ -19,9 +19,9 @@ interface TooltipBlock extends Blockly.BlockSvg {
 
 /**
  * Register the Blockly tooltip block extension.
- * @param {!TooltipRender} tooltipRender Custom tooltip render function.
- * @param {string=} extensionName Optional extension name.
- * @return {string} The registered extension name.
+ * @param tooltipRender Custom tooltip render function.
+ * @param extensionName Optional extension name.
+ * @return The registered extension name.
  */
 export const registerTooltipExtension = (tooltipRender: TooltipRender,
     extensionName = 'custom-tooltip-extension') => {
