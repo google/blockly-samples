@@ -36,7 +36,7 @@ function createWorkspace(blocklyDiv, options) {
     xmlList.push(button);
 
     const blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
-    xmlList = blockList.concat(xmlList);
+    xmlList = xmlList.concat(blockList);
     return xmlList;
   };
 
