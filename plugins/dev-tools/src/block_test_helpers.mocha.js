@@ -94,7 +94,7 @@ export class SerializationTestCase {
     this.json;
     /**
      * @type {string|undefined} The expected json after round trip. Provided if
-     *    it different from json that was passed in.
+     *    it is different from json that was passed in.
      */
     this.expectedJson;
   }
