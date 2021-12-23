@@ -70,6 +70,10 @@ zoom-to-fit control to the workspace.
 - [``@blockly/plugin-scroll-options``](scroll-options/): A Blockly plugin that
 adds additional scrolling features.
 
+### Serializers
+
+- [``@blockly/serialize-disabled-interactions``](serialize-disabled-interactions/): A serializer that serializes movable, deltable, and editable attributes.
+
 ### Other
 
 - [``@blockly/plugin-modal``](modal/): A Blockly plugin that creates a modal.
