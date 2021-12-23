@@ -168,7 +168,7 @@ export const runSerializationTestSuite = (testCases) => {
    * @param {!SerializationTestCase} testCase The test case information.
    * @return {!Function} The test callback.
    */
-  const createXmlToBlockTestCallback = (testCase) => {
+  const createSerializedDataToBlockTestCallback = (testCase) => {
     return function() {
       let block;
       if (testCase.json) {
@@ -186,7 +186,7 @@ export const runSerializationTestSuite = (testCases) => {
    * @param {!SerializationTestCase} testCase The test case information.
    * @return {!Function} The test callback.
    */
-  const createXmlRoundTripTestCallback = (testCase) => {
+  const createRoundTripTestCallback = (testCase) => {
     return function() {
       if (testCase.json) {
         const block = Blockly.serialization.blocks.append(
@@ -207,7 +207,7 @@ export const runSerializationTestSuite = (testCases) => {
   };
   suite('Serialization', function() {
     suite('xmlToBlock', function() {
-      runTestCases(testCases, createXmlToBlockTestCallback);
+      runTestCases(testCases, createSerializedDataToBlockTestCallback);
     });
     suite('xml round-trip', function() {
       setup(function() {
@@ -236,7 +236,7 @@ export const runSerializationTestSuite = (testCases) => {
         sinon.restore();
       });
 
-      runTestCases(testCases, createXmlRoundTripTestCallback);
+      runTestCases(testCases, createRoundTripTestCallback);
     });
   });
 };
