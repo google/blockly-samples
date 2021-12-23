@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-serialize-disabled-interactions",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -42,14 +42,14 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.10",
     "@blockly/dev-tools": "^2.5.6",
-    "blockly": "^6.20210701.0"
+    "blockly": "^7.20211209.1"
   },
   "peerDependencies": {
     "blockly": "^6.20210701.0"
   },
-  "publishConfig": {},
-  "eslintConfig": {
-    "extends": "@blockly/eslint-config"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
   },
   "engines": {
     "node": ">=8.17.0"

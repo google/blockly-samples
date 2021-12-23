@@ -1,13 +1,12 @@
 /**
  * @license
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * @fileoverview Unit tests for a strict connection checker that extends
- * Blockly.ConnectionChecker. Based on blockly's connection_checker_tests.js.
- * @author fenichel@google.com (Rachel Fenichel)
+ * @fileoverview Unit tests for a serializer which serializes disabled
+ *   interactions.
  */
 
 const chai = require('chai');

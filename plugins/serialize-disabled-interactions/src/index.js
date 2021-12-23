@@ -51,7 +51,7 @@ class State {
  */
 class DisabledInteractionsSerializer {
   /**
-   * Constructs te disabled interactions serializer.
+   * Constructs the disabled interactions serializer.
    */
   constructor() {
     /**

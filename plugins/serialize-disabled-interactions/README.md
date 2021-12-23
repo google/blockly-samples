@@ -1,7 +1,7 @@
 # @blockly/plugin-serialize-disabled-interactions [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that for the JSON
-serialization system that serializes which are blocks are not deletable,
+A [Blockly](https://www.npmjs.com/package/blockly) plugin for the JSON
+serialization system that serializes blocks which are not deletable,
 movable, or editable.
 
 ## Installation
