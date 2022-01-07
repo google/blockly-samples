@@ -269,6 +269,10 @@ const procedureDefMutator = {
    *     parameters and statements.
    */
   saveExtraState: function() {
+    if (!this.argData_.length && this.hasStatements_) {
+      return null;
+    }
+
     const state = Object.create(null);
     if (this.argData_.length) {
       state['params'] = [];
@@ -277,7 +281,7 @@ const procedureDefMutator = {
         state['params'].push({
           'name': model.name,
           'id': model.getId(),
-          'argId': model.argId,
+          'argId': arg.argId,
         });
       });
     }
@@ -295,7 +299,8 @@ const procedureDefMutator = {
   loadExtraState: function(state) {
     // We have to handle this so that the user doesn't add blocks to the stack,
     // in which case it would be impossible to return to the old mutators.
-    if (!state['hasStatements']) {
+    this.hasStatements_ = state['hasStatements'] !== false;
+    if (!this.hasStatements_) {
       this.removeInput('STACK');
     }
 

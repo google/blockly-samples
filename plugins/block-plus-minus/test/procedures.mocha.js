@@ -346,11 +346,13 @@ suite('Procedure blocks', function() {
                 'params': [
                   {
                     'name': 'x',
-                    'id': 'arg1'
+                    'id': 'id1',
+                    'argId': 'arg1',
                   },
                   {
                     'name': 'y',
-                    'id': 'arg1'
+                    'id': 'id2',
+                    'argId': 'arg2',
                   }
                 ]
               }
@@ -360,18 +362,20 @@ suite('Procedure blocks', function() {
               'id': '1',
               'fields': {
                 'NAME': 'do something',
-                '1': 'x',
-                '1': 'y',
+                'arg1': 'x',
+                'arg2': 'y',
               },
               'extraState': {
                 'params': [
                   {
                     'name': 'x',
-                    'id': 'arg1'
+                    'id': 'id1',
+                    'argId': 'arg1',
                   },
                   {
                     'name': 'y',
-                    'id': 'arg1'
+                    'id': 'id2',
+                    'argId': 'arg2',
                   }
                 ]
               }
@@ -399,12 +403,12 @@ suite('Procedure blocks', function() {
                 'NAME': 'do something',
               },
               'extraState': {
-                'hasStatements': 'false',
+                'hasStatements': false,
               }
             },
             assertBlockStructure:
                 (block) => {
-                  assertDefBlockStructure(block, true, [], false);
+                  assertDefBlockStructure(block, testSuite.hasReturn, [], false);
                 },
           },
           {

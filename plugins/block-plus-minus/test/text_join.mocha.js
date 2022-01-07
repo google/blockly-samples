@@ -180,12 +180,12 @@ suite('Text join block', function() {
           'type': 'text_join',
           'id': '1',
           'extraState': {
-            'itemCount': 3
+            'itemCount': 2
           }
         },
         assertBlockStructure:
             (block) => {
-              assertTextJoinBlockStructure(block, 3);
+              assertTextJoinBlockStructure(block, 2);
             },
       },
       {
@@ -228,8 +228,9 @@ suite('Text join block', function() {
             'ADD2': {
               'block': {
                 'type': 'logic_boolean',
+                'id': '1',
                 'fields': {
-                  'BOOL': false
+                  'BOOL': 'FALSE'
                 }
               }
             }
@@ -237,7 +238,7 @@ suite('Text join block', function() {
         },
         assertBlockStructure:
             (block) => {
-              assertTextJoinBlockStructure(block, 4);
+              assertTextJoinBlockStructure(block, 3);
               const child = block.getInputTargetBlock('ADD2');
               assert.isNotNull(child);
               assert.equal(child.type, 'logic_boolean');

@@ -68,10 +68,10 @@ const controlsIfMutator = {
       return null;
     }
     const state = Object.create(null);
-    if (this.elseifCount_) {
-      state['elseIfCount'] = this.elseifCount_;
+    if (this.elseIfCount_) {
+      state['elseIfCount'] = this.elseIfCount_;
     }
-    if (this.elseCount_) {
+    if (this.hasElse_) {
       state['hasElse'] = true;
     }
     return state;

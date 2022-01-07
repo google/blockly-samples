@@ -253,8 +253,9 @@ suite('List create block', function() {
             'ADD3': {
               'block': {
                 'type': 'logic_boolean',
+                'id': '1',
                 'fields': {
-                  'BOOL': false
+                  'BOOL': 'FALSE'
                 }
               }
             }

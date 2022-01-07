@@ -165,7 +165,8 @@ suite('If block', function() {
           'type': 'controls_if',
           'extraState': {
             'elseIfCount': 2,
-          }
+          },
+          'id': '1',
         },
         assertBlockStructure:
             (block) => {
@@ -179,7 +180,8 @@ suite('If block', function() {
           'extraState': {
             'elseIfCount': 3,
             'hasElse': true,
-          }
+          },
+          'id': '1',
         },
         assertBlockStructure:
             (block) => {
