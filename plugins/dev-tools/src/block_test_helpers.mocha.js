@@ -193,7 +193,7 @@ export const runSerializationTestSuite = (testCases) => {
             testCase.json, this.workspace);
         const generatedJson = Blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
-        assert.equal(generatedJson, expectedJson);
+        assert.deepEqual(generatedJson, expectedJson);
       } else {
         const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             testCase.xml), this.workspace);
