@@ -15,9 +15,15 @@ build/
 gh-pages/_site
 gh-pages/plugins
 gh-pages/examples
+.DS_Store
 
 # TypeScript cache
 *.tsbuildinfo
 
 # Optional npm cache directory
 .npm
+
+# IDEs and editors
+.idea
+*.sublime-workspace
+.vscode/*
