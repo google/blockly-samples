@@ -136,7 +136,7 @@ The toolbox may be organized into categories, and may contain both single blocks
 
 A toolbox is defined as a JavaScript object and passed into the workspace constructor through an options struct.
 
-For more information on this JSON format and toolbox configuration, including category creation, click <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">here</a>.
+For more information on this JSON format and toolbox configuration, including category creation, please see our <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">toolbox documentation</a> for more information.
 
 
 ### Define the toolbox
