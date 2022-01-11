@@ -26,7 +26,7 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 - Familiarity with JSON and the JSON specification.
 - Comfort with defining blocks and toolboxes.
 
-This codelab assumes that you are already comfortable with using the Blockly playground locally.
+This codelab assumes that you are comfortable using the command line/terminal.
 
 ## Setup
 
@@ -34,9 +34,13 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 ### The playground
 
-You will make all of your changes in the advanced playground, which you can find at `tests/playgrounds/advanced_playground.html`. This playground contains all of Blockly's base blocks, as well as some developer tools to make testing easier.
+You will make all of your changes in the advanced playground, which you can find at `tests/playgrounds/advanced_playground.html`. This playground contains all of Blockly's base blocks, as well as some developer tools to make testing easier. To use it:
+  1) Clone or download the Blockly directory if you haven't already.
+  2) Navigate to your Blockly directory via the command line.
+  3) Run `npm run start`.
+  4) Using the page that opens in your browser navigate to the `tests/playgrounds/advanced_playground.html` page.
 
-To start, create a file named `custom_generator.js` in the same folder as the playground.  Include it with a script tag.
+Now to start, create a file named `custom_generator.js` in the same folder as the playground.  Include it with a script tag.
 
 ```
 <script src="./custom_generator.js"></script>
@@ -111,17 +115,39 @@ Next, define your toolbox in XML. For this example we have a flyout-only toolbox
 Copy this code into `custom_generator.js`:
 
 ```js
-var codelabToolbox = `
-<xml id="toolbox" style="display: none">
-<block type="object"/>
-<block type="member"></block>
-<block type="math_number"><field name="NUM">0</field></block>
-<block type="text"><field name="TEXT"/></block>
-<block type="logic_boolean"><field name="BOOL">TRUE</field></block>
-<block type="logic_null"/>
-<block type="lists_create_with"><mutation items="3"/></block>
-</xml>
-`
+var codelabToolbox = {
+  'kind': 'flyoutToolbox',
+  'contents': [
+    {
+      'kind': 'block',
+      'type': 'object'
+    },
+    {
+      'kind': 'block',
+      'type': 'member'
+    },
+    {
+      'kind': 'block',
+      'type': 'math_number'
+    },
+    {
+      'kind': 'block',
+      'type': 'text'
+    },
+    {
+      'kind': 'block',
+      'type': 'logic_boolean'
+    },
+    {
+      'kind': 'block',
+      'type': 'logic_null'
+    },
+    {
+      'kind': 'block',
+      'type': 'lists_create_with'
+    },
+  ]
+}
 ```
 
 Then update the options struct in the playground to use your new toolbox:
@@ -366,8 +392,8 @@ All together, here is block generator for the member block:
 ```js
 codelabGenerator['member'] = function(block) {
   const name = block.getFieldValue('MEMBER_NAME');
-  const value = codelabGenerator.valueToCode(block, 'MEMBER_VALUE',
-      codelabGenerator.PRECEDENCE);
+  const value = codelabGenerator.valueToCode(
+      block, 'MEMBER_VALUE', codelabGenerator.PRECEDENCE);
   const code = '"' + name + '": ' + value;
   return code;
 };

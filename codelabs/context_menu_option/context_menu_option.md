@@ -262,14 +262,12 @@ As an example, update the help item's `callback` to add a block to the workspace
 
 ```js
 callback: function(scope) {
-  const domText = Blockly.Xml.textToDom(`
-  <xml xmlns="https://developers.google.com/blockly/xml">
-    <block type="text">
-      <field name="TEXT">Now there is a block</field>
-    </block>
-    </xml>
-  `);
-  Blockly.Xml.domToWorkspace(domText, scope.workspace);
+  Blockly.serialization.blocks.append({
+    'type': 'text',
+    'fields': {
+      'TEXT': 'Now there is a block'
+    }
+  });
 }
 ```
 
