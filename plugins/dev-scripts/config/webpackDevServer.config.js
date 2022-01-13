@@ -22,5 +22,11 @@ module.exports = () => {
       },
     },
     open: true,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
   };
 };
