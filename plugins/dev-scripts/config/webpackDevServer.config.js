@@ -18,7 +18,7 @@ module.exports = () => {
     watchFiles: {
       paths: './',
       options: {
-        ignored: /node_modules/,
+        ignored: 'node_modules',
       },
     },
     open: true,
