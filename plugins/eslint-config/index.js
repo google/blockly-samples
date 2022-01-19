@@ -54,7 +54,7 @@ module.exports = {
     // Allow TODO comments.
     'no-warning-comments': 'off',
     // Allow long import lines.
-    'max-len': ['error', {'ignorePattern': '^import'}],
+    'max-len': ['error', {'ignorePattern': '^import', 'ignoreUrls': true}],
     'no-invalid-this': 'off',
     // valid-jsdoc does not work properly for interface methods.
     // https://github.com/eslint/eslint/issues/9978

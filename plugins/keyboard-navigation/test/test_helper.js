@@ -20,7 +20,8 @@ export function createNavigationWorkspace(
     navigation, enableKeyboardNav, readOnly) {
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: `
-      <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
+      <xml xmlns="https://developers.google.com/blockly/xml"
+          id="toolbox-categories" style="display: none">
         <category colour="#FFFFFF" name="First" css-container="something">
           <block type="basic_block">
             <field name="TEXT">FirstCategory-FirstBlock</field>

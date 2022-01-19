@@ -9,8 +9,11 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
+
 /**
- * @typedef {{
+ * Render the playground layout.
+ * @param {HTMLElement} container The container to render the playground in.
+ * @return {{
  *     blocklyDiv: HTMLElement,
  *     minimizeButton: HTMLElement,
  *     monacoDiv: HTMLElement,
@@ -18,15 +21,7 @@
  *     playgroundDiv: HTMLElement,
  *     tabsDiv: HTMLElement,
  *     tabButtons: HTMLElement
- * }}
- */
-let PlaygroundLayout;
-
-
-/**
- * Render the playground layout.
- * @param {HTMLElement} container The container to render the playground in.
- * @return {PlaygroundLayout} An object with the various playground components.
+ * }} An object with the various playground components.
  */
 export function renderPlayground(container) {
   container.style.display = 'flex';
