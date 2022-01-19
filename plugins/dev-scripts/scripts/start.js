@@ -40,7 +40,7 @@ console.log(`Running start for ${packageJson.name}`);
 // Create the webpack configuration for the development environment.
 // Build the test directory.
 const config = webpackConfig({
-  mode: 'development',
+  mode: 'test',
 });
 if (!config.entry) {
   console.log(`${chalk.red(`Configuration error.`)}
