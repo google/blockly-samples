@@ -578,7 +578,8 @@ export class Backpack extends Blockly.DragTarget {
    * @protected
    */
   isOpenable_() {
-    return !this.isOpen();
+    return !this.isOpen() &&
+    this.options_.allowEmptyBackpackOpen ? true : this.getCount() > 0;
   }
 
   /**

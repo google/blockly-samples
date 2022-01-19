@@ -78,7 +78,8 @@ export class SerializationTestCase {
    */
   constructor() {
     /**
-     * @type {string} The block xml to use for test.
+     * @type {string} The block xml to use for test. Do not provide if json is
+     *     provided.
      */
     this.xml;
     /**
@@ -86,6 +87,16 @@ export class SerializationTestCase {
      *    it different from xml that was passed in.
      */
     this.expectedXml;
+    /**
+     * @type {string} The block json to use for test. Do not provide if xml is
+     *     provided.
+     */
+    this.json;
+    /**
+     * @type {string|undefined} The expected json after round trip. Provided if
+     *    it is different from json that was passed in.
+     */
+    this.expectedJson;
   }
   /**
    * Asserts that the block created from xml has the expected structure.
@@ -157,10 +168,16 @@ export const runSerializationTestSuite = (testCases) => {
    * @param {!SerializationTestCase} testCase The test case information.
    * @return {!Function} The test callback.
    */
-  const createXmlToBlockTestCallback = (testCase) => {
+  const createSerializedDataToBlockTestCallback = (testCase) => {
     return function() {
-      const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-          testCase.xml), this.workspace);
+      let block;
+      if (testCase.json) {
+        block = Blockly.serialization.blocks.append(
+            testCase.json, this.workspace);
+      } else {
+        block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+            testCase.xml), this.workspace);
+      }
       testCase.assertBlockStructure(block);
     };
   };
@@ -169,20 +186,28 @@ export const runSerializationTestSuite = (testCases) => {
    * @param {!SerializationTestCase} testCase The test case information.
    * @return {!Function} The test callback.
    */
-  const createXmlRoundTripTestCallback = (testCase) => {
+  const createRoundTripTestCallback = (testCase) => {
     return function() {
-      const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
-          testCase.xml), this.workspace);
-      const generatedXml =
-          Blockly.Xml.domToPrettyText(
-              Blockly.Xml.blockToDom(block));
-      const expectedXml = testCase.expectedXml || testCase.xml;
-      assert.equal(generatedXml, expectedXml);
+      if (testCase.json) {
+        const block = Blockly.serialization.blocks.append(
+            testCase.json, this.workspace);
+        const generatedJson = Blockly.serialization.blocks.save(block);
+        const expectedJson = testCase.expectedJson || testCase.json;
+        assert.deepEqual(generatedJson, expectedJson);
+      } else {
+        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+            testCase.xml), this.workspace);
+        const generatedXml =
+            Blockly.Xml.domToPrettyText(
+                Blockly.Xml.blockToDom(block));
+        const expectedXml = testCase.expectedXml || testCase.xml;
+        assert.equal(generatedXml, expectedXml);
+      }
     };
   };
   suite('Serialization', function() {
     suite('xmlToBlock', function() {
-      runTestCases(testCases, createXmlToBlockTestCallback);
+      runTestCases(testCases, createSerializedDataToBlockTestCallback);
     });
     suite('xml round-trip', function() {
       setup(function() {
@@ -211,7 +236,7 @@ export const runSerializationTestSuite = (testCases) => {
         sinon.restore();
       });
 
-      runTestCases(testCases, createXmlRoundTripTestCallback);
+      runTestCases(testCases, createRoundTripTestCallback);
     });
   });
 };

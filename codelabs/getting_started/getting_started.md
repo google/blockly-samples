@@ -124,7 +124,7 @@ You can also define your imports more carefully to get [different generators](ht
 
 In this section you will learn how to add a workspace to your app, including how to define a toolbox.
 
-### The Blockly toolbox
+### Parts of Blockly
 
 A Blockly workspace has two main components:
 - The area where the user assembles their blocks (the white area).
@@ -134,35 +134,44 @@ A Blockly workspace has two main components:
 
 The toolbox may be organized into categories, and may contain both single blocks and groups of blocks. A well-organized toolbox helps the user to explore the available blocks and understand the capabilities of the underlying system.
 
-A toolbox is defined in XML and passed into the workspace constructor through an options struct.
+A toolbox is defined as a JavaScript object and passed into the workspace constructor through an options struct.
 
-For more information on this XML format and toolbox configuration, including category creation, click <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">here</a>.
+For more information on this JSON format and toolbox configuration, including category creation, please see our <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">toolbox documentation</a> for more information.
+
 
 ### Define the toolbox
 
-Add the structure of the toolbox just after the `blocklyDiv`:
+Open up `scripts/main.js` and scroll down to the end of the file. Then add the code for your toolbox definition just after the call to `enableMakerMode()`.
 
-```xml
-<xml id="toolbox" style="display: none">
-  <block type="controls_repeat_ext">
-    <value name="TIMES">
-      <shadow type="math_number">
-        <field name="NUM">5</field>
-      </shadow>
-    </value>
-  </block>
-</xml>
+```js
+const toolbox = {
+  'kind': 'flyoutToolbox',
+  'contents': [
+    {
+      'kind': 'block',
+      'type': 'controls_repeat_ext',
+      'inputs': {
+        'TIMES': {
+          'shadow': {
+            'type': 'math_number',
+            'fields': {
+              'NUM': 5
+            }
+          }
+        }
+      }
+    }
+  ]
+}
 ```
 
-This XML defines a toolbox with a single "repeat loop" block.
-
-We set the display style of the toolbox to `none`, because we do not intend to display the XML structure on our web page - it will be just used to construct the toolbox programmatically.
+This JavaScript object defines a toolbox with a single "repeat loop" block.
 
 ### Injection
 
 Adding a Blockly workspace to a page is called *injection*, because the workspace is injected into a `div` that already exists on the page.
 
-The function to call is `Blockly.inject(container, options)`, which takes two arguments:
+To do this you call the function `Blockly.inject(container, options)`, which takes two arguments:
 - `container` is where the Blockly workspace should be placed on the page. It can be an `Element`, an ID string, or a CSS selector.
 - `options` is a dictionary of configuration options.
 
@@ -174,18 +183,18 @@ For this codelab we will inject into a div with the id `"blocklyDiv"`, which you
 
 ### Create the workspace
 
-Now open `scripts/main.js`. Scroll to the end of the file and add code to inject Blockly editor just after the call to `enableMakerMode()`:
+Now add code to inject the Blockly editor just afer the code you used to define your toolbox:
 
 ```js
 Blockly.inject('blocklyDiv', {
-  toolbox: document.getElementById('toolbox'),
+  toolbox: toolbox,
   scrollbars: false
 });
 ```
 
 Let's look at the options we used to initialize your blockly editor:
 
-- `toolbox`: An XML element which defines the toolbox for the editor
+- `toolbox`: An JavaScript object which defines the toolbox for the editor.
 - `scrollbars`: whether to show scrollbars in the workspace.
 
 The options struct gives you significant control over your Blockly instance. You can pass options to set Blockly's theme, modify scrolling behaviour, set the renderer, and more. For more information, head over to Blockly's developer site and check out the [configuration](https://developers.google.com/blockly/guides/get-started/web#configuration) section.
@@ -253,19 +262,32 @@ Your block definitions must come after importing Blockly and before the other im
 
 ### Add the sound block to the toolbox
 
-Now we can update the toolbox to include the new sound block, by adding `<block type="play_sound"></block>`.
+Now we can update the toolbox to include the new sound block, by adding `{'kind': 'block', 'type': 'play_sound'}`.
 
-```xml
-<xml id="toolbox" style="display: none">
-  <block type="controls_repeat_ext">
-    <value name="TIMES">
-      <shadow type="math_number">
-        <field name="NUM">5</field>
-      </shadow>
-    </value>
-  </block>
-  <block type="play_sound"></block>
-</xml>
+```js
+const toolbox = {
+  'kind': 'flyoutToolbox',
+  'contents': [
+    {
+      'kind': 'block',
+      'type': 'controls_repeat_ext',
+      'inputs': {
+        'TIMES': {
+          'shadow': {
+            'type': 'math_number',
+            'fields': {
+              'NUM': 5
+            }
+          }
+        }
+      }
+    },
+    {
+      'kind': 'block',
+      'type': 'play_sound'
+    }
+  ]
+};
 ```
 
 Run the app one more time, and play around with the new `Play (sound)` block. It should look like this:
@@ -287,10 +309,10 @@ Once the button behavior is defined by the user, it needs to be saved for later 
 Open `scripts/main.js`. Add the following code to the `save()` method:
 
 ```js
-button.blocklyXml = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+button.blocklySave = Blockly.serialization.workspaces.save(Blockly.getMainWorkspace());
 ```
 
-`workspaceToDom` takes the Blockly workspace, exports it to an XML DOM structure and stores it in a `blocklyXml` property on the button. This way the exported XML for the block sequence gets associated with a particular button.
+`workspaces.save` takes the Blockly workspace, exports its state to a JavaScript object and stores it in a `blocklySave` property on the button. This way the exported state for the block sequence gets associated with a particular button.
 
 ### Add the load method
 
@@ -300,15 +322,14 @@ In the `scripts/main.js `file, add `loadWorkspace` function:
 
 ```
 function loadWorkspace(button) {
-  let workspace = Blockly.getMainWorkspace();
-  workspace.clear();
-  if (button.blocklyXml) {
-    Blockly.Xml.domToWorkspace(button.blocklyXml, workspace);
+  const workspace = Blockly.getMainWorkspace();
+  if (button.blocklySave) {
+    Blockly.serialization.workspaces.load(button.blocklySave, workspace);
   }
 }
 ```
 
-It clears the workspace from any blocks and then loads blocks from the XML stored on the button that was clicked.
+This loads the blocks stored on the button that was clicked back into the workspace.
 
 Call this function from `enableBlocklyMode`:
 

@@ -41,13 +41,6 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     this.scrollAnimationFraction = 0.3;
 
     /**
-     * A list of blocks that can be recycled.
-     * @type {!Array.<!Blockly.BlockSvg>}
-     * @private
-     */
-    this.recycleBlocks_ = [];
-
-    /**
      * Whether to recycle blocks when refreshing the flyout. When false, do not
      * allow anything to be recycled. The default is to recycle.
      * @type {boolean}
@@ -268,79 +261,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   show(flyoutDef) {
     super.show(flyoutDef);
-    this.emptyRecycleBlocks_();
     this.recordScrollPositions();
     this.workspace_.resizeContents();
-  }
-
-  /**
-   * Empty out the recycled blocks, properly destroying everything.
-   * @protected
-   */
-  emptyRecycleBlocks_() {
-    // Clean out the old recycle bin.
-    const oldBlocks = this.recycleBlocks_;
-    this.recycleBlocks_ = [];
-    for (const oldBlock of oldBlocks) {
-      oldBlock.dispose(false, false);
-    }
-  }
-
-  /**
-   * @override
-   */
-  createBlock_(blockXml) {
-    const blockType = blockXml.getAttribute('type');
-    const blockIdx = this.recycleBlocks_.findIndex(function(block) {
-      return block.type === blockType;
-    });
-    let curBlock;
-    if (blockIdx > -1) {
-      curBlock = this.recycleBlocks_.splice(blockIdx, 1)[0];
-    } else {
-      curBlock = Blockly.Xml.domToBlock(blockXml, this.workspace_);
-    }
-    if (!curBlock.isEnabled()) {
-      // Record blocks that were initially disabled.
-      // Do not enable these blocks as a result of capacity filtering.
-      this.permanentlyDisabled_.push(curBlock);
-    }
-    return curBlock;
-  }
-
-  /**
-   * @override
-   */
-  clearOldBlocks_() {
-    // Delete any blocks from a previous showing.
-    const oldBlocks = /** @type {!Array<!Blockly.BlockSvg>} */
-        (this.workspace_.getTopBlocks(false));
-    for (const block of oldBlocks) {
-      if (block.workspace == this.workspace_) {
-        if (this.recyclingEnabled_ &&
-          this.blockIsRecyclable_(block)) {
-          this.recycleBlock_(block);
-        } else {
-          block.dispose(false, false);
-        }
-      }
-    }
-    // Delete any mats from a previous showing.
-    for (const rect of this.mats_) {
-      if (rect) {
-        Blockly.Tooltip.unbindMouseEvents(rect);
-        Blockly.utils.dom.removeNode(rect);
-      }
-    }
-    this.mats_.length = 0;
-    // Delete any buttons from a previous showing.
-    for (const button of this.buttons_) {
-      button.dispose();
-    }
-    this.buttons_.length = 0;
-
-    // Clear potential variables from the previous showing.
-    this.workspace_.getPotentialVariableMap().clear();
   }
 
   /**
@@ -351,6 +273,10 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @protected
    */
   blockIsRecyclable_(block) {
+    if (!this.recyclingEnabled_) {
+      return false;
+    }
+
     // If the block needs to parse mutations, never recycle.
     if (block.mutationToDom && block.domToMutation) {
       return false;
@@ -398,18 +324,5 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   setRecyclingEnabled(isEnabled) {
     this.recyclingEnabled_ = isEnabled;
-  }
-
-  /**
-   * Puts a previously created block into the recycle bin and moves it to the
-   * top of the workspace. Used during large workspace swaps to limit the number
-   * of new DOM elements we need to create.
-   * @param {!Blockly.BlockSvg} block The block to recycle.
-   * @protected
-   */
-  recycleBlock_(block) {
-    const xy = block.getRelativeToSurfaceXY();
-    block.moveBy(-xy.x, -xy.y);
-    this.recycleBlocks_.push(block);
   }
 }
