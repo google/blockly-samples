@@ -9,19 +9,24 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-
 /**
- * Render the playground layout.
- * @param {HTMLElement} container The container to render the playground in.
- * @return {{
+ * @typedef {{
  *     blocklyDiv: HTMLElement,
  *     minimizeButton: HTMLElement,
  *     monacoDiv: HTMLElement,
  *     guiContainer: HTMLElement,
  *     playgroundDiv: HTMLElement,
  *     tabsDiv: HTMLElement,
- *     tabButtons: HTMLElement,
- * }} An object with the various playground components.
+ *     tabButtons: HTMLElement
+ * }}
+ */
+let PlaygroundLayout;
+
+
+/**
+ * Render the playground layout.
+ * @param {HTMLElement} container The container to render the playground in.
+ * @return {PlaygroundLayout} An object with the various playground components.
  */
 export function renderPlayground(container) {
   container.style.display = 'flex';

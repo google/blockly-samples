@@ -17,14 +17,14 @@
  *   copyToBackpack:(boolean|undefined),
  *   copyAllToBackpack:(boolean|undefined),
  *   pasteAllToBackpack:(boolean|undefined),
- *   disablePreconditionChecks:(boolean|undefined),
+ *   disablePreconditionChecks:(boolean|undefined)
  * }}
  */
 export let BackpackContextMenuOptions;
 
 /**
  * @typedef {{
- *    contextMenu:(!BackpackContextMenuOptions|undefined),
+ *    contextMenu:(!BackpackContextMenuOptions|undefined)
  * }}
  */
 export let BackpackOptions;

@@ -1,4 +1,6 @@
 
+// Declare external types to make eslint happy.
+/* global monaco */
 
 /**
  * Load the monaco editor.

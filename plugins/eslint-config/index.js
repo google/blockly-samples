@@ -51,6 +51,10 @@ module.exports = {
     // http://eslint.org/docs/rules/
     'camelcase': 'warn',
     'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
+    // Allow TODO comments.
+    'no-warning-comments': 'off',
+    // Allow long import lines.
+    'max-len': ['error', {'ignorePattern': '^import'}],
     'no-invalid-this': 'off',
     // valid-jsdoc does not work properly for interface methods.
     // https://github.com/eslint/eslint/issues/9978
@@ -59,7 +63,8 @@ module.exports = {
     // https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules
     'require-jsdoc': 'off',
     'jsdoc/newline-after-description': 'off',
-    'jsdoc/require-description-complete-sentence': 'warn',
+    // This should warn instead, but it's broken for long record type params.
+    'jsdoc/require-description-complete-sentence': 'off',
     'jsdoc/require-returns': [
       'error',
       {
