@@ -158,7 +158,9 @@ module.exports = (env) => {
       }),
       // canvas should only be required by jsdom if the 'canvas' package is
       // installed in package.json. Ignoring canvas require errors.
-      isTest && new webpack.IgnorePlugin(/canvas$/),
+      isTest && new webpack.IgnorePlugin({
+        resourceRegExp: /canvas$/
+      }),
     ].filter(Boolean),
     externals: isProduction ? {
       'blockly/core': {
