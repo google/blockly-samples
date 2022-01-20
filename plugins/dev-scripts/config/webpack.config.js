@@ -85,9 +85,6 @@ module.exports = (env) => {
       },
       extensions: ['.ts', '.js']
           .filter((ext) => isTypescript || !ext.includes('ts')),
-      fallback: {
-        'util': false,
-      },
     },
     module: {
       rules: [
