@@ -16,6 +16,8 @@ import * as Blockly from 'blockly/core';
 (() => {
   const renderStandardTooltip = (el: HTMLElement, tooltipDiv: HTMLElement) => {
     let tip = BlocklyTooltip.getTooltipOfObject(el);
+    // Allow the any due to incomplete blockly typing.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tip = (Blockly.utils as any).string.wrap(tip, BlocklyTooltip.LIMIT);
     // Create new text, line by line.
     const lines = tip.split('\n');
@@ -27,6 +29,8 @@ import * as Blockly from 'blockly/core';
   };
 
   const renderTooltip = (el: HTMLElement, tooltipDiv: HTMLElement) => {
+    // Allow the any due to tooltips shoving properties into HTMLElements.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const customTooltip = (el as any).customTooltip;
     if (customTooltip) {
       const customEl = customTooltip();
@@ -40,6 +44,8 @@ import * as Blockly from 'blockly/core';
     }
   };
 
+  // Allow the any due to incomplete blockly typing.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const BlocklyTooltip = (Blockly.Tooltip as any);
   BlocklyTooltip.show_ = function() {
     if (BlocklyTooltip.blocked_) {

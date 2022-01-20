@@ -50,8 +50,11 @@ module.exports = {
   rules: {
     // http://eslint.org/docs/rules/
     'camelcase': 'warn',
-    'no-warning-comments': 'warn',
     'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
+    // Allow TODO comments.
+    'no-warning-comments': 'off',
+    // Allow long import lines.
+    'max-len': ['error', {'ignorePattern': '^import', 'ignoreUrls': true}],
     'no-invalid-this': 'off',
     // valid-jsdoc does not work properly for interface methods.
     // https://github.com/eslint/eslint/issues/9978
@@ -60,7 +63,8 @@ module.exports = {
     // https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules
     'require-jsdoc': 'off',
     'jsdoc/newline-after-description': 'off',
-    'jsdoc/require-description-complete-sentence': 'warn',
+    // This should warn instead, but it's broken for long record type params.
+    'jsdoc/require-description-complete-sentence': 'off',
     'jsdoc/require-returns': [
       'error',
       {
@@ -101,10 +105,21 @@ module.exports = {
         warnOnUnsupportedTypeScriptVersion: true,
       },
       plugins: ['@typescript-eslint'],
+      settings: {
+        jsdoc: {
+          mode: 'typescript',
+        },
+      },
 
       // If adding a typescript-eslint version of an existing ESLint rule,
       // make sure to disable the ESLint rule here.
       rules: {
+
+        // The types are specified in TS rather than JsDoc.
+        'jsdoc/no-types': 'warn',
+        'jsdoc/require-param-type': 'off',
+        'jsdoc/require-property-type': 'off',
+        'jsdoc/require-returns-type': 'off',
 
         // Already handled by tsc.
         'no-dupe-class-members': 'off',
@@ -116,7 +131,7 @@ module.exports = {
             'default': 'array-simple',
           },
         ],
-        '@typescript-eslint/ban-ts-ignore': 'error',
+        '@typescript-eslint/ban-ts-comment': 'error',
         '@typescript-eslint/ban-types': ['error',
           {
             'types': {
@@ -136,15 +151,26 @@ module.exports = {
           },
         ],
         'camelcase': 'off',
-        '@typescript-eslint/camelcase': 'warn',
         '@typescript-eslint/naming-convention': ['error',
+          {
+            'selector': 'default',
+            'format': ['camelCase', 'PascalCase'],
+          },
           {
             'selector': 'class',
             'format': ['PascalCase'],
           },
+          {
+            // Disallow starting interaces with 'I'
+            'selector': 'interface',
+            'format': ['PascalCase'],
+            'custom': {
+              'regex': '^I[A-Z]',
+              'match': false,
+            },
+          },
         ],
         '@typescript-eslint/consistent-type-assertions': 'error',
-        '@typescript-eslint/interface-name-prefix': 'error',
         '@typescript-eslint/member-delimiter-style': ['error',
           {
             'multiline': {

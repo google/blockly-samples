@@ -27,6 +27,8 @@ import {addGUIControls} from './options';
 import {LocalStorageState} from './state';
 import {renderCheckbox, renderCodeTab, renderPlayground} from './ui';
 
+// Declare external types to make eslint happy.
+/* global dat, monaco */
 
 /**
  * @typedef {function(!HTMLElement,!Blockly.BlocklyOptions):
@@ -36,9 +38,9 @@ let CreateWorkspaceFn;
 
 /**
  * @typedef {{
- *     generate: function():void,
+ *     generate: function(): void,
  *     state: ?,
- *     tabElement: !HTMLElement,
+ *     tabElement: !HTMLElement
  * }}
  */
 let PlaygroundTab;
@@ -65,7 +67,7 @@ let PlaygroundTab;
  *     addGenerator: function(string,!Blockly.Generator,string=):void,
  *     getCurrentTab: function():!PlaygroundTab,
  *     getGUI: function():!dat.GUI,
- *     getWorkspace: function():!Blockly.WorkspaceSvg,
+ *     getWorkspace: function():!Blockly.WorkspaceSvg
  * }}
  */
 let PlaygroundAPI;

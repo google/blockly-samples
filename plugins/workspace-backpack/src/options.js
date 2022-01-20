@@ -17,7 +17,7 @@
  *   copyToBackpack:(boolean|undefined),
  *   copyAllToBackpack:(boolean|undefined),
  *   pasteAllToBackpack:(boolean|undefined),
- *   disablePreconditionChecks:(boolean|undefined),
+ *   disablePreconditionChecks:(boolean|undefined)
  * }}
  */
 export let BackpackContextMenuOptions;
@@ -25,7 +25,7 @@ export let BackpackContextMenuOptions;
 /**
  * @typedef {{
  *    allowEmptyBackpackOpen: (boolean|undefined),
- *    contextMenu:(!BackpackContextMenuOptions|undefined),
+ *    contextMenu:(!BackpackContextMenuOptions|undefined)
  * }}
  */
 export let BackpackOptions;

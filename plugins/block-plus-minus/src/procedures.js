@@ -99,7 +99,7 @@ Blockly.defineBlocksWithJsonArray([
 /**
  * Defines the what are essentially info-getters for the procedures_defnoreturn
  * block.
- * @type {{callType_: string, getProcedureDef: (function(): *[])}}
+ * @type {{callType_: string, getProcedureDef: (function(): Array)}}
  */
 const getDefNoReturn = {
   /**
@@ -124,7 +124,7 @@ Blockly.Extensions.registerMixin('get_procedure_def_no_return', getDefNoReturn);
 /**
  * Defines what are essentially info-getters for the procedures_def_return
  * block.
- * @type {{callType_: string, getProcedureDef: (function(): *[])}}
+ * @type {{callType_: string, getProcedureDef: (function(): Array)}}
  */
 const getDefReturn = {
   /**
