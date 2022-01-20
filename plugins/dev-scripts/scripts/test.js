@@ -30,7 +30,7 @@ console.log(`Building tests for ${packageJson.name}`);
 const args = process.argv.slice(2);
 const skipLint = args.includes('--skip-lint');
 const config = webpackConfig({
-  mode: 'development',
+  mode: 'test',
   skipLint: skipLint,
 });
 if (!config.entry) {
