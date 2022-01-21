@@ -10,11 +10,6 @@
 
 import Blockly from 'blockly/core';
 
-
-// Temporarily required to ensure there's no conflict with
-// Blockly.Themes.Dark
-Blockly.registry.unregister('theme', 'dark');
-
 /**
  * Dark theme.
  */
