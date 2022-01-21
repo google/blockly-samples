@@ -78,10 +78,6 @@ const categoryStyles = {
   'variable_dynamic_category': {'colour': '#880e4f'},
 };
 
-// Temporarily required to ensure there's no conflict with
-// Blockly.Themes.HighContrast
-Blockly.registry.unregister('theme', 'highcontrast');
-
 /**
  * High contrast theme.
  */

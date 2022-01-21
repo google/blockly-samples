@@ -88,10 +88,6 @@ const categoryStyles = {
   },
 };
 
-// Temporarily required to ensure there's no conflict with
-// Blockly.Themes.Tritanopia
-Blockly.registry.unregister('theme', 'tritanopia');
-
 /**
  * Tritanopia theme.
  * A colour palette for people that have tritanopia (the inability to perceive
