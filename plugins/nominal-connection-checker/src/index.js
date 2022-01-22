@@ -11,7 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {TypeHierarchy} from './type_hierarchy';
-import {parseType, structureToString, TypeStructure} from './type_structure';
+import {parseType, structureToString} from './type_structure';
 import {getCheck, isExplicitConnection, isGenericConnection} from './utils';
 
 
