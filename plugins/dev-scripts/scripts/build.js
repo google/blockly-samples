@@ -45,15 +45,33 @@ Make sure a ${chalk.red('src/index.(js|ts)')} file is included in your package.
 
 // Create and run the webpack compiler.
 webpack(config, (err, stats) => {
-  if (err) {
-    console.error(err.stack || err);
-    if (err.details) {
-      console.error(err.details);
-    }
-    return;
+  const statsData = stats.toJson({
+    all: false,
+    warnings: true,
+    errors: true,
+  });
+
+  const formatWebpackMessage = (obj) => {
+    return obj.message.trim();
+  };
+
+  const messages = {
+    errors: statsData.errors
+        .map(formatWebpackMessage),
+    warnings: statsData.warnings
+        .map(formatWebpackMessage),
+  };
+
+  if (!messages.errors.length && !messages.warnings.length) {
+    console.log(chalk.green('Compiled successfully!'));
   }
-  console.log(stats.toString({
-    chunks: false, // Makes the build much quieter
-    colors: true, // Shows colors in the console
-  }));
+  if (messages.errors.length) {
+    console.log(chalk.red('Failed to compile.\n'));
+    console.log(messages.errors.join('\n\n'));
+    process.exit(1);
+  }
+  if (messages.warnings.length) {
+    console.log(chalk.yellow('Compiled with warnings.\n'));
+    console.log(messages.warnings.join('\n\n'));
+  }
 });
