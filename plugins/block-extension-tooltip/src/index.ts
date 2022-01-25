@@ -8,6 +8,10 @@
  * @fileoverview Custom tooltip block extension.
  * @author samelh@google.com (Sam El-Husseini)
  */
+
+// TODO(maribethb): This should be from 'blockly/core'; fix asap when this
+// plugin is made compatible with v7 of Blockly.
+// See https://github.com/google/blockly-samples/issues/805
 import * as Blockly from 'blockly';
 import './tooltip_monkey_patch';
 
