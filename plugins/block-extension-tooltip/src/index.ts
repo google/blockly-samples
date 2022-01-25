@@ -8,7 +8,7 @@
  * @fileoverview Custom tooltip block extension.
  * @author samelh@google.com (Sam El-Husseini)
  */
-import * as Blockly from 'blockly/core';
+import * as Blockly from 'blockly';
 import './tooltip_monkey_patch';
 
 type TooltipRender = (block: Blockly.BlockSvg) => HTMLElement;
