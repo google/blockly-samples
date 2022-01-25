@@ -12,6 +12,7 @@
     "prepublishOnly": "npm run clean && npm run dist",
     "start": "blockly-scripts start"
   },
+  "private": true,
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
