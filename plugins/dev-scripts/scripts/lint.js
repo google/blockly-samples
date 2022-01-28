@@ -59,23 +59,26 @@ async function lintDir(dir, linter) {
 
 linter.loadFormatter('stylish').then((formatter) => {
   // Run eslint for both the src and test directories.
-  // The eslint engine will use the .eslintrc under plugins/ for configuration.
-  lintDir('src', linter).then((lintResults) => {
+  let exitCode = 0;
+  const src = lintDir('src', linter).then((lintResults) => {
     const [result, errors] = lintResults;
     if (result) {
       console.log(formatter.format(result));
     }
     if (errors.length) {
-      process.exit(1);
+      exitCode = 1;
     }
   });
-  lintDir('test', linter).then((lintResults) => {
+  const test = lintDir('test', linter).then((lintResults) => {
     const [result, errors] = lintResults;
     if (result) {
       console.log(formatter.format(result));
     }
     if (errors.length) {
-      process.exit(1);
+      exitCode = 1;
     }
+  });
+  Promise.all([src, test]).then(() => {
+    process.exit(exitCode);
   });
 });
