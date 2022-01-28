@@ -136,6 +136,9 @@ module.exports = (env) => {
         },
       ].filter(Boolean),
     },
+    // Ignore spurious warnings from source-map-loader
+    // It can't find source maps for some Closure modules and that is expected
+    ignoreWarnings: [/Failed to parse source map/],
     plugins: [
       // Add package name.
       new webpack.DefinePlugin({

@@ -15,7 +15,7 @@
 import * as Blockly from 'blockly';
 import './tooltip_monkey_patch';
 
-type TooltipRender = (block: Blockly.BlockSvg) => HTMLElement;
+type TooltipRender = (block: Blockly.BlockSvg) => HTMLDivElement;
 
 interface TooltipBlock extends Blockly.BlockSvg {
   customTooltip: () => HTMLElement;

@@ -16,7 +16,7 @@
         "deploy": "npm run deploy:prepare && gulp deploy",
         "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
         "license": "gulp checkLicenses",
-        "lint": "lerna run lint",
+        "lint": "lerna run lint --no-bail",
         "lint:fix": "lerna run lint -- -- --fix",
         "postinstall": "npm run boot",
         "test": "lerna run test",
