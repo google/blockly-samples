@@ -46,19 +46,8 @@ export class DebugRenderer {
   }
 
   /**
-   * Initialize the debug renderer.
-   * @public
-   */
-  static init() {
-    Blockly.blockRendering.debug.startDebugger();
-    // TODO(google/blockly-samples##944): Remove this once #944 is complete.
-    Blockly.blockRendering.debug.stopDebugger();
-    Blockly.blockRendering.Debug = DebugRenderer;
-  }
-
-  /**
    * Remove all elements the this object created on the last pass.
-   * @package
+   * @protected
    */
   clearElems() {
     for (let i = 0, elem; (elem = this.debugElements_[i]); i++) {
@@ -73,10 +62,10 @@ export class DebugRenderer {
    * @param {!Blockly.blockRendering.Row} row The row to render.
    * @param {number} cursorY The y position of the top of the row.
    * @param {boolean} isRtl Whether the block is rendered RTL.
-   * @package
+   * @protected
    */
   drawSpacerRow(row, cursorY, isRtl) {
-    if (!Blockly.blockRendering.Debug.config.rowSpacers) {
+    if (!DebugRenderer.config.rowSpacers) {
       return;
     }
 
@@ -106,10 +95,10 @@ export class DebugRenderer {
    * @param {!Blockly.blockRendering.InRowSpacer} elem The spacer to render.
    * @param {number} rowHeight The height of the container row.
    * @param {boolean} isRtl Whether the block is rendered RTL.
-   * @package
+   * @protected
    */
   drawSpacerElem(elem, rowHeight, isRtl) {
-    if (!Blockly.blockRendering.Debug.config.elemSpacers) {
+    if (!DebugRenderer.config.elemSpacers) {
       return;
     }
 
@@ -139,10 +128,10 @@ export class DebugRenderer {
    * Draw a debug rectangle for an in-row element.
    * @param {!Blockly.blockRendering.Measurable} elem The element to render.
    * @param {boolean} isRtl Whether the block is rendered RTL.
-   * @package
+   * @protected
    */
   drawRenderedElem(elem, isRtl) {
-    if (Blockly.blockRendering.Debug.config.elems) {
+    if (DebugRenderer.config.elems) {
       let xPos = elem.xPos;
       if (isRtl) {
         xPos = -(xPos + elem.width);
@@ -181,7 +170,7 @@ export class DebugRenderer {
 
 
     if (Blockly.blockRendering.Types.isInput(elem) &&
-        Blockly.blockRendering.Debug.config.connections) {
+        DebugRenderer.config.connections) {
       this.drawConnection(elem.connectionModel);
     }
   }
@@ -191,10 +180,16 @@ export class DebugRenderer {
    * share the same colours, as do previous and next.  When positioned correctly
    * a connected pair will look like a bullseye.
    * @param {Blockly.RenderedConnection} conn The connection to circle.
+<<<<<<< HEAD:plugins/dev-tools/src/debugRenderer.js
    * @package
+=======
+   * @suppress {visibility} Suppress visibility of conn.offsetInBlock_ since
+   *     this is a debug module.
+   * @protected
+>>>>>>> 6afbfcf7a (fix: debug renderer):plugins/dev-tools/src/debugger/debugRenderer.js
    */
   drawConnection(conn) {
-    if (!Blockly.blockRendering.Debug.config.connections) {
+    if (!DebugRenderer.config.connections) {
       return;
     }
 
@@ -235,10 +230,10 @@ export class DebugRenderer {
    * @param {!Blockly.blockRendering.Row} row The non-empty row to render.
    * @param {number} cursorY The y position of the top of the row.
    * @param {boolean} isRtl Whether the block is rendered RTL.
-   * @package
+   * @protected
    */
   drawRenderedRow(row, cursorY, isRtl) {
-    if (!Blockly.blockRendering.Debug.config.rows) {
+    if (!DebugRenderer.config.rows) {
       return;
     }
     this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
@@ -258,7 +253,7 @@ export class DebugRenderer {
       return;
     }
 
-    if (Blockly.blockRendering.Debug.config.connectedBlockBounds) {
+    if (DebugRenderer.config.connectedBlockBounds) {
       this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
           {
             'class': 'connectedBlockWidth blockRenderDebug',
@@ -280,7 +275,7 @@ export class DebugRenderer {
    * @param {!Blockly.blockRendering.Row} row The non-empty row to render.
    * @param {number} cursorY The y position of the top of the row.
    * @param {boolean} isRtl Whether the block is rendered RTL.
-   * @package
+   * @protected
    */
   drawRowWithElements(row, cursorY, isRtl) {
     for (let i = 0, l = row.elements.length; i < l; i++) {
@@ -304,10 +299,10 @@ export class DebugRenderer {
    * Draw a debug rectangle around the entire block.
    * @param {!Blockly.blockRendering.RenderInfo} info Rendering information
    *     about the block to debug.
-   * @package
+   * @protected
    */
   drawBoundingBox(info) {
-    if (!Blockly.blockRendering.Debug.config.blockBounds) {
+    if (!DebugRenderer.config.blockBounds) {
       return;
     }
     // Bounding box without children.
@@ -327,7 +322,7 @@ export class DebugRenderer {
         },
         this.svgRoot_));
 
-    if (Blockly.blockRendering.Debug.config.connectedBlockBounds) {
+    if (DebugRenderer.config.connectedBlockBounds) {
       // Bounding box with children.
       xPos = info.RTL ? -info.widthWithChildren : 0;
       this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
@@ -351,7 +346,7 @@ export class DebugRenderer {
    * @param {!Blockly.BlockSvg} block The block to draw debug information for.
    * @param {!Blockly.blockRendering.RenderInfo} info Rendering information
    *     about the block to debug.
-   * @package
+   * @public
    */
   drawDebug(block, info) {
     this.clearElems();
@@ -392,10 +387,10 @@ export class DebugRenderer {
   /**
    * Show a debug filter to highlight that a block has been rendered.
    * @param {!SVGElement} svgPath The block's svg path.
-   * @package
+   * @protected
    */
   drawRender(svgPath) {
-    if (!Blockly.blockRendering.Debug.config.render) {
+    if (!DebugRenderer.config.render) {
       return;
     }
     svgPath.setAttribute('filter',

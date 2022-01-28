@@ -12,7 +12,8 @@
 import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
-import {DebugRenderer} from '../debugRenderer';
+import {DebugRenderer} from '../debugger/debugRenderer';
+import {registerDebugRenderer} from '../debugger/debugFactory';
 import {disableLogger, enableLogger} from '../logger';
 import {HashState} from './hash_state';
 import {populateRandom} from '../populateRandom';
@@ -470,8 +471,13 @@ function populateRendererOption(folder, options, onChange) {
   const renderers = Blockly.blockRendering.rendererMap_ ||
       (Blockly.registry && Blockly.registry.getAllItems('renderer'));
   setTooltip(
+      // TODO: Filter out the debugRenderer
       folder.add(options, 'renderer', Object.keys(renderers))
-          .onChange((value) => onChange('renderer', value)),
+          .onChange((value) => {
+            registerDebugRenderer(
+                Blockly[value].Renderer, Blockly[value].Drawer);
+            onChange('renderer', value);
+          }),
       'The renderer used by Blockly.');
 }
 
@@ -719,7 +725,8 @@ function setTooltip(controller, tooltip) {
  * @param {boolean=} reset Whether or not to reset the renderer config.
  */
 function initDebugRenderer(guiDebugState, reset) {
-  DebugRenderer.init();
+  registerDebugRenderer(
+      Blockly.blockRendering.Renderer, Blockly.blockRendering.Drawer);
   Object.keys(DebugRenderer.config).map((key) => {
     if (guiDebugState[key] == undefined || reset) {
       guiDebugState[key] = false;

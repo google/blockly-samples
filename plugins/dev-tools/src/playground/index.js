@@ -309,6 +309,7 @@ export function createPlayground(
 
         // Load the GUI controls.
         const gui = addGUIControls((options) => {
+          options['renderer'] = 'debugRenderer';
           workspace = createWorkspace(blocklyDiv, options);
 
           // Initialize the test toolbox.
