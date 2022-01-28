@@ -14,15 +14,12 @@ import * as Blockly from 'blockly/core';
 
 import {category as alignCategory, onInit as initAlign} from './align';
 import {category as basicCategory, onInit as initBasic} from './basic';
-import {
-  category as connectionsCategory, onInit as initConnections,
-} from './connections';
+import {category as connectionsCategory, onInit as initConnections} from './connections';
 import {category as dragCategory, onInit as initDrag} from './drag';
 import {category as fieldsCategory, onInit as initFields} from './fields';
 import {category as mutatorsCategory, onInit as initMutators} from './mutators';
 import {category as styleCategory, onInit as initStyle} from './style';
-import {category as serializationCategory, onInit as initSerialization} from
-  './serialization/category';
+import {category as serializationCategory, onInit as initSerialization} from './serialization/category';
 
 
 /**
