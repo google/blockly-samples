@@ -8,6 +8,8 @@
  * @fileoverview A 'lint' script for Blockly extension packages.
  * This script:
  *   Runs eslint on the src and test directories.
+ *   If run with --fix, fixes problems that can be resolved automatically.
+ *   Returns with an error if there are any lint errors in either src or test.
  * @author samelh@google.com (Sam El-Husseini)
  */
 
@@ -42,8 +44,8 @@ const linter = new ESLint({
  * Lint this directory.
  * @param {string} dir The directory to lint.
  * @param {ESLint} linter The linter.
- * @return {Promise<Array<LintResult>|null>} The results, which may be printed
- *   with an approriate formatter.
+ * @return {Promise<Array<LintResult|Array<LintResult|null>>>} All results,
+ *   which may be printed with an approriate formatter, and error results.
  */
 async function lintDir(dir, linter) {
   const resolvePath = resolveApp(dir);
@@ -78,6 +80,7 @@ linter.loadFormatter('stylish').then((formatter) => {
       exitCode = 1;
     }
   });
+  // Only exit on error after both directories have output their messages.
   Promise.all([src, test]).then(() => {
     process.exit(exitCode);
   });
