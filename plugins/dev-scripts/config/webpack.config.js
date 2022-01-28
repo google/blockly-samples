@@ -136,6 +136,7 @@ module.exports = (env) => {
         },
       ].filter(Boolean),
     },
+    ignoreWarnings: [/Failed to parse source map/],
     plugins: [
       // Add package name.
       new webpack.DefinePlugin({
