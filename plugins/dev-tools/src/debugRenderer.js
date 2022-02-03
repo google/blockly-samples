@@ -191,8 +191,6 @@ export class DebugRenderer {
    * share the same colours, as do previous and next.  When positioned correctly
    * a connected pair will look like a bullseye.
    * @param {Blockly.RenderedConnection} conn The connection to circle.
-   * @suppress {visibility} Suppress visibility of conn.offsetInBlock_ since
-   *     this is a debug module.
    * @package
    */
   drawConnection(conn) {

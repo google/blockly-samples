@@ -414,7 +414,6 @@ goog.getMsgOrig = goog.getMsg;
  * @param {string} str Translatable string, places holders in the form {$foo}.
  * @param {Object.<string, string>=} values Maps place holder name to value.
  * @return {string} Message with placeholders filled.
- * @suppress {duplicate}
  */
 goog.getMsg = function(str, values = undefined) {
   const key = goog.getMsg.blocklyMsgMap[str];
