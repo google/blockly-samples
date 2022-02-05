@@ -227,8 +227,11 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
+  const debugOptionsFolder = debugFolder.addFolder('Debug Options');
+
   setTooltip(debugFolder, 'Rendering debug configuration.');
-  populateDebugOptions(debugFolder, guiState, onChangeInternal, onChange);
+  populateDebugFolder(debugFolder, debugOptionsFolder, guiState, onChange);
+  populateDebugOptionsFolder(debugOptionsFolder, guiState, onChangeInternal);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
@@ -371,7 +374,10 @@ function loadGUIState() {
   }
   // TODO: If we are in debug mode then register the debug renderer.
   guiState.renderer = guiState.options.renderer || 'geras';
-  // guiState.options.renderer = debugRendererName;
+
+  if (guiState.debug.enabled) {
+    guiState.options.renderer = debugRendererName;
+  }
 
   return guiState;
 }
@@ -486,7 +492,11 @@ function populateRendererOption(folder, options, guiState, onChange) {
           .onChange((value) => {
             registerDebugFromName(value);
             guiState.renderer = value;
-            onChange('renderer', value);
+            if (guiState.debug.enabled) {
+              onChange('renderer', debugRendererName);
+            } else {
+              onChange('renderer', value);
+            }
           }),
       'The renderer used by Blockly.');
 }
@@ -748,41 +758,45 @@ function initDebugRenderer(guiState, guiDebugState, reset) {
   }
 }
 
-/**
- * Populate debug options.
- * @param {dat.GUI} debugFolder The dat.GUI debug folder.
- * @param {Object} guiState The GUI state.
- * @param {function():void} onChangeInternal Internal on change method.
- */
-function populateDebugOptions(debugFolder, guiState, onChangeInternal, onChange) {
+
+function populateDebugFolder(debugFolder, debugOptionsFolder, guiState, onChange) {
   const guiDebugState = guiState.debug;
-  let parentFolder;
+  if (!guiDebugState.enabled) {
+    debugOptionsFolder.hide();
+  } else {
+    // TODO: How to get this to enable correctly on refresh.
+    // onChange('renderer', debugRendererName);
+    debugOptionsFolder.open();
+  }
+
   debugFolder.add(guiDebugState, 'enabled').onChange((value) => {
     if (value) {
-      parentFolder = debugFolder.addFolder('Debug Options');
-      guiState.options.renderer = debugRendererName;
-      createDebugCheckboxes(parentFolder, guiDebugState, onChangeInternal);
+      debugOptionsFolder.show();
+      debugOptionsFolder.open();
       onChange('renderer', debugRendererName);
       guiDebugState.enabled = true;
+      // TODO: Keep DebugRenderer.config up to date.
     } else {
       guiDebugState.enabled = false;
-      debugFolder.removeFolder(parentFolder);
+      debugOptionsFolder.hide();
       onChange('renderer', guiState.renderer);
     }
   });
-  openFolderIfOptionSelected(
-      debugFolder, guiState, guiDebugState,
-      Object.keys(DebugRenderer.config).filter((k) => !!guiDebugState[k]));
 }
 
-function createDebugCheckboxes(parentFolder, debugState, onChangeInternal) {
+function populateDebugOptionsFolder(debugOptionsFolder, guiState, onChangeInternal) {
+  const debugState = guiState.debug;
   Object.keys(DebugRenderer.config).map((key) => {
-    parentFolder.add(debugState, key, 0, 50).onChange((value) => {
+    debugOptionsFolder.add(debugState, key, 0, 50).onChange((value) => {
       debugState[key] = value;
       DebugRenderer.config[key] = debugState[key];
       onChangeInternal();
     });
   });
+  // // How to have these open properly.
+  // openFolderIfOptionSelected(
+  //     debugOptionsFolder, guiState, debugState,
+  //     Object.keys(DebugRenderer.config).filter((k) => !!debugState[k]));
 }
 
 /**
