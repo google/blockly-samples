@@ -13,7 +13,7 @@ import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
 import {DebugRenderer} from '../debugger/debugRenderer';
-import {registerDebugRenderer} from '../debugger/debugFactory';
+import {registerDebugFromName, debugRendererName} from '../debugger/debugFactory';
 import {disableLogger, enableLogger} from '../logger';
 import {HashState} from './hash_state';
 import {populateRandom} from '../populateRandom';
@@ -78,7 +78,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
     ...defaultOptions,
     ...guiState.options,
   });
-  initDebugRenderer(guiState.debug);
+  initDebugRenderer(guiState, guiState.debug);
 
   let workspace = genWorkspace(saveOptions);
   const resizeEnabled = !config.disableResize;
@@ -158,7 +158,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
     assign(saveOptions, defaultOptions);
     Object.keys(guiState.options).forEach((k) => delete guiState.options[k]);
     // Reset debug options.
-    initDebugRenderer(guiState.debug, true);
+    initDebugRenderer(guiState, guiState.debug, true);
     // Reset toolbox selection.
     guiState.toolboxName = defaultToolboxName;
     guiState.themeName = defaultThemeName;
@@ -190,7 +190,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
       'If true, mirror the editor (for Arabic or Hebrew locales).');
 
   // Renderer.
-  populateRendererOption(optionsFolder, options, onChange);
+  populateRendererOption(optionsFolder, options, guiState, onChange);
 
   // Theme.
   populateThemeOption(
@@ -228,7 +228,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
   setTooltip(debugFolder, 'Rendering debug configuration.');
-  populateDebugOptions(debugFolder, guiState, onChangeInternal);
+  populateDebugOptions(debugFolder, guiState, onChangeInternal, onChange);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
@@ -325,6 +325,9 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   // Don't save toolbox and theme, as we'll save their names instead.
   delete guiState.options['toolbox'];
   delete guiState.options['theme'];
+  if (guiState.options.renderer === debugRendererName) {
+    delete guiState.options['renderer'];
+  }
 
   // Save GUI control options to local storage.
   const guiStateKey = `guiState_${id}`;
@@ -338,6 +341,7 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   if (guiState.themeName !== defaultThemeName) {
     hashGuiState.theme = guiState.themeName;
   }
+  hashGuiState.renderer = guiState.renderer;
   window.location.hash = HashState.save(hashGuiState);
 }
 
@@ -365,6 +369,10 @@ function loadGUIState() {
     guiState.themeName = guiState.options.theme;
     delete guiState.options.theme;
   }
+  // TODO: If we are in debug mode then register the debug renderer.
+  guiState.renderer = guiState.options.renderer || 'geras';
+  // guiState.options.renderer = debugRendererName;
+
   return guiState;
 }
 
@@ -462,20 +470,22 @@ function populateBasicOptions(basicFolder, options, guiState, onChange) {
  * Populate the renderer option.
  * @param {dat.GUI} folder The dat.GUI folder.
  * @param {Blockly.Options} options Blockly options.
- * @param {function(string, *):void} onChange On Change method.
+ * @param {Blockly.Options} guiState .
+ * @param {function():void} onChangeInternal On Change method.
  */
-function populateRendererOption(folder, options, onChange) {
+function populateRendererOption(folder, options, guiState, onChange) {
   // Get the list of renderers. Previous versions of Blockly used the
   // rendererMap_, whereas newer versions that use the global registry get their
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
       (Blockly.registry && Blockly.registry.getAllItems('renderer'));
+  const publicRenderers =
+    Object.keys(renderers).filter((name) => name !== debugRendererName);
   setTooltip(
-      // TODO: Filter out the debugRenderer
-      folder.add(options, 'renderer', Object.keys(renderers))
+      folder.add(guiState, 'renderer', publicRenderers)
           .onChange((value) => {
-            registerDebugRenderer(
-                Blockly[value].Renderer, Blockly[value].Drawer);
+            registerDebugFromName(value);
+            guiState.renderer = value;
             onChange('renderer', value);
           }),
       'The renderer used by Blockly.');
@@ -721,18 +731,21 @@ function setTooltip(controller, tooltip) {
 
 /**
  * Initialize debug renderer.
+ * @param {Object.<string, boolean>} saveOptions TODO
  * @param {Object.<string, boolean>} guiDebugState Saved GUI debug state.
  * @param {boolean=} reset Whether or not to reset the renderer config.
  */
-function initDebugRenderer(guiDebugState, reset) {
-  registerDebugRenderer(
-      Blockly.blockRendering.Renderer, Blockly.blockRendering.Drawer);
+function initDebugRenderer(guiState, guiDebugState, reset) {
+  registerDebugFromName(guiState.renderer);
   Object.keys(DebugRenderer.config).map((key) => {
     if (guiDebugState[key] == undefined || reset) {
       guiDebugState[key] = false;
     }
     DebugRenderer.config[key] = guiDebugState[key];
   });
+  if (DebugRenderer.config.enabled) {
+    guiState.options.renderer = debugRendererName;
+  }
 }
 
 /**
@@ -741,18 +754,35 @@ function initDebugRenderer(guiDebugState, reset) {
  * @param {Object} guiState The GUI state.
  * @param {function():void} onChangeInternal Internal on change method.
  */
-function populateDebugOptions(debugFolder, guiState, onChangeInternal) {
+function populateDebugOptions(debugFolder, guiState, onChangeInternal, onChange) {
   const guiDebugState = guiState.debug;
-  Object.keys(DebugRenderer.config).map((key) => {
-    debugFolder.add(guiDebugState, key, 0, 50).onChange((value) => {
-      guiDebugState[key] = value;
-      DebugRenderer.config[key] = guiDebugState[key];
-      onChangeInternal();
-    });
+  let parentFolder;
+  debugFolder.add(guiDebugState, 'enabled').onChange((value) => {
+    if (value) {
+      parentFolder = debugFolder.addFolder('Debug Options');
+      guiState.options.renderer = debugRendererName;
+      createDebugCheckboxes(parentFolder, guiDebugState, onChangeInternal);
+      onChange('renderer', debugRendererName);
+      guiDebugState.enabled = true;
+    } else {
+      guiDebugState.enabled = false;
+      debugFolder.removeFolder(parentFolder);
+      onChange('renderer', guiState.renderer);
+    }
   });
   openFolderIfOptionSelected(
       debugFolder, guiState, guiDebugState,
       Object.keys(DebugRenderer.config).filter((k) => !!guiDebugState[k]));
+}
+
+function createDebugCheckboxes(parentFolder, debugState, onChangeInternal) {
+  Object.keys(DebugRenderer.config).map((key) => {
+    parentFolder.add(debugState, key, 0, 50).onChange((value) => {
+      debugState[key] = value;
+      DebugRenderer.config[key] = debugState[key];
+      onChangeInternal();
+    });
+  });
 }
 
 /**

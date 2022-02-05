@@ -34,11 +34,20 @@ export const debugRendererName = 'debugRenderer';
  * @param {function(new: Blockly.blockRendering.Drawer)} Drawer The original
  *     drawer.
  */
-export function registerDebugRenderer(Renderer, Drawer) {
-  const NewDrawer = createNewDrawer(Drawer);
+export function registerDebugRenderer(Renderer) {
+  const NewDrawer = createNewDrawer(Renderer.Drawer);
   const NewRenderer = createNewRenderer(Renderer, NewDrawer);
   Blockly.registry.register(Blockly.registry.Type.RENDERER,
       debugRendererName, NewRenderer, true);
+}
+
+export function registerDebugFromName(name) {
+  // Geras is the default renderer name.
+  const rendererName = name || 'geras';
+  // TODO: Catch if it fails.
+  const RendererClass =
+      Blockly.registry.getClass(Blockly.registry.Type.RENDERER, rendererName);
+  registerDebugRenderer(RendererClass);
 }
 
 /**
@@ -49,9 +58,6 @@ export function registerDebugRenderer(Renderer, Drawer) {
  *     to the block.
  */
 function createNewDrawer(OldDrawer) {
-  /**
-   * The drawer that 
-   */
   class DebugDrawer extends OldDrawer {
     /**
      * An object that draws a block based on the given rendering information.
