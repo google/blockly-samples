@@ -41,7 +41,7 @@ export function registerDebugRenderer(Renderer) {
       debugRendererName, NewRenderer, true);
 }
 
-export function registerDebugFromName(name) {
+export function registerDebugRendererFromName(name) {
   // Geras is the default renderer name.
   const rendererName = name || 'geras';
   // TODO: Catch if it fails.
