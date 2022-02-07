@@ -415,5 +415,4 @@ DebugRenderer.config = {
   blockBounds: true,
   connectedBlockBounds: true,
   render: true,
-  enabled: false,
 };

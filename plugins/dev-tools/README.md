@@ -92,13 +92,19 @@ This package is also used in mocha tests, and exports a suite of useful test hel
 You can find the full list of helpers [here](https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js).
 
 ### Debug Renderer
-The debug renderer is a helpful tool to debug blocks when building a custom renderer. 
+The debug renderer is a helpful tool to debug blocks when building a custom
+renderer. It displays the different elements on a block such as the rows,
+elements and connections.
 
 ```js
+// TODO: Fix this.
 import {DebugRenderer} from '@blockly/dev-tools';
 // Initialize the debug renderer.
 DebugRenderer.init();
 ```
+
+// TODO: Add information on how to extend the debug renderer. Or how to use
+it for your own renderer.
 
 The debug renderer is included by default in the playground.
 

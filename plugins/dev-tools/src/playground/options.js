@@ -74,8 +74,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   guiState.options.theme = themes[guiState.themeName];
 
   const defaultRendererName = defaultOptions.renderer ?
-      /** @type {!Blockly.blockRendering.Renderer} */
-      (defaultOptions.renderer).name : 'geras';
+      defaultOptions.renderer : 'geras';
   guiState.renderer = guiState.renderer || defaultRendererName;
 
   // Merge default and saved state.
@@ -237,7 +236,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
   // Adds the checkbox to toggle using the debug renderer.
-  const debugController = debugFolder.add(guiState.debug, 'enabled');
+  const debugController = debugFolder.add(guiState, 'debugEnabled');
   // Folder with all the debug options. Hidden if the debugger is not enabled.
   const debugOptionsFolder = debugFolder.addFolder('Debug Options');
 
@@ -341,7 +340,7 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   delete guiState.options['toolbox'];
   delete guiState.options['theme'];
 
-  if (guiState.debug.enabled) {
+  if (guiState.debugEnabled) {
     // In this case guiState.options.renderer is 'debugRenderer'. Storing this
     // is not helpful, so instead store the actual name of the renderer.
     // (ex. zelos, geras, thrasos).
@@ -360,6 +359,9 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   if (guiState.themeName !== defaultThemeName) {
     hashGuiState.theme = guiState.themeName;
   }
+
+  // Save whether the debug is enabled.
+  hashGuiState.debugEnabled = guiState.debugEnabled;
   window.location.hash = HashState.save(hashGuiState);
 }
 
@@ -368,7 +370,7 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
  * @return {Object} The GUI state.
  */
 function loadGUIState() {
-  const defaultState = {options: {}, debug: {}};
+  const defaultState = {options: {}, debug: {}, debugEnabled: false};
   const guiStateKey = `guiState_${id}`;
   const guiState = JSON.parse(localStorage.getItem(guiStateKey)) ||
       defaultState;
@@ -392,7 +394,7 @@ function loadGUIState() {
   guiState.renderer = guiState.options.renderer;
 
   // Use the debug renderer.
-  if (guiState.debug.enabled) {
+  if (guiState.debugEnabled) {
     guiState.options.renderer = debugRendererName;
   }
 
@@ -508,7 +510,7 @@ function populateRendererOption(folder, guiState, onChange) {
           .onChange((value) => {
             guiState.renderer = value;
             registerDebugRendererFromName(value);
-            if (guiState.debug.enabled) {
+            if (guiState.debugEnabled) {
               onChange('renderer', debugRendererName);
             } else {
               onChange('renderer', value);
@@ -783,15 +785,12 @@ function initDebugRenderer(guiState, reset) {
  */
 function populateDebugFolder(
     debugController, debugOptionsFolder, guiState, onChange) {
-  const guiDebugState = guiState.debug;
-
-  updateDebugFolder(debugOptionsFolder, guiDebugState.enabled);
+  updateDebugFolder(debugOptionsFolder, guiState.debugEnabled);
 
   debugController.onChange((value) => {
-    guiDebugState.enabled = value;
-    DebugRenderer.config.enabled = guiDebugState.enabled;
+    guiState.debugEnabled = value;
     onChange('renderer', value ? debugRendererName : guiState.renderer);
-    updateDebugFolder(debugOptionsFolder, guiDebugState.enabled);
+    updateDebugFolder(debugOptionsFolder, guiState.debugEnabled);
   });
 }
 
