@@ -235,7 +235,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
   // Adds the checkbox to toggle using the debug renderer.
-  const debugController = debugFolder.add(guiState, 'debugEnabled');
+  const debugController = debugFolder.add(guiState, 'Enable Debug Renderer');
   // Folder with all the debug options. Hidden if the debugger is not enabled.
   const debugOptionsFolder = debugFolder.addFolder('Debug Options');
 
@@ -342,7 +342,6 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   if (guiState.debugEnabled) {
     // In this case guiState.options.renderer is 'debugRenderer'. Storing this
     // is not helpful, so instead store the actual name of the renderer.
-    // (ex. zelos, geras, thrasos).
     guiState.options.renderer = guiState.renderer;
   }
 
@@ -509,11 +508,8 @@ function populateRendererOption(folder, guiState, onChange) {
           .onChange((value) => {
             guiState.renderer = value;
             registerDebugRendererFromName(value);
-            if (guiState.debugEnabled) {
-              onChange('renderer', debugRendererName);
-            } else {
-              onChange('renderer', value);
-            }
+            onChange('renderer',
+                guiState.debugEnabled ? debugRendererName : value);
           }),
       'The renderer used by Blockly.');
 }
@@ -758,7 +754,7 @@ function setTooltip(controller, tooltip) {
 
 /**
  * Initialize debug renderer.
- * @param {Object} guiState The GUI State.
+ * @param {!Object} guiState The GUI State.
  * @param {boolean=} reset Whether or not to reset the renderer config.
  */
 function initDebugRenderer(guiState, reset) {
@@ -777,12 +773,12 @@ function initDebugRenderer(guiState, reset) {
 }
 
 /**
- * Populate the parent folder that holds the enabled button as well as the
+ * Populate the parent folder that holds the debug enabled button and the
  * folder with all the debug options in it. When debug is enabled it should
  * open the folder holding all the debug options.
  * @param {dat.GUIController} debugController The GUI controller.
  * @param {dat.GUI} debugOptionsFolder The folder that holds all the debug
- *     options. (ex. 'rowSpacers', 'elemSpacers')
+ *     options.
  * @param {Object} guiState The GUI State.
  * @param {function(string, *):void} onChange On Change method.
  */
@@ -801,7 +797,7 @@ function populateDebugFolder(
  * Updates the debug folder to be hidden/displayed based on whether the
  * rendering debugger is enabled.
  * @param {dat.GUI} folder The folder that holds all the debug
- *     options. (ex. 'rowSpacers', 'elemSpacers')
+ *     options.
  * @param {boolean} isEnabled True if the debugger is enabled, false otherwise.
  */
 function updateDebugFolder(folder, isEnabled) {
@@ -814,10 +810,9 @@ function updateDebugFolder(folder, isEnabled) {
 }
 
 /**
- * Populate the folder holding all the options for what the debug renderer
- * should display.
+ * Populates the folder holding all the debug renderer options.
  * @param {dat.GUI} debugOptionsFolder The folder that holds all the debug
- *     options. (ex. 'rowSpacers', 'elemSpacers')
+ *     options.
  * @param {Object} guiState The GUI State.
  * @param {function():void} onChangeInternal Internal on change method.
  */
