@@ -6,8 +6,8 @@
 
 import * as Blockly from 'blockly/core';
 
-import {DebugDrawer} from './debugger/debugDrawer';
-import {createNewRenderer} from './debugger/debugFactory';
+import {DebugDrawer} from './debugDrawer';
+import {createNewRenderer} from './debug';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
 import {downloadWorkspaceScreenshot} from './screenshot';

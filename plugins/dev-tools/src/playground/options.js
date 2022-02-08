@@ -12,8 +12,8 @@
 import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
-import {DebugDrawer} from '../debugger/debugDrawer';
-import {registerDebugRendererFromName, debugRendererName} from '../debugger/debugFactory';
+import {DebugDrawer} from '../debugDrawer';
+import {registerDebugRendererFromName, debugRendererName} from '../debug';
 import {disableLogger, enableLogger} from '../logger';
 import {HashState} from './hash_state';
 import {populateRandom} from '../populateRandom';
@@ -770,6 +770,10 @@ function initDebugRenderer(guiState, reset) {
     }
     DebugDrawer.config[key] = guiDebugState[key];
   });
+
+  if (reset) {
+    guiState.debugEnabled = false;
+  }
 }
 
 /**
