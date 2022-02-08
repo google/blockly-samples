@@ -180,13 +180,9 @@ export class DebugRenderer {
    * share the same colours, as do previous and next.  When positioned correctly
    * a connected pair will look like a bullseye.
    * @param {Blockly.RenderedConnection} conn The connection to circle.
-<<<<<<< HEAD:plugins/dev-tools/src/debugRenderer.js
-   * @package
-=======
    * @suppress {visibility} Suppress visibility of conn.offsetInBlock_ since
    *     this is a debug module.
    * @protected
->>>>>>> 6afbfcf7a (fix: debug renderer):plugins/dev-tools/src/debugger/debugRenderer.js
    */
   drawConnection(conn) {
     if (!DebugRenderer.config.connections) {

@@ -12,7 +12,7 @@
 import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
-import {DebugRenderer} from '../debugger/debugRenderer';
+import {DebugDrawer} from '../debugger/debugDrawer';
 import {registerDebugRendererFromName, debugRendererName} from '../debugger/debugFactory';
 import {disableLogger, enableLogger} from '../logger';
 import {HashState} from './hash_state';
@@ -162,7 +162,6 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
     assign(saveOptions, defaultOptions);
     Object.keys(guiState.options).forEach((k) => delete guiState.options[k]);
     // Reset debug options.
-    // TODO: set a default renderer name.
     guiState.renderer = defaultRendererName;
     initDebugRenderer(guiState, true);
     updateDebugFolder(debugOptionsFolder, false);
@@ -765,11 +764,11 @@ function setTooltip(controller, tooltip) {
 function initDebugRenderer(guiState, reset) {
   const guiDebugState = guiState.debug;
   registerDebugRendererFromName(guiState.renderer);
-  Object.keys(DebugRenderer.config).map((key) => {
+  Object.keys(DebugDrawer.config).map((key) => {
     if (guiDebugState[key] == undefined || reset) {
       guiDebugState[key] = false;
     }
-    DebugRenderer.config[key] = guiDebugState[key];
+    DebugDrawer.config[key] = guiDebugState[key];
   });
 }
 
@@ -821,10 +820,10 @@ function updateDebugFolder(folder, isEnabled) {
 function populateDebugOptionsFolder(
     debugOptionsFolder, guiState, onChangeInternal) {
   const debugState = guiState.debug;
-  Object.keys(DebugRenderer.config).map((key) => {
+  Object.keys(DebugDrawer.config).map((key) => {
     debugOptionsFolder.add(debugState, key, 0, 50).onChange((value) => {
       debugState[key] = value;
-      DebugRenderer.config[key] = debugState[key];
+      DebugDrawer.config[key] = debugState[key];
       onChangeInternal();
     });
   });

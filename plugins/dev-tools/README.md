@@ -96,17 +96,28 @@ The debug renderer is a helpful tool to debug blocks when building a custom
 renderer. It displays the different elements on a block such as the rows,
 elements and connections.
 
+![A block showing the rows.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerRows.png)
+![A block showing the elements.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerElements.png)
+![A block showing the connections.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerConnections.png)
+
+If you want to use the debug renderer with the playground, you can simply
+set your renderer in the `defaultOptions` passed into `createPlayground`. It
+can then be turned on/off by toggling the 'debugEnabled' option under the
+'Debug' folder.
+
+If you want to extend the debugger or you are not using the playground, you
+can follow the example below.
+
 ```js
-// TODO: Fix this.
-import {DebugRenderer} from '@blockly/dev-tools';
-// Initialize the debug renderer.
-DebugRenderer.init();
+import {createNewRenderer, DebugDrawer} from '@blockly/dev-tools';
+
+class CustomDebugDrawer extends DebugDrawer {
+  // Add custom functionality here.
+}
+
+const DebugRenderer = createNewRenderer(YourCustomRenderer);
+DebugRenderer.DebugDrawerClass = CustomDebugDrawer;
 ```
-
-// TODO: Add information on how to extend the debug renderer. Or how to use
-it for your own renderer.
-
-The debug renderer is included by default in the playground.
 
 ### Logger
 A lightweight workspace console logger. 
