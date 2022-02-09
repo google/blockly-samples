@@ -216,7 +216,8 @@ suite('Procedure blocks', function() {
                 '</block>',
             assertBlockStructure:
                 (block) => {
-                  assertDefBlockStructure(block, testSuite.hasReturn, ['x', 'y']);
+                  assertDefBlockStructure(
+                      block, testSuite.hasReturn, ['x', 'y']);
                 },
           },
           {
@@ -301,14 +302,14 @@ suite('Procedure blocks', function() {
           {
             title: 'Minimal definition',
             json: {
-              'type': testSuite.defType
+              'type': testSuite.defType,
             },
             expectedJson: {
               'type': testSuite.defType,
               'id': '1',
               'fields': {
-                'NAME': ''
-              }
+                'NAME': '',
+              },
             },
             assertBlockStructure:
                 (block) => {
@@ -320,15 +321,15 @@ suite('Procedure blocks', function() {
             json: {
               'type': testSuite.defType,
               'fields': {
-                'NAME': 'do something'
-              }
+                'NAME': 'do something',
+              },
             },
             expectedJson: {
               'type': testSuite.defType,
               'id': '1',
               'fields': {
-                'NAME': 'do something'
-              }
+                'NAME': 'do something',
+              },
             },
             assertBlockStructure:
                 (block) => {
@@ -353,9 +354,9 @@ suite('Procedure blocks', function() {
                     'name': 'y',
                     'id': 'id2',
                     'argId': 'arg2',
-                  }
-                ]
-              }
+                  },
+                ],
+              },
             },
             expectedJson: {
               'type': testSuite.defType,
@@ -376,13 +377,14 @@ suite('Procedure blocks', function() {
                     'name': 'y',
                     'id': 'id2',
                     'argId': 'arg2',
-                  }
-                ]
-              }
+                  },
+                ],
+              },
             },
             assertBlockStructure:
                 (block) => {
-                  assertDefBlockStructure(block, testSuite.hasReturn, ['x', 'y']);
+                  assertDefBlockStructure(
+                      block, testSuite.hasReturn, ['x', 'y']);
                 },
           },
           {
@@ -393,8 +395,8 @@ suite('Procedure blocks', function() {
                 'NAME': 'do something',
               },
               'extraState': {
-                'hasStatements': false
-              }
+                'hasStatements': false,
+              },
             },
             expectedJson: {
               'type': testSuite.defType,
@@ -404,11 +406,12 @@ suite('Procedure blocks', function() {
               },
               'extraState': {
                 'hasStatements': false,
-              }
+              },
             },
             assertBlockStructure:
                 (block) => {
-                  assertDefBlockStructure(block, testSuite.hasReturn, [], false);
+                  assertDefBlockStructure(
+                      block, testSuite.hasReturn, [], false);
                 },
           },
           {
@@ -420,8 +423,8 @@ suite('Procedure blocks', function() {
               'type': testSuite.callType,
               'id': '1',
               'extraState': {
-                'name': ''
-              }
+                'name': '',
+              },
             },
             assertBlockStructure:
                 (block) => {
@@ -433,15 +436,15 @@ suite('Procedure blocks', function() {
             json: {
               'type': testSuite.callType,
               'extraState': {
-                'name': 'do something'
-              }
+                'name': 'do something',
+              },
             },
             expectedJson: {
               'type': testSuite.callType,
               'id': '1',
               'extraState': {
-                'name': 'do something'
-              }
+                'name': 'do something',
+              },
             },
             assertBlockStructure:
                 (block) => {
@@ -454,16 +457,16 @@ suite('Procedure blocks', function() {
               'type': testSuite.callType,
               'extraState': {
                 'name': 'do something',
-                'params': ['x', 'y']
-              }
+                'params': ['x', 'y'],
+              },
             },
             expectedJson: {
               'type': testSuite.callType,
               'id': '1',
               'extraState': {
                 'name': 'do something',
-                'params': ['x', 'y']
-              }
+                'params': ['x', 'y'],
+              },
             },
             assertBlockStructure:
                 (block) => {

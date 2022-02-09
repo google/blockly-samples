@@ -185,14 +185,14 @@ suite('List create block', function() {
       {
         title: 'No mutation',
         json: {
-          'type': 'lists_create_with'
+          'type': 'lists_create_with',
         },
         expectedJson: {
           'type': 'lists_create_with',
           'id': '1',
           'extraState': {
-            'itemCount': 3
-          }
+            'itemCount': 3,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -205,8 +205,8 @@ suite('List create block', function() {
           'type': 'lists_create_with',
           'id': '1',
           'extraState': {
-            'itemCount': 3
-          }
+            'itemCount': 3,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -219,8 +219,8 @@ suite('List create block', function() {
           'type': 'lists_create_with',
           'id': '1',
           'extraState': {
-            'itemCount': 5
-          }
+            'itemCount': 5,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -233,8 +233,8 @@ suite('List create block', function() {
           'type': 'lists_create_with',
           'id': '1',
           'extraState': {
-            'itemCount': 0
-          }
+            'itemCount': 0,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -247,7 +247,7 @@ suite('List create block', function() {
           'type': 'lists_create_with',
           'id': '1',
           'extraState': {
-            'itemCount': 4
+            'itemCount': 4,
           },
           'inputs': {
             'ADD3': {
@@ -255,11 +255,11 @@ suite('List create block', function() {
                 'type': 'logic_boolean',
                 'id': '1',
                 'fields': {
-                  'BOOL': 'FALSE'
-                }
-              }
-            }
-          }
+                  'BOOL': 'FALSE',
+                },
+              },
+            },
+          },
         },
         assertBlockStructure:
             (block) => {

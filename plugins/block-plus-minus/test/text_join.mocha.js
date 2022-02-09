@@ -8,7 +8,6 @@ const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
 const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
 const Blockly = require('blockly/node');
-const { ShortcutItems } = require('blockly/node');
 
 require('../src/index');
 
@@ -174,14 +173,14 @@ suite('Text join block', function() {
       {
         title: 'No mutation',
         json: {
-          'type': 'text_join'
+          'type': 'text_join',
         },
         expectedJson: {
           'type': 'text_join',
           'id': '1',
           'extraState': {
-            'itemCount': 2
-          }
+            'itemCount': 2,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -194,8 +193,8 @@ suite('Text join block', function() {
           'type': 'text_join',
           'id': '1',
           'extraState': {
-            'itemCount': 0
-          }
+            'itemCount': 0,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -208,8 +207,8 @@ suite('Text join block', function() {
           'type': 'text_join',
           'id': '1',
           'extraState': {
-            'itemCount': 3
-          }
+            'itemCount': 3,
+          },
         },
         assertBlockStructure:
             (block) => {
@@ -222,7 +221,7 @@ suite('Text join block', function() {
           'type': 'text_join',
           'id': '1',
           'extraState': {
-            'itemCount': 3
+            'itemCount': 3,
           },
           'inputs': {
             'ADD2': {
@@ -230,11 +229,11 @@ suite('Text join block', function() {
                 'type': 'logic_boolean',
                 'id': '1',
                 'fields': {
-                  'BOOL': 'FALSE'
-                }
-              }
-            }
-          }
+                  'BOOL': 'FALSE',
+                },
+              },
+            },
+          },
         },
         assertBlockStructure:
             (block) => {
