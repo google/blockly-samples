@@ -74,6 +74,11 @@ Blockly.Blocks['dynamic_if'] = {
     }
   },
 
+  /**
+   * Parses XML based on the 'inputs' attribute (non-standard).
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
   deserializeInputs_: function(xmlElement) {
     const inputs = xmlElement.getAttribute('inputs');
     if (inputs) {
@@ -108,6 +113,11 @@ Blockly.Blocks['dynamic_if'] = {
     this.inputCounter = next;
   },
 
+  /**
+   * Parses XML based on the 'elseif' and 'else' attributes (standard).
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
   deserializeCounts_: function(xmlElement) {
     const elseifCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
     const elseCount = parseInt(xmlElement.getAttribute('else'), 10) || 0;
