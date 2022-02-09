@@ -7,8 +7,7 @@
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
 const Blockly = require('blockly/node');
-
-require('../src/index');
+const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
@@ -18,8 +17,8 @@ suite('If block', function() {
    * @param {!Blockly.Block} block The block to check.
    * @param {!Array<string>} expectedInputs The expected inputs.
    */
-  function assertBlockStructure(block, expectedInputs) {
-    assert.equal(block.type, 'dynamic_if');
+  function assertBlockStructure(block, expectedInputs, type = 'dynamic_if') {
+    assert.equal(block.type, type);
     assert.equal(block.inputList.length, expectedInputs.length);
     assert.isTrue(expectedInputs.length >= 2);
     for (let i = 0; i < expectedInputs.length; i++) {
@@ -53,6 +52,7 @@ suite('If block', function() {
 
   setup(function() {
     this.workspace = new Blockly.Workspace();
+    overrideOldBlockDefinitions();
   });
 
   teardown(function() {
@@ -221,6 +221,21 @@ suite('If block', function() {
       assertBlockStructure: (block) => {
         assertBlockStructure(
             block, ['IF0', 'DO0', 'IF1', 'DO1', 'IF2', 'DO2', 'ELSE']);
+      },
+    },
+    {
+      title: 'standard/core XML is deserialized correctly',
+      xml:
+        '<block type="controls_if" id="1" x="38" y="63">' +
+        '  <mutation elseif="1" else= "1" ></mutation>' +
+        '</block>',
+      expectedXml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1">\n' +
+          '  <mutation inputs="0,1" else="true" next="2"></mutation>\n</block>',
+      assertBlockStructure: (block) => {
+        assertBlockStructure(
+            block, ['IF0', 'DO0', 'IF1', 'DO1', 'ELSE'], 'controls_if');
       },
     },
   ];

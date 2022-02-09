@@ -7,8 +7,7 @@
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
 const Blockly = require('blockly/node');
-
-require('../src/index');
+const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
@@ -18,8 +17,10 @@ suite('Text join block', function() {
    * @param {!Blockly.Block} block The block to check.
    * @param {!Array<string>} expectedInputs The expected inputs.
    */
-  function assertBlockStructure(block, expectedInputs) {
-    assert.equal(block.type, 'dynamic_text_join');
+  function assertBlockStructure(
+      block, expectedInputs, type = 'dynamic_text_join'
+  ) {
+    assert.equal(block.type, type);
     assert.equal(block.inputList.length, expectedInputs.length);
     assert.isTrue(expectedInputs.length >= 2);
     for (let i = 0; i < expectedInputs.length; i++) {
@@ -41,6 +42,7 @@ suite('Text join block', function() {
 
   setup(function() {
     this.workspace = new Blockly.Workspace();
+    overrideOldBlockDefinitions();
   });
 
   teardown(function() {
@@ -159,6 +161,35 @@ suite('Text join block', function() {
           '    </block>\n  </value>\n</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, ['ADD1', 'ADD5', 'ADD2', 'ADD4']);
+      },
+    },
+    {
+      title: 'standard/core XML is deserialized correctly',
+      xml:
+        '<block type="text_join" id="1" x="63" y="113">' +
+        '  <mutation items="3"></mutation>' +
+        '</block>',
+      expectedXml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation inputs="ADD0,ADD1,ADD2" next="3"></mutation>\n</block>',
+      assertBlockStructure: (block) => {
+        assertBlockStructure(
+            block, ['ADD0', 'ADD1', 'ADD2'], 'text_join');
+      },
+    },
+    {
+      title: 'standard/core XML still maintains minimum inputs',
+      xml:
+        '<block type="text_join" id="1" x="63" y="113">' +
+        '  <mutation items="0"></mutation>' +
+        '</block>',
+      expectedXml:
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n</block>',
+      assertBlockStructure: (block) => {
+        assertBlockStructure(block, ['ADD0', 'ADD1'], 'text_join');
       },
     },
   ];
