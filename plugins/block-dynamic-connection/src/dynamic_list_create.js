@@ -91,7 +91,7 @@ Blockly.Blocks['dynamic_list_create'] = {
     const itemCount = Math.max(
         parseInt(xmlElement.getAttribute('items'), 10), this.minInputs);
     // Two inputs are added automatically.
-    for (let i = 2; i < itemCount; i++) {
+    for (let i = this.minInputs; i < itemCount; i++) {
       this.appendValueInput('ADD' + i);
     }
     this.inputCounter = itemCount;
