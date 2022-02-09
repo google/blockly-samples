@@ -67,6 +67,14 @@ Blockly.Blocks['dynamic_if'] = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
+    if (xmlElement.getAttribute('inputs')) {
+      this.deserializeInputs_(xmlElement);
+    } else {
+      this.deserializeCounts_(xmlElement);
+    }
+  },
+
+  deserializeInputs_: function(xmlElement) {
     const inputs = xmlElement.getAttribute('inputs');
     if (inputs) {
       const inputNumbers = inputs.split(',');
@@ -98,6 +106,22 @@ Blockly.Blocks['dynamic_if'] = {
     }
     const next = parseInt(xmlElement.getAttribute('next'));
     this.inputCounter = next;
+  },
+
+  deserializeCounts_: function(xmlElement) {
+    const elseifCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
+    const elseCount = parseInt(xmlElement.getAttribute('else'), 10) || 0;
+    for (let i = 1; i <= elseifCount; i++) {
+      this.appendValueInput('IF' + i).setCheck('Boolean').appendField(
+          Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
+      this.appendStatementInput('DO' + i).appendField(
+          Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+    }
+    if (elseCount) {
+      this.appendStatementInput('ELSE').appendField(
+          Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+    }
+    this.inputCounter = elseifCount + 1;
   },
 
   /**
