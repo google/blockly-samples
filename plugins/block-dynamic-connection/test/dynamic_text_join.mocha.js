@@ -16,6 +16,7 @@ suite('Text join block', function() {
    * Asserts that the text join block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
    * @param {!Array<string>} expectedInputs The expected inputs.
+   * @type {string=} The block type expected. Defaults to 'dynamic_text_join'.
    */
   function assertBlockStructure(
       block, expectedInputs, type = 'dynamic_text_join'

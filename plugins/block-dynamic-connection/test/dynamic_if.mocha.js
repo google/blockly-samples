@@ -16,6 +16,7 @@ suite('If block', function() {
    * Asserts that the if block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
    * @param {!Array<string>} expectedInputs The expected inputs.
+   * @type {string=} The block type expected. Defaults to 'dynamic_if'.
    */
   function assertBlockStructure(block, expectedInputs, type = 'dynamic_if') {
     assert.equal(block.type, type);

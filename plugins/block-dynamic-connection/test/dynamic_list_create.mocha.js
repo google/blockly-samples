@@ -16,6 +16,7 @@ suite('List create block', function() {
    * Asserts that the list create block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
    * @param {!Array<string>} expectedInputs The expected inputs.
+   * @type {string=} The block type expected. Defaults to 'dynamic_list_create'.
    */
   function assertBlockStructure(
       block, expectedInputs, type = 'dynamic_list_create'
