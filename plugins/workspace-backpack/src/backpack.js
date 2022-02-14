@@ -250,7 +250,7 @@ export class Backpack extends Blockly.DragTarget {
   createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.G, {}, null);
-    const rnd = Blockly.utils.genUid();
+    const rnd = Blockly.utils.idGenerator.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.CLIPPATH,
         {'id': 'blocklyBackpackClipPath' + rnd},
