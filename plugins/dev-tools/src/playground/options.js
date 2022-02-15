@@ -12,7 +12,8 @@
 import * as Blockly from 'blockly/core';
 import * as dat from 'dat.gui';
 
-import {DebugRenderer} from '../debugRenderer';
+import {DebugDrawer} from '../debugDrawer';
+import {registerDebugRendererFromName, debugRendererName} from '../debug';
 import {disableLogger, enableLogger} from '../logger';
 import {HashState} from './hash_state';
 import {populateRandom} from '../populateRandom';
@@ -72,12 +73,16 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   guiState.themeName = guiState.themeName || defaultThemeName;
   guiState.options.theme = themes[guiState.themeName];
 
+  const defaultRendererName = defaultOptions.renderer ?
+      defaultOptions.renderer : 'geras';
+  guiState.renderer = guiState.renderer || defaultRendererName;
+
   // Merge default and saved state.
   const saveOptions = /** @type {!Blockly.BlocklyOptions} */ ({
     ...defaultOptions,
     ...guiState.options,
   });
-  initDebugRenderer(guiState.debug);
+  initDebugRenderer(guiState);
 
   let workspace = genWorkspace(saveOptions);
   const resizeEnabled = !config.disableResize;
@@ -157,7 +162,10 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
     assign(saveOptions, defaultOptions);
     Object.keys(guiState.options).forEach((k) => delete guiState.options[k]);
     // Reset debug options.
-    initDebugRenderer(guiState.debug, true);
+    guiState.renderer = defaultRendererName;
+    initDebugRenderer(guiState, true);
+    updateDebugFolder(debugOptionsFolder, false);
+
     // Reset toolbox selection.
     guiState.toolboxName = defaultToolboxName;
     guiState.themeName = defaultThemeName;
@@ -189,7 +197,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
       'If true, mirror the editor (for Arabic or Hebrew locales).');
 
   // Renderer.
-  populateRendererOption(optionsFolder, options, onChange);
+  populateRendererOption(optionsFolder, guiState, onChange);
 
   // Theme.
   populateThemeOption(
@@ -226,8 +234,14 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
 
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
+  // Adds the checkbox to toggle using the debug renderer.
+  const debugController = debugFolder.add(guiState, 'Enable Debug Renderer');
+  // Folder with all the debug options. Hidden if the debugger is not enabled.
+  const debugOptionsFolder = debugFolder.addFolder('Debug Options');
+
   setTooltip(debugFolder, 'Rendering debug configuration.');
-  populateDebugOptions(debugFolder, guiState, onChangeInternal);
+  populateDebugFolder(debugController, debugOptionsFolder, guiState, onChange);
+  populateDebugOptionsFolder(debugOptionsFolder, guiState, onChangeInternal);
 
   // GUI actions.
   const actionsFolder = gui.addFolder('Actions');
@@ -325,6 +339,12 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   delete guiState.options['toolbox'];
   delete guiState.options['theme'];
 
+  if (guiState.debugEnabled) {
+    // In this case guiState.options.renderer is 'debugRenderer'. Storing this
+    // is not helpful, so instead store the actual name of the renderer.
+    guiState.options.renderer = guiState.renderer;
+  }
+
   // Save GUI control options to local storage.
   const guiStateKey = `guiState_${id}`;
   localStorage.setItem(guiStateKey, JSON.stringify(guiState));
@@ -337,6 +357,9 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
   if (guiState.themeName !== defaultThemeName) {
     hashGuiState.theme = guiState.themeName;
   }
+
+  // Save whether the debug is enabled.
+  hashGuiState.debugEnabled = guiState.debugEnabled;
   window.location.hash = HashState.save(hashGuiState);
 }
 
@@ -345,7 +368,7 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
  * @return {Object} The GUI state.
  */
 function loadGUIState() {
-  const defaultState = {options: {}, debug: {}};
+  const defaultState = {options: {}, debug: {}, debugEnabled: false};
   const guiStateKey = `guiState_${id}`;
   const guiState = JSON.parse(localStorage.getItem(guiStateKey)) ||
       defaultState;
@@ -364,6 +387,15 @@ function loadGUIState() {
     guiState.themeName = guiState.options.theme;
     delete guiState.options.theme;
   }
+  // If we end up using the 'debugRenderer' we still need to store the name of
+  // the original renderer.
+  guiState.renderer = guiState.options.renderer;
+
+  // Use the debug renderer.
+  if (guiState.debugEnabled) {
+    guiState.options.renderer = debugRendererName;
+  }
+
   return guiState;
 }
 
@@ -460,18 +492,25 @@ function populateBasicOptions(basicFolder, options, guiState, onChange) {
 /**
  * Populate the renderer option.
  * @param {dat.GUI} folder The dat.GUI folder.
- * @param {Blockly.Options} options Blockly options.
+ * @param {Object} guiState The GUI state.
  * @param {function(string, *):void} onChange On Change method.
  */
-function populateRendererOption(folder, options, onChange) {
+function populateRendererOption(folder, guiState, onChange) {
   // Get the list of renderers. Previous versions of Blockly used the
   // rendererMap_, whereas newer versions that use the global registry get their
   // list of renderers from somewhere else.
   const renderers = Blockly.blockRendering.rendererMap_ ||
       (Blockly.registry && Blockly.registry.getAllItems('renderer'));
+  const publicRenderers = Object.keys(renderers)
+      .filter((name) => name !== debugRendererName.toLowerCase());
   setTooltip(
-      folder.add(options, 'renderer', Object.keys(renderers))
-          .onChange((value) => onChange('renderer', value)),
+      folder.add(guiState, 'renderer', publicRenderers)
+          .onChange((value) => {
+            guiState.renderer = value;
+            registerDebugRendererFromName(value);
+            onChange('renderer',
+                guiState.debugEnabled ? debugRendererName : value);
+          }),
       'The renderer used by Blockly.');
 }
 
@@ -715,37 +754,78 @@ function setTooltip(controller, tooltip) {
 
 /**
  * Initialize debug renderer.
- * @param {Object.<string, boolean>} guiDebugState Saved GUI debug state.
+ * @param {!Object} guiState The GUI State.
  * @param {boolean=} reset Whether or not to reset the renderer config.
  */
-function initDebugRenderer(guiDebugState, reset) {
-  DebugRenderer.init();
-  Object.keys(DebugRenderer.config).map((key) => {
+function initDebugRenderer(guiState, reset) {
+  const guiDebugState = guiState.debug;
+  registerDebugRendererFromName(guiState.renderer);
+  Object.keys(DebugDrawer.config).map((key) => {
     if (guiDebugState[key] == undefined || reset) {
       guiDebugState[key] = false;
     }
-    DebugRenderer.config[key] = guiDebugState[key];
+    DebugDrawer.config[key] = guiDebugState[key];
+  });
+
+  if (reset) {
+    guiState.debugEnabled = false;
+  }
+}
+
+/**
+ * Populate the parent folder that holds the debug enabled button and the
+ * folder with all the debug options in it. When debug is enabled it should
+ * open the folder holding all the debug options.
+ * @param {dat.GUIController} debugController The GUI controller.
+ * @param {dat.GUI} debugOptionsFolder The folder that holds all the debug
+ *     options.
+ * @param {Object} guiState The GUI State.
+ * @param {function(string, *):void} onChange On Change method.
+ */
+function populateDebugFolder(
+    debugController, debugOptionsFolder, guiState, onChange) {
+  updateDebugFolder(debugOptionsFolder, guiState.debugEnabled);
+
+  debugController.onChange((value) => {
+    guiState.debugEnabled = value;
+    onChange('renderer', value ? debugRendererName : guiState.renderer);
+    updateDebugFolder(debugOptionsFolder, guiState.debugEnabled);
   });
 }
 
 /**
- * Populate debug options.
- * @param {dat.GUI} debugFolder The dat.GUI debug folder.
- * @param {Object} guiState The GUI state.
+ * Updates the debug folder to be hidden/displayed based on whether the
+ * rendering debugger is enabled.
+ * @param {dat.GUI} folder The folder that holds all the debug
+ *     options.
+ * @param {boolean} isEnabled True if the debugger is enabled, false otherwise.
+ */
+function updateDebugFolder(folder, isEnabled) {
+  if (isEnabled) {
+    folder.show();
+    folder.open();
+  } else {
+    folder.hide();
+  }
+}
+
+/**
+ * Populates the folder holding all the debug renderer options.
+ * @param {dat.GUI} debugOptionsFolder The folder that holds all the debug
+ *     options.
+ * @param {Object} guiState The GUI State.
  * @param {function():void} onChangeInternal Internal on change method.
  */
-function populateDebugOptions(debugFolder, guiState, onChangeInternal) {
-  const guiDebugState = guiState.debug;
-  Object.keys(DebugRenderer.config).map((key) => {
-    debugFolder.add(guiDebugState, key, 0, 50).onChange((value) => {
-      guiDebugState[key] = value;
-      DebugRenderer.config[key] = guiDebugState[key];
+function populateDebugOptionsFolder(
+    debugOptionsFolder, guiState, onChangeInternal) {
+  const debugState = guiState.debug;
+  Object.keys(DebugDrawer.config).map((key) => {
+    debugOptionsFolder.add(debugState, key, 0, 50).onChange((value) => {
+      debugState[key] = value;
+      DebugDrawer.config[key] = debugState[key];
       onChangeInternal();
     });
   });
-  openFolderIfOptionSelected(
-      debugFolder, guiState, guiDebugState,
-      Object.keys(DebugRenderer.config).filter((k) => !!guiDebugState[k]));
 }
 
 /**
