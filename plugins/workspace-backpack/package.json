@@ -22,7 +22,7 @@
     "workspace",
     "backpack"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/workspace-backpack",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/workspace-backpack#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
