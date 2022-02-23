@@ -76,6 +76,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   const defaultRendererName = defaultOptions.renderer ?
       defaultOptions.renderer : 'geras';
   guiState.renderer = guiState.renderer || defaultRendererName;
+  guiState.debugEnabled = guiState.debugEnabled || false;
 
   // Merge default and saved state.
   const saveOptions = /** @type {!Blockly.BlocklyOptions} */ ({
