@@ -76,6 +76,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   const defaultRendererName = defaultOptions.renderer ?
       defaultOptions.renderer : 'geras';
   guiState.renderer = guiState.renderer || defaultRendererName;
+  guiState.debugEnabled = guiState.debugEnabled || false;
 
   // Merge default and saved state.
   const saveOptions = /** @type {!Blockly.BlocklyOptions} */ ({
@@ -235,7 +236,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   // Debug renderer.
   const debugFolder = gui.addFolder('Debug');
   // Adds the checkbox to toggle using the debug renderer.
-  const debugController = debugFolder.add(guiState, 'Enable Debug Renderer');
+  const debugController = debugFolder.add(guiState, 'debugEnabled');
   // Folder with all the debug options. Hidden if the debugger is not enabled.
   const debugOptionsFolder = debugFolder.addFolder('Debug Options');
 
