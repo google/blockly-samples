@@ -104,15 +104,35 @@ This package is also used in mocha tests, and exports a suite of useful test hel
 You can find the full list of helpers [here](https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js).
 
 ### Debug Renderer
-The debug renderer is a helpful tool to debug blocks when building a custom renderer. 
+The debug renderer is a helpful tool to debug blocks when building a custom
+renderer. It displays the different elements on a block such as the rows,
+elements and connections shown below.
+
+![A block showing the rows.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerRows.png)
+![A block showing the elements.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerElements.png)
+![A block showing the connections.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerConnections.png)
+
+If you want to use the debug a custom renderer with the playground, you can
+simply set your renderer in the `defaultOptions` passed into `createPlayground`.
+The debug renderer can then be turned on/off by toggling the 'debugEnabled'
+option under the 'Debug' folder.
+
+If you want to modify the rectangles that are drawn or you are not using the
+playground, you can follow the example below.
 
 ```js
-import {DebugRenderer} from '@blockly/dev-tools';
-// Initialize the debug renderer.
-DebugRenderer.init();
-```
+import {createNewRenderer, DebugDrawer} from '@blockly/dev-tools';
 
-The debug renderer is included by default in the playground.
+class CustomDebugDrawer extends DebugDrawer {
+  // Add custom functionality here.
+}
+
+const DebugRenderer = createNewRenderer(YourCustomRenderer);
+DebugRenderer.DebugDrawerClass = CustomDebugDrawer;
+Blockly.blockRendering.register('debugRenderer', DebugRenderer);
+
+Blockly.inject('blocklyDiv', {renderer: 'debugRenderer'});
+```
 
 ### Logger
 A lightweight workspace console logger. 
