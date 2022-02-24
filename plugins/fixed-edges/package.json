@@ -1,6 +1,6 @@
 {
   "name": "@blockly/fixed-edges",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "A Blockly MetricsManager for configuring fixed sides.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.14",
-    "@blockly/dev-tools": "^3.0.6",
+    "@blockly/dev-tools": "^3.0.7",
     "blockly": "^7.20211209.0"
   },
   "peerDependencies": {
