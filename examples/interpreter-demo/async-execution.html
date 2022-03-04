@@ -2,13 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Asynchronous Execution with JS Interpreter</title>
+  <title>Blockly Demo: Asynchronous Execution with JS-Interpreter</title>
   <script src="acorn_interpreter.js"></script>
 
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/javascript_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>  
+  <script src="./node_modules/blockly/msg/en.js"></script>
   <script src="wait_block.js"></script>
   <style>
     body {
@@ -22,11 +22,11 @@
   </style>
 </head>
 <body>
-  <h1>Asynchronous Execution with JS Interpreter</h1>
+  <h1>Asynchronous Execution with JS-Interpreter</h1>
 
   <p>This is a demo of executing code asynchronously (e.g., waiting for delays or user input) using the JavaScript interpreter.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS Interpreter</a></p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS-Interpreter</a></p>
 
   <p>
     <button onclick="runCode()" id="runButton">Run JavaScript</button>
@@ -153,31 +153,30 @@
 
     function initApi(interpreter, globalObject) {
       // Add an API function for the alert() block, generated for "text_print" blocks.
-      var wrapper = function(text) {
-        text = text ? text.toString() : '';
-        outputArea.value = outputArea.value + '\n' + text;
+      var wrapper = function alert(text) {
+        text = arguments.length ? text : '';
+        outputArea.value += '\n' + text;
       };
       interpreter.setProperty(globalObject, 'alert',
           interpreter.createNativeFunction(wrapper));
 
       // Add an API function for the prompt() block.
-      var wrapper = function(text) {
-        text = text ? text.toString() : '';
-        return interpreter.createPrimitive(prompt(text));
+      var wrapper = function prompt(text) {
+        return window.prompt(text);
       };
       interpreter.setProperty(globalObject, 'prompt',
           interpreter.createNativeFunction(wrapper));
 
-      // Add an API for the wait block.  See wait_block.js
-      initInterpreterWaitForSeconds(interpreter, globalObject);
-
       // Add an API function for highlighting blocks.
       var wrapper = function(id) {
-        id = id ? id.toString() : '';
-        return interpreter.createPrimitive(highlightBlock(id));
+        id = String(id || '');
+        return highlightBlock(id);
       };
       interpreter.setProperty(globalObject, 'highlightBlock',
           interpreter.createNativeFunction(wrapper));
+
+      // Add an API for the wait block.  See wait_block.js
+      initInterpreterWaitForSeconds(interpreter, globalObject);
     }
 
     var highlightPause = false;
@@ -226,8 +225,7 @@
         // In a timeout to allow the outputArea.value to reset first.
         setTimeout(function() {
           alert('Ready to execute the following code\n' +
-            '===================================\n' +
-            latestCode);
+              '===================================\n' + latestCode);
 
           // Begin execution
           highlightPause = false;
