@@ -56,7 +56,7 @@ Blockly.ContextMenuItems.blockPasteFromStorage = function() {
 
 
 Blockly.ShortcutItems.blockCopyToStorage = function() {
-  /** @type {!ShortcutRegistry.KeyboardShortcut} */
+  /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
   const copyShortcut = {
     name: 'copy',
     preconditionFn: function(workspace) {
@@ -93,7 +93,7 @@ Blockly.ShortcutItems.blockCopyToStorage = function() {
   Blockly.ShortcutRegistry.registry.addKeyMapping(metaC, copyShortcut.name);
 };
 Blockly.ShortcutItems.blockCutToStorage = function() {
-/** @type {!ShortcutRegistry.KeyboardShortcut} */
+/** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
   const cutShortcut = {
     name: 'cut',
     preconditionFn: function(workspace) {
@@ -131,7 +131,7 @@ Blockly.ShortcutItems.blockCutToStorage = function() {
   Blockly.ShortcutRegistry.registry.addKeyMapping(metaX, cutShortcut.name);
 };
 Blockly.ShortcutItems.blockPasteFromStorage = function() {
-/** @type {!ShortcutRegistry.KeyboardShortcut} */
+/** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
   const pasteShortcut = {
     name: 'paste',
     preconditionFn: function(workspace) {
