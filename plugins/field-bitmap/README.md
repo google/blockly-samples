@@ -1,0 +1,59 @@
+# blockly-field-bitmap [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+
+<!--
+  - TODO: Add field description.
+  -->
+A [Blockly](https://www.npmjs.com/package/blockly) ... field.
+
+## Installation
+
+### Yarn
+```
+yarn add blockly-field-bitmap
+```
+
+### npm
+```
+npm install blockly-field-bitmap --save
+```
+
+## Usage
+
+<!--
+  - TODO: Update usage and rename field.
+  -->
+
+### JavaScript
+```js
+import * as Blockly from 'blockly';
+import {FieldTemplate} from 'blockly-field-bitmap';
+Blockly.Blocks["test_field_template"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("template: ")
+      .appendField(new FieldTemplate(...), "FIELDNAME");
+  }
+};
+```
+### JSON
+
+```js
+import * as Blockly from 'blockly';
+import 'blockly-field-bitmap';
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "test_field_template",
+        "message0": "template: %1",
+        "args0": [
+            {
+                "type": "field_template",
+                "name": "FIELDNAME",
+                "value": ...
+            }
+        ]
+    }]);
+```
+
+## License
+
+Apache 2.0
