@@ -10,4 +10,4 @@
  */
 import {doRenames} from './rename.js';
 
-doRenames();
+doRenames('0.0.0', '100.0.0', './*');
