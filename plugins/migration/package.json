@@ -1,5 +1,5 @@
 {
-  "name": "@blockly/migration",
+  "name": "@blockly/migrate",
   "version": "1.0.0",
   "description": "A collection of tools that help with migrating apps using Blockly to new versions of BLockly.",
   "bin": "./bin/migrate.js",

@@ -1,46 +1,21 @@
-# blockly-plugin-migration [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/migrate [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
   -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A collection of tools that help with migrating apps using [Blockly](https://www.npmjs.com/package/blockly) to new versions of BLockly.
 
-## Installation
+## Example Usage
 
-### Yarn
-```
-yarn add blockly-plugin-migration
-```
+TODO: Update example usage.
 
-### npm
 ```
-npm install blockly-plugin-migration --save
+npx @blockly/migrate
 ```
 
-## Usage
+Use `--help` option for more info.
 
-<!--
-  - TODO: Update usage.
-  -->
-```js
-import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-migration';
-
-// Inject Blockly.
-const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: toolboxCategories,
-});
-
-// Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
 ```
-
-## API
-
-<!--
-  - TODO: describe the API.
-  -->
+npx @blockly/migrate --help
+```
 
 ## License
 Apache 2.0
