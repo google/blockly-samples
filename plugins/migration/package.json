@@ -5,7 +5,7 @@
   "bin": "./bin/migrate.js",
   "author": "Blockly Team",
   "scripts": {
-    "test": "blockly-scripts test"
+    "test": "mocha --ui tdd"
   },
   "keywords": [
     "blockly",
@@ -38,5 +38,9 @@
   "engines": {
     "node": ">=8.17.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^9.2.1"
+  }
 }
