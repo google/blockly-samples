@@ -1,7 +1,6 @@
 # @blockly/migrate [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-  -->
-A collection of tools that help with migrating apps using [Blockly](https://www.npmjs.com/package/blockly) to new versions of BLockly.
+A collection of tools that help with migrating apps using [Blockly](https://www.npmjs.com/package/blockly) to new versions of Blockly.
 
 ## Example Usage
 
