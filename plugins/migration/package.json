@@ -25,7 +25,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "json5": "^2.2.0"
+    "json5": "^2.2.0",
+    "node-fetch": "^3.2.2"
   },
   "publishConfig": {
     "access": "public",
@@ -36,5 +37,6 @@
   },
   "engines": {
     "node": ">=8.17.0"
-  }
+  },
+  "type": "module"
 }
