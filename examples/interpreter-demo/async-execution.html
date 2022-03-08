@@ -217,7 +217,7 @@
           // Begin execution
           highlightPause = false;
           myInterpreter = new Interpreter(latestCode, initApi);
-          function runner(args) {
+          function runner() {
             if (myInterpreter) {
               var hasMore = myInterpreter.run();
               if (hasMore) {
