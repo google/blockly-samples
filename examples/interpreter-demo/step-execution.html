@@ -142,6 +142,8 @@
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
          toolbox: document.getElementById('toolbox')});
+    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+    Blockly.JavaScript.addReservedWords('highlightBlock');
     Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
                                demoWorkspace);
 
@@ -175,7 +177,6 @@
     }
 
     var highlightPause = false;
-    var latestCode = '';
 
     function highlightBlock(id) {
       demoWorkspace.highlightBlock(id);
@@ -189,14 +190,7 @@
       if (clearOutput) {
         outputArea.value = 'Program output:\n=================';
       }
-    }
-
-    function generateCodeAndLoadIntoInterpreter() {
-      // Generate JavaScript code and parse it.
-      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-      Blockly.JavaScript.addReservedWords('highlightBlock');
-      latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-      resetStepUi(true);
+      myInterpreter = null;
     }
 
     function stepCode() {
@@ -204,6 +198,7 @@
         // First statement of this code.
         // Clear the program output.
         resetStepUi(true);
+        var latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
         myInterpreter = new Interpreter(latestCode, initApi);
 
         // And then show generated code in an alert.
@@ -225,7 +220,6 @@
             // Program complete, no more code to execute.
             outputArea.value += '\n\n<< Program complete >>';
 
-            myInterpreter = null;
             resetStepUi(false);
 
             // Cool down, to discourage accidentally restarting the program.
@@ -242,12 +236,10 @@
       } while (hasMoreCode && !highlightPause);
     }
 
-    // Load the interpreter now, and upon future changes.
-    generateCodeAndLoadIntoInterpreter();
     demoWorkspace.addChangeListener(function(event) {
       if (!event.isUiEvent) {
-        // Something changed. Parser needs to be reloaded.
-        generateCodeAndLoadIntoInterpreter();
+        // Something changed.  Interpreter needs to be reloaded.
+        resetStepUi(true);
       }
     });
   </script>

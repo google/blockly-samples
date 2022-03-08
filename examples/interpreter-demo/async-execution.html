@@ -140,6 +140,8 @@
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
          toolbox: document.getElementById('toolbox')});
+    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+    Blockly.JavaScript.addReservedWords('highlightBlock');
     Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
                                demoWorkspace);
 
@@ -149,7 +151,7 @@
     var outputArea = document.getElementById('output');
     var runButton = document.getElementById('runButton');
     var myInterpreter = null;
-    var runner;
+    var runnerPid = 0;
 
     function initApi(interpreter, globalObject) {
       // Add an API function for the alert() block, generated for "text_print" blocks.
@@ -180,7 +182,6 @@
     }
 
     var highlightPause = false;
-    var latestCode = '';
 
     function highlightBlock(id) {
       demoWorkspace.highlightBlock(id);
@@ -188,6 +189,7 @@
     }
 
     function resetStepUi(clearOutput) {
+      clearTimeout(runnerPid);
       demoWorkspace.highlightBlock(null);
       highlightPause = false;
       runButton.disabled = '';
@@ -195,23 +197,7 @@
       if (clearOutput) {
         outputArea.value = 'Program output:\n=================';
       }
-    }
-
-    function generateCodeAndLoadIntoInterpreter() {
-      // Generate JavaScript code and parse it.
-      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-      Blockly.JavaScript.addReservedWords('highlightBlock');
-      latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-
-      resetStepUi(true);
-    }
-
-    function resetInterpreter() {
       myInterpreter = null;
-      if (runner) {
-        clearTimeout(runner);
-        runner = null;
-      }
     }
 
     function runCode() {
@@ -219,6 +205,7 @@
         // First statement of this code.
         // Clear the program output.
         resetStepUi(true);
+        var latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
         runButton.disabled = 'disabled';
 
         // And then show generated code in an alert.
@@ -230,34 +217,30 @@
           // Begin execution
           highlightPause = false;
           myInterpreter = new Interpreter(latestCode, initApi);
-          runner = function() {
+          function runner(args) {
             if (myInterpreter) {
               var hasMore = myInterpreter.run();
               if (hasMore) {
                 // Execution is currently blocked by some async call.
                 // Try again later.
-                setTimeout(runner, 10);
+                runnerPid = setTimeout(runner, 10);
               } else {
                 // Program is complete.
                 outputArea.value += '\n\n<< Program complete >>';
-                resetInterpreter();
                 resetStepUi(false);
               }
             }
-          };
+          }
           runner();
         }, 1);
         return;
       }
     }
 
-    // Load the interpreter now, and upon future changes.
-    generateCodeAndLoadIntoInterpreter();
     demoWorkspace.addChangeListener(function(event) {
       if (!event.isUiEvent) {
-        // Something changed. Parser needs to be reloaded.
-        resetInterpreter();
-        generateCodeAndLoadIntoInterpreter();
+        // Something changed.  Interpreter needs to be reloaded.
+        resetStepUi(true);
       }
     });
   </script>
