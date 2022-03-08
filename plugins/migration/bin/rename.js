@@ -47,10 +47,11 @@ async function getDatabase() {
  * @param {string} currVersion The version to migrate from.
  * @param {string} newVersion The version to migrate to.
  * @param {!Array<string>} strings The strings to apply the renamings in.
+ * @return {!Array<string>} The strings with renamings applied.
  */
 export function doRenamings(database, currVersion, newVersion, strings) {
   const renamings = calculateRenamings(database, currVersion, newVersion);
-  for (const str of strings) applyRenamings(renamings, str);
+  return strings.map((str) => applyRenamings(renamings, str));
 }
 
 /**
