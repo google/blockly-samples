@@ -1,4 +1,4 @@
-# blockly-plugin-my-plugin [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-copy-by-storage [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 <!--
   - TODO: Edit plugin description.
@@ -9,12 +9,12 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
 
 ### Yarn
 ```
-yarn add blockly-plugin-my-plugin
+yarn add @blockly/plugin-copy-by-storage
 ```
 
 ### npm
 ```
-npm install blockly-plugin-my-plugin --save
+npm install @blockly/plugin-copy-by-storage --save
 ```
 
 ## Usage
@@ -24,7 +24,7 @@ npm install blockly-plugin-my-plugin --save
   -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-my-plugin';
+import {Plugin} from '@blockly/plugin-copy-by-storage';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {

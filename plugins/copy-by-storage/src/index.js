@@ -1,4 +1,4 @@
-Blockly.ContextMenuItems.blockCopyToStorage = function() {
+const blockCopyToStorageContextMenu = function() {
   /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
   const copyToStorageOption = {
     displayText: function() {
@@ -13,9 +13,9 @@ Blockly.ContextMenuItems.blockCopyToStorage = function() {
     },
     callback: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-      const blockDom = Blockly.Xml.blockToDomWithXY(scope.block);
-      Blockly.Xml.deleteNext(blockDom);
-      const blockText = Blockly.Xml.domToText(blockDom);
+      const json = Blockly.serialization.blocks.save(
+          scope.block, {addCoordinates: true, addNextBlocks: false});
+      const blockText = JSON.stringify(json);
       localStorage.setItem('blocklyStash', blockText);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
@@ -24,7 +24,7 @@ Blockly.ContextMenuItems.blockCopyToStorage = function() {
   };
   Blockly.ContextMenuRegistry.registry.register(copyToStorageOption);
 };
-Blockly.ContextMenuItems.blockPasteFromStorage = function() {
+const blockPasteFromStorageContextMenu = function() {
   /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
   const pasteFromStorageOption = {
     displayText: function() {
@@ -43,8 +43,8 @@ Blockly.ContextMenuItems.blockPasteFromStorage = function() {
     callback: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
       const blockText = localStorage.getItem('blocklyStash');
-      const blockDom = Blockly.Xml.textToDom(blockText);
-      Blockly.Xml.domToBlock(blockDom, scope.workspace);
+      const json = JSON.parse(blockText);
+      Blockly.serialization.blocks.append(json, scope.workspace);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     id: 'blockPasteFromStorage',
@@ -54,7 +54,7 @@ Blockly.ContextMenuItems.blockPasteFromStorage = function() {
 };
 
 
-Blockly.ShortcutItems.blockCopyToStorage = function() {
+const blockCopyToStorageShortcut = function() {
   /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
   const copyShortcut = {
     name: 'copy',
@@ -69,9 +69,9 @@ Blockly.ShortcutItems.blockCopyToStorage = function() {
       // Prevent the default copy behavior, which may beep or otherwise indicate
       // an error due to the lack of a selection.
       e.preventDefault();
-      const blockDom = Blockly.Xml.blockToDomWithXY(Blockly.selected);
-      Blockly.Xml.deleteNext(blockDom);
-      const blockText = Blockly.Xml.domToText(blockDom);
+      const json = Blockly.serialization.blocks.save(
+          Blockly.selected, {addCoordinates: true, addNextBlocks: false});
+      const blockText = JSON.stringify(json);
       localStorage.setItem('blocklyStash', blockText);
       return true;
     },
@@ -91,7 +91,7 @@ Blockly.ShortcutItems.blockCopyToStorage = function() {
       Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.META]);
   Blockly.ShortcutRegistry.registry.addKeyMapping(metaC, copyShortcut.name);
 };
-Blockly.ShortcutItems.blockCutToStorage = function() {
+const blockCutToStorageShortcut = function() {
 /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
   const cutShortcut = {
     name: 'cut',
@@ -107,9 +107,9 @@ Blockly.ShortcutItems.blockCutToStorage = function() {
       // Prevent the default copy behavior, which may beep or otherwise indicate
       // an error due to the lack of a selection.
       e.preventDefault();
-      const blockDom = Blockly.Xml.blockToDomWithXY(Blockly.selected);
-      Blockly.Xml.deleteNext(blockDom);
-      const blockText = Blockly.Xml.domToText(blockDom);
+      const json = Blockly.serialization.blocks.save(
+          Blockly.selected, {addCoordinates: true, addNextBlocks: false});
+      const blockText = JSON.stringify(json);
       localStorage.setItem('blocklyStash', blockText);
       Blockly.deleteBlock(Blockly.selected);
       return true;
@@ -129,7 +129,7 @@ Blockly.ShortcutItems.blockCutToStorage = function() {
       Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.META]);
   Blockly.ShortcutRegistry.registry.addKeyMapping(metaX, cutShortcut.name);
 };
-Blockly.ShortcutItems.blockPasteFromStorage = function() {
+const blockPasteFromStorageShortcut = function() {
 /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
   const pasteShortcut = {
     name: 'paste',
@@ -144,8 +144,8 @@ Blockly.ShortcutItems.blockPasteFromStorage = function() {
       // an error due to the lack of a selection.
       e.preventDefault();
       const blockText = localStorage.getItem('blocklyStash');
-      const blockDom = Blockly.Xml.textToDom(blockText);
-      Blockly.Xml.domToBlock(blockDom, workspace);
+      const json = JSON.parse(blockText);
+      Blockly.serialization.blocks.append(json, workspace);
       return true;
     },
   };
@@ -177,8 +177,8 @@ export function init(
     contextMenu = true, shortcut = true, unregisterDuplicate = true) {
   if (contextMenu) {
     // Register the menus
-    Blockly.ContextMenuItems.blockCopyToStorage();
-    Blockly.ContextMenuItems.blockPasteFromStorage();
+    blockCopyToStorageContextMenu();
+    blockPasteFromStorageContextMenu();
   }
 
   if (shortcut) {
@@ -190,9 +190,9 @@ export function init(
     Blockly.ShortcutRegistry.registry.unregister(
         Blockly.ShortcutItems.names.PASTE);
     // Register the KeyboardShortcuts
-    Blockly.ShortcutItems.blockCopyToStorage();
-    Blockly.ShortcutItems.blockCutToStorage();
-    Blockly.ShortcutItems.blockPasteFromStorage();
+    blockCopyToStorageShortcut();
+    blockCutToStorageShortcut();
+    blockPasteFromStorageShortcut();
   }
 
   if (unregisterDuplicate) {

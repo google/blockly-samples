@@ -1,5 +1,5 @@
 {
-  "name": "plugin-copy-by-storage",
+  "name": "@blockly/plugin-copy-by-storage",
   "version": "1.0.0",
   "description": "Allows you to copy blocks with cross-tab.",
   "scripts": {
@@ -27,7 +27,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins\\copy-by-storage"
+    "directory": "plugins/copy-by-storage"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -41,12 +41,15 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.14",
     "@blockly/dev-tools": "^3.0.7",
-    "blockly": "^6.20210701.0"
+    "blockly": "^7.20211209.4"
   },
   "peerDependencies": {
-    "blockly": "^6.20210701.0"
+    "blockly": "^7.20211209.4"
   },
-  "publishConfig": {},
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   },
