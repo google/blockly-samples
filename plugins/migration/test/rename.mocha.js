@@ -340,7 +340,7 @@ const bar = module.newNameForExistingExport;`;
             newName: 'newModule',
             exports: {
               'oldExport': {
-                newName: 'newExport',
+                newExport: 'newExport',
               },
             },
           },
@@ -363,7 +363,7 @@ const bar = module.newNameForExistingExport;`;
             newPath: 'oldModule',
             exports: {
               'oldExport': {
-                newName: 'newExport',
+                newExport: 'newExport',
               },
             },
           },

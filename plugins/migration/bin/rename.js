@@ -74,22 +74,24 @@ function calculateRenamings(database, currVersion, newVersion) {
     if (compareVersions.compare(version, newVersion, '>')) break;
 
     for (const module of database[version]) {
-      const oldPath = module.oldPath ?? module.oldName;
-      const newPath = module.newPath ?? module.newName ?? oldPath;
+      const oldModulePath = module.oldPath ?? module.oldName;
+      const newModulePath = module.newPath ?? module.newName ?? oldModulePath;
 
       if (module.exports) {
         for (const [oldExportName, info] of Object.entries(module.exports)) {
-          const oldExportPath = info.oldPath ?? `${oldPath}.${oldExportName}`;
-          const newExportPath =
-              info.newPath ?? `${newPath}.${info.newExport}` ?? oldExportPath;
+          const oldExportPath =
+              info.oldPath ?? `${oldModulePath}.${oldExportName}`;
+          const newExportPath = info.newPath ??
+              (info.newModule ?? newModulePath) + '.' +
+              (info.newExport ?? oldExportName);
           if (newExportPath !== oldExportPath) {
             renamings.push({old: oldExportPath, new: newExportPath});
           }
         }
       }
 
-      if (newPath !== oldPath) {
-        renamings.push({old: oldPath, new: newPath});
+      if (newModulePath !== oldModulePath) {
+        renamings.push({old: oldModulePath, new: newModulePath});
       }
     }
   }
