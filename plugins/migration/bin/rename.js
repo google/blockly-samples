@@ -12,10 +12,10 @@
 'use strict';
 
 import fetch from 'node-fetch';
+import JSON5 from 'json5';
 
 
-const dataBaseLocation = `https://raw.githubusercontent.com/google/blockly/
-develop/scripts/migration/renamings.js`;
+const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/validate-renamings/scripts/migration/renamings.json5`;
 
 /**
  * A temporary top level function that can be called for manual testing.
@@ -33,11 +33,10 @@ export async function tempTopLevel(currVersion, newVersion, files) {
  * Gets the database of renames.
  * @return {!Promise<Object>} The database of renames as an object.
  */
-async function getDatabase() {
-  const response = await fetch(dataBaseLocation);
+export async function getDatabase() {
+  const response = await fetch(DATABASE_URL);
   const body = await response.text();
-  console.log(body);
-  // return JSON5.parse(body);
+  return JSON5.parse(body);
 }
 
 /**

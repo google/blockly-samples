@@ -9,10 +9,21 @@
  */
 
 import {assert} from 'chai';
-import {doRenamings} from '../bin/rename.js';
+import {doRenamings, getDatabase} from '../bin/rename.js';
 
 
 suite('Rename', function() {
+  suite('Database', function() {
+    test('getDatabase retrieves renamings.json5', async function() {
+      const database = await getDatabase();
+
+      // Sanity check example entry.
+      assert.isObject(database);
+      assert.isTrue('0.0.0' in database);
+      assert.isArray(database['0.0.0']);
+    });
+  });
+
   suite('Exports', function() {
     test('exports without new paths are renamed to the new export', function() {
       const database = {
