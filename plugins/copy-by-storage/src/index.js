@@ -1,4 +1,3 @@
-Blockly.copyByStorage = {};
 Blockly.ContextMenuItems.blockCopyToStorage = function() {
   /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
   const copyToStorageOption = {
@@ -17,7 +16,7 @@ Blockly.ContextMenuItems.blockCopyToStorage = function() {
       const blockDom = Blockly.Xml.blockToDomWithXY(scope.block);
       Blockly.Xml.deleteNext(blockDom);
       const blockText = Blockly.Xml.domToText(blockDom);
-      Blockly.copyByStorage.__Storage.setItem('blocklyStash', blockText);
+      localStorage.setItem('blocklyStash', blockText);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     id: 'blockCopyToStorage',
@@ -36,14 +35,14 @@ Blockly.ContextMenuItems.blockPasteFromStorage = function() {
     },
     preconditionFn: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-      if (Blockly.copyByStorage.__Storage.getItem('blocklyStash')) {
+      if (localStorage.getItem('blocklyStash')) {
         return 'enabled';
       }
       return 'disabled';
     },
     callback: function(
         /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-      const blockText = Blockly.copyByStorage.__Storage.getItem('blocklyStash');
+      const blockText = localStorage.getItem('blocklyStash');
       const blockDom = Blockly.Xml.textToDom(blockText);
       Blockly.Xml.domToBlock(blockDom, scope.workspace);
     },
@@ -73,7 +72,7 @@ Blockly.ShortcutItems.blockCopyToStorage = function() {
       const blockDom = Blockly.Xml.blockToDomWithXY(Blockly.selected);
       Blockly.Xml.deleteNext(blockDom);
       const blockText = Blockly.Xml.domToText(blockDom);
-      Blockly.copyByStorage.__Storage.setItem('blocklyStash', blockText);
+      localStorage.setItem('blocklyStash', blockText);
       return true;
     },
   };
@@ -111,7 +110,7 @@ Blockly.ShortcutItems.blockCutToStorage = function() {
       const blockDom = Blockly.Xml.blockToDomWithXY(Blockly.selected);
       Blockly.Xml.deleteNext(blockDom);
       const blockText = Blockly.Xml.domToText(blockDom);
-      Blockly.copyByStorage.__Storage.setItem('blocklyStash', blockText);
+      localStorage.setItem('blocklyStash', blockText);
       Blockly.deleteBlock(Blockly.selected);
       return true;
     },
@@ -135,7 +134,7 @@ Blockly.ShortcutItems.blockPasteFromStorage = function() {
   const pasteShortcut = {
     name: 'paste',
     preconditionFn: function(workspace) {
-      if (!Blockly.copyByStorage.__Storage.getItem('blocklyStash')) {
+      if (!localStorage.getItem('blocklyStash')) {
         return 'disabled';
       }
       return !workspace.options.readOnly && !Blockly.Gesture.inProgress();
@@ -144,7 +143,7 @@ Blockly.ShortcutItems.blockPasteFromStorage = function() {
       // Prevent the default copy behavior, which may beep or otherwise indicate
       // an error due to the lack of a selection.
       e.preventDefault();
-      const blockText = Blockly.copyByStorage.__Storage.getItem('blocklyStash');
+      const blockText = localStorage.getItem('blocklyStash');
       const blockDom = Blockly.Xml.textToDom(blockText);
       Blockly.Xml.domToBlock(blockDom, workspace);
       return true;
@@ -174,11 +173,8 @@ Blockly.ShortcutItems.blockPasteFromStorage = function() {
  * @param {boolean} unregisterDuplicate
  * Unregister the context menu duplication command
  */
-Blockly.copyByStorage.init = function(
+export function init(
     contextMenu = true, shortcut = true, unregisterDuplicate = true) {
-  // Use localStorage
-  Blockly.copyByStorage.__Storage = localStorage;
-
   if (contextMenu) {
     // Register the menus
     Blockly.ContextMenuItems.blockCopyToStorage();
@@ -203,4 +199,4 @@ Blockly.copyByStorage.init = function(
     // Unregister the context menu duplication command
     Blockly.ContextMenuRegistry.registry.unregister('blockDuplicate');
   }
-};
+}
