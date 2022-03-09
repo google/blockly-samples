@@ -13,6 +13,98 @@ import {doRenamings, getDatabase} from '../bin/rename.js';
 
 
 suite('Rename', function() {
+  // Integration-ish test meant to test multiple things.
+  test('a javascript program with multiple renames works correctly',
+      function() {
+        const database = {
+          '1.0.0': [
+            {
+              oldName: 'Blockly.moduleA',
+              newName: 'Blockly.newModuleA',
+              exports: {
+                'exportA': {
+                  newExport: 'newExportA',
+                },
+                'exportB': {
+                  newExport: 'newExportB',
+                },
+                'exportC': {
+                  newExport: 'someOtherName',
+                  newPath: 'Blockly.moduleA.exportC',
+                },
+              },
+            },
+            {
+              oldName: 'Blockly.moduleB',
+              newName: 'Blockly.newModuleB',
+              newPath: 'Blockly.moduleB',
+            },
+            {
+              oldName: 'Blockly.moduleC',
+              newExport: 'ClassC',
+            },
+            {
+              oldName: 'Blockly.moduleD',
+              newExport: 'ClassD',
+            },
+          ],
+        };
+        const oldString = `
+import Blockly from 'blockly';
+
+class SubClass extends Blockly.moduleC {
+  constructor() {
+    this.propertyA = Blockly.moduleA.exportA();
+    Blockly.moduleA.exportB(null);
+    this.propertyC = Blockly.moduleA.exportC;
+  }
+
+  methodA() {
+    // A comment containing Blockly.moduleA.exportA with some following.
+    methodB(Blockly.moduleB.suffix(), this.propertyA);
+  }
+
+  /**
+   * @param {number}
+   * @param {Blockly.moduleA.exportC}
+   * @return {Blockly.moduleA.exportA}
+   */
+  methodB(paramA, paramB) {
+    const thingA = /** @type {Blockly.moduleD} */ (new Blockly.moduleE());
+    return thingA.someMethod(paramA, paramB);
+  }
+};`;
+
+        const newStrings = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
+
+        const expectedString = `
+import Blockly from 'blockly';
+
+class SubClass extends Blockly.moduleC.ClassC {
+  constructor() {
+    this.propertyA = Blockly.newModuleA.newExportA();
+    Blockly.newModuleA.newExportB = something;
+    this.propertyC = Blockly.moduleA.exportC;
+  }
+
+  methodA() {
+    // A comment containing Blockly.newModuleA.newExportA with some following.
+    methodB(Blockly.moduleB.suffix(), this.propertyA);
+  }
+
+  /**
+   * @param {number}
+   * @param {Blockly.moduleA.exportC}
+   * @return {Blockly.newModuleA.newExportA}
+   */
+  methodB(paramA, paramB) {
+    const thing = /** @type {Blockly.moduleD.ClassD} */ (new Blockly.moduleE());
+    return thing.someMethod(paramA, paramB);
+  }
+};`;
+        assert.deepEqual(newStrings, [expectedString]);
+      });
+
   suite('Database', function() {
     test('getDatabase retrieves renamings.json5', async function() {
       const database = await getDatabase();
@@ -280,6 +372,68 @@ suite('Rename', function() {
 
       assert.deepEqual(newStrings, ['moduleC.exportName']);
     });
+
+    test('exports which are renamed in consecutive versions get the most ' +
+        'recent rename', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'moduleA',
+            exports: {
+              'exportA1': {
+                newExport: 'exportA2',
+              },
+            },
+          },
+        ],
+        '2.0.0': [
+          {
+            oldName: 'moduleA',
+            exports: {
+              'exportA2': {
+                newExport: 'exportA3',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'moduleA.exportA1';
+
+      const newStrings = doRenamings(database, '0.0.0', '2.0.0', [oldString]);
+
+      assert.deepEqual(newStrings, ['moduleA.exportA3']);
+    });
+
+    test('exports which are renamed and then reexported at their old path ' +
+        'in a newer version are not renamed', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'moduleA',
+            exports: {
+              'exportA1': {
+                newExport: 'exportA2',
+              },
+            },
+          },
+        ],
+        '2.0.0': [
+          {
+            oldName: 'moduleA',
+            exports: {
+              'exportA2': {
+                newPath: 'moduleA.exportA1',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'moduleA.exportA1';
+
+      const newStrings = doRenamings(database, '0.0.0', '2.0.0', [oldString]);
+
+      assert.deepEqual(newStrings, ['moduleA.exportA1']);
+    });
   });
 
   suite('Modules', function() {
@@ -423,6 +577,52 @@ suite('Rename', function() {
 
           assert.deepEqual(newStrings, ['newModuleName.newExport']);
         });
+
+    test('modules which are renamed in consecutive versions get the most ' +
+        'recent rename', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'moduleA1',
+            newName: 'moduleA2',
+          },
+        ],
+        '2.0.0': [
+          {
+            oldName: 'moduleA2',
+            newName: 'moduleA3',
+          },
+        ],
+      };
+      const oldString = 'moduleA1';
+
+      const newStrings = doRenamings(database, '0.0.0', '2.0.0', [oldString]);
+
+      assert.deepEqual(newStrings, ['moduleA3']);
+    });
+
+    test('modules which are renamed and then reexported at their old path ' +
+        'in a newer version are not renamed', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'moduleA1',
+            newName: 'moduleA2',
+          },
+        ],
+        '2.0.0': [
+          {
+            oldName: 'moduleA2',
+            newPath: 'moduleA1',
+          },
+        ],
+      };
+      const oldString = 'moduleA1';
+
+      const newStrings = doRenamings(database, '0.0.0', '2.0.0', [oldString]);
+
+      assert.deepEqual(newStrings, ['moduleA1']);
+    });
   });
 
   suite('Versions', function() {
