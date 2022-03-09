@@ -13,6 +13,7 @@
 
 import fetch from 'node-fetch';
 import JSON5 from 'json5';
+import compareVersions from 'compare-versions';
 
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/validate-renamings/scripts/migration/renamings.json5`;
@@ -62,7 +63,37 @@ export function doRenamings(database, currVersion, newVersion, strings) {
  * @return {*} The collection of renamings to perform.
  */
 function calculateRenamings(database, currVersion, newVersion) {
-  return null;
+  const renamings = [];
+
+  // Sort versions (case not already sorted), as we want to apply
+  // renamings in order.
+  const versions = Object.keys(database).sort(compareVersions);
+  for (const version of versions) {
+    // Only process versions in the range (currVersion, newVersion].
+    if (compareVersions.compare(version, currVersion, '<=')) continue;
+    if (compareVersions.compare(version, newVersion, '>')) break;
+
+    for (const module of database[version]) {
+      const oldPath = module.oldPath ?? module.oldName;
+      const newPath = module.newPath ?? module.newName ?? oldPath;
+
+      if (module.exports) {
+        for (const [oldExportName, info] of Object.entries(module.exports)) {
+          const oldExportPath = info.oldPath ?? `${oldPath}.${oldExportName}`;
+          const newExportPath =
+              info.newPath ?? `${newPath}.${info.newExport}` ?? oldExportPath;
+          if (newExportPath !== oldExportPath) {
+            renamings.push({old: oldExportPath, new: newExportPath});
+          }
+        }
+      }
+
+      if (newPath !== oldPath) {
+        renamings.push({old: oldPath, new: newPath});
+      }
+    }
+  }
+  return renamings;
 }
 
 /**
@@ -72,5 +103,11 @@ function calculateRenamings(database, currVersion, newVersion) {
  * @return {string} The file with renamings applied.
  */
 function applyRenamings(renamings, str) {
-  return '';
+  // Quick hack to test calculateRenamings.
+  for (const entry of renamings) {
+    if (str.startsWith(entry.old)) {
+      return entry.new + str.slice(entry.old.length);
+    }
+  }
+  return str;
 }
