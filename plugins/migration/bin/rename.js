@@ -16,7 +16,7 @@ import JSON5 from 'json5';
 import compareVersions from 'compare-versions';
 
 
-const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/validate-renamings/scripts/migration/renamings.json5`;
+const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
 /**
  * A temporary top level function that can be called for manual testing.
