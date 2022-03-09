@@ -279,6 +279,35 @@ class SubClass extends Blockly.moduleC.ClassC {
       assert.deepEqual(newStrings, ['module.newExportName.suffix']);
     });
 
+    test('properties on renamed exports which are moved to new properties ' +
+        'are renamed properly', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'export.property': {
+                newExport: 'newExport',
+              },
+              'export': {
+                newExport: 'newNameForExistingExport',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = `
+const foo = module.export.property;
+const bar = module.export;`;
+
+      const newStrings = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
+
+      const expectedString = `
+const foo = module.newExport;
+const bar = module.newNameForExistingExport;`;
+      assert.deepEqual(newStrings, [expectedString]);
+    });
+
     test('exports with get methods are changed to use get methods', function() {
       const database = {
         '1.0.0': [
@@ -299,8 +328,52 @@ class SubClass extends Blockly.moduleC.ClassC {
       assert.deepEqual(newStrings, ['const foo = module.getExport();']);
     });
 
-    test('exports with set methods trigger console logs', function() {
+    test.skip('exports with set methods trigger console logs', function() {
       // TODO: Implement this and then complete test.
+    });
+
+    test('renamed exports in renamed modules get properly renamed', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'oldModule',
+            newName: 'newModule',
+            exports: {
+              'oldExport': {
+                newName: 'newExport',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'oldModule.oldExport';
+
+      const newStrings = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
+
+      assert.deepEqual(newStrings, ['newModule.newExport']);
+    });
+
+    test('renamed exports on renamed modules with backwards compatible new ' +
+        'paths do not have their modules renamed', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'oldModule',
+            newName: 'newModule',
+            newPath: 'oldModule',
+            exports: {
+              'oldExport': {
+                newName: 'newExport',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'oldModule.oldExport';
+
+      const newStrings = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
+
+      assert.deepEqual(newStrings, ['oldModule.newExport']);
     });
 
     test('exports with new modules are "moved" to new modules', function() {
