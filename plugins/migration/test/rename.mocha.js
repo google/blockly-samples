@@ -594,7 +594,7 @@ const bar = module.newNameForExistingExport;`;
       };
       const oldString = 'oldModuleName.suffix';
 
-      const newStrings = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
+      const newString = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
 
       assert.deepEqual(newString, 'newModuleName.suffix');
     });
