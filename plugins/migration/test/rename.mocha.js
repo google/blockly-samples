@@ -830,5 +830,22 @@ const bar = module.newNameForExistingExport;`;
 
           assert.deepEqual(newString, 'module.oldExportName');
         });
+
+    test('the develop version is ignored', function() {
+      const database = {
+        'develop': [
+          {
+            oldName: 'oldModule',
+            newName: 'newModule',
+          },
+        ],
+      };
+      const oldString = 'oldModule';
+
+      const newString =
+          (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
+
+      assert.deepEqual(newString, 'oldModule');
+    });
   });
 });
