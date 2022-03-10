@@ -11,12 +11,18 @@
  */
 'use strict';
 
+import compareVersions from 'compare-versions';
+import {createAndAddSubCommand} from './command.js';
 import fetch from 'node-fetch';
 import JSON5 from 'json5';
-import compareVersions from 'compare-versions';
 
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
+
+createAndAddSubCommand('rename', '>=5')
+    .action(function() {
+      console.log('args:', this.processedArgs);
+    });
 
 /**
  * A temporary top level function that can be called for manual testing.
