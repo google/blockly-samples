@@ -14,14 +14,37 @@
 import compareVersions from 'compare-versions';
 import {createAndAddSubCommand} from './command.js';
 import fetch from 'node-fetch';
+import glob from 'glob';
+import {readFile, writeFile} from 'fs';
 import JSON5 from 'json5';
-
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
 createAndAddSubCommand('rename', '>=5')
-    .action(function() {
-      console.log('args:', this.processedArgs);
+    .action(async function() {
+      const fromVersion = this.processedArgs[0];
+      const toVersion = this.processedArgs[1];
+      const fileGlobs = this.processedArgs[2];
+      const fileNames = fileGlobs.flatMap((fileGlob) =>
+        glob.sync(fileGlob, {nodir: true, nonull: false}));
+
+      if (!fileNames.length) {
+        console.log(`No matching files found for ${fileGlobs}. ` +
+            `Aborting rename.`);
+        return;
+      }
+
+      const renamer = new Renamer(await getDatabase(), fromVersion, toVersion);
+      fileNames.forEach((name) => {
+        readFile(name, 'utf8', (err, contents) => {
+          if (err) throw err;
+          const newContents = renamer.rename(contents);
+          writeFile(name, newContents, (err) => {
+            if (err) throw err;
+            console.log(`Migrated renamings in ${name}`);
+          });
+        });
+      });
     });
 
 /**

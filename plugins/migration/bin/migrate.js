@@ -9,5 +9,8 @@
  * @fileoverview A script for helping to migrate between versions of Blockly.
  */
 import {tempTopLevel} from './rename.js';
+import {parseAndRunMigrations} from './command.js';
+
+// parseAndRunMigrations();
 
 tempTopLevel('0.0.0', '100.0.0', './*');

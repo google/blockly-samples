@@ -55,5 +55,6 @@ export function createAndAddSubCommand(name, _targetVersionRange) {
  * Runs the root command with the current command line arguments and options.
  */
 export function parseAndRunMigrations() {
-  ROOT_COMMAND.parse();
+  // Use parseAsync for async commands like rename (which fetches a database).
+  ROOT_COMMAND.parseAsync();
 }
