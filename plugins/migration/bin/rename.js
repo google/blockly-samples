@@ -157,15 +157,11 @@ class VersionRenamer {
           const newExportPath = info.newPath ??
               (info.newModule ?? newModulePath) + '.' +
               (info.newExport ?? oldExportName);
-          if (newExportPath !== oldExportPath) {
-            this.renamings_.push({old: oldExportPath, new: newExportPath});
-          }
+          this.renamings_.push({old: oldExportPath, new: newExportPath});
         }
       }
 
-      if (newModulePath !== oldModulePath) {
-        this.renamings_.push({old: oldModulePath, new: newModulePath});
-      }
+      this.renamings_.push({old: oldModulePath, new: newModulePath});
     }
   }
 
