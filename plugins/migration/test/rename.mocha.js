@@ -596,7 +596,8 @@ const bar = module.newNameForExistingExport;`;
       };
       const oldString = 'oldModuleName.suffix';
 
-      const newString = doRenamings(database, '0.0.0', '1.0.0', [oldString]);
+      const newString =
+          (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
       assert.deepEqual(newString, 'newModuleName.suffix');
     });
@@ -724,6 +725,14 @@ const bar = module.newNameForExistingExport;`;
   });
 
   suite('Versions', function() {
+    setup(function() {
+      this.consoleSpy = spy(console, 'log');
+    });
+
+    teardown(function() {
+      this.consoleSpy.restore();
+    });
+
     test('renames below the lower bound of the version range are not applied',
         function() {
           const database = {
@@ -834,65 +843,19 @@ const bar = module.newNameForExistingExport;`;
         });
 
     test('from-version assumes the earliest matching version', function() {
-      const database = {
-        '1.0.0': [
-          {
-            oldName: 'module',
-            exports: {
-              'exportA': {
-                newExport: 'newExportA',
-              },
-            },
-          },
-        ],
-        '1.1.0': [
-          {
-            oldName: 'module',
-            exports: {
-              'exportB': {
-                newExport: 'newExportB',
-              },
-            },
-          },
-        ],
-      };
-      const consoleSpy = spy(console, 'log');
-
       parseAndRunMigrations(
           ['node', 'migrate', 'rename', '1', '2.0.0', 'no-match']);
 
-      assert.isTrue(consoleSpy.calledWith('Assuming a from-version of 1.0.0'));
+      assert.isTrue(
+          this.consoleSpy.calledWith('Assuming a from-version of 1.0.0'));
     });
 
     test('to-version assumes the latest matching version', function() {
-      const database = {
-        '2.0.0': [
-          {
-            oldName: 'module',
-            exports: {
-              'exportA': {
-                newExport: 'newExportA',
-              },
-            },
-          },
-        ],
-        '2.1.0': [
-          {
-            oldName: 'module',
-            exports: {
-              'exportB': {
-                newExport: 'newExportB',
-              },
-            },
-          },
-        ],
-      };
-      const consoleSpy = spy(console, 'log');
-
       parseAndRunMigrations(
           ['node', 'migrate', 'rename', '1.0.0', '2', 'no-match']);
 
-      assert.isTrue(consoleSpy.calledWith('Assuming a to-version of 2.1.0'));
+      assert.isTrue(
+          this.consoleSpy.calledWith('Assuming a to-version of 2.1.0'));
     });
 
     test('the develop version is ignored', function() {
