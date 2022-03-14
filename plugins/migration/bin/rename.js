@@ -76,11 +76,6 @@ export function doRenamings(database, currVersion, newVersion, strings) {
  * An object which can apply a given set of renamings to the contents
  * of JavaScript files, so as to automatically update developer's code
  * where parts of the Blockly API have been renamed.
- * @param {!Object} database The database of renames.
- * @param {string} currVersion The version to migrate from.
- * @param {string} newVersion The version to migrate to.
- * @param {!Array<string>} strings The strings to apply the renamings in.
- * @return {!Array<string>} The strings with renamings applied.
  */
 export class Renamer {
   /**
@@ -90,7 +85,8 @@ export class Renamer {
    * @param {string} newVersion The version to migrate to.
    */
   constructor(database, currVersion, newVersion) {
-    this.renamings =
+    /** @private @const {!Array<!VersionRenamer>} */
+    this.versionRenamers_ =
         Renamer.calculateRenamings(database, currVersion, newVersion);
   }
 
@@ -100,42 +96,21 @@ export class Renamer {
    * @param {!Object} database The database of renames.
    * @param {string} currVersion The version to migrate from.
    * @param {string} newVersion The version to migrate to.
-   * @return {*} The collection of renamings to perform.
+   * @return {!Array<!VersionRenamer>} The collection of renamings to perform.
    */
   static calculateRenamings(database, currVersion, newVersion) {
-    const renamings = [];
-
     // Sort versions (case not already sorted), as we want to apply
     // renamings in order.
     const versions = Object.keys(database).sort(compareVersions);
+    const renamers /** !Array<!VersionRenamer> */ = [];
     for (const version of versions) {
       // Only process versions in the range (currVersion, newVersion].
       if (compareVersions.compare(version, currVersion, '<=')) continue;
       if (compareVersions.compare(version, newVersion, '>')) break;
 
-      for (const module of database[version]) {
-        const oldModulePath = module.oldPath ?? module.oldName;
-        const newModulePath = module.newPath ?? module.newName ?? oldModulePath;
-
-        if (module.exports) {
-          for (const [oldExportName, info] of Object.entries(module.exports)) {
-            const oldExportPath =
-                info.oldPath ?? `${oldModulePath}.${oldExportName}`;
-            const newExportPath = info.newPath ??
-                (info.newModule ?? newModulePath) + '.' +
-                (info.newExport ?? oldExportName);
-            if (newExportPath !== oldExportPath) {
-              renamings.push({old: oldExportPath, new: newExportPath});
-            }
-          }
-        }
-
-        if (newModulePath !== oldModulePath) {
-          renamings.push({old: oldModulePath, new: newModulePath});
-        }
-      }
+      renamers.push(new VersionRenamer(database[version]));
     }
-    return renamings;
+    return renamers;
   }
 
   /**
@@ -146,7 +121,56 @@ export class Renamer {
    */
   rename(str) {
     // Quick hack to test calculateRenamings.
-    for (const entry of this.renamings) {
+    for (const versionRenamer of this.versionRenamers_) {
+      str = versionRenamer.rename(str);
+    }
+    return str;
+  }
+}
+
+/**
+ * An object which can apply a given set of renamings for a single
+ * Blockly version to the individual dotted-identifier paths.
+ */
+class VersionRenamer {
+  /**
+   * @param {!Object} entry The database entry for a single version.
+   */
+  constructor(entry) {
+    /** @private @const {!Array<{old: string, new: string}>} */ 
+    this.renamings_ = [];
+
+    for (const module of entry) {
+      const oldModulePath = module.oldPath ?? module.oldName;
+      const newModulePath = module.newPath ?? module.newName ?? oldModulePath;
+
+      if (module.exports) {
+        for (const [oldExportName, info] of Object.entries(module.exports)) {
+          const oldExportPath =
+              info.oldPath ?? `${oldModulePath}.${oldExportName}`;
+          const newExportPath = info.newPath ??
+              (info.newModule ?? newModulePath) + '.' +
+              (info.newExport ?? oldExportName);
+          if (newExportPath !== oldExportPath) {
+            this.renamings_.push({old: oldExportPath, new: newExportPath});
+          }
+        }
+      }
+
+      if (newModulePath !== oldModulePath) {
+        this.renamings_.push({old: oldModulePath, new: newModulePath});
+      }
+    }
+  }
+
+  /**
+   * Applies the renamings directly to a single JavaScript dotted
+   * identifier path (e.g. 'foo.bar.baz')
+   * @param {string} str The string to apply the renamings in.
+   * @return {string} The string after applying any relevant renamings.
+   */
+  rename(str) {
+    for (const entry of this.renamings_) {
       if (str.startsWith(entry.old)) {
         return entry.new + str.slice(entry.old.length);
       }
