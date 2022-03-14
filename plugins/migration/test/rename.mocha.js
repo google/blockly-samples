@@ -72,8 +72,8 @@ class SubClass extends Blockly.moduleC {
    * @return {Blockly.moduleA.exportA}
    */
   methodB(paramA, paramB) {
-    const thingA = /** @type {Blockly.moduleD} */ (new Blockly.moduleE());
-    return thingA.someMethod(paramA, paramB);
+    const thing = /** @type {Blockly.moduleD} */ (new Blockly.moduleE());
+    return thing.someMethod(paramA, paramB);
   }
 };`;
 
@@ -86,7 +86,7 @@ import Blockly from 'blockly';
 class SubClass extends Blockly.moduleC.ClassC {
   constructor() {
     this.propertyA = Blockly.newModuleA.newExportA();
-    Blockly.newModuleA.newExportB = something;
+    Blockly.newModuleA.newExportB(null);
     this.propertyC = Blockly.moduleA.exportC;
   }
 
@@ -534,35 +534,35 @@ const bar = module.newNameForExistingExport;`;
       const database = {
         '1.0.0': [
           {
-            oldName: 'oldModuleName',
-            newName: 'newModuleName',
+            oldName: 'base.oldModuleName',
+            newName: 'base.newModuleName',
           },
         ],
       };
-      const oldString = 'oldModuleName';
+      const oldString = 'base.oldModuleName';
 
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'newModuleName');
+      assert.deepEqual(newString, 'base.newModuleName');
     });
 
     test('modules with new paths are renamed to the new path', function() {
       const database = {
         '1.0.0': [
           {
-            oldName: 'oldModuleName',
-            newName: 'someOtherName',
-            newPath: 'newModuleName',
+            oldName: 'base.oldModuleName',
+            newName: 'base.someOtherName',
+            newPath: 'base.newModuleName',
           },
         ],
       };
-      const oldString = 'oldModuleName';
+      const oldString = 'base.oldModuleName';
 
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'newModuleName');
+      assert.deepEqual(newString, 'base.newModuleName');
     });
 
     test('suffixes on renamed modules without new exports are kept',
@@ -570,17 +570,17 @@ const bar = module.newNameForExistingExport;`;
           const database = {
             '1.0.0': [
               {
-                oldName: 'oldModuleName',
-                newName: 'newModuleName',
+                oldName: 'base.oldModuleName',
+                newName: 'base.newModuleName',
               },
             ],
           };
-          const oldString = 'oldModuleName.suffix';
+          const oldString = 'base.oldModuleName.suffix';
 
           const newString =
               (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-          assert.deepEqual(newString, 'newModuleName.suffix');
+          assert.deepEqual(newString, 'base.newModuleName.suffix');
         });
 
     test('suffixes on renamed modules without new exports but with new paths ' +
@@ -588,18 +588,19 @@ const bar = module.newNameForExistingExport;`;
       const database = {
         '1.0.0': [
           {
-            oldName: 'oldModuleName',
-            newName: 'someOtherName',
-            newPath: 'newModuleName',
+            oldName: 'base.oldModuleName',
+            newName: 'base.someOtherName',
+            newPath: 'base.newModuleName',
           },
         ],
       };
-      const oldString = 'oldModuleName.suffix';
+
+      const oldString = 'base.oldModuleName.suffix';
 
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'newModuleName.suffix');
+      assert.deepEqual(newString, 'base.newModuleName.suffix');
     });
 
     test('modules with new exports and without new paths gain the new export',
@@ -607,17 +608,17 @@ const bar = module.newNameForExistingExport;`;
           const database = {
             '1.0.0': [
               {
-                oldName: 'moduleName',
+                oldName: 'base.moduleName',
                 newExport: 'newExport',
               },
             ],
           };
-          const oldString = 'moduleName';
+          const oldString = 'base.moduleName';
 
           const newString =
               (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-          assert.deepEqual(newString, 'moduleName.newExport');
+          assert.deepEqual(newString, 'base.moduleName.newExport');
         });
 
     test('modules with new exports with new paths are renamed to the new path',
@@ -625,35 +626,35 @@ const bar = module.newNameForExistingExport;`;
           const database = {
             '1.0.0': [
               {
-                oldName: 'moduleName',
+                oldName: 'base.moduleName',
                 newExport: 'someOtherName',
-                newPath: 'newModuleName.newExport',
+                newPath: 'base.newModuleName.newExport',
               },
             ],
           };
-          const oldString = 'moduleName';
+          const oldString = 'base.moduleName';
 
           const newString =
               (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-          assert.deepEqual(newString, 'newModuleName.newExport');
+          assert.deepEqual(newString, 'base.newModuleName.newExport');
         });
 
     test('suffixes on modules with new exports are kept', function() {
       const database = {
         '1.0.0': [
           {
-            oldName: 'moduleName',
+            oldName: 'base.moduleName',
             newExport: 'newExport',
           },
         ],
       };
-      const oldString = 'moduleName.suffix';
+      const oldString = 'base.moduleName.suffix';
 
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'moduleName.newExport.suffix');
+      assert.deepEqual(newString, 'base.moduleName.newExport.suffix');
     });
 
     test('modules with new exports and new names are renamed properly',
@@ -661,18 +662,18 @@ const bar = module.newNameForExistingExport;`;
           const database = {
             '1.0.0': [
               {
-                oldName: 'oldModuleName',
-                newName: 'newModuleName',
+                oldName: 'base.oldModuleName',
+                newName: 'base.newModuleName',
                 newExport: 'newExport',
               },
             ],
           };
-          const oldString = 'oldModuleName';
+          const oldString = 'base.oldModuleName';
 
           const newString =
               (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-          assert.deepEqual(newString, 'newModuleName.newExport');
+          assert.deepEqual(newString, 'base.newModuleName.newExport');
         });
 
     test('modules which are renamed in consecutive versions get the most ' +
@@ -680,23 +681,23 @@ const bar = module.newNameForExistingExport;`;
       const database = {
         '1.0.0': [
           {
-            oldName: 'moduleA1',
-            newName: 'moduleA2',
+            oldName: 'base.moduleA1',
+            newName: 'base.moduleA2',
           },
         ],
         '2.0.0': [
           {
-            oldName: 'moduleA2',
-            newName: 'moduleA3',
+            oldName: 'base.moduleA2',
+            newName: 'base.moduleA3',
           },
         ],
       };
-      const oldString = 'moduleA1';
+      const oldString = 'base.moduleA1';
 
       const newString =
           (new Renamer(database, '0.0.0', '2.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'moduleA3');
+      assert.deepEqual(newString, 'base.moduleA3');
     });
 
     test('modules which are renamed and then reexported at their old path ' +
@@ -704,23 +705,23 @@ const bar = module.newNameForExistingExport;`;
       const database = {
         '1.0.0': [
           {
-            oldName: 'moduleA1',
-            newName: 'moduleA2',
+            oldName: 'base.moduleA1',
+            newName: 'base.moduleA2',
           },
         ],
         '2.0.0': [
           {
-            oldName: 'moduleA2',
-            newPath: 'moduleA1',
+            oldName: 'base.moduleA2',
+            newPath: 'base.moduleA1',
           },
         ],
       };
-      const oldString = 'moduleA1';
+      const oldString = 'base.moduleA1';
 
       const newString =
           (new Renamer(database, '0.0.0', '2.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'moduleA1');
+      assert.deepEqual(newString, 'base.moduleA1');
     });
   });
 
