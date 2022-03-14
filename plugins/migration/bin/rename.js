@@ -20,7 +20,8 @@ import JSON5 from 'json5';
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
-createAndAddSubCommand('rename', '>=5')
+createAndAddSubCommand(
+    'rename', '>=5', 'Perform renamings for breaking changes')
     .action(async function() {
       const fromVersion = this.processedArgs[0];
       const toVersion = this.processedArgs[1];

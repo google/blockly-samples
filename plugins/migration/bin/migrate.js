@@ -9,5 +9,6 @@
  * @fileoverview A script for helping to migrate between versions of Blockly.
  */
 import {parseAndRunMigrations} from './command.js';
+import './rename.js';
 
 parseAndRunMigrations();

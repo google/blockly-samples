@@ -10,6 +10,7 @@
  */
 
 import chalk from 'chalk';
+import semver from 'semver';
 import {Command} from 'commander';
 
 // TODO: Not sure the best way to access the JSON from node.
@@ -20,7 +21,7 @@ const scriptPackageJson = require('../package-lock.json');
 
 const SCRIPT_NAME = scriptPackageJson.name;
 
-export const ROOT_COMMAND = new Command(SCRIPT_NAME)
+const ROOT_COMMAND = new Command(SCRIPT_NAME)
     .version(
         scriptPackageJson.version,
         '-v, --version',
@@ -29,22 +30,71 @@ export const ROOT_COMMAND = new Command(SCRIPT_NAME)
         `${chalk.green('<from-version> <to-version>')} [options] ` +
         `${chalk.green('<file...>')}`);
 
+const HELP_COMMAND = new Command('help')
+    .argument('[version]', 'the version of Blockly to provide info about')
+    .description('display this help, or help for the specific version')
+    .action(function() {
+      if (this.args.length) {
+        showVersionHelp(this.args[0]);
+      } else {
+        ROOT_COMMAND.help();
+      }
+    });
+
+ROOT_COMMAND.addCommand(HELP_COMMAND);
+
+/**
+ * Data about all of the migrations for use in help text.
+ * @type {!Array<{range: string, name: string, description: string}>}
+ */
+const migrations = [];
+
+/**
+ * Logs information about migrations for the given version.
+ * @param {string} version The version to show migrations for.
+ */
+function showVersionHelp(version) {
+  const targetRange = `${version} - ${version}`;
+  if (!semver.validRange(targetRange)) {
+    console.log(`Invalid version: ${version}`);
+    return;
+  }
+
+  const ranges = migrations.map((migration) => migration.range);
+  if (!ranges.some((range) => semver.intersects(range, targetRange))) {
+    console.log(`No migrations found for version ${version}`);
+    return;
+  }
+
+  console.log(`Migrations for version ${version}:`);
+
+  for (const migration of migrations) {
+    if (!semver.intersects(migration.range, targetRange)) continue;
+    console.log(`  ${chalk.blue(migration.name)}, ${migration.description}`);
+  }
+}
+
 /**
  * Creates a command with the basic format expected by the migrate script,
  * and automatically adds it as a subcommand. It is then returned so it can be
  * configured.
  * @param {string} name The name of the subcommand.
- * @param {string} _targetVersionRange The range of target versions of Blockly
+ * @param {string} targetVersionRange The range of target versions of Blockly
  *     this command assists in migrating to.
+ * @param {string} description The description of the new subcommand.
  * @return {!Command} The basic subcommand.
  */
-export function createAndAddSubCommand(name, _targetVersionRange) {
-  // TODO: Use targetVersion to create more informative help text.
+export function createAndAddSubCommand(name, targetVersionRange, description) {
+  const migration = {
+    name: name,
+    description: description,
+    range: targetVersionRange,
+  };
+  migrations.push(migration);
 
   const subCommand = new Command(name)
+      .description(description)
       .argument('<from-version>', 'Blockly version to migrate from')
-      // TODO: Make the to-version optional (default to latest non-beta version
-      //     of Blockly).
       .argument('<to-version>', 'Blockly version to migrate to')
       .argument('<file...>', 'Files to migrate');
   ROOT_COMMAND.addCommand(subCommand);
@@ -55,7 +105,7 @@ export function createAndAddSubCommand(name, _targetVersionRange) {
  * Runs the root command with the current command line arguments and options.
  * @param {!Array<string>=} args The array of string arguments to parse.
  */
-export function parseAndRunMigrations(args = undefined) {
+export async function parseAndRunMigrations(args = undefined) {
   // Use parseAsync for async commands like rename (which fetches a database).
-  ROOT_COMMAND.parseAsync(args);
+  await ROOT_COMMAND.parseAsync(args);
 }
