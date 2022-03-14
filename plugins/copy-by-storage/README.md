@@ -24,7 +24,7 @@ npm install @blockly/plugin-copy-by-storage --save
   -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from '@blockly/plugin-copy-by-storage';
+import {CopyByStorage} from '@blockly/plugin-copy-by-storage';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -32,7 +32,20 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 // Initialize plugin.
-const plugin = new Plugin(workspace);
+const plugin = new CopyByStorage(workspace);
+plugin.init();
+```
+
+or In Browser
+
+```js
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: toolboxCategories,
+});
+
+// Initialize plugin.
+const plugin = new CopyByStorage();
 plugin.init();
 ```
 
