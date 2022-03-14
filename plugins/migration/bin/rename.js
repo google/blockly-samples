@@ -120,11 +120,12 @@ export class Renamer {
    * @return {string} The file with renamings applied.
    */
   rename(str) {
-    // Quick hack to test calculateRenamings.
-    for (const versionRenamer of this.versionRenamers_) {
-      str = versionRenamer.rename(str);
-    }
-    return str;
+    return str.replace(dottedIdentifier, (match) => {
+      for (const versionRenamer of this.versionRenamers_) {
+        match = versionRenamer.rename(match);
+      }
+      return match;
+    });
   }
 }
 
@@ -171,7 +172,7 @@ class VersionRenamer {
    * Applies the renamings directly to a single JavaScript dotted
    * identifier path (e.g. 'foo.bar.baz')
    * @param {string} str The string to apply the renamings in.
-   * @return {string} The string after applying any relevant renamings.
+   * @return {string} The string after applying the most relevant renaming.
    */
   rename(str) {
     for (const entry of this.renamings_) {
@@ -182,3 +183,13 @@ class VersionRenamer {
     return str;
   }
 }
+
+/** 
+ * RegExp matching a dotted identifier path like "foo.bar.baz".  Note
+ * that this only matches such paths containing at least one dot, as
+ * we expect to be looking for string like "Blockly.<something>" and
+ * don't want to try to rename every singe variable and every word
+ * that appears in each comment!
+ */
+const dottedIdentifier =
+      /[A-Za-z$_][A-Za-z0-9$_]*(\.[A-Za-z$_][A-Za-z0-9$_]*)+/g;
