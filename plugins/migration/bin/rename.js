@@ -140,9 +140,13 @@ class VersionRenamer {
     /** @private @const {!Array<{old: string, new: string}>} */ 
     this.renamings_ = [];
 
+    // See the sample entry in renamings.json5 for explanation of the
+    // meaning of the different properties on database entries.
     for (const module of entry) {
       const oldModulePath = module.oldPath ?? module.oldName;
-      const newModulePath = module.newPath ?? module.newName ?? oldModulePath;
+      const newExport = module.newExport ? '.' + module.newExport : '';
+      const newModulePath =
+          module.newPath ?? (module.newName ?? oldModulePath) + newExport;
 
       if (module.exports) {
         for (const [oldExportName, info] of Object.entries(module.exports)) {
