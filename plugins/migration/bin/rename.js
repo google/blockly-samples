@@ -48,18 +48,6 @@ createAndAddSubCommand('rename', '>=5')
     });
 
 /**
- * A temporary top level function that can be called for manual testing.
- * @param {string} currVersion The version to migrate from.
- * @param {string} newVersion The version to migrate to.
- * @param {!Array<string>} files The names files to apply the renamings in.
- */
-export async function tempTopLevel(currVersion, newVersion, files) {
-  const database = await getDatabase();
-  // TODO: Fix this to actually get the contents of the files.
-  doRenamings(database, currVersion, newVersion, files);
-}
-
-/**
  * Gets the database of renames.
  * @return {!Promise<Object>} The database of renames as an object.
  */
@@ -96,6 +84,7 @@ export function doRenamings(database, currVersion, newVersion, strings) {
  */
 export class Renamer {
   /**
+   * Constructor for the class.
    * @param {!Object} database The database of renames.
    * @param {string} currVersion The version to migrate from.
    * @param {string} newVersion The version to migrate to.

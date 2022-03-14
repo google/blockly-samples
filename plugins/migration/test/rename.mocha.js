@@ -9,7 +9,9 @@
  */
 
 import {assert} from 'chai';
-import {doRenamings, getDatabase, Renamer} from '../bin/rename.js';
+import {getDatabase, Renamer} from '../bin/rename.js';
+import {parseAndRunMigrations} from '../bin/command.js';
+import {spy} from 'sinon';
 
 
 suite('Rename', function() {
@@ -830,6 +832,68 @@ const bar = module.newNameForExistingExport;`;
 
           assert.deepEqual(newString, 'module.oldExportName');
         });
+
+    test('from-version assumes the earliest matching version', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportA': {
+                newExport: 'newExportA',
+              },
+            },
+          },
+        ],
+        '1.1.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportB': {
+                newExport: 'newExportB',
+              },
+            },
+          },
+        ],
+      };
+      const consoleSpy = spy(console, 'log');
+
+      parseAndRunMigrations(
+          ['node', 'migrate', 'rename', '1', '2.0.0', 'no-match']);
+
+      assert.isTrue(consoleSpy.calledWith('Assuming a from-version of 1.0.0'));
+    });
+
+    test('to-version assumes the latest matching version', function() {
+      const database = {
+        '2.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportA': {
+                newExport: 'newExportA',
+              },
+            },
+          },
+        ],
+        '2.1.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportB': {
+                newExport: 'newExportB',
+              },
+            },
+          },
+        ],
+      };
+      const consoleSpy = spy(console, 'log');
+
+      parseAndRunMigrations(
+          ['node', 'migrate', 'rename', '1.0.0', '2', 'no-match']);
+
+      assert.isTrue(consoleSpy.calledWith('Assuming a to-version of 2.1.0'));
+    });
 
     test('the develop version is ignored', function() {
       const database = {
