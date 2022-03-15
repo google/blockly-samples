@@ -28,6 +28,10 @@ const DEV_VERSION = 'develop';
 
 createAndAddSubCommand(
     'rename', '>=5', 'Perform renamings for breaking changes')
+    .option(
+        '-i [suffix]',
+        'do renamings in-place, optionally create backup files with the ' +
+        'given suffix')
     .action(async function() {
       const fromVersion = this.processedArgs[0];
       const toVersion = this.processedArgs[1];
@@ -46,13 +50,25 @@ createAndAddSubCommand(
         readFile(name, 'utf8', (err, contents) => {
           if (err) throw err;
           const newContents = renamer.rename(contents);
-          writeFile(name, newContents, (err) => {
-            if (err) throw err;
+          const i = this.opts().i;
+          if (i) {
+            if (typeof i == 'string') writeFile(name + i, contents, throwError);
+            writeFile(name, newContents, throwError);
             console.log(`Migrated renamings in ${name}`);
-          });
+          } else {
+            process.stdout.write(newContents);
+          }
         });
       });
     });
+
+/**
+ * Throws the error if the error is received, otherwise noop.
+ * @param {!Error|null} err A possible error to throw.
+ */
+function throwError(err) {
+  if (err) throw err;
+}
 
 /**
  * Gets the database of renames.
