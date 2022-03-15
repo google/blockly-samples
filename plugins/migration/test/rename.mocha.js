@@ -844,22 +844,68 @@ const bar = module.newNameForExistingExport;`;
         });
 
     test('from-version assumes the earliest matching version', function() {
-      parseAndRunMigrations(
-          ['node', 'migrate', 'rename', '1', '2.0.0', 'no-match']);
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportA': {
+                newExport: 'newExportA',
+              },
+            },
+          },
+        ],
+        '1.1.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportB': {
+                newExport: 'newExportB',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'module.exportA; module.exportB';
 
-      assert.isTrue(
-          this.consoleSpy.calledWith('Assuming a from-version of 1.0.0'));
+      const newString =
+          (new Renamer(database, '1', '2.0.0')).rename(oldString);
+
+      assert.deepEqual(newString, 'module.exportA; module.newExportB');
     });
 
     test('to-version assumes the latest matching version', function() {
-      parseAndRunMigrations(
-          ['node', 'migrate', 'rename', '1.0.0', '2', 'no-match']);
+      const database = {
+        '2.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportA': {
+                newExport: 'newExportA',
+              },
+            },
+          },
+        ],
+        '2.1.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'exportB': {
+                newExport: 'newExportB',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'module.exportA; module.exportB';
 
-      assert.isTrue(
-          this.consoleSpy.calledWith('Assuming a to-version of 2.1.0'));
+      const newString =
+          (new Renamer(database, '1.0.0', '2')).rename(oldString);
+
+      assert.deepEqual(newString, 'module.newExportA; module.newExportB');
     });
 
-    test('the develop version is ignored', function() {
+    test('the develop version is outside all ranges', function() {
       const database = {
         'develop': [
           {
@@ -873,7 +919,24 @@ const bar = module.newNameForExistingExport;`;
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'oldModule');
+      assert.deepEqual(newString, 'base.oldModule');
+    });
+
+    test('the develop version works if directly targetted', function() {
+      const database = {
+        'develop': [
+          {
+            oldName: 'oldModule',
+            newName: 'newModule',
+          },
+        ],
+      };
+      const oldString = 'oldModule';
+
+      const newString =
+          (new Renamer(database, '0.0.0', 'develop')).rename(oldString);
+
+      assert.deepEqual(newString, 'base.newModule');
     });
   });
 });

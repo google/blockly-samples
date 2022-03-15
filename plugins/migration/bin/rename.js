@@ -136,10 +136,11 @@ export class Renamer {
  */
 class VersionRenamer {
   /**
+   * Constructor for the version renamer.
    * @param {!Object} entry The database entry for a single version.
    */
   constructor(entry) {
-    /** @private @const {!Array<{old: string, new: string}>} */ 
+    /** @private @const {!Array<{old: string, new: string}>} */
     this.renamings_ = [];
 
     // See the sample entry in renamings.json5 for explanation of the
@@ -181,7 +182,7 @@ class VersionRenamer {
   }
 }
 
-/** 
+/**
  * RegExp matching a dotted identifier path like "foo.bar.baz".  Note
  * that this only matches such paths containing at least one dot, as
  * we expect to be looking for string like "Blockly.<something>" and
