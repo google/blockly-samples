@@ -899,12 +899,12 @@ const bar = module.newNameForExistingExport;`;
       const database = {
         'develop': [
           {
-            oldName: 'oldModule',
-            newName: 'newModule',
+            oldName: 'base.oldModule',
+            newName: 'base.newModule',
           },
         ],
       };
-      const oldString = 'oldModule';
+      const oldString = 'base.oldModule';
 
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
@@ -912,16 +912,16 @@ const bar = module.newNameForExistingExport;`;
       assert.deepEqual(newString, 'base.oldModule');
     });
 
-    test('the develop version works if directly targetted', function() {
+    test('the develop version works if directly targeted', function() {
       const database = {
         'develop': [
           {
-            oldName: 'oldModule',
-            newName: 'newModule',
+            oldName: 'base.oldModule',
+            newName: 'base.newModule',
           },
         ],
       };
-      const oldString = 'oldModule';
+      const oldString = 'base.oldModule';
 
       const newString =
           (new Renamer(database, '0.0.0', 'develop')).rename(oldString);

@@ -20,6 +20,12 @@ import JSON5 from 'json5';
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
+/**
+ * The version associated with renamings that have not been released yet.
+ * @const {string}
+ */
+const DEV_VERSION = 'develop';
+
 createAndAddSubCommand(
     'rename', '>=5', 'Perform renamings for breaking changes')
     .action(async function() {
@@ -100,18 +106,67 @@ export class Renamer {
    * @return {!Array<!VersionRenamer>} The collection of renamings to perform.
    */
   static calculateRenamings(database, currVersion, newVersion) {
-    currVersion = semver.coerce(currVersion).toString();
-    newVersion = semver.coerce(newVersion).toString();
-    const versions = Object.keys(database).sort(semver.compare);
+    currVersion = Renamer.coerce(currVersion);
+    newVersion = Renamer.coerce(newVersion);
+    const versions = Object.keys(database).sort(Renamer.compare);
     const renamers /** !Array<!VersionRenamer> */ = [];
     for (const version of versions) {
       // Only process versions in the range (currVersion, ^newVersion].
-      if (semver.lte(version, currVersion)) continue;
-      if (semver.gtr(version, `^${newVersion}`)) break;
+      if (Renamer.lte(version, currVersion)) continue;
+      if (Renamer.gt(version, newVersion)) break;
 
       renamers.push(new VersionRenamer(database[version]));
     }
     return renamers;
+  }
+
+  /**
+   * Coerces the given string into a valid version (semver compliant or
+   * develop).
+   * @param {string} version  The version to coerce.
+   * @return  {string} The coerced version.
+   */
+  static coerce(version) {
+    return version === DEV_VERSION ?
+        version : semver.coerce(version).toString();
+  }
+
+  /**
+   * Compares the given versions. Compatible with Array.sort.
+   * @param {string} v1 The first version to compare.
+   * @param {string} v2 The second version to compare.
+   * @return {number} A number indicating the relationship between the versions.
+   */
+  static compare(v1, v2) {
+    if (v2 === DEV_VERSION) return -1;
+    if (v1 === DEV_VERSION) return 1;
+    return semver.compare(v1, v2);
+  }
+
+  /**
+   * Returns true if the first version is less than or equal to the second
+   * version.
+   * @param {string} v1 The version to compare.
+   * @param {string} v2 The version to compare against.
+   * @return {boolean} True if the first version is less than or equal to the
+   *     second one.
+   */
+  static lte(v1, v2) {
+    if (v2 === DEV_VERSION) return true;
+    if (v1 === DEV_VERSION) return false;
+    return semver.lte(v1, v2);
+  }
+
+  /**
+   * Returns true if the first version is greater than the second version.
+   * @param {string} v1 The version to compare.
+   * @param {string} v2 The version to compare against.
+   * @return {boolean} True if the first version is greater than the second one.
+   */
+  static gt(v1, v2) {
+    if (v2 === DEV_VERSION) return false;
+    if (v1 === DEV_VERSION) return true;
+    return semver.gtr(v1, `^${v2}`);
   }
 
   /**
