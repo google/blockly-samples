@@ -211,9 +211,12 @@ class VersionRenamer {
    * @param {!Object} entry The database entry for a single version.
    */
   constructor(entry) {
-    /** @private @const {!Array<{old: string, new: string}>} */
+    /** 
+     * List of pre-compiled renamings.
+     * @private @const {
+     *     !Array<{old: string, new: ?string, get: ?string, set: ?string}>}
+     */ 
     this.renamings_ = [];
-
     // See the sample entry in renamings.json5 for explanation of the
     // meaning of the different properties on database entries.
     for (const module of entry) {
@@ -226,10 +229,17 @@ class VersionRenamer {
         for (const [oldExportName, info] of Object.entries(module.exports)) {
           const oldExportPath =
               info.oldPath ?? `${oldModulePath}.${oldExportName}`;
-          const newExportPath = info.newPath ??
-              (info.newModule ?? newModulePath) + '.' +
-              (info.newExport ?? oldExportName);
-          this.renamings_.push({old: oldExportPath, new: newExportPath});
+          const newBase = (info.newModule ?? newModulePath) + '.';
+          let renaming = {old: oldExportPath};
+          if (info.newPath) {  // If newPath provided just use that.
+            renaming.new = info.newPath;
+          } else if (info.getMethod || info.setMethod) {
+            renaming.get = info.getMethod ? newBase + info.getMethod : null;
+            renaming.set = info.setMethod ? newBase + info.setMethod : null;
+          } else {
+            renaming.new = newBase + (info.newExport ?? oldExportName);
+          }
+          this.renamings_.push(renaming);
         }
       }
 
@@ -246,6 +256,18 @@ class VersionRenamer {
   rename(str) {
     for (const entry of this.renamings_) {
       if (str.startsWith(entry.old)) {
+        if (entry.get || entry.set) {
+          console.log(`NOTE: ${entry.old} has been removed.`);
+          if (entry.get) {
+            console.log(`    - Call ${entry.get}() instead of reading it.`);
+          }
+          if (entry.set) {
+            console.log(`    - Call ${entry.set}(/* new value */) instead of ` +
+                'setting it.');
+          }
+          console.log('You will need to manually verify this update.');
+          return (entry.get ?? entry.set) + '()' + str.slice(entry.old.length);
+        }
         return entry.new + str.slice(entry.old.length);
       }
     }
