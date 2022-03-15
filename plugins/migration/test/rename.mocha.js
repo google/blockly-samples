@@ -10,8 +10,6 @@
 
 import {assert} from 'chai';
 import {getDatabase, Renamer} from '../bin/rename.js';
-import {parseAndRunMigrations} from '../bin/command.js';
-import {spy} from 'sinon';
 
 
 suite('Rename', function() {
@@ -726,14 +724,6 @@ const bar = module.newNameForExistingExport;`;
   });
 
   suite('Versions', function() {
-    setup(function() {
-      this.consoleSpy = spy(console, 'log');
-    });
-
-    teardown(function() {
-      this.consoleSpy.restore();
-    });
-
     test('renames below the lower bound of the version range are not applied',
         function() {
           const database = {
