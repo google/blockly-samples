@@ -11,11 +11,11 @@
  */
 'use strict';
 
-import compareVersions from 'compare-versions';
 import {createAndAddSubCommand} from './command.js';
 import fetch from 'node-fetch';
 import glob from 'glob';
 import {readFile, writeFile} from 'fs';
+import semver from 'semver';
 import JSON5 from 'json5';
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
@@ -100,14 +100,14 @@ export class Renamer {
    * @return {!Array<!VersionRenamer>} The collection of renamings to perform.
    */
   static calculateRenamings(database, currVersion, newVersion) {
-    // Sort versions (case not already sorted), as we want to apply
-    // renamings in order.
-    const versions = Object.keys(database).sort(compareVersions);
+    currVersion = semver.coerce(currVersion).toString();
+    newVersion = semver.coerce(newVersion).toString();
+    const versions = Object.keys(database).sort(semver.compare);
     const renamers /** !Array<!VersionRenamer> */ = [];
     for (const version of versions) {
-      // Only process versions in the range (currVersion, newVersion].
-      if (compareVersions.compare(version, currVersion, '<=')) continue;
-      if (compareVersions.compare(version, newVersion, '>')) break;
+      // Only process versions in the range (currVersion, ^newVersion].
+      if (semver.lte(version, currVersion)) continue;
+      if (semver.gtr(version, `^${newVersion}`)) break;
 
       renamers.push(new VersionRenamer(database[version]));
     }
