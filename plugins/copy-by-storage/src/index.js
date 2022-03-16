@@ -1,17 +1,31 @@
-import * as Blockly from 'blockly/core';
 /**
- * Class for CopyByStorage
+ * @license
+ * Copyright 2022 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+import * as Blockly from 'blockly/core';
+import {convertBlockToSaveInfo} from './utility';
+/**
+ * A Blockly plugin that adds context menu items and keyboard shortcuts
+ * to allow users to copy and paste a block between tabs
  */
 export class CopyByStorage {
   /**
    * Set the copyByStorage function.
-   * @param {boolean} contextMenu Register copy and paste in the context menu
-   * @param {boolean} shortcut Register cut (ctr + x), copy (ctr + c),
-   *  paste (ctr + v) in the shortcut.
-   * @param {boolean} unregisterDuplicate
-   * Unregister the context menu duplication command
+   * @param {{contextMenu: boolean,
+   * shortcut: boolean}} options
+   * `contextMenu` Register copy and paste in the context menu.
+   * `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
+   * in the shortcut.
    */
-  init(contextMenu = true, shortcut = true, unregisterDuplicate = true) {
+  init({
+    contextMenu = true,
+    shortcut = true,
+  } = {
+    contextMenu: true,
+    shortcut: true,
+    unregisterDuplicate: true,
+  }) {
     if (contextMenu) {
       // Register the menus
       this.blockCopyToStorageContextMenu();
@@ -31,13 +45,11 @@ export class CopyByStorage {
       this.blockCutToStorageShortcut();
       this.blockPasteFromStorageShortcut();
     }
-
-    if (unregisterDuplicate) {
-      // Unregister the context menu duplication command
-      Blockly.ContextMenuRegistry.registry.unregister('blockDuplicate');
-    }
   }
-  blockCopyToStorageContextMenu = function() {
+  /**
+   * Set the copy command to context menu
+   */
+  blockCopyToStorageContextMenu() {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const copyToStorageOption = {
       displayText: function() {
@@ -52,9 +64,8 @@ export class CopyByStorage {
       },
       callback: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-        const json = Blockly.serialization.blocks.save(
-            scope.block, {addCoordinates: true, addNextBlocks: false});
-        const blockText = JSON.stringify(json);
+        const blockText = JSON.stringify(
+            convertBlockToSaveInfo(Blockly.selected));
         localStorage.setItem('blocklyStash', blockText);
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
@@ -62,8 +73,11 @@ export class CopyByStorage {
       weight: 0,
     };
     Blockly.ContextMenuRegistry.registry.register(copyToStorageOption);
-  };
-  blockPasteFromStorageContextMenu = function() {
+  }
+  /**
+   * Set the paste command to context menu
+   */
+  blockPasteFromStorageContextMenu() {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const pasteFromStorageOption = {
       displayText: function() {
@@ -74,7 +88,9 @@ export class CopyByStorage {
       },
       preconditionFn: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-        if (localStorage.getItem('blocklyStash')) {
+        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
+        if (copyData &&
+          scope.workspace.isCapacityAvailable(copyData.typeCounts)) {
           return 'enabled';
         }
         return 'disabled';
@@ -82,18 +98,20 @@ export class CopyByStorage {
       callback: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
         const blockText = localStorage.getItem('blocklyStash');
-        const json = JSON.parse(blockText);
-        Blockly.serialization.blocks.append(json, scope.workspace);
+        const saveInfo = JSON.parse(blockText);
+        Blockly.serialization.blocks.append(
+            saveInfo['saveInfo'], scope.workspace);
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
       id: 'blockPasteFromStorage',
       weight: 0,
     };
     Blockly.ContextMenuRegistry.registry.register(pasteFromStorageOption);
-  };
-
-
-  blockCopyToStorageShortcut = function() {
+  }
+  /**
+   * Set the copy command to keybord shortcut
+   */
+  blockCopyToStorageShortcut() {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const copyShortcut = {
       name: 'copy',
@@ -109,9 +127,9 @@ export class CopyByStorage {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const json = Blockly.serialization.blocks.save(
-            Blockly.selected, {addCoordinates: true, addNextBlocks: false});
-        const blockText = JSON.stringify(json);
+        workspace.hideChaff();
+        const blockText = JSON.stringify(
+            convertBlockToSaveInfo(Blockly.selected));
         localStorage.setItem('blocklyStash', blockText);
         return true;
       },
@@ -130,8 +148,11 @@ export class CopyByStorage {
     const metaC = Blockly.ShortcutRegistry.registry.createSerializedKey(
         Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.META]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaC, copyShortcut.name);
-  };
-  blockCutToStorageShortcut = function() {
+  }
+  /**
+   * Set the cut command to keybord shortcut
+   */
+  blockCutToStorageShortcut() {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const cutShortcut = {
       name: 'cut',
@@ -148,11 +169,12 @@ export class CopyByStorage {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const json = Blockly.serialization.blocks.save(
-            Blockly.selected, {addCoordinates: true, addNextBlocks: false});
-        const blockText = JSON.stringify(json);
+        const blockText = JSON.stringify(
+            convertBlockToSaveInfo(Blockly.selected));
         localStorage.setItem('blocklyStash', blockText);
-        Blockly.deleteBlock(Blockly.selected);
+        Blockly.Events.setGroup(true);
+        Blockly.selected.dispose(true);
+        Blockly.Events.setGroup(false);
         return true;
       },
     };
@@ -169,16 +191,23 @@ export class CopyByStorage {
     const metaX = Blockly.ShortcutRegistry.registry.createSerializedKey(
         Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.META]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaX, cutShortcut.name);
-  };
-  blockPasteFromStorageShortcut = function() {
+  }
+  /**
+   * Set the paste command to keybord shortcut
+   */
+  blockPasteFromStorageShortcut() {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const pasteShortcut = {
       name: 'paste',
       preconditionFn: function(workspace) {
-        if (!localStorage.getItem('blocklyStash')) {
+        if (workspace.options.readOnly || Blockly.Gesture.inProgress()) {
           return 'disabled';
         }
-        return !workspace.options.readOnly && !Blockly.Gesture.inProgress();
+        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
+        if (!copyData || !workspace.isCapacityAvailable(copyData.typeCounts)) {
+          return 'disabled';
+        }
+        return 'enabled';
       },
       callback: function(workspace, e) {
         // Prevent the default copy behavior,
@@ -186,8 +215,9 @@ export class CopyByStorage {
         // an error due to the lack of a selection.
         e.preventDefault();
         const blockText = localStorage.getItem('blocklyStash');
-        const json = JSON.parse(blockText);
-        Blockly.serialization.blocks.append(json, workspace);
+        const saveInfo = JSON.parse(blockText);
+        Blockly.serialization.blocks.append(
+            saveInfo['saveInfo'], workspace);
         return true;
       },
     };
@@ -205,5 +235,5 @@ export class CopyByStorage {
     const metaV = Blockly.ShortcutRegistry.registry.createSerializedKey(
         Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.META]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaV, pasteShortcut.name);
-  };
+  }
 }

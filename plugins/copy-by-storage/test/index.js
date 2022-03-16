@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Plugin} from '../src/index';
+import {CopyByStorage} from '../src/index';
 
 /**
  * Create a workspace.
@@ -20,11 +20,6 @@ import {Plugin} from '../src/index';
  */
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
-
-  // TODO: Initialize your plugin here.
-  const plugin = new Plugin(workspace);
-  plugin.init();
-
   return workspace;
 }
 
@@ -34,4 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
+  const plugin = new CopyByStorage();
+  plugin.init();
 });

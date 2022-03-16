@@ -3,7 +3,7 @@
 <!--
   - TODO: Edit plugin description.
   -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds context menu items and keyboard shortcuts to allow users to copy and paste a block between tabs
 
 ## Installation
 
@@ -19,9 +19,6 @@ npm install @blockly/plugin-copy-by-storage --save
 
 ## Usage
 
-<!--
-  - TODO: Update usage.
-  -->
 ```js
 import * as Blockly from 'blockly';
 import {CopyByStorage} from '@blockly/plugin-copy-by-storage';
@@ -34,6 +31,9 @@ const workspace = Blockly.inject('blocklyDiv', {
 // Initialize plugin.
 const plugin = new CopyByStorage(workspace);
 plugin.init();
+
+// optional: Remove the duplication command from Blockly's context menu.
+Blockly.ContextMenuRegistry.registry.unregister('blockDuplicate');
 ```
 
 or In Browser
@@ -44,16 +44,22 @@ const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
 });
 
+const options = {
+  contextMenu: true,
+  shortcut: true,
+}
+
 // Initialize plugin.
-const plugin = new CopyByStorage();
+const plugin = new CopyByStorage(options);
 plugin.init();
+
+// optional: Remove the duplication command from Blockly's context menu.
+Blockly.ContextMenuRegistry.registry.unregister('blockDuplicate');
 ```
 
-## API
-
-<!--
-  - TODO: describe the API.
-  -->
+## Options
+- contextMenu {boolean} Register copy, cut, and paste commands in the Blockly context menu.
+- shortcut {boolean} Register cut (ctr + x), copy (ctr + c) and paste (ctr + v) in the keybord shortcut.
 
 ## License
 Apache 2.0
