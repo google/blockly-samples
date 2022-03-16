@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * @license
  * Copyright 2022 Google LLC
@@ -13,7 +12,7 @@ import chalk from 'chalk';
 import semver from 'semver';
 import {Command} from 'commander';
 
-// TODO: Not sure the best way to access the JSON from node.
+// require() is not available in ES modules by default, so we must obtain it.
 import {createRequire} from 'module';
 const require = createRequire(import.meta.url);
 const scriptPackageJson = require('../package-lock.json');

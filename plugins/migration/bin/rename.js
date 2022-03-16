@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * @license
  * Copyright 2022 Google LLC
@@ -29,9 +28,9 @@ const DEV_VERSION = 'develop';
 createAndAddSubCommand(
     'rename', '>=5', 'Perform renamings for breaking changes')
     .option(
-        '-i [suffix]',
+        '-i, --in-place [suffix]',
         'do renamings in-place, optionally create backup files with the ' +
-        'given suffix')
+        'given suffix. Otherwise output to stdout')
     .action(async function() {
       const fromVersion = this.processedArgs[0];
       const toVersion = this.processedArgs[1];
@@ -122,9 +121,9 @@ export class Renamer {
    * @return {!Array<!VersionRenamer>} The collection of renamings to perform.
    */
   static calculateRenamings(database, currVersion, newVersion) {
-    currVersion = Renamer.coerce(currVersion);
-    newVersion = Renamer.coerce(newVersion);
-    const versions = Object.keys(database).sort(Renamer.compare);
+    currVersion = Renamer.coerceVersion(currVersion);
+    newVersion = Renamer.coerceVersion(newVersion);
+    const versions = Object.keys(database).sort(Renamer.compareVersions);
     const renamers /** !Array<!VersionRenamer> */ = [];
     for (const version of versions) {
       // Only process versions in the range (currVersion, ^newVersion].
@@ -137,12 +136,27 @@ export class Renamer {
   }
 
   /**
+   * Applies the given renamings directly to a JavaScript string
+   * (presumably the contents of a developer's file).
+   * @param {string} str The string to apply the renamings in.
+   * @return {string} The file with renamings applied.
+   */
+  rename(str) {
+    return str.replace(dottedIdentifier, (match) => {
+      for (const versionRenamer of this.versionRenamers_) {
+        match = versionRenamer.rename(match);
+      }
+      return match;
+    });
+  }
+
+  /**
    * Coerces the given string into a valid version (semver compliant or
    * develop).
    * @param {string} version  The version to coerce.
    * @return  {string} The coerced version.
    */
-  static coerce(version) {
+  static coerceVersion(version) {
     return version === DEV_VERSION ?
         version : semver.coerce(version).toString();
   }
@@ -153,7 +167,7 @@ export class Renamer {
    * @param {string} v2 The second version to compare.
    * @return {number} A number indicating the relationship between the versions.
    */
-  static compare(v1, v2) {
+  static compareVersions(v1, v2) {
     if (v2 === DEV_VERSION) return -1;
     if (v1 === DEV_VERSION) return 1;
     return semver.compare(v1, v2);
@@ -183,21 +197,6 @@ export class Renamer {
     if (v2 === DEV_VERSION) return false;
     if (v1 === DEV_VERSION) return true;
     return semver.gtr(v1, `^${v2}`);
-  }
-
-  /**
-   * Applies the given renamings directly to a JavaScript string
-   * (presumably the contents of a developer's file).
-   * @param {string} str The string to apply the renamings in.
-   * @return {string} The file with renamings applied.
-   */
-  rename(str) {
-    return str.replace(dottedIdentifier, (match) => {
-      for (const versionRenamer of this.versionRenamers_) {
-        match = versionRenamer.rename(match);
-      }
-      return match;
-    });
   }
 }
 
