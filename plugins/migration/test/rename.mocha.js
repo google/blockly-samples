@@ -10,6 +10,7 @@
 
 import {assert} from 'chai';
 import {getDatabase, Renamer} from '../bin/rename.js';
+import {stub} from 'sinon';
 
 
 suite('Rename', function() {
@@ -118,6 +119,14 @@ class SubClass extends Blockly.moduleC.ClassC {
   });
 
   suite('Exports', function() {
+    setup(function() {
+      this.errSpy = stub(process.stderr, 'write');
+    });
+
+    teardown(function() {
+      this.errSpy.restore();
+    });
+
     test('exports without new paths are renamed to the new export', function() {
       const database = {
         '1.0.0': [
@@ -339,8 +348,25 @@ const bar = module.newNameForExistingExport;`;
       assert.deepEqual(newString, 'const foo = module.getExport();');
     });
 
-    test.skip('exports with set methods trigger console logs', function() {
-      // TODO: Implement this and then complete test.
+    test('exports with set methods trigger console output', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'oldExportName': {
+                setMethod: 'setExport',
+              },
+            },
+          },
+        ],
+      };
+      const oldString = 'module.oldExportName = foo;';
+
+      (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
+
+      assert.isTrue(this.errSpy.calledWith('    - Call module.setExport(' +
+          '/* new value */) instead of setting it.'));
     });
 
     test('renamed exports in renamed modules get properly renamed', function() {
