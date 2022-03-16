@@ -13,7 +13,7 @@
 import {createAndAddSubCommand} from './command.js';
 import fetch from 'node-fetch';
 import glob from 'glob';
-import {readFile, writeFile} from 'fs';
+import {readFileSync, writeFileSync} from 'fs';
 import semver from 'semver';
 import JSON5 from 'json5';
 
@@ -46,28 +46,18 @@ createAndAddSubCommand(
 
       const renamer = new Renamer(await getDatabase(), fromVersion, toVersion);
       fileNames.forEach((name) => {
-        readFile(name, 'utf8', (err, contents) => {
-          if (err) throw err;
-          const newContents = renamer.rename(contents);
-          const i = this.opts().i;
-          if (i) {
-            if (typeof i == 'string') writeFile(name + i, contents, throwError);
-            writeFile(name, newContents, throwError);
-            process.stderr.write(`Migrated renamings in ${name}`);
-          } else {
-            process.stdout.write(newContents);
-          }
-        });
+        const contents = readFileSync(name, 'utf8');
+        const newContents = renamer.rename(contents);
+        const i = this.opts().i;
+        if (i) {
+          if (typeof i == 'string') writeFileSync(name + i, contents);
+          writeFileSync(name, newContents);
+          process.stderr.write(`Migrated renamings in ${name}`);
+        } else {
+          process.stdout.write(newContents);
+        }
       });
     });
-
-/**
- * Throws the error if the error is received, otherwise noop.
- * @param {!Error|null} err A possible error to throw.
- */
-function throwError(err) {
-  if (err) throw err;
-}
 
 /**
  * Gets the database of renames.
