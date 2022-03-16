@@ -12,7 +12,6 @@
 
 import {createAndAddSubCommand} from './command.js';
 import fetch from 'node-fetch';
-import glob from 'glob';
 import {readFileSync, writeFileSync} from 'fs';
 import semver from 'semver';
 import JSON5 from 'json5';
@@ -34,15 +33,7 @@ createAndAddSubCommand(
     .action(async function() {
       const fromVersion = this.processedArgs[0];
       const toVersion = this.processedArgs[1];
-      const fileGlobs = this.processedArgs[2];
-      const fileNames = fileGlobs.flatMap((fileGlob) =>
-        glob.sync(fileGlob, {nodir: true, nonull: false}));
-
-      if (!fileNames.length) {
-        process.stderr.write(`No matching files found for ${fileGlobs}. ` +
-            `Aborting rename.`);
-        return;
-      }
+      const fileNames = this.processedArgs[2];
 
       const renamer = new Renamer(await getDatabase(), fromVersion, toVersion);
       fileNames.forEach((name) => {
