@@ -10,7 +10,7 @@
  */
 'use strict';
 
-import {createAndAddSubCommand, extractRequiredInfo} from './command.js';
+import {createSubCommand, extractRequiredInfo} from './command.js';
 import fetch from 'node-fetch';
 import {readFileSync, writeFileSync} from 'fs';
 import * as versionUtils from './versions.js';
@@ -19,7 +19,7 @@ import JSON5 from 'json5';
 
 const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
-createAndAddSubCommand(
+export const rename = createSubCommand(
     'rename', '>=5', 'Perform renamings for breaking changes')
     .option(
         '-i, --in-place [suffix]',

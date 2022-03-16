@@ -8,7 +8,10 @@
 /**
  * @fileoverview A script for helping to migrate between versions of Blockly.
  */
-import {parseAndRunMigrations} from './command.js';
-import './rename.js';
+import {addSubCommand, parseAndRunMigrations} from './command.js';
+import {rename} from './rename.js';
+
+
+addSubCommand(rename);
 
 parseAndRunMigrations();

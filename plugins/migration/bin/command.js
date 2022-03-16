@@ -84,7 +84,7 @@ function showVersionHelp(version) {
  * @param {string} description The description of the new subcommand.
  * @return {!Command} The basic subcommand.
  */
-export function createAndAddSubCommand(name, targetVersionRange, description) {
+export function createSubCommand(name, targetVersionRange, description) {
   const migration = {
     name: name,
     description: description,
@@ -92,14 +92,20 @@ export function createAndAddSubCommand(name, targetVersionRange, description) {
   };
   migrations.push(migration);
 
-  const subCommand = new Command(name)
+  return new Command(name)
       .description(description)
       .requiredOption(
           '--from <from-version>', 'Blockly version to migrate from')
       .option('--to <to-version>', 'Blockly version to migrate to')
       .argument('<file...>', 'Files to migrate');
-  ROOT_COMMAND.addCommand(subCommand);
-  return subCommand;
+}
+
+/**
+ * Add the given command as a sub command of the root @blockly/migrate command.
+ * @param {Command} command The migration to run.
+ */
+export function addSubCommand(command) {
+  ROOT_COMMAND.addCommand(command);
 }
 
 /**
