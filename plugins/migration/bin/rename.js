@@ -40,7 +40,7 @@ createAndAddSubCommand(
         glob.sync(fileGlob, {nodir: true, nonull: false}));
 
       if (!fileNames.length) {
-        console.log(`No matching files found for ${fileGlobs}. ` +
+        process.stderr.write(`No matching files found for ${fileGlobs}. ` +
             `Aborting rename.`);
         return;
       }
@@ -54,7 +54,7 @@ createAndAddSubCommand(
           if (i) {
             if (typeof i == 'string') writeFile(name + i, contents, throwError);
             writeFile(name, newContents, throwError);
-            console.log(`Migrated renamings in ${name}`);
+            process.stderr.write(`Migrated renamings in ${name}`);
           } else {
             process.stdout.write(newContents);
           }
@@ -211,11 +211,11 @@ class VersionRenamer {
    * @param {!Object} entry The database entry for a single version.
    */
   constructor(entry) {
-    /** 
+    /**
      * List of pre-compiled renamings.
      * @private @const {
      *     !Array<{old: string, new: ?string, get: ?string, set: ?string}>}
-     */ 
+     */
     this.renamings_ = [];
     // See the sample entry in renamings.json5 for explanation of the
     // meaning of the different properties on database entries.
@@ -230,8 +230,8 @@ class VersionRenamer {
           const oldExportPath =
               info.oldPath ?? `${oldModulePath}.${oldExportName}`;
           const newBase = (info.newModule ?? newModulePath) + '.';
-          let renaming = {old: oldExportPath};
-          if (info.newPath) {  // If newPath provided just use that.
+          const renaming = {old: oldExportPath};
+          if (info.newPath) { // If newPath provided just use that.
             renaming.new = info.newPath;
           } else if (info.getMethod || info.setMethod) {
             renaming.get = info.getMethod ? newBase + info.getMethod : null;
@@ -257,15 +257,16 @@ class VersionRenamer {
     for (const entry of this.renamings_) {
       if (str.startsWith(entry.old)) {
         if (entry.get || entry.set) {
-          console.log(`NOTE: ${entry.old} has been removed.`);
+          process.stderr.write(`NOTE: ${entry.old} has been removed.`);
           if (entry.get) {
-            console.log(`    - Call ${entry.get}() instead of reading it.`);
+            process.stderr.write(`    - Call ${entry.get}() instead of ` +
+                'reading it.');
           }
           if (entry.set) {
-            console.log(`    - Call ${entry.set}(/* new value */) instead of ` +
-                'setting it.');
+            process.stderr.write(`    - Call ${entry.set}(/* new value */) ` +
+                'instead of setting it.');
           }
-          console.log('You will need to manually verify this update.');
+          process.stderr.write('You will need to manually verify this update.');
           return (entry.get ?? entry.set) + '()' + str.slice(entry.old.length);
         }
         return entry.new + str.slice(entry.old.length);
