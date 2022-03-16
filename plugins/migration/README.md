@@ -1,19 +1,19 @@
 # @blockly/migrate [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A collection of tools that help with migrating apps using [Blockly](https://www.npmjs.com/package/blockly) to new versions of Blockly.
+A collection of tools that help with migrating apps built on [Blockly](https://www.npmjs.com/package/blockly) to new versions of Blockly.
 
 ## Example Usage
 
-TODO: Update example usage.
+```
+npx @blockly/migrate rename --from 6 ./path/to/my/files*
+npx @blockly/migrate rename --from 6 --to 7 ./path/to/my/files*
+```
+
+Use `help` subcommand for more info.
 
 ```
-npx @blockly/migrate
-```
-
-Use `--help` option for more info.
-
-```
-npx @blockly/migrate --help
+npx @blockly/migrate help
+npx @blockly/migrate help 6
 ```
 
 ## License

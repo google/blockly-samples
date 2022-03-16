@@ -1,3 +1,7 @@
+// Manual test data for the renamings migration.
+// Run using:
+//   node ./bin/migrate rename --from <version> ./test/manual-test-data.txt
+
 import Blockly from 'blockly';
 
 class SubClass extends Blockly.moduleC {
