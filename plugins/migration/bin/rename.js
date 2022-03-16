@@ -144,16 +144,17 @@ class VersionRenamer {
     // See the sample entry in renamings.json5 for explanation of the
     // meaning of the different properties on database entries.
     for (const module of entry) {
-      const oldModulePath = module.oldPath ?? module.oldName;
+      // TODO: switch all of the || to ?? if/when we drop Node12.
+      const oldModulePath = module.oldPath || module.oldName;
       const newExport = module.newExport ? '.' + module.newExport : '';
       const newModulePath =
-          module.newPath ?? (module.newName ?? oldModulePath) + newExport;
+          module.newPath || (module.newName || oldModulePath) + newExport;
 
       if (module.exports) {
         for (const [oldExportName, info] of Object.entries(module.exports)) {
           const oldExportPath =
-              info.oldPath ?? `${oldModulePath}.${oldExportName}`;
-          const newBase = (info.newModule ?? newModulePath) + '.';
+              info.oldPath || `${oldModulePath}.${oldExportName}`;
+          const newBase = (info.newModule || newModulePath) + '.';
           const renaming = {old: oldExportPath};
           if (info.newPath) { // If newPath provided just use that.
             renaming.new = info.newPath;
@@ -161,7 +162,7 @@ class VersionRenamer {
             renaming.get = info.getMethod ? newBase + info.getMethod : null;
             renaming.set = info.setMethod ? newBase + info.setMethod : null;
           } else {
-            renaming.new = newBase + (info.newExport ?? oldExportName);
+            renaming.new = newBase + (info.newExport || oldExportName);
           }
           this.renamings_.push(renaming);
         }
@@ -191,7 +192,7 @@ class VersionRenamer {
                 'instead of setting it.');
           }
           process.stderr.write('You will need to manually verify this update.');
-          return (entry.get ?? entry.set) + '()' + str.slice(entry.old.length);
+          return (entry.get || entry.set) + '()' + str.slice(entry.old.length);
         }
         return entry.new + str.slice(entry.old.length);
       }
