@@ -10,19 +10,14 @@
  */
 'use strict';
 
-import {createAndAddSubCommand} from './command.js';
+import {createAndAddSubCommand, extractRequiredInfo} from './command.js';
 import fetch from 'node-fetch';
 import {readFileSync, writeFileSync} from 'fs';
-import semver from 'semver';
+import * as versionUtils from './versions.js';
 import JSON5 from 'json5';
 
-const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
-/**
- * The version associated with renamings that have not been released yet.
- * @const {string}
- */
-const DEV_VERSION = 'develop';
+const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
 
 createAndAddSubCommand(
     'rename', '>=5', 'Perform renamings for breaking changes')
@@ -31,9 +26,7 @@ createAndAddSubCommand(
         'do renamings in-place, optionally create backup files with the ' +
         'given suffix. Otherwise output to stdout')
     .action(async function() {
-      const fromVersion = this.processedArgs[0];
-      const toVersion = this.processedArgs[1];
-      const fileNames = this.processedArgs[2];
+      const {fromVersion, toVersion, fileNames} = extractRequiredInfo(this);
 
       const renamer = new Renamer(await getDatabase(), fromVersion, toVersion);
       fileNames.forEach((name) => {
@@ -102,14 +95,14 @@ export class Renamer {
    * @return {!Array<!VersionRenamer>} The collection of renamings to perform.
    */
   static calculateRenamings(database, currVersion, newVersion) {
-    currVersion = Renamer.coerceVersion(currVersion);
-    newVersion = Renamer.coerceVersion(newVersion);
-    const versions = Object.keys(database).sort(Renamer.compareVersions);
+    currVersion = versionUtils.coerce(currVersion);
+    newVersion = versionUtils.coerce(newVersion);
+    const versions = Object.keys(database).sort(versionUtils.compare);
     const renamers /** !Array<!VersionRenamer> */ = [];
     for (const version of versions) {
       // Only process versions in the range (currVersion, ^newVersion].
-      if (Renamer.lte(version, currVersion)) continue;
-      if (Renamer.gt(version, newVersion)) break;
+      if (versionUtils.lte(version, currVersion)) continue;
+      if (versionUtils.gt(version, newVersion)) break;
 
       renamers.push(new VersionRenamer(database[version]));
     }
@@ -129,55 +122,6 @@ export class Renamer {
       }
       return match;
     });
-  }
-
-  /**
-   * Coerces the given string into a valid version (semver compliant or
-   * develop).
-   * @param {string} version  The version to coerce.
-   * @return  {string} The coerced version.
-   */
-  static coerceVersion(version) {
-    return version === DEV_VERSION ?
-        version : semver.coerce(version).toString();
-  }
-
-  /**
-   * Compares the given versions. Compatible with Array.sort.
-   * @param {string} v1 The first version to compare.
-   * @param {string} v2 The second version to compare.
-   * @return {number} A number indicating the relationship between the versions.
-   */
-  static compareVersions(v1, v2) {
-    if (v2 === DEV_VERSION) return -1;
-    if (v1 === DEV_VERSION) return 1;
-    return semver.compare(v1, v2);
-  }
-
-  /**
-   * Returns true if the first version is less than or equal to the second
-   * version.
-   * @param {string} v1 The version to compare.
-   * @param {string} v2 The version to compare against.
-   * @return {boolean} True if the first version is less than or equal to the
-   *     second one.
-   */
-  static lte(v1, v2) {
-    if (v2 === DEV_VERSION) return true;
-    if (v1 === DEV_VERSION) return false;
-    return semver.lte(v1, v2);
-  }
-
-  /**
-   * Returns true if the first version is greater than the second version.
-   * @param {string} v1 The version to compare.
-   * @param {string} v2 The version to compare against.
-   * @return {boolean} True if the first version is greater than the second one.
-   */
-  static gt(v1, v2) {
-    if (v2 === DEV_VERSION) return false;
-    if (v1 === DEV_VERSION) return true;
-    return semver.gtr(v1, `^${v2}`);
   }
 }
 

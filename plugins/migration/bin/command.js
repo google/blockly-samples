@@ -26,7 +26,8 @@ const ROOT_COMMAND = new Command(SCRIPT_NAME)
         '-v, --version',
         'output the version of this script')
     .usage(`${chalk.blue('<migration>')} ` +
-        `${chalk.green('<from-version> <to-version>')} [options] ` +
+        `${chalk.green('--from <from-version>')}` +
+        '[--to <to-version>] [options] ' +
         `${chalk.green('<file...>')}`);
 
 const HELP_COMMAND = new Command('help')
@@ -93,11 +94,29 @@ export function createAndAddSubCommand(name, targetVersionRange, description) {
 
   const subCommand = new Command(name)
       .description(description)
-      .argument('<from-version>', 'Blockly version to migrate from')
-      .argument('<to-version>', 'Blockly version to migrate to')
+      .requiredOption(
+          '--from <from-version>', 'Blockly version to migrate from')
+      .option('--to <to-version>', 'Blockly version to migrate to')
       .argument('<file...>', 'Files to migrate');
   ROOT_COMMAND.addCommand(subCommand);
   return subCommand;
+}
+
+/**
+ * Extracts the from-version, to-version, and file names from the options and
+ * arguments.
+ * @param {Command} command The command to extract the info from.
+ * @return {{
+ *   fromVersion: string,
+ *   toVersion:string,
+ *   fileNames: !Array<string>}} The required info.
+ */
+export function extractRequiredInfo(command) {
+  return {
+    fromVersion: command.opts().from,
+    toVersion: command.opts().to || 'latest',
+    fileNames: command.processedArgs[0],
+  };
 }
 
 /**
