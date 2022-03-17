@@ -54,14 +54,13 @@ const migrations = [];
  * @param {string} version The version to show migrations for.
  */
 function showVersionHelp(version) {
-  const targetRange = `${version} - ${version}`;
-  if (!semver.validRange(targetRange)) {
+  if (!semver.validRange(version)) {
     console.log(`Invalid version: ${version}`);
     return;
   }
 
   const ranges = migrations.map((migration) => migration.range);
-  if (!ranges.some((range) => semver.intersects(range, targetRange))) {
+  if (!ranges.some((range) => semver.intersects(range, version))) {
     console.log(`No migrations found for version ${version}`);
     return;
   }
@@ -69,7 +68,7 @@ function showVersionHelp(version) {
   console.log(`Migrations for version ${version}:`);
 
   for (const migration of migrations) {
-    if (!semver.intersects(migration.range, targetRange)) continue;
+    if (!semver.intersects(migration.range, version)) continue;
     console.log(`  ${chalk.blue(migration.name)}, ${migration.description}`);
   }
 }
@@ -127,7 +126,8 @@ export function extractRequiredInfo(command) {
 
 /**
  * Runs the root command with the current command line arguments and options.
- * @param {!Array<string>=} args The array of string arguments to parse.
+ * @param {!Array<string>=} args The array of string arguments to parse. If not
+ *     provided process.argv will be used.
  */
 export async function parseAndRunMigrations(args = undefined) {
   // Use parseAsync for async commands like rename (which fetches a database).

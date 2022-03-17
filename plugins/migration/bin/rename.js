@@ -34,7 +34,9 @@ export const rename = createSubCommand(
         const newContents = renamer.rename(contents);
         const i = this.opts().i;
         if (i) {
-          if (typeof i == 'string') writeFileSync(name + i, contents);
+          if (typeof i == 'string') {
+            writeFileSync(name + i, contents);
+          }
           writeFileSync(name, newContents);
           process.stderr.write(`Migrated renamings in ${name}`);
         } else {
@@ -45,27 +47,21 @@ export const rename = createSubCommand(
 
 /**
  * Gets the database of renames.
- * @return {!Promise<Object>} The database of renames as an object.
+ * @return {!Promise<!Object>} The database of renames as an object.
  */
 export async function getDatabase() {
-  const response = await fetch(DATABASE_URL);
-  const body = await response.text();
-  return JSON5.parse(body);
-}
-
-/**
- * Upgrades pieces of the Blockly API that have been renamed by modifying
- * developers' local files.
- * @param {!Object} database The database of renames.
- * @param {string} currVersion The version to migrate from.
- * @param {string} newVersion The version to migrate to.
- * @param {!Array<string>} strings The strings to apply the renamings in.
- * @return {!Array<string>} The strings with renamings applied.
- * @deprecated Use Renamer instance instead.
- */
-export function doRenamings(database, currVersion, newVersion, strings) {
-  const renamer = new Renamer(database, currVersion, newVersion);
-  return strings.map((str) => renamer.rename(str));
+  try {
+    const response = await fetch(DATABASE_URL);
+    const body = await response.text();
+    return JSON5.parse(body);
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      process.stderr.write('Unable to parse the renamings database. Please ' +
+          'report the issue at github.com/google/blockly/issues/new/choose\n');
+      process.exit();
+    }
+    throw e;
+  }
 }
 
 /**
@@ -113,7 +109,7 @@ export class Renamer {
    * Applies the given renamings directly to a JavaScript string
    * (presumably the contents of a developer's file).
    * @param {string} str The string to apply the renamings in.
-   * @return {string} The file with renamings applied.
+   * @return {string} The string with renamings applied.
    */
   rename(str) {
     return str.replace(dottedIdentifier, (match) => {
