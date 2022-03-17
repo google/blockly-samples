@@ -12,7 +12,7 @@
 
 import {createSubCommand, extractRequiredInfo} from './command.js';
 import fetch from 'node-fetch';
-import {readFileSync, writeFileSync} from 'fs';
+import {readFileSync, statSync, writeFileSync} from 'fs';
 import * as versionUtils from './versions.js';
 import JSON5 from 'json5';
 
@@ -30,17 +30,18 @@ export const rename = createSubCommand(
 
       const renamer = new Renamer(await getDatabase(), fromVersion, toVersion);
       fileNames.forEach((name) => {
+        if (statSync(name).isDirectory()) return;
         const contents = readFileSync(name, 'utf8');
         const newContents = renamer.rename(contents);
-        const i = this.opts().i;
-        if (i) {
+        const inPlace = this.opts().inPlace;
+        if (inPlace) {
           if (typeof i == 'string') {
-            writeFileSync(name + i, contents);
+            writeFileSync(name + inPlace, contents);
           }
           writeFileSync(name, newContents);
-          process.stderr.write(`Migrated renamings in ${name}`);
+          process.stderr.write(`Migrated renamings in ${name}\n`);
         } else {
-          process.stdout.write(newContents);
+          process.stdout.write(newContents + '\n');
         }
       });
     });
@@ -178,16 +179,17 @@ class VersionRenamer {
     for (const entry of this.renamings_) {
       if (str.startsWith(entry.old)) {
         if (entry.get || entry.set) {
-          process.stderr.write(`NOTE: ${entry.old} has been removed.`);
+          process.stderr.write(`NOTE: ${entry.old} has been removed.\n`);
           if (entry.get) {
             process.stderr.write(`    - Call ${entry.get}() instead of ` +
-                'reading it.');
+                'reading it.\n');
           }
           if (entry.set) {
             process.stderr.write(`    - Call ${entry.set}(/* new value */) ` +
-                'instead of setting it.');
+                'instead of setting it.\n');
           }
-          process.stderr.write('You will need to manually verify this update.');
+          process.stderr.write(
+              'You will need to manually verify this update.\n');
           return (entry.get || entry.set) + '()' + str.slice(entry.old.length);
         }
         return entry.new + str.slice(entry.old.length);
