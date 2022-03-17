@@ -114,7 +114,7 @@ However, if you run the below commands in your console you will see that
 your toolbox is now using the `CustomCategory` class.
 
 ```js
-var toolbox = Blockly.getMainWorkspace().getToolbox();
+var toolbox = Blockly.common.getMainWorkspace().getToolbox();
 toolbox.getToolboxItems()[0];
 ```
 

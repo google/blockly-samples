@@ -68,7 +68,7 @@ The blocks are:
 Copy this code into `custom_generator.js` to define the two custom blocks.
 
 ```js
-Blockly.defineBlocksWithJsonArray([{
+Blockly.common.defineBlocksWithJsonArray([{
   "type": "object",
   "message0": "{ %1 %2 }",
   "args0": [
