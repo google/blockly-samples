@@ -13,7 +13,7 @@
  */
 CustomDialog = {};
 
-/** Override Blockly.dialog.setAlert()() with custom implementation. */
+/** Override Blockly.dialog.setAlert() with custom implementation. */
 Blockly.dialog.setAlert(function(message, callback) {
   console.log('Alert: ' + message);
   CustomDialog.show('Alert', message, {
@@ -21,7 +21,7 @@ Blockly.dialog.setAlert(function(message, callback) {
   });
 });
 
-/** Override Blockly.dialog.setConfirm()() with custom implementation. */
+/** Override Blockly.dialog.setConfirm() with custom implementation. */
 Blockly.dialog.setConfirm(function(message, callback) {
   console.log('Confirm: ' + message);
   CustomDialog.show('Confirm', message, {
@@ -36,7 +36,7 @@ Blockly.dialog.setConfirm(function(message, callback) {
   });
 });
 
-/** Override Blockly.dialog.setPrompt()() with custom implementation. */
+/** Override Blockly.dialog.setPrompt() with custom implementation. */
 Blockly.dialog.setPrompt(function(message, defaultValue, callback) {
   console.log('Prompt: ' + message);
   CustomDialog.show('Prompt', message, {
