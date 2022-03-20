@@ -7,7 +7,7 @@ import * as Blockly from 'blockly/core';
 import {convertBlockToSaveInfo} from './utility';
 /**
  * A Blockly plugin that adds context menu items and keyboard shortcuts
- * to allow users to copy and paste a block between tabs
+ * to allow users to copy and paste a block between tabs.
  */
 export class CopyByStorage {
   /**
@@ -21,10 +21,6 @@ export class CopyByStorage {
   init({
     contextMenu = true,
     shortcut = true,
-  } = {
-    contextMenu: true,
-    shortcut: true,
-    unregisterDuplicate: true,
   }) {
     if (contextMenu) {
       // Register the menus
@@ -46,6 +42,7 @@ export class CopyByStorage {
       this.blockPasteFromStorageShortcut();
     }
   }
+
   /**
    * Set the copy command to context menu
    */
@@ -74,6 +71,7 @@ export class CopyByStorage {
     };
     Blockly.ContextMenuRegistry.registry.register(copyToStorageOption);
   }
+
   /**
    * Set the paste command to context menu
    */
@@ -108,6 +106,7 @@ export class CopyByStorage {
     };
     Blockly.ContextMenuRegistry.registry.register(pasteFromStorageOption);
   }
+
   /**
    * Set the copy command to keybord shortcut
    */
@@ -149,6 +148,7 @@ export class CopyByStorage {
         Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.META]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaC, copyShortcut.name);
   }
+
   /**
    * Set the cut command to keybord shortcut
    */
@@ -192,6 +192,7 @@ export class CopyByStorage {
         Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.META]);
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaX, cutShortcut.name);
   }
+
   /**
    * Set the paste command to keybord shortcut
    */
