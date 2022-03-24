@@ -21,6 +21,9 @@ export class CopyByStorage {
   init({
     contextMenu = true,
     shortcut = true,
+  } = {
+    contextMenu: true,
+    shortcut: true,
   }) {
     if (contextMenu) {
       // Register the menus
@@ -53,7 +56,7 @@ export class CopyByStorage {
         if (Blockly.Msg['COPYBYSTORAGE_COPY']) {
           return Blockly.Msg['COPYBYSTORAGE_COPY'];
         }
-        return 'copy';
+        return 'Copy';
       },
       preconditionFn: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
@@ -82,7 +85,7 @@ export class CopyByStorage {
         if (Blockly.Msg['COPYBYSTORAGE_PASTE']) {
           return Blockly.Msg['COPYBYSTORAGE_PASTE'];
         }
-        return 'paste';
+        return 'Paste';
       },
       preconditionFn: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
@@ -98,7 +101,7 @@ export class CopyByStorage {
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
         Blockly.serialization.blocks.append(
-            saveInfo['saveInfo'], scope.workspace);
+            saveInfo['saveInfo'], scope.workspace, {recordUndo: true});
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
       id: 'blockPasteFromStorage',
@@ -218,7 +221,7 @@ export class CopyByStorage {
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
         Blockly.serialization.blocks.append(
-            saveInfo['saveInfo'], workspace);
+            saveInfo['saveInfo'], workspace, {recordUndo: true});
         return true;
       },
     };
