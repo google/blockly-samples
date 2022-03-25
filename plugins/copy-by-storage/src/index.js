@@ -205,13 +205,13 @@ export class CopyByStorage {
       name: 'paste',
       preconditionFn: function(workspace) {
         if (workspace.options.readOnly || Blockly.Gesture.inProgress()) {
-          return 'disabled';
+          return false;
         }
         const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
         if (!copyData || !workspace.isCapacityAvailable(copyData.typeCounts)) {
-          return 'disabled';
+          return false;
         }
-        return 'enabled';
+        return true;
       },
       callback: function(workspace, e) {
         // Prevent the default copy behavior,
