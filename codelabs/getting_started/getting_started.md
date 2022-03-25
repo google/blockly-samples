@@ -227,7 +227,7 @@ Create a JS file to define a new "play sound" block:
 1. Add the following code to `sound_blocks.js`:
 
 ```js
-Blockly.defineBlocksWithJsonArray([
+Blockly.common.defineBlocksWithJsonArray([
   {
     "type": "play_sound",
     "message0": "Play %1",
@@ -309,7 +309,7 @@ Once the button behavior is defined by the user, it needs to be saved for later 
 Open `scripts/main.js`. Add the following code to the `save()` method:
 
 ```js
-button.blocklySave = Blockly.serialization.workspaces.save(Blockly.getMainWorkspace());
+button.blocklySave = Blockly.serialization.workspaces.save(Blockly.common.getMainWorkspace());
 ```
 
 `workspaces.save` takes the Blockly workspace, exports its state to a JavaScript object and stores it in a `blocklySave` property on the button. This way the exported state for the block sequence gets associated with a particular button.
@@ -322,7 +322,7 @@ In the `scripts/main.js `file, add `loadWorkspace` function:
 
 ```
 function loadWorkspace(button) {
-  const workspace = Blockly.getMainWorkspace();
+  const workspace = Blockly.common.getMainWorkspace();
   if (button.blocklySave) {
     Blockly.serialization.workspaces.load(button.blocklySave, workspace);
   }
@@ -392,7 +392,7 @@ Next, you need to generate the code out of that workspace, which you can do with
 The user's code will consist of many `MusicMaker.queueSound` calls. At the end of our generated script, add `MusicMaker.play `call to play all the sounds added to the queue.
 
 ```js
-let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+let code = Blockly.JavaScript.workspaceToCode(Blockly.common.getMainWorkspace());
 code += 'MusicMaker.play();';
 ```
 
@@ -413,7 +413,7 @@ The end result should look like this:
 ```js
 function handlePlay(event) {
   loadWorkspace(event.target);
-  let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+  let code = Blockly.JavaScript.workspaceToCode(Blockly.common.getMainWorkspace());
   code += 'MusicMaker.play();';
   try {
     eval(code);
