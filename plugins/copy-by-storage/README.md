@@ -50,8 +50,8 @@ Blockly.ContextMenuRegistry.registry.getItem('blockPasteFromStorage').weight = 3
 You can change the displayed words.
 ### English
 ```js
-Blockly.Msg['COPYBYSTORAGE_COPY'] = 'copy';
-Blockly.Msg['COPYBYSTORAGE_PASTE'] = 'paste';
+Blockly.Msg['COPYBYSTORAGE_COPY'] = 'Copy';
+Blockly.Msg['COPYBYSTORAGE_PASTE'] = 'Paste';
 ```
 
 ### Japanese
