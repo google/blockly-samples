@@ -4,14 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as showdown from 'showdown';
-
 /**
- * This example plugin parses markdown in tooltips and renders the formatted
- * tooltips. It is only an example of how to use the customTooltip API and
- * should not be copied wholesale.
+ * This example plugin can show images in tooltips. It is only an example of how
+ * to use the customTooltip API and should not be copied wholesale.
  */
-export class MarkdownTooltips {
+export class CustomTooltips {
   /**
    * Initialize the plugin.
    */
@@ -21,16 +18,18 @@ export class MarkdownTooltips {
     // the content into. The second argument is the element to show the tooltip
     // for.
     const customTooltip = function(div, element) {
-      // In this example, the tooltip we set on an element such as block may
-      // contain markdown-formatted text.
-      let tip = Blockly.Tooltip.getTooltipOfObject(element);
-      tip = new showdown.Converter().makeHtml(tip);
-      const child = document.createElement('div');
-      // Warning: Setting innerHTML is dangerous!
-      // Accepting untrusted HTML leaves you vulnerable to XSS attacks.
-      // To do this in production, use an HTML sanitization library.
-      child.innerHTML = tip;
-      div.appendChild(child);
+      const tip = Blockly.Tooltip.getTooltipOfObject(element);
+      const text = document.createElement('div');
+      text.textContent = tip;
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      if (element.tooltipImg) {
+        const img = document.createElement('img');
+        img.setAttribute('src', element.tooltipImg);
+        container.appendChild(img);
+      }
+      container.appendChild(text);
+      div.appendChild(container);
     };
     // Register the function in the Blockly.Tooltip so that Blockly calls it
     // when needed.

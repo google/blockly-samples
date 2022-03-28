@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {createPlayground} from '@blockly/dev-tools';
-import {MarkdownTooltips} from '../src/index';
+import {CustomTooltips} from '../src/index';
 
 /**
  * Create a workspace.
@@ -22,7 +22,7 @@ function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   // Initialize the plugin.
-  const plugin = new MarkdownTooltips(workspace);
+  const plugin = new CustomTooltips(workspace);
   plugin.init();
 
   return workspace;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
       this.appendDummyInput()
           .appendField('This is a test block.');
       this.setColour(150);
-      this.setTooltip('This is **formatted**! Look how *great* it is!');
+      this.setTooltip('This is a regular tooltip.');
       this.setHelpUrl('');
     },
   };
@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
       this.appendDummyInput()
           .appendField('This is a different test block.');
       this.setColour(150);
-      this.setTooltip('![lightbulb](lightbulb.png) Tip: Use this block.');
+      this.setTooltip('Tip: This tooltip has an image.');
+      // We will check for this property in our custom rendering code.
+      this.tooltipImg = 'lightbulb.png';
       this.setHelpUrl('');
     },
   };
