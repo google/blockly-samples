@@ -28,8 +28,8 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
  */
 function checkLicenses() {
   const checker = new jsgl.LicenseChecker({
-      // dev: true,
-      // verbose: false,
+    // dev: true,
+    // verbose: false,
   });
   checker.setDefaultHandlers();
   const pluginsDir = 'plugins';
@@ -162,7 +162,7 @@ function preparePlugin(pluginDir) {
           {
             label: 'README',
             link: 'README',
-          }
+          },
         ],
       })))
       .pipe(gulp.src(
@@ -219,9 +219,9 @@ function prepareExample(baseDir, exampleDir, done) {
   const assets = blocklyDemoConfig.files.filter((f) => !pageRegex.test(f));
 
   let stream = gulp.src(
-                       pages.map((f) => path.join(baseDir, exampleDir, f)),
-                       {base: baseDir, allowEmpty: true})
-                   .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
+      pages.map((f) => path.join(baseDir, exampleDir, f)),
+      {base: baseDir, allowEmpty: true})
+      .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
   if (assets.length) {
     stream = stream.pipe(gulp.src(
         assets.map((f) => path.join(baseDir, exampleDir, f)),
@@ -278,7 +278,7 @@ function deployToGhPages(repo) {
 function preparePluginsForLocal(isBeta) {
   return (done) => {
     if (isBeta) {
-      execSync(`lerna exec -- npm install blockly@beta`, {stdio: 'inherit'});
+      execSync(`lerna add blockly@beta --dev`, {stdio: 'inherit'});
     }
     execSync(`npm run boot`, {stdio: 'inherit'});
     // Bundles all the plugins.
@@ -298,7 +298,7 @@ function prepareExamplesForLocal(isBeta) {
     const examplesDirectory = 'examples';
     if (isBeta) {
       execSync(
-          `lerna exec -- npm install blockly@beta`,
+          `lerna add blockly@beta`,
           {cwd: examplesDirectory, stdio: 'inherit'});
     }
     execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
