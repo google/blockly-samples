@@ -514,18 +514,22 @@ function registerEditorCommands(editor, playground) {
     const workspace = playground.getWorkspace();
     try {
       Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
-    } catch(e) {
+    } catch (e) {
       // If this fails that's fine.
+      return false;
     }
+    return true;
   };
   const loadJson = () => {
     const json = editor.getModel().getValue();
     const workspace = playground.getWorkspace();
     try {
       Blockly.serialization.workspaces.load(JSON.parse(json), workspace);
-    } catch(e) {
+    } catch (e) {
       // If this fails that's fine.
+      return false;
     }
+    return true;
   };
   const save = () => {
     playground.getCurrentTab().generate();
@@ -555,7 +559,7 @@ function registerEditorCommands(editor, playground) {
     contextMenuOrder: 1,
     run: save,
   });
-  // Add Clean XML action (only available on thee JSON tab).
+  // Add Clean XML action (only available on the XML tab).
   editor.addAction({
     id: 'clean-xml',
     label: 'Clean XML',
@@ -570,7 +574,7 @@ function registerEditorCommands(editor, playground) {
       editor.setSelection(new window.monaco.Range(0, 0, 0, 0));
     },
   });
-  // Add JSON Import action (only available on the XML tab).
+  // Add JSON Import action (only available on the JSON tab).
   editor.addAction({
     id: 'import-json',
     label: 'Import from JSON',
@@ -600,8 +604,7 @@ function registerEditorCommands(editor, playground) {
       save();
       e.preventDefault();
     } else if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.ENTER) {
-      loadXml();
-      loadJson();
+      if (!loadJson()) loadXml();
       e.preventDefault();
     }
   });
