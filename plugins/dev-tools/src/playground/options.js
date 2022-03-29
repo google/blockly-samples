@@ -132,13 +132,13 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
 
   const onChangeInternal = () => {
     // Serialize current workspace state.
-    const state = Blockly.Xml.workspaceToDom(workspace);
+    const state = Blockly.serialization.workspaces.save(workspace);
     // Dispose of the current workspace
     workspace.dispose();
     // Create a new workspace with options.
     workspace = genWorkspace(saveOptions);
     // Deserialize state into workspace.
-    Blockly.Xml.domToWorkspace(state, workspace);
+    Blockly.serialization.workspaces.load(state, workspace);
     // Resize the gui.
     if (resizeEnabled) {
       onResize();
