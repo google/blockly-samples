@@ -196,7 +196,7 @@ export function createPlayground(
           const isJson = tab.state.name == 'JSON';
           editor.setModel(currentTab.state.model);
           editor.updateOptions({
-            readOnly: !isXml,
+            readOnly: !isXml && !isJson,
             wordWrap: false,
           });
 
