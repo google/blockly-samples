@@ -143,23 +143,25 @@ class VersionRenamer {
     for (const module of entry) {
       // TODO: switch all of the || to ?? if/when we drop Node12.
       const oldModulePath = module.oldPath || module.oldName;
-      const newExport = module.newExport ? '.' + module.newExport : '';
+      const newExport = module.newExport ? `.${module.newExport}` : '';
       const newModulePath =
-          module.newPath || (module.newName || oldModulePath) + newExport;
+          module.newPath || `${module.newName || oldModulePath}${newExport}`;
 
       if (module.exports) {
         for (const [oldExportName, info] of Object.entries(module.exports)) {
           const oldExportPath =
               info.oldPath || `${oldModulePath}.${oldExportName}`;
-          const newBase = (info.newModule || newModulePath) + '.';
+          const newBase = `${info.newModule || newModulePath}.`;
           const renaming = {old: oldExportPath};
           if (info.newPath) { // If newPath provided just use that.
             renaming.new = info.newPath;
           } else if (info.getMethod || info.setMethod) {
-            renaming.get = info.getMethod ? newBase + info.getMethod : null;
-            renaming.set = info.setMethod ? newBase + info.setMethod : null;
+            renaming.get = info.getMethod ?
+                `${newBase}${info.getMethod}` : null;
+            renaming.set = info.setMethod ?
+                `${newBase}${info.setMethod}` : null;
           } else {
-            renaming.new = newBase + (info.newExport || oldExportName);
+            renaming.new = `${newBase}${info.newExport || oldExportName}`;
           }
           this.renamings_.push(renaming);
         }
@@ -203,7 +205,7 @@ class VersionRenamer {
  * RegExp matching a dotted identifier path like "foo.bar.baz".  Note
  * that this only matches such paths containing at least one dot, as
  * we expect to be looking for string like "Blockly.<something>" and
- * don't want to try to rename every singe variable and every word
+ * don't want to try to rename every single variable and every word
  * that appears in each comment!
  */
 const dottedIdentifier =

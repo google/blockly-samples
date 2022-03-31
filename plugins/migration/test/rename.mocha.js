@@ -366,7 +366,7 @@ const bar = module.newNameForExistingExport;`;
       (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
       assert.isTrue(this.errSpy.calledWith('    - Call module.setExport(' +
-          '/* new value */) instead of setting it.'));
+          '/* new value */) instead of setting it.\n'));
     });
 
     test('renamed exports in renamed modules get properly renamed', function() {
