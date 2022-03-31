@@ -8,6 +8,6 @@
         "start": "node index.js"
     },
     "dependencies": {
-        "blockly": "3.20200924.3 - 8"
+        "blockly": "^3.20200924.3"
     }
 }
