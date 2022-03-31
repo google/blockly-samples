@@ -42,10 +42,10 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.14",
-    "blockly": "^7.20211209.0"
+    "blockly": "^8.0.0"
   },
   "peerDependencies": {
-    "blockly": "3.20200123.0 - 7"
+    "blockly": "3.20200123.0 - 8"
   },
   "publishConfig": {
     "access": "public",
