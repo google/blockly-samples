@@ -66,6 +66,8 @@ workspace search support.
 zoom-to-fit control to the workspace.
 - [``@blockly/plugin-scroll-options``](scroll-options/): A Blockly plugin that
 adds additional scrolling features.
+- [``@blockly/plugin-copy-by-storage``](cross-tab-copy-paste/): A Blockly plugin
+that allows a user to copy and paste blocks between tabs.
 
 ### Serializers
 

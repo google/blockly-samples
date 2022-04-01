@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {CopyByStorage} from '../src/index';
+import {CrossTabCopyPaste} from '../src/index';
 
 /**
  * Create a workspace.
@@ -29,6 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
-  const plugin = new CopyByStorage();
-  plugin.init();
+  const copyPastePlugin = new CrossTabCopyPaste();
+  copyPastePlugin.init();
 });

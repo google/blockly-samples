@@ -45,7 +45,7 @@
     "blockly": "^8.0.0"
   },
   "peerDependencies": {
-    "blockly": "^8.0.0"
+    "blockly": "^7 - 8"
   },
   "publishConfig": {
     "access": "public",
@@ -58,8 +58,6 @@
     "node": ">=8.17.0"
   },
   "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
+    "defaults"
   ]
 }
