@@ -2,7 +2,6 @@
   "name": "@blockly/plugin-copy-by-storage",
   "version": "1.0.1",
   "description": "Allows you to copy blocks with cross-tab.",
-  "private": true,
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
