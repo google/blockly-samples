@@ -750,14 +750,14 @@ const BACKPACK_SVG_DATAURI =
     '0xNiwxM3YxdjAuNSBjMCwwLjI4LTAuMjIsMC41LTAuNSwwLjVTMTUsMTQuNzgsMTUsMTQuNV' +
     'YxNHYtMUg4di0xaDdoMVYxM3oiLz48L2c+PC9nPjwvc3ZnPg==';
 
-Blockly.Css.register([
-  `.blocklyBackpack {
-    opacity: .4;
-  }
-  .blocklyBackpackDarken {
-    opacity: .6;
-  }
-  .blocklyBackpack:active {
-    opacity: .8;
-  }`,
-]);
+Blockly.Css.register(
+    `.blocklyBackpack {
+      opacity: .4;
+    }
+    .blocklyBackpackDarken {
+      opacity: .6;
+    }
+    .blocklyBackpack:active {
+      opacity: .8;
+    }`,
+);
