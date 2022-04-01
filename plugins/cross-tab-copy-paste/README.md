@@ -1,4 +1,4 @@
-# @blockly/plugin-copy-by-storage [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-cross-tab-copy-paste [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds context menu items and keyboard shortcuts to allow users to copy and paste a block between tabs.
 
@@ -6,19 +6,19 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds context menu
 
 ### Yarn
 ```
-yarn add @blockly/plugin-cross-tab-copy
+yarn add @blockly/plugin-cross-tab-copy-paste
 ```
 
 ### npm
 ```
-npm install @blockly/plugin-copy-by-storage --save
+npm install @blockly/plugin-cross-tab-copy-paste --save
 ```
 
 ## Usage
 
 ```js
 import * as Blockly from 'blockly';
-import {CrossTabyCopyPaste} from '@blockly/plugin-copy-by-storage';
+import {CrossTabyCopyPaste} from '@blockly/plugin-cross-tab-copy-paste';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
