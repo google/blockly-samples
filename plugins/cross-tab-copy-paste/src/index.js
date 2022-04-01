@@ -3,17 +3,20 @@
  * Copyright 2022 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
 import * as Blockly from 'blockly/core';
 import {convertBlockToSaveInfo} from './utility';
+
+
 /**
  * A Blockly plugin that adds context menu items and keyboard shortcuts
  * to allow users to copy and paste a block between tabs.
  */
-export class CopyByStorage {
+export class CrossTabCopyPaste {
   /**
-   * Set the copyByStorage function.
-   * @param {{contextMenu: boolean,
-   * shortcut: boolean}} options
+   * Initializes the cross tab copy paste plugin. If no options are selected
+   * then both context menu items and keyboard shortcuts are added.
+   * @param {{contextMenu: boolean, shortcut: boolean}} options
    * `contextMenu` Register copy and paste in the context menu.
    * `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
    * in the shortcut.
@@ -47,14 +50,14 @@ export class CopyByStorage {
   }
 
   /**
-   * Set the copy command to context menu
+   * Adds a copy command to the block context menu.
    */
   blockCopyToStorageContextMenu() {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const copyToStorageOption = {
       displayText: function() {
-        if (Blockly.Msg['COPYBYSTORAGE_COPY']) {
-          return Blockly.Msg['COPYBYSTORAGE_COPY'];
+        if (Blockly.Msg['CROSS_TAB_COPY']) {
+          return Blockly.Msg['CROSS_TAB_COPY'];
         }
         return 'Copy';
       },
@@ -76,14 +79,14 @@ export class CopyByStorage {
   }
 
   /**
-   * Set the paste command to context menu
+   * Adds a paste command to the block context menu.
    */
   blockPasteFromStorageContextMenu() {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const pasteFromStorageOption = {
       displayText: function() {
-        if (Blockly.Msg['COPYBYSTORAGE_PASTE']) {
-          return Blockly.Msg['COPYBYSTORAGE_PASTE'];
+        if (Blockly.Msg['CROSS_TAB_PASTE']) {
+          return Blockly.Msg['CROSS_TAB_PASTE'];
         }
         return 'Paste';
       },
@@ -100,8 +103,7 @@ export class CopyByStorage {
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
-        Blockly.serialization.blocks.append(
-            saveInfo['saveInfo'], scope.workspace, {recordUndo: true});
+        scope.workspace.paste(saveInfo['saveInfo']);
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
       id: 'blockPasteFromStorage',
@@ -111,7 +113,8 @@ export class CopyByStorage {
   }
 
   /**
-   * Set the copy command to keybord shortcut
+   * Adds a keyboard shortcut that will store copy information for a block
+   * in localStorage.
    */
   blockCopyToStorageShortcut() {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
@@ -153,7 +156,8 @@ export class CopyByStorage {
   }
 
   /**
-   * Set the cut command to keybord shortcut
+   * Adds a keyboard shortcut that will store copy information for a block
+   * in local storage and delete the block.
    */
   blockCutToStorageShortcut() {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
@@ -197,7 +201,7 @@ export class CopyByStorage {
   }
 
   /**
-   * Set the paste command to keybord shortcut
+   * Adds a keyboard shortcut that will paste the block stored in localStorage.
    */
   blockPasteFromStorageShortcut() {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
@@ -220,8 +224,7 @@ export class CopyByStorage {
         e.preventDefault();
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
-        Blockly.serialization.blocks.append(
-            saveInfo['saveInfo'], workspace, {recordUndo: true});
+        workspace.paste(saveInfo['saveInfo']);
         return true;
       },
     };

@@ -1,4 +1,4 @@
-# @blockly/plugin-copy-by-storage [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/plugin-cross-tab-copy-paste [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds context menu items and keyboard shortcuts to allow users to copy and paste a block between tabs.
 
@@ -6,19 +6,19 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds context menu
 
 ### Yarn
 ```
-yarn add @blockly/plugin-copy-by-storage
+yarn add @blockly/plugin-cross-tab-copy-paste
 ```
 
 ### npm
 ```
-npm install @blockly/plugin-copy-by-storage --save
+npm install @blockly/plugin-cross-tab-copy-paste --save
 ```
 
 ## Usage
 
 ```js
 import * as Blockly from 'blockly';
-import {CopyByStorage} from '@blockly/plugin-copy-by-storage';
+import {CrossTabyCopyPaste} from '@blockly/plugin-cross-tab-copy-paste';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -31,7 +31,7 @@ const options = {
 }
 
 // Initialize plugin.
-const plugin = new CopyByStorage();
+const plugin = new CrossTabyCopyPaste();
 plugin.init(options);
 
 // optional: Remove the duplication command from Blockly's context menu.
@@ -50,14 +50,14 @@ Blockly.ContextMenuRegistry.registry.getItem('blockPasteFromStorage').weight = 3
 You can change the displayed words.
 ### English
 ```js
-Blockly.Msg['COPYBYSTORAGE_COPY'] = 'Copy';
-Blockly.Msg['COPYBYSTORAGE_PASTE'] = 'Paste';
+Blockly.Msg['CROSS_TAB_COPY'] = 'Copy';
+Blockly.Msg['CROSS_TAB_PASTE'] = 'Paste';
 ```
 
 ### Japanese
 ```js
-Blockly.Msg['COPYBYSTORAGE_COPY'] = 'コピー';
-Blockly.Msg['COPYBYSTORAGE_PASTE'] = '貼り付け';
+Blockly.Msg['CROSS_TAB_COPY'] = 'コピー';
+Blockly.Msg['CROSS_TAB_PASTE'] = '貼り付け';
 ```
 
 ## License

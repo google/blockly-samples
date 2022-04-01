@@ -1,8 +1,7 @@
 {
-  "name": "@blockly/plugin-copy-by-storage",
+  "name": "@blockly/plugin-cross-tab-copy-paste",
   "version": "1.0.1",
   "description": "Allows you to copy blocks with cross-tab.",
-  "private": true,
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
@@ -21,14 +20,14 @@
     "blockly",
     "blockly-plugin"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/copy-by-storage#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/cross-tab-copy-paste#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/copy-by-storage"
+    "directory": "plugins/cross-tab-copy-paste"
   },
   "license": "Apache-2.0",
   "directories": {
@@ -45,7 +44,7 @@
     "blockly": "^8.0.0"
   },
   "peerDependencies": {
-    "blockly": "^8.0.0"
+    "blockly": "^7 - 8"
   },
   "publishConfig": {
     "access": "public",
@@ -58,8 +57,6 @@
     "node": ">=8.17.0"
   },
   "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
+    "defaults"
   ]
 }
