@@ -104,8 +104,6 @@ export class CrossTabCopyPaste {
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
         scope.workspace.paste(saveInfo['saveInfo']);
-        // Blockly.serialization.blocks.append(
-        //     saveInfo['saveInfo'], scope.workspace, {recordUndo: true});
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
       id: 'blockPasteFromStorage',
