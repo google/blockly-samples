@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Step Execution with JS-Interpreter</title>
+  <script src="toolbox.js"></script>
+  <!-- acorn_interpreter.js is copied from the JS-Interpreter project
+    without modification. -->
   <script src="acorn_interpreter.js"></script>
+
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/javascript_compressed.js"></script>
@@ -29,7 +33,7 @@
   and set the variable <code>highlightPause</code> to <code>true</code>.</p>
 
   <p>Each press of the "Step JavaScript" button will run the interpreter one
-  step until the <code>highlightPause</code> is true.
+  step after another until <code>highlightPause</code> is true.
   That is, until <code>highlightBlock()</code> has highlighted the block that
   will be executed on the next step.</p>
 
@@ -46,48 +50,6 @@
         style="display: inline-block; height: 480px; width: 38%;">
     </textarea>
   </div>
-
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
-      <block type="controls_if"></block>
-      <block type="logic_compare"></block>
-      <block type="logic_operation"></block>
-      <block type="logic_negate"></block>
-      <block type="logic_boolean"></block>
-    </category>
-    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
-      <block type="controls_repeat_ext">
-        <value name="TIMES">
-          <block type="math_number">
-            <field name="NUM">10</field>
-          </block>
-        </value>
-      </block>
-      <block type="controls_whileUntil"></block>
-    </category>
-    <category name="Math" colour="%{BKY_MATH_HUE}">
-      <block type="math_number">
-        <field name="NUM">123</field>
-      </block>
-      <block type="math_arithmetic"></block>
-      <block type="math_single"></block>
-    </category>
-    <category name="Text" colour="%{BKY_TEXTS_HUE}">
-      <block type="text"></block>
-      <block type="text_length"></block>
-      <block type="text_print"></block>
-      <block type="text_prompt_ext">
-        <value name="TEXT">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <sep></sep>
-    <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
-    </category>
-    <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
-    </category>
-  </xml>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
     <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
@@ -139,9 +101,10 @@
   </xml>
 
   <script>
+
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
-         toolbox: document.getElementById('toolbox')});
+         toolbox: toolboxJson});
     Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
     Blockly.JavaScript.addReservedWords('highlightBlock');
     Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
@@ -153,29 +116,30 @@
 
     function initApi(interpreter, globalObject) {
       // Add an API function for the alert() block, generated for "text_print" blocks.
-      var wrapper = function alert(text) {
+      var wrapperAlert = function alert(text) {
         text = arguments.length ? text : '';
         outputArea.value += '\n' + text;
       };
       interpreter.setProperty(globalObject, 'alert',
-          interpreter.createNativeFunction(wrapper));
+          interpreter.createNativeFunction(wrapperAlert));
 
       // Add an API function for the prompt() block.
-      var wrapper = function prompt(text) {
+      var wrapperPrompt = function prompt(text) {
         return window.prompt(text);
       };
       interpreter.setProperty(globalObject, 'prompt',
-          interpreter.createNativeFunction(wrapper));
+          interpreter.createNativeFunction(wrapperPrompt));
 
       // Add an API function for highlighting blocks.
-      var wrapper = function(id) {
+      var wrapperHighlight = function(id) {
         id = String(id || '');
         return highlightBlock(id);
       };
       interpreter.setProperty(globalObject, 'highlightBlock',
-          interpreter.createNativeFunction(wrapper));
+          interpreter.createNativeFunction(wrapperHighlight));
     }
 
+    // Each step will run the interpreter until the highlightPause is true.
     var highlightPause = false;
 
     function highlightBlock(id) {
