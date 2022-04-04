@@ -17,6 +17,7 @@
       "lightbulb.png",
       "./node_modules/blockly/blockly_compressed.js",
       "./node_modules/blockly/blockly_compressed.js.map",
+      "./node_modules/blockly/blocks_compressed.js",
       "./node_modules/blockly/msg/en.js",
       "./node_modules/@blockly/dev-tools/dist/index.js"
     ]

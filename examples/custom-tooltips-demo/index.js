@@ -19,6 +19,10 @@ function initTooltips() {
   // the content into. The second argument is the element to show the tooltip
   // for.
   const customTooltip = function(div, element) {
+    if (element instanceof Blockly.BlockSvg) {
+      // Set the background color to the color of the block
+      div.style.backgroundColor = element.getColour();
+    }
     const tip = Blockly.Tooltip.getTooltipOfObject(element);
     const text = document.createElement('div');
     text.textContent = tip;
