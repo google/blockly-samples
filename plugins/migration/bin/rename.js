@@ -174,6 +174,13 @@ class VersionRenamer {
         }
       }
 
+      // Module renamings have to be added at the end so all export renamings
+      // can be detected.
+      // Eg if we have renamings:
+      //   moduleA -> moduleB
+      //   moduleA.exportA -> moduleC.exportB
+      // And we performed the module rename first, we wouldn't be able to detect
+      // the export rename.
       this.renamings_.push({old: oldModulePath, new: newModulePath});
     }
   }
