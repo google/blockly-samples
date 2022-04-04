@@ -17,7 +17,7 @@ import * as versionUtils from './versions.js';
 import JSON5 from 'json5';
 
 
-const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/develop/scripts/migration/renamings.json5`;
+const DATABASE_URL = `https://raw.githubusercontent.com/google/blockly/master/scripts/migration/renamings.json5`;
 
 export const rename = createSubCommand(
     'rename', '>=5', 'Perform renamings for breaking changes')
@@ -25,17 +25,22 @@ export const rename = createSubCommand(
         '-i, --in-place [suffix]',
         'do renamings in-place, optionally create backup files with the ' +
         'given suffix. Otherwise output to stdout')
+    .option(
+        '--database <database-url>',
+        'explicitly specify the URL for fetching the renamings database')
     .action(async function() {
       const {fromVersion, toVersion, fileNames} = extractRequiredInfo(this);
+      const url = this.opts().database;
 
-      const renamer = new Renamer(await getDatabase(), fromVersion, toVersion);
+      const renamer = new Renamer(
+          await getDatabase(url), fromVersion, toVersion);
       fileNames.forEach((name) => {
         if (statSync(name).isDirectory()) return;
         const contents = readFileSync(name, 'utf8');
         const newContents = renamer.rename(contents);
         const inPlace = this.opts().inPlace;
         if (inPlace) {
-          if (typeof i == 'string') {
+          if (typeof inPlace == 'string') {
             writeFileSync(name + inPlace, contents);
           }
           writeFileSync(name, newContents);
@@ -48,11 +53,13 @@ export const rename = createSubCommand(
 
 /**
  * Gets the database of renames.
+ * @param {string=} url The URL to fetch the renamings database from, or
+ *     undefined to fetch from master.
  * @return {!Promise<!Object>} The database of renames as an object.
  */
-export async function getDatabase() {
+export async function getDatabase(url = undefined) {
   try {
-    const response = await fetch(DATABASE_URL);
+    const response = await fetch(url || DATABASE_URL);
     const body = await response.text();
     return JSON5.parse(body);
   } catch (e) {
