@@ -29,6 +29,8 @@ blocks that add connections dynamically.
 
 - [``@blockly/create-package``](dev-create/): A tool for creating a Blockly
 plugin based on a pre-existing template.
+- [``@blockly/migrate``](migrate/): A tool for migrating apps built on Blockly
+to newer versions of Blockly that make breaking changes.
 - [``@blockly/eslint-config``](eslint-config/): ESlint configuration used by
 Blockly plugins.
 - [``@blockly/dev-tool``](dev-tools/): A library of common utilities for Blockly
