@@ -7,8 +7,14 @@
     "files": [
       "index.html",
       "async-execution.html",
+      "backwards.html",
       "step-execution.html",
       "acorn_interpreter.js",
+      "acorn.js",
+      "interpreter.js",
+      "serialize.js",
+      "diff_match_patch.js",
+      "toolbox.js",
       "wait_block.js",
       "./node_modules/blockly/*_compressed.js",
       "./node_modules/blockly/*_compressed.js.map",
@@ -22,6 +28,10 @@
       {
         "label": "Async Execution",
         "link": "async-execution.html"
+      },
+      {
+        "label": "Backwards Execution",
+        "link": "backwards.html"
       }
     ]
   },

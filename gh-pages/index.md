@@ -31,6 +31,7 @@ layout: index
 * [Keyboard Navigation](plugins/keyboard-navigation/test/index.html)
 * [Scroll Options](plugins/scroll-options/test/index.html)
 * [Serialize Disabled Interactions](plugins/serialize-disabled-interactions/test/index.html)
+* [Cross Tab Copy Paste](plugins/cross-tab-copy-paste/test/index.html)
 
 ## Themes
 * [Theme Dark](plugins/theme-dark/test/index.html)

@@ -6,7 +6,8 @@
 
 import * as Blockly from 'blockly/core';
 
-import {DebugRenderer} from './debugRenderer';
+import {DebugDrawer} from './debugDrawer';
+import {createNewRenderer} from './debug';
 import {generateFieldTestBlocks} from './generateFieldTestBlocks';
 import {populateRandom} from './populateRandom';
 import {downloadWorkspaceScreenshot} from './screenshot';
@@ -39,8 +40,9 @@ if (Blockly.utils.global) {
 export {
   addCodeEditor,
   addGUIControls,
+  createNewRenderer,
   createPlayground,
-  DebugRenderer,
+  DebugDrawer,
   downloadWorkspaceScreenshot,
   generateFieldTestBlocks,
   populateRandom,

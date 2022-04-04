@@ -1,0 +1,51 @@
+{
+  "name": "@blockly/migrate",
+  "version": "1.0.0",
+  "description": "A collection of tools that help with migrating apps using Blockly to new versions of BLockly.",
+  "bin": "./bin/migrate.js",
+  "author": "Blockly Team",
+  "scripts": {
+    "test": "mocha --ui tdd"
+  },
+  "keywords": [
+    "blockly",
+    "dev",
+    "migration",
+    "migrate",
+    "version"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/migration#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/migration"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "commander": "^9.0.0",
+    "json5": "^2.2.0",
+    "node-fetch": "^3.2.2",
+    "semver": "^7.3.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/mocha": "^9.1.0",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.1",
+    "sinon": "^13.0.1"
+  }
+}

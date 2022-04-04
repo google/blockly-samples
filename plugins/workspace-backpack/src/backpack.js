@@ -250,7 +250,7 @@ export class Backpack extends Blockly.DragTarget {
   createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.G, {}, null);
-    const rnd = Blockly.utils.genUid();
+    const rnd = Blockly.utils.idGenerator.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.CLIPPATH,
         {'id': 'blocklyBackpackClipPath' + rnd},
@@ -750,14 +750,14 @@ const BACKPACK_SVG_DATAURI =
     '0xNiwxM3YxdjAuNSBjMCwwLjI4LTAuMjIsMC41LTAuNSwwLjVTMTUsMTQuNzgsMTUsMTQuNV' +
     'YxNHYtMUg4di0xaDdoMVYxM3oiLz48L2c+PC9nPjwvc3ZnPg==';
 
-Blockly.Css.register([
-  `.blocklyBackpack {
-    opacity: .4;
-  }
-  .blocklyBackpackDarken {
-    opacity: .6;
-  }
-  .blocklyBackpack:active {
-    opacity: .8;
-  }`,
-]);
+Blockly.Css.register(
+    `.blocklyBackpack {
+      opacity: .4;
+    }
+    .blocklyBackpackDarken {
+      opacity: .6;
+    }
+    .blocklyBackpack:active {
+      opacity: .8;
+    }`,
+);

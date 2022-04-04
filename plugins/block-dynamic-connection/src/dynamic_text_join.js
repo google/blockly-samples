@@ -57,6 +57,19 @@ Blockly.Blocks['dynamic_text_join'] = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
+    if (xmlElement.getAttribute('inputs')) {
+      this.deserializeInputs_(xmlElement);
+    } else {
+      this.deserializeCounts_(xmlElement);
+    }
+  },
+
+  /**
+   * Parses XML based on the 'inputs' attribute (non-standard).
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
+  deserializeInputs_: function(xmlElement) {
     const items = xmlElement.getAttribute('inputs');
     if (items) {
       const inputNames = items.split(',');
@@ -67,6 +80,21 @@ Blockly.Blocks['dynamic_text_join'] = {
     }
     const next = parseInt(xmlElement.getAttribute('next'));
     this.inputCounter = next;
+  },
+
+  /**
+   * Parses XML based on the 'items' attribute (standard).
+   * @param {!Element} xmlElement XML storage element.
+   * @this {Blockly.Block}
+   */
+  deserializeCounts_: function(xmlElement) {
+    const itemCount = Math.max(
+        parseInt(xmlElement.getAttribute('items'), 10), this.minInputs);
+    // Two inputs are added automatically.
+    for (let i = this.minInputs; i < itemCount; i++) {
+      this.appendValueInput('ADD' + i);
+    }
+    this.inputCounter = itemCount;
   },
 
   /**
