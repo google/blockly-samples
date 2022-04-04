@@ -1115,35 +1115,13 @@ export class Navigation {
    * @package
    */
   paste() {
-    // TODO(google/blockly#4600):Need a way to get this value without using a
-    // private variable.
-    if (!Blockly.clipboardXml_) {
-      return false;
-    }
-    let workspace = Blockly.clipboardSource_;
     let isHandled = false;
-
-    // Pasting always pastes to the main workspace, even if the copy
-    // started in a flyout workspace.
-    if (workspace.isFlyout) {
-      workspace = workspace.targetWorkspace;
+    Blockly.Events.setGroup(true);
+    const block = Blockly.clipboard.paste();
+    if (block) {
+      isHandled = this.insertPastedBlock(block.workspace, block);
     }
-
-    // Handles paste for keyboard navigation.
-    if (Blockly.clipboardTypeCounts_ &&
-        workspace.isCapacityAvailable(Blockly.clipboardTypeCounts_)) {
-      Blockly.Events.setGroup(true);
-      const block = /** @type {Blockly.BlockSvg} */ (
-        Blockly.Xml.domToBlock(Blockly.clipboardXml_, workspace));
-      if (block) {
-        this.insertPastedBlock(workspace, block);
-        if (Blockly.Events.isEnabled() && !block.isShadow()) {
-          Blockly.Events.fire(new Blockly.Events.BlockCreate(block));
-        }
-        isHandled = true;
-      }
-      Blockly.Events.setGroup(false);
-    }
+    Blockly.Events.setGroup(false);
     return isHandled;
   }
 
