@@ -18,7 +18,7 @@ npm install @blockly/plugin-cross-tab-copy-paste --save
 
 ```js
 import * as Blockly from 'blockly';
-import {CrossTabyCopyPaste} from '@blockly/plugin-cross-tab-copy-paste';
+import {CrossTabCopyPaste} from '@blockly/plugin-cross-tab-copy-paste';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -31,7 +31,7 @@ const options = {
 }
 
 // Initialize plugin.
-const plugin = new CrossTabyCopyPaste();
+const plugin = new CrossTabCopyPaste();
 plugin.init(options);
 
 // optional: Remove the duplication command from Blockly's context menu.
