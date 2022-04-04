@@ -6,11 +6,12 @@
 
 /**
  * @fileoverview Example "wait" block that will pause the interpreter for a
- * number of seconds. Because wait is a blocking behavior, such blocks will
+ * number of seconds. Because wait is a blocking behaviour, such blocks will
  * only work in interpreted environments.
  *
  * See https://neil.fraser.name/software/JS-Interpreter/docs.html
  */
+
 Blockly.common.defineBlocksWithJsonArray([{
   "type": "wait_seconds",
   "message0": " wait %1 seconds",
