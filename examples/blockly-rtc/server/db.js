@@ -20,7 +20,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-const sqlite3 = require('sqlite3');
+const sqlite3 = require('@vscode/sqlite3');
 
 const db = new sqlite3.Database('./eventsdb.sqlite', (err) => {
   if (err) {
