@@ -713,7 +713,7 @@ export class NavigationController {
       callback: (workspace) => {
         const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
         workspace.hideChaff();
-        Blockly.copy(sourceBlock);
+        Blockly.clipboard.copy(sourceBlock);
       },
     };
 
@@ -794,7 +794,7 @@ export class NavigationController {
       },
       callback: (workspace) => {
         const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
-        Blockly.copy(sourceBlock);
+        Blockly.clipboard.copy(sourceBlock);
         this.navigation.moveCursorOnBlockDelete(workspace, sourceBlock);
         sourceBlock.checkAndDelete();
         return true;
