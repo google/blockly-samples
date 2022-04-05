@@ -79,6 +79,9 @@ layout: index
 ## Backpack
 * [Shared Backpacks](examples/backpack-demo/index.html)
 
+## Tooltips
+* [Custom Tooltips](examples/custom-tooltips-demo/index.html)
+
 ## Graph
 * [Graph](examples/graph-demo/index.html)
 
