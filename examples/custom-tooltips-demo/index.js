@@ -20,7 +20,8 @@ function initTooltips() {
   // for.
   const customTooltip = function(div, element) {
     if (element instanceof Blockly.BlockSvg) {
-      // Set the background color to the color of the block
+      // You can access the block being moused over.
+      // Here we get the color of the block to set the background color.
       div.style.backgroundColor = element.getColour();
     }
     const tip = Blockly.Tooltip.getTooltipOfObject(element);
@@ -28,6 +29,7 @@ function initTooltips() {
     text.textContent = tip;
     const container = document.createElement('div');
     container.style.display = 'flex';
+    // Check to see if the custom property we added is present.
     if (element.tooltipImg) {
       const img = document.createElement('img');
       img.setAttribute('src', element.tooltipImg);
@@ -79,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
     toolbox: document.getElementById('toolbox'),
   };
+
+  // createPlayground is from @blockly/dev-tools.
   // eslint-disable-next-line no-undef
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
