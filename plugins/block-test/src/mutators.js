@@ -45,7 +45,6 @@ Blockly.defineBlocksWithJsonArray([
 /**
  * Mutator methods added to the test_mutators_many block.
  * @mixin
- * @augments Blockly.Block
  * @package
  * @readonly
  */
@@ -58,7 +57,6 @@ const MANY_BLOCKS_MUTATOR = {
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('colour', this.colour_);
-    this.setColour(this.colour_);
     return container;
   },
   /**
@@ -68,6 +66,24 @@ const MANY_BLOCKS_MUTATOR = {
    */
   domToMutation: function(xmlElement) {
     this.colour_ = xmlElement.getAttribute('colour');
+    this.setColour(this.colour_);
+  },
+  /**
+   * Returns the state of this block as a json serializable object.
+   * @return {{colour: string}} The state of this block.
+   * @this {Blockly.Block}
+   */
+  saveExtraState: function() {
+    return {'colour': this.colour_};
+  },
+  /**
+   * Applies the state to this block.
+   * @param {{color: string}} state The state to apply.
+   * @this {Blockly.Block}
+   */
+  loadExtraState: function(state) {
+    this.colour_ = state['colour'];
+    this.setColour(this.colour_);
   },
   /**
    * Populate the mutator's dialog with this block's components.
@@ -129,7 +145,6 @@ Blockly.defineBlocksWithJsonArray([
 /**
  * Mutator methods added to the test_mutators_noflyout block.
  * @mixin
- * @augments Blockly.Block
  * @package
  * @readonly
  */
@@ -142,7 +157,6 @@ const NO_FLYOUT_MUTATOR = {
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('colour', this.colour_);
-    this.setColour(this.colour_);
     return container;
   },
   /**
@@ -152,6 +166,23 @@ const NO_FLYOUT_MUTATOR = {
    */
   domToMutation: function(xmlElement) {
     this.colour_ = xmlElement.getAttribute('colour');
+    this.setColour(this.colour_);
+  },
+  /**
+   * Returns the state of this block as a JSON serializable object.
+   * @return {{colour: string}} The state of this block.
+   */
+  saveExtraState: function() {
+    return {'colour': this.colour_};
+  },
+  /**
+   * Applies the given state to the block.
+   * @param {{colour: string}} state The state to apply.
+   * @this {Blockly.Block}
+   */
+  loadExtraState: function(state) {
+    this.colour_ = state['colour'];
+    this.setColour(this.colour_);
   },
   /**
    * Populate the mutator's dialog with this block's components.

@@ -450,7 +450,6 @@ Blockly.Blocks['test_dropdowns_dynamic_connect_dependant'] = {
 /**
  * Mutator methods added to the test_dropdowns_in_mutator block.
  * @mixin
- * @augments Blockly.Block
  * @package
  * @readonly
  */
@@ -470,6 +469,18 @@ const DROPDOWN_MUTATOR = {
    * @this {Blockly.Block}
    */
   domToMutation: function(_xmlElement) {},
+  /**
+   * Returns the state of the block as a JSON serializable object.
+   * @return {!Object} The state of the block as a JSON serializable object.
+   */
+  saveExtraState: function() {
+    return {};
+  },
+  /**
+   * Applies the given state to the block.
+   * @param {!Object} _state The state to apply.
+   */
+  loadExtraState: function(_state) { },
   /**
    * Populate the mutator's dialog with this block's components.
    * @param {!Blockly.Workspace} workspace Mutator's workspace.
