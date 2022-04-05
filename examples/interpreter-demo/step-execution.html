@@ -3,8 +3,14 @@ title: "JS Interpreter"
 files:
   - "index.html"
   - "async-execution.html"
+  - "backwards.html"
   - "step-execution.html"
   - "acorn_interpreter.js"
+  - "acorn.js"
+  - "interpreter.js"
+  - "serialize.js"
+  - "diff_match_patch.js"
+  - "toolbox.js"
   - "wait_block.js"
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
@@ -14,6 +20,8 @@ pages:
     link: "step-execution.html"
   - label: "Async Execution"
     link: "async-execution.html"
+  - label: "Backwards Execution"
+    link: "backwards.html"
 pageRoot: "examples/interpreter-demo"
 
 ---
@@ -21,8 +29,12 @@ pageRoot: "examples/interpreter-demo"
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Step Execution with JS Interpreter</title>
+  <title>Blockly Demo: Step Execution with JS-Interpreter</title>
+  <script src="toolbox.js"></script>
+  <!-- acorn_interpreter.js is copied from the JS-Interpreter project
+    without modification. -->
   <script src="acorn_interpreter.js"></script>
+
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/javascript_compressed.js"></script>
@@ -39,7 +51,7 @@ pageRoot: "examples/interpreter-demo"
   </style>
 </head>
 <body>
-  <h1>Step Execution with JS Interpreter</h1>
+  <h1>Step Execution with JS-Interpreter</h1>
 
   <p>This is a demo of executing code step-by-step with a sandboxed JavaScript interpreter.</p>
 
@@ -47,11 +59,12 @@ pageRoot: "examples/interpreter-demo"
   where <code>%1</code> is the block id. The call to <code>highlightBlock()</code> will highlight the identified block
   and set the variable <code>highlightPause</code> to <code>true</code>.</p>
 
-  <p>"Parse JavaScript" will generate the code and load it into the interpreter. Then, each press of the
-  "Step JavaScript" button will run the interpreter one step until the <code>highlightPause</code> is true.
-  That is, until <code>highlightBlock()</code> has highlighted the block that will be executed on the next step.</p>
+  <p>Each press of the "Step JavaScript" button will run the interpreter one
+  step after another until <code>highlightPause</code> is true.
+  That is, until <code>highlightBlock()</code> has highlighted the block that
+  will be executed on the next step.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS Interpreter</a></p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS-Interpreter</a></p>
 
   <p>
     <button onclick="stepCode()" id="stepButton">Step JavaScript</button>
@@ -64,48 +77,6 @@ pageRoot: "examples/interpreter-demo"
         style="display: inline-block; height: 480px; width: 38%;">
     </textarea>
   </div>
-
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
-      <block type="controls_if"></block>
-      <block type="logic_compare"></block>
-      <block type="logic_operation"></block>
-      <block type="logic_negate"></block>
-      <block type="logic_boolean"></block>
-    </category>
-    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
-      <block type="controls_repeat_ext">
-        <value name="TIMES">
-          <block type="math_number">
-            <field name="NUM">10</field>
-          </block>
-        </value>
-      </block>
-      <block type="controls_whileUntil"></block>
-    </category>
-    <category name="Math" colour="%{BKY_MATH_HUE}">
-      <block type="math_number">
-        <field name="NUM">123</field>
-      </block>
-      <block type="math_arithmetic"></block>
-      <block type="math_single"></block>
-    </category>
-    <category name="Text" colour="%{BKY_TEXTS_HUE}">
-      <block type="text"></block>
-      <block type="text_length"></block>
-      <block type="text_print"></block>
-      <block type="text_prompt_ext">
-        <value name="TEXT">
-          <block type="text"></block>
-        </value>
-      </block>
-    </category>
-    <sep></sep>
-    <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
-    </category>
-    <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
-    </category>
-  </xml>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
     <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
@@ -157,9 +128,12 @@ pageRoot: "examples/interpreter-demo"
   </xml>
 
   <script>
+
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
-         toolbox: document.getElementById('toolbox')});
+         toolbox: toolboxJson});
+    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+    Blockly.JavaScript.addReservedWords('highlightBlock');
     Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
                                demoWorkspace);
 
@@ -169,30 +143,31 @@ pageRoot: "examples/interpreter-demo"
 
     function initApi(interpreter, globalObject) {
       // Add an API function for the alert() block, generated for "text_print" blocks.
-      interpreter.setProperty(globalObject, 'alert',
-          interpreter.createNativeFunction(function(text) {
+      var wrapperAlert = function alert(text) {
         text = arguments.length ? text : '';
         outputArea.value += '\n' + text;
-      }));
+      };
+      interpreter.setProperty(globalObject, 'alert',
+          interpreter.createNativeFunction(wrapperAlert));
 
       // Add an API function for the prompt() block.
-      var wrapper = function(text) {
-        return interpreter.createPrimitive(prompt(text));
+      var wrapperPrompt = function prompt(text) {
+        return window.prompt(text);
       };
       interpreter.setProperty(globalObject, 'prompt',
-          interpreter.createNativeFunction(wrapper));
+          interpreter.createNativeFunction(wrapperPrompt));
 
       // Add an API function for highlighting blocks.
-      var wrapper = function(id) {
+      var wrapperHighlight = function(id) {
         id = String(id || '');
-        return interpreter.createPrimitive(highlightBlock(id));
+        return highlightBlock(id);
       };
       interpreter.setProperty(globalObject, 'highlightBlock',
-          interpreter.createNativeFunction(wrapper));
+          interpreter.createNativeFunction(wrapperHighlight));
     }
 
+    // Each step will run the interpreter until the highlightPause is true.
     var highlightPause = false;
-    var latestCode = '';
 
     function highlightBlock(id) {
       demoWorkspace.highlightBlock(id);
@@ -206,14 +181,7 @@ pageRoot: "examples/interpreter-demo"
       if (clearOutput) {
         outputArea.value = 'Program output:\n=================';
       }
-    }
-
-    function generateCodeAndLoadIntoInterpreter() {
-      // Generate JavaScript code and parse it.
-      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-      Blockly.JavaScript.addReservedWords('highlightBlock');
-      latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-      resetStepUi(true);
+      myInterpreter = null;
     }
 
     function stepCode() {
@@ -221,13 +189,14 @@ pageRoot: "examples/interpreter-demo"
         // First statement of this code.
         // Clear the program output.
         resetStepUi(true);
+        var latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
         myInterpreter = new Interpreter(latestCode, initApi);
 
         // And then show generated code in an alert.
         // In a timeout to allow the outputArea.value to reset first.
         setTimeout(function() {
           alert('Ready to execute the following code\n' +
-            '===================================\n' + latestCode);
+              '===================================\n' + latestCode);
           highlightPause = true;
           stepCode();
         }, 1);
@@ -242,7 +211,6 @@ pageRoot: "examples/interpreter-demo"
             // Program complete, no more code to execute.
             outputArea.value += '\n\n<< Program complete >>';
 
-            myInterpreter = null;
             resetStepUi(false);
 
             // Cool down, to discourage accidentally restarting the program.
@@ -259,12 +227,10 @@ pageRoot: "examples/interpreter-demo"
       } while (hasMoreCode && !highlightPause);
     }
 
-    // Load the interpreter now, and upon future changes.
-    generateCodeAndLoadIntoInterpreter();
     demoWorkspace.addChangeListener(function(event) {
       if (!event.isUiEvent) {
-        // Something changed. Parser needs to be reloaded.
-        generateCodeAndLoadIntoInterpreter();
+        // Something changed.  Interpreter needs to be reloaded.
+        resetStepUi(true);
       }
     });
   </script>
