@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -29,7 +29,8 @@ function initTooltips() {
     text.textContent = tip;
     const container = document.createElement('div');
     container.style.display = 'flex';
-    // Check to see if the custom property we added is present.
+    // Check to see if the custom property we added in the block definition is
+    // present.
     if (element.tooltipImg) {
       const img = document.createElement('img');
       img.setAttribute('src', element.tooltipImg);
@@ -60,8 +61,7 @@ function createWorkspace(blocklyDiv, options) {
 document.addEventListener('DOMContentLoaded', function() {
   Blockly.Blocks['custom_tooltip_1'] = {
     init: function() {
-      this.appendDummyInput()
-          .appendField('This is a test block.');
+      this.appendDummyInput().appendField('This is a test block.');
       this.setColour(150);
       this.setTooltip('This is a regular tooltip.');
       this.setHelpUrl('');
@@ -69,8 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   Blockly.Blocks['custom_tooltip_2'] = {
     init: function() {
-      this.appendDummyInput()
-          .appendField('Mouse over me.');
+      this.appendDummyInput().appendField('Mouse over me.');
       this.setColour(150);
       this.setTooltip('Tip: This tooltip has an image.');
       // We will check for this property in our custom rendering code.
@@ -79,11 +78,17 @@ document.addEventListener('DOMContentLoaded', function() {
     },
   };
   const defaultOptions = {
-    toolbox: document.getElementById('toolbox'),
+    toolbox: {
+      'kind': 'flyoutToolbox',
+      'contents': [
+        {'kind': 'block', 'type': 'custom_tooltip_1'},
+        {'kind': 'block', 'type': 'custom_tooltip_2'},
+      ],
+    },
   };
 
   // createPlayground is from @blockly/dev-tools.
   // eslint-disable-next-line no-undef
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+      document.getElementById('root'), createWorkspace, defaultOptions);
 });
