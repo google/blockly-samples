@@ -58,6 +58,41 @@ const controlsIfMutator = {
   },
 
   /**
+   * Returns the state of this block as a JSON serializable object.
+   * @return {{elseIfCount: (number|undefined),
+   *     haseElse: (boolean|undefined)}} The state of this block, ie the else
+   *     if count and else state.
+   */
+  saveExtraState: function() {
+    if (!this.elseIfCount_ && !this.hasElse_) {
+      return null;
+    }
+    const state = Object.create(null);
+    if (this.elseIfCount_) {
+      state['elseIfCount'] = this.elseIfCount_;
+    }
+    if (this.hasElse_) {
+      state['hasElse'] = true;
+    }
+    return state;
+  },
+
+  /**
+   * Applies the given state to this block.
+   * @param {*} state The state to apply to this block, ie the else if count and
+   *     else state.
+   */
+  loadExtraState: function(state) {
+    const targetCount = state['elseIfCount'] || 0;
+    this.hasElse_ = state['hasElse'] || false;
+    if (this.hasElse_ && !this.getInput('ELSE')) {
+      this.appendStatementInput('ELSE')
+          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+    }
+    this.updateShape_(targetCount);
+  },
+
+  /**
    * Adds else-if and do inputs to the block until the block matches the
    * target else-if count.
    * @param {number} targetCount The target number of else-if inputs.

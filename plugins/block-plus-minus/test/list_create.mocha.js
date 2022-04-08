@@ -96,77 +96,183 @@ suite('List create block', function() {
     runCodeGenerationTestSuites(testSuites);
   });
 
-  /**
-   * Test cases for serialization tests.
-   * @type {Array<SerializationTestCase>}
-   */
-  const testCases = [
-    {title: 'Empty XML', xml: '<block type="lists_create_with"/>',
-      expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="lists_create_with" id="1">\n' +
-          '  <mutation items="3"></mutation>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertListBlockStructure(block, 3);
+  suite('Xml', function() {
+    /**
+     * Test cases for serialization tests.
+     * @type {Array<SerializationTestCase>}
+     */
+    const testCases = [
+      {
+        title: 'Empty XML',
+        xml: '<block type="lists_create_with"/>',
+        expectedXml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="lists_create_with" id="1">\n' +
+            '  <mutation items="3"></mutation>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 3);
+            },
+      },
+      {
+        title: '3 items',
+        xml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="lists_create_with" id="1">\n' +
+            '  <mutation items="3"></mutation>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 3);
+            },
+      },
+      {
+        title: '5 items',
+        xml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="lists_create_with" id="1">\n' +
+            '  <mutation items="5"></mutation>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 5);
+            },
+      },
+      {
+        title: '0 items',
+        xml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="lists_create_with" id="1">\n' +
+            '  <mutation items="0"></mutation>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 0);
+            },
+      },
+      {
+        title: '4 items with child attached',
+        xml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="lists_create_with" id="1">\n' +
+            '  <mutation items="4"></mutation>\n' +
+            '  <value name="ADD3">\n' +
+            '    <block type="logic_boolean" id="1">\n' +
+            '      <field name="BOOL">FALSE</field>\n' +
+            '    </block>\n' +
+            '  </value>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 4);
+              const child = block.getInputTargetBlock('ADD3');
+              assert.isNotNull(child);
+              assert.equal(child.type, 'logic_boolean');
+              assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+            },
+      },
+    ];
+    runSerializationTestSuite(testCases);
+  });
+
+  suite('Json', function() {
+    /**
+     * Test cases for serialization tests.
+     * @type {Array<SerializationTestCase>}
+     */
+    const testCases = [
+      {
+        title: 'No mutation',
+        json: {
+          'type': 'lists_create_with',
+        },
+        expectedJson: {
+          'type': 'lists_create_with',
+          'id': '1',
+          'extraState': {
+            'itemCount': 3,
           },
-    },
-    {title: '3 items',
-      xml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="lists_create_with" id="1">\n' +
-          '  <mutation items="3"></mutation>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertListBlockStructure(block, 3);
+        },
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 3);
+            },
+      },
+      {
+        title: '3 items',
+        json: {
+          'type': 'lists_create_with',
+          'id': '1',
+          'extraState': {
+            'itemCount': 3,
           },
-    },
-    {title: '5 items',
-      xml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="lists_create_with" id="1">\n' +
-          '  <mutation items="5"></mutation>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertListBlockStructure(block, 5);
+        },
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 3);
+            },
+      },
+      {
+        title: '5 items',
+        json: {
+          'type': 'lists_create_with',
+          'id': '1',
+          'extraState': {
+            'itemCount': 5,
           },
-    },
-    {title: '0 items',
-      xml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="lists_create_with" id="1">\n' +
-          '  <mutation items="0"></mutation>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertListBlockStructure(block, 0);
+        },
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 5);
+            },
+      },
+      {
+        title: '0 items',
+        json: {
+          'type': 'lists_create_with',
+          'id': '1',
+          'extraState': {
+            'itemCount': 0,
           },
-    },
-    {title: '4 items with child attached',
-      xml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="lists_create_with" id="1">\n' +
-          '  <mutation items="4"></mutation>\n' +
-          '  <value name="ADD3">\n' +
-          '    <block type="logic_boolean" id="1">\n' +
-          '      <field name="BOOL">FALSE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertListBlockStructure(block, 4);
-            const child = block.getInputTargetBlock('ADD3');
-            assert.isNotNull(child);
-            assert.equal(child.type, 'logic_boolean');
-            assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+        },
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 0);
+            },
+      },
+      {
+        title: '4 items with child attached',
+        json: {
+          'type': 'lists_create_with',
+          'id': '1',
+          'extraState': {
+            'itemCount': 4,
           },
-    },
-  ];
-  runSerializationTestSuite(testCases);
+          'inputs': {
+            'ADD3': {
+              'block': {
+                'type': 'logic_boolean',
+                'id': '1',
+                'fields': {
+                  'BOOL': 'FALSE',
+                },
+              },
+            },
+          },
+        },
+        assertBlockStructure:
+            (block) => {
+              assertListBlockStructure(block, 4);
+              const child = block.getInputTargetBlock('ADD3');
+              assert.isNotNull(child);
+              assert.equal(child.type, 'logic_boolean');
+              assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+            },
+      },
+    ];
+    runSerializationTestSuite(testCases);
+  });
 
   runPlusMinusTestSuite('lists_create_with', 3, 0, 'ADD',
       assertListBlockStructure);

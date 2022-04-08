@@ -64,6 +64,24 @@ const listCreateMutator = {
   },
 
   /**
+   * Returns the state of this block as a JSON serializable object.
+   * @return {{itemCount: number}} The state of this block, ie the item count.
+   */
+  saveExtraState: function() {
+    return {
+      'itemCount': this.itemCount_,
+    };
+  },
+
+  /**
+   * Applies the given state to this block.
+   * @param {*} state The state to apply to this block, ie the item count.
+   */
+  loadExtraState: function(state) {
+    this.updateShape_(state['itemCount']);
+  },
+
+  /**
    * Adds inputs to the block until it reaches the target number of inputs.
    * @param {number} targetCount The target number of inputs for the block.
    * @this {Blockly.Block}

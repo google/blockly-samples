@@ -94,44 +94,103 @@ suite('If block', function() {
     runCodeGenerationTestSuites(testSuites);
   });
 
-  /**
-   * Test cases for serialization tests.
-   * @type {Array<SerializationTestCase>}
-   */
-  const testCases = [
-    {title: 'Empty XML', xml: '<block type="controls_if"/>',
-      expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="controls_if" id="1"></block>',
-      assertBlockStructure:
-          (block) => {
-            assertIfBlockStructure(block, 1);
+  suite('XML', function() {
+    /**
+     * Test cases for serialization tests.
+     * @type {Array<SerializationTestCase>}
+     */
+    const testCases = [
+      {
+        title: 'Empty Xml',
+        xml: '<block type="controls_if"/>',
+        expectedXml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="controls_if" id="1"></block>',
+        assertBlockStructure:
+            (block) => {
+              assertIfBlockStructure(block, 1);
+            },
+      },
+      {
+        title: '2 elseif no else',
+        xml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="controls_if" id="1">\n' +
+            '  <mutation elseif="2"></mutation>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertIfBlockStructure(block, 3);
+            },
+      },
+      {
+        title: '3 elseif with else',
+        xml:
+            '<block xmlns="https://developers.google.com/blockly/xml" ' +
+            'type="controls_if" id="1">\n' +
+            '  <mutation elseif="3" else="1"></mutation>\n' +
+            '</block>',
+        assertBlockStructure:
+            (block) => {
+              assertIfBlockStructure(block, 4, true);
+            },
+      },
+    ];
+    runSerializationTestSuite(testCases);
+  });
+
+  suite('JSON', function() {
+    /**
+     * Test cases for serialization tests.
+     * @type {Array<SerializationTestCase>}
+     */
+    const testCases = [
+      {
+        title: 'No mutation',
+        json: {
+          'type': 'controls_if',
+        },
+        expectedJson: {
+          'type': 'controls_if',
+          'id': '1',
+        },
+        assertBlockStructure:
+            (block) => {
+              assertIfBlockStructure(block, 1);
+            },
+      },
+      {
+        title: '2 elseif no else',
+        json: {
+          'type': 'controls_if',
+          'extraState': {
+            'elseIfCount': 2,
           },
-    },
-    {title: '2 elseif no else',
-      xml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="controls_if" id="1">\n' +
-          '  <mutation elseif="2"></mutation>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertIfBlockStructure(block, 3);
+          'id': '1',
+        },
+        assertBlockStructure:
+            (block) => {
+              assertIfBlockStructure(block, 3);
+            },
+      },
+      {
+        title: '3 elseif with else',
+        json: {
+          'type': 'controls_if',
+          'extraState': {
+            'elseIfCount': 3,
+            'hasElse': true,
           },
-    },
-    {title: '3 elseif with else',
-      xml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="controls_if" id="1">\n' +
-          '  <mutation elseif="3" else="1"></mutation>\n' +
-          '</block>',
-      assertBlockStructure:
-          (block) => {
-            assertIfBlockStructure(block, 4, true);
-          },
-    },
-  ];
-  runSerializationTestSuite(testCases);
+          'id': '1',
+        },
+        assertBlockStructure:
+            (block) => {
+              assertIfBlockStructure(block, 4, true);
+            },
+      },
+    ];
+    runSerializationTestSuite(testCases);
+  });
 
   runPlusMinusTestSuite('controls_if', 1, 1, 'IF',
       assertIfBlockStructure);

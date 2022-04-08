@@ -29,6 +29,7 @@ const textJoinMutator = {
     container.setAttribute('items', this.itemCount_);
     return container;
   },
+
   /**
    * Parses XML to restore the inputs.
    * @param {!Element} xmlElement XML storage element.
@@ -37,6 +38,24 @@ const textJoinMutator = {
   domToMutation: function(xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('items'), 10);
     this.updateShape_(targetCount);
+  },
+
+  /**
+   * Returns the state of this block as a JSON serializable object.
+   * @return {{itemCount: number}} The state of this block, ie the item count.
+   */
+  saveExtraState: function() {
+    return {
+      'itemCount': this.itemCount_,
+    };
+  },
+
+  /**
+   * Applies the given state to this block.
+   * @param {*} state The state to apply to this block, ie the item count.
+   */
+  loadExtraState: function(state) {
+    this.updateShape_(state['itemCount']);
   },
 
   /**
