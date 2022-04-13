@@ -174,7 +174,7 @@ export class ContentHighlight {
       Blockly.utils.dom.removeNode(this.svgGroup_);
     }
     if (this.onChangeWrapper_) {
-      Blockly.unbindEvent_(this.onChangeWrapper_);
+      this.workspace_.removeChangeListener(this.onChangeWrapper_);
     }
   }
 
