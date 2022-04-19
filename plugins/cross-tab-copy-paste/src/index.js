@@ -68,7 +68,7 @@ export class CrossTabCopyPaste {
       callback: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
         const blockText = JSON.stringify(
-            convertBlockToSaveInfo(Blockly.selected));
+            convertBlockToSaveInfo(scope.block));
         localStorage.setItem('blocklyStash', blockText);
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
