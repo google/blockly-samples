@@ -12,7 +12,7 @@
     "test": "blockly-scripts test"
   },
   "devDependencies": {
-    "@blockly/dev-tools": "^2.5.1",
+    "@blockly/dev-tools": "^3.0.0",
     "typescript": "^3.8.0"
   }
 }
