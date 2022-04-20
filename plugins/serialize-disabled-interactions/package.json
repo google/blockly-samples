@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.16",
-    "@blockly/dev-tools": "^2.5.6",
+    "@blockly/dev-tools": "^3.0.0",
     "blockly": "^8.0.0",
     "chai": "^4.3.4"
   },
