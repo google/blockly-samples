@@ -81,9 +81,6 @@ suite('FieldBitmap', function() {
    * @param {FieldBitmap} field The field to check.
    */
   const assertFieldDefault = function(field) {
-    console.log(
-        'ASSERT1', JSON.stringify(field.getValue()),
-        JSON.stringify(defaultFieldValue));
     assert(
         JSON.stringify(field.getValue()) === JSON.stringify(defaultFieldValue));
   };
@@ -94,9 +91,6 @@ suite('FieldBitmap', function() {
    */
   const validTestCaseAssertField = function(field, testCase) {
     const expectedValue = testCase.value;
-    console.log('ASSERT2');
-    console.log('ACTUAL', JSON.stringify(field.getValue()));
-    console.log('EXPECTED', JSON.stringify(expectedValue));
     assert(JSON.stringify(field.getValue()) === JSON.stringify(expectedValue));
   };
 
