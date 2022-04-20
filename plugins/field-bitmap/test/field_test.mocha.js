@@ -139,8 +139,4 @@ suite('FieldBitmap', function() {
 
   runSetValueTests(
       validValueTestCases, invalidValueTestCases, defaultFieldValue);
-
-  // suite('Validators', function() {
-  //   // TODO
-  // });
 });
