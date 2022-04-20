@@ -19,8 +19,6 @@ const PIXEL_SIZE = 15;
 const FILLED_PIXEL_COLOR = '#363d80';
 const EMPTY_PIXEL_COLOR = 'white';
 
-let debugCount = 0;
-
 /**
  * Field for inputting a small bitmap image.
  * Includes a grid of clickable pixels that's exported as a bitmap.
@@ -64,19 +62,20 @@ export class FieldBitmap extends Blockly.Field {
    * @nocollapse
    */
   static fromJson(options) {
-    console.log('FromJSON,', options);
     return new FieldBitmap((options && options['value']), undefined, options);
   }
 
+  /**
+   * Validates that a new value meets the requirements for a valid bitmap array.
+   * @param {*} newValue
+   * @return the new value if it's valid, or null
+   */
   doClassValidation_(newValue = undefined) {
-    console.log('Running class validation...', newValue);
     if (!newValue) {
-      console.log('FAILED 1');
       return null;
     }
     // Check if the new value is an array
     if (!Array.isArray(newValue)) {
-      console.log('FAILED 2');
       return null;
     }
     const newHeight = newValue.length;
@@ -94,14 +93,12 @@ export class FieldBitmap extends Blockly.Field {
 
     // Check that the width matches the existing width of the image if it
     // already has a value
-    let newWidth = newValue[0].length;
+    const newWidth = newValue[0].length;
     for (const row of newValue) {
       if (!Array.isArray(row)) {
-        console.log('FAILED 4A');
         return null;
       }
       if (row.length !== newWidth) {
-        console.log('FAILED 4B');
         return null;
       }
     }
@@ -118,7 +115,6 @@ export class FieldBitmap extends Blockly.Field {
         }
       }
     }
-    console.log('Validation passed');
     return newValue;
   }
 
@@ -140,20 +136,17 @@ export class FieldBitmap extends Blockly.Field {
    */
   showEditor_(e = undefined, _quietInput = undefined) {
     // Build the DOM.
-    console.log('Editor cap reached. btw value is', this.getValue());
-
     const editor = this.dropdownCreate_();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));
-    debugCount += 1;
-    console.log(debugCount);
   }
 
   /**
    * Updates the block display and editor dropdown when the field re-renders.
    * @protected
    * @override
+   * @return void
    */
   render_() {
     super.render_();
@@ -168,20 +161,22 @@ export class FieldBitmap extends Blockly.Field {
 
         if (this.blockDisplayPixels_) {
           this.blockDisplayPixels_[r][c].style.fill =
-              pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+            pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
         }
         if (this.editorPixels_) {
           this.editorPixels_[r][c].style.background =
-              pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+            pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
         }
-      })
+      });
     }
   }
 
-  /** This field is editable. */
+  /**
+   * Determines whether the field is editable
+   * @return true since it is always editable. */
   updateEditable() {
     return true;
-  };
+  }
 
   /**
    * Creates the slider editor and add event listeners.
@@ -189,7 +184,6 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownCreate_() {
-    console.log('Creating dropdown, value = ', this.getValue());
     const dropdownEditor =
         this.createElementWithClassname_('div', 'dropdownEditor');
     const pixelContainer =
@@ -241,14 +235,14 @@ export class FieldBitmap extends Blockly.Field {
     for (let r = 0; r < this.imgHeight_; r++) {
       const row = [];
       for (let c = 0; c < this.imgWidth_; c++) {
-        var square = Blockly.utils.dom.createSvgElement(
+        const square = Blockly.utils.dom.createSvgElement(
             'rect', {
               'x': c * PIXEL_SIZE,
               'y': r * PIXEL_SIZE,
               'width': PIXEL_SIZE,
               'height': PIXEL_SIZE,
               'fill': EMPTY_PIXEL_COLOR,
-              'fill_opacity': 1
+              'fill_opacity': 1,
             },
             this.fieldGroup_);
         row.push(square);
@@ -273,7 +267,7 @@ export class FieldBitmap extends Blockly.Field {
 
       this.size_.width = newWidth;
       this.size_.height = newHeight;
-    };
+    }
   }
 
   /**
@@ -300,7 +294,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Constructs an array of zeros with the specified width and height
-   * @returns the new value
+   * @return the new value
    */
   getEmptyArray_() {
     const newVal = [];
@@ -323,7 +317,6 @@ export class FieldBitmap extends Blockly.Field {
     this.setPixel_(r, c, newPixelValue);
     this.mouseIsDown_ = true;
     this.valToPaintWith_ = newPixelValue;
-    ;
   }
 
   /**
@@ -349,7 +342,7 @@ export class FieldBitmap extends Blockly.Field {
     this.valToPaintWith_ = undefined;
     this.forAllCells_((r, c) => {
       this.editorPixels_[r][c].alreadyToggledThisDrag = false;
-    })
+    });
   }
 
   /**
@@ -395,7 +388,10 @@ export class FieldBitmap extends Blockly.Field {
     }
   }
 
-  /** Creates a new element with the specified type and class */
+  /**
+   * Creates a new element with the specified type and class
+   * @return the created element
+   */
   createElementWithClassname_(elementType, className) {
     const newElt = document.createElement(elementType);
     newElt.className = className;

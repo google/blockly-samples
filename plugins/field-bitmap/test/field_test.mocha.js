@@ -10,12 +10,12 @@ const {assert} = require('chai');
 const {FieldBitmap} = require('../src/index');
 
 function processTestCases(testCases) {
-  return testCases.map(x => ({
-                         title: x.title,
-                         value: x.value,
-                         args: [x.value, null, {}],
-                         json: {value: x.value}
-                       }));
+  return testCases.map((x) => ({
+    title: x.title,
+    value: x.value,
+    args: [x.value, null, {}],
+    json: {value: x.value},
+  }));
 }
 
 const {
@@ -23,7 +23,6 @@ const {
   FieldValueTestCase,
   runConstructorSuiteTests,
   runFromJsonSuiteTests,
-  runSetValueTests,
 } = testHelpers;
 
 suite('FieldBitmap', function() {
@@ -40,15 +39,15 @@ suite('FieldBitmap', function() {
     {title: 'Not a 2D array', value: [0, 1, 0, 1]},
     {
       title: 'Not a rectangle',
-      value: [[1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]]
+      value: [[1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]],
     },
     {
       title: 'Contains non-binary number',
-      value: [[1, 99, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]]
+      value: [[1, 99, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]],
     },
     {
       title: 'Contains bad value',
-      value: [[1, 'b', 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]]
+      value: [[1, 'b', 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]],
     },
   ]);
 
@@ -60,12 +59,12 @@ suite('FieldBitmap', function() {
     {title: '3x3 solid', value: [[1, 1, 1], [1, 1, 1], [1, 1, 1]]},
     {
       title: '4x4 solid',
-      value: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+      value: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
     },
     {title: '3x3 checkerboard', value: [[1, 0, 1], [0, 1, 0], [1, 0, 1]]},
     {
       title: '4x4 solid',
-      value: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+      value: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     },
   ]);
 
@@ -75,8 +74,8 @@ suite('FieldBitmap', function() {
    */
   const defaultFieldValue = [
     [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
-  ];  // TODO update with default value
+    [0, 0, 0, 0, 0],
+  ];
   /**
    * Asserts that the field property values are set to default.
    * @param {FieldBitmap} field The field to check.
@@ -101,13 +100,6 @@ suite('FieldBitmap', function() {
     assert(JSON.stringify(field.getValue()) === JSON.stringify(expectedValue));
   };
 
-  function runTestCases(testCases, createTestCallback) {
-    testCases.forEach((testCase) => {
-      let testCall = (testCase.skip ? test.skip : test);
-      testCall = (testCase.only ? test.only : testCall);
-      testCall(testCase.title, createTestCallback(testCase));
-    });
-  }
   function runSetValueTests(
       validValueTestCases, invalidValueTestCases, invalidRunExpectedValue,
       invalidRunExpectedText) {
@@ -118,7 +110,7 @@ suite('FieldBitmap', function() {
      */
     const createInvalidSetValueTestCallback = (testCase) => {
       return function() {
-        var field = FieldBitmap.fromJson(testCase.json);
+        const field = FieldBitmap.fromJson(testCase.json);
         field.setValue(testCase.value);
         assertFieldDefault(field);
       };
@@ -130,7 +122,7 @@ suite('FieldBitmap', function() {
      */
     const createValidSetValueTestCallback = (testCase) => {
       return function() {
-        var field = FieldBitmap.fromJson(defaultFieldValue);
+        const field = FieldBitmap.fromJson(defaultFieldValue);
         field.setValue(testCase.value);
         validTestCaseAssertField(field, testCase);
       };
