@@ -412,35 +412,35 @@ Blockly.fieldRegistry.register('field_bitmap', FieldBitmap);
 /**
  * CSS for bitmap field.
  */
-Blockly.Css.register([
-  /* eslint-disable indent */
-  `.dropdownEditor {
-        align-items: center;
-        flex-direction: column;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-  .pixelContainer {
-    margin: 20px;
-  }
-  .pixelRow {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
-    margin: 0;
-    height: ${PIXEL_SIZE}
-  }
-  .pixelButton {
-    width: ${PIXEL_SIZE}px;
-    height: ${PIXEL_SIZE}px;
-    border: 1px solid black;
-  }
-  .pixelDisplay {
-    white-space:pre-wrap;
-  }
-  .controlButton {
-    margin: 5px 0;
-  }`,
-  /* eslint-enable indent */
-]);
+Blockly.Css.register(
+    /* eslint-disable indent */
+    `.dropdownEditor {
+          align-items: center;
+          flex-direction: column;
+          display: flex;
+          justify-content: center;
+          margin-bottom: 20px;
+        }
+    .pixelContainer {
+      margin: 20px;
+    }
+    .pixelRow {
+      display: flex;
+      flex-direction: row;
+      padding: 0;
+      margin: 0;
+      height: ${PIXEL_SIZE}
+    }
+    .pixelButton {
+      width: ${PIXEL_SIZE}px;
+      height: ${PIXEL_SIZE}px;
+      border: 1px solid black;
+    }
+    .pixelDisplay {
+      white-space:pre-wrap;
+    }
+    .controlButton {
+      margin: 5px 0;
+    }`
+    /* eslint-enable indent */
+);
