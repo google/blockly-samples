@@ -84,13 +84,6 @@ export class FieldBitmap extends Blockly.Field {
       return null;
     }
 
-    // Check that the height matches the existing height of the image if it
-    // already has a value
-    // if (this.imgHeight_ && this.imgHeight_ !== newHeight) {
-    //   console.log('FAILED 3');
-    //   return null;
-    // }
-
     // Check that the width matches the existing width of the image if it
     // already has a value
     const newWidth = newValue[0].length;
@@ -102,10 +95,6 @@ export class FieldBitmap extends Blockly.Field {
         return null;
       }
     }
-    // if (this.imgWidth_ && this.imgWidth_ !== newWidth) {
-    //   console.log('FAILED 5');
-    //   return null;
-    // }
 
     // Check if all contents of the arrays are either 0 or 1
     for (const row of newValue) {
