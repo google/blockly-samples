@@ -107,6 +107,10 @@ export class FieldBitmap extends Blockly.Field {
     return newValue;
   }
 
+  /**
+   * Called when a new value has been validated and is about to be set.
+   * @param {*} newValue
+   */
   doValueUpdate_(newValue) {
     super.doValueUpdate_(newValue);
     if (newValue) {
@@ -124,7 +128,6 @@ export class FieldBitmap extends Blockly.Field {
    * @protected
    */
   showEditor_(e = undefined, _quietInput = undefined) {
-    // Build the DOM.
     const editor = this.dropdownCreate_();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
     Blockly.DropDownDiv.showPositionedByField(
@@ -369,6 +372,10 @@ export class FieldBitmap extends Blockly.Field {
     this.setValue(newGrid);
   }
 
+  /**
+   * Calls a given function for all cells in the image, with the cell coordinates as the arguments.
+   * @param {*} func a function to be applied
+   */
   forAllCells_(func) {
     for (let r = 0; r < this.imgHeight_; r++) {
       for (let c = 0; c < this.imgWidth_; c++) {

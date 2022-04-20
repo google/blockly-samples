@@ -6,9 +6,13 @@
 
 const {testHelpers} = require('@blockly/dev-tools');
 const {assert} = require('chai');
-// const {assertFieldValue} = require('@blockly/dev-tools').testHelpers;
 const {FieldBitmap} = require('../src/index');
 
+/**
+ * Helper method to reformat raw test cases to a format that the various tests can use
+ * @param {*} testCases
+ * @returns
+ */
 function processTestCases(testCases) {
   return testCases.map((x) => ({
     title: x.title,
@@ -94,9 +98,18 @@ suite('FieldBitmap', function() {
     assert(JSON.stringify(field.getValue()) === JSON.stringify(expectedValue));
   };
 
+  /**
+   * Re-implementation of the method from TestHelpers that supports array equality checking.
+   * @return void
+   */
+
+  /**
+   * Reimplementation of the function from TestHelpers that supports array equality testing.
+   * @param {*} validValueTestCases test cases for valid field values
+   * @param {*} invalidValueTestCases test cases for invalid field values
+   */
   function runSetValueTests(
-      validValueTestCases, invalidValueTestCases, invalidRunExpectedValue,
-      invalidRunExpectedText) {
+      validValueTestCases, invalidValueTestCases) {
     /**
      * Creates test callback for invalid setValue test.
      * @param {!FieldValueTestCase} testCase The test case information.
@@ -138,5 +151,5 @@ suite('FieldBitmap', function() {
       validTestCaseAssertField, assertFieldDefault);
 
   runSetValueTests(
-      validValueTestCases, invalidValueTestCases, defaultFieldValue);
+      validValueTestCases, invalidValueTestCases);
 });
