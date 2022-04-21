@@ -21,7 +21,7 @@ This script runs `npm run clean` on each of the Blockly plugins.
 In general, clean deletes the `/build` and `/dist` folders in these plugins.
 
 ### `npm run clean:node`
-This script recursively deletes all `node_modules/` directories in this repo.
+This script deletes `node_modules/` from each plugin in this repo.
 This may be useful if you feel your node modules have wound up in a bad state.
 
 ### `npm run deploy`
