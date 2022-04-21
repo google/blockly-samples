@@ -6,7 +6,7 @@
 
 const {testHelpers} = require('@blockly/dev-tools');
 const {assert} = require('chai');
-const {FieldBitmap} = require('../src/index');
+const {FieldBitmap, DEFAULT_HEIGHT, DEFAULT_WIDTH} = require('../src/index');
 
 /**
  * Helper method to reformat raw test cases to a format that the
@@ -48,11 +48,11 @@ suite('FieldBitmap', function() {
     },
     {
       title: 'Contains non-binary number',
-      value: [[1, 99, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]],
+      value: [[1, 99, 1], [1, 1, 1], [1, 1, 1]],
     },
     {
       title: 'Contains bad value',
-      value: [[1, 'b', 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]],
+      value: [[1, 'b', 1], [1, 1, 1], [1, 1, 1]],
     },
   ]);
 
@@ -113,8 +113,16 @@ suite('FieldBitmap', function() {
    * @param {*} validValueTestCases test cases for valid field values
    * @param {*} invalidValueTestCases test cases for invalid field values
    */
-  function runSetValueTests(
-      validValueTestCases, invalidValueTestCases) {
+  function runSetValueTests(validValueTestCases, invalidValueTestCases) {
+    const createFieldForTestCase = (testCase) => FieldBitmap.fromJson(`{
+        width: ${Array.isArray(testCase.value) ?
+      testCase.value.length :
+      DEFAULT_WIDTH},
+        height:${testCase.value && Array.isArray(testCase.value[0]) ?
+      testCase.value[0].length :
+      DEFAULT_HEIGHT},
+      }`);
+
     /**
      * Creates test callback for invalid setValue test.
      * @param {!FieldValueTestCase} testCase The test case information.
@@ -122,7 +130,7 @@ suite('FieldBitmap', function() {
      */
     const createInvalidSetValueTestCallback = (testCase) => {
       return function() {
-        const field = FieldBitmap.fromJson(testCase.json);
+        const field = createFieldForTestCase(testCase);
         field.setValue(testCase.value);
         assertFieldDefault(field);
       };
@@ -134,7 +142,7 @@ suite('FieldBitmap', function() {
      */
     const createValidSetValueTestCallback = (testCase) => {
       return function() {
-        const field = FieldBitmap.fromJson(defaultFieldValue);
+        const field = createFieldForTestCase(testCase);
         field.setValue(testCase.value);
         validTestCaseAssertField(field, testCase);
       };

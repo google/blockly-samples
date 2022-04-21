@@ -12,9 +12,8 @@
 
 import Blockly from 'blockly/core';
 import {assert} from 'chai';
-
-const DEFAULT_HEIGHT = 5;
-const DEFAULT_WIDTH = 5;
+export const DEFAULT_HEIGHT = 5;
+export const DEFAULT_WIDTH = 5;
 const PIXEL_SIZE = 15;
 const FILLED_PIXEL_COLOR = '#363d80';
 const EMPTY_PIXEL_COLOR = 'white';
@@ -52,6 +51,7 @@ export class FieldBitmap extends Blockly.Field {
 
     /** References to UI elements */
     this.editorPixels = null;
+    this.fieldGroup_ = null;
     this.blockDisplayPixels_ = null;
 
     /** Stateful variables */
@@ -134,7 +134,6 @@ export class FieldBitmap extends Blockly.Field {
       if (this.imgHeight_ !== newHeight || this.imgWidth_ !== newWidth) {
         this.imgHeight_ = newHeight;
         this.imgWidth_ = newWidth;
-        this.initView();
       }
 
       this.imgHeight_ = newValue.length;
