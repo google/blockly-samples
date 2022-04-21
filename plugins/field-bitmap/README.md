@@ -1,9 +1,6 @@
 # blockly-field-bitmap [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Add field description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) ... field.
+A [Blockly](https://www.npmjs.com/package/blockly) field that allows for user-inputted pixel grids. The image value is stored as a 2D array of 1s and 0s, and supports any size. The user can paint over pixels with their mouse, or randomize the grid.
 
 ## Installation
 
@@ -19,9 +16,13 @@ npm install blockly-field-bitmap --save
 
 ## Usage
 
-<!--
-  - TODO: Update usage and rename field.
-  -->
+This field accepts up to 3 parameters:
+- `"value"` to specify an initial value. Must be a 2D rectangular array of 1s and 0s.
+If not provided, the default is an empty grid of the specified size.
+- `"width"` to specify an initial width, if there is no initial value.
+If not provided, the default is a width of 5.
+- `"height"` to specify an initial height, if there is no initial value.
+If not provided, the default is a height of 5.
 
 ### JavaScript
 ```js
