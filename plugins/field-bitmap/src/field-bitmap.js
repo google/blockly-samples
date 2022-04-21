@@ -28,11 +28,16 @@ export class FieldBitmap extends Blockly.Field {
     super(value, validator, config);
 
     // Configure value, height, and width
-    this.imgHeight_ = (config && config['height']) || DEFAULT_HEIGHT;
-    this.imgWidth_ = (config && config['width']) || DEFAULT_WIDTH;
+    if (this.getValue() !== null) {
+      this.imgHeight_ = this.getValue().length;
+      this.imgWidth_ = this.getValue()[0].length || 0;
+    } else {
+      this.imgHeight_ = (config && config['height']) || DEFAULT_HEIGHT;
+      this.imgWidth_ = (config && config['width']) || DEFAULT_WIDTH;
+    }
 
     // Set a default empty value
-    if (this.getValue() == null) {
+    if (this.getValue() === null) {
       this.setValue(this.getEmptyArray_());
     }
 
@@ -63,6 +68,14 @@ export class FieldBitmap extends Blockly.Field {
    */
   static fromJson(options) {
     return new FieldBitmap((options && options['value']), undefined, options);
+  }
+
+  getImageWidth() {
+    return this.imgWidth_;
+  }
+
+  getImageHeight() {
+    return this.imgHeight_;
   }
 
   /**
@@ -115,6 +128,15 @@ export class FieldBitmap extends Blockly.Field {
     super.doValueUpdate_(newValue);
     if (newValue) {
       assert(Array.isArray(newValue));
+
+      const newHeight = newValue.length;
+      const newWidth = newValue[0] ? newValue[0].length : 0;
+      if (this.imgHeight_ !== newHeight || this.imgWidth_ !== newWidth) {
+        this.imgHeight_ = newHeight;
+        this.imgWidth_ = newWidth;
+        this.initView();
+      }
+
       this.imgHeight_ = newValue.length;
       this.imgWidth_ = newValue[0] ? newValue[0].length : 0;
     }
@@ -373,7 +395,8 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Calls a given function for all cells in the image, with the cell coordinates as the arguments.
+   * Calls a given function for all cells in the image, with the cell
+   * coordinates as the arguments.
    * @param {*} func a function to be applied
    */
   forAllCells_(func) {
@@ -408,35 +431,35 @@ Blockly.fieldRegistry.register('field_bitmap', FieldBitmap);
 /**
  * CSS for bitmap field.
  */
-Blockly.Css.register(
-    /* eslint-disable indent */
-    `.dropdownEditor {
-          align-items: center;
-          flex-direction: column;
-          display: flex;
-          justify-content: center;
-          margin-bottom: 20px;
-        }
-    .pixelContainer {
-      margin: 20px;
-    }
-    .pixelRow {
-      display: flex;
-      flex-direction: row;
-      padding: 0;
-      margin: 0;
-      height: ${PIXEL_SIZE}
-    }
-    .pixelButton {
-      width: ${PIXEL_SIZE}px;
-      height: ${PIXEL_SIZE}px;
-      border: 1px solid black;
-    }
-    .pixelDisplay {
-      white-space:pre-wrap;
-    }
-    .controlButton {
-      margin: 5px 0;
-    }`
-    /* eslint-enable indent */
-);
+Blockly.Css.register([
+  /* eslint-disable indent */
+  `.dropdownEditor {
+        align-items: center;
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+  .pixelContainer {
+    margin: 20px;
+  }
+  .pixelRow {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    height: ${PIXEL_SIZE}
+  }
+  .pixelButton {
+    width: ${PIXEL_SIZE}px;
+    height: ${PIXEL_SIZE}px;
+    border: 1px solid black;
+  }
+  .pixelDisplay {
+    white-space:pre-wrap;
+  }
+  .controlButton {
+    margin: 5px 0;
+  }`,
+  /* eslint-enable indent */
+]);

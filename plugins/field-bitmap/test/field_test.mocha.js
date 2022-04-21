@@ -9,9 +9,10 @@ const {assert} = require('chai');
 const {FieldBitmap} = require('../src/index');
 
 /**
- * Helper method to reformat raw test cases to a format that the various tests can use
+ * Helper method to reformat raw test cases to a format that the
+ * various tests can use.
  * @param {*} testCases
- * @returns
+ * @return the processed test cases
  */
 function processTestCases(testCases) {
   return testCases.map((x) => ({
@@ -96,15 +97,19 @@ suite('FieldBitmap', function() {
   const validTestCaseAssertField = function(field, testCase) {
     const expectedValue = testCase.value;
     assert(JSON.stringify(field.getValue()) === JSON.stringify(expectedValue));
+    assert(field.getImageHeight() === expectedValue.length);
+    assert(field.getImageWidth() === expectedValue[0].length);
   };
 
   /**
-   * Re-implementation of the method from TestHelpers that supports array equality checking.
+   * Re-implementation of the method from TestHelpers that supports array
+   * equality checking.
    * @return void
    */
 
   /**
-   * Reimplementation of the function from TestHelpers that supports array equality testing.
+   * Reimplementation of the function from TestHelpers that supports array
+   * equality testing.
    * @param {*} validValueTestCases test cases for valid field values
    * @param {*} invalidValueTestCases test cases for invalid field values
    */
