@@ -122,7 +122,7 @@ module.exports = (env) => {
         // Run babel to compile both JS and TS.
         {
           test: /\.(js|mjs|ts)$/,
-          exclude: /(node_modules|build|dist)/,
+          exclude: /(node_modules|build)/,
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
