@@ -113,10 +113,6 @@
       "releaseType": "node",
       "versioning": "default"
     },
-    "plugins/workspace-minimap": {
-      "releaseType": "node",
-      "versioning": "default"
-    },
     "plugins/workspace-search": {
       "releaseType": "node",
       "versioning": "default"
