@@ -1,5 +1,6 @@
 {
   "bootstrap-sha": "9c21ab94c16e68438b3883db69afc3d170ec9553",
+  "plugins": ["node-workspace"],
   "packages": {
     "plugins/block-dynamic-connection": {
       "releaseType": "node",
