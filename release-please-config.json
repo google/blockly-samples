@@ -1,12 +1,136 @@
 {
+  "bootstrap-sha": "9c21ab94c16e68438b3883db69afc3d170ec9553",
   "packages": {
-    "undefined": {
+    "plugins/block-dynamic-connection": {
       "releaseType": "node",
-      "draft": false,
-      "prerelease": false,
-      "bumpMinorPreMajor": false,
-      "bumpPatchForMinorPreMajor": false,
-      "changelogPath": "CHANGELOG.md",
+      "versioning": "default"
+    },
+    "plugins/block-extension-tooltip": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/block-plus-minus": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/block-test": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/content-highlight": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/continuous-toolbox": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/copy-by-storage": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/cross-tab-copy-paste": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/dev-create": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/dev-scripts": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/dev-tools": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/disable-top-blocks": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/eslint-config": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/field-date": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/field-grid-dropdown": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/field-slider": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/fixed-edges": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/keyboard-navigation": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/migration": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/modal": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/scroll-options": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/serialize-disabled-interactions": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/strict-connection-checker": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/theme-dark": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/theme-deuteranopia": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/theme-highcontrast": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/theme-modern": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/theme-tritanopia": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/typed-variable-modal": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/workspace-backpack": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/workspace-minimap": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/workspace-search": {
+      "releaseType": "node",
+      "versioning": "default"
+    },
+    "plugins/zoom-to-fit": {
+      "releaseType": "node",
       "versioning": "default"
     }
   }
