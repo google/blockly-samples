@@ -267,7 +267,7 @@ next() {
     return null;
   }
   // The next Blockly.ASTNode.
-  const newNode = curNode.next();
+  let newNode = curNode.next();
   if (newNode) {
     // This in charge of updating the current location and drawing the cursor.
     this.setCurNode(newNode);
@@ -280,7 +280,7 @@ in() {
   if (!curNode) {
     return null;
   }
-  const newNode = curNode.in();
+  let newNode = curNode.in();
   if (newNode) {
     this.setCurNode(newNode);
   }
@@ -292,7 +292,7 @@ prev() {
   if (!curNode) {
     return null;
   }
-  const newNode = curNode.prev();
+  let newNode = curNode.prev();
   if (newNode) {
     this.setCurNode(newNode);
   }
@@ -304,7 +304,7 @@ out() {
   if (!curNode) {
     return null;
   }
-  const newNode = curNode.out();
+  let newNode = curNode.out();
   if (newNode) {
     this.setCurNode(newNode);
   }
@@ -326,7 +326,7 @@ next() {
   if (!curNode) {
     return null;
   }
-  const newNode = curNode.next();
+  let newNode = curNode.next();
   // While the newNode exists and is either a previous or next type go to the
   // next value.
   while (newNode && (newNode.getType() === Blockly.ASTNode.types.PREVIOUS ||
@@ -347,7 +347,7 @@ prev() {
   if (!curNode) {
     return null;
   }
-  const newNode = curNode.prev();
+  let newNode = curNode.prev();
   // While the newNode exists and is either a previous or next connection go to
   // the previous value.
   while (newNode && (newNode.getType() === Blockly.ASTNode.types.PREVIOUS ||
@@ -368,7 +368,7 @@ in() {
   if (!curNode) {
     return null;
   }
-  const newNode = curNode.in();
+  let newNode = curNode.in();
   // If the newNode is a previous connection go to the next value in the level. 
   // This will be the block.
   if (newNode && newNode.getType() === Blockly.ASTNode.types.PREVIOUS) {
