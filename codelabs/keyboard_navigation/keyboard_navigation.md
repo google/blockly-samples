@@ -149,7 +149,7 @@ In the class you just created, override `createDomInternal_`. This method is in 
 
     // If this is a cursor make the cursor blink.
     if (this.isCursor()) {
-      var blinkProperties = this.getBlinkProperties_();
+      const blinkProperties = this.getBlinkProperties_();
       Blockly.utils.dom.createSvgElement('animate', blinkProperties,
           this.blockPath_);
     }
@@ -185,7 +185,7 @@ Override `showAtLocation_`. This method is used to decide what to display at a g
    * @override
    */
   showAtLocation_(curNode) {
-    var handled = false;
+    let handled = false;
     // If the cursor is on a block call the new method we created to draw the cursor.
     if (curNode.getType() == Blockly.ASTNode.types.BLOCK) {
       this.showWithBlock_(curNode);
@@ -227,7 +227,7 @@ Blockly.blockRendering.register('custom_renderer', CustomRenderer);
 ```
 
 Now we need to override the method responsible for returning the drawer for markers and cursors.
-In the `CustomRenderer` class add the following method.
+Add the following method in the `CustomRenderer` class.
 ```js
 makeMarkerDrawer(workspace, marker) {
   return new CustomMarkerSvg(workspace, this.getConstants(), marker);
@@ -240,8 +240,7 @@ In order to use your custom renderer, import it and set the renderer property in
 import './custom_marker_svg';
 ```
 
-In the 'DomContentLoaded' event listener add the renderer to the default
-options so it looks like the below code. 
+Pass the renderer name to the default options in the 'DomContentLoaded' event listener.
 ```js
   const defaultOptions = {
     toolbox: toolboxCategories,
@@ -263,12 +262,12 @@ Add the below code to your `custom_cursor.js` file.
 
 next() {
   // The current Blockly.ASTNode the cursor is on.
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
   // The next Blockly.ASTNode.
-  var newNode = curNode.next();
+  const newNode = curNode.next();
   if (newNode) {
     // This in charge of updating the current location and drawing the cursor.
     this.setCurNode(newNode);
@@ -277,11 +276,11 @@ next() {
 }
 
 in() {
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
-  var newNode = curNode.in();
+  const newNode = curNode.in();
   if (newNode) {
     this.setCurNode(newNode);
   }
@@ -289,11 +288,11 @@ in() {
 }
 
 prev() {
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
-  var newNode = curNode.prev();
+  const newNode = curNode.prev();
   if (newNode) {
     this.setCurNode(newNode);
   }
@@ -301,11 +300,11 @@ prev() {
 }
 
 out() {
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
-  var newNode = curNode.out();
+  const newNode = curNode.out();
   if (newNode) {
     this.setCurNode(newNode);
   }
@@ -323,11 +322,11 @@ move methods. The red boxes represent the nodes we want to skip.
 Change the `next` method so it will skip over any previous or next connections.
 ```js
 next() {
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
-  var newNode = curNode.next();
+  const newNode = curNode.next();
   // While the newNode exists and is either a previous or next type go to the
   // next value.
   while (newNode && (newNode.getType() === Blockly.ASTNode.types.PREVIOUS ||
@@ -344,11 +343,11 @@ next() {
 Change the `prev` method so it will skip over any previous or next connections.
 ```js
 prev() {
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
-  var newNode = curNode.prev();
+  const newNode = curNode.prev();
   // While the newNode exists and is either a previous or next connection go to
   // the previous value.
   while (newNode && (newNode.getType() === Blockly.ASTNode.types.PREVIOUS ||
@@ -365,11 +364,11 @@ prev() {
 Change the `in` method so that it will skip over any previous connections and go straight to the block. 
 ```js
 in() {
-  var curNode = this.getCurNode();
+  const curNode = this.getCurNode();
   if (!curNode) {
     return null;
   }
-  var newNode = curNode.in();
+  const newNode = curNode.in();
   // If the newNode is a previous connection go to the next value in the level. 
   // This will be the block.
   if (newNode && newNode.getType() === Blockly.ASTNode.types.PREVIOUS) {
@@ -473,7 +472,7 @@ create the keyboard shortcut by adding a keyCodes property to your shortcut
 object. 
 
 ```js
-var moveToStack = {
+const moveToStack = {
   ...
   keyCodes: [ctrlW]
 };
