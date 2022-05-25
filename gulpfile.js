@@ -87,15 +87,11 @@ function publish(dryRun, force) {
     console.log('Running tests to check for problems');
     execSync('npm run test', execSyncOptions);
 
-    // dryRun and force are never both true.
-    if (dryRun) {
-      execSync('npm run publish:check', execSyncOptions);
-    } else if (force) {
-      execSync(
-          'npm run publish:_internal -- --force-publish=*', execSyncOptions);
-    } else {
-      execSync('npm run publish:_internal', execSyncOptions);
-    }
+    console.log('Publishing on github and npm');
+    execSync(
+        `npm run publish:${dryRun ? 'check' : '_internal'}` +
+            `${force ? ' -- --force-publish=*' : ''}`,
+        execSyncOptions);
 
     done();
   };
