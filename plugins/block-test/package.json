@@ -7,7 +7,6 @@
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
-
     "start": "blockly-scripts start"
   },
   "main": "./dist/index.js",

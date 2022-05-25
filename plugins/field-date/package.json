@@ -8,7 +8,6 @@
         "clean": "blockly-scripts clean",
         "lint": "blockly-scripts lint",
         "predeploy": "npm run build && blockly-scripts predeploy",
-
         "start": "npm run build && blockly-scripts start",
         "test": "npm run build && blockly-scripts test"
     },

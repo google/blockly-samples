@@ -8,7 +8,6 @@
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "predeploy": "blockly-scripts predeploy",
-
     "start": "blockly-scripts start"
   },
   "main": "./dist/index.js",

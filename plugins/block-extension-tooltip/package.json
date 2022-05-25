@@ -9,7 +9,6 @@
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
     "predeploy": "npm run build && blockly-scripts predeploy",
-
     "start": "blockly-scripts start"
   },
   "private": true,
