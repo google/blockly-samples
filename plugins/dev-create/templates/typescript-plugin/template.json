@@ -7,7 +7,6 @@
     "dist": "blockly-scripts build prod",
     "lint": "blockly-scripts lint",
     "predeploy": "blockly-scripts predeploy",
-
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
