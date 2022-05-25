@@ -65,28 +65,37 @@ function publish(dryRun, force) {
         {stdio: 'inherit'});
 
     const releaseDir = 'dist';
-    // Delete the release directory if it exists.
     if (fs.existsSync(releaseDir)) {
       console.log('Removing previous `dist/` directory.');
       rimraf.sync(releaseDir);
     }
 
-    // Clone a fresh copy of blockly-samples.
     console.log(`Checking out a fresh copy of blockly-samples under\
  ${path.resolve(releaseDir)}`);
     execSync(
         `git clone https://github.com/google/blockly-samples ${releaseDir}`,
         {stdio: 'pipe'});
 
-    // Run npm ci.
-    console.log('Running npm ci to install.');
-    execSync(`npm ci`, {cwd: releaseDir, stdio: 'inherit'});
+    const execSyncOptions = {cwd: releaseDir, stdio: 'inherit'};
 
-    // Run npm publish.
-    execSync(
-        `npm run publish:${dryRun ? 'check' : '_internal'}` +
-            `${force ? ' -- --force-publish=*' : ''}`,
-        {cwd: releaseDir, stdio: 'inherit'});
+    console.log('Running npm ci to install.');
+    execSync(`npm ci`, execSyncOptions);
+
+    console.log('Running the build to check for problems');
+    execSync('npm run build', execSyncOptions);
+
+    console.log('Running tests to check for problems');
+    execSync('npm run test', execSyncOptions);
+
+    // dryRun and force are never both true.
+    if (dryRun) {
+      execSync('npm run publish:check', execSyncOptions);
+    } else if (force) {
+      execSync(
+          'npm run publish:_internal -- --force-publish=*', execSyncOptions);
+    } else {
+      execSync('npm run publish:_internal', execSyncOptions);
+    }
 
     done();
   };

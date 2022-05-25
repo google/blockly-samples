@@ -129,7 +129,7 @@ const packageJson = {
     'dist': 'blockly-scripts build prod',
     'lint': 'blockly-scripts lint',
     'predeploy': 'blockly-scripts predeploy',
-    'prepublishOnly': 'npm run clean && npm run dist',
+
     'start': 'blockly-scripts start',
     'test': 'blockly-scripts test',
   },

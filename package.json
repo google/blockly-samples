@@ -24,7 +24,7 @@
         "publish:check": "lerna changed",
         "publish:dryrun": "gulp publishDryRun",
         "publish:force": "gulp forcePublish",
-        "publish:_internal": "lerna publish",
+        "publish:_internal": "lerna publish --conventional-commits --create-release github --yes",
         "test:ghpages:beta": "gulp testGhPagesBeta",
         "test:ghpages": "gulp testGhPages"
     },
