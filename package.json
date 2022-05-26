@@ -20,7 +20,7 @@
         "lint:fix": "lerna run lint -- -- --fix",
         "postinstall": "npm run boot",
         "test": "lerna run test",
-        "publish": "gulp publish",
+        "publish:manual": "gulp publish",
         "publish:check": "lerna changed",
         "publish:dryrun": "gulp publishDryRun",
         "publish:force": "gulp forcePublish",
