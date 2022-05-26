@@ -25,6 +25,7 @@ export let BackpackContextMenuOptions;
 /**
  * @typedef {{
  *    allowEmptyBackpackOpen: (boolean|undefined),
+ *    useFilledBackpackImage: (boolean|undefined),
  *    contextMenu:(!BackpackContextMenuOptions|undefined)
  * }}
  */
@@ -37,8 +38,9 @@ export let BackpackOptions;
  * @return {!BackpackOptions} The created options object.
  */
 export function parseOptions(options) {
-  const defaultOptions = {
+  const defaults = {
     allowEmptyBackpackOpen: true,
+    useFilledBackpackImage: false,
     contextMenu: {
       emptyBackpack: true,
       removeFromBackpack: true,
@@ -48,13 +50,19 @@ export function parseOptions(options) {
       disablePreconditionChecks: false,
     },
   };
+
   if (!options) {
-    return defaultOptions;
+    return defaults;
   }
-  const mergedOptions = {};
-  mergedOptions.contextMenu = {
-    ...defaultOptions.contextMenu, ...options.contextMenu};
-  mergedOptions.allowEmptyBackpackOpen = options.allowEmptyBackpackOpen ??
-      defaultOptions.allowEmptyBackpackOpen;
-  return mergedOptions;
+
+  return {
+    allowEmptyBackpackOpen:
+        options.allowEmptyBackpackOpen ?? defaults.allowEmptyBackpackOpen,
+    useFilledBackpackImage:
+        options.useFilledBackpackImage ?? defaults.useFilledBackpackImage,
+    contextMenu: {
+      ...defaults.contextMenu,
+      ...options.contextMenu,
+    },
+  };
 }

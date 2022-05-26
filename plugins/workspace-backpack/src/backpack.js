@@ -12,9 +12,7 @@
 import * as Blockly from 'blockly/core';
 import {cleanBlockXML, registerContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
-import {
-  BackpackContextMenuOptions, BackpackOptions, parseOptions,
-} from './options';
+import {BackpackContextMenuOptions, BackpackOptions, parseOptions} from './options';
 
 /**
  * Class for backpack that can be used save blocks from the workspace for
@@ -556,6 +554,9 @@ export class Backpack extends Blockly.DragTarget {
    */
   onContentChange_() {
     this.maybeRefreshFlyoutContents_();
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
+
+    if (!this.options_.useFilledBackpackImage) return;
     if (this.contents_.length > 0) {
       this.svgImg_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
           BACKPACK_FILLED_SVG_DATAURI);
@@ -563,8 +564,6 @@ export class Backpack extends Blockly.DragTarget {
       this.svgImg_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
           BACKPACK_SVG_DATAURI);
     }
-
-    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
   }
 
   /**
