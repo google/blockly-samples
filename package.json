@@ -26,7 +26,8 @@
         "publish:force": "gulp forcePublish",
         "publish:_internal": "lerna publish",
         "test:ghpages:beta": "gulp testGhPagesBeta",
-        "test:ghpages": "gulp testGhPages"
+        "test:ghpages": "gulp testGhPages",
+        "version": "npm install --package-lock-only && git add package-lock.json"
     },
     "devDependencies": {
         "@blockly/eslint-config": "^2.1.7",
