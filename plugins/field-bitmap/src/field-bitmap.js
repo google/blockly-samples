@@ -73,12 +73,18 @@ export class FieldBitmap extends Blockly.Field {
     return new FieldBitmap((options && options['value']), undefined, options);
   }
 
-  /** Returns the width of the image in pixels. */
+  /** 
+   * Returns the width of the image in pixels. 
+   * @return {number} The width in pixels
+   */
   getImageWidth() {
     return this.imgWidth_;
   }
 
-  /** Returns the height of the image in pixels. */
+  /** 
+   * Returns the height of the image in pixels. 
+   * @return {number} The height in pixels
+   */
   getImageHeight() {
     return this.imgHeight_;
   }
