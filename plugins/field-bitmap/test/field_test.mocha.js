@@ -68,7 +68,7 @@ suite('FieldBitmap', function() {
     },
     {title: '3x3 checkerboard', value: [[1, 0, 1], [0, 1, 0], [1, 0, 1]]},
     {
-      title: '4x4 solid',
+      title: '4x4 empty',
       value: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     },
   ]);
@@ -86,8 +86,7 @@ suite('FieldBitmap', function() {
    * @param {FieldBitmap} field The field to check.
    */
   const assertFieldDefault = function(field) {
-    assert(
-        JSON.stringify(field.getValue()) === JSON.stringify(defaultFieldValue));
+    assert.deepEqual(field.getValue(), defaultFieldValue);
   };
   /**
    * Asserts that the field properties are correct based on the test case.
@@ -96,16 +95,10 @@ suite('FieldBitmap', function() {
    */
   const validTestCaseAssertField = function(field, testCase) {
     const expectedValue = testCase.value;
-    assert(JSON.stringify(field.getValue()) === JSON.stringify(expectedValue));
-    assert(field.getImageHeight() === expectedValue.length);
-    assert(field.getImageWidth() === expectedValue[0].length);
+    assert.deepEqual(field.getValue(), defaultFieldValue);
+    assert.equal(field.getImageHeight(), expectedValue.length);
+    assert.equal(field.getImageWidth(), expectedValue[0].length);
   };
-
-  /**
-   * Re-implementation of the method from TestHelpers that supports array
-   * equality checking.
-   * @return void
-   */
 
   /**
    * Reimplementation of the function from TestHelpers that supports array

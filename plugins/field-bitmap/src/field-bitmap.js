@@ -11,7 +11,9 @@
 
 
 import Blockly from 'blockly/core';
-import {assert} from 'chai';
+import { assert } from 'chai';
+
+
 export const DEFAULT_HEIGHT = 5;
 export const DEFAULT_WIDTH = 5;
 const PIXEL_SIZE = 15;
@@ -23,6 +25,7 @@ const EMPTY_PIXEL_COLOR = 'white';
  * Includes a grid of clickable pixels that's exported as a bitmap.
  */
 export class FieldBitmap extends Blockly.Field {
+  /** Constructor for the bitmap field. */
   constructor(value = undefined, validator = undefined, config = undefined) {
     super(value, validator, config);
 
@@ -50,7 +53,7 @@ export class FieldBitmap extends Blockly.Field {
     this.boundEvents_ = [];
 
     /** References to UI elements */
-    this.editorPixels = null;
+    this.editorPixels_ = null;
     this.fieldGroup_ = null;
     this.blockDisplayPixels_ = null;
 
@@ -60,7 +63,7 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Constructs a FieldTemplate from a JSON arg object.
+   * Constructs a FieldBitmap from a JSON arg object.
    * @param {!Object} options A JSON object with options.
    * @return {!FieldBitmap} The new field instance.
    * @package
@@ -70,18 +73,20 @@ export class FieldBitmap extends Blockly.Field {
     return new FieldBitmap((options && options['value']), undefined, options);
   }
 
+  /** Returns the width of the image in pixels. */
   getImageWidth() {
     return this.imgWidth_;
   }
 
+  /** Returns the height of the image in pixels. */
   getImageHeight() {
     return this.imgHeight_;
   }
 
   /**
    * Validates that a new value meets the requirements for a valid bitmap array.
-   * @param {*} newValue
-   * @return the new value if it's valid, or null
+   * @param {*} newValue the new value to be tested
+   * @return {Object} the new value if it's valid, or null
    */
   doClassValidation_(newValue = undefined) {
     if (!newValue) {
@@ -122,13 +127,11 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Called when a new value has been validated and is about to be set.
-   * @param {*} newValue
+   * @param {*} newValue the value that's about to be set
    */
   doValueUpdate_(newValue) {
     super.doValueUpdate_(newValue);
     if (newValue) {
-      assert(Array.isArray(newValue));
-
       const newHeight = newValue.length;
       const newWidth = newValue[0] ? newValue[0].length : 0;
       if (this.imgHeight_ !== newHeight || this.imgWidth_ !== newWidth) {
@@ -143,7 +146,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Show the bitmap editor dialog
-   * @param {Event=} e Optional mouse event that triggered the field to
+   * @param {!Event=} e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
    * @param {boolean=} _quietInput Quiet input.
    * @protected
@@ -159,7 +162,6 @@ export class FieldBitmap extends Blockly.Field {
    * Updates the block display and editor dropdown when the field re-renders.
    * @protected
    * @override
-   * @return void
    */
   render_() {
     super.render_();
@@ -186,13 +188,14 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Determines whether the field is editable
-   * @return true since it is always editable. */
+   * @return {boolean} true since it is always editable. 
+   */
   updateEditable() {
     return true;
   }
 
   /**
-   * Creates the slider editor and add event listeners.
+   * Creates the bitmap editor and add event listeners.
    * @return {!Element} The newly created dropdown menu.
    * @private
    */
@@ -216,6 +219,10 @@ export class FieldBitmap extends Blockly.Field {
         this.editorPixels_[r].push(button);
         rowDiv.appendChild(button);
 
+        // Load the current pixel color
+        const pixel = this.getValue()[r][c];
+        button.style.background = pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+
         // Handle clicking a pixel
         this.bindEvent_(button, 'mousedown', () => {
           this.onMouseDownInPixel_(r, c);
@@ -234,7 +241,20 @@ export class FieldBitmap extends Blockly.Field {
     this.addControlButton_(dropdownEditor, 'Randomize', this.randomizePixels_);
     this.addControlButton_(dropdownEditor, 'Clear', this.clearPixels_);
 
-    this.render_();
+    if (this.blockDisplayPixels_) {
+      this.forAllCells_((r, c) => {
+        const pixel = this.getValue()[r][c];
+
+        // if (this.blockDisplayPixels_) {
+        //   this.blockDisplayPixels_[r][c].style.fill =
+        //     pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+        // }
+        if (this.editorPixels_) {
+          this.editorPixels_[r][c].style.background =
+            pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+        }
+      });
+    }
 
     return dropdownEditor;
   }
@@ -257,7 +277,8 @@ export class FieldBitmap extends Blockly.Field {
               'fill': EMPTY_PIXEL_COLOR,
               'fill_opacity': 1,
             },
-            this.fieldGroup_);
+          this.fieldGroup_);
+        
         row.push(square);
       }
       this.blockDisplayPixels_.push(row);
@@ -295,14 +316,14 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Disposes of events belonging to the slider editor.
+   * Disposes of events belonging to the bitmap editor.
    * @private
    */
   dropdownDispose_() {
     for (const event of this.boundEvents_) {
       Blockly.browserEvents.unbind(event);
     }
-    this.sliderInput_ = null;
+    this.editorPixels_ = null;
   }
 
   /**
@@ -353,9 +374,6 @@ export class FieldBitmap extends Blockly.Field {
   onMouseUp_() {
     this.mouseIsDown_ = false;
     this.valToPaintWith_ = undefined;
-    this.forAllCells_((r, c) => {
-      this.editorPixels_[r][c].alreadyToggledThisDrag = false;
-    });
   }
 
   /**

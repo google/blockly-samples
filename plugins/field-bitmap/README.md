@@ -1,4 +1,4 @@
-# blockly-field-bitmap [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/field-bitmap [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) field that allows for user-inputted pixel grids. The image value is stored as a 2D array of 1s and 0s, and supports any size. The user can paint over pixels with their mouse, or randomize the grid.
 
@@ -6,12 +6,12 @@ A [Blockly](https://www.npmjs.com/package/blockly) field that allows for user-in
 
 ### Yarn
 ```
-yarn add blockly-field-bitmap
+yarn add @blockly/field-bitmap
 ```
 
 ### npm
 ```
-npm install blockly-field-bitmap --save
+npm install @blockly/field-bitmap --save
 ```
 
 ## Usage
@@ -27,29 +27,57 @@ If not provided, the default is a height of 5.
 ### JavaScript
 ```js
 import * as Blockly from 'blockly';
-import {FieldTemplate} from 'blockly-field-bitmap';
-Blockly.Blocks["test_field_template"] = {
+import {FieldBitmap} from 'blockly-field-bitmap';
+Blockly.Blocks["test_field_bitmap"] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("template: ")
-      .appendField(new FieldTemplate(...), "FIELDNAME");
+      .appendField("bitmap: ")
+      .appendField(new FieldBitmap(...), "FIELDNAME");
   }
 };
 ```
 ### JSON
 
+Example with default value:
 ```js
 import * as Blockly from 'blockly';
-import 'blockly-field-bitmap';
+import '@blockly/field-bitmap';
 Blockly.defineBlocksWithJsonArray([
     {
-        "type": "test_field_template",
-        "message0": "template: %1",
+        "type": "test_field_bitmap",
+        "message0": "bitmap: %1",
         "args0": [
             {
-                "type": "field_template",
+                "type": "field_bitmap",
                 "name": "FIELDNAME",
-                "value": ...
+                "value": [
+                    [0, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 0, 1, 1, 0],
+                    [0, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 1, 1, 0],
+                    [0, 1, 0, 0, 0, 1, 0],
+                    [0, 0, 1, 1, 1, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0],
+                ],
+            }
+        ]
+    }]);
+```
+
+Example with width and height:
+```js
+import * as Blockly from 'blockly';
+import '@blockly/field-bitmap';
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "test_field_bitmap",
+        "message0": "bitmap: %1",
+        "args0": [
+            {
+                "type": "field_bitmap",
+                "name": "FIELDNAME",
+                "width": 8,
+                "height": 8
             }
         ]
     }]);

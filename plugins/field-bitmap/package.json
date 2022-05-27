@@ -1,7 +1,7 @@
 {
-  "name": "blockly-field-bitmap",
-  "version": "0.0.0",
-  "description": "A Blockly field.",
+  "name": "@blockly/field-bitmap",
+  "version": "1.0.0",
+  "description": "A field that lets users input a pixel grid with their mouse.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
@@ -24,11 +24,11 @@
   ],
   "homepage": "https://github.com/GregoryCannon/blockly-samples/tree/master/field-bitmap#readme",
   "bugs": {
-    "url": "https://github.com/GregoryCannon/blockly-samples/issues"
+    "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GregoryCannon/blockly-samples.git",
+    "url": "https://github.com/google/blockly-samples.git",
     "directory": "field-bitmap"
   },
   "license": "Apache-2.0",
@@ -61,5 +61,6 @@
     "defaults",
     "IE 11",
     "IE_Mob 11"
-  ]
+  ],
+  "dependencies": {}
 }
