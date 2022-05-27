@@ -22,7 +22,7 @@
     "blockly-field",
     "bitmap"
   ],
-  "homepage": "https://github.com/GregoryCannon/blockly-samples/tree/master/field-bitmap#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/field-bitmap#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },

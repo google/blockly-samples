@@ -95,7 +95,7 @@ suite('FieldBitmap', function() {
    */
   const validTestCaseAssertField = function(field, testCase) {
     const expectedValue = testCase.value;
-    assert.deepEqual(field.getValue(), defaultFieldValue);
+    assert.deepEqual(field.getValue(), defaultexpectedValueFieldValue);
     assert.equal(field.getImageHeight(), expectedValue.length);
     assert.equal(field.getImageWidth(), expectedValue[0].length);
   };
