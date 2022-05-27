@@ -11,7 +11,6 @@
 
 
 import Blockly from 'blockly/core';
-import { assert } from 'chai';
 
 
 export const DEFAULT_HEIGHT = 5;
@@ -73,16 +72,16 @@ export class FieldBitmap extends Blockly.Field {
     return new FieldBitmap((options && options['value']), undefined, options);
   }
 
-  /** 
-   * Returns the width of the image in pixels. 
+  /**
+   * Returns the width of the image in pixels.
    * @return {number} The width in pixels
    */
   getImageWidth() {
     return this.imgWidth_;
   }
 
-  /** 
-   * Returns the height of the image in pixels. 
+  /**
+   * Returns the height of the image in pixels.
    * @return {number} The height in pixels
    */
   getImageHeight() {
@@ -194,7 +193,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Determines whether the field is editable
-   * @return {boolean} true since it is always editable. 
+   * @return {boolean} true since it is always editable.
    */
   updateEditable() {
     return true;
@@ -226,8 +225,8 @@ export class FieldBitmap extends Blockly.Field {
         rowDiv.appendChild(button);
 
         // Load the current pixel color
-        const pixel = this.getValue()[r][c];
-        button.style.background = pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+        const isOn = this.getValue()[r][c];
+        button.style.background = isOn ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
 
         // Handle clicking a pixel
         this.bindEvent_(button, 'mousedown', () => {
@@ -283,8 +282,7 @@ export class FieldBitmap extends Blockly.Field {
               'fill': EMPTY_PIXEL_COLOR,
               'fill_opacity': 1,
             },
-          this.fieldGroup_);
-        
+            this.fieldGroup_);
         row.push(square);
       }
       this.blockDisplayPixels_.push(row);
