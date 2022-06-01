@@ -497,8 +497,9 @@ following line to your `index.js` file.
 import {Constants} from '../src/index';
 ```
 
-In `index.js` we set the keys for the next, previous, in and out actions. Here
-is our [full list of actions](https://github.com/google/blockly/blob/07762ff4da3c713f7592c80052b1fa7cadb461a2/core/keyboard_nav/navigation.js#L957).
+In `index.js` we set the keys for the next, previous, in and out actions. For a
+full list of the shortcuts registered in the keyboard navigation plugin see the
+[constants file](https://github.com/google/blockly-samples/blob/35edbc9d7b882ec9a24ff0811e1e255f5d565fe8/plugins/keyboard-navigation/src/constants.js#L31).
 ```js
 Blockly.ShortcutRegistry.registry.removeAllKeyMappings(Constants.SHORTCUT_NAMES.OUT);
 Blockly.ShortcutRegistry.registry.addKeyMapping(Blockly.utils.KeyCodes.LEFT, Constants.SHORTCUT_NAMES.OUT);
