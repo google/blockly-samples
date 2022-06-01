@@ -25,7 +25,8 @@ jobs:
         node-version: 16
 
     - name: NPM install
-      run: npm install
+      # Use CI so that we don't update dependencies in this step.
+      run: npm ci
 
     - name: Build
       run: npm run build -- -- -- --skip-lint
@@ -37,4 +38,4 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm lerna publish --conventional-commits --create-release github --yes
+      run: lerna publish --conventional-commits --create-release github --yes
