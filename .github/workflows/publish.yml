@@ -38,4 +38,4 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: lerna publish --conventional-commits --create-release github --yes
+      run: npx lerna publish --conventional-commits --create-release github --yes
