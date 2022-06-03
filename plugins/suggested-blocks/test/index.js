@@ -11,7 +11,6 @@
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import * as SuggestedBlocks from '../src/index';
-import Theme from './theme';
 
 /**
  * Create a workspace.
