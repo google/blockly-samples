@@ -31,6 +31,9 @@ jobs:
       with:
         node-version: 16
 
+    - name: Configure npm
+      run: npm config set //wombat-dressing-room.appspot.com/:_authToken=$NODE_AUTH_TOKEN
+
     - name: NPM install
       # Use CI so that we don't update dependencies in this step.
       run: npm ci
