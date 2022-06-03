@@ -11,6 +11,7 @@
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import * as SuggestedBlocks from '../src/index';
+import Theme from './theme';
 
 /**
  * Create a workspace.
@@ -27,9 +28,27 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+const customTheme = Blockly.Theme.defineTheme('CLASSIC_WITH_SUGGESTIONS', {
+  'base': Blockly.Themes.Classic,
+  'blockStyles': {},
+  'categoryStyles': {
+    'frequently_used_category': {'colour': '60'},
+    'recently_used_category': {'colour': '60'},
+  },
+  'componentStyles': {},
+  'fontStyle': {},
+  'startHats': null,
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Insert two new categories
+  const newCategories = '<category name="Frequently Used" categorystyle="frequently_used_category" custom="MOST_USED"></category><category name="Recently Used" categorystyle="recently_used_category" custom="RECENTLY_USED"></category>';
+  const indexToInsert = toolboxCategories.indexOf('</xml>');
+  const toolboxCompiled = toolboxCategories.slice(0, indexToInsert) + newCategories + toolboxCategories.slice(indexToInsert);
+
   const defaultOptions = {
-    toolbox: toolboxCategories,
+    toolbox: toolboxCompiled,
+    theme: customTheme
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);

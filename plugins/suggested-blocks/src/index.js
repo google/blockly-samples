@@ -14,7 +14,8 @@
  * @namespace Blockly.SuggestedBlocks
  */
 import * as Blockly from 'blockly';
-const eventUtils = goog.require('Blockly.Events.utils');
+const eventUtils = Blockly.Events.utils;
+console.log("EVENT UTILS:", eventUtils);
 
 const blockDefaultJson = {};
 const recentlyUsedBlocks = [];
@@ -67,7 +68,7 @@ const getRecentlyUsed =
 }
 
 const eventListener = function(e) {
-  if (e.type == eventUtils.BLOCK_CREATE) {
+  if (e.type == Blockly.Events.BLOCK_CREATE) {
     console.log('Block created.', e);
     const newBlockType = e.json.type;
     blockDefaultJson[newBlockType] = e.json;
@@ -75,7 +76,8 @@ const eventListener = function(e) {
   }
 };
 
-export const init = function(workspace) {
+export const init = function (workspace) {
+  console.log("INIT");
   workspace.registerToolboxCategoryCallback('MOST_USED', getMostUsed);
   workspace.registerToolboxCategoryCallback('RECENTLY_USED', getRecentlyUsed);
   workspace.addChangeListener(eventListener);
