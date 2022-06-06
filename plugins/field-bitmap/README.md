@@ -2,6 +2,8 @@
 
 A [Blockly](https://www.npmjs.com/package/blockly) field that allows for user-inputted pixel grids. The image value is stored as a 2D array of 1s and 0s, and supports any size. The user can paint over pixels with their mouse, or randomize the grid.
 
+Note: this field does not support serialization to JSON.
+
 ## Installation
 
 ### Yarn
