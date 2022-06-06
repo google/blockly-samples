@@ -27,7 +27,7 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-const customTheme = Blockly.Theme.defineTheme('CLASSIC_WITH_SUGGESTIONS', {
+const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
   'base': Blockly.Themes.Classic,
   'blockStyles': {},
   'categoryStyles': {
