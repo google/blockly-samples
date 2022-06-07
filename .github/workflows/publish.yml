@@ -31,6 +31,11 @@ jobs:
       with:
         node-version: 16
 
+    - name: Configure npm
+      run: npm config set //wombat-dressing-room.appspot.com/:_authToken=$NODE_AUTH_TOKEN
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
+
     - name: NPM install
       # Use CI so that we don't update dependencies in this step.
       run: npm ci
@@ -43,6 +48,5 @@ jobs:
 
     - name: Publish
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npx lerna publish --conventional-commits --create-release github --yes
