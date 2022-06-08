@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.7 (2022-06-08)
+
+
+### Bug Fixes
+
+* package versions to support patch releases ([#1150](https://github.com/google/blockly-samples/issues/1150)) ([e1ae378](https://github.com/google/blockly-samples/commit/e1ae378d779531621c3d948566257d069002963f))
+
+
+
+
+
 ## 1.0.6 (2022-06-02)
 
 
