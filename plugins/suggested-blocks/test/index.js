@@ -39,7 +39,7 @@ const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
   'startHats': null,
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   // Insert two new categories
   const newCategories = '<category name="Frequently Used" categorystyle="frequently_used_category" custom="MOST_USED"></category><category name="Recently Used" categorystyle="recently_used_category" custom="RECENTLY_USED"></category>';
   const indexToInsert = toolboxCategories.indexOf('</xml>');

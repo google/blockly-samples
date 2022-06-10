@@ -14,71 +14,79 @@
  * @namespace Blockly.SuggestedBlocks
  */
 import * as Blockly from 'blockly';
-const eventUtils = Blockly.Events.utils;
-console.log("EVENT UTILS:", eventUtils);
 
-const blockDefaultJson = {};
-const recentlyUsedBlocks = [];
 const NUM_BLOCKS_PER_CATEGORY = 10;
 
-// Returns an array of objects.
-const getMostUsed = function() {
-  const countMap = {};
-  for (const key of recentlyUsedBlocks) {
-    countMap[key] = (countMap[key] || 0) + 1;
-  }
-  console.log(countMap);
+export class BlockSuggestor {
+  constructor() {
+    this.blockDefaultJson = {};
+    this.recentlyUsedBlocks = [];
 
-  const freqUsedKeys = [];
-  for (const key in countMap) {
-    freqUsedKeys.push(key);
+    this.eventListener = this.eventListener.bind(this);
+    this.getMostUsed = this.getMostUsed.bind(this);
+    this.getRecentlyUsed = this.getRecentlyUsed.bind(this);
   }
-  freqUsedKeys.sort((a, b) => countMap[b] - countMap[a]);
 
-  var blockList = [];
-  for (const key of freqUsedKeys.slice(0, NUM_BLOCKS_PER_CATEGORY)) {
-    const json = (blockDefaultJson[key] || {});
-    blockList.push({
-      'kind': 'BLOCK',
-      'type': key,
-      'fields': json.fields,
-      'inputs': json.inputs
-    });
+  // Returns an array of objects.
+  getMostUsed = function() {
+    console.log('GETTING MOST USED', this.recentlyUsedBlocks, this);
+    const countMap = {};
+    for (const key of this.recentlyUsedBlocks) {
+      countMap[key] = (countMap[key] || 0) + 1;
+    }
+    // console.log(countMap);
+
+    const freqUsedKeys = [];
+    for (const key of Object.keys(countMap)) {
+      freqUsedKeys.push(key);
+    }
+    freqUsedKeys.sort((a, b) => countMap[b] - countMap[a]);
+
+    const blockList = [];
+    for (const key of freqUsedKeys.slice(0, NUM_BLOCKS_PER_CATEGORY)) {
+      const json = (this.blockDefaultJson[key] || {});
+      blockList.push({
+        'kind': 'BLOCK',
+        'type': key,
+        'fields': json.fields,
+        'inputs': json.inputs,
+      });
+    }
+    return blockList;
+  };
+
+  // Returns an array of objects.
+  getRecentlyUsed = function() {
+    const uniqueRecentBlocks = [...new Set(this.recentlyUsedBlocks)];
+    // console.log(uniqueRecentBlocks);
+
+    const blockList = [];
+    for (const key of uniqueRecentBlocks.slice(-1 * NUM_BLOCKS_PER_CATEGORY)) {
+      const json = (this.blockDefaultJson[key] || {});
+      blockList.push({
+        'kind': 'BLOCK',
+        'type': key,
+        'fields': json.fields,
+        'inputs': json.inputs,
+      });
+    }
+    return blockList;
   }
-  return blockList;
-};
 
-// Returns an array of objects.
-const getRecentlyUsed =
-    function() {
-  const uniqueRecentBlocks = [...new Set(recentlyUsedBlocks)]
-  console.log(uniqueRecentBlocks);
-
-  var blockList = [];
-  for (const key of uniqueRecentBlocks.slice(-1 * NUM_BLOCKS_PER_CATEGORY)) {
-    const json = (blockDefaultJson[key] || {});
-    blockList.push({
-      'kind': 'BLOCK',
-      'type': key,
-      'fields': json.fields,
-      'inputs': json.inputs
-    });
-  }
-  return blockList
+  eventListener = function(e) {
+    if (e.type == Blockly.Events.BLOCK_CREATE) {
+      const newBlockType = e.json.type;
+      console.log('Block created.', newBlockType, e, this.recentlyUsedBlocks, this);
+      this.blockDefaultJson[newBlockType] = e.json;
+      this.recentlyUsedBlocks.unshift(newBlockType);
+    }
+  };
 }
 
-const eventListener = function(e) {
-  if (e.type == Blockly.Events.BLOCK_CREATE) {
-    console.log('Block created.', e);
-    const newBlockType = e.json.type;
-    blockDefaultJson[newBlockType] = e.json;
-    recentlyUsedBlocks.unshift(newBlockType);
-  }
-};
-
-export const init = function (workspace) {
-  console.log("INIT");
-  workspace.registerToolboxCategoryCallback('MOST_USED', getMostUsed);
-  workspace.registerToolboxCategoryCallback('RECENTLY_USED', getRecentlyUsed);
-  workspace.addChangeListener(eventListener);
+export const init = function(workspace) {
+  const suggestor = new BlockSuggestor();
+  workspace.registerToolboxCategoryCallback('MOST_USED', suggestor.getMostUsed);
+  workspace.registerToolboxCategoryCallback('RECENTLY_USED',
+      suggestor.getRecentlyUsed);
+  workspace.addChangeListener(suggestor.eventListener);
 };
