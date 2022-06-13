@@ -15,7 +15,7 @@ import {Command} from 'commander';
 // require() is not available in ES modules by default, so we must obtain it.
 import {createRequire} from 'module';
 const require = createRequire(import.meta.url);
-const scriptPackageJson = require('../package-lock.json');
+const scriptPackageJson = require('../package.json');
 
 
 const SCRIPT_NAME = scriptPackageJson.name;
