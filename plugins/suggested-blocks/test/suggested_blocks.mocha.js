@@ -9,95 +9,192 @@ const sinon = require('sinon');
 const Blockly = require('blockly/node');
 const SuggestedBlocks = require('../src/index');
 
-const BLOCK_LIST_1 = [
-  'controls_if',
-  'controls_if',
-  'controls_if',
-  'controls_if',
-  'controls_if',
-  'lists_length',
-  'controls_whileUntil',
-  'controls_whileUntil',
-  'controls_whileUntil',
-  'controls_whileUntil',
-  'colour_picker',
-  'colour_picker',
-  'colour_random',
-  'colour_random',
-  'colour_random',
-]
+const STANDARD_TEST_CASE = {
+  usedBlockList: [
+    'controls_if',
+    'controls_if',
+    'controls_if',
+    'controls_if',
+    'controls_if',
+    'lists_length',
+    'controls_whileUntil',
+    'controls_whileUntil',
+    'controls_whileUntil',
+    'controls_whileUntil',
+    'colour_picker',
+    'colour_picker',
+    'colour_random',
+    'colour_random',
+    'colour_random',
+  ],
+  expectedFrequentBlocks: [
+    'controls_if',
+    'controls_whileUntil',
+    'colour_random',
+    'colour_picker',
+    'lists_length',
+  ],
+  expectedRecentBlocks: [
+    'colour_random',
+    'colour_picker',
+    'controls_whileUntil',
+    'lists_length',
+    'controls_if',
+  ]
+}
 
-const EXPECTED_FREQUENT_BLOCKS_ORDER_1 = [
-  'controls_if',
-  'controls_whileUntil',
-  'colour_random',
-  'colour_picker',
-  'lists_length',
-]
+const MANY_UNIQUE_BLOCKS_TEST_CASE = {
+  usedBlockList: [
+    'controls_if',
+    'controls_if',
+    'lists_length',
+    'controls_whileUntil',
+    'controls_whileUntil',
+    'controls_whileUntil',
+    'colour_picker',
+    'colour_picker',
+    'colour_random',
+    'colour_random',
+    'math_arithmetic',
+    'logic_operation',
+    'math_single',
+    'math_trig',
+    'math_constant',
+    'controls_repeat_ext',
+    'controls_forEach',
+    'text_multiline'
+  ],
+  expectedFrequentBlocks: [
+    'controls_whileUntil',
+    'colour_random',
+    'colour_picker',
+    'controls_if',
+    'text_multiline',
+    'controls_forEach',
+    'controls_repeat_ext',
+    'math_constant',
+    'math_trig',
+    'math_single',
 
-const EXPECTED_RECENT_BLOCKS_ORDER_1 = [
-  'controls_if',
-  'lists_length',
-  'controls_whileUntil',
-  'colour_picker',
-  'colour_random',
-]
+  ],
+  expectedRecentBlocks: [
+    'text_multiline',
+    'controls_forEach',
+    'controls_repeat_ext',
+    'math_constant',
+    'math_trig',
+    'math_single',
+    'logic_operation',
+    'math_arithmetic',
+    'colour_random',
+    'colour_picker',
+  ]
+}
 
-suite('Frequently used blocks', function() {
+const FREQUENCY_TIEBREAK_TEST_CASE = {
+  usedBlockList: [
+    // Used once
+    'controls_if',
+    'lists_length',
+    'controls_whileUntil',
+    'colour_picker',
+    'colour_random',
+    'math_arithmetic',
+    // Used a second time
+    'controls_if',
+    'controls_whileUntil',
+    'colour_picker',
+    'colour_random',
+    // Used a third time
+    'colour_picker',
+    'colour_random',
+  ],
+  expectedFrequentBlocks: [
+    'colour_random',
+    'colour_picker',
+    'controls_whileUntil',
+    'controls_if',
+    'math_arithmetic',
+    'lists_length',
+  ],
+  expectedRecentBlocks: [
+    'colour_random',
+    'colour_picker',
+    'controls_whileUntil',
+    'controls_if',
+    'math_arithmetic',
+    'lists_length',
+  ]
+}
+
+
+suite('Suggested blocks', function() {
   /**
    * Asserts that the list of blocks matches the expected list.
    * @param blockList
    * @param expectedBlockIds
    */
   function assertSuggestedListEquals(blockList, expectedBlockIds) {
-    assert.equal(blockList.length, expectedBlockIds.length);
-    for (let i = 0; i < blockList.length; i++){
-      assert.equal(blockList[i].type, expectedBlockIds[i]);
-    }
+    const actualBlockIds = blockList.map(x => x.type);
+    assert.deepEqual(actualBlockIds, expectedBlockIds);
   }
 
+  const simulateTestCase = (testCase, workspace, clock) => {
+    for (const blockType of testCase.usedBlockList){
+      workspace.newBlock(blockType);
+    }
+    clock.tick(10); // Wait 10 ms for the async BLOCK_CREATE events to propagate. Takes <1ms, so 10 is conservative
+  };
+
   setup(function() {
+    // Create a workspace and integrate with the suggested blocks plugin
     this.workspace = new Blockly.Workspace();
     this.suggestor = new SuggestedBlocks.BlockSuggestor();
     this.workspace.addChangeListener(this.suggestor.eventListener);
-    this.clock = sinon.useFakeTimers();
+    
+    // Configure the Sinon library, which lets us control the timing of the unit tests.
+    if (!this.clock){
+      this.clock = sinon.useFakeTimers();
+    }
+  });
+
+  test('No blocks, both lists empty', function() {
+    assertSuggestedListEquals(this.suggestor.getMostUsed(), []);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), []);
+  });
+
+  test('Standard case, most used', function() {
+    simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
+    assertSuggestedListEquals(this.suggestor.getMostUsed(), STANDARD_TEST_CASE.expectedFrequentBlocks);
+  });
+
+  test('Standard case, recently used', function() {
+    simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), STANDARD_TEST_CASE.expectedRecentBlocks);
+  });
+
+  test('Many blocks case, most used', function() {
+    simulateTestCase(MANY_UNIQUE_BLOCKS_TEST_CASE, this.workspace, this.clock);
+    assertSuggestedListEquals(this.suggestor.getMostUsed(), MANY_UNIQUE_BLOCKS_TEST_CASE.expectedFrequentBlocks);
+  });
+
+  test('Many blocks case, recently used', function() {
+    simulateTestCase(MANY_UNIQUE_BLOCKS_TEST_CASE, this.workspace, this.clock);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), MANY_UNIQUE_BLOCKS_TEST_CASE.expectedRecentBlocks);
+  });
+
+  test('Frequency tiebreak case, most used', function() {
+    simulateTestCase(FREQUENCY_TIEBREAK_TEST_CASE, this.workspace, this.clock);
+    assertSuggestedListEquals(this.suggestor.getMostUsed(), FREQUENCY_TIEBREAK_TEST_CASE.expectedFrequentBlocks);
+  });
+
+  test('Frequency tiebreak case, recently used', function() {
+    simulateTestCase(FREQUENCY_TIEBREAK_TEST_CASE, this.workspace, this.clock);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), FREQUENCY_TIEBREAK_TEST_CASE.expectedRecentBlocks);
   });
 
   teardown(function() {
     this.workspace.dispose();
     this.suggestor = null;
   });
-
-  // test('Initially both empty', function() {
-  //   // this.block = this.workspace.newBlock('lists_create_with');
-  //   assertSuggestedListEquals(this.suggestor.getMostUsed(), []);
-  //   assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), []);
-  // });
-
-  test('Standard case, most used', function() {
-    for (const blockType of BLOCK_LIST_1){
-      // Broken method
-      this.workspace.newBlock(blockType);
-      
-      // // Workaround
-      // const mockEvent = {
-      //   type: Blockly.Events.BLOCK_CREATE,
-      //   json: {
-      //     type: blockType
-      //   }
-      // }
-      // this.suggestor.eventListener(mockEvent);
-    }
-    this.clock.tick(500);
-    const result = this.suggestor.getMostUsed();
-    console.log('RESULT:', result);
-    assertSuggestedListEquals(result, EXPECTED_FREQUENT_BLOCKS_ORDER_1);
-  });
-
-  // test('Standard case, recently used', function() {
-  //   for (const blockType of BLOCK_LIST_1){
-  //     this.workspace.newBlock(blockType);
-  //   }
-  //   assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), EXPECTED_RECENT_BLOCKS_ORDER_1);
-  // });
 });
