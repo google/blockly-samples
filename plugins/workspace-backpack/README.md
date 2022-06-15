@@ -58,6 +58,7 @@ This plugin takes an optional configuration object.
 ```
 {
   allowEmptyBackpackOpen: (boolean|undefined),
+  useFilledBackpackImage: (boolean|undefined),
   contextMenu: {
     emptyBackpack: (boolean|undefined),
     removeFromBackpack: (boolean|undefined),
@@ -75,6 +76,7 @@ registered at `init`.
 ```js
 const backpackOptions = {
   allowEmptyBackpackOpen: true,
+  useFilledBackpackImage: true,
   contextMenu: {
     emptyBackpack: true,
     removeFromBackpack: true,
@@ -89,6 +91,7 @@ passed in options that is undefined:
 ```js
 const defaultOptions = {
   allowEmptyBackpackOpen: true,
+  useFilledBackpackImage: false,
   contextMenu: {
     emptyBackpack: true,
     removeFromBackpack: true,
@@ -102,6 +105,9 @@ const defaultOptions = {
 
 The `allowEmptyBackpackOpen` property, if set to `false`, will prevent the backpack flyout from
 being opened if the backpack is empty.
+
+The `useFilledBackpackImage` property, if set to `true`, will change the
+backpack image when the backpack has something in it.
 
 The `disablePreconditionChecks` property will prevent the "Copy to Backpack"
 context menu option from disabling the context menu option if the block is
