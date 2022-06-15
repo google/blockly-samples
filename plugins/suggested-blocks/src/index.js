@@ -27,41 +27,50 @@ export class BlockSuggestor {
     this.getRecentlyUsed = this.getRecentlyUsed.bind(this);
   }
 
-  // Returns an array of objects.
-  getMostUsed = function() {
-    console.log('GETTING MOST USED', this.recentlyUsedBlocks, this);
+  /**
+   * Generates a list of the 10 most frequently used blocks, in order. Includes a secondary sort by most recent blocks.
+   * @return A list of block JSON objects
+   */
+  getMostUsed = function () {
+    // Store the frequency of each block, as well as the index at which it first appears
     const countMap = {};
-    for (const key of this.recentlyUsedBlocks) {
+    const recencyMap = {};
+    for (const [index, key] of this.recentlyUsedBlocks.entries()) {
       countMap[key] = (countMap[key] || 0) + 1;
+      if (!recencyMap[key]) {
+        recencyMap[key] = index + 1;
+      }
     }
-    // console.log(countMap);
 
-    const freqUsedKeys = [];
+    // Get a sorted list
+    const freqUsedBlockTypes = [];
     for (const key of Object.keys(countMap)) {
-      freqUsedKeys.push(key);
+      freqUsedBlockTypes.push(key);
     }
-    freqUsedKeys.sort((a, b) => countMap[b] - countMap[a]);
+    freqUsedBlockTypes.sort((a, b) => countMap[b] - countMap[a] + 0.01 * (recencyMap[a] - recencyMap[b]));
 
-    const blockList = [];
-    for (const key of freqUsedKeys.slice(0, NUM_BLOCKS_PER_CATEGORY)) {
-      const json = (this.blockDefaultJson[key] || {});
-      blockList.push({
-        'kind': 'BLOCK',
-        'type': key,
-        'fields': json.fields,
-        'inputs': json.inputs,
-      });
-    }
-    return blockList;
+    return this.generateBlockData(freqUsedBlockTypes);
   };
 
-  // Returns an array of objects.
-  getRecentlyUsed = function() {
+  /**
+   * Generates a list of the 10 most recently used blocks.
+   * @return A list of block JSON objects
+   */
+  getRecentlyUsed = function () {
     const uniqueRecentBlocks = [...new Set(this.recentlyUsedBlocks)];
-    // console.log(uniqueRecentBlocks);
+    const recencyMap = {};
+    for (const [index, key] of this.recentlyUsedBlocks.entries()) {
+      if (!recencyMap[key]) {
+        recencyMap[key] = index + 1;
+      }
+    }
+    uniqueRecentBlocks.sort((a, b) => recencyMap[a] - recencyMap[b]);
+    return this.generateBlockData(uniqueRecentBlocks)
+  }
 
+  generateBlockData = function (blockTypeList) {
     const blockList = [];
-    for (const key of uniqueRecentBlocks.slice(-1 * NUM_BLOCKS_PER_CATEGORY)) {
+    for (const key of blockTypeList.slice(0, NUM_BLOCKS_PER_CATEGORY)) {
       const json = (this.blockDefaultJson[key] || {});
       blockList.push({
         'kind': 'BLOCK',
@@ -73,20 +82,20 @@ export class BlockSuggestor {
     return blockList;
   }
 
-  eventListener = function(e) {
+  eventListener = function (e) {
     if (e.type == Blockly.Events.BLOCK_CREATE) {
       const newBlockType = e.json.type;
-      console.log('Block created.', newBlockType, e, this.recentlyUsedBlocks, this);
+      // console.log('Block created.', newBlockType, this.recentlyUsedBlocks);
       this.blockDefaultJson[newBlockType] = e.json;
       this.recentlyUsedBlocks.unshift(newBlockType);
     }
   };
 }
 
-export const init = function(workspace) {
+export const init = function (workspace) {
   const suggestor = new BlockSuggestor();
   workspace.registerToolboxCategoryCallback('MOST_USED', suggestor.getMostUsed);
   workspace.registerToolboxCategoryCallback('RECENTLY_USED',
-      suggestor.getRecentlyUsed);
+    suggestor.getRecentlyUsed);
   workspace.addChangeListener(suggestor.eventListener);
 };
