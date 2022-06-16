@@ -20,10 +20,7 @@ import * as SuggestedBlocks from '../src/index';
  */
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
-
-  // TODO: Initialize your plugin here.
   SuggestedBlocks.init(workspace);
-
   return workspace;
 }
 

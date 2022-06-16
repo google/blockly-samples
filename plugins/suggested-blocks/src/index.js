@@ -17,14 +17,22 @@ import * as Blockly from 'blockly';
 
 const NUM_BLOCKS_PER_CATEGORY = 10;
 
+// Map from workspace ID to BlockSuggestor objects
+const suggestorLookup = {};
+
 export class BlockSuggestor {
   constructor() {
-    this.blockDefaultJson = {};
+    this.defaultJsonForBlockLookup = {};
     this.recentlyUsedBlocks = [];
+    this.recentlyDeletedBlocks = [];
 
     this.eventListener = this.eventListener.bind(this);
     this.getMostUsed = this.getMostUsed.bind(this);
     this.getRecentlyUsed = this.getRecentlyUsed.bind(this);
+  }
+
+  getFullBlockHistory = function () {
+    return this.recentlyDeletedBlocks.concat(this.recentlyUsedBlocks);
   }
 
   /**
@@ -71,23 +79,66 @@ export class BlockSuggestor {
   generateBlockData = function (blockTypeList) {
     const blockList = [];
     for (const key of blockTypeList.slice(0, NUM_BLOCKS_PER_CATEGORY)) {
-      const json = (this.blockDefaultJson[key] || {});
+      const json = (this.defaultJsonForBlockLookup[key] || {});
+      json['kind'] = 'BLOCK';
+      json['type'] = key;
+      json['x'] = null;
+      json['y'] = null;
+      blockList.push(json);
+    }
+    if (blockList.length == 0){
       blockList.push({
-        'kind': 'BLOCK',
-        'type': key,
-        'fields': json.fields,
-        'inputs': json.inputs,
-      });
+        'kind': 'LABEL',
+        'text': 'No blocks have been used yet!',
+      })
     }
     return blockList;
+  }
+
+  loadFromSerializedData(data){
+    console.log("Suggestor LOADING...", data);
+    this.defaultJsonForBlockLookup = data.defaultJsonForBlockLookup;
+    // Add all the blocks that were used and then deleted into the block history queue
+    this.recentlyUsedBlocks = data.recentlyDeletedBlocks;
+    this.recentlyDeletedBlocks = data.recentlyDeletedBlocks;
+  }
+
+  saveToSerializedData(){
+    console.log("Suggestor SAVING...");
+
+    /* All blocks that were ever used are either:
+        1) still present (and will automatically emit new BLOCK_CREATE events 
+          when de-serialized)
+        2) deleted at some point
+      Therefore, when serializing we only need to store the deleted blocks.
+     */
+    return {
+      defaultJsonForBlockLookup: this.defaultJsonForBlockLookup,
+      recentlyDeletedBlocks: this.recentlyDeletedBlocks
+    }
+  }
+
+  clearPriorBlockData(){
+    console.log("Suggestor CLEARING...");
+    this.defaultJsonForBlockLookup = {};
+    this.recentlyUsedBlocks = [];
+    this.recentlyDeletedBlocks = [];
   }
 
   eventListener = function (e) {
     if (e.type == Blockly.Events.BLOCK_CREATE) {
       const newBlockType = e.json.type;
-      // console.log('Block created.', newBlockType, this.recentlyUsedBlocks);
-      this.blockDefaultJson[newBlockType] = e.json;
+      console.log('Block created.', newBlockType, e.json);
+      // If this is the first time creating this block, store its default
+      // configuration so we know how exactly to render it in the toolbox
+      if (!this.defaultJsonForBlockLookup[newBlockType]){
+        this.defaultJsonForBlockLookup[newBlockType] = e.json;        
+      }
       this.recentlyUsedBlocks.unshift(newBlockType);
+    } else if (e.type == Blockly.Events.BLOCK_DELETE) {
+      const newBlockType = e.oldJson.type;
+      console.log('Block deleted.', newBlockType);
+      this.recentlyDeletedBlocks.unshift(newBlockType);
     }
   };
 }
@@ -98,4 +149,35 @@ export const init = function (workspace) {
   workspace.registerToolboxCategoryCallback('RECENTLY_USED',
     suggestor.getRecentlyUsed);
   workspace.addChangeListener(suggestor.eventListener);
+  suggestorLookup[workspace.id] = suggestor;
 };
+
+class BlockSuggestorSerializer{
+  /** Constructs the block suggestor serializer */
+  constructor() {
+    /**
+     * The priority for deserializing block suggestion data.
+     * Should be less than the priority for blocks so that this state is
+     * applied after the blocks are loaded.
+     * @type {number}
+     */
+    this.priority = Blockly.serialization.priorities.BLOCKS - 10;
+  }
+
+  save(workspace) {
+    return suggestorLookup[workspace.id].saveToSerializedData();
+  }
+
+  load(state, workspace) {
+    suggestorLookup[workspace.id].loadFromSerializedData(state);
+  }
+
+  clear(workspace) {
+    suggestorLookup[workspace.id].clearPriorBlockData();
+  }
+}
+
+
+Blockly.serialization.registry.register(
+  'suggested-blocks',  // Name
+  new BlockSuggestorSerializer());
