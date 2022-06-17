@@ -40,8 +40,8 @@ const STANDARD_TEST_CASE = {
     'controls_whileUntil',
     'lists_length',
     'controls_if',
-  ]
-}
+  ],
+};
 
 const MANY_UNIQUE_BLOCKS_TEST_CASE = {
   usedBlockList: [
@@ -62,7 +62,7 @@ const MANY_UNIQUE_BLOCKS_TEST_CASE = {
     'math_constant',
     'controls_repeat_ext',
     'controls_forEach',
-    'text_multiline'
+    'text_multiline',
   ],
   expectedFrequentBlocks: [
     'controls_whileUntil',
@@ -88,8 +88,8 @@ const MANY_UNIQUE_BLOCKS_TEST_CASE = {
     'math_arithmetic',
     'colour_random',
     'colour_picker',
-  ]
-}
+  ],
+};
 
 const FREQUENCY_TIEBREAK_TEST_CASE = {
   usedBlockList: [
@@ -124,8 +124,8 @@ const FREQUENCY_TIEBREAK_TEST_CASE = {
     'controls_if',
     'math_arithmetic',
     'lists_length',
-  ]
-}
+  ],
+};
 
 
 suite('Suggested blocks', function() {
@@ -135,15 +135,18 @@ suite('Suggested blocks', function() {
    * @param expectedBlockIds
    */
   function assertSuggestedListEquals(blockList, expectedBlockIds) {
-    const actualBlockIds = blockList.map(x => x.type);
+    const actualBlockIds = blockList.map((x) => x.type);
     assert.deepEqual(actualBlockIds, expectedBlockIds);
   }
 
   const simulateTestCase = (testCase, workspace, clock) => {
-    for (const blockType of testCase.usedBlockList){
+    for (const blockType of testCase.usedBlockList) {
       workspace.newBlock(blockType);
     }
-    clock.tick(10); // Wait 10 ms for the async BLOCK_CREATE events to propagate. Takes <1ms, so 10 is conservative
+
+    // Wait 10 ms for the async BLOCK_CREATE events to propagate.
+    // Takes <1ms, so 10ms is conservative
+    clock.tick(10);
   };
 
   setup(function() {
@@ -151,46 +154,72 @@ suite('Suggested blocks', function() {
     this.workspace = new Blockly.Workspace();
     this.suggestor = new SuggestedBlocks.BlockSuggestor();
     this.workspace.addChangeListener(this.suggestor.eventListener);
-    
-    // Configure the Sinon library, which lets us control the timing of the unit tests.
-    if (!this.clock){
+    this.workspace.fireChangeListener({type: Blockly.Events.FINISHED_LOADING});
+
+    // Configure the Sinon library, which lets us control the timing of the
+    // unit tests.
+    if (!this.clock) {
       this.clock = sinon.useFakeTimers();
     }
   });
 
-  test('No blocks, both lists empty', function() {
-    assertSuggestedListEquals(this.suggestor.getMostUsed(), []);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), []);
+  test('No blocks, shows label', function() {
+    // (No setup code needed because no blocks created)
+
+    const mostUsed = this.suggestor.getMostUsed();
+    assert.equal(mostUsed.length, 1);
+    assert.equal(mostUsed[0].kind, 'LABEL');
+
+    const recentlyUsed = this.suggestor.getMostUsed();
+    assert.equal(recentlyUsed.length, 1);
+    assert.equal(recentlyUsed[0].kind, 'LABEL');
   });
 
   test('Standard case, most used', function() {
     simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getMostUsed(), STANDARD_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(this.suggestor.getMostUsed(),
+        STANDARD_TEST_CASE.expectedFrequentBlocks);
   });
 
   test('Standard case, recently used', function() {
     simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), STANDARD_TEST_CASE.expectedRecentBlocks);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(),
+        STANDARD_TEST_CASE.expectedRecentBlocks);
   });
 
   test('Many blocks case, most used', function() {
     simulateTestCase(MANY_UNIQUE_BLOCKS_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getMostUsed(), MANY_UNIQUE_BLOCKS_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(this.suggestor.getMostUsed(),
+        MANY_UNIQUE_BLOCKS_TEST_CASE.expectedFrequentBlocks);
   });
 
   test('Many blocks case, recently used', function() {
     simulateTestCase(MANY_UNIQUE_BLOCKS_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), MANY_UNIQUE_BLOCKS_TEST_CASE.expectedRecentBlocks);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(),
+        MANY_UNIQUE_BLOCKS_TEST_CASE.expectedRecentBlocks);
   });
 
   test('Frequency tiebreak case, most used', function() {
     simulateTestCase(FREQUENCY_TIEBREAK_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getMostUsed(), FREQUENCY_TIEBREAK_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(this.suggestor.getMostUsed(),
+        FREQUENCY_TIEBREAK_TEST_CASE.expectedFrequentBlocks);
   });
 
   test('Frequency tiebreak case, recently used', function() {
     simulateTestCase(FREQUENCY_TIEBREAK_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(), FREQUENCY_TIEBREAK_TEST_CASE.expectedRecentBlocks);
+    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(),
+        FREQUENCY_TIEBREAK_TEST_CASE.expectedRecentBlocks);
+  });
+
+  test('Can serialize/de-serialize', function() {
+    simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
+
+    const serializedData = this.suggestor.saveToSerializedData();
+    this.suggestor.clearPriorBlockData();
+    this.suggestor.loadFromSerializedData(serializedData);
+
+    assertSuggestedListEquals(this.suggestor.getMostUsed(),
+        STANDARD_TEST_CASE.expectedFrequentBlocks);
   });
 
   teardown(function() {
