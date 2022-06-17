@@ -18,7 +18,7 @@ import * as Blockly from 'blockly';
 const NUM_BLOCKS_PER_CATEGORY = 10;
 
 // Map from workspace ID to BlockSuggestor objects
-const suggestorLookup = {};
+const suggestorLookup = new WeakMap();
 
 export class BlockSuggestor {
   constructor() {
@@ -86,7 +86,7 @@ export class BlockSuggestor {
       json['y'] = null;
       blockList.push(json);
     }
-    if (blockList.length == 0){
+    if (blockList.length == 0) {
       blockList.push({
         'kind': 'LABEL',
         'text': 'No blocks have been used yet!',
@@ -95,7 +95,7 @@ export class BlockSuggestor {
     return blockList;
   }
 
-  loadFromSerializedData(data){
+  loadFromSerializedData(data) {
     console.log("Suggestor LOADING...", data);
     this.defaultJsonForBlockLookup = data.defaultJsonForBlockLookup;
     // Add all the blocks that were used and then deleted into the block history queue
@@ -118,7 +118,7 @@ export class BlockSuggestor {
     }
   }
 
-  clearPriorBlockData(){
+  clearPriorBlockData() {
     console.log("Suggestor CLEARING...");
     this.defaultJsonForBlockLookup = {};
     this.recentlyUsedBlocks = [];
@@ -131,8 +131,8 @@ export class BlockSuggestor {
       console.log('Block created.', newBlockType, e.json);
       // If this is the first time creating this block, store its default
       // configuration so we know how exactly to render it in the toolbox
-      if (!this.defaultJsonForBlockLookup[newBlockType]){
-        this.defaultJsonForBlockLookup[newBlockType] = e.json;        
+      if (!this.defaultJsonForBlockLookup[newBlockType]) {
+        this.defaultJsonForBlockLookup[newBlockType] = e.json;
       }
       this.recentlyUsedBlocks.unshift(newBlockType);
     } else if (e.type == Blockly.Events.BLOCK_DELETE) {
@@ -149,10 +149,10 @@ export const init = function (workspace) {
   workspace.registerToolboxCategoryCallback('RECENTLY_USED',
     suggestor.getRecentlyUsed);
   workspace.addChangeListener(suggestor.eventListener);
-  suggestorLookup[workspace.id] = suggestor;
+  suggestorLookup.set(workspace, suggestor);
 };
 
-class BlockSuggestorSerializer{
+class BlockSuggestorSerializer {
   /** Constructs the block suggestor serializer */
   constructor() {
     /**
@@ -165,15 +165,15 @@ class BlockSuggestorSerializer{
   }
 
   save(workspace) {
-    return suggestorLookup[workspace.id].saveToSerializedData();
+    return suggestorLookup.get(workspace).saveToSerializedData();
   }
 
   load(state, workspace) {
-    suggestorLookup[workspace.id].loadFromSerializedData(state);
+    suggestorLookup.get(workspace).loadFromSerializedData(state);
   }
 
   clear(workspace) {
-    suggestorLookup[workspace.id].clearPriorBlockData();
+    suggestorLookup.get(workspace).clearPriorBlockData();
   }
 }
 
