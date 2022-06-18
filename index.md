@@ -9,10 +9,10 @@ layout: index
 * [Blocks Dynamic Connection](plugins/block-dynamic-connection/test/index.html)
 
 ## Fields
-* [Field Bitmap](plugins/field-bitmap/test/index.html)
 * [Field Date](plugins/field-date/test/index.html)
 * [Field Slider](plugins/field-slider/test/index.html)
 * [Field Grid Dropdown](plugins/field-grid-dropdown/test/index.html)
+* [Field Bitmap](/plugins/field-bitmap/test/index.html)
 
 
 ## Plugins
