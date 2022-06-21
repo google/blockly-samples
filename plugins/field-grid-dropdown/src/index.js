@@ -139,8 +139,7 @@ Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
 /**
  * CSS for slider field.
  */
-Blockly.Css.register([
-  /* eslint-disable indent */
+Blockly.Css.register(
   `/** Setup grid layout of DropDown */
   .fieldGridDropDownContainer.blocklyMenu {
       display: grid;
@@ -171,6 +170,5 @@ Blockly.Css.register([
   }
   .fieldGridDropDownContainer {
     margin: 7px; /* needed for highlight */
-  }`,
-  /* eslint-enable indent */
-]);
+  }`
+);
