@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.0.16 (2022-06-21)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
 ## 4.0.15 (2022-06-08)
 
 

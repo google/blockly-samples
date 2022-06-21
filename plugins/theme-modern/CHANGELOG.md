@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.1.36 (2022-06-21)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
 ## 2.1.35 (2022-06-08)
 
 

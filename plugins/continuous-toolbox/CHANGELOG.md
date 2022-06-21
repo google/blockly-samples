@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.0.34 (2022-06-21)
+
+**Note:** Version bump only for package @blockly/continuous-toolbox
+
+
+
+
+
 ## 2.0.33 (2022-06-08)
 
 
