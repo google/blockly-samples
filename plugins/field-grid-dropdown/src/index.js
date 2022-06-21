@@ -140,7 +140,7 @@ Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
  * CSS for slider field.
  */
 Blockly.Css.register(
-  `/** Setup grid layout of DropDown */
+    `/** Setup grid layout of DropDown */
   .fieldGridDropDownContainer.blocklyMenu {
       display: grid;
       grid-gap: 7px;
