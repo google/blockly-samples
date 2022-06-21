@@ -207,6 +207,8 @@ const controlsIfHelper = function() {
   this.getInput('IF0').insertFieldAt(0, createPlusField(), 'PLUS');
 };
 
-Blockly.Extensions.unregister('controls_if_mutator');
+if (Blockly.Extensions.isRegistered('controls_if_mutator')) {
+  Blockly.Extensions.unregister('controls_if_mutator');
+}
 Blockly.Extensions.registerMutator('controls_if_mutator',
     controlsIfMutator, controlsIfHelper);

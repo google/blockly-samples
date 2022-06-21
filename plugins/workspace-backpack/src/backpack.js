@@ -12,9 +12,7 @@
 import * as Blockly from 'blockly/core';
 import {cleanBlockXML, registerContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
-import {
-  BackpackContextMenuOptions, BackpackOptions, parseOptions,
-} from './options';
+import {BackpackContextMenuOptions, BackpackOptions, parseOptions} from './options';
 
 /**
  * Class for backpack that can be used save blocks from the workspace for
@@ -557,6 +555,15 @@ export class Backpack extends Blockly.DragTarget {
   onContentChange_() {
     this.maybeRefreshFlyoutContents_();
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
+
+    if (!this.options_.useFilledBackpackImage) return;
+    if (this.contents_.length > 0) {
+      this.svgImg_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
+          BACKPACK_FILLED_SVG_DATAURI);
+    } else {
+      this.svgImg_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
+          BACKPACK_SVG_DATAURI);
+    }
   }
 
   /**
@@ -749,6 +756,55 @@ const BACKPACK_SVG_DATAURI =
     'w1LDEyLDVzLTAuNjYsMC4wMy0wLjk4LDAuMDlDMTEuMDEsNS4wNiwxMSw1LjAzLDExLDV6IE' +
     '0xNiwxM3YxdjAuNSBjMCwwLjI4LTAuMjIsMC41LTAuNSwwLjVTMTUsMTQuNzgsMTUsMTQuNV' +
     'YxNHYtMUg4di0xaDdoMVYxM3oiLz48L2c+PC9nPjwvc3ZnPg==';
+
+/**
+ * Base64 encoded data uri for backpack  icon when filled.
+ * @type {string}
+ */
+const BACKPACK_FILLED_SVG_DATAURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
+    'lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYX' +
+    'RlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2Zw' +
+    'ogICB3aWR0aD0iMjQiCiAgIGhlaWdodD0iMjQiCiAgIHZpZXdCb3g9IjAgMCAyNCAyNCIKIC' +
+    'AgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnNSIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3' +
+    'JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj' +
+    '4KICA8ZGVmcwogICAgIGlkPSJkZWZzMiIgLz4KICA8ZwogICAgIGlkPSJsYXllcjEiPgogIC' +
+    'AgPGcKICAgICAgIHN0eWxlPSJmaWxsOiM0NTVhNjQiCiAgICAgICBpZD0iZzg0OCIKICAgIC' +
+    'AgIHRyYW5zZm9ybT0ibWF0cml4KDAuMjY0NTgzMzMsMCwwLDAuMjY0NTgzMzMsOC44MjQ5OT' +
+    'k3LDguODI0OTk5NykiPgogICAgICA8ZwogICAgICAgICBpZD0iZzgyNiI+CiAgICAgICAgPH' +
+    'JlY3QKICAgICAgICAgICBmaWxsPSJub25lIgogICAgICAgICAgIGhlaWdodD0iMjQiCiAgIC' +
+    'AgICAgICAgd2lkdGg9IjI0IgogICAgICAgICAgIGlkPSJyZWN0ODI0IgogICAgICAgICAgIH' +
+    'g9IjAiCiAgICAgICAgICAgeT0iMCIgLz4KICAgICAgPC9nPgogICAgICA8ZwogICAgICAgIC' +
+    'BpZD0iZzgzNCI+CiAgICAgICAgPGcKICAgICAgICAgICBpZD0iZzgyOCIgLz4KICAgICAgIC' +
+    'A8ZwogICAgICAgICAgIGlkPSJnMjIyMyI+CiAgICAgICAgICA8ZwogICAgICAgICAgICAgaW' +
+    'Q9ImcyMTAxNiI+CiAgICAgICAgICAgIDxnCiAgICAgICAgICAgICAgIHN0eWxlPSJmaWxsOi' +
+    'M0NTVhNjQiCiAgICAgICAgICAgICAgIGlkPSJnMTQ5MyIKICAgICAgICAgICAgICAgdHJhbn' +
+    'Nmb3JtPSJtYXRyaXgoMy43Nzk1Mjc2LDAsMCwzLjc3OTUyNzYsLTMzLjM1NDMzLC0zMy4zNT' +
+    'QzMykiPgogICAgICAgICAgICAgIDxnCiAgICAgICAgICAgICAgICAgaWQ9ImcxNDcxIj4KIC' +
+    'AgICAgICAgICAgICAgIDxwYXRoCiAgICAgICAgICAgICAgICAgICBpZD0icmVjdDE0NjkiCi' +
+    'AgICAgICAgICAgICAgICAgICBzdHlsZT0iZmlsbDpub25lIgogICAgICAgICAgICAgICAgIC' +
+    'AgZD0iTSAwLDAgSCAyNCBWIDI0IEggMCBaIiAvPgogICAgICAgICAgICAgIDwvZz4KICAgIC' +
+    'AgICAgICAgICA8ZwogICAgICAgICAgICAgICAgIGlkPSJnMTQ3OSI+CiAgICAgICAgICAgIC' +
+    'AgICA8ZwogICAgICAgICAgICAgICAgICAgaWQ9ImcxNDczIiAvPgogICAgICAgICAgICAgIC' +
+    'AgPGcKICAgICAgICAgICAgICAgICAgIGlkPSJnMTQ3NyI+CiAgICAgICAgICAgICAgICAgID' +
+    'xwYXRoCiAgICAgICAgICAgICAgICAgICAgIGlkPSJwYXRoMTQ3NSIKICAgICAgICAgICAgIC' +
+    'AgICAgICAgZD0ibSAxMiwzIGMgLTEuMSwwIC0yLDAuOSAtMiwyIDAsMC4xMiAwLjAxOTMsMC' +
+    '4yMjk4NDM4IDAuMDI5MywwLjMzOTg0MzggQyA3LjY4OTI5NjUsNi4xNDk4NDMzIDYsOC4zOC' +
+    'A2LDExIHYgOCBjIDAsMS4xIDAuOSwyIDIsMiBoIDggYyAxLjEsMCAyLC0wLjkgMiwtMiBWID' +
+    'ExIEMgMTgsOC4zOCAxNi4zMTA3MDMsNi4xNDk4NDMzIDEzLjk3MDcwMyw1LjMzOTg0MzggMT' +
+    'MuOTgwNzAzLDUuMjI5ODQzOCAxNCw1LjEyIDE0LDUgMTQsMy45IDEzLjEsMyAxMiwzIFogbS' +
+    'AwLDEgYyAwLjU1LDAgMSwwLjQ1IDEsMSAwLDAuMDMgLTAuMDA5NSwwLjA1OTg0NCAtMC4wMT' +
+    'k1MywwLjA4OTg0NCBDIDEyLjY2MDQ2OSw1LjAyOTg0MzggMTIuMzQsNSAxMiw1IDExLjY2LD' +
+    'UgMTEuMzM5NTMxLDUuMDI5ODQzOCAxMS4wMTk1MzEsNS4wODk4NDM4IDExLjAwOTUzMSw1Lj' +
+    'A1OTg0MzggMTEsNS4wMyAxMSw1IDExLDQuNDUgMTEuNDUsNCAxMiw0IFogbSAtMy40NzI2NT' +
+    'YyLDYuMzk4NDM4IGggMS4xNTYyNSB2IDIuNjQwNjI0IGggMC4zMDkzMzU0IGwgLTIuMzdlLT' +
+    'UsLTEuMTcxMTQ2IDEuMDgyNzEwNSwtMTBlLTcgMC4wMTEsMS4xNzExNDYgaCAwLjMzMzMwNC' +
+    'BsIC0wLjAzNTA0LC0yLjU4NzMxNSBoIDAuNTc4MTI1IDAuNTc4MTI1IGwgMC4wMTEwNSwyLj' +
+    'U4NzMxNSBoIDAuMzU2MDI0IFYgMTIuMDYwNTQ3IEggMTQuMDYyNSB2IDAuOTc4NTE1IGggMC' +
+    '4zMzAwNzggdiAtMi41NTI3MzQgaCAxLjE1NjI1IHYgMi41NTI3MzQgaCAwLjk2Njc5NyB2ID' +
+    'AuMzU3NDIyIEggOS42ODM1OTM4IDguNTI3MzQzOCA3LjYwMzUxNTYgdiAtMC4zNTc0MjIgaC' +
+    'AwLjkyMzgyODIgeiIKICAgICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgID' +
+    'wvZz4KICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgIDwvZz' +
+    '4KICAgICAgICA8L2c+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
 Blockly.Css.register(
     `.blocklyBackpack {

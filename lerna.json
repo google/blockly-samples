@@ -5,9 +5,6 @@
   "version": "independent",
   "npmClient": "npm",
   "command": {
-    "bootstrap": {
-      "forceLocal": true
-    },
     "publish": {
       "registry": "https://wombat-dressing-room.appspot.com"
     }

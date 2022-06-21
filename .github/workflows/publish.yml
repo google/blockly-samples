@@ -1,0 +1,52 @@
+# This workflow handles releasing all of the packages in samples.
+
+name: publish
+
+on: workflow_dispatch  # Manually trigger.
+
+permissions:
+  contents: write  # For checkout and tag.
+  packages: write  # For publish.
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    # Environment specific to releasing so we can isolate the npm token.
+    environment: release  
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # This uses a reverse-engineered email for the github actions bot. See
+    # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+    - name: Git Identity
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '<41898282+github-actions[bot]@users.noreply.github.com'
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Configure npm
+      run: npm config set //wombat-dressing-room.appspot.com/:_authToken=$NODE_AUTH_TOKEN
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
+
+    - name: NPM install
+      # Use CI so that we don't update dependencies in this step.
+      run: npm ci
+
+    - name: Build
+      run: npm run build -- -- -- --skip-lint
+
+    - name: Test
+      run: npm run test -- -- -- --skip-lint
+
+    - name: Publish
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx lerna publish --conventional-commits --create-release github --yes

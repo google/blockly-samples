@@ -9,7 +9,7 @@
         "boot": "lerna bootstrap",
         "build": "lerna run build",
         "clean": "lerna run clean",
-        "clean:node": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
+        "clean:node": "lerna clean --yes",
         "deploy:prepare": "npm run deploy:prepare:plugins && npm run deploy:prepare:examples && gulp predeploy",
         "deploy:prepare:examples": "cd examples && npm run predeploy",
         "deploy:prepare:plugins": "npm run clean && lerna run predeploy",
@@ -20,13 +20,14 @@
         "lint:fix": "lerna run lint -- -- --fix",
         "postinstall": "npm run boot",
         "test": "lerna run test",
-        "publish": "gulp publish",
+        "publish:manual": "gulp publish",
         "publish:check": "lerna changed",
         "publish:dryrun": "gulp publishDryRun",
         "publish:force": "gulp forcePublish",
         "publish:_internal": "lerna publish",
         "test:ghpages:beta": "gulp testGhPagesBeta",
-        "test:ghpages": "gulp testGhPages"
+        "test:ghpages": "gulp testGhPages",
+        "version": "npm install --package-lock-only && git add package-lock.json"
     },
     "devDependencies": {
         "@blockly/eslint-config": "^2.1.7",
