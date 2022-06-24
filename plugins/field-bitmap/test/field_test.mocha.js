@@ -11,8 +11,8 @@ const {FieldBitmap, DEFAULT_HEIGHT, DEFAULT_WIDTH} = require('../src/index');
 /**
  * Helper method to reformat raw test cases to a format that the
  * various tests can use.
- * @param {*} testCases
- * @return the processed test cases
+ * @param {Array.<Object>} testCases unformatted testcase
+ * @return {Array.<Object>} the processed test cases
  */
 function processTestCases(testCases) {
   return testCases.map((x) => ({

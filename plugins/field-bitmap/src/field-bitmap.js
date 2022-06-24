@@ -24,7 +24,12 @@ const EMPTY_PIXEL_COLOR = 'white';
  * Includes a grid of clickable pixels that's exported as a bitmap.
  */
 export class FieldBitmap extends Blockly.Field {
-  /** Constructor for the bitmap field. */
+  /**
+   *Constructor for the bitmap field.
+   * @param {Array.<Array<number>>} value 2D rectangular array of 1s and 0s
+   * @param {Function} validator A function that is called to validate
+   * @param {Object} config config A map of options used to configure the field
+   */
   constructor(value = undefined, validator = undefined, config = undefined) {
     super(value, validator, config);
 
@@ -69,7 +74,7 @@ export class FieldBitmap extends Blockly.Field {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldBitmap((options && options['value']), undefined, options);
+    return new FieldBitmap(options && options['value'], undefined, options);
   }
 
   /**
@@ -160,7 +165,9 @@ export class FieldBitmap extends Blockly.Field {
     const editor = this.dropdownCreate_();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
     Blockly.DropDownDiv.showPositionedByField(
-        this, this.dropdownDispose_.bind(this));
+        this,
+        this.dropdownDispose_.bind(this)
+    );
   }
 
   /**
@@ -180,12 +187,14 @@ export class FieldBitmap extends Blockly.Field {
         const pixel = this.getValue()[r][c];
 
         if (this.blockDisplayPixels_) {
-          this.blockDisplayPixels_[r][c].style.fill =
-            pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+          this.blockDisplayPixels_[r][c].style.fill = pixel ?
+            FILLED_PIXEL_COLOR :
+            EMPTY_PIXEL_COLOR;
         }
         if (this.editorPixels_) {
-          this.editorPixels_[r][c].style.background =
-            pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+          this.editorPixels_[r][c].style.background = pixel ?
+            FILLED_PIXEL_COLOR :
+            EMPTY_PIXEL_COLOR;
         }
       });
     }
@@ -205,10 +214,14 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownCreate_() {
-    const dropdownEditor =
-        this.createElementWithClassname_('div', 'dropdownEditor');
-    const pixelContainer =
-        this.createElementWithClassname_('div', 'pixelContainer');
+    const dropdownEditor = this.createElementWithClassname_(
+        'div',
+        'dropdownEditor'
+    );
+    const pixelContainer = this.createElementWithClassname_(
+        'div',
+        'pixelContainer'
+    );
     dropdownEditor.appendChild(pixelContainer);
 
     this.bindEvent_(dropdownEditor, 'mouseup', this.onMouseUp_);
@@ -255,8 +268,9 @@ export class FieldBitmap extends Blockly.Field {
         //     pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
         // }
         if (this.editorPixels_) {
-          this.editorPixels_[r][c].style.background =
-            pixel ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+          this.editorPixels_[r][c].style.background = pixel ?
+            FILLED_PIXEL_COLOR :
+            EMPTY_PIXEL_COLOR;
         }
       });
     }
@@ -274,15 +288,17 @@ export class FieldBitmap extends Blockly.Field {
       const row = [];
       for (let c = 0; c < this.imgWidth_; c++) {
         const square = Blockly.utils.dom.createSvgElement(
-            'rect', {
-              'x': c * PIXEL_SIZE,
-              'y': r * PIXEL_SIZE,
-              'width': PIXEL_SIZE,
-              'height': PIXEL_SIZE,
-              'fill': EMPTY_PIXEL_COLOR,
-              'fill_opacity': 1,
+            'rect',
+            {
+              x: c * PIXEL_SIZE,
+              y: r * PIXEL_SIZE,
+              width: PIXEL_SIZE,
+              height: PIXEL_SIZE,
+              fill: EMPTY_PIXEL_COLOR,
+              fill_opacity: 1,
             },
-            this.fieldGroup_);
+            this.fieldGroup_
+        );
         row.push(square);
       }
       this.blockDisplayPixels_.push(row);
@@ -309,8 +325,12 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Creates a button with specified text and action, and adds it to the
-   * parent view.
+   *Create control button
+   * @param {!HTMLElement} parent parent HTML element to which
+   * control button will be added
+   * @param {string} buttonText text of the control button
+   * @param {Function} onClick callback that will be
+   * attached to the control button
    */
   addControlButton_(parent, buttonText, onClick) {
     const button = this.createElementWithClassname_('button', 'controlButton');
@@ -332,7 +352,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Constructs an array of zeros with the specified width and height
-   * @return the new value
+   * @return {!Array.<Array<?>>}the new value
    */
   getEmptyArray_() {
     const newVal = [];
@@ -348,6 +368,8 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Called when a mousedown event occurs within the bounds of a pixel.
    * @private
+   * @param {number} r row number of grid
+   * @param {number} c column number of grid
    */
   onMouseDownInPixel_(r, c) {
     // Toggle that pixel to the opposite of its value
@@ -360,6 +382,8 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Called when the mouse drags over a pixel in the editor.
    * @private
+   * @param {number} r row number of grid
+   * @param {number} c column number of grid
    */
   onMouseEnterPixel_(r, c) {
     if (!this.mouseIsDown_) {
@@ -407,6 +431,9 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Sets the value of a particular pixel
+   * @param {number} r row number of grid
+   * @param {number} c column number of grid
+   * @param {number} newValue value of the pixel
    * @private
    */
   setPixel_(r, c, newValue) {
@@ -430,7 +457,9 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Creates a new element with the specified type and class
-   * @return the created element
+   * @param {string} elementType type of html element
+   * @param {string} className className of html element
+   * @return {!HTMLElement} the created element
    */
   createElementWithClassname_(elementType, className) {
     const newElt = document.createElement(elementType);
@@ -438,10 +467,17 @@ export class FieldBitmap extends Blockly.Field {
     return newElt;
   }
 
-  /** Binds an event listener to the specified element */
+  /**
+   * Binds an event listener to the specified element
+   * @param {!HTMLElement} element specified element
+   * @param {string} eventName name of the event to bind
+   * @param {Function} callback function to be called on specified event
+   */
   bindEvent_(element, eventName, callback) {
-    this.boundEvents_.push(Blockly.browserEvents.conditionalBind(
-        element, eventName, this, callback));
+    this.boundEvents_.push(
+        Blockly.browserEvents.
+            conditionalBind(element, eventName, this, callback)
+    );
   }
 }
 
