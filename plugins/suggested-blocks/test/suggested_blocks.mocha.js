@@ -131,8 +131,8 @@ const FREQUENCY_TIEBREAK_TEST_CASE = {
 suite('Suggested blocks', function() {
   /**
    * Asserts that the list of blocks matches the expected list.
-   * @param blockList
-   * @param expectedBlockIds
+   * @param {Array <object>} blockList list of block JSON objects
+   * @param {Array <string>} expectedBlockIds list of expected block_type values
    */
   function assertSuggestedListEquals(blockList, expectedBlockIds) {
     const actualBlockIds = blockList.map((x) => x.type);
