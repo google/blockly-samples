@@ -1,46 +1,41 @@
 # blockly-plugin-suggested-blocks [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that suggests blocks for the user based on which blocks they've used already in the workspace.
 
 ## Installation
 
 ### Yarn
 ```
-yarn add blockly-plugin-suggested-blocks
+yarn add @blockly/suggested-blocks
 ```
 
 ### npm
 ```
-npm install blockly-plugin-suggested-blocks --save
+npm install @blockly/suggested-blocks --save
 ```
 
 ## Usage
-
-<!--
-  - TODO: Update usage.
-  -->
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-suggested-blocks';
+import {toolboxCategories} from '@blockly/dev-tools';
+import * as SuggestedBlocks from '@blockly/suggested-blocks';
+
+// TODO: either splice these into the toolboxCategories string or insert them where the categories are defined
+const mostUsedCategory = '<category name="Frequently Used" custom="MOST_USED"></category>';
+const recentlyUsedCategory = '<category name="Recently Used" custom="RECENTLY_USED"></category>';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
 });
 
-// Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
+// Initialize the plugin
+SuggestedBlocks.init(workspace);
 ```
 
 ## API
 
-<!--
-  - TODO: describe the API.
-  -->
+- `init`: Initializes the suggested blocks categories in the toolbox
 
 ## License
 Apache 2.0
