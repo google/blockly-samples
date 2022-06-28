@@ -60,10 +60,6 @@
             }
     }, [primaryWorkspace, toolbox, blocklyDiv, props]);
  
-    //  setXml(xml) {
-    //      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), this.primaryWorkspace);
-    //  }
- 
     return (
     <React.Fragment>
         <button onClick={generateCode}>Convert</button>
