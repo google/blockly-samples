@@ -26,7 +26,7 @@ import './App.css';
 
 import logo from './logo.svg';
 
-import BlocklyFunction, { Block, Value, Field, Shadow } from './Blockly';
+import BlocklyComponent, { Block, Value, Field, Shadow } from './Blockly';
 
 import './blocks/customblocks';
 import './generator/generator';
@@ -36,7 +36,7 @@ function App(props) {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <BlocklyFunction readOnly={false} 
+          <BlocklyComponent readOnly={false} 
           trashcan={true} media={'media/'}
           move={{
             scrollbars: true,
@@ -72,7 +72,7 @@ function App(props) {
                 </Block>
               </Value>
             </Block>
-          </BlocklyFunction>
+          </BlocklyComponent>
         </header>
       </div>
     );

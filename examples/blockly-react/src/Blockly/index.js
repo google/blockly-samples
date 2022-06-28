@@ -22,9 +22,9 @@
  */
 
  import React from 'react';
-import BlocklyFunction from './BlocklyFunction';
+import BlocklyComponent from './BlocklyComponent';
 
-export default BlocklyFunction;
+export default BlocklyComponent;
 
 const Block = (p) => {
     const { children, ...props } = p;
