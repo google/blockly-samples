@@ -35,11 +35,12 @@
  function BlocklyFunction(props) {
     const blocklyDiv = useRef();
     const toolbox = useRef();
-    const primaryWorkspace = useRef();
+    let primaryWorkspace = useRef();
 
     const generateCode = () => {
+        console.log(primaryWorkspace.current.workspace);
         var code = BlocklyJS.workspaceToCode(
-          primaryWorkspace.current.workspace
+          primaryWorkspace.current
         );
         console.log(code);
     }
