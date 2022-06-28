@@ -38,7 +38,6 @@
     let primaryWorkspace = useRef();
 
     const generateCode = () => {
-        console.log(primaryWorkspace.current.workspace);
         var code = BlocklyJS.workspaceToCode(
           primaryWorkspace.current
         );
