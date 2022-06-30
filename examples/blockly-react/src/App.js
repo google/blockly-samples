@@ -28,32 +28,16 @@ import logo from './logo.svg';
 
 import BlocklyComponent, { Block, Value, Field, Shadow } from './Blockly';
 
-import BlocklyJS from 'blockly/javascript';
-
 import './blocks/customblocks';
 import './generator/generator';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.simpleWorkspace = React.createRef();
-  }
-
-  generateCode = () => {
-    var code = BlocklyJS.workspaceToCode(
-      this.simpleWorkspace.current.workspace
-    );
-    console.log(code);
-  }
-
-  render() {
+function App(props) {
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <button onClick={this.generateCode}>Convert</button>
-          <BlocklyComponent ref={this.simpleWorkspace}
-          readOnly={false} trashcan={true} media={'media/'}
+          <BlocklyComponent readOnly={false} 
+          trashcan={true} media={'media/'}
           move={{
             scrollbars: true,
             drag: true,
@@ -92,7 +76,6 @@ class App extends React.Component {
         </header>
       </div>
     );
-  }
 }
 
 export default App;
