@@ -51,6 +51,12 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     this.workspace_.setMetricsManager(
         new ContinuousFlyoutMetrics(this.workspace_, this));
 
+    this.workspace_.addChangeListener((e) => {
+      if (e.type === Blockly.Events.VIEWPORT_CHANGE) {
+        this.selectCategoryByScrollPosition_(-this.workspace_.scrollY);
+      }
+    });
+
     this.autoClose = false;
   }
 
@@ -181,14 +187,6 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       }
     }
     return 0;
-  }
-
-  /** @override */
-  setMetrics_(xyRatio) {
-    super.setMetrics_(xyRatio);
-    if (this.scrollPositions) {
-      this.selectCategoryByScrollPosition_(-this.workspace_.scrollY);
-    }
   }
 
   /**
