@@ -210,6 +210,7 @@ const procedureDefMutator = {
    * @this {Blockly.Block}
    */
   mutationToDom: function(isForCaller = false) {
+    console.trace('mutation to dom');
     const container = Blockly.utils.xml.createElement('mutation');
     if (isForCaller) {
       container.setAttribute('name', this.getFieldValue('NAME'));
@@ -269,6 +270,7 @@ const procedureDefMutator = {
    *     parameters and statements.
    */
   saveExtraState: function() {
+    console.log('save extra');
     if (!this.argData_.length && this.hasStatements_) {
       return null;
     }
