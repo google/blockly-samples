@@ -29,7 +29,13 @@ if (typeof window !== 'undefined') {
 
 // Export Blockly into the global namespace to make it easier to debug from the
 // console.
-globalThis.Blockly = Blockly;
+if (Blockly.utils.global) {
+  if (Blockly.utils.global.globalThis) {
+    Blockly.utils.global.globalThis.Blockly = Blockly;
+  } else {
+    Blockly.utils.global.Blockly = Blockly;
+  }
+}
 
 export {
   addCodeEditor,
