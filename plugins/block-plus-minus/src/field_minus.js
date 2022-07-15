@@ -10,6 +10,7 @@
 'use strict';
 
 import * as Blockly from 'blockly/core';
+import {getExtraBlockState} from './serialization_helper';
 
 /**
  * Creates a minus image field used for mutation.
@@ -42,18 +43,13 @@ function onClick_(minusField) {
   }
 
   Blockly.Events.setGroup(true);
-
-  const oldMutationDom = block.mutationToDom();
-  const oldMutation = oldMutationDom && Blockly.Xml.domToText(oldMutationDom);
-
+  const oldExtraState = getExtraBlockState(block);
   block.minus(minusField.args_);
+  const newExtraState = getExtraBlockState(block);
 
-  const newMutationDom = block.mutationToDom();
-  const newMutation = newMutationDom && Blockly.Xml.domToText(newMutationDom);
-
-  if (oldMutation != newMutation) {
+  if (oldExtraState != newExtraState) {
     Blockly.Events.fire(new Blockly.Events.BlockChange(
-        block, 'mutation', null, oldMutation, newMutation));
+        block, 'mutation', null, oldExtraState, newExtraState));
   }
   Blockly.Events.setGroup(false);
 }
