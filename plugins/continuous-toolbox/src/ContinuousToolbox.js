@@ -30,7 +30,6 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     flyout.recordScrollPositions();
 
     this.workspace_.addChangeListener((e) => {
-      console.log('triggered');
       if (e.type === Blockly.Events.BLOCK_CREATE ||
           e.type === Blockly.Events.BLOCK_DELETE) {
         this.refreshSelection();
