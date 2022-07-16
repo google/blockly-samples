@@ -28,6 +28,13 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     const flyout = this.getFlyout();
     flyout.show(this.getInitialFlyoutContents_());
     flyout.recordScrollPositions();
+
+    this.workspace_.addChangeListener((e) => {
+      if (e.type === Blockly.Events.BLOCK_CREATE ||
+          e.type === Blockly.Events.BLOCK_DELETE) {
+        this.refreshSelection();
+      }
+    });
   }
 
   /** @override */
