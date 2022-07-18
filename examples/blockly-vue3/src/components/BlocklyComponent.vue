@@ -1,7 +1,7 @@
 <script setup>
 /**
  * @fileoverview Blockly Vue Component.
- * @author dcodien@gmail.com (Dylan Coodien)
+ * @author dcoodien@gmail.com (Dylan Coodien)
  */
 
 import { onMounted, ref, shallowRef } from "vue";
