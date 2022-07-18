@@ -11,7 +11,7 @@
 
 module.exports = () => {
   return {
-    port: 3000,
+    port: 'auto',
     hot: true,
     static: ['./test'],
     watchFiles: {
