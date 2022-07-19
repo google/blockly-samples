@@ -15,28 +15,28 @@ import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_slider', [
   {
-    'label': 'Basic',
-    'args': {
+    label: 'Basic',
+    args: {
       'value': 50,
     },
   },
   {
-    'label': 'Min',
-    'args': {
+    label: 'Min',
+    args: {
       'value': 20,
       'min': 10,
     },
   },
   {
-    'label': 'Max',
-    'args': {
+    label: 'Max',
+    args: {
       'value': 70,
       'max': 80,
     },
   },
   {
-    'label': 'Min and Max',
-    'args': {
+    label: 'Min and Max',
+    args: {
       'value': 60,
       'min': 10,
       'max': 80,
@@ -46,17 +46,23 @@ const toolbox = generateFieldTestBlocks('field_slider', [
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @return The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
+function createWorkspace(blocklyDiv: HTMLElement,
+    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+  /**
+   * TODO: Update options type information to properly support 
+   * `Blockly.BlocklyOptions`.
+   * See https://github.com/google/blockly/blob/master/core/inject.js
+   */
+  const workspace = Blockly.inject(blocklyDiv, options as () => void);
   return workspace;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
+  const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
   createPlayground(document.getElementById('root'), createWorkspace,

@@ -9,12 +9,55 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/ban-types */
-
 import * as Blockly from 'blockly/core';
 
 type BoundEvent = ReturnType<typeof Blockly.browserEvents.conditionalBind>;
+
+/**
+ * TODO: Add more precise config type at the corresponding source.
+ * See https://github.com/google/blockly/blob/master/core/field.js
+ */
+interface FieldConfig {
+  tooltip?: string;
+}
+
+/**
+ * TODO: Add more precise config type at the corresponding source.
+ * See https://github.com/google/blockly/blob/master/core/field_textinput.js
+ */
+interface FieldTextInputConfig extends FieldConfig {
+  spellcheck?: boolean;
+}
+
+/**
+ * TODO: Add more precise config type at the corresponding source.
+ * See https://github.com/google/blockly/blob/master/core/field_number.js
+ */
+interface FieldNumberConfig extends FieldTextInputConfig {
+  min?: string | number;
+  max?: string | number;
+  precision?: string | number;
+}
+
+/**
+ * A config object for defining a field slider.
+ */
+export type FieldSliderConfig = FieldNumberConfig;
+
+/**
+ * Options used to define a field slider from JSON.
+ */
+export interface FieldSliderOptions extends FieldNumberConfig {
+  value?: string | number;
+}
+
+/* eslint-disable @typescript-eslint/ban-types */
+/**
+ * TODO: Add more precise function type at the corresponding source.
+ * See https://github.com/google/blockly/blob/master/core/field.js
+ */
+type FieldSliderValidator = Function;
+/* eslint-enable @typescript-eslint/ban-types */
 
 /**
  * Slider field.
@@ -24,15 +67,11 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Array holding info needed to unbind events.
    * Used for disposing.
    * Ex: [[node, name, func], [node, name, func]].
-   * @type {!Array.<Array<?>>}
-   * @private
    */
   private boundEvents: BoundEvent[] = [];
 
   /**
    * The HTML range input element.
-   * @type {?HTMLInputElement}
-   * @private
    */
   private sliderInput?: HTMLInputElement = null;
 
@@ -45,15 +84,15 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @param precision Precision for value.
    * @param validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
-   *    number, or null to abort the change.
+   *    number, or null to abort the change.`
    * @param config A map of options used to configure the field.
    *    See the [field creation documentation]{@link
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
    *    for a list of properties this parameter supports.
    */
-  constructor(
-      value?: string | number, min?: string | number, max?: string | number,
-      precision?: string | number, validator?: Function, config?: {}) {
+  constructor(value?: string | number, min?: string | number,
+      max?: string | number, precision?: string | number,
+      validator?: FieldSliderValidator, config?: FieldSliderConfig) {
     super(value, min, max, precision, validator, config);
   }
 
@@ -65,18 +104,18 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @package
    * @nocollapse
    */
-  static fromJson(options: {}): FieldSlider {
-    return new FieldSlider(
-        options['value'], undefined, undefined, undefined, undefined, options);
+  static fromJson(options: FieldSliderOptions): FieldSlider {
+    return new FieldSlider(options['value'], undefined, undefined, undefined,
+        undefined, options);
   }
 
+  /* eslint-disable @typescript-eslint/naming-convention */
   /**
    * Show the inline free-text editor on top of the text along with the slider
    *    editor.
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
    * @param _quietInput Quiet input.
-   * @override
    */
   protected override showEditor_(e?: Event, _quietInput?: boolean) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
@@ -96,7 +135,6 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Updates the slider when the field rerenders.
-   * @override
    */
   protected override render_() {
     super.render_();
@@ -131,7 +169,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    */
   private dropdownDispose_() {
     for (const event of this.boundEvents) {
-      Blockly.unbindEvent_(event);
+      Blockly.browserEvents.unbind(event);
     }
     this.sliderInput = null;
   }
@@ -152,6 +190,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     }
     this.sliderInput.setAttribute('value', this.getValue());
   }
+  /* eslint-enable @typescript-eslint/naming-convention */
 }
 
 Blockly.fieldRegistry.register('field_slider', FieldSlider);
