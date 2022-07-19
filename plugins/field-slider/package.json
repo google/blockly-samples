@@ -42,9 +42,10 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.24",
     "@blockly/dev-tools": "^3.1.9",
-    "blockly": "^8.0.0",
+    "blockly": "^8.0.3",
     "chai": "^4.2.0",
-    "sinon": "^9.0.1"
+    "sinon": "^9.0.1",
+    "typescript": "^4.7.4"
   },
   "peerDependencies": {
     "blockly": ">=7 <9"
