@@ -115,11 +115,20 @@ export class FieldSlider extends Blockly.FieldNumber {
    *    editor.
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
-   * @param _quietInput Quiet input.
+   * @param quietInput Quiet input.
    */
-  protected override showEditor_(e?: Event, _quietInput?: boolean) {
-    // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    super.showEditor_(e);
+  protected override showEditor_(e?: Event, quietInput?: boolean) {
+    /**
+     * NOTE: The second param, `quietInput`, is utilized in `field_textinput`,
+     * but the type isn't properly built.
+     * See https://github.com/google/blockly/blob/master/core/field_textinput.js
+     *
+     * TODO: Remove `ShowEditorCorrected` once the exported `showEditor_` type
+     * is fixed.
+     */
+    type ShowEditorCorrected = (e?: Event, quietInput?: boolean) => void;
+    (super.showEditor_ as ShowEditorCorrected)(e, quietInput);
+
     // Build the DOM.
     const editor = this.dropdownCreate_();
 
