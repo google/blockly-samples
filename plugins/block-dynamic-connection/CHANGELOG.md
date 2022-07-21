@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.33 (2022-07-21)
+
+**Note:** Version bump only for package @blockly/block-dynamic-connection
+
+
+
+
+
 ## 0.1.32 (2022-07-06)
 
 

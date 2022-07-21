@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.0.19 (2022-07-21)
+
+**Note:** Version bump only for package @blockly/block-plus-minus
+
+
+
+
+
 ## 3.0.18 (2022-07-06)
 
 

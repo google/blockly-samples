@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.44 (2022-07-21)
+
+**Note:** Version bump only for package @blockly/plugin-strict-connection-checker
+
+
+
+
+
 ## 1.0.43 (2022-07-06)
 
 
