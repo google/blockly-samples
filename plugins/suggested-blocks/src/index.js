@@ -28,9 +28,24 @@ export class BlockSuggestor {
    * @param {number} numBlocksPerCategory
    */
   constructor(numBlocksPerCategory) {
+    /**
+     * Saves the full JSON data for each block type the first time it's used.
+     * This helps store what initial configuration / sub-blocks each block type
+     * would be expected to have.
+     */
     this.defaultJsonForBlockLookup = {};
+    /**
+     * List of reently used block types
+     */
     this.recentlyUsedBlocks = [];
+    /**
+     * Checks if the workspace is finished loading, to avoid taking action on
+     * all the BLOCK_CREATE events during workspace loading.
+     */
     this.workspaceHasFinishedLoading = false;
+    /**
+     * Config parameter which sets the size of the toolbox categories.
+     */
     this.numBlocksPerCategory = numBlocksPerCategory;
 
     this.eventListener = this.eventListener.bind(this);
