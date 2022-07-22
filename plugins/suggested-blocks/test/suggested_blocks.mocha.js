@@ -144,7 +144,7 @@ suite('Suggested blocks', function() {
       workspace.newBlock(blockType);
     }
 
-    // Wait 10 ms for the async BLOCK_CREATE events to propagate.
+    // Force events to fire by running any timers scheduled for the next 10ms.
     // Takes <1ms, so 10ms is conservative
     clock.tick(10);
   };
@@ -152,7 +152,8 @@ suite('Suggested blocks', function() {
   setup(function() {
     // Create a workspace and integrate with the suggested blocks plugin
     this.workspace = new Blockly.Workspace();
-    this.suggestor = new SuggestedBlocks.BlockSuggestor();
+    this.suggestor = new SuggestedBlocks.BlockSuggestor(
+        /* numBlocksPerCategory= */ 10);
     this.workspace.addChangeListener(this.suggestor.eventListener);
     this.workspace.fireChangeListener({type: Blockly.Events.FINISHED_LOADING});
 

@@ -15,8 +15,6 @@
  */
 import * as Blockly from 'blockly';
 
-const NUM_BLOCKS_PER_CATEGORY = 10;
-
 // Map from workspace ID to BlockSuggestor objects
 const suggestorLookup = new WeakMap();
 
@@ -26,15 +24,18 @@ const suggestorLookup = new WeakMap();
 export class BlockSuggestor {
   /**
    * Constructs a BlockSuggestor object.
+   * @param {number} numBlocksPerCategory
    */
-  constructor() {
+  constructor(numBlocksPerCategory) {
     this.defaultJsonForBlockLookup = {};
     this.recentlyUsedBlocks = [];
     this.workspaceHasFinishedLoading = false;
+    this.numBlocksPerCategory = numBlocksPerCategory;
 
     this.eventListener = this.eventListener.bind(this);
     this.getMostUsed = this.getMostUsed.bind(this);
     this.getRecentlyUsed = this.getRecentlyUsed.bind(this);
+    this.generateBlockData = this.generateBlockData.bind(this);
   }
 
   /**
@@ -81,15 +82,16 @@ export class BlockSuggestor {
   }
 
   generateBlockData = function(blockTypeList) {
-    const blockList = [];
-    for (const key of blockTypeList.slice(0, NUM_BLOCKS_PER_CATEGORY)) {
-      const json = (this.defaultJsonForBlockLookup[key] || {});
-      json['kind'] = 'BLOCK';
-      json['type'] = key;
-      json['x'] = null;
-      json['y'] = null;
-      blockList.push(json);
-    }
+    const blockList = blockTypeList.slice(0, this.numBlocksPerCategory).map(
+        (key) => {
+          const json = (this.defaultJsonForBlockLookup[key] || {});
+          json['kind'] = 'BLOCK';
+          json['type'] = key;
+          json['x'] = null;
+          json['y'] = null;
+          return json;
+        });
+
     if (blockList.length == 0) {
       blockList.push({
         'kind': 'LABEL',
@@ -147,8 +149,14 @@ export class BlockSuggestor {
   }
 }
 
-export const init = function(workspace) {
-  const suggestor = new BlockSuggestor();
+/**
+ * Main entry point to initialize the suggested blocks categories.
+ * @param {*} workspace the workspace to load into
+ * @param {*} numBlocksPerCategory how many blocks should be included per
+ * category
+ */
+export const init = function(workspace, numBlocksPerCategory = 10) {
+  const suggestor = new BlockSuggestor(numBlocksPerCategory);
   workspace.registerToolboxCategoryCallback('MOST_USED', suggestor.getMostUsed);
   workspace.registerToolboxCategoryCallback('RECENTLY_USED',
       suggestor.getRecentlyUsed);
