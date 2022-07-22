@@ -75,7 +75,6 @@ const MANY_UNIQUE_BLOCKS_TEST_CASE = {
     'math_constant',
     'math_trig',
     'math_single',
-
   ],
   expectedRecentBlocks: [
     'text_multiline',

@@ -25,7 +25,7 @@ const suggestorLookup = new WeakMap();
 export class BlockSuggestor {
   /**
    * Constructs a BlockSuggestor object.
-   * @param {number} numBlocksPerCategory
+   * @param {number} numBlocksPerCategory the size of each toolbox category
    */
   constructor(numBlocksPerCategory) {
     /**
@@ -57,26 +57,27 @@ export class BlockSuggestor {
   /**
    * Generates a list of the 10 most frequently used blocks, in order.
    * Includes a secondary sort by most recent blocks.
-   * @return {Array <object>}A list of block JSON objects
+   * @return {!Array<!Blockly.utils.toolbox.BlockInfo>}A list of block JSON
    */
   getMostUsed = function() {
-    // Store the frequency of each block, as well as the index first appears at
-    const countMap = {};
-    const recencyMap = {};
+    // Store the frequency of each block, as well as the index first appears at.
+    const countMap = new Map();
+    const recencyMap = new Map();
     for (const [index, key] of this.recentlyUsedBlocks.entries()) {
-      countMap[key] = (countMap[key] || 0) + 1;
-      if (!recencyMap[key]) {
-        recencyMap[key] = index + 1;
+      countMap.set(key, countMap.get(key) + 1);
+      if (!recencyMap.has(key)) {
+        recencyMap.set(key, index + 1);
       }
     }
 
-    // Get a sorted list
+    // Get a sorted list.
     const freqUsedBlockTypes = [];
-    for (const key of Object.keys(countMap)) {
+    for (const key of countMap.keys()) {
       freqUsedBlockTypes.push(key);
     }
-    freqUsedBlockTypes.sort((a, b) => countMap[b] - countMap[a] +
-        0.01 * (recencyMap[a] - recencyMap[b]));
+    // Use recency as a tiebreak.
+    freqUsedBlockTypes.sort((a, b) => countMap.get(b) - countMap.get(a) +
+        0.01 * (recencyMap.get(a) - recencyMap.get(b)));
 
     return this.generateBlockData(freqUsedBlockTypes);
   };
@@ -87,10 +88,10 @@ export class BlockSuggestor {
    */
   getRecentlyUsed = function() {
     const uniqueRecentBlocks = [...new Set(this.recentlyUsedBlocks)];
-    const recencyMap = {};
+    const recencyMap = new Map();
     for (const [index, key] of this.recentlyUsedBlocks.entries()) {
-      if (!recencyMap[key]) {
-        recencyMap[key] = index + 1;
+      if (!recencyMap.has(key)) {
+        recencyMap.set(key, index + 1);
       }
     }
     uniqueRecentBlocks.sort((a, b) => recencyMap[a] - recencyMap[b]);
@@ -152,20 +153,22 @@ export class BlockSuggestor {
 
   /**
    * Callback for when the workspace sends out events.
-   * @param {any} e the event object
+   * @param {!Blockly.Events.Abstract} e the event object
    */
   eventListener(e) {
+    if (e.type == Blockly.Events.FINISHED_LOADING) {
+      this.workspaceHasFinishedLoading = true;
+      return;
+    }
     if (e.type == Blockly.Events.BLOCK_CREATE &&
       this.workspaceHasFinishedLoading) {
       const newBlockType = e.json.type;
       // If this is the first time creating this block, store its default
-      // configuration so we know how exactly to render it in the toolbox
+      // configuration so we know how exactly to render it in the toolbox.
       if (!this.defaultJsonForBlockLookup[newBlockType]) {
         this.defaultJsonForBlockLookup[newBlockType] = e.json;
       }
       this.recentlyUsedBlocks.unshift(newBlockType);
-    } else if (e.type == Blockly.Events.FINISHED_LOADING) {
-      this.workspaceHasFinishedLoading = true;
     }
   }
 }
