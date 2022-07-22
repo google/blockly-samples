@@ -19,7 +19,8 @@ import * as Blockly from 'blockly';
 const suggestorLookup = new WeakMap();
 
 /**
- *
+ * Class that tracks all blocks created in a workspace and suggests future
+ * blocks to use.
  */
 export class BlockSuggestor {
   /**
@@ -81,6 +82,11 @@ export class BlockSuggestor {
     return this.generateBlockData(uniqueRecentBlocks);
   }
 
+  /**
+   * Converts a list of block types to a full-fledge list of block data.
+   * @param {Array<string>} blockTypeList the list of block types
+   * @return {Array<JSON>} the block data list
+   */
   generateBlockData = function(blockTypeList) {
     const blockList = blockTypeList.slice(0, this.numBlocksPerCategory).map(
         (key) => {
@@ -165,7 +171,8 @@ export const init = function(workspace, numBlocksPerCategory = 10) {
 };
 
 /**
- *
+ * Custom serializer so that the block suggestor can save and later recall which
+ * blocks have been used in a workspace.
  */
 class BlockSuggestorSerializer {
   /** Constructs the block suggestor serializer */
