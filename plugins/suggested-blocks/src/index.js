@@ -64,7 +64,7 @@ export class BlockSuggestor {
     const countMap = new Map();
     const recencyMap = new Map();
     for (const [index, key] of this.recentlyUsedBlocks.entries()) {
-      countMap.set(key, countMap.get(key) + 1);
+      countMap.set(key, (countMap.get(key) || 0) + 1);
       if (!recencyMap.has(key)) {
         recencyMap.set(key, index + 1);
       }
