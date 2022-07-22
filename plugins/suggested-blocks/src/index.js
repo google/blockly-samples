@@ -15,7 +15,7 @@
  */
 import * as Blockly from 'blockly';
 
-// Map from workspace ID to BlockSuggestor objects
+/** Map from workspaces to BlockSuggestor objects. */
 const suggestorLookup = new WeakMap();
 
 /**
