@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2022 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { fileURLToPath, URL } from "url";
 
 import { defineConfig } from "vite";

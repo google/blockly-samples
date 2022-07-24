@@ -1,5 +1,11 @@
 <script setup>
 /**
+ * @license
+ * Copyright 2022 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
  * @fileoverview Main Vue component that includes the Blockly component.
  * @author dcoodien@google.com (Dylan Coodien)
  */
