@@ -26,10 +26,10 @@ const EMPTY_PIXEL_COLOR = 'white';
 export class FieldBitmap extends Blockly.Field {
   /**
    *Constructor for the bitmap field.
-   * @param {!Array<!Array<number>>=} value 2D rectangular array of 1s and 0s
-   * @param {Function=} validator A function that is called to validate
-   * @param {!Object=} config config A map of options used to
-   * configure the field
+   * @param {!Array<!Array<number>>=} value 2D rectangular array of 1s and 0s.
+   * @param {Function=} validator A function that is called to validate.
+   * @param {!Object=} config Config A map of options used to
+   * configure the field.
    */
   constructor(value = undefined, validator = undefined, config = undefined) {
     super(value, validator, config);
@@ -80,7 +80,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Returns the width of the image in pixels.
-   * @return {number} The width in pixels
+   * @return {number} The width in pixels.
    */
   getImageWidth() {
     return this.imgWidth_;
@@ -88,7 +88,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Returns the height of the image in pixels.
-   * @return {number} The height in pixels
+   * @return {number} The height in pixels.
    */
   getImageHeight() {
     return this.imgHeight_;
@@ -96,8 +96,8 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Validates that a new value meets the requirements for a valid bitmap array.
-   * @param {*} newValue the new value to be tested
-   * @return {Object} the new value if it's valid, or null
+   * @param {*} newValue The new value to be tested.
+   * @return {Object} The new value if it's valid, or null.
    */
   doClassValidation_(newValue = undefined) {
     if (!newValue) {
@@ -138,7 +138,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Called when a new value has been validated and is about to be set.
-   * @param {*} newValue the value that's about to be set
+   * @param {*} newValue The value that's about to be set.
    */
   doValueUpdate_(newValue) {
     super.doValueUpdate_(newValue);
@@ -156,7 +156,7 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Show the bitmap editor dialog
+   * Show the bitmap editor dialog.
    * @param {!Event=} e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
    * @param {boolean=} _quietInput Quiet input.
@@ -202,8 +202,8 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Determines whether the field is editable
-   * @return {boolean} true since it is always editable.
+   * Determines whether the field is editable.
+   * @return {boolean} True since it is always editable.
    */
   updateEditable() {
     return true;
@@ -227,6 +227,9 @@ export class FieldBitmap extends Blockly.Field {
 
     this.bindEvent_(dropdownEditor, 'mouseup', this.onMouseUp_);
     this.bindEvent_(dropdownEditor, 'mouseleave', this.onMouseUp_);
+    this.bindEvent_(dropdownEditor, 'dragstart', (e) => {
+      e.preventDefault();
+    });
 
     this.editorPixels_ = [];
     for (let r = 0; r < this.imgHeight_; r++) {
@@ -326,12 +329,12 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   *Create control button
-   * @param {!HTMLElement} parent parent HTML element to which
-   * control button will be added
-   * @param {string} buttonText text of the control button
-   * @param {Function} onClick callback that will be
-   * attached to the control button
+   *Create control button.
+   * @param {!HTMLElement} parent Parent HTML element to which
+   * control button will be added.
+   * @param {string} buttonText Text of the control button.
+   * @param {Function} onClick Callback that will be
+   * attached to the control button.
    */
   addControlButton_(parent, buttonText, onClick) {
     const button = this.createElementWithClassname_('button', 'controlButton');
@@ -352,8 +355,8 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Constructs an array of zeros with the specified width and height
-   * @return {!Array<!Array<number>>}the new value
+   * Constructs an array of zeros with the specified width and height.
+   * @return {!Array<!Array<number>>}The new value.
    */
   getEmptyArray_() {
     const newVal = [];
@@ -369,8 +372,8 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Called when a mousedown event occurs within the bounds of a pixel.
    * @private
-   * @param {number} r row number of grid
-   * @param {number} c column number of grid
+   * @param {number} r Row number of grid.
+   * @param {number} c Column number of grid.
    */
   onMouseDownInPixel_(r, c) {
     // Toggle that pixel to the opposite of its value
@@ -383,8 +386,8 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Called when the mouse drags over a pixel in the editor.
    * @private
-   * @param {number} r row number of grid
-   * @param {number} c column number of grid
+   * @param {number} r Row number of grid.
+   * @param {number} c Column number of grid.
    */
   onMouseEnterPixel_(r, c) {
     if (!this.mouseIsDown_) {
@@ -396,7 +399,7 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Resets mouse state (e.g. after either a mouseup event or if the mouse
+   * Resets mouse state (e.g. After either a mouseup event or if the mouse
    * leaves the editor area).
    * @private
    */
@@ -406,7 +409,7 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Sets all the pixels in the image to a random value
+   * Sets all the pixels in the image to a random value.
    * @private
    */
   randomizePixels_() {
@@ -419,7 +422,7 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Sets all the pixels to 0
+   * Sets all the pixels to 0.
    * @private
    */
   clearPixels_() {
@@ -431,10 +434,10 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Sets the value of a particular pixel
-   * @param {number} r row number of grid
-   * @param {number} c column number of grid
-   * @param {number} newValue value of the pixel
+   * Sets the value of a particular pixel.
+   * @param {number} r Row number of grid.
+   * @param {number} c Column number of grid.
+   * @param {number} newValue Value of the pixel.
    * @private
    */
   setPixel_(r, c, newValue) {
@@ -446,7 +449,7 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Calls a given function for all cells in the image, with the cell
    * coordinates as the arguments.
-   * @param {*} func a function to be applied
+   * @param {*} func A function to be applied.
    */
   forAllCells_(func) {
     for (let r = 0; r < this.imgHeight_; r++) {
@@ -457,10 +460,10 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Creates a new element with the specified type and class
-   * @param {string} elementType type of html element
-   * @param {string} className className of html element
-   * @return {!HTMLElement} the created element
+   * Creates a new element with the specified type and class.
+   * @param {string} elementType Type of html element.
+   * @param {string} className ClassName of html element.
+   * @return {!HTMLElement} The created element.
    */
   createElementWithClassname_(elementType, className) {
     const newElt = document.createElement(elementType);
@@ -469,10 +472,10 @@ export class FieldBitmap extends Blockly.Field {
   }
 
   /**
-   * Binds an event listener to the specified element
-   * @param {!HTMLElement} element specified element
-   * @param {string} eventName name of the event to bind
-   * @param {Function} callback function to be called on specified event
+   * Binds an event listener to the specified element.
+   * @param {!HTMLElement} element Specified element.
+   * @param {string} eventName Name of the event to bind.
+   * @param {Function} callback Function to be called on specified event.
    */
   bindEvent_(element, eventName, callback) {
     this.boundEvents_.push(

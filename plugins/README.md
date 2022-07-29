@@ -11,6 +11,8 @@ tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 ### Fields
 
+- [``@blockly/field-bitmap``](field-bitmap/): A Blockly field that allows for
+user-inputted pixel grids.
 - [``@blockly/field-date``](field-date/): A date picker field that uses the
 Google Closure date picker.
 - [``@blockly/field-grid-dropdown``](field-grid-dropdown/): A Blockly dropdown
@@ -29,7 +31,7 @@ blocks that add connections dynamically.
 
 - [``@blockly/create-package``](dev-create/): A tool for creating a Blockly
 plugin based on a pre-existing template.
-- [``@blockly/migrate``](migrate/): A tool for migrating apps built on Blockly
+- [``@blockly/migrate``](migration/): A tool for migrating apps built on Blockly
 to newer versions of Blockly that make breaking changes.
 - [``@blockly/eslint-config``](eslint-config/): ESlint configuration used by
 Blockly plugins.
@@ -42,6 +44,12 @@ plugins.
 
 - [``@blockly/theme-modern``](theme-modern/): A Blockly modern theme.
 - [``@blockly/theme-dark``](theme-dark/): A Blockly dark theme.
+- [``@blockly/theme-highcontrast``](theme-highcontrast/): A Blockly high
+contrast theme.
+- [``@blockly/theme-deuteranopia``](theme-deuteranopia/): A Blockly theme for
+people who have deuteranopia.
+- [``@blockly/theme-tritanopia``](theme-tritanopia/): A Blockly theme for people
+who have tritanopia.
 
 ### Block Extension
 
@@ -70,6 +78,8 @@ zoom-to-fit control to the workspace.
 adds additional scrolling features.
 - [``@blockly/plugin-cross-tab-copy-paste``](cross-tab-copy-paste/): A Blockly plugin
 that allows a user to copy and paste blocks between tabs.
+- [``@blockly/workspace-backpack``](workspace-backpack/): A Blockly plugin that
+adds Backpack support.
 
 ### Serializers
 
