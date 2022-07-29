@@ -12,6 +12,7 @@ layout: index
 * [Block Extension Tooltip](plugins/block-extension-tooltip/test/index.html)
 
 ## Fields
+* [Field Bitmap](plugins/field-bitmap/test/index.html)
 * [Field Date](plugins/field-date/test/index.html)
 * [Field Slider](plugins/field-slider/test/index.html)
 * [Field Grid Dropdown](plugins/field-grid-dropdown/test/index.html)
