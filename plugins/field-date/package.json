@@ -40,7 +40,7 @@
     ],
     "devDependencies": {
         "@blockly/dev-scripts": "^1.2.25",
-        "@blockly/dev-tools": "^3.1.9",
+        "@blockly/dev-tools": "^4.0.1",
         "blockly": "^8.0.0",
         "google-closure-compiler": "^20200920.0.0",
         "google-closure-library": "^20200830.0.0",
