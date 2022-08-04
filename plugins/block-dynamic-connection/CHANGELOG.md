@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.35 (2022-08-04)
+
+
+### Bug Fixes
+
+* fix the name of the package of suggested-blocks ([#1214](https://github.com/google/blockly-samples/issues/1214)) ([35aa8ec](https://github.com/google/blockly-samples/commit/35aa8ec73a60a4eb5b1e80cb2fc71dcd83d05e27))
+
+
+
+
+
 ## 0.1.33 (2022-07-21)
 
 **Note:** Version bump only for package @blockly/block-dynamic-connection
