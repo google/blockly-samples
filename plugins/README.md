@@ -51,11 +51,6 @@ people who have deuteranopia.
 - [``@blockly/theme-tritanopia``](theme-tritanopia/): A Blockly theme for people
 who have tritanopia.
 
-### Block Extension
-
-- [``@blockly/block-extension-tooltip``](block-extension-tooltip/): A Blockly
-block extension that adds support for custom tooltip rendering.
-
 ### Workspace
 
 - [``@blockly/continuous-toolbox``](continuous-toolbox/): A Blockly plugin
