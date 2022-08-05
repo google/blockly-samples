@@ -10,85 +10,108 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {FieldNumberConfig} from 'blockly/core/field_number';
+
+type BoundEvent = ReturnType<typeof Blockly.browserEvents.conditionalBind>;
+
+/**
+ * A config object for defining a field slider.
+ */
+export type FieldSliderConfig = FieldNumberConfig;
+
+/**
+ * Options used to define a field slider from JSON.
+ */
+export interface FieldSliderOptions extends FieldNumberConfig {
+  value?: string | number;
+}
+
+/* eslint-disable @typescript-eslint/ban-types */
+/**
+ * TODO: Add more precise function type at the corresponding source.
+ * See https://github.com/google/blockly/blob/master/core/field.js
+ */
+type FieldSliderValidator = Function;
+/* eslint-enable @typescript-eslint/ban-types */
 
 /**
  * Slider field.
  */
 export class FieldSlider extends Blockly.FieldNumber {
   /**
+   * Array holding info needed to unbind events.
+   * Used for disposing.
+   * Ex: [[node, name, func], [node, name, func]].
+   */
+  private boundEvents: BoundEvent[] = [];
+
+  /**
+   * The HTML range input element.
+   */
+  private sliderInput?: HTMLInputElement = null;
+
+  /**
    * Class for an number slider field.
-   * @param {string|number=} value The initial value of the field. Should
+   * @param value The initial value of the field. Should
    *    cast to a number. Defaults to 0.
-   * @param {?(string|number)=} min Minimum value.
-   * @param {?(string|number)=} max Maximum value.
-   * @param {?(string|number)=} precision Precision for value.
-   * @param {?Function=} validator A function that is called to validate
+   * @param min Minimum value.
+   * @param max Maximum value.
+   * @param precision Precision for value.
+   * @param validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
-   *    number, or null to abort the change.
-   * @param {Object=} config A map of options used to configure the field.
+   *    number, or null to abort the change.`
+   * @param config A map of options used to configure the field.
    *    See the [field creation documentation]{@link
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
    *    for a list of properties this parameter supports.
-   * @extends {Blockly.FieldNumber}
-   * @constructor
    */
-  constructor(
-      value = undefined, min = undefined, max = undefined,
-      precision = undefined, validator = undefined, config = undefined) {
+  constructor(value?: string | number, min?: string | number,
+      max?: string | number, precision?: string | number,
+      validator?: FieldSliderValidator, config?: FieldSliderConfig) {
     super(value, min, max, precision, validator, config);
-
-    /**
-     * Array holding info needed to unbind events.
-     * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array.<Array<?>>}
-     * @private
-     */
-    this.boundEvents_ = [];
-
-    /**
-     * The HTML range input element.
-     * @type {?HTMLInputElement}
-     * @private
-     */
-    this.sliderInput_ = null;
   }
 
   /**
    * Constructs a FieldSlider from a JSON arg object.
-   * @param {!Object} options A JSON object with options (value, min, max, and
+   * @param options A JSON object with options (value, min, max, and
    *                          precision).
-   * @return {!FieldSlider} The new field instance.
+   * @return The new field instance.
    * @package
    * @nocollapse
    */
-  static fromJson(options) {
-    return new FieldSlider(
-        options['value'], undefined, undefined, undefined, undefined, options);
+  static fromJson(options: FieldSliderOptions): FieldSlider {
+    return new FieldSlider(options['value'], undefined, undefined, undefined,
+        undefined, options);
   }
 
+  /* eslint-disable @typescript-eslint/naming-convention */
   /**
    * Show the inline free-text editor on top of the text along with the slider
    *    editor.
-   * @param {Event=} e Optional mouse event that triggered the field to
+   * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
-   * @param {boolean=} _quietInput Quiet input.
-   * @protected
-   * @override
+   * @param quietInput Quiet input.
    */
-  showEditor_(e = undefined, _quietInput = undefined) {
-    // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    const noFocus = Blockly.utils.userAgent.MOBILE ||
-        Blockly.utils.userAgent.ANDROID || Blockly.utils.userAgent.IPAD;
-    super.showEditor_(e, noFocus);
+  protected override showEditor_(e?: Event, quietInput?: boolean) {
+    /**
+     * NOTE: The second param, `quietInput`, is utilized in `field_textinput`,
+     * but the type isn't properly built.
+     * See https://github.com/google/blockly/blob/master/core/field_textinput.js
+     *
+     * TODO: Remove `ShowEditorCorrected` once the exported `showEditor_` type
+     * is fixed.
+     */
+    type ShowEditorCorrected = (e?: Event, quietInput?: boolean) => void;
+    (super.showEditor_ as ShowEditorCorrected)(e, quietInput);
+
     // Build the DOM.
     const editor = this.dropdownCreate_();
 
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
     Blockly.DropDownDiv.setColour(
-        this.sourceBlock_.style.colourPrimary,
-        this.sourceBlock_.style.colourTertiary);
+        this.sourceBlock_['style'].colourPrimary,
+        this.sourceBlock_['style'].colourTertiary);
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));
@@ -96,33 +119,30 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Updates the slider when the field rerenders.
-   * @protected
-   * @override
    */
-  render_() {
+  protected override render_() {
     super.render_();
     this.updateSlider_();
   }
 
   /**
    * Creates the slider editor and add event listeners.
-   * @return {!Element} The newly created slider.
-   * @private
+   * @return The newly created slider.
    */
-  dropdownCreate_() {
+  private dropdownCreate_(): Element {
     const wrapper = document.createElement('div');
     wrapper.className = 'fieldSliderContainer';
     const sliderInput = document.createElement('input');
     sliderInput.setAttribute('type', 'range');
-    sliderInput.setAttribute('min', this.min_);
-    sliderInput.setAttribute('max', this.max_);
-    sliderInput.setAttribute('step', this.precision_);
+    sliderInput.setAttribute('min', `${this.min_}`);
+    sliderInput.setAttribute('max', `${this.max_}`);
+    sliderInput.setAttribute('step', `${this.precision_}`);
     sliderInput.setAttribute('value', this.getValue());
     sliderInput.className = 'fieldSlider';
     wrapper.appendChild(sliderInput);
-    this.sliderInput_ = sliderInput;
+    this.sliderInput = sliderInput;
 
-    this.boundEvents_.push(Blockly.browserEvents.conditionalBind(
+    this.boundEvents.push(Blockly.browserEvents.conditionalBind(
         sliderInput, 'input', this, this.onSliderChange_));
 
     return wrapper;
@@ -130,35 +150,33 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Disposes of events belonging to the slider editor.
-   * @private
    */
-  dropdownDispose_() {
-    for (const event of this.boundEvents_) {
-      Blockly.unbindEvent_(event);
+  private dropdownDispose_() {
+    for (const event of this.boundEvents) {
+      Blockly.browserEvents.unbind(event);
     }
-    this.boundEvents_.length = 0;
-    this.sliderInput_ = null;
+    this.boundEvents.length = 0;
+    this.sliderInput = null;
   }
 
   /**
    * Sets the text to match the slider's position.
-   * @private
    */
-  onSliderChange_() {
-    this.setEditorValue_(this.sliderInput_.value);
+  private onSliderChange_() {
+    this.setEditorValue_(this.sliderInput.value);
     this.resizeEditor_();
   }
 
   /**
    * Updates the slider when the field rerenders.
-   * @private
    */
-  updateSlider_() {
-    if (!this.sliderInput_) {
+  private updateSlider_() {
+    if (!this.sliderInput) {
       return;
     }
-    this.sliderInput_.setAttribute('value', this.getValue());
+    this.sliderInput.setAttribute('value', this.getValue());
   }
+  /* eslint-enable @typescript-eslint/naming-convention */
 }
 
 Blockly.fieldRegistry.register('field_slider', FieldSlider);
