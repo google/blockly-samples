@@ -18,6 +18,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      # fetch all tags and commits so that lerna can version appropriately
+      with:
+        fetch-depth: 0
 
     # This uses a reverse-engineered email for the github actions bot. See
     # https://github.com/actions/checkout/issues/13#issuecomment-724415212
