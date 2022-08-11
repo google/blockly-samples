@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.0.3 (2022-08-11)
+
+
+### Bug Fixes
+
+* Remove the deprecated block-extension-tooltip ([#1215](https://github.com/google/blockly-samples/issues/1215)) ([a044478](https://github.com/google/blockly-samples/commit/a044478c86a73e3065bc866e427f175cbec6fc13))
+
+
+
+
+
 ## 4.0.2 (2022-08-04)
 
 
