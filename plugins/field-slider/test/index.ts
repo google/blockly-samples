@@ -57,7 +57,7 @@ function createWorkspace(blocklyDiv: HTMLElement,
    * `Blockly.BlocklyOptions`.
    * See https://github.com/google/blockly/blob/master/core/inject.js
    */
-  const workspace = Blockly.inject(blocklyDiv, options as () => void);
+  const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 

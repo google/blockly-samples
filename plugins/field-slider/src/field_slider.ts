@@ -12,8 +12,6 @@
 import * as Blockly from 'blockly/core';
 import {FieldNumberConfig} from 'blockly/core/field_number';
 
-type BoundEvent = ReturnType<typeof Blockly.browserEvents.conditionalBind>;
-
 /**
  * A config object for defining a field slider.
  */
@@ -22,7 +20,7 @@ export type FieldSliderConfig = FieldNumberConfig;
 /**
  * Options used to define a field slider from JSON.
  */
-export interface FieldSliderOptions extends FieldNumberConfig {
+export interface FieldSliderOptions extends FieldSliderConfig {
   value?: string | number;
 }
 
@@ -43,7 +41,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Used for disposing.
    * Ex: [[node, name, func], [node, name, func]].
    */
-  private boundEvents: BoundEvent[] = [];
+  private boundEvents: Blockly.browserEvents.Data[] = [];
 
   /**
    * The HTML range input element.
