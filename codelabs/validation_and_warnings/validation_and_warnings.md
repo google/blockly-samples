@@ -26,6 +26,7 @@ You can find the code for the [completed custom block](https://github.com/google
 - A text editor.
 - Basic knowledge of JavaScript.
 - Basic understanding of the [Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolbox).
+- Basic understanding of [using JSON to define custom blocks](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks).
 
 ## Setup
 
@@ -60,7 +61,7 @@ Next, open the file `starter-code/index.js` in a text editor. You will be making
 1. In a function called `executeCode()`, it executes the generated JavaScript code.
 
 ### Define a custom block type
-To prepare for adding validation, let's define a new custom block type named `list_range`. Copy the following code to the beginning of `index.js`:
+To prepare for adding validation, let's define a new custom block type named `list_range` with two number fields called `FIRST` and `LAST`. Copy the following code to the beginning of `index.js`:
 
 ```js
 // Use Blockly's custom block JSON API to define a new block type.
@@ -86,9 +87,7 @@ Blockly.common.defineBlocksWithJsonArray([
 ]);
 ```
 
-This definition indicates that this block has two numerical fields called `FIRST` and `LAST`, and that it outputs a list. Later on, we'll refine this definition to add validation to it.
-
-However, if you reload `index.html` and open the toolbox, you won't find the new block in it yet. To be able to use the new block in a workspace, the toolbox definition needs to include it. Find the toolbox definition in `index.js` and insert this code at the beginning of the list of available blocks, right before the one named `controls_forEach`, making sure that the `'type'` here matches the custom block's `'type'`:
+Then, to make this block available from the toolbox, find the toolbox definition in `index.js` and insert this code at the beginning of the list of available blocks, right before the one named `controls_forEach`:
 
 ```js
         {
@@ -97,12 +96,12 @@ However, if you reload `index.html` and open the toolbox, you won't find the new
         },
 ```
 
-This time when you reload `index.html` and open the toolbox, you should see the new block at the top:
+Now, if you reload `index.html` and open the toolbox, you should see the new block at the top:
 
 ![A Blockly toolbox containing range, for-each, sum, print, and break blocks.](completed_toolbox.png)
 
 ### Generating JavaScript code for the custom block
-You can drag now this block out from the toolbox into the workspace, but if you try to use it, you'll find that Blockly doesn't know how to generate JavaScript code from this block yet and error messages will appear in the browser console when it tries to update the display of the generated code. To fix this, add the following code below the custom block definition:
+You can drag this block out from the toolbox into the workspace, but if you try to use it, you'll find that Blockly doesn't know how to generate JavaScript code from this block yet and error messages will appear in the browser console when it tries to update the display of the generated code. To fix this, add the following code below the custom block definition:
 
 ```js
 // Define how to generate JavaScript from the custom block.
@@ -213,7 +212,7 @@ Reload `index.html` now, then drag the custom block to your workspace and try se
 
 Both Blockly's built-in validators and custom validators are nice because they immediately correct any errors so that there should never be any interruption in the validity of the blocks in the workspace or in the validity of the code that it generates. This results in a smooth, pleasant experience for the user, and you should take advantage of these validators whenever possible. 
 
-However, there may be invalid conditions that can't be corrected automatically because it's ambiguous what the desired result is. For example, it doesn't make much sense for our custom block to have a `FIRST` field with a greater value than the `LAST` field, but it's not obvious which of the two fields is "wrong". The best we can do is warn the user about the problem, and let them decide how to fix it. 
+However, there may be invalid conditions that can't be corrected automatically because it's ambiguous what the desired result is. For example, it doesn't make much sense for our custom block to have a `FIRST` field with a greater value than the `LAST` field, but it's not obvious which of the two fields is "wrong." The best we can do is warn the user about the problem, and let them decide how to fix it. 
 
 In the case of our custom block, we want our extension to be notified whenever either field is updated, so that it can check both of the fields to determine whether the block is currently valid. We can set that up with a general change listener by adding this code inside the extension function after the custom validator:
 
@@ -223,10 +222,10 @@ In the case of our custom block, we want our extension to be notified whenever e
   this.setOnChange(function(event) {
     const first = this.getFieldValue('FIRST');
     const last = this.getFieldValue('LAST');
-    const valid = (first <= last);
+    const valid = (first < last);
     this.setWarningText(valid
       ? null
-      : `The first number (${first}) cannot be greater than the last number (${last}).`);
+      : `The first number (${first}) must be smaller than the last number (${last}).`);
   });
 ```
 
@@ -246,11 +245,11 @@ You can disable a block using `this.setEnabled(false)`, although there are some 
     // Disable invalid blocks (unless it's in a toolbox flyout,
     // since you can't drag disabled blocks to your workspace).
     if (!this.isInFlyout) {
-      const group = Blockly.Events.getGroup();
+      const initialGroup = Blockly.Events.getGroup();
       // Make it so the move and the disable event get undone together.
       Blockly.Events.setGroup(event.group);
       this.setEnabled(valid);
-      Blockly.Events.setGroup(group);
+      Blockly.Events.setGroup(initialGroup);
     }
 ```
 
@@ -261,7 +260,7 @@ Reload `index.html` one last time, drag out the custom block, and edit the field
 ## Summary
 In this codelab, you learned:
 * How to use the field validators in Blockly's JSON API.
-* How to create extension to access Blockly's JavaScript API.
+* How to create an extension that adds functionality to a block.
 * How to create custom field validators.
 * How to validate the entire block when any part of it changes.
 * How to display a warning message on the block.

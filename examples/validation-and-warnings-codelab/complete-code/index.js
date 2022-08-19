@@ -39,19 +39,19 @@ Blockly.Extensions.register('list_range_validation', function() {
   this.setOnChange(function(event) {
     const first = this.getFieldValue('FIRST');
     const last = this.getFieldValue('LAST');
-    const valid = (first <= last);
+    const valid = (first < last);
     this.setWarningText(valid
       ? null
-      : `The first number (${first}) cannot be greater than the last number (${last}).`);
+      : `The first number (${first}) must be smaller than the last number (${last}).`);
 
     // Disable invalid blocks (unless it's in a toolbox flyout,
     // since you can't drag disabled blocks to your workspace).
     if (!this.isInFlyout) {
-      const group = Blockly.Events.getGroup();
+      const initialGroup = Blockly.Events.getGroup();
       // Make it so the move and the disable event get undone together.
       Blockly.Events.setGroup(event.group);
       this.setEnabled(valid);
-      Blockly.Events.setGroup(group);
+      Blockly.Events.setGroup(initialGroup);
     }
   });
 });
