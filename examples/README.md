@@ -33,6 +33,7 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 - [``custom-toolbox-codelab``](custom-toolbox-codelab/): Starter code and completed code for the [codelab](https://blocklycodelabs.dev/codelabs/custom_toolbox/index.html) on how to customize your toolbox.
 - [``getting-started-codelab``](getting-started-codelab/): Code for the [Blockly getting started codelab](https://blocklycodelabs.dev/codelabs/getting-started/index.html).
 - [``theme-extension-codelab``](theme-extension-codelab/): Starter code and completed code for the [codelab](https://blocklycodelabs.dev/codelabs/theme-extension-identifier/index.html) on applying themes.
+- [``validation-and-warnings-codelab``](validation-and-warnings-codelab/): Starter code and completed code for the [codelab](https://blocklycodelabs.dev/codelabs/validation-and-warnings/index.html) on validating blocks and displaying warnings.
 
 ### Integrating Blockly
 

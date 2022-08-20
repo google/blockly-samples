@@ -520,5 +520,5 @@ The toolbox can be customized in a variety of ways to make it work for your appl
 * How to add an icon by adding a custom CSS class to the icon div.
 * How to change what HTML Elements are used for different parts of a category.
 * How to create a custom toolbox item.
-You can find the code for the [completed custom](https://github.com/google/blockly-samples/tree/master/codelabs/custom_toolbox/final_src) on GitHub, in both ES5 and ES6 syntax.
+You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/examples/custom-toolbox-codelab/complete-code) on GitHub, in both ES5 and ES6 syntax.
 
