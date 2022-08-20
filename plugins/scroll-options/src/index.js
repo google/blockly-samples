@@ -76,8 +76,11 @@ export class ScrollOptions {
       return;
     }
 
-    let element = this.workspace_.getBlockDragSurface().getSvgRoot();
-    if (!Blockly.utils.svgMath.is3dSupported()) {
+    let element;
+    const dragSurface = this.workspace_.getBlockDragSurface();
+    if (Blockly.utils.svgMath.is3dSupported() && dragSurface) {
+      element = dragSurface.getSvgRoot();
+    } else {
       element = this.workspace_.svgGroup_;
     }
 
