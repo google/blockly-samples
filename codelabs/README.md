@@ -23,12 +23,12 @@ You can find additional details on the
 Put your image assets associated with your codelab in the same folder as your
 markdown file. Any images you add can be linked from the Codelab using:
 ```md
-![image_caption](./codelabexample.png
+![image_caption](codelabexample.png)
 ```
 
 
 ## Resources
 
-[Sample Codelab](/sample.md)
+[Sample Codelab](sample.md)
 
 [Codelab Markdown Formatting Guide](https://github.com/googlecodelabs/tools/tree/master/claat/parser/md)

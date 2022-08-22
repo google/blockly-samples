@@ -576,9 +576,9 @@ Next, add a second member block and rerun the generator. Did the resulting code 
 ### The scrub_ function
 
 The `scrub_` function is called on every block from `blockToCode`. It takes in three arguments:
-- `_block` is the current block.
+- `block` is the current block.
 - `code` is the code generated for this block, which includes code from all attached value blocks.
-- `_opt_thisOnly` is an optional `boolean`. If true, code should be generated for this block but no subsequent blocks.
+- `opt_thisOnly` is an optional `boolean`. If true, code should be generated for this block but no subsequent blocks.
 
 By default, `scrub_` simply returns the passed-in code. A common pattern is to override the function to also generate code for any blocks that follow the current block in a stack. In this case, we will add commas and newlines between object members:
 
