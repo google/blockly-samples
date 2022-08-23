@@ -91,6 +91,22 @@ function prepareForPublish(done) {
 }
 
 /**
+ * Exit early if the release directory does not exist.
+ * @param {string} releaseDir release directory to check
+ * @param {Function} done Gulp callback.
+ */
+function exitIfNoReleaseDir(releaseDir, done) {
+  // Check that release directory exists.
+  if (!fs.existsSync(releaseDir)) {
+    console.error(
+        `No release directory ${releaseDir} exists. ` +
+            `Did you run 'npm run publish:prepare'?`);
+    done();
+    process.exit(1);
+  }
+}
+
+/**
  * This script does not log into the npm publish service. If you haven't run
  * the prepare script recently, publishing will fail for that reason.
  * @param {boolean=} force True for forcing all plugins to publish, even ones
@@ -100,13 +116,7 @@ function prepareForPublish(done) {
 function publish(force) {
   return (done) => {
     const releaseDir = 'dist';
-    // Check that release directory exists.
-    if (!fs.existsSync(releaseDir)) {
-      console.err(
-          `No release directory ${releaseDir} exists. ` +
-          `Did you run 'npm run publish:prepare'?`);
-      process.exit(1);
-    }
+    exitIfNoReleaseDir(releaseDir, done);
 
     // Run lerna publish. Uses conventional commits for versioning
     // creates the release on GitHub.
@@ -149,13 +159,7 @@ function forcePublish(done) {
  */
 function publishFromPackage(done) {
   const releaseDir = 'dist';
-  // Check that release directory exists.
-  if (!fs.existsSync(releaseDir)) {
-    console.err(
-        `No release directory ${releaseDir} exists. ` +
-        `Did you run 'npm run publish:prepare'?`);
-    process.exit(1);
-  }
+  exitIfNoReleaseDir(releaseDir, done);
 
   // Run lerna publish. Will not update versions.
   console.log(`Publishing plugins from package.json versions.`);
@@ -173,13 +177,7 @@ function publishFromPackage(done) {
  */
 function checkVersions(done) {
   const releaseDir = 'dist';
-  // Check that release directory exists.
-  if (!fs.existsSync(releaseDir)) {
-    console.err(
-        `No release directory ${releaseDir} exists. ` +
-        `Did you run 'npm run publish:prepare'?`);
-    process.exit(1);
-  }
+  exitIfNoReleaseDir(releaseDir, done);
 
   // Check version numbers that would be created.
   console.log('Running lerna version.',
