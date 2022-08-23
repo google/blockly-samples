@@ -49,23 +49,55 @@ this repo.
 ### `npm run test`
 This script runs `npm run test` on each of the Blockly plugins in this repo.
 
-### `npm run publish`
-This script runs the publish script that publishes any changed plugins to npm.
-The script first makes sure you're logged into the npm registry used for
-publishing. It then checks out a clean blockly-samples repo under `/dist` and
-prepares it for publishing. Finally, it runs `lerna publish` that walks you
-through the publishing process.
+### `npm run publish:prepare`
+This script will clone a copy of blockly-samples to a directory called `dist`,
+run `npm ci`, build and test all plugins, and then log in to the npm publishing
+service. It must be run before any of the other manual publishing commands are
+run.
 
-Before you run this, it's a good idea to run `npm run publish:check` and
-`npm run publish:dryrun`.
+If any plugin fails to build or some tests fail, this script should fail. Since
+nothing has been pushed to npm or github, you can simply correct the error and
+try again.
 
-### `npm run publish:check`
-This script runs `lerna changes` that checks whether or not any of the plugins
-have changed since last published, and thus require publishing.
+### `npm run publish:manual`
+This script assumes that you have already run `npm run publish:prepare`. It will
+publish all of the changed plugins since the last release, using the `dist` directory. It
+runs the lerna command that uses conventional commits to determine a new version number
+for each plugin, and publishes the new versions to npm and to a github release and tag.
+Since all plugins should have the `prepublishOnly` lifecycle script configured, plugins
+will build themselves before the publish step, so that the correct files are uploaded.
 
-### `npm run publish:dryrun`
-This script runs the publishing script, but with a dryrun flag, such that
-nothing is actually published to npm.
+If any plugin fails to build, hopefully that should have been caught by the
+`publish:prepare` script. If it fails during this step, then likely some plugins have
+already been published to npm, and some will not have due to the error. That may also
+occur if there is some other with npm while running this command. You can recover from
+this state by fixing the error, and then running `npm run publish:prepare` again followed
+by `npm run publish:unpublishedOnly` or `npm run publish:force`.
+
+### `npm run publish:unpublishedOnly`
+This script assumes that you have already run `npm run publish:prepare`. It uses the `dist`
+directory created in that script. It uses lerna to check each plugin to see if the version
+in `package.json` matches the version on npm. If a version is not yet on npm, it will publish
+that plugin without updating its version number. Thus, this script should only be used
+after `lerna version` has been run in some form (most commonly, during a run of
+`npm run publish:manual` that subsequently failed).
+
+If this script fails, correct the error and re-run `npm run publish:prepare` and
+`npm run publish:unpublishedOnly`.
+
+### `npm run publish:force`
+This script assumes you have already run `npm run publish:prepare`. It will use lerna
+to force publish all packages, even those that have not changed. You can use this
+if you run into publishing problems to recover from error states, but you should prefer
+to use `npm run publish:unpublishedOnly` if possible.
+
+### `npm run publish:checkVersions`
+This script assumes you have already run `npm run publish:prepare`. It will run `lerna
+version` to generate the new version numbers using conventional commits that would be
+created during a full publish action, but it will not actually push the changes nor
+create any tags. This can be used to check which plugins would be published and under
+what versions. Note to get accurate results with `lerna version` you must have the
+latest tags pulled. This is taken care of by the `publish:prepare` script.
 
 ## Other Scripts
 
@@ -81,7 +113,3 @@ cleans and builds the src and test directories of each plugin.
 
 You shouldn't need to run this script directly, instead it is run by
 `npm run deploy` and `npm run deploy:upstream`.
-
-### `npm run publish:_internal`
-This script is called by the `npm run publish` script above to call lerna.
-There shouldn't be a need for you to call this script directly.
