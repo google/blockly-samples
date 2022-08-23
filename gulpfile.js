@@ -49,43 +49,81 @@ function checkLicenses() {
 }
 
 /**
- * Publish all plugins that have changed since the last release.
- * @param {boolean=} dryRun True for running through the publish script as a dry
- *     run.
+ * Prepare for publishing. Must be run before any manual publish command.
+ *
+ * Clones blockly-samples, runs build and tests, logs into npm publish service.
+ * @param {Function} done Completed callback.
+ */
+function prepareForPublish(done) {
+  const releaseDir = 'dist';
+
+  // Delete the release directory if it exists.
+  if (fs.existsSync(releaseDir)) {
+    console.log('Removing previous `dist/` directory.');
+    rimraf.sync(releaseDir);
+  }
+
+  // Clone a fresh copy of blockly-samples.
+  console.log(`Checking out a fresh copy of blockly-samples under ` +
+      `${path.resolve(releaseDir)}`);
+  execSync(
+      `git clone https://github.com/google/blockly-samples ${releaseDir}`,
+      {stdio: 'pipe'});
+
+  // Run npm ci.
+  console.log('Running npm ci to install.');
+  execSync(`npm ci`, {cwd: releaseDir, stdio: 'inherit'});
+
+  // Build all plugins.
+  console.log('Building all plugins.');
+  execSync('npm run build', {cwd: releaseDir, stdio: 'inherit'});
+
+  // Test all plugins.
+  console.log('Testing all plugins.');
+  execSync('npm run test', {cwd: releaseDir, stdio: 'inherit'});
+
+  // Login to npm.
+  console.log('Logging in to npm.');
+  execSync(
+      `npm login --registry https://wombat-dressing-room.appspot.com`,
+      {stdio: 'inherit'});
+  done();
+}
+
+/**
+ * Exit early if the release directory does not exist.
+ * @param {string} releaseDir release directory to check
+ * @param {Function} done Gulp callback.
+ */
+function exitIfNoReleaseDir(releaseDir, done) {
+  // Check that release directory exists.
+  if (!fs.existsSync(releaseDir)) {
+    console.error(
+        `No release directory ${releaseDir} exists. ` +
+            `Did you run 'npm run publish:prepare'?`);
+    done();
+    process.exit(1);
+  }
+}
+
+/**
+ * This script does not log into the npm publish service. If you haven't run
+ * the prepare script recently, publishing will fail for that reason.
  * @param {boolean=} force True for forcing all plugins to publish, even ones
  *     that have not changed.
  * @return {Function} Gulp task.
  */
-function publish(dryRun, force) {
+function publish(force) {
   return (done) => {
-    // Login to npm.
-    console.log('Logging in to npm.');
-    execSync(
-        `npm login --registry https://wombat-dressing-room.appspot.com`,
-        {stdio: 'inherit'});
-
     const releaseDir = 'dist';
-    // Delete the release directory if it exists.
-    if (fs.existsSync(releaseDir)) {
-      console.log('Removing previous `dist/` directory.');
-      rimraf.sync(releaseDir);
-    }
+    exitIfNoReleaseDir(releaseDir, done);
 
-    // Clone a fresh copy of blockly-samples.
-    console.log(`Checking out a fresh copy of blockly-samples under\
- ${path.resolve(releaseDir)}`);
+    // Run lerna publish. Uses conventional commits for versioning
+    // creates the release on GitHub.
+    console.log(`Publishing ${force ? 'all' : 'changed'} plugins.`);
     execSync(
-        `git clone https://github.com/google/blockly-samples ${releaseDir}`,
-        {stdio: 'pipe'});
-
-    // Run npm ci.
-    console.log('Running npm ci to install.');
-    execSync(`npm ci`, {cwd: releaseDir, stdio: 'inherit'});
-
-    // Run npm publish.
-    execSync(
-        `npm run publish:${dryRun ? 'check' : '_internal'}` +
-            `${force ? ' -- --force-publish=*' : ''}`,
+        `lerna publish --conventional-commits --create-release github` +
+            `${force ? ' --force-publish=*' : ''}`,
         {cwd: releaseDir, stdio: 'inherit'});
 
     done();
@@ -93,21 +131,13 @@ function publish(dryRun, force) {
 }
 
 /**
- * Publish all plugins.
+ * Publish all plugins that have changed since the last release.
+ * Run `npm run publish:prepare` before running this script.
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function publishRelease(done) {
-  return publish()(done);
-}
-
-/**
- * Run through a dry run of the release script.
- * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
- */
-function publishDryRun(done) {
-  return publish(true)(done);
+function publishManual(done) {
+  return publish(false)(done);
 }
 
 /**
@@ -117,7 +147,47 @@ function publishDryRun(done) {
  * @return {Function} Gulp task.
  */
 function forcePublish(done) {
-  return publish(false, true)(done);
+  return publish(true)(done);
+}
+
+/**
+ * Publishes plugins that haven't previously been uploaded to npm.
+ * Useful if a previous run of publishing failed after versions were
+ * uploaded to github but not all packages were placed uploaded to npm.
+ * You must run `npm run publish:prepare` first.
+ * @param {Function} done Completed callback.
+ */
+function publishFromPackage(done) {
+  const releaseDir = 'dist';
+  exitIfNoReleaseDir(releaseDir, done);
+
+  // Run lerna publish. Will not update versions.
+  console.log(`Publishing plugins from package.json versions.`);
+  execSync(
+      `lerna publish --from-package`,
+      {cwd: releaseDir, stdio: 'inherit'});
+  done();
+}
+
+/**
+ * Runs lerna version to check which version numbers would be updated.
+ * The version numbers will not be pushed and no tags or releases will
+ * be created, even if you answer 'yes' to the prompt.
+ * @param {Function} done Completed callback.
+ */
+function checkVersions(done) {
+  const releaseDir = 'dist';
+  exitIfNoReleaseDir(releaseDir, done);
+
+  // Check version numbers that would be created.
+  console.log('Running lerna version.',
+      'These version numbers will not be pushed and no tags will be created,',
+      'even if you answer yes to the prompt.');
+  execSync(
+      `lerna version --conventional-commits --no-git-tag-version --no-push`,
+      {cwd: releaseDir, stdio: 'inherit'});
+
+  done();
 }
 
 /**
@@ -298,8 +368,7 @@ function prepareExamplesForLocal(isBeta) {
     const examplesDirectory = 'examples';
     if (isBeta) {
       execSync(
-          `lerna add blockly@beta`,
-          {cwd: examplesDirectory, stdio: 'inherit'});
+          `lerna add blockly@beta`, {cwd: examplesDirectory, stdio: 'inherit'});
     }
     execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
     // Bundles any examples that define a predeploy script (ex. blockly-react).
@@ -351,9 +420,11 @@ module.exports = {
   deploy: deployToGhPagesOrigin,
   deployUpstream: deployToGhPagesUpstream,
   predeploy: gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
-  publish: publishRelease,
-  publishDryRun: publishDryRun,
+  prepareForPublish: prepareForPublish,
+  publishManual: publishManual,
   forcePublish: forcePublish,
+  publishFromPackage: publishFromPackage,
+  checkVersions: checkVersions,
   testGhPagesBeta: testGhPagesLocally(true),
   testGhPages: testGhPagesLocally(false),
 };
