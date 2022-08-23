@@ -75,9 +75,17 @@ export class ScrollOptions {
       // Already enabled.
       return;
     }
+
+    let element;
     const dragSurface = this.workspace_.getBlockDragSurface();
+    if (Blockly.utils.svgMath.is3dSupported() && dragSurface) {
+      element = dragSurface.getSvgRoot();
+    } else {
+      element = this.workspace_.svgGroup_;
+    }
+
     this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
-        dragSurface.getSvgRoot(), 'wheel', this, this.onMouseWheel_);
+        element, 'wheel', this, this.onMouseWheel_);
   }
 
   /**

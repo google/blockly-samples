@@ -105,14 +105,15 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.scrollDelta_.x -= deltaX;
     this.scrollDelta_.y -= deltaY;
 
-    // Moves the parent block drag surface in the opposite direction of the
-    // child drag surface. This makes the block stay under the cursor.
-    this.workspace_.getBlockDragSurface().translateBy(-deltaX, -deltaY);
-
-
     // The total amount the block has moved since being picked up.
     const totalDelta =
         Blockly.utils.Coordinate.sum(this.scrollDelta_, this.dragDelta_);
+
+    const delta = this.pixelsToWorkspaceUnits_(totalDelta);
+    const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, delta);
+
+    // Make the block stay under the cursor.
+    this.draggingBlock_.moveDuringDrag(newLoc);
 
     this.dragIcons_(totalDelta);
 
