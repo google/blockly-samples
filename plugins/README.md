@@ -13,6 +13,8 @@ tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
 - [``@blockly/field-bitmap``](field-bitmap/): A Blockly field that allows for
 user-inputted pixel grids.
+- [``@blockly/field-colour-hsv-sliders``](field-colour-hsv-sliders/): A colour
+picker field that uses HSV sliders.
 - [``@blockly/field-date``](field-date/): A date picker field that uses the
 Google Closure date picker.
 - [``@blockly/field-grid-dropdown``](field-grid-dropdown/): A Blockly dropdown
