@@ -224,7 +224,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
 
   /**
    * Class for an HSV colour sliders field.
-   * @param {(string|!Sentinel)=} value The initial value of the
+   * @param {(string|!Blockly.Sentinel)=} value The initial value of the
    *     field. Should be in '#rrggbb' format.
    *     Also accepts Field.SKIP_SETUP if you wish to skip setup (only used by
    *     subclasses that want to handle configuration and setting the field
