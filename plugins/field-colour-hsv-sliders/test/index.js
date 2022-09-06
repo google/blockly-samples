@@ -6,7 +6,6 @@
 
 /**
  * @fileoverview Colour HSV Sliders field test playground.
- * @author nesky@google.com (John Nesky)
  */
 
 import * as Blockly from 'blockly';

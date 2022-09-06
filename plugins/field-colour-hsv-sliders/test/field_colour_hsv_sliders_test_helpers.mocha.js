@@ -12,6 +12,7 @@ const {FieldColourHsvSliders} = require('../src/index');
  * @param {FieldColourHsvSliders} colourHsvSlidersField The colour hsv sliders
  *   field.
  * @param {string} expectedValue The expected value.
+ * @param {string} expectedText The expected text.
  */
 function assertColourHsvSlidersField(
     colourHsvSlidersField, expectedValue, expectedText) {

@@ -6,39 +6,50 @@
 
 /**
  * @fileoverview Colour input field with HSV sliders.
- * @author nesky@google.com (John Nesky)
  */
 
 import * as Blockly from 'blockly/core';
 
 /**
  * A structure with three properties r, g, and b, representing the amount of
- * red, green, and blue light in the sRGB colour space where 1.0 is the maximum
+ * red, green, and blue light in the sRGB colour space where 1 is the maximum
  * amount of light that can be displayed.
  */
 class RgbColour {
   /**
    * The RgbColour constructor.
-   * @param {number=} r The initial amount of red. Defaults to 0.0.
-   * @param {number=} g The initial amount of green. Defaults to 0.0.
-   * @param {number=} b The initial amount of blue. Defaults to 0.0.
+   * @param {number=} r The initial amount of red. Defaults to 0.
+   * @param {number=} g The initial amount of green. Defaults to 0.
+   * @param {number=} b The initial amount of blue. Defaults to 0.
    * @constructor
    */
   constructor(r = undefined, g = undefined, b = undefined) {
-    this.r = r || 0.0;
-    this.g = g || 0.0;
-    this.b = b || 0.0;
+    /**
+     * The red component of the color, ranging from 0 to 1.
+     * @type {!number}
+     */
+    this.r = r || 0;
+    /**
+     * The green component of the color, ranging from 0 to 1.
+     * @type {!number}
+     */
+    this.g = g || 0;
+    /**
+     * The blue component of the color, ranging from 0 to 1.
+     * @type {!number}
+     */
+    this.b = b || 0;
   }
 
   /**
-   * Given a number from 0.0 to 1.0, returns a two-digit hexadecimal string from
+   * Given a number from 0 to 1, returns a two-digit hexadecimal string from
    * '00' to 'ff'.
-   * @param {number} x The amount of light in a component from 0.0 to 1.0.
+   * @param {number} x The amount of light in a component from 0 to 1.
    * @return {string} A hexadecimal representation from '00' to 'ff'.
    */
   static componentToHex(x) {
-    if (x <= 0.0) return '00';
-    if (x >= 1.0) return 'ff';
+    if (x <= 0) return '00';
+    if (x >= 1) return 'ff';
     return ('0' + ((x * 255 + 0.5) >>> 0).toString(16)).substr(-2);
   }
 
@@ -60,9 +71,9 @@ class RgbColour {
    * @return {!RgbColour} This instance after updating it.
    */
   loadFromHex(hex) {
-    this.r = parseInt(hex.slice(1, 3), 16) / 255.0;
-    this.g = parseInt(hex.slice(3, 5), 16) / 255.0;
-    this.b = parseInt(hex.slice(5, 7), 16) / 255.0;
+    this.r = parseInt(hex.slice(1, 3), 16) / 255;
+    this.g = parseInt(hex.slice(3, 5), 16) / 255;
+    this.b = parseInt(hex.slice(5, 7), 16) / 255;
     return this;
   }
 
@@ -73,34 +84,46 @@ class RgbColour {
    * @return {!RgbColour} This instance after updating it.
    */
   loadFromHsv(hsv) {
-    const hue = (hsv.h - Math.floor(hsv.h)) * 6.0;
-    this.r = hsv.v * (1.0 - hsv.s * Math.max(0.0, Math.min(1.0,
-        2.0 - Math.abs(hue - 3.0))));
-    this.g = hsv.v * (1.0 - hsv.s * Math.max(0.0, Math.min(1.0,
-        Math.abs(hue - 2.0) - 1.0)));
-    this.b = hsv.v * (1.0 - hsv.s * Math.max(0.0, Math.min(1.0,
-        Math.abs(hue - 4.0) - 1.0)));
+    const hue = (hsv.h - Math.floor(hsv.h)) * 6;
+    this.r = hsv.v * (1 - hsv.s * Math.max(0, Math.min(1,
+        2 - Math.abs(hue - 3))));
+    this.g = hsv.v * (1 - hsv.s * Math.max(0, Math.min(1,
+        Math.abs(hue - 2) - 1)));
+    this.b = hsv.v * (1 - hsv.s * Math.max(0, Math.min(1,
+        Math.abs(hue - 4) - 1)));
     return this;
   }
 }
 
 /**
  * A structure with three properties h, s, and v, representing the hue,
- * saturation, and brightness in a colour. All three properties range from 0.0
- * to 1.0.
+ * saturation, and brightness in a colour. All three properties range from 0
+ * to 1.
  */
 class HsvColour {
   /**
    * The HsvColour constructor.
-   * @param {number=} h The initial hue of the colour. Defaults to 0.0.
-   * @param {number=} s The initial amount of saturation. Defaults to 0.0.
-   * @param {number=} v The initial amount of brightness. Defaults to 0.0.
+   * @param {number=} h The initial hue of the colour. Defaults to 0.
+   * @param {number=} s The initial amount of saturation. Defaults to 0.
+   * @param {number=} v The initial amount of brightness. Defaults to 0.
    * @constructor
    */
   constructor(h = undefined, s = undefined, v = undefined) {
-    this.h = h || 0.0;
-    this.s = s || 0.0;
-    this.v = v || 0.0;
+    /**
+     * The hue of the color, ranging from 0 to 1.
+     * @type {!number}
+     */
+    this.h = h || 0;
+    /**
+     * The saturation of the color, ranging from 0 to 1.
+     * @type {!number}
+     */
+    this.s = s || 0;
+    /**
+     * The brightness of the color, ranging from 0 to 1.
+     * @type {!number}
+     */
+    this.v = v || 0;
   }
 
   /**
@@ -130,7 +153,7 @@ class HsvColour {
     } else {
       hue = 4 + ((rgb.r - rgb.g) / delta);
     }
-    hue /= 6.0;
+    hue /= 6;
     this.h = hue - Math.floor(hue);
     return this;
   }
@@ -146,36 +169,6 @@ class HsvColour {
     this.v = other.v;
     return this;
   }
-
-  /**
-   * Sets the hue to the provided value.
-   * @param {number} h The hue of the colour.
-   * @return {!HsvColour} This instance after updating it.
-   */
-  setHue(h) {
-    this.h = h;
-    return this;
-  }
-
-  /**
-   * Sets the saturation to the provided value.
-   * @param {number} s The amount of saturation.
-   * @return {!HsvColour} This instance after updating it.
-   */
-  setSaturation(s) {
-    this.s = s;
-    return this;
-  }
-
-  /**
-   * Sets the brightness to the provided value.
-   * @param {number} v The amount of brightness.
-   * @return {!HsvColour} This instance after updating it.
-   */
-  setBrightness(v) {
-    this.v = v;
-    return this;
-  }
 }
 
 /**
@@ -185,7 +178,42 @@ class HsvColour {
  */
 export class FieldColourHsvSliders extends Blockly.FieldColour {
   /**
-   * Class for an number slider field.
+   * The maximum value of the hue slider range.
+   * @const {!number}
+   * @private
+   */
+  static HUE_SLIDER_MAX = 360;
+
+  /**
+   * The maximum value of the saturation slider range.
+   * @const {!number}
+   * @private
+   */
+  static SATURATION_SLIDER_MAX = 100;
+
+  /**
+   * The maximum value of the brightness slider range.
+   * @const {!number}
+   * @private
+   */
+  static BRIGHTNESS_SLIDER_MAX = 100;
+
+  /**
+   * Helper colour structures to allow manipulation in the HSV colour space.
+   * @const {!HsvColour}
+   * @private
+   */
+  static helperHsv_ = new HsvColour();
+
+  /**
+   * Helper colour structures to support conversion to the RGB colour space.
+   * @const {!RgbColour}
+   * @private
+   */
+  static helperRgb_ = new RgbColour();
+
+  /**
+   * Class for an HSV colour sliders field.
    * @param {(string|!Sentinel)=} value The initial value of the
    *     field. Should be in '#rrggbb' format.
    *     Also accepts Field.SKIP_SETUP if you wish to skip setup (only used by
@@ -279,6 +307,45 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
   }
 
   /**
+   * Creates a row with a slider label and a readout to display the slider
+   * value, appends it to the provided container, and returns the readout.
+   * @param {string} name The display name of the slider.
+   * @param {!HTMLElement} container Where the row will be inserted.
+   * @return {!HTMLSpanElement} The readout, so that it can be updated.
+   * @private
+   */
+  static createLabelInContainer_(name, container) {
+    const label = document.createElement('div');
+    const labelText = document.createElement('span');
+    const readout = document.createElement('span');
+    label.classList.add('fieldColourSliderLabel');
+    labelText.textContent = name;
+    label.appendChild(labelText);
+    label.appendChild(readout);
+    container.appendChild(label);
+    return readout;
+  }
+
+  /**
+   * Creates a slider, appends it to the provided container, and returns it.
+   * @param {number} max The maximum value of the slider.
+   * @param {number} step The minimum step size of the slider.
+   * @param {!HTMLElement} container Where the row slider be inserted.
+   * @return {!HTMLInputElement} The slider.
+   * @private
+   */
+  static createSliderInContainer_(max, step, container) {
+    const slider = document.createElement('input');
+    slider.classList.add('fieldColourSlider');
+    slider.type = 'range';
+    slider.min = String(0);
+    slider.max = String(max);
+    slider.step = String(step);
+    container.appendChild(slider);
+    return slider;
+  }
+
+  /**
    * Creates the colour picker slider editor and adds event listeners.
    * @private
    */
@@ -286,35 +353,18 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
     const container = document.createElement('div');
     container.classList.add('fieldColourSliderContainer');
 
-    function addLabel(name) {
-      const label = document.createElement('div');
-      const labelText = document.createElement('span');
-      const readout = document.createElement('span');
-      label.classList.add('fieldColourSliderLabel');
-      labelText.textContent = name;
-      label.appendChild(labelText);
-      label.appendChild(readout);
-      container.appendChild(label);
-      return readout;
-    }
-
-    function addSlider(max, step) {
-      const slider = document.createElement('input');
-      slider.classList.add('fieldColourSlider');
-      slider.type = 'range';
-      slider.min = String(0);
-      slider.max = String(max);
-      slider.step = String(step);
-      container.appendChild(slider);
-      return slider;
-    }
-
-    this.hueReadout_ = addLabel('Hue');
-    this.hueSlider_ = addSlider(360, 5);
-    this.saturationReadout_ = addLabel('Saturation');
-    this.saturationSlider_ = addSlider(100, 1);
-    this.brightnessReadout_ = addLabel('Brightness');
-    this.brightnessSlider_ = addSlider(100, 1);
+    this.hueReadout_ = FieldColourHsvSliders.createLabelInContainer_(
+        'Hue', container);
+    this.hueSlider_ = FieldColourHsvSliders.createSliderInContainer_(
+        FieldColourHsvSliders.HUE_SLIDER_MAX, 2, container);
+    this.saturationReadout_ = FieldColourHsvSliders.createLabelInContainer_(
+        'Saturation', container);
+    this.saturationSlider_ = FieldColourHsvSliders.createSliderInContainer_(
+        FieldColourHsvSliders.SATURATION_SLIDER_MAX, 1, container);
+    this.brightnessReadout_ = FieldColourHsvSliders.createLabelInContainer_(
+        'Brightness', container);
+    this.brightnessSlider_ = FieldColourHsvSliders.createSliderInContainer_(
+        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX, 1, container);
 
     this.boundEvents_.push(
         Blockly.browserEvents.conditionalBind(
@@ -374,18 +424,38 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
   }
 
   /**
+   * A helper function that converts a color, specified by the provided hue,
+   * saturation, and brightness parameters, into a hexadecimal string in the
+   * format "#rrggbb".
+   * @param {number} hue The hue of the color.
+   * @param {number} saturation The saturation of the color.
+   * @param {number} brightness The brightness of the color.
+   * @return {!string} A hexadecimal representation of the color in the format
+   *   "#rrggbb"
+   * @private
+   */
+  static hsvToHex_(hue, saturation, brightness) {
+    FieldColourHsvSliders.helperHsv_.h = hue;
+    FieldColourHsvSliders.helperHsv_.s = saturation;
+    FieldColourHsvSliders.helperHsv_.v = brightness;
+    return FieldColourHsvSliders.helperRgb_.loadFromHsv(
+        FieldColourHsvSliders.helperHsv_).toHex();
+  }
+
+  /**
    * Updates the value of this field based on the editor sliders.
    * @param {?Event} event Unused.
    * @private
    */
   onSliderChange_(event) {
-    const hue = parseFloat(this.hueSlider_.value);
-    const saturation = parseFloat(this.saturationSlider_.value);
-    const brightness = parseFloat(this.brightnessSlider_.value);
-    const hsv = new HsvColour(
-        hue / 360.0, saturation / 100.0, brightness / 100.0);
-    const rgb = new RgbColour().loadFromHsv(hsv);
-    this.setValue(rgb.toHex());
+    const hue = parseFloat(this.hueSlider_.value) /
+        FieldColourHsvSliders.HUE_SLIDER_MAX;
+    const saturation = parseFloat(this.saturationSlider_.value) /
+        FieldColourHsvSliders.SATURATION_SLIDER_MAX;
+    const brightness = parseFloat(this.brightnessSlider_.value) /
+        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
+    this.doValueUpdate_(FieldColourHsvSliders.hsvToHex_(
+        hue, saturation, brightness));
     this.renderSliders_();
   }
 
@@ -397,7 +467,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
   onEyedropperEvent_(event) {
     const eyeDropper = new window.EyeDropper();
     eyeDropper.open().then((result) => {
-      this.setValue(result.sRGBHex);
+      this.doValueUpdate_(result.sRGBHex);
       this.updateSliderValues_();
     });
   }
@@ -409,7 +479,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @private
    */
   onBrowserColourInputEvent_(event) {
-    this.setValue(event.target.value);
+    this.doValueUpdate_(event.target.value);
     this.updateSliderValues_();
   }
 
@@ -419,58 +489,53 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @private
    */
   renderSliders_() {
-    const hue = parseFloat(this.hueSlider_.value);
-    const saturation = parseFloat(this.saturationSlider_.value);
-    const brightness = parseFloat(this.brightnessSlider_.value);
+    this.hueReadout_.textContent = this.hueSlider_.value;
+    this.saturationReadout_.textContent = this.saturationSlider_.value;
+    this.brightnessReadout_.textContent = this.brightnessSlider_.value;
 
-    this.hueReadout_.textContent = String(hue);
-    this.saturationReadout_.textContent = String(saturation);
-    this.brightnessReadout_.textContent = String(brightness);
+    const h = parseFloat(this.hueSlider_.value) /
+        FieldColourHsvSliders.HUE_SLIDER_MAX;
+    const s = parseFloat(this.saturationSlider_.value) /
+        FieldColourHsvSliders.SATURATION_SLIDER_MAX;
+    const v = parseFloat(this.brightnessSlider_.value) /
+        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
 
-    const hsv = new HsvColour(
-        hue / 360.0, saturation / 100.0, brightness / 100.0);
-    // Temporary colour structures to allow manipulation in the HSV colour space
-    // and conversion to the RGB colour space.
-    const tempHsv = new HsvColour();
-    const tempRgb = new RgbColour();
-    const trackRadius = '8px';
+    // The gradient control point positions should align with the center of the
+    // slider thumb when the corresponding color is selected. When the slider is
+    // at the minimum or maximum value, the distance of center of the thumb from
+    // the edge of the track will be the thumb's radius, so that's how far the
+    // minimum and maximum control points should be.
+    const thumbRadius = '8px';
 
+    // The hue slider needs intermediate gradient control points to include all
+    // colours of the rainbow.
     let hueGradient = 'linear-gradient(to right, ';
-    tempHsv.copy(hsv).setHue(0.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() +
-        ' ' + trackRadius + ', ';
-    tempHsv.copy(hsv).setHue(1.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() + ', ';
-    tempHsv.copy(hsv).setHue(2.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() + ', ';
-    tempHsv.copy(hsv).setHue(3.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() + ', ';
-    tempHsv.copy(hsv).setHue(4.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() + ', ';
-    tempHsv.copy(hsv).setHue(5.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() + ', ';
-    tempHsv.copy(hsv).setHue(6.0/6.0);
-    hueGradient += tempRgb.loadFromHsv(tempHsv).toHex() +
-        ' calc(100% - ' + trackRadius + '))';
+    hueGradient += FieldColourHsvSliders.hsvToHex_(0/6, s, v) +
+        ` ${thumbRadius}, `;
+    hueGradient += FieldColourHsvSliders.hsvToHex_(1/6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex_(2/6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex_(3/6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex_(4/6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex_(5/6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex_(6/6, s, v) +
+        ` calc(100% - ${thumbRadius}))`;
     this.hueSlider_.style.setProperty('--slider-track-background', hueGradient);
 
+    // The saturation slider only needs gradient control points at each end.
     let saturationGradient = 'linear-gradient(to right, ';
-    tempHsv.copy(hsv).setSaturation(0.0);
-    saturationGradient += tempRgb.loadFromHsv(tempHsv).toHex() +
-        ' ' + trackRadius + ', ';
-    tempHsv.copy(hsv).setSaturation(1.0);
-    saturationGradient += tempRgb.loadFromHsv(tempHsv).toHex() +
-        ' calc(100% - ' + trackRadius + '))';
+    saturationGradient += FieldColourHsvSliders.hsvToHex_(h, 0, v) +
+        ` ${thumbRadius}, `;
+    saturationGradient += FieldColourHsvSliders.hsvToHex_(h, 1, v) +
+        ` calc(100% - ${thumbRadius}))`;
     this.saturationSlider_.style.setProperty(
         '--slider-track-background', saturationGradient);
 
+    // The brightness slider only needs gradient control points at each end.
     let brightnessGradient = 'linear-gradient(to right, ';
-    tempHsv.copy(hsv).setBrightness(0.0);
-    brightnessGradient += tempRgb.loadFromHsv(tempHsv).toHex() +
-        ' ' + trackRadius + ', ';
-    tempHsv.copy(hsv).setBrightness(1.0);
-    brightnessGradient += tempRgb.loadFromHsv(tempHsv).toHex() +
-        ' calc(100% - ' + trackRadius + '))';
+    brightnessGradient += FieldColourHsvSliders.hsvToHex_(h, s, 0) +
+        ` ${thumbRadius}, `;
+    brightnessGradient += FieldColourHsvSliders.hsvToHex_(h, s, 1) +
+        ` calc(100% - ${thumbRadius}))`;
     this.brightnessSlider_.style.setProperty(
         '--slider-track-background', brightnessGradient);
   }
@@ -484,12 +549,15 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
       return;
     }
 
-    const rgb = new RgbColour().loadFromHex(this.getValue());
-    const hsv = new HsvColour().loadFromRgb(rgb);
+    const hsv = FieldColourHsvSliders.helperHsv_.loadFromRgb(
+        FieldColourHsvSliders.helperRgb_.loadFromHex(this.getValue()));
 
-    this.hueSlider_.value = String(hsv.h * 360.0);
-    this.saturationSlider_.value = String(hsv.s * 100.0);
-    this.brightnessSlider_.value = String(hsv.v * 100.0);
+    this.hueSlider_.value =
+        String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX);
+    this.saturationSlider_.value =
+        String(hsv.s * FieldColourHsvSliders.SATURATION_SLIDER_MAX);
+    this.brightnessSlider_.value =
+        String(hsv.v * FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX);
 
     this.renderSliders_();
   }

@@ -17,7 +17,7 @@ npm install @blockly/field-colour-hsv-sliders --save
 ```
 
 ## Usage
-This plugin adds a field type `FieldColourHsvSliders` that is registered to the name `'field_colour_hsv_sliders'`. This field is an extension of the Blockly.FieldColour field. See the [Blockly.FieldColour documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour#creation) on what parameters and configurations this field supports. However, unlike Blockly.FieldColour, FieldColourHsvSliders does not use colour swatches and thus ignores options related to the swatches such as `'colourOptions'`.
+This plugin adds a field type `FieldColourHsvSliders` that is registered to the name `'field_colour_hsv_sliders'`. This field is an extension of the `Blockly.FieldColour` field and outputs values in the same hexadecimal string format `'#rrggbb'` even though the UI represents the colour in the HSV colour space. See the [Blockly.FieldColour documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour#creation) on what parameters and configurations this field supports, although unlike `Blockly.FieldColour`, this field does not use colour swatches and thus ignores options related to the swatches such as `'colourOptions'`.
 
 To use it, you'll need to add this field to a block type definition, and add that block to your toolbox. See below for an example of defining a block type that uses this field.
 
