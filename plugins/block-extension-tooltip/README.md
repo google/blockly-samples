@@ -15,12 +15,12 @@ pages:
 A [Blockly](https://www.npmjs.com/package/blockly) block extension that adds
 support for custom tooltip rendering.
 
-WARNING: This plugin is currently incompatible with the latest version of Blockly (v7.20211209.0). Please comment on https://github.com/google/blockly-samples/issues/899 if this is blocking you (we also welcome contributions).
+WARNING: This plugin is **deprecated**. It is not compatible with recent versions of Blockly (v7.20211209.0 or above). As of Blockly v8, this plugin is no longer necessary as Blockly supports [custom tooltip rendering](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks#customizing). For an example, see the [custom tooltip demo](https://google.github.io/blockly-samples/examples/custom-tooltips-demo/). Please uninstall this plugin and update Blockly to v8 or above. This plugin may be removed in the future.
 
 Note:
 - This plugin uses a [block extension](https://developers.google.com/blockly/guides/create-custom-blocks/extensions)
 and as a result, it needs to be added to each block type. See [test/index.ts](https://github.com/google/blockly-samples/tree/master/plugins/block-extension-tooltip/test/index.ts)
-- This plugin is monkeypatching Blockly until we can make the correct change in [core](https://github.com/google/blockly/issues/983) 
+- This plugin is monkeypatching Blockly. It is not guaranteed to continue to function.
 
 ## Installation
 
