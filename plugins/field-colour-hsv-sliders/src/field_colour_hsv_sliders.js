@@ -23,22 +23,22 @@ class RgbColour {
    * @param {number=} b The initial amount of blue. Defaults to 0.
    * @constructor
    */
-  constructor(r = undefined, g = undefined, b = undefined) {
+  constructor(r = 0, g = 0, b = 0) {
     /**
-     * The red component of the color, ranging from 0 to 1.
+     * The red component of the colour, ranging from 0 to 1.
      * @type {!number}
      */
-    this.r = r || 0;
+    this.r = r;
     /**
-     * The green component of the color, ranging from 0 to 1.
+     * The green component of the colour, ranging from 0 to 1.
      * @type {!number}
      */
-    this.g = g || 0;
+    this.g = g;
     /**
-     * The blue component of the color, ranging from 0 to 1.
+     * The blue component of the colour, ranging from 0 to 1.
      * @type {!number}
      */
-    this.b = b || 0;
+    this.b = b;
   }
 
   /**
@@ -108,22 +108,22 @@ class HsvColour {
    * @param {number=} v The initial amount of brightness. Defaults to 0.
    * @constructor
    */
-  constructor(h = undefined, s = undefined, v = undefined) {
+  constructor(h = 0, s = 0, v = 0) {
     /**
-     * The hue of the color, ranging from 0 to 1.
+     * The hue of the colour, ranging from 0 to 1.
      * @type {!number}
      */
-    this.h = h || 0;
+    this.h = h;
     /**
-     * The saturation of the color, ranging from 0 to 1.
+     * The saturation of the colour, ranging from 0 to 1.
      * @type {!number}
      */
-    this.s = s || 0;
+    this.s = s;
     /**
-     * The brightness of the color, ranging from 0 to 1.
+     * The brightness of the colour, ranging from 0 to 1.
      * @type {!number}
      */
-    this.v = v || 0;
+    this.v = v;
   }
 
   /**
@@ -182,21 +182,31 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @const {!number}
    * @private
    */
-  static HUE_SLIDER_MAX = 360;
+  static HUE_SLIDER_MAX_ = 360;
 
   /**
    * The maximum value of the saturation slider range.
    * @const {!number}
    * @private
    */
-  static SATURATION_SLIDER_MAX = 100;
+  static SATURATION_SLIDER_MAX_ = 100;
 
   /**
    * The maximum value of the brightness slider range.
    * @const {!number}
    * @private
    */
-  static BRIGHTNESS_SLIDER_MAX = 100;
+  static BRIGHTNESS_SLIDER_MAX_ = 100;
+
+  /**
+   * The gradient control point positions should align with the center of the
+   * slider thumb when the corresponding colour is selected. When the slider
+   * is at the minimum or maximum value, the distance of center of the thumb
+   * from the edge of the track will be the thumb's radius, so that's how far
+   * the minimum and maximum control points should be.
+   * @const {!number}
+   */
+  static THUMB_RADIUS = 12;
 
   /**
    * Helper colour structures to allow manipulation in the HSV colour space.
@@ -356,15 +366,15 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
     this.hueReadout_ = FieldColourHsvSliders.createLabelInContainer_(
         'Hue', container);
     this.hueSlider_ = FieldColourHsvSliders.createSliderInContainer_(
-        FieldColourHsvSliders.HUE_SLIDER_MAX, 2, container);
+        FieldColourHsvSliders.HUE_SLIDER_MAX_, 2, container);
     this.saturationReadout_ = FieldColourHsvSliders.createLabelInContainer_(
         'Saturation', container);
     this.saturationSlider_ = FieldColourHsvSliders.createSliderInContainer_(
-        FieldColourHsvSliders.SATURATION_SLIDER_MAX, 1, container);
+        FieldColourHsvSliders.SATURATION_SLIDER_MAX_, 1, container);
     this.brightnessReadout_ = FieldColourHsvSliders.createLabelInContainer_(
         'Brightness', container);
     this.brightnessSlider_ = FieldColourHsvSliders.createSliderInContainer_(
-        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX, 1, container);
+        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX_, 1, container);
 
     this.boundEvents_.push(
         Blockly.browserEvents.conditionalBind(
@@ -424,13 +434,13 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
   }
 
   /**
-   * A helper function that converts a color, specified by the provided hue,
+   * A helper function that converts a colour, specified by the provided hue,
    * saturation, and brightness parameters, into a hexadecimal string in the
    * format "#rrggbb".
-   * @param {number} hue The hue of the color.
-   * @param {number} saturation The saturation of the color.
-   * @param {number} brightness The brightness of the color.
-   * @return {!string} A hexadecimal representation of the color in the format
+   * @param {number} hue The hue of the colour.
+   * @param {number} saturation The saturation of the colour.
+   * @param {number} brightness The brightness of the colour.
+   * @return {!string} A hexadecimal representation of the colour in the format
    *   "#rrggbb"
    * @private
    */
@@ -449,11 +459,11 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    */
   onSliderChange_(event) {
     const hue = parseFloat(this.hueSlider_.value) /
-        FieldColourHsvSliders.HUE_SLIDER_MAX;
+        FieldColourHsvSliders.HUE_SLIDER_MAX_;
     const saturation = parseFloat(this.saturationSlider_.value) /
-        FieldColourHsvSliders.SATURATION_SLIDER_MAX;
+        FieldColourHsvSliders.SATURATION_SLIDER_MAX_;
     const brightness = parseFloat(this.brightnessSlider_.value) /
-        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
+        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX_;
     this.doValueUpdate_(FieldColourHsvSliders.hsvToHex_(
         hue, saturation, brightness));
     this.renderSliders_();
@@ -494,48 +504,41 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
     this.brightnessReadout_.textContent = this.brightnessSlider_.value;
 
     const h = parseFloat(this.hueSlider_.value) /
-        FieldColourHsvSliders.HUE_SLIDER_MAX;
+        FieldColourHsvSliders.HUE_SLIDER_MAX_;
     const s = parseFloat(this.saturationSlider_.value) /
-        FieldColourHsvSliders.SATURATION_SLIDER_MAX;
+        FieldColourHsvSliders.SATURATION_SLIDER_MAX_;
     const v = parseFloat(this.brightnessSlider_.value) /
-        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
-
-    // The gradient control point positions should align with the center of the
-    // slider thumb when the corresponding color is selected. When the slider is
-    // at the minimum or maximum value, the distance of center of the thumb from
-    // the edge of the track will be the thumb's radius, so that's how far the
-    // minimum and maximum control points should be.
-    const thumbRadius = '8px';
+        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX_;
 
     // The hue slider needs intermediate gradient control points to include all
     // colours of the rainbow.
     let hueGradient = 'linear-gradient(to right, ';
     hueGradient += FieldColourHsvSliders.hsvToHex_(0/6, s, v) +
-        ` ${thumbRadius}, `;
+        ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
     hueGradient += FieldColourHsvSliders.hsvToHex_(1/6, s, v) + ', ';
     hueGradient += FieldColourHsvSliders.hsvToHex_(2/6, s, v) + ', ';
     hueGradient += FieldColourHsvSliders.hsvToHex_(3/6, s, v) + ', ';
     hueGradient += FieldColourHsvSliders.hsvToHex_(4/6, s, v) + ', ';
     hueGradient += FieldColourHsvSliders.hsvToHex_(5/6, s, v) + ', ';
     hueGradient += FieldColourHsvSliders.hsvToHex_(6/6, s, v) +
-        ` calc(100% - ${thumbRadius}))`;
+        ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
     this.hueSlider_.style.setProperty('--slider-track-background', hueGradient);
 
     // The saturation slider only needs gradient control points at each end.
     let saturationGradient = 'linear-gradient(to right, ';
     saturationGradient += FieldColourHsvSliders.hsvToHex_(h, 0, v) +
-        ` ${thumbRadius}, `;
+        ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
     saturationGradient += FieldColourHsvSliders.hsvToHex_(h, 1, v) +
-        ` calc(100% - ${thumbRadius}))`;
+        ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
     this.saturationSlider_.style.setProperty(
         '--slider-track-background', saturationGradient);
 
     // The brightness slider only needs gradient control points at each end.
     let brightnessGradient = 'linear-gradient(to right, ';
     brightnessGradient += FieldColourHsvSliders.hsvToHex_(h, s, 0) +
-        ` ${thumbRadius}, `;
+        ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
     brightnessGradient += FieldColourHsvSliders.hsvToHex_(h, s, 1) +
-        ` calc(100% - ${thumbRadius}))`;
+        ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
     this.brightnessSlider_.style.setProperty(
         '--slider-track-background', brightnessGradient);
   }
@@ -553,11 +556,11 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
         FieldColourHsvSliders.helperRgb_.loadFromHex(this.getValue()));
 
     this.hueSlider_.value =
-        String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX);
+        String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX_);
     this.saturationSlider_.value =
-        String(hsv.s * FieldColourHsvSliders.SATURATION_SLIDER_MAX);
+        String(hsv.s * FieldColourHsvSliders.SATURATION_SLIDER_MAX_);
     this.brightnessSlider_.value =
-        String(hsv.v * FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX);
+        String(hsv.v * FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX_);
 
     this.renderSliders_();
   }
@@ -657,8 +660,8 @@ Blockly.Css.register(`\
     border-radius: 50%;
     box-shadow: 0 0 0 4px rgba(0,0,0,.15);
     cursor: pointer;
-    width: 24px;
-    height: 24px;
+    width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+    height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
     margin-top: -4px;
   }
   /* Firefox */
@@ -673,8 +676,8 @@ Blockly.Css.register(`\
     border-radius: 50%;
     box-shadow: 0 0 0 4px rgba(0,0,0,.15);
     cursor: pointer;
-    width: 24px;
-    height: 24px;
+    width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+    height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
   }
   .fieldColourSlider::-moz-focus-outer {
     /* override the focus border style */
@@ -701,7 +704,7 @@ Blockly.Css.register(`\
     border-radius: 50%;
     box-shadow: 0 0 0 4px rgba(0,0,0,.15);
     cursor: pointer;
-    width: 24px;
-    height: 24px;
+    width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+    height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
   }`
 );
