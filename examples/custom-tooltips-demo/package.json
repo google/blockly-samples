@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@blockly/dev-tools": "^4.0.1",
+    "@blockly/dev-tools": "^4.0.3",
     "blockly": "^8.0.0"
   },
   "blocklyDemoConfig": {
