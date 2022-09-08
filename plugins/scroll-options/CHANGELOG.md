@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.23](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@2.0.22...@blockly/plugin-scroll-options@2.0.23) (2022-09-08)
+
+
+### Bug Fixes
+
+* scroll-options when drag surface is disabled ([#1202](https://github.com/google/blockly-samples/issues/1202)) ([eac0bad](https://github.com/google/blockly-samples/commit/eac0badff6311801f3e279f04e80832e93b74132))
+
+
+
+
+
 ## 2.0.22 (2022-08-11)
 
 
