@@ -11,11 +11,11 @@
 
 import {toolboxTestBlocks, toolboxTestBlocksInit} from '@blockly/block-test';
 import * as Blockly from 'blockly/core';
-import {dartGenerator} from 'blockly/dart';
-import {javascriptGenerator} from 'blockly/javascript';
-import {luaGenerator} from 'blockly/lua';
-import {phpGenerator} from 'blockly/php';
-import {pythonGenerator} from 'blockly/python';
+import * as BlocklyDart from 'blockly/dart';
+import * as BlocklyJS from 'blockly/javascript';
+import * as BlocklyLua from 'blockly/lua';
+import * as BlocklyPHP from 'blockly/php';
+import * as BlocklyPython from 'blockly/python';
 
 import {downloadWorkspaceScreenshot} from '../screenshot';
 import toolboxCategories from '../toolboxCategories';
@@ -265,28 +265,27 @@ export function createPlayground(
           'JavaScript': registerGenerator(
               'JavaScript',
               'javascript',
-              (ws) =>
-                (javascriptGenerator || Blockly.JavaScript).workspaceToCode(ws),
+              (ws) => (BlocklyJS || Blockly.JavaScript).workspaceToCode(ws),
               true),
           'Python': registerGenerator(
               'Python',
               'python',
-              (ws) => (pythonGenerator || Blockly.Python).workspaceToCode(ws),
+              (ws) => (BlocklyPython || Blockly.Python).workspaceToCode(ws),
               true),
           'Dart': registerGenerator(
               'Dart',
               'dart',
-              (ws) => (dartGenerator || Blockly.Dart).workspaceToCode(ws),
+              (ws) => (BlocklyDart || Blockly.Dart).workspaceToCode(ws),
               true),
           'Lua': registerGenerator(
               'Lua',
               'lua',
-              (ws) => (luaGenerator || Blockly.Lua).workspaceToCode(ws),
+              (ws) => (BlocklyLua || Blockly.Lua).workspaceToCode(ws),
               true),
           'PHP': registerGenerator(
               'PHP',
               'php',
-              (ws) => (phpGenerator || Blockly.PHP).workspaceToCode(ws),
+              (ws) => (BlocklyPHP || Blockly.PHP).workspaceToCode(ws),
               true),
         };
 
