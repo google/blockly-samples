@@ -197,6 +197,11 @@ export class ContentHighlight {
       this.position_(this.cachedContentMetrics_, absoluteMetrics);
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
       this.handleBlockDrag_(/** @type {!Blockly.Events.BlockDrag} */ event);
+    } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
+      // Resizes the content highlight when it is a block change event
+      const metricsManager = this.workspace_.getMetricsManager();
+      this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
+      this.resize_(this.cachedContentMetrics_);
     }
   }
 
