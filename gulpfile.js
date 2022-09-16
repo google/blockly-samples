@@ -223,6 +223,7 @@ function preparePlugin(pluginDir) {
         title: `${packageJson.name} Demo`,
         packageName: packageJson.name,
         description: packageJson.description,
+        version: packageJson.version,
         pageRoot: `plugins/${pluginDir}`,
         pages: [
           {
