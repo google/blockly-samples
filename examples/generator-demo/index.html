@@ -137,7 +137,7 @@
         {media: 'https://unpkg.com/blockly/media/',
          toolbox: toolbox});
          
-    var flyToolbox = {
+    var startBlocks = {
         "blocks":{
           "languageVersion":0,
           "blocks":[
@@ -229,7 +229,7 @@
           ]
         }
       }
-    Blockly.serialization.workspaces.load(flyToolbox, demoWorkspace);
+    Blockly.serialization.workspaces.load(startBlocks, demoWorkspace);
 
     function showCode() {
       // Generate JavaScript code and display it.
