@@ -108,7 +108,9 @@ const MANY_BLOCKS_MUTATOR = {
   },
 };
 
-Blockly.Extensions.unregister('test_many_blocks_mutator');
+if (Blockly.Extensions.isRegistered('test_many_blocks_mutator')) {
+  Blockly.Extensions.unregister('test_many_blocks_mutator');
+}
 
 /**
  * Register custom mutator used by the test_mutators_many block.
