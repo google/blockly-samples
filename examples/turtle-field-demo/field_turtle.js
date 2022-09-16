@@ -11,7 +11,7 @@
 'use strict';
 
 // You must provide the constructor for your custom field.
-goog.provide('FieldTurtle');
+goog.provide('CustomFields.FieldTurtle');
 
 // You must require the abstract field class to inherit from.
 goog.require('Blockly.Field');
