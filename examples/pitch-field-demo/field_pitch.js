@@ -52,6 +52,7 @@ class FieldPitch extends Blockly.FieldTextInput {
      */
     this.moveWrapper_ = null;
   }
+  
   /**
    * Construct a FieldPitch from a JSON arg object.
    * @param {!Object} options A JSON object with options (pitch).
@@ -62,6 +63,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   static fromJson(options) {
     return new FieldPitch(options['pitch']);
   }
+
   /**
    * Show the inline free-text editor on top of the text and the note picker.
    * @protected
@@ -97,6 +99,7 @@ class FieldPitch extends Blockly.FieldTextInput {
 
     this.updateGraph_();
   }
+
   /**
    * Create the pitch editor.
    * @return {!Element} The newly created pitch picker.
@@ -108,6 +111,7 @@ class FieldPitch extends Blockly.FieldTextInput {
 
     return this.imageElement_;
   }
+
   /**
    * Dispose of events belonging to the pitch editor.
    * @private
@@ -123,6 +127,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     }
     this.imageElement_ = null;
   }
+
   /**
    * Hide the editor.
    * @private
@@ -131,6 +136,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     Blockly.WidgetDiv.hide();
     Blockly.DropDownDiv.hideWithoutAnimation();
   }
+
   /**
    * Set the note to match the mouse's position.
    * @param {!Event} e Mouse move event.
@@ -142,6 +148,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     this.imageElement_.style.backgroundPosition = (-note * 37) + 'px 0';
     this.setEditorValue_(note);
   }
+
   /**
    * Convert the machine-readable value (0-12) to human-readable text (C3-A4).
    * @param {number|string} value The provided value.
@@ -150,6 +157,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   valueToNote(value) {
     return FieldPitch.NOTES[Number(value)];
   }
+
   /**
    * Convert the human-readable text (C3-A4) to machine-readable value (0-12).
    * @param {string} text The provided note.
@@ -160,6 +168,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     const i = FieldPitch.NOTES.indexOf(normalizedText);
     return i > -1 ? i : undefined;
   }
+
   /**
    * Get the text to be displayed on the field node.
    * @return {?string} The HTML value if we're editing, otherwise null. Null means
@@ -172,6 +181,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     }
     return this.valueToNote(this.getValue()) || null;
   }
+
   /**
    * Transform the provided value into a text to show in the HTML input.
    * @param {*} value The value stored in this field.
@@ -180,6 +190,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   getEditorText_(value) {
     return this.valueToNote(value);
   }
+
   /**
    * Transform the text received from the HTML input (note) into a value
    * to store in this field.
@@ -189,6 +200,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   getValueFromEditorText_(text) {
     return this.noteToValue(text);
   }
+
   /**
    * Updates the graph when the field rerenders.
    * @private
@@ -198,6 +210,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     super.render_();
     this.updateGraph_();
   }
+
   /**
    * Redraw the note picker with the current note.
    * @private
@@ -209,6 +222,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     const i = this.getValue();
     this.imageElement_.style.backgroundPosition = (-i * 37) + 'px 0';
   }
+
   /**
    * Ensure that only a valid value may be entered.
    * @param {*} opt_newValue The input value.
