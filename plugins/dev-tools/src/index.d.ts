@@ -24,6 +24,7 @@ interface PlaygroundAPI {
   getCurrentTab: () => PlaygroundTab;
   getGUI: () => DevTools.GUI;
   getWorkspace: () => Blockly.WorkspaceSvg;
+  removeGenerator: (label: string) => void;
 }
 
 declare namespace DevTools {
