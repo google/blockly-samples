@@ -33,7 +33,7 @@ class FieldTurtle extends Blockly.Field {
 
     // The turtle field contains an object as its value, so we need to compile
     // the parameters into an object.
-    var value = {};
+    const value = {};
     value.pattern = opt_pattern || FieldTurtle.PATTERNS[0];
     value.hat = opt_hat || FieldTurtle.HATS[0];
     value.turtleName = opt_turtleName || FieldTurtle.NAMES[0];
@@ -83,7 +83,7 @@ class FieldTurtle extends Blockly.Field {
     // Things like this are best applied to the clickTarget_. By default the
     // click target is the same as getSvgRoot, which by default is the
     // fieldGroup_.
-    var group = this.getClickTarget_();
+    const group = this.getClickTarget_();
     if (!this.isCurrentlyEditable()) {
       group.style.cursor = 'not-allowed';
     } else {
@@ -92,7 +92,7 @@ class FieldTurtle extends Blockly.Field {
   }
   // Gets the text to display when the block is collapsed
   getText() {
-    var text = this.value_.turtleName + ' wearing a ' + this.value_.hat;
+    const text = this.value_.turtleName + ' wearing a ' + this.value_.hat;
     if (this.value_.hat == 'Stovepipe' || this.value_.hat == 'Propeller') {
       text += ' hat';
     }
@@ -167,7 +167,7 @@ class FieldTurtle extends Blockly.Field {
   }
   // Updates the field's on-block display based on the current display value.
   render_() {
-    var value = this.displayValue_;
+    const value = this.displayValue_;
 
     // Always do editor updates inside render. This makes sure the editor
     // always displays the correct value, even if a validator changes it.
@@ -240,7 +240,7 @@ class FieldTurtle extends Blockly.Field {
     this.updateSize_();
   }
   renderEditor_() {
-    var value = this.displayValue_;
+    const value = this.displayValue_;
 
     // .textElement is a property assigned to the element.
     // It allows the text to be edited without destroying the warning icon.
@@ -259,9 +259,9 @@ class FieldTurtle extends Blockly.Field {
   // included inside render_ (it is not called anywhere else), but it is
   // usually separated to keep code more organized.
   updateSize_() {
-    var bbox = this.movableGroup_.getBBox();
-    var width = bbox.width;
-    var height = bbox.height;
+    const bbox = this.movableGroup_.getBBox();
+    let width = bbox.width;
+    let height = bbox.height;
     if (this.borderRect_) {
       width += this.constants_.FIELD_BORDER_RECT_X_PADDING * 2;
       height += this.constants_.FIELD_BORDER_RECT_X_PADDING * 2;
@@ -281,7 +281,7 @@ class FieldTurtle extends Blockly.Field {
     Blockly.DropDownDiv.getContentDiv().appendChild(this.editor_);
 
     // These allow us to have the editor match the block's colour.
-    var fillColour = this.sourceBlock_.getColour();
+    const fillColour = this.sourceBlock_.getColour();
     Blockly.DropDownDiv.setColour(fillColour,
       this.sourceBlock_.style.colourTertiary);
 
@@ -292,28 +292,28 @@ class FieldTurtle extends Blockly.Field {
   }
   // Creates the UI of the editor, and adds event listeners to it.
   dropdownCreate_() {
-    var createRow = function (table) {
-      var row = table.appendChild(document.createElement('tr'));
+    const createRow = function (table) {
+      const row = table.appendChild(document.createElement('tr'));
       row.className = 'row';
       return row;
     };
-    var createLeftArrow = function (row) {
-      var cell = document.createElement('div');
+    const createLeftArrow = function (row) {
+      const cell = document.createElement('div');
       cell.className = 'arrow';
-      var leftArrow = document.createElement('button');
+      const leftArrow = document.createElement('button');
       leftArrow.setAttribute('type', 'button');
       leftArrow.textContent = '<';
       cell.appendChild(leftArrow);
       row.appendChild(cell);
       return cell;
     };
-    var createTextNode = function (row, text) {
-      var cell = document.createElement('div');
+    const createTextNode = function (row, text) {
+      const cell = document.createElement('div');
       cell.className = 'text';
-      var text = document.createTextNode(text);
-      cell.appendChild(text);
-      cell.textElement = text;
-      var warning = document.createElement('img');
+      const textElem = document.createTextNode(text);
+      cell.appendChild(textElem);
+      cell.textElement = textElem;
+      const warning = document.createElement('img');
       warning.setAttribute('src', 'media/warning.svg');
       warning.setAttribute('height', '16px');
       warning.setAttribute('width', '16px');
@@ -323,42 +323,42 @@ class FieldTurtle extends Blockly.Field {
       row.appendChild(cell);
       return cell;
     };
-    var createRightArrow = function (row) {
-      var cell = document.createElement('div');
+    const createRightArrow = function (row) {
+      const cell = document.createElement('div');
       cell.className = 'arrow';
-      var rightArrow = document.createElement('button');
+      const rightArrow = document.createElement('button');
       rightArrow.setAttribute('type', 'button');
       rightArrow.textContent = '>';
       cell.appendChild(rightArrow);
       row.appendChild(cell);
       return cell;
     };
-    var createArrowListener = function (variable, array, direction) {
+    const createArrowListener = function (variable, array, direction) {
       return function () {
-        var currentIndex = array.indexOf(this.displayValue_[variable]);
+        const currentIndex = array.indexOf(this.displayValue_[variable]);
         currentIndex += direction;
         if (currentIndex <= -1) {
           currentIndex = array.length - 1;
         } else if (currentIndex >= array.length) {
           currentIndex = 0;
         }
-        var value = {};
+        const value = {};
         value[variable] = array[currentIndex];
         this.setValue(value);
       };
     };
 
-    var widget = document.createElement('div');
+    const widget = document.createElement('div');
     widget.className = 'customFieldsTurtleWidget blocklyNonSelectable';
 
-    var table = document.createElement('div');
+    const table = document.createElement('div');
     table.className = 'table';
     widget.appendChild(table);
 
-    var row = createRow(table);
-    var leftArrow = createLeftArrow(row);
+    const row = createRow(table);
+    const leftArrow = createLeftArrow(row);
     widget.patternText = createTextNode(row, this.displayValue_.pattern);
-    var rightArrow = createRightArrow(row);
+    const rightArrow = createRightArrow(row);
     this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('pattern', FieldTurtle.PATTERNS, -1)));
     this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
@@ -382,13 +382,13 @@ class FieldTurtle extends Blockly.Field {
     this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('turtleName', FieldTurtle.NAMES, 1)));
 
-    var randomizeButton = document.createElement('button');
+    const randomizeButton = document.createElement('button');
     randomizeButton.className = 'randomize';
     randomizeButton.setAttribute('type', 'button');
     randomizeButton.textContent = 'randomize turtle';
     this.editorListeners_.push(Blockly.browserEvents.bind(randomizeButton, 'mouseup', this,
       function () {
-        var value = {};
+        const value = {};
         value.pattern = FieldTurtle.PATTERNS[Math.floor(Math.random() * FieldTurtle.PATTERNS.length)];
 
         value.hat = FieldTurtle.HATS[Math.floor(Math.random() * FieldTurtle.HATS.length)];
@@ -403,7 +403,7 @@ class FieldTurtle extends Blockly.Field {
   }
   // Cleans up any event listeners that were attached to the now hidden editor.
   dropdownDispose_() {
-    for (var i = this.editorListeners_.length, listener; listener = this.editorListeners_[i]; i--) {
+    for (let i = this.editorListeners_.length, listener; listener = this.editorListeners_[i]; i--) {
       Blockly.browserEvents.unbind(listener);
       this.editorListeners_.pop();
     }
@@ -415,15 +415,15 @@ class FieldTurtle extends Blockly.Field {
       return;
     }
     // The getColourX functions are the best way to access the colours of a block.
-    var isShadow = this.sourceBlock_.isShadow();
-    var fillColour = isShadow ?
+    const isShadow = this.sourceBlock_.isShadow();
+    const fillColour = isShadow ?
       this.sourceBlock_.style.colourSecondary : this.sourceBlock_.getColour();
     // This is technically a package function, meaning it could change.
-    var borderColour = isShadow ? fillColour :
+    const borderColour = isShadow ? fillColour :
       this.sourceBlock_.style.colourTertiary;
 
     if (this.turtleGroup_) {
-      var child = this.turtleGroup_.firstChild;
+      let child = this.turtleGroup_.firstChild;
       while (child) {
         // If it is a text node, continue.
         if (child.nodeType == 3) {
@@ -431,7 +431,7 @@ class FieldTurtle extends Blockly.Field {
           continue;
         }
         // Or if it is a non-turtle node, continue.
-        var className = child.getAttribute('class');
+        const className = child.getAttribute('class');
         if (!className || className.indexOf('turtleBody') == -1) {
           child = child.nextSibling;
           continue;
@@ -464,7 +464,7 @@ class FieldTurtle extends Blockly.Field {
   fromXml(fieldElement) {
     // Because we had to do custom serialization for this field, we also need
     // to do custom de-serialization.
-    var value = {};
+    const value = {};
     value.pattern = fieldElement.getAttribute('pattern');
     value.hat = fieldElement.getAttribute('hat');
     value.turtleName = fieldElement.textContent;
@@ -478,7 +478,7 @@ class FieldTurtle extends Blockly.Field {
       {
         'transform': 'translate(0,5)'
       }, this.fieldGroup_);
-    var scaleGroup = Blockly.utils.dom.createSvgElement('g',
+    const scaleGroup = Blockly.utils.dom.createSvgElement('g',
       {
         'transform': 'scale(1.5)'
       }, this.movableGroup_);
@@ -487,13 +487,13 @@ class FieldTurtle extends Blockly.Field {
         // Makes the smaller turtle graphic align with the hats.
         'class': 'turtleBody'
       }, scaleGroup);
-    var tail = Blockly.utils.dom.createSvgElement('path',
+    const tail = Blockly.utils.dom.createSvgElement('path',
       {
         'class': 'turtleBody',
         'd': 'M7,27.5H0.188c3.959-2,6.547-2.708,8.776-5.237',
         'transform': 'translate(0.312 -12.994)'
       }, this.turtleGroup_);
-    var legLeft = Blockly.utils.dom.createSvgElement('rect',
+    const legLeft = Blockly.utils.dom.createSvgElement('rect',
       {
         'class': 'turtleBody',
         'x': 8.812,
@@ -501,7 +501,7 @@ class FieldTurtle extends Blockly.Field {
         'width': 4,
         'height': 10
       }, this.turtleGroup_);
-    var legRight = Blockly.utils.dom.createSvgElement('rect',
+    const legRight = Blockly.utils.dom.createSvgElement('rect',
       {
         'class': 'turtleBody',
         'x': 28.812,
@@ -509,19 +509,19 @@ class FieldTurtle extends Blockly.Field {
         'width': 4,
         'height': 10
       }, this.turtleGroup_);
-    var head = Blockly.utils.dom.createSvgElement('path',
+    const head = Blockly.utils.dom.createSvgElement('path',
       {
         'class': 'turtleBody',
         'd': 'M47.991,17.884c0,1.92-2.144,3.477-4.788,3.477a6.262,6.262,0,0,1-2.212-.392c-0.2-.077-1.995,2.343-4.866,3.112a17.019,17.019,0,0,1-6.01.588c-4.413-.053-2.5-3.412-2.745-3.819-0.147-.242,2.232.144,6.126-0.376a7.392,7.392,0,0,0,4.919-2.588c0-1.92,2.144-3.477,4.788-3.477S47.991,15.964,47.991,17.884Z',
         'transform': 'translate(0.312 -12.994)'
       }, this.turtleGroup_);
-    var smile = Blockly.utils.dom.createSvgElement('path',
+    const smile = Blockly.utils.dom.createSvgElement('path',
       {
         'class': 'turtleBody',
         'd': 'M42.223,18.668a3.614,3.614,0,0,0,2.728,2.38',
         'transform': 'translate(0.312 -12.994)'
       }, this.turtleGroup_);
-    var sclera = Blockly.utils.dom.createSvgElement('ellipse',
+    const sclera = Blockly.utils.dom.createSvgElement('ellipse',
       {
         'cx': 43.435,
         'cy': 2.61,
@@ -529,14 +529,14 @@ class FieldTurtle extends Blockly.Field {
         'ry': 2.61,
         'fill': '#fff'
       }, this.turtleGroup_);
-    var pupil = Blockly.utils.dom.createSvgElement('ellipse',
+    const pupil = Blockly.utils.dom.createSvgElement('ellipse',
       {
         'cx': 44.166,
         'cy': 3.403,
         'rx': 1.318,
         'ry': 1.62
       }, this.turtleGroup_);
-    var shell = Blockly.utils.dom.createSvgElement('path',
+    const shell = Blockly.utils.dom.createSvgElement('path',
       {
         'class': 'turtleBody',
         'd': 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
@@ -638,7 +638,7 @@ class FieldTurtle extends Blockly.Field {
         'stroke-opacity': .3,
         'fill-opacity': 0
       }, this.hexagonPattern_);
-    var use = Blockly.utils.dom.createSvgElement('use',
+    let use = Blockly.utils.dom.createSvgElement('use',
       {
         'x': 5,
       }, this.hexagonPattern_);
