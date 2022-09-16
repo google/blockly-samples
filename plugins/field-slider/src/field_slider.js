@@ -145,6 +145,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    */
   onSliderChange_() {
     this.setEditorValue_(this.sliderInput_.value);
+    this.resizeEditor_();
   }
 
   /**
