@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
       },
     ],
   };
- 
+
   const defaultOptions = {
     toolbox,
   };
