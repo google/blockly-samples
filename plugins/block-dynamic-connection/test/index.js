@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
  
   const defaultOptions = {
-    toolbox
+    toolbox,
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
