@@ -34,7 +34,7 @@
     </tr>
   </table>
 
-  <!-- Deprecated XML toolbox implementation 
+  <!-- XML toolbox implementation 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
     <block type="controls_if"></block>
     <block type="logic_compare"></block>
@@ -70,7 +70,7 @@
           "kind": "block",
           "type": "math_number",
           "fields": {
-            "NUM": 123
+            NUM: 123
           }
         },
         {
@@ -89,8 +89,27 @@
           "kind": "block",
           "type": "variables_get",
           "fields": {
-            "name": "VAR",
-            "variable": "i"
+            "VAR": {
+              "name": "i"
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "variables_get",
+          "fields": {
+            "VAR": {
+              "name": "j"
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "variables_get",
+          "fields": {
+            "VAR": {
+              "name": "k"
+            }
           }
         },
       ]
