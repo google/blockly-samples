@@ -126,7 +126,7 @@ class FieldTurtle extends Blockly.Field {
 
   // Gets the text to display when the block is collapsed
   getText() {
-    const text = this.value_.turtleName + ' wearing a ' + this.value_.hat;
+    let text = this.value_.turtleName + ' wearing a ' + this.value_.hat;
     if (this.value_.hat == 'Stovepipe' || this.value_.hat == 'Propeller') {
       text += ' hat';
     }
@@ -376,7 +376,7 @@ class FieldTurtle extends Blockly.Field {
     };
     const createArrowListener = function (variable, array, direction) {
       return function () {
-        const currentIndex = array.indexOf(this.displayValue_[variable]);
+        let currentIndex = array.indexOf(this.displayValue_[variable]);
         currentIndex += direction;
         if (currentIndex <= -1) {
           currentIndex = array.length - 1;
@@ -396,10 +396,10 @@ class FieldTurtle extends Blockly.Field {
     table.className = 'table';
     widget.appendChild(table);
 
-    const row = createRow(table);
-    const leftArrow = createLeftArrow(row);
+    let row = createRow(table);
+    let leftArrow = createLeftArrow(row);
     widget.patternText = createTextNode(row, this.displayValue_.pattern);
-    const rightArrow = createRightArrow(row);
+    let rightArrow = createRightArrow(row);
     this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('pattern', FieldTurtle.PATTERNS, -1)));
     this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
@@ -730,6 +730,5 @@ class FieldTurtle extends Blockly.Field {
 // Blockly needs to know the JSON name of this field. Usually this is
 // registered at the bottom of the field class.
 Blockly.fieldRegistry.register('field_turtle', FieldTurtle);
-
 
 CustomFields.FieldTurtle = FieldTurtle;
