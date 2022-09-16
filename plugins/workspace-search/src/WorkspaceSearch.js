@@ -189,8 +189,10 @@ export class WorkspaceSearch {
         .onKeyDown_(/** @type {KeyboardEvent} */ evt));
     this.addEvent_(this.inputElement_, 'input', this, () =>this
         .onInput_());
-    this.addEvent_(this.inputElement_, 'click', this, () => this
-        .searchAndHighlight(this.searchText_, this.preserveSelected));
+    this.addEvent_(this.inputElement_, 'click', this, () => {
+      this.searchAndHighlight(this.searchText_, this.preserveSelected);
+      this.inputElement_.select();
+    });
 
     inputWrapper.appendChild(this.inputElement_);
     searchContent.appendChild(inputWrapper);
