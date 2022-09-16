@@ -23,12 +23,31 @@ goog.require('Blockly.utils.Size');
 
 var CustomFields = CustomFields || {};
 
-// Generally field's values should be optional, and have logical defaults.
-// If this is not possible (for example image fields can't have logical
-// defaults) the field should throw a clear error when a value is not provided.
-// Editable fields also generally accept validators, so we will accept a
-// validator.
 class FieldTurtle extends Blockly.Field {
+  // Since this field is editable we must also define serializable as true
+  // (for backwards compatibility reasons serializable is false by default).
+  SERIALIZABLE = true;
+
+  // The cursor property defines what the mouse will look like when the user
+  // hovers over the field. By default the cursor will be whatever
+  // .blocklyDraggable's cursor is defined as (vis. grab). Most fields define
+  // this property as 'default'.
+  CURSOR = 'pointer';
+
+  // How far to move the text to keep it to the right of the turtle.
+  // May change if the turtle gets fancy enough.
+  TEXT_OFFSET_X = 80;
+
+  // Used to keep track of our editor event listeners, so they can be
+  // properly disposed of when the field closes. You can keep track of your
+  // listeners however you want, just be sure to dispose of them!
+  editorListeners_ = [];
+
+  // Generally field's values should be optional, and have logical defaults.
+  // If this is not possible (for example image fields can't have logical
+  // defaults) the field should throw a clear error when a value is not provided.
+  // Editable fields also generally accept validators, so we will accept a
+  // validator.
   constructor(opt_pattern, opt_hat, opt_turtleName, opt_validator) {
 
     // The turtle field contains an object as its value, so we need to compile
@@ -50,6 +69,18 @@ class FieldTurtle extends Blockly.Field {
      */
     this.size_ = new Blockly.utils.Size(0, 0);
   }
+
+  // These are the different options for our turtle. Being declared this way
+  // means they are static, and not translatable. If you want to do something
+  // similar, but make it translatable you should set up your options like a
+  // dropdown field, with language-neutral keys and human-readable values.
+  static PATTERNS =
+      ['Dots', 'Stripes', 'Hexagons'];
+  static HATS =
+      ['Stovepipe', 'Crown', 'Propeller', 'Mask', 'Fedora'];
+  static NAMES =
+      ['Yertle', 'Franklin', 'Crush', 'Leonardo', 'Bowser', 'Squirtle', 'Oogway'];
+
   // This allows the field to be constructed using a JSON block definition.
   static fromJson(options) {
     // In this case we simply pass the JSON options along to the constructor,
@@ -59,6 +90,7 @@ class FieldTurtle extends Blockly.Field {
       options['hat'],
       options['turtleName']);
   }
+
   // Used to create the DOM of our field.
   initView() {
     // Because we want to have both a borderRect_ (background) and a
@@ -71,6 +103,7 @@ class FieldTurtle extends Blockly.Field {
     // fieldGroup_.
     this.createView_();
   }
+
   // Updates how the field looks depending on if it is editable or not.
   updateEditable() {
     if (!this.fieldGroup_) {
@@ -90,6 +123,7 @@ class FieldTurtle extends Blockly.Field {
       group.style.cursor = this.CURSOR;
     }
   }
+
   // Gets the text to display when the block is collapsed
   getText() {
     const text = this.value_.turtleName + ' wearing a ' + this.value_.hat;
@@ -98,6 +132,7 @@ class FieldTurtle extends Blockly.Field {
     }
     return text;
   }
+
   // Makes sure new field values (given to setValue) are valid, meaning
   // something this field can legally "hold". Class validators can either change
   // the input value, or return null if the input value is invalid. Called by
@@ -140,6 +175,7 @@ class FieldTurtle extends Blockly.Field {
     }
     return newValue;
   }
+
   // Saves the new field value. Called by the setValue function.
   doValueUpdate_(newValue) {
     // The default function sets this field's this.value_ property to the
@@ -151,6 +187,7 @@ class FieldTurtle extends Blockly.Field {
     // sure it knows it is now valid.
     this.isValueInvalid_ = false;
   }
+
   // Notifies that the field that the new value was invalid. Called by
   // setValue function. Can either be triggered by the class validator, or the
   // local validator.
@@ -165,6 +202,7 @@ class FieldTurtle extends Blockly.Field {
     this.isDirty_ = true;
     this.isValueInvalid_ = true;
   }
+
   // Updates the field's on-block display based on the current display value.
   render_() {
     const value = this.displayValue_;
@@ -239,6 +277,7 @@ class FieldTurtle extends Blockly.Field {
 
     this.updateSize_();
   }
+
   renderEditor_() {
     const value = this.displayValue_;
 
@@ -255,6 +294,7 @@ class FieldTurtle extends Blockly.Field {
     this.editor_.turtleNameText.warningIcon.style.display =
       this.cachedValidatedValue_.turtleName ? 'none' : '';
   }
+
   // Used to update the size of the field. This function's logic could be simply
   // included inside render_ (it is not called anywhere else), but it is
   // usually separated to keep code more organized.
@@ -290,6 +330,7 @@ class FieldTurtle extends Blockly.Field {
     Blockly.DropDownDiv.showPositionedByField(
       this, this.dropdownDispose_.bind(this));
   }
+
   // Creates the UI of the editor, and adds event listeners to it.
   dropdownCreate_() {
     const createRow = function (table) {
@@ -401,6 +442,7 @@ class FieldTurtle extends Blockly.Field {
 
     return widget;
   }
+
   // Cleans up any event listeners that were attached to the now hidden editor.
   dropdownDispose_() {
     for (let i = this.editorListeners_.length, listener; listener = this.editorListeners_[i]; i--) {
@@ -408,6 +450,7 @@ class FieldTurtle extends Blockly.Field {
       this.editorListeners_.pop();
     }
   }
+
   // Updates the field's colour based on the colour of the block. Called by
   // block.applyColour.
   applyColour() {
@@ -443,6 +486,7 @@ class FieldTurtle extends Blockly.Field {
       }
     }
   }
+
   // Saves the field's value to an XML node. Allows for custom serialization.
   toXml(fieldElement) {
     // The default implementation of this function creates a node that looks
@@ -471,6 +515,7 @@ class FieldTurtle extends Blockly.Field {
     // The end goal is to call this.setValue()
     this.setValue(value);
   }
+  
   // Called by initView to create all of the SVGs. This is just used to keep
   // the code more organized.
   createView_() {
@@ -681,37 +726,6 @@ class FieldTurtle extends Blockly.Field {
       }, this.stripesPattern_);
   }
 }
-
-
-// Since this field is editable we must also define serializable as true
-// (for backwards compatibility reasons serializable is false by default).
-FieldTurtle.prototype.SERIALIZABLE = true;
-
-// The cursor property defines what the mouse will look like when the user
-// hovers over the field. By default the cursor will be whatever
-// .blocklyDraggable's cursor is defined as (vis. grab). Most fields define
-// this property as 'default'.
-FieldTurtle.prototype.CURSOR = 'pointer';
-
-// How far to move the text to keep it to the right of the turtle.
-// May change if the turtle gets fancy enough.
-FieldTurtle.prototype.TEXT_OFFSET_X = 80;
-
-// These are the different options for our turtle. Being declared this way
-// means they are static, and not translatable. If you want to do something
-// similar, but make it translatable you should set up your options like a
-// dropdown field, with language-neutral keys and human-readable values.
-FieldTurtle.PATTERNS =
-    ['Dots', 'Stripes', 'Hexagons'];
-FieldTurtle.HATS =
-    ['Stovepipe', 'Crown', 'Propeller', 'Mask', 'Fedora'];
-FieldTurtle.NAMES =
-    ['Yertle', 'Franklin', 'Crush', 'Leonardo', 'Bowser', 'Squirtle', 'Oogway'];
-
-// Used to keep track of our editor event listeners, so they can be
-// properly disposed of when the field closes. You can keep track of your
-// listeners however you want, just be sure to dispose of them!
-FieldTurtle.prototype.editorListeners_ = [];
 
 // Blockly needs to know the JSON name of this field. Usually this is
 // registered at the bottom of the field class.
