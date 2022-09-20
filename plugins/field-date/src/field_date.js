@@ -34,11 +34,14 @@ goog.require('goog.ui.DatePicker');
  */
 class FieldDate extends Blockly.FieldTextInput {
   /**
+   * Class for a date input field. Derived from the Closure library date
+   * picker.
    * @param {string=} value The initial value of the field. Should be in
    *    'YYYY-MM-DD' format. Defaults to the current date.
    * @param {Function=} validator A function that is called to validate
    *    changes to the field's value. Takes in a date string & returns a
-   *    validated date string ('YYYY-MM-DD' format), or null to abort the change.
+   *    validated date string ('YYYY-MM-DD' format), or null to abort the
+   *    change.
    * @param {?(boolean|string)=} textEdit Whether to enable text editor.
    */
   constructor(value = undefined, validator = undefined, textEdit = false) {
@@ -49,7 +52,7 @@ class FieldDate extends Blockly.FieldTextInput {
      * @type {*}
      * @protected
      */
-     this.DEFAULT_VALUE = (new goog.date.Date()).toIsoString(true);
+    this.DEFAULT_VALUE = (new goog.date.Date()).toIsoString(true);
 
     /**
      * Whether text editing is enabled on this field.
@@ -156,7 +159,8 @@ class FieldDate extends Blockly.FieldTextInput {
       this.oldSelectedElement_.style.backgroundColor = null;
       this.oldSelectedElement_.style.color = null;
     }
-    const selected = this.picker_.getElementByClass('goog-date-picker-selected');
+    const selected =
+        this.picker_.getElementByClass('goog-date-picker-selected');
     this.oldSelectedElement_ = selected;
     if (selected) {
       selected.style.backgroundColor = this.selectedColour_;
@@ -199,9 +203,9 @@ class FieldDate extends Blockly.FieldTextInput {
     this.picker_.render(Blockly.DropDownDiv.getContentDiv());
     Blockly.utils.dom.addClass(this.picker_.getElement(), 'blocklyDatePicker');
     Blockly.DropDownDiv.setColour(
-      this.DROPDOWN_BACKGROUND_COLOUR, this.DROPDOWN_BORDER_COLOUR);
+        this.DROPDOWN_BACKGROUND_COLOUR, this.DROPDOWN_BORDER_COLOUR);
     Blockly.DropDownDiv.showPositionedByField(
-      this, this.dropdownDispose_.bind(this));
+        this, this.dropdownDispose_.bind(this));
 
     this.updateEditor_();
   }
@@ -222,17 +226,17 @@ class FieldDate extends Blockly.FieldTextInput {
     picker.setDate(goog.date.DateTime.fromIsoString(this.getValue()));
 
     this.changeEventKey_ = goog.events.listen(
-      picker,
-      goog.ui.DatePicker.Events.CHANGE,
-      this.onDateSelected_,
-      null,
-      this);
+        picker,
+        goog.ui.DatePicker.Events.CHANGE,
+        this.onDateSelected_,
+        null,
+        this);
     this.activeMonthEventKey_ = goog.events.listen(
-      picker,
-      goog.ui.DatePicker.Events.CHANGE_ACTIVE_MONTH,
-      this.updateEditor_,
-      null,
-      this);
+        picker,
+        goog.ui.DatePicker.Events.CHANGE_ACTIVE_MONTH,
+        this.updateEditor_,
+        null,
+        this);
 
     return picker;
   }
@@ -259,7 +263,7 @@ class FieldDate extends Blockly.FieldTextInput {
     super.bindInputEvents_(htmlInput);
 
     this.onClickWrapper_ = Blockly.browserEvents.conditionalBind(htmlInput,
-      'click', this, this.onClick_, true);
+        'click', this, this.onClick_, true);
   }
 
   /**
