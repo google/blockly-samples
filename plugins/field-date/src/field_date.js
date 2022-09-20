@@ -270,7 +270,7 @@ class FieldDate extends Blockly.FieldTextInput {
   unbindInputEvents_() {
     super.unbindInputEvents_();
     if (this.onClickWrapper_) {
-      Blockly.unbindEvent_(this.onClickWrapper_);
+      Blockly.browserEvents.unbind(this.onClickWrapper_);
       this.onClickWrapper_ = null;
     }
   }
