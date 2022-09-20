@@ -64,8 +64,5 @@
         "defaults",
         "IE 11",
         "IE_Mob 11"
-    ],
-    "dependencies": {
-        "beta": "^0.0.1"
-    }
+    ]
 }
