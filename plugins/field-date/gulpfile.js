@@ -59,6 +59,8 @@ function build() {
         entry_point: './src/field_date.js',
         js_output_file: 'date_compressed.js',
         language_in: 'ECMASCRIPT_2015',
+        // TODO: look into updating closure compiler--this should just be ES NEXT
+        language_out: 'ECMASCRIPT_2015',
         externs: ['./externs.js'],
         output_wrapper: outputWrapperUMD('Blockly.FieldDate', [{
           name: 'Blockly',
