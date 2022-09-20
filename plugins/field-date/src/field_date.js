@@ -334,66 +334,64 @@ FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
 /**
  * CSS for date picker.  See css.js for use.
  */
-Blockly.Css.register([
-  /* eslint-disable indent */
-  '.blocklyDatePicker,',
-  '.blocklyDatePicker th,',
-  '.blocklyDatePicker td {',
-    'font: 13px Arial, sans-serif;',
-    'color: #3c4043;',
-  '}',
+Blockly.Css.register(`
+.blocklyDatePicker,
+.blocklyDatePicker th,
+.blocklyDatePicker td {
+  font: 13px Arial, sans-serif;
+  color: #3c4043;
+}
 
-  '.blocklyDatePicker th,',
-  '.blocklyDatePicker td {',
-    'text-align: center;',
-    'vertical-align: middle;',
-  '}',
+.blocklyDatePicker th,
+.blocklyDatePicker td {
+  text-align: center;
+  vertical-align: middle;
+}
 
-  '.blocklyDatePicker .goog-date-picker-wday,',
-  '.blocklyDatePicker .goog-date-picker-date {',
-    'padding: 6px 6px;',
-  '}',
+.blocklyDatePicker .goog-date-picker-wday,
+.blocklyDatePicker .goog-date-picker-date {
+  padding: 6px 6px;
+}
 
-  '.blocklyDatePicker button {',
-    'cursor: pointer;',
-    'padding: 6px 6px;',
-    'margin: 1px 0;',
-    'border: 0;',
-    'color: #3c4043;',
-    'font-weight: bold;',
-    'background: transparent;',
-  '}',
+.blocklyDatePicker button {
+  cursor: pointer;
+  padding: 6px 6px;
+  margin: 1px 0;
+  border: 0;
+  color: #3c4043;
+  font-weight: bold;
+  background: transparent;
+}
 
-  '.blocklyDatePicker .goog-date-picker-previousMonth,',
-  '.blocklyDatePicker .goog-date-picker-nextMonth {',
-    'height: 24px;',
-    'width: 24px;',
-  '}',
+.blocklyDatePicker .goog-date-picker-previousMonth,
+.blocklyDatePicker .goog-date-picker-nextMonth {
+  height: 24px;
+  width: 24px;
+}
 
-  '.blocklyDatePicker .goog-date-picker-monthyear {',
-    'font-weight: bold;',
-  '}',
+.blocklyDatePicker .goog-date-picker-monthyear {
+  font-weight: bold;
+}
 
-  '.blocklyDatePicker .goog-date-picker-wday, ',
-  '.blocklyDatePicker .goog-date-picker-other-month {',
-    'color: #70757a;',
-    'border-radius: 12px;',
-  '}',
+.blocklyDatePicker .goog-date-picker-wday, 
+.blocklyDatePicker .goog-date-picker-other-month {
+  color: #70757a;
+  border-radius: 12px;
+}
 
-  '.blocklyDatePicker button,',
-  '.blocklyDatePicker .goog-date-picker-date {',
-    'cursor: pointer;',
-    'background-color: rgb(218, 220, 224, 0);',
-    'border-radius: 12px;',
-    'transition: background-color,opacity 100ms linear;',
-  '}',
+.blocklyDatePicker button,
+.blocklyDatePicker .goog-date-picker-date {
+  cursor: pointer;
+  background-color: rgb(218, 220, 224, 0);
+  border-radius: 12px;
+  transition: background-color,opacity 100ms linear;
+}
 
-  '.blocklyDatePicker button:hover,',
-  '.blocklyDatePicker .goog-date-picker-date:hover {',
-    'background-color: rgb(218, 220, 224, .5);',
-  '}',
-  /* eslint-enable indent */
-]);
+.blocklyDatePicker button:hover,
+.blocklyDatePicker .goog-date-picker-date:hover {
+  background-color: rgb(218, 220, 224, .5);
+}
+`);
 
 Blockly.fieldRegistry.register('field_date', FieldDate);
 
