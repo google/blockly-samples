@@ -40,10 +40,10 @@ class FieldDate extends Blockly.FieldTextInput {
    *    changes to the field's value. Takes in a date string & returns a
    *    validated date string ('YYYY-MM-DD' format), or null to abort the change.
    * @param {?(boolean|string)=} textEdit Whether to enable text editor.
-   * @constructor
    */
   constructor(value = undefined, validator = undefined, textEdit = false) {
     super(value, validator);
+
     /**
      * The default value for this field (current date).
      * @type {*}
@@ -77,7 +77,7 @@ class FieldDate extends Blockly.FieldTextInput {
    */
   static loadLanguage_() {
     for (const prop in goog.i18n) {
-      if (Blockly.utils.string.startsWith(prop, 'DateTimeSymbols_')) {
+      if (prop.startsWith('DateTimeSymbols_')) {
         const lang = prop.substr(16).toLowerCase().replace('_', '.');
         // E.g. 'DateTimeSymbols_pt_BR' -> 'pt.br'
         if (goog.getObjectByName(lang, Blockly.Msg)) {
@@ -395,6 +395,8 @@ Blockly.Css.register(`
 
 Blockly.fieldRegistry.register('field_date', FieldDate);
 
+Blockly.FieldDate = FieldDate;
+
 /**
  * Back up original getMsg function.
  * @type {!Function}
@@ -423,5 +425,3 @@ goog.getMsg = function(str, values = undefined) {
 goog.getMsg.blocklyMsgMap = {
   'Today': 'TODAY',
 };
-
-Blockly.FieldDate = FieldDate;
