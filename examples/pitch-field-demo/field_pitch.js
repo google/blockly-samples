@@ -14,9 +14,10 @@
 
 goog.provide('CustomFields.FieldPitch');
 
+goog.require('Blockly.browserEvents');
 goog.require('Blockly.FieldTextInput');
 goog.require('Blockly.utils.math');
-goog.require('Blockly.utils.object');
+
 
 var CustomFields = CustomFields || {};
 
@@ -28,7 +29,7 @@ var CustomFields = CustomFields || {};
  */
 class FieldPitch extends Blockly.FieldTextInput {
   /**
-   * All notes available for the picker.
+   * All pitches available for the picker.
    */
   static NOTES = 'C3 D3 E3 F3 G3 A3 B3 C4 D4 E4 F4 G4 A4'.split(/ /);
 
@@ -56,7 +57,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   /**
    * Construct a FieldPitch from a JSON arg object.
    * @param {!Object} options A JSON object with options (pitch).
-   * @return {!FieldPitch} The new field instance.
+   * @returns {!FieldPitch} The new field instance.
    * @package
    * @nocollapse
    */
@@ -65,7 +66,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   }
 
   /**
-   * Show the inline free-text editor on top of the text and the note picker.
+   * Show the inline free-text editor on top of the text and the pitch picker.
    * @protected
    */
   showEditor_() {
@@ -86,23 +87,23 @@ class FieldPitch extends Blockly.FieldTextInput {
     Blockly.DropDownDiv.showPositionedByField(
       this, this.dropdownDispose_.bind(this));
 
-    // The note picker is different from other fields in that it updates on
+    // The pitch picker is different from other fields in that it updates on
     // mousemove even if it's not in the middle of a drag.  In future we may
-    // change this behaviour.  For now, using bindEvent_ instead of
-    // bindEventWithChecks_ allows it to work without a mousedown/touchstart.
+    // change this behaviour.  For now, using `bind` instead of
+    // `conditionalBind` allows it to work without a mousedown/touchstart.
     this.clickWrapper_ =
-      Blockly.browserEvents.bind(this.imageElement_, 'click', this,
+        Blockly.browserEvents.bind(this.imageElement_, 'click', this,
         this.hide_);
     this.moveWrapper_ =
-      Blockly.browserEvents.bind(this.imageElement_, 'mousemove', this,
+        Blockly.browserEvents.bind(this.imageElement_, 'mousemove', this,
         this.onMouseMove);
 
     this.updateGraph_();
   }
 
   /**
-   * Create the pitch editor.
-   * @return {!Element} The newly created pitch picker.
+   * Create the pitch picker.
+   * @returns {!Element} The newly created pitch picker.
    * @private
    */
   dropdownCreate_() {
@@ -113,7 +114,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   }
 
   /**
-   * Dispose of events belonging to the pitch editor.
+   * Dispose of events belonging to the pitch picker.
    * @private
    */
   dropdownDispose_() {
@@ -129,7 +130,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   }
 
   /**
-   * Hide the editor.
+   * Hide the editor and picker.
    * @private
    */
   hide_() {
@@ -152,7 +153,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   /**
    * Convert the machine-readable value (0-12) to human-readable text (C3-A4).
    * @param {number|string} value The provided value.
-   * @return {string|undefined} The respective note, or undefined if invalid.
+   * @returns {string|undefined} The respective pitch, or undefined if invalid.
    */
   valueToNote(value) {
     return FieldPitch.NOTES[Number(value)];
@@ -160,8 +161,8 @@ class FieldPitch extends Blockly.FieldTextInput {
 
   /**
    * Convert the human-readable text (C3-A4) to machine-readable value (0-12).
-   * @param {string} text The provided note.
-   * @return {number|undefined} The respective value, or undefined if invalid.
+   * @param {string} text The provided pitch.
+   * @returns {number|undefined} The respective value, or undefined if invalid.
    */
   noteToValue(text) {
     const normalizedText = text.trim().toUpperCase();
@@ -171,8 +172,8 @@ class FieldPitch extends Blockly.FieldTextInput {
 
   /**
    * Get the text to be displayed on the field node.
-   * @return {?string} The HTML value if we're editing, otherwise null. Null means
-   *   the super class will handle it, likely a string cast of value.
+   * @returns {?string} The HTML value if we're editing, otherwise null.
+   * Null means the super class will handle it, likely a string cast of value.
    * @protected
    */
   getText_() {
@@ -185,7 +186,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   /**
    * Transform the provided value into a text to show in the HTML input.
    * @param {*} value The value stored in this field.
-   * @return {string} The text to show on the HTML input.
+   * @returns {string} The text to show on the HTML input.
    */
   getEditorText_(value) {
     return this.valueToNote(value);
@@ -195,7 +196,7 @@ class FieldPitch extends Blockly.FieldTextInput {
    * Transform the text received from the HTML input (note) into a value
    * to store in this field.
    * @param {string} text Text received from the HTML input.
-   * @return {*} The value to store.
+   * @returns {*} The value to store.
    */
   getValueFromEditorText_(text) {
     return this.noteToValue(text);
@@ -212,7 +213,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   }
 
   /**
-   * Redraw the note picker with the current note.
+   * Redraw the pitch picker with the current pitch.
    * @private
    */
   updateGraph_() {
@@ -226,7 +227,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   /**
    * Ensure that only a valid value may be entered.
    * @param {*} opt_newValue The input value.
-   * @return {*} A valid value, or null if invalid.
+   * @returns {*} A valid value, or null if invalid.
    */
   doClassValidation_(opt_newValue) {
     if (opt_newValue === null || opt_newValue === undefined) {
