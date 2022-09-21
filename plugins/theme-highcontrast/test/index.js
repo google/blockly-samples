@@ -204,7 +204,7 @@ const toolbox = {
 document.addEventListener('DOMContentLoaded', function() {
   Blockly.inject('root', {
     theme: Theme,
-    toolbox: document.getElementById('toolbox'),
+    toolbox: toolbox,
     grid: {
       spacing: 25,
       length: 3,
