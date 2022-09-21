@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 /**
  * @license
  * Copyright 2021 Google LLC
