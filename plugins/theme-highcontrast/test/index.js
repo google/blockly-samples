@@ -88,7 +88,7 @@ const toolbox = {
               'shadow': {
                 'type': 'math_number',
                 'fields': {
-                  'NUM': 1
+                  'NUM': 1,
                 },
               },
             },
@@ -187,7 +187,7 @@ const toolbox = {
       'kind': 'category',
       'name': 'Variables',
       'categorystyle': 'variable_category',
-      'custom': 'VARIABLE'
+      'custom': 'VARIABLE',
     },
     {
       'kind': 'category',
