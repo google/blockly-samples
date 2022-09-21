@@ -54,7 +54,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.27",
     "@types/dat.gui": "^0.7.5",
-    "blockly": "^8.0.0"
+    "blockly": "^9.0.0-beta.1"
   },
   "peerDependencies": {
     "blockly": ">=8 <10"
