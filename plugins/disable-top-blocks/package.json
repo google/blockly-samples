@@ -44,7 +44,7 @@
     "blockly": "^8.0.0"
   },
   "peerDependencies": {
-    "blockly": ">=3.20200924.3 <9"
+    "blockly": ">=3.20200924.3 <10"
   },
   "publishConfig": {
     "access": "public",

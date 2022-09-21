@@ -47,7 +47,7 @@
     "mocha": "^7.1.0"
   },
   "peerDependencies": {
-    "blockly": ">=3 <9"
+    "blockly": ">=3 <10"
   },
   "publishConfig": {
     "access": "public",

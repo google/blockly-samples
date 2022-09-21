@@ -49,7 +49,7 @@
     "sinon": "7.5.0"
   },
   "peerDependencies": {
-    "blockly": ">=7 <9"
+    "blockly": ">=7 <10"
   },
   "publishConfig": {
     "access": "public",
