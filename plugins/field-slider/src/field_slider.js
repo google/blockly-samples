@@ -136,6 +136,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     for (const event of this.boundEvents_) {
       Blockly.unbindEvent_(event);
     }
+    this.boundEvents_.length = 0;
     this.sliderInput_ = null;
   }
 
