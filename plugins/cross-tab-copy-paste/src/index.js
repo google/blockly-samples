@@ -20,6 +20,8 @@ export class CrossTabCopyPaste {
    * `contextMenu` Register copy and paste in the context menu.
    * `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
    * in the shortcut.
+   * @param {Function=} typeErrorCallback
+   * callback function to handle type errors
    */
   init({
     contextMenu = true,
@@ -27,11 +29,12 @@ export class CrossTabCopyPaste {
   } = {
     contextMenu: true,
     shortcut: true,
-  }) {
+  },
+  typeErrorCallback) {
     if (contextMenu) {
       // Register the menus
       this.blockCopyToStorageContextMenu();
-      this.blockPasteFromStorageContextMenu();
+      this.blockPasteFromStorageContextMenu(typeErrorCallback);
     }
 
     if (shortcut) {
@@ -45,7 +48,7 @@ export class CrossTabCopyPaste {
       // Register the KeyboardShortcuts
       this.blockCopyToStorageShortcut();
       this.blockCutToStorageShortcut();
-      this.blockPasteFromStorageShortcut();
+      this.blockPasteFromStorageShortcut(typeErrorCallback);
     }
   }
 
@@ -80,8 +83,10 @@ export class CrossTabCopyPaste {
 
   /**
    * Adds a paste command to the block context menu.
+   * @param {Function=} typeErrorCallback
+   * callback function to handle type errors
    */
-  blockPasteFromStorageContextMenu() {
+  blockPasteFromStorageContextMenu(typeErrorCallback) {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const pasteFromStorageOption = {
       displayText: function() {
@@ -103,7 +108,15 @@ export class CrossTabCopyPaste {
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
-        scope.workspace.paste(saveInfo['saveInfo']);
+        try {
+          scope.workspace.paste(saveInfo['saveInfo']);
+        } catch (e) {
+          if (e instanceof TypeError && typeErrorCallback) {
+            typeErrorCallback();
+          } else {
+            throw e;
+          }
+        }
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
       id: 'blockPasteFromStorage',
@@ -202,8 +215,10 @@ export class CrossTabCopyPaste {
 
   /**
    * Adds a keyboard shortcut that will paste the block stored in localStorage.
+   * @param {Function=} typeErrorCallback
+   * callback function to handle type errors
    */
-  blockPasteFromStorageShortcut() {
+  blockPasteFromStorageShortcut(typeErrorCallback) {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const pasteShortcut = {
       name: 'paste',
@@ -224,7 +239,15 @@ export class CrossTabCopyPaste {
         e.preventDefault();
         const blockText = localStorage.getItem('blocklyStash');
         const saveInfo = JSON.parse(blockText);
-        workspace.paste(saveInfo['saveInfo']);
+        try {
+          workspace.paste(saveInfo['saveInfo']);
+        } catch (e) {
+          if (e instanceof TypeError && typeErrorCallback) {
+            typeErrorCallback();
+          } else {
+            throw e;
+          }
+        }
         return true;
       },
     };
