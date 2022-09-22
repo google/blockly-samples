@@ -48,13 +48,6 @@ class FieldDate extends Blockly.FieldTextInput {
     super(value, validator);
 
     /**
-     * The default value for this field (current date).
-     * @type {*}
-     * @protected
-     */
-    this.DEFAULT_VALUE = (new goog.date.Date()).toIsoString(true);
-
-    /**
      * Whether text editing is enabled on this field.
      * @type {boolean}
      * @private
@@ -334,6 +327,13 @@ FieldDate.prototype.DROPDOWN_BORDER_COLOUR = 'silver';
  * @private
  */
 FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
+
+/**
+ * The default value for this field (current date).
+ * @type {*}
+ * @protected
+ */
+  FieldDate.prototype.DEFAULT_VALUE = (new goog.date.Date()).toIsoString(true);
 
 /**
  * CSS for date picker.  See css.js for use.
