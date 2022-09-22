@@ -333,7 +333,7 @@ FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
  * @type {*}
  * @protected
  */
-  FieldDate.prototype.DEFAULT_VALUE = (new goog.date.Date()).toIsoString(true);
+FieldDate.prototype.DEFAULT_VALUE = (new goog.date.Date()).toIsoString(true);
 
 /**
  * CSS for date picker.  See css.js for use.
@@ -398,8 +398,6 @@ Blockly.Css.register(`
 `);
 
 Blockly.fieldRegistry.register('field_date', FieldDate);
-
-Blockly.FieldDate = FieldDate;
 
 /**
  * Back up original getMsg function.
