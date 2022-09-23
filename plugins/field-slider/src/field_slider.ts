@@ -90,7 +90,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    *     open, or undefined if triggered programmatically.
    * @param quietInput Quiet input.
    */
-  protected override showEditor_(e?: Event, quietInput?: boolean) {
+  protected showEditor_(e?: Event, quietInput?: boolean) {
     /**
      * NOTE: The second param, `quietInput`, is utilized in `field_textinput`,
      * but the type isn't properly built.
@@ -118,7 +118,7 @@ export class FieldSlider extends Blockly.FieldNumber {
   /**
    * Updates the slider when the field rerenders.
    */
-  protected override render_() {
+  protected render_() {
     super.render_();
     this.updateSlider_();
   }
