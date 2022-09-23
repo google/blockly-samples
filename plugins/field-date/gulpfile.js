@@ -61,7 +61,7 @@ function build() {
         language_in: 'ECMASCRIPT_NEXT',
         language_out: 'ECMASCRIPT_2015',
         externs: ['./externs.js'],
-        output_wrapper: outputWrapperUMD('Blockly.FieldDate', [{
+        output_wrapper: outputWrapperUMD('FieldDate', [{
           name: 'Blockly',
           amd: 'blockly/core',
           cjs: 'blockly/core',
