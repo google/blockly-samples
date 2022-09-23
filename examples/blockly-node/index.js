@@ -21,28 +21,41 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-var Blockly = require('blockly');
+let Blockly = require('blockly');
 
-var xmlText = `<xml xmlns="https://developers.google.com/blockly/xml">
-<block type="text_print" x="37" y="63">
-  <value name="TEXT">
-    <shadow type="text">
-      <field name="TEXT">Hello from Blockly!</field>
-    </shadow>
-  </value>
-</block>
-</xml>`;
+let toolbox = {
+  "kind": "blockly-node",
+  "contents": [
+    {
+      "kind": "block",
+      "type": "text_print",
+      "contents": [
+        {
+          "kind": "value",
+          "name": "TEXT",
+          "contents": [
+            {
+              "kind": "shadow",
+              "type": "text",
+              "contents": [
+                {
+                  "kind": "field",
+                  "name": "TEXT",
+                  "value": "Hello from Blockly!"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
 
 try {
-  var xml = Blockly.Xml.textToDom(xmlText);
-
-  // Create workspace and import the XML
   var workspace = new Blockly.Workspace();
-  Blockly.Xml.domToWorkspace(xml, workspace);
-
-  // Convert code and log output
-  var code = Blockly.Python.workspaceToCode(workspace);
-  console.log(code);
+  // Blockly.inject('blocklyDiv', { toolbox: toolbox });
+  console.log(JSON.stringify(toolbox));
 }
 catch (e) {
   console.log(e);
