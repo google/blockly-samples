@@ -4,12 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const chai = require('chai');
-const Blockly = require('blockly');
-const {BlockShadowChange, shadowBlockConversionChangeListener} =
-    require('../src/index');
-
-const assert = chai.assert;
+import {assert} from 'chai';
+import * as Blockly from 'blockly';
+import {BlockShadowChange, shadowBlockConversionChangeListener} from '../src/index';
 
 /**
  * Wait until after previously queued Blockly events have been handled by any
