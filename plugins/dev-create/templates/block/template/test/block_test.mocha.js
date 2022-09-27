@@ -7,6 +7,11 @@
 const chai = require('chai');
 const Blockly = require('blockly/node');
 const {testHelpers} = require('@blockly/dev-tools');
+const {dartGenerator} = require('blockly/dart');
+const {javascriptGenerator} = require('blockly/javascript');
+const {luaGenerator} = require('blockly/lua');
+const {phpGenerator} = require('blockly/php');
+const {pythonGenerator} = require('blockly/python');
 
 require('../src/index');
 
@@ -52,28 +57,28 @@ suite('BlockTemplate', function() {
       // TODO Remove unsupported languages.
       // TODO Update expectedCode for all test cases.
       // TODO Add additional useful testCases.
-      {title: 'Dart', generator: Blockly.Dart,
+      {title: 'Dart', generator: dartGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'TODO',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'JavaScript', generator: Blockly.JavaScript,
+      {title: 'JavaScript', generator: javascriptGenerator,
         testCases: [
 
           {title: 'Trivial', expectedCode: 'TODO',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'Lua', generator: Blockly.Lua,
+      {title: 'Lua', generator: luaGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'TODO',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'PHP', generator: Blockly.PHP,
+      {title: 'PHP', generator: phpGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'TODO',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'Python', generator: Blockly.Python,
+      {title: 'Python', generator: pythonGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'TODO',
             createBlock: trivialCreateBlock},

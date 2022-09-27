@@ -8,6 +8,11 @@ const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
 const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
 const Blockly = require('blockly/node');
+const {dartGenerator} = require('blockly/dart');
+const {javascriptGenerator} = require('blockly/javascript');
+const {luaGenerator} = require('blockly/lua');
+const {phpGenerator} = require('blockly/php');
+const {pythonGenerator} = require('blockly/python');
 
 require('../src/index');
 
@@ -65,27 +70,27 @@ suite('If block', function() {
      * @type {Array<CodeGenerationTestSuite>}
      */
     const testSuites = [
-      {title: 'Dart', generator: Blockly.Dart,
+      {title: 'Dart', generator: dartGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'JavaScript', generator: Blockly.JavaScript,
+      {title: 'JavaScript', generator: javascriptGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'Lua', generator: Blockly.Lua,
+      {title: 'Lua', generator: luaGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'if false then\nend\n',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'PHP', generator: Blockly.PHP,
+      {title: 'PHP', generator: phpGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
             createBlock: trivialCreateBlock},
         ]},
-      {title: 'Python', generator: Blockly.Python,
+      {title: 'Python', generator: pythonGenerator,
         testCases: [
           {title: 'Trivial', expectedCode: 'if False:\n  pass\n',
             createBlock: trivialCreateBlock},
