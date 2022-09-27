@@ -45,7 +45,19 @@ export const fixImports = createSubCommand(
     });
   });
 
+/**
+ * @typedef {{
+ *   oldIdentifier: string,
+ *   newIdentifier: string,
+ *   import: string,
+ * }}
+ */
+const MigrationData = {};
+
 // TODO: Make this database format more robust.
+/**
+ * @type {MigrationData[]}
+ */
 const database = [
   {
     oldIdentifier: 'Blockly.Dart',
@@ -74,6 +86,13 @@ const database = [
   }
 ]
 
+/**
+ * Migrates the contents of a particular file, renaming references and adding
+ * imports.
+ * 
+ * @param {string} contents The string contents of the file to migrate.
+ * @return {string} The migrated contents of the file.
+ */
 function createNewContents(contents) {
   let newContents = contents;
   for (const migrationData of database) {
@@ -82,12 +101,28 @@ function createNewContents(contents) {
   return newContents;
 }
 
+/**
+ * Migrates a particular import in a particular file. Renames references to
+ * where the import used to exist on the namespace tree, and adds a new import.
+ * 
+ * @param {string} contents The string contents of the file to migrate.
+ * @param {MigrationData} migrationData Data defining what to migrate and how.
+ * @return {string} The migrated contents of the file.
+ */
 function fixImport(contents, migrationData) {
   const newContents = replaceReferences(contents, migrationData);
   if (newContents !== contents) return addImport(newContents, migrationData);
   return contents;
 }
 
+/**
+ * Replaces references to where an import used to exist on the namespace tree
+ * with references to the actual import (if any references are found).
+ * 
+ * @param {string} contents The string contents of the file to migrate.
+ * @param {MigrationData} migrationData Data defining what to migrate and how.
+ * @return {string} The migrated contents of the file.
+ */
 function replaceReferences(contents, migrationData) {
   return contents.replace(dottedIdentifier, (match) => {
     if (match.startsWith(migrationData.oldIdentifier)) {
@@ -98,6 +133,15 @@ function replaceReferences(contents, migrationData) {
   });
 }
 
+/**
+ * Adds the import defined by the Migration data after the last import found in
+ * the file, or at the top of the file if it has no imports (which /should/
+ * never happen, because they should always import Blockly).
+ * 
+ * @param {string} contents The string contents of the file to migrate.
+ * @param {MigrationData} migrationData Data defining what to migrate and how.
+ * @return {string} The migrated contents of the file.
+ */
 function addImport(contents, migrationData) {
   const index = getImportsEnd(contents);
   return contents.slice(0, index) +
@@ -105,6 +149,12 @@ function addImport(contents, migrationData) {
       contents.slice(index)
 }
 
+/**
+ * Returns the index of the end of the imports, or 0 if no imports are found.
+ * 
+ * @param {string} contents The contents of the file being migrated.
+ * @return {number} The index of the end of the imports.
+ */
 function getImportsEnd(contents) {
   const matches = contents.match(/import.*\n/g)
   if (!matches || !matches.length) return 0;
