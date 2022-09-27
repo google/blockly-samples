@@ -22,7 +22,6 @@ export const fixImports = createSubCommand(
       'fix imports in-place, optionally create backup files with the ' +
       'given suffix. Otherwise output to stdout')
   .action(function() {
-    console.log('action called');
     // TODO: In the future we should use the fromVersion and toVersion so that
     //   we can support doing this across multiple versions. But for now we
     //   just need it to work for v9.
@@ -92,7 +91,8 @@ function fixImport(contents, migrationData) {
 function replaceReferences(contents, migrationData) {
   return contents.replace(dottedIdentifier, (match) => {
     if (match.startsWith(migrationData.oldIdentifier)) {
-      return migrationData.newIdentifier + match.slice(migrationData.oldIdentifier.length);
+      return migrationData.newIdentifier +
+          match.slice(migrationData.oldIdentifier.length);
     }
     return match;
   });
