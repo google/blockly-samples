@@ -21,41 +21,37 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-let Blockly = require('blockly');
+var Blockly = require('blockly');
 
-let toolbox = {
-  "kind": "blockly-node",
-  "contents": [
-    {
-      "kind": "block",
-      "type": "text_print",
-      "contents": [
-        {
-          "kind": "value",
-          "name": "TEXT",
-          "contents": [
-            {
-              "kind": "shadow",
+var json = {
+  "blocks": {
+    "languageVersion": 0,
+    "blocks": [
+      {
+        "type": "text_print",
+        "id": "0b61B|)zMnTbwbPAG1iG",
+        "x": 113,
+        "y": 238,
+        "inputs": {
+          "TEXT": {
+            "shadow": {
               "type": "text",
-              "contents": [
-                {
-                  "kind": "field",
-                  "name": "TEXT",
-                  "value": "Hello from Blockly!"
-                }
-              ]
+              "id": "_!OgDm+,dRCHii(i|kdL",
+              "fields": {
+                "TEXT": "Hello from Blockly!"
+              }
             }
-          ]
+          }
         }
-      ]
-    }
-  ]
+      }
+    ]
+  }
 }
 
 try {
   var workspace = new Blockly.Workspace();
-  // Blockly.inject('blocklyDiv', { toolbox: toolbox });
-  console.log(JSON.stringify(toolbox));
+  Blockly.serialization.workspaces.load(json, workspace);
+  console.log(workspace);
 }
 catch (e) {
   console.log(e);
