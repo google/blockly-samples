@@ -45,5 +45,8 @@
   },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
+  },
+  "dependencies": {
+    "blockly": "^9.0.0-beta.2"
   }
 }
