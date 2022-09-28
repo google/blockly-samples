@@ -49,9 +49,12 @@ var json = {
 }
 
 try {
+  // Create workspace and load JSON
   var workspace = new Blockly.Workspace();
   Blockly.serialization.workspaces.load(json, workspace);
-  console.log(workspace);
+  // Convert code and log output
+  var code = Blockly.Python.workspaceToCode(workspace);
+  console.log(code);
 }
 catch (e) {
   console.log(e);
