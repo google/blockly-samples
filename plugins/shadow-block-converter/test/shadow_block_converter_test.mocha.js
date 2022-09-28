@@ -26,7 +26,7 @@ suite('shadowBlockConversionChangeListener', function() {
     this.clock.restore();
   });
 
-  test('directly running shadow event changes shadow', async function() {
+  test('directly running shadow event changes shadow', function() {
     const block = this.workspace.newBlock('text');
     const event = new BlockShadowChange(block, false, true);
     event.run(true);
@@ -35,7 +35,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(block.isShadow());
   });
 
-  test('responds to field change', async function() {
+  test('responds to field change', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     block.getField('TEXT').setValue('new value');
@@ -43,7 +43,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(block.isShadow());
   });
 
-  test('responds to block change event', async function() {
+  test('responds to block change event', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     const event = new Blockly.Events.BlockChange(
@@ -52,7 +52,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(block.isShadow());
   });
 
-  test('ignores to block move event', async function() {
+  test('ignores to block move event', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     const event = new Blockly.Events.BlockMove(block);
@@ -60,7 +60,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isTrue(block.isShadow());
   });
 
-  test('undo shadow change', async function() {
+  test('undo shadow change', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     block.getField('TEXT').setValue('new value');
@@ -73,7 +73,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isTrue(block.isShadow());
   });
 
-  test('redo shadow change', async function() {
+  test('redo shadow change', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     block.getField('TEXT').setValue('new value');
@@ -87,7 +87,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(block.isShadow());
   });
 
-  test('shadow change follows output connection', async function() {
+  test('shadow change follows output connection', function() {
     const statementBlock = this.workspace.newBlock('text_print');
     const expressionBlock = this.workspace.newBlock('text');
     statementBlock.inputList[0].connection.connect(
@@ -100,7 +100,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(statementBlock.isShadow());
   });
 
-  test('shadow change follows previous connection', async function() {
+  test('shadow change follows previous connection', function() {
     const block1 = this.workspace.newBlock('controls_whileUntil');
     const block2 = this.workspace.newBlock('controls_whileUntil');
     block1.nextConnection.connect(block2.previousConnection);
