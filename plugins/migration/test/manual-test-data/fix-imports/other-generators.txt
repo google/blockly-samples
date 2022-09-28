@@ -1,0 +1,11 @@
+// Manual test data for the renamings migration.
+// Run using:
+//   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/other-generators.txt
+
+const Blockly = require('blockly');
+const 
+
+Blockly.JavaScript;
+Blockly.JavaScript.something;
+const something = Blockly.JavaScript.something;
+Some.Other.identifer;

@@ -1,0 +1,34 @@
+// Manual test data for the renamings migration.
+// Run using:
+//   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/require.txt
+
+const Blockly = require('blockly');
+const BlocklyDart = require('blockly/dart');
+const BlocklyLua = require('blockly/lua');
+const BlocklyPhp = require('blockly/php');
+const BlocklyPython = require('blockly/python');
+
+Blockly.JavaScript;
+Blockly.JavaScript.something;
+const something = Blockly.JavaScript.something;
+Some.Other.identifer;
+
+BlocklyDart;
+BlocklyDart.something;
+const something = BlocklyDart.something;
+Some.Other.identifer;
+
+BlocklyLua;
+BlocklyLua.something;
+const something = BlocklyLua.something;
+Some.Other.identifer;
+
+BlocklyPhp;
+BlocklyPhp.something;
+const something = BlocklyPhp.something;
+Some.Other.identifer;
+
+BlocklyPython;
+BlocklyPython.something;
+const something = BlocklyPython.something;
+Some.Other.identifer;

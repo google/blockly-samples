@@ -50,39 +50,49 @@ export const fixImports = createSubCommand(
  *   oldIdentifier: string,
  *   newIdentifier: string,
  *   import: string,
+ *   require: string,
  * }}
  */
 const MigrationData = {};
 
 // TODO: Make this database format more robust.
 /**
- * @type {MigrationData[]}
  */
 const database = [
   {
+    import: 'blockly/dart',
     oldIdentifier: 'Blockly.Dart',
     newIdentifier: 'dartGenerator',
-    import: `import {dartGenerator} from 'blockly/dart';\n`,
+    newimport: `import {dartGenerator} from 'blockly/dart';\n`,
+    require: `const dartGenerator = require('blockly/dart');\n`,
   },
   {
+    import: 'blockly/javascript',
     oldIdentifier: 'Blockly.JavaScript',
     newIdentifier: 'javascriptGenerator',
-    import: `import {javascriptGenerator} from 'blockly/javascript';\n`,
+    newimport: `import {javascriptGenerator} from 'blockly/javascript';\n`,
+    require: `const javascriptGenerator = require('blockly/javascript');\n`,
   },
   {
+    import: 'blockly/lua',
     oldIdentifier: 'Blockly.Lua',
     newIdentifier: 'luaGenerator',
-    import: `import {luaGenerator} from 'blockly/lua';\n`,
+    newimport: `import {luaGenerator} from 'blockly/lua';\n`,
+    require: `const luaGenerator = require('blockly/lua');\n`,
   },
   {
+    import: 'blockly/php',
     oldIdentifier: 'Blockly.PHP',
     newIdentifier: 'phpGenerator',
-    import: `import {phpGenerator} from 'blockly/php';\n`,
+    newimport: `import {phpGenerator} from 'blockly/php';\n`,
+    require: `const phpGenerator = require('blockly/php');\n`,
   },
   {
+    import: 'blockly/python',
     oldIdentifier: 'Blockly.Python',
     newIdentifier: 'pythonGenerator',
-    import: `import {pythonGenerator} from 'blockly/python';\n`,
+    newimport: `import {pythonGenerator} from 'blockly/python';\n`,
+    require: `const pythonGenerator = require('blockly/python');\n`,
   }
 ]
 
@@ -110,9 +120,35 @@ function createNewContents(contents) {
  * @return {string} The migrated contents of the file.
  */
 function fixImport(contents, migrationData) {
-  const newContents = replaceReferences(contents, migrationData);
+  const identifier = getIdentifier(contents, migrationData);
+  if (!identifier) return contents;
+  const newContents = replaceReferences(contents, migrationData, identifier);
   if (newContents !== contents) return addImport(newContents, migrationData);
   return contents;
+}
+
+function usesImportStatements(contents) {
+  return !!contents.match(/import.+'.+';/);
+}
+
+function usesRequireStatements(contents) {
+  return !!contents.match(/require\('.+'\);/)
+}
+
+function getIdentifier(contents, migrationData) {
+  if (usesImportStatements(contents)) {
+    const identifierMatch = contents.match(
+        new RegExp(`\\s(\\S*) from '${migrationData.import}'`));
+    if (!identifierMatch) return null;
+    return identifierMatch[1]
+  } else if (usesRequireStatements(contents)) {
+    const identifierMatch = contents.match(
+        new RegExp(`(\\S*) = require\\('${migrationData.import}'\\)`));
+    if (!identifierMatch) return null;
+    return identifierMatch[1]
+  } else {
+    // TODO: handle Blockly.JavaScript and Blockly.libraryBlocks.
+  }
 }
 
 /**
@@ -123,11 +159,11 @@ function fixImport(contents, migrationData) {
  * @param {MigrationData} migrationData Data defining what to migrate and how.
  * @return {string} The migrated contents of the file.
  */
-function replaceReferences(contents, migrationData) {
+function replaceReferences(contents, migrationData, identifier) {
   return contents.replace(dottedIdentifier, (match) => {
-    if (match.startsWith(migrationData.oldIdentifier)) {
+    if (match.startsWith(identifier)) {
       return migrationData.newIdentifier +
-          match.slice(migrationData.oldIdentifier.length);
+          match.slice(identifier.length);
     }
     return match;
   });
