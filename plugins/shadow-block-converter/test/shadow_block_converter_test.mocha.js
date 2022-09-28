@@ -4,31 +4,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {assert} from 'chai';
-import * as Blockly from 'blockly';
-import {BlockShadowChange, shadowBlockConversionChangeListener} from '../src/index';
+const chai = require('chai');
+const sinon = require('sinon');
+const Blockly = require('blockly');
+const {BlockShadowChange, shadowBlockConversionChangeListener} =
+    require('../src/index');
 
-/**
- * Wait until after previously queued Blockly events have been handled by any
- * workspace change listeners.
- *
- * Blockly event firing is asynchronous, so the shadow block conversion plugin's
- * workspace change listener isn't notified immediately when blocks change, but
- * waiting for a timeout to complete should be sufficient to ensure any queued
- * events have propagated to the listener.
- */
-async function waitForEventsToFire() {
-  await new Promise((resolve) => setTimeout(resolve, 0));
-}
+const assert = chai.assert;
 
 suite('shadowBlockConversionChangeListener', function() {
   setup(function() {
     this.workspace = new Blockly.Workspace();
     this.workspace.addChangeListener(shadowBlockConversionChangeListener);
+    this.clock = sinon.useFakeTimers();
   });
 
   teardown(function() {
     this.workspace.dispose();
+    // Finish any remaining queued events then dispose the sinon environment.
+    this.clock.runAll();
+    this.clock.restore();
   });
 
   test('directly running shadow event changes shadow', async function() {
@@ -44,7 +39,7 @@ suite('shadowBlockConversionChangeListener', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     block.getField('TEXT').setValue('new value');
-    await waitForEventsToFire();
+    this.clock.runAll();
     assert.isFalse(block.isShadow());
   });
 
@@ -70,10 +65,10 @@ suite('shadowBlockConversionChangeListener', function() {
     block.setShadow(true);
     block.getField('TEXT').setValue('new value');
     // Wait for the block change event to get handled by the shadow listener.
-    await waitForEventsToFire();
+    this.clock.runAll();
     assert.isFalse(block.isShadow());
     // Wait for the shadow change event to get fired and recorded in history.
-    await waitForEventsToFire();
+    this.clock.runAll();
     this.workspace.undo(false);
     assert.isTrue(block.isShadow());
   });
@@ -83,9 +78,9 @@ suite('shadowBlockConversionChangeListener', function() {
     block.setShadow(true);
     block.getField('TEXT').setValue('new value');
     // Wait for the block change event to get handled by the shadow listener.
-    await waitForEventsToFire();
+    this.clock.runAll();
     // Wait for the shadow change event to get fired and recorded in history.
-    await waitForEventsToFire();
+    this.clock.runAll();
     this.workspace.undo(false);
     assert.isTrue(block.isShadow());
     this.workspace.undo(true);
@@ -100,7 +95,7 @@ suite('shadowBlockConversionChangeListener', function() {
     expressionBlock.setShadow(true);
     statementBlock.setShadow(true);
     expressionBlock.getField('TEXT').setValue('new value');
-    await waitForEventsToFire();
+    this.clock.runAll();
     assert.isFalse(expressionBlock.isShadow());
     assert.isFalse(statementBlock.isShadow());
   });
@@ -112,7 +107,7 @@ suite('shadowBlockConversionChangeListener', function() {
     block2.setShadow(true);
     block1.setShadow(true);
     block2.getField('MODE').setValue('UNTIL');
-    await waitForEventsToFire();
+    this.clock.runAll();
     assert.isFalse(block2.isShadow());
     assert.isFalse(block1.isShadow());
   });
