@@ -151,9 +151,6 @@ suite('FieldSlider', function() {
   suite('Validators', function() {
     setup(function() {
       this.sliderField = new FieldSlider(1);
-      this.sliderField.htmlInput_ = Object.create(null);
-      this.sliderField.htmlInput_.oldValue_ = '1';
-      this.sliderField.htmlInput_.untypedDefaultValue_ = 1;
       this.stub = sinon.stub(this.sliderField, 'resizeEditor_');
     });
     teardown(function() {
@@ -177,14 +174,6 @@ suite('FieldSlider', function() {
       suite(suiteInfo.title, function() {
         setup(function() {
           this.sliderField.setValidator(suiteInfo.validator);
-        });
-        test('When Editing', function() {
-          this.sliderField.isBeingEdited_ = true;
-          this.sliderField.htmlInput_.value = String(suiteInfo.value);
-          this.sliderField.onHtmlInputChange_(null);
-          assertFieldValue(
-              this.sliderField, suiteInfo.expectedValue,
-              String(suiteInfo.value));
         });
         test('When Not Editing', function() {
           this.sliderField.setValue(suiteInfo.value);
