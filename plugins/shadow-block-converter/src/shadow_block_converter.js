@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Colour input field with HSV sliders.
+ * @fileoverview Plugin for converting shadow blocks to real ones on edit.
  */
 
 import * as Blockly from 'blockly/core';
@@ -151,14 +151,8 @@ export function shadowBlockConversionChangeListener(event) {
   } else {
     // The initiating event wasn't part of any named group, so the shadow events
     // can't be grouped with it, but at least they can be grouped with each
-    // other. This happens when editing e.g. boolean fields.
+    // other.
     Blockly.Events.setGroup(true);
-
-    // HACK: Retroactively overwrite the initiating event's group property in
-    // order to include it in the same group as the shadow events anyway. It
-    // wasn't previously grouped with any other events, but now it can be
-    // grouped with the new events.
-    event.group = Blockly.Events.getGroup();
   }
 
   // If the changed shadow block is, itself, a child of another shadow block,
