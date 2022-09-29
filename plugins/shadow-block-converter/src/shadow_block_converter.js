@@ -155,13 +155,13 @@ export function shadowBlockConversionChangeListener(event) {
     Blockly.Events.setGroup(true);
   }
 
-  // If the changed shadow block is, itself, a child of another shadow block,
-  // then both blocks should be converted to real blocks. Keep track of all
-  // shadow blocks that should be converted and haven't been yet.
+  // If the changed shadow block is a child of another shadow block, then both
+  // blocks should be converted to real blocks. To find all the shadow block
+  // ancestors that need to be converted to real blocks, seed the list of blocks
+  // starting with the changed block, and append all shadow block ancestors.
   const shadowBlocks = [block];
-
-  while (shadowBlocks.length > 0) {
-    const shadowBlock = shadowBlocks.pop();
+  for (let i = 0; i < shadowBlocks.length; i++) {
+    const shadowBlock = shadowBlocks[i];
 
     // If connected blocks need to be converted too, add them to the list.
     if (shadowBlock.outputConnection != null &&
@@ -174,9 +174,16 @@ export function shadowBlockConversionChangeListener(event) {
         shadowBlock.previousConnection.targetBlock().isShadow()) {
       shadowBlocks.push(shadowBlock.previousConnection.targetBlock());
     }
+  }
 
-    // Finally, convert the block to a real block, and fire an event recording
-    // the change so that it can be undone. Ideally the
+  // The list of shadow blocks starts with the deepest child and ends with the
+  // highest parent, but the parent of a real block should never be a shadow
+  // block, so the parents need to be converted to real blocks first. Start
+  // at the end of the list and iterate backward to convert the blocks.
+  for (let i = shadowBlocks.length - 1; i >= 0; i--) {
+    const shadowBlock = shadowBlocks[i];
+    // Convert the shadow block to a real block and fire an event recording the
+    // change so that it can be undone. Ideally the
     // Blockly.Block.prototype.setShadow method should fire this event directly,
     // but for this plugin it needs to be explicitly fired here.
     shadowBlock.setShadow(false);

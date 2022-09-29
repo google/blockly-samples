@@ -111,4 +111,36 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(block2.isShadow());
     assert.isFalse(block1.isShadow());
   });
+
+  test('parent blocks are reified before child blocks', function() {
+    const block1 = this.workspace.newBlock('text_print');
+    const block2 = this.workspace.newBlock('text_print');
+    const block3 = this.workspace.newBlock('text_print');
+    const block4 = this.workspace.newBlock('text');
+    block1.nextConnection.connect(block2.previousConnection);
+    block2.nextConnection.connect(block3.previousConnection);
+    block3.inputList[0].connection.connect(block4.outputConnection);
+    block4.setShadow(true);
+    block3.setShadow(true);
+    block2.setShadow(true);
+    block1.setShadow(true);
+
+    const reifiedBlocks = [];
+    this.workspace.addChangeListener((event) => {
+      if (event.type === BlockShadowChange.EVENT_TYPE &&
+          event.newValue == false) {
+        reifiedBlocks.push(event.blockId);
+      }
+    });
+
+    block4.getField('TEXT').setValue('new value');
+    this.clock.runAll();
+    assert.isFalse(block4.isShadow());
+    assert.isFalse(block3.isShadow());
+    assert.isFalse(block2.isShadow());
+    assert.isFalse(block1.isShadow());
+
+    assert.deepEqual(
+        reifiedBlocks, [block1.id, block2.id, block3.id, block4.id]);
+  });
 });
