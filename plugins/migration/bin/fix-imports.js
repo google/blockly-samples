@@ -47,10 +47,10 @@ export const fixImports = createSubCommand(
 
 /**
  * @typedef {{
- *   oldIdentifier: string,
- *   newIdentifier: string,
  *   import: string,
- *   require: string,
+ *   newIdentifier: string,
+ *   newImport: string,
+ *   newRequire: string,
  * }}
  */
 const MigrationData = {};
@@ -63,36 +63,36 @@ const database = [
     import: 'blockly/dart',
     oldIdentifier: 'Blockly.Dart',
     newIdentifier: 'dartGenerator',
-    newimport: `import {dartGenerator} from 'blockly/dart';\n`,
-    require: `const dartGenerator = require('blockly/dart');\n`,
+    newImport: `import {dartGenerator} from 'blockly/dart';`,
+    newRequire: `const {dartGenerator} = require('blockly/dart');`,
   },
   {
     import: 'blockly/javascript',
     oldIdentifier: 'Blockly.JavaScript',
     newIdentifier: 'javascriptGenerator',
-    newimport: `import {javascriptGenerator} from 'blockly/javascript';\n`,
-    require: `const javascriptGenerator = require('blockly/javascript');\n`,
+    newImport: `import {javascriptGenerator} from 'blockly/javascript';`,
+    newRequire: `const {javascriptGenerator} = require('blockly/javascript');`,
   },
   {
     import: 'blockly/lua',
     oldIdentifier: 'Blockly.Lua',
     newIdentifier: 'luaGenerator',
-    newimport: `import {luaGenerator} from 'blockly/lua';\n`,
-    require: `const luaGenerator = require('blockly/lua');\n`,
+    newImport: `import {luaGenerator} from 'blockly/lua';`,
+    newRequire: `const {luaGenerator} = require('blockly/lua');`,
   },
   {
     import: 'blockly/php',
     oldIdentifier: 'Blockly.PHP',
     newIdentifier: 'phpGenerator',
-    newimport: `import {phpGenerator} from 'blockly/php';\n`,
-    require: `const phpGenerator = require('blockly/php');\n`,
+    newImport: `import {phpGenerator} from 'blockly/php';`,
+    newRequire: `const {phpGenerator} = require('blockly/php');`,
   },
   {
     import: 'blockly/python',
     oldIdentifier: 'Blockly.Python',
     newIdentifier: 'pythonGenerator',
-    newimport: `import {pythonGenerator} from 'blockly/python';\n`,
-    require: `const pythonGenerator = require('blockly/python');\n`,
+    newImport: `import {pythonGenerator} from 'blockly/python';`,
+    newRequire: `const {pythonGenerator} = require('blockly/python');`,
   }
 ]
 
@@ -179,10 +179,14 @@ function replaceReferences(contents, migrationData, identifier) {
  * @return {string} The migrated contents of the file.
  */
 function addImport(contents, migrationData) {
-  const index = getImportsEnd(contents);
-  return contents.slice(0, index) +
-      migrationData.import +
-      contents.slice(index)
+  const importLine = new RegExp(`.*'${migrationData.import}'.*`)
+  if (usesImportStatements(contents)) {
+    return contents.replace(importLine, migrationData.newImport);
+  } else if (usesRequireStatements(contents)) {
+    return contents.replace(importLine, migrationData.newRequire);
+  } else {
+    // TODO: handle Blockly.JavaScript and Blockly.libraryBlocks.
+  }
 }
 
 /**
