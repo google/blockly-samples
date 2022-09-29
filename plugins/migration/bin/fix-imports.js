@@ -22,9 +22,9 @@ export const fixImports = createSubCommand(
       'fix imports in-place, optionally create backup files with the ' +
       'given suffix. Otherwise output to stdout')
   .action(function() {
-    // TODO: In the future we should use the fromVersion and toVersion so that
-    //   we can support doing this across multiple versions. But for now we
-    //   just need it to work for v9.
+    // TODO (#1211): In the future we should use the fromVersion and toVersion
+    //   so that we can support doing this across multiple versions. But for
+    //   now we just need it to work for v9.
     const {fileNames} = extractRequiredInfo(this);
 
     fileNames.forEach((name) => {
@@ -54,10 +54,11 @@ export const fixImports = createSubCommand(
  *   newRequire: string,
  * }}
  */
-const MigrationData = {};
+let MigrationData;
 
-// TODO: Make this database format more robust.
+// TODO (#1211): Make this database format more robust.
 /**
+ * @type {MigrationData[]}
  */
 const database = [
   {
@@ -90,6 +91,13 @@ const database = [
     newIdentifier: 'pythonGenerator',
     newImport: `import {pythonGenerator} from 'blockly/python';`,
     newRequire: `const {pythonGenerator} = require('blockly/python');`,
+  },
+  {
+    import: 'blockly/blocks',
+    oldIdentifier: 'Blockly.libraryBlocks',
+    newIdentifier: 'libraryBlocks',
+    newImport:  `import {libraryBlocks} from 'blockly/blocks';`,
+    newRequire: `const {libraryBlocks} = require('blockly/blocks');`,
   }
 ]
 

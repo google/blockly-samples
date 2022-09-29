@@ -27,3 +27,7 @@ Some.Other.identifer;
 BlocklyPython.something;
 const something = BlocklyPython.something;
 Some.Other.identifer;
+
+Blockly.libraryBlocks.something;
+const something = Blockly.libraryBlocks.something;
+Some.Other.identifer;
