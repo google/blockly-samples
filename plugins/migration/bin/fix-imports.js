@@ -48,6 +48,7 @@ export const fixImports = createSubCommand(
 /**
  * @typedef {{
  *   import: string,
+ *   oldIdentifier?: string,
  *   newIdentifier: string,
  *   newImport: string,
  *   newRequire: string,
@@ -61,7 +62,6 @@ const MigrationData = {};
 const database = [
   {
     import: 'blockly/dart',
-    oldIdentifier: 'Blockly.Dart',
     newIdentifier: 'dartGenerator',
     newImport: `import {dartGenerator} from 'blockly/dart';`,
     newRequire: `const {dartGenerator} = require('blockly/dart');`,
@@ -75,21 +75,18 @@ const database = [
   },
   {
     import: 'blockly/lua',
-    oldIdentifier: 'Blockly.Lua',
     newIdentifier: 'luaGenerator',
     newImport: `import {luaGenerator} from 'blockly/lua';`,
     newRequire: `const {luaGenerator} = require('blockly/lua');`,
   },
   {
     import: 'blockly/php',
-    oldIdentifier: 'Blockly.PHP',
     newIdentifier: 'phpGenerator',
     newImport: `import {phpGenerator} from 'blockly/php';`,
     newRequire: `const {phpGenerator} = require('blockly/php');`,
   },
   {
     import: 'blockly/python',
-    oldIdentifier: 'Blockly.Python',
     newIdentifier: 'pythonGenerator',
     newImport: `import {pythonGenerator} from 'blockly/python';`,
     newRequire: `const {pythonGenerator} = require('blockly/python');`,
@@ -139,16 +136,16 @@ function getIdentifier(contents, migrationData) {
   if (usesImportStatements(contents)) {
     const identifierMatch = contents.match(
         new RegExp(`\\s(\\S*) from '${migrationData.import}'`));
-    if (!identifierMatch) return null;
-    return identifierMatch[1]
-  } else if (usesRequireStatements(contents)) {
+    if (!identifierMatch) return migrationData.oldIdentifier ?? null;
+    return identifierMatch[1];
+  }
+  if (usesRequireStatements(contents)) {
     const identifierMatch = contents.match(
         new RegExp(`(\\S*) = require\\('${migrationData.import}'\\)`));
-    if (!identifierMatch) return null;
-    return identifierMatch[1]
-  } else {
-    // TODO: handle Blockly.JavaScript and Blockly.libraryBlocks.
+    if (!identifierMatch) return migrationData.oldIdentifier ?? null;
+    return identifierMatch[1];
   }
+  return null;
 }
 
 /**
@@ -181,11 +178,22 @@ function replaceReferences(contents, migrationData, identifier) {
 function addImport(contents, migrationData) {
   const importLine = new RegExp(`.*'${migrationData.import}'.*`)
   if (usesImportStatements(contents)) {
-    return contents.replace(importLine, migrationData.newImport);
-  } else if (usesRequireStatements(contents)) {
-    return contents.replace(importLine, migrationData.newRequire);
-  } else {
-    // TODO: handle Blockly.JavaScript and Blockly.libraryBlocks.
+    if (contents.match(importLine)) {
+      return contents.replace(importLine, migrationData.newImport);
+    }
+    const index = getImportsEnd(contents);
+    return contents.slice(0, index) +
+      migrationData.newImport + '\n' +
+      contents.slice(index)
+  }
+  if (usesRequireStatements(contents)) {
+    if (contents.match(importLine)) {
+      return contents.replace(importLine, migrationData.newRequire);
+    }
+    const index = getImportsEnd(contents);
+    return contents.slice(0, index) +
+      migrationData.newRequire + '\n' +
+      contents.slice(index)
   }
 }
 
@@ -196,10 +204,18 @@ function addImport(contents, migrationData) {
  * @return {number} The index of the end of the imports.
  */
 function getImportsEnd(contents) {
-  const matches = contents.match(/import.*\n/g)
-  if (!matches || !matches.length) return 0;
-  const match = matches[matches.length - 1];
-  return contents.indexOf(match) + match.length;
+  if (usesImportStatements(contents)) {
+    const matches = contents.match(/import.*\n/g)
+    if (!matches || !matches.length) return 0;
+    const match = matches[matches.length - 1];
+    return contents.indexOf(match) + match.length;
+  }
+  if (usesRequireStatements(contents)) {
+    const matches = contents.match(/require\(.*\n/g)
+    if (!matches || !matches.length) return 0;
+    const match = matches[matches.length - 1];
+    return contents.indexOf(match) + match.length;
+  }
 }
 
 /**
