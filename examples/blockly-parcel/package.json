@@ -9,7 +9,7 @@
     "build": "parcel build public/index.html"
   },
   "devDependencies": {
-    "blockly": "^5.2",
+    "blockly": "^8.0.5",
     "parcel": "next",
     "parcel-reporter-static-files-copy": "^1.3"
   },
