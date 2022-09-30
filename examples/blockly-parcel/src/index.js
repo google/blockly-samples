@@ -13,65 +13,65 @@
 import * as Blockly from 'blockly';
 
 const toolbox = {
-  "kind": "flyoutToolbox",
-  "contents": [
+  kind: 'flyoutToolbox',
+  contents: [
     {
-      "kind": "block",
-      "type": "controls_ifelse"
+      kind: 'block',
+      type: 'controls_ifelse',
     },
     {
-      "kind": "block",
-      "type": "logic_compare"
+      kind: 'block',
+      type: 'logic_compare',
     },
     {
-      "kind": "block",
-      "type": "logic_operation"
+      kind: 'block',
+      type: 'logic_operation',
     },
     {
-      'kind': 'block',
-      'type': 'controls_repeat_ext',
-      'inputs': {
-        'TIMES': {
-          'shadow': {
-            'type': 'math_number',
-            'fields': {
-              'NUM': 10,
+      kind: 'block',
+      type: 'controls_repeat_ext',
+      inputs: {
+        TIMES: {
+          shadow: {
+            type: 'math_number',
+            fields: {
+              NUM: 10,
             },
           },
         },
       },
     },
     {
-      "kind": "block",
-      "type": "logic_operation"
+      kind: 'block',
+      type: 'logic_operation',
     },
     {
-      "kind": "block",
-      "type": "logic_negate"
+      kind: 'block',
+      type: 'logic_negate',
     },
     {
-      "kind": "block",
-      "type": "logic_boolean"
+      kind: 'block',
+      type: 'logic_boolean',
     },
     {
-      "kind": "block",
-      "type": "logic_null",
-      "disabled": "true"
+      kind: 'block',
+      type: 'logic_null',
+      disabled: 'true',
     },
     {
-      "kind": "block",
-      "type": "logic_ternary"
+      kind: 'block',
+      type: 'logic_ternary',
     },
     {
-      "kind": "block",
-      "type": "text_charAt",
-      "inputs": {
-        "VALUE": {
-          "block": {
-            "type": "variables_get",
-            "fields": {
-              "VAR": {
-                "name": "text"
+      kind: 'block',
+      type: 'text_charAt',
+      inputs: {
+        VALUE: {
+          block: {
+            type: 'variables_get',
+            fields: {
+              VAR: {
+                name: 'text',
               }
             },
           },
@@ -81,7 +81,7 @@ const toolbox = {
   ]
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
   const workspace = Blockly.inject('blocklyDiv',
     {
       toolbox: toolbox,
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const lang = 'JavaScript';
   const button = document.getElementById('blocklyButton');
   button.addEventListener('click', function () {
-    alert("Check the console for the generated output.");
+    alert('Check the console for the generated output.');
     const code = Blockly[lang].workspaceToCode(workspace);
     console.log(code);
   });
