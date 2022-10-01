@@ -23,9 +23,6 @@ suite('Navigation', function() {
   setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
-    Blockly.utils.dom.getFastTextWidthWithSizeString = function() {
-      return 10;
-    };
     this.controller = new NavigationController();
     this.controller.init();
     this.navigation = this.controller.navigation;
@@ -45,9 +42,9 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_input',
-            'name': 'TEXT',
-            'text': 'default',
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
       }]);
@@ -56,6 +53,7 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
@@ -111,9 +109,10 @@ suite('Navigation', function() {
           navigation.getState(this.workspace), Constants.STATE.FLYOUT);
 
       const flyoutCursor = navigation.getFlyoutCursor(this.workspace);
+      // See test_helper.js for hardcoded field values.
       chai.assert.equal(
-          flyoutCursor.getCurNode().getLocation().getFieldValue('TEXT'),
-          'FirstCategory-FirstBlock');
+          flyoutCursor.getCurNode().getLocation().getFieldValue('COLOURFIELD'),
+          '#ff0000');
     });
 
     test('Focuses workspace from toolbox (e)', function() {
@@ -155,9 +154,9 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_input',
-            'name': 'TEXT',
-            'text': 'default',
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
       }]);
@@ -167,6 +166,7 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
@@ -183,12 +183,13 @@ suite('Navigation', function() {
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
           this.navigation.getState(this.workspace), Constants.STATE.FLYOUT);
+      // See test_helper.js for hardcoded field values.
       chai.assert.equal(
           this.navigation.getFlyoutCursor(this.workspace)
               .getCurNode()
               .getLocation()
-              .getFieldValue('TEXT'),
-          'FirstCategory-FirstBlock');
+              .getFieldValue('COLOURFIELD'),
+          '#ff0000');
     });
     test('Previous', function() {
       const flyoutBlocks =
@@ -198,8 +199,9 @@ suite('Navigation', function() {
       let flyoutBlock = this.navigation.getFlyoutCursor(this.workspace)
           .getCurNode()
           .getLocation();
+      // See test_helper.js for hardcoded field values.
       chai.assert.equal(
-          flyoutBlock.getFieldValue('TEXT'), 'FirstCategory-SecondBlock');
+          flyoutBlock.getFieldValue('COLOURFIELD'), '#00ff00');
 
       const mockEvent =
           createKeyDownEvent(Blockly.utils.KeyCodes.W, 'NotAField');
@@ -214,8 +216,9 @@ suite('Navigation', function() {
       flyoutBlock = this.navigation.getFlyoutCursor(this.workspace)
           .getCurNode()
           .getLocation();
+      // See test_helper.js for hardcoded field values.
       chai.assert.equal(
-          flyoutBlock.getFieldValue('TEXT'), 'FirstCategory-FirstBlock');
+          flyoutBlock.getFieldValue('COLOURFIELD'), '#ff0000');
     });
 
     test('Next', function() {
@@ -232,8 +235,9 @@ suite('Navigation', function() {
       const flyoutBlock = this.navigation.getFlyoutCursor(this.workspace)
           .getCurNode()
           .getLocation();
+      // See test_helper.js for hardcoded field values.
       chai.assert.equal(
-          flyoutBlock.getFieldValue('TEXT'), 'FirstCategory-SecondBlock');
+          flyoutBlock.getFieldValue('COLOURFIELD'), '#00ff00');
     });
 
     test('Out', function() {
@@ -306,9 +310,9 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_input',
-            'name': 'TEXT',
-            'text': 'default',
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
         'previousStatement': null,
@@ -319,6 +323,7 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
@@ -442,15 +447,9 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_dropdown',
-            'name': 'OP',
-            'options': [
-              ['%{BKY_MATH_ADDITION_SYMBOL}', 'ADD'],
-              ['%{BKY_MATH_SUBTRACTION_SYMBOL}', 'MINUS'],
-              ['%{BKY_MATH_MULTIPLICATION_SYMBOL}', 'MULTIPLY'],
-              ['%{BKY_MATH_DIVISION_SYMBOL}', 'DIVIDE'],
-              ['%{BKY_MATH_POWER_SYMBOL}', 'POWER'],
-            ],
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
       }]);
@@ -460,11 +459,11 @@ suite('Navigation', function() {
       this.basicBlock = this.workspace.newBlock('basic_block');
     });
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
     });
-
 
     test('Action does not exist', function() {
       const block = this.workspace.getTopBlocks()[0];
@@ -549,14 +548,9 @@ suite('Navigation', function() {
           'message0': '%1 %2',
           'args0': [
             {
-              'type': 'field_dropdown',
-              'name': 'NAME',
-              'options': [
-                [
-                  'a',
-                  'optionA',
-                ],
-              ],
+              'type': 'field_colour',
+              'name': 'COLOURFIELD',
+              'colour': '#ff4040',
             },
             {
               'type': 'input_value',
@@ -577,6 +571,7 @@ suite('Navigation', function() {
       });
 
       teardown(function() {
+        this.navigation.removeWorkspace(this.workspace);
         this.workspace.dispose();
         sinon.restore();
         delete Blockly.Blocks['field_block'];
@@ -627,9 +622,9 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_input',
-            'name': 'TEXT',
-            'text': 'default',
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
         'previousStatement': null,
@@ -646,6 +641,7 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
@@ -759,6 +755,7 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
@@ -851,6 +848,7 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
       this.workspace.dispose();
       sinon.restore();
       delete Blockly.Blocks['basic_block'];
@@ -945,9 +943,9 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_input',
-            'name': 'TEXT',
-            'text': 'default',
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
         'previousStatement': null,
@@ -959,6 +957,8 @@ suite('Navigation', function() {
     });
 
     teardown(function() {
+      this.navigation.removeWorkspace(this.workspace);
+      this.workspace.dispose();
       delete Blockly.Blocks['basic_block'];
       sinon.restore();
     });
@@ -1049,13 +1049,11 @@ suite('Navigation', function() {
         'message0': '%1',
         'args0': [
           {
-            'type': 'field_input',
-            'name': 'TEXT',
-            'text': 'default',
+            'type': 'field_colour',
+            'name': 'COLOURFIELD',
+            'colour': '#ff4040',
           },
         ],
-        'previousStatement': null,
-        'nextStatement': null,
       }]);
       this.workspace = createNavigationWorkspace(this.navigation, true);
       this.flyoutChangeListener = this.navigation.flyoutChangeWrapper;
@@ -1067,6 +1065,8 @@ suite('Navigation', function() {
 
     teardown(function() {
       delete Blockly.Blocks['basic_block'];
+      this.navigation.removeWorkspace(this.workspace);
+      this.workspace.dispose();
       sinon.restore();
     });
     test('Handle block click in flyout - click event', function() {
@@ -1120,8 +1120,8 @@ suite('Navigation', function() {
       this.navigation.removeWorkspace(this.workspace);
       chai.assert.equal(this.workspace.listeners_.length, numListeners - 1);
 
-      const marker = this.workspace.getMarkerManager().markers_[markerName];
-      chai.assert.isUndefined(marker);
+      const marker = this.workspace.getMarkerManager().getMarker(markerName);
+      chai.assert.isNull(marker);
     });
     test('Keyboard accessibility mode can not be enabled', function() {
       this.navigation.removeWorkspace(this.workspace);
