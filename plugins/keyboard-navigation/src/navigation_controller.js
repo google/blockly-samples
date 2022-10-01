@@ -113,7 +113,8 @@ export class NavigationController {
           return false;
       }
     }
-    return Blockly.FieldColour.superClass_.onShortcut.call(this, shortcut);
+    // Field is the superclass of FieldColour.
+    return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
   /**
@@ -139,7 +140,8 @@ export class NavigationController {
           return false;
       }
     }
-    return Blockly.FieldDropdown.superClass_.onShortcut.call(this, shortcut);
+    // Field is the superclass of FieldDropdown.
+    return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
   /**
