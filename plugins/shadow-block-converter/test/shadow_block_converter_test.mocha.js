@@ -52,7 +52,7 @@ suite('shadowBlockConversionChangeListener', function() {
     assert.isFalse(block.isShadow());
   });
 
-  test('ignores to block move event', function() {
+  test('ignores block move event', function() {
     const block = this.workspace.newBlock('text');
     block.setShadow(true);
     const event = new Blockly.Events.BlockMove(block);
