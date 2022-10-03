@@ -75,6 +75,8 @@ zoom-to-fit control to the workspace.
 adds additional scrolling features.
 - [``@blockly/plugin-cross-tab-copy-paste``](cross-tab-copy-paste/): A Blockly plugin
 that allows a user to copy and paste blocks between tabs.
+- [``@blockly/shadow-block-converter``](shadow-block-converter/): A Blockly plugin
+that automatically converts shadow blocks to real blocks when the user edits them.
 - [``@blockly/workspace-backpack``](workspace-backpack/): A Blockly plugin that
 adds Backpack support.
 
