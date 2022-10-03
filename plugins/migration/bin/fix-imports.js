@@ -30,7 +30,7 @@ export const fixImports = createSubCommand(
     fileNames.forEach((name) => {
       if (statSync(name).isDirectory()) return;
       const contents = readFileSync(name, 'utf8');
-      const newContents = createNewContents(contents);
+      const migratedContents = migrateContents(contents);
       const inPlace = this.opts().inPlace;
 
 
@@ -38,10 +38,10 @@ export const fixImports = createSubCommand(
         if (typeof inPlace == 'string') {
           writeFileSync(name + inPlace, contents);
         }
-        writeFileSync(name, newContents);
+        writeFileSync(name, migratedContents);
         process.stderr.write(`Migrated renamings in ${name}\n`);
       } else {
-        process.stdout.write(newContents + '\n');
+        process.stdout.write(migratedContents + '\n');
       }
     });
   });
@@ -58,9 +58,7 @@ export const fixImports = createSubCommand(
 let MigrationData;
 
 // TODO (#1211): Make this database format more robust.
-/**
- * @type {MigrationData[]}
- */
+/** @type {MigrationData[]} */
 const database = [
   {
     import: 'blockly/dart',
@@ -103,13 +101,13 @@ const database = [
 ]
 
 /**
- * Migrates the contents of a particular file, renaming references and adding
- * imports.
+ * Migrates the contents of a particular file, renaming references and
+ * adding/updating imports.
  * 
  * @param {string} contents The string contents of the file to migrate.
  * @return {string} The migrated contents of the file.
  */
-function createNewContents(contents) {
+function migrateContents(contents) {
   let newContents = contents;
   for (const migrationData of database) {
     newContents = fixImport(newContents, migrationData);
@@ -119,7 +117,8 @@ function createNewContents(contents) {
 
 /**
  * Migrates a particular import in a particular file. Renames references to
- * where the import used to exist on the namespace tree, and adds a new import.
+ * where the import used to exist on the namespace tree, and adds/updates
+ * imports.
  * 
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
@@ -133,6 +132,14 @@ function fixImport(contents, migrationData) {
   return contents;
 }
 
+/**
+ * Returns the identifier a given import is assigned to.
+ * 
+ * @param {string} contents The string contents of the file to migrate.
+ * @param {MigrationData} migrationData Data defining what to migrate and how.
+ * @return The identifier associated with the import associated with the
+ *     migration data.
+ */
 function getIdentifier(contents, migrationData) {
   const importMatch = contents.match(
       new RegExp(`\\s(\\S*) from ('|")${migrationData.import}('|")`));
@@ -162,9 +169,8 @@ function replaceReferences(contents, migrationData, identifier) {
 }
 
 /**
- * Adds the import defined by the Migration data after the last import found in
- * the file, or at the top of the file if it has no imports (which /should/
- * never happen, because they should always import Blockly).
+ * Replaces the any existing import with the new import, or if no import is
+ * found, inserts a new one after the 'blockly' import.
  * 
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
@@ -174,13 +180,15 @@ function addImport(contents, migrationData) {
   const importRegExp = createImportRegExp(migrationData.import);
   const importMatch = contents.match(importRegExp);
   if (importMatch) {
-    return contents.replace(importRegExp, importMatch[1] + migrationData.newImport);
+    return contents.replace(
+        importRegExp, importMatch[1] + migrationData.newImport);
   }
 
   const requireRegExp = createRequireRegExp(migrationData.import);
   const requireMatch = contents.match(requireRegExp);
   if (requireMatch) {
-    return contents.replace(requireRegExp, requireMatch[1] + migrationData.newRequire);
+    return contents.replace(
+        requireRegExp, requireMatch[1] + migrationData.newRequire);
   }
 
   const blocklyImportMatch = contents.match(createImportRegExp('blockly'));
@@ -193,7 +201,6 @@ function addImport(contents, migrationData) {
   }
 
   const blocklyRequireMatch = contents.match(createRequireRegExp('blockly'));
-  console.log(migrationData.import, !!blocklyRequireMatch);
   if (blocklyRequireMatch) {
     const match = blocklyRequireMatch;
     return contents.slice(0, match.index + match[0].length) +
@@ -205,10 +212,24 @@ function addImport(contents, migrationData) {
   return contents;
 }
 
+/**
+ * Returns a regular expression that matches an import statement for the given
+ * import identifier.
+ * 
+ * @param {string} importIdent The identifier of the import to match.
+ * @return {RegExp} The regular expression.
+ */
 function createImportRegExp(importIdent) {
   return new RegExp(`(\\s*)import .+ from ('|")${importIdent}('|");`)
 }
 
+/**
+ * Returns a regular expression that matches a require statement for the given
+ * identifier.
+ * 
+ * @param {string} importIdent The identifer of the import to match.
+ * @return {RegExp} The regular expression.
+ */
 function createRequireRegExp(importIdent) {
   return new RegExp(`(\\s*)const .* = require\\(('|")${importIdent}('|")\\);`);
 }
