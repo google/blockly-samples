@@ -113,7 +113,8 @@ export class NavigationController {
           return false;
       }
     }
-    // Field is the superclass of FieldColour.
+    // If we haven't already handled the shortcut, let the default Field
+    // handler try.
     return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
@@ -140,7 +141,8 @@ export class NavigationController {
           return false;
       }
     }
-    // Field is the superclass of FieldDropdown.
+    // If we haven't already handled the shortcut, let the default Field
+    // handler try.
     return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
