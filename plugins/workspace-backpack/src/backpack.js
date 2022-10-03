@@ -651,7 +651,7 @@ export class Backpack extends Blockly.DragTarget {
    * @protected
    */
   onClick_(e) {
-    if (Blockly.utils.isRightButton(e)) {
+    if (Blockly.browserEvents.isRightButton(e)) {
       return;
     }
     this.open();
@@ -733,7 +733,7 @@ export class Backpack extends Blockly.DragTarget {
    * @protected
    */
   blockMouseDownWhenOpenable_(e) {
-    if (!Blockly.utils.isRightButton(e) && this.isOpenable_()) {
+    if (!Blockly.browserEvents.isRightButton(e) && this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
