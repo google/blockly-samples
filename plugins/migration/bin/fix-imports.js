@@ -33,6 +33,7 @@ export const fixImports = createSubCommand(
       const newContents = createNewContents(contents);
       const inPlace = this.opts().inPlace;
 
+
       if (inPlace) {
         if (typeof inPlace == 'string') {
           writeFileSync(name + inPlace, contents);
@@ -65,39 +66,39 @@ const database = [
     import: 'blockly/dart',
     newIdentifier: 'dartGenerator',
     newImport: `import {dartGenerator} from 'blockly/dart';`,
-    newRequire: `const {dartGenerator} = require('blockly/dart');`,
+    newRequire: `const {dartGenerator} = require('blockly/dart');`
   },
   {
     import: 'blockly/javascript',
     oldIdentifier: 'Blockly.JavaScript',
     newIdentifier: 'javascriptGenerator',
     newImport: `import {javascriptGenerator} from 'blockly/javascript';`,
-    newRequire: `const {javascriptGenerator} = require('blockly/javascript');`,
+    newRequire: `const {javascriptGenerator} = require('blockly/javascript');`
   },
   {
     import: 'blockly/lua',
     newIdentifier: 'luaGenerator',
     newImport: `import {luaGenerator} from 'blockly/lua';`,
-    newRequire: `const {luaGenerator} = require('blockly/lua');`,
+    newRequire: `const {luaGenerator} = require('blockly/lua');`
   },
   {
     import: 'blockly/php',
     newIdentifier: 'phpGenerator',
     newImport: `import {phpGenerator} from 'blockly/php';`,
-    newRequire: `const {phpGenerator} = require('blockly/php');`,
+    newRequire: `const {phpGenerator} = require('blockly/php');`
   },
   {
     import: 'blockly/python',
     newIdentifier: 'pythonGenerator',
     newImport: `import {pythonGenerator} from 'blockly/python';`,
-    newRequire: `const {pythonGenerator} = require('blockly/python');`,
+    newRequire: `const {pythonGenerator} = require('blockly/python');`
   },
   {
     import: 'blockly/blocks',
     oldIdentifier: 'Blockly.libraryBlocks',
     newIdentifier: 'libraryBlocks',
     newImport:  `import {libraryBlocks} from 'blockly/blocks';`,
-    newRequire: `const {libraryBlocks} = require('blockly/blocks');`,
+    newRequire: `const {libraryBlocks} = require('blockly/blocks');`
   }
 ]
 
@@ -132,28 +133,14 @@ function fixImport(contents, migrationData) {
   return contents;
 }
 
-function usesImportStatements(contents) {
-  return !!contents.match(/import.+'.+';/);
-}
-
-function usesRequireStatements(contents) {
-  return !!contents.match(/require\('.+'\);/)
-}
-
 function getIdentifier(contents, migrationData) {
-  if (usesImportStatements(contents)) {
-    const identifierMatch = contents.match(
-        new RegExp(`\\s(\\S*) from '${migrationData.import}'`));
-    if (!identifierMatch) return migrationData.oldIdentifier ?? null;
-    return identifierMatch[1];
-  }
-  if (usesRequireStatements(contents)) {
-    const identifierMatch = contents.match(
-        new RegExp(`(\\S*) = require\\('${migrationData.import}'\\)`));
-    if (!identifierMatch) return migrationData.oldIdentifier ?? null;
-    return identifierMatch[1];
-  }
-  return null;
+  const importMatch = contents.match(
+      new RegExp(`\\s(\\S*) from ('|")${migrationData.import}('|")`));
+  if (importMatch) return importMatch[1];
+  const requireMatch = contents.match(
+      new RegExp(`(\\S*) = require\\(('|")${migrationData.import}('|")\\)`));
+  if (requireMatch) return requireMatch[1];
+  return migrationData.oldIdentifier;
 }
 
 /**
@@ -184,46 +171,46 @@ function replaceReferences(contents, migrationData, identifier) {
  * @return {string} The migrated contents of the file.
  */
 function addImport(contents, migrationData) {
-  const importLine = new RegExp(`.*'${migrationData.import}'.*`)
-  if (usesImportStatements(contents)) {
-    if (contents.match(importLine)) {
-      return contents.replace(importLine, migrationData.newImport);
-    }
-    const index = getImportsEnd(contents);
-    return contents.slice(0, index) +
-      migrationData.newImport + '\n' +
-      contents.slice(index)
+  const importRegExp = createImportRegExp(migrationData.import);
+  const importMatch = contents.match(importRegExp);
+  if (importMatch) {
+    return contents.replace(importRegExp, importMatch[1] + migrationData.newImport);
   }
-  if (usesRequireStatements(contents)) {
-    if (contents.match(importLine)) {
-      return contents.replace(importLine, migrationData.newRequire);
-    }
-    const index = getImportsEnd(contents);
-    return contents.slice(0, index) +
-      migrationData.newRequire + '\n' +
-      contents.slice(index)
+
+  const requireRegExp = createRequireRegExp(migrationData.import);
+  const requireMatch = contents.match(requireRegExp);
+  if (requireMatch) {
+    return contents.replace(requireRegExp, requireMatch[1] + migrationData.newRequire);
   }
+
+  const blocklyImportMatch = contents.match(createImportRegExp('blockly'));
+  console.log(migrationData.import, !!blocklyImportMatch);
+  if (blocklyImportMatch) {
+    const match = blocklyImportMatch;
+    return contents.slice(0, match.index + match[0].length) +
+        '\n' + migrationData.newImport +
+        contents.slice(match.index + match[0].length);
+  }
+
+  const blocklyRequireMatch = contents.match(createRequireRegExp('blockly'));
+  console.log(migrationData.import, !!blocklyRequireMatch);
+  if (blocklyRequireMatch) {
+    const match = blocklyRequireMatch;
+    return contents.slice(0, match.index + match[0].length) +
+        '\n' + migrationData.newRequire +
+        contents.slice(match.index + match[0].length);
+  }
+
+  // Should never happen, but return something so we can keep going if it does.
+  return contents;
 }
 
-/**
- * Returns the index of the end of the imports, or 0 if no imports are found.
- * 
- * @param {string} contents The contents of the file being migrated.
- * @return {number} The index of the end of the imports.
- */
-function getImportsEnd(contents) {
-  if (usesImportStatements(contents)) {
-    const matches = contents.match(/import.*\n/g)
-    if (!matches || !matches.length) return 0;
-    const match = matches[matches.length - 1];
-    return contents.indexOf(match) + match.length;
-  }
-  if (usesRequireStatements(contents)) {
-    const matches = contents.match(/require\(.*\n/g)
-    if (!matches || !matches.length) return 0;
-    const match = matches[matches.length - 1];
-    return contents.indexOf(match) + match.length;
-  }
+function createImportRegExp(importIdent) {
+  return new RegExp(`(\\s*)import .+ from ('|")${importIdent}('|");`)
+}
+
+function createRequireRegExp(importIdent) {
+  return new RegExp(`(\\s*)const .* = require\\(('|")${importIdent}('|")\\);`);
 }
 
 /**

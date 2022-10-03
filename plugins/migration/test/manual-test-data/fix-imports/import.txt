@@ -3,9 +3,9 @@
 //   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/import.txt
 
 import Blockly from 'blockly';
-import * as BlocklyDart from 'blockly/dart';
+import * as BlocklyDart from "blockly/dart";
 import * as BlocklyLua from 'blockly/lua';
-import * as BlocklyPhp from 'blockly/php';
+import * as BlocklyPhp from "blockly/php";
 import * as BlocklyPython from 'blockly/python';
 
 Blockly.JavaScript.something;
