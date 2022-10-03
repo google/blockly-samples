@@ -113,7 +113,9 @@ export class NavigationController {
           return false;
       }
     }
-    return Blockly.FieldColour.superClass_.onShortcut.call(this, shortcut);
+    // If we haven't already handled the shortcut, let the default Field
+    // handler try.
+    return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
   /**
@@ -139,7 +141,9 @@ export class NavigationController {
           return false;
       }
     }
-    return Blockly.FieldDropdown.superClass_.onShortcut.call(this, shortcut);
+    // If we haven't already handled the shortcut, let the default Field
+    // handler try.
+    return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
   /**

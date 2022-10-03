@@ -24,15 +24,15 @@ export function createNavigationWorkspace(
           id="toolbox-categories" style="display: none">
         <category colour="#FFFFFF" name="First" css-container="something">
           <block type="basic_block">
-            <field name="TEXT">FirstCategory-FirstBlock</field>
+            <field name="COLOURFIELD">#ff0000</field>
           </block>
           <block type="basic_block">
-            <field name="TEXT">FirstCategory-SecondBlock</field>
+            <field name="COLOURFIELD">#00ff00</field>
           </block>
         </category>
         <category colour="#FFFFFF" name="Second">
           <block type="basic_block">
-            <field name="TEXT">SecondCategory-FirstBlock</field>
+            <field name="COLOURFIELD">#0000ff</field>
           </block>
         </category>
       </xml>
@@ -53,7 +53,7 @@ export function createNavigationWorkspace(
  *     enum.
  * @param {string} type The type of the target. This only matters for the
  *     Blockly.utils.isTargetInput method.
- * @param {Array<number>} modifiers A list of modifiers. Use
+ * @param {?Array<number>} modifiers A list of modifiers. Use
  *     Blockly.utils.KeyCodes enum.
  * @return {Object} The mocked keydown
  * event.
