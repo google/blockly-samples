@@ -806,14 +806,14 @@ const BACKPACK_FILLED_SVG_DATAURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
     'wvZz4KICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgIDwvZz' +
     '4KICAgICAgICA8L2c+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
-Blockly.Css.register(
-    `.blocklyBackpack {
-      opacity: .4;
-    }
-    .blocklyBackpackDarken {
-      opacity: .6;
-    }
-    .blocklyBackpack:active {
-      opacity: .8;
-    }`,
-);
+Blockly.Css.register(`
+.blocklyBackpack {
+  opacity: .4;
+}
+.blocklyBackpackDarken {
+  opacity: .6;
+}
+.blocklyBackpack:active {
+  opacity: .8;
+}
+`);
