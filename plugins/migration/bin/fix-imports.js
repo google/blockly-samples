@@ -93,7 +93,7 @@ const database = [
   },
   {
     import: 'blockly/blocks',
-    oldIdentifier: 'Blockly.libraryBlocks',
+    oldIdentifier: 'Blockly.libraryBlocks.blocks',
     newIdentifier: 'libraryBlocks',
     newImport:  `import {libraryBlocks} from 'blockly/blocks';`,
     newRequire: `const {libraryBlocks} = require('blockly/blocks');`
