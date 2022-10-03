@@ -33,7 +33,6 @@ export const fixImports = createSubCommand(
       const migratedContents = migrateContents(contents);
       const inPlace = this.opts().inPlace;
 
-
       if (inPlace) {
         if (typeof inPlace == 'string') {
           writeFileSync(name + inPlace, contents);
@@ -95,8 +94,8 @@ const database = [
     import: 'blockly/blocks',
     oldIdentifier: 'Blockly.libraryBlocks',
     newIdentifier: 'libraryBlocks',
-    newImport:  `import {libraryBlocks} from 'blockly/blocks';`,
-    newRequire: `const {libraryBlocks} = require('blockly/blocks');`
+    newImport:  `import * as libraryBlocks from 'blockly/blocks';`,
+    newRequire: `const libraryBlocks = require('blockly/blocks');`
   }
 ]
 
@@ -142,10 +141,10 @@ function fixImport(contents, migrationData) {
  */
 function getIdentifier(contents, migrationData) {
   const importMatch = contents.match(
-      new RegExp(`\\s(\\S*) from ('|")${migrationData.import}('|")`));
+      new RegExp(`\\s(\\S*)\\s+from\\s+['"]${migrationData.import}['"]`));
   if (importMatch) return importMatch[1];
   const requireMatch = contents.match(
-      new RegExp(`(\\S*) = require\\(('|")${migrationData.import}('|")\\)`));
+      new RegExp(`(\\S*)\\s+=\\s+require\\(['"]${migrationData.import}['"]\\)`));
   if (requireMatch) return requireMatch[1];
   return migrationData.oldIdentifier;
 }
@@ -192,7 +191,6 @@ function addImport(contents, migrationData) {
   }
 
   const blocklyImportMatch = contents.match(createImportRegExp('blockly'));
-  console.log(migrationData.import, !!blocklyImportMatch);
   if (blocklyImportMatch) {
     const match = blocklyImportMatch;
     return contents.slice(0, match.index + match[0].length) +
@@ -220,7 +218,7 @@ function addImport(contents, migrationData) {
  * @return {RegExp} The regular expression.
  */
 function createImportRegExp(importIdent) {
-  return new RegExp(`(\\s*)import .+ from ('|")${importIdent}('|");`)
+  return new RegExp(`(\\s*)import\\s+.+\\s+from\\s+['"]${importIdent}['"];`)
 }
 
 /**
@@ -232,7 +230,7 @@ function createImportRegExp(importIdent) {
  */
 function createRequireRegExp(importIdent) {
   return new RegExp(
-      `(\\s*)(const|let|var) .* = require\\(('|")${importIdent}('|")\\);`);
+      `(\\s*)(const|let|var)\\s+.*\\s+=\\s+require\\(['"]${importIdent}['"]\\);`);
 }
 
 /**
