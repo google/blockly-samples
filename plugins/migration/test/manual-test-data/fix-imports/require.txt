@@ -5,8 +5,8 @@
 const Blockly = require('blockly');
 const BlocklyDart = require("blockly/dart");
 const BlocklyLua = require('blockly/lua');
-const BlocklyPhp = require("blockly/php");
-const BlocklyPython = require('blockly/python');
+let BlocklyPhp = require("blockly/php");
+var BlocklyPython = require('blockly/python');
 
 Blockly.JavaScript.something;
 const something = Blockly.JavaScript.something;

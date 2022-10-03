@@ -93,7 +93,7 @@ const database = [
   },
   {
     import: 'blockly/blocks',
-    oldIdentifier: 'Blockly.libraryBlocks.blocks',
+    oldIdentifier: 'Blockly.libraryBlocks',
     newIdentifier: 'libraryBlocks',
     newImport:  `import {libraryBlocks} from 'blockly/blocks';`,
     newRequire: `const {libraryBlocks} = require('blockly/blocks');`
@@ -231,7 +231,8 @@ function createImportRegExp(importIdent) {
  * @return {RegExp} The regular expression.
  */
 function createRequireRegExp(importIdent) {
-  return new RegExp(`(\\s*)const .* = require\\(('|")${importIdent}('|")\\);`);
+  return new RegExp(
+      `(\\s*)(const|let|var) .* = require\\(('|")${importIdent}('|")\\);`);
 }
 
 /**
