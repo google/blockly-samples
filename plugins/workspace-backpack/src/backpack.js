@@ -651,7 +651,7 @@ export class Backpack extends Blockly.DragTarget {
    * @protected
    */
   onClick_(e) {
-    if (Blockly.utils.isRightButton(e)) {
+    if (Blockly.browserEvents.isRightButton(e)) {
       return;
     }
     this.open();
@@ -733,7 +733,7 @@ export class Backpack extends Blockly.DragTarget {
    * @protected
    */
   blockMouseDownWhenOpenable_(e) {
-    if (!Blockly.utils.isRightButton(e) && this.isOpenable_()) {
+    if (!Blockly.browserEvents.isRightButton(e) && this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
@@ -806,14 +806,14 @@ const BACKPACK_FILLED_SVG_DATAURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
     'wvZz4KICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgIDwvZz' +
     '4KICAgICAgICA8L2c+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
-Blockly.Css.register(
-    `.blocklyBackpack {
-      opacity: .4;
-    }
-    .blocklyBackpackDarken {
-      opacity: .6;
-    }
-    .blocklyBackpack:active {
-      opacity: .8;
-    }`,
-);
+Blockly.Css.register(`
+.blocklyBackpack {
+  opacity: .4;
+}
+.blocklyBackpackDarken {
+  opacity: .6;
+}
+.blocklyBackpack:active {
+  opacity: .8;
+}
+`);
