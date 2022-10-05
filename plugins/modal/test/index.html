@@ -2,6 +2,7 @@
 title: "@blockly/plugin-modal Demo"
 packageName: "@blockly/plugin-modal"
 description: "A Blockly plugin that creates a modal."
+version: "4.0.0"
 pageRoot: "plugins/modal"
 pages:
   - label: "Playground"

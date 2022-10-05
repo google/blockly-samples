@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/plugin-serialize-disabled-interactions Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/plugin-serialize-disabled-interactions Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/plugin-serialize-disabled-interactions Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks." />
+<meta property="og:description" content="A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks." />
+<link rel="canonical" href="http://localhost:4000/plugins/serialize-disabled-interactions/README.html" />
+<meta property="og:url" content="http://localhost:4000/plugins/serialize-disabled-interactions/README.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"headline":"@blockly/plugin-serialize-disabled-interactions Demo","description":"A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks.","url":"http://localhost:4000/plugins/serialize-disabled-interactions/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-serialize-disabled-interactions Demo</div>
+      <div class="subtitle">A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks.</div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/serialize-disabled-interactions/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/plugin-serialize-disabled-interactions" class="button" target="_blank">View on npm</a>
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/serialize-disabled-interactions/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/serialize-disabled-interactions/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklyplugin-serialize-disabled-interactions-">@blockly/plugin-serialize-disabled-interactions <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin for the JSON
+serialization system that serializes blocks which are not deletable,
+movable, or editable.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/plugin-serialize-disabled-interactions
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/plugin-serialize-disabled-interactions --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Import plugin to get side effects.</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">@blockly/plugin-serialize-disabled-interactions</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Information about which blocks are not deletable/movable/editable will</span>
+<span class="c1">// automatically be included because of the above import.</span>
+<span class="kd">var</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">serialization</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">myWorkspace</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The resultant JSON will look like this:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"blocks"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">/*</span><span class="w"> </span><span class="err">block</span><span class="w"> </span><span class="err">state</span><span class="w"> </span><span class="err">*/</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"disabledInteractions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"notDeletable"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">/*</span><span class="w"> </span><span class="err">block</span><span class="w"> </span><span class="err">ids</span><span class="w"> </span><span class="err">*/</span><span class="w"> </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"notMovable"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">/*</span><span class="w"> </span><span class="err">block</span><span class="w"> </span><span class="err">ids</span><span class="w"> </span><span class="err">*/</span><span class="w"> </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"notEditable"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">/*</span><span class="w"> </span><span class="err">block</span><span class="w"> </span><span class="err">ids</span><span class="w"> </span><span class="err">*/</span><span class="w"> </span><span class="p">],</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>All of the keys are optional. For example, if all of the blocks on the workspace
+are deletable, the <code class="language-plaintext highlighter-rouge">'notDeletable'</code> key will be undefined. If all of the keys
+are undefined, then the <code class="language-plaintext highlighter-rouge">'disabledInteractions</code>’ key is also undefined.</p>
+
+<h2 id="migration-guide">Migration Guide</h2>
+
+<p>This plugin was created because the old XML serialization system supported
+serializing these attributes, but the new JSON system does not. For more
+information about why this is, see <a href="https://groups.google.com/g/blockly/c/eP9PXVfCaHs/m/S4rPmwnTAQAJ">this forum post</a>.</p>
+
+<p>Usually these values don’t need to be serialized. Instead you can just set these
+attributes in your block definition:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Blockly</span><span class="p">.</span><span class="nx">Blocks</span><span class="p">[</span><span class="dl">'</span><span class="s1">my_start_block</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">init</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Your normal init code...</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setDeletable</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setMovable</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setEditable</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>However, sometimes you want a block type that is sometimes
+deletable/movable/editable and othertimes not. For example in <a href="https://blockly.games/">Blockly Games</a>
+they have blocks that start off as not-deletable, and then as you progress
+through levels they become deletable. This plugin faciliates that.</p>
+
+<p>Suppose you have the following block defined in XML, and you would like to
+migrate to the JSON system (which is completely optional).</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;block</span> <span class="na">type=</span><span class="s">"my_start_block"</span> <span class="na">deletable=</span><span class="s">"false"</span> <span class="na">movable=</span><span class="s">"false"</span> <span class="na">editable=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>You can either modify the <code class="language-plaintext highlighter-rouge">'my_start_block'</code>’s definition (as specified above),
+or you can import this plugin and then change your JSON to look like the
+following:</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="dl">'</span><span class="s1">@blockly/plugin-serialize-disabled-interactions</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">json</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="dl">'</span><span class="s1">blocks</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">'</span><span class="s1">languageVersion</span><span class="dl">'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">blocks</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="dl">'</span><span class="s1">type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">my_start_block</span><span class="dl">'</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">start_block_id</span><span class="dl">'</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="dl">'</span><span class="s1">disabledInteractions</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">'</span><span class="s1">notDeletable</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">start_block_id</span><span class="dl">'</span><span class="p">],</span>
+    <span class="dl">'</span><span class="s1">notMovable</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">start_block_id</span><span class="dl">'</span><span class="p">],</span>
+    <span class="dl">'</span><span class="s1">notEditable</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">start_block_id</span><span class="dl">'</span><span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Any questions about how this works can be directed to the <a href="https://groups.google.com/g/blockly">forums</a>.</p>
+
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

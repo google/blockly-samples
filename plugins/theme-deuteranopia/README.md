@@ -2,6 +2,7 @@
 title: "@blockly/theme-deuteranopia Demo"
 packageName: "@blockly/theme-deuteranopia"
 description: "A Blockly theme for people that have deuteranopia."
+version: "3.0.0"
 pageRoot: "plugins/theme-deuteranopia"
 pages:
   - label: "Playground"

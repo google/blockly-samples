@@ -45,26 +45,75 @@ pageRoot: "examples/mirror-demo"
     </tr>
   </table>
 
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <block type="controls_if"></block>
-    <block type="logic_compare"></block>
-    <block type="controls_repeat_ext"></block>
-    <block type="math_number">
-      <field name="NUM">123</field>
-    </block>
-    <block type="math_arithmetic"></block>
-    <block type="text"></block>
-    <block type="text_print"></block>
-    <block type="variables_get"><field name="VAR">i</field></block>
-    <block type="variables_get"><field name="VAR">j</field></block>
-    <block type="variables_get"><field name="VAR">k</field></block>
-  </xml>
-
   <script>
-    // Inject primary workspace.
+    var toolbox = {
+      "kind": "flyoutToolbox",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "controls_if"
+        },
+        {
+          "kind": "block",
+          "type": "logic_compare"
+        },
+        {
+          "kind": "block",
+          "type": "controls_repeat_ext"
+        },
+        {
+          "kind": "block",
+          "type": "math_number",
+          "fields": {
+            NUM: 123
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_arithmetic"
+        },
+        {
+          "kind": "block",
+          "type": "text"
+        },
+        {
+          "kind": "block",
+          "type": "text_print"
+        },
+        {
+          "kind": "block",
+          "type": "variables_get",
+          "fields": {
+            "VAR": {
+              "name": "i"
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "variables_get",
+          "fields": {
+            "VAR": {
+              "name": "j"
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "variables_get",
+          "fields": {
+            "VAR": {
+              "name": "k"
+            }
+          }
+        },
+      ]
+    };
+  
+    // Inject primary workspace. 
     var primaryWorkspace = Blockly.inject('primaryDiv',
         {media: 'https://unpkg.com/blockly/media/',
-         toolbox: document.getElementById('toolbox')});
+         toolbox: toolbox});
     // Inject secondary workspace.
     var secondaryWorkspace = Blockly.inject('secondaryDiv',
         {media: 'https://unpkg.com/blockly/media/',

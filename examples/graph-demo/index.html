@@ -66,119 +66,6 @@ pageRoot: "examples/graph-demo"
     ...
   </div>
 
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Math" colour="%{BKY_MATH_HUE}">
-      <block type="math_number">
-        <field name="NUM">123</field>
-      </block>
-      <block type="math_arithmetic">
-        <value name="A">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="B">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_single">
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">9</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_trig">
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">45</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_constant"></block>
-      <block type="math_number_property">
-        <value name="NUMBER_TO_CHECK">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_round">
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">3.1</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_modulo">
-        <value name="DIVIDEND">
-          <shadow type="math_number">
-            <field name="NUM">64</field>
-          </shadow>
-        </value>
-        <value name="DIVISOR">
-          <shadow type="math_number">
-            <field name="NUM">10</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_constrain">
-        <value name="VALUE">
-          <shadow type="math_number">
-            <field name="NUM">50</field>
-          </shadow>
-        </value>
-        <value name="LOW">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="HIGH">
-          <shadow type="math_number">
-            <field name="NUM">100</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_random_int">
-        <value name="FROM">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="TO">
-          <shadow type="math_number">
-            <field name="NUM">100</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_random_float"></block>
-      <block type="math_atan2">
-        <value name="X">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="Y">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-      </block>
-    </category>
-    <category name="Variables" colour="%{BKY_VARIABLES_HUE}">
-      <block type="graph_get_x"></block>
-    </category>
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
-      <block type="logic_compare"></block>
-      <block type="logic_operation"></block>
-      <block type="logic_negate"></block>
-      <block type="logic_boolean"></block>
-      <block type="logic_ternary"></block>
-    </category>
-  </xml>
-
   <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
     <block type="graph_set_y" deletable="false" x="100" y="100">
       <value name="VALUE">
@@ -212,6 +99,296 @@ if (typeof google == 'object') {
         'Are you connected to the Internet?');
 }
 
+// Define the toolbox 
+const toolbox = {
+  "kind": "categoryToolbox",
+  "contents": [
+    {
+      "kind": "category",
+      "name": "Math",
+      "colour": "%{BKY_MATH_HUE}",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "math_number",
+          "fields": {
+            "NUM": 123
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_arithmetic",
+          "inputs": {
+            "A": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 1
+                }
+              }
+            },
+            "B": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 1
+                }
+              }
+            }
+          }
+        }, 
+        {
+          "kind": "block",
+          "type": "math_single",
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 9
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_trig",
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 45
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_constant"
+        },
+        {
+          "kind": "block",
+          "type": "math_number_property",
+          "inputs": {
+            "NUMBER_TO_CHECK": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_round",
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 3.1
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_modulo",
+          "inputs": {
+            "DIVIDEND": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 64
+                }
+              }
+            },
+            "DIVISOR": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 10
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_constrain",
+          "inputs": {
+            "VALUE": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 50
+                }
+              }
+            },
+            "LOW": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 1
+                }
+              }
+            },
+            "HIGH": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 100
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_random_int",
+          "inputs": {
+            "FROM": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 1
+                }
+              }
+            },
+            "TO": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 100
+                }
+              }
+            }
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_random_float"
+        },
+        {
+          "kind": "block",
+          "type": "math_atan2",
+          "inputs": {
+            "X": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 1
+                }
+              }
+            },
+            "Y": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 1
+                }
+              }
+            }
+          }
+        },
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Variables",
+      "colour": "%{BKY_VARIABLES_HUE}",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "graph_get_x",
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Logic",
+      "colour": "%{BKY_LOGIC_HUE}",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "logic_compare"
+        },
+        {
+          "kind": "block",
+          "type": "logic_operation"
+        },
+
+        {
+          "kind": "block",
+          "type": "logic_negate"
+        },
+        {
+          "kind": "block",
+          "type": "logic_boolean"
+        },
+        {
+          "kind": "block",
+          "type": "logic_ternary"
+        }
+      ]
+    }
+  ]
+};
+
+const startBlocks = {
+  "blocks": {
+    "blocks": [{
+      "kind": "block",
+      "type": "graph_set_y",
+      "x": 100,
+      "y": 100,
+      "inputs": { 
+        "VALUE": {
+          "block": {
+            "type": "math_arithmetic",
+            "fields": {
+              "OP": "POWER"
+            },
+            "inputs": {
+              "A": {
+                "block":{
+                  "type": "graph_get_x",
+                  "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                      "NUM": 1
+                    }
+                  }
+                }
+              },
+              "B": {
+                "block": {
+                  "type": "math_number",
+                  "fields": {
+                    "NUM": 2
+                  },
+                  "shadow": {
+                    "type": "math_number",
+                    "fields": {
+                      "NUM": 1
+                    }
+                  }
+                }
+              }
+            }
+          }        
+        }
+      }
+    }]
+  }
+};
+
 // Define the custom blocks and their JS generators.
 Blockly.defineBlocksWithJsonArray([{
   "type": "graph_get_x",
@@ -243,6 +420,9 @@ Blockly.defineBlocksWithJsonArray([{
 }]);
 
 Blockly.JavaScript['graph_set_y'] = function(block) {
+  // block.setDeletable cannot be set from json
+  block.setDeletable(false);
+
   // y variable setter.
   var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE',
       Blockly.JavaScript.ORDER_ASSIGNMENT) || '';
@@ -354,9 +534,9 @@ Graph.init = function() {
       {collapse: false,
        disable: false,
        media: 'https://unpkg.com/blockly/media/',
-       toolbox: document.getElementById('toolbox')});
-  Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
-                             Graph.workspace);
+       toolbox: toolbox});
+
+  Blockly.serialization.workspaces.load(startBlocks, Graph.workspace);
   Graph.workspace.clearUndo();
 
   // When Blockly changes, update the graph.

@@ -2,6 +2,7 @@
 title: "@blockly/field-colour-hsv-sliders Demo"
 packageName: "@blockly/field-colour-hsv-sliders"
 description: "A Blockly colour field using HSV sliders."
+version: "2.0.0"
 pageRoot: "plugins/field-colour-hsv-sliders"
 pages:
   - label: "Playground"

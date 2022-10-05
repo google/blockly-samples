@@ -2,6 +2,7 @@
 title: "@blockly/eslint-config Demo"
 packageName: "@blockly/eslint-config"
 description: "ESlint configuration used by Blockly plugins."
+version: "2.1.18"
 pageRoot: "plugins/eslint-config"
 pages:
   - label: "Playground"

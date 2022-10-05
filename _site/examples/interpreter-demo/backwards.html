@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>JS Interpreter</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>JS Interpreter | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="JS Interpreter" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Sample projects demonstrating techniques to include and extend the Blockly library." />
+<meta property="og:description" content="Sample projects demonstrating techniques to include and extend the Blockly library." />
+<link rel="canonical" href="http://localhost:4000/examples/interpreter-demo/backwards.html" />
+<meta property="og:url" content="http://localhost:4000/examples/interpreter-demo/backwards.html" />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"headline":"JS Interpreter","description":"Sample projects demonstrating techniques to include and extend the Blockly library.","url":"http://localhost:4000/examples/interpreter-demo/backwards.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">JS Interpreter</div>
+      <div class="subtitle"></div>
+    </div>
+
+    <a href="https://github.com/google/blockly-samples/blob/master/examples/interpreter-demo/" class="button" target="_blank">View code</a>
+
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/examples/interpreter-demo/step-execution.html">
+              Step Execution
+            </a>
+          </li>
+        
+          <li>
+            <a href="/examples/interpreter-demo/async-execution.html">
+              Async Execution
+            </a>
+          </li>
+        
+          <li>
+            <a href="/examples/interpreter-demo/backwards.html">
+              Backwards Execution
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Backwards Stepping with JS-Interpreter</title>
+  <script src="toolbox.js"></script>
+  <!-- acorn.js, interpreter.js and serialize.js are copied from the
+    JS-Interpreter project without modification.  The compressed
+    acorn_interpreter.js file cannot be used with serialization. -->
+  <script src="acorn.js"></script>
+  <script src="interpreter.js"></script>
+  <script src="serialize.js"></script>
+  <!-- diff_match_patch.js is copied from the Diff Match Patch project
+     without modification. -->
+  <script src="diff_match_patch.js"></script>
+
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/javascript_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+    <a href="../index.html">Demos</a> &gt; Backwards Stepping with JS-Interpreter</h1>
+
+  <p>This is a demo of executing code step-by-step with a sandboxed JavaScript
+  interpreter -- both forwards and backwards.</p>
+
+  <p>Each step forwards saves the current state to a stack.  Each state
+  backwards restores to the previous state on the stack.  Compression is used
+  to keep only the deltas between stack frames.  Note that because serialization
+  reaches deep beyond the public API for the JS-Interpreter, the uncompiled
+  acorn.js and interpreter.js must be used in place of acorn_interpreter.js.</p>
+
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS-Interpreter</a></p>
+
+  <p>
+    <button onclick="stepBackwards()" id="stepBackwardsButton" disabled="disabled">Step &larr;</button>
+    <button onclick="stepForwards()" id="stepForwardsButton">Step &rarr;</button>
+  </p>
+
+  <div style="width: 100%">
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 480px; width: 58%"></div>
+    <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 480px; width: 38%;">
+    </textarea>
+  </div>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
+    <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
+      <field name="VAR">n</field>
+      <value name="VALUE">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <next>
+        <block type="controls_repeat_ext" id="repeat" inline="true">
+          <value name="TIMES">
+            <block type="math_number">
+              <field name="NUM">4</field>
+            </block>
+          </value>
+          <statement name="DO">
+            <block type="variables_set" id="set_n_update" inline="true">
+              <field name="VAR">n</field>
+              <value name="VALUE">
+                <block type="math_arithmetic" inline="true">
+                  <field name="OP">MULTIPLY</field>
+                  <value name="A">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                  <value name="B">
+                    <block type="math_number">
+                      <field name="NUM">2</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <next>
+                <block type="text_print" id="print">
+                  <value name="TEXT">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>
+  </xml>
+
+  <script>
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: 'https://unpkg.com/blockly/media/',
+         toolbox: toolboxJson});
+    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+    Blockly.JavaScript.addReservedWords('highlightBlock');
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                               demoWorkspace);
+
+    var outputArea = document.getElementById('output');
+    var myInterpreter = null;
+
+    // Stack of serializations.  Each object contains these properties:
+    //   .json: A full serialization of the interpreter's state, or...
+    //   .delta: Instead of a full serialization, a delta from the next state.
+    //   .highlight: The ID of the block highlighted in this state.
+    //   .output: State of the output textarea.
+    var serializationStack = [];
+
+    // Global variable to keep track of the currently highlighted block.
+    var highlightedBlockId = '';
+
+    // The forward step button disables for 2s after program completion, then
+    // re-enables.  If the backwards step button is pressed during this time
+    // then cancel the scheduled re-enabling.
+    var resetButtonsPid = 0;
+
+    // Optionally, use the Diff Match Patch library to compress the stack.
+    var dmp;
+    if (typeof diff_match_patch === 'function') {
+      dmp = new diff_match_patch();
+      console.log('Using DMP for compression.');
+    } else {
+      console.warn('DMP not available, each step will cost ~300 KB.');
+    }
+
+    function initApi(interpreter, globalObject) {
+      // Add an API function for the alert() block, generated for "text_print" blocks.
+      var wrapperAlert = function alert(text) {
+        text = arguments.length ? text : '';
+        outputArea.value += '\n' + text;
+      };
+      interpreter.setProperty(globalObject, 'alert',
+          interpreter.createNativeFunction(wrapperAlert));
+
+      // Add an API function for the prompt() block.
+      var wrapperPrompt = function prompt(text) {
+        return window.prompt(text);
+      };
+      interpreter.setProperty(globalObject, 'prompt',
+          interpreter.createNativeFunction(wrapperPrompt));
+
+      // Add an API function for highlighting blocks.
+      var wrapperHighlight = function(id) {
+        id = String(id || '');
+        highlightedBlockId = id;
+        return highlightBlock(id);
+      };
+      interpreter.setProperty(globalObject, 'highlightBlock',
+          interpreter.createNativeFunction(wrapperHighlight));
+    }
+
+    // Each step will run the interpreter until the highlightPause is true.
+    var highlightPause = false;
+
+    function highlightBlock(id) {
+      demoWorkspace.highlightBlock(id);
+      highlightPause = true;
+    }
+
+    function resetStepUi(clearOutput) {
+      demoWorkspace.highlightBlock(null);
+      highlightPause = false;
+
+      if (clearOutput) {
+        outputArea.value = 'Program output:\n=================';
+      }
+      myInterpreter = null;
+    }
+
+    function stepBackwards() {
+      var serialization = serializationStack.pop();
+      if (!serializationStack.length) {
+        document.getElementById('stepBackwardsButton').disabled = 'disabled';
+      }
+      if (!serialization) {
+        return;  // Should never happen.
+      }
+      highlightedBlockId = serialization.highlight;
+      highlightBlock(highlightedBlockId);
+      var json = serialization.json;
+      if (dmp && serializationStack.length) {
+        uncompressLastSerialization(json);
+      }
+      json = JSON.parse(json);
+      // Create a clean interpreter with the same initialization functions.
+      myInterpreter = new Interpreter('', initApi);
+      deserialize(json, myInterpreter);
+
+      // Restore the output text.  In other applications this would restore
+      // the player to a previous location, or restore a graphic, or whatever.
+      outputArea.value = serialization.output;
+
+      if (resetButtonsPid) {
+        clearTimeout(resetButtonsPid);
+        resetButtonsPid = 0;
+        document.getElementById('stepForwardsButton').disabled = '';
+      }
+    }
+
+    function stepForwards() {
+      if (!myInterpreter) {
+        // First statement of this code.
+        // Clear the program output.
+        resetStepUi(true);
+        var latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        serializationStack.length = 0;
+        document.getElementById('stepBackwardsButton').disabled = 'disabled';
+        myInterpreter = new Interpreter(latestCode, initApi);
+
+        // And then show generated code in an alert.
+        // In a timeout to allow the outputArea.value to reset first.
+        setTimeout(function() {
+          alert('Ready to execute the following code\n' +
+              '===================================\n' + latestCode);
+          highlightPause = true;
+          stepForwards();
+        }, 1);
+        return;
+      }
+      highlightPause = false;
+
+      var json = JSON.stringify(serialize(myInterpreter));
+      if (dmp && serializationStack.length) {
+        compressLastSerialization(json);
+      }
+      serializationStack.push({
+        json: json,
+        delta: null,
+        highlight: highlightedBlockId,
+        output: outputArea.value
+      });
+      document.getElementById('stepBackwardsButton').disabled = '';
+
+      do {
+        try {
+          var hasMoreCode = myInterpreter.step();
+        } finally {
+          if (!hasMoreCode) {
+            // Program complete, no more code to execute.
+            outputArea.value += '\n\n<< Program complete >>';
+
+            resetStepUi(false);
+
+            // Cool down, to discourage accidentally restarting the program.
+            document.getElementById('stepForwardsButton').disabled = 'disabled';
+            resetButtonsPid = setTimeout(resetButtons, 2000);
+            return;
+          }
+        }
+        // Keep executing until a highlight statement is reached,
+        // or the code completes or errors.
+      } while (hasMoreCode && !highlightPause);
+    }
+
+    // Enable the forwards button, disable the backwards button.
+    function resetButtons() {
+      document.getElementById('stepForwardsButton').disabled = '';
+      document.getElementById('stepBackwardsButton').disabled = 'disabled';
+      resetButtonsPid = 0;
+    }
+
+    // Compress the previous serialization as a delta of the current one.
+    function compressLastSerialization(currentJson) {
+      var previousStack = serializationStack[serializationStack.length - 1];
+      var previousDiff = dmp.diff_main(currentJson, previousStack.json);
+      dmp.diff_cleanupEfficiency(previousDiff);
+      previousStack.json = null;
+      previousStack.delta = dmp.diff_toDelta(previousDiff);
+    }
+
+    // Uncompress the previous serialization's delta, based off the current one.
+    function uncompressLastSerialization(currentJson) {
+      var previousStack = serializationStack[serializationStack.length - 1];
+      var previousDiff = dmp.diff_fromDelta(currentJson, previousStack.delta);
+      previousStack.delta = null;
+      previousStack.json = dmp.diff_text2(previousDiff);
+    }
+
+    demoWorkspace.addChangeListener(function(event) {
+      if (!event.isUiEvent) {
+        // Something changed.  Interpreter needs to be reloaded.
+        resetStepUi(true);
+      }
+    });
+  </script>
+</body>
+</html>
+
+</div>
+
+
+    
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

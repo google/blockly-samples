@@ -2,6 +2,7 @@
 title: "@blockly/plugin-workspace-search Demo"
 packageName: "@blockly/plugin-workspace-search"
 description: "A Blockly plugin that adds workspace search support."
+version: "6.0.0"
 pageRoot: "plugins/workspace-search"
 pages:
   - label: "Playground"
@@ -51,6 +52,44 @@ To open workspace search use either command + f or control + f. To close the sea
 - `addActionBtn`: Add a button to the action div. This must be called after the init function has been called.
 - `clearBlocks`: Clears the selection group and current block.
 - `searchAndHighlight`: Searches the workspace for the current search term and highlights matching blocks.
+
+## Styling
+
+The generated search bar looks like:
+```html
+<div class="ws-search'>
+  <div class="ws-search-container'>
+    <div class="ws-search-content'>
+      <div class="ws-search-input'>
+        [... text input goes here ...]
+      </div>
+      [... actions div goes here ...]
+    </div>
+    [... close button goes here ...]
+  </div>
+</div>
+```
+
+Here are additional CSS classes to style your search bar:
+- `blockly-ws-search`: Applies to the outer-most div.
+  - Default styling:
+    ```css
+    '.blockly-ws-search {',
+      'background: white;',
+      'border: solid lightgrey .5px;',
+      'box-shadow: 0px 10px 20px grey;',
+      'justify-content: center;',
+      'padding: .25em;',
+      'position: absolute;',
+      'z-index: 70;',
+    '}'
+    ```
+- `blockly-ws-search-container`: Applies to the search container.
+- `blockly-ws-search-content`: Applies to the search content.
+- `blockly-ws-search-input`: Applies to the input wrapper. (Default: `border: none;`)
+- `blockly-ws-search-actions`: Applies to the action div.
+- `blockly-ws-search-current`: Highlights the provided block as the "current selection". (Default: `fill: grey;`)
+- `blockly-ws-search-highlight`: Adds highlight to the provided blocks. (Default: `fill: black;`)
 
 ## License
 Apache 2.0

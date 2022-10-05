@@ -62,24 +62,49 @@ pageRoot: "examples/resizable-demo"
 
   <div id="blocklyDiv" style="position: absolute"></div>
 
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <block type="controls_if"></block>
-    <block type="logic_compare"></block>
-    <block type="controls_repeat_ext"></block>
-    <block type="math_number">
-      <field name="NUM">123</field>
-    </block>
-    <block type="math_arithmetic"></block>
-    <block type="text"></block>
-    <block type="text_print"></block>
-  </xml>
-
   <script>
+    var toolbox = {
+        "kind":"flyoutToolbox",
+        "contents":[
+          {
+            "kind":"block",
+            "type":"controls_if"
+          },
+          {
+            "kind":"block",
+            "type":"logic_compare"
+          },
+          {
+            "kind":"block",
+            "type":"controls_repeat_ext"
+          },
+          {
+            "kind":"block",
+            "type":"math_number",
+            "fields":{
+              "NUM":123
+            }
+          },
+          {
+            "kind":"block",
+            "type":"math_arithmetic"
+          },
+          {
+            "kind":"block",
+            "type":"text"
+          },
+          {
+            "kind":"block",
+            "type":"text_print"
+          }
+        ]
+      }
+      
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
     var demoWorkspace = Blockly.inject(blocklyDiv,
         {media: 'https://unpkg.com/blockly/media/',
-         toolbox: document.getElementById('toolbox')});
+         toolbox: toolbox});
     var onresize = function(e) {
       // Compute the absolute coordinates and dimensions of blocklyArea.
       var element = blocklyArea;
