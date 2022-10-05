@@ -43,12 +43,12 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.27",
     "@blockly/dev-tools": "^5.0.0",
-    "blockly": "^8.0.0",
+    "blockly": "^9.0.0",
     "chai": "^4.2.0",
     "sinon": "^9.0.1"
   },
   "peerDependencies": {
-    "blockly": ">=7 <9"
+    "blockly": "^9.0.0"
   },
   "publishConfig": {
     "access": "public",
