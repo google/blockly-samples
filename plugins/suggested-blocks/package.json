@@ -48,7 +48,7 @@
     "sinon": "^14.0.0"
   },
   "peerDependencies": {
-    "blockly": ">=8.0.2 <10"
+    "blockly": "^9.0.0"
   },
   "publishConfig": {
     "access": "public",
