@@ -572,139 +572,140 @@ Blockly.fieldRegistry.register(
 /**
  * CSS for colour slider fields.
  */
-Blockly.Css.register(`\
-  .fieldColourSliderContainer {
-    padding: 4px;
-  }
-  .fieldColourSliderContainer hr {
-    border: none;
-    border-top: 1px solid #bbb;
-  }
-  .fieldColourSliderLabel {
-    display: flex;
-    justify-content: space-between;
-  }
-  .fieldColourEyedropper {
-    appearance: none;
-    position: relative;
-    border: none;
-    border-radius: 4px;
-    background: transparent;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    width: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .fieldColourEyedropper:hover {
-    background: rgba(0,0,0,0.1)
-  }
-  .fieldColourEyedropper input {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  .fieldColourEyedropper::before {
-    content: "Eyedropper";
-  }
-  .fieldColourEyedropper::after {
-    content: "";
-    margin-left: 8px;
-    width: 24px;
-    height: 24px;
-    background: currentColor;
-    pointer-events: none;
-    -webkit-mask-image: var(--customize-dial-symbol);
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-image: var(--customize-dial-symbol);
-    mask-repeat: no-repeat;
-    mask-position: center;
-    --customize-dial-symbol: url('data:image/svg+xml,\
-      <svg xmlns="http://www.w3.org/2000/svg" \
-           width="24px" height="24px" \
-           viewBox="0 0 24 24"> \
-        <path stroke="black" strokewidth="1.414" fill="none" \
-              d="m 13 8 L 6 15 Q 3 18 2 21 Q 0 23 .5 23.5 Q 1 24 3 22 \
-                  Q 6 21 9 18 L 16 11"/> \
-        <path fill="black" \
-              d="m 12 7 Q 11 6 12 5 Q 13 4 14 5 Q 15 6 16 5 Q 20 -1 22.5 1.5 \
-                  Q 25 4 19 8 Q 18 9 19 10 Q 20 11 19 12 Q 18 13 17 12"/> \
-      </svg>');
-  }
-  .fieldColourSlider {
-    -webkit-appearance: none;
-    width: 150px;
-    height: 24px;
-    margin: 4px 8px 24px 8px;
-    padding: 0;
-  }
-  .fieldColourSlider:focus {
-    outline: none;
-  }
-  /* Webkit */
-  .fieldColourSlider::-webkit-slider-runnable-track {
-    background: var(--slider-track-background);
-    border-radius: 8px;
-    height: 16px;
-  }
-  .fieldColourSlider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(0,0,0,.15);
-    cursor: pointer;
-    width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
-    height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
-    margin-top: -4px;
-  }
-  /* Firefox */
-  .fieldColourSlider::-moz-range-track {
-    background: var(--slider-track-background);
-    border-radius: 8px;
-    height: 16px;
-  }
-  .fieldColourSlider::-moz-range-thumb {
-    background: #fff;
-    border: none;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(0,0,0,.15);
-    cursor: pointer;
-    width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
-    height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
-  }
-  .fieldColourSlider::-moz-focus-outer {
-    /* override the focus border style */
-    border: 0;
-  }
-  /* IE */
-  .fieldColourSlider::-ms-track {
-    background: var(--slider-track-background);
-    border-radius: 12px;
-    width: 100%;
-    height: 24px;
-    /* remove default tick marks */
-    color: transparent;
-  }
-  .fieldColourSlider::-ms-fill-lower  {
-    background: transparent;
-  }
-  .fieldColourSlider::-ms-fill-upper  {
-    background: transparent;
-  }
-  .fieldColourSlider::-ms-thumb {
-    background: #fff;
-    border: none;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(0,0,0,.15);
-    cursor: pointer;
-    width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
-    height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
-  }`
-);
+Blockly.Css.register(`
+.fieldColourSliderCoainer {
+  padding: 4p
+}
+
+fieldColourSliderContainer hr {
+  border: none;
+  border-top: 1px solid #bbb;
+ 
+ fieldColourSliderLabel {
+  display: flex;
+  justify-content: space-between;
+ 
+ fieldColourEyedropper {
+  appearance: none;
+  position: relative;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+ fieldColourEyedropper:hover {
+  background: rgba(0,0,0,0.1)
+ 
+ fieldColourEyedropper input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+ 
+ fieldColourEyedropper::before {
+  content: "Eyedropper";
+ 
+ fieldColourEyedropper::after {
+  content: "";
+  margin-left: 8px;
+  width: 24px;
+  height: 24px;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask-image: var(--customize-dial-symbol);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: var(--customize-dial-symbol);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  --customize-dial-symbol: url('data:image/svg+xml,\
+    <svg xmlns="http://www.w3.org/2000/svg" \
+         width="24px" height="24px" \
+         viewBox="0 0 24 24"> \
+      <path stroke="black" strokewidth="1.414" fill="none" \
+            d="m 13 8 L 6 15 Q 3 18 2 21 Q 0 23 .5 23.5 Q 1 24 3 22 \
+                Q 6 21 9 18 L 16 11"/> \
+      <path fill="black" \
+            d="m 12 7 Q 11 6 12 5 Q 13 4 14 5 Q 15 6 16 5 Q 20 -1 22.5 1.5 \
+                Q 25 4 19 8 Q 18 9 19 10 Q 20 11 19 12 Q 18 13 17 12"/> \
+    </svg>');
+ 
+ fieldColourSlider {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 24px;
+  margin: 4px 8px 24px 8px;
+  padding: 0;
+ 
+ fieldColourSlider:focus {
+  outline: none;
+ 
+ * Webkit */
+ fieldColourSlider::-webkit-slider-runnable-track {
+  background: var(--slider-track-background);
+  border-radius: 8px;
+  height: 16px;
+ 
+ fieldColourSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(0,0,0,.15);
+  cursor: pointer;
+  width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+  height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+  margin-top: -4px;
+ 
+ * Firefox */
+ fieldColourSlider::-moz-range-track {
+  background: var(--slider-track-background);
+  border-radius: 8px;
+  height: 16px;
+ 
+ fieldColourSlider::-moz-range-thumb {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(0,0,0,.15);
+  cursor: pointer;
+  width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+  height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+ 
+ fieldColourSlider::-moz-focus-outer {
+  /* override the focus border style */
+  border: 0;
+ 
+ * IE */
+ fieldColourSlider::-ms-track {
+  background: var(--slider-track-background);
+  border-radius: 12px;
+  width: 100%;
+  height: 24px;
+  /* remove default tick marks */
+  color: transparent;
+ 
+ fieldColourSlider::-ms-fill-lower  {
+  background: transparent;
+ 
+ fieldColourSlider::-ms-fill-upper  {
+  background: transparent;
+ 
+ fieldColourSlider::-ms-thumb {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(0,0,0,.15);
+  cursor: pointer;
+  width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+  height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
+}
+`);

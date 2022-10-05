@@ -139,36 +139,36 @@ Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
 /**
  * CSS for slider field.
  */
-Blockly.Css.register(
-    `/** Setup grid layout of DropDown */
-  .fieldGridDropDownContainer.blocklyMenu {
-      display: grid;
-      grid-gap: 7px;
-    }
-  /* Change look of cells (add border, sizing, padding, and text color) */
-  .fieldGridDropDownContainer.blocklyMenu .blocklyMenuItem {
-    border: 1px solid rgba(1, 1, 1, 0.5);
-    border-radius: 4px;
-    color: white;
-    min-width: auto;
-    padding-left: 15px; /* override padding-left now that checkmark is hidden */
+Blockly.Css.register(`
+/** Setup grid layout of DropDown */
+.fieldGridDropDownContainer.blocklyMenu {
+    display: grid;
+    grid-gap: 7px;
   }
-  /* Change look of selected cell */
-  .fieldGridDropDownContainer .blocklyMenuItem .blocklyMenuItemCheckbox {
-    display: none; /* Hide checkmark */
-  }
-  .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemSelected {
-    background-color: rgba(1, 1, 1, 0.25);
-  }
-  /* Change look of focus/highlighted cell */
-  .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
-    box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
-  }
-  .fieldGridDropDownContainer .blocklyMenuItemHighlight {
-    /* Uses less selectors so as to not affect blocklyMenuItemSelected */
-    background-color: inherit;
-  }
-  .fieldGridDropDownContainer {
-    margin: 7px; /* needed for highlight */
-  }`
-);
+/* Change look of cells (add border, sizing, padding, and text color) */
+.fieldGridDropDownContainer.blocklyMenu .blocklyMenuItem {
+  border: 1px solid rgba(1, 1, 1, 0.5);
+  border-radius: 4px;
+  color: white;
+  min-width: auto;
+  padding-left: 15px; /* override padding-left now that checkmark is hidden */
+}
+/* Change look of selected cell */
+.fieldGridDropDownContainer .blocklyMenuItem .blocklyMenuItemCheckbox {
+  display: none; /* Hide checkmark */
+}
+.fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemSelected {
+  background-color: rgba(1, 1, 1, 0.25);
+}
+/* Change look of focus/highlighted cell */
+.fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
+}
+.fieldGridDropDownContainer .blocklyMenuItemHighlight {
+  /* Uses less selectors so as to not affect blocklyMenuItemSelected */
+  background-color: inherit;
+}
+.fieldGridDropDownContainer {
+  margin: 7px; /* needed for highlight */
+}
+`);

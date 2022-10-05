@@ -9,6 +9,11 @@ const sinon = require('sinon');
 const Blockly = require('blockly/node');
 const {testHelpers} = require('@blockly/dev-tools');
 const procedureTestHelpers = require('./procedures_test_helpers.mocha');
+const {dartGenerator} = require('blockly/dart');
+const {javascriptGenerator} = require('blockly/javascript');
+const {luaGenerator} = require('blockly/lua');
+const {phpGenerator} = require('blockly/php');
+const {pythonGenerator} = require('blockly/python');
 
 require('../src/index');
 
@@ -71,7 +76,7 @@ suite('Procedure blocks', function() {
          * @type {Array<CodeGenerationTestSuite>}
          */
         const codeGenerationTestSuites = [
-          {title: 'Dart', generator: Blockly.Dart,
+          {title: 'Dart', generator: dartGenerator,
             testCases: [
               {title: 'No arguments',
                 useWorkspaceToCode: true,
@@ -91,7 +96,7 @@ suite('Procedure blocks', function() {
                     '}',
                 createBlock: createBlockFn(1)},
             ]},
-          {title: 'JavaScript', generator: Blockly.JavaScript,
+          {title: 'JavaScript', generator: javascriptGenerator,
             testCases: [
               {title: 'No arguments',
                 useWorkspaceToCode: true,
@@ -107,7 +112,7 @@ suite('Procedure blocks', function() {
                     '}\n',
                 createBlock: createBlockFn(1)},
             ]},
-          {title: 'Lua', generator: Blockly.Lua,
+          {title: 'Lua', generator: luaGenerator,
             testCases: [
               {title: 'No arguments',
                 useWorkspaceToCode: true,
@@ -122,7 +127,7 @@ suite('Procedure blocks', function() {
                     'end\n',
                 createBlock: createBlockFn(1)},
             ]},
-          {title: 'PHP', generator: Blockly.PHP,
+          {title: 'PHP', generator: phpGenerator,
             testCases: [
               {title: 'No arguments',
                 useWorkspaceToCode: true,
@@ -137,7 +142,7 @@ suite('Procedure blocks', function() {
                     '}\n',
                 createBlock: createBlockFn(1)},
             ]},
-          {title: 'Python', generator: Blockly.Python,
+          {title: 'Python', generator: pythonGenerator,
             testCases: [
               {title: 'No arguments',
                 useWorkspaceToCode: true,

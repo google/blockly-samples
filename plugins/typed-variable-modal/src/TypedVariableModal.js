@@ -362,24 +362,25 @@ export class TypedVariableModal extends Modal {
   }
 }
 
-Blockly.Css.register([`
-    .typedModalTitle {
-      font-weight: bold;
-      font-size: 1em;
-    }
-    .typedModalVariableInputContainer {
-      margin: 1em 0 1em 0;
-    }
-    .typedModalVariableLabel{
-      margin-right: .5em;
-    }
-    .typedModalTypes ul{
-      display: flex;
-      flex-wrap: wrap;
-      list-style-type: none;
-      padding: 0;
-    }
-    .typedModalTypes li {
-      margin-right: 1em;
-      display: flex;
-    }`]);
+Blockly.Css.register(`
+.typedModalTitle {
+  font-weight: bold;
+  font-size: 1em;
+}
+.typedModalVariableInputContainer {
+  margin: 1em 0 1em 0;
+}
+.typedModalVariableLabel{
+  margin-right: .5em;
+}
+.typedModalTypes ul{
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+.typedModalTypes li {
+  margin-right: 1em;
+  display: flex;
+}
+`);
