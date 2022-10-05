@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/theme-dark@3.0.17...@blockly/theme-dark@4.0.0) (2022-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer and devDependencies of all plugins to require Blockly v9 (#1314)
+
+### Features
+
+* Update theme-dark to use JSON toolbox definitions instead of xml ([#1281](https://github.com/google/blockly-samples/issues/1281)) ([ec47395](https://github.com/google/blockly-samples/commit/ec47395405ef602ecd8885b2c06f0b1fa77d2bb8))
+
+
+### Bug Fixes
+
+* references to deprecated functions in v9 ([#1313](https://github.com/google/blockly-samples/issues/1313)) ([cb2e679](https://github.com/google/blockly-samples/commit/cb2e67987e0b62a77c26adc660cc6ade1ba67954))
+
+
+### Miscellaneous Chores
+
+* update peer and devDependencies of all plugins to require Blockly v9 ([#1314](https://github.com/google/blockly-samples/issues/1314)) ([03d4912](https://github.com/google/blockly-samples/commit/03d4912c42c8de0f30493037ccc28dddaea0f266))
+
+
+
 ## 3.0.17 (2022-08-11)
 
 

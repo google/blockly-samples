@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@3.0.22...@blockly/block-plus-minus@4.0.0) (2022-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer and devDependencies of all plugins to require Blockly v9 (#1314)
+
+### Features
+
+* convert block-plus-minus :toolbox definition from xml to json ([#1285](https://github.com/google/blockly-samples/issues/1285)) ([d8d1c67](https://github.com/google/blockly-samples/commit/d8d1c676b87ee695ea1f070937651fbabe5377c3))
+
+
+### Bug Fixes
+
+* generator imports for use with blockly v9 ([#1305](https://github.com/google/blockly-samples/issues/1305)) ([51d59e9](https://github.com/google/blockly-samples/commit/51d59e98d172400e45fc74755f577e068df9996b))
+* references to deprecated functions in v9 ([#1313](https://github.com/google/blockly-samples/issues/1313)) ([cb2e679](https://github.com/google/blockly-samples/commit/cb2e67987e0b62a77c26adc660cc6ade1ba67954))
+
+
+### Miscellaneous Chores
+
+* update peer and devDependencies of all plugins to require Blockly v9 ([#1314](https://github.com/google/blockly-samples/issues/1314)) ([03d4912](https://github.com/google/blockly-samples/commit/03d4912c42c8de0f30493037ccc28dddaea0f266))
+
+
+
 ## 3.0.22 (2022-08-11)
 
 

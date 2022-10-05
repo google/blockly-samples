@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-slider@3.0.22...@blockly/field-slider@4.0.0) (2022-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer and devDependencies of all plugins to require Blockly v9 (#1314)
+
+### Bug Fixes
+
+* field slider test that used private properties ([#1307](https://github.com/google/blockly-samples/issues/1307)) ([55a5498](https://github.com/google/blockly-samples/commit/55a5498104589d8931effecddf6dfc7abebfb79a))
+* references to deprecated functions in v9 ([#1313](https://github.com/google/blockly-samples/issues/1313)) ([cb2e679](https://github.com/google/blockly-samples/commit/cb2e67987e0b62a77c26adc660cc6ade1ba67954))
+* resizing for slider field to fit contents ([#1275](https://github.com/google/blockly-samples/issues/1275)) ([78455c9](https://github.com/google/blockly-samples/commit/78455c90bbaf3d77f976e4958f12e60fe148772f))
+* slider field dispose ([#1299](https://github.com/google/blockly-samples/issues/1299)) ([c05edf9](https://github.com/google/blockly-samples/commit/c05edf91fd8865f85f142927f77c29019bd6176f))
+
+
+### Miscellaneous Chores
+
+* update peer and devDependencies of all plugins to require Blockly v9 ([#1314](https://github.com/google/blockly-samples/issues/1314)) ([03d4912](https://github.com/google/blockly-samples/commit/03d4912c42c8de0f30493037ccc28dddaea0f266))
+
+
+
 ## 3.0.22 (2022-08-11)
 
 

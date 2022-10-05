@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.0](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.2.22...@blockly/keyboard-navigation@0.3.0) (2022-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer and devDependencies of all plugins to require Blockly v9 (#1314)
+
+### Bug Fixes
+
+* keyboard navigation tests ([#1311](https://github.com/google/blockly-samples/issues/1311)) ([8299646](https://github.com/google/blockly-samples/commit/8299646ecf26bf0a95df11bfb24ae2e219c88176))
+* references to deprecated functions in v9 ([#1313](https://github.com/google/blockly-samples/issues/1313)) ([cb2e679](https://github.com/google/blockly-samples/commit/cb2e67987e0b62a77c26adc660cc6ade1ba67954))
+
+
+### Miscellaneous Chores
+
+* update peer and devDependencies of all plugins to require Blockly v9 ([#1314](https://github.com/google/blockly-samples/issues/1314)) ([03d4912](https://github.com/google/blockly-samples/commit/03d4912c42c8de0f30493037ccc28dddaea0f266))
+
+
+
 ## 0.2.22 (2022-08-11)
 
 

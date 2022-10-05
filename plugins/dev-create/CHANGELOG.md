@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.20](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.19...@blockly/create-package@1.1.20) (2022-10-05)
+
+
+### Bug Fixes
+
+* generator imports for use with blockly v9 ([#1305](https://github.com/google/blockly-samples/issues/1305)) ([51d59e9](https://github.com/google/blockly-samples/commit/51d59e98d172400e45fc74755f577e068df9996b))
+
+
+
 ## 1.1.19 (2022-08-11)
 
 
