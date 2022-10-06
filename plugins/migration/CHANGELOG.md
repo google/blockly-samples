@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.0](https://github.com/google/blockly-samples/compare/@blockly/migrate@1.0.12...@blockly/migrate@1.1.0) (2022-10-05)
+
+
+### Features
+
+* add a migration script to fix imports ([#1306](https://github.com/google/blockly-samples/issues/1306)) ([338c5b3](https://github.com/google/blockly-samples/commit/338c5b322e287768a72e4be6e2d2c5aabf037e5a))
+
+
+
 ## 1.0.12 (2022-08-11)
 
 

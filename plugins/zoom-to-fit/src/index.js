@@ -250,14 +250,14 @@ const ZOOM_TO_FIT_SVG_DATAURI =
     'QuNTdsLTMuMDktMy4wOC0xLjQxIDEuNDFMMTcuNTkgMTlIMTV2Mmg2di02aC0yek04LjA5ID' +
     'E0LjVMNSAxNy41OVYxNUgzdjZoNnYtMkg2LjQybDMuMDgtMy4wOXoiLz48L3N2Zz4=';
 
-Blockly.Css.register([
-  `.zoomToFit {
-    opacity: .4;
-  }
-  .zoomToFit:hover {
-    opacity: .6;
-  }
-  .zoomToFit:active {
-    opacity: .8;
-  }`,
-]);
+Blockly.Css.register(`
+.zoomToFit {
+  opacity: .4;
+}
+.zoomToFit:hover {
+  opacity: .6;
+}
+.zoomToFit:active {
+  opacity: .8;
+}
+`);

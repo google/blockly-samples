@@ -326,54 +326,55 @@ export class Modal {
   }
 }
 
-Blockly.Css.register([`
-    .blocklyModalOverlay {
-      width: 100%;
-      height: 100%;
-      left: 0px;
-      top: 0px;
-      position: fixed;
-    }
-    .blocklyModalContainer {
-      background-color: white;
-      border: 1px solid gray;
-      font-family: Helvetica;
-      font-weight: 300;
-      padding: 1em;
-      width: 400px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      box-shadow: 0px 10px 20px grey;
-      z-index: 100;
-      margin: 15% auto;
-    }
-    .blocklyModalHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .blocklyModalHeaderTitle {
-      margin-top: 0;
-      margin-bottom: 0;
-      font-size: 1.2em;
-      line-height: 1.25;
-    }
-    .blocklyModalHeader .blocklyModalBtn {
-      margin-left: auto;
-      height: fit-content;
-    }
-    .blocklyModalBtnClose:before {
-      content: "\\2715";
-    }
-    .blocklyModalBtn {
-      margin-right: .5em;
-      border: 1px solid gray;
-      font-weight: 500;
-      color: gray;
-      border-radius: 25px;
-    }
-    .blocklyModalBtnPrimary {
-      background-color: gray;
-      color: white;
-    }`]);
+Blockly.Css.register(`
+.blocklyModalOverlay {
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  position: fixed;
+}
+.blocklyModalContainer {
+  background-color: white;
+  border: 1px solid gray;
+  font-family: Helvetica;
+  font-weight: 300;
+  padding: 1em;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0px 10px 20px grey;
+  z-index: 100;
+  margin: 15% auto;
+}
+.blocklyModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.blocklyModalHeaderTitle {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.2em;
+  line-height: 1.25;
+}
+.blocklyModalHeader .blocklyModalBtn {
+  margin-left: auto;
+  height: fit-content;
+}
+.blocklyModalBtnClose:before {
+  content: "\\2715";
+}
+.blocklyModalBtn {
+  margin-right: .5em;
+  border: 1px solid gray;
+  font-weight: 500;
+  color: gray;
+  border-radius: 25px;
+}
+.blocklyModalBtnPrimary {
+  background-color: gray;
+  color: white;
+}
+`);

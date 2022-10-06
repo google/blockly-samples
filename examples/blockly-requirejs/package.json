@@ -1,16 +1,16 @@
 {
-    "name": "blockly-requirejs-sample",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "audit": "npm audit fix",
-        "update": "npm update",
-        "start": "node_modules/.bin/http-server -c-1 ./ -p 3000"
-    },
-    "dependencies": {
-        "blockly": "^3.20200123.0"
-    },
-    "devDependencies": {
-        "http-server": "^0.12.3"
-    }
+  "name": "blockly-requirejs-sample",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "audit": "npm audit fix",
+    "update": "npm update",
+    "start": "node_modules/.bin/http-server -c-1 ./ -p 3000"
+  },
+  "dependencies": {
+    "blockly": "^3.20200123.0"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3"
+  }
 }

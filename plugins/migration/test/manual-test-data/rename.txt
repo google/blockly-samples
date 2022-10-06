@@ -1,6 +1,6 @@
 // Manual test data for the renamings migration.
 // Run using:
-//   node ./bin/migrate rename --from <version> ./test/manual-test-data.txt
+//   node ./bin/migrate rename --from <version> ./test/manual-test-data/rename.txt
 
 import Blockly from 'blockly';
 

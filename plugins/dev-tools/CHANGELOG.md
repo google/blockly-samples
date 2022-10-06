@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@4.0.3...@blockly/dev-tools@5.0.0) (2022-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer and devDependencies of all plugins to require Blockly v9 (#1314)
+
+### Bug Fixes
+
+* add missing removeGenerator function in Playground API type ([#1224](https://github.com/google/blockly-samples/issues/1224)) ([#1274](https://github.com/google/blockly-samples/issues/1274)) ([9e92461](https://github.com/google/blockly-samples/commit/9e9246153d4089aaa1c9ad011cf5812e3c136f13))
+* generator imports for use with blockly v9 ([#1305](https://github.com/google/blockly-samples/issues/1305)) ([51d59e9](https://github.com/google/blockly-samples/commit/51d59e98d172400e45fc74755f577e068df9996b))
+* references to deprecated functions in v9 ([#1313](https://github.com/google/blockly-samples/issues/1313)) ([cb2e679](https://github.com/google/blockly-samples/commit/cb2e67987e0b62a77c26adc660cc6ade1ba67954))
+
+
+### Reverts
+
+* Revert "chore: fix generator imports in dev tools (#1236)" (#1266) ([4da4fd7](https://github.com/google/blockly-samples/commit/4da4fd71e9d56e78075d9809e75ab058cf0cca0e)), closes [#1236](https://github.com/google/blockly-samples/issues/1236) [#1266](https://github.com/google/blockly-samples/issues/1266)
+
+
+### Miscellaneous Chores
+
+* update peer and devDependencies of all plugins to require Blockly v9 ([#1314](https://github.com/google/blockly-samples/issues/1314)) ([03d4912](https://github.com/google/blockly-samples/commit/03d4912c42c8de0f30493037ccc28dddaea0f266))
+
+
+
 ## 4.0.3 (2022-08-11)
 
 

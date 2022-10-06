@@ -1,49 +1,50 @@
 {
-    "name": "blockly-samples",
-    "version": "0.0.0",
-    "description": "Samples for using Blockly",
-    "author": "Blockly Team",
-    "license": "Apache-2.0",
-    "scripts": {
-        "audit:fix": "lerna run audit:fix && lerna bootstrap",
-        "boot": "lerna bootstrap",
-        "build": "lerna run build",
-        "clean": "lerna run clean",
-        "clean:node": "lerna clean --yes",
-        "deploy:prepare": "npm run deploy:prepare:plugins && npm run deploy:prepare:examples && gulp predeploy",
-        "deploy:prepare:examples": "cd examples && npm run predeploy",
-        "deploy:prepare:plugins": "npm run clean && lerna run predeploy",
-        "deploy": "npm run deploy:prepare && gulp deploy",
-        "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
-        "license": "gulp checkLicenses",
-        "lint": "lerna run lint --no-bail",
-        "lint:fix": "lerna run lint -- -- --fix",
-        "postinstall": "npm run boot",
-        "test": "lerna run test",
-        "publish:prepare": "gulp prepareForPublish",
-        "publish:manual": "gulp publishManual",
-        "publish:force": "gulp forcePublish",
-        "publish:unpublishedOnly": "gulp publishFromPackage",
-        "publish:checkVersions": "gulp checkVersions",
-        "test:ghpages:beta": "gulp testGhPagesBeta",
-        "test:ghpages": "gulp testGhPages"
-    },
-    "devDependencies": {
-        "@blockly/eslint-config": "^2.1.7",
-        "eslint": "^7.15.0",
-        "gh-pages": "^3.1.0",
-        "gulp": "^4.0.2",
-        "gulp-header": "^2.0.9",
-        "js-green-licenses": "^1.1.0",
-        "json-to-pretty-yaml": "^1.2.2",
-        "lerna": "^5.4.3",
-        "rimraf": "^3.0.2"
-    },
-    "publishConfig": {
-        "access": "public",
-        "registry": "https://wombat-dressing-room.appspot.com"
-    },
-    "eslintConfig": {
-        "extends": "@blockly/eslint-config"
-    }
+  "name": "blockly-samples",
+  "version": "0.0.0",
+  "description": "Samples for using Blockly",
+  "author": "Blockly Team",
+  "license": "Apache-2.0",
+  "scripts": {
+    "audit:fix": "lerna run audit:fix && lerna bootstrap",
+    "boot": "lerna bootstrap",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "clean:node": "lerna clean --yes",
+    "deploy:prepare": "npm run deploy:prepare:plugins && npm run deploy:prepare:examples && gulp predeploy",
+    "deploy:prepare:examples": "cd examples && npm run predeploy",
+    "deploy:prepare:plugins": "npm run clean && lerna run predeploy",
+    "deploy": "npm run deploy:prepare && gulp deploy",
+    "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
+    "license": "gulp checkLicenses",
+    "lint": "lerna run lint --no-bail",
+    "lint:fix": "lerna run lint -- -- --fix",
+    "postinstall": "npm run boot",
+    "test": "lerna run test",
+    "publish:prepare": "gulp prepareForPublish",
+    "publish:manual": "gulp publishManual",
+    "publish:force": "gulp forcePublish",
+    "publish:unpublishedOnly": "gulp publishFromPackage",
+    "publish:checkVersions": "gulp checkVersions",
+    "test:ghpages:beta": "gulp testGhPagesBeta",
+    "test:ghpages": "gulp testGhPages"
+  },
+  "devDependencies": {
+    "@blockly/eslint-config": "^2.1.7",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "eslint": "^7.15.0",
+    "gh-pages": "^3.1.0",
+    "gulp": "^4.0.2",
+    "gulp-header": "^2.0.9",
+    "js-green-licenses": "^1.1.0",
+    "json-to-pretty-yaml": "^1.2.2",
+    "lerna": "^5.5.4",
+    "rimraf": "^3.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  }
 }

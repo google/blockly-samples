@@ -143,7 +143,7 @@ export class ScrollOptions {
     }
 
     // Figure out the desired location to scroll to.
-    const scrollDelta = Blockly.utils.getScrollDeltaPixels(e);
+    const scrollDelta = Blockly.browserEvents.getScrollDeltaPixels(e);
     const x = this.workspace_.scrollX - scrollDelta.x;
     const y = this.workspace_.scrollY - scrollDelta.y;
 

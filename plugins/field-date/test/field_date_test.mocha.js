@@ -40,7 +40,7 @@ suite('FieldDate', function() {
   validValueTestCases.forEach(addArgsAndJson);
   // Construct ISO string using current timezone.
   // Cannot use toISOString() because it returns in UTC.
-  const defaultFieldValue = new Date().toLocaleDateString()
+  const defaultFieldValue = new Date().toLocaleDateString('en-US')
       .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
       .replace(/-(\d)(?!\d)/g, '-0$1');
   const assertFieldDefault = function(field) {
