@@ -11,9 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const resolve = require('resolve');
 const webpack = require('webpack');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
@@ -120,7 +118,7 @@ module.exports = (env) => {
           enforce: 'pre',
         },
         // Run babel to compile both JS and TS.
-        {
+        !isTypescript && {
           test: /\.(js|mjs|ts)$/,
           exclude: /(node_modules|build)/,
           loader: require.resolve('babel-loader'),
@@ -134,6 +132,10 @@ module.exports = (env) => {
             compact: isProduction,
           },
         },
+        isTypescript && {
+          test: /\.tsx?$/,
+          loader: require.resolve("ts-loader")
+        },
       ].filter(Boolean),
     },
     // Ignore spurious warnings from source-map-loader
@@ -143,21 +145,6 @@ module.exports = (env) => {
       // Add package name.
       new webpack.DefinePlugin({
         'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
-      }),
-      // Typecheck TS.
-      isTypescript &&
-      new ForkTsCheckerWebpackPlugin({
-        typescript: resolve.sync('typescript', {
-          basedir: resolveApp('node_modules'),
-        }),
-        async: isDevelopment,
-        useTypescriptIncrementalApi: true,
-        checkSyntacticErrors: true,
-        tsconfig: resolveApp('tsconfig.json'),
-        reportFiles: [
-          '**',
-        ],
-        silent: true,
       }),
       // canvas should only be required by jsdom if the 'canvas' package is
       // installed in package.json. Ignoring canvas require errors.
