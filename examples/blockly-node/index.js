@@ -23,23 +23,35 @@
 
 var Blockly = require('blockly');
 
-var xmlText = `<xml xmlns="https://developers.google.com/blockly/xml">
-<block type="text_print" x="37" y="63">
-  <value name="TEXT">
-    <shadow type="text">
-      <field name="TEXT">Hello from Blockly!</field>
-    </shadow>
-  </value>
-</block>
-</xml>`;
+var json = {
+  "blocks": {
+    "languageVersion": 0,
+    "blocks": [
+      {
+        "type": "text_print",
+        "id": "0b61B|)zMnTbwbPAG1iG",
+        "x": 113,
+        "y": 238,
+        "inputs": {
+          "TEXT": {
+            "shadow": {
+              "type": "text",
+              "id": "_!OgDm+,dRCHii(i|kdL",
+              "fields": {
+                "TEXT": "Hello from Blockly!"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
 
 try {
-  var xml = Blockly.Xml.textToDom(xmlText);
-
-  // Create workspace and import the XML
+  // Create workspace and load JSON
   var workspace = new Blockly.Workspace();
-  Blockly.Xml.domToWorkspace(xml, workspace);
-
+  Blockly.serialization.workspaces.load(json, workspace);
   // Convert code and log output
   var code = Blockly.Python.workspaceToCode(workspace);
   console.log(code);
