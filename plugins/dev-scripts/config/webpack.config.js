@@ -127,14 +127,13 @@ module.exports = (env) => {
             configFile: false,
             presets: [
               require.resolve('@babel/preset-env'),
-              isTypescript && require.resolve('@babel/preset-typescript'),
             ].filter(Boolean),
             compact: isProduction,
           },
         },
         isTypescript && {
           test: /\.tsx?$/,
-          loader: require.resolve("ts-loader")
+          loader: require.resolve('ts-loader'),
         },
       ].filter(Boolean),
     },
