@@ -8,7 +8,7 @@
         "experimentalDecorators": true,
         "module": "ES2015",
         "moduleResolution": "node",
-        "target": "ES2020",
+        "target": "ES2015",
         "strict": true,
     },
     // NOTE: `test/**/*` is automatically included in `blockly-scripts start`.
