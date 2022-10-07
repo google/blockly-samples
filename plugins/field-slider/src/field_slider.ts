@@ -26,8 +26,9 @@ export interface FieldSliderOptions extends FieldSliderConfig {
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
- * TODO: Add more precise function type at the corresponding source.
- * See https://github.com/google/blockly/blob/master/core/field.js
+ * NOTE: `Function` is banned by eslint. Eventually, a more precise
+ * function type should be added at the corresponding source:
+ * https://github.com/google/blockly/blob/master/core/field.ts
  */
 type FieldSliderValidator = Function;
 /* eslint-enable @typescript-eslint/ban-types */
@@ -46,7 +47,7 @@ export class FieldSlider extends Blockly.FieldNumber {
   /**
    * The HTML range input element.
    */
-  private sliderInput?: HTMLInputElement = null;
+  private sliderInput: HTMLInputElement|null = null;
 
   /**
    * Class for an number slider field.
@@ -78,8 +79,8 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @nocollapse
    */
   static fromJson(options: FieldSliderOptions): FieldSlider {
-    return new FieldSlider(options['value'], undefined, undefined, undefined,
-        undefined, options);
+    return new FieldSlider(
+        options.value, undefined, undefined, undefined, undefined, options);
   }
 
   /* eslint-disable @typescript-eslint/naming-convention */
@@ -91,25 +92,18 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @param quietInput Quiet input.
    */
   protected showEditor_(e?: Event, quietInput?: boolean) {
-    /**
-     * NOTE: The second param, `quietInput`, is utilized in `field_textinput`,
-     * but the type isn't properly built.
-     * See https://github.com/google/blockly/blob/master/core/field_textinput.js
-     *
-     * TODO: Remove `ShowEditorCorrected` once the exported `showEditor_` type
-     * is fixed.
-     */
-    type ShowEditorCorrected = (e?: Event, quietInput?: boolean) => void;
-    (super.showEditor_ as ShowEditorCorrected)(e, quietInput);
+    super.showEditor_(e, quietInput);
 
     // Build the DOM.
     const editor = this.dropdownCreate_();
 
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
-    Blockly.DropDownDiv.setColour(
-        this.sourceBlock_['style'].colourPrimary,
-        this.sourceBlock_['style'].colourTertiary);
+    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
+
+    const primary = sourceBlock.getColour() || '';
+    const tertiary = sourceBlock.getColourTertiary() || '';
+    Blockly.DropDownDiv.setColour(primary, tertiary);
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));
@@ -161,7 +155,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Sets the text to match the slider's position.
    */
   private onSliderChange_() {
-    this.setEditorValue_(this.sliderInput.value);
+    this.setEditorValue_(this.sliderInput?.value);
     this.resizeEditor_();
   }
 

@@ -52,11 +52,6 @@ const toolbox = generateFieldTestBlocks('field_slider', [
  */
 function createWorkspace(blocklyDiv: HTMLElement,
     options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
-  /**
-   * TODO: Update options type information to properly support
-   * `Blockly.BlocklyOptions`.
-   * See https://github.com/google/blockly/blob/master/core/inject.js
-   */
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
@@ -65,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    createPlayground(rootElement, createWorkspace, defaultOptions);
+  }
 });
