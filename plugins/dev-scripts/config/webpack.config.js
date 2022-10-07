@@ -117,7 +117,6 @@ module.exports = (env) => {
           use: [require.resolve('source-map-loader')],
           enforce: 'pre',
         },
-        // Run babel to compile both JS and TS.
         !isTypescript && {
           test: /\.(js|mjs|ts)$/,
           exclude: /(node_modules|build)/,
