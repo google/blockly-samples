@@ -117,7 +117,10 @@ module.exports = (env) => {
           use: [require.resolve('source-map-loader')],
           enforce: 'pre',
         },
-        !isTypescript && {
+        isTypescript ? {
+          test: /\.tsx?$/,
+          loader: require.resolve('ts-loader'),
+        } : {
           test: /\.(js|mjs|ts)$/,
           exclude: /(node_modules|build)/,
           loader: require.resolve('babel-loader'),
@@ -129,10 +132,6 @@ module.exports = (env) => {
             ].filter(Boolean),
             compact: isProduction,
           },
-        },
-        isTypescript && {
-          test: /\.tsx?$/,
-          loader: require.resolve('ts-loader'),
         },
       ].filter(Boolean),
     },
