@@ -106,6 +106,16 @@ export class BlocklyComponent implements OnInit {
       ]
     }
 
-    Blockly.inject(blocklyDiv, { toolbox: toolbox } as BlocklyOptions);
+    Blockly.inject(blocklyDiv, {
+      readOnly: false,
+      media: 'media/',
+      trashcan: true,
+      move: {
+        scrollbars: true,
+        drag: true,
+        wheel: true
+      },
+      toolbox: toolbox
+    } as BlocklyOptions);
   }
 }
