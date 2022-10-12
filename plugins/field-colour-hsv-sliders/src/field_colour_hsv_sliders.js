@@ -573,19 +573,18 @@ Blockly.fieldRegistry.register(
  * CSS for colour slider fields.
  */
 Blockly.Css.register(`
-.fieldColourSliderCoainer {
-  padding: 4p
+.fieldColourSliderContainer {
+  padding: 4px;
 }
-
-fieldColourSliderContainer hr {
+.fieldColourSliderContainer hr {
   border: none;
   border-top: 1px solid #bbb;
- 
- fieldColourSliderLabel {
+}
+.fieldColourSliderLabel {
   display: flex;
   justify-content: space-between;
- 
- fieldColourEyedropper {
+}
+.fieldColourEyedropper {
   appearance: none;
   position: relative;
   border: none;
@@ -599,22 +598,22 @@ fieldColourSliderContainer hr {
   display: flex;
   justify-content: center;
   align-items: center;
- 
- fieldColourEyedropper:hover {
+}
+.fieldColourEyedropper:hover {
   background: rgba(0,0,0,0.1)
- 
- fieldColourEyedropper input {
+}
+.fieldColourEyedropper input {
   opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
- 
- fieldColourEyedropper::before {
+}
+.fieldColourEyedropper::before {
   content: "Eyedropper";
- 
- fieldColourEyedropper::after {
+}
+.fieldColourEyedropper::after {
   content: "";
   margin-left: 8px;
   width: 24px;
@@ -638,24 +637,24 @@ fieldColourSliderContainer hr {
             d="m 12 7 Q 11 6 12 5 Q 13 4 14 5 Q 15 6 16 5 Q 20 -1 22.5 1.5 \
                 Q 25 4 19 8 Q 18 9 19 10 Q 20 11 19 12 Q 18 13 17 12"/> \
     </svg>');
- 
- fieldColourSlider {
+}
+.fieldColourSlider {
   -webkit-appearance: none;
   width: 150px;
   height: 24px;
   margin: 4px 8px 24px 8px;
   padding: 0;
- 
- fieldColourSlider:focus {
+}
+.fieldColourSlider:focus {
   outline: none;
- 
- * Webkit */
- fieldColourSlider::-webkit-slider-runnable-track {
+}
+/* Webkit */
+.fieldColourSlider::-webkit-slider-runnable-track {
   background: var(--slider-track-background);
   border-radius: 8px;
   height: 16px;
- 
- fieldColourSlider::-webkit-slider-thumb {
+}
+.fieldColourSlider::-webkit-slider-thumb {
   -webkit-appearance: none;
   background: #fff;
   border-radius: 50%;
@@ -664,14 +663,14 @@ fieldColourSliderContainer hr {
   width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
   height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
   margin-top: -4px;
- 
- * Firefox */
- fieldColourSlider::-moz-range-track {
+}
+/* Firefox */
+.fieldColourSlider::-moz-range-track {
   background: var(--slider-track-background);
   border-radius: 8px;
   height: 16px;
- 
- fieldColourSlider::-moz-range-thumb {
+}
+.fieldColourSlider::-moz-range-thumb {
   background: #fff;
   border: none;
   border-radius: 50%;
@@ -679,27 +678,27 @@ fieldColourSliderContainer hr {
   cursor: pointer;
   width: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
   height: ${FieldColourHsvSliders.THUMB_RADIUS * 2}px;
- 
- fieldColourSlider::-moz-focus-outer {
+}
+.fieldColourSlider::-moz-focus-outer {
   /* override the focus border style */
   border: 0;
- 
- * IE */
- fieldColourSlider::-ms-track {
+}
+/* IE */
+.fieldColourSlider::-ms-track {
   background: var(--slider-track-background);
   border-radius: 12px;
   width: 100%;
   height: 24px;
   /* remove default tick marks */
   color: transparent;
- 
- fieldColourSlider::-ms-fill-lower  {
+}
+.fieldColourSlider::-ms-fill-lower  {
   background: transparent;
- 
- fieldColourSlider::-ms-fill-upper  {
+}
+.fieldColourSlider::-ms-fill-upper  {
   background: transparent;
- 
- fieldColourSlider::-ms-thumb {
+}
+.fieldColourSlider::-ms-thumb {
   background: #fff;
   border: none;
   border-radius: 50%;
