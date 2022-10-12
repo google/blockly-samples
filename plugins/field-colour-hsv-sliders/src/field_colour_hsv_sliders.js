@@ -628,8 +628,8 @@ Blockly.Css.register(`
   mask-position: center;
   --customize-dial-symbol: url('data:image/svg+xml,\
     <svg xmlns="http://www.w3.org/2000/svg" \
-          width="24px" height="24px" \
-          viewBox="0 0 24 24"> \
+         width="24px" height="24px" \
+         viewBox="0 0 24 24"> \
       <path stroke="black" strokewidth="1.414" fill="none" \
             d="m 13 8 L 6 15 Q 3 18 2 21 Q 0 23 .5 23.5 Q 1 24 3 22 \
                 Q 6 21 9 18 L 16 11"/> \
