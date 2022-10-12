@@ -2,7 +2,10 @@
 
 name: publish
 
-on: workflow_dispatch  # Manually trigger.
+on:
+  workflow_dispatch:  # Manually trigger. Colon is required.
+  schedule:
+    cron: '5 17 * * 4' # Thursdays at 17:05 UTC (09:05 PST / 10:05 PDT)
 
 permissions:
   contents: write  # For checkout and tag.
