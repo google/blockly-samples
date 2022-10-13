@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@3.0.0...@blockly/workspace-backpack@3.0.1) (2022-10-13)
+
+**Note:** Version bump only for package @blockly/workspace-backpack
+
+
+
+
+
 ## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@2.0.16...@blockly/workspace-backpack@3.0.0) (2022-10-05)
 
 

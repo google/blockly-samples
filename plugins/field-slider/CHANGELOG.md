@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-slider@4.0.0...@blockly/field-slider@4.0.1) (2022-10-13)
+
+
+### Bug Fixes
+
+* scripts plugin now properly builds TypeScript declarations ([#1322](https://github.com/google/blockly-samples/issues/1322)) ([180cb6a](https://github.com/google/blockly-samples/commit/180cb6a431a2e9bdc1000b1521413d74625391db))
+
+
+
 ## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-slider@3.0.22...@blockly/field-slider@4.0.0) (2022-10-05)
 
 

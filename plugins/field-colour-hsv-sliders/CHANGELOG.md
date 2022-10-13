@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.0.0...@blockly/field-colour-hsv-sliders@2.0.1) (2022-10-13)
+
+
+### Bug Fixes
+
+* Reverting invalid changes to hsv slider css. ([#1329](https://github.com/google/blockly-samples/issues/1329)) ([925858d](https://github.com/google/blockly-samples/commit/925858dd1ab7befcf051bf64d045dc71ea4ed997))
+
+
+
 ## [2.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@1.1.0...@blockly/field-colour-hsv-sliders@2.0.0) (2022-10-05)
 
 

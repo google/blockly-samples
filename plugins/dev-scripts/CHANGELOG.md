@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.28](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.27...@blockly/dev-scripts@1.2.28) (2022-10-13)
+
+
+### Bug Fixes
+
+* scripts plugin now properly builds TypeScript declarations ([#1322](https://github.com/google/blockly-samples/issues/1322)) ([180cb6a](https://github.com/google/blockly-samples/commit/180cb6a431a2e9bdc1000b1521413d74625391db))
+
+
+
 ## 1.2.27 (2022-08-11)
 
 
