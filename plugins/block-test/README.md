@@ -2,7 +2,7 @@
 title: "@blockly/block-test Demo"
 packageName: "@blockly/block-test"
 description: "A group of Blockly test blocks."
-version: "3.0.0"
+version: "3.0.1"
 pageRoot: "plugins/block-test"
 pages:
   - label: "Playground"
