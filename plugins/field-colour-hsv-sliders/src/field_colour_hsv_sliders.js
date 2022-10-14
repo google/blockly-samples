@@ -386,28 +386,15 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
         Blockly.browserEvents.conditionalBind(
             this.brightnessSlider_, 'input', this, this.onSliderChange_));
 
-    container.appendChild(document.createElement('hr'));
-
     if (window.EyeDropper) {
       // If the browser supports the eyedropper API, create a button for it.
       const button = document.createElement('button');
       button.classList.add('fieldColourEyedropper');
+      container.appendChild(document.createElement('hr'));
       container.appendChild(button);
       this.boundEvents_.push(
           Blockly.browserEvents.conditionalBind(
               button, 'click', this, this.onEyedropperEvent_));
-    } else {
-      // Otherwise, fall back on colour input elements. Browsers generally
-      // provide an eyedropper feature as part of their colour input editor.
-      const label = document.createElement('label');
-      label.classList.add('fieldColourEyedropper');
-      const input = document.createElement('input');
-      input.type = 'color';
-      label.appendChild(input);
-      container.appendChild(label);
-      this.boundEvents_.push(
-          Blockly.browserEvents.conditionalBind(
-              input, 'input', this, this.onBrowserColourInputEvent_));
     }
 
     this.dropdownContainer_ = container;
@@ -480,17 +467,6 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
       this.doValueUpdate_(result.sRGBHex);
       this.updateSliderValues_();
     });
-  }
-
-  /**
-   * Updates the value of this field and editor sliders based on a colour input.
-   * @param {?InputEvent} event The event generated from editing an input
-   *   element.
-   * @private
-   */
-  onBrowserColourInputEvent_(event) {
-    this.doValueUpdate_(event.target.value);
-    this.updateSliderValues_();
   }
 
   /**
@@ -644,6 +620,9 @@ Blockly.Css.register(`
   height: 24px;
   margin: 4px 8px 24px 8px;
   padding: 0;
+}
+.fieldColourSlider:last-child {
+  margin-bottom: 4px;
 }
 .fieldColourSlider:focus {
   outline: none;
