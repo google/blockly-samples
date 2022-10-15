@@ -13,14 +13,16 @@ function init() {
   const primaryWorkspace = Blockly.inject('primaryDiv',
       {
         media: 'https://unpkg.com/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
+        toolbox: toolbox,
+
         trashcan: true,
       });
   // Inject secondary workspace.
   var secondaryWorkspace = Blockly.inject('secondaryDiv',
       {
         media: 'https://unpkg.com/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
+        toolbox: toolbox,
+
         trashcan: true,
       });
 
