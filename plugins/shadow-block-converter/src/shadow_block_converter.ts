@@ -43,7 +43,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    * @param oldValue Previous value of shadow state.
    * @param newValue New value of shadow state.
    */
-  constructor(block: Block, oldValue?: boolean, newValue?: boolean) {
+  constructor(block?: Block, oldValue?: boolean, newValue?: boolean) {
     super(block);
 
     this.type = BlockShadowChange.EVENT_TYPE;
