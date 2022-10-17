@@ -28,11 +28,6 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
   /* eslint-enable @typescript-eslint/naming-convention */
 
   /**
-   * Type of this event.
-   */
-  type = BlockShadowChange.EVENT_TYPE;
-
-  /**
    * The previous value of the field.
    */
   oldValue: unknown;
@@ -50,6 +45,8 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    */
   constructor(block: Block, oldValue?: boolean, newValue?: boolean) {
     super(block);
+
+    this.type = BlockShadowChange.EVENT_TYPE;
 
     if (!block) {
       return; // Blank event to be populated by fromJson.
