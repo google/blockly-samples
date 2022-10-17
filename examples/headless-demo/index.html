@@ -26,61 +26,117 @@
   </style>
 </head>
 <body>
-  <p>This is a simple demo of generating Python code from XML with no graphics.
+  <p>This is a simple demo of generating Python code from JSON with no graphics.
   This might be useful for server-side code generation.</p>
 
   <table style="width: 100%">
     <tr>
       <td style="width:50%">
-        <textarea id="xml_input">
-<xml xmlns="https://developers.google.com/blockly/xml">
-  <block type="controls_if" inline="false" x="20" y="20">
-    <mutation else="1"></mutation>
-    <value name="IF0">
-      <block type="logic_compare" inline="true">
-        <field name="OP">EQ</field>
-        <value name="A">
-          <block type="math_arithmetic" inline="true">
-            <field name="OP">MULTIPLY</field>
-            <value name="A">
-              <block type="math_number">
-                <field name="NUM">6</field>
-              </block>
-            </value>
-            <value name="B">
-              <block type="math_number">
-                <field name="NUM">7</field>
-              </block>
-            </value>
-          </block>
-        </value>
-        <value name="B">
-          <block type="math_number">
-            <field name="NUM">42</field>
-          </block>
-        </value>
-      </block>
-    </value>
-    <statement name="DO0">
-      <block type="text_print" inline="false">
-        <value name="TEXT">
-          <block type="text">
-            <field name="TEXT">Don't panic</field>
-          </block>
-        </value>
-      </block>
-    </statement>
-    <statement name="ELSE">
-      <block type="text_print" inline="false">
-        <value name="TEXT">
-          <block type="text">
-            <field name="TEXT">Panic</field>
-          </block>
-        </value>
-      </block>
-    </statement>
-  </block>
-</xml>
+        <textarea id="json_input">
+          {
+            "blocks": {
+              "languageVersion": 0,
+              "blocks": [
+                {
+                  "type": "controls_if",
+                  "id": "hcM!J@v1Q:ETY/XlicRs",
+                  "x": 20,
+                  "y": 20,
+                  "inline": false,
+                  "extraState": {
+                    "hasElse": true
+                  },
+                  "inputs": {
+                    "IF0": {
+                      "block": {
+                        "type": "logic_compare",
+                        "id": "a7D:k-_Gs;8WXBktuG-.",
+                        "fields": {
+                          "OP": "EQ"
+                        },
+                        "inputs": {
+                          "A": {
+                            "block": {
+                              "type": "math_arithmetic",
+                              "id": "kJ!}3)?D8|^QE5:;E!ca",
+                              "fields": {
+                                "OP": "MULTIPLY"
+                              },
+                              "inputs": {
+                                "A": {
+                                  "block": {
+                                    "type": "math_number",
+                                    "id": "/4}qscwq65Os19_TVM2!",
+                                    "fields": {
+                                      "NUM": 6
+                                    }
+                                  }
+                                },
+                                "B": {
+                                  "block": {
+                                    "type": "math_number",
+                                    "id": "e/4vVZ)jVyy+l*L2.wtO",
+                                    "fields": {
+                                      "NUM": 7
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "B": {
+                            "block": {
+                              "type": "math_number",
+                              "id": "zh%N-A$:h};v5@Ib19dg",
+                              "fields": {
+                                "NUM": 42
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "DO0": {
+                      "block": {
+                        "type": "text_print",
+                        "id": "Id1;Y=4bs|t[wfF;$|)w",
+                        "inline": false,
+                        "inputs": {
+                          "TEXT": {
+                            "block": {
+                              "type": "text",
+                              "id": "H?-zC-%qQf3bQ/]Y@:pk",
+                              "fields": {
+                                "TEXT": "Don't panic"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "ELSE": {
+                      "block": {
+                        "type": "text_print",
+                        "id": "UN3lvlw.`,HejEO*?krp",
+                        "inline": false,
+                        "inputs": {
+                          "TEXT": {
+                            "block": {
+                              "type": "text",
+                              "id": "pU2CN%i*x~@4Y28*Qm=,",
+                              "fields": {
+                                "TEXT": "Panic"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
         </textarea>
       </td>
       <td>
@@ -98,16 +154,10 @@
   <script>
     function generate() {
       // Parse the XML into a tree.
-      var xmlText = document.getElementById('xml_input').value;
-      try {
-        var xml = Blockly.Xml.textToDom(xmlText)
-      } catch (e) {
-        alert(e);
-        return;
-      }
+      var jsonText = document.getElementById('json_input').value;
       // Create a headless workspace.
       var demoWorkspace = new Blockly.Workspace();
-      Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+      Blockly.serialization.workspaces.load(JSON.parse(jsonText), demoWorkspace);
       var code = Blockly.Python.workspaceToCode(demoWorkspace);
       document.getElementById('code_output').value = code;
     }
