@@ -154,14 +154,19 @@
   <script>
     function generate() {
       // Parse the XML into a tree.
-      var jsonText = document.getElementById('json_input').value;
+      var json = document.getElementById('json_input').value;
       // Create a headless workspace.
-      var demoWorkspace = new Blockly.Workspace();
-      Blockly.serialization.workspaces.load(JSON.parse(jsonText), demoWorkspace);
-      var code = Blockly.Python.workspaceToCode(demoWorkspace);
-      document.getElementById('code_output').value = code;
+      try {
+        var workspace = new Blockly.Workspace();
+        Blockly.serialization.workspaces.load(JSON.parse(json), workspace);
+        // Convert code and log output
+        var code = Blockly.Python.workspaceToCode(workspace);
+        console.log(code);
+      }
+      catch (e) {
+        console.log(e);
+      }
     }
   </script>
-
 </body>
 </html>
