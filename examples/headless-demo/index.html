@@ -155,15 +155,17 @@
     function generate() {
       var json = document.getElementById('json_input').value;
       // Create a headless workspace.
+      var code;
       try {
         var workspace = new Blockly.Workspace();
         Blockly.serialization.workspaces.load(JSON.parse(json), workspace);
         // Convert code and log output
-        Blockly.Python.workspaceToCode(workspace);
+        code = Blockly.Python.workspaceToCode(workspace);
       }
       catch (e) {
         console.log(e);
       }
+      document.getElementById('code_output').value = code;
     }
   </script>
 </body>
