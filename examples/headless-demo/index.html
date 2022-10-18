@@ -153,15 +153,13 @@
 
   <script>
     function generate() {
-      // Parse the json into a tree.
       var json = document.getElementById('json_input').value;
       // Create a headless workspace.
       try {
         var workspace = new Blockly.Workspace();
         Blockly.serialization.workspaces.load(JSON.parse(json), workspace);
         // Convert code and log output
-        var code = Blockly.Python.workspaceToCode(workspace);
-        console.log(code);
+        Blockly.Python.workspaceToCode(workspace);
       }
       catch (e) {
         console.log(e);
