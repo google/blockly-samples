@@ -23,7 +23,75 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    var toolbox = document.getElementById('toolbox');
+    const toolbox = {
+        kind: 'flyoutToolbox',
+        contents: [
+            {
+                kind: 'block',
+                type: 'controls_ifelse',
+            },
+            {
+                kind: 'block',
+                type: 'logic_compare',
+            },
+            {
+                kind: 'block',
+                type: 'logic_operation',
+            },
+            {
+                kind: 'block',
+                type: 'controls_repeat_ext',
+                inputs: {
+                    TIMES: {
+                        shadow: {
+                            type: 'math_number',
+                            fields: {
+                                NUM: 10,
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                kind: 'block',
+                type: 'logic_operation',
+            },
+            {
+                kind: 'block',
+                type: 'logic_negate',
+            },
+            {
+                kind: 'block',
+                type: 'logic_boolean',
+            },
+            {
+                kind: 'block',
+                type: 'logic_null',
+                disabled: 'true',
+            },
+            {
+                kind: 'block',
+                type: 'logic_ternary',
+            },
+            {
+                kind: 'block',
+                type: 'text_charAt',
+                inputs: {
+                    VALUE: {
+                        block: {
+                            type: 'variables_get',
+                            fields: {
+                                VAR: {
+                                    name: 'text',
+                                }
+                            },
+                        },
+                    },
+                },
+            }
+        ]
+    }
+
     var workspace = Blockly.inject('blocklyDiv',
         {
             comments: true,
