@@ -39,7 +39,6 @@
               "blocks": [
                 {
                   "type": "controls_if",
-                  "id": "@Tr`@6~sR~{^SM209=Xf",
                   "x": 20,
                   "y": 20,
                   "inline": false,
@@ -50,7 +49,6 @@
                     "IF0": {
                       "block": {
                         "type": "logic_compare",
-                        "id": "M[Hm[I!A2o@M|e}3..}m",
                         "fields": {
                           "OP": "EQ"
                         },
@@ -58,7 +56,6 @@
                           "A": {
                             "block": {
                               "type": "math_arithmetic",
-                              "id": "9miM+0Q9m^w+GktifOe8",
                               "fields": {
                                 "OP": "MULTIPLY"
                               },
@@ -66,7 +63,6 @@
                                 "A": {
                                   "block": {
                                     "type": "math_number",
-                                    "id": "69fy7;_0ehA[5a::-vqN",
                                     "fields": {
                                       "NUM": 6
                                     }
@@ -75,7 +71,6 @@
                                 "B": {
                                   "block": {
                                     "type": "math_number",
-                                    "id": "gTj1V`#_r$P}O~-,GB~w",
                                     "fields": {
                                       "NUM": 7
                                     }
@@ -87,7 +82,6 @@
                           "B": {
                             "block": {
                               "type": "math_number",
-                              "id": "iD@:qf#M(?]|-s,8f~!_",
                               "fields": {
                                 "NUM": 42
                               }
@@ -99,13 +93,11 @@
                     "DO0": {
                       "block": {
                         "type": "text_print",
-                        "id": "BVhhD/$clq3p`L`lI0q2",
                         "inline": false,
                         "inputs": {
                           "TEXT": {
                             "block": {
                               "type": "text",
-                              "id": "~.{((-CCl=Md]tKc(CJ3",
                               "fields": {
                                 "TEXT": "Don't panic"
                               }
@@ -117,13 +109,11 @@
                     "ELSE": {
                       "block": {
                         "type": "text_print",
-                        "id": "*m2.gNHm(9=)(fL-U1wt",
                         "inline": false,
                         "inputs": {
                           "TEXT": {
                             "block": {
                               "type": "text",
-                              "id": "O`B5SRD-vxvcNh(~},8Y",
                               "fields": {
                                 "TEXT": "Panic"
                               }
@@ -158,13 +148,13 @@
       var code;
       try {
         var json = JSON.parse(jsonText)
-        var demoWorkspace = new Blockly.Workspace();
-        Blockly.serialization.workspaces.load(json, demoWorkspace);
-        code = Blockly.Python.workspaceToCode(demoWorkspace);
       } catch (e) {
         alert(e);
         return;
       }
+      var demoWorkspace = new Blockly.Workspace();
+      Blockly.serialization.workspaces.load(json, demoWorkspace);
+      var code = Blockly.Python.workspaceToCode(demoWorkspace);
       // Create a headless workspace.
       document.getElementById('code_output').value = code;
     }
