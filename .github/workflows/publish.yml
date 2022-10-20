@@ -14,6 +14,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Don't try to publish from a fork of google/blockly-samples.
+    if: ${{ github.repository_owner == 'google' }}
 
     # Environment specific to releasing so we can isolate the npm token.
     environment: release  
