@@ -22,33 +22,104 @@
  */
 
 import * as Blockly from 'blockly';
-import {getSnapshot, getEvents, writeEvents, getBroadcast} from './workspace_client_handlers';
-import {getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates,
-    connectUser, getUserDisconnects} from './user_data_handlers';
+import { getSnapshot, getEvents, writeEvents, getBroadcast } from './workspace_client_handlers';
+import {
+  getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates,
+  connectUser, getUserDisconnects
+} from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
 
+const toolbar = {
+  kind: 'flyoutToolbox',
+  contents: [
+    {
+      kind: 'block',
+      type: 'controls_ifelse',
+    },
+    {
+      kind: 'block',
+      type: 'logic_compare',
+    },
+    {
+      kind: 'block',
+      type: 'logic_operation',
+    },
+    {
+      kind: 'block',
+      type: 'controls_repeat_ext',
+      inputs: {
+        TIMES: {
+          shadow: {
+            type: 'math_number',
+            fields: {
+              NUM: 10,
+            },
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'logic_operation',
+    },
+    {
+      kind: 'block',
+      type: 'logic_negate',
+    },
+    {
+      kind: 'block',
+      type: 'logic_boolean',
+    },
+    {
+      kind: 'block',
+      type: 'logic_null',
+      disabled: 'true',
+    },
+    {
+      kind: 'block',
+      type: 'logic_ternary',
+    },
+    {
+      kind: 'block',
+      type: 'text_charAt',
+      inputs: {
+        VALUE: {
+          block: {
+            type: 'variables_get',
+            fields: {
+              VAR: {
+                name: 'text',
+              }
+            },
+          },
+        },
+      },
+    }
+  ]
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
-      {
-        toolbox: document.getElementById('toolbox'),
-        media: 'media/',
-      });
+    {
+      toolbox: toolbar,
+      media: 'media/',
+    });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
+    workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
   await workspaceClient.start();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-      getPositionUpdates, getBroadcastPositionUpdates);
+    getPositionUpdates, getBroadcastPositionUpdates);
   await userDataManager.setPresenceHandlers(connectUser, getUserDisconnects);
   await userDataManager.start();
 
   workspace.addChangeListener((event) => {
     if (event.type === Blockly.Events.SELECTED ||
-        (event.type === Blockly.Events.CHANGE && event.element === 'field')) {
+      (event.type === Blockly.Events.CHANGE && event.element === 'field')) {
       userDataManager.handleEvent(event);
     }
     if (event.isUiEvent) {
@@ -68,7 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    * @private
    */
   function runEvents_(eventQueue) {
-    eventQueue.forEach((workspaceAction)=> {
+    eventQueue.forEach((workspaceAction) => {
       Blockly.Events.disable();
       workspaceAction.event.run(workspaceAction.forward);
       Blockly.Events.enable();
