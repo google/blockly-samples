@@ -28,7 +28,7 @@ import { getPositionUpdates, sendPositionUpdate } from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
 
-const toolbar = {
+const toolbox = {
   kind: 'flyoutToolbox',
   contents: [
     {
@@ -100,18 +100,18 @@ const toolbar = {
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
     {
-      toolbox: toolbar,
+      toolbox: toolbox,
       media: 'media/',
     });
   const workspaceClient = new WorkspaceClient(
-    workspace.id, getSnapshot, getEvents, writeEvents);
+  workspace.id, getSnapshot, getEvents, writeEvents);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
   await workspaceClient.start();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-    getPositionUpdates);
+  getPositionUpdates);
   await userDataManager.start();
 
   workspace.addChangeListener((event) => {

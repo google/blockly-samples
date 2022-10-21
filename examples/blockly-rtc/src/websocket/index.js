@@ -30,7 +30,7 @@ import {
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
 
-const toolbar = {
+const toolbox = {
   kind: 'flyoutToolbox',
   contents: [
     {
@@ -102,18 +102,18 @@ const toolbar = {
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
     {
-      toolbox: toolbar,
+      toolbox: toolbox,
       media: 'media/',
     });
   const workspaceClient = new WorkspaceClient(
-    workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
+  workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
   await workspaceClient.start();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-    getPositionUpdates, getBroadcastPositionUpdates);
+  getPositionUpdates, getBroadcastPositionUpdates);
   await userDataManager.setPresenceHandlers(connectUser, getUserDisconnects);
   await userDataManager.start();
 
