@@ -545,9 +545,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
 Blockly.fieldRegistry.register(
     'field_colour_hsv_sliders', FieldColourHsvSliders);
 
-/**
- * CSS for colour slider fields.
- */
+// CSS for colour slider fields.
 Blockly.Css.register(`
 .fieldColourSliderContainer {
   padding: 4px;
