@@ -188,10 +188,10 @@ export function shadowBlockConversionChangeListener(
         shadowBlock.outputConnection?.targetBlock();
     const previousBlock: Block | null =
         shadowBlock.previousConnection?.targetBlock();
-    if (outputBlock != null && outputBlock.isShadow()) {
+    if (outputBlock?.isShadow()) {
       shadowBlocks.push(outputBlock);
     }
-    if (previousBlock != null && previousBlock.isShadow()) {
+    if (previousBlock?.isShadow()) {
       shadowBlocks.push(previousBlock);
     }
   }
