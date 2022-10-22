@@ -24,7 +24,7 @@
 import * as Blockly from 'blockly';
 import {getSnapshot, getEvents, writeEvents, getBroadcast} from './workspace_client_handlers';
 import {getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates,
-  connectUser, getUserDisconnects} from './user_data_handlers';
+    connectUser, getUserDisconnects} from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
 
