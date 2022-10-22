@@ -22,7 +22,7 @@
  */
 
 import * as Blockly from 'blockly';
-import { getSnapshot, getEvents, writeEvents, getBroadcast } from './workspace_client_handlers';
+import {getSnapshot, getEvents, writeEvents, getBroadcast} from './workspace_client_handlers';
 import {
   getPositionUpdates, sendPositionUpdate, getBroadcastPositionUpdates,
   connectUser, getUserDisconnects
@@ -101,25 +101,25 @@ const toolbox = {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
-    {
-      toolbox: toolbox,
-      media: 'media/',
-    });
+      {
+        toolbox: toolbox,
+        media: 'media/',
+      });
   const workspaceClient = new WorkspaceClient(
-  workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
+      workspace.id, getSnapshot, getEvents, writeEvents, getBroadcast);
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
   await workspaceClient.start();
 
   const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-  getPositionUpdates, getBroadcastPositionUpdates);
+      getPositionUpdates, getBroadcastPositionUpdates);
   await userDataManager.setPresenceHandlers(connectUser, getUserDisconnects);
   await userDataManager.start();
 
   workspace.addChangeListener((event) => {
     if (event.type === Blockly.Events.SELECTED ||
-      (event.type === Blockly.Events.CHANGE && event.element === 'field')) {
+        (event.type === Blockly.Events.CHANGE && event.element === 'field')) {
       userDataManager.handleEvent(event);
     }
     if (event.isUiEvent) {
