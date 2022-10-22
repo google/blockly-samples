@@ -99,10 +99,10 @@ const toolbox = {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
-    {
-      toolbox: toolbox,
-      media: 'media/',
-    });
+      {
+        toolbox: toolbox,
+        media: 'media/',
+      });
   const workspaceClient = new WorkspaceClient(
       workspace.id, getSnapshot, getEvents, writeEvents);
       workspaceClient.listener.on('runEvents', (eventQueue) => {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   await workspaceClient.start();
 
-  const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate, 
+  const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
       getPositionUpdates);
   await userDataManager.start();
 
