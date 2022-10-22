@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
   const workspaceClient = new WorkspaceClient(
       workspace.id, getSnapshot, getEvents, writeEvents);
-      workspaceClient.listener.on('runEvents', (eventQueue) => {
-      runEvents_(eventQueue);
+  workspaceClient.listener.on('runEvents', (eventQueue) => {
+    runEvents_(eventQueue);
   });
   await workspaceClient.start();
 
