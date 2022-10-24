@@ -8,7 +8,7 @@
     "start": "node_modules/.bin/http-server -c-1 ./ -p 3000"
   },
   "dependencies": {
-    "blockly": "^3.20200123.1"
+    "blockly": "^9.0.0"
   },
   "devDependencies": {
     "http-server": "^0.12.3"
