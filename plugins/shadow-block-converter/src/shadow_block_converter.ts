@@ -9,34 +9,43 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {Block} from 'blockly/core/block';
+import {Abstract} from 'blockly/core/events/events_abstract';
+import {BlockChangeJson} from 'blockly/core/events/events_block_change';
+
 
 /**
  * A new blockly event class specifically for recording changes to the shadow
  * state of a block. This implementation is similar to and could be merged with
  * the implementation of Blockly.Events.BlockChange in Blockly core code.
- * @extends {Blockly.Events.BlockBase}
  */
 export class BlockShadowChange extends Blockly.Events.BlockBase {
   /**
    * The name of the event type for broadcast and listening purposes.
-   * @type {string}
    */
-  static EVENT_TYPE = 'block_shadow_change';
+  /* eslint-disable @typescript-eslint/naming-convention */
+  static readonly EVENT_TYPE = 'block_shadow_change';
+  /* eslint-enable @typescript-eslint/naming-convention */
+
+  /**
+   * The previous value of the field.
+   */
+  oldValue: unknown;
+
+  /**
+   * The new value of the field.
+   */
+  newValue: unknown;
 
   /**
    * The constructor for a new BlockShadowChange event.
-   * @param {Blockly.Block=} block The changed block. Undefined for a blank
-   *   event.
-   * @param {boolean=} oldValue Previous value of shadow state.
-   * @param {boolean=} newValue New value of shadow state.
+   * @param block The changed block. Undefined for a blank event.
+   * @param oldValue Previous value of shadow state.
+   * @param newValue New value of shadow state.
    */
-  constructor(block, oldValue, newValue) {
+  constructor(block?: Block, oldValue?: boolean, newValue?: boolean) {
     super(block);
 
-    /**
-     * Type of this event.
-     * @type {string}
-     */
     this.type = BlockShadowChange.EVENT_TYPE;
 
     if (!block) {
@@ -48,11 +57,11 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Encode the event as JSON.
-   * @return {!Object} JSON representation.
+   * @return JSON representation.
    * @override
    */
-  toJson() {
-    const json = super.toJson();
+  toJson(): BlockChangeJson {
+    const json = super.toJson() as BlockChangeJson;
     json['oldValue'] = this.oldValue;
     json['newValue'] = this.newValue;
     return json;
@@ -60,10 +69,10 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Decode the JSON event.
-   * @param {!Object} json JSON representation.
+   * @param json JSON representation.
    * @override
    */
-  fromJson(json) {
+  fromJson(json: BlockChangeJson) {
     super.fromJson(json);
     this.oldValue = json['oldValue'];
     this.newValue = json['newValue'];
@@ -71,24 +80,30 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Does this event record any change of state?
-   * @return {boolean} False if something changed.
+   * @return False if something changed.
    * @override
    */
-  isNull() {
+  isNull(): boolean {
     return this.oldValue === this.newValue;
   }
 
   /**
    * Run a change event.
-   * @param {boolean} forward True if run forward, false if run backward (undo).
+   * @param forward True if run forward, false if run backward (undo).
    * @override
    */
-  run(forward) {
+  run(forward: boolean) {
     const workspace = this.getEventWorkspace_();
+    if (!this.blockId) {
+      throw new Error(
+          'The block ID is undefined. Either pass a block to ' +
+          'the constructor, or call fromJson');
+    }
     const block = workspace.getBlockById(this.blockId);
     if (!block) {
-      console.warn('Can\'t change non-existent block: ' + this.blockId);
-      return;
+      throw new Error(
+          'The associated block is undefined. Either pass a ' +
+          'block to the constructor, or call fromJson');
     }
 
     const value = forward ? this.newValue : this.oldValue;
@@ -111,9 +126,10 @@ Blockly.registry.register(
  * Ideally the Blockly.Field.prototype.setValue method should handle this logic,
  * but for the purposes of this plugin it can be a workspace change listener.
  *
- * @param {Blockly.Events.Abstract} event An event broadcast by the workspace.
+ * @param event An event broadcast by the workspace.
  */
-export function shadowBlockConversionChangeListener(event) {
+export function shadowBlockConversionChangeListener(
+    event: Abstract) {
   // Auto-converting shadow blocks to real blocks should happen in response to
   // new user action events (which get recorded as undo events) but not when
   // undoing or redoing events (which do not get recorded again).
@@ -126,12 +142,16 @@ export function shadowBlockConversionChangeListener(event) {
   if (event.type != Blockly.Events.BLOCK_CHANGE) {
     return;
   }
+  const blockEvent = event as Blockly.Events.BlockChange;
 
-  const workspace = Blockly.Workspace.getById(event.workspaceId);
+  if (!blockEvent.workspaceId || !blockEvent.blockId) {
+    return;
+  }
+  const workspace = Blockly.Workspace.getById(blockEvent.workspaceId);
   if (!workspace) {
     return;
   }
-  const block = workspace.getBlockById(event.blockId);
+  const block = workspace.getBlockById(blockEvent.blockId);
   if (!block) {
     return;
   }
@@ -144,10 +164,10 @@ export function shadowBlockConversionChangeListener(event) {
   // Remember the current event group so that it can be resumed below.
   const currentGroup = Blockly.Events.getGroup();
 
-  if (event.group) {
+  if (blockEvent.group) {
     // Temporarily use the same group as the initiating event so that
     // the shadow events get grouped with it for undo purposes.
-    Blockly.Events.setGroup(event.group);
+    Blockly.Events.setGroup(blockEvent.group);
   } else {
     // The initiating event wasn't part of any named group, so the shadow events
     // can't be grouped with it, but at least they can be grouped with each
@@ -164,15 +184,15 @@ export function shadowBlockConversionChangeListener(event) {
     const shadowBlock = shadowBlocks[i];
 
     // If connected blocks need to be converted too, add them to the list.
-    if (shadowBlock.outputConnection != null &&
-        shadowBlock.outputConnection.isConnected() &&
-        shadowBlock.outputConnection.targetBlock().isShadow()) {
-      shadowBlocks.push(shadowBlock.outputConnection.targetBlock());
+    const outputBlock: Block | null =
+        shadowBlock.outputConnection?.targetBlock();
+    const previousBlock: Block | null =
+        shadowBlock.previousConnection?.targetBlock();
+    if (outputBlock?.isShadow()) {
+      shadowBlocks.push(outputBlock);
     }
-    if (shadowBlock.previousConnection != null &&
-        shadowBlock.previousConnection.isConnected() &&
-        shadowBlock.previousConnection.targetBlock().isShadow()) {
-      shadowBlocks.push(shadowBlock.previousConnection.targetBlock());
+    if (previousBlock?.isShadow()) {
+      shadowBlocks.push(previousBlock);
     }
   }
 

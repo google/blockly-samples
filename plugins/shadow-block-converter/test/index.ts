@@ -12,7 +12,7 @@ import * as Blockly from 'blockly';
 import {createPlayground} from '@blockly/dev-tools';
 import {shadowBlockConversionChangeListener} from '../src/index';
 
-const toolbox = {
+const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
   'kind': 'flyoutToolbox',
   'contents': [
     {
@@ -21,11 +21,16 @@ const toolbox = {
       'inputs': {
         'COLOUR1': {
           'shadow': {'type': 'colour_picker', 'fields': {'COLOUR': '#ff0000'}},
+          'block': undefined,
         },
         'COLOUR2': {
           'shadow': {'type': 'colour_picker', 'fields': {'COLOUR': '#3333ff'}},
+          'block': undefined,
         },
-        'RATIO': {'shadow': {'type': 'math_number', 'fields': {'NUM': 0.5}}},
+        'RATIO': {
+          'shadow': {'type': 'math_number', 'fields': {'NUM': 0.5}},
+          'block': undefined,
+        },
       },
     },
     {
@@ -38,18 +43,20 @@ const toolbox = {
       'inputs': {
         'TEXT': {
           'shadow': {'type': 'text', 'fields': {'TEXT': 'Example Text 1'}},
+          'block': undefined,
         },
       },
       'next': {
         'shadow': {
-          'kind': 'block',
           'type': 'text_print',
           'inputs': {
             'TEXT': {
               'shadow': {'type': 'text', 'fields': {'TEXT': 'Example Text 2'}},
+              'block': undefined,
             },
           },
         },
+        'block': undefined,
       },
     },
     {
@@ -60,31 +67,40 @@ const toolbox = {
       'kind': 'block',
       'type': 'controls_if',
       'inputs': {
-        'IF0': {'shadow': {'type': 'logic_boolean'}},
+        'IF0': {'shadow': {'type': 'logic_boolean'}, 'block': undefined},
         'DO0': {
           'shadow': {
             'type': 'controls_ifelse',
             'inputs': {
-              'IF0': {'shadow': {'type': 'logic_boolean'}},
-              'DO0': {'shadow': {'type': 'controls_if'}},
+              'IF0': {'shadow': {'type': 'logic_boolean'}, 'block': undefined},
+              'DO0': {'shadow': {'type': 'controls_if'}, 'block': undefined},
               'ELSE': {
                 'shadow': {
                   'type': 'controls_if',
                   'inputs': {
-                    'IF0': {'shadow': {'type': 'logic_boolean'}},
+                    'IF0': {
+                      'shadow': {'type': 'logic_boolean'},
+                      'block': undefined,
+                    },
                   },
                 },
+                'block': undefined,
               },
             },
             'next': {
               'shadow': {
                 'type': 'controls_if',
                 'inputs': {
-                  'IF0': {'shadow': {'type': 'logic_boolean'}},
+                  'IF0': {
+                    'shadow': {'type': 'logic_boolean'},
+                    'block': undefined,
+                  },
                 },
               },
+              'block': undefined,
             },
           },
+          'block': undefined,
         },
       },
     },
@@ -97,20 +113,23 @@ const toolbox = {
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @return The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
+function createWorkspace(blocklyDiv: HTMLElement,
+    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
   workspace.addChangeListener(shadowBlockConversionChangeListener);
   return workspace;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
+  const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    createPlayground(rootElement, createWorkspace, defaultOptions);
+  }
 });
