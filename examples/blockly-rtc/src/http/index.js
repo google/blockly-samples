@@ -28,10 +28,79 @@ import {getPositionUpdates, sendPositionUpdate} from './user_data_handlers';
 import UserDataManager from '../UserDataManager';
 import WorkspaceClient from '../WorkspaceClient';
 
+const toolbox = {
+  kind: 'flyoutToolbox',
+  contents: [
+    {
+      kind: 'block',
+      type: 'controls_ifelse',
+    },
+    {
+      kind: 'block',
+      type: 'logic_compare',
+    },
+    {
+      kind: 'block',
+      type: 'logic_operation',
+    },
+    {
+      kind: 'block',
+      type: 'controls_repeat_ext',
+      inputs: {
+        TIMES: {
+          shadow: {
+            type: 'math_number',
+            fields: {
+              NUM: 10,
+            },
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'logic_operation',
+    },
+    {
+      kind: 'block',
+      type: 'logic_negate',
+    },
+    {
+      kind: 'block',
+      type: 'logic_boolean',
+    },
+    {
+      kind: 'block',
+      type: 'logic_null',
+      disabled: 'true',
+    },
+    {
+      kind: 'block',
+      type: 'logic_ternary',
+    },
+    {
+      kind: 'block',
+      type: 'text_charAt',
+      inputs: {
+        VALUE: {
+          block: {
+            type: 'variables_get',
+            fields: {
+              VAR: {
+                name: 'text',
+              }
+            },
+          },
+        },
+      },
+    }
+  ]
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const workspace = Blockly.inject('blocklyDiv',
       {
-        toolbox: document.getElementById('toolbox'),
+        toolbox: toolbox,
         media: 'media/',
       });
   const workspaceClient = new WorkspaceClient(
@@ -67,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    * @private
    */
   function runEvents_(eventQueue) {
-    eventQueue.forEach((workspaceAction)=> {
+    eventQueue.forEach((workspaceAction) => {
       Blockly.Events.disable();
       workspaceAction.event.run(workspaceAction.forward);
       Blockly.Events.enable();
