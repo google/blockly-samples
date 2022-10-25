@@ -113,7 +113,7 @@ export class FieldSlider extends Blockly.FieldNumber {
 
     // Focus on the slider field, unless quietInput is passed.
     if (!quietInput) {
-      (editor.children[0] as HTMLInputElement).focus({
+      (editor.firstChild as HTMLInputElement).focus({
         preventScroll: true,
       });
     }
