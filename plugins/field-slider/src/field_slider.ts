@@ -89,10 +89,13 @@ export class FieldSlider extends Blockly.FieldNumber {
    *    editor.
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
-   * @param quietInput Quiet input.
+   * @param quietInput Quiet input (prevent focusing on the editor).
    */
   protected showEditor_(e?: Event, quietInput?: boolean) {
-    super.showEditor_(e, quietInput);
+    // Always quiet the input for the super constructor, as we don't want to
+    // focus on the text field, and we don't want to display the modal
+    // editor on mobile devices.
+    super.showEditor_(e, true);
 
     // Build the DOM.
     const editor = this.dropdownCreate_();
@@ -107,6 +110,13 @@ export class FieldSlider extends Blockly.FieldNumber {
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));
+
+    // Focus on the slider field, unless quietInput is passed.
+    if (!quietInput) {
+      (editor.children[0] as HTMLInputElement).focus({
+        preventScroll: true,
+      });
+    }
   }
 
   /**
@@ -121,8 +131,8 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Creates the slider editor and add event listeners.
    * @return The newly created slider.
    */
-  private dropdownCreate_(): Element {
-    const wrapper = document.createElement('div');
+  private dropdownCreate_(): HTMLElement {
+    const wrapper = document.createElement('div') as HTMLElement;
     wrapper.className = 'fieldSliderContainer';
     const sliderInput = document.createElement('input');
     sliderInput.setAttribute('type', 'range');
@@ -130,6 +140,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     sliderInput.setAttribute('max', `${this.max_}`);
     sliderInput.setAttribute('step', `${this.precision_}`);
     sliderInput.setAttribute('value', this.getValue());
+    sliderInput.setAttribute('tabindex', '0');
     sliderInput.className = 'fieldSlider';
     wrapper.appendChild(sliderInput);
     this.sliderInput = sliderInput;
