@@ -87,6 +87,3 @@ layout: index
 
 ## Mirrored Blockly
 * [Mirrored Blockly](examples/mirror-demo/index.html)
-
-## Plane
-* [Plane](examples/plane-demo/index.html)
