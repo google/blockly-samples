@@ -26,7 +26,7 @@
  import {useEffect, useRef} from 'react';
 
  import Blockly from 'blockly/core';
- import BlocklyJS from 'blockly/javascript';
+ import {javascriptGenerator} from 'blockly/javascript';
  import locale from 'blockly/msg/en';
  import 'blockly/blocks';
  
@@ -38,7 +38,7 @@
     let primaryWorkspace = useRef();
 
     const generateCode = () => {
-        var code = BlocklyJS.workspaceToCode(
+        var code = javascriptGenerator.workspaceToCode(
           primaryWorkspace.current
         );
         console.log(code);
