@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.0.1...@blockly/field-colour-hsv-sliders@2.0.2) (2022-10-27)
+
+
+### Bug Fixes
+
+* disable eye dropper instead of using fallback ([#1337](https://github.com/google/blockly-samples/issues/1337)) ([7fb03d9](https://github.com/google/blockly-samples/commit/7fb03d94346ada497d0822df00364c38ea9bd4ff))
+
+
+
 ## [2.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.0.0...@blockly/field-colour-hsv-sliders@2.0.1) (2022-10-13)
 
 

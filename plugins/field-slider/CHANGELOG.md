@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-slider@4.0.1...@blockly/field-slider@4.0.2) (2022-10-27)
+
+
+### Bug Fixes
+
+* slider field shouldn't show modal editor on mobile ([#1352](https://github.com/google/blockly-samples/issues/1352)) ([c950925](https://github.com/google/blockly-samples/commit/c95092550dc47a82eb898f64b7a3987d712b6e64))
+
+
+
 ## [4.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-slider@4.0.0...@blockly/field-slider@4.0.1) (2022-10-13)
 
 
