@@ -2,7 +2,7 @@
 title: "@blockly/field-grid-dropdown Demo"
 packageName: "@blockly/field-grid-dropdown"
 description: "A Blockly dropdown field with grid layout."
-version: "2.0.1"
+version: "2.0.2"
 pageRoot: "plugins/field-grid-dropdown"
 pages:
   - label: "Playground"

@@ -16,27 +16,22 @@ var toolboxJson =
       "contents": [
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "controls_if"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "logic_compare"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "logic_operation"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "logic_negate"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "logic_boolean"
         }
       ],
@@ -48,12 +43,10 @@ var toolboxJson =
       "contents": [
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "controls_repeat_ext"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "controls_whileUntil"
         }
       ],
@@ -65,17 +58,14 @@ var toolboxJson =
       "contents": [
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "math_number"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "math_arithmetic"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "math_single"
         }
       ],
@@ -87,22 +77,18 @@ var toolboxJson =
       "contents": [
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "text"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "text_length"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "text_print"
         },
         {
           "kind": "BLOCK",
-          "blockxml": {},
           "type": "text_prompt_ext"
         }
       ],
