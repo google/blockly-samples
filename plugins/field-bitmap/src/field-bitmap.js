@@ -34,6 +34,9 @@ export class FieldBitmap extends Blockly.Field {
   constructor(value = undefined, validator = undefined, config = undefined) {
     super(value, validator, config);
 
+    this.SERIALIZABLE = true;
+
+
     // Configure value, height, and width
     if (this.getValue() !== null) {
       this.imgHeight_ = this.getValue().length;
@@ -484,8 +487,6 @@ export class FieldBitmap extends Blockly.Field {
     );
   }
 }
-
-FieldBitmap.prototype.SERIALIZABLE = true;
 
 Blockly.fieldRegistry.register('field_bitmap', FieldBitmap);
 
