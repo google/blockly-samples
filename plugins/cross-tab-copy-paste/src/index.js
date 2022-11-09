@@ -66,7 +66,12 @@ export class CrossTabCopyPaste {
       },
       preconditionFn: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-        return 'enabled';
+        if (
+          Blockly.selected.isDeletable() &&
+          Blockly.selected.isMovable()) {
+          return 'enabled';
+        }
+        return 'disabled';
       },
       callback: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
