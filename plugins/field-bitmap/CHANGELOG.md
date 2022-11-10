@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@2.0.2...@blockly/field-bitmap@2.0.3) (2022-11-10)
+
+
+### Bug Fixes
+
+* field-bitmap now serializing correctly ([#1361](https://github.com/google/blockly-samples/issues/1361)) ([304a875](https://github.com/google/blockly-samples/commit/304a875648bac4c7d78747a298dc8b2a1d28ba5b))
+
+
+
 ## [2.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@2.0.1...@blockly/field-bitmap@2.0.2) (2022-10-27)
 
 **Note:** Version bump only for package @blockly/field-bitmap
