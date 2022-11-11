@@ -6,6 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 import {ScrollMetricsManager} from './ScrollMetricsManager';
+import {getTranslation} from './utils';
 
 /**
  * AutoScroll is used to scroll/pan the workspace automatically. For example,
@@ -111,8 +112,7 @@ export class AutoScroll {
    * @param {number} scrollDy Amount to scroll in vertical direction.
    */
   scrollWorkspaceWithBlock(scrollDx, scrollDy) {
-    const dragSurface = this.workspace_.getBlockDragSurface();
-    const oldLocation = dragSurface.getWsTranslation();
+    const oldLocation = getTranslation(this.workspace_);
 
     // As we scroll, we shouldn't expand past the content area that existed
     // before the block was picked up. Therefore, we use cached ContentMetrics
@@ -126,7 +126,7 @@ export class AutoScroll {
     this.workspace_.scroll(newX, newY);
     metricsManager.useCachedContentMetrics = false;
 
-    const newLocation = dragSurface.getWsTranslation();
+    const newLocation = getTranslation(this.workspace_);
 
     // How much we actually ended up scrolling.
     const deltaX = newLocation.x - oldLocation.x;
