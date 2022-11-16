@@ -87,9 +87,9 @@ export class Plugin {
   init() {
     console.log('SHORTCUTS: ');
     console.log('Shortcut Registry Shortcuts',
-        Blockly.ShortcutRegistry.registry.shortcuts);
+      Blockly.ShortcutRegistry.registry.shortcuts);
     console.log('Shortcut Registry Shortcut items',
-        Blockly.ShortcutRegistry.registry.shortcuts.keys());
+      Blockly.ShortcutRegistry.registry.shortcuts.keys());
     // Map shortcut name -> [list of key codes]
     // TODO: maybe consider caching and listening to update cache on registry up
     for (const [key, value] of Blockly.ShortcutRegistry.registry.shortcuts) {
@@ -123,9 +123,9 @@ export class Plugin {
     );
     this.widgetCreate_();
     const focusableEls = this.htmlDiv_.querySelectorAll(
-        'a[href],' +
-        'area[href], input:not([disabled]), select:not([disabled]),' +
-        'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]'
+      'a[href],' +
+      'area[href], input:not([disabled]), select:not([disabled]),' +
+      'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]'
     );
     if (focusableEls.length > 0) {
       this.firstFocusableEl_ = focusableEls[0];
@@ -239,10 +239,10 @@ export class Plugin {
    */
   addEvent_(node, name, thisObject, func) {
     const event = Blockly.browserEvents.conditionalBind(
-        node,
-        name,
-        thisObject,
-        func
+      node,
+      name,
+      thisObject,
+      func
     );
     this.boundEvents_.push(event);
   }
@@ -280,9 +280,9 @@ export class Plugin {
     // Add Events
     this.addEvent_(
         /** @type{!HTMLDivElement} */ modalContainer,
-        'keydown',
-        this,
-        this.handleKeyDown_
+      'keydown',
+      this,
+      this.handleKeyDown_
     );
 
     if (this.shouldCloseOnOverlayClick) {
@@ -352,8 +352,7 @@ export class Plugin {
       'Alt': 'Alt',
     };
 
-    return keyCodes.map
-    ((codes) => String(codes).split('+').map((code) => {
+    return keyCodes.map((codes) => String(codes).split('+').map((code) => {
       if (code in specialCodes) {
         return specialCodes[code];
       }
@@ -362,7 +361,29 @@ export class Plugin {
         return String.fromCharCode(Number(code));
       }
       return code;
-    }).map((code) => `<code>${code}</code>`).join(' + ')).join(' | ');
+    }).map((code) => `<code>${code}</code>`).join(' + ')).join(' , ');
+  }
+
+
+  /**
+   * Handle search bar filtering
+   */
+  onEvent_(e) {
+    console.log('here');
+    console.log('Input value', this.inputElement_.value);
+    return;
+  }
+
+  /**
+   * Creates the text input for the search bar.
+   * @return {!HTMLInputElement} A text input for the search bar.
+   * @protected
+   */
+  createTextInput_() {
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    textInput.setAttribute('placeholder', 'Type to search in keybindings');
+    return textInput;
   }
 
   /**
@@ -376,17 +397,47 @@ export class Plugin {
     // TODO: change this type
     modalContent.className = 'blocklyModalHeaderTitle';
 
-    // TODO: make table
-    // TODO: keycodes to readable cmds
-    // TODO: searchbar
+    const inputWrapper = document.createElement('div');
+    Blockly.utils.dom.addClass(inputWrapper, 'searchBar');
+    this.inputElement_ = this.createTextInput_();
+    this.addEvent_(this.inputElement_, 'keydown', this, (evt) => this
+      .onEvent_(/** @type {KeyboardEvent} */ evt));
 
-    // TODO: wew want to insert some HTML node for the table
+    inputWrapper.appendChild(this.inputElement_)
+    modalContent.appendChild(inputWrapper);
+
+    // // TODO: update filter member and rerender shortcut modal every 100ms
+    // document.addEventListener('keydown', (e) => {
+    //   const target = e.target;
+    //   if (target.id == 'search') {
+    //     // save off the text value;
+    //     console.log('Works!');
+    //   }
+    // }, true);
+
+    // TODO: we want to insert some HTML node for the table
+    let table = '';
+
+    table +=
+      `<table>
+      <tr>
+        <th>Command</th>
+        <th>Keybinding</th>
+      </tr>`;
     for (const [key, value] of Blockly.ShortcutRegistry.registry.shortcuts) {
-      modalContent.innerHTML +=
-      `<p>${key} -> ${this.formatCodes(value.keyCodes)}</p>`;
+      table +=
+        `<tr>
+         <td>${key}</td>
+         <td>${this.formatCodes(value.keyCodes)}</td>
+       </tr>`;
     }
+    table += `</table>`;
 
-    // modalContent.appendChild(document.createElement(shortcuts));
+    modalContent.innerHTML += table;
+
+    console.log(table);
+    console.log(modalContent.innerHTML);
+
     contentContainer.appendChild(modalContent);
   }
 
@@ -407,6 +458,21 @@ Blockly.Css.register(`
   left: 0px;
   top: 0px;
   position: fixed;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+td + td, th + th { border-left:2px solid #ddd; }
+tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 .blocklyModalContainer {
   background-color: white;
@@ -456,5 +522,17 @@ code {
   background-color: lightGray;
   padding: 4px;
   border-radius: 5px;
+}
+.searchBar input[type=text] {
+  font-size: 17px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  width: 100%;
+  padding: 6px;
+  margin-top: 8px;
+  margin-right: 16px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
 }
 `);

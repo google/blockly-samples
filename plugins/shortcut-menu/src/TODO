@@ -1,0 +1,3 @@
+- rename instances of "plugin" to "shortcut menu"
+- import and use Modal class (extend its DOM)?
+- add more CSS styling
