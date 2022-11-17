@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/google/blockly-samples/compare/@blockly/plugin-cross-tab-copy-paste@2.0.2...@blockly/plugin-cross-tab-copy-paste@2.0.3) (2022-11-17)
+
+
+### Bug Fixes
+
+* disable copy for immovable and undeletable blocks ([#1371](https://github.com/google/blockly-samples/issues/1371)) ([5afc679](https://github.com/google/blockly-samples/commit/5afc67950643a40e913d518921c65572ba9fdeab))
+
+
+
 ## [2.0.2](https://github.com/google/blockly-samples/compare/@blockly/plugin-cross-tab-copy-paste@2.0.1...@blockly/plugin-cross-tab-copy-paste@2.0.2) (2022-10-27)
 
 **Note:** Version bump only for package @blockly/plugin-cross-tab-copy-paste
