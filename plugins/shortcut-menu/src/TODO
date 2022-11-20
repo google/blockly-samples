@@ -1,3 +1,7 @@
 - rename instances of "plugin" to "shortcut menu"
 - import and use Modal class (extend its DOM)?
-- add more CSS styling
+- add more CSS styling?
+- mention future imporovements:
+  - add search functionality similar to VS code (e.g. "Ctrl + C" gets replaced with Ctrl and C tags)
+- address lowercase letters?
+- add jsdocs
