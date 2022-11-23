@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Plugin} from '../src/index';
+import {ShortcutMenu} from '../src/index';
 
 /**
  * Create a workspace.
@@ -22,7 +22,7 @@ function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   // TODO: Initialize your plugin here.
-  const plugin = new Plugin('Short Cut Menu', workspace);
+  const plugin = new ShortcutMenu('Short Cut Menu', workspace);
   plugin.init();
   plugin.show();
 

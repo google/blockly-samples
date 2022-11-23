@@ -47,6 +47,9 @@
   "peerDependencies": {
     "blockly": "^9.0.1"
   },
+  "dependencies": {
+    "@blockly/plugin-modal": "^4.0.1"
+  },
   "publishConfig": {},
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
