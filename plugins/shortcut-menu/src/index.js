@@ -38,7 +38,6 @@ export class ShortcutMenu extends Modal {
     Blockly.ShortcutRegistry.registry.removeAllKeyMappings('copy');
     Blockly.ShortcutRegistry.registry.addKeyMapping('Control+70', 'copy', true);
 
-
     console.log('SHORTCUTS: ', Blockly.ShortcutRegistry.registry);
     console.log('Shortcut Registry Shortcuts',
         Blockly.ShortcutRegistry.registry.shortcuts);
@@ -120,32 +119,70 @@ export class ShortcutMenu extends Modal {
   }
 
   /**
+   * Handle search bar filtering
+   * @param command name of the command to edit
+   * @protected
+   */
+  onEditCommand_(command) {
+    console.log(command);
+    // Open modal to edit command
+  }
+
+  /**
    * Creates the shortcut table for the shortcut menu modal
    * @protected
    */
   createShortcutTable_() {
-    let table = '';
+    const table = '';
 
-    table +=
-      `<table>
-      <tr>
-        <th>Command</th>
-        <th>Keybinding</th>
-      </tr>`;
+    const tbl = document.createElement('table');
+    const tblBody = document.createElement('tbody');
+
+    const headerRow = document.createElement('tr');
+    const commandHeader = document.createElement('th');
+    const keybindHeader = document.createElement('th');
+
+    commandHeader.appendChild(document.createTextNode('Command'));
+    keybindHeader.appendChild(document.createTextNode('Keybinding'));
+    headerRow.appendChild(commandHeader);
+    headerRow.appendChild(keybindHeader);
+
+    // add the row to the table body
+    tblBody.appendChild(headerRow);
+
     for (const [key, value] of Blockly.ShortcutRegistry.registry.shortcuts) {
+      const row = document.createElement('tr');
       const keyBindings = this.getKeybindings(value.keyCodes);
-      if (!this.filter_ || key.includes(this.filter_) ||
+      if (!this.filter_ || key.toLowerCase().
+          includes(this.filter_.toLowerCase()) ||
           keyBindings.includes(this.filter_)) {
-        table +=
-        `<tr>
-         <td>${key}</td>
-         <td>${this.formatKeybindings(keyBindings)}</td>
-       </tr>`;
+        const commandCell = document.createElement('td');
+        const commandCellText = document.createTextNode(key);
+        commandCell.appendChild(commandCellText);
+
+        const keybindCell = document.createElement('td');
+        keybindCell.innerHTML = this.formatKeybindings(keyBindings);
+
+        row.appendChild(commandCell);
+        row.appendChild(keybindCell);
+
+        const tooltip = document.createElement('div');
+
+        tooltip.innerHTML =
+        `
+        <div class="tooltip">
+          <span class="tooltiptext"> Click on this row to edit the shortcuts</span>
+         </div>
+         `;
+        row.appendChild(tooltip);
+        this.addEvent_(this.shortcutTable_, 'click', this, (e) => this.onEditCommand_(e));
       }
+      tblBody.appendChild(row);
     }
-    table += `</table>`;
-    console.log(table);
-    this.shortcutTable_.innerHTML = table;
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody); document.createElement('tbody');
+
+    this.shortcutTable_ = tbl;
   }
 
   /**
@@ -159,8 +196,7 @@ export class ShortcutMenu extends Modal {
     Blockly.utils.dom.addClass(inputWrapper, 'searchBar');
     this.inputElement_ = this.createTextInput_();
 
-    this.addEvent_(this.inputElement_, 'keyup', this, (e) => this
-        .onSearchEvent_());
+    this.addEvent_(this.inputElement_, 'keyup', this, this.onSearchEvent_);
 
     inputWrapper.appendChild(this.inputElement_);
     contentContainer.appendChild(inputWrapper);
@@ -184,6 +220,35 @@ td + td, th + th { border-left:2px solid #ddd; }
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+tr:hover:not(:first-child) {
+  opacity: 0.75;
+  cursor: pointer;
+}
+tr:hover .tooltip .tooltiptext {
+  visibility: visible;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  right: 10px;
+  top: -10px;
+}
+
 .blocklyModalContainer {
   background-color: white;
   border: 1px solid gray;
