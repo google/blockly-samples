@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@3.0.2...@blockly/plugin-scroll-options@3.0.3) (2022-11-17)
+
+
+### Bug Fixes
+
+* scroll-options stops using is3dSupported ([#1363](https://github.com/google/blockly-samples/issues/1363)) ([b13b091](https://github.com/google/blockly-samples/commit/b13b0918fc2994e68d05c5e434a5151efe765d77))
+
+
+
 ## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@3.0.1...@blockly/plugin-scroll-options@3.0.2) (2022-10-27)
 
 **Note:** Version bump only for package @blockly/plugin-scroll-options
