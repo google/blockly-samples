@@ -45,9 +45,9 @@ const toolbox = generateFieldTestBlocks('field_numpad', [
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @return The created workspace.
  */
 function createWorkspace(blocklyDiv: HTMLElement,
     options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {

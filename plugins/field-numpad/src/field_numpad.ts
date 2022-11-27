@@ -18,24 +18,23 @@ import {FieldNumberConfig} from 'blockly/core/field_number';
 export type FieldNumpadConfig = FieldNumberConfig;
 
 /**
-* Options used to define a field numpad from JSON.
-*/
+ * Options used to define a field numpad from JSON.
+ */
 export interface FieldNumpadOptions extends FieldNumpadConfig {
   value?: string | number;
 }
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
-* NOTE: `Function` is banned by eslint. Eventually, a more precise
-* function type should be added at the corresponding source:
-* https://github.com/google/blockly/blob/master/core/field.ts
-*/
+ * NOTE: `Function` is banned by eslint. Eventually, a more precise
+ * function type should be added at the corresponding source:
+ * https://github.com/google/blockly/blob/master/core/field.ts
+ */
 type FieldNumpadValidator = Function;
 /* eslint-enable @typescript-eslint/ban-types */
 
-// TODO: Rename field and update description.
 /**
- * Field description.
+ * Numpad field.
  */
 export class FieldNumpad extends Blockly.FieldNumber {
   /**
@@ -74,7 +73,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
 
   /* eslint-disable @typescript-eslint/naming-convention */
   /**
-   * Show the inline free-text editor on top of the text along with the slider
+   * Show the inline free-text editor on top of the text along with the numpad
    *    editor.
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
@@ -102,27 +101,34 @@ export class FieldNumpad extends Blockly.FieldNumber {
   }
 
   /**
-   * Updates the slider when the field rerenders.
+   * Updates the numpad when the field rerenders.
    */
   protected render_() {
     super.render_();
   }
 
+  /**
+   * Creates a table cell in the provided table row
+   * @param name The text content of the cell.
+   * @param row The row the cell will be inserted.
+   * @param position The position in the row the cell will be inserted.
+   * @return The newly created cell.
+   */
   static createCellInRow_(name: string, row: HTMLTableRowElement,
       position: number): HTMLTableCellElement {
     const cell = row.insertCell(position);
-    cell.className = 'numpadItem';
+    cell.className = 'blocklyMenuItem';
     cell.textContent = name;
     return cell;
   }
 
   /**
-   * Creates the slider editor and add event listeners.
-   * @return The newly created slider.
+   * Creates the numpad editor and adds event listeners.
+   * @return The newly created numpad.
    */
   private dropdownCreate_(): HTMLElement {
     const wrapper = document.createElement('div') as HTMLElement;
-    wrapper.className = 'fieldNumpadContainer';
+    wrapper.className = 'fieldNumpadContainer blocklyMenu blocklyNonSelectable';
     const table = document.createElement('table');
     table.className = 'fieldNumpad';
 
@@ -136,6 +142,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
     const key4 = FieldNumpad.createCellInRow_('4', secondRow, 0);
     const key5 = FieldNumpad.createCellInRow_('5', secondRow, 1);
     const key6 = FieldNumpad.createCellInRow_('6', secondRow, 2);
+    const keyClr = FieldNumpad.createCellInRow_('Clr', secondRow, 3);
 
     const thirdRow = table.insertRow(2);
     const key1 = FieldNumpad.createCellInRow_('1', thirdRow, 0);
@@ -158,6 +165,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
     key8.addEventListener('click', () => this.onNumClick_('8'));
     key9.addEventListener('click', () => this.onNumClick_('9'));
     keyDel.addEventListener('click', () => this.onDelClick_());
+    keyClr.addEventListener('click', () => this.onClrClick_());
     keySign.addEventListener('click', () => this.onSignClick_());
     keyDecimal.addEventListener('click', () => this.onNumClick_('.'));
 
@@ -165,22 +173,39 @@ export class FieldNumpad extends Blockly.FieldNumber {
     return wrapper;
   }
 
-  private onNumClick_(num: string): any {
-    const currentValue = this.getValue().toString();
+  /**
+   * Append the provided numpad digit to the end of the current field value
+   * @param num Numpad digit to append
+   */
+  private onNumClick_(num: string) {
+    const currentValue = this.getText();
     this.setEditorValue_(currentValue + num);
   }
 
-  private onDelClick_(): any {
-    const currentValue = this.getValue().toString();
-    this.setEditorValue_(Number(currentValue.substring(0,
-        currentValue.length-1)));
+  /**
+   * Remove the right most digit from the current field value
+   */
+  private onDelClick_() {
+    const currentValue = this.getText();
+    this.setEditorValue_(currentValue.substring(0,
+        currentValue.length-1));
   }
 
-  private onSignClick_(): any {
-    const currentValue = this.getValue().toString();
+  /**
+   * Clear all digits from the current field value
+   */
+  private onClrClick_() {
+    this.setEditorValue_('');
+  }
+
+  /**
+   * Swap the sign of the current field value
+   */
+  private onSignClick_() {
+    const currentValue = this.getText();
     if (currentValue.startsWith('-')) {
-      this.setEditorValue_(Number(currentValue.substring(1,
-          currentValue.length)));
+      this.setEditorValue_(currentValue.substring(1,
+          currentValue.length));
     } else {
       this.setEditorValue_(Number('-' + currentValue));
     }
@@ -191,7 +216,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
 Blockly.fieldRegistry.register('field_numpad', FieldNumpad);
 
 /**
- * CSS for slider field.
+ * CSS for numpad field.
  */
 Blockly.Css.register(`
 .fieldNumpadContainer {
@@ -205,14 +230,13 @@ Blockly.Css.register(`
   height: 100%;  
   width: 100%;
 }
-.fieldNumpad .numpadItem {
+.fieldNumpadContainer.blocklyMenu .blocklyMenuItem {
   border: 1px solid rgba(1, 1, 1, 0.5);
   border-radius: 4px;
   color: white;
   min-width: auto;
-  padding: 5px;
 }
-.numpadItem:hover {
+.fieldNumpadContainer .blocklyMenuItem:hover {
   cursor: pointer;
   box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
 }
