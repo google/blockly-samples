@@ -28,8 +28,9 @@
 
   <p>This is a demo of executing code step-by-step with a sandboxed JavaScript interpreter.</p>
 
-  <p>The generator's <code>Blockly.JavaScript.STATEMENT_PREFIX</code> is assigned <code>'highlightBlock(%1);\n'</code>,
-  where <code>%1</code> is the block id. The call to <code>highlightBlock()</code> will highlight the identified block
+  <p>The generator's <code>Blockly.JavaScript.STATEMENT_PREFIX</code> is assigned
+  <code>'highlightBlock(%1);\n'</code>, where <code>%1</code> is the block ID.
+  The call to <code>highlightBlock()</code> will highlight the identified block
   and set the variable <code>highlightPause</code> to <code>true</code>.</p>
 
   <p>Each press of the "Step JavaScript" button will run the interpreter one
@@ -37,7 +38,7 @@
   That is, until <code>highlightBlock()</code> has highlighted the block that
   will be executed on the next step.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS-Interpreter</a></p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript#js-interpreter">More info on running code with JS-Interpreter</a></p>
 
   <p>
     <button onclick="stepCode()" id="stepButton">Step JavaScript</button>

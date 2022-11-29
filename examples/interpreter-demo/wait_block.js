@@ -20,11 +20,11 @@ Blockly.defineBlocksWithJsonArray([{
     "name": "SECONDS",
     "min": 0,
     "max": 600,
-    "value": 1
+    "value": 1,
   }],
   "previousStatement": null,
   "nextStatement": null,
-  "colour": "%{BKY_LOOPS_HUE}"
+  "colour": "%{BKY_LOOPS_HUE}",
 }]);
 
 /**
