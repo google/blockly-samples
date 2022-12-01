@@ -4,19 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+
 import * as Blockly from 'blockly';
-import {blocks} from './blocks/text';
-import {forBlock} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
+import {blocks} from './blocks/p5';
+import {forBlock} from './generators/javascript';
+import p5 from 'p5';
 import './index.css';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
 
-// Set up UI elements and inject Blockly
+// Set up UI elements
 const codeDiv = document.getElementById('generatedCode').firstChild;
 const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
@@ -31,8 +33,16 @@ const runCode = () => {
 
   outputDiv.innerHTML = '';
 
-  eval(code);
+  // Run p5 in instance mode. The name `sketch` matches the name
+  // used in the generator for all the p5 blocks.
+  // eslint-disable-next-line new-cap
+  new p5((sketch) => {
+    eval(code);
+  }, outputDiv);
 };
+
+// Disable blocks that aren't inside the setup or draw loops.
+ws.addChangeListener(Blockly.Events.disableOrphans);
 
 // Load the initial state from storage and run the code.
 load(ws);
