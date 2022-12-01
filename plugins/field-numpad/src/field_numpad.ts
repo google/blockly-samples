@@ -1,6 +1,7 @@
 /**
  * @license
  * Copyright 2022 Google LLC
+ * © 2022 Richard La <r4la@uwaterloo.ca>
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -46,7 +47,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
    * @param precision Precision for value.
    * @param validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
-   *    number, or null to abort the change.`
+   *    number, or null to abort the change.
    * @param config A map of options used to configure the field.
    *    See the [field creation documentation]{@link
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
@@ -204,8 +205,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
   private onSignClick_() {
     const currentValue = this.getText();
     if (currentValue.startsWith('-')) {
-      this.setEditorValue_(currentValue.substring(1,
-          currentValue.length));
+      this.setEditorValue_(currentValue.substring(1));
     } else {
       this.setEditorValue_(Number('-' + currentValue));
     }
@@ -220,7 +220,7 @@ Blockly.fieldRegistry.register('field_numpad', FieldNumpad);
  */
 Blockly.Css.register(`
 .fieldNumpadContainer {
-  font-family: 
+  font-family: 'Roboto', 'Noto', sans-serif;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -233,11 +233,11 @@ Blockly.Css.register(`
 .fieldNumpadContainer.blocklyMenu .blocklyMenuItem {
   border: 1px solid rgba(1, 1, 1, 0.5);
   border-radius: 4px;
-  color: white;
+  color: #fff;
   min-width: auto;
 }
 .fieldNumpadContainer .blocklyMenuItem:hover {
   cursor: pointer;
-  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
 }
 `);
