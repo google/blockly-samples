@@ -19,19 +19,19 @@ import {Modal} from '@blockly/plugin-modal';
 export class ShortcutMenu extends Modal {
   /**
    * Constructor for creating a Blockly modal.
-   * @param {string} title The title for the modal.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to display the modal
    *     over.
    */
-  constructor(title, workspace) {
-    super(title, workspace);
+  constructor(workspace) {
+    super('Shortcut menu', workspace);
 
     /**
      * The div holding the shortcut menu
      * @type {HTMLElement}
      * @private
      */
-    this.shortcutTable_ = document.createElement('div');
+    this.shortcutTableContainer_ = document.createElement('div');
+    this.editRow_ = '';
 
     /** Test code */
     // Sample edit shortcut code
@@ -43,14 +43,41 @@ export class ShortcutMenu extends Modal {
         Blockly.ShortcutRegistry.registry.shortcuts);
     console.log('Shortcut Registry Shortcut items',
         Blockly.ShortcutRegistry.registry.shortcuts.keys());
-    console.log('Shortcut Current Key map',
-        Blockly.ShortcutRegistry.registry.getKeyMap());
     // Map shortcut name -> [list of key codes]
     // TODO: maybe consider caching and listening to update cache on registry up
     for (const [key, value] of Blockly.ShortcutRegistry.registry.shortcuts) {
       console.log(`${key} -> ${value.keyCodes}`);
     }
+    // TODO: key map
+    // console.log('KEYMAP: ', Blockly.ShortcutRegistry.registry.getKeyMap());
+    // console.log(bindings);
+    // for (const [key, value] of Object.entries(bindings)) {
+    //   console.log(`${key} -> ${value}`);
+    // }
+    console.log('bindings: ', this.getBindingsByNames_());
+
+
     /** End Test Code */
+  }
+
+  /**
+   * Return a map of command names to keybindings by parsing keymap.
+   * @protected
+   * @return {any} map of command to keybindings
+   */
+  getBindingsByNames_() {
+    const bindings = {};
+    for (const [key, values] of
+      Object.entries(Blockly.ShortcutRegistry.registry.getKeyMap())
+          .sort()) {
+      for (const value of values) {
+        if (!(value in bindings)) {
+          bindings[value] = [];
+        }
+        bindings[value].push(key);
+      }
+    }
+    return bindings;
   }
 
   /**
@@ -125,16 +152,36 @@ export class ShortcutMenu extends Modal {
    */
   onEditCommand_(command) {
     console.log(command);
-    // Open modal to edit command
+    this.editRow_ = command;
+    this.createShortcutTable_();
   }
+
+  /**
+   * Change keycode after confirmation
+   * @param command
+   * @param keycode
+   */
+  onChangeCommand_(command, keycode) {
+    Blockly.ShortcutRegistry.registry.removeAllKeyMappings(command);
+    Blockly.ShortcutRegistry.registry.addKeyMapping(keycode, command, true);
+    this.editRow_ = '';
+    this.createShortcutTable_();
+  }
+
+  /**
+   * Cancel edit command input
+   */
+  onCancelEditCommand_() {
+    this.editRow_ = '';
+    this.createShortcutTable_();
+  }
+
 
   /**
    * Creates the shortcut table for the shortcut menu modal
    * @protected
    */
   createShortcutTable_() {
-    const table = '';
-
     const tbl = document.createElement('table');
     const tblBody = document.createElement('tbody');
 
@@ -150,9 +197,10 @@ export class ShortcutMenu extends Modal {
     // add the row to the table body
     tblBody.appendChild(headerRow);
 
-    for (const [key, value] of Blockly.ShortcutRegistry.registry.shortcuts) {
+    for (const [key, values] of
+      Object.entries(this.getBindingsByNames_()).sort()) {
       const row = document.createElement('tr');
-      const keyBindings = this.getKeybindings(value.keyCodes);
+      const keyBindings = this.getKeybindings(values);
       if (!this.filter_ || key.toLowerCase().
           includes(this.filter_.toLowerCase()) ||
           keyBindings.includes(this.filter_)) {
@@ -161,28 +209,47 @@ export class ShortcutMenu extends Modal {
         commandCell.appendChild(commandCellText);
 
         const keybindCell = document.createElement('td');
-        keybindCell.innerHTML = this.formatKeybindings(keyBindings);
+
+        if (this.editRow_ == key) {
+          const keybindInput = document.createElement('input');
+          keybindInput.setAttribute('class', 'editKeyBinding');
+          keybindInput.autofocus = true;
+          this.addEvent_(keybindInput, 'keydown', this,
+              (e) => {
+                console.log(e);
+                if (e.key == 'Enter') {
+                  this.onChangeCommand_(key, keybindInput.value.trim());
+                } else if (e.key == 'Escape') {
+                  e.stopPropagation();
+                  this.onCancelEditCommand_();
+                }
+              });
+          keybindCell.appendChild(keybindInput);
+        } else {
+          keybindCell.innerHTML = this.formatKeybindings(keyBindings);
+        }
 
         row.appendChild(commandCell);
         row.appendChild(keybindCell);
 
-        const tooltip = document.createElement('div');
+        if (this.editRow_ != key) {
+          const tooltip = document.createElement('div');
+          tooltip.setAttribute('class', 'tooltip');
+          const tooltipText = document.createElement('span');
+          tooltipText.setAttribute('class', 'tooltiptext');
+          tooltipText.textContent = 'Click row to edit';
+          tooltip.appendChild(tooltipText);
+          row.appendChild(tooltip);
+          this.addEvent_(row, 'click', this, () => this.onEditCommand_(key));
+        }
 
-        tooltip.innerHTML =
-        `
-        <div class="tooltip">
-          <span class="tooltiptext"> Click on this row to edit the shortcuts</span>
-         </div>
-         `;
-        row.appendChild(tooltip);
-        this.addEvent_(this.shortcutTable_, 'click', this, (e) => this.onEditCommand_(e));
+        tblBody.appendChild(row);
       }
-      tblBody.appendChild(row);
     }
-    // put the <tbody> in the <table>
-    tbl.appendChild(tblBody); document.createElement('tbody');
+    tbl.appendChild(tblBody);
 
-    this.shortcutTable_ = tbl;
+    this.shortcutTableContainer_.innerHTML = '';
+    this.shortcutTableContainer_.appendChild(tbl);
   }
 
   /**
@@ -201,7 +268,7 @@ export class ShortcutMenu extends Modal {
     inputWrapper.appendChild(this.inputElement_);
     contentContainer.appendChild(inputWrapper);
     this.createShortcutTable_();
-    contentContainer.appendChild(this.shortcutTable_);
+    contentContainer.appendChild(this.shortcutTableContainer_);
   }
 }
 
@@ -215,6 +282,9 @@ table {
 th, td {
   text-align: left;
   padding: 16px;
+}
+tr {
+  line-height: 175%;
 }
 td + td, th + th { border-left:2px solid #ddd; }
 tr:nth-child(even) {
@@ -262,7 +332,7 @@ tr:hover .tooltip .tooltiptext {
   box-shadow: 0px 10px 20px grey;
   z-index: 100;
   margin: 5% auto;
-  overflow: scroll;
+  overflow: auto;
 }
 code {
   background-color: lightGray;
@@ -279,6 +349,16 @@ code {
   margin-top: 8px;
   margin-right: 16px;
   margin-bottom: 8px;
+  box-sizing: border-box;
+}
+.editKeyBinding {
+  font-size: 17px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  width: 100%;
+  padding: 2px 6px;
+  margin-right: 16px;
   box-sizing: border-box;
 }
 `);
