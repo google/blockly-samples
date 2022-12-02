@@ -1,10 +1,4 @@
 /**
- * @license
- * Copyright 2020 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
-/**
  * @fileoverview Class responsible for creating a Blockly modal.
  * @author dnaidapp@uwaterloo.ca (Dulhan Waduge)
  * @author rickson.yang@uwaterloo.ca (Rickson Yang)
@@ -32,11 +26,18 @@ export class ShortcutMenu extends Modal {
      */
     this.shortcutTableContainer_ = document.createElement('div');
     this.editRow_ = '';
+    this.keyCode_ = '';
 
     /** Test code */
     // Sample edit shortcut code
     Blockly.ShortcutRegistry.registry.removeAllKeyMappings('copy');
-    Blockly.ShortcutRegistry.registry.addKeyMapping('Control+70', 'copy', true);
+    // Blockly.ShortcutRegistry.registry.addKeyMapping('Control+70',
+    // 'copy', true);
+    const code = Blockly.ShortcutRegistry.registry.createSerializedKey(70,
+        [Blockly.utils.KeyCodes.CTRL]);
+    // helper -> text to display, input.value = `Ctrl + F` (eg)
+
+    Blockly.ShortcutRegistry.registry.addKeyMapping(code, 'copy', true);
 
     console.log('SHORTCUTS: ', Blockly.ShortcutRegistry.registry);
     console.log('Shortcut Registry Shortcuts',
@@ -86,11 +87,20 @@ export class ShortcutMenu extends Modal {
    * @protected
    * @return readable keybindings given keycodes
    */
-  getKeybindings(keyCodes) {
+  getKeyCodesDisplay_(keyCodes) {
     const specialCodes = {
       '27': 'Escape',
-      '46': '.',
       '8': 'Backspace',
+      '186': ';',
+      '188': ',',
+      '189': '-',
+      '191': '/',
+      '219': '[',
+      '220': '\\',
+      '221': ']',
+      '190': '.',
+      '222': '\'',
+      '187': '=',
       'Control': 'Ctrl', // or Cmd for MAC
       'Meta': 'Meta',
       'Shift': 'Shift',
@@ -102,10 +112,7 @@ export class ShortcutMenu extends Modal {
         return specialCodes[code];
       }
       // printable ASCII chars
-      if (code >= '!' && code <= '~') {
-        return String.fromCharCode(Number(code));
-      }
-      return code;
+      return String.fromCharCode(Number(code)); // ! BUG
     }).map((code) => `${code}`).join(' + ')).join(' , ');
   }
 
@@ -162,8 +169,10 @@ export class ShortcutMenu extends Modal {
    * @param keycode
    */
   onChangeCommand_(command, keycode) {
-    Blockly.ShortcutRegistry.registry.removeAllKeyMappings(command);
-    Blockly.ShortcutRegistry.registry.addKeyMapping(keycode, command, true);
+    if (keycode.length > 0) {
+      Blockly.ShortcutRegistry.registry.removeAllKeyMappings(command);
+      Blockly.ShortcutRegistry.registry.addKeyMapping(keycode, command, true);
+    }
     this.editRow_ = '';
     this.createShortcutTable_();
   }
@@ -176,12 +185,61 @@ export class ShortcutMenu extends Modal {
     this.createShortcutTable_();
   }
 
+  // /**
+  //  * @param serializedKeyCode
+  //  */
+  // getKeyCodeDisplay_(serializedKeyCode) {
+  //   const mods = {
+  //     '27': 'Escape',
+  //     '46': '.',
+  //     '8': 'Backspace',
+  //     'Control': 'Ctrl',
+  //     'Meta': 'Meta',
+  //     'Shift': 'Shift',
+  //     'Alt': 'Alt',
+  //   };
+
+  //   return serializedKeyCode.split('+').map((key) => {
+  //     if (key in mods) {
+  //       return mods[key];
+  //     } else {
+  //       return String.fromCharCode(Number(key));
+  //     }
+  //   }).join('+');
+  // }
+
+  /**
+   * Create a serialized keycode from keyboard event keycode and modifiers
+   *
+   * @param e
+   * @return {!String} serialized key to register into keymap
+   */
+  getSerializedKeycode_(e) {
+    const code = e.keyCode;
+    const mods = [];
+
+    if (e.altKey) {
+      mods.push(Blockly.utils.KeyCodes.ALT);
+    }
+    if (e.ctrlKey) {
+      mods.push(Blockly.utils.KeyCodes.CTRL);
+    }
+    if (e.shiftKey) {
+      mods.push(Blockly.utils.KeyCodes.SHIFT);
+    }
+    if (e.metaKey) {
+      mods.push(Blockly.utils.KeyCodes.META);
+    }
+    return Blockly.ShortcutRegistry.registry.createSerializedKey(code, mods);
+  }
+
 
   /**
    * Creates the shortcut table for the shortcut menu modal
    * @protected
    */
   createShortcutTable_() {
+    const keybindInput = document.createElement('input');
     const tbl = document.createElement('table');
     const tblBody = document.createElement('tbody');
 
@@ -200,7 +258,7 @@ export class ShortcutMenu extends Modal {
     for (const [key, values] of
       Object.entries(this.getBindingsByNames_()).sort()) {
       const row = document.createElement('tr');
-      const keyBindings = this.getKeybindings(values);
+      const keyBindings = this.getKeyCodesDisplay_(values);
       if (!this.filter_ || key.toLowerCase().
           includes(this.filter_.toLowerCase()) ||
           keyBindings.includes(this.filter_)) {
@@ -211,17 +269,28 @@ export class ShortcutMenu extends Modal {
         const keybindCell = document.createElement('td');
 
         if (this.editRow_ == key) {
-          const keybindInput = document.createElement('input');
           keybindInput.setAttribute('class', 'editKeyBinding');
-          keybindInput.autofocus = true;
+          keybindInput.readOnly = true;
+
           this.addEvent_(keybindInput, 'keydown', this,
               (e) => {
                 console.log(e);
+                console.log(this.keyCode_);
                 if (e.key == 'Enter') {
-                  this.onChangeCommand_(key, keybindInput.value.trim());
+                  this.onChangeCommand_(key, this.keyCode_);
                 } else if (e.key == 'Escape') {
                   e.stopPropagation();
                   this.onCancelEditCommand_();
+                } else {
+                  // Only support keybindings with some non-modifier key
+                  if (!(['Shift', 'Control', 'Alt', 'Meta'].includes(e.key))) {
+                    this.keyCode_ = this.getSerializedKeycode_(e);
+                    console.log(this.keyCode_);
+                    keybindInput.value = this.getKeyCodesDisplay_(
+                        [this.keyCode_]);
+                  } else {
+                    keybindInput.value = '';
+                  }
                 }
               });
           keybindCell.appendChild(keybindInput);
@@ -250,6 +319,7 @@ export class ShortcutMenu extends Modal {
 
     this.shortcutTableContainer_.innerHTML = '';
     this.shortcutTableContainer_.appendChild(tbl);
+    keybindInput.autofocus = true;
   }
 
   /**
@@ -301,6 +371,7 @@ tr:hover .tooltip .tooltiptext {
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
+  opacity: 75%;
 }
 
 .tooltip .tooltiptext {
