@@ -6,7 +6,7 @@
 
 /**
  * @fileoverview Time input field.
- * @author carl.shen1@uwaterloo.ca (Carl Shen)
+ * @author shencarl21@gmail.com (Carl Shen)
  */
 
 import * as Blockly from 'blockly/core';

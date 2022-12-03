@@ -14,7 +14,7 @@ import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_time', [
   {
-    label: 'Min',
+    label: 'Time Field',
     args: {
       'time': '24:23',
     },
