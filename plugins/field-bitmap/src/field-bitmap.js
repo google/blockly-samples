@@ -354,6 +354,7 @@ export class FieldBitmap extends Blockly.Field {
     for (const event of this.boundEvents_) {
       Blockly.browserEvents.unbind(event);
     }
+    this.boundEvents_.length = 0;
     this.editorPixels_ = null;
   }
 

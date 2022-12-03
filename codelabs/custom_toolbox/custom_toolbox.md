@@ -27,7 +27,7 @@ The resulting toolbox is shown below.
 
 ![A toolbox with colored background and the blockly label above the category text.](./final_toolbox.png)
 
-The code samples are written in ES6 syntax. You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/examples/custom-toolbox-codelab/complete-code/index.html) on GitHub, in both ES5 and ES6 syntax.
+The code samples are written in ES6 syntax. You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/examples/custom-toolbox-codelab/complete-code/index.html) on GitHub.
 
 ### What you'll need
 - A browser.
@@ -520,5 +520,4 @@ The toolbox can be customized in a variety of ways to make it work for your appl
 * How to add an icon by adding a custom CSS class to the icon div.
 * How to change what HTML Elements are used for different parts of a category.
 * How to create a custom toolbox item.
-You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/examples/custom-toolbox-codelab/complete-code) on GitHub, in both ES5 and ES6 syntax.
-
+You can find the code for the [completed custom toolbox](https://github.com/google/blockly-samples/tree/master/examples/custom-toolbox-codelab/complete-code) on GitHub.
