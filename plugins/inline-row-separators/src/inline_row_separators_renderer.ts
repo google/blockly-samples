@@ -24,7 +24,7 @@ export class RenderInfo extends Blockly.geras.RenderInfo {
    * @param lastInput The input that follows.
    * @return True if the next input should be rendered on a new row.
    */
-  protected override shouldStartNewRow_(
+  protected shouldStartNewRow_(
       input: Blockly.Input, lastInput?: Blockly.Input): boolean {
     /* eslint-enable @typescript-eslint/naming-convention */
     if (lastInput?.type === Blockly.inputTypes.DUMMY) {
@@ -45,7 +45,7 @@ export class Renderer extends Blockly.geras.Renderer {
    * @param block The block to measure.
    * @return The render info object.
    */
-  protected override makeRenderInfo_(block: Blockly.BlockSvg): RenderInfo {
+  protected makeRenderInfo_(block: Blockly.BlockSvg): RenderInfo {
     /* eslint-enable @typescript-eslint/naming-convention */
     return new RenderInfo(this, block);
   }
