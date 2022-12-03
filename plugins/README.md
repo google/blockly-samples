@@ -28,6 +28,9 @@ replace the built-in mutator UI with a +/- based UI.
 - [``@blockly/block-dynamic-connection``](block-dynamic-connection/): A group of
 blocks that add connections dynamically.
 - [``@blockly/block-test``](block-test/): A group of Blockly test blocks.
+- [``@blockly/inline-row-separators``](inline-row-separators/): A renderer that
+allows putting inline value input connectors on separate rows, and blocks that
+demonstrate the feature.
 
 ### Dev
 
