@@ -12,22 +12,11 @@ import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
 import '../src/index';
 
-// const toolbox = generateFieldTestBlocks('field_time', [
-//   {
-//     label: 'Basic',
-//     args: {
-//       'time':'12:00',
-//       'textEdit': true,
-//     },
-//   },
-// ]);
-
 const toolbox = generateFieldTestBlocks('field_time', [
   {
     label: 'Min',
     args: {
-      'time': 'POG',
-      'textEdit': true,
+      'time': '24:23',
     },
   },
 ]);

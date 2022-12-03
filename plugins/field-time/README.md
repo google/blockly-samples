@@ -1,46 +1,54 @@
-# blockly-plugin-field-time [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/field-time [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) time picker field that uses [HTML time input](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/time)
 
 ## Installation
 
 ### Yarn
 ```
-yarn add blockly-plugin-field-time
+yarn add @blockly/field-time
 ```
 
 ### npm
 ```
-npm install blockly-plugin-field-time --save
+npm install @blockly/field-time --save
 ```
 
 ## Usage
 
-<!--
-  - TODO: Update usage.
-  -->
+### JavaScript
 ```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-field-time';
+import FieldDate from '@blockly/field-time';
 
-// Inject Blockly.
-const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: toolboxCategories,
-});
+Blockly.Blocks["test_fields_time"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("time: ")
+      .appendField(new FieldTime("12:00"), "FIELDNAME");
+  }
+};
+```
+### JSON
 
-// Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
+```js
+import * as Blockly from 'blockly';
+import '@blockly/field-time';
+
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "test_fields_time",
+        "message0": "time: %1",
+        "args0": [
+            {
+                "type": "field_time",
+                "name": "FIELDNAME",
+                "time": "12:00"
+            }
+        ]
+    }]);
 ```
 
-## API
-
-<!--
-  - TODO: describe the API.
-  -->
-
 ## License
+
 Apache 2.0
