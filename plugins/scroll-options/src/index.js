@@ -6,6 +6,7 @@
 
 import Blockly from 'blockly/core';
 import {EdgeScrollOptions, ScrollBlockDragger} from './ScrollBlockDragger';
+import {getTranslation} from './utils';
 
 /**
  * A Blockly plugin that adds additional features related to scrolling and
@@ -78,7 +79,7 @@ export class ScrollOptions {
 
     let element;
     const dragSurface = this.workspace_.getBlockDragSurface();
-    if (Blockly.utils.svgMath.is3dSupported() && dragSurface) {
+    if (dragSurface) {
       element = dragSurface.getSvgRoot();
     } else {
       element = this.workspace_.svgGroup_;
@@ -147,14 +148,14 @@ export class ScrollOptions {
     const x = this.workspace_.scrollX - scrollDelta.x;
     const y = this.workspace_.scrollY - scrollDelta.y;
 
-    const oldLocation = this.getDragSurfaceLocation_();
+    const oldLocation = getTranslation(this.workspace_);
 
     // Try to scroll to the desired location.
     this.workspace_.getMetricsManager().useCachedContentMetrics = true;
     this.workspace_.scroll(x, y);
     this.workspace_.getMetricsManager().useCachedContentMetrics = false;
 
-    const newLocation = this.getDragSurfaceLocation_();
+    const newLocation = getTranslation(this.workspace_);
 
     // How much we actually ended up scrolling.
     const deltaX = newLocation.x - oldLocation.x;
@@ -164,16 +165,6 @@ export class ScrollOptions {
       currentGesture.getCurrentDragger().moveBlockWhileDragging(deltaX, deltaY);
       e.preventDefault();
     }
-  }
-
-  /**
-   * Gets the current location of the drag surface.
-   * @return {!Blockly.utils.Coordinate} The current coordinate.
-   * @private
-   */
-  getDragSurfaceLocation_() {
-    const dragSurface = this.workspace_.getBlockDragSurface();
-    return dragSurface.getWsTranslation();
   }
 }
 
