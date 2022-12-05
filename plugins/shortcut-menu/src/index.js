@@ -59,17 +59,19 @@ export class ShortcutMenu extends Modal {
     const specialCodes = {
       '27': 'Escape',
       '8': 'Backspace',
+      '46': 'Delete',
       '186': ';',
       '188': ',',
       '189': '-',
       '191': '/',
+      '192': '~',
       '219': '[',
       '220': '\\',
       '221': ']',
       '190': '.',
       '222': '\'',
       '187': '=',
-      'Control': 'Ctrl', // or Cmd for MAC
+      'Control': 'Ctrl',
       'Meta': 'Meta',
       'Shift': 'Shift',
       'Alt': 'Alt',
@@ -103,7 +105,6 @@ export class ShortcutMenu extends Modal {
    */
   onSearchEvent_() {
     this.filter_ = this.inputElement_.value.trim();
-    console.log(this.filter_);
     this.createShortcutTable_();
   }
 
@@ -125,7 +126,6 @@ export class ShortcutMenu extends Modal {
    * @protected
    */
   onEditCommand_(command) {
-    console.log(command);
     this.editRow_ = command;
     this.createShortcutTable_();
   }
@@ -202,14 +202,16 @@ export class ShortcutMenu extends Modal {
       Object.entries(this.getBindingsByNames_()).sort()) {
       const row = document.createElement('tr');
       const keyBindings = this.getKeyCodesDisplay_(values);
-      if (!this.filter_ || key.toLowerCase().
-          includes(this.filter_.toLowerCase()) ||
-          keyBindings.includes(this.filter_)) {
+      if (!this.filter_ ||
+          key.toLowerCase().includes(this.filter_.toLowerCase()) ||
+          keyBindings.toLowerCase().includes(this.filter_.toLowerCase())
+      ) {
         const commandCell = document.createElement('td');
         const commandCellText = document.createTextNode(key);
         commandCell.appendChild(commandCellText);
 
         const keybindCell = document.createElement('td');
+        keybindCell.setAttribute('class', 'keybindCell');
 
         if (this.editRow_ == key) {
           keybindInput.setAttribute('class', 'editKeyBinding');
@@ -217,8 +219,6 @@ export class ShortcutMenu extends Modal {
 
           this.addEvent_(keybindInput, 'keydown', this,
               (e) => {
-                console.log(e);
-                console.log(this.keyCode_);
                 if (e.key == 'Enter') {
                   this.onChangeCommand_(key, this.keyCode_);
                 } else if (e.key == 'Escape') {
@@ -228,7 +228,6 @@ export class ShortcutMenu extends Modal {
                   // Only support keybindings with some non-modifier key
                   if (!(['Shift', 'Control', 'Alt', 'Meta'].includes(e.key))) {
                     this.keyCode_ = this.getSerializedKeycode_(e);
-                    console.log(this.keyCode_);
                     keybindInput.value = this.getKeyCodesDisplay_(
                         [this.keyCode_]);
                   } else {
@@ -262,7 +261,7 @@ export class ShortcutMenu extends Modal {
 
     this.shortcutTableContainer_.innerHTML = '';
     this.shortcutTableContainer_.appendChild(tbl);
-    keybindInput.autofocus = true;
+    keybindInput.focus();
   }
 
   /**
@@ -310,13 +309,16 @@ tr:hover:not(:first-child) {
 tr:hover .tooltip .tooltiptext {
   visibility: visible;
 }
+tr .keybindCell {
+  width: 85%;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
   opacity: 75%;
 }
-
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 200px;

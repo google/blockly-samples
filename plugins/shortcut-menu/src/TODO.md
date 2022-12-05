@@ -1,7 +1,0 @@
-- add more CSS styling?
-- mention future imporovements:
-  - add search functionality similar to VS code (e.g. "Ctrl + C" gets replaced with Ctrl and C tags)
-- address lowercase letters?
-- add jsdocs
-- export secondary modal from another file while keeping it private?
-- fix filter (typing c allows "delete")
