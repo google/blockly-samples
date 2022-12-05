@@ -22,11 +22,12 @@ This field is an extension of the Blockly.FieldNumber field. See the [Blockly.Fi
 import * as Blockly from 'blockly';
 import {FieldNumpad} from '@blockly/field-numpad';
 Blockly.Blocks["test_field_numpad"] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField("numpad: ")
-      .appendField(new FieldNumpad(50), "FIELDNAME")
-  }
+    init: function () 
+        {
+            this.appendDummyInput()
+                .appendField('numpad: ')
+                .appendField(new FieldNumpad(50), "FIELDNAME");
+        }
 };
 ```
 ### JSON
@@ -42,7 +43,7 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "field_numpad",
                 "name": "FIELDNAME",
-                "value": 50
+                "value": 50,
             }
         ]
     }]);

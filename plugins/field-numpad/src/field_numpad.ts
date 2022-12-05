@@ -1,6 +1,7 @@
 /**
  * @license
  * Copyright 2022 Google LLC
+ * © 2022 Richard La <r3la@uwaterloo.ca>
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -46,7 +47,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
    * @param precision Precision for value.
    * @param validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
-   *    number, or null to abort the change.`
+   *    number, or null to abort the change.
    * @param config A map of options used to configure the field.
    *    See the [field creation documentation]{@link
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
@@ -95,28 +96,18 @@ export class FieldNumpad extends Blockly.FieldNumber {
     const primary = sourceBlock.getColour() || '';
     const tertiary = sourceBlock.getColourTertiary() || '';
     Blockly.DropDownDiv.setColour(primary, tertiary);
-
-    Blockly.DropDownDiv.showPositionedByField(
-        this, undefined);
-  }
-
-  /**
-   * Updates the numpad when the field rerenders.
-   */
-  protected render_() {
-    super.render_();
+    Blockly.DropDownDiv.showPositionedByField(this, undefined);
   }
 
   /**
    * Creates a table cell in the provided table row
    * @param name The text content of the cell.
    * @param row The row the cell will be inserted.
-   * @param position The position in the row the cell will be inserted.
    * @return The newly created cell.
    */
   static createCellInRow_(name: string, row: HTMLTableRowElement,
       position: number): HTMLTableCellElement {
-    const cell = row.insertCell(position);
+    const cell = row.insertCell();
     cell.className = 'blocklyMenuItem';
     cell.textContent = name;
     return cell;
@@ -132,24 +123,24 @@ export class FieldNumpad extends Blockly.FieldNumber {
     const table = document.createElement('table');
     table.className = 'fieldNumpad';
 
-    const firstRow = table.insertRow(0);
+    const firstRow = table.insertRow();
     const key7 = FieldNumpad.createCellInRow_('7', firstRow, 0);
     const key8 = FieldNumpad.createCellInRow_('8', firstRow, 1);
     const key9 = FieldNumpad.createCellInRow_('9', firstRow, 2);
     const keyDel = FieldNumpad.createCellInRow_('Del', firstRow, 3);
 
-    const secondRow = table.insertRow(1);
+    const secondRow = table.insertRow();
     const key4 = FieldNumpad.createCellInRow_('4', secondRow, 0);
     const key5 = FieldNumpad.createCellInRow_('5', secondRow, 1);
     const key6 = FieldNumpad.createCellInRow_('6', secondRow, 2);
     const keyClr = FieldNumpad.createCellInRow_('Clr', secondRow, 3);
 
-    const thirdRow = table.insertRow(2);
+    const thirdRow = table.insertRow();
     const key1 = FieldNumpad.createCellInRow_('1', thirdRow, 0);
     const key2 = FieldNumpad.createCellInRow_('2', thirdRow, 1);
     const key3 = FieldNumpad.createCellInRow_('3', thirdRow, 2);
 
-    const fourthRow = table.insertRow(3);
+    const fourthRow = table.insertRow();
     const keySign = FieldNumpad.createCellInRow_('±', fourthRow, 0);
     const key0 = FieldNumpad.createCellInRow_('0', fourthRow, 1);
     const keyDecimal = FieldNumpad.createCellInRow_('.', fourthRow, 2);
@@ -174,8 +165,8 @@ export class FieldNumpad extends Blockly.FieldNumber {
   }
 
   /**
-   * Append the provided numpad digit to the end of the current field value
-   * @param num Numpad digit to append
+   * Append the provided numpad digit to the end of the current field value.
+   * @param num Numpad digit to append.
    */
   private onNumClick_(num: string) {
     const currentValue = this.getText();
@@ -183,29 +174,28 @@ export class FieldNumpad extends Blockly.FieldNumber {
   }
 
   /**
-   * Remove the right most digit from the current field value
+   * Remove the right most digit from the current field value.
    */
   private onDelClick_() {
     const currentValue = this.getText();
     this.setEditorValue_(currentValue.substring(0,
-        currentValue.length-1));
+        currentValue.length - 1));
   }
 
   /**
-   * Clear all digits from the current field value
+   * Clear all digits from the current field value.
    */
   private onClrClick_() {
     this.setEditorValue_('');
   }
 
   /**
-   * Swap the sign of the current field value
+   * Swap the sign of the current field value.
    */
   private onSignClick_() {
     const currentValue = this.getText();
     if (currentValue.startsWith('-')) {
-      this.setEditorValue_(currentValue.substring(1,
-          currentValue.length));
+      this.setEditorValue_(currentValue.substring(1));
     } else {
       this.setEditorValue_(Number('-' + currentValue));
     }
@@ -220,7 +210,7 @@ Blockly.fieldRegistry.register('field_numpad', FieldNumpad);
  */
 Blockly.Css.register(`
 .fieldNumpadContainer {
-  font-family: 
+  font-family: 'Roboto', 'Noto', sans-serif;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -233,11 +223,11 @@ Blockly.Css.register(`
 .fieldNumpadContainer.blocklyMenu .blocklyMenuItem {
   border: 1px solid rgba(1, 1, 1, 0.5);
   border-radius: 4px;
-  color: white;
+  color: #fff;
   min-width: auto;
 }
 .fieldNumpadContainer .blocklyMenuItem:hover {
   cursor: pointer;
-  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
 }
 `);
