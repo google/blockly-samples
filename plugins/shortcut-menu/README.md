@@ -18,10 +18,6 @@ npm install blockly-plugin-shortcut-menu --save
 
 ## Usage
 
-<!--
-  - TODO: Update usage.
-  -->
-
 ```js
 import * as Blockly from "blockly";
 import { Plugin } from "blockly-plugin-shortcut-menu";

@@ -1,4 +1,10 @@
 /**
+ * @license
+ * Copyright 2022 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
  * @fileoverview Class responsible for creating a Blockly Shortcut modal.
  * @author dnaidapp@uwaterloo.ca (Dulhan Waduge)
  * @author rickson.yang@uwaterloo.ca (Rickson Yang)
@@ -17,7 +23,7 @@ export class ShortcutMenu extends Modal {
    *     over.
    */
   constructor(workspace) {
-    super('Shortcut menu', workspace);
+    super('Shortcut Menu', workspace);
 
     /**
      * The div holding the shortcut menu
@@ -25,7 +31,20 @@ export class ShortcutMenu extends Modal {
      * @private
      */
     this.shortcutTableContainer_ = document.createElement('div');
+
+    /**
+     * The shortcut name of the keybinding row that is currently being edited.
+     * Empty string if no row is being edited.
+     * @type {string}
+     * @private
+     */
     this.editRow_ = '';
+
+    /**
+     * The current keycode input for command overriding.
+     * @type {string}
+     * @private
+     */
     this.keyCode_ = '';
   }
 
@@ -37,8 +56,7 @@ export class ShortcutMenu extends Modal {
   getBindingsByNames_() {
     const bindings = {};
     for (const [key, values] of
-      Object.entries(Blockly.ShortcutRegistry.registry.getKeyMap())
-          .sort()) {
+      Object.entries(Blockly.ShortcutRegistry.registry.getKeyMap()).sort()) {
       for (const value of values) {
         if (!(value in bindings)) {
           bindings[value] = [];
@@ -51,37 +69,38 @@ export class ShortcutMenu extends Modal {
 
   /**
    * Format keycodes into human friendly format
-   * @param keyCodes keycodes to format
+   * @param {!Array.<String>} keyCodes keycodes to format
    * @protected
-   * @return readable keybindings given keycodes
+   * @return {!String} readable keybindings given keycodes
    */
   getKeyCodesDisplay_(keyCodes) {
     const specialCodes = {
-      '27': 'Escape',
       '8': 'Backspace',
+      '20': 'CapsLock',
+      '27': 'Escape',
       '46': 'Delete',
       '186': ';',
+      '187': '=',
       '188': ',',
       '189': '-',
+      '190': '.',
       '191': '/',
       '192': '~',
       '219': '[',
       '220': '\\',
       '221': ']',
-      '190': '.',
       '222': '\'',
-      '187': '=',
+      'Alt': 'Alt',
       'Control': 'Ctrl',
       'Meta': 'Meta',
       'Shift': 'Shift',
-      'Alt': 'Alt',
     };
 
     return keyCodes.map((codes) => String(codes).split('+').map((code) => {
       if (code in specialCodes) {
         return specialCodes[code];
       }
-      // printable ASCII chars, NOTE: this is unreliable for key codes
+      // NOTE: this is unreliable for key codes
       return String.fromCharCode(Number(code));
     }).map((code) => `${code}`).join(' + ')).join(' , ');
   }
@@ -90,7 +109,7 @@ export class ShortcutMenu extends Modal {
    * Format keybindings html for table output
    * @param {!String} keybindings to format with code tags
    * @protected
-   * @return formatted keybindings
+   * @return {!String} formatted keybindings
    */
   formatKeybindings(keybindings) {
     return keybindings.split(' , ').map((keybinding) => {
@@ -100,12 +119,12 @@ export class ShortcutMenu extends Modal {
   }
 
   /**
-   * Handle search bar filtering
+   * Handle search bar filtering and rerender table to include filtered results
    * @protected
    */
   onSearchEvent_() {
     this.filter_ = this.inputElement_.value.trim();
-    this.createShortcutTable_();
+    this.saveShortcutTable_();
   }
 
   /**
@@ -121,19 +140,20 @@ export class ShortcutMenu extends Modal {
   }
 
   /**
-   * Handle search bar filtering
-   * @param command name of the command to edit
+   * Handle edit command by rendering input on selected row
+   * @param {!String} command name of the command to edit
    * @protected
    */
   onEditCommand_(command) {
     this.editRow_ = command;
-    this.createShortcutTable_();
+    this.saveShortcutTable_();
   }
 
   /**
-   * Change keycode after confirmation
-   * @param command
-   * @param keycode
+   * Override command with new keybinding
+   * @param {!String} command command to override
+   * @param {!String} keycode new keybinding for command
+   * @protected
    */
   onChangeCommand_(command, keycode) {
     if (keycode.length > 0) {
@@ -141,67 +161,83 @@ export class ShortcutMenu extends Modal {
       Blockly.ShortcutRegistry.registry.addKeyMapping(keycode, command, true);
     }
     this.editRow_ = '';
-    this.createShortcutTable_();
+    this.saveShortcutTable_();
   }
 
   /**
    * Cancel edit command input
+   * @protected
    */
   onCancelEditCommand_() {
     this.editRow_ = '';
-    this.createShortcutTable_();
+    this.saveShortcutTable_();
   }
 
   /**
    * Create a serialized keycode from keyboard event keycode and modifiers
-   *
-   * @param e
+   * @param {KeyboardEvent} event keyboard event
    * @return {!String} serialized key to register into keymap
    */
-  getSerializedKeycode_(e) {
-    const code = e.keyCode;
+  getSerializedKeycode_(event) {
+    const code = event.keyCode;
     const mods = [];
 
-    if (e.altKey) {
+    if (event.altKey) {
       mods.push(Blockly.utils.KeyCodes.ALT);
     }
-    if (e.ctrlKey) {
+    if (event.ctrlKey) {
       mods.push(Blockly.utils.KeyCodes.CTRL);
     }
-    if (e.shiftKey) {
+    if (event.shiftKey) {
       mods.push(Blockly.utils.KeyCodes.SHIFT);
     }
-    if (e.metaKey) {
+    if (event.metaKey) {
       mods.push(Blockly.utils.KeyCodes.META);
     }
     return Blockly.ShortcutRegistry.registry.createSerializedKey(code, mods);
   }
 
   /**
+   * Creates a tooltip used when hovering over a keybinding row
+   * @return {HTMLDivElement} the tooltip div
+   * @protected
+   */
+  createKeybindingRowTooltip_() {
+    const tooltip = document.createElement('div');
+    tooltip.setAttribute('class', 'tooltip');
+    const tooltipText = document.createElement('span');
+    tooltipText.setAttribute('class', 'tooltiptext');
+    tooltipText.textContent = 'Click row to edit';
+    tooltip.appendChild(tooltipText);
+    return tooltip;
+  }
+
+  /**
    * Creates the shortcut table for the shortcut menu modal
    * @protected
    */
-  createShortcutTable_() {
-    const keybindInput = document.createElement('input');
+  saveShortcutTable_() {
     const tbl = document.createElement('table');
     const tblBody = document.createElement('tbody');
 
     const headerRow = document.createElement('tr');
     const commandHeader = document.createElement('th');
     const keybindHeader = document.createElement('th');
+    const keybindInput = document.createElement('input');
 
     commandHeader.appendChild(document.createTextNode('Command'));
     keybindHeader.appendChild(document.createTextNode('Keybinding'));
     headerRow.appendChild(commandHeader);
     headerRow.appendChild(keybindHeader);
 
-    // add the row to the table body
+    // add the header row to the table body
     tblBody.appendChild(headerRow);
 
     for (const [key, values] of
       Object.entries(this.getBindingsByNames_()).sort()) {
       const row = document.createElement('tr');
       const keyBindings = this.getKeyCodesDisplay_(values);
+
       if (!this.filter_ ||
           key.toLowerCase().includes(this.filter_.toLowerCase()) ||
           keyBindings.toLowerCase().includes(this.filter_.toLowerCase())
@@ -244,13 +280,7 @@ export class ShortcutMenu extends Modal {
         row.appendChild(keybindCell);
 
         if (this.editRow_ != key) {
-          const tooltip = document.createElement('div');
-          tooltip.setAttribute('class', 'tooltip');
-          const tooltipText = document.createElement('span');
-          tooltipText.setAttribute('class', 'tooltiptext');
-          tooltipText.textContent = 'Click row to edit';
-          tooltip.appendChild(tooltipText);
-          row.appendChild(tooltip);
+          row.appendChild(this.createKeybindingRowTooltip_());
           this.addEvent_(row, 'click', this, () => this.onEditCommand_(key));
         }
 
@@ -267,7 +297,6 @@ export class ShortcutMenu extends Modal {
   /**
    * Render content for the modal content div.
    * @param {HTMLDivElement} contentContainer The modal's content div.
-   * @param contentContainer
    * @protected
    */
   renderContent_(contentContainer) {
@@ -279,7 +308,7 @@ export class ShortcutMenu extends Modal {
 
     inputWrapper.appendChild(this.inputElement_);
     contentContainer.appendChild(inputWrapper);
-    this.createShortcutTable_();
+    this.saveShortcutTable_();
     contentContainer.appendChild(this.shortcutTableContainer_);
   }
 }

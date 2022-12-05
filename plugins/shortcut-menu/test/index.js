@@ -21,17 +21,9 @@ import {ShortcutMenu} from '../src/index';
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
 
-  // TODO: Initialize your plugin here.
-  const plugin = new ShortcutMenu(workspace);
-  plugin.init();
-  plugin.show();
-
-  // const button = document.createElement('button');
-  // button.setAttribute('class', 'shortcutButton');
-  // button.addEventListener('click', function() {
-  //   plugin.show();
-  // });
-  // document.getElementById('root').appendChild(button);
+  const shortcutMenu = new ShortcutMenu(workspace);
+  shortcutMenu.init();
+  shortcutMenu.show();
 
   return workspace;
 }
