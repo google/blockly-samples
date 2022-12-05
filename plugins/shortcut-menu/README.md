@@ -1,18 +1,17 @@
 # blockly-plugin-shortcut-menu [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that renders an interactive shortcut menu modal
 
 ## Installation
 
 ### Yarn
+
 ```
 yarn add blockly-plugin-shortcut-menu
 ```
 
 ### npm
+
 ```
 npm install blockly-plugin-shortcut-menu --save
 ```
@@ -22,25 +21,32 @@ npm install blockly-plugin-shortcut-menu --save
 <!--
   - TODO: Update usage.
   -->
+
 ```js
-import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-plugin-shortcut-menu';
+import * as Blockly from "blockly";
+import { Plugin } from "blockly-plugin-shortcut-menu";
 
 // Inject Blockly.
-const workspace = Blockly.inject('blocklyDiv', {
+const workspace = Blockly.inject("blocklyDiv", {
   toolbox: toolboxCategories,
 });
 
-// Initialize plugin.
-const plugin = new Plugin(workspace);
+// Initialize plugin and show plugin
+const plugin = new ShortcutMenu(workspace);
 plugin.init();
+plugin.show();
 ```
 
 ## API
 
-<!--
-  - TODO: describe the API.
-  -->
+### Methods
+
+- `init`: Create a modal.
+- `dispose`: Dispose of the modal.
+- `show`: Show the modal and focus on the first interactable element.
+- `hide`: Hide the modal.
+- `render`: Create all the dom elements for the modal.
 
 ## License
+
 Apache 2.0

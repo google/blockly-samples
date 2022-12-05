@@ -1,5 +1,5 @@
 /**
- * @fileoverview Class responsible for creating a Blockly modal.
+ * @fileoverview Class responsible for creating a Blockly Shortcut modal.
  * @author dnaidapp@uwaterloo.ca (Dulhan Waduge)
  * @author rickson.yang@uwaterloo.ca (Rickson Yang)
  */
@@ -27,38 +27,6 @@ export class ShortcutMenu extends Modal {
     this.shortcutTableContainer_ = document.createElement('div');
     this.editRow_ = '';
     this.keyCode_ = '';
-
-    /** Test code */
-    // Sample edit shortcut code
-    Blockly.ShortcutRegistry.registry.removeAllKeyMappings('copy');
-    // Blockly.ShortcutRegistry.registry.addKeyMapping('Control+70',
-    // 'copy', true);
-    const code = Blockly.ShortcutRegistry.registry.createSerializedKey(70,
-        [Blockly.utils.KeyCodes.CTRL]);
-    // helper -> text to display, input.value = `Ctrl + F` (eg)
-
-    Blockly.ShortcutRegistry.registry.addKeyMapping(code, 'copy', true);
-
-    console.log('SHORTCUTS: ', Blockly.ShortcutRegistry.registry);
-    console.log('Shortcut Registry Shortcuts',
-        Blockly.ShortcutRegistry.registry.shortcuts);
-    console.log('Shortcut Registry Shortcut items',
-        Blockly.ShortcutRegistry.registry.shortcuts.keys());
-    // Map shortcut name -> [list of key codes]
-    // TODO: maybe consider caching and listening to update cache on registry up
-    for (const [key, value] of Blockly.ShortcutRegistry.registry.shortcuts) {
-      console.log(`${key} -> ${value.keyCodes}`);
-    }
-    // TODO: key map
-    // console.log('KEYMAP: ', Blockly.ShortcutRegistry.registry.getKeyMap());
-    // console.log(bindings);
-    // for (const [key, value] of Object.entries(bindings)) {
-    //   console.log(`${key} -> ${value}`);
-    // }
-    console.log('bindings: ', this.getBindingsByNames_());
-
-
-    /** End Test Code */
   }
 
   /**
@@ -111,12 +79,11 @@ export class ShortcutMenu extends Modal {
       if (code in specialCodes) {
         return specialCodes[code];
       }
-      // printable ASCII chars
-      return String.fromCharCode(Number(code)); // ! BUG
+      // printable ASCII chars, NOTE: this is unreliable for key codes
+      return String.fromCharCode(Number(code));
     }).map((code) => `${code}`).join(' + ')).join(' , ');
   }
 
-  // split by , then split by +, then map to <code>{text}</code>
   /**
    * Format keybindings html for table output
    * @param {!String} keybindings to format with code tags
@@ -185,29 +152,6 @@ export class ShortcutMenu extends Modal {
     this.createShortcutTable_();
   }
 
-  // /**
-  //  * @param serializedKeyCode
-  //  */
-  // getKeyCodeDisplay_(serializedKeyCode) {
-  //   const mods = {
-  //     '27': 'Escape',
-  //     '46': '.',
-  //     '8': 'Backspace',
-  //     'Control': 'Ctrl',
-  //     'Meta': 'Meta',
-  //     'Shift': 'Shift',
-  //     'Alt': 'Alt',
-  //   };
-
-  //   return serializedKeyCode.split('+').map((key) => {
-  //     if (key in mods) {
-  //       return mods[key];
-  //     } else {
-  //       return String.fromCharCode(Number(key));
-  //     }
-  //   }).join('+');
-  // }
-
   /**
    * Create a serialized keycode from keyboard event keycode and modifiers
    *
@@ -232,7 +176,6 @@ export class ShortcutMenu extends Modal {
     }
     return Blockly.ShortcutRegistry.registry.createSerializedKey(code, mods);
   }
-
 
   /**
    * Creates the shortcut table for the shortcut menu modal
