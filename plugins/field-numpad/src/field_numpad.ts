@@ -100,13 +100,13 @@ export class FieldNumpad extends Blockly.FieldNumber {
   }
 
   /**
-   * Creates a table cell in the provided table row
+   * Creates a table cell in the provided table row.
    * @param name The text content of the cell.
    * @param row The row the cell will be inserted.
    * @return The newly created cell.
    */
-  static createCellInRow_(name: string, row: HTMLTableRowElement,
-      position: number): HTMLTableCellElement {
+  static createCellInRow_(name: string,
+      row: HTMLTableRowElement): HTMLTableCellElement {
     const cell = row.insertCell();
     cell.className = 'blocklyMenuItem';
     cell.textContent = name;
@@ -124,26 +124,26 @@ export class FieldNumpad extends Blockly.FieldNumber {
     table.className = 'fieldNumpad';
 
     const firstRow = table.insertRow();
-    const key7 = FieldNumpad.createCellInRow_('7', firstRow, 0);
-    const key8 = FieldNumpad.createCellInRow_('8', firstRow, 1);
-    const key9 = FieldNumpad.createCellInRow_('9', firstRow, 2);
-    const keyDel = FieldNumpad.createCellInRow_('Del', firstRow, 3);
+    const key7 = FieldNumpad.createCellInRow_('7', firstRow);
+    const key8 = FieldNumpad.createCellInRow_('8', firstRow);
+    const key9 = FieldNumpad.createCellInRow_('9', firstRow);
+    const keyDel = FieldNumpad.createCellInRow_('Del', firstRow);
 
     const secondRow = table.insertRow();
-    const key4 = FieldNumpad.createCellInRow_('4', secondRow, 0);
-    const key5 = FieldNumpad.createCellInRow_('5', secondRow, 1);
-    const key6 = FieldNumpad.createCellInRow_('6', secondRow, 2);
-    const keyClr = FieldNumpad.createCellInRow_('Clr', secondRow, 3);
+    const key4 = FieldNumpad.createCellInRow_('4', secondRow);
+    const key5 = FieldNumpad.createCellInRow_('5', secondRow);
+    const key6 = FieldNumpad.createCellInRow_('6', secondRow);
+    const keyClr = FieldNumpad.createCellInRow_('Clr', secondRow);
 
     const thirdRow = table.insertRow();
-    const key1 = FieldNumpad.createCellInRow_('1', thirdRow, 0);
-    const key2 = FieldNumpad.createCellInRow_('2', thirdRow, 1);
-    const key3 = FieldNumpad.createCellInRow_('3', thirdRow, 2);
+    const key1 = FieldNumpad.createCellInRow_('1', thirdRow);
+    const key2 = FieldNumpad.createCellInRow_('2', thirdRow);
+    const key3 = FieldNumpad.createCellInRow_('3', thirdRow);
 
     const fourthRow = table.insertRow();
-    const keySign = FieldNumpad.createCellInRow_('±', fourthRow, 0);
-    const key0 = FieldNumpad.createCellInRow_('0', fourthRow, 1);
-    const keyDecimal = FieldNumpad.createCellInRow_('.', fourthRow, 2);
+    const keySign = FieldNumpad.createCellInRow_('±', fourthRow);
+    const key0 = FieldNumpad.createCellInRow_('0', fourthRow);
+    const keyDecimal = FieldNumpad.createCellInRow_('.', fourthRow);
 
     key0.addEventListener('click', () => this.onNumClick_('0'));
     key1.addEventListener('click', () => this.onNumClick_('1'));
@@ -197,7 +197,7 @@ export class FieldNumpad extends Blockly.FieldNumber {
     if (currentValue.startsWith('-')) {
       this.setEditorValue_(currentValue.substring(1));
     } else {
-      this.setEditorValue_(Number('-' + currentValue));
+      this.setEditorValue_('-' + currentValue);
     }
   }
   /* eslint-enable @typescript-eslint/naming-convention */
