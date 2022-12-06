@@ -78,7 +78,7 @@ Interpreter.Completion = {
   BREAK: 1,
   CONTINUE: 2,
   RETURN: 3,
-  THROW: 4
+  THROW: 4,
 };
 
 /**
@@ -86,7 +86,7 @@ Interpreter.Completion = {
  */
 Interpreter.PARSE_OPTIONS = {
   'locations': true,
-  'ecmaVersion': 5  // Needed in the event a version > 0.5.0 of Acorn is used.
+  'ecmaVersion': 5,  // Needed in the event a version > 0.5.0 of Acorn is used.
 };
 
 /**
@@ -95,7 +95,7 @@ Interpreter.PARSE_OPTIONS = {
 Interpreter.READONLY_DESCRIPTOR = {
   configurable: true,
   enumerable: true,
-  writable: false
+  writable: false,
 };
 
 /**
@@ -104,7 +104,7 @@ Interpreter.READONLY_DESCRIPTOR = {
 Interpreter.NONENUMERABLE_DESCRIPTOR = {
   configurable: true,
   enumerable: false,
-  writable: true
+  writable: true,
 };
 
 /**
@@ -113,7 +113,7 @@ Interpreter.NONENUMERABLE_DESCRIPTOR = {
 Interpreter.READONLY_NONENUMERABLE_DESCRIPTOR = {
   configurable: true,
   enumerable: false,
-  writable: false
+  writable: false,
 };
 
 /**
@@ -123,7 +123,7 @@ Interpreter.READONLY_NONENUMERABLE_DESCRIPTOR = {
 Interpreter.NONCONFIGURABLE_READONLY_NONENUMERABLE_DESCRIPTOR = {
   configurable: false,
   enumerable: false,
-  writable: false
+  writable: false,
 };
 
 /**
@@ -132,7 +132,7 @@ Interpreter.NONCONFIGURABLE_READONLY_NONENUMERABLE_DESCRIPTOR = {
 Interpreter.VARIABLE_DESCRIPTOR = {
   configurable: false,
   enumerable: true,
-  writable: true
+  writable: true,
 };
 
 /**
@@ -1528,7 +1528,7 @@ Interpreter.prototype.initString = function(globalObject) {
           var sandbox = {
             'string': string,
             'separator': separator,
-            'limit': limit
+            'limit': limit,
           };
           var code = 'string.split(separator, limit)';
           var jsList =
@@ -1571,7 +1571,7 @@ Interpreter.prototype.initString = function(globalObject) {
         // Run match in vm.
         var sandbox = {
           'string': string,
-          'regexp': regexp
+          'regexp': regexp,
         };
         var code = 'string.match(regexp)';
         var m = thisInterpreter.vmCall(code, sandbox, regexp, callback);
@@ -1650,7 +1650,7 @@ Interpreter.prototype.initString = function(globalObject) {
           var sandbox = {
             'string': string,
             'substr': substr,
-            'newSubstr': newSubstr
+            'newSubstr': newSubstr,
           };
           var code = 'string.replace(substr, newSubstr)';
           var str = thisInterpreter.vmCall(code, sandbox, substr, callback);
@@ -1955,7 +1955,7 @@ Interpreter.prototype.initRegExp = function(globalObject) {
         // Run exec in vm.
         var sandbox = {
           'string': string,
-          'regexp': regexp
+          'regexp': regexp,
         };
         var code = 'regexp.exec(string)';
         var match = thisInterpreter.vmCall(code, sandbox, regexp, callback);
@@ -2251,7 +2251,7 @@ Interpreter.prototype.vmCall = function(code, sandbox, nativeRegExp, callback) {
   var options = {'timeout': this['REGEXP_THREAD_TIMEOUT']};
   try {
     return Interpreter.vm['runInNewContext'](code, sandbox, options);
-  } catch (e) {
+  } catch (_e) {
     callback(null);
     this.throwException(this.ERROR, 'RegExp Timeout: ' + nativeRegExp);
   }
@@ -2284,7 +2284,7 @@ Interpreter.prototype.maybeThrowRegExp = function(nativeRegExp, callback) {
       // Try to load Node's vm module.
       try {
         Interpreter.vm = require('vm');
-      } catch (e) {}
+      } catch (_e) {}
       ok = !!Interpreter.vm;
     } else {
       // Fail: Neither Web Workers nor vm available.
@@ -2314,7 +2314,7 @@ Interpreter.prototype.regExpTimeout = function(nativeRegExp, worker, callback) {
       try {
         thisInterpreter.throwException(thisInterpreter.ERROR,
             'RegExp Timeout: ' + nativeRegExp);
-      } catch (e) {
+      } catch (_e) {
         // Eat the expected Interpreter.STEP_ERROR.
       }
   }, this['REGEXP_THREAD_TIMEOUT']);
@@ -2532,7 +2532,7 @@ Interpreter.prototype.pseudoToNative = function(pseudoObj, opt_cycles) {
 
   var cycles = opt_cycles || {
     pseudo: [],
-    native: []
+    native: [],
   };
   var index = cycles.pseudo.indexOf(pseudoObj);
   if (index !== -1) {
@@ -2854,7 +2854,7 @@ Interpreter.prototype.setProperty = function(obj, name, value, opt_descriptor) {
       // No setter, simple assignment.
       try {
         obj.properties[name] = value;
-      } catch (e) {
+      } catch (_e) {
         if (strict) {
           this.throwException(this.TYPE_ERROR, "Cannot assign to read only " +
               "property '" + name + "' of object '" + obj + "'");
@@ -3212,7 +3212,7 @@ Interpreter.prototype.unwind = function(type, value, label) {
       'ReferenceError': ReferenceError,
       'SyntaxError': SyntaxError,
       'TypeError': TypeError,
-      'URIError': URIError
+      'URIError': URIError,
     };
     var name = String(this.getProperty(value, 'name'));
     var message = this.getProperty(value, 'message').valueOf();
@@ -4050,31 +4050,35 @@ Interpreter.prototype['stepForInStatement'] = function(stack, state, node) {
 };
 
 Interpreter.prototype['stepForStatement'] = function(stack, state, node) {
-  var mode = state.mode_ || 0;
-  if (mode === 0) {
-    state.mode_ = 1;
-    if (node['init']) {
-      return new Interpreter.State(node['init'], state.scope);
-    }
-  } else if (mode === 1) {
-    state.mode_ = 2;
-    if (node['test']) {
-      return new Interpreter.State(node['test'], state.scope);
-    }
-  } else if (mode === 2) {
-    state.mode_ = 3;
-    if (node['test'] && !state.value) {
-      // Done, exit loop.
-      stack.pop();
-    } else {  // Execute the body.
-      state.isLoop = true;
-      return new Interpreter.State(node['body'], state.scope);
-    }
-  } else if (mode === 3) {
-    state.mode_ = 1;
-    if (node['update']) {
-      return new Interpreter.State(node['update'], state.scope);
-    }
+  switch (state.mode_) {
+    default:
+      state.mode_ = 1;
+      if (node['init']) {
+        return new Interpreter.State(node['init'], state.scope);
+      }
+      break;
+    case 1:
+      state.mode_ = 2;
+      if (node['test']) {
+        return new Interpreter.State(node['test'], state.scope);
+      }
+      break;
+    case 2:
+      state.mode_ = 3;
+      if (node['test'] && !state.value) {
+        // Done, exit loop.
+        stack.pop();
+      } else {  // Execute the body.
+        state.isLoop = true;
+        return new Interpreter.State(node['body'], state.scope);
+      }
+      break;
+    case 3:
+      state.mode_ = 1;
+      if (node['update']) {
+        return new Interpreter.State(node['update'], state.scope);
+      }
+      break;
   }
 };
 
@@ -4233,7 +4237,7 @@ Interpreter.prototype['stepObjectExpression'] = function(stack, state, node) {
         configurable: true,
         enumerable: true,
         get: kinds['get'],
-        set: kinds['set']
+        set: kinds['set'],
       };
       this.setProperty(state.object_, key, Interpreter.VALUE_IN_DESCRIPTOR,
                        descriptor);
@@ -4378,43 +4382,51 @@ Interpreter.prototype['stepUnaryExpression'] = function(stack, state, node) {
   }
   stack.pop();
   var value = state.value;
-  if (node['operator'] === '-') {
-    value = -value;
-  } else if (node['operator'] === '+') {
-    value = +value;
-  } else if (node['operator'] === '!') {
-    value = !value;
-  } else if (node['operator'] === '~') {
-    value = ~value;
-  } else if (node['operator'] === 'delete') {
-    var result = true;
-    // If value is not an array, then it is a primitive, or some other value.
-    // If so, skip the delete and return true.
-    if (Array.isArray(value)) {
-      var obj = value[0];
-      if (obj === Interpreter.SCOPE_REFERENCE) {
-        // `delete foo;` is the same as `delete window.foo;`.
-        obj = state.scope;
-      }
-      var name = String(value[1]);
-      try {
-        delete obj.properties[name];
-      } catch (e) {
-        if (state.scope.strict) {
-          this.throwException(this.TYPE_ERROR, "Cannot delete property '" +
-                              name + "' of '" + obj + "'");
-        } else {
-          result = false;
+  switch (node['operator']) {
+    case '-':
+      value = -value;
+      break;
+    case '+':
+      value = +value;
+      break;
+    case '!':
+      value = !value;
+      break;
+    case '~':
+      value = ~value;
+      break;
+    case 'delete':
+      var result = true;
+      // If value is not an array, then it is a primitive, or some other value.
+      // If so, skip the delete and return true.
+      if (Array.isArray(value)) {
+        var obj = value[0];
+        if (obj === Interpreter.SCOPE_REFERENCE) {
+          // `delete foo;` is the same as `delete window.foo;`.
+          obj = state.scope;
+        }
+        var name = String(value[1]);
+        try {
+          delete obj.properties[name];
+        } catch (_e) {
+          if (state.scope.strict) {
+            this.throwException(this.TYPE_ERROR, "Cannot delete property '" +
+                                name + "' of '" + obj + "'");
+          } else {
+            result = false;
+          }
         }
       }
-    }
-    value = result;
-  } else if (node['operator'] === 'typeof') {
-    value = (value && value.class === 'Function') ? 'function' : typeof value;
-  } else if (node['operator'] === 'void') {
-    value = undefined;
-  } else {
-    throw SyntaxError('Unknown unary operator: ' + node['operator']);
+      value = result;
+      break;
+    case 'typeof':
+      value = (value && value.class === 'Function') ? 'function' : typeof value;
+      break;
+    case 'void':
+      value = undefined;
+      break;
+    default:
+      throw SyntaxError('Unknown unary operator: ' + node['operator']);
   }
   stack[stack.length - 1].value = value;
 };
