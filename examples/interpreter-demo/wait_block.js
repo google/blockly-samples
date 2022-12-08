@@ -32,8 +32,8 @@ Blockly.defineBlocksWithJsonArray([{
  * <code>waitForSeconds()</code>.
  */
 Blockly.JavaScript['wait_seconds'] = function(block) {
-  var seconds = Number(block.getFieldValue('SECONDS'));
-  var code = 'waitForSeconds(' + seconds + ');\n';
+  const seconds = Number(block.getFieldValue('SECONDS'));
+  const code = 'waitForSeconds(' + seconds + ');\n';
   return code;
 };
 
@@ -45,7 +45,7 @@ function initInterpreterWaitForSeconds(interpreter, globalObject) {
   // Ensure function name does not conflict with variable names.
   Blockly.JavaScript.addReservedWords('waitForSeconds');
 
-  var wrapper = interpreter.createAsyncFunction(
+  const wrapper = interpreter.createAsyncFunction(
     function(timeInSeconds, callback) {
       // Delay the call to the callback.
       setTimeout(callback, timeInSeconds * 1000);
