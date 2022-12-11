@@ -8,11 +8,12 @@
  * @fileoverview Shared toolbox for JS-Interpreter demos.
  */
 
-var toolboxJson =
-{
+var toolboxJson = {
   "contents": [
     {
       "kind": "CATEGORY",
+      "name": "Logic",
+      "colour": "%{BKY_LOGIC_HUE}",
       "contents": [
         {
           "kind": "BLOCK",
@@ -34,27 +35,35 @@ var toolboxJson =
           "kind": "BLOCK",
           "type": "logic_boolean"
         }
-      ],
-      "name": "Logic",
-      "colour": "%{BKY_LOGIC_HUE}"
+      ]
     },
     {
       "kind": "CATEGORY",
+      "name": "Loops",
+      "colour": "%{BKY_LOOPS_HUE}",
       "contents": [
         {
           "kind": "BLOCK",
-          "type": "controls_repeat_ext"
+          "type": "controls_repeat_ext",
+          "inputs": {
+            "TIMES": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {"NUM":10}
+              }
+            }
+          }
         },
         {
           "kind": "BLOCK",
           "type": "controls_whileUntil"
         }
-      ],
-      "name": "Loops",
-      "colour": "%{BKY_LOOPS_HUE}"
+      ]
     },
     {
       "kind": "CATEGORY",
+      "name": "Math",
+      "colour": "%{BKY_MATH_HUE}",
       "contents": [
         {
           "kind": "BLOCK",
@@ -62,18 +71,40 @@ var toolboxJson =
         },
         {
           "kind": "BLOCK",
-          "type": "math_arithmetic"
+          "type": "math_arithmetic",
+          "inputs": {
+            "A": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {"NUM": 1}
+              }
+            },
+            "B": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {"NUM": 1}
+              }
+            }
+          }
         },
         {
           "kind": "BLOCK",
-          "type": "math_single"
+          "type": "math_single",
+          "inputs": {
+            "NUM": {
+              "shadow": {
+                "type":"math_number",
+                "fields": {"NUM": 9}
+              }
+            }
+          }
         }
-      ],
-      "name": "Math",
-      "colour": "%{BKY_MATH_HUE}"
+      ]
     },
     {
       "kind": "CATEGORY",
+      "name": "Text",
+      "colour": "%{BKY_TEXTS_HUE}",
       "contents": [
         {
           "kind": "BLOCK",
@@ -81,36 +112,58 @@ var toolboxJson =
         },
         {
           "kind": "BLOCK",
-          "type": "text_length"
+          "type": "text_length",
+          "inputs": {
+            "VALUE": {
+              "shadow": {
+                "type": "text",
+                "fields": {"TEXT": "abc"}
+              }
+            }
+          }
         },
         {
           "kind": "BLOCK",
-          "type": "text_print"
+          "type": "text_print",
+          "inputs": {
+            "TEXT": {
+              "shadow": {
+                "type": "text",
+                "fields": {"TEXT": "abc"}
+              }
+            }
+          }
         },
         {
           "kind": "BLOCK",
-          "type": "text_prompt_ext"
+          "type": "text_prompt_ext",
+          "inputs": {
+            "TEXT": {
+              "shadow": {
+                "type": "text",
+                "fields": {"TEXT": "abc"}
+              }
+            }
+          }
         }
-      ],
-      "name": "Text",
-      "colour": "%{BKY_TEXTS_HUE}"
+      ]
     },
     {
       "kind": "SEP"
     },
     {
       "kind": "CATEGORY",
-      "contents": [],
       "name": "Variables",
       "custom": "VARIABLE",
-      "colour": "%{BKY_VARIABLES_HUE}"
+      "colour": "%{BKY_VARIABLES_HUE}",
+      "contents": []
     },
     {
       "kind": "CATEGORY",
-      "contents": [],
       "name": "Functions",
       "custom": "PROCEDURE",
-      "colour": "%{BKY_PROCEDURES_HUE}"
+      "colour": "%{BKY_PROCEDURES_HUE}",
+      "contents": []
     }
   ]
 };

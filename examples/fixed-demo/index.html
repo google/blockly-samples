@@ -24,13 +24,13 @@
   <div class="demo">
     <p>This is a simple demo of injecting Blockly into a fixed-sized 'div' element.</p>
 
-    <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure-blockly/web/fixed-size">injecting fixed-sized Blockly</a>&hellip;</p>
+    <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/fixed-size">injecting fixed-sized Blockly</a>&hellip;</p>
 
     <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
   </div>
 
   <script>
-    var toolbox = {
+    const toolbox = {
       "kind": "flyoutToolbox",
       "contents": [
         {
@@ -67,7 +67,7 @@
       ]
     };
 
-    var demoWorkspace = Blockly.inject('blocklyDiv',
+    const demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
          toolbox: toolbox});
   </script>
