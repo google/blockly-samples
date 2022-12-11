@@ -23,7 +23,7 @@ declare interface TextJoinBlock extends Blockly.Block {
 // Define a new block that is like the built-in block, but with an extension
 // that enables inline input mode and overrides the updateShape_ method to
 // insert dummy inputs between value inputs.
-Blockly.common.defineBlocksWithJsonArray([
+Blockly.defineBlocksWithJsonArray([
   {
     'type': 'inline_text_join',
     'message0': '',
@@ -66,7 +66,7 @@ const inlineTextJoinExtension = function(this: TextJoinBlock) {
         if (i === 0) {
           dummy.appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
         }
-        this.appendValueInput('ADD' + i).setAlign(Blockly.Input.Align.RIGHT);
+        this.appendValueInput('ADD' + i).setAlign(Blockly.Input.Align.LEFT);
       }
     }
 

@@ -50,7 +50,7 @@ Blockly.Blocks['inline_lists_create_with'] = Object.assign(
               dummy.appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
             }
             this.appendValueInput('ADD' + i).setAlign(
-                Blockly.Input.Align.RIGHT);
+                Blockly.Input.Align.LEFT);
           }
         }
 

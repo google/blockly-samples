@@ -5,10 +5,12 @@
  */
 
 import * as Blockly from 'blockly/core';
-import './inline_row_separators_renderer';
+import {addInlineRowSeparators} from './inline_row_separators_renderer';
 import './inline_text_join';
 import './inline_lists_create_with';
 import './inline_procedures_defreturn';
+
+export {addInlineRowSeparators};
 
 /**
  * Replaces the built-in block definitions for "text_join",

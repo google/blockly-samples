@@ -103,7 +103,7 @@ function createWorkspace(blocklyDiv: HTMLElement,
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
-    renderer: 'inline-row-separators',
+    renderer: 'thrasos-inline-row-separators',
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {

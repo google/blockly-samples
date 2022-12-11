@@ -21,6 +21,7 @@ Blockly.Blocks['inline_procedures_defreturn'] = Object.assign(
       init: function(this: Blockly.Block) {
         builtInProcedureBlock.init.apply(this);
         this.inputsInline = true;
+        this.getInput('RETURN')?.setAlign(Blockly.Input.Align.LEFT);
       },
     }
 );

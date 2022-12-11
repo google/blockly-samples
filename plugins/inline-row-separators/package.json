@@ -1,7 +1,7 @@
 {
-  "name": "@blockly/inline-row-separators",
+  "name": "@blockly/renderer-inline-row-separators",
   "version": "1.0.0-beta.0",
-  "description": "A plugin that registers a renderer called 'inline-row-separators' that renders dummy inputs like line breaks.",
+  "description": "A plugin to treat dummy inputs like line breaks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
@@ -22,14 +22,14 @@
     "inline",
     "dummy"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/inline-row-separators#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/renderer-inline-row-separators#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/inline-row-separators"
+    "directory": "plugins/renderer-inline-row-separators"
   },
   "license": "Apache-2.0",
   "directories": {
