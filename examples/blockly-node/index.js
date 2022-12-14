@@ -22,6 +22,7 @@
  */
 
 var Blockly = require('blockly');
+var {pythonGenerator} = require('blockly/python');
 
 var json = {
   "blocks": {
@@ -53,7 +54,7 @@ try {
   var workspace = new Blockly.Workspace();
   Blockly.serialization.workspaces.load(json, workspace);
   // Convert code and log output
-  var code = Blockly.Python.workspaceToCode(workspace);
+  var code = pythonGenerator.workspaceToCode(workspace);
   console.log(code);
 }
 catch (e) {

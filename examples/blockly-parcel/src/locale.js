@@ -12,7 +12,7 @@
 
 import * as Blockly from 'blockly/core';
 import 'blockly/blocks';
-import 'blockly/javascript';
+import {javascriptGenerator} from 'blockly/javascript';
 import * as Fr from 'blockly/msg/fr';
 
 Blockly.setLocale(Fr);
@@ -93,11 +93,10 @@ document.addEventListener('DOMContentLoaded', function () {
       media: 'media/'
     });
 
-  const lang = 'JavaScript';
   const button = document.getElementById('blocklyButton');
   button.addEventListener('click', function () {
     alert('Check the console for the generated output.');
-    const code = Blockly[lang].workspaceToCode(workspace);
+    const code = javascriptGenerator.workspaceToCode(workspace);
     console.log(code);
   });
 });

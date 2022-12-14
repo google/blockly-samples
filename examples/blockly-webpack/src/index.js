@@ -23,6 +23,7 @@
  */
 
 import * as Blockly from 'blockly';
+import {javascriptGenerator} from 'blockly/javascript';
 
 document.addEventListener("DOMContentLoaded", function () {
     const workspace = Blockly.inject('blocklyDiv',
@@ -31,11 +32,10 @@ document.addEventListener("DOMContentLoaded", function () {
             media: 'media/'
         });
 
-    const lang = 'JavaScript';
     const button = document.getElementById('blocklyButton');
     button.addEventListener('click', function () {
         alert("Check the console for the generated output.");
-        const code = Blockly[lang].workspaceToCode(workspace);
+        const code = javascriptGenerator.workspaceToCode(workspace);
         console.log(code);
     })
 });
