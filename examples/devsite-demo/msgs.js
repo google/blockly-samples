@@ -9,7 +9,113 @@
  */
 'use strict';
 
+/**
+ * Lookup for names of languages.  Keys should be in ISO 639 format.
+ */
+var LANGUAGE_NAME = {
+//  'ace': 'بهسا اچيه',  // RTL
+//  'af': 'Afrikaans',
+  'am': 'አማርኛ',
+  'ar': 'العربية',  // RTL
+//  'az': 'Azərbaycanca',
+  'be': 'беларускі',
+  'be-tarask': 'Taraškievica',
+  'bg': 'български език',
+  'bn': 'বাংলা',
+  'br': 'Brezhoneg',
+  'ca': 'Català',
+//  'cdo': '閩東語',
+  'cs': 'Česky',
+  'da': 'Dansk',
+  'de': 'Deutsch',
+  'el': 'Ελληνικά',
+  'en': 'English',
+  'eo': 'Esperanto',
+  'es': 'Español',
+  'eu': 'Euskara',
+  'fa': 'فارسی',  // RTL
+  'fi': 'Suomi',
+  'fo': 'Føroyskt',
+  'fr': 'Français',
+//  'frr': 'Frasch',
+  'gl': 'Galego',
+  'ha': 'Hausa',
+//  'hak': '客家話',
+  'he': 'עברית',  // RTL
+  'hi': 'हिन्दी',
+  'hr': 'Hrvatski',
+//  'hrx': 'Hunsrik',
+  'hu': 'Magyar',
+  'hy': 'հայերէն',
+  'ia': 'Interlingua',
+  'id': 'Bahasa Indonesia',
+  'ig': 'Asụsụ Igbo',
+  'is': 'Íslenska',
+  'it': 'Italiano',
+  'ja': '日本語',
+//  'ka': 'ქართული',
+  'kab': 'Taqbaylit',
+//  'km': 'ភាសាខ្មែរ',
+  'kn': 'ಕನ್ನಡ',
+  'ko': '한국어',
+//  'ksh': 'Ripoarėsch',
+//  'ky': 'Кыргызча',
+//  'la': 'Latine',
+//  'lb': 'Lëtzebuergesch',
+  'lt': 'Lietuvių',
+  'lv': 'Latviešu',
+//  'mg': 'Malagasy',
+//  'ml': 'മലയാളം',
+//  'mk': 'Македонски',
+//  'mr': 'मराठी',
+  'ms': 'Bahasa Melayu',
+  'my': 'မြန်မာစာ',
+//  'mzn': 'مازِرونی',  // RTL
+  'nb': 'Norsk (bokmål)',
+  'nl': 'Nederlands, Vlaams',
+//  'oc': 'Lenga d\'òc',
+//  'pa': 'पंजाबी',
+  'pl': 'Polski',
+  'pms': 'Piemontèis',
+//  'ps': 'پښتو',  // RTL
+  'pt': 'Português',
+  'pt-br': 'Português Brasileiro',
+  'ro': 'Română',
+  'ru': 'Русский',
+  'sc': 'Sardu',
+//  'sco': 'Scots',
+//  'si': 'සිංහල',
+  'sk': 'Slovenčina',
+  'sl': 'Slovenščina',
+//  'smn': 'Anarâškielâ',
+  'sq': 'Shqip',
+  'sr': 'Српски',
+  'sr-latn': 'Srpski',
+  'sv': 'Svenska',
+//  'sw': 'Kishwahili',
+//  'ta': 'தமிழ்',
+  'th': 'ภาษาไทย',
+  'ti': 'ትግርኛ',
+//  'tl': 'Tagalog',
+  'tr': 'Türkçe',
+  'uk': 'Українська',
+  'ur': 'اُردُو‬',  // RTL
+  'vi': 'Tiếng Việt',
+  'yo': 'Èdè Yorùbá',
+  'zh-hans': '简体中文',
+  'zh-hant': '正體中文',
+};
 
+
+/**
+ * List of RTL languages.
+ */
+var LANGUAGE_RTL = [/*'ace',*/ 'ar', 'fa', 'he', /*'mzn', 'ps',*/ 'ur'];
+
+
+/**
+ * Category names in every language.
+ */
 var msgs = {
   "ab": {
     "Logic": "Алогика",

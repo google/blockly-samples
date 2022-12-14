@@ -10,109 +10,6 @@
 'use strict';
 
 
-/**
- * Lookup for names of languages.  Keys should be in ISO 639 format.
- */
-const LANGUAGE_NAME = {
-//  'ace': 'بهسا اچيه',  // RTL
-//  'af': 'Afrikaans',
-  'am': 'አማርኛ',
-  'ar': 'العربية',  // RTL
-//  'az': 'Azərbaycanca',
-  'be': 'беларускі',
-  'be-tarask': 'Taraškievica',
-  'bg': 'български език',
-  'bn': 'বাংলা',
-  'br': 'Brezhoneg',
-  'ca': 'Català',
-//  'cdo': '閩東語',
-  'cs': 'Česky',
-  'da': 'Dansk',
-  'de': 'Deutsch',
-  'el': 'Ελληνικά',
-  'en': 'English',
-  'eo': 'Esperanto',
-  'es': 'Español',
-  'eu': 'Euskara',
-  'fa': 'فارسی',  // RTL
-  'fi': 'Suomi',
-  'fo': 'Føroyskt',
-  'fr': 'Français',
-//  'frr': 'Frasch',
-  'gl': 'Galego',
-  'ha': 'Hausa',
-//  'hak': '客家話',
-  'he': 'עברית',  // RTL
-  'hi': 'हिन्दी',
-  'hr': 'Hrvatski',
-//  'hrx': 'Hunsrik',
-  'hu': 'Magyar',
-  'hy': 'հայերէն',
-  'ia': 'Interlingua',
-  'id': 'Bahasa Indonesia',
-  'ig': 'Asụsụ Igbo',
-  'is': 'Íslenska',
-  'it': 'Italiano',
-  'ja': '日本語',
-//  'ka': 'ქართული',
-  'kab': 'Taqbaylit',
-//  'km': 'ភាសាខ្មែរ',
-  'kn': 'ಕನ್ನಡ',
-  'ko': '한국어',
-//  'ksh': 'Ripoarėsch',
-//  'ky': 'Кыргызча',
-//  'la': 'Latine',
-//  'lb': 'Lëtzebuergesch',
-  'lt': 'Lietuvių',
-  'lv': 'Latviešu',
-//  'mg': 'Malagasy',
-//  'ml': 'മലയാളം',
-//  'mk': 'Македонски',
-//  'mr': 'मराठी',
-  'ms': 'Bahasa Melayu',
-  'my': 'မြန်မာစာ',
-//  'mzn': 'مازِرونی',  // RTL
-  'nb': 'Norsk (bokmål)',
-  'nl': 'Nederlands, Vlaams',
-//  'oc': 'Lenga d\'òc',
-//  'pa': 'पंजाबी',
-  'pl': 'Polski',
-  'pms': 'Piemontèis',
-//  'ps': 'پښتو',  // RTL
-  'pt': 'Português',
-  'pt-br': 'Português Brasileiro',
-  'ro': 'Română',
-  'ru': 'Русский',
-  'sc': 'Sardu',
-//  'sco': 'Scots',
-//  'si': 'සිංහල',
-  'sk': 'Slovenčina',
-  'sl': 'Slovenščina',
-//  'smn': 'Anarâškielâ',
-  'sq': 'Shqip',
-  'sr': 'Српски',
-  'sr-latn': 'Srpski',
-  'sv': 'Svenska',
-//  'sw': 'Kishwahili',
-//  'ta': 'தமிழ்',
-  'th': 'ภาษาไทย',
-  'ti': 'ትግርኛ',
-//  'tl': 'Tagalog',
-  'tr': 'Türkçe',
-  'uk': 'Українська',
-  'ur': 'اُردُو‬',  // RTL
-  'vi': 'Tiếng Việt',
-  'yo': 'Èdè Yorùbá',
-  'zh-hans': '简体中文',
-  'zh-hant': '正體中文',
-};
-
-/**
- * List of RTL languages.
- */
-const LANGUAGE_RTL = [/*'ace',*/ 'ar', 'fa', 'he', /*'mzn', 'ps',*/ 'ur'];
-
-
 let language = 'en';  // Default to English.
 
 // Run this setup code once while still rendering the head.
@@ -127,6 +24,9 @@ let language = 'en';  // Default to English.
   document.write('<script src="./node_modules/blockly/msg/' + language + '.js"></script>\n');
 })();
 
+/**
+ * Initialize the page once everything is loaded.
+ */
 function init() {
   // Sort languages alphabetically.
   const languages = [];
@@ -152,6 +52,8 @@ function init() {
     languageMenu.options.add(option);
   }
 
+  // Changing languages involves reloading the page.  To not lose the blocks,
+  // they were stored in sessionStorage.  Here we retrieve that data.
   let loadOnce = null;
   try {
     loadOnce = window.sessionStorage.getItem('loadOnceBlocks');
@@ -179,6 +81,7 @@ function init() {
       Blockly.Msg.VARIABLES_DEFAULT_NAME);
   toolboxJson = JSON.parse(toolboxString);
 
+  // Inject Blockly.
   const workspace = Blockly.inject('blocklyDiv',
       {
         toolbox: toolboxJson,
@@ -188,18 +91,24 @@ function init() {
   workspace.addChangeListener(regenerate);
 }
 
+/**
+ * Look up a category name in the current (human) language.
+ */
 function getMsg(name) {
   let msg = msgs['en'][name];
   try {
-    msg = msgs[language][name];
+    msg = msgs[language][name] || msg;
   } catch (_e) {
     // Stay with english default.
   }
   return msg;
 }
 
+/**
+ * Change the (human) language.  Reloads the page.
+ */
 function languageChange() {
-  // Store the blocks for the duration of the reload.
+  // Store the blocks in sessionStorage for the duration of the reload.
   const text = JSON.stringify(
       Blockly.serialization.workspaces.save(Blockly.getMainWorkspace()));
   try {
@@ -213,9 +122,15 @@ function languageChange() {
   window.location.search = '?hl=' + encodeURIComponent(newLang);
 }
 
+/**
+ * Regenerate the blocks into a (computer) language.
+ * Called when the blocks change, or when the target language changes.
+ */
 function regenerate(_e) {
-  const generateDropdown = document.getElementById('generateDropdown');
-  const generator = Blockly[generateDropdown.value];
+  const generateLang = document.getElementById('generateDropdown').value;
+  const generator = Blockly[generateLang];
+  const playButton = document.getElementById('playButton');
+  playButton.style.display = (generateLang === 'JavaScript') ? 'block' : 'none';
   const code = generator.workspaceToCode(Blockly.getMainWorkspace());
   const codeHolder = document.getElementById('codeHolder');
   codeHolder.innerHTML = '';  // Delete old code.
@@ -226,6 +141,9 @@ function regenerate(_e) {
   }
 }
 
+/**
+ * Generate JavaScript from the blocks, then execute it using JS-Interpreter.
+ */
 function execute() {
   const initFunc = function(interpreter, globalObject) {
     const alertWrapper = function alert(text) {
@@ -253,6 +171,9 @@ function execute() {
   }
 }
 
+/**
+ * Initial blocks when loading page.
+ */
 const startBlocks = {
   "blocks": {
     "languageVersion": 0,
