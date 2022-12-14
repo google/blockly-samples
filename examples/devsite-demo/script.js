@@ -76,6 +76,7 @@ function init() {
   toolboxJson['contents'][8].name = getMsg('Procedures');
 
   // Inject default variable name.
+  // https://github.com/google/blockly/issues/5238
   let toolboxString = JSON.stringify(toolboxJson);
   toolboxString = toolboxString.replace(/%\{BKY_VARIABLES_DEFAULT_NAME\}/g,
       Blockly.Msg.VARIABLES_DEFAULT_NAME);
