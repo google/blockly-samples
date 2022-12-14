@@ -31,6 +31,7 @@ layout: index
 * [Scroll Options](plugins/scroll-options/test/index.html)
 * [Serialize Disabled Interactions](plugins/serialize-disabled-interactions/test/index.html)
 * [Shadow Block Converter](plugins/shadow-block-converter/test/index.html)
+* [Suggested Blocks](plugins/suggested-block/test/index.html)
 * [Cross Tab Copy Paste](plugins/cross-tab-copy-paste/test/index.html)
 
 ## Themes
@@ -68,6 +69,7 @@ layout: index
 ## JS Interpreter
 * [Step by step execution in JavaScript](examples/interpreter-demo/step-execution.html)
 * [Asynchronous execution in JavaScript](examples/interpreter-demo/async-execution.html)
+* [Backwards execution in JavaScript](examples/interpreter-demo/backwards.html)
 
 ## Custom Dialogs
 * [Custom Dialogs](examples/custom-dialogs-demo/index.html)
