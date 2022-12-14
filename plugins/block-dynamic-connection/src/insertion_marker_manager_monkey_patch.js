@@ -13,28 +13,31 @@
 
 import * as Blockly from 'blockly/core';
 
-Blockly.InsertionMarkerManager.prototype.update = function(dxy, deleteArea) {
-  const candidate = this.getCandidate_(dxy);
+Blockly.InsertionMarkerManager.prototype.update = function(dxy, dragTarget) {
+  const newCandidate = this.getCandidate(dxy);
 
-  this.wouldDeleteBlock_ = this.shouldDelete_(candidate, deleteArea);
-  const shouldUpdate = this.wouldDeleteBlock_ ||
-      this.shouldUpdatePreviews_(candidate, dxy);
+  this.wouldDeleteBlock = this.shouldDelete(!!newCandidate, dragTarget);
+
+  const shouldUpdate =
+      this.wouldDeleteBlock || this.shouldUpdatePreviews(newCandidate, dxy);
 
   if (shouldUpdate) {
     // Begin monkey patch
-    if (candidate.closest &&
-        candidate.closest.sourceBlock_.onPendingConnection) {
-      candidate.closest.sourceBlock_.onPendingConnection(candidate.closest);
+    if (newCandidate &&
+        newCandidate.closest &&
+        newCandidate.closest.sourceBlock_.onPendingConnection) {
+      newCandidate.closest.sourceBlock_
+          .onPendingConnection(newCandidate.closest);
       if (!this.pendingBlocks) {
         this.pendingBlocks = new Set();
       }
-      this.pendingBlocks.add(candidate.closest.sourceBlock_);
+      this.pendingBlocks.add(newCandidate.closest.sourceBlock_);
     }
     // End monkey patch
     // Don't fire events for insertion marker creation or movement.
     Blockly.Events.disable();
-    this.maybeHidePreview_(candidate);
-    this.maybeShowPreview_(candidate);
+    this.maybeHidePreview(newCandidate);
+    this.maybeShowPreview(newCandidate);
     Blockly.Events.enable();
   }
 };
