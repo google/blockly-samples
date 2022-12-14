@@ -280,7 +280,7 @@ export const category = {
  */
 export function onInit(workspace) {
   const randomizeLabelText = function(button) {
-    const blocks = button.targetWorkspace_.getBlocksByType(
+    const blocks = button.getTargetWorkspace().getBlocksByType(
         'test_fields_label_serializable');
     const possible = 'AB';
     for (let i = 0, block; block = blocks[i]; i++) {
@@ -292,7 +292,7 @@ export function onInit(workspace) {
     }
   };
   const setRandomStyle = function(button) {
-    const blocks = button.workspace_.getAllBlocks(false);
+    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace().getAllBlocks(false);
     const styles =
         Object.keys(workspace.getRenderer().getConstants().blockStyles);
     styles.splice(styles.indexOf(blocks[0].getStyleName()), 1);
@@ -302,25 +302,26 @@ export function onInit(workspace) {
     }
   };
   const toggleEnabled = function(button) {
-    const blocks = button.workspace_.getAllBlocks(false);
+    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace().getAllBlocks(false);
     for (let i = 0, block; block = blocks[i]; i++) {
       block.setEnabled(!block.isEnabled());
     }
   };
   const toggleShadow = function(button) {
-    const blocks = button.workspace_.getAllBlocks(false);
+    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace().getAllBlocks(false);
     for (let i = 0, block; block = blocks[i]; i++) {
       block.setShadow(!block.isShadow());
     }
   };
   const toggleCollapsed = function(button) {
-    const blocks = button.workspace_.getAllBlocks(false);
+    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace().getAllBlocks(false);
     for (let i = 0, block; block = blocks[i]; i++) {
       block.setCollapsed(!block.isCollapsed());
     }
   };
   const changeImage = function(button) {
-    const blocks = button.workspace_.getBlocksByType('test_fields_image');
+    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace().getBlocksByType(
+        'test_fields_image');
     const possible = 'abcdefghijklm';
     const image = possible.charAt(Math.floor(Math.random() * possible.length));
     const src =
