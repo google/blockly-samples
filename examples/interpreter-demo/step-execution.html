@@ -62,17 +62,13 @@
             "y": 20,
             "inline": true,
             "fields": {
-              "VAR": {
-                "id": "n"
-              }
+              "VAR": {"id": "n"}
             },
             "inputs": {
               "VALUE": {
                 "block": {
                   "type": "math_number",
-                  "fields": {
-                    "NUM": 1
-                  }
+                  "fields": {"NUM": 1}
                 }
               }
             },
@@ -84,9 +80,7 @@
                   "TIMES": {
                     "block": {
                       "type": "math_number",
-                      "fields": {
-                        "NUM": 4
-                      }
+                      "fields": {"NUM": 4}
                     }
                   },
                   "DO": {
@@ -94,34 +88,26 @@
                       "type": "variables_set",
                       "inline": true,
                       "fields": {
-                        "VAR": {
-                          "id": "n"
-                        }
+                        "VAR": {"id": "n"}
                       },
                       "inputs": {
                         "VALUE": {
                           "block": {
                             "type": "math_arithmetic",
-                            "fields": {
-                              "OP": "MULTIPLY"
-                            },
+                            "fields": {"OP": "MULTIPLY"},
                             "inputs": {
                               "A": {
                                 "block": {
                                   "type": "variables_get",
                                   "fields": {
-                                    "VAR": {
-                                      "id": "n"
-                                    }
+                                    "VAR": {"id": "n"}
                                   }
                                 }
                               },
                               "B": {
                                 "block": {
                                   "type": "math_number",
-                                  "fields": {
-                                    "NUM": 2
-                                  }
+                                  "fields": {"NUM": 2}
                                 }
                               }
                             }
@@ -136,9 +122,7 @@
                               "block": {
                                 "type": "variables_get",
                                 "fields": {
-                                  "VAR": {
-                                    "id": "n"
-                                  }
+                                  "VAR": {"id": "n"}
                                 }
                               }
                             }

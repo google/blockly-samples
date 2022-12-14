@@ -49,7 +49,7 @@ var toolboxJson = {
             "TIMES": {
               "shadow": {
                 "type": "math_number",
-                "fields": {"NUM":10}
+                "fields": {"NUM": 10}
               }
             }
           }
@@ -93,7 +93,7 @@ var toolboxJson = {
           "inputs": {
             "NUM": {
               "shadow": {
-                "type":"math_number",
+                "type": "math_number",
                 "fields": {"NUM": 9}
               }
             }
@@ -156,14 +156,12 @@ var toolboxJson = {
       "name": "Variables",
       "custom": "VARIABLE",
       "colour": "%{BKY_VARIABLES_HUE}",
-      "contents": []
     },
     {
       "kind": "CATEGORY",
       "name": "Functions",
       "custom": "PROCEDURE",
       "colour": "%{BKY_PROCEDURES_HUE}",
-      "contents": []
     }
   ]
 };
