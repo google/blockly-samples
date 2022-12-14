@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@blockly/dev-tools": "^4.0.3",
-    "blockly": "^8.0.0"
+    "@blockly/dev-tools": "^5.0.0",
+    "blockly": "^9.0.0"
   },
   "blocklyDemoConfig": {
     "title": "Custom Tooltips",
