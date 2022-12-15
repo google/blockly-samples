@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.3.2...@blockly/keyboard-navigation@0.3.3) (2022-12-15)
+
+**Note:** Version bump only for package @blockly/keyboard-navigation
+
+
+
+
+
 ## [0.3.2](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.3.1...@blockly/keyboard-navigation@0.3.2) (2022-10-27)
 
 **Note:** Version bump only for package @blockly/keyboard-navigation

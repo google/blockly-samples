@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/block-test@3.0.1...@blockly/block-test@3.0.2) (2022-12-15)
+
+
+### Bug Fixes
+
+* Don't use private fields to access the workspace flyout buttons are on. ([#1458](https://github.com/google/blockly-samples/issues/1458)) ([742ce59](https://github.com/google/blockly-samples/commit/742ce5932736a3859b0b45e34b1716d7a9b5dd81))
+
+
+
 ## [3.0.1](https://github.com/google/blockly-samples/compare/@blockly/block-test@3.0.0...@blockly/block-test@3.0.1) (2022-10-13)
 
 **Note:** Version bump only for package @blockly/block-test
