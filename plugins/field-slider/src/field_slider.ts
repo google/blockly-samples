@@ -10,7 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {FieldNumberConfig} from 'blockly/core/field_number';
+import {FieldNumberConfig, FieldNumberValidator} from 'blockly/core/field_number';
 
 /**
  * A config object for defining a field slider.
@@ -24,14 +24,7 @@ export interface FieldSliderOptions extends FieldSliderConfig {
   value?: string | number;
 }
 
-/* eslint-disable @typescript-eslint/ban-types */
-/**
- * NOTE: `Function` is banned by eslint. Eventually, a more precise
- * function type should be added at the corresponding source:
- * https://github.com/google/blockly/blob/master/core/field.ts
- */
-type FieldSliderValidator = Function;
-/* eslint-enable @typescript-eslint/ban-types */
+export type FieldSliderValidator = FieldNumberValidator;
 
 /**
  * Slider field.
