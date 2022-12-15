@@ -54,7 +54,7 @@ export function toolboxTestBlocksInit(workspace) {
 
   const addAllBlocksToWorkspace = function(button) {
     const workspace = button.getTargetWorkspace();
-    const blocks = button.workspace_.getTopBlocks();
+    const blocks = workspace.getFlyout().getWorkspace().getTopBlocks();
     for (let i = 0, block; block = blocks[i]; i++) {
       const state = Blockly.serialization.blocks.save(
           block, {addCoordinates: true});
