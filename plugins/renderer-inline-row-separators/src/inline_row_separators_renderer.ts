@@ -38,7 +38,7 @@ export function addInlineRowSeparators<
    * line breaks, forcing any following input to be rendered on a separate row,
    * even when the block type definition has `"inputsInline": true`.
    */
-  class RenderInfo extends renderInfoBase {
+  class InlineRenderInfo extends renderInfoBase {
     /* eslint-disable @typescript-eslint/naming-convention */
     /**
      * Decide whether to start a new row between the two Blockly.Inputs.
@@ -47,7 +47,7 @@ export function addInlineRowSeparators<
      * @param lastInput The input that follows.
      * @return True if the next input should be rendered on a new row.
      */
-    protected shouldStartNewRow_(
+    protected override shouldStartNewRow_(
         input: Blockly.Input, lastInput?: Blockly.Input): boolean {
       /* eslint-enable @typescript-eslint/naming-convention */
       if (lastInput?.type === Blockly.inputTypes.DUMMY) {
@@ -60,7 +60,7 @@ export function addInlineRowSeparators<
   /**
    * A subclass of the provided Renderer that uses the new RenderInfo object.
    */
-  return class Renderer extends rendererBase {
+  return class InlineRenderer extends rendererBase {
     /* eslint-disable @typescript-eslint/naming-convention */
     /**
      * Create a new instance of the renderer's render info object.
@@ -68,14 +68,16 @@ export function addInlineRowSeparators<
      * @param block The block to measure.
      * @return The render info object.
      */
-    protected makeRenderInfo_(block: Blockly.BlockSvg): RenderInfo {
+    protected override makeRenderInfo_(block: Blockly.BlockSvg):
+        InlineRenderInfo {
       /* eslint-enable @typescript-eslint/naming-convention */
-      return new RenderInfo(this, block);
+      return new InlineRenderInfo(this, block);
     }
   };
 }
 
-export const Renderer = addInlineRowSeparators(
+export const InlineRenderer = addInlineRowSeparators(
     Blockly.thrasos.Renderer, Blockly.thrasos.RenderInfo);
 
-Blockly.blockRendering.register('thrasos-inline-row-separators', Renderer);
+Blockly.blockRendering.register(
+    'thrasos-inline-row-separators', InlineRenderer);

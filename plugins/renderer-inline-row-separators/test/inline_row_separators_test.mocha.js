@@ -54,42 +54,6 @@ suite('inlineRowSeparates', function() {
         renderInfo.shouldStartNewRow_(block.inputList[2], block.inputList[1]));
   });
 
-  test('inline_text_join is inline and inserts dummies', function() {
-    const block = this.workspace.newBlock('inline_text_join');
-    assert.isTrue(block.inputList[0].type === Blockly.inputTypes.DUMMY);
-    assert.isTrue(block.inputList[1].type === Blockly.inputTypes.VALUE);
-    assert.isTrue(block.inputList[2].type === Blockly.inputTypes.DUMMY);
-    assert.isTrue(block.inputList[3].type === Blockly.inputTypes.VALUE);
-    const renderInfo = this.renderer.makeRenderInfo_(block);
-    assert.isTrue(renderInfo.isInline);
-  });
-
-  test('inline_lists_create_with is inline and inserts dummies', function() {
-    const block = this.workspace.newBlock('inline_lists_create_with');
-    assert.isTrue(block.inputList[0].type === Blockly.inputTypes.DUMMY);
-    assert.isTrue(block.inputList[1].type === Blockly.inputTypes.VALUE);
-    assert.isTrue(block.inputList[2].type === Blockly.inputTypes.DUMMY);
-    assert.isTrue(block.inputList[3].type === Blockly.inputTypes.VALUE);
-    assert.isTrue(block.inputList[4].type === Blockly.inputTypes.DUMMY);
-    assert.isTrue(block.inputList[5].type === Blockly.inputTypes.VALUE);
-    const renderInfo = this.renderer.makeRenderInfo_(block);
-    assert.isTrue(renderInfo.isInline);
-  });
-
-  test('inline_procedures_defreturn is inline', function() {
-    const block = this.workspace.newBlock('inline_procedures_defreturn');
-    const renderInfo = this.renderer.makeRenderInfo_(block);
-    assert.isTrue(renderInfo.isInline);
-  });
-
-  test('overrideOldBlockDefinitions replaces blocks', function() {
-    Blockly.Blocks['text_join'] === Blockly.Blocks['inline_text_join'];
-    Blockly.Blocks['lists_create_with'] ===
-        Blockly.Blocks['inline_lists_create_with'];
-    Blockly.Blocks['procedures_defreturn'] ===
-        Blockly.Blocks['inline_procedures_defreturn'];
-  });
-
   test('addInlineRowSeparators adds row separators to renderer', function() {
     const Renderer = addInlineRowSeparators(
         Blockly.zelos.Renderer, Blockly.zelos.RenderInfo);
@@ -97,9 +61,50 @@ suite('inlineRowSeparates', function() {
     const renderer = new Renderer('test_renderer');
     renderer.init(this.workspace.getTheme());
     const renderInfo = renderer.makeRenderInfo_(block);
+    // Test that a dummy after a value still remains on one row.
     assert.isFalse(
         renderInfo.shouldStartNewRow_(block.inputList[1], block.inputList[0]));
+    // Test that a value after a dummy is put on a new row.
     assert.isTrue(
         renderInfo.shouldStartNewRow_(block.inputList[2], block.inputList[1]));
+  });
+
+  test('inline_text_join is inline and inserts dummies', function() {
+    const block = this.workspace.newBlock('inline_text_join');
+    // Test that the alternative block inserts dummies between values.
+    assert.isTrue(block.inputList[0].type === Blockly.inputTypes.DUMMY);
+    assert.isTrue(block.inputList[1].type === Blockly.inputTypes.VALUE);
+    assert.isTrue(block.inputList[2].type === Blockly.inputTypes.DUMMY);
+    assert.isTrue(block.inputList[3].type === Blockly.inputTypes.VALUE);
+    // Test that the alternative block's inputs are rendered in inline mode.
+    assert.isTrue(block.inputsInline);
+  });
+
+  test('inline_lists_create_with is inline and inserts dummies', function() {
+    const block = this.workspace.newBlock('inline_lists_create_with');
+    // Test that the alternative block inserts dummies between values.
+    assert.isTrue(block.inputList[0].type === Blockly.inputTypes.DUMMY);
+    assert.isTrue(block.inputList[1].type === Blockly.inputTypes.VALUE);
+    assert.isTrue(block.inputList[2].type === Blockly.inputTypes.DUMMY);
+    assert.isTrue(block.inputList[3].type === Blockly.inputTypes.VALUE);
+    assert.isTrue(block.inputList[4].type === Blockly.inputTypes.DUMMY);
+    assert.isTrue(block.inputList[5].type === Blockly.inputTypes.VALUE);
+    // Test that the alternative block's inputs are rendered in inline mode.
+    assert.isTrue(block.inputsInline);
+  });
+
+  test('inline_procedures_defreturn is inline', function() {
+    const block = this.workspace.newBlock('inline_procedures_defreturn');
+    // Test that the alternative block's inputs are rendered in inline mode.
+    assert.isTrue(block.inputsInline);
+  });
+
+  test('overrideOldBlockDefinitions replaces blocks', function() {
+    assert.isTrue(Blockly.Blocks['text_join'] ===
+        Blockly.Blocks['inline_text_join']);
+    assert.isTrue(Blockly.Blocks['lists_create_with'] ===
+        Blockly.Blocks['inline_lists_create_with']);
+    assert.isTrue(Blockly.Blocks['procedures_defreturn'] ===
+        Blockly.Blocks['inline_procedures_defreturn']);
   });
 });
