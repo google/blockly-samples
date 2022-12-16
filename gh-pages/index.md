@@ -33,6 +33,7 @@ layout: index
 * [Shadow Block Converter](plugins/shadow-block-converter/test/index.html)
 * [Suggested Blocks](plugins/suggested-block/test/index.html)
 * [Cross Tab Copy Paste](plugins/cross-tab-copy-paste/test/index.html)
+* [Inline Row Separators](plugins/renderer-inline-row-separators/test/index.html)
 
 ## Themes
 * [Theme Dark](plugins/theme-dark/test/index.html)
