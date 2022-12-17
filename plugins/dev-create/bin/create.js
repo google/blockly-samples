@@ -144,14 +144,12 @@ const packageJson = {
   homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
   bugs: isGit ? {
     url: `${gitURL}/issues`,
-  } :
-                {},
+  } : {},
   repository: isGit ? {
     'type': 'git',
     'url': `${gitURL}.git`,
     'directory': gitPluginPath,
-  } :
-                      {},
+  } : {},
   license: 'Apache-2.0',
   directories: {
     'dist': 'dist',
@@ -168,19 +166,13 @@ const packageJson = {
   publishConfig: isFirstParty ? {
     'access': 'public',
     'registry': 'https://wombat-dressing-room.appspot.com',
-  } :
-                                {},
+  } : {},
   eslintConfig: {
     'extends': '@blockly/eslint-config',
   },
   engines: {
     'node': '>=8.17.0',
   },
-  browserslist: [
-    'defaults',
-    'IE 11',
-    'IE_Mob 11',
-  ],
 };
 
 // Add dev dependencies.

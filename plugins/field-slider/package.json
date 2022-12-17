@@ -58,10 +58,5 @@
   },
   "engines": {
     "node": ">=8.0.0"
-  },
-  "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
-  ]
+  }
 }
