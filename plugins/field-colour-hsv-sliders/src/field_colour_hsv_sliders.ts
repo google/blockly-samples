@@ -258,13 +258,16 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
   protected showEditor_(): void {
     /* eslint-enable @typescript-eslint/naming-convention */
     this.createDropdownSliders();
-    Blockly.DropDownDiv.getContentDiv().appendChild(this.dropdownContainer!);
+    if (!this.dropdownContainer || !this.hueSlider) {
+      throw new Error('Failed to initialize the HSV sliders.');
+    }
+    Blockly.DropDownDiv.getContentDiv().appendChild(this.dropdownContainer);
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDisposeSliders.bind(this));
 
     // Focus so we can start receiving keyboard events.
-    this.hueSlider!.focus({preventScroll: true});
+    this.hueSlider.focus({preventScroll: true});
   }
 
   /**
@@ -388,13 +391,16 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @param event Unused.
    */
   private onSliderChange(event?: Event): void {
-    const hue: number = parseFloat(this.hueSlider!.value) /
+    if (!this.hueSlider || !this.saturationSlider || !this.brightnessSlider) {
+      throw new Error('The HSV sliders are missing.');
+    }
+    const hue: number = parseFloat(this.hueSlider.value) /
         FieldColourHsvSliders.HUE_SLIDER_MAX;
-    const saturation: number = parseFloat(this.saturationSlider!.value) /
+    const saturation: number = parseFloat(this.saturationSlider.value) /
         FieldColourHsvSliders.SATURATION_SLIDER_MAX;
-    const brightness: number = parseFloat(this.brightnessSlider!.value) /
+    const brightness: number = parseFloat(this.brightnessSlider.value) /
         FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
-    this.doValueUpdate_(FieldColourHsvSliders.hsvToHex(
+    this.setValue(FieldColourHsvSliders.hsvToHex(
         hue, saturation, brightness));
     this.renderSliders();
   }
@@ -404,11 +410,13 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @param event Unused.
    */
   private onEyedropperEvent(event?: Event): void {
-    const eyeDropper: EyeDropper = new window.EyeDropper!();
-    eyeDropper.open().then((result) => {
-      this.doValueUpdate_(result.sRGBHex);
-      this.updateSliderValues();
-    });
+    if (window.EyeDropper) {
+      const eyeDropper: EyeDropper = new window.EyeDropper();
+      eyeDropper.open().then((result) => {
+        this.setValue(result.sRGBHex);
+        this.updateSliderValues();
+      });
+    }
   }
 
   /**
@@ -416,15 +424,20 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * on the slider values.
    */
   private renderSliders(): void {
-    this.hueReadout!.textContent = this.hueSlider!.value;
-    this.saturationReadout!.textContent = this.saturationSlider!.value;
-    this.brightnessReadout!.textContent = this.brightnessSlider!.value;
+    if (!this.hueSlider || !this.hueReadout ||
+        !this.saturationSlider || !this.saturationReadout ||
+        !this.brightnessSlider || !this.brightnessReadout) {
+      throw new Error('The HSV sliders are missing.');
+    }
+    this.hueReadout.textContent = this.hueSlider.value;
+    this.saturationReadout.textContent = this.saturationSlider.value;
+    this.brightnessReadout.textContent = this.brightnessSlider.value;
 
-    const h: number = parseFloat(this.hueSlider!.value) /
+    const h: number = parseFloat(this.hueSlider.value) /
         FieldColourHsvSliders.HUE_SLIDER_MAX;
-    const s: number = parseFloat(this.saturationSlider!.value) /
+    const s: number = parseFloat(this.saturationSlider.value) /
         FieldColourHsvSliders.SATURATION_SLIDER_MAX;
-    const v: number = parseFloat(this.brightnessSlider!.value) /
+    const v: number = parseFloat(this.brightnessSlider.value) /
         FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
 
     // The hue slider needs intermediate gradient control points to include all
@@ -439,7 +452,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
     hueGradient += FieldColourHsvSliders.hsvToHex(5/6, s, v) + ', ';
     hueGradient += FieldColourHsvSliders.hsvToHex(6/6, s, v) +
         ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
-    this.hueSlider!.style.setProperty(
+    this.hueSlider.style.setProperty(
         '--slider-track-background', hueGradient);
 
     // The saturation slider only needs gradient control points at each end.
@@ -448,7 +461,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
         ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
     saturationGradient += FieldColourHsvSliders.hsvToHex(h, 1, v) +
         ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
-    this.saturationSlider!.style.setProperty(
+    this.saturationSlider.style.setProperty(
         '--slider-track-background', saturationGradient);
 
     // The brightness slider only needs gradient control points at each end.
@@ -457,13 +470,13 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
         ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
     brightnessGradient += FieldColourHsvSliders.hsvToHex(h, s, 1) +
         ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
-    this.brightnessSlider!.style.setProperty(
+    this.brightnessSlider.style.setProperty(
         '--slider-track-background', brightnessGradient);
   }
 
   /** Updates slider values based on the current value of the field. */
   private updateSliderValues(): void {
-    if (!this.hueSlider) {
+    if (!this.hueSlider || !this.saturationSlider || !this.brightnessSlider) {
       return;
     }
 
@@ -472,9 +485,9 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
 
     this.hueSlider.value =
         String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX);
-    this.saturationSlider!.value =
+    this.saturationSlider.value =
         String(hsv.s * FieldColourHsvSliders.SATURATION_SLIDER_MAX);
-    this.brightnessSlider!.value =
+    this.brightnessSlider.value =
         String(hsv.v * FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX);
 
     this.renderSliders();
