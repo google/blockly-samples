@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>@blockly/field-colour-hsv-sliders Demo</title>
+  
+<!-- HEAD  -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/css/custom.css" />
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>@blockly/field-colour-hsv-sliders Demo | blockly-samples</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="@blockly/field-colour-hsv-sliders Demo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Blockly colour field using HSV sliders." />
+<meta property="og:description" content="A Blockly colour field using HSV sliders." />
+<meta property="og:site_name" content="blockly-samples" />
+<script type="application/ld+json">
+{"headline":"@blockly/field-colour-hsv-sliders Demo","description":"A Blockly colour field using HSV sliders.","url":"/plugins/field-colour-hsv-sliders/README.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+</head>
+
+<body class="root">
+  <nav id="toolbar">
+    <a href="" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/field-colour-hsv-sliders Demo</div>
+      <div class="subtitle">A Blockly colour field using HSV sliders.</div>
+    </div>
+
+    
+    2.0.2
+    
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour-hsv-sliders/" class="button" target="_blank">View code</a>
+
+    
+    <!-- NPM LINK -->
+    <a href="https://www.npmjs.com/package/@blockly/field-colour-hsv-sliders" class="button" target="_blank">View on npm</a>
+    
+    
+  </nav>
+  <main id="main"  class="has-tabs" >
+
+    
+      <!-- PAGE TABS -->
+      <ul id="tabs">
+        
+          <li>
+            <a href="/plugins/field-colour-hsv-sliders/test/index">
+              Playground
+            </a>
+          </li>
+        
+          <li>
+            <a href="/plugins/field-colour-hsv-sliders/README">
+              README
+            </a>
+          </li>
+        
+      </ul>
+    
+
+    <article class="article-container site-width"><div class="article">
+
+    
+
+    
+<!-- CONTENT  -->
+<div class="drop-shadow"></div>
+<div class="content">
+  <h1 id="blocklyfield-colour-hsv-sliders-">@blockly/field-colour-hsv-sliders <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> colour field using HSV sliders for editing.</p>
+
+<p><img src="readme-media/hsv_sliders_screenshot.png" alt="A Blockly workspace showing the HSV sliders." /></p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="yarn">Yarn</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add @blockly/field-colour-hsv-sliders
+</code></pre></div></div>
+
+<h3 id="npm">npm</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install @blockly/field-colour-hsv-sliders --save
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+<p>This plugin adds a field type <code class="language-plaintext highlighter-rouge">FieldColourHsvSliders</code> that is registered to the name <code class="language-plaintext highlighter-rouge">'field_colour_hsv_sliders'</code>. This field is an extension of the <code class="language-plaintext highlighter-rouge">Blockly.FieldColour</code> field and outputs values in the same hexadecimal string format <code class="language-plaintext highlighter-rouge">'#rrggbb'</code> even though the UI represents the colour in the HSV colour space. See the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour#creation">Blockly.FieldColour documentation</a> on what parameters and configurations this field supports, although unlike <code class="language-plaintext highlighter-rouge">Blockly.FieldColour</code>, this field does not use colour swatches and thus ignores options related to the swatches such as <code class="language-plaintext highlighter-rouge">'colourOptions'</code>.</p>
+
+<p>The UI also provides an eye dropper button that can be used to take a colour from anywhere on the screen <a href="https://caniuse.com/?search=eyedropper">on supported platforms</a>. Chrome, Edge, and Opera support the eye dropper feature, except <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1348921">on Chromebooks</a> and on mobile devices. There is also <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1227633">a known bug in Chrome on some versions of Linux</a> where the eye dropper may be visible but does not work correctly.</p>
+
+<p>To use it, you’ll need to add this field to a block type definition, and add that block to your toolbox. See below for an example of defining a block type that uses this field.</p>
+
+<h3 id="json">JSON</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">@blockly/field-slider</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">Blockly</span><span class="p">.</span><span class="nx">defineBlocksWithJsonArray</span><span class="p">([</span>
+  <span class="p">{</span>
+    <span class="dl">'</span><span class="s1">type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">colour_hsv_sliders</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">message0</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">hsv %1</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">args0</span><span class="dl">'</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="dl">'</span><span class="s1">type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">field_colour_hsv_sliders</span><span class="dl">'</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">name</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">COLOUR</span><span class="dl">'</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">colour</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">#ff0000</span><span class="dl">'</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="dl">'</span><span class="s1">output</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Colour</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">style</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">colour_blocks</span><span class="dl">'</span>
+  <span class="p">}</span>
+<span class="p">]);</span>
+<span class="nx">Blockly</span><span class="p">.</span><span class="nx">JavaScript</span><span class="p">[</span><span class="dl">'</span><span class="s1">colour_hsv_sliders</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">code</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">JavaScript</span><span class="p">.</span><span class="nx">quote_</span><span class="p">(</span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="dl">'</span><span class="s1">COLOUR</span><span class="dl">'</span><span class="p">));</span>
+  <span class="k">return</span> <span class="p">[</span><span class="nx">code</span><span class="p">,</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">JavaScript</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="javascript">JavaScript</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">Blockly</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">blockly</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">FieldColourHsvSliders</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@blockly/field-colour-hsv-sliders</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">Blockly</span><span class="p">.</span><span class="nx">Blocks</span><span class="p">[</span><span class="dl">'</span><span class="s1">colour_hsv_sliders</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">init</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">appendDummyInput</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">appendField</span><span class="p">(</span><span class="dl">'</span><span class="s1">hsv </span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">appendField</span><span class="p">(</span><span class="k">new</span> <span class="nx">FieldColourHsvSliders</span><span class="p">(</span><span class="dl">'</span><span class="s1">#ff0000</span><span class="dl">'</span><span class="p">),</span> <span class="dl">'</span><span class="s1">COLOUR</span><span class="dl">'</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setOutput</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Colour</span><span class="dl">'</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="dl">'</span><span class="s1">colour_blocks</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="nx">Blockly</span><span class="p">.</span><span class="nx">JavaScript</span><span class="p">[</span><span class="dl">'</span><span class="s1">colour_hsv_sliders</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">code</span> <span class="o">=</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">JavaScript</span><span class="p">.</span><span class="nx">quote_</span><span class="p">(</span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="dl">'</span><span class="s1">COLOUR</span><span class="dl">'</span><span class="p">));</span>
+  <span class="k">return</span> <span class="p">[</span><span class="nx">code</span><span class="p">,</span> <span class="nx">Blockly</span><span class="p">.</span><span class="nx">JavaScript</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="license">License</h2>
+
+<p>Apache 2.0</p>
+
+</div>
+
+
+    </div></article>
+  </main>
+  <!-- FOOTER  -->
+<footer id="footer">
+  <div class="footer-wrapper site-width">
+    <div class="link-list">
+      <label>Developer Resources</label>
+      <ul>
+        <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+        <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+        <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+            Tools</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Github</label>
+      <ul>
+        <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+        <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+      </ul>
+    </div>
+    <div class="link-list">
+      <label>Support</label>
+      <ul>
+        <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+      </ul>
+      <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+
+</html>

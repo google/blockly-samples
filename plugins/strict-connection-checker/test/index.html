@@ -2,7 +2,7 @@
 title: "@blockly/plugin-strict-connection-checker Demo"
 packageName: "@blockly/plugin-strict-connection-checker"
 description: "A Blockly plugin that makes connection checks strict."
-version: "2.0.2"
+version: "2.0.3"
 pageRoot: "plugins/strict-connection-checker"
 pages:
   - label: "Playground"

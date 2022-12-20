@@ -2,7 +2,7 @@
 title: "@blockly/shadow-block-converter Demo"
 packageName: "@blockly/shadow-block-converter"
 description: "A workspace change listener that converts shadow blocks to real blocks when the user edits them."
-version: "2.0.2"
+version: "2.0.3"
 pageRoot: "plugins/shadow-block-converter"
 pages:
   - label: "Playground"

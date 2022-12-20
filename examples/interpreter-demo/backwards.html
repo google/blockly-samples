@@ -69,7 +69,7 @@ pageRoot: "examples/interpreter-demo"
   reaches deep beyond the public API for the JS-Interpreter, the uncompiled
   acorn.js and interpreter.js must be used in place of acorn_interpreter.js.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS-Interpreter</a></p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript#js-interpreter">More info on running code with JS-Interpreter</a></p>
 
   <p>
     <button onclick="stepBackwards()" id="stepBackwardsButton" disabled="disabled">Step &larr;</button>
@@ -84,97 +84,80 @@ pageRoot: "examples/interpreter-demo"
     </textarea>
   </div>
 
-
   <script>
-    var startBlocks = {
-  "blocks": {
-    "blocks": [
-      {
-        "type": "variables_set",
-        "id": "set_n_initial",
-        "x": 20,
-        "y": 20,
-        "inline": true,
-        "fields": {
-          "VAR": {
-            "id": ",4tsL~{roFQW!-CL1(Gn"
-          }
-        },
-        "inputs": {
-          "VALUE": {
-            "block": {
-              "type": "math_number",
-              "fields": {
-                "NUM": 1
-              }
-            }
-          }
-        },
-        "next": {
-          "block": {
-            "type": "controls_repeat_ext",
-            "id": "repeat",
+    const startBlocks = {
+      "blocks": {
+        "blocks": [
+          {
+            "type": "variables_set",
+            "x": 20,
+            "y": 20,
             "inline": true,
+            "fields": {
+              "VAR": {
+                "id": "n"
+              }
+            },
             "inputs": {
-              "TIMES": {
+              "VALUE": {
                 "block": {
                   "type": "math_number",
-                  "fields": {
-                    "NUM": 4
-                  }
+                  "fields": {"NUM": 1}
                 }
-              },
-              "DO": {
-                "block": {
-                  "type": "variables_set",
-                  "id": "set_n_update",
-                  "inline": true,
-                  "fields": {
-                    "VAR": {
-                      "id": ",4tsL~{roFQW!-CL1(Gn"
+              }
+            },
+            "next": {
+              "block": {
+                "type": "controls_repeat_ext",
+                "inline": true,
+                "inputs": {
+                  "TIMES": {
+                    "block": {
+                      "type": "math_number",
+                      "fields": {"NUM": 4}
                     }
                   },
-                  "inputs": {
-                    "VALUE": {
-                      "block": {
-                        "type": "math_arithmetic",
-                        "fields": {
-                          "OP": "MULTIPLY"
-                        },
-                        "inputs": {
-                          "A": {
-                            "block": {
-                              "type": "variables_get",
-                              "fields": {
-                                "VAR": {
-                                  "id": ",4tsL~{roFQW!-CL1(Gn"
+                  "DO": {
+                    "block": {
+                      "type": "variables_set",
+                      "inline": true,
+                      "fields": {
+                        "VAR": {"id": "n"}
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "block": {
+                            "type": "math_arithmetic",
+                            "fields": {"OP": "MULTIPLY"},
+                            "inputs": {
+                              "A": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "fields": {
+                                    "VAR": {"id": "n"}
+                                  }
+                                }
+                              },
+                              "B": {
+                                "block": {
+                                  "type": "math_number",
+                                  "fields": {"NUM": 2}
                                 }
                               }
                             }
-                          },
-                          "B": {
-                            "block": {
-                              "type": "math_number",
-                              "fields": {
-                                "NUM": 2
-                              }
-                            }
                           }
                         }
-                      }
-                    }
-                  },
-                  "next": {
-                    "block": {
-                      "type": "text_print",
-                      "id": "print",
-                      "inputs": {
-                        "TEXT": {
-                          "block": {
-                            "type": "variables_get",
-                            "fields": {
-                              "VAR": {
-                                "id": ",4tsL~{roFQW!-CL1(Gn"
+                      },
+                      "next": {
+                        "block": {
+                          "type": "text_print",
+                          "inputs": {
+                            "TEXT": {
+                              "block": {
+                                "type": "variables_get",
+                                "fields": {
+                                  "VAR": {"id": "n"}
+                                }
                               }
                             }
                           }
@@ -186,18 +169,17 @@ pageRoot: "examples/interpreter-demo"
               }
             }
           }
+        ]
+      },
+      "variables": [
+        {
+          "name": "n",
+          "id": "n"
         }
-      }
-    ]
-  },
-  "variables": [
-    {
-      "name": "n",
-      "id": ",4tsL~{roFQW!-CL1(Gn"
-    }
-  ]
-}
-    var demoWorkspace = Blockly.inject('blocklyDiv',
+      ]
+    };
+
+    const demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
          toolbox: toolboxJson});
     Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
@@ -205,26 +187,26 @@ pageRoot: "examples/interpreter-demo"
     Blockly.serialization.workspaces.load(startBlocks, demoWorkspace)
 
 
-    var outputArea = document.getElementById('output');
-    var myInterpreter = null;
+    const outputArea = document.getElementById('output');
+    let myInterpreter = null;
 
     // Stack of serializations.  Each object contains these properties:
     //   .json: A full serialization of the interpreter's state, or...
     //   .delta: Instead of a full serialization, a delta from the next state.
     //   .highlight: The ID of the block highlighted in this state.
     //   .output: State of the output textarea.
-    var serializationStack = [];
+    const serializationStack = [];
 
     // Global variable to keep track of the currently highlighted block.
-    var highlightedBlockId = '';
+    let highlightedBlockId = '';
 
     // The forward step button disables for 2s after program completion, then
     // re-enables.  If the backwards step button is pressed during this time
     // then cancel the scheduled re-enabling.
-    var resetButtonsPid = 0;
+    let resetButtonsPid = 0;
 
     // Optionally, use the Diff Match Patch library to compress the stack.
-    var dmp;
+    let dmp;
     if (typeof diff_match_patch === 'function') {
       dmp = new diff_match_patch();
       console.log('Using DMP for compression.');
@@ -234,7 +216,7 @@ pageRoot: "examples/interpreter-demo"
 
     function initApi(interpreter, globalObject) {
       // Add an API function for the alert() block, generated for "text_print" blocks.
-      var wrapperAlert = function alert(text) {
+      const wrapperAlert = function alert(text) {
         text = arguments.length ? text : '';
         outputArea.value += '\n' + text;
       };
@@ -242,14 +224,14 @@ pageRoot: "examples/interpreter-demo"
           interpreter.createNativeFunction(wrapperAlert));
 
       // Add an API function for the prompt() block.
-      var wrapperPrompt = function prompt(text) {
+      const wrapperPrompt = function prompt(text) {
         return window.prompt(text);
       };
       interpreter.setProperty(globalObject, 'prompt',
           interpreter.createNativeFunction(wrapperPrompt));
 
       // Add an API function for highlighting blocks.
-      var wrapperHighlight = function(id) {
+      const wrapperHighlight = function(id) {
         id = String(id || '');
         highlightedBlockId = id;
         return highlightBlock(id);
@@ -259,7 +241,7 @@ pageRoot: "examples/interpreter-demo"
     }
 
     // Each step will run the interpreter until the highlightPause is true.
-    var highlightPause = false;
+    let highlightPause = false;
 
     function highlightBlock(id) {
       demoWorkspace.highlightBlock(id);
@@ -277,7 +259,7 @@ pageRoot: "examples/interpreter-demo"
     }
 
     function stepBackwards() {
-      var serialization = serializationStack.pop();
+      const serialization = serializationStack.pop();
       if (!serializationStack.length) {
         document.getElementById('stepBackwardsButton').disabled = 'disabled';
       }
@@ -286,7 +268,7 @@ pageRoot: "examples/interpreter-demo"
       }
       highlightedBlockId = serialization.highlight;
       highlightBlock(highlightedBlockId);
-      var json = serialization.json;
+      let json = serialization.json;
       if (dmp && serializationStack.length) {
         uncompressLastSerialization(json);
       }
@@ -311,7 +293,7 @@ pageRoot: "examples/interpreter-demo"
         // First statement of this code.
         // Clear the program output.
         resetStepUi(true);
-        var latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        const latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
         serializationStack.length = 0;
         document.getElementById('stepBackwardsButton').disabled = 'disabled';
         myInterpreter = new Interpreter(latestCode, initApi);
@@ -328,7 +310,7 @@ pageRoot: "examples/interpreter-demo"
       }
       highlightPause = false;
 
-      var json = JSON.stringify(serialize(myInterpreter));
+      const json = JSON.stringify(serialize(myInterpreter));
       if (dmp && serializationStack.length) {
         compressLastSerialization(json);
       }
@@ -340,9 +322,10 @@ pageRoot: "examples/interpreter-demo"
       });
       document.getElementById('stepBackwardsButton').disabled = '';
 
+      let hasMoreCode
       do {
         try {
-          var hasMoreCode = myInterpreter.step();
+          hasMoreCode = myInterpreter.step();
         } finally {
           if (!hasMoreCode) {
             // Program complete, no more code to execute.
@@ -370,8 +353,8 @@ pageRoot: "examples/interpreter-demo"
 
     // Compress the previous serialization as a delta of the current one.
     function compressLastSerialization(currentJson) {
-      var previousStack = serializationStack[serializationStack.length - 1];
-      var previousDiff = dmp.diff_main(currentJson, previousStack.json);
+      const previousStack = serializationStack[serializationStack.length - 1];
+      const previousDiff = dmp.diff_main(currentJson, previousStack.json);
       dmp.diff_cleanupEfficiency(previousDiff);
       previousStack.json = null;
       previousStack.delta = dmp.diff_toDelta(previousDiff);
@@ -379,8 +362,8 @@ pageRoot: "examples/interpreter-demo"
 
     // Uncompress the previous serialization's delta, based off the current one.
     function uncompressLastSerialization(currentJson) {
-      var previousStack = serializationStack[serializationStack.length - 1];
-      var previousDiff = dmp.diff_fromDelta(currentJson, previousStack.delta);
+      const previousStack = serializationStack[serializationStack.length - 1];
+      const previousDiff = dmp.diff_fromDelta(currentJson, previousStack.delta);
       previousStack.delta = null;
       previousStack.json = dmp.diff_text2(previousDiff);
     }

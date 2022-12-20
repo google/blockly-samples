@@ -2,7 +2,7 @@
 title: "@blockly/dev-tools Demo"
 packageName: "@blockly/dev-tools"
 description: "A library of common utilities for Blockly extension development."
-version: "5.0.2"
+version: "5.0.3"
 pageRoot: "plugins/dev-tools"
 pages:
   - label: "Playground"

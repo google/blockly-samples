@@ -65,41 +65,39 @@ pageRoot: "examples/resizable-demo"
   <script>
     var toolbox = {
         "kind":"flyoutToolbox",
-        "contents":[
+        "contents": [
           {
-            "kind":"block",
-            "type":"controls_if"
+            "kind": "block",
+            "type": "controls_if"
           },
           {
-            "kind":"block",
-            "type":"logic_compare"
+            "kind": "block",
+            "type": "logic_compare"
           },
           {
-            "kind":"block",
-            "type":"controls_repeat_ext"
+            "kind": "block",
+            "type": "controls_repeat_ext"
           },
           {
-            "kind":"block",
-            "type":"math_number",
-            "fields":{
-              "NUM":123
-            }
+            "kind": "block",
+            "type": "math_number",
+            "fields": {"NUM": 123}
           },
           {
-            "kind":"block",
-            "type":"math_arithmetic"
+            "kind": "block",
+            "type": "math_arithmetic"
           },
           {
-            "kind":"block",
-            "type":"text"
+            "kind": "block",
+            "type": "text"
           },
           {
-            "kind":"block",
-            "type":"text_print"
-          }
+            "kind": "block",
+            "type": "text_print"
+          },
         ]
-      }
-      
+      };
+
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
     var demoWorkspace = Blockly.inject(blocklyDiv,
@@ -126,7 +124,6 @@ pageRoot: "examples/resizable-demo"
     };
     window.addEventListener('resize', onresize, false);
     onresize();
-    Blockly.svgResize(demoWorkspace);
   </script>
 </body>
 </html>
