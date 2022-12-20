@@ -9,8 +9,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {Sentinel} from 'blockly/core/utils/sentinel';
-import {FieldColourConfig, FieldColourValidator} from 'blockly/core/field_colour';
 
 // Experimental API: https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper
 declare interface EyeDropper {
@@ -181,13 +179,13 @@ class HsvColour {
 export class FieldColourHsvSliders extends Blockly.FieldColour {
   /* eslint-disable @typescript-eslint/naming-convention */
   /** The maximum value of the hue slider range. */
-  private static readonly HUE_SLIDER_MAX: number = 360;
+  private static readonly HUE_SLIDER_MAX = 360;
 
   /** The maximum value of the saturation slider range. */
-  private static readonly SATURATION_SLIDER_MAX: number = 100;
+  private static readonly SATURATION_SLIDER_MAX = 100;
 
   /** The maximum value of the brightness slider range. */
-  private static readonly BRIGHTNESS_SLIDER_MAX: number = 100;
+  private static readonly BRIGHTNESS_SLIDER_MAX = 100;
 
   /**
    * The gradient control point positions should align with the center of the
@@ -196,7 +194,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * from the edge of the track will be the thumb's radius, so that's how far
    * the minimum and maximum control points should be.
    */
-  static readonly THUMB_RADIUS: number = 12;
+  static readonly THUMB_RADIUS = 12;
   /* eslint-enable @typescript-eslint/naming-convention */
 
   /** Helper colour structures to allow manipulation in the HSV colour space. */
@@ -228,27 +226,6 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
 
   /** HTML div element containing all the labels and sliders. */
   private dropdownContainer: HTMLDivElement | null = null;
-
-  /**
-   * Class for an HSV colour sliders field.
-   * @param value The initial value of the field. Should be in '#rrggbb' format.
-   *     Also accepts Field.SKIP_SETUP if you wish to skip setup (only used by
-   *     subclasses that want to handle configuration and setting the field
-   *     value after their own constructors have run).
-   * @param validator A function that is called to validate changes to the
-   *     field's value. Takes in a colour string & returns a validated colour
-   *     string ('#rrggbb' format), or null to abort the change.
-   * @param config A map of options used to configure the field. See the [field
-   *     creation documentation]{@link
-   *     https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour}
-   *     for a list of properties this parameter supports.
-   */
-  constructor(
-      value?: string | Sentinel,
-      validator?: FieldColourValidator,
-      config?: FieldColourConfig) {
-    super(value, validator, config);
-  }
 
   /* eslint-disable @typescript-eslint/naming-convention */
   /**
