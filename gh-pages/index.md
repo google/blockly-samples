@@ -31,7 +31,7 @@ layout: index
 * [Scroll Options](plugins/scroll-options/test/index.html)
 * [Serialize Disabled Interactions](plugins/serialize-disabled-interactions/test/index.html)
 * [Shadow Block Converter](plugins/shadow-block-converter/test/index.html)
-* [Suggested Blocks](plugins/suggested-block/test/index.html)
+* [Suggested Blocks](plugins/suggested-blocks/test/index.html)
 * [Cross Tab Copy Paste](plugins/cross-tab-copy-paste/test/index.html)
 * [Inline Row Separators](plugins/renderer-inline-row-separators/test/index.html)
 
