@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-tritanopia",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A Blockly theme for people that have tritanopia.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -56,10 +56,5 @@
   },
   "engines": {
     "node": ">=8.17.0"
-  },
-  "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
-  ]
+  }
 }

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.3...@blockly/disable-top-blocks@0.2.4) (2023-01-05)
+
+**Note:** Version bump only for package @blockly/disable-top-blocks
+
+
+
+
+
+## [0.2.3](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.2...@blockly/disable-top-blocks@0.2.3) (2022-12-15)
+
+**Note:** Version bump only for package @blockly/disable-top-blocks
+
+
+
+
+
 ## [0.2.2](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.1...@blockly/disable-top-blocks@0.2.2) (2022-10-27)
 
 **Note:** Version bump only for package @blockly/disable-top-blocks

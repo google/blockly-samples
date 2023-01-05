@@ -1,0 +1,64 @@
+{
+  "name": "@blockly/renderer-inline-row-separators",
+  "version": "0.2.1",
+  "description": "A plugin to treat dummy inputs like line breaks.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
+    "postinstall": "blockly-scripts postinstall",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "inline",
+    "dummy"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/renderer-inline-row-separators#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/renderer-inline-row-separators"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.2.28",
+    "@blockly/dev-tools": "^5.0.4",
+    "blockly": "^9.0.0",
+    "chai": "^4.2.0",
+    "jsdom": "^19.0.0",
+    "jsdom-global": "^3.0.2"
+  },
+  "peerDependencies": {
+    "blockly": "^9.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

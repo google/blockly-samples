@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@2.0.5...@blockly/field-bitmap@2.0.6) (2023-01-05)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
+## [2.0.5](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@2.0.4...@blockly/field-bitmap@2.0.5) (2022-12-15)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
+## [2.0.4](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@2.0.3...@blockly/field-bitmap@2.0.4) (2022-12-01)
+
+
+### Bug Fixes
+
+* **field-bitmap:** Fix crash when dismissing FieldBitmap dropdown ([#1394](https://github.com/google/blockly-samples/issues/1394)) ([9a2ea9c](https://github.com/google/blockly-samples/commit/9a2ea9cfe43bd7d87b809c0b0dc8a807e958630d)), closes [#1386](https://github.com/google/blockly-samples/issues/1386)
+
+
+
 ## [2.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@2.0.2...@blockly/field-bitmap@2.0.3) (2022-11-10)
 
 

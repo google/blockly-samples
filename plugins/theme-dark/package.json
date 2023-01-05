@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-dark",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A Blockly dark theme.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -56,10 +56,5 @@
   },
   "engines": {
     "node": ">=8.17.0"
-  },
-  "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
-  ]
+  }
 }

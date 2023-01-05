@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.21](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.20...@blockly/create-package@1.1.21) (2023-01-05)
+
+**Note:** Version bump only for package @blockly/create-package
+
+
+
+
+
 ## [1.1.20](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.19...@blockly/create-package@1.1.20) (2022-10-05)
 
 

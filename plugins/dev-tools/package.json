@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "5.0.2",
+  "version": "5.0.4",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -39,11 +39,11 @@
     "src"
   ],
   "dependencies": {
-    "@blockly/block-test": "^3.0.1",
-    "@blockly/theme-dark": "^4.0.1",
-    "@blockly/theme-deuteranopia": "^3.0.1",
-    "@blockly/theme-highcontrast": "^3.0.1",
-    "@blockly/theme-tritanopia": "^3.0.2",
+    "@blockly/block-test": "^3.0.3",
+    "@blockly/theme-dark": "^4.0.2",
+    "@blockly/theme-deuteranopia": "^3.0.2",
+    "@blockly/theme-highcontrast": "^3.0.2",
+    "@blockly/theme-tritanopia": "^3.0.3",
     "chai": "^4.2.0",
     "dat.gui": "^0.7.7",
     "lodash.assign": "^4.2.0",
@@ -68,10 +68,5 @@
   },
   "engines": {
     "node": ">=8.0.0"
-  },
-  "browserslist": [
-    "defaults",
-    "IE 11",
-    "IE_Mob 11"
-  ]
+  }
 }

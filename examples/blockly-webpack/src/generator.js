@@ -24,7 +24,7 @@
 
 import * as Blockly from 'blockly/core';
 import 'blockly/blocks';
-import 'blockly/python';
+import {pythonGenerator} from 'blockly/python';
 
 import * as En from 'blockly/msg/en';
 Blockly.setLocale(En);
@@ -37,11 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
             media: 'media/'
         });
 
-    const lang = 'Python';
     const button = document.getElementById('blocklyButton');
     button.addEventListener('click', function () {
         alert("Check the console for the generated output.");
-        const code = Blockly[lang].workspaceToCode(workspace);
+        const code = pythonGenerator.workspaceToCode(workspace);
         console.log(code);
     })
 });

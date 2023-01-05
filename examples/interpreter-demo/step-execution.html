@@ -28,8 +28,9 @@
 
   <p>This is a demo of executing code step-by-step with a sandboxed JavaScript interpreter.</p>
 
-  <p>The generator's <code>Blockly.JavaScript.STATEMENT_PREFIX</code> is assigned <code>'highlightBlock(%1);\n'</code>,
-  where <code>%1</code> is the block id. The call to <code>highlightBlock()</code> will highlight the identified block
+  <p>The generator's <code>Blockly.JavaScript.STATEMENT_PREFIX</code> is assigned
+  <code>'highlightBlock(%1);\n'</code>, where <code>%1</code> is the block ID.
+  The call to <code>highlightBlock()</code> will highlight the identified block
   and set the variable <code>highlightPause</code> to <code>true</code>.</p>
 
   <p>Each press of the "Step JavaScript" button will run the interpreter one
@@ -37,7 +38,7 @@
   That is, until <code>highlightBlock()</code> has highlighted the block that
   will be executed on the next step.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/running-javascript#js_interpreter">More info on running code with JS-Interpreter</a></p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript#js-interpreter">More info on running code with JS-Interpreter</a></p>
 
   <p>
     <button onclick="stepCode()" id="stepButton">Step JavaScript</button>
@@ -52,91 +53,77 @@
   </div>
 
   <script>
-    var startBlocks = {
-  "blocks": {
-    "blocks": [
-      {
-        "type": "variables_set",
-        "x": 20,
-        "y": 20,
-        "inline": true,
-        "fields": {
-          "VAR": {
-            "id": "tM=w))MOXI6@zs0Q9:]U"
-          }
-        },
-        "inputs": {
-          "VALUE": {
-            "block": {
-              "type": "math_number",
-              "fields": {
-                "NUM": 1
-              }
-            }
-          }
-        },
-        "next": {
-          "block": {
-            "type": "controls_repeat_ext",
+    const startBlocks = {
+      "blocks": {
+        "blocks": [
+          {
+            "type": "variables_set",
+            "x": 20,
+            "y": 20,
             "inline": true,
+            "fields": {
+              "VAR": {"id": "n"}
+            },
             "inputs": {
-              "TIMES": {
+              "VALUE": {
                 "block": {
                   "type": "math_number",
-                  "fields": {
-                    "NUM": 4
-                  }
+                  "fields": {"NUM": 1}
                 }
-              },
-              "DO": {
-                "block": {
-                  "type": "variables_set",
-                  "inline": true,
-                  "fields": {
-                    "VAR": {
-                      "id": "tM=w))MOXI6@zs0Q9:]U"
+              }
+            },
+            "next": {
+              "block": {
+                "type": "controls_repeat_ext",
+                "inline": true,
+                "inputs": {
+                  "TIMES": {
+                    "block": {
+                      "type": "math_number",
+                      "fields": {"NUM": 4}
                     }
                   },
-                  "inputs": {
-                    "VALUE": {
-                      "block": {
-                        "type": "math_arithmetic",
-                        "fields": {
-                          "OP": "MULTIPLY"
-                        },
-                        "inputs": {
-                          "A": {
-                            "block": {
-                              "type": "variables_get",
-                              "fields": {
-                                "VAR": {
-                                  "id": "tM=w))MOXI6@zs0Q9:]U"
+                  "DO": {
+                    "block": {
+                      "type": "variables_set",
+                      "inline": true,
+                      "fields": {
+                        "VAR": {"id": "n"}
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "block": {
+                            "type": "math_arithmetic",
+                            "fields": {"OP": "MULTIPLY"},
+                            "inputs": {
+                              "A": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "fields": {
+                                    "VAR": {"id": "n"}
+                                  }
+                                }
+                              },
+                              "B": {
+                                "block": {
+                                  "type": "math_number",
+                                  "fields": {"NUM": 2}
                                 }
                               }
                             }
-                          },
-                          "B": {
-                            "block": {
-                              "type": "math_number",
-                              "fields": {
-                                "NUM": 2
-                              }
-                            }
                           }
                         }
-                      }
-                    }
-                  },
-                  "next": {
-                    "block": {
-                      "type": "text_print",
-                      "inputs": {
-                        "TEXT": {
-                          "block": {
-                            "type": "variables_get",
-                            "fields": {
-                              "VAR": {
-                                "id": "tM=w))MOXI6@zs0Q9:]U"
+                      },
+                      "next": {
+                        "block": {
+                          "type": "text_print",
+                          "inputs": {
+                            "TEXT": {
+                              "block": {
+                                "type": "variables_get",
+                                "fields": {
+                                  "VAR": {"id": "n"}
+                                }
                               }
                             }
                           }
@@ -148,31 +135,30 @@
               }
             }
           }
+        ]
+      },
+      "variables": [
+        {
+          "name": "n",
+          "id": "n"
         }
-      }
-    ]
-  },
-  "variables": [
-    {
-      "name": "n",
-      "id": "tM=w))MOXI6@zs0Q9:]U"
-    }
-  ]
-}
-    var demoWorkspace = Blockly.inject('blocklyDiv',
+      ]
+    };
+
+    const demoWorkspace = Blockly.inject('blocklyDiv',
         {media: 'https://unpkg.com/blockly/media/',
          toolbox: toolboxJson});
     Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
     Blockly.JavaScript.addReservedWords('highlightBlock');
     Blockly.serialization.workspaces.load(startBlocks, demoWorkspace)
 
-    var outputArea = document.getElementById('output');
-    var stepButton = document.getElementById('stepButton');
-    var myInterpreter = null;
+    const outputArea = document.getElementById('output');
+    const stepButton = document.getElementById('stepButton');
+    let myInterpreter = null;
 
     function initApi(interpreter, globalObject) {
       // Add an API function for the alert() block, generated for "text_print" blocks.
-      var wrapperAlert = function alert(text) {
+      const wrapperAlert = function alert(text) {
         text = arguments.length ? text : '';
         outputArea.value += '\n' + text;
       };
@@ -180,14 +166,14 @@
           interpreter.createNativeFunction(wrapperAlert));
 
       // Add an API function for the prompt() block.
-      var wrapperPrompt = function prompt(text) {
+      const wrapperPrompt = function prompt(text) {
         return window.prompt(text);
       };
       interpreter.setProperty(globalObject, 'prompt',
           interpreter.createNativeFunction(wrapperPrompt));
 
       // Add an API function for highlighting blocks.
-      var wrapperHighlight = function(id) {
+      const wrapperHighlight = function(id) {
         id = String(id || '');
         return highlightBlock(id);
       };
@@ -196,7 +182,7 @@
     }
 
     // Each step will run the interpreter until the highlightPause is true.
-    var highlightPause = false;
+    let highlightPause = false;
 
     function highlightBlock(id) {
       demoWorkspace.highlightBlock(id);
@@ -218,7 +204,7 @@
         // First statement of this code.
         // Clear the program output.
         resetStepUi(true);
-        var latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        const latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
         myInterpreter = new Interpreter(latestCode, initApi);
 
         // And then show generated code in an alert.
@@ -232,9 +218,10 @@
         return;
       }
       highlightPause = false;
+      let hasMoreCode;
       do {
         try {
-          var hasMoreCode = myInterpreter.step();
+          hasMoreCode = myInterpreter.step();
         } finally {
           if (!hasMoreCode) {
             // Program complete, no more code to execute.

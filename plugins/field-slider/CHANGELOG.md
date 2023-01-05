@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/google/blockly-samples/compare/@blockly/field-slider@4.0.3...@blockly/field-slider@4.0.4) (2023-01-05)
+
+**Note:** Version bump only for package @blockly/field-slider
+
+
+
+
+
+## [4.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-slider@4.0.2...@blockly/field-slider@4.0.3) (2022-12-15)
+
+
+### Bug Fixes
+
+* field slider validator type ([#1455](https://github.com/google/blockly-samples/issues/1455)) ([e7ac2a6](https://github.com/google/blockly-samples/commit/e7ac2a6c4d255e66a55b31bedd0ab30fc7d729bd))
+
+
+
 ## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-slider@4.0.1...@blockly/field-slider@4.0.2) (2022-10-27)
 
 
