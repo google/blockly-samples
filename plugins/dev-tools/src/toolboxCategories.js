@@ -58,7 +58,6 @@ export default {
             'TIMES': {
               'shadow': {
                 'type': 'math_number',
-                'id': 'Y.z2N%rZVW2$WG~Rr3jV',
                 'fields': {
                   'NUM': 10,
                 },
@@ -101,7 +100,6 @@ export default {
             'TO': {
               'shadow': {
                 'type': 'math_number',
-                'id': 'o(J=1}3OGC}o{WXU^~O?',
                 'fields': {
                   'NUM': 10,
                 },
@@ -217,7 +215,6 @@ export default {
         {
           'type': 'math_number_property',
           'kind': 'block',
-          'extraState': '<mutation divisor_input=\'false\'></mutation>',
           'fields': {
             'PROPERTY': 'EVEN',
           },
@@ -252,7 +249,6 @@ export default {
         {
           'type': 'math_on_list',
           'kind': 'block',
-          'extraState': '<mutation op=\'SUM\'></mutation>',
           'fields': {
             'OP': 'SUM',
           },
@@ -381,9 +377,6 @@ export default {
         {
           'type': 'text_join',
           'kind': 'block',
-          'extraState': {
-            'itemCount': 2,
-          },
         },
         {
           'type': 'text_append',
@@ -460,7 +453,6 @@ export default {
         {
           'type': 'text_charAt',
           'kind': 'block',
-          'extraState': '<mutation at=\'true\'></mutation>',
           'fields': {
             'WHERE': 'FROM_START',
           },
@@ -480,7 +472,6 @@ export default {
         {
           'type': 'text_getSubstring',
           'kind': 'block',
-          'extraState': '<mutation at1=\'true\' at2=\'true\'></mutation>',
           'fields': {
             'WHERE1': 'FROM_START',
             'WHERE2': 'FROM_START',
@@ -616,7 +607,6 @@ export default {
         {
           'type': 'text_prompt_ext',
           'kind': 'block',
-          'extraState': '<mutation type=\'TEXT\'></mutation>',
           'fields': {
             'TYPE': 'TEXT',
           },
@@ -641,16 +631,10 @@ export default {
         {
           'type': 'lists_create_with',
           'kind': 'block',
-          'extraState': {
-            'itemCount': 0,
-          },
         },
         {
           'type': 'lists_create_with',
           'kind': 'block',
-          'extraState': {
-            'itemCount': 3,
-          },
         },
         {
           'type': 'lists_repeat',

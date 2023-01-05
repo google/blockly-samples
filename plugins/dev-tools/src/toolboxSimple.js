@@ -1,110 +1,83 @@
 export default {
-  'blocks': {
-    'languageVersion': 0,
-    'blocks': [
-      {
-        'type': 'controls_ifelse',
-      },
-      {
-        'type': 'logic_compare',
-        'fields': {
-          'OP': 'EQ',
-        },
-      },
-      {
-        'type': 'logic_operation',
-        'fields': {
-          'OP': 'AND',
-        },
-      },
-      {
-        'type': 'controls_repeat_ext',
-        'inputs': {
-          'TIMES': {
-            'shadow': {
-              'type': 'math_number',
-              'fields': {
-                'NUM': 10,
-              },
-            },
-          },
-        },
-      },
-      {
-        'type': 'logic_operation',
-        'fields': {
-          'OP': 'AND',
-        },
-      },
-      {
-        'type': 'logic_negate',
-      },
-      {
-        'type': 'logic_boolean',
-        'fields': {
-          'BOOL': 'TRUE',
-        },
-      },
-      {
-        'type': 'logic_null',
-        'enabled': false,
-      },
-      {
-        'type': 'logic_ternary',
-      },
-      {
-        'type': 'text_charAt',
-        'extraState': '<mutation at="true"></mutation>',
-        'fields': {
-          'WHERE': 'FROM_START',
-        },
-        'inputs': {
-          'VALUE': {
-            'block': {
-              'type': 'variables_get',
-              'fields': {
-                'VAR': {
-                  'id': '{3!sh(%.@[UaGqJV==ke',
-                },
-              },
-            },
-          },
-        },
-      },
-    ],
-  },
-  'variables': [
+  'kind': 'flyoutToolbox',
+  'contents': [
     {
-      'name': 'text',
-      'id': '{3!sh(%.@[UaGqJV==ke',
+      'type': 'controls_ifelse',
+      'kind': 'block',
+    },
+    {
+      'type': 'logic_compare',
+      'kind': 'block',
+      'fields': {
+        'OP': 'EQ',
+      },
+    },
+    {
+      'type': 'logic_operation',
+      'kind': 'block',
+      'fields': {
+        'OP': 'AND',
+      },
+    },
+    {
+      'type': 'controls_repeat_ext',
+      'kind': 'block',
+      'inputs': {
+        'TIMES': {
+          'shadow': {
+            'type': 'math_number',
+            'fields': {
+              'NUM': 10,
+            },
+          },
+        },
+      },
+    },
+    {
+      'type': 'logic_operation',
+      'kind': 'block',
+      'fields': {
+        'OP': 'AND',
+      },
+    },
+    {
+      'type': 'logic_negate',
+      'kind': 'block',
+    },
+    {
+      'type': 'logic_boolean',
+      'kind': 'block',
+      'fields': {
+        'BOOL': 'TRUE',
+      },
+    },
+    {
+      'type': 'logic_null',
+      'kind': 'block',
+      'enabled': false,
+    },
+    {
+      'type': 'logic_ternary',
+      'kind': 'block',
+    },
+    {
+      'type': 'text_charAt',
+      'kind': 'block',
+      'fields': {
+        'WHERE': 'FROM_START',
+      },
+      'inputs': {
+        'VALUE': {
+          'block': {
+            'type': 'variables_get',
+            'fields': {
+              'VAR': {
+                'name': 'text',
+              },
+            },
+          },
+        },
+      },
     },
   ],
 };
-
-
-/* `<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-simple" style="display: none">
-<block type="controls_ifelse"></block>
-<block type="logic_compare"></block>
-<!-- <block type="control_repeat"></block> -->
-<block type="logic_operation"></block>
-<block type="controls_repeat_ext">
-  <value name="TIMES">
-    <shadow type="math_number">
-      <field name="NUM">10</field>
-    </shadow>
-  </value>
-</block>
-<block type="logic_operation"></block>
-<block type="logic_negate"></block>
-<block type="logic_boolean"></block>
-<block type="logic_null" disabled="true"></block>
-<block type="logic_ternary"></block>
-<block type="text_charAt">
-  <value name="VALUE">
-    <block type="variables_get">
-      <field name="VAR">text</field>
-    </block>
-  </value>
-</block>
-</xml>`;
- */
