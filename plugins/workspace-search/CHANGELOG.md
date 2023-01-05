@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.4](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@6.0.3...@blockly/plugin-workspace-search@6.0.4) (2023-01-05)
+
+**Note:** Version bump only for package @blockly/plugin-workspace-search
+
+
+
+
+
 ## [6.0.3](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@6.0.2...@blockly/plugin-workspace-search@6.0.3) (2022-12-15)
 
 **Note:** Version bump only for package @blockly/plugin-workspace-search
