@@ -23,19 +23,23 @@ const toolbox = generateFieldTestBlocks('field_colour_hsv_sliders', [
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @return The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
+function createWorkspace(
+    blocklyDiv: HTMLElement, options: Blockly.BlocklyOptions):
+    Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
+  const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    createPlayground(rootElement, createWorkspace, defaultOptions);
+  }
 });
