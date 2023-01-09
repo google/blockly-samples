@@ -532,7 +532,7 @@ function populateToolboxOption(
           .name('toolbox')
           .onChange((value) => {
             guiState.toolboxName = value;
-            onChange('toolbox', toolboxes[value]); //toolboxes[value] is being overwritten
+            onChange('toolbox', toolboxes[value]);
           }),
       'The toolbox used by Blockly.');
   if (guiState.toolboxName !== defaultToolboxName) {
