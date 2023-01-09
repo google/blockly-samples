@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as Blockly from 'blockly';
 import {blocks} from './blocks/text';
 import {generator} from './generators/javascript';

@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import * as Blockly from 'blockly/core';
 
 // Create a custom block called 'add_text' that adds
@@ -28,5 +34,6 @@ const addText = {
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
+// This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
     [addText]);
