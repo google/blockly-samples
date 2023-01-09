@@ -24,9 +24,9 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 ### What you'll need
 
 - Familiarity with JSON and the JSON specification.
-- Comfort with defining blocks and toolboxes.
-
-This codelab assumes that you are comfortable using the command line/terminal. It also uses npm in the sample application, so you will need to [install npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) if you haven't yet.
+- Comfort with defining blocks and toolboxes in Blockly.
+- NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
+- Comfort using the command line/terminal.
 
 ## Setup
 
@@ -36,7 +36,7 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 You will make all of your changes in a sample Blockly app, which you can find in blockly-samples at [`examples/sample-app`](https://github.com/google/blockly-samples/tree/master/examples/sample-app). This application contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
   1) Clone or download the blockly-samples directory if you haven't already.
-  2) Navigate to the sample-app directory (or a copy of it) via the command line.
+  2) Navigate to the `examples/sample-app` directory (or a copy of it) via the command line.
   3) Run `npm install` to install the required dependencies.
   4) Run `npm run start` to start the server and run the sample application.
   5) The sample app will automatically run in the browser window that opens.
@@ -44,6 +44,13 @@ You will make all of your changes in a sample Blockly app, which you can find in
 The initial application has one custom block and includes JavaScript generator definitions for that block. Since we will be creating a JSON generator, we'll remove that custom block and add our own.
 
 You can view the complete code used in this codelab in blockly-samples under [`examples/custom-generator-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-generator-codelab).
+
+Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string:
+
+```js
+// Use a unique storage key for this codelab
+const storageKey = 'jsonGeneratorWorkspace';
+```
 
 ### Blocks
 
