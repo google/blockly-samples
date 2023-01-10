@@ -2,7 +2,7 @@
 title: "@blockly/workspace-content-highlight Demo"
 packageName: "@blockly/workspace-content-highlight"
 description: "A Blockly workspace plugin that adds a highlight around the content area."
-version: "2.0.3"
+version: "2.0.4"
 pageRoot: "plugins/content-highlight"
 pages:
   - label: "Playground"

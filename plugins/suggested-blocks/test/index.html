@@ -2,7 +2,7 @@
 title: "@blockly/suggested-blocks Demo"
 packageName: "@blockly/suggested-blocks"
 description: "A plugin that adds toolbox panes with suggested blocks based on the user's past usage of blocks."
-version: "2.0.3"
+version: "2.0.4"
 pageRoot: "plugins/suggested-blocks"
 pages:
   - label: "Playground"

@@ -2,7 +2,7 @@
 title: "@blockly/plugin-scroll-options Demo"
 packageName: "@blockly/plugin-scroll-options"
 description: "A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block."
-version: "3.0.4"
+version: "3.0.5"
 pageRoot: "plugins/scroll-options"
 pages:
   - label: "Playground"

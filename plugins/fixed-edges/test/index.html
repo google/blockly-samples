@@ -2,7 +2,7 @@
 title: "@blockly/fixed-edges Demo"
 packageName: "@blockly/fixed-edges"
 description: "A Blockly MetricsManager for configuring fixed sides."
-version: "2.0.3"
+version: "2.0.4"
 pageRoot: "plugins/fixed-edges"
 pages:
   - label: "Playground"

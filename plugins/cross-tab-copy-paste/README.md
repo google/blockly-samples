@@ -2,7 +2,7 @@
 title: "@blockly/plugin-cross-tab-copy-paste Demo"
 packageName: "@blockly/plugin-cross-tab-copy-paste"
 description: "Allows you to copy blocks with cross-tab."
-version: "2.0.4"
+version: "2.0.5"
 pageRoot: "plugins/cross-tab-copy-paste"
 pages:
   - label: "Playground"

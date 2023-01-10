@@ -2,7 +2,7 @@
 title: "@blockly/renderer-inline-row-separators Demo"
 packageName: "@blockly/renderer-inline-row-separators"
 description: "A plugin to treat dummy inputs like line breaks."
-version: "0.1.0"
+version: "0.2.1"
 pageRoot: "plugins/renderer-inline-row-separators"
 pages:
   - label: "Playground"
