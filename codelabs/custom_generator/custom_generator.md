@@ -35,7 +35,7 @@ In this codelab you will add code to the Blockly playground to create and use a 
 ### The application
 
 You will make all of your changes in a sample Blockly app, which you can find in blockly-samples at [`examples/sample-app`](https://github.com/google/blockly-samples/tree/master/examples/sample-app). This application contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1) Clone or download the blockly-samples directory if you haven't already.
+  1) Clone or download the blockly-samples repository if you haven't already.
   2) Navigate to the `examples/sample-app` directory (or a copy of it) via the command line.
   3) Run `npm install` to install the required dependencies.
   4) Run `npm run start` to start the server and run the sample application.
@@ -114,8 +114,15 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([{
 }]);
 ```
 
-This code creates the block definitions, but it doesn't register them with Blockly. We'll do that in `src/index.js`.
-Currently, we import `blocks` from the original sample file, `text.js`. Instead, we want to import the definitions we just added:
+This code creates the block definitions, but it doesn't register the definitions with Blockly to make the blocks usable. We'll do that in `src/index.js`.
+Currently, we import `blocks` from the original sample file, `text.js`. Instead, we want to import the definitions we just added. Remove the original import:
+
+```js
+// Remove this!
+import {blocks} from './blocks/text';
+```
+
+and add the import for the new blocks:
 
 ```js
 import {blocks} from './blocks/json';
@@ -171,9 +178,11 @@ export const toolbox = {
 
 Our `index.js` file already handles importing the toolbox and using it in Blockly.
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon. For now, you should see the new blocks in the toolbox, like this:
+If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. You should see the new blocks in the toolbox, like this:
 
 ![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
+
+The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon. 
 
 ## The basics
 
@@ -199,18 +208,19 @@ export const jsonGenerator = new Blockly.Generator('JSON');
 
 ### Generate code
 
-Next, let's hook up the new generator with the sample app. In `src/index.js`, we need to import the new generator:
+Next, let's hook up the new generator with the sample app. First, we'll remove the old code that imports the new block generator properties and assigns them to the `javascriptGenerator`. Remove these lines from `src/index.js`:
 
 ```js
-import {jsonGenerator} from './generators/json';
-```
-
-and remove the line that assigns the imported properties to `javascriptGenerator`. This is a good approach if you want to add blocks to an existing generator, but we're just going to create our generator and add the block generators to it all at the same time. We can also remove the unnecessary imports for the JavaScript generators. So remove these lines:
-
-```js
+// Remove these lines!
 import {generator} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 Object.assign(javascriptGenerator, generator);
+```
+
+Then, we need to import the new generator:
+
+```js
+import {jsonGenerator} from './generators/json';
 ```
 
 Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workpace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
