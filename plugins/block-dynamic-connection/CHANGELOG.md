@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.5](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.2.4...@blockly/block-dynamic-connection@0.2.5) (2023-01-19)
+
+
+### Bug Fixes
+
+* block-dynamic-connections insertion marker monkey patch ([#1452](https://github.com/google/blockly-samples/issues/1452)) ([5bf1e79](https://github.com/google/blockly-samples/commit/5bf1e79493de4bc3a7fce4bef6a69b5f4055de7b))
+
+
+
 ## [0.2.4](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.2.3...@blockly/block-dynamic-connection@0.2.4) (2023-01-05)
 
 **Note:** Version bump only for package @blockly/block-dynamic-connection
