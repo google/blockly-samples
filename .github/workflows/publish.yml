@@ -59,3 +59,9 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npx lerna publish --conventional-commits --create-release github --yes --ignore-scripts
+
+  update-gh-pages:
+    name: Update GitHub Pages
+    # Call the Update gh-pages workflow only if publishing succeeds
+    needs: [publish]
+    uses: ./.github/workflows/update_gh_pages.yml
