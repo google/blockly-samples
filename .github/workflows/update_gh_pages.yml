@@ -4,6 +4,7 @@ name: Update GitHub Pages
 
 on:
   workflow_dispatch:  # Manually trigger. Colon is required.
+  workflow_call: # Allow this workflow to be called from publish workflow.
 
 permissions:
   contents: write  # For checkout and push.
