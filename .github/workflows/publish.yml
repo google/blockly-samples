@@ -64,4 +64,6 @@ jobs:
     name: Update GitHub Pages
     # Call the Update gh-pages workflow only if publishing succeeds
     needs: [publish]
+    # Don't try to auto-update if on a fork of google/blockly-samples.
+    if: ${{ github.repository_owner == 'google' }}
     uses: ./.github/workflows/update_gh_pages.yml
