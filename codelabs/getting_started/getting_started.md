@@ -162,7 +162,7 @@ const toolbox = {
       }
     }
   ]
-}
+};
 ```
 
 This JavaScript object defines a toolbox with a single "repeat loop" block.
