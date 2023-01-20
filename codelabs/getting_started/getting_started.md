@@ -98,7 +98,7 @@ Open `starter-code/index.html` in a text editor and scroll to the end. You can s
 <script src="scripts/main.js"></script>
 ```
 
-Add Blockly just before these two scripts. The order is important, because you will use Blockly objects later in `main.js`.
+Add Blockly just before these two scripts. The order is important, because you will use Blockly objects later in `main.js`.  Your imports should now look like this:
 
 ```html
 <script src="https://unpkg.com/blockly"></script>
@@ -141,7 +141,7 @@ For more information on this JSON format and toolbox configuration, including ca
 
 ### Define the toolbox
 
-Open up `scripts/main.js` and scroll down to the end of the file. Then add the code for your toolbox definition just after the call to `enableMakerMode()`.
+Open up `scripts/main.js` and scroll down to the end of the file. Then add the code for your `toolbox` definition just after the call to `enableMakerMode()`:
 
 ```js
 const toolbox = {
@@ -188,16 +188,20 @@ Now add code to inject the Blockly editor just afer the code you used to define 
 ```js
 Blockly.inject('blocklyDiv', {
   toolbox: toolbox,
-  scrollbars: false
+  scrollbars: false,
+  horizontalLayout: true,
+  toolboxPosition: "end"
 });
 ```
 
 Let's look at the options we used to initialize your blockly editor:
 
 - `toolbox`: An JavaScript object which defines the toolbox for the editor.
-- `scrollbars`: whether to show scrollbars in the workspace.
+- `scrollbars`: Whether to show scrollbars in the workspace.
+- `horizontalLayout`: Whether to display the toolbox horizontally or vertically in the workspace.
+- `toolboxPosition`: Whether to show the toolbox at the top or bottom of the workspace.
 
-The options struct gives you significant control over your Blockly instance. You can pass options to set Blockly's theme, modify scrolling behaviour, set the renderer, and more. For more information, head over to Blockly's developer site and check out the [configuration](https://developers.google.com/blockly/guides/get-started/web#configuration) section.
+The `options` struct gives you significant control over your Blockly instance. You can pass options to set Blockly's theme, modify scrolling behaviour, set the renderer, and more. For more information, head over to Blockly's developer site and check out the [configuration](https://developers.google.com/blockly/guides/get-started/web#configuration) section.
 
 ### Check your work
 
@@ -257,12 +261,18 @@ Add a script tag to `index.html` to include your new block definition:
 <script src="scripts/sound_blocks.js"></script>
 ```
 
-Your block definitions must come after importing Blockly and before the other imports, since you will use Blockly functions in this file, and you will be using functions from this file in later files.
+Your sound block definitions must come after importing Blockly and before the other imports, since you will use Blockly functions in this file, and you will be using functions from this file in later files.  Your imports should now look like this:
 
+```html
+<script src="https://unpkg.com/blockly"></script>
+<script src="scripts/sound_blocks.js"></script>
+<script src="scripts/music_maker.js"></script>
+<script src="scripts/main.js"></script>
+```
 
 ### Add the sound block to the toolbox
 
-Now we can update the toolbox to include the new sound block, by adding `{'kind': 'block', 'type': 'play_sound'}`.
+Now we can update the toolbox to include the new sound block, by adding `{'kind': 'block', 'type': 'play_sound'}` to our `toolbox` definition:
 
 ```js
 const toolbox = {
@@ -309,7 +319,8 @@ Once the button behavior is defined by the user, it needs to be saved for later 
 Open `scripts/main.js`. Add the following code to the `save()` method:
 
 ```js
-button.blocklySave = Blockly.serialization.workspaces.save(Blockly.common.getMainWorkspace());
+button.blocklySave = Blockly.serialization.workspaces.save(
+    Blockly.getMainWorkspace());
 ```
 
 `workspaces.save` takes the Blockly workspace, exports its state to a JavaScript object and stores it in a `blocklySave` property on the button. This way the exported state for the block sequence gets associated with a particular button.
@@ -322,16 +333,18 @@ In the `scripts/main.js `file, add `loadWorkspace` function:
 
 ```
 function loadWorkspace(button) {
-  const workspace = Blockly.common.getMainWorkspace();
+  const workspace = Blockly.getMainWorkspace();
   if (button.blocklySave) {
     Blockly.serialization.workspaces.load(button.blocklySave, workspace);
+  } else {
+    workspace.clear();
   }
 }
 ```
 
 This loads the blocks stored on the button that was clicked back into the workspace.
 
-Call this function from `enableBlocklyMode`:
+Call this function from the end of the function `enableBlocklyMode`:
 
 ```
 function enableBlocklyMode(e) {
@@ -360,7 +373,7 @@ As previously mentioned, you can define your imports more carefully to get a [di
 
 When Blockly generates JavaScript code for blocks in a workspace, it translates each block into code. By default, it knows how to translate all library-provided default blocks into JavaScript code. However, for any custom blocks, we need to specify our own translation functions. These are called *block generators*.
 
-Add the following code in `scripts/sound_blocks.js`:
+Add the following code to the bottom of `scripts/sound_blocks.js`:
 
 ```js
 Blockly.JavaScript['play_sound'] = function(block) {
@@ -373,7 +386,11 @@ With this translation function, the following `play_sound` block:
 
 ![image](play_sound_block.png)
 
-translates into the JavaScript code "`MusicMaker.queueSound('Sounds/c4.m4a');`".
+translates into the JavaScript code:
+
+```javascript
+MusicMaker.queueSound('Sounds/c4.m4a');
+```
 
 For more information on generators, read the [generating code](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code) page on the developer site.
 
@@ -389,10 +406,10 @@ loadWorkspace(event.target);
 
 Next, you need to generate the code out of that workspace, which you can do with a call to `Blockly.JavaScript.workspaceToCode`.
 
-The user's code will consist of many `MusicMaker.queueSound` calls. At the end of our generated script, add `MusicMaker.play `call to play all the sounds added to the queue.
+The user's code will consist of many `MusicMaker.queueSound` calls. At the end of our generated script, add a call to `MusicMaker.play` to play all the sounds added to the queue:
 
 ```js
-let code = Blockly.JavaScript.workspaceToCode(Blockly.common.getMainWorkspace());
+let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
 code += 'MusicMaker.play();';
 ```
 
@@ -413,7 +430,7 @@ The end result should look like this:
 ```js
 function handlePlay(event) {
   loadWorkspace(event.target);
-  let code = Blockly.JavaScript.workspaceToCode(Blockly.common.getMainWorkspace());
+  let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
   code += 'MusicMaker.play();';
   try {
     eval(code);
