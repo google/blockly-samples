@@ -85,6 +85,7 @@ function init() {
   // Inject Blockly.
   const workspace = Blockly.inject('blocklyDiv',
       {
+        media: "./node_modules/blockly/media/",
         toolbox: toolboxJson,
         rtl: LANGUAGE_RTL.includes(language),
       });

@@ -98,14 +98,14 @@
         },
       ]
     };
-  
-    // Inject primary workspace. 
+
+    // Inject primary workspace.
     var primaryWorkspace = Blockly.inject('primaryDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          toolbox: toolbox});
     // Inject secondary workspace.
     var secondaryWorkspace = Blockly.inject('secondaryDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          readOnly: true});
     // Listen to events on primary workspace.
     primaryWorkspace.addChangeListener(mirrorEvent);
