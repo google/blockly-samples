@@ -386,7 +386,12 @@ Interpreter.prototype.step = function() {
     } catch (e) {
       // Eat any step errors.  They have been thrown on the stack.
       if (e !== Interpreter.STEP_ERROR) {
-        // Uh oh.  This is a real error in the JS-Interpreter.  Rethrow.
+        // This is a real error, either in the JS-Interpreter, or an uncaught
+        // error in the interpreted code.  Rethrow.
+        if (this.value !== e) {
+          // Uh oh.  Internal error in the JS-Interpreter.
+          this.value = undefined;
+        }
         throw e;
       }
     } finally {
@@ -398,10 +403,12 @@ Interpreter.prototype.step = function() {
     }
     if (this.getterStep_) {
       // Getter from this step was not handled.
+      this.value = undefined;
       throw Error('Getter not supported in this context');
     }
     if (this.setterStep_) {
       // Setter from this step was not handled.
+      this.value = undefined;
       throw Error('Setter not supported in this context');
     }
     // This may be polyfill code.  Keep executing until we arrive at user code.
@@ -985,8 +992,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function pop() {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (!len || len < 0) {",
       "o.length = 0;",
       "return undefined;",
@@ -1003,8 +1009,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function push(var_args) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "for (var i = 0; i < arguments.length; i++) {",
       "o[len] = arguments[i];",
       "len++;",
@@ -1018,8 +1023,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function shift() {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (!len || len < 0) {",
       "o.length = 0;",
       "return undefined;",
@@ -1042,8 +1046,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function unshift(var_args) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (!len || len < 0) {",
       "len = 0;",
     "}",
@@ -1065,8 +1068,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function reverse() {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (!len || len < 2) {",
       "return o;",  // Not an array, or too short to reverse.
     "}",
@@ -1092,8 +1094,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function indexOf(searchElement, fromIndex) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "var n = fromIndex | 0;",
     "if (!len || n >= len) {",
       "return -1;",
@@ -1113,8 +1114,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function lastIndexOf(searchElement, fromIndex) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (!len) {",
       "return -1;",
     "}",
@@ -1140,8 +1140,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function slice(start, end) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     // Handle negative value for "start"
     "start |= 0;",
     "start = (start >= 0) ? start : Math.max(0, len + start);",
@@ -1173,8 +1172,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function splice(start, deleteCount, var_args) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "start |= 0;",
     "if (start < 0) {",
       "start = Math.max(len + start, 0);",
@@ -1260,11 +1258,11 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function join(opt_separator) {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
+    "var o = Object(this), len = o.length >>> 0;",
     "var sep = typeof opt_separator === 'undefined' ?",
         "',' : ('' + opt_separator);",
     "var str = '';",
-    "for (var i = 0; i < o.length; i++) {",
+    "for (var i = 0; i < len; i++) {",
       "if (i && sep) {",
         "str += sep;",
       "}",
@@ -1280,11 +1278,9 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function every(callbackfn, thisArg) {",
     "if (!this || typeof callbackfn !== 'function') throw TypeError();",
-    "var t, k;",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var t, k = 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (arguments.length > 1) t = thisArg;",
-    "k = 0;",
     "while (k < len) {",
       "if (k in o && !callbackfn.call(t, o[k], k, o)) return false;",
       "k++;",
@@ -1299,8 +1295,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function filter(fun, var_args) {",
     "if (this === void 0 || this === null || typeof fun !== 'function') throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "var res = [];",
     "var thisArg = arguments.length >= 2 ? arguments[1] : void 0;",
     "for (var i = 0; i < len; i++) {",
@@ -1319,11 +1314,9 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function forEach(callback, thisArg) {",
     "if (!this || typeof callback !== 'function') throw TypeError();",
-    "var t, k;",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var t, k = 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (arguments.length > 1) t = thisArg;",
-    "k = 0;",
     "while (k < len) {",
       "if (k in o) callback.call(t, o[k], k, o);",
       "k++;",
@@ -1337,12 +1330,10 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function map(callback, thisArg) {",
     "if (!this || typeof callback !== 'function') throw TypeError();",
-    "var t, a, k;",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var t, k = 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "if (arguments.length > 1) t = thisArg;",
-    "a = new Array(len);",
-    "k = 0;",
+    "var a = new Array(len);",
     "while (k < len) {",
       "if (k in o) a[k] = callback.call(t, o[k], k, o);",
       "k++;",
@@ -1357,7 +1348,8 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function reduce(callback /*, initialValue*/) {",
     "if (!this || typeof callback !== 'function') throw TypeError();",
-    "var o = Object(this), len = o.length >>> 0, k = 0, value;",
+    "var o = Object(this), len = o.length >>> 0;",
+    "var k = 0, value;",
     "if (arguments.length === 2) {",
       "value = arguments[1];",
     "} else {",
@@ -1380,7 +1372,8 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function reduceRight(callback /*, initialValue*/) {",
     "if (null === this || 'undefined' === typeof this || 'function' !== typeof callback) throw TypeError();",
-    "var o = Object(this), len = o.length >>> 0, k = len - 1, value;",
+    "var o = Object(this), len = o.length >>> 0;",
+    "var k = len - 1, value;",
     "if (arguments.length >= 2) {",
       "value = arguments[1];",
     "} else {",
@@ -1403,8 +1396,7 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function some(fun/*, thisArg*/) {",
     "if (!this || typeof fun !== 'function') throw TypeError();",
-    "var o = Object(this);",
-    "var len = o.length >>> 0;",
+    "var o = Object(this), len = o.length >>> 0;",
     "var thisArg = arguments.length >= 2 ? arguments[1] : void 0;",
     "for (var i = 0; i < len; i++) {",
       "if (i in o && fun.call(thisArg, o[i], i, o)) {",
@@ -1453,9 +1445,9 @@ Interpreter.prototype.initArray = function(globalObject) {
     "{configurable: true, writable: true, value:",
   "function toLocaleString() {",
     "if (!this) throw TypeError();",
-    "var o = Object(this);",
+    "var o = Object(this), len = o.length >>> 0;",
     "var out = [];",
-    "for (var i = 0; i < o.length; i++) {",
+    "for (var i = 0; i < len; i++) {",
       "out[i] = (o[i] === null || o[i] === undefined) ? '' : o[i].toLocaleString();",
     "}",
     "return out.join(',');",
@@ -3222,6 +3214,9 @@ Interpreter.prototype.unwind = function(type, value, label) {
   } else {
     realError = String(value);
   }
+  // Overwrite the previous (more or less random) interpreter return value.
+  // Replace it with the error.
+  this.value = realError;
   throw realError;
 };
 
@@ -3918,6 +3913,7 @@ Interpreter.prototype['stepEvalProgram_'] = function(stack, state, node) {
 
 Interpreter.prototype['stepExpressionStatement'] = function(stack, state, node) {
   if (!state.done_) {
+    this.value = undefined;
     state.done_ = true;
     return new Interpreter.State(node['expression'], state.scope);
   }
