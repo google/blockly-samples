@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   build:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,6 +35,7 @@ jobs:
       run: npm run test -- -- -- --skip-lint
 
   lint:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

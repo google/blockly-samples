@@ -110,8 +110,48 @@
                   "kind":"block",
                   "type":"math_single"
                 }
-              ]
-            },
+              },
+              {
+                "kind":"block",
+                "type":"math_arithmetic"
+              },
+              {
+                "kind":"block",
+                "type":"math_single"
+              }
+            ]
+          },
+          {
+            "kind":"category",
+            "name":"Text",
+            "categorystyle":"text_category",
+            "contents":[
+              {
+                "kind":"block",
+                "type":"text"
+              },
+              {
+                "kind":"block",
+                "type":"text_length"
+              },
+              {
+                "kind":"block",
+                "type":"text_print"
+              }
+            ]
+          }
+        ]
+      }
+
+
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: './node_modules/blockly/media/',
+         toolbox: toolbox});
+
+    var startBlocks = {
+        "blocks":{
+          "languageVersion":0,
+          "blocks":[
             {
               "kind":"category",
               "name":"Text",
