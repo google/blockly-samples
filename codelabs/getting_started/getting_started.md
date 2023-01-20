@@ -196,7 +196,7 @@ Blockly.inject('blocklyDiv', {
 
 Let's look at the options we used to initialize your blockly editor:
 
-- `toolbox`: An JavaScript object which defines the toolbox for the editor.
+- `toolbox`: A JavaScript object which defines the toolbox for the editor.
 - `scrollbars`: Whether to show scrollbars in the workspace.
 - `horizontalLayout`: Whether to display the toolbox horizontally or vertically in the workspace.
 - `toolboxPosition`: Whether to show the toolbox at the top or bottom of the workspace.
