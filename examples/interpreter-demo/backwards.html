@@ -153,7 +153,7 @@
     };
 
     const demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          toolbox: toolboxJson});
     Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
     Blockly.JavaScript.addReservedWords('highlightBlock');

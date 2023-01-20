@@ -11,7 +11,8 @@
       "turtle.css",
       "media/*",
       "./node_modules/blockly/*_compressed.js",
-      "./node_modules/blockly/*_compressed.js.map"
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/media/*"
     ]
   },
   "dependencies": {

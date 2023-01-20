@@ -18,7 +18,8 @@
       "wait_block.js",
       "./node_modules/blockly/*_compressed.js",
       "./node_modules/blockly/*_compressed.js.map",
-      "./node_modules/blockly/msg/en.js"
+      "./node_modules/blockly/msg/en.js",
+      "./node_modules/blockly/media/*"
     ],
     "pages": [
       {
