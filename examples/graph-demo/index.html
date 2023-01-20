@@ -1,85 +1,87 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Graph</title>
-  <script src="https://www.google.com/jsapi"></script>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/javascript_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>Graph</title>
+    <meta name="description" content="Instant updates when blocks are changed.">
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/javascript_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      #funcText {
+        margin-top: 1em;
+        margin-left: 1.5em;
+        font-family: sans-serif;
+      }
+      #funcText>img {
+        height: 3px;
+        width: 15px;
+        vertical-align: middle;
+        margin-right: .5em;
+      }
+      #y1 {
+        background-color: #36c;
+      }
+    </style>
+  </head>
+  <body>
+    <script>templateTop();</script>
+    <p>This is a demo of giving instant feedback as blocks are changed.</p>
 
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    #funcText {
-      margin-top: 1em;
-      margin-left: 1.5em;
-      font-family: sans-serif;
-    }
-    #funcText>img {
-      height: 3px;
-      width: 15px;
-      vertical-align: middle;
-      margin-right: .5em;
-    }
-    #y1 {
-      background-color: #36c;
-    }
-  </style>
-</head>
-<body>
-  <p>This is a demo of giving instant feedback as blocks are changed.</p>
+    <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators#generating_code">Realtime generation</a>&hellip;</p>
 
-  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators#generating_code">Realtime generation</a>&hellip;</p>
+    <table>
+      <tr>
+        <td>
+          <div id="visualization" style="width: 400px"></div>
+        </td>
+        <td>
+          <div id="blocklyDiv" style="height: 400px"></div>
+        </td>
+      </tr>
+    </table>
 
-  <table>
-    <tr>
-      <td>
-        <div id="visualization" style="width: 400px"></div>
-      </td>
-      <td>
-        <div id="blocklyDiv" style="height: 400px"></div>
-      </td>
-    </tr>
-  </table>
+    <div id="funcText">
+      <img id="y1" src="../../media/1x1.gif">
+      ...
+    </div>
 
-  <div id="funcText">
-    <img id="y1" src="../../media/1x1.gif">
-    ...
-  </div>
+    <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
+      <block type="graph_set_y" deletable="false" x="100" y="100">
+        <value name="VALUE">
+          <block type="math_arithmetic">
+            <field name="OP">POWER</field>
+            <value name="A">
+              <block type="graph_get_x"></block>
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+            <value name="B">
+              <block type="math_number">
+                <field name="NUM">2</field>
+              </block>
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+    </xml>
 
-  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
-    <block type="graph_set_y" deletable="false" x="100" y="100">
-      <value name="VALUE">
-        <block type="math_arithmetic">
-          <field name="OP">POWER</field>
-          <value name="A">
-            <block type="graph_get_x"></block>
-            <shadow type="math_number">
-              <field name="NUM">1</field>
-            </shadow>
-          </value>
-          <value name="B">
-            <block type="math_number">
-              <field name="NUM">2</field>
-            </block>
-            <shadow type="math_number">
-              <field name="NUM">1</field>
-            </shadow>
-          </value>
-        </block>
-      </value>
-    </block>
-  </xml>
-
-  <script>
+    <script>
 // Load the Google Chart Tools Visualization API and the chart package.
 if (typeof google == 'object') {
   google.load('visualization', '1', {packages: ['corechart']});
@@ -536,7 +538,8 @@ Graph.init = function() {
 
 window.addEventListener('load', Graph.init);
 window.addEventListener('resize', Graph.resize);
-  </script>
+    </script>
 
+    <script>templateBottom();</script>
 </body>
 </html>

@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <title>Custom Tooltips</title>
+    <meta name="description" content="Example of using a custom tooltip renderer. Make sure you select the 'default' toolbox.">
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="./node_modules/@blockly/dev-tools/dist/index.js"></script>
+    <script src="./index.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
+    <style>
+      html, body {
+        margin: 0;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Custom Tooltip Example</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <script src="./node_modules/@blockly/dev-tools/dist/index.js"></script>
-  <script src="./index.js"></script>
-  <style>
-    html, body {
-      margin: 0;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="root"></div>
-</body>
-
+  <body>
+    <script>templateTop();</script>
+    <div id="root"></div>
+    <script>templateBottom();</script>
+  </body>
 </html>

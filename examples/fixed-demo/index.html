@@ -1,76 +1,80 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Fixed Blockly</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>Fixed Blockly</title>
+    <meta name="description" content="Inject Blockly into a page as a fixed element.">
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
     <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    .demo {
-      padding: 1rem;
-    }
-  </style>
-</head>
-<body>
-  <div class="demo">
-    <p>This is a simple demo of injecting Blockly into a fixed-sized 'div' element.</p>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      .demo {
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <script>templateTop();</script>
+    <div class="demo">
+      <p>This is a simple demo of injecting Blockly into a fixed-sized 'div' element.</p>
 
-    <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/fixed-size">injecting fixed-sized Blockly</a>&hellip;</p>
+      <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/fixed-size">injecting fixed-sized Blockly</a>&hellip;</p>
 
-    <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
-  </div>
+      <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+    </div>
 
-  <script>
-    const toolbox = {
-      "kind": "flyoutToolbox",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "controls_if"
-        },
-        {
-          "kind" : "block",
-          "type" : "logic_compare"
-        },
-        {
-          "kind": "block",
-          "type": "controls_repeat_ext"
-        },
-        {
-          "kind": "block",
-          "type": "math_number",
-          "fields": {
-            "NUM": 123
+    <script>
+      const toolbox = {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind" : "block",
+            "type" : "logic_compare"
+          },
+          {
+            "kind": "block",
+            "type": "controls_repeat_ext"
+          },
+          {
+            "kind": "block",
+            "type": "math_number",
+            "fields": {
+              "NUM": 123
+            }
+          },
+          {
+            "kind": "block",
+            "type": "math_arithmetic"
+          },
+          {
+            "kind": "block",
+            "type": "text"
+          },
+          {
+            "kind" : "block",
+            "type" : "text_print"
           }
-        },
-        {
-          "kind": "block",
-          "type": "math_arithmetic"
-        },
-        {
-          "kind": "block",
-          "type": "text"
-        },
-        {
-          "kind" : "block",
-          "type" : "text_print"
-        }
-      ]
-    };
+        ]
+      };
 
-    const demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: './node_modules/blockly/media/',
-         toolbox: toolbox});
-  </script>
+      const demoWorkspace = Blockly.inject('blocklyDiv',
+          {media: './node_modules/blockly/media/',
+          toolbox: toolbox});
+    </script>
 
-</body>
+    <script>templateBottom();</script>
+  </body>
 </html>

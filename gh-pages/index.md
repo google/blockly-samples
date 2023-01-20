@@ -67,7 +67,7 @@ layout: index
 ## Headless
 * [Headless](examples/headless-demo/index.html)
 
-## JS Interpreter
+## JS-Interpreter
 * [Step by step execution in JavaScript](examples/interpreter-demo/step-execution.html)
 * [Asynchronous execution in JavaScript](examples/interpreter-demo/async-execution.html)
 * [Backwards execution in JavaScript](examples/interpreter-demo/backwards.html)

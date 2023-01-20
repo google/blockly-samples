@@ -1,121 +1,125 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Headless</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/python_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    td {
-      vertical-align: top;
-    }
-    textarea {
-      width: 100%;
-      height: 20em;
-    }
-  </style>
-</head>
-<body>
-  <p>This is a simple demo of generating Python code from JSON with no graphics.
-  This might be useful for server-side code generation.</p>
+  <head>
+    <meta charset="utf-8">
+    <title>Headless</title>
+    <meta name="description" content="Generate code from XML without graphics.">
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/python_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      td {
+        vertical-align: top;
+      }
+      textarea {
+        width: 100%;
+        height: 20em;
+      }
+    </style>
+  </head>
+  <body>
+    <script>templateTop();</script>
+    <p>This is a simple demo of generating Python code from JSON with no graphics.
+    This might be useful for server-side code generation.</p>
 
-  <table style="width: 100%">
-    <tr>
-      <td style="width:50%">
-        <textarea id="json_input">
-          {
-            "blocks": {
-              "languageVersion": 0,
-              "blocks": [
-                {
-                  "type": "controls_if",
-                  "x": 20,
-                  "y": 20,
-                  "inline": false,
-                  "extraState": {
-                    "hasElse": true
-                  },
-                  "inputs": {
-                    "IF0": {
-                      "block": {
-                        "type": "logic_compare",
-                        "fields": {
-                          "OP": "EQ"
-                        },
-                        "inputs": {
-                          "A": {
-                            "block": {
-                              "type": "math_arithmetic",
-                              "fields": {
-                                "OP": "MULTIPLY"
-                              },
-                              "inputs": {
-                                "A": {
-                                  "block": {
-                                    "type": "math_number",
-                                    "fields": {
-                                      "NUM": 6
-                                    }
-                                  }
+    <table style="width: 100%">
+      <tr>
+        <td style="width:50%">
+          <textarea id="json_input">
+            {
+              "blocks": {
+                "languageVersion": 0,
+                "blocks": [
+                  {
+                    "type": "controls_if",
+                    "x": 20,
+                    "y": 20,
+                    "inline": false,
+                    "extraState": {
+                      "hasElse": true
+                    },
+                    "inputs": {
+                      "IF0": {
+                        "block": {
+                          "type": "logic_compare",
+                          "fields": {
+                            "OP": "EQ"
+                          },
+                          "inputs": {
+                            "A": {
+                              "block": {
+                                "type": "math_arithmetic",
+                                "fields": {
+                                  "OP": "MULTIPLY"
                                 },
-                                "B": {
-                                  "block": {
-                                    "type": "math_number",
-                                    "fields": {
-                                      "NUM": 7
+                                "inputs": {
+                                  "A": {
+                                    "block": {
+                                      "type": "math_number",
+                                      "fields": {
+                                        "NUM": 6
+                                      }
+                                    }
+                                  },
+                                  "B": {
+                                    "block": {
+                                      "type": "math_number",
+                                      "fields": {
+                                        "NUM": 7
+                                      }
                                     }
                                   }
                                 }
                               }
-                            }
-                          },
-                          "B": {
-                            "block": {
-                              "type": "math_number",
-                              "fields": {
-                                "NUM": 42
+                            },
+                            "B": {
+                              "block": {
+                                "type": "math_number",
+                                "fields": {
+                                  "NUM": 42
+                                }
                               }
                             }
                           }
                         }
-                      }
-                    },
-                    "DO0": {
-                      "block": {
-                        "type": "text_print",
-                        "inline": false,
-                        "inputs": {
-                          "TEXT": {
-                            "block": {
-                              "type": "text",
-                              "fields": {
-                                "TEXT": "Don't panic"
+                      },
+                      "DO0": {
+                        "block": {
+                          "type": "text_print",
+                          "inline": false,
+                          "inputs": {
+                            "TEXT": {
+                              "block": {
+                                "type": "text",
+                                "fields": {
+                                  "TEXT": "Don't panic"
+                                }
                               }
                             }
                           }
                         }
-                      }
-                    },
-                    "ELSE": {
-                      "block": {
-                        "type": "text_print",
-                        "inline": false,
-                        "inputs": {
-                          "TEXT": {
-                            "block": {
-                              "type": "text",
-                              "fields": {
-                                "TEXT": "Panic"
+                      },
+                      "ELSE": {
+                        "block": {
+                          "type": "text_print",
+                          "inline": false,
+                          "inputs": {
+                            "TEXT": {
+                              "block": {
+                                "type": "text",
+                                "fields": {
+                                  "TEXT": "Panic"
+                                }
                               }
                             }
                           }
@@ -123,42 +127,41 @@
                       }
                     }
                   }
-                }
-              ]
+                ]
+              }
             }
-          }
-        </textarea>
-      </td>
-      <td>
-      </td>
-      <td style="width:50%">
-        <textarea id="code_output" readonly></textarea>
-      </td>
-    </tr>
-  </table>
+          </textarea>
+        </td>
+        <td>
+        </td>
+        <td style="width:50%">
+          <textarea id="code_output" readonly></textarea>
+        </td>
+      </tr>
+    </table>
 
-  <div style="text-align: center">
-    <button onclick="generate()">Generate Python &#10548;</button>
-  </div>
+    <div style="text-align: center">
+      <button onclick="generate()">Generate Python &#10548;</button>
+    </div>
 
-  <script>
-    function generate() {
-      // Parse the JSON into a tree.
-      var jsonText = document.getElementById('json_input').value;
-      var code;
-      try {
-        var json = JSON.parse(jsonText)
-      } catch (e) {
-        alert(e);
-        return;
+    <script>
+      function generate() {
+        // Parse the JSON into a tree.
+        var jsonText = document.getElementById('json_input').value;
+        var code;
+        try {
+          var json = JSON.parse(jsonText)
+        } catch (e) {
+          alert(e);
+          return;
+        }
+        var demoWorkspace = new Blockly.Workspace();
+        Blockly.serialization.workspaces.load(json, demoWorkspace);
+        var code = Blockly.Python.workspaceToCode(demoWorkspace);
+        // Create a headless workspace.
+        document.getElementById('code_output').value = code;
       }
-      var demoWorkspace = new Blockly.Workspace();
-      Blockly.serialization.workspaces.load(json, demoWorkspace);
-      var code = Blockly.Python.workspaceToCode(demoWorkspace);
-      // Create a headless workspace.
-      document.getElementById('code_output').value = code;
-    }
-  </script>
-
-</body>
+    </script>
+    <script>templateBottom();</script>
+  </body>
 </html>

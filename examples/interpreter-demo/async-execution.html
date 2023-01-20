@@ -1,285 +1,292 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Asynchronous Execution with JS-Interpreter</title>
-  <!-- acorn_interpreter.js is copied from the JS-Interpreter project
-    without modification. -->
-  <script src="acorn_interpreter.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>JS-Interpreter Asynchronous Execution</title>
+    <meta name="description" content="Asynchronous execution in JavaScript">
+    <link rel="next" href="step-execution.html" title="Step Execution">
+    <link rel="next" href="async-execution.html" title="Async Execution">
+    <link rel="next" href="backwards.html" title="Backwards Execution">
+    <!-- acorn_interpreter.js is copied from the JS-Interpreter project
+      without modification. -->
+    <script src="acorn_interpreter.js"></script>
 
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/javascript_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <script src="wait_block.js"></script>
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-  </style>
-</head>
-<body>
-  <h1>Asynchronous Execution with JS-Interpreter</h1>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/javascript_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="wait_block.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>
+  </head>
+  <body>
+    <script>templateTop();</script>
+    <h1>Asynchronous Execution with JS-Interpreter</h1>
 
-  <p>This is a demo of executing code asynchronously (e.g., waiting for delays or user input) using the JavaScript interpreter.</p>
+    <p>This is a demo of executing code asynchronously (e.g., waiting for delays or user input) using the JavaScript interpreter.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript#js-interpreter">More info on running code with JS-Interpreter</a></p>
+    <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript#js-interpreter">More info on running code with JS-Interpreter</a></p>
 
-  <p>
-    <button onclick="runCode()" id="runButton">Run JavaScript</button>
-  </p>
+    <p>
+      <button onclick="runCode()" id="runButton">Run JavaScript</button>
+    </p>
 
-  <div style="width: 100%">
-    <div id="blocklyDiv"
-        style="display: inline-block; height: 480px; width: 58%"></div>
-    <textarea id="output" disabled="disabled"
-        style="display: inline-block; height: 480px; width: 38%;">
-    </textarea>
-  </div>
+    <div style="width: 100%">
+      <div id="blocklyDiv"
+          style="display: inline-block; height: 480px; width: 58%"></div>
+      <textarea id="output" disabled="disabled"
+          style="display: inline-block; height: 480px; width: 38%;">
+      </textarea>
+    </div>
 
-  <script>
-    const toolboxJson = {
-      "contents": [
-        {
-          "kind": "CATEGORY",
-          "name": "Logic",
-          "colour": "%{BKY_LOGIC_HUE}",
-          "contents": [
-            {
-              "kind": "BLOCK",
-              "type": "controls_if"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "logic_compare"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "logic_operation"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "logic_negate"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "logic_boolean"
-            }
-          ]
-        },
-        {
-          "kind": "CATEGORY",
-          "name": "Loops",
-          "colour": "%{BKY_LOOPS_HUE}",
-          "contents": [
-            {
-              "kind": "BLOCK",
-              "type": "controls_repeat_ext",
-              "inputs": {
-                "TIMES": {
-                  "shadow": {
-                    "type": "math_number",
-                    "fields": {"NUM": 10}
-                  }
-                }
-              }
-            },
-            {
-              "kind": "BLOCK",
-              "type": "controls_whileUntil"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "wait_seconds"
-            }
-          ]
-        },
-        {
-          "kind": "CATEGORY",
-          "name": "Math",
-          "colour": "%{BKY_MATH_HUE}",
-          "contents": [
-            {
-              "kind": "BLOCK",
-              "type": "math_number"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "math_arithmetic",
-              "inputs": {
-                "A": {
-                  "shadow": {
-                    "type": "math_number",
-                    "fields": {"NUM": 1}
-                  }
-                },
-                "B": {
-                  "shadow": {
-                    "type": "math_number",
-                    "fields": {"NUM": 1}
-                  }
-                }
-              }
-            },
-            {
-              "kind": "BLOCK",
-              "type": "math_single",
-              "inputs": {
-                "NUM": {
-                  "shadow": {
-                    "type": "math_number",
-                    "fields": {"NUM": 9}
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
-          "kind": "CATEGORY",
-          "name": "Text",
-          "colour": "%{BKY_TEXTS_HUE}",
-          "contents": [
-            {
-              "kind": "BLOCK",
-              "type": "text"
-            },
-            {
-              "kind": "BLOCK",
-              "type": "text_length",
-              "inputs": {
-                "VALUE": {
-                  "shadow": {
-                    "type": "text",
-                    "fields": {"TEXT": "abc"}
-                  }
-                }
-              }
-            },
-            {
-              "kind": "BLOCK",
-              "type": "text_print",
-              "inputs": {
-                "TEXT": {
-                  "shadow": {
-                    "type": "text",
-                    "fields": {"TEXT": "abc"}
-                  }
-                }
-              }
-            },
-            {
-              "kind": "BLOCK",
-              "type": "text_prompt_ext",
-              "inputs": {
-                "TEXT": {
-                  "shadow": {
-                    "type": "text",
-                    "fields": {"TEXT": "abc"}
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
-          "kind": "SEP"
-        },
-        {
-          "kind": "CATEGORY",
-          "name": "Variables",
-          "custom": "VARIABLE",
-          "colour": "%{BKY_VARIABLES_HUE}",
-        },
-        {
-          "kind": "CATEGORY",
-          "name": "Functions",
-          "custom": "PROCEDURE",
-          "colour": "%{BKY_PROCEDURES_HUE}",
-        }
-      ]
-    };
-
-    const startBlocks = {
-      "blocks": {
-        "blocks": [
+    <script>
+      const toolboxJson = {
+        "contents": [
           {
-            "type": "variables_set",
-            "x": 20,
-            "y": 20,
-            "inline": true,
-            "fields": {
-              "VAR": {"id": "n"}
-            },
-            "inputs": {
-              "VALUE": {
-                "block": {
-                  "type": "math_number",
-                  "fields": {"NUM": 1}
-                }
+            "kind": "CATEGORY",
+            "name": "Logic",
+            "colour": "%{BKY_LOGIC_HUE}",
+            "contents": [
+              {
+                "kind": "BLOCK",
+                "type": "controls_if"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "logic_compare"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "logic_operation"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "logic_negate"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "logic_boolean"
               }
-            },
-            "next": {
-              "block": {
+            ]
+          },
+          {
+            "kind": "CATEGORY",
+            "name": "Loops",
+            "colour": "%{BKY_LOOPS_HUE}",
+            "contents": [
+              {
+                "kind": "BLOCK",
                 "type": "controls_repeat_ext",
-                "inline": true,
                 "inputs": {
                   "TIMES": {
-                    "block": {
+                    "shadow": {
                       "type": "math_number",
-                      "fields": {"NUM": 4}
+                      "fields": {"NUM": 10}
+                    }
+                  }
+                }
+              },
+              {
+                "kind": "BLOCK",
+                "type": "controls_whileUntil"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "wait_seconds"
+              }
+            ]
+          },
+          {
+            "kind": "CATEGORY",
+            "name": "Math",
+            "colour": "%{BKY_MATH_HUE}",
+            "contents": [
+              {
+                "kind": "BLOCK",
+                "type": "math_number"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "math_arithmetic",
+                "inputs": {
+                  "A": {
+                    "shadow": {
+                      "type": "math_number",
+                      "fields": {"NUM": 1}
                     }
                   },
-                  "DO": {
-                    "block": {
-                      "type": "wait_seconds",
-                      "fields": {"SECONDS": 1},
-                      "next": {
-                        "block": {
-                          "type": "variables_set",
-                          "inline": true,
-                          "fields": {
-                            "VAR": {"id": "n"}
-                          },
-                          "inputs": {
-                            "VALUE": {
+                  "B": {
+                    "shadow": {
+                      "type": "math_number",
+                      "fields": {"NUM": 1}
+                    }
+                  }
+                }
+              },
+              {
+                "kind": "BLOCK",
+                "type": "math_single",
+                "inputs": {
+                  "NUM": {
+                    "shadow": {
+                      "type": "math_number",
+                      "fields": {"NUM": 9}
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "kind": "CATEGORY",
+            "name": "Text",
+            "colour": "%{BKY_TEXTS_HUE}",
+            "contents": [
+              {
+                "kind": "BLOCK",
+                "type": "text"
+              },
+              {
+                "kind": "BLOCK",
+                "type": "text_length",
+                "inputs": {
+                  "VALUE": {
+                    "shadow": {
+                      "type": "text",
+                      "fields": {"TEXT": "abc"}
+                    }
+                  }
+                }
+              },
+              {
+                "kind": "BLOCK",
+                "type": "text_print",
+                "inputs": {
+                  "TEXT": {
+                    "shadow": {
+                      "type": "text",
+                      "fields": {"TEXT": "abc"}
+                    }
+                  }
+                }
+              },
+              {
+                "kind": "BLOCK",
+                "type": "text_prompt_ext",
+                "inputs": {
+                  "TEXT": {
+                    "shadow": {
+                      "type": "text",
+                      "fields": {"TEXT": "abc"}
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "kind": "SEP"
+          },
+          {
+            "kind": "CATEGORY",
+            "name": "Variables",
+            "custom": "VARIABLE",
+            "colour": "%{BKY_VARIABLES_HUE}",
+          },
+          {
+            "kind": "CATEGORY",
+            "name": "Functions",
+            "custom": "PROCEDURE",
+            "colour": "%{BKY_PROCEDURES_HUE}",
+          }
+        ]
+      };
+
+      const startBlocks = {
+        "blocks": {
+          "blocks": [
+            {
+              "type": "variables_set",
+              "x": 20,
+              "y": 20,
+              "inline": true,
+              "fields": {
+                "VAR": {"id": "n"}
+              },
+              "inputs": {
+                "VALUE": {
+                  "block": {
+                    "type": "math_number",
+                    "fields": {"NUM": 1}
+                  }
+                }
+              },
+              "next": {
+                "block": {
+                  "type": "controls_repeat_ext",
+                  "inline": true,
+                  "inputs": {
+                    "TIMES": {
+                      "block": {
+                        "type": "math_number",
+                        "fields": {"NUM": 4}
+                      }
+                    },
+                    "DO": {
+                      "block": {
+                        "type": "wait_seconds",
+                        "fields": {"SECONDS": 1},
+                        "next": {
+                          "block": {
+                            "type": "variables_set",
+                            "inline": true,
+                            "fields": {
+                              "VAR": {"id": "n"}
+                            },
+                            "inputs": {
+                              "VALUE": {
+                                "block": {
+                                  "type": "math_arithmetic",
+                                  "fields": {"OP": "MULTIPLY"},
+                                  "inputs": {
+                                    "A": {
+                                      "block": {
+                                        "type": "variables_get",
+                                        "fields": {
+                                          "VAR": {"id": "n"}
+                                        }
+                                      }
+                                    },
+                                    "B": {
+                                      "block": {
+                                        "type": "math_number",
+                                        "fields": {"NUM": 2}
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "next": {
                               "block": {
-                                "type": "math_arithmetic",
-                                "fields": {"OP": "MULTIPLY"},
+                                "type": "text_print",
+                                "inline": false,
                                 "inputs": {
-                                  "A": {
+                                  "TEXT": {
                                     "block": {
                                       "type": "variables_get",
                                       "fields": {
                                         "VAR": {"id": "n"}
                                       }
-                                    }
-                                  },
-                                  "B": {
-                                    "block": {
-                                      "type": "math_number",
-                                      "fields": {"NUM": 2}
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "next": {
-                            "block": {
-                              "type": "text_print",
-                              "inline": false,
-                              "inputs": {
-                                "TEXT": {
-                                  "block": {
-                                    "type": "variables_get",
-                                    "fields": {
-                                      "VAR": {"id": "n"}
                                     }
                                   }
                                 }
@@ -293,114 +300,114 @@
                 }
               }
             }
+          ]
+        },
+        "variables": [
+          {
+            "name": "n",
+            "id": "n"
           }
         ]
-      },
-      "variables": [
-        {
-          "name": "n",
-          "id": "n"
-        }
-      ]
-    };
-
-    const demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: './node_modules/blockly/media/',
-         toolbox: toolboxJson});
-    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-    Blockly.JavaScript.addReservedWords('highlightBlock');
-    Blockly.serialization.workspaces.load(startBlocks, demoWorkspace)
-
-    const outputArea = document.getElementById('output');
-    const runButton = document.getElementById('runButton');
-    let myInterpreter = null;
-    let runnerPid = 0;
-
-    function initApi(interpreter, globalObject) {
-      // Add an API function for the alert() block, generated for "text_print" blocks.
-      const wrapperAlert = function alert(text) {
-        text = arguments.length ? text : '';
-        outputArea.value += '\n' + text;
       };
-      interpreter.setProperty(globalObject, 'alert',
-          interpreter.createNativeFunction(wrapperAlert));
 
-      // Add an API function for the prompt() block.
-      const wrapperPrompt = function prompt(text) {
-        return window.prompt(text);
-      };
-      interpreter.setProperty(globalObject, 'prompt',
-          interpreter.createNativeFunction(wrapperPrompt));
+      const demoWorkspace = Blockly.inject('blocklyDiv',
+          {media: './node_modules/blockly/media/',
+          toolbox: toolboxJson});
+      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+      Blockly.JavaScript.addReservedWords('highlightBlock');
+      Blockly.serialization.workspaces.load(startBlocks, demoWorkspace)
 
-      // Add an API function for highlighting blocks.
-      const wrapper = function(id) {
-        id = String(id || '');
-        return highlightBlock(id);
-      };
-      interpreter.setProperty(globalObject, 'highlightBlock',
-          interpreter.createNativeFunction(wrapper));
+      const outputArea = document.getElementById('output');
+      const runButton = document.getElementById('runButton');
+      let myInterpreter = null;
+      let runnerPid = 0;
 
-      // Add an API for the wait block.  See wait_block.js
-      initInterpreterWaitForSeconds(interpreter, globalObject);
-    }
+      function initApi(interpreter, globalObject) {
+        // Add an API function for the alert() block, generated for "text_print" blocks.
+        const wrapperAlert = function alert(text) {
+          text = arguments.length ? text : '';
+          outputArea.value += '\n' + text;
+        };
+        interpreter.setProperty(globalObject, 'alert',
+            interpreter.createNativeFunction(wrapperAlert));
 
-    function highlightBlock(id) {
-      demoWorkspace.highlightBlock(id);
-    }
+        // Add an API function for the prompt() block.
+        const wrapperPrompt = function prompt(text) {
+          return window.prompt(text);
+        };
+        interpreter.setProperty(globalObject, 'prompt',
+            interpreter.createNativeFunction(wrapperPrompt));
 
-    function resetStepUi(clearOutput) {
-      clearTimeout(runnerPid);
-      demoWorkspace.highlightBlock(null);
-      runButton.disabled = '';
+        // Add an API function for highlighting blocks.
+        const wrapper = function(id) {
+          id = String(id || '');
+          return highlightBlock(id);
+        };
+        interpreter.setProperty(globalObject, 'highlightBlock',
+            interpreter.createNativeFunction(wrapper));
 
-      if (clearOutput) {
-        outputArea.value = 'Program output:\n=================';
+        // Add an API for the wait block.  See wait_block.js
+        initInterpreterWaitForSeconds(interpreter, globalObject);
       }
-      myInterpreter = null;
-    }
 
-    function runCode() {
-      if (!myInterpreter) {
-        // First statement of this code.
-        // Clear the program output.
-        resetStepUi(true);
-        const latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-        runButton.disabled = 'disabled';
+      function highlightBlock(id) {
+        demoWorkspace.highlightBlock(id);
+      }
 
-        // And then show generated code in an alert.
-        // In a timeout to allow the outputArea.value to reset first.
-        setTimeout(function() {
-          alert('Ready to execute the following code\n' +
-              '===================================\n' + latestCode);
+      function resetStepUi(clearOutput) {
+        clearTimeout(runnerPid);
+        demoWorkspace.highlightBlock(null);
+        runButton.disabled = '';
 
-          // Begin execution
-          myInterpreter = new Interpreter(latestCode, initApi);
-          function runner() {
-            if (myInterpreter) {
-              const hasMore = myInterpreter.run();
-              if (hasMore) {
-                // Execution is currently blocked by some async call.
-                // Try again later.
-                runnerPid = setTimeout(runner, 10);
-              } else {
-                // Program is complete.
-                outputArea.value += '\n\n<< Program complete >>';
-                resetStepUi(false);
+        if (clearOutput) {
+          outputArea.value = 'Program output:\n=================';
+        }
+        myInterpreter = null;
+      }
+
+      function runCode() {
+        if (!myInterpreter) {
+          // First statement of this code.
+          // Clear the program output.
+          resetStepUi(true);
+          const latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+          runButton.disabled = 'disabled';
+
+          // And then show generated code in an alert.
+          // In a timeout to allow the outputArea.value to reset first.
+          setTimeout(function() {
+            alert('Ready to execute the following code\n' +
+                '===================================\n' + latestCode);
+
+            // Begin execution
+            myInterpreter = new Interpreter(latestCode, initApi);
+            function runner() {
+              if (myInterpreter) {
+                const hasMore = myInterpreter.run();
+                if (hasMore) {
+                  // Execution is currently blocked by some async call.
+                  // Try again later.
+                  runnerPid = setTimeout(runner, 10);
+                } else {
+                  // Program is complete.
+                  outputArea.value += '\n\n<< Program complete >>';
+                  resetStepUi(false);
+                }
               }
             }
-          }
-          runner();
-        }, 1);
-        return;
+            runner();
+          }, 1);
+          return;
+        }
       }
-    }
 
-    demoWorkspace.addChangeListener(function(event) {
-      if (!event.isUiEvent) {
-        // Something changed.  Interpreter needs to be reloaded.
-        resetStepUi(true);
-      }
-    });
-  </script>
-</body>
+      demoWorkspace.addChangeListener(function(event) {
+        if (!event.isUiEvent) {
+          // Something changed.  Interpreter needs to be reloaded.
+          resetStepUi(true);
+        }
+      });
+    </script>
+    <script>templateBottom();</script>
+  </body>
 </html>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Blockly Demo: Custom Turtle Field</title>
+    <meta charset="utf-8">
+    <title>Turtle Field</title>
+    <meta name="description" content="Custom field with lots of options.">
     <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="blocks.js"></script>
     <script>
@@ -12,7 +13,8 @@
       };
     </script>
     <script src="field_turtle.js"></script>
-    <script src="https://unpkg.com/blockly/msg/en.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
     <style>
       body {
         margin: 0 10%;
@@ -33,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="turtle.css">
   </head>
   <body onload="start()">
+    <script>templateTop();</script>
 
     <p>This is a demo of creating custom block fields. In this case the field
       is used to define a turtle.
@@ -169,5 +172,6 @@
       <block type="turtle_nullifier" y="120"></block>
       <block type="turtle_changer" y="230"></block>
     </xml>
+    <script>templateBottom();</script>
   </body>
 </html>

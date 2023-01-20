@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Blockly Demo: Custom Dialog</title>
+    <meta charset="utf-8">
+    <title>Custom Dialogs</title>
+    <meta name="description" content="Override Blockly browser dialogs with custom implementations.">
     <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="./node_modules/blockly/blocks_compressed.js"></script>
     <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="../../gh-pages/js/templates.js"></script>
     <style>
       body {
         background-color: #fff;
@@ -18,6 +20,7 @@
     </style>
   </head>
   <body>
+    <script>templateTop();</script>
     <p>This is a simple demo of replacing modal browser dialogs with HTML.</p>
 
     <p>
@@ -85,5 +88,6 @@
       });
     </script>
     <script src="custom-dialog.js"></script>
+    <script>templateBottom();</script>
   </body>
 </html>

@@ -424,7 +424,7 @@ function handlePlay(event) {
 ```
 
 ### A note on eval
-Executing scripts with eval is not always the safest option - we use it here for simplicity. If you intend to run the user's blocks in production, check out the <a href="https://github.com/NeilFraser/JS-Interpreter">JS Interpreter project</a>. This project is separate from Blockly, but was specifically written for Blockly.
+Executing scripts with eval is not always the safest option - we use it here for simplicity. If you intend to run the user's blocks in production, check out the <a href="https://github.com/NeilFraser/JS-Interpreter">JS-Interpreter project</a>. This project is separate from Blockly, but was specifically written for Blockly.
 
 ### Test it
 

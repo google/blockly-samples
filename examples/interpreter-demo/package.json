@@ -20,20 +20,6 @@
       "./node_modules/blockly/*_compressed.js.map",
       "./node_modules/blockly/msg/en.js",
       "./node_modules/blockly/media/*"
-    ],
-    "pages": [
-      {
-        "label": "Step Execution",
-        "link": "step-execution.html"
-      },
-      {
-        "label": "Async Execution",
-        "link": "async-execution.html"
-      },
-      {
-        "label": "Backwards Execution",
-        "link": "backwards.html"
-      }
     ]
   },
   "dependencies": {
