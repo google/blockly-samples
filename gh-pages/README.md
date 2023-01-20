@@ -63,36 +63,37 @@ Browse to http://127.0.0.1:4000
 
 ## Deploying
 
-### To personal gh-pages
+### One-click
 
-Make sure everything is installed (plugins and examples). From root, run:
+Run the [Update GitHub Pages Action](https://github.com/google/blockly-samples/actions/workflows/update_gh_pages.yml) from either the `google/blockly-samples` repo or your fork to deploy to that location automatically. Click the "Run workflow" button to start it. After this workflow finishes, GitHub's built-in "build and deploy" action will automatically start. When that finishes, the updated site will be live.
 
-```
-npm install
-cd examples && npm install
-cd ..
-```
+Note: Updating GitHub Pages is done automatically when publishing plugins through the Publish action.
 
-Build and push to your personal gh-pages site:
+### Manual
 
-```
-npm run deploy
-```
+1. Make sure everything is installed (plugins and examples). From root, run:
 
-Test at `<your username>.github.io/blockly-samples/`.
+    ```
+    npm install
+    cd examples && npm install
+    cd ..
+    ```
 
-## To blockly-samples gh-pages
+2. Build and push
+    
+    * to your personal gh-pages site:
 
-```
-npm install
-cd examples && npm install
-cd ..
-```
+        ```
+        npm run deploy
+        ```
 
-Build and push to the blockly-samples gh-pages site
+        Test at `<your username>.github.io/blockly-samples/`.
 
-```
-npm run deploy:upstream
-```
 
-Test at https://google.github.io/blockly-samples/
+    * to the blockly-samples gh-pages site:
+
+        ```
+        npm run deploy:upstream
+        ```
+
+        Test at https://google.github.io/blockly-samples/
