@@ -89,7 +89,7 @@
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
     var demoWorkspace = Blockly.inject(blocklyDiv,
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          toolbox: toolbox});
     var onresize = function(e) {
       // Compute the absolute coordinates and dimensions of blocklyArea.

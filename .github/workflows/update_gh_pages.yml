@@ -1,0 +1,43 @@
+# This workflow updates GitHub Pages on the repo it is run from.
+
+name: Update GitHub Pages
+
+on:
+  workflow_dispatch:  # Manually trigger. Colon is required.
+  workflow_call: # Allow this workflow to be called from publish workflow.
+
+permissions:
+  contents: write  # For checkout and push.
+
+jobs:
+  update-github-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: master
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: NPM install
+      # Use CI so that we don't update dependencies in this step.
+      # TODO(#1511): remove --force flag from installing examples
+      # Until then, don't block updating just because some dependencies are out of date.
+      run: |
+        npm ci
+        (cd examples && npm ci --force)
+
+    - name: Deploy to GH Pages
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # deploys to the current repo,
+      # so you can use this workflow from a fork to update your personal gh-pages
+      run: |
+        npm run deploy:prepare
+        git remote set-url origin https://git:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        npx gh-pages -d gh-pages -u "github-actions-bot <support+actions@github.com>"
