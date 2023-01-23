@@ -147,7 +147,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
     guiState.guiObject = gui.getSaveObject();
     saveGUIState(guiState, defaultToolboxName, defaultThemeName);
     // Update options.
-    merge(options, workspace.options);
+    merge(saveOptions, workspace.options);
     gui.updateDisplay();
   };
 
