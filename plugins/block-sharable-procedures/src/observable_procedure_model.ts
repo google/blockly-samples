@@ -7,6 +7,7 @@
 import * as Blockly from 'blockly/core';
 import {triggerProceduresUpdate} from './update_procedures';
 
+/** Represents a procedure signature. */
 export class ObservableProcedureModel
 implements Blockly.procedures.IProcedureModel {
   private id: string;
@@ -17,6 +18,12 @@ implements Blockly.procedures.IProcedureModel {
   private shouldFireEvents = false;
   private shouldTriggerUpdates = true;
 
+  /**
+   * Constructor for the procedure model.
+   * @param workspace The workspace the procedure model is associated with.
+   * @param name The name of the new procedure.
+   * @param id The (optional) unique language-neutral ID for the procedure.
+   */
   constructor(
       private readonly workspace: Blockly.Workspace,
       name: string,
@@ -236,6 +243,7 @@ implements Blockly.procedures.IProcedureModel {
    * @internal
    */
   stopPublishing() {
+    triggerProceduresUpdate(this.workspace);
     this.shouldFireEvents = false;
     for (const param of this.parameters) {
       if (Blockly.isObservable(param)) param.stopPublishing();

@@ -42,7 +42,8 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.28",
-    "@blockly/dev-tools": "^5.0.4"
+    "@blockly/dev-tools": "^5.0.4",
+    "sinon": "^15.0.1"
   },
   "private": true,
   "publishConfig": {
