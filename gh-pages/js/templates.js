@@ -2,10 +2,10 @@
 // Immediately append this to the head.
 document.write(
 `
-<link rel="icon" type="image/x-icon" href="../../gh-pages/favicon.ico" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+<link rel="icon" type="image/x-icon" href="../../gh-pages/favicon.ico">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="../../gh-pages/css/custom.css" />
+<link rel="stylesheet" href="../../gh-pages/css/custom.css">
 `);
 
 function templateTop() {
@@ -43,7 +43,7 @@ function templateTop() {
     <a href="../../" id="arrow-back">
       <i class="material-icons">close</i>
       <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
-        alt="Blockly logo" />
+        height=36 width=120 alt="Blockly">
     </a>
 
     <div class="title-grow">
@@ -97,4 +97,20 @@ function templateBottom() {
     </div>
   </footer>
 `);
+
+  if (location.href.startsWith('https://google.github.io/blockly-samples/')) {
+    document.write(`
+  <!-- ANALYTICS  -->
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', '{{ site.google_analytics }}', 'auto');
+    ga('send', 'pageview');
+  </script>
+`);
+  }
 }
