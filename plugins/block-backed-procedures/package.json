@@ -1,0 +1,58 @@
+{
+  "name": "blockly-block-backed-procedures",
+  "version": "1.0.0",
+  "description": "A plugin that adds procedure blocks which are backed by explicit data models.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "blockly-block",
+    "backed-procedures"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-backed-procedures#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/block-backed-procedures"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.2.28",
+    "@blockly/dev-tools": "^5.0.4",
+    "blockly": "^9.2.1"
+  },
+  "peerDependencies": {
+    "blockly": "^9.2.1"
+  },
+  "publishConfig": {},
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  }
+}
