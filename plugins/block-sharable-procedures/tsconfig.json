@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "build",
-    "target": "es5",
+    "target": "es6",
     "allowJs": true,
     "sourceMap": true,
-    "lib": ["es6", "dom"]
+    "lib": ["es6", "dom"],
+    "moduleResolution": "node"
   },
   "include": [
     "src", "test"

@@ -5,6 +5,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {ProcedureParameterRename} from './events_procedure_parameter_rename';
 import {triggerProceduresUpdate} from './update_procedures';
 
 /** Represents a procedure parameter. */
@@ -43,10 +44,9 @@ export class ObservableParameterModel implements
         this.workspace.getVariable(name) ?? this.workspace.createVariable(name);
     triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
-      // Blockly.Events.fire(
-      //     new (Blockly.Events.get(
-      //         Blockly.Events.PROCEDURE_PARAMETER_RENAME))(
-      //         this.workspace, this.procedureModel, this, oldName));
+      Blockly.Events.fire(
+          new ProcedureParameterRename(
+              this.workspace, this.procedureModel, this, oldName));
     }
     return this;
   }
