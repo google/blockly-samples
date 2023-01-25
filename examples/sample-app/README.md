@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This app illustrates how to use Blockly together with common programming tools like node/npm, webpack, typescript, eslint, and others. You can copy and modify it as much as you'd like. It contains basic infrastructure for running, building, testing, etc. that you can use even if you don't understand how to configure the related tool yet. For creating your first application using Blockly, you can use the tools we've provided here for as long as they work for you. Eventually, you might need to customize the way your application builds, for example, and at that time you can replace the provided webpack configuration with your own.
+This app illustrates how to use Blockly together with common programming tools like node/npm, webpack, typescript, eslint, and others. You can use it as the starting point for your own application and modify it as much as you'd like. It contains basic infrastructure for running, building, testing, etc. that you can use even if you don't understand how to configure the related tool yet. When your needs outgrow the functionality provided here, you can replace the provided configuration or tool with your own.
 
 ## Quick Start
 
