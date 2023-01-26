@@ -1,6 +1,6 @@
 {
   "name": "@blockly/suggested-blocks",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A plugin that adds toolbox panes with suggested blocks based on the user's past usage of blocks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -42,7 +42,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.28",
-    "@blockly/dev-tools": "^5.0.4",
+    "@blockly/dev-tools": "^5.0.5",
     "blockly": "^9.0.0",
     "chai": "^4.3.6",
     "sinon": "^14.0.0"
