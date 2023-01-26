@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.4...@blockly/suggested-blocks@2.0.5) (2023-01-26)
+
+**Note:** Version bump only for package @blockly/suggested-blocks
+
+
+
+
+
 ## [2.0.4](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.3...@blockly/suggested-blocks@2.0.4) (2023-01-05)
 
 **Note:** Version bump only for package @blockly/suggested-blocks
