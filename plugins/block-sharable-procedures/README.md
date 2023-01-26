@@ -1,4 +1,4 @@
-# blockly-block-backed-procedures [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/block-sharable-procedures [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A set of [Blockly](https://www.npmjs.com/package/blockly) blocks that allow
 end-users to define procedures (i.e. functions). These blocks reference explicit
@@ -9,12 +9,12 @@ between workspaces.
 
 ### Yarn
 ```
-yarn add blockly-block-backed-procedures
+yarn add @blockly/block-sharable-procedures
 ```
 
 ### npm
 ```
-npm install blockly-block-backed-procedures --save
+npm install @blockly/block-sharable-procedures --save
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ npm install blockly-block-backed-procedures --save
 ### Import
 ```js
 import * as Blockly from 'blockly';
-import {blocks} from 'blockly-block-backed-procedures';
+import {blocks} from '@blockly/block-sharable-procedures';
 
 Blockly.common.defineBlocks(blocks);
 ```
