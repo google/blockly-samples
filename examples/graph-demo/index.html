@@ -6,6 +6,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/graph-demo"
 
 ---
@@ -99,7 +100,7 @@ if (typeof google == 'object') {
         'Are you connected to the Internet?');
 }
 
-// Define the toolbox 
+// Define the toolbox
 const toolbox = {
   "kind": "categoryToolbox",
   "contents": [
@@ -136,7 +137,7 @@ const toolbox = {
               }
             }
           }
-        }, 
+        },
         {
           "kind": "block",
           "type": "math_single",
@@ -348,7 +349,7 @@ const startBlocks = {
       "type": "graph_set_y",
       "x": 100,
       "y": 100,
-      "inputs": { 
+      "inputs": {
         "VALUE": {
           "block": {
             "type": "math_arithmetic",
@@ -382,7 +383,7 @@ const startBlocks = {
                 }
               }
             }
-          }        
+          }
         }
       }
     }]
@@ -533,7 +534,7 @@ Graph.init = function() {
   Graph.workspace = Blockly.inject('blocklyDiv',
       {collapse: false,
        disable: false,
-       media: 'https://unpkg.com/blockly/media/',
+       media: './node_modules/blockly/media/',
        toolbox: toolbox});
 
   Blockly.serialization.workspaces.load(startBlocks, Graph.workspace);

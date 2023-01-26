@@ -6,6 +6,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/mirror-demo"
 
 ---
@@ -109,14 +110,14 @@ pageRoot: "examples/mirror-demo"
         },
       ]
     };
-  
-    // Inject primary workspace. 
+
+    // Inject primary workspace.
     var primaryWorkspace = Blockly.inject('primaryDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          toolbox: toolbox});
     // Inject secondary workspace.
     var secondaryWorkspace = Blockly.inject('secondaryDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          readOnly: true});
     // Listen to events on primary workspace.
     primaryWorkspace.addChangeListener(mirrorEvent);

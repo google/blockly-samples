@@ -6,6 +6,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/fixed-demo"
 
 ---
@@ -79,7 +80,7 @@ pageRoot: "examples/fixed-demo"
     };
 
     const demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          toolbox: toolbox});
   </script>
 

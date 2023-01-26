@@ -7,6 +7,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/resizable-demo"
 
 ---
@@ -101,7 +102,7 @@ pageRoot: "examples/resizable-demo"
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
     var demoWorkspace = Blockly.inject(blocklyDiv,
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          toolbox: toolbox});
     var onresize = function(e) {
       // Compute the absolute coordinates and dimensions of blocklyArea.

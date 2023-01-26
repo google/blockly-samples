@@ -9,6 +9,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/pitch-field-demo"
 
 ---
@@ -102,7 +103,7 @@ pageRoot: "examples/pitch-field-demo"
       }
 
       var options = {
-        media: 'https://unpkg.com/blockly/media/',
+        media: './node_modules/blockly/media/',
         grid: {
           spacing: 25,
           length: 3,

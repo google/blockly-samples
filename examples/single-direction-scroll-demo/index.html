@@ -6,6 +6,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/single-direction-scroll-demo"
 
 ---
@@ -57,7 +58,7 @@ pageRoot: "examples/single-direction-scroll-demo"
   <script>
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {
-          media: 'https://unpkg.com/blockly/media/',
+          media: './node_modules/blockly/media/',
           toolbox: document.getElementById('toolbox'),
           grid:
               {

@@ -6,6 +6,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/en.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/max-blocks-demo"
 
 ---
@@ -91,7 +92,7 @@ pageRoot: "examples/max-blocks-demo"
 
   <script>
     var demoWorkspace = Blockly.inject('blocklyDiv',
-        {media: 'https://unpkg.com/blockly/media/',
+        {media: './node_modules/blockly/media/',
          maxBlocks: 5,
          toolbox: document.getElementById('toolbox')});
 

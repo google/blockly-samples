@@ -6,6 +6,7 @@ files:
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
   - "./node_modules/blockly/msg/ar.js"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/rtl-demo"
 
 ---
@@ -35,7 +36,7 @@ pageRoot: "examples/rtl-demo"
   <script>
     function init() {
       var demoWorkspace = Blockly.inject('blocklyDiv',
-          {media: 'https://unpkg.com/blockly/media/',
+          {media: './node_modules/blockly/media/',
            rtl: true,
            toolbox: document.getElementById('toolbox')});
       Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),

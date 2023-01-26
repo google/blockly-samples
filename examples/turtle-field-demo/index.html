@@ -8,6 +8,7 @@ files:
   - "media/*"
   - "./node_modules/blockly/*_compressed.js"
   - "./node_modules/blockly/*_compressed.js.map"
+  - "./node_modules/blockly/media/*"
 pageRoot: "examples/turtle-field-demo"
 
 ---
@@ -154,7 +155,7 @@ pageRoot: "examples/turtle-field-demo"
       }
 
       var options = {
-        media: 'https://unpkg.com/blockly/media/',
+        media: './node_modules/blockly/media/',
         grid: {
           spacing: 25,
           length: 3,
