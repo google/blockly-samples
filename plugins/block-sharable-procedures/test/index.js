@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
           'kind': 'block',
           'type': b,
-        }
-      })
-    }
+        };
+      }),
+    },
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
