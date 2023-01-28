@@ -17,10 +17,21 @@ var NODE_LOC_CONSTRUCTOR;
 var LINE_LOC_CONSTRUCTOR;
 
 /**
- * All non-primitives in the interpreter.
+ * All non-primitives in the interpreter as an Array.
  * @type {!Array<!Object>}
  */
- var objectList = [];
+var objectList = [];
+
+/**
+ * A Map mapping non-primitves their corresponding indices in objectList.
+ * Doubles the speed of serialisation if ES6's Map is available.
+ * @type {Map|undefined}
+ */
+var objectMap;
+if (typeof Map === 'function') {
+  objectMap = new Map();
+}
+
 
 /**
  * Inspect an interpreter and record the constructors used to create new nodes.
@@ -58,6 +69,7 @@ function deserialize(json, interpreter) {
   recordAcornConstructors_(interpreter);
   // Find all native functions in existing interpreter.
   objectList = [];
+  objectMap && objectMap.clear();
   objectHunt_(stack);
   var functionMap = Object.create(null);
   for (var i = 0; i < objectList.length; i++) {
@@ -80,7 +92,9 @@ function deserialize(json, interpreter) {
   for (var prop in root) {
     interpreter[prop] = root[prop];
   }
-  objectList = [];  // Garbage collect.
+  // Garbage collect.
+  objectList = [];
+  objectMap && objectMap.clear();
 }
 
 /**
@@ -287,7 +301,8 @@ function serialize(interpreter) {
   recordAcornConstructors_(interpreter);
   // Find all objects.
   objectList = [];
-  objectHunt_(root, objectList);
+  objectMap && objectMap.clear();
+  objectHunt_(root);
   // Serialize every object.
   var json = [];
   for (var i = 0; i < objectList.length; i++) {
@@ -395,7 +410,9 @@ function serialize(interpreter) {
       jsonObj['setter'] = setter;
     }
   }
-  objectList = [];  // Garbage collect.
+  // Garbage collect.
+  objectList = [];
+  objectMap && objectMap.clear();
   return json;
 }
 
@@ -441,8 +458,8 @@ function encodeLoc_(loc) {
  */
  function encodeValue_(value) {
   if (value && (typeof value === 'object' || typeof value === 'function')) {
-    var ref = objectList.indexOf(value);
-    if (ref === -1) {
+    var ref = objectMap ? objectMap.get(value) : objectList.indexOf(value);
+    if (ref === undefined || ref === -1) {
       throw RangeError('Object not found in table.');
     }
     return {'#': ref};
@@ -471,9 +488,10 @@ function encodeLoc_(loc) {
  */
 function objectHunt_(node) {
   if (node && (typeof node === 'object' || typeof node === 'function')) {
-    if (objectList.indexOf(node) !== -1) {
+    if (objectMap ? objectMap.has(node) : objectList.indexOf(node) !== -1) {
       return;
     }
+    objectMap && objectMap.set(node, objectList.length);
     objectList.push(node);
     if (typeof node === 'object') {  // Recurse.
       var isAcornNode =
