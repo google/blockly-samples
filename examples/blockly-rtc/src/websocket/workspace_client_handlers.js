@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ const socket = io();
 
 /**
  * Query the database a snapshot of the current workspace.
- * @return {!Promise} Promise object that represents the latest snapshot of the
+ * @returns {!Promise} Promise object that represents the latest snapshot of the
  * workspace.
  * @public
  */
@@ -45,7 +45,7 @@ export async function getSnapshot() {
 /**
  * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
- * @return {!Promise} Promise object that represents the entries of events since
+ * @returns {!Promise} Promise object that represents the entries of events since
  * the given serverId.
  * @public
  */
@@ -65,7 +65,7 @@ export async function getEvents(serverId) {
 /**
  * Add an entry to the database.
  * @param {!LocalEntry} entry The entry to be added to the database.
- * @return {!Promise} Promise object that represents the success of the write.
+ * @returns {!Promise} Promise object that represents the success of the write.
  * @public
  */
 export async function writeEvents(entry) {
@@ -85,7 +85,7 @@ export async function writeEvents(entry) {
  * Listen for events broadcast by the server.
  * @param {!Function} callback The callback handler that passes the events to
  * the workspace.
- * @return {!Promise} Promise object that represents the success of the write.
+ * @returns {!Promise} Promise object that represents the success of the write.
  * @public
  */
 export function getBroadcast(callback) {

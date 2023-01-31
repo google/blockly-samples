@@ -57,7 +57,7 @@ export class BlockSuggestor {
   /**
    * Generates a list of the 10 most frequently used blocks, in order.
    * Includes a secondary sort by most recent blocks.
-   * @return {!Array<!Blockly.utils.toolbox.BlockInfo>}A list of block JSON
+   * @returns {!Array<!Blockly.utils.toolbox.BlockInfo>}A list of block JSON
    */
   getMostUsed = function() {
     // Store the frequency of each block, as well as the index first appears at.
@@ -84,7 +84,7 @@ export class BlockSuggestor {
 
   /**
    * Generates a list of the 10 most recently used blocks.
-   * @return {Array <object>} A list of block JSON objects
+   * @returns {Array <object>} A list of block JSON objects
    */
   getRecentlyUsed = function() {
     const uniqueRecentBlocks = [...new Set(this.recentlyUsedBlocks)];
@@ -101,7 +101,7 @@ export class BlockSuggestor {
   /**
    * Converts a list of block types to a full-fledge list of block data.
    * @param {Array<string>} blockTypeList the list of block types
-   * @return {Array<JSON>} the block data list
+   * @returns {Array<JSON>} the block data list
    */
   generateBlockData = function(blockTypeList) {
     const blockList = blockTypeList.slice(0, this.numBlocksPerCategory).map(
@@ -134,7 +134,7 @@ export class BlockSuggestor {
 
   /**
    * Saves the state of this object to a serialized JSON.
-   * @return {object} a serialized data object including this object's state
+   * @returns {object} a serialized data object including this object's state
    */
   saveToSerializedData() {
     return {
@@ -207,7 +207,7 @@ class BlockSuggestorSerializer {
   /**
    * Saves a target workspace's state to serialized JSON.
    * @param {Blockly.Workspace} workspace the workspace to save
-   * @return {object} the serialized JSON
+   * @returns {object} the serialized JSON
    */
   save(workspace) {
     return suggestorLookup.get(workspace).saveToSerializedData();

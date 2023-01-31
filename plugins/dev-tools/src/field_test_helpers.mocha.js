@@ -90,7 +90,7 @@ function runCreationTests_(testCases, assertion, creation) {
   /**
    * Creates test callback for creation test.
    * @param {FieldCreationTestCase} testCase The test case to use.
-   * @return {Function} The test callback.
+   * @returns {Function} The test callback.
    */
   const createTestFn = (testCase) => {
     return function() {
@@ -113,7 +113,7 @@ function runCreationTestsAssertThrows_(testCases, creation) {
   /**
    * Creates test callback for creation test.
    * @param {!FieldCreationTestCase} testCase The test case to use.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createTestFn = (testCase) => {
     return function() {
@@ -163,7 +163,7 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
     /**
      * Creates a field using its constructor and the provided test case.
      * @param {!FieldCreationTestCase} testCase The test case information.
-     * @return {!Blockly.Field} The instantiated field.
+     * @returns {!Blockly.Field} The instantiated field.
      */
     const createWithJs = function(testCase) {
       return customCreateWithJs ? customCreateWithJs.call(this, testCase) :
@@ -217,7 +217,7 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
     /**
      * Creates a field using fromJson and the provided test case.
      * @param {!FieldCreationTestCase} testCase The test case information.
-     * @return {!Blockly.Field} The instantiated field.
+     * @returns {!Blockly.Field} The instantiated field.
      */
     const createWithJson = function(testCase) {
       return customCreateWithJson ? customCreateWithJson.call(this, testCase) :
@@ -249,7 +249,7 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
   /**
    * Creates test callback for invalid setValue test.
    * @param {!FieldValueTestCase} testCase The test case information.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createInvalidSetValueTestCallback = (testCase) => {
     return function() {
@@ -261,7 +261,7 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
   /**
    * Creates test callback for valid setValue test.
    * @param {!FieldValueTestCase} testCase The test case information.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createValidSetValueTestCallback = (testCase) => {
     return function() {

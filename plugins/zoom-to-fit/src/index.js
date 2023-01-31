@@ -161,7 +161,7 @@ export class ZoomToFitControl {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The component’s bounding box.
+   * @returns {!Blockly.utils.Rect} The component’s bounding box.
    */
   getBoundingRectangle() {
     return new Blockly.utils.Rect(
@@ -252,12 +252,12 @@ const ZOOM_TO_FIT_SVG_DATAURI =
 
 Blockly.Css.register(`
 .zoomToFit {
-  opacity: .4;
+  opacity: 0.4;
 }
 .zoomToFit:hover {
-  opacity: .6;
+  opacity: 0.6;
 }
 .zoomToFit:active {
-  opacity: .8;
+  opacity: 0.8;
 }
 `);

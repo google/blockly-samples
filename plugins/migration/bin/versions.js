@@ -28,7 +28,7 @@ const LATEST = 'latest';
  * Coerces the given string into a valid version (semver compliant or
  * one of our special values).
  * @param {string} version The version to coerce.
- * @return  {string} The coerced version.
+ * @returns  {string} The coerced version.
  */
 export function coerce(version) {
   return version === DEV_VERSION || version === LATEST?
@@ -39,7 +39,7 @@ export function coerce(version) {
  * Compares the given versions. Compatible with Array.sort.
  * @param {string} v1 The first version to compare.
  * @param {string} v2 The second version to compare.
- * @return {number} A number indicating the relationship between the versions.
+ * @returns {number} A number indicating the relationship between the versions.
  */
 export function compare(v1, v2) {
   if (v2 === DEV_VERSION) return v1 === DEV_VERSION ? 0 : -1;
@@ -54,7 +54,7 @@ export function compare(v1, v2) {
  * version.
  * @param {string} v1 The version to compare.
  * @param {string} v2 The version to compare against.
- * @return {boolean} True if the first version is less than or equal to the
+ * @returns {boolean} True if the first version is less than or equal to the
  *     second one.
  */
 export function lte(v1, v2) {
@@ -65,7 +65,7 @@ export function lte(v1, v2) {
  * Returns true if the first version is greater than the second version.
  * @param {string} v1 The version to compare.
  * @param {string} v2 The version to compare against.
- * @return {boolean} True if the first version is greater than the second one.
+ * @returns {boolean} True if the first version is greater than the second one.
  */
 export function gt(v1, v2) {
   if (v2 === DEV_VERSION) return false;

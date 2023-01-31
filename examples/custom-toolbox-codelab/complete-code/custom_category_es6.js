@@ -56,7 +56,7 @@ class CustomCategory extends Blockly.ToolboxCategory {
 
   /**
    * Creates the dom used for the icon.
-   * @return {HTMLElement} The element for the icon.
+   * @returns {HTMLElement} The element for the icon.
    * @override
    */
   createIconDom_() {

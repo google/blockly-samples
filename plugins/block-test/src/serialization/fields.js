@@ -30,7 +30,7 @@ class NoOverridesField extends Blockly.FieldLabel {
 /**
  * Creates the field based on its JSON definition.
  * @param {*} options Options for creating the field.
- * @return {!NoOverridesField} The field that was created.
+ * @returns {!NoOverridesField} The field that was created.
  */
 NoOverridesField.fromJson = function(options) {
   const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
@@ -60,7 +60,7 @@ class XmlField extends Blockly.FieldLabel {
   /**
    * Saves the state of the field as XML.
    * @param {!Element} element The element to add the state to.
-   * @return {!Element} The element with the state added.
+   * @returns {!Element} The element with the state added.
    */
   toXml(element) {
     element.setAttribute('value', this.getValue());
@@ -79,7 +79,7 @@ class XmlField extends Blockly.FieldLabel {
 /**
  * Creates the field based on its JSON definition.
  * @param {*} options Options for creating the field.
- * @return {!XmlField} The field that was created.
+ * @returns {!XmlField} The field that was created.
  */
 XmlField.fromJson = function(options) {
   const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
@@ -108,7 +108,7 @@ class JsoField extends Blockly.FieldLabel {
 
   /**
    * Saves the state of the field as a JSON serializable value.
-   * @return {*} The state of the field.
+   * @returns {*} The state of the field.
    */
   saveState() {
     return {
@@ -128,7 +128,7 @@ class JsoField extends Blockly.FieldLabel {
 /**
  * Creates the field based on its JSON definition.
  * @param {*} options Options for creating the field.
- * @return {!JsoField} The field that was created.
+ * @returns {!JsoField} The field that was created.
  */
 JsoField.fromJson = function(options) {
   const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);
@@ -158,7 +158,7 @@ class BothField extends Blockly.FieldLabel {
   /**
    * Saves the state of the field as XML.
    * @param {!Element} element The element to add the state to.
-   * @return {!Element} The element with the state added.
+   * @returns {!Element} The element with the state added.
    */
   toXml(element) {
     element.setAttribute('value', this.getValue());
@@ -175,7 +175,7 @@ class BothField extends Blockly.FieldLabel {
 
   /**
    * Saves the state of the field as a JSON serializable value.
-   * @return {*} The state of the field.
+   * @returns {*} The state of the field.
    */
   saveState() {
     return {
@@ -195,7 +195,7 @@ class BothField extends Blockly.FieldLabel {
 /**
  * Creates the field based on its JSON definition.
  * @param {*} options Options for creating the field.
- * @return {!BothField} The field that was created.
+ * @returns {!BothField} The field that was created.
  */
 BothField.fromJson = function(options) {
   const text = Blockly.utils.parsing.replaceMessageReferences(options['text']);

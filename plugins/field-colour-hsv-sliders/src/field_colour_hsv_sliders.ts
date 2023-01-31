@@ -51,7 +51,7 @@ class RgbColour {
    * Given a number from 0 to 1, returns a two-digit hexadecimal string from
    * '00' to 'ff'.
    * @param x The amount of light in a component from 0 to 1.
-   * @return A hexadecimal representation from '00' to 'ff'.
+   * @returns A hexadecimal representation from '00' to 'ff'.
    */
   static componentToHex(x: number): string {
     if (x <= 0) return '00';
@@ -61,7 +61,7 @@ class RgbColour {
 
   /**
    * Returns a hexadecimal string in the format #rrggbb representing the colour.
-   * @return A hexadecimal representation of this colour.
+   * @returns A hexadecimal representation of this colour.
    */
   toHex(): string {
     return '#' +
@@ -74,7 +74,7 @@ class RgbColour {
    * Updates the properties of this instance to represent the same colour as the
    * provided string in the hexadecimal format #rrggbb.
    * @param hex A hexadecimal string in the format '#rrggbb'.
-   * @return This instance after updating it.
+   * @returns This instance after updating it.
    */
   loadFromHex(hex: string): RgbColour {
     this.r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -87,7 +87,7 @@ class RgbColour {
    * Updates the properties of this instance to represent the same colour as the
    * provided HsvColour but in the sRGB colour space.
    * @param hsv An HSV representation of a colour to copy.
-   * @return This instance after updating it.
+   * @returns This instance after updating it.
    */
   loadFromHsv(hsv: HsvColour): RgbColour {
     const hue: number = (hsv.h - Math.floor(hsv.h)) * 6;
@@ -132,7 +132,7 @@ class HsvColour {
    * Updates the properties of this instance to represent the same colour as the
    * provided RgbColour but in the HSV colour space.
    * @param rgb An RGB representation of a colour to copy.
-   * @return This instance after updating it.
+   * @returns This instance after updating it.
    */
   loadFromRgb(rgb: RgbColour): HsvColour {
     const max: number = Math.max(Math.max(rgb.r, rgb.g), rgb.b);
@@ -163,7 +163,7 @@ class HsvColour {
   /**
    * Updates the properties of this instance to copy the provided HsvColour.
    * @param other An HSV representation of a colour to copy.
-   * @return This instance after updating it.
+   * @returns This instance after updating it.
    */
   copy(other: HsvColour): HsvColour {
     this.h = other.h;
@@ -252,7 +252,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * value, appends it to the provided container, and returns the readout.
    * @param name The display name of the slider.
    * @param container Where the row will be inserted.
-   * @return The readout, so that it can be updated.
+   * @returns The readout, so that it can be updated.
    */
   private static createLabelInContainer(
       name: string, container: HTMLElement): HTMLSpanElement {
@@ -272,7 +272,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @param max The maximum value of the slider.
    * @param step The minimum step size of the slider.
    * @param container Where the row slider be inserted.
-   * @return The slider.
+   * @returns The slider.
    */
   private static createSliderInContainer(
       max: number, step: number, container: HTMLElement): HTMLInputElement {
@@ -352,7 +352,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
    * @param hue The hue of the colour.
    * @param saturation The saturation of the colour.
    * @param brightness The brightness of the colour.
-   * @return A hexadecimal representation of the colour in the format "#rrggbb"
+   * @returns A hexadecimal representation of the colour in the format "#rrggbb"
    */
   private static hsvToHex(
       hue: number, saturation: number, brightness: number): string {

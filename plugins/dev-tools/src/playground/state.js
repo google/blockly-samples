@@ -49,7 +49,7 @@ export class LocalStorageState {
   /**
    * Get value of key.
    * @param {string} key The key to lookup.
-   * @return {*} The value.
+   * @returns {*} The value.
    */
   get(key) {
     return this.state_[key];

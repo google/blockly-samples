@@ -48,7 +48,7 @@ class ToolboxLabel extends Blockly.ToolboxItem {
 
   /**
    * Gets the div for the toolbox item.
-   * @return {HTMLLabelElement} The label element.
+   * @returns {HTMLLabelElement} The label element.
    * @override
    */
   getDiv() {

@@ -16,7 +16,7 @@ import {getExtraBlockState} from './serialization_helper';
  * Creates a plus image field used for mutation.
  * @param {Object=} args Untyped args passed to block.minus when the field
  *     is clicked.
- * @return {Blockly.FieldImage} The Plus field.
+ * @returns {Blockly.FieldImage} The Plus field.
  */
 export function createPlusField(args = undefined) {
   const plus = new Blockly.FieldImage(plusImage, 15, 15, undefined, onClick_);

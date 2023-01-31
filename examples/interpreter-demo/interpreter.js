@@ -227,7 +227,7 @@ Interpreter.WORKER_CODE = [
 /**
  * Is a value a legal integer for an array length?
  * @param {Interpreter.Value} x Value to check.
- * @return {number} Zero, or a positive integer if the value can be
+ * @returns {number} Zero, or a positive integer if the value can be
  *     converted to such.  NaN otherwise.
  */
 Interpreter.legalArrayLength = function(x) {
@@ -239,7 +239,7 @@ Interpreter.legalArrayLength = function(x) {
 /**
  * Is a value a legal integer for an array index?
  * @param {Interpreter.Value} x Value to check.
- * @return {number} Zero, or a positive integer if the value can be
+ * @returns {number} Zero, or a positive integer if the value can be
  *     converted to such.  NaN otherwise.
  */
 Interpreter.legalArrayIndex = function(x) {
@@ -325,7 +325,7 @@ Interpreter.prototype.appendCodeNumber_ = 0;
  * Parse JavaScript code into an AST using Acorn.
  * @param {string} code Raw JavaScript text.
  * @param {string} sourceFile Name of filename (for stack trace).
- * @return {!Object} AST.
+ * @returns {!Object} AST.
  * @private
  */
 Interpreter.prototype.parse_ = function(code, sourceFile) {
@@ -362,7 +362,7 @@ Interpreter.prototype.appendCode = function(code) {
 
 /**
  * Execute one step of the interpreter.
- * @return {boolean} True if a step was executed, false if no more instructions.
+ * @returns {boolean} True if a step was executed, false if no more instructions.
  */
 Interpreter.prototype.step = function() {
   var stack = this.stateStack;
@@ -416,7 +416,7 @@ Interpreter.prototype.step = function() {
 
 /**
  * Execute the interpreter to program completion.  Vulnerable to infinite loops.
- * @return {boolean} True if a execution is asynchronously blocked,
+ * @returns {boolean} True if a execution is asynchronously blocked,
  *     false if no more instructions.
  */
 Interpreter.prototype.run = function() {
@@ -2134,7 +2134,7 @@ Interpreter.prototype.initJSON = function(globalObject) {
  * Is an object of a certain class?
  * @param {Interpreter.Value} child Object to check.
  * @param {Interpreter.Object} constructor Constructor of object.
- * @return {boolean} True if object is the class or inherits from it.
+ * @returns {boolean} True if object is the class or inherits from it.
  *     False otherwise.
  */
 Interpreter.prototype.isa = function(child, constructor) {
@@ -2227,7 +2227,7 @@ Interpreter.prototype.populateError = function(pseudoError, opt_message) {
  * Using a separate file fails in Chrome when run locally on a file:// URI.
  * Using a data encoded URI fails in IE and Edge.
  * Using a blob works in IE11 and all other browsers.
- * @return {!Worker} Web Worker with regexp execution code loaded.
+ * @returns {!Worker} Web Worker with regexp execution code loaded.
  */
 Interpreter.prototype.createWorker = function() {
   var blob = this.createWorker.blob_;
@@ -2304,7 +2304,7 @@ Interpreter.prototype.maybeThrowRegExp = function(nativeRegExp, callback) {
  * @param {!RegExp} nativeRegExp Regular expression (used for error message).
  * @param {!Worker} worker Thread to terminate.
  * @param {!Function} callback Async callback function to continue execution.
- * @return {number} PID of timeout.  Used to cancel if thread completes.
+ * @returns {number} PID of timeout.  Used to cancel if thread completes.
  */
 Interpreter.prototype.regExpTimeout = function(nativeRegExp, worker, callback) {
   var thisInterpreter = this;
@@ -2324,7 +2324,7 @@ Interpreter.prototype.regExpTimeout = function(nativeRegExp, worker, callback) {
  * Create a new data object based on a constructor's prototype.
  * @param {Interpreter.Object} constructor Parent constructor function,
  *     or null if scope object.
- * @return {!Interpreter.Object} New data object.
+ * @returns {!Interpreter.Object} New data object.
  */
 Interpreter.prototype.createObject = function(constructor) {
   return this.createObjectProto(constructor &&
@@ -2334,7 +2334,7 @@ Interpreter.prototype.createObject = function(constructor) {
 /**
  * Create a new data object based on a prototype.
  * @param {Interpreter.Object} proto Prototype object.
- * @return {!Interpreter.Object} New data object.
+ * @returns {!Interpreter.Object} New data object.
  */
 Interpreter.prototype.createObjectProto = function(proto) {
   if (typeof proto !== 'object') {
@@ -2352,7 +2352,7 @@ Interpreter.prototype.createObjectProto = function(proto) {
 
 /**
  * Create a new array.
- * @return {!Interpreter.Object} New array.
+ * @returns {!Interpreter.Object} New array.
  */
 Interpreter.prototype.createArray = function() {
   var array = this.createObjectProto(this.ARRAY_PROTO);
@@ -2367,7 +2367,7 @@ Interpreter.prototype.createArray = function() {
  * Create a new function object (could become interpreted or native or async).
  * @param {number} argumentLength Number of arguments.
  * @param {boolean} isConstructor True if function can be used with 'new'.
- * @return {!Interpreter.Object} New function.
+ * @returns {!Interpreter.Object} New function.
  * @private
  */
 Interpreter.prototype.createFunctionBase_ = function(argumentLength,
@@ -2395,7 +2395,7 @@ Interpreter.prototype.createFunctionBase_ = function(argumentLength,
  * @param {!Object} node AST node defining the function.
  * @param {!Interpreter.Scope} scope Parent scope.
  * @param {string=} opt_name Optional name for function.
- * @return {!Interpreter.Object} New function.
+ * @returns {!Interpreter.Object} New function.
  */
 Interpreter.prototype.createFunction = function(node, scope, opt_name) {
   var func = this.createFunctionBase_(node['params'].length, true);
@@ -2417,7 +2417,7 @@ Interpreter.prototype.createFunction = function(node, scope, opt_name) {
  * Create a new native function.
  * @param {!Function} nativeFunc JavaScript function.
  * @param {boolean} isConstructor True if function can be used with 'new'.
- * @return {!Interpreter.Object} New function.
+ * @returns {!Interpreter.Object} New function.
  */
 Interpreter.prototype.createNativeFunction = function(nativeFunc,
                                                       isConstructor) {
@@ -2432,7 +2432,7 @@ Interpreter.prototype.createNativeFunction = function(nativeFunc,
 /**
  * Create a new native asynchronous function.
  * @param {!Function} asyncFunc JavaScript function.
- * @return {!Interpreter.Object} New function.
+ * @returns {!Interpreter.Object} New function.
  */
 Interpreter.prototype.createAsyncFunction = function(asyncFunc) {
   var func = this.createFunctionBase_(asyncFunc.length, true);
@@ -2448,7 +2448,7 @@ Interpreter.prototype.createAsyncFunction = function(asyncFunc) {
  * Can handle JSON-style values, regular expressions, dates and functions.
  * Does NOT handle cycles.
  * @param {*} nativeObj The native JavaScript object to be converted.
- * @return {Interpreter.Value} The equivalent JS-Interpreter object.
+ * @returns {Interpreter.Value} The equivalent JS-Interpreter object.
  */
 Interpreter.prototype.nativeToPseudo = function(nativeObj) {
   if (nativeObj instanceof Interpreter.Object) {
@@ -2509,7 +2509,7 @@ Interpreter.prototype.nativeToPseudo = function(nativeObj) {
  * @param {Interpreter.Value} pseudoObj The JS-Interpreter object to be
  * converted.
  * @param {Object=} opt_cycles Cycle detection (used in recursive calls).
- * @return {*} The equivalent native JavaScript object or value.
+ * @returns {*} The equivalent native JavaScript object or value.
  */
 Interpreter.prototype.pseudoToNative = function(pseudoObj, opt_cycles) {
   if ((typeof pseudoObj !== 'object' && typeof pseudoObj !== 'function') ||
@@ -2571,7 +2571,7 @@ Interpreter.prototype.pseudoToNative = function(pseudoObj, opt_cycles) {
  * Does handle non-numeric properties (like str.match's index prop).
  * Does NOT recurse into the array's contents.
  * @param {!Array} nativeArray The JavaScript array to be converted.
- * @return {!Interpreter.Object} The equivalent JS-Interpreter array.
+ * @returns {!Interpreter.Object} The equivalent JS-Interpreter array.
  */
 Interpreter.prototype.arrayNativeToPseudo = function(nativeArray) {
   var pseudoArray = this.createArray();
@@ -2588,7 +2588,7 @@ Interpreter.prototype.arrayNativeToPseudo = function(nativeArray) {
  * Does NOT recurse into the array's contents.
  * @param {!Interpreter.Object} pseudoArray The JS-Interpreter array,
  *     or JS-Interpreter object pretending to be an array.
- * @return {!Array} The equivalent native JavaScript array.
+ * @returns {!Array} The equivalent native JavaScript array.
  */
 Interpreter.prototype.arrayPseudoToNative = function(pseudoArray) {
   var nativeArray = [];
@@ -2606,7 +2606,7 @@ Interpreter.prototype.arrayPseudoToNative = function(pseudoArray) {
 /**
  * Look up the prototype for this value.
  * @param {Interpreter.Value} value Data object.
- * @return {Interpreter.Object} Prototype object, null if none.
+ * @returns {Interpreter.Object} Prototype object, null if none.
  */
 Interpreter.prototype.getPrototype = function(value) {
   switch (typeof value) {
@@ -2627,7 +2627,7 @@ Interpreter.prototype.getPrototype = function(value) {
  * Fetch a property value from a data object.
  * @param {Interpreter.Value} obj Data object.
  * @param {Interpreter.Value} name Name of property.
- * @return {Interpreter.Value} Property value (may be undefined).
+ * @returns {Interpreter.Value} Property value (may be undefined).
  */
 Interpreter.prototype.getProperty = function(obj, name) {
   if (this.getterStep_) {
@@ -2675,7 +2675,7 @@ Interpreter.prototype.getProperty = function(obj, name) {
  * Does the named property exist on a data object.
  * @param {!Interpreter.Object} obj Data object.
  * @param {Interpreter.Value} name Name of property.
- * @return {boolean} True if property exists.
+ * @returns {boolean} True if property exists.
  */
 Interpreter.prototype.hasProperty = function(obj, name) {
   if (!(obj instanceof Interpreter.Object)) {
@@ -2707,7 +2707,7 @@ Interpreter.prototype.hasProperty = function(obj, name) {
  *     Use Interpreter.VALUE_IN_DESCRIPTOR if value is handled by
  *     descriptor instead.
  * @param {Object=} opt_descriptor Optional descriptor object.
- * @return {!Interpreter.Object|undefined} Returns a setter function if one
+ * @returns {!Interpreter.Object|undefined} Returns a setter function if one
  *     needs to be called, otherwise undefined.
  */
 Interpreter.prototype.setProperty = function(obj, name, value, opt_descriptor) {
@@ -2897,7 +2897,7 @@ Interpreter.prototype.setAsyncFunctionPrototype =
 
 /**
  * Returns the current scope from the stateStack.
- * @return {!Interpreter.Scope} Current scope.
+ * @returns {!Interpreter.Scope} Current scope.
  */
 Interpreter.prototype.getScope = function() {
   var scope = this.stateStack[this.stateStack.length - 1].scope;
@@ -2912,7 +2912,7 @@ Interpreter.prototype.getScope = function() {
  * @param {!Object} node AST node defining the scope container
  *     (e.g. a function).
  * @param {Interpreter.Scope} parentScope Scope to link to.
- * @return {!Interpreter.Scope} New scope.
+ * @returns {!Interpreter.Scope} New scope.
  */
 Interpreter.prototype.createScope = function(node, parentScope) {
   // Determine if this scope starts with `use strict`.
@@ -2943,7 +2943,7 @@ Interpreter.prototype.createScope = function(node, parentScope) {
  * @param {!Interpreter.Scope} parentScope Scope to link to.
  * @param {Interpreter.Object=} opt_object Optional object to transform into
  *     scope.
- * @return {!Interpreter.Scope} New scope.
+ * @returns {!Interpreter.Scope} New scope.
  */
 Interpreter.prototype.createSpecialScope = function(parentScope, opt_object) {
   if (!parentScope) {
@@ -2956,7 +2956,7 @@ Interpreter.prototype.createSpecialScope = function(parentScope, opt_object) {
 /**
  * Retrieves a value from the scope chain.
  * @param {string} name Name of variable.
- * @return {Interpreter.Value} Any value.
+ * @returns {Interpreter.Value} Any value.
  *   May be flagged as being a getter and thus needing immediate execution
  *   (rather than being the value of the property).
  */
@@ -2986,7 +2986,7 @@ Interpreter.prototype.getValueFromScope = function(name) {
  * Sets a value to the current scope.
  * @param {string} name Name of variable.
  * @param {Interpreter.Value} value Value.
- * @return {!Interpreter.Object|undefined} Returns a setter function if one
+ * @returns {!Interpreter.Object|undefined} Returns a setter function if one
  *     needs to be called, otherwise undefined.
  */
 Interpreter.prototype.setValueToScope = function(name, value) {
@@ -3014,7 +3014,7 @@ Interpreter.prototype.setValueToScope = function(name, value) {
  * @param {!Object} node AST node (usually a program or function when initally
  *   calling this function, though it recurses to scan many child nodes).
  * @param {!Interpreter.Scope} scope Scope dictionary to populate.
- * @return {!Object} Map of all variable and function names.
+ * @returns {!Object} Map of all variable and function names.
  * @private
  */
 Interpreter.prototype.populateScope_ = function(node, scope) {
@@ -3089,7 +3089,7 @@ Interpreter.prototype.populateScope_ = function(node, scope) {
 
 /**
  * Is the current state directly being called with as a construction with 'new'.
- * @return {boolean} True if 'new foo()', false if 'foo()'.
+ * @returns {boolean} True if 'new foo()', false if 'foo()'.
  */
 Interpreter.prototype.calledWithNew = function() {
   return this.stateStack[this.stateStack.length - 1].isConstructor;
@@ -3098,7 +3098,7 @@ Interpreter.prototype.calledWithNew = function() {
 /**
  * Gets a value from the scope chain or from an object property.
  * @param {!Array} ref Name of variable or object/propname tuple.
- * @return {Interpreter.Value} Any value.
+ * @returns {Interpreter.Value} Any value.
  *   May be flagged as being a getter and thus needing immediate execution
  *   (rather than being the value of the property).
  */
@@ -3116,7 +3116,7 @@ Interpreter.prototype.getValue = function(ref) {
  * Sets a value to the scope chain or to an object property.
  * @param {!Array} ref Name of variable or object/propname tuple.
  * @param {Interpreter.Value} value Value.
- * @return {!Interpreter.Object|undefined} Returns a setter function if one
+ * @returns {!Interpreter.Object|undefined} Returns a setter function if one
  *     needs to be called, otherwise undefined.
  */
 Interpreter.prototype.setValue = function(ref, value) {
@@ -3286,7 +3286,7 @@ Interpreter.prototype.createSetter_ = function(func, left, value) {
  * In non-strict mode `this` must be an object.
  * Must not be called in strict mode.
  * @param {Interpreter.Value} value Proposed value for `this`.
- * @return {!Interpreter.Object} Final value for `this`.
+ * @returns {!Interpreter.Object} Final value for `this`.
  * @private
  */
 Interpreter.prototype.boxThis_ = function(value) {
@@ -3305,7 +3305,7 @@ Interpreter.prototype.boxThis_ = function(value) {
 
 /**
  * Return the global scope object.
- * @return {!Interpreter.Scope} Scope object.
+ * @returns {!Interpreter.Scope} Scope object.
  */
 Interpreter.prototype.getGlobalScope = function() {
   return this.globalScope;
@@ -3313,7 +3313,7 @@ Interpreter.prototype.getGlobalScope = function() {
 
 /**
  * Return the state stack.
- * @return {!Array<!Interpreter.State>} State stack.
+ * @returns {!Array<!Interpreter.State>} State stack.
  */
 Interpreter.prototype.getStateStack = function() {
   return this.stateStack;
@@ -3381,7 +3381,7 @@ Interpreter.Object.prototype.data = null;
 
 /**
  * Convert this object into a string.
- * @return {string} String value.
+ * @returns {string} String value.
  * @override
  */
 Interpreter.Object.prototype.toString = function() {
@@ -3464,7 +3464,7 @@ Interpreter.Object.prototype.toString = function() {
 
 /**
  * Return the object's value.
- * @return {Interpreter.Value} Value.
+ * @returns {Interpreter.Value} Value.
  * @override
  */
 Interpreter.Object.prototype.valueOf = function() {

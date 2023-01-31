@@ -27,8 +27,6 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param {Object=} config A map of options used to configure the field.
    *    See the [field creation documentation]{@link https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation}
    *    for a list of properties this parameter supports.
-   * @extends {Blockly.Field}
-   * @constructor
    * @throws {TypeError} If `menuGenerator` options are incorrectly structured.
    */
   constructor(menuGenerator, validator = undefined, config = undefined) {
@@ -57,12 +55,14 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   /**
    * Constructs a FieldGridDropdown from a JSON arg object.
    * @param {!Object} options A JSON object with options.
-   * @return {!FieldGridDropdown} The new field instance.
+   * @returns {!FieldGridDropdown} The new field instance.
    * @package
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldGridDropdown(options['options'], undefined, options);
+    // `this` might be a subclass of FieldGridDropdown if that class doesn't
+    // override the static fromJson method.
+    return new this(options['options'], undefined, options);
   }
 
   /**
@@ -85,7 +85,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @private
    */
   setColumnsInternal_(columns) {
-    columns = parseInt(columns);
+    columns = parseInt(String(columns));
     if (!isNaN(columns) && columns >= 1) {
       this.columns_ = columns;
     }
@@ -103,15 +103,18 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
     // Dropdown should match block colour unless other colours are specified
     // in the config.
-    const blockPrimaryColour = (this.sourceBlock_.isShadow()) ?
-        this.sourceBlock_.getParent().getColour() :
-        this.sourceBlock_.getColour();
-    const blockBorderColour = (this.sourceBlock_.isShadow()) ?
-        this.sourceBlock_.getParent().style.colourTertiary :
-        this.sourceBlock_.style.colourTertiary;
-    const primaryColour = this.primaryColour || blockPrimaryColour;
-    const borderColour = this.borderColour || blockBorderColour;
-    Blockly.DropDownDiv.setColour(primaryColour, borderColour);
+    const sourceBlock = this.getSourceBlock();
+    if (sourceBlock instanceof Blockly.BlockSvg) {
+      const blockPrimaryColour = (sourceBlock.isShadow()) ?
+          sourceBlock.getParent().getColour() :
+          sourceBlock.getColour();
+      const blockBorderColour = (sourceBlock.isShadow()) ?
+          sourceBlock.getParent().style.colourTertiary :
+          sourceBlock.style.colourTertiary;
+      const primaryColour = this.primaryColour || blockPrimaryColour;
+      const borderColour = this.borderColour || blockBorderColour;
+      Blockly.DropDownDiv.setColour(primaryColour, borderColour);
+    }
 
     Blockly.utils.dom.addClass(
         this.menu_.getElement(), 'fieldGridDropDownContainer');
@@ -162,7 +165,7 @@ Blockly.Css.register(`
 }
 /* Change look of focus/highlighted cell */
 .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
-  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
 }
 .fieldGridDropDownContainer .blocklyMenuItemHighlight {
   /* Uses less selectors so as to not affect blocklyMenuItemSelected */

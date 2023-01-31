@@ -45,7 +45,7 @@ export class CodeGenerationTestCase {
    * Creates the block to use for this test case.
    * @param {!Blockly.Workspace} workspace The workspace context for this
    *    test.
-   * @return {!Blockly.Block} The block to use for the test case.
+   * @returns {!Blockly.Block} The block to use for the test case.
    */
   createBlock(workspace) {}
 }
@@ -109,7 +109,7 @@ export class SerializationTestCase {
  * Returns mocha test callback for code generation based on provided
  *    generator.
  * @param {!Blockly.Generator} generator The generator to use in test.
- * @return {function(!CodeGenerationTestCase):!Function} Function that
+ * @returns {function(!CodeGenerationTestCase):!Function} Function that
  *    returns mocha test callback based on test case.
  * @private
  */
@@ -148,7 +148,7 @@ export const runCodeGenerationTestSuites = (testSuites) => {
   /**
    * Creates function used to generate mocha test callback.
    * @param {!CodeGenerationTestSuite} suiteInfo The test suite information.
-   * @return {function(!CodeGenerationTestCase):!Function} Function that
+   * @returns {function(!CodeGenerationTestCase):!Function} Function that
    *    creates mocha test callback.
    */
   const createTestFn = (suiteInfo) => {
@@ -166,7 +166,7 @@ export const runSerializationTestSuite = (testCases) => {
   /**
    * Creates test callback for xmlToBlock test.
    * @param {!SerializationTestCase} testCase The test case information.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createSerializedDataToBlockTestCallback = (testCase) => {
     return function() {
@@ -184,7 +184,7 @@ export const runSerializationTestSuite = (testCases) => {
   /**
    * Creates test callback for xml round trip test.
    * @param {!SerializationTestCase} testCase The test case information.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createRoundTripTestCallback = (testCase) => {
     return function() {

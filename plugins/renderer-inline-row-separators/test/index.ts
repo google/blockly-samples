@@ -93,7 +93,7 @@ const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
  * Create a workspace.
  * @param blocklyDiv The blockly container div.
  * @param options The Blockly options.
- * @return The created workspace.
+ * @returns The created workspace.
  */
 function createWorkspace(blocklyDiv: HTMLElement,
     options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {

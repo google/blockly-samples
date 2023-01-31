@@ -62,7 +62,7 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
 
   /**
    * Returns whether the scroll area has fixed edges.
-   * @return {boolean} Whether the scroll area has fixed edges.
+   * @returns {boolean} Whether the scroll area has fixed edges.
    * @package
    * @override
    */
@@ -75,7 +75,7 @@ export class FixedEdgesMetricsManager extends Blockly.MetricsManager {
    * @param {!Blockly.MetricsManager.ContainerRegion=} cachedViewMetrics The
    *     view metrics if they have been previously computed. Passing in null may
    *     cause the view metrics to be computed again, if it is needed.
-   * @return {!Blockly.MetricsManager.FixedEdges} The fixed edges of the scroll
+   * @returns {!Blockly.MetricsManager.FixedEdges} The fixed edges of the scroll
    *     area.
    * @protected
    * @override

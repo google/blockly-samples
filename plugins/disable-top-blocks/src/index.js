@@ -58,7 +58,7 @@ export class DisableTopBlocks {
  * attached to something). This means all children of orphan blocks are also
  * orphans and cannot be manually re-enabled.
  * @param {!Blockly.BlockSvg} block Block to check.
- * @return {boolean} Whether the block is an orphan.
+ * @returns {boolean} Whether the block is an orphan.
  */
 function isOrphan(block) {
   // If the parent is an orphan block, this block should also be considered

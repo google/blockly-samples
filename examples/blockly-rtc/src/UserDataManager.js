@@ -97,19 +97,19 @@ export default class UserDataManager {
 
   /**
    * Get the workspace that corresponds to workspaceId.
-   * @return {Blockly.Workspace} The sought after workspace or null if not found.
+   * @returns {Blockly.Workspace} The sought after workspace or null if not found.
    * @private
-   */  
+   */
   getWorkspace_() {
     return Blockly.Workspace.getById(this.workspaceId);
   };
 
   /**
    * Get the MarkerManager for the workspace.
-   * @return {Blockly.MarkerManager} The sought after MarkerManager or null if not
+   * @returns {Blockly.MarkerManager} The sought after MarkerManager or null if not
    * found.
    * @private
-   */  
+   */
   getMarkerManager_() {
     return this.getWorkspace_() ?
         this.getWorkspace_().getMarkerManager(): null;
@@ -119,7 +119,7 @@ export default class UserDataManager {
    * Get a color to assign to a new user marker.
    * @returns {string} The string encoding a colour.
    * @private
-   */  
+   */
   getColour_() {
     const colour = this.colours.shift();
     this.colours.push(colour);
@@ -169,7 +169,7 @@ export default class UserDataManager {
    * @returns {Blockly.Marker} The Marker for the user if it exists, otherwise
    * null.
    * @private
-   */  
+   */
   getMarker(workspaceId) {
     return this.getMarkerManager_() ?
         this.getMarkerManager_().getMarker(workspaceId) : null;
@@ -190,7 +190,7 @@ export default class UserDataManager {
       if (this.getMarker(positionUpdate.workspaceId)) {
         this.getMarker(positionUpdate.workspaceId).setCurNode(node);
       } else {
-        this.createMarker_(positionUpdate).setCurNode(node);        
+        this.createMarker_(positionUpdate).setCurNode(node);
       };
     });
   };

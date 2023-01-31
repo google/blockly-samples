@@ -38,7 +38,7 @@ class Database {
   /**
    * Query the database for entries since the given server id.
    * @param {number} serverId serverId for the lower bound of the query.
-   * @return {!Promise} Promise object represents the entries since the last
+   * @returns {!Promise} Promise object represents the entries since the last
    * given serverId.
    * @public
    */
@@ -64,7 +64,7 @@ class Database {
    * For each user, an addition is valid if the entryNumber is greater than the
    * entryNumber of its last added entry.
    * @param {!LocalEntry} entry The entry to be added to the database.
-   * @return {!Promise} Promise object with the serverId of the entry written to
+   * @returns {!Promise} Promise object with the serverId of the entry written to
    * the database.
    * @public
    */
@@ -90,7 +90,7 @@ class Database {
   /**
    * Run query to add an entry to the database.
    * @param {!LocalEntry} entry The entry to be added to the database.
-   * @return {!Promise} Promise object with the serverId for the entry if the
+   * @returns {!Promise} Promise object with the serverId for the entry if the
    * write succeeded.
    * @private
    */
@@ -122,7 +122,7 @@ class Database {
    * @param {!string} workspaceId The workspaceId of the user.
    * @param {!number} entryNumber The numeric ID assigned to an entry by the
    * user.
-   * @return {!Promise} Promise object represents the success of the update.
+   * @returns {!Promise} Promise object represents the success of the update.
    * @private
    */
   updateLastEntryNumber_(workspaceId, entryNumber) {
@@ -143,7 +143,7 @@ class Database {
   /**
    * Get the lastEntryNumber for a given user.
    * @param {!string} workspaceId The workspaceId of the user.
-   * @return {!Promise} Promise object with the the numeric ID assigned to an
+   * @returns {!Promise} Promise object with the the numeric ID assigned to an
    * entry by the user.
    * @private
    */
@@ -185,12 +185,12 @@ class Database {
    * Query the position for the given user. If no user is specified will
    * return the positions of all users.
    * @param {string=} workspaceId workspaceId of the user.
-   * @return {!Promise} Promise object with an array of positionUpdate objects.
+   * @returns {!Promise} Promise object with an array of positionUpdate objects.
    * @public
    */
   getPositionUpdates(workspaceId) {
     return new Promise((resolve, reject) => {
-      const sql = workspaceId ? 
+      const sql = workspaceId ?
           `SELECT workspaceId, position from users
           WHERE
           (EXISTS (SELECT 1 from users WHERE workspaceId == ${workspaceId}))
@@ -214,7 +214,7 @@ class Database {
    * Update the position in the users table for a given user.
    * @param {!Object} positionUpdate The positionUpdate with the new
    * position for a given user.
-   * @return {!Promise} Promise object represents the success of the update.
+   * @returns {!Promise} Promise object represents the success of the update.
    * @public
    */
   updatePosition(positionUpdate) {
@@ -243,7 +243,7 @@ class Database {
    * Delete a user from the users table.
    * @param {string} workspaceId The workspaceId of the user to be removed from
    * the users table.
-   * @return {!Promise} Promise object represents the success of the deletion.
+   * @returns {!Promise} Promise object represents the success of the deletion.
    * @public
    */
   deleteUser(workspaceId) {
@@ -262,7 +262,7 @@ class Database {
 
   /**
    * Retrieve the latest snapshot of the workspace.
-   * @return {!Snapshot} The latest snapshot of the workspace.
+   * @returns {!Snapshot} The latest snapshot of the workspace.
    * @public
    */
   async getSnapshot() {
@@ -272,7 +272,7 @@ class Database {
 
   /**
    * Update the snapshot of the workspace.
-   * @return {!Promise} Promise object that represents the success of the
+   * @returns {!Promise} Promise object that represents the success of the
    * update.
    * @private
    */
@@ -287,7 +287,7 @@ class Database {
       const workspace = new Blocky.Workspace();
       if (this.snapshot.xml) {
         const xml = Blocky.Xml.textToDom(this.snapshot.xml);
-        Blocky.Xml.domToWorkspace(xml, workspace);  
+        Blocky.Xml.domToWorkspace(xml, workspace);
       };
       // Play events since the last time the snapshot was generated.
       newEntries.forEach((entry) => {
