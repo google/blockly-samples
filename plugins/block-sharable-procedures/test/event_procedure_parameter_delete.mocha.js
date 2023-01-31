@@ -225,7 +225,7 @@ suite('Procedure Parameter Delete Event', function() {
               .insertParameter(param, 0);
       this.procedureMap.add(model);
       const origEvent = new ProcedureParameterDelete(
-          this.workspace, model);
+          this.workspace, model, param, 0);
 
       const json = origEvent.toJson();
       const newEvent = Blockly.Events.fromJson(json, this.workspace);

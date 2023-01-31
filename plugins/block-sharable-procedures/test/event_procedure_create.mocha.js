@@ -139,7 +139,7 @@ suite('Procedure Create Event', function() {
         eventTestHelpers.assertEventFiredShallow(
             this.eventSpy,
             ProcedureDelete,
-            {model},
+            {procedure: model},
             this.workspace.id);
       });
 
