@@ -29,9 +29,15 @@ function createWorkspace(blocklyDiv, options) {
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
-    toolbox: `<xml xmlns="https://developers.google.com/blockly/xml">
-      ${allBlocks.map((b) => `<block type="${b}"></block>`)}
-    </xml>`,
+    toolbox: {
+      'kind': 'flyoutToolbox',
+      'contents': allBlocks.map((b) => {
+        return {
+          'kind': 'block',
+          'type': b,
+        };
+      }),
+    },
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
