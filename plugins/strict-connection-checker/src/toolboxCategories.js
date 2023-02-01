@@ -384,16 +384,6 @@ export default {
           'fields': {
             'name': 'item',
           },
-          'inputs': {
-            'TEXT': {
-              'shadow': {
-                'type': 'text',
-                'fields': {
-                  'TEXT': '',
-                },
-              },
-            },
-          },
         },
         {
           'type': 'text_length',
@@ -429,44 +419,12 @@ export default {
           'fields': {
             'END': 'FIRST',
           },
-          'inputs': {
-            'VALUE': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'text',
-                  },
-                },
-              },
-            },
-            'FIND': {
-              'shadow': {
-                'type': 'text',
-                'fields': {
-                  'TEXT': 'abc',
-                },
-              },
-            },
-          },
         },
         {
           'type': 'text_charAt',
           'kind': 'block',
           'fields': {
             'WHERE': 'FROM_START',
-          },
-          'inputs': {
-            'VALUE': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'text',
-                  },
-                },
-              },
-            },
           },
         },
         {
@@ -475,18 +433,6 @@ export default {
           'fields': {
             'WHERE1': 'FROM_START',
             'WHERE2': 'FROM_START',
-          },
-          'inputs': {
-            'STRING': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'text',
-                  },
-                },
-              },
-            },
           },
         },
         {
@@ -589,7 +535,6 @@ export default {
             },
           },
         },
-
         {
           'type': 'text_print',
           'kind': 'block',
@@ -597,9 +542,6 @@ export default {
         {
           'type': 'text_prompt_ext',
           'kind': 'block',
-          'fields': {
-            'TYPE': 'TEXT',
-          },
         },
       ],
     },
@@ -641,21 +583,8 @@ export default {
         {
           'type': 'lists_indexOf',
           'kind': 'block',
-
           'fields': {
             'END': 'FIRST',
-          },
-          'inputs': {
-            'VALUE': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'list',
-                  },
-                },
-              },
-            },
           },
         },
         {
@@ -665,18 +594,6 @@ export default {
             'MODE': 'GET',
             'WHERE': 'FROM_START',
           },
-          'inputs': {
-            'VALUE': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'list',
-                  },
-                },
-              },
-            },
-          },
         },
         {
           'type': 'lists_setIndex',
@@ -684,18 +601,6 @@ export default {
           'fields': {
             'MODE': 'SET',
             'WHERE': 'FROM_START',
-          },
-          'inputs': {
-            'LIST': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'list',
-                  },
-                },
-              },
-            },
           },
         },
         {
@@ -705,23 +610,10 @@ export default {
             'WHERE1': 'FROM_START',
             'WHERE2': 'FROM_START',
           },
-          'inputs': {
-            'LIST': {
-              'block': {
-                'type': 'variables_get',
-                'fields': {
-                  'VAR': {
-                    'name': 'list',
-                  },
-                },
-              },
-            },
-          },
         },
         {
           'type': 'lists_split',
           'kind': 'block',
-
           'fields': {
             'MODE': 'SPLIT',
           },
@@ -739,7 +631,6 @@ export default {
         {
           'type': 'lists_sort',
           'kind': 'block',
-
           'fields': {
             'TYPE': 'NUMERIC',
             'DIRECTION': '1',
@@ -837,7 +728,6 @@ export default {
       'name': 'Variables',
       'custom': 'VARIABLE',
       'categorystyle': 'variable_category',
-
     },
     {
       'kind': 'category',
