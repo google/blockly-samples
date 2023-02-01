@@ -71,7 +71,13 @@ module.exports = {
         'forceRequireReturn': false,
       },
     ],
-    'jsdoc/require-description': 'warn',
+    'jsdoc/require-description': [
+      'warn',
+      {
+        // Don't require descriptions if these tags are present.
+        'exemptedBy': ['inheritdoc', 'param', 'return', 'returns', 'type'],
+      },
+    ],
     'jsdoc/check-tag-names': 'off',
     'jsdoc/check-access': 'warn',
     'jsdoc/check-types': 'off',
@@ -107,6 +113,9 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       settings: {
         jsdoc: {
+          tagNamePreference: {
+            'returns': 'returns',
+          },
           mode: 'typescript',
         },
       },
