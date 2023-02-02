@@ -1,10 +1,6 @@
 {
   "name": "@blockly/block-sharable-procedures",
-<<<<<<< HEAD
   "version": "1.0.1",
-=======
-  "version": "1.0.0",
->>>>>>> 17a918d1 (fix: strict connection tidy up)
   "description": "A plugin that adds procedure blocks which are backed by explicit data models.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
