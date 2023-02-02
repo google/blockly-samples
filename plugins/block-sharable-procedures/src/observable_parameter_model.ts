@@ -34,7 +34,7 @@ export class ObservableParameterModel implements
   /**
    * Sets the name of this parameter to the given name.
    * @param name The string to set the name to.
-   * @return This parameter model.
+   * @returns This parameter model.
    */
   setName(name: string): this {
     if (name === this.variable.name) return this;
@@ -66,16 +66,14 @@ export class ObservableParameterModel implements
   }
 
   /**
-   * Returns the name of this parameter.
-   * @return the name of this parameter.
+   * @returns the name of this parameter.
    */
   getName(): string {
     return this.variable.name;
   }
 
   /**
-   * Returns the types of this parameter.
-   * @return the types of this parameter.
+   * @returns the types of this parameter.
    */
   getTypes(): string[] {
     return [];
@@ -84,15 +82,14 @@ export class ObservableParameterModel implements
   /**
    * Returns the unique language-neutral ID for the parameter. This represents
    * the identity of the variable model which does not change over time.
-   * @return The unique language-neutral ID for the parameter.
+   * @returns The unique language-neutral ID for the parameter.
    */
   getId(): string {
     return this.id;
   }
 
   /**
-   * Returns the variable model associated with the parameter model.
-   * @return the variable model associated with the parameter model.
+   * @returns the variable model associated with the parameter model.
    */
   getVariableModel(): Blockly.VariableModel {
     return this.variable;
@@ -117,12 +114,9 @@ export class ObservableParameterModel implements
   /**
    * Sets the procedure model this parameter is a part of.
    * @param model The procedure model this parameter is a part of.
-   * @return This parameter model.
+   * @returns This parameter model.
    */
   setProcedureModel(model: Blockly.procedures.IProcedureModel): this {
-    // TODO: Not sure if we want to do this, or accept it via the constructor.
-    //   That means it could be non-null, but it would also break the fluent
-    //   API.
     this.procedureModel = model;
     return this;
   }

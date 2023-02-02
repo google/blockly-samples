@@ -36,7 +36,7 @@ implements Blockly.procedures.IProcedureModel {
   /**
    * Sets the human-readable name of the procedure.
    * @param name The human-readable name of the procedure.
-   * @return This procedure model.
+   * @returns This procedure model.
    */
   setName(name: string): this {
     if (name === this.name) return this;
@@ -56,7 +56,7 @@ implements Blockly.procedures.IProcedureModel {
    * To move a parameter, first delete it, and then re-insert.
    * @param parameterModel The parameter model to insert.
    * @param index The index to insert it at.
-   * @return This procedure model.
+   * @returns This procedure model.
    */
   insertParameter(
       parameterModel: Blockly.procedures.IParameterModel, index: number): this {
@@ -88,7 +88,7 @@ implements Blockly.procedures.IProcedureModel {
   /**
    * Removes the parameter at the given index from the parameter list.
    * @param index The index of the parameter to remove.
-   * @return This procedure model.
+   * @returns This procedure model.
    */
   deleteParameter(index: number): this {
     if (!this.parameters[index]) return this;
@@ -116,7 +116,7 @@ implements Blockly.procedures.IProcedureModel {
    * return types (i.e. non-empty arrays, e.g. ['number']).
    * @param types Used to set whether this procedure has a return value
    *     (empty array) or no return value (null).
-   * @return This procedure model.
+   * @returns This procedure model.
    */
   setReturnTypes(types: string[]|null): this {
     if (types && types.length) {
@@ -141,7 +141,7 @@ implements Blockly.procedures.IProcedureModel {
    * Sets whether this procedure is enabled/disabled. If a procedure is disabled
    * all procedure caller blocks should be disabled as well.
    * @param enabled Whether this procedure is enabled/disabled.
-   * @return This procedure model.
+   * @returns This procedure model.
    */
   setEnabled(enabled: boolean): this {
     if (enabled === this.enabled) return this;
@@ -175,33 +175,29 @@ implements Blockly.procedures.IProcedureModel {
   }
 
   /**
-   * Returns the unique language-neutral ID for the procedure.
-   * @return The unique language-neutral ID for the procedure.
+   * @returns The unique language-neutral ID for the procedure.
    */
   getId(): string {
     return this.id;
   }
 
   /**
-   * Returns the human-readable name of the procedure.
-   * @return The human-readable name of the procedure
+   * @returns The human-readable name of the procedure
    */
   getName(): string {
     return this.name;
   }
 
   /**
-   * Returns the parameter at the given index in the parameter list.
    * @param index The index of the parameter to return.
-   * @return the parameter at the given index in the parameter list.
+   * @returns the parameter at the given index in the parameter list.
    */
   getParameter(index: number): Blockly.procedures.IParameterModel {
     return this.parameters[index];
   }
 
   /**
-   * Returns an array of all of the parameters in the parameter list.
-   * @return an array of all of the parameters in the parameter list.
+   * @returns an array of all of the parameters in the parameter list.
    */
   getParameters(): Blockly.procedures.IParameterModel[] {
     return [...this.parameters];
@@ -210,7 +206,7 @@ implements Blockly.procedures.IProcedureModel {
   /**
    * Returns the return type of the procedure.
    * Null represents a procedure that does not return a value.
-   * @return the return type of the procedure.
+   * @returns the return type of the procedure.
    */
   getReturnTypes(): string[]|null {
     return this.returnTypes;
@@ -219,7 +215,7 @@ implements Blockly.procedures.IProcedureModel {
   /**
    * Returns whether the procedure is enabled/disabled. If a procedure is
    * disabled, all procedure caller blocks should be disabled as well.
-   * @return Returns whether the procedure is enabled/disabled.
+   * @returns Returns whether the procedure is enabled/disabled.
    */
   getEnabled(): boolean {
     return this.enabled;
