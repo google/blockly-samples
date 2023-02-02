@@ -26,7 +26,7 @@ type RenderInfoConstructor = new (...args: any[]) =>
  *     the new renderer will be derived from.
  * @param renderInfoBase A class extending Blockly.blockRendering.RenderInfo
  *     that should be compatible with the provided rendererBase.
- * @return The new renderer class. It's up to you to register it with Blockly.
+ * @returns The new renderer class. It's up to you to register it with Blockly.
  */
 export function addInlineRowSeparators<
     RendererBase extends RendererConstructor,
@@ -45,7 +45,7 @@ export function addInlineRowSeparators<
      *
      * @param input The first input to consider
      * @param lastInput The input that follows.
-     * @return True if the next input should be rendered on a new row.
+     * @returns True if the next input should be rendered on a new row.
      */
     protected shouldStartNewRow_(
         input: Blockly.Input, lastInput?: Blockly.Input): boolean {
@@ -66,7 +66,7 @@ export function addInlineRowSeparators<
      * Create a new instance of the renderer's render info object.
      *
      * @param block The block to measure.
-     * @return The render info object.
+     * @returns The render info object.
      */
     protected makeRenderInfo_(block: Blockly.BlockSvg):
         InlineRenderInfo {

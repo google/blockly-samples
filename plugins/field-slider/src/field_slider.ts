@@ -67,7 +67,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Constructs a FieldSlider from a JSON arg object.
    * @param options A JSON object with options (value, min, max, and
    *                          precision).
-   * @return The new field instance.
+   * @returns The new field instance.
    * @package
    * @nocollapse
    */
@@ -122,7 +122,7 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Creates the slider editor and add event listeners.
-   * @return The newly created slider.
+   * @returns The newly created slider.
    */
   private dropdownCreate_(): HTMLElement {
     const wrapper = document.createElement('div') as HTMLElement;

@@ -57,7 +57,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    * @override
    */
   toJson(): BlockChangeJson {
