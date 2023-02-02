@@ -40,13 +40,13 @@ implements Blockly.procedures.IProcedureModel {
    */
   setName(name: string): this {
     if (name === this.name) return this;
-    const prevName = this.name;
+    const oldName = this.name;
     this.name = name;
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
       // Blockly.Events.fire(
       //     new (Blockly.Events.get(Blockly.Events.PROCEDURE_RENAME))(
-      //         this.workspace, this, prevName));
+      //         this.workspace, this, oldName));
     }
     return this;
   }
