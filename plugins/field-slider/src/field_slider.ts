@@ -67,7 +67,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Constructs a FieldSlider from a JSON arg object.
    * @param options A JSON object with options
    *     (value, min, max, precision).
-   * @returs The new field instance.
+   * @returns The new field instance.
    * @package
    * @nocollapse
    */
