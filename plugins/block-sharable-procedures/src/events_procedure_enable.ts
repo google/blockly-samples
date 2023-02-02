@@ -58,7 +58,7 @@ export class ProcedureEnable extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureEnableJson {
     return super.toJson() as ProcedureEnableJson;
@@ -68,7 +68,7 @@ export class ProcedureEnable extends ProcedureBase {
    * Deserializes the JSON event.
    * @param json The JSON representation of a procedure enable event.
    * @param workspace The workspace to deserialize the event into.
-   * @return The new procedure enable event.
+   * @returns The new procedure enable event.
    * @internal
    */
   static fromJson(json: ProcedureEnableJson, workspace: Blockly.Workspace):

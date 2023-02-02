@@ -28,7 +28,7 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureParameterBaseJson {
     const json = super.toJson() as ProcedureParameterBaseJson;

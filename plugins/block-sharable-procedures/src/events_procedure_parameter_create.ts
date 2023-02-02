@@ -60,7 +60,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
   /**
    * Returns true if the given parameter is identical to this parameter.
    * @param param The parameter to check for equivalence.
-   * @return True if the parameter matches, false if it does not.
+   * @returns True if the parameter matches, false if it does not.
    */
   parameterMatches(param: Blockly.procedures.IParameterModel) {
     return param && param.getId() === this.parameter.getId();
@@ -68,7 +68,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureParameterCreateJson {
     const json = super.toJson() as ProcedureParameterCreateJson;
@@ -82,7 +82,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
    * Deserializes the JSON event.
    * @param json The JSON representation of a procedure parameter create event.
    * @param workspace The workspace to deserialize the event into.
-   * @return The new procedure parameter create event.
+   * @returns The new procedure parameter create event.
    * @internal
    */
   static fromJson(

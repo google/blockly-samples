@@ -63,7 +63,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureParameterRenameJson {
     const json = super.toJson() as ProcedureParameterRenameJson;
@@ -75,7 +75,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
    * Deserializes the JSON event.
    * @param json The JSON representation of a procedure parameter rename event.
    * @param workspace The workspace to deserialize the event into.
-   * @return The new procedure parameter rename event.
+   * @returns The new procedure parameter rename event.
    * @internal
    */
   static fromJson(
@@ -106,7 +106,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
  * @param workspace The workspace to search for the parameter.
  * @param modelId The ID of the model to search for the parameter.
  * @param paramId The ID of the parameter to search for.
- * @return The parameter model that was found.
+ * @returns The parameter model that was found.
  */
 function findMatchingParameter(
     workspace: Blockly.Workspace,

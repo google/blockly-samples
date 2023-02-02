@@ -59,7 +59,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureChangeReturnJson {
     const json = super.toJson() as ProcedureChangeReturnJson;
@@ -71,7 +71,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
    * Deserializes the JSON event.
    * @param json The JSON representation of a procedure change event.
    * @param workspace The workspace to deserialize the event into.
-   * @return The new procedure change return event.
+   * @returns The new procedure change return event.
    * @internal
    */
   static fromJson(

@@ -26,7 +26,7 @@ export abstract class ProcedureBase extends Blockly.Events.Abstract {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureBaseJson {
     const json = super.toJson() as ProcedureBaseJson;

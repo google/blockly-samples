@@ -54,7 +54,7 @@ export class ProcedureRename extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): ProcedureRenameJson {
     const json = super.toJson() as ProcedureRenameJson;
@@ -66,7 +66,7 @@ export class ProcedureRename extends ProcedureBase {
    * Deserializes the JSON event.
    * @param json The JSON representation of a procedure rename event.
    * @param workspace The workspace to deserialize the event into.
-   * @return The new procedure rename event.
+   * @returns The new procedure rename event.
    * @internal
    */
   static fromJson(json: ProcedureRenameJson, workspace: Blockly.Workspace):
