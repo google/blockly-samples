@@ -20,7 +20,7 @@ export interface IProcedureBlock {
 /**
  * A type guard which checks if the given block is a procedure block.
  * @param block The block to check for procedure-y-ness.
- * @return Whether this block is a procedure block or not.
+ * @returns Whether this block is a procedure block or not.
  */
 export function isProcedureBlock(block: Blockly.Block |
   IProcedureBlock): block is IProcedureBlock {

@@ -17,6 +17,12 @@ export {
   blocks,
 };
 
+/**
+ * Unregisters all of the procedure blocks.
+ *
+ * Usually used to unregister the built-in blocks, before register the
+ * blocks provided by this plugin.
+ */
 export function unregisterProcedureBlocks() {
   delete Blockly.Blocks['procedures_defnoreturn'];
   delete Blockly.Blocks['procedures_callnoreturn'];

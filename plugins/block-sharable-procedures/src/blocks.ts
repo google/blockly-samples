@@ -166,7 +166,7 @@ const procedureDefGetDefMixin = function() {
 
     /**
      * Returns the data model for this procedure block.
-     * @return The data model for this procedure
+     * @returns The data model for this procedure
      *     block.
      */
     getProcedureModel() {
@@ -176,7 +176,7 @@ const procedureDefGetDefMixin = function() {
     /**
      * True if this is a procedure definition block, false otherwise (i.e.
      * it is a caller).
-     * @return True because this is a procedure definition block.
+     * @returns True because this is a procedure definition block.
      */
     isProcedureDef() {
       return true;
@@ -184,7 +184,7 @@ const procedureDefGetDefMixin = function() {
 
     /**
      * Return all variables referenced by this block.
-     * @return List of variable names.
+     * @returns List of variable names.
      * @this {Blockly.Block}
      */
     getVars: function() {
@@ -194,7 +194,7 @@ const procedureDefGetDefMixin = function() {
 
     /**
      * Return all variables referenced by this block.
-     * @return List of variable models.
+     * @returns List of variable models.
      * @this {Blockly.Block}
      */
     getVarModels: function() {
@@ -373,7 +373,7 @@ const procedureDefMutator = {
    * Backwards compatible serialization implementation.
    * @param opt_paramIds If true include the IDs of the parameter
    *     quarks.  Used by Blockly.Procedures.mutateCallers for reconnection.
-   * @return XML storage element.
+   * @returns XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function(opt_paramIds) {
@@ -425,7 +425,7 @@ const procedureDefMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return The state of this block, eg the parameters and statements.
+   * @returns The state of this block, eg the parameters and statements.
    */
   saveExtraState: function() {
     const state = Object.create(null);
@@ -489,7 +489,7 @@ const procedureDefMutator = {
    * given procedure ID. False otherwise.
    * @param procedureId The ID of the procedure to check for a claiming
    *     block.
-   * @return True if there is no definition block currently associated
+   * @returns True if there is no definition block currently associated
    *     with the given procedure ID. False otherwise.
    */
   noBlockHasClaimedModel_(procedureId) {
@@ -502,7 +502,7 @@ const procedureDefMutator = {
   /**
    * Populate the mutator's dialog with this block's components.
    * @param workspace Blockly.Mutator's workspace.
-   * @return Root block in mutator.
+   * @returns Root block in mutator.
    * @this {Blockly.Block}
    */
   decompose: function(workspace) {
@@ -678,7 +678,7 @@ Blockly.Extensions.register(
 const procedureDefNoReturnGetCallerBlockMixin = {
   /**
    * Return the signature of this procedure definition.
-   * @return Tuple containing three elements:
+   * @returns Tuple containing three elements:
    *     - the name of the defined procedure,
    *     - a list of all its arguments,
    *     - that it DOES NOT have a return value.
@@ -697,7 +697,7 @@ Blockly.Extensions.registerMixin(
 const procedureDefReturnGetCallerBlockMixin = {
   /**
    * Return the signature of this procedure definition.
-   * @return Tuple containing three elements:
+   * @returns Tuple containing three elements:
    *     - the name of the defined procedure,
    *     - a list of all its arguments,
    *     - that it DOES have a return value.
@@ -735,7 +735,7 @@ const procedureCallerGetDefMixin = function() {
 
     /**
      * Returns the procedure model associated with this block.
-     * @return The procedure model associated with this block.
+     * @returns The procedure model associated with this block.
      */
     getProcedureModel() {
       return this.model_;
@@ -746,7 +746,7 @@ const procedureCallerGetDefMixin = function() {
      * @param name The name of the procedure model to find.
      * @param params The param names of the procedure model
      *     to find.
-     * @return The procedure model that was found.
+     * @returns The procedure model that was found.
      */
     findProcedureModel_(name, params = []) {
       const workspace = this.getTargetWorkspace_();
@@ -768,7 +768,7 @@ const procedureCallerGetDefMixin = function() {
     /**
      * Returns the main workspace (i.e. not the flyout workspace) associated
      * with this block.
-     * @return The main workspace (i.e. not the flyout workspace) associated
+     * @returns The main workspace (i.e. not the flyout workspace) associated
      *     with this block.
      */
     getTargetWorkspace_() {
@@ -778,7 +778,7 @@ const procedureCallerGetDefMixin = function() {
 
     /**
      * Returns the name of the procedure this block calls.
-     * @return Procedure name.
+     * @returns Procedure name.
      * @this {Blockly.Block}
      */
     getProcedureCall: function() {
@@ -789,7 +789,7 @@ const procedureCallerGetDefMixin = function() {
     /**
      * True if this is a procedure definition block, false otherwise (i.e.
      * it is a caller).
-     * @return False because this is not a procedure definition block.
+     * @returns False because this is not a procedure definition block.
      */
     isProcedureDef() {
       return false;
@@ -797,7 +797,7 @@ const procedureCallerGetDefMixin = function() {
 
     /**
      * Return all variables referenced by this block.
-     * @return List of variable names.
+     * @returns List of variable names.
      * @this {Blockly.Block}
      */
     getVars: function() {
@@ -807,7 +807,7 @@ const procedureCallerGetDefMixin = function() {
 
     /**
      * Return all variables referenced by this block.
-     * @return List of variable models.
+     * @returns List of variable models.
      * @this {Blockly.Block}
      */
     getVarModels: function() {
@@ -831,7 +831,7 @@ const procedureCallerMutator = {
   /**
    * Create XML to represent the (non-editable) name and arguments.
    * Backwards compatible serialization implementation.
-   * @return XML storage element.
+   * @returns XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -867,7 +867,7 @@ const procedureCallerMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return The state of
+   * @returns The state of
    *     this block, ie the params and procedure name.
    */
   saveExtraState: function() {
@@ -1103,7 +1103,7 @@ const procedureCallerOnChangeMixin = {
    * Returns true if the given def block matches the definition of this caller
    * block.
    * @param defBlock The definition block to check against.
-   * @return Whether the def block matches or not.
+   * @returns Whether the def block matches or not.
    */
   defMatches_(defBlock) {
     return defBlock && defBlock.type === this.defType_ &&
@@ -1116,7 +1116,7 @@ const procedureCallerOnChangeMixin = {
    * and returns the procedure model associated with it.
    * @param name The name of the procedure to create.
    * @param params The names of the parameters to create.
-   * @return The procedure model associated with the new
+   * @returns The procedure model associated with the new
    *     procedure definition block.
    */
   createDef_(name, params = []) {
