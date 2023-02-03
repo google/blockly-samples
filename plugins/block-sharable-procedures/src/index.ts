@@ -5,16 +5,21 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {blocks} from './blocks';
+import {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
 import {ObservableParameterModel} from './observable_parameter_model';
 import {ObservableProcedureModel} from './observable_procedure_model';
-import {blocks} from './blocks';
+import {triggerProceduresUpdate} from './update_procedures';
 
 console.log(blocks);
 
 export {
+  blocks,
+  IProcedureBlock,
+  isProcedureBlock,
   ObservableParameterModel,
   ObservableProcedureModel,
-  blocks,
+  triggerProceduresUpdate,
 };
 
 /**
