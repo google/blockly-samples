@@ -27,6 +27,16 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
   }
 
   /**
+   * Returns true if the given parameter is identical to this parameter.
+   * @param param The parameter to check for equivalence.
+   * @returns True if the parameter matches, false if it does not.
+   */
+  protected parameterMatches(
+      param: Blockly.procedures.IParameterModel): boolean {
+    return param.getId() === this.parameter.getId();
+  }
+
+  /**
    * Encode the event as JSON.
    * @returns JSON representation.
    */

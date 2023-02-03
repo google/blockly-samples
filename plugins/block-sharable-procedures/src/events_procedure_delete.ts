@@ -20,17 +20,6 @@ export class ProcedureDelete extends ProcedureBase {
   type = TYPE;
 
   /**
-   * Constructs the procedure delete event.
-   * @param workspace The workspace this event is associated with.
-   * @param procedure The procedure model this event is associated with.
-   */
-  constructor(
-      workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel) {
-    super(workspace, procedure);
-  }
-
-  /**
    * Replays the event in the workspace.
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).

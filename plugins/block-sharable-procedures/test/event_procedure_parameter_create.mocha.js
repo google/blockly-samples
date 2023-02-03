@@ -188,10 +188,19 @@ suite('Procedure Parameter Create Event', function() {
       });
 
       test(
-          'a parameter is not deleted if a parameter with a ' +
+          'running the event throws if a parameter with a ' +
           'matching ID and index does not exist',
           function() {
             // TODO: Figure out what we want to do in this case.
+            const {param, proc} =
+            this.createProcedureAndParameter(
+                'test name', 'test id', 'test param name', 'test param id');
+            const event = this.createEventToState(proc, param);
+
+            this.eventSpy.resetHistory();
+            chai.assert.throws(() => {
+              event.run(/* forward= */ false);
+            });
           });
 
       test('not removing a parameter does not fire a delete event', function() {

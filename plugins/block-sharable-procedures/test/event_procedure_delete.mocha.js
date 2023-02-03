@@ -148,7 +148,7 @@ suite('Procedure Delete Event', function() {
         this.procedureMap.add(model);
 
         this.eventSpy.resetHistory();
-        event.run(/* forward= */ true);
+        event.run(/* forward= */ false);
         this.clock.runAll();
 
         testHelpers.assertEventNotFired(

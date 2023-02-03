@@ -10,8 +10,6 @@ import {ProcedureParameterBase, ProcedureParameterBaseJson} from './events_proce
 
 const TYPE = 'procedure_parameter_rename';
 
-// TODO: Maybe delete this event since I don't think we're firing it.
-
 /**
  * Notifies listeners that a procedure parameter was renamed.
  */
@@ -49,11 +47,6 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
         this.getEventWorkspace_(),
         this.procedure.getId(),
         this.parameter.getId());
-    if (!parameterModel) {
-      throw new Error(
-          'Cannot rename a parameter that does not exist ' +
-          'in the procedure map');
-    }
     if (forward) {
       parameterModel.setName(this.newName);
     } else {
@@ -83,18 +76,8 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
       workspace: Blockly.Workspace
   ): ProcedureParameterRename {
     const model = workspace.getProcedureMap().get(json['procedureId']);
-    if (!model) {
-      throw new Error(
-          'Cannot deserialize procedure delete event because the ' +
-          'target procedure does not exist');
-    }
     const param = findMatchingParameter(
         workspace, json['procedureId'], json['parameterId']);
-    if (!param) {
-      throw new Error(
-          'Cannot deserialize parameter rename event because the ' +
-          'target parameter does not exist');
-    }
     return new ProcedureParameterRename(
         workspace, model, param, json['oldName']);
   }
@@ -112,14 +95,21 @@ function findMatchingParameter(
     workspace: Blockly.Workspace,
     modelId: string,
     paramId: string
-): Blockly.procedures.IParameterModel|undefined {
+): Blockly.procedures.IParameterModel {
   const procedureModel = workspace.getProcedureMap().get(modelId);
   if (!procedureModel) {
     throw new Error(
         'Cannot rename the parameter of a procedure that does not exist ' +
         'in the procedure map');
   }
-  return procedureModel.getParameters().find((p) => p.getId() === paramId);
+  const param = procedureModel.getParameters()
+      .find((p) => p.getId() === paramId);
+  if (!param) {
+    throw new Error(
+        'Cannot rename a parameter that does not exist in ' +
+        'its associated procedure');
+  }
+  return param;
 }
 
 export interface ProcedureParameterRenameJson extends

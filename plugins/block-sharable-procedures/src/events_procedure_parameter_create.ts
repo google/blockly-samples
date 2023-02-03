@@ -49,21 +49,12 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
     }
     const parameterModel = procedureModel.getParameter(this.index);
     if (forward) {
-      if (this.parameterMatches(parameterModel)) return;
+      if (parameterModel && this.parameterMatches(parameterModel)) return;
       procedureModel.insertParameter(this.parameter, this.index);
     } else {
-      if (!this.parameterMatches(parameterModel)) return;
+      if (!parameterModel || !this.parameterMatches(parameterModel)) return;
       procedureModel.deleteParameter(this.index);
     }
-  }
-
-  /**
-   * Returns true if the given parameter is identical to this parameter.
-   * @param param The parameter to check for equivalence.
-   * @returns True if the parameter matches, false if it does not.
-   */
-  parameterMatches(param: Blockly.procedures.IParameterModel) {
-    return param && param.getId() === this.parameter.getId();
   }
 
   /**
