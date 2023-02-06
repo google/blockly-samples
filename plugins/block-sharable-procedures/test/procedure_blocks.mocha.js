@@ -16,6 +16,7 @@ const {
   createProcCallBlock,
   createProcDefBlock,
 } = require('./procedure_test_helpers');
+const {testHelpers} = require('@blockly/dev-tools');
 const {ObservableParameterModel} = require('../src/observable_parameter_model');
 const {blocks} = require('../src/blocks');
 const {unregisterProcedureBlocks} = require('../src/index');
@@ -1624,4 +1625,481 @@ suite('Procedures', function() {
           'second param');
     });
   });
+
+  suite('full workspace serialization test cases', function() {
+    test('definitions with parameters are properly rendered', function() {
+      Blockly.serialization.workspaces.load({
+        'blocks': {
+          'languageVersion': 0,
+          'blocks': [
+            {
+              'type': 'procedures_defnoreturn',
+              'extraState': {
+                'procedureId': 'procId',
+                'params': [
+                  {
+                    'name': 'x',
+                    'id': 'varId',
+                    'paramId': 'paramId',
+                  },
+                ],
+              },
+              'fields': {
+                'NAME': 'do something',
+              },
+            },
+          ],
+        },
+        'procedures': [
+          {
+            'id': 'procId',
+            'name': 'do something',
+            'returnTypes': null,
+            'parameters': [
+              {
+                'id': 'paramId',
+                'name': 'x',
+              },
+            ],
+          },
+        ],
+        'variables': [
+          {
+            'name': 'x',
+            'id': 'varId',
+          },
+        ],
+      }, this.workspace);
+      assertDefBlockStructure(
+          this.workspace.getTopBlocks(false)[0], false, ['x'], ['varId']);
+    });
+
+    test(
+        'multiple definitions pointing to the same model end up with ' +
+        'different models',
+        function() {
+          Blockly.serialization.workspaces.load({
+            'blocks': {
+              'languageVersion': 0,
+              'blocks': [
+                {
+                  'type': 'procedures_defnoreturn',
+                  'extraState': {
+                    'procedureId': 'procId',
+                  },
+                  'fields': {
+                    'NAME': 'do something',
+                  },
+                },
+                {
+                  'type': 'procedures_defnoreturn',
+                  'y': 10,
+                  'extraState': {
+                    'procedureId': 'procId',
+                  },
+                  'fields': {
+                    'NAME': 'do something',
+                  },
+                },
+              ],
+            },
+            'procedures': [
+              {
+                'id': 'procId',
+                'name': 'do something',
+                'returnTypes': null,
+              },
+            ],
+          }, this.workspace);
+          const def1 = this.workspace.getTopBlocks(true)[0];
+          const def2 = this.workspace.getTopBlocks(true)[1];
+          chai.assert.equal(
+              def1.getProcedureModel().getName(),
+              'do something',
+              'Expected the first procedure definition to have the ' +
+              'name in XML');
+          chai.assert.equal(
+              def2.getProcedureModel().getName(),
+              'do something2',
+              'Expected the second procedure definition to be renamed');
+          chai.assert.notEqual(
+              def1.getProcedureModel(),
+              def2.getProcedureModel(),
+              'Expected the procedures to have different models');
+        });
+  });
+
+  const xmlTestCases = [
+    {
+      title: 'XML - Minimal definition',
+      xml: '<block type="procedures_defnoreturn"/>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_defnoreturn" id="1">\n' +
+              '  <field name="NAME">unnamed</field>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, false);
+              },
+    },
+    {
+      title: 'XML - Common definition',
+      xml:
+              '<block type="procedures_defnoreturn">' +
+              '  <field name="NAME">do something</field>' +
+              '</block>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_defnoreturn" id="1">\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, false);
+              },
+    },
+    {
+      title: 'XML - With vars definition',
+      xml:
+              '<block type="procedures_defnoreturn">\n' +
+              '  <mutation>\n' +
+              '    <arg name="x" varid="arg1"></arg>\n' +
+              '    <arg name="y" varid="arg2"></arg>\n' +
+              '  </mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_defnoreturn" id="1">\n' +
+              '  <mutation>\n' +
+              '    <arg name="x" varid="arg1"></arg>\n' +
+              '    <arg name="y" varid="arg2"></arg>\n' +
+              '  </mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(
+                    block, false, ['x', 'y'], ['arg1', 'arg2']);
+              },
+    },
+    {
+      title: 'XML - With pre-created vars definition',
+      xml:
+              '<block type="procedures_defnoreturn">\n' +
+              '  <mutation>\n' +
+              '    <arg name="preCreatedVar" varid="preCreatedVarId"></arg>\n' +
+              '  </mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_defnoreturn" id="1">\n' +
+              '  <mutation>\n' +
+              '    <arg name="preCreatedVar" varid="preCreatedVarId"></arg>\n' +
+              '  </mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, false,
+                    ['preCreatedVar'], ['preCreatedVarId']);
+              },
+    },
+    {
+      title: 'XML - No statements definition',
+      xml:
+              '<block type="procedures_defreturn">\n' +
+              '  <mutation statements="false"></mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_defreturn" id="1">\n' +
+              '  <mutation statements="false"></mutation>\n' +
+              '  <field name="NAME">do something</field>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, true, [], [], false);
+              },
+    },
+    {
+      title: 'XML - Minimal caller',
+      xml: '<block type="procedures_callnoreturn"/>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_callnoreturn" id="1">\n' +
+              '  <mutation name="unnamed"></mutation>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(block);
+              },
+    },
+    {
+      title: 'XML - Common caller',
+      xml:
+              '<block type="procedures_callnoreturn">\n' +
+              '  <mutation name="do something"/>\n' +
+              '</block>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_callnoreturn" id="1">\n' +
+              '  <mutation name="do something"></mutation>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(block);
+              },
+    },
+    {
+      title: 'XML - With pre-created vars caller',
+      xml:
+              '<block type="procedures_callnoreturn">\n' +
+              '  <mutation name="do something">\n' +
+              '    <arg name="preCreatedVar"></arg>\n' +
+              '  </mutation>\n' +
+              '</block>',
+      expectedXml:
+              '<block xmlns="https://developers.google.com/blockly/xml" ' +
+              'type="procedures_callnoreturn" id="1">\n' +
+              '  <mutation name="do something">\n' +
+              '    <arg name="preCreatedVar"></arg>\n' +
+              '  </mutation>\n' +
+              '</block>',
+      assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(
+                    block, ['preCreatedVar'], ['preCreatedVarId']);
+              },
+    },
+  ];
+  testHelpers.runSerializationTestSuite(xmlTestCases);
+
+  const jsonTestCases = [
+    {
+      title: 'JSON - Minimal definition',
+      json: {
+        'type': 'procedures_defnoreturn',
+      },
+      expectedJson: {
+        'type': 'procedures_defnoreturn',
+        'id': '1',
+        'fields': {
+          'NAME': 'unnamed',
+        },
+        'extraState': {
+          'procedureId': '1',
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, false);
+              },
+    },
+    {
+      title: 'JSON - Common definition',
+      json: {
+        'type': 'procedures_defnoreturn',
+        'fields': {
+          'NAME': 'do something',
+        },
+      },
+      expectedJson: {
+        'type': 'procedures_defnoreturn',
+        'id': '1',
+        'fields': {
+          'NAME': 'do something',
+        },
+        'extraState': {
+          'procedureId': '1',
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, false);
+              },
+    },
+    {
+      title: 'JSON - With vars definition',
+      json: {
+        'type': 'procedures_defnoreturn',
+        'fields': {
+          'NAME': 'do something',
+        },
+        'extraState': {
+          'params': [
+            {
+              'name': 'x',
+              'id': 'arg1',
+            },
+            {
+              'name': 'y',
+              'id': 'arg2',
+            },
+          ],
+        },
+      },
+      expectedJson: {
+        'type': 'procedures_defnoreturn',
+        'id': '1',
+        'fields': {
+          'NAME': 'do something',
+        },
+        'extraState': {
+          'procedureId': '1',
+          'params': [
+            {
+              'name': 'x',
+              'id': 'arg1',
+              'paramId': '1',
+            },
+            {
+              'name': 'y',
+              'id': 'arg2',
+              'paramId': '1',
+            },
+          ],
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(
+                    block, false, ['x', 'y'], ['arg1', 'arg2']);
+              },
+    },
+    {
+      title: 'JSON - With pre-created vars definition',
+      json: {
+        'type': 'procedures_defnoreturn',
+        'extraState': {
+          'params': [
+            {
+              'name': 'preCreatedVar',
+              'id': 'preCreatedVarId',
+            },
+          ],
+        },
+        'fields': {
+          'NAME': 'do something',
+        },
+      },
+      expectedJson: {
+        'type': 'procedures_defnoreturn',
+        'id': '1',
+        'fields': {
+          'NAME': 'do something',
+        },
+        'extraState': {
+          'procedureId': '1',
+          'params': [
+            {
+              'name': 'preCreatedVar',
+              'id': 'preCreatedVarId',
+              'paramId': '1',
+            },
+          ],
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, false,
+                    ['preCreatedVar'], ['preCreatedVarId']);
+              },
+    },
+    {
+      title: 'JSON - No statements definition',
+      json: {
+        'type': 'procedures_defreturn',
+        'fields': {
+          'NAME': 'do something',
+        },
+        'extraState': {
+          'hasStatements': false,
+        },
+      },
+      expectedJson: {
+        'type': 'procedures_defreturn',
+        'id': '1',
+        'fields': {
+          'NAME': 'do something',
+        },
+        'extraState': {
+          'procedureId': '1',
+          'hasStatements': false,
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertDefBlockStructure(block, true, [], [], false);
+              },
+    },
+    {
+      title: 'JSON - Minimal caller',
+      json: {
+        'type': 'procedures_callnoreturn',
+      },
+      expectedJson: {
+        'type': 'procedures_callnoreturn',
+        'id': '1',
+        'extraState': {
+          'name': 'unnamed',
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(block);
+              },
+    },
+    {
+      title: 'JSON - Common caller',
+      json: {
+        'type': 'procedures_callnoreturn',
+        'extraState': {
+          'name': 'do something',
+        },
+      },
+      expectedJson: {
+        'type': 'procedures_callnoreturn',
+        'id': '1',
+        'extraState': {
+          'name': 'do something',
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(block);
+              },
+    },
+    {
+      title: 'JSON - With pre-created vars caller',
+      json: {
+        'type': 'procedures_callnoreturn',
+        'extraState': {
+          'name': 'do something',
+          'params': [
+            'preCreatedVar',
+          ],
+        },
+      },
+      expectedJson: {
+        'type': 'procedures_callnoreturn',
+        'id': '1',
+        'extraState': {
+          'name': 'do something',
+          'params': [
+            'preCreatedVar',
+          ],
+        },
+      },
+      assertBlockStructure:
+              (block) => {
+                assertCallBlockStructure(
+                    block, ['preCreatedVar'], ['preCreatedVarId']);
+              },
+    },
+  ];
+  testHelpers.runSerializationTestSuite(jsonTestCases);
 });
