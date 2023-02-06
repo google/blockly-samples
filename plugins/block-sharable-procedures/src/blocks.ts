@@ -371,26 +371,17 @@ const procedureDefMutator = {
   /**
    * Create XML to represent the argument inputs.
    * Backwards compatible serialization implementation.
-   * @param opt_paramIds If true include the IDs of the parameter
-   *     quarks.  Used by Blockly.Procedures.mutateCallers for reconnection.
    * @returns XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function(opt_paramIds) {
+  mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
-    if (opt_paramIds) {
-      container.setAttribute('name', this.getFieldValue('NAME'));
-    }
-
     const params = this.getProcedureModel().getParameters();
     for (let i = 0; i < params.length; i++) {
       const parameter = Blockly.utils.xml.createElement('arg');
       const varModel = params[i].getVariableModel();
       parameter.setAttribute('name', varModel.name);
       parameter.setAttribute('varid', varModel.getId());
-      if (opt_paramIds) {
-        parameter.setAttribute('paramId', params[i].getId());
-      }
       container.appendChild(parameter);
     }
 
