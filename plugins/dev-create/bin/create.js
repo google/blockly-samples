@@ -60,9 +60,9 @@ let gitURL = '';
 try {
   gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
   gitURL = execSync(`git config --get remote.origin.url`)
-               .toString()
-               .trim()
-               .replace(/\.git$/, '');
+      .toString()
+      .trim()
+      .replace(/\.git$/, '');
 } catch (err) {
   // NOP
 }
@@ -89,7 +89,7 @@ if (!pluginTypes.includes(pluginType)) {
 }
 
 // Check plugin directory doesn't already exist.
-if (pluginPath != root) {  // Allow creating a plugin in current directory '.'.
+if (pluginPath != root) { // Allow creating a plugin in current directory '.'.
   if (fs.existsSync(pluginPath)) {
     console.error(`Package directory already exists,\
    delete ${chalk.red(pluginDir)} and try again.`);
@@ -107,7 +107,6 @@ console.log(`Creating a new Blockly\
 const templatesDir = `../templates`;
 const templateDir =
     `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
-const templateJson = require(path.join(templateDir, 'template.json'));
 
 // Only use the @blockly scope for first party plugins.
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
@@ -115,14 +114,14 @@ const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
 
 const gitPluginPath = path.join(path.relative(gitRoot, root), pluginDir);
 
-var latestBlocklyVersion =
+const latestBlocklyVersion =
     execSync('npm show blockly version').toString().trim();
 
 const packageJson = {
   name: pluginPackageName,
   version: `0.0.0`,
-  description: templateJson.description || `A Blockly ${pluginType}.`,
-  scripts: templateJson.scripts || {
+  description: `A Blockly ${pluginType}.`,
+  scripts: {
     'audit:fix': 'blockly-scripts auditFix',
     'build': 'blockly-scripts build',
     'clean': 'blockly-scripts clean',
@@ -139,7 +138,7 @@ const packageJson = {
   author: pluginAuthor,
   keywords: [
     'blockly', 'blockly-plugin',
-    pluginType != 'plugin' && `blockly-${pluginType}`, pluginName
+    pluginType != 'plugin' && `blockly-${pluginType}`, pluginName,
   ].filter(Boolean),
   homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
   bugs: isGit ? {
@@ -170,17 +169,18 @@ const packageJson = {
   eslintConfig: {
     'extends': '@blockly/eslint-config',
   },
-  engines: {
-    'node': '>=8.17.0',
-  },
 };
 
 // Add dev dependencies.
-const devDependencies = ['blockly', '@blockly/dev-scripts'].concat(
-    Object.keys(templateJson.devDependencies));
-devDependencies.sort().forEach((dep) => {
-  const latestVersion = execSync(`npm show ${dep} version`).toString();
-  packageJson.devDependencies[dep] = `^${latestVersion.trim()}`;
+const devDependencies = [
+  'blockly', '@blockly/dev-scripts', '@blockly/dev-tools',
+];
+if (isTypescript) {
+  devDependencies.push('typescript');
+}
+devDependencies.forEach((dep) => {
+  const latestVersion = execSync(`npm show ${dep} version`).toString().trim();
+  packageJson.devDependencies[dep] = `^${latestVersion}`;
 });
 
 // Write the README.md to the new package.
