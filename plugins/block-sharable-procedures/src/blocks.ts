@@ -418,9 +418,6 @@ const procedureDefMutator = {
           i);
     }
     this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
-
-    // Call mutate callers for backwards compatibility.
-    Blockly.Procedures.mutateCallers(this);
   },
 
   /**
@@ -479,9 +476,6 @@ const procedureDefMutator = {
 
     this.doProcedureUpdate();
     this.setStatements_(state['hasStatements'] === false ? false : true);
-
-    // Call mutate callers for backwards compatibility.
-    Blockly.Procedures.mutateCallers(this);
   },
 
   /**
@@ -537,9 +531,6 @@ const procedureDefMutator = {
       containerBlock.removeInput('STATEMENT_INPUT');
     }
 
-    // Update callers (called for backwards compatibility).
-    Blockly.Procedures.mutateCallers(this);
-
     return containerBlock;
   },
 
@@ -573,9 +564,6 @@ const procedureDefMutator = {
     if (hasStatements !== null) {
       this.setStatements_(hasStatements === 'TRUE');
     }
-
-    // Call mutate callers for backwards compatibility.
-    Blockly.Procedures.mutateCallers(this);
   },
 };
 Blockly.Extensions.registerMutator(
@@ -676,18 +664,6 @@ Blockly.Extensions.register(
     procedureDefReturnSetCommentHelper);
 
 const procedureDefNoReturnGetCallerBlockMixin = {
-  /**
-   * Return the signature of this procedure definition.
-   * @returns Tuple containing three elements:
-   *     - the name of the defined procedure,
-   *     - a list of all its arguments,
-   *     - that it DOES NOT have a return value.
-   * @this {Blockly.Block}
-   */
-  getProcedureDef: function() {
-    return [this.getFieldValue('NAME'), this.getVars(), false];
-  },
-
   callType_: 'procedures_callnoreturn',
 };
 Blockly.Extensions.registerMixin(
@@ -695,18 +671,6 @@ Blockly.Extensions.registerMixin(
     procedureDefNoReturnGetCallerBlockMixin);
 
 const procedureDefReturnGetCallerBlockMixin = {
-  /**
-   * Return the signature of this procedure definition.
-   * @returns Tuple containing three elements:
-   *     - the name of the defined procedure,
-   *     - a list of all its arguments,
-   *     - that it DOES have a return value.
-   * @this {Blockly.Block}
-   */
-  getProcedureDef: function() {
-    return [this.getFieldValue('NAME'), this.getVars(), true];
-  },
-
   callType_: 'procedures_callreturn',
 };
 Blockly.Extensions.registerMixin(
@@ -774,16 +738,6 @@ const procedureCallerGetDefMixin = function() {
     getTargetWorkspace_() {
       return this.workspace.isFlyout ? this.workspace.targetWorkspace :
         this.workspace;
-    },
-
-    /**
-     * Returns the name of the procedure this block calls.
-     * @returns Procedure name.
-     * @this {Blockly.Block}
-     */
-    getProcedureCall: function() {
-      // The NAME field is guaranteed to exist, null will never be returned.
-      return /** @type {string} */ (this.getFieldValue('NAME'));
     },
 
     /**
@@ -1047,7 +1001,7 @@ const procedureCallerUpdateShapeMixin = {
    * @this {Blockly.Block}
    */
   renameProcedure: function(oldName, newName) {
-    if (Blockly.Names.equals(oldName, this.getProcedureCall())) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('NAME'))) {
       this.setFieldValue(newName, 'NAME');
       const baseMsg = this.outputConnection ?
         Blockly.Msg['PROCEDURES_CALLRETURN_TOOLTIP'] :
@@ -1080,7 +1034,7 @@ const procedureCallerOnChangeMixin = {
       // Look for the case where a procedure call was created (usually through
       // paste) and there is no matching definition.  In this case, create
       // an empty definition block with the correct signature.
-      const name = this.getProcedureCall();
+      const name = this.getFieldValue('NAME');
       let def = Blockly.Procedures.getDefinition(name, this.workspace);
       if (!this.defMatches_(def)) def = null;
       if (!def) {
@@ -1154,7 +1108,7 @@ const procedureCallerContextMenuMixin = {
       return;
     }
 
-    const name = this.getProcedureCall();
+    const name = this.getFieldValue('NAME');
     const workspace = this.workspace;
     const callback = function() {
       const def = Blockly.Procedures.getDefinition(name, workspace);

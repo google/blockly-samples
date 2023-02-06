@@ -1331,7 +1331,7 @@ suite('Procedures', function() {
                   },
                 ],
               },
-            }, this.workspace);
+            }, this.workspace, {recordUndo: true});
             this.clock.runAll();
             const defBlock =
                 this.workspace.getBlocksByType('procedures_defreturn')[0];
@@ -1727,6 +1727,59 @@ suite('Procedures', function() {
               def2.getProcedureModel(),
               'Expected the procedures to have different models');
         });
+  });
+
+  suite('getDefinition', function() {
+    test('individual definitions are returned', function() {
+      const defBlock = createProcDefBlock(
+          this.workspace, false, [], 'proc name');
+      const def = Blockly.procedures.getDefinition('proc name', this.workspace);
+      assert.equal(def, defBlock);
+    });
+
+    test('definitions of different procedures are not returned', function() {
+      const defBlock1 = createProcDefBlock(
+          this.workspace, false, [], 'proc name');
+      createProcDefBlock(
+          this.workspace, false, [], 'other proc name');
+      const def = Blockly.procedures.getDefinition('proc name', this.workspace);
+      assert.equal(def, defBlock1);
+    });
+  });
+
+  suite('getCallers', function() {
+    test('individual callers are returned', function() {
+      createProcDefBlock(this.workspace, false, [], 'proc name');
+      const callBlock = createProcCallBlock(this.workspace, false, 'proc name');
+      const callers = Blockly.procedures.getCallers(
+          'proc name', this.workspace);
+      assert.equal(callers.length, 1);
+      assert.equal(callers[0], callBlock);
+    });
+
+    test('multiple callers of the same procedure are returned', function() {
+      createProcDefBlock(this.workspace, false, [], 'proc name');
+      const callBlock1 = createProcCallBlock(
+          this.workspace, false, 'proc name');
+      const callBlock2 = createProcCallBlock(
+          this.workspace, false, 'proc name');
+      const callers = Blockly.procedures.getCallers(
+          'proc name', this.workspace);
+      assert.equal(callers.length, 2);
+      assert.includeMembers(callers, [callBlock1, callBlock2]);
+    });
+
+    test('callers of different procedures are not returned', function() {
+      createProcDefBlock(this.workspace, false, [], 'proc name1');
+      const callBlock1 = createProcCallBlock(
+          this.workspace, false, 'proc name1');
+      createProcDefBlock(this.workspace, false, [], 'proc name2');
+      createProcCallBlock(this.workspace, false, 'proc name2');
+      const callers = Blockly.procedures.getCallers(
+          'proc name1', this.workspace);
+      assert.equal(callers.length, 1);
+      assert.equal(callers[0], callBlock1);
+    });
   });
 
   const xmlTestCases = [
