@@ -71,11 +71,26 @@ try {
 const isGit = !!gitURL;
 const isFirstParty = program.firstParty || gitURL == 'https://github.com/google/blockly-samples';
 
+/**
+ * Gets the name of the plugin prefixed with the type.
+ * Default to the plugin name if the type=plugin, otherwise use [type]-[name].
+ * @param {string} name Plugin name.
+ * @param {string} type Plugin type.
+ * @return {string} Plugin name prefixed with type.
+ */
+const getPrefixedName = function(name, type) {
+  // Don't add 'plugin' prefix for default type
+  if (type == 'plugin') return name;
+  // If the name is already prefixed, just return the name.
+  if (name.startsWith(`${type}-`)) return name;
+  // Add the prefix if not already present.
+  return `${type}-${name}`;
+};
+
 // Default to type=plugin.
 const pluginType = program.type || 'plugin';
-// Default to the plugin name if the type=plugin, otherwise use [type]-[name].
-const pluginDir = program.dir ||
-    (pluginType == 'plugin' ? pluginName : `${pluginType}-${pluginName}`);
+const prefixedName = getPrefixedName(pluginName, pluginType);
+const pluginDir = program.dir || prefixedName;
 const pluginPath = path.join(root, pluginDir);
 const pluginAuthor = program.author || (isFirstParty ? 'Blockly Team' : '');
 
@@ -111,7 +126,7 @@ const templateDir =
 
 // Only use the @blockly scope for first party plugins.
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
-const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
+const pluginPackageName = `${pluginScope}${prefixedName}`;
 
 const gitPluginPath = path.join(path.relative(gitRoot, root), pluginDir);
 
