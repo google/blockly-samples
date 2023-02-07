@@ -49,10 +49,10 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
     }
     const parameterModel = procedureModel.getParameter(this.index);
     if (forward) {
-      if (!parameterModel || !this.parameterMatches(parameterModel)) return;
+      if (!this.parameterMatches(parameterModel)) return;
       procedureModel.deleteParameter(this.index);
     } else {
-      if (parameterModel && this.parameterMatches(parameterModel)) return;
+      if (this.parameterMatches(parameterModel)) return;
       procedureModel.insertParameter(this.parameter, this.index);
     }
   }

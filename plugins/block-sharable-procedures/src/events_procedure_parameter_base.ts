@@ -32,8 +32,8 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
    * @returns True if the parameter matches, false if it does not.
    */
   protected parameterMatches(
-      param: Blockly.procedures.IParameterModel): boolean {
-    return param.getId() === this.parameter.getId();
+      param?: Blockly.procedures.IParameterModel): boolean {
+    return param && param.getId() === this.parameter.getId();
   }
 
   /**
