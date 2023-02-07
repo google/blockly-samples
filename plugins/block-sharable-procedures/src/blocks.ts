@@ -8,7 +8,6 @@
 import * as Blockly from 'blockly/core';
 import {ObservableProcedureModel} from './observable_procedure_model';
 import {ObservableParameterModel} from './observable_parameter_model';
-import {triggerProceduresUpdate} from './update_procedures';
 import {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
 
 
@@ -78,6 +77,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     'helpUrl': '%{BKY_PROCEDURES_CALLNORETURN_HELPURL}',
     'extensions': [
       'procedure_caller_get_def_mixin',
+      'procedure_caller_var_mixin',
       'procedure_caller_update_shape_mixin',
       'procedure_caller_context_menu_mixin',
       'procedure_caller_onchange_mixin',
@@ -151,6 +151,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     'helpUrl': '%{BKY_PROCEDURES_CALLRETURN_HELPURL}',
     'extensions': [
       'procedure_caller_get_def_mixin',
+      'procedure_caller_var_mixin',
       'procedure_caller_update_shape_mixin',
       'procedure_caller_context_menu_mixin',
       'procedure_caller_onchange_mixin',
@@ -263,7 +264,7 @@ const procedureDefVarMixin = function() {
       const containsVar = this.getProcedureModel().getParameters().some(
           (p) => p.getVariableModel() === variable);
       if (containsVar) {
-        triggerProceduresUpdate(this.workspace);
+        this.doProcedureUpdate(); // Rerender.
       }
     },
   };
@@ -767,6 +768,32 @@ const procedureCallerGetDefMixin = function() {
 // overriding built-ins.
 Blockly.Extensions.register(
     'procedure_caller_get_def_mixin', procedureCallerGetDefMixin);
+
+const procedureCallerVarMixin = function() {
+  const mixin = {
+    /**
+     * Notification that a variable is renaming but keeping the same ID.  If the
+     * variable is in use on this block, rerender to show the new name.
+     * @param variable The variable being renamed.
+     * @package
+     * @override
+     * @this {Blockly.Block}
+     */
+    updateVarName: function(variable) {
+      const containsVar = this.getProcedureModel().getParameters().some(
+          (p) => p.getVariableModel() === variable);
+      if (containsVar) {
+        this.doProcedureUpdate(); // Rerender.
+      }
+    },
+  };
+
+  this.mixin(mixin, true);
+};
+// Using register instead of registerMixin to avoid triggering warnings about
+// overriding built-ins.
+Blockly.Extensions.register(
+    'procedure_caller_var_mixin', procedureCallerVarMixin);
 
 const procedureCallerMutator = {
   previousEnabledState_: true,
