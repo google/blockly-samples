@@ -42,6 +42,7 @@ const program =
             `specify the type of the plugin. One of ${pluginTypes.join(', ')}`)
         .option('--typescript', 'use typescript')
         .option('--author <author>', 'author, eg: Blockly Team')
+        .option('--first-party', 'create a first-party plugin')
         .option('--skip-install')
         .parse(process.argv);
 
@@ -68,7 +69,7 @@ try {
 }
 
 const isGit = !!gitURL;
-const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
+const isFirstParty = program.firstParty || gitURL == 'https://github.com/google/blockly-samples';
 
 // Default to type=plugin.
 const pluginType = program.type || 'plugin';
