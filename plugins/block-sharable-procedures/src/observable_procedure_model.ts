@@ -5,6 +5,13 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {ProcedureChangeReturn} from './events_procedure_change_return';
+import {ProcedureCreate} from './events_procedure_create';
+import {ProcedureDelete} from './events_procedure_delete';
+import {ProcedureEnable} from './events_procedure_enable';
+import {ProcedureParameterCreate} from './events_procedure_parameter_create';
+import {ProcedureParameterDelete} from './events_procedure_parameter_delete';
+import {ProcedureRename} from './events_procedure_rename';
 import {triggerProceduresUpdate} from './update_procedures';
 
 /** Represents a procedure signature. */
@@ -44,9 +51,7 @@ implements Blockly.procedures.IProcedureModel {
     this.name = name;
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
-      // Blockly.Events.fire(
-      //     new (Blockly.Events.get(Blockly.Events.PROCEDURE_RENAME))(
-      //         this.workspace, this, oldName));
+      Blockly.Events.fire(new ProcedureRename(this.workspace, this, oldName));
     }
     return this;
   }
@@ -77,10 +82,9 @@ implements Blockly.procedures.IProcedureModel {
 
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
-      // Blockly.Events.fire(
-      //     new (Blockly.Events.get(
-      //         Blockly.Events.PROCEDURE_PARAMETER_CREATE))(
-      //         this.workspace, this, parameterModel, index));
+      Blockly.Events.fire(
+          new ProcedureParameterCreate(
+              this.workspace, this, parameterModel, index));
     }
     return this;
   }
@@ -101,10 +105,8 @@ implements Blockly.procedures.IProcedureModel {
     }
 
     if (this.shouldFireEvents) {
-      // Blockly.Events.fire(
-      //     new (Blockly.Events.get(
-      //         Blockly.Events.PROCEDURE_PARAMETER_DELETE))(
-      //         this.workspace, this, oldParam, index));
+      Blockly.Events.fire(
+          new ProcedureParameterDelete(this.workspace, this, oldParam, index));
     }
     return this;
   }
@@ -130,9 +132,8 @@ implements Blockly.procedures.IProcedureModel {
     this.returnTypes = types;
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
-      // Blockly.Events.fire(
-      //     new (Blockly.Events.get(Blockly.Events.PROCEDURE_CHANGE_RETURN))(
-      //         this.workspace, this, oldReturnTypes));
+      Blockly.Events.fire(
+          new ProcedureChangeReturn(this.workspace, this, oldReturnTypes));
     }
     return this;
   }
@@ -148,9 +149,7 @@ implements Blockly.procedures.IProcedureModel {
     this.enabled = enabled;
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
-      // Blockly.Events.fire(
-      //     new (Blockly.Events.get(Blockly.Events.PROCEDURE_ENABLE))(
-      //         this.workspace, this));
+      Blockly.Events.fire(new ProcedureEnable(this.workspace, this));
     }
     return this;
   }
@@ -228,6 +227,7 @@ implements Blockly.procedures.IProcedureModel {
    */
   startPublishing() {
     this.shouldFireEvents = true;
+    Blockly.Events.fire(new ProcedureCreate(this.workspace, this));
     for (const param of this.parameters) {
       if (Blockly.isObservable(param)) param.startPublishing();
     }
@@ -240,6 +240,7 @@ implements Blockly.procedures.IProcedureModel {
    */
   stopPublishing() {
     triggerProceduresUpdate(this.workspace);
+    Blockly.Events.fire(new ProcedureDelete(this.workspace, this));
     this.shouldFireEvents = false;
     for (const param of this.parameters) {
       if (Blockly.isObservable(param)) param.stopPublishing();

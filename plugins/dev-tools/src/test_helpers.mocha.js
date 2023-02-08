@@ -7,6 +7,7 @@
 import * as commonHelpers from './common_test_helpers.mocha';
 import * as blockTestHelpers from './block_test_helpers.mocha';
 import * as fieldTestHelpers from './field_test_helpers.mocha';
+import * as eventTestHelpers from './event_test_helpers.mocha';
 
 const {
   TestCase,
@@ -33,7 +34,14 @@ const {
   runSetValueTests,
 } = fieldTestHelpers;
 
+const {
+  assertEventFiredShallow,
+  assertEventNotFired,
+} = eventTestHelpers;
+
 export {
+  assertEventFiredShallow,
+  assertEventNotFired,
   assertFieldValue,
   CodeGenerationTestCase,
   CodeGenerationTestSuite,
