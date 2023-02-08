@@ -28,7 +28,7 @@ suite('Procedures', function() {
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
 
     this.sandbox = sinon.createSandbox();
-    this.clock = this.sandbox.useFakeTimers();
+    globalThis.clock = this.sandbox.useFakeTimers();
 
     unregisterProcedureBlocks();
     Blockly.common.defineBlocks(blocks);
@@ -68,7 +68,7 @@ suite('Procedures', function() {
   });
 
   teardown(function() {
-    this.clock.runAll();
+    globalThis.clock.runAll();
     delete Blockly.Blocks['row_block'];
     this.getContextStub.restore();
     this.findParentWsStub.restore();
@@ -96,7 +96,7 @@ suite('Procedures', function() {
           const defBlock = createProcDefBlock(this.workspace);
 
           defBlock.setEnabled(false);
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           assert.isFalse(
               defBlock.getProcedureModel().getEnabled(),
@@ -1053,7 +1053,7 @@ suite('Procedures', function() {
           const callBlock = createProcCallBlock(this.workspace);
 
           defBlock.setEnabled(false);
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           assert.isFalse(
               callBlock.isEnabled(),
@@ -1067,10 +1067,10 @@ suite('Procedures', function() {
           const defBlock = createProcDefBlock(this.workspace);
           const callBlock = createProcCallBlock(this.workspace);
           defBlock.setEnabled(false);
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           defBlock.setEnabled(true);
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           assert.isTrue(
               callBlock.isEnabled(),
@@ -1083,14 +1083,14 @@ suite('Procedures', function() {
         function() {
           const defBlock = createProcDefBlock(this.workspace);
           const callBlock = createProcCallBlock(this.workspace);
-          this.clock.runAll();
+          globalThis.clock.runAll();
           callBlock.setEnabled(false);
-          this.clock.runAll();
+          globalThis.clock.runAll();
           defBlock.setEnabled(false);
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           defBlock.setEnabled(true);
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           assert.isFalse(
               callBlock.isEnabled(),
@@ -1108,7 +1108,7 @@ suite('Procedures', function() {
           const callBlock2 = createProcCallBlock(this.workspace);
 
           defBlock.dispose();
-          this.clock.runAll();
+          globalThis.clock.runAll();
 
           assert.isTrue(
               callBlock1.disposed, 'Expected the first caller to be disposed');
@@ -1134,7 +1134,7 @@ suite('Procedures', function() {
               <mutation name="do something"/>
             </block>`
         ), this.workspace);
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(
             this.workspace.getBlocksByType('procedures_defreturn')[0], true);
         assertCallBlockStructure(callBlock, [], [], 'do something');
@@ -1144,7 +1144,7 @@ suite('Procedures', function() {
         const callBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             '<block type="procedures_callreturn"></block>'
         ), this.workspace);
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(
             this.workspace.getBlocksByType('procedures_defreturn')[0], true);
         assertCallBlockStructure(callBlock, [], [], 'unnamed');
@@ -1164,7 +1164,7 @@ suite('Procedures', function() {
             '  <mutation name="do something"/>' +
             '</block>'
         ), this.workspace);
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(defBlock, true, ['x'], ['arg']);
         assertCallBlockStructure(callBlock, [], [], 'do something2');
       });
@@ -1185,7 +1185,7 @@ suite('Procedures', function() {
               </mutation>
             </block>
         `), this.workspace);
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(defBlock, true, ['x'], ['arg']);
         assertCallBlockStructure(
             callBlock, ['y'], [this.TEST_VAR_ID], 'do something2');
@@ -1209,7 +1209,7 @@ suite('Procedures', function() {
                   </block>
                 </xml>
             `), this.workspace);
-            this.clock.runAll();
+            globalThis.clock.runAll();
             const defBlock =
                 this.workspace.getBlocksByType('procedures_defreturn')[0];
             const callBlock =
@@ -1231,7 +1231,7 @@ suite('Procedures', function() {
             'name': 'do something',
           },
         }, this.workspace, {recordUndo: true});
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(
             this.workspace.getBlocksByType('procedures_defreturn')[0], true);
         assertCallBlockStructure(callBlock, [], [], 'do something');
@@ -1242,7 +1242,7 @@ suite('Procedures', function() {
         const callBlock = Blockly.serialization.blocks.append({
           'type': 'procedures_callreturn',
         }, this.workspace, {recordUndo: true});
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(
             this.workspace.getBlocksByType('procedures_defreturn')[0], true);
         assertCallBlockStructure(callBlock, [], [], 'unnamed');
@@ -1269,7 +1269,7 @@ suite('Procedures', function() {
             'name': 'do something',
           },
         }, this.workspace, {recordUndo: true});
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(defBlock, true, ['x'], ['arg']);
         assertCallBlockStructure(callBlock, [], [], 'do something2');
       });
@@ -1296,7 +1296,7 @@ suite('Procedures', function() {
             'params': ['y'],
           },
         }, this.workspace, {recordUndo: true});
-        this.clock.runAll();
+        globalThis.clock.runAll();
         assertDefBlockStructure(defBlock, true, ['x'], ['arg']);
         assertCallBlockStructure(
             callBlock, ['y'], [this.TEST_VAR_ID], 'do something2');
@@ -1332,7 +1332,7 @@ suite('Procedures', function() {
                 ],
               },
             }, this.workspace, {recordUndo: true});
-            this.clock.runAll();
+            globalThis.clock.runAll();
             const defBlock =
                 this.workspace.getBlocksByType('procedures_defreturn')[0];
             const callBlock =
@@ -1929,7 +1929,7 @@ suite('Procedures', function() {
               },
     },
   ];
-  testHelpers.runSerializationTestSuite(xmlTestCases);
+  testHelpers.runSerializationTestSuite(xmlTestCases, globalThis.clock);
 
   const jsonTestCases = [
     {
@@ -2154,5 +2154,5 @@ suite('Procedures', function() {
               },
     },
   ];
-  testHelpers.runSerializationTestSuite(jsonTestCases);
+  testHelpers.runSerializationTestSuite(jsonTestCases, globalThis.clock);
 });
