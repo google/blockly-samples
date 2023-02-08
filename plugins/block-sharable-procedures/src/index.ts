@@ -11,8 +11,6 @@ import {ObservableParameterModel} from './observable_parameter_model';
 import {ObservableProcedureModel} from './observable_procedure_model';
 import {triggerProceduresUpdate} from './update_procedures';
 
-console.log(blocks);
-
 export {
   blocks,
   IProcedureBlock,
