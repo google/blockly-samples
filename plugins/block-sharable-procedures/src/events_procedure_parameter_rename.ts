@@ -26,15 +26,19 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
    * @param procedure The procedure model this event is associated with.
    * @param parameter The parameter model this event is associated with.
    * @param oldName The old name of the procedure parameter.
+   * @param newName The (optional) new name of the procedure parameter. If not
+   *     provided, the parameter model will be inspected to see what its current
+   *     name is.
    */
   constructor(
       workspace: Blockly.Workspace,
       procedure: Blockly.procedures.IProcedureModel,
       parameter: Blockly.procedures.IParameterModel,
-      readonly oldName: string) {
+      readonly oldName: string,
+      newName?: string) {
     super(workspace, procedure, parameter);
 
-    this.newName = parameter.getName();
+    this.newName = newName ?? parameter.getName();
   }
 
   /**
@@ -60,6 +64,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
    */
   toJson(): ProcedureParameterRenameJson {
     const json = super.toJson() as ProcedureParameterRenameJson;
+    json['newName'] = this.newName;
     json['oldName'] = this.oldName;
     return json;
   }
@@ -79,13 +84,14 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
         ProcedureParameterBase.findMatchingParameter(
             workspace, json['procedureId'], json['parameterId']);
     return new ProcedureParameterRename(
-        workspace, procedure, parameter, json['oldName']);
+        workspace, procedure, parameter, json['oldName'], json['newName']);
   }
 }
 
 export interface ProcedureParameterRenameJson extends
     ProcedureParameterBaseJson {
   oldName: string;
+  newName: string;
 }
 
 Blockly.registry.register(

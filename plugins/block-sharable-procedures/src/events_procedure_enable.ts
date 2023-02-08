@@ -26,14 +26,23 @@ export class ProcedureEnable extends ProcedureBase {
    * Constructs the procedure enable event.
    * @param workspace The workspace this event is associated with.
    * @param procedure The model this event is associated with.
+   * @param newState The (optional) new enabled state of the procedure model.
+   *     If not provided, the procedure model will be inspected to determine
+   *     its current state.
    */
   constructor(
       workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel) {
+      procedure: Blockly.procedures.IProcedureModel,
+      newState?: boolean) {
     super(workspace, procedure);
 
-    this.oldState = !procedure.getEnabled();
-    this.newState = procedure.getEnabled();
+    if (newState === undefined) {
+      this.oldState = !procedure.getEnabled();
+      this.newState = procedure.getEnabled();
+    } else {
+      this.oldState = !newState;
+      this.newState = newState;
+    }
   }
 
   /**
@@ -61,7 +70,9 @@ export class ProcedureEnable extends ProcedureBase {
    * @returns JSON representation.
    */
   toJson(): ProcedureEnableJson {
-    return super.toJson() as ProcedureEnableJson;
+    const json = super.toJson() as ProcedureEnableJson;
+    json['newState'] = this.newState;
+    return json;
   }
 
   /**
@@ -79,11 +90,13 @@ export class ProcedureEnable extends ProcedureBase {
           'Cannot deserialize procedure enable event because the ' +
           'target procedure does not exist');
     }
-    return new ProcedureEnable(workspace, model);
+    return new ProcedureEnable(workspace, model, json['newState']);
   }
 }
 
-export type ProcedureEnableJson = ProcedureBaseJson;
+export interface ProcedureEnableJson extends ProcedureBaseJson {
+  newState: boolean;
+}
 
 Blockly.registry.register(
     Blockly.registry.Type.EVENT, TYPE, ProcedureEnable);
