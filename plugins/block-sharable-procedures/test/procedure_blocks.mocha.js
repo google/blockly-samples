@@ -52,7 +52,7 @@ suite('Procedures', function() {
       'output': null,
     }]);
 
-    this.getContextStub = sinon.stub(
+    this.getContextStub = this.sandbox.stub(
         window.HTMLCanvasElement.prototype, 'getContext')
         .callsFake(() => {
           return {
@@ -61,7 +61,7 @@ suite('Procedures', function() {
             },
           };
         });
-    this.findParentWsStub = sinon.stub(Blockly.Mutator, 'findParentWs')
+    this.findParentWsStub = this.sandbox.stub(Blockly.Mutator, 'findParentWs')
         .callsFake(() => {
           return this.workspace;
         });
@@ -70,8 +70,6 @@ suite('Procedures', function() {
   teardown(function() {
     globalThis.clock.runAll();
     delete Blockly.Blocks['row_block'];
-    this.getContextStub.restore();
-    this.findParentWsStub.restore();
     this.sandbox.restore();
     this.jsdomCleanup();
   });
