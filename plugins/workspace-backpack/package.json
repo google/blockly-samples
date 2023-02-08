@@ -13,6 +13,7 @@
     "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
+  "types": "./src/index.d.ts",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
