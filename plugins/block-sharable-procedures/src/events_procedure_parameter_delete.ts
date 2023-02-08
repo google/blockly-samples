@@ -78,14 +78,10 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
       json: ProcedureParameterDeleteJson,
       workspace: Blockly.Workspace
   ): ProcedureParameterDelete {
-    const model = workspace.getProcedureMap().get(json['procedureId']);
-    if (!model) {
-      throw new Error(
-          'Cannot deserialize procedure delete event because the ' +
-          'target procedure does not exist');
-    }
-    const param = model.getParameter(json['index']);
-    return new ProcedureParameterDelete(workspace, model, param, json['index']);
+    const {procedure, parameter} = ProcedureParameterBase.findMatchingParameter(
+        workspace, json['procedureId'], json['parameterId']);
+    return new ProcedureParameterDelete(
+        workspace, procedure, parameter, json['index']);
   }
 }
 
