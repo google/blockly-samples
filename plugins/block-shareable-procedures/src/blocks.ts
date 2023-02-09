@@ -538,29 +538,82 @@ const procedureDefMutator = {
    * @this {Blockly.Block}
    */
   compose: function(containerBlock) {
-    const model = this.getProcedureModel();
-    const count = model.getParameters().length;
-    model.startBulkUpdate();
-    for (let i = count - 1; i >= 0; i--) {
-      model.deleteParameter(i);
-    }
-
-    let i = 0;
-    let paramBlock = containerBlock.getInputTargetBlock('STACK');
-    while (paramBlock && !paramBlock.isInsertionMarker()) {
-      model.insertParameter(
-          new ObservableParameterModel(
-              this.workspace, paramBlock.getFieldValue('NAME'), paramBlock.id),
-          i);
-      paramBlock =
-        paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
-      i++;
-    }
-    model.endBulkUpdate();
+    // Note that only one of these four things can actually occur for any given
+    // composition, because the user can only drag blocks around so quickly.
+    // So we can use that when making assumptions inside the definitions of
+    // these sub procedures.
+    this.deleteParamsFromModel_(containerBlock);
+    this.renameParamsInModel_(containerBlock);
+    this.addParamsToModel_(containerBlock);
 
     const hasStatements = containerBlock.getFieldValue('STATEMENTS');
     if (hasStatements !== null) {
       this.setStatements_(hasStatements === 'TRUE');
+    }
+  },
+
+  /**
+   * Deletes any parameters from the procedure model that do not have associated
+   * parameter blocks in the mutator.
+   * @param containerBlock Root block in the mutator.
+   */
+  deleteParamsFromModel_: function(containerBlock) {
+    const ids = new Set(containerBlock.getDescendants().map((b) => b.id));
+    const model = this.getProcedureModel();
+    const count = model.getParameters().length;
+    for (let i = count - 1; i >= 0; i--) {
+      if (!ids.has(model.getParameter(i).getId())) {
+        model.deleteParameter(i);
+      }
+    }
+  },
+
+  /**
+   * Renames any parameters in the procedure model whose associated parameter
+   * blocks have been renamed.
+   * @param containerBlock Root block in the mutator.
+   */
+  renameParamsInModel_: function(containerBlock) {
+    const model = this.getProcedureModel();
+
+    let i = 0;
+    let paramBlock = containerBlock.getInputTargetBlock('STACK');
+    while (paramBlock && !paramBlock.isInsertionMarker()) {
+      const param = model.getParameter(i);
+      if (param &&
+          param.getId() === paramBlock.id &&
+          param.getName() !== paramBlock.getFieldValue('NAME')) {
+        param.setName(paramBlock.getFieldValue('NAME'));
+      }
+      paramBlock = paramBlock.nextConnection &&
+          paramBlock.nextConnection.targetBlock();
+      i++;
+    }
+  },
+
+  /**
+   * Adds new parameters to the procedure model for any new procedure parameter
+   * blocks.
+   * @param containerBlock Root block in the mutator.
+   */
+  addParamsToModel_: function(containerBlock) {
+    const model = this.getProcedureModel();
+
+    let i = 0;
+    let paramBlock = containerBlock.getInputTargetBlock('STACK');
+    while (paramBlock && !paramBlock.isInsertionMarker()) {
+      if (!model.getParameter(i) ||
+          model.getParameter(i).getId() !== paramBlock.id) {
+        model.insertParameter(
+            new ObservableParameterModel(
+                this.workspace,
+                paramBlock.getFieldValue('NAME'),
+                paramBlock.id),
+            i);
+      }
+      paramBlock =
+        paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
+      i++;
     }
   },
 };
