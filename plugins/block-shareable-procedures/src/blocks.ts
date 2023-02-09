@@ -251,11 +251,7 @@ const procedureDefVarMixin = function() {
       if (index === -1) return; // Not found.
       const newVar = this.workspace.getVariableById(newId);
       const oldParam = model.getParameter(index);
-      model.deleteParameter(index);
-      model.insertParameter(
-          new ObservableParameterModel(
-              this.workspace, newVar.name, oldParam.getId()),
-          index);
+      oldParam.setName(newVar.name);
     },
 
     /**
