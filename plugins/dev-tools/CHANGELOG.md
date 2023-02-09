@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.0.5...@blockly/dev-tools@5.1.0) (2023-02-09)
+
+
+### Features
+
+* add procedure events ([#1536](https://github.com/google/blockly-samples/issues/1536)) ([05a02ae](https://github.com/google/blockly-samples/commit/05a02aed7f3f59758db83eb2d8459ce727405d4d))
+
+
+
 ## [5.0.5](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.0.4...@blockly/dev-tools@5.0.5) (2023-01-26)
 
 **Note:** Version bump only for package @blockly/dev-tools
