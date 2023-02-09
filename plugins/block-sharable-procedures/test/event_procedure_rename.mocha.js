@@ -109,6 +109,26 @@ suite('Procedure Rename Event', function() {
               event.run(/* forward= */ true);
             });
           });
+
+      test(
+          'deserializing the event and running it triggers the effect',
+          function() {
+            const initial = this.createProcedureModel('test id');
+            const final = this.createProcedureModel('test id');
+            final.setName(NON_DEFAULT_NAME);
+            const event = this.createEventToState(final);
+            this.procedureMap.add(initial);
+
+            const newEvent = Blockly.Events.fromJson(
+                event.toJson(), this.workspace);
+            newEvent.run(/* forward= */ true);
+            this.clock.runAll();
+
+            assert.equal(
+                initial.getName(),
+                final.getName(),
+                'Expected the procedure\'s name to be changed');
+          });
     });
 
     suite('backward', function() {

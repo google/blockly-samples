@@ -132,6 +132,28 @@ suite('Procedure Parameter Rename Event', function() {
               event.run(/* forward= */ true);
             });
           });
+
+      test(
+          'deserializing the event and running it triggers the effect',
+          function() {
+            const {param: initialParam, proc: initialProc} =
+                this.createProcedureAndParameter('test procId', 'test paramId');
+            const {param: finalParam, proc: finalProc} =
+                this.createProcedureAndParameter('test procId', 'test paramId');
+            finalParam.setName(NON_DEFAULT_NAME);
+            const event = this.createEventToState(finalProc, finalParam);
+            this.procedureMap.add(initialProc);
+
+            const newEvent = Blockly.Events.fromJson(
+                event.toJson(), this.workspace);
+            newEvent.run(/* forward= */ true);
+            this.clock.runAll();
+
+            assert.equal(
+                initialParam.getName(),
+                finalParam.getName(),
+                'Expected the procedure parameter\'s name to be changed');
+          });
     });
 
     suite('backward', function() {

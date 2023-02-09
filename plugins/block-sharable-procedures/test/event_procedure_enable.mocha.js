@@ -102,6 +102,26 @@ suite('Procedure Enable Event', function() {
               event.run(/* forward= */ true);
             });
           });
+
+      test(
+          'deserializing the event and running it triggers the effect',
+          function() {
+            const initial = this.createProcedureModel('test id');
+            const final = this.createProcedureModel('test id');
+            final.setEnabled(!final.getEnabled()); // Set it to the non-default.
+            const event = this.createEventToState(final);
+            this.procedureMap.add(initial);
+
+            const newEvent = Blockly.Events.fromJson(
+                event.toJson(), this.workspace);
+            newEvent.run(/* forward= */ true);
+            this.clock.runAll();
+
+            assert.equal(
+                initial.getEnabled(),
+                final.getEnabled(),
+                'Expected the procedure\'s enabled state to be flipped');
+          });
     });
 
     suite('backward', function() {
