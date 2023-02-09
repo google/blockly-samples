@@ -47,12 +47,9 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
           'Cannot add a parameter to a procedure that does not exist ' +
           'in the procedure map');
     }
-    const parameterModel = procedureModel.getParameter(this.index);
     if (forward) {
-      if (!this.parameterMatches(parameterModel)) return;
       procedureModel.deleteParameter(this.index);
     } else {
-      if (this.parameterMatches(parameterModel)) return;
       procedureModel.insertParameter(this.parameter, this.index);
     }
   }
@@ -80,6 +77,9 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
   ): ProcedureParameterDelete {
     const {procedure, parameter} = ProcedureParameterBase.findMatchingParameter(
         workspace, json['procedureId'], json['parameterId']);
+    if (!parameter) {
+      throw new Error('Cannot delete a non existant parameter');
+    }
     return new ProcedureParameterDelete(
         workspace, procedure, parameter, json['index']);
   }

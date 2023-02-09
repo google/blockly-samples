@@ -49,12 +49,9 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
           'Cannot add a parameter to a procedure that does not exist ' +
           'in the procedure map');
     }
-    const parameterModel = procedureModel.getParameter(this.index);
     if (forward) {
-      if (this.parameterMatches(parameterModel)) return;
       procedureModel.insertParameter(this.parameter, this.index);
     } else {
-      if (!this.parameterMatches(parameterModel)) return;
       procedureModel.deleteParameter(this.index);
     }
   }

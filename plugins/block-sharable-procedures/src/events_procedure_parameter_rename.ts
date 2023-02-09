@@ -83,6 +83,9 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
     const {procedure, parameter} =
         ProcedureParameterBase.findMatchingParameter(
             workspace, json['procedureId'], json['parameterId']);
+    if (!parameter) {
+      throw new Error('Cannot delete a non existant parameter');
+    }
     return new ProcedureParameterRename(
         workspace, procedure, parameter, json['oldName'], json['newName']);
   }

@@ -7,7 +7,6 @@
 
 import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
-import {ObservableProcedureModel} from './observable_procedure_model';
 
 
 const TYPE = 'procedure_delete';
@@ -27,14 +26,10 @@ export class ProcedureDelete extends ProcedureBase {
   run(forward: boolean) {
     const workspace = this.getEventWorkspace_();
     const procedureMap = workspace.getProcedureMap();
-    const procedureModel = procedureMap.get(this.procedure.getId());
     if (forward) {
-      if (!procedureModel) return;
       procedureMap.delete(this.procedure.getId());
     } else {
-      if (procedureModel) return;
-      procedureMap.add(new ObservableProcedureModel(
-          workspace, this.procedure.getName(), this.procedure.getId()));
+      procedureMap.add(this.procedure);
     }
   }
 
