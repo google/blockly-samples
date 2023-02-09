@@ -42,6 +42,7 @@ const program =
             `specify the type of the plugin. One of ${pluginTypes.join(', ')}`)
         .option('--typescript', 'use typescript')
         .option('--author <author>', 'author, eg: Blockly Team')
+        .option('--first-party', 'create a first-party plugin')
         .option('--skip-install')
         .parse(process.argv);
 
@@ -60,21 +61,36 @@ let gitURL = '';
 try {
   gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
   gitURL = execSync(`git config --get remote.origin.url`)
-               .toString()
-               .trim()
-               .replace(/\.git$/, '');
+      .toString()
+      .trim()
+      .replace(/\.git$/, '');
 } catch (err) {
   // NOP
 }
 
 const isGit = !!gitURL;
-const isFirstParty = gitURL == 'https://github.com/google/blockly-samples';
+const isFirstParty = program.firstParty || gitURL == 'https://github.com/google/blockly-samples';
+
+/**
+ * Gets the name of the plugin prefixed with the type.
+ * Default to the plugin name if the type=plugin, otherwise use [type]-[name].
+ * @param {string} name Plugin name.
+ * @param {string} type Plugin type.
+ * @return {string} Plugin name prefixed with type.
+ */
+const getPrefixedName = function(name, type) {
+  // Don't add 'plugin' prefix for default type
+  if (type == 'plugin') return name;
+  // If the name is already prefixed, just return the name.
+  if (name.startsWith(`${type}-`)) return name;
+  // Add the prefix if not already present.
+  return `${type}-${name}`;
+};
 
 // Default to type=plugin.
 const pluginType = program.type || 'plugin';
-// Default to the plugin name if the type=plugin, otherwise use [type]-[name].
-const pluginDir = program.dir ||
-    (pluginType == 'plugin' ? pluginName : `${pluginType}-${pluginName}`);
+const prefixedName = getPrefixedName(pluginName, pluginType);
+const pluginDir = program.dir || prefixedName;
 const pluginPath = path.join(root, pluginDir);
 const pluginAuthor = program.author || (isFirstParty ? 'Blockly Team' : '');
 
@@ -89,7 +105,7 @@ if (!pluginTypes.includes(pluginType)) {
 }
 
 // Check plugin directory doesn't already exist.
-if (pluginPath != root) {  // Allow creating a plugin in current directory '.'.
+if (pluginPath != root) { // Allow creating a plugin in current directory '.'.
   if (fs.existsSync(pluginPath)) {
     console.error(`Package directory already exists,\
    delete ${chalk.red(pluginDir)} and try again.`);
@@ -107,22 +123,21 @@ console.log(`Creating a new Blockly\
 const templatesDir = `../templates`;
 const templateDir =
     `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
-const templateJson = require(path.join(templateDir, 'template.json'));
 
 // Only use the @blockly scope for first party plugins.
 const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
-const pluginPackageName = `${pluginScope}${pluginType}-${pluginName}`;
+const pluginPackageName = `${pluginScope}${prefixedName}`;
 
 const gitPluginPath = path.join(path.relative(gitRoot, root), pluginDir);
 
-var latestBlocklyVersion =
+const latestBlocklyVersion =
     execSync('npm show blockly version').toString().trim();
 
 const packageJson = {
   name: pluginPackageName,
   version: `0.0.0`,
-  description: templateJson.description || `A Blockly ${pluginType}.`,
-  scripts: templateJson.scripts || {
+  description: `A Blockly ${pluginType}.`,
+  scripts: {
     'audit:fix': 'blockly-scripts auditFix',
     'build': 'blockly-scripts build',
     'clean': 'blockly-scripts clean',
@@ -139,7 +154,7 @@ const packageJson = {
   author: pluginAuthor,
   keywords: [
     'blockly', 'blockly-plugin',
-    pluginType != 'plugin' && `blockly-${pluginType}`, pluginName
+    pluginType != 'plugin' && `blockly-${pluginType}`, pluginName,
   ].filter(Boolean),
   homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
   bugs: isGit ? {
@@ -170,17 +185,18 @@ const packageJson = {
   eslintConfig: {
     'extends': '@blockly/eslint-config',
   },
-  engines: {
-    'node': '>=8.17.0',
-  },
 };
 
 // Add dev dependencies.
-const devDependencies = ['blockly', '@blockly/dev-scripts'].concat(
-    Object.keys(templateJson.devDependencies));
-devDependencies.sort().forEach((dep) => {
-  const latestVersion = execSync(`npm show ${dep} version`).toString();
-  packageJson.devDependencies[dep] = `^${latestVersion.trim()}`;
+const devDependencies = [
+  'blockly', '@blockly/dev-scripts', '@blockly/dev-tools',
+];
+if (isTypescript) {
+  devDependencies.push('typescript');
+}
+devDependencies.forEach((dep) => {
+  const latestVersion = execSync(`npm show ${dep} version`).toString().trim();
+  packageJson.devDependencies[dep] = `^${latestVersion}`;
 });
 
 // Write the README.md to the new package.
