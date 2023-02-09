@@ -34,9 +34,9 @@ suite('Procedure Parameter Create Event', function() {
 
   suite('running', function() {
     setup(function() {
-      this.createProcedureModel = (name, id) => {
+      this.createProcedureModel = (name, id, workspace) => {
         return new ObservableProcedureModel(
-            this.workspace, name, id);
+            workspace ?? this.workspace, name, id);
       };
 
       this.createProcedureAndParameter =
@@ -146,6 +146,42 @@ suite('Procedure Parameter Create Event', function() {
                 ProcedureParameterCreate,
                 {},
                 this.workspace.id);
+          });
+
+      test(
+          'deserializing the event into a different workspace creates ' +
+          'an identical parameter (including variable ID)',
+          function() {
+            const otherWorkspace = new Blockly.Workspace();
+            const otherProcedureMap = otherWorkspace.getProcedureMap();
+
+            const {param: modelParam, proc: modelProc} =
+            this.createProcedureAndParameter(
+                'test name', 'test id', 'test param name', 'test param id');
+            const event = this.createEventToState(modelProc, modelParam);
+            const actualProc = this.createProcedureModel(
+                'test name', 'test id', otherWorkspace);
+            otherProcedureMap.add(actualProc);
+
+            const otherEvent = Blockly.Events.fromJson(
+                event.toJson(), otherWorkspace);
+            otherEvent.run(/* forward= */ true);
+            this.clock.runAll();
+
+            const createdParam = actualProc.getParameter(0);
+            assert.isDefined(createdParam, 'Expected the parameter to exist');
+            assert.equal(
+                createdParam.getName(),
+                modelParam.getName(),
+                'Expected the parameter\'s name to match the model');
+            assert.equal(
+                createdParam.getId(),
+                modelParam.getId(),
+                'Expected the parameter\'s id to match the model');
+            assert.equal(
+                createdParam.getVariableModel().getId(),
+                modelParam.getVariableModel().getId(),
+                'Expected the parameter\'s variable\'s id to match the model');
           });
     });
 
