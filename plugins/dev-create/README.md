@@ -2,7 +2,7 @@
 title: "@blockly/create-package Demo"
 packageName: "@blockly/create-package"
 description: "A tool for creating a Blockly plugin based on a template."
-version: "1.1.23"
+version: "1.2.0"
 pageRoot: "plugins/dev-create"
 pages:
   - label: "Playground"
@@ -14,6 +14,8 @@ pages:
 # @blockly/create-package [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A tool for creating a Blockly plugin based on a pre-existing template.
+
+For more information about creating plugins in Blockly, see [the developer documentation](https://developers.google.com/blockly/guides/contribute/samples/add_a_plugin).
 
 ## Example Usage
 ```
@@ -30,6 +32,9 @@ npm start
 ``--type theme``: A theme template.
 
 ``--type plugin``: A generic plugin template. (Default)
+
+## Options
+Run `npx @blockly/create-package --help` to see the available options.
 
 ## Adding TypeScript
 ```
