@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^4.0.0",
-    "commander": "^5.0.0",
+    "commander": "^10.0.0",
     "fs-extra": "^9.0.0"
   },
   "publishConfig": {
@@ -35,6 +35,6 @@
     "extends": "@blockly/eslint-config"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=14.0.0"
   }
 }
