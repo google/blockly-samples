@@ -16,10 +16,13 @@ const {
   createProcCallBlock,
   createProcDefBlock,
 } = require('./procedure_test_helpers');
+const {assertEventFiredShallow} = require('./event_test_helpers');
 const {testHelpers} = require('@blockly/dev-tools');
 const {ObservableParameterModel} = require('../src/observable_parameter_model');
 const {blocks} = require('../src/blocks');
 const {unregisterProcedureBlocks} = require('../src/index');
+const {ProcedureDelete} = require('../src/events_procedure_delete');
+const {ProcedureCreate} = require('../src/events_procedure_create');
 
 
 suite('Procedures', function() {
@@ -33,8 +36,10 @@ suite('Procedures', function() {
     unregisterProcedureBlocks();
     Blockly.common.defineBlocks(blocks);
 
-    // this.workspace = new Blockly.Workspace();
     this.workspace = Blockly.inject('blocklyDiv', {});
+
+    this.eventSpy = this.sandbox.spy();
+    this.workspace.addChangeListener(this.eventSpy);
 
     this.workspace.createVariable('preCreatedVar', '', 'preCreatedVarId');
     this.workspace.createVariable(
@@ -1096,6 +1101,25 @@ suite('Procedures', function() {
         });
   });
 
+  suite('creating procedure blocks', function() {
+    test(
+        'when a procedure definition block is created, a create event for ' +
+        'its data model is fired',
+        function() {
+          const defBlock = createProcDefBlock(this.workspace);
+          const procedure = defBlock.getProcedureModel();
+          globalThis.clock.runAll();
+
+          assertEventFiredShallow(
+              this.eventSpy,
+              ProcedureCreate,
+              {
+                procedure: procedure,
+              },
+              this.workspace.id);
+        });
+  });
+
   suite('deleting procedure blocks', function() {
     test(
         'when the procedure definition block is deleted, all of its ' +
@@ -1112,6 +1136,25 @@ suite('Procedures', function() {
               callBlock1.disposed, 'Expected the first caller to be disposed');
           assert.isTrue(
               callBlock2.disposed, 'Expected the second caller to be disposed');
+        });
+
+    test(
+        'when a procedure definition block is deleted, a delete event for ' +
+        'its data model is fired',
+        function() {
+          const defBlock = createProcDefBlock(this.workspace);
+          const procedure = defBlock.getProcedureModel();
+
+          defBlock.dispose();
+          globalThis.clock.runAll();
+
+          assertEventFiredShallow(
+              this.eventSpy,
+              ProcedureDelete,
+              {
+                procedure: procedure,
+              },
+              this.workspace.id);
         });
   });
 
