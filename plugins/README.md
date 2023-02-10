@@ -17,6 +17,8 @@ user-inputted pixel grids.
 picker field that uses HSV sliders.
 - [``@blockly/field-date``](field-date/): A date picker field that uses the
 Google Closure date picker.
+- [``@blockly/field-dependent-dropdown``](field-dependent-dropdown/): A tool for
+making a dropdown field's options depend on the value of another field.
 - [``@blockly/field-grid-dropdown``](field-grid-dropdown/): A Blockly dropdown
 field with grid layout.
 - [``@blockly/field-slider``](field-slider/): A slider field.
