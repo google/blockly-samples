@@ -1017,6 +1017,8 @@ const procedureCallerOnChangeMixin = {
     if (!event.recordUndo) return;
     if (event.type !== Blockly.Events.BLOCK_CREATE) return;
     if (event.blockId !== this.id && event.ids.indexOf(this.id) === -1) return;
+    // We already found our model, which means we don't need to create a block.
+    if (this.getProcedureModel()) return;
 
     // Look for the case where a procedure call was created (usually through
     // paste) and there is no matching definition.  In this case, create
