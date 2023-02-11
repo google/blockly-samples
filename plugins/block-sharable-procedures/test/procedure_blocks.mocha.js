@@ -18,6 +18,7 @@ const {
 } = require('./procedure_test_helpers');
 const {testHelpers} = require('@blockly/dev-tools');
 const {ObservableParameterModel} = require('../src/observable_parameter_model');
+const {ObservableProcedureModel} = require('../src/observable_procedure_model');
 const {blocks} = require('../src/blocks');
 const {unregisterProcedureBlocks} = require('../src/index');
 
@@ -1126,6 +1127,21 @@ suite('Procedures', function() {
     });
 
     suite('xml', function() {
+      test('callers that can find models do not create defs', function() {
+        this.workspace.getProcedureMap().add(
+            new ObservableProcedureModel(this.workspace, 'do something'));
+        Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
+            <block type="procedures_callnoreturn">
+              <mutation name="do something"/>
+            </block>`
+        ), this.workspace);
+        globalThis.clock.runAll();
+        assert.equal(
+            this.workspace.getTopBlocks().length,
+            1,
+            'Expected only the call block to exist');
+      });
+
       test('callers without defs create new defs', function() {
         const callBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
             <block type="procedures_callreturn">
@@ -1222,6 +1238,22 @@ suite('Procedures', function() {
     });
 
     suite('json', function() {
+      test('callers that can find models do not create defs', function() {
+        this.workspace.getProcedureMap().add(
+            new ObservableProcedureModel(this.workspace, 'do something'));
+        Blockly.serialization.blocks.append({
+          'type': 'procedures_callnoreturn',
+          'extraState': {
+            'name': 'do something',
+          },
+        }, this.workspace, {recordUndo: true});
+        globalThis.clock.runAll();
+        assert.equal(
+            this.workspace.getTopBlocks().length,
+            1,
+            'Expected only the call block to exist');
+      });
+
       test('callers without defs create new defs', function() {
         const callBlock = Blockly.serialization.blocks.append({
           'type': 'procedures_callreturn',
