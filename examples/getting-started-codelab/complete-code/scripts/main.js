@@ -24,6 +24,8 @@
     const workspace = Blockly.getMainWorkspace();
     if (button.blocklySave) {
       Blockly.serialization.workspaces.load(button.blocklySave, workspace);
+    } else {
+      workspace.clear();
     }
   }
 
@@ -92,5 +94,7 @@
   Blockly.inject('blocklyDiv', {
     toolbox: toolbox,
     scrollbars: false,
+    horizontalLayout: true,
+    toolboxPosition: 'end',
   });
 })();

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.23...@blockly/create-package@1.2.0) (2023-02-09)
+
+
+### Features
+
+* add option to create first party plugins, improve names ([#1547](https://github.com/google/blockly-samples/issues/1547)) ([ba1e545](https://github.com/google/blockly-samples/commit/ba1e5450923ad24f3ba886d0be901440e55cab6a))
+
+
+
+## [1.1.23](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.22...@blockly/create-package@1.1.23) (2023-02-02)
+
+
+### Bug Fixes
+
+* update templates to use JSON ([#1532](https://github.com/google/blockly-samples/issues/1532)) ([d4f6bbf](https://github.com/google/blockly-samples/commit/d4f6bbf38376f1ad39c9440aac7522a447c1a924))
+
+
+
 ## [1.1.22](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.21...@blockly/create-package@1.1.22) (2023-01-26)
 
 **Note:** Version bump only for package @blockly/create-package
