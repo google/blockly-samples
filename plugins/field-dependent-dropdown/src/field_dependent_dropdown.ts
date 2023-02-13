@@ -20,7 +20,7 @@ import {FieldValidator} from 'blockly/core/field';
  *
  * @param a The first array to compare.
  * @param b The second array to compare.
- * @return Whether the arrays are deeply equivalent.
+ * @returns Whether the arrays are deeply equivalent.
  */
 function arraysAreEquivalent<T>(a: T[], b: T[]): boolean {
   return a.length === b.length && a.every((aElement, index) => {
@@ -124,7 +124,7 @@ class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
   /**
    * Encode the event as JSON.
    *
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): DependentDropdownOptionsChangeJson {
     const json = super.toJson() as DependentDropdownOptionsChangeJson;
@@ -162,7 +162,7 @@ class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
   /**
    * Does this event leave all state as it was before?
    *
-   * @return False if something changed.
+   * @returns False if something changed.
    */
   isNull(): boolean {
     return !this.oldValue ||
