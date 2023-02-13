@@ -8,12 +8,12 @@ import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 
 
-const TYPE = 'procedure_rename';
-
 /** Notifies listeners that a procedure model has been renamed. */
 export class ProcedureRename extends ProcedureBase {
+  static readonly TYPE = 'procedure_rename';
+
   /** A string used to check the type of the event. */
-  type = TYPE;
+  type = ProcedureRename.TYPE;
 
   private newName: string;
 
@@ -93,4 +93,4 @@ export interface ProcedureRenameJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, TYPE, ProcedureRename);
+    Blockly.registry.Type.EVENT, ProcedureRename.TYPE, ProcedureRename);

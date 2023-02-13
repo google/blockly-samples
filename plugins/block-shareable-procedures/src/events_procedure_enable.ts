@@ -9,15 +9,15 @@ import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 
 
-const TYPE = 'procedure_enable';
-
 /**
  * Notifies listeners that the procedure data model has been enabled or
  * disabled.
  */
 export class ProcedureEnable extends ProcedureBase {
+  static readonly TYPE = 'procedure_enable';
+
   /** A string used to check the type of the event. */
-  type = TYPE;
+  type = ProcedureEnable.TYPE;
 
   private oldState: boolean;
   private newState: boolean;
@@ -99,4 +99,4 @@ export interface ProcedureEnableJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, TYPE, ProcedureEnable);
+    Blockly.registry.Type.EVENT, ProcedureEnable.TYPE, ProcedureEnable);

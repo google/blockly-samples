@@ -9,14 +9,14 @@ import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 
 
-const TYPE = 'procedure_change';
-
 /**
  * Notifies listeners that a procedure's return type/status has changed.
  */
 export class ProcedureChangeReturn extends ProcedureBase {
+  static readonly TYPE = 'procedure_change';
+
   /** A string used to check the type of the event. */
-  type = TYPE;
+  type = ProcedureChangeReturn.TYPE;
 
   /** The new type(s) the procedure's return has been set to. */
   private newTypes: string[]|null;
@@ -92,4 +92,6 @@ export interface ProcedureChangeReturnJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, TYPE, ProcedureChangeReturn);
+    Blockly.registry.Type.EVENT,
+    ProcedureChangeReturn.TYPE,
+    ProcedureChangeReturn);

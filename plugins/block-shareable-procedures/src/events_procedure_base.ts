@@ -12,6 +12,9 @@ import * as Blockly from 'blockly/core';
 export abstract class ProcedureBase extends Blockly.Events.Abstract {
   isBlank = false;
 
+  static readonly TYPE: string = 'procedure_base';
+  type = ProcedureBase.TYPE;
+
   /**
    * Constructs the base procedure event.
    * @param workspace The workspace the procedure model exists in.

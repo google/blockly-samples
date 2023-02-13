@@ -10,14 +10,14 @@ import {ObservableParameterModel} from './observable_parameter_model';
 import {ObservableProcedureModel} from './observable_procedure_model';
 
 
-const TYPE = 'procedure_create';
-
 /**
  * Notifies listeners that a procedure data model has been created.
  */
 export class ProcedureCreate extends ProcedureBase {
+  static readonly TYPE = 'procedure_create';
+
   /** A string used to check the type of the event. */
-  type = TYPE;
+  type = ProcedureCreate.TYPE;
 
   /**
    * Replays the event in the workspace.
@@ -69,4 +69,4 @@ export interface ProcedureCreateJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, TYPE, ProcedureCreate);
+    Blockly.registry.Type.EVENT, ProcedureCreate.TYPE, ProcedureCreate);
