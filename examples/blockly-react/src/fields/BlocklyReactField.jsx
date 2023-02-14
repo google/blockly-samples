@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +32,11 @@ import * as Blockly from 'blockly/core';
 class BlocklyReactField extends Blockly.Field {
 
   SERIALIZABLE = true
-  
+
   static fromJson(options) {
-    return new BlocklyReactField(options['text']);
+    // `this` might be a subclass of BlocklyReactField if that class doesn't
+    // override the static fromJson method.
+    return new this(options['text']);
   }
 
   showEditor_() {

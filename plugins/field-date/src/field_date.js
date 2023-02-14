@@ -63,7 +63,9 @@ class FieldDate extends Blockly.FieldTextInput {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldDate(options['date'], undefined, options['textEdit']);
+    // `this` might be a subclass of FieldDate if that class doesn't
+    // override the static fromJson method.
+    return new this(options['date'], undefined, options['textEdit']);
   }
 
   /**

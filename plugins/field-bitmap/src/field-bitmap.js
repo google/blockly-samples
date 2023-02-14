@@ -78,7 +78,9 @@ export class FieldBitmap extends Blockly.Field {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldBitmap(options && options['value'], undefined, options);
+    // `this` might be a subclass of FieldBitmap if that class doesn't override
+    // the static fromJson method.
+    return new this(options && options['value'], undefined, options);
   }
 
   /**

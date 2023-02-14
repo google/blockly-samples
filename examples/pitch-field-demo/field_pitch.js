@@ -53,7 +53,7 @@ class FieldPitch extends Blockly.FieldTextInput {
      */
     this.moveWrapper_ = null;
   }
-  
+
   /**
    * Construct a FieldPitch from a JSON arg object.
    * @param {!Object} options A JSON object with options (pitch).
@@ -62,7 +62,9 @@ class FieldPitch extends Blockly.FieldTextInput {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldPitch(options['pitch']);
+    // `this` might be a subclass of FieldPitch if that class doesn't
+    // override the static fromJson method.
+    return new this(options['pitch']);
   }
 
   /**

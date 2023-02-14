@@ -85,10 +85,9 @@ class FieldTurtle extends Blockly.Field {
   static fromJson(options) {
     // In this case we simply pass the JSON options along to the constructor,
     // but you can also use this to get message references, and other such things.
-    return new FieldTurtle(
-      options['pattern'],
-      options['hat'],
-      options['turtleName']);
+    // `this` might be a subclass of FieldTurtle if that class doesn't override
+    // the static fromJson method.
+    return new this(options['pattern'], options['hat'], options['turtleName']);
   }
 
   // Used to create the DOM of our field.
