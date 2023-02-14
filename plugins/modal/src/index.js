@@ -61,8 +61,7 @@ export class Modal {
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array.<Array<?>>}
+     * @type {!Array<!Blockly.browserEvents.Data>}
      * @private
      */
     this.boundEvents_ = [];
@@ -95,9 +94,9 @@ export class Modal {
    */
   dispose() {
     for (const event of this.boundEvents_) {
-      Blockly.unbindEvent_(event);
+      Blockly.browserEvents.unbind(event);
     }
-    this.boundEvents_ = [];
+    this.boundEvents_.length = 0;
     if (this.htmlDiv_) {
       this.htmlDiv_.remove();
     }

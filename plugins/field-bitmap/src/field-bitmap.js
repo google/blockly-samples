@@ -25,7 +25,7 @@ const EMPTY_PIXEL_COLOR = '#fff';
  */
 export class FieldBitmap extends Blockly.Field {
   /**
-   *Constructor for the bitmap field.
+   * Constructor for the bitmap field.
    * @param {!Array<!Array<number>>=} value 2D rectangular array of 1s and 0s.
    * @param {Function=} validator A function that is called to validate.
    * @param {!Object=} config Config A map of options used to
@@ -35,7 +35,6 @@ export class FieldBitmap extends Blockly.Field {
     super(value, validator, config);
 
     this.SERIALIZABLE = true;
-
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -54,8 +53,7 @@ export class FieldBitmap extends Blockly.Field {
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array<!Array<?>>}
+     * @type {!Array<!Blockly.browserEvents.Data>}
      * @private
      */
     this.boundEvents_ = [];
