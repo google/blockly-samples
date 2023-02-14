@@ -19,7 +19,7 @@ const closureCompiler = require('google-closure-compiler').gulp();
  * body in a Universal Module Definition.
  * @param {string} namespace The export namespace.
  * @param {Array.<Object>} dependencies An array of dependencies to inject.
- * @return {string} The output wrapper.
+ * @returns {string} The output wrapper.
  */
 function outputWrapperUMD(namespace, dependencies) {
   const amdDeps = dependencies.map((d) => '\'' + d.amd + '\'' ).join(', ');
@@ -46,7 +46,7 @@ return ${namespace};
 
 /**
  * Build script.
- * @return {Function} The gulp task.
+ * @returns {Function} The gulp task.
  */
 function build() {
   return gulp.src([

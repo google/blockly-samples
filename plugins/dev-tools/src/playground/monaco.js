@@ -7,7 +7,7 @@
  * @param {!HTMLElement} container The container element.
  * @param {Object} options Monaco editor options.
  * @param {string=} vsEditorPath Optional VS editor path.
- * @return {Promise} A promise that resolves with the editor.
+ * @returns {Promise} A promise that resolves with the editor.
  */
 export function addCodeEditor(container, options, vsEditorPath) {
   return new Promise((resolve, reject) => {
@@ -57,7 +57,7 @@ export function addCodeEditor(container, options, vsEditorPath) {
  * Create the monaco editor.
  * @param {!HTMLElement} container The container element.
  * @param {Object} options Monaco editor options.
- * @return {monaco.editor.IStandaloneCodeEditor} A monaco editor.
+ * @returns {monaco.editor.IStandaloneCodeEditor} A monaco editor.
  */
 function createEditor(container, options) {
   const editor = window.monaco.editor.create(container, options);
@@ -68,7 +68,7 @@ function createEditor(container, options) {
 /**
  * Check whether or not a JS file exists at the url specified.
  * @param {string} url The url of the file.
- * @return {boolean} Whether or not the file exists.
+ * @returns {boolean} Whether or not the file exists.
  */
 function checkFileExists(url) {
   const http = new XMLHttpRequest();

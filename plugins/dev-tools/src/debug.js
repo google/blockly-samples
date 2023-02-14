@@ -37,7 +37,7 @@ export function registerDebugRendererFromName(name) {
  * Creates a debug renderer.
  * @param {function(new: Blockly.blockRendering.Renderer)} Renderer The
  *     original renderer we are going to extend.
- * @return {function(new: Blockly.blockRendering.Renderer)} The renderer with
+ * @returns {function(new: Blockly.blockRendering.Renderer)} The renderer with
  *     the necessary logic to draw the debug rectangles.
  */
 export function createNewRenderer(Renderer) {
@@ -73,7 +73,7 @@ export function createNewRenderer(Renderer) {
      * If we have already created a debugger for this block, use that debugger
      * so that it can remove any previously created html elements.
      * @param {Blockly.BlockSvg} block The block that is about to be rendered.
-     * @return {DebugDrawer} The object used to draw the debug rectangles
+     * @returns {DebugDrawer} The object used to draw the debug rectangles
      *     on the block.
      * @private
      */

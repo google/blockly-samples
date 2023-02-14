@@ -40,7 +40,7 @@ Blockly.Blocks['dynamic_list_create'] = {
 
   /**
    * Create XML to represent number of text inputs.
-   * @return {!Element} XML storage element.
+   * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -101,7 +101,7 @@ Blockly.Blocks['dynamic_list_create'] = {
    * Check whether a new input should be added and determine where it should go.
    * @param {!Blockly.Connection} connection The connection that has a
    *     pending connection.
-   * @return {number} The index before which to insert a new input,
+   * @returns {number} The index before which to insert a new input,
    *     or null if no input should be added.
    */
   getIndexForNewInput: function(connection) {

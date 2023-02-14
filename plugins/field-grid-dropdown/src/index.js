@@ -57,7 +57,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   /**
    * Constructs a FieldGridDropdown from a JSON arg object.
    * @param {!Object} options A JSON object with options.
-   * @return {!FieldGridDropdown} The new field instance.
+   * @returns {!FieldGridDropdown} The new field instance.
    * @package
    * @nocollapse
    */

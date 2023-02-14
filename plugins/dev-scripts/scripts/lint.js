@@ -44,7 +44,7 @@ const linter = new ESLint({
  * Lint this directory.
  * @param {string} dir The directory to lint.
  * @param {ESLint} linter The linter.
- * @return {Promise<Array<LintResult|Array<LintResult|null>>>} All results,
+ * @returns {Promise<Array<LintResult|Array<LintResult|null>>>} All results,
  *   which may be printed with an approriate formatter, and error results.
  */
 async function lintDir(dir, linter) {

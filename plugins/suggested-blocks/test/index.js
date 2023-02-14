@@ -16,7 +16,7 @@ import * as SuggestedBlocks from '../src/index';
  * Create a workspace.
  * @param {HTMLElement} blocklyDiv The blockly container div.
  * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @returns {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
   const workspace = Blockly.inject(blocklyDiv, options);
@@ -41,7 +41,7 @@ const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
  * @param {string} original the base string
  * @param {string} newContent the new string to be inserted
  * @param {number} index the index where the string should be inserted
- * @return {string} the modified string.
+ * @returns {string} the modified string.
  */
 function insertIntoString(original, newContent, index) {
   return original.slice(0, index) + newContent + original.slice(index);

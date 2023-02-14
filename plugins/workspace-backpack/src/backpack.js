@@ -308,7 +308,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns the backpack flyout.
-   * @return {?Blockly.IFlyout} The backpack flyout.
+   * @returns {?Blockly.IFlyout} The backpack flyout.
    * @public
    */
   getFlyout() {
@@ -318,7 +318,7 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns the bounding rectangle of the drag target area in pixel units
    * relative to viewport.
-   * @return {?Blockly.utils.Rect} The component's bounding box. Null if drag
+   * @returns {?Blockly.utils.Rect} The component's bounding box. Null if drag
    *   target area should be ignored.
    */
   getClientRect() {
@@ -337,7 +337,7 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The component’s bounding box.
+   * @returns {!Blockly.utils.Rect} The component’s bounding box.
    */
   getBoundingRectangle() {
     return new Blockly.utils.Rect(
@@ -414,7 +414,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns the count of items in the backpack.
-   * @return {number} The count of items.
+   * @returns {number} The count of items.
    */
   getCount() {
     return this.contents_.length;
@@ -422,7 +422,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns backpack contents.
-   * @return {!Array<string>} The backpack contents.
+   * @returns {!Array<string>} The backpack contents.
    */
   getContents() {
     // Return a shallow copy of the contents array.
@@ -443,7 +443,7 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Converts the provided block into a cleaned XML string.
    * @param {!Blockly.Block} block The block to convert.
-   * @return {string} The cleaned XML string.
+   * @returns {string} The cleaned XML string.
    * @private
    */
   blockToCleanXmlString_(block) {
@@ -453,7 +453,7 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns whether the backpack contains a duplicate of the provided Block.
    * @param {!Blockly.Block} block The block to check.
-   * @return {boolean} Whether the backpack contains a duplicate of the provided
+   * @returns {boolean} Whether the backpack contains a duplicate of the provided
    *     block.
    */
   containsBlock(block) {
@@ -570,7 +570,7 @@ export class Backpack extends Blockly.DragTarget {
    * Returns a filtered list without duplicates within itself and without any
    * shared elements with this.contents_.
    * @param {!Array<string>} array The array of items to filter.
-   * @return {!Array<string>} The filtered list.
+   * @returns {!Array<string>} The filtered list.
    * @private
    */
   filterDuplicates_(array) {
@@ -581,7 +581,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns whether the backpack is open-able.
-   * @return {boolean} Whether the backpack is open-able.
+   * @returns {boolean} Whether the backpack is open-able.
    * @protected
    */
   isOpenable_() {
@@ -591,7 +591,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns whether the backpack is open.
-   * @return {boolean} Whether the backpack is open.
+   * @returns {boolean} Whether the backpack is open.
    */
   isOpen() {
     return this.flyout_.isVisible();
@@ -720,7 +720,7 @@ export class Backpack extends Blockly.DragTarget {
    * it was when the drag started.
    * @param {!Blockly.IDraggable} dragElement The block or bubble currently
    *   being dragged.
-   * @return {boolean} Whether the block or bubble provided should be returned
+   * @returns {boolean} Whether the block or bubble provided should be returned
    *   to drag start.
    */
   shouldPreventMove(dragElement) {

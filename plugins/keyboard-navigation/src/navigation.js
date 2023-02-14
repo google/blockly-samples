@@ -158,7 +158,7 @@ export class Navigation {
   /**
    * Gets the navigation state of the current workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get the state of.
-   * @return {!Constants.STATE} The state of the given workspace.
+   * @returns {!Constants.STATE} The state of the given workspace.
    * @package
    */
   getState(workspace) {
@@ -169,7 +169,7 @@ export class Navigation {
    * Gets the marker created for keyboard navigation.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get the marker
    *     from.
-   * @return {?Blockly.Marker} The marker created for keyboard navigation.
+   * @returns {?Blockly.Marker} The marker created for keyboard navigation.
    * @protected
    */
   getMarker(workspace) {
@@ -517,7 +517,7 @@ export class Navigation {
    * Gets the cursor on the flyout's workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The main workspace the flyout is
    *     on.
-   * @return {?Blockly.FlyoutCursor} The flyout's cursor or null if no flyout
+   * @returns {?Blockly.FlyoutCursor} The flyout's cursor or null if no flyout
    *     exists.
    * @protected
    */
@@ -558,7 +558,7 @@ export class Navigation {
    * Creates a new block based on the current block the flyout cursor is on.
    * @param {!Blockly.WorkspaceSvg} workspace The main workspace. The workspace
    *     the block will be placed on.
-   * @return {?Blockly.BlockSvg} The newly created block.
+   * @returns {?Blockly.BlockSvg} The newly created block.
    * @protected
    */
   createNewBlock(workspace) {
@@ -606,7 +606,7 @@ export class Navigation {
    * Connects the location of the marker and the location of the cursor.
    * No-op if the marker or cursor node are null.
    * @param {!Blockly.WorkspaceSvg} workspace The main workspace.
-   * @return {boolean} True if the cursor and marker locations were connected,
+   * @returns {boolean} True if the cursor and marker locations were connected,
    *     false otherwise.
    * @package
    */
@@ -626,7 +626,7 @@ export class Navigation {
    * @param {!Blockly.WorkspaceSvg} workspace The main workspace.
    * @param {!Blockly.ASTNode} markerNode The node to try to connect to.
    * @param {!Blockly.ASTNode} cursorNode The node to connect to the markerNode.
-   * @return {boolean} True if the key was handled; false if something went
+   * @returns {boolean} True if the key was handled; false if something went
    *     wrong.
    * @protected
    */
@@ -667,7 +667,7 @@ export class Navigation {
    * Warns the user if the given cursor or marker node can not be connected.
    * @param {!Blockly.ASTNode} markerNode The node to try to connect to.
    * @param {!Blockly.ASTNode} cursorNode The node to connect to the markerNode.
-   * @return {boolean} True if the marker and cursor are valid types, false
+   * @returns {boolean} True if the marker and cursor are valid types, false
    *     otherwise.
    * @protected
    */
@@ -713,7 +713,7 @@ export class Navigation {
    * @param {?Blockly.BlockSvg} block The block to be moved to the workspace.
    * @param {!Blockly.ASTNode} wsNode The workspace node holding the position
    *     the block will be moved to.
-   * @return {boolean} True if the block can be moved to the workspace,
+   * @returns {boolean} True if the block can be moved to the workspace,
    *     false otherwise.
    * @protected
    */
@@ -771,7 +771,7 @@ export class Navigation {
    *     is being moved.
    * @param {?Blockly.RenderedConnection} destConnection The connection to be
    *     moved to.
-   * @return {boolean} True if the two connections or their target connections
+   * @returns {boolean} True if the two connections or their target connections
    *     were connected, false otherwise.
    * @protected
    */
@@ -812,7 +812,7 @@ export class Navigation {
    * is superior.
    * @param {?Blockly.RenderedConnection} connection The connection trying to be
    *     connected.
-   * @return {?Blockly.RenderedConnection} The inferior connection or null if
+   * @returns {?Blockly.RenderedConnection} The inferior connection or null if
    *     none exists.
    * @protected
    */
@@ -834,7 +834,7 @@ export class Navigation {
    * inferior.
    * @param {?Blockly.RenderedConnection} connection The connection trying to be
    *     connected.
-   * @return {?Blockly.RenderedConnection} The superior connection or null if
+   * @returns {?Blockly.RenderedConnection} The superior connection or null if
    *     none exists.
    * @protected
    */
@@ -853,7 +853,7 @@ export class Navigation {
    *     is being moved.
    * @param {?Blockly.RenderedConnection} destConnection The connection to be
    *     moved to.
-   * @return {boolean} True if the connections were connected, false otherwise.
+   * @returns {boolean} True if the connections were connected, false otherwise.
    * @protected
    */
   moveAndConnect(movingConnection, destConnection) {
@@ -885,7 +885,7 @@ export class Navigation {
    * @param {!Blockly.BlockSvg} block The block to move.
    * @param {!Blockly.RenderedConnection} destConnection The connection to
    *     connect to.
-   * @return {boolean} Whether the connection was successful.
+   * @returns {boolean} Whether the connection was successful.
    * @protected
    */
   insertBlock(block, destConnection) {
@@ -1068,7 +1068,7 @@ export class Navigation {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace the cursor is on.
    * @param {number} xDirection -1 to move cursor left. 1 to move cursor right.
    * @param {number} yDirection -1 to move cursor up. 1 to move cursor down.
-   * @return {boolean} True if the current node is a workspace, false otherwise.
+   * @returns {boolean} True if the current node is a workspace, false otherwise.
    * @package
    */
   moveWSCursor(workspace, xDirection, yDirection) {
@@ -1111,7 +1111,7 @@ export class Navigation {
 
   /**
    * Pastes the coped block to the marked location.
-   * @return {boolean} True if the paste was sucessful, false otherwise.
+   * @returns {boolean} True if the paste was sucessful, false otherwise.
    * @package
    */
   paste() {
@@ -1132,7 +1132,7 @@ export class Navigation {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to paste the block
    *     on.
    * @param {!Blockly.BlockSvg} block The block to paste.
-   * @return {boolean} True if the block was pasted to the workspace, false
+   * @returns {boolean} True if the block was pasted to the workspace, false
    *     otherwise.
    * @protected
    */

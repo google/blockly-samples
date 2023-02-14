@@ -250,7 +250,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the text input for the search bar.
-   * @return {!HTMLInputElement} A text input for the search bar.
+   * @returns {!HTMLInputElement} A text input for the search bar.
    * @protected
    */
   createTextInput_() {
@@ -262,7 +262,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the next block in the list.
-   * @return {!HTMLButtonElement} The next button.
+   * @returns {!HTMLButtonElement} The next button.
    * @protected
    */
   createNextBtn_() {
@@ -271,7 +271,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the previous block in the list.
-   * @return {!HTMLButtonElement} The previous button.
+   * @returns {!HTMLButtonElement} The previous button.
    * @protected
    */
   createPreviousBtn_() {
@@ -280,7 +280,7 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used for closing the search bar.
-   * @return {!HTMLButtonElement} A button for closing the search bar.
+   * @returns {!HTMLButtonElement} A button for closing the search bar.
    * @protected
    */
   createCloseBtn_() {
@@ -291,7 +291,7 @@ export class WorkspaceSearch {
    * Creates a button for the workspace search bar.
    * @param {string} className The class name for the button.
    * @param {string} text The text to display to the screen reader.
-   * @return {!HTMLButtonElement} The created button.
+   * @returns {!HTMLButtonElement} The created button.
    * @private
    */
   createBtn_(className, text) {
@@ -327,7 +327,7 @@ export class WorkspaceSearch {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {?Blockly.utils.Rect} The component’s bounding box. Null in this
+   * @returns {?Blockly.utils.Rect} The component’s bounding box. Null in this
    *     case since we don't need other elements to avoid the workspace search
    *     field.
    */
@@ -505,7 +505,7 @@ export class WorkspaceSearch {
   /**
    * Returns pool of blocks to search from.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to get blocks from.
-   * @return {!Array.<!Blockly.BlockSvg>} The search pool of blocks to use.
+   * @returns {!Array.<!Blockly.BlockSvg>} The search pool of blocks to use.
    * @private
    */
   getSearchPool_(workspace) {
@@ -525,7 +525,7 @@ export class WorkspaceSearch {
    * @param {string} searchText The search text. Note if the search is case
    *    insensitive, this will be passed already converted to lowercase letters.
    * @param {boolean} caseSensitive Whether the search is caseSensitive.
-   * @return {boolean} True if the block is a match, false otherwise.
+   * @returns {boolean} True if the block is a match, false otherwise.
    * @protected
    */
   isBlockMatch_(block, searchText, caseSensitive) {
@@ -553,7 +553,7 @@ export class WorkspaceSearch {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to search.
    * @param {string} searchText The search text.
    * @param {boolean} caseSensitive Whether the search should be case sensitive.
-   * @return {!Array.<Blockly.BlockSvg>} The blocks that match the search
+   * @returns {!Array.<Blockly.BlockSvg>} The blocks that match the search
    *    text.
    * @protected
    */

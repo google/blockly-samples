@@ -259,7 +259,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * top left.
    * @param {!CandidateScrolls} candidateScrolls Existing lists of candidate
    *     scrolls. Will be modified in place.
-   * @return {!Blockly.utils.Coordinate} Overall scroll vector.
+   * @returns {!Blockly.utils.Coordinate} Overall scroll vector.
    * @protected
    */
   getOverallScrollVector_(candidateScrolls) {
@@ -359,7 +359,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
    *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
-   * @return {!Object<string, number>} An object describing the amount of
+   * @returns {!Object<string, number>} An object describing the amount of
    *     overflow in each direction.
    * @protected
    */
@@ -414,7 +414,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
    *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
-   * @return {!Object<string, number>} An object describing the amount of
+   * @returns {!Object<string, number>} An object describing the amount of
    *     overflow in each direction.
    * @protected
    */

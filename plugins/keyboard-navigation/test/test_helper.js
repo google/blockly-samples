@@ -14,7 +14,7 @@ const Blockly = require('blockly/node');
  * @param {boolean} enableKeyboardNav True to enable keyboard navigation, false
  *     otherwise.
  * @param {boolean} readOnly True for a read only workspace, false otherwise.
- * @return {Blockly.WorkspaceSvg} The created workspace.
+ * @returns {Blockly.WorkspaceSvg} The created workspace.
  */
 export function createNavigationWorkspace(
     navigation, enableKeyboardNav, readOnly) {
@@ -55,7 +55,7 @@ export function createNavigationWorkspace(
  *     Blockly.utils.isTargetInput method.
  * @param {?Array<number>} modifiers A list of modifiers. Use
  *     Blockly.utils.KeyCodes enum.
- * @return {Object} The mocked keydown
+ * @returns {Object} The mocked keydown
  * event.
  */
 export function createKeyDownEvent(keyCode, type, modifiers) {

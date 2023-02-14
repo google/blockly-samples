@@ -35,7 +35,7 @@ export let BackpackOptions;
  * Returns a new options object with all properties set, using default values
  * if not specified in the optional options that were passed in.
  * @param {BackpackOptions=} options The options to use.
- * @return {!BackpackOptions} The created options object.
+ * @returns {!BackpackOptions} The created options object.
  */
 export function parseOptions(options) {
   const defaults = {

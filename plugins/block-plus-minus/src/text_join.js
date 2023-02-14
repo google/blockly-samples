@@ -21,7 +21,7 @@ const textJoinMutator = {
 
   /**
    * Creates XML to represent number of inputs.
-   * @return {!Element} XML storage element.
+   * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -42,7 +42,7 @@ const textJoinMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return {{itemCount: number}} The state of this block, ie the item count.
+   * @returns {{itemCount: number}} The state of this block, ie the item count.
    */
   saveExtraState: function() {
     return {

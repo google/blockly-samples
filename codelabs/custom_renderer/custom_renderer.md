@@ -189,7 +189,7 @@ The `shapeFor` function on a constants provider maps from connection to connecti
  * of the connection.
  * @param {!Blockly.RenderedConnection} connection The connection to find a
  *     shape object for
- * @return {!Object} The shape object for the connection.
+ * @returns {!Object} The shape object for the connection.
  * @package
  */
 Blockly.blockRendering.ConstantProvider.prototype.shapeFor = function(

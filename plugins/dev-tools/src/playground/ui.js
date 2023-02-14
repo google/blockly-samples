@@ -13,7 +13,7 @@
 /**
  * Render the playground layout.
  * @param {HTMLElement} container The container to render the playground in.
- * @return {{
+ * @returns {{
  *     blocklyDiv: HTMLElement,
  *     minimizeButton: HTMLElement,
  *     monacoDiv: HTMLElement,
@@ -139,7 +139,7 @@ export function renderPlayground(container) {
 /**
  * Render a code tab.
  * @param {string} name Name of the tab.
- * @return {HTMLElement} The tab <span> element.
+ * @returns {HTMLElement} The tab <span> element.
  */
 export function renderCodeTab(name) {
   const tab = document.createElement('span');
@@ -156,7 +156,7 @@ export function renderCodeTab(name) {
  * Render a checkbox.
  * @param {string} id Id to use for the checkbox element.
  * @param {string} label The label string to use.
- * @return {Array<HTMLElement>} A tuple of the checkbox input element, and the
+ * @returns {Array<HTMLElement>} A tuple of the checkbox input element, and the
  * checkbox label element.
  */
 export function renderCheckbox(id, label) {
