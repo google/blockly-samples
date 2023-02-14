@@ -22,7 +22,8 @@ npm install @blockly/block-sharable-procedures
 
 ## Usage
 
-See developers.google.com/blockly/guides/create-custom-blocks/procedures/using-procedures for more information about using this plugin.
+See [developers.google.com/blockly/guides/create-custom-blocks/procedures/using-procedures](https://developers.google.com/blockly/guides/create-custom-blocks/procedures/using-procedures)
+for more information about using this plugin.
 
 ## License
 Apache 2.0
