@@ -108,8 +108,7 @@ export class WorkspaceSearch {
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array.<Array<?>>}
+     * @type {!Array<!Blockly.browserEvents.Data>}
      * @private
      */
     this.boundEvents_ = [];
@@ -138,9 +137,9 @@ export class WorkspaceSearch {
    */
   dispose() {
     for (const event of this.boundEvents_) {
-      Blockly.unbindEvent_(event);
+      Blockly.browserEvents.unbind(event);
     }
-    this.boundEvents_ = null;
+    this.boundEvents_.length = 0;
     if (this.htmlDiv_) {
       this.htmlDiv_.remove();
       this.htmlDiv_ = null;

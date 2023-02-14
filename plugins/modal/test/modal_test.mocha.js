@@ -51,11 +51,11 @@ suite('Modal', function() {
     test('Events and button callback removed', function() {
       this.modal.init();
       const numEvents = this.modal.boundEvents_.length;
-      Blockly.unbindEvent_ = sinon.fake();
+      Blockly.browserEvents.unbind = sinon.fake();
       this.modal.dispose();
 
       assert.equal(document.querySelector('.blocklyModalOverlay'), null);
-      sinon.assert.callCount(Blockly.unbindEvent_, numEvents);
+      sinon.assert.callCount(Blockly.browserEvents.unbind, numEvents);
     });
   });
 

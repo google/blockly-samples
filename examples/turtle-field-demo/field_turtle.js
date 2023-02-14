@@ -38,10 +38,13 @@ class FieldTurtle extends Blockly.Field {
   // May change if the turtle gets fancy enough.
   TEXT_OFFSET_X = 80;
 
-  // Used to keep track of our editor event listeners, so they can be
-  // properly disposed of when the field closes. You can keep track of your
-  // listeners however you want, just be sure to dispose of them!
-  editorListeners_ = [];
+  /**
+   * Array holding info needed to unbind events.
+   * Used for disposing.
+   * @type {!Array<!Blockly.browserEvents.Data>}
+   * @private
+   */
+  boundEvents_ = [];
 
   // Generally field's values should be optional, and have logical defaults.
   // If this is not possible (for example image fields can't have logical
@@ -49,7 +52,6 @@ class FieldTurtle extends Blockly.Field {
   // Editable fields also generally accept validators, so we will accept a
   // validator.
   constructor(opt_pattern, opt_hat, opt_turtleName, opt_validator) {
-
     // The turtle field contains an object as its value, so we need to compile
     // the parameters into an object.
     const value = {};
@@ -399,34 +401,34 @@ class FieldTurtle extends Blockly.Field {
     let leftArrow = createLeftArrow(row);
     widget.patternText = createTextNode(row, this.displayValue_.pattern);
     let rightArrow = createRightArrow(row);
-    this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('pattern', FieldTurtle.PATTERNS, -1)));
-    this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('pattern', FieldTurtle.PATTERNS, 1)));
 
     row = createRow(table);
     leftArrow = createLeftArrow(row);
     widget.hatText = createTextNode(row, this.displayValue_.hat);
     rightArrow = createRightArrow(row);
-    this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('hat', FieldTurtle.HATS, -1)));
-    this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('hat', FieldTurtle.HATS, 1)));
 
     row = createRow(table);
     leftArrow = createLeftArrow(row);
     widget.turtleNameText = createTextNode(row, this.displayValue_.turtleName);
     rightArrow = createRightArrow(row);
-    this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('turtleName', FieldTurtle.NAMES, -1)));
-    this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('turtleName', FieldTurtle.NAMES, 1)));
 
     const randomizeButton = document.createElement('button');
     randomizeButton.className = 'randomize';
     randomizeButton.setAttribute('type', 'button');
     randomizeButton.textContent = 'randomize turtle';
-    this.editorListeners_.push(Blockly.browserEvents.bind(randomizeButton, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(randomizeButton, 'mouseup', this,
       function () {
         const value = {};
         value.pattern = FieldTurtle.PATTERNS[Math.floor(Math.random() * FieldTurtle.PATTERNS.length)];
@@ -444,10 +446,10 @@ class FieldTurtle extends Blockly.Field {
 
   // Cleans up any event listeners that were attached to the now hidden editor.
   dropdownDispose_() {
-    for (let i = this.editorListeners_.length, listener; listener = this.editorListeners_[i]; i--) {
-      Blockly.browserEvents.unbind(listener);
-      this.editorListeners_.pop();
+    for (const event of this.boundEvents_) {
+      Blockly.browserEvents.unbind(event);
     }
+    this.boundEvents_.length = 0;
   }
 
   // Updates the field's colour based on the colour of the block. Called by

@@ -69,7 +69,7 @@ export class Backpack extends Blockly.DragTarget {
      * Array holding info needed to unbind events.
      * Used for disposing.
      * @type {!Array<!Blockly.browserEvents.Data>}
-     * @protected
+     * @private
      */
     this.boundEvents_ = [];
 
@@ -189,7 +189,7 @@ export class Backpack extends Blockly.DragTarget {
       Blockly.utils.dom.removeNode(this.svgGroup_);
     }
     for (const event of this.boundEvents_) {
-      Blockly.unbindEvent_(event);
+      Blockly.browserEvents.unbind(event);
     }
     this.boundEvents_.length = 0;
   }

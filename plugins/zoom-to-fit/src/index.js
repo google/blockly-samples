@@ -120,7 +120,8 @@ export class ZoomToFitControl {
       Blockly.utils.dom.removeNode(this.svgGroup_);
     }
     if (this.onZoomToFitWrapper_) {
-      Blockly.unbindEvent_(this.onZoomToFitWrapper_);
+      Blockly.browserEvents.unbind(this.onZoomToFitWrapper_);
+      this.onZoomToFitWrapper_ = null;
     }
   }
 
