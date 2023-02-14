@@ -17,24 +17,12 @@ yarn add @blockly/block-sharable-procedures
 
 ### npm
 ```
-npm install @blockly/block-sharable-procedures --save
+npm install @blockly/block-sharable-procedures
 ```
 
 ## Usage
 
-### Import
-
-The blocks in this plugin must be explicitly defined after they are imported.
-This is so that importing the plugin doesn't have side effects (i.e. defining
-the blocks itself) which might be unexpected.
-
-```js
-import * as Blockly from 'blockly';
-import {blocks} from '@blockly/block-sharable-procedures';
-
-// Blocks must be explicitly defined after importing.
-Blockly.common.defineBlocks(blocks);
-```
+See developers.google.com/blockly/guides/create-custom-blocks/procedures/using-procedures for more information about using this plugin.
 
 ## License
 Apache 2.0
