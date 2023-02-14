@@ -1,7 +1,7 @@
 
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ const socket = io();
  * Get the position for a given user. If no user is specified will return the
  * positions of all users.
  * @param {string=} workspaceId workspaceId of the user.
- * @return {!Promise} Promise object with an array of PositionUpdate objects.
+ * @returns {!Promise} Promise object with an array of PositionUpdate objects.
  * @public
  */
 export async function getPositionUpdates(workspaceId) {
@@ -50,7 +50,7 @@ export async function getPositionUpdates(workspaceId) {
  * Update the position of a user in the database.
  * @param {!PositionUpdate} positionUpdate The PositionUpdate with the new
  * position for a given user.
- * @return {!Promise} Promise object representing the success of the update.
+ * @returns {!Promise} Promise object representing the success of the update.
  * @public
  */
 export async function sendPositionUpdate(positionUpdate) {
@@ -85,7 +85,7 @@ export async function connectUser(workspaceId) {
   return new Promise((resolve, reject) => {
     socket.emit('connectUser', workspaceId, ()=> {
       resolve();
-    });  
+    });
   });
 };
 

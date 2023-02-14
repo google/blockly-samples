@@ -27,7 +27,7 @@ export class InputModal extends TypedVariableModal {
 
   /**
    * Get the selected type.
-   * @return {string} The selected type.
+   * @returns {string} The selected type.
    * @override
    */
   getSelectedType_() {

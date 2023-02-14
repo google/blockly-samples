@@ -69,7 +69,7 @@ suite('Modal', function() {
      * @param {number} keyCode The keycode to use for the event.
      * @param {boolean} shift True if we want to emulate hitting the shift key.
      *    False otherwise.
-     * @return {Object} A fake event.
+     * @returns {Object} A fake event.
      */
     function makeEvent(keyCode, shift) {
       const event = {

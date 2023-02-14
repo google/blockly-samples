@@ -102,9 +102,9 @@ const database = [
 /**
  * Migrates the contents of a particular file, renaming references and
  * adding/updating imports.
- * 
+ *
  * @param {string} contents The string contents of the file to migrate.
- * @return {string} The migrated contents of the file.
+ * @returns {string} The migrated contents of the file.
  */
 function migrateContents(contents) {
   let newContents = contents;
@@ -118,10 +118,10 @@ function migrateContents(contents) {
  * Migrates a particular import in a particular file. Renames references to
  * where the import used to exist on the namespace tree, and adds/updates
  * imports.
- * 
+ *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
- * @return {string} The migrated contents of the file.
+ * @returns {string} The migrated contents of the file.
  */
 function fixImport(contents, migrationData) {
   const identifier = getIdentifier(contents, migrationData);
@@ -133,10 +133,10 @@ function fixImport(contents, migrationData) {
 
 /**
  * Returns the identifier a given import is assigned to.
- * 
+ *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
- * @return The identifier associated with the import associated with the
+ * @returns The identifier associated with the import associated with the
  *     migration data.
  */
 function getIdentifier(contents, migrationData) {
@@ -152,10 +152,10 @@ function getIdentifier(contents, migrationData) {
 /**
  * Replaces references to where an import used to exist on the namespace tree
  * with references to the actual import (if any references are found).
- * 
+ *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
- * @return {string} The migrated contents of the file.
+ * @returns {string} The migrated contents of the file.
  */
 function replaceReferences(contents, migrationData, identifier) {
   return contents.replace(dottedIdentifier, (match) => {
@@ -170,10 +170,10 @@ function replaceReferences(contents, migrationData, identifier) {
 /**
  * Replaces the any existing import with the new import, or if no import is
  * found, inserts a new one after the 'blockly' import.
- * 
+ *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
- * @return {string} The migrated contents of the file.
+ * @returns {string} The migrated contents of the file.
  */
 function addImport(contents, migrationData) {
   const importRegExp = createImportRegExp(migrationData.import);
@@ -213,9 +213,9 @@ function addImport(contents, migrationData) {
 /**
  * Returns a regular expression that matches an import statement for the given
  * import identifier.
- * 
+ *
  * @param {string} importIdent The identifier of the import to match.
- * @return {RegExp} The regular expression.
+ * @returns {RegExp} The regular expression.
  */
 function createImportRegExp(importIdent) {
   return new RegExp(`(\\s*)import\\s+.+\\s+from\\s+['"]${importIdent}['"];`)
@@ -224,9 +224,9 @@ function createImportRegExp(importIdent) {
 /**
  * Returns a regular expression that matches a require statement for the given
  * identifier.
- * 
+ *
  * @param {string} importIdent The identifer of the import to match.
- * @return {RegExp} The regular expression.
+ * @returns {RegExp} The regular expression.
  */
 function createRequireRegExp(importIdent) {
   return new RegExp(

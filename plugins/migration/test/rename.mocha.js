@@ -68,7 +68,7 @@ class SubClass extends Blockly.moduleC {
   /**
    * @param {number}
    * @param {Blockly.moduleA.exportC}
-   * @return {Blockly.moduleA.exportA}
+   * @returns {Blockly.moduleA.exportA}
    */
   methodB(paramA, paramB) {
     const thing = /** @type {Blockly.moduleD} */ (new Blockly.moduleE());
@@ -97,7 +97,7 @@ class SubClass extends Blockly.moduleC.ClassC {
   /**
    * @param {number}
    * @param {Blockly.moduleA.exportC}
-   * @return {Blockly.newModuleA.newExportA}
+   * @returns {Blockly.newModuleA.newExportA}
    */
   methodB(paramA, paramB) {
     const thing = /** @type {Blockly.moduleD.ClassD} */ (new Blockly.moduleE());

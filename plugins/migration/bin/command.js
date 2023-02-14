@@ -81,7 +81,7 @@ function showVersionHelp(version) {
  * @param {string} targetVersionRange The range of target versions of Blockly
  *     this command assists in migrating to.
  * @param {string} description The description of the new subcommand.
- * @return {!Command} The basic subcommand.
+ * @returns {!Command} The basic subcommand.
  */
 export function createSubCommand(name, targetVersionRange, description) {
   const migration = {
@@ -111,7 +111,7 @@ export function addSubCommand(command) {
  * Extracts the from-version, to-version, and file names from the options and
  * arguments.
  * @param {Command} command The command to extract the info from.
- * @return {{
+ * @returns {{
  *   fromVersion: string,
  *   toVersion:string,
  *   fileNames: !Array<string>}} The required info.

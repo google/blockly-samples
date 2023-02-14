@@ -26,7 +26,7 @@ const controlsIfMutator = {
 
   /**
    * Creates XML to represent the number of else-if and else inputs.
-   * @return {Element} XML storage element.
+   * @returns {Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -59,7 +59,7 @@ const controlsIfMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return {{elseIfCount: (number|undefined),
+   * @returns {{elseIfCount: (number|undefined),
    *     haseElse: (boolean|undefined)}} The state of this block, ie the else
    *     if count and else state.
    */

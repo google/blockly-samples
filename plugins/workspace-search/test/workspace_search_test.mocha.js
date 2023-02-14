@@ -19,7 +19,7 @@ suite('WorkspaceSearch', function() {
   /**
    * Check if a block is currently highlighted.
    * @param {Blockly.BlockSvg} block The block to test.
-   * @return {boolean} True if the block is currently highlighted.
+   * @returns {boolean} True if the block is currently highlighted.
    */
   function isBlockHighlighted(block) {
     const path = block.pathObject.svgPath;
@@ -30,7 +30,7 @@ suite('WorkspaceSearch', function() {
   /**
    * Check if a block is currently styled.
    * @param {Blockly.BlockSvg} block The block to test.
-   * @return {boolean} True if the block is currently styled.
+   * @returns {boolean} True if the block is currently styled.
    */
   function isBlockCurrentStyled(block) {
     const path = block.pathObject.svgPath;

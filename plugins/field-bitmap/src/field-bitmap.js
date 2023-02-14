@@ -73,7 +73,7 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Constructs a FieldBitmap from a JSON arg object.
    * @param {!Object} options A JSON object with options.
-   * @return {!FieldBitmap} The new field instance.
+   * @returns {!FieldBitmap} The new field instance.
    * @package
    * @nocollapse
    */
@@ -83,7 +83,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Returns the width of the image in pixels.
-   * @return {number} The width in pixels.
+   * @returns {number} The width in pixels.
    */
   getImageWidth() {
     return this.imgWidth_;
@@ -91,7 +91,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Returns the height of the image in pixels.
-   * @return {number} The height in pixels.
+   * @returns {number} The height in pixels.
    */
   getImageHeight() {
     return this.imgHeight_;
@@ -100,7 +100,7 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Validates that a new value meets the requirements for a valid bitmap array.
    * @param {*} newValue The new value to be tested.
-   * @return {Object} The new value if it's valid, or null.
+   * @returns {Object} The new value if it's valid, or null.
    */
   doClassValidation_(newValue = undefined) {
     if (!newValue) {
@@ -206,7 +206,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Determines whether the field is editable.
-   * @return {boolean} True since it is always editable.
+   * @returns {boolean} True since it is always editable.
    */
   updateEditable() {
     return true;
@@ -214,7 +214,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Creates the bitmap editor and add event listeners.
-   * @return {!Element} The newly created dropdown menu.
+   * @returns {!Element} The newly created dropdown menu.
    * @private
    */
   dropdownCreate_() {
@@ -360,7 +360,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Constructs an array of zeros with the specified width and height.
-   * @return {!Array<!Array<number>>}The new value.
+   * @returns {!Array<!Array<number>>}The new value.
    */
   getEmptyArray_() {
     const newVal = [];
@@ -467,7 +467,7 @@ export class FieldBitmap extends Blockly.Field {
    * Creates a new element with the specified type and class.
    * @param {string} elementType Type of html element.
    * @param {string} className ClassName of html element.
-   * @return {!HTMLElement} The created element.
+   * @returns {!HTMLElement} The created element.
    */
   createElementWithClassname_(elementType, className) {
     const newElt = document.createElement(elementType);

@@ -63,7 +63,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   /**
    * Gets parent toolbox.
    * Since we registered the ContinuousToolbox, we know that's its type.
-   * @return {!ContinuousToolbox} Toolbox that owns this flyout.
+   * @returns {!ContinuousToolbox} Toolbox that owns this flyout.
    * @private
    */
   getParentToolbox_() {
@@ -94,7 +94,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   /**
    * Returns the scroll position for the given category name.
    * @param {string} name Category name.
-   * @return {?Object} Scroll position for given category, or null if not found.
+   * @returns {?Object} Scroll position for given category, or null if not found.
    * @package
    */
   getCategoryScrollPosition(name) {
@@ -174,7 +174,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    *    metrics for the flyout.
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
    *    for the flyout.
-   * @return {number} Additional bottom padding.
+   * @returns {number} Additional bottom padding.
    */
   calculateBottomPadding(contentMetrics, viewMetrics) {
     if (this.scrollPositions.length > 0) {
@@ -267,7 +267,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * Determine if this block can be recycled in the flyout.  Blocks that have no
    * variables and are not dynamic shadows can be recycled.
    * @param {!Blockly.BlockSvg} block The block to attempt to recycle.
-   * @return {boolean} True if the block can be recycled.
+   * @returns {boolean} True if the block can be recycled.
    * @protected
    */
   blockIsRecyclable_(block) {

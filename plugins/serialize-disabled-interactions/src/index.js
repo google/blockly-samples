@@ -68,7 +68,7 @@ class DisabledInteractionsSerializer {
    * workspace.
    * @param {!Blockly.Workspace} workspace The workspace to save the disabled
    *     interactions of.
-   * @return {?State} The state of the workspace's disabled interactions, or
+   * @returns {?State} The state of the workspace's disabled interactions, or
    *     null if there are none.
    */
   save(workspace) {

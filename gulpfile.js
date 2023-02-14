@@ -24,7 +24,7 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 /**
  * Run the license checker for all packages.
- * @return {Promise} A promise.
+ * @returns {Promise} A promise.
  */
 function checkLicenses() {
   const checker = new jsgl.LicenseChecker({
@@ -111,7 +111,7 @@ function exitIfNoReleaseDir(releaseDir, done) {
  * the prepare script recently, publishing will fail for that reason.
  * @param {boolean=} force True for forcing all plugins to publish, even ones
  *     that have not changed.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function publish(force) {
   return (done) => {
@@ -134,7 +134,7 @@ function publish(force) {
  * Publish all plugins that have changed since the last release.
  * Run `npm run publish:prepare` before running this script.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function publishManual(done) {
   return publish(false)(done);
@@ -144,7 +144,7 @@ function publishManual(done) {
  * Forces all plugins to publish.
  * Uses the built in lerna option --force-publish=*.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function forcePublish(done) {
   return publish(true)(done);
@@ -193,7 +193,7 @@ function checkVersions(done) {
 /**
  * Convert json to front matter YAML config.
  * @param {!Object} json The json config.
- * @return {string} The front matter YAML config.
+ * @returns {string} The front matter YAML config.
  */
 function buildFrontMatter(json) {
   return `---
@@ -207,7 +207,7 @@ ${yaml.stringify(json)}
  * this plugin. Add variables as needed for Jekyll.
  * The resulting code lives in gh-pages/plugins/<pluginName>.
  * @param {string} pluginDir The subdirectory (inside plugins/) for this plugin.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function preparePlugin(pluginDir) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
@@ -249,7 +249,7 @@ function preparePlugin(pluginDir) {
  *
  * For each plugin, copy relevant files to the gh-pages directory.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function prepareToDeployPlugins(done) {
   const dir = 'plugins';
@@ -273,7 +273,7 @@ function prepareToDeployPlugins(done) {
  * @param {string} exampleDir The subdirectory (inside examples/) for this
  *     example.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function prepareExample(baseDir, exampleDir, done) {
   const packageJson =
@@ -307,7 +307,7 @@ function prepareExample(baseDir, exampleDir, done) {
  * For each examples, read the demo config, and copy relevant files to the
  * gh-pages directory.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function prepareToDeployExamples(done) {
   const dir = 'examples';
@@ -325,7 +325,7 @@ function prepareToDeployExamples(done) {
 /**
  * Deploy all plugins to gh-pages.
  * @param {string=} repo The repo to deploy to.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function deployToGhPages(repo) {
   return (done) => {
@@ -344,7 +344,7 @@ function deployToGhPages(repo) {
  * Prepares plugins to be tested locally.
  * @param {boolean} isBeta True if we want to test gh pages with the beta
  *     version of Blockly.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function preparePluginsForLocal(isBeta) {
   return (done) => {
@@ -362,7 +362,7 @@ function preparePluginsForLocal(isBeta) {
  * Prepares examples to be tested locally.
  * @param {boolean} isBeta True if we want to test gh pages with the beta
  *     version of Blockly.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function prepareExamplesForLocal(isBeta) {
   return (done) => {
@@ -383,7 +383,7 @@ function prepareExamplesForLocal(isBeta) {
  * @param {boolean} isBeta True if we want to test gh pages with the beta
  *     version of Blockly. This is particularly helpful for testing before we
  *     release core.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function testGhPagesLocally(isBeta) {
   return gulp.series(
@@ -401,7 +401,7 @@ function testGhPagesLocally(isBeta) {
 /**
  * Deploy all plugins to gh-pages on origin.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function deployToGhPagesOrigin(done) {
   return deployToGhPages()(done);
@@ -410,7 +410,7 @@ function deployToGhPagesOrigin(done) {
 /**
  * Deploy all plugins to gh-pages on upstream.
  * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * @returns {Function} Gulp task.
  */
 function deployToGhPagesUpstream(done) {
   return deployToGhPages('https://github.com/google/blockly-samples.git')(done);

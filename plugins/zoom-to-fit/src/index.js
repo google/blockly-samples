@@ -161,7 +161,7 @@ export class ZoomToFitControl {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @return {!Blockly.utils.Rect} The component’s bounding box.
+   * @returns {!Blockly.utils.Rect} The component’s bounding box.
    */
   getBoundingRectangle() {
     return new Blockly.utils.Rect(

@@ -89,7 +89,7 @@ export class NavigationController {
    * This is only triggered when keyboard accessibility mode is enabled.
    * @param {!Blockly.ShortcutRegistry.KeyboardShortcut} shortcut The shortcut
    *     to be handled.
-   * @return {boolean} True if the field handled the shortcut,
+   * @returns {boolean} True if the field handled the shortcut,
    *     false otherwise.
    * @this {Blockly.FieldColour}
    * @protected
@@ -123,7 +123,7 @@ export class NavigationController {
    * This is only triggered when keyboard accessibility mode is enabled.
    * @param {!Blockly.ShortcutRegistry.KeyboardShortcut} shortcut The shortcut
    *     to be handled.
-   * @return {boolean} True if the field handled the shortcut,
+   * @returns {boolean} True if the field handled the shortcut,
    *     false otherwise.
    * @this {Blockly.FieldDropdown}
    * @protected
@@ -151,7 +151,7 @@ export class NavigationController {
    * This is only triggered when keyboard accessibility mode is enabled.
    * @param {!Blockly.ShortcutRegistry.KeyboardShortcut} shortcut The shortcut
    *     to be handled.
-   * @return {boolean} True if the toolbox handled the shortcut,
+   * @returns {boolean} True if the toolbox handled the shortcut,
    *     false otherwise.
    * @this {Blockly.Toolbox}
    * @protected
@@ -222,7 +222,7 @@ export class NavigationController {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace to check.
    * @param {!Blockly.ShortcutRegistry.KeyboardShortcut} shortcut The shortcut
    *     to give to the field.
-   * @return {boolean} True if the shortcut was handled by the field, false
+   * @returns {boolean} True if the shortcut was handled by the field, false
    *     otherwise.
    * @protected
    */
