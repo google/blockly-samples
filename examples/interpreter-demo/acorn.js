@@ -30,6 +30,11 @@
   exports.version = "0.5.0";
   // Plus additional edits marked with 'JS-Interpreter change' comments.
 
+  // JS-Interpreter change:
+  // No longer exporting defaultOptions, getLineInfo, tokenize, tokTypes,
+  // isIdentifierStart, and isIdentifierChar.  Not used by JS-Interpreter.
+  // -- Neil Fraser, February 2023.
+
   // The main exported interface (under `self.acorn` when in the
   // browser) is a `parse` function that takes a code string and
   // returns an abstract syntax tree as specified by [Mozilla parser
@@ -50,11 +55,12 @@
   // A second optional argument can be given to further configure
   // the parser process. These options are recognized:
 
-  var defaultOptions = exports.defaultOptions = {
+  var defaultOptions = {
     // JS-Interpreter change:
     // `ecmaVersion` option has been removed along with all cases where
     // it is checked.  In this version of Acorn it was limited to 3 or 5,
     // and there's no use case for 3 with JS-Interpreter.
+    // -- Neil Fraser, December 2022.
 
     // Turn on `strictSemicolons` to prevent the parser from doing
     // automatic semicolon insertion.
@@ -122,7 +128,7 @@
   // offset. `input` should be the code string that the offset refers
   // into.
 
-  var getLineInfo = exports.getLineInfo = function(input, offset) {
+  var getLineInfo = function(input, offset) {
     for (var line = 1, cur = 0;;) {
       lineBreak.lastIndex = cur;
       var match = lineBreak.exec(input);
@@ -134,43 +140,9 @@
     return {line: line, column: offset - cur};
   };
 
-  // Acorn is organized as a tokenizer and a recursive-descent parser.
-  // The `tokenize` export provides an interface to the tokenizer.
-  // Because the tokenizer is optimized for being efficiently used by
-  // the Acorn parser itself, this interface is somewhat crude and not
-  // very modular. Performing another parse or call to `tokenize` will
-  // reset the internal state, and invalidate existing tokenizers.
-
-  exports.tokenize = function(inpt, opts) {
-    input = String(inpt); inputLen = input.length;
-    setOptions(opts);
-    initTokenState();
-
-    var t = {};
-    function getToken(forceRegexp) {
-      lastEnd = tokEnd;
-      readToken(forceRegexp);
-      t.start = tokStart; t.end = tokEnd;
-      t.startLoc = tokStartLoc; t.endLoc = tokEndLoc;
-      t.type = tokType; t.value = tokVal;
-      return t;
-    }
-    getToken.jumpTo = function(pos, reAllowed) {
-      tokPos = pos;
-      if (options.locations) {
-        tokCurLine = 1;
-        tokLineStart = lineBreak.lastIndex = 0;
-        var match;
-        while ((match = lineBreak.exec(input)) && match.index < pos) {
-          ++tokCurLine;
-          tokLineStart = match.index + match[0].length;
-        }
-      }
-      tokRegexpAllowed = reAllowed;
-      skipSpace();
-    };
-    return getToken;
-  };
+  // JS-Interpreter change:
+  // tokenize function never used.  Removed.
+  // -- Neil Fraser, February 2023.
 
   // State is kept in (closure-)global variables. We already saw the
   // `options`, `input`, and `inputLen` variables above.
@@ -341,14 +313,9 @@
   var _plusMin = {binop: 9, prefix: true, beforeExpr: true};
   var _multiplyModulo = {binop: 10, beforeExpr: true};
 
-  // Provide access to the token types for external users of the
-  // tokenizer.
-
-  exports.tokTypes = {bracketL: _bracketL, bracketR: _bracketR, braceL: _braceL, braceR: _braceR,
-                      parenL: _parenL, parenR: _parenR, comma: _comma, semi: _semi, colon: _colon,
-                      dot: _dot, question: _question, slash: _slash, eq: _eq, name: _name, eof: _eof,
-                      num: _num, regexp: _regexp, string: _string};
-  for (var kw in keywordTypes) exports.tokTypes["_" + kw] = keywordTypes[kw];
+  // JS-Interpreter change:
+  // tokTypes map never used.  Removed.
+  // -- Neil Fraser, February 2023.
 
   // JS-Interpreter change:
   // Acorn's original code built up functions using strings for maximum efficiency.
@@ -406,7 +373,7 @@
 
   // Test whether a given character code starts an identifier.
 
-  var isIdentifierStart = exports.isIdentifierStart = function(code) {
+  var isIdentifierStart = function(code) {
     if (code < 65) return code === 36;
     if (code < 91) return true;
     if (code < 97) return code === 95;
@@ -416,7 +383,7 @@
 
   // Test whether a given character is part of an identifier.
 
-  var isIdentifierChar = exports.isIdentifierChar = function(code) {
+  var isIdentifierChar = function(code) {
     if (code < 48) return code === 36;
     if (code < 58) return true;
     if (code < 65) return false;
@@ -1264,12 +1231,14 @@
         expect(_parenR);
         // JS-Interpreter change:
         // Obsolete unused property; commenting out.
+        // -- Neil Fraser, January 2023.
         // clause.guard = null;
         clause.body = parseBlock();
         node.handler = finishNode(clause, "CatchClause");
       }
       // JS-Interpreter change:
       // Obsolete unused property; commenting out.
+      // -- Neil Fraser, January 2023.
       // node.guardedHandlers = empty;
       node.finalizer = eat(_finally) ? parseBlock() : null;
       if (!node.handler && !node.finalizer)
