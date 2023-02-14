@@ -371,7 +371,7 @@ Blockly.Css.register(`
   margin: 1em 0 1em 0;
 }
 .typedModalVariableLabel{
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 .typedModalTypes ul{
   display: flex;

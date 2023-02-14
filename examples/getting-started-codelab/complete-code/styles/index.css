@@ -36,7 +36,7 @@ h1 {
   position: absolute;
   top: 64px;
   left: -400px;
-  transition: left .4s;
+  transition: left 0.4s;
   height: 460px;
   width: 400px;
   background-color: #eee;

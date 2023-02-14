@@ -162,7 +162,7 @@ Blockly.Css.register(`
 }
 /* Change look of focus/highlighted cell */
 .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
-  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
 }
 .fieldGridDropDownContainer .blocklyMenuItemHighlight {
   /* Uses less selectors so as to not affect blocklyMenuItemSelected */

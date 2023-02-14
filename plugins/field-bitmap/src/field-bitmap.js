@@ -17,7 +17,7 @@ export const DEFAULT_HEIGHT = 5;
 export const DEFAULT_WIDTH = 5;
 const PIXEL_SIZE = 15;
 const FILLED_PIXEL_COLOR = '#363d80';
-const EMPTY_PIXEL_COLOR = 'white';
+const EMPTY_PIXEL_COLOR = '#fff';
 
 /**
  * Field for inputting a small bitmap image.
@@ -515,7 +515,7 @@ Blockly.Css.register(`
 .pixelButton {
   width: ${PIXEL_SIZE}px;
   height: ${PIXEL_SIZE}px;
-  border: 1px solid black;
+  border: 1px solid #000;
 }
 .pixelDisplay {
   white-space:pre-wrap;
