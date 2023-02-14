@@ -24,7 +24,9 @@ export class FieldTemplate extends Blockly.Field {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldTemplate(options['value']);
+    // `this` might be a subclass of FieldTemplate if that class doesn't
+    // override the static fromJson method.
+    return new this(options['value']);
   }
 }
 
