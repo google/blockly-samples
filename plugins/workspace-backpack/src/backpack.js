@@ -808,12 +808,12 @@ const BACKPACK_FILLED_SVG_DATAURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
 
 Blockly.Css.register(`
 .blocklyBackpack {
-  opacity: .4;
+  opacity: 0.4;
 }
 .blocklyBackpackDarken {
-  opacity: .6;
+  opacity: 0.6;
 }
 .blocklyBackpack:active {
-  opacity: .8;
+  opacity: 0.8;
 }
 `);

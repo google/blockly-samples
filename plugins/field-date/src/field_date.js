@@ -377,7 +377,7 @@ Blockly.Css.register(`
   font-weight: bold;
 }
 
-.blocklyDatePicker .goog-date-picker-wday, 
+.blocklyDatePicker .goog-date-picker-wday,
 .blocklyDatePicker .goog-date-picker-other-month {
   color: #70757a;
   border-radius: 12px;
@@ -393,7 +393,7 @@ Blockly.Css.register(`
 
 .blocklyDatePicker button:hover,
 .blocklyDatePicker .goog-date-picker-date:hover {
-  background-color: rgb(218, 220, 224, .5);
+  background-color: rgb(218, 220, 224, 0.5);
 }
 `);
 

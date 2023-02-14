@@ -503,6 +503,7 @@ class FieldTurtle extends Blockly.Field {
     // Always return the element!
     return fieldElement;
   }
+
   // Sets the field's value based on an XML node. Allows for custom
   // de-serialization.
   fromXml(fieldElement) {
@@ -515,7 +516,7 @@ class FieldTurtle extends Blockly.Field {
     // The end goal is to call this.setValue()
     this.setValue(value);
   }
-  
+
   // Called by initView to create all of the SVGs. This is just used to keep
   // the code more organized.
   createView_() {
@@ -656,7 +657,7 @@ class FieldTurtle extends Blockly.Field {
         'cy': 2.5,
         'r': 2.5,
         'fill': '#000',
-        'fill-opacity': .3
+        'fill-opacity': 0.3
       }, this.polkadotGroup_);
     Blockly.utils.dom.createSvgElement('circle',
       {
@@ -664,7 +665,7 @@ class FieldTurtle extends Blockly.Field {
         'cy': 7.5,
         'r': 2.5,
         'fill': '#000',
-        'fill-opacity': .3
+        'fill-opacity': 0.3
       }, this.polkadotGroup_);
 
     this.hexagonPattern_ = Blockly.utils.dom.createSvgElement('pattern',
@@ -680,7 +681,7 @@ class FieldTurtle extends Blockly.Field {
         'id': 'hex',
         'points': '4.96,4.4 7.46,5.84 7.46,8.74 4.96,10.18 2.46,8.74 2.46,5.84',
         'stroke': '#000',
-        'stroke-opacity': .3,
+        'stroke-opacity': 0.3,
         'fill-opacity': 0
       }, this.hexagonPattern_);
     let use = Blockly.utils.dom.createSvgElement('use',
@@ -722,7 +723,7 @@ class FieldTurtle extends Blockly.Field {
         'y2': 10,
         'stroke-width': 4,
         'stroke': '#000',
-        'stroke-opacity': .3
+        'stroke-opacity': 0.3
       }, this.stripesPattern_);
   }
 }
