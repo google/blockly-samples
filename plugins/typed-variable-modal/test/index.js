@@ -52,13 +52,15 @@ function createWorkspace(blocklyDiv, options) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  let toolboxString = toolboxCategories.replace('</xml>',
-      '<category name="Typed Variables" categorystyle="variable_category" ' +
-      'custom="CREATE_TYPED_VARIABLE"></category>');
-  toolboxString = toolboxString + '</xml>';
+  toolboxCategories['contents'].push({
+    'kind': 'category',
+    'name': 'Typed Variables',
+    'custom': 'CREATE_TYPED_VARIABLE',
+    'categorystyle': 'variable_category',
+  });
 
   const defaultOptions = {
-    toolbox: toolboxString,
+    toolbox: toolboxCategories,
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);
