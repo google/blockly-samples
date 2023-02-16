@@ -16,7 +16,7 @@ const chalk = require('chalk');
 const fs = require('fs-extra');
 const path = require('path');
 const execSync = require('child_process').execSync;
-const {createDir} = require('./common');
+const {checkAndCreateDir} = require('./common');
 
 const pluginTypes = ['plugin', 'field', 'block', 'theme'];
 
@@ -32,11 +32,12 @@ exports.createPlugin = function(pluginName, options) {
         .trim()
         .replace(/\.git$/, '');
   } catch (err) {
-  // NOP
+    // NOP
   }
 
   const isGit = !!gitURL;
-  const isFirstParty = options.firstParty || gitURL == 'https://github.com/google/blockly-samples';
+  const isFirstParty = options.firstParty ||
+      gitURL == 'https://github.com/google/blockly-samples';
 
   /**
    * Gets the name of the plugin prefixed with the type.
@@ -46,7 +47,7 @@ exports.createPlugin = function(pluginName, options) {
    * @return {string} Plugin name prefixed with type.
    */
   const getPrefixedName = function(name, type) {
-  // Don't add 'plugin' prefix for default type
+    // Don't add 'plugin' prefix for default type
     if (type == 'plugin') return name;
     // If the name is already prefixed, just return the name.
     if (name.startsWith(`${type}-`)) return name;
@@ -72,15 +73,15 @@ exports.createPlugin = function(pluginName, options) {
   }
 
   // Create the new directory if needed.
-  createDir(pluginPath);
+  checkAndCreateDir(pluginPath);
 
-  console.log(`Creating a new Blockly\
- ${chalk.green(pluginType)} with name ${chalk.green(pluginName)}\
- in ${chalk.green(pluginPath)}.\n`);
+  console.log(
+      `Creating a new Blockly ${chalk.green(pluginType)} with name ` +
+      `${chalk.green(pluginName)} in ${chalk.green(pluginPath)}.\n`);
 
   const templatesDir = `../templates`;
   const templateDir =
-    `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
+      `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
 
   // Only use the @blockly scope for first party plugins.
   const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
@@ -89,7 +90,7 @@ exports.createPlugin = function(pluginName, options) {
   const gitPluginPath = path.join(path.relative(gitRoot, root), pluginDir);
 
   const latestBlocklyVersion =
-    execSync('npm show blockly version').toString().trim();
+      execSync('npm show blockly version').toString().trim();
 
   const packageJson = {
     name: pluginPackageName,
@@ -111,8 +112,10 @@ exports.createPlugin = function(pluginName, options) {
     unpkg: './dist/index.js',
     author: pluginAuthor,
     keywords: [
-      'blockly', 'blockly-plugin',
-      pluginType != 'plugin' && `blockly-${pluginType}`, pluginName,
+      'blockly',
+      'blockly-plugin',
+      pluginType != 'plugin' && `blockly-${pluginType}`,
+      pluginName,
     ].filter(Boolean),
     homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
     bugs: isGit ? {
@@ -147,7 +150,9 @@ exports.createPlugin = function(pluginName, options) {
 
   // Add dev dependencies.
   const devDependencies = [
-    'blockly', '@blockly/dev-scripts', '@blockly/dev-tools',
+    'blockly',
+    '@blockly/dev-scripts',
+    '@blockly/dev-tools',
   ];
   if (isTypescript) {
     devDependencies.push('typescript');
@@ -158,8 +163,8 @@ exports.createPlugin = function(pluginName, options) {
   });
 
   // Write the README.md to the new package.
-  let readme =
-    fs.readFileSync(path.resolve(__dirname, templateDir, 'README.md'), 'utf-8');
+  let readme = fs.readFileSync(
+      path.resolve(__dirname, templateDir, 'README.md'), 'utf-8');
   readme = readme.replace(/@blockly\/plugin/gmi, `${pluginPackageName}`);
   fs.writeFileSync(path.join(pluginPath, 'README.md'), readme, 'utf-8');
 
@@ -180,7 +185,7 @@ exports.createPlugin = function(pluginName, options) {
   // Run npm install.
   if (!skipInstall) {
     console.log('Installing packages. This might take a couple of minutes.');
-    execSync(`cd ${pluginDir} && npm install`, {stdio: [0, 1, 2]});
+    execSync(`cd ${pluginDir} && npm install`, {stdio: 'inherit'});
   }
 
   console.log(
