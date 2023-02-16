@@ -2,7 +2,7 @@
 title: "@blockly/theme-tritanopia Demo"
 packageName: "@blockly/theme-tritanopia"
 description: "A Blockly theme for people that have tritanopia."
-version: "3.0.4"
+version: "3.0.5"
 pageRoot: "plugins/theme-tritanopia"
 pages:
   - label: "Playground"

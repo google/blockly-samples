@@ -38,10 +38,13 @@ class FieldTurtle extends Blockly.Field {
   // May change if the turtle gets fancy enough.
   TEXT_OFFSET_X = 80;
 
-  // Used to keep track of our editor event listeners, so they can be
-  // properly disposed of when the field closes. You can keep track of your
-  // listeners however you want, just be sure to dispose of them!
-  editorListeners_ = [];
+  /**
+   * Array holding info needed to unbind events.
+   * Used for disposing.
+   * @type {!Array<!Blockly.browserEvents.Data>}
+   * @private
+   */
+  boundEvents_ = [];
 
   // Generally field's values should be optional, and have logical defaults.
   // If this is not possible (for example image fields can't have logical
@@ -49,7 +52,6 @@ class FieldTurtle extends Blockly.Field {
   // Editable fields also generally accept validators, so we will accept a
   // validator.
   constructor(opt_pattern, opt_hat, opt_turtleName, opt_validator) {
-
     // The turtle field contains an object as its value, so we need to compile
     // the parameters into an object.
     const value = {};
@@ -85,10 +87,9 @@ class FieldTurtle extends Blockly.Field {
   static fromJson(options) {
     // In this case we simply pass the JSON options along to the constructor,
     // but you can also use this to get message references, and other such things.
-    return new FieldTurtle(
-      options['pattern'],
-      options['hat'],
-      options['turtleName']);
+    // `this` might be a subclass of FieldTurtle if that class doesn't override
+    // the static fromJson method.
+    return new this(options['pattern'], options['hat'], options['turtleName']);
   }
 
   // Used to create the DOM of our field.
@@ -400,34 +401,34 @@ class FieldTurtle extends Blockly.Field {
     let leftArrow = createLeftArrow(row);
     widget.patternText = createTextNode(row, this.displayValue_.pattern);
     let rightArrow = createRightArrow(row);
-    this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('pattern', FieldTurtle.PATTERNS, -1)));
-    this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('pattern', FieldTurtle.PATTERNS, 1)));
 
     row = createRow(table);
     leftArrow = createLeftArrow(row);
     widget.hatText = createTextNode(row, this.displayValue_.hat);
     rightArrow = createRightArrow(row);
-    this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('hat', FieldTurtle.HATS, -1)));
-    this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('hat', FieldTurtle.HATS, 1)));
 
     row = createRow(table);
     leftArrow = createLeftArrow(row);
     widget.turtleNameText = createTextNode(row, this.displayValue_.turtleName);
     rightArrow = createRightArrow(row);
-    this.editorListeners_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
       createArrowListener('turtleName', FieldTurtle.NAMES, -1)));
-    this.editorListeners_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
       createArrowListener('turtleName', FieldTurtle.NAMES, 1)));
 
     const randomizeButton = document.createElement('button');
     randomizeButton.className = 'randomize';
     randomizeButton.setAttribute('type', 'button');
     randomizeButton.textContent = 'randomize turtle';
-    this.editorListeners_.push(Blockly.browserEvents.bind(randomizeButton, 'mouseup', this,
+    this.boundEvents_.push(Blockly.browserEvents.bind(randomizeButton, 'mouseup', this,
       function () {
         const value = {};
         value.pattern = FieldTurtle.PATTERNS[Math.floor(Math.random() * FieldTurtle.PATTERNS.length)];
@@ -445,10 +446,10 @@ class FieldTurtle extends Blockly.Field {
 
   // Cleans up any event listeners that were attached to the now hidden editor.
   dropdownDispose_() {
-    for (let i = this.editorListeners_.length, listener; listener = this.editorListeners_[i]; i--) {
-      Blockly.browserEvents.unbind(listener);
-      this.editorListeners_.pop();
+    for (const event of this.boundEvents_) {
+      Blockly.browserEvents.unbind(event);
     }
+    this.boundEvents_.length = 0;
   }
 
   // Updates the field's colour based on the colour of the block. Called by
@@ -503,6 +504,7 @@ class FieldTurtle extends Blockly.Field {
     // Always return the element!
     return fieldElement;
   }
+
   // Sets the field's value based on an XML node. Allows for custom
   // de-serialization.
   fromXml(fieldElement) {
@@ -515,7 +517,7 @@ class FieldTurtle extends Blockly.Field {
     // The end goal is to call this.setValue()
     this.setValue(value);
   }
-  
+
   // Called by initView to create all of the SVGs. This is just used to keep
   // the code more organized.
   createView_() {
@@ -656,7 +658,7 @@ class FieldTurtle extends Blockly.Field {
         'cy': 2.5,
         'r': 2.5,
         'fill': '#000',
-        'fill-opacity': .3
+        'fill-opacity': 0.3
       }, this.polkadotGroup_);
     Blockly.utils.dom.createSvgElement('circle',
       {
@@ -664,7 +666,7 @@ class FieldTurtle extends Blockly.Field {
         'cy': 7.5,
         'r': 2.5,
         'fill': '#000',
-        'fill-opacity': .3
+        'fill-opacity': 0.3
       }, this.polkadotGroup_);
 
     this.hexagonPattern_ = Blockly.utils.dom.createSvgElement('pattern',
@@ -680,7 +682,7 @@ class FieldTurtle extends Blockly.Field {
         'id': 'hex',
         'points': '4.96,4.4 7.46,5.84 7.46,8.74 4.96,10.18 2.46,8.74 2.46,5.84',
         'stroke': '#000',
-        'stroke-opacity': .3,
+        'stroke-opacity': 0.3,
         'fill-opacity': 0
       }, this.hexagonPattern_);
     let use = Blockly.utils.dom.createSvgElement('use',
@@ -722,7 +724,7 @@ class FieldTurtle extends Blockly.Field {
         'y2': 10,
         'stroke-width': 4,
         'stroke': '#000',
-        'stroke-opacity': .3
+        'stroke-opacity': 0.3
       }, this.stripesPattern_);
   }
 }

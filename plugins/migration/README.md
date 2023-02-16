@@ -2,7 +2,7 @@
 title: "@blockly/migrate Demo"
 packageName: "@blockly/migrate"
 description: "A collection of tools that help with migrating apps using Blockly to new versions of BLockly."
-version: "1.1.1"
+version: "1.1.2"
 pageRoot: "plugins/migration"
 pages:
   - label: "Playground"

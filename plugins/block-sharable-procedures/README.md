@@ -2,7 +2,7 @@
 title: "@blockly/block-sharable-procedures Demo"
 packageName: "@blockly/block-sharable-procedures"
 description: "A plugin that adds procedure blocks which are backed by explicit data models."
-version: "1.1.0"
+version: "1.1.1"
 pageRoot: "plugins/block-sharable-procedures"
 pages:
   - label: "Playground"
@@ -30,24 +30,13 @@ yarn add @blockly/block-sharable-procedures
 
 ### npm
 ```
-npm install @blockly/block-sharable-procedures --save
+npm install @blockly/block-sharable-procedures
 ```
 
 ## Usage
 
-### Import
-
-The blocks in this plugin must be explicitly defined after they are imported.
-This is so that importing the plugin doesn't have side effects (i.e. defining
-the blocks itself) which might be unexpected.
-
-```js
-import * as Blockly from 'blockly';
-import {blocks} from '@blockly/block-sharable-procedures';
-
-// Blocks must be explicitly defined after importing.
-Blockly.common.defineBlocks(blocks);
-```
+See [developers.google.com/blockly/guides/create-custom-blocks/procedures/using-procedures](https://developers.google.com/blockly/guides/create-custom-blocks/procedures/using-procedures)
+for more information about using this plugin.
 
 ## License
 Apache 2.0

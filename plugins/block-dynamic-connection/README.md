@@ -2,7 +2,7 @@
 title: "@blockly/block-dynamic-connection Demo"
 packageName: "@blockly/block-dynamic-connection"
 description: "A group of blocks that add connections dynamically."
-version: "0.2.7"
+version: "0.2.8"
 pageRoot: "plugins/block-dynamic-connection"
 pages:
   - label: "Playground"
