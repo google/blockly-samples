@@ -7,7 +7,7 @@ import * as Blockly from 'blockly/core';
 /**
  * Convert block to save info.
  * @param {Blockly.Block} block The block you want to convert.
- * @return {{saveInfo:?Blockly.serialization.blocks,
+ * @returns {{saveInfo:?Blockly.serialization.blocks,
  * typeCounts:?Object}} The serialized block and type information.
  */
 export function convertBlockToSaveInfo(block) {

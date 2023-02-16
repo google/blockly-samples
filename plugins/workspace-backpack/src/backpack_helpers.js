@@ -237,7 +237,7 @@ export function registerContextMenus(contextMenuOptions, workspace) {
  * content array.
  * @param {!Element} xml An XML tree defining the block and any
  *    connected child blocks.
- * @return {string} Text representing the XML tree, cleaned of all unnecessary
+ * @returns {string} Text representing the XML tree, cleaned of all unnecessary
  * attributes.
  */
 export function cleanBlockXML(xml) {

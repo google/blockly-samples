@@ -57,12 +57,14 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   /**
    * Constructs a FieldGridDropdown from a JSON arg object.
    * @param {!Object} options A JSON object with options.
-   * @return {!FieldGridDropdown} The new field instance.
+   * @returns {!FieldGridDropdown} The new field instance.
    * @package
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldGridDropdown(options['options'], undefined, options);
+    // `this` might be a subclass of FieldGridDropdown if that class doesn't
+    // override the static fromJson method.
+    return new this(options['options'], undefined, options);
   }
 
   /**
@@ -162,7 +164,7 @@ Blockly.Css.register(`
 }
 /* Change look of focus/highlighted cell */
 .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
-  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
 }
 .fieldGridDropDownContainer .blocklyMenuItemHighlight {
   /* Uses less selectors so as to not affect blocklyMenuItemSelected */

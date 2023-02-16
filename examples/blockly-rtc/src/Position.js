@@ -33,7 +33,7 @@ export default class Position {
    * Create a Position from an event. Currently supports creating Positions for
    * blocks from a 'selected' UI event.
    * @param {!Blockly.Events.Abstract} event The event that creates a Position.
-   * @return {!PositionUpdate} The Position representative of the event.
+   * @returns {!PositionUpdate} The Position representative of the event.
    * @public
    */
   static fromEvent(event) {
@@ -52,7 +52,7 @@ export default class Position {
   /**
    * Create a Position from a Blockly UI event.
    * @param {!Blockly.Events.Selected} event The event that creates a Position.
-   * @return {!PositionUpdate} The Position representative of the event.
+   * @returns {!PositionUpdate} The Position representative of the event.
    * @private
    */
   static fromSelectedUiEvent_(event) {
@@ -67,7 +67,7 @@ export default class Position {
   /**
    * Create a Position from a Blockly Change event.
    * @param {!Blockly.Event.Change} event The event that creates a Position.
-   * @return {!PositionUpdate} The Position representative of the event.
+   * @returns {!PositionUpdate} The Position representative of the event.
    * @private
    */
   static fromFieldChangeEvent_(event) {
@@ -80,7 +80,7 @@ export default class Position {
   /**
    * Decode the JSON into a Position.
    * @param {!Object} json The JSON representation of the Position.
-   * @return {!PositionUpdate} The Position represented by the JSON.
+   * @returns {!PositionUpdate} The Position represented by the JSON.
    * @public
    */
   static fromJson(json) {
@@ -89,7 +89,7 @@ export default class Position {
 
   /**
    * Check if the combination of Position properties describe a viable position.
-   * @return {!Boolean} Whether the PositionUpdate has a viable position.
+   * @returns {!Boolean} Whether the PositionUpdate has a viable position.
    * @public
    */
   hasValidPosition() {
@@ -105,7 +105,7 @@ export default class Position {
   /**
    * Create a Marker at the Position.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {!Blockly.Marker} A Marker with the curNode set to the Position.
+   * @returns {!Blockly.Marker} A Marker with the curNode set to the Position.
    * @public
    */
   toMarker(workspace) {
@@ -118,7 +118,7 @@ export default class Position {
   /**
    * Create an ASTNode pointing to the Position.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {Blockly.ASTNode} An AST Node that points to the Position or null
+   * @returns {Blockly.ASTNode} An AST Node that points to the Position or null
    * if the position is not viable.
    * @public
    */
@@ -136,7 +136,7 @@ export default class Position {
   /**
    * Create an ASTNode pointing to a block.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {Blockly.ASTNode} An AST Node that points to a block.
+   * @returns {Blockly.ASTNode} An AST Node that points to a block.
    * @public
    */
   createBlockNode_(workspace) {
@@ -147,7 +147,7 @@ export default class Position {
   /**
    * Create an ASTNode pointing to a field.
    * @param {!Blockly.Workspace} workspace The workspace the user is on.
-   * @return {Blockly.ASTNode} An AST Node that points to a field.
+   * @returns {Blockly.ASTNode} An AST Node that points to a field.
    * @public
    */
   createFieldNode_(workspace) {

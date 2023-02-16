@@ -49,7 +49,7 @@ const merge = require('lodash.merge');
  * @param {Blockly.BlocklyOptions} defaultOptions The default workspace options
  *     to use.
  * @param {GUIConfig=} config Optional GUI config.
- * @return {dat.GUI} The dat.GUI instance.
+ * @returns {dat.GUI} The dat.GUI instance.
  */
 export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   // Initialize state.
@@ -251,7 +251,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
 
   /**
    * Get the current workspace.
-   * @return {!Blockly.WorkspaceSvg} The Blockly workspace.
+   * @returns {!Blockly.WorkspaceSvg} The Blockly workspace.
    */
   const getWorkspace = () => {
     return workspace;
@@ -264,7 +264,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
    *     when the action is clicked.
    * @param {string=} folderName Optional folder to place the action under.
    * @param {string=} tooltip Optional tooltip to set.
-   * @return {dat.GUIController} The GUI controller.
+   * @returns {dat.GUIController} The GUI controller.
    */
   const addAction = (name, callback, folderName, tooltip) => {
     actions[name] = () => {
@@ -294,7 +294,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
    * @param {string=} folderName Optional folder to place the action under.
    * @param {boolean=} defaultValue Default value.
    * @param {string=} tooltip Optional tooltip to set.
-   * @return {dat.GUIController} The GUI controller.
+   * @returns {dat.GUIController} The GUI controller.
    */
   const addCheckboxAction =
       (name, callback, folderName, defaultValue, tooltip) => {
@@ -366,7 +366,7 @@ function saveGUIState(guiState, defaultToolboxName, defaultThemeName) {
 
 /**
  * Load the GUI state from local storage and the window hash.
- * @return {Object} The GUI state.
+ * @returns {Object} The GUI state.
  */
 function loadGUIState() {
   const defaultState = {options: {}, debug: {}, debugEnabled: false};
@@ -430,7 +430,7 @@ function openFolderIfOptionSelected(folder, guiState, mainObj, options) {
  * @param {Blockly.BlocklyOptions} defaultOptions Default Blockly options.
  * @param {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} toolboxes The
  *     registered toolboxes.
- * @return {string} The default toolbox name.
+ * @returns {string} The default toolbox name.
  */
 function initDefaultToolbox(defaultOptions, toolboxes) {
   const defaultToolbox = defaultOptions.toolbox;
@@ -572,7 +572,7 @@ function populateToolboxSidesOption(
 /**
  * Get the list of Blockly themes.
  * @param {Blockly.BlocklyOptions} defaultOptions Default Blockly options.
- * @return {Object<string,Blockly.Theme>} The list of registered themes.
+ * @returns {Object<string,Blockly.Theme>} The list of registered themes.
  */
 function getThemes(defaultOptions) {
   let themes;

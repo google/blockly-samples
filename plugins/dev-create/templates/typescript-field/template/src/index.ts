@@ -19,12 +19,14 @@ export class FieldTemplate extends Blockly.Field {
   /**
    * Constructs a FieldTemplate from a JSON arg object.
    * @param {!Object} options A JSON object with options.
-   * @return {!FieldTemplate} The new field instance.
+   * @returns {!FieldTemplate} The new field instance.
    * @package
    * @nocollapse
    */
   static fromJson(options): Blockly.Field {
-    return new FieldTemplate(options['value']);
+    // `this` might be a subclass of FieldTemplate if that class doesn't
+    // override the static fromJson method.
+    return new this(options['value']);
   }
 }
 

@@ -25,7 +25,7 @@ import * as Blockly from 'blockly';
 
 /**
  * Get a snapshot of the current workspace.
- * @return {!Snapshot} The latest snapshot of the workspace.
+ * @returns {!Snapshot} The latest snapshot of the workspace.
  * @public
  */
 export async function getSnapshot() {
@@ -43,7 +43,7 @@ export async function getSnapshot() {
 /**
  * Query the database for entries since the given server id.
  * @param {number} serverId serverId for the lower bound of the query.
- * @return {<!Array.<!Entry>>} Entries since the given serverId.
+ * @returns {<!Array.<!Entry>>} Entries since the given serverId.
  * @throws Will throw an error if the response status code is not 200.
  * @public
  */

@@ -61,8 +61,7 @@ export class Modal {
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array.<Array<?>>}
+     * @type {!Array<!Blockly.browserEvents.Data>}
      * @private
      */
     this.boundEvents_ = [];
@@ -95,9 +94,9 @@ export class Modal {
    */
   dispose() {
     for (const event of this.boundEvents_) {
-      Blockly.unbindEvent_(event);
+      Blockly.browserEvents.unbind(event);
     }
-    this.boundEvents_ = [];
+    this.boundEvents_.length = 0;
     if (this.htmlDiv_) {
       this.htmlDiv_.remove();
     }
@@ -330,12 +329,12 @@ Blockly.Css.register(`
 .blocklyModalOverlay {
   width: 100%;
   height: 100%;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   position: fixed;
 }
 .blocklyModalContainer {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid gray;
   font-family: Helvetica;
   font-weight: 300;
@@ -367,7 +366,7 @@ Blockly.Css.register(`
   content: "\\2715";
 }
 .blocklyModalBtn {
-  margin-right: .5em;
+  margin-right: 0.5em;
   border: 1px solid gray;
   font-weight: 500;
   color: gray;
@@ -375,6 +374,6 @@ Blockly.Css.register(`
 }
 .blocklyModalBtnPrimary {
   background-color: gray;
-  color: white;
+  color: #fff;
 }
 `);

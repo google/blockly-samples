@@ -17,7 +17,7 @@ export const DEFAULT_HEIGHT = 5;
 export const DEFAULT_WIDTH = 5;
 const PIXEL_SIZE = 15;
 const FILLED_PIXEL_COLOR = '#363d80';
-const EMPTY_PIXEL_COLOR = 'white';
+const EMPTY_PIXEL_COLOR = '#fff';
 
 /**
  * Field for inputting a small bitmap image.
@@ -25,7 +25,7 @@ const EMPTY_PIXEL_COLOR = 'white';
  */
 export class FieldBitmap extends Blockly.Field {
   /**
-   *Constructor for the bitmap field.
+   * Constructor for the bitmap field.
    * @param {!Array<!Array<number>>=} value 2D rectangular array of 1s and 0s.
    * @param {Function=} validator A function that is called to validate.
    * @param {!Object=} config Config A map of options used to
@@ -35,7 +35,6 @@ export class FieldBitmap extends Blockly.Field {
     super(value, validator, config);
 
     this.SERIALIZABLE = true;
-
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -54,8 +53,7 @@ export class FieldBitmap extends Blockly.Field {
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
-     * Ex: [[node, name, func], [node, name, func]].
-     * @type {!Array<!Array<?>>}
+     * @type {!Array<!Blockly.browserEvents.Data>}
      * @private
      */
     this.boundEvents_ = [];
@@ -73,17 +71,19 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Constructs a FieldBitmap from a JSON arg object.
    * @param {!Object} options A JSON object with options.
-   * @return {!FieldBitmap} The new field instance.
+   * @returns {!FieldBitmap} The new field instance.
    * @package
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldBitmap(options && options['value'], undefined, options);
+    // `this` might be a subclass of FieldBitmap if that class doesn't override
+    // the static fromJson method.
+    return new this(options && options['value'], undefined, options);
   }
 
   /**
    * Returns the width of the image in pixels.
-   * @return {number} The width in pixels.
+   * @returns {number} The width in pixels.
    */
   getImageWidth() {
     return this.imgWidth_;
@@ -91,7 +91,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Returns the height of the image in pixels.
-   * @return {number} The height in pixels.
+   * @returns {number} The height in pixels.
    */
   getImageHeight() {
     return this.imgHeight_;
@@ -100,7 +100,7 @@ export class FieldBitmap extends Blockly.Field {
   /**
    * Validates that a new value meets the requirements for a valid bitmap array.
    * @param {*} newValue The new value to be tested.
-   * @return {Object} The new value if it's valid, or null.
+   * @returns {Object} The new value if it's valid, or null.
    */
   doClassValidation_(newValue = undefined) {
     if (!newValue) {
@@ -206,7 +206,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Determines whether the field is editable.
-   * @return {boolean} True since it is always editable.
+   * @returns {boolean} True since it is always editable.
    */
   updateEditable() {
     return true;
@@ -214,7 +214,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Creates the bitmap editor and add event listeners.
-   * @return {!Element} The newly created dropdown menu.
+   * @returns {!Element} The newly created dropdown menu.
    * @private
    */
   dropdownCreate_() {
@@ -360,7 +360,7 @@ export class FieldBitmap extends Blockly.Field {
 
   /**
    * Constructs an array of zeros with the specified width and height.
-   * @return {!Array<!Array<number>>}The new value.
+   * @returns {!Array<!Array<number>>}The new value.
    */
   getEmptyArray_() {
     const newVal = [];
@@ -467,7 +467,7 @@ export class FieldBitmap extends Blockly.Field {
    * Creates a new element with the specified type and class.
    * @param {string} elementType Type of html element.
    * @param {string} className ClassName of html element.
-   * @return {!HTMLElement} The created element.
+   * @returns {!HTMLElement} The created element.
    */
   createElementWithClassname_(elementType, className) {
     const newElt = document.createElement(elementType);
@@ -515,7 +515,7 @@ Blockly.Css.register(`
 .pixelButton {
   width: ${PIXEL_SIZE}px;
   height: ${PIXEL_SIZE}px;
-  border: 1px solid black;
+  border: 1px solid #000;
 }
 .pixelDisplay {
   white-space:pre-wrap;

@@ -11,7 +11,7 @@ const sinon = require('sinon');
  * and values (shallowly equated) as the expected object.
  * @param {!Object} expected The expected set of properties we expect the
  *    actual object to have.
- * @return {function(*): boolean} A matcher that returns true if the `actual`
+ * @returns {function(*): boolean} A matcher that returns true if the `actual`
  *     object has all of the properties of the `expected` param, with the same
  *     values.
  */

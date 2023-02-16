@@ -55,7 +55,7 @@ export const rename = createSubCommand(
  * Gets the database of renames.
  * @param {string=} url The URL to fetch the renamings database from, or
  *     undefined to fetch from master.
- * @return {!Promise<!Object>} The database of renames as an object.
+ * @returns {!Promise<!Object>} The database of renames as an object.
  */
 export async function getDatabase(url = undefined) {
   try {
@@ -96,7 +96,7 @@ export class Renamer {
    * @param {!Object} database The database of renames.
    * @param {string} currVersion The version to migrate from.
    * @param {string} newVersion The version to migrate to.
-   * @return {!Array<!VersionRenamer>} The collection of renamings to perform.
+   * @returns {!Array<!VersionRenamer>} The collection of renamings to perform.
    */
   static calculateRenamings(database, currVersion, newVersion) {
     currVersion = versionUtils.coerce(currVersion);
@@ -117,7 +117,7 @@ export class Renamer {
    * Applies the given renamings directly to a JavaScript string
    * (presumably the contents of a developer's file).
    * @param {string} str The string to apply the renamings in.
-   * @return {string} The string with renamings applied.
+   * @returns {string} The string with renamings applied.
    */
   rename(str) {
     return str.replace(dottedIdentifier, (match) => {
@@ -189,7 +189,7 @@ class VersionRenamer {
    * Applies the renamings directly to a single JavaScript dotted
    * identifier path (e.g. 'foo.bar.baz')
    * @param {string} str The string to apply the renamings in.
-   * @return {string} The string after applying the most relevant renaming.
+   * @returns {string} The string after applying the most relevant renaming.
    */
   rename(str) {
     for (const entry of this.renamings_) {

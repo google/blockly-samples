@@ -41,7 +41,7 @@ module.exports = {
   settings: {
     jsdoc: {
       tagNamePreference: {
-        'returns': 'return',
+        'returns': 'returns',
       },
       mode: 'closure',
     },

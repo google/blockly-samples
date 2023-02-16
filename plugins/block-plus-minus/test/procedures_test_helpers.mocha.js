@@ -155,7 +155,7 @@ function assertProcBlocksStructure(
  *    return.
  * @param {string=} nameId The procedure name.
  * @param {boolean=} hasStatements Whether the block has statements (STACK).
- * @return {Blockly.Block} The created block.
+ * @returns {Blockly.Block} The created block.
  */
 function createProcDefBlock(
     workspace, hasReturn = false, nameId = 'proc name', hasStatements = true) {
@@ -176,7 +176,7 @@ function createProcDefBlock(
  * @param {boolean=} hasReturn Whether the corresponding procedure definition
  *    has return.
  * @param {string=} nameId The procedure name.
- * @return {Blockly.Block} The created block.
+ * @returns {Blockly.Block} The created block.
  */
 function createProcCallBlock(
     workspace, hasReturn = false, nameId = 'proc name') {

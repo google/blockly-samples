@@ -41,7 +41,7 @@ export class HashState {
   /**
    * Serialize the state into a hash string.
    * @param {Object} state The state.
-   * @return {string} The serialized state.
+   * @returns {string} The serialized state.
    */
   static save(state) {
     const result = {};

@@ -147,7 +147,7 @@ export class TypedVariableModal extends Modal {
 
   /**
    * Get the selected type.
-   * @return {?string} The selected type.
+   * @returns {?string} The selected type.
    * @protected
    */
   getSelectedType_() {
@@ -199,7 +199,7 @@ export class TypedVariableModal extends Modal {
   /**
    * Get the display name for the given type.
    * @param {string} type The type to get the display name for.
-   * @return {string} The display name for the type.
+   * @returns {string} The display name for the type.
    * @private
    */
   getDisplayName_(type) {
@@ -214,7 +214,7 @@ export class TypedVariableModal extends Modal {
 
   /**
    * Get the valid variable name, or null if the name is not valid.
-   * @return {string} The valid variable name, or null if the name exists.
+   * @returns {string} The valid variable name, or null if the name exists.
    * @private
    */
   getValidInput_() {
@@ -263,7 +263,7 @@ export class TypedVariableModal extends Modal {
 
   /**
    * Create button in charge of creating the variable.
-   * @return {!HTMLButtonElement} The button in charge of creating a variable.
+   * @returns {!HTMLButtonElement} The button in charge of creating a variable.
    * @protected
    */
   createConfirmBtn_() {
@@ -276,7 +276,7 @@ export class TypedVariableModal extends Modal {
 
   /**
    * Create button in charge of cancelling.
-   * @return {!HTMLButtonElement} The button in charge of cancelling.
+   * @returns {!HTMLButtonElement} The button in charge of cancelling.
    * @protected
    */
   createCancelBtn_() {
@@ -303,7 +303,7 @@ export class TypedVariableModal extends Modal {
    * @param {Array<Array<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
    *     Ex: [['Penguin', 'PENGUIN'], ['Giraffe', 'GIRAFFE']].
-   * @return {HTMLElement} The list of types.
+   * @returns {HTMLElement} The list of types.
    * @protected
    */
   createVariableTypeContainer_(types) {
@@ -337,7 +337,7 @@ export class TypedVariableModal extends Modal {
   /**
    * Create the div that holds the text input and label for the variable name
    * input.
-   * @return {HTMLDivElement} The div holding the text input and label for text
+   * @returns {HTMLDivElement} The div holding the text input and label for text
    *     input.
    * @protected
    */
@@ -371,7 +371,7 @@ Blockly.Css.register(`
   margin: 1em 0 1em 0;
 }
 .typedModalVariableLabel{
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 .typedModalTypes ul{
   display: flex;

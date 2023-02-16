@@ -17,7 +17,7 @@ import toolboxCategories from '../src/toolboxCategories';
  * Create a workspace.
  * @param {HTMLElement} blocklyDiv The blockly container div.
  * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @returns {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
   return Blockly.inject(blocklyDiv, options);

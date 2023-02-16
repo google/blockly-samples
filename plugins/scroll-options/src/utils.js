@@ -8,7 +8,7 @@
  * Gets the current location of the workspace considering
  * when there's no drag surface.
  * @param {!Blockly.WorkspaceSvg} ws The workspace to calculate.
- * @return {!Blockly.utils.Coordinate} The current workspace coordinate.
+ * @returns {!Blockly.utils.Coordinate} The current workspace coordinate.
  */
 export const getTranslation = (ws) => {
   const dragSurface = ws.getBlockDragSurface();

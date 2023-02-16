@@ -109,7 +109,7 @@ export function runTestSuites(testSuites, createTestCaseCallback) {
  * Captures the strings sent to console.warn() when calling a function.
  * Copies from core.
  * @param {Function} innerFunc The function where warnings may called.
- * @return {Array<string>} The warning messages (only the first arguments).
+ * @returns {Array<string>} The warning messages (only the first arguments).
  */
 export function captureWarnings(innerFunc) {
   const msgs = [];

@@ -13,7 +13,7 @@ const {FieldBitmap, DEFAULT_HEIGHT, DEFAULT_WIDTH} = require('../src/index');
  * various tests can use.
  * @param {!Array<!Object>} testCases raw testcases that
  * need to be reformatted
- * @return {!Array<!Object>} the reformatted test cases
+ * @returns {!Array<!Object>} the reformatted test cases
  * that can be used by various tests
  */
 function processTestCases(testCases) {
@@ -121,7 +121,7 @@ suite('FieldBitmap', function() {
     /**
      * Creates test callback for invalid setValue test.
      * @param {!FieldValueTestCase} testCase The test case information.
-     * @return {!Function} The test callback.
+     * @returns {!Function} The test callback.
      */
     const createInvalidSetValueTestCallback = (testCase) => {
       return function() {
@@ -133,7 +133,7 @@ suite('FieldBitmap', function() {
     /**
      * Creates test callback for valid setValue test.
      * @param {!FieldValueTestCase} testCase The test case information.
-     * @return {!Function} The test callback.
+     * @returns {!Function} The test callback.
      */
     const createValidSetValueTestCallback = (testCase) => {
       return function() {

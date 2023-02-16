@@ -456,7 +456,7 @@ Blockly.Blocks['test_dropdowns_dynamic_connect_dependant'] = {
 const DROPDOWN_MUTATOR = {
   /**
    * Create XML to represent the block mutation.
-   * @return {Element} XML storage element.
+   * @returns {Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -471,7 +471,7 @@ const DROPDOWN_MUTATOR = {
   domToMutation: function(_xmlElement) {},
   /**
    * Returns the state of the block as a JSON serializable object.
-   * @return {!Object} The state of the block as a JSON serializable object.
+   * @returns {!Object} The state of the block as a JSON serializable object.
    */
   saveExtraState: function() {
     return {};
@@ -484,7 +484,7 @@ const DROPDOWN_MUTATOR = {
   /**
    * Populate the mutator's dialog with this block's components.
    * @param {!Blockly.Workspace} workspace Mutator's workspace.
-   * @return {!Blockly.Block} Root block in mutator.
+   * @returns {!Blockly.Block} Root block in mutator.
    * @this {Blockly.Block}
    */
   decompose: function(workspace) {

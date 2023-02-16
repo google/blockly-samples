@@ -80,7 +80,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Does this event record any change of state?
-   * @return False if something changed.
+   * @returns False if something changed.
    * @override
    */
   isNull(): boolean {
