@@ -36,29 +36,22 @@ const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
   'startHats': null,
 });
 
-/**
- * Helper method that splices a string into another string.
- * @param {string} original the base string
- * @param {string} newContent the new string to be inserted
- * @param {number} index the index where the string should be inserted
- * @returns {string} the modified string.
- */
-function insertIntoString(original, newContent, index) {
-  return original.slice(0, index) + newContent + original.slice(index);
-}
-
 document.addEventListener('DOMContentLoaded', function() {
   // Insert two new categories
-  const mostUsedCategory = '<category name="Frequently Used" categorystyle=' +
-    '"frequently_used_category" custom="MOST_USED"></category>';
-  const recentlyUsedCategory = '<category name="Recently Used" categorystyle=' +
-    '"recently_used_category" custom="RECENTLY_USED"></category>';
-  const indexToInsert = toolboxCategories.indexOf('</xml>');
-  const toolboxCompiled = insertIntoString(toolboxCategories,
-      mostUsedCategory + recentlyUsedCategory, indexToInsert);
-
+  toolboxCategories['contents'].push({
+    'kind': 'category',
+    'name': 'Frequently Used',
+    'custom': 'MOST_USED',
+    'categorystyle': 'frequently_used_category',
+  });
+  toolboxCategories['contents'].push({
+    'kind': 'category',
+    'name': 'Recentlty Used',
+    'custom': 'RECENTLY_USED',
+    'categorystyle': 'recently_used_category',
+  });
   const defaultOptions = {
-    toolbox: toolboxCompiled,
+    toolbox: toolboxCategories,
     theme: customTheme,
   };
   createPlayground(document.getElementById('root'), createWorkspace,
