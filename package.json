@@ -37,7 +37,7 @@
     "gulp-header": "^2.0.9",
     "js-green-licenses": "^1.1.0",
     "json-to-pretty-yaml": "^1.2.2",
-    "lerna": "^5.5.4",
+    "lerna": "^6.5.1",
     "rimraf": "^3.0.2"
   },
   "publishConfig": {
