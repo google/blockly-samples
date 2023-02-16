@@ -1068,7 +1068,8 @@ export class Navigation {
    * @param {!Blockly.WorkspaceSvg} workspace The workspace the cursor is on.
    * @param {number} xDirection -1 to move cursor left. 1 to move cursor right.
    * @param {number} yDirection -1 to move cursor up. 1 to move cursor down.
-   * @returns {boolean} True if the current node is a workspace, false otherwise.
+   * @returns {boolean} True if the current node is a workspace, false
+   *     otherwise.
    * @package
    */
   moveWSCursor(workspace, xDirection, yDirection) {

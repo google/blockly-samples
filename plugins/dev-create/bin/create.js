@@ -76,7 +76,7 @@ const isFirstParty = program.firstParty || gitURL == 'https://github.com/google/
  * Default to the plugin name if the type=plugin, otherwise use [type]-[name].
  * @param {string} name Plugin name.
  * @param {string} type Plugin type.
- * @return {string} Plugin name prefixed with type.
+ * @returns {string} Plugin name prefixed with type.
  */
 const getPrefixedName = function(name, type) {
   // Don't add 'plugin' prefix for default type

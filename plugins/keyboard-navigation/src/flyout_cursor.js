@@ -56,8 +56,8 @@ export class FlyoutCursor extends Blockly.Cursor {
 
   /**
    * Moves the cursor to the previous stack of blocks in the flyout.
-   * @returns {Blockly.ASTNode} The previous element, or null if the current node
-   *     is not set or there is no previous value.
+   * @returns {Blockly.ASTNode} The previous element, or null if the current
+   *     node is not set or there is no previous value.
    * @override
    */
   prev() {

@@ -103,8 +103,8 @@ export class LineCursor extends Blockly.BasicCursor {
   /**
    * Moves the cursor to the previous input connection or field in the pre order
    * traversal.
-   * @returns {Blockly.ASTNode} The previous node, or null if the current node is
-   *     not set or there is no previous value.
+   * @returns {Blockly.ASTNode} The previous node, or null if the current node
+   *     is not set or there is no previous value.
    * @override
    */
   out() {
