@@ -481,8 +481,8 @@ const procedureDefMutator = {
     /**
      * Returns true if the variable associated with this field is only used
      * by this block, or callers of this procedure.
-     * @returns {boolean} True if the variable associated with this field is only
-     *     used by this block, or callers of this procedure.
+     * @returns {boolean} True if the variable associated with this field is
+     *     only used by this block, or callers of this procedure.
      */
     const varOnlyUsedHere = () => {
       return workspace.getVariableUsesById(currId).every((block) => {

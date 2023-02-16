@@ -453,8 +453,8 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns whether the backpack contains a duplicate of the provided Block.
    * @param {!Blockly.Block} block The block to check.
-   * @returns {boolean} Whether the backpack contains a duplicate of the provided
-   *     block.
+   * @returns {boolean} Whether the backpack contains a duplicate of the
+   *     provided block.
    */
   containsBlock(block) {
     const cleanedBlockXml = this.blockToCleanXmlString_(block);
