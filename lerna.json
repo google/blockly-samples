@@ -12,5 +12,6 @@
   "changelogPreset": {
     "name": "conventionalcommits"
   },
-  "ignoreChanges": ["plugins/**/package-lock.json"]
+  "ignoreChanges": ["plugins/**/package-lock.json"],
+  "useNx": false
 }
