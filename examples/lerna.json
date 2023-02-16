@@ -4,5 +4,6 @@
     "**-demo"
   ],
   "version": "independent",
-  "npmClient": "npm"
+  "npmClient": "npm",
+  "useNx": false
 }
