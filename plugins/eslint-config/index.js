@@ -40,6 +40,9 @@ module.exports = {
 
   settings: {
     jsdoc: {
+      tagNamePreference: {
+        'returns': 'returns',
+      },
       mode: 'closure',
     },
   },
@@ -110,6 +113,9 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       settings: {
         jsdoc: {
+          tagNamePreference: {
+            'returns': 'returns',
+          },
           mode: 'typescript',
         },
       },
