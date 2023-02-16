@@ -38,15 +38,6 @@ module.exports = {
     'goog': true,
   },
 
-  settings: {
-    jsdoc: {
-      tagNamePreference: {
-        'returns': 'return',
-      },
-      mode: 'closure',
-    },
-  },
-
   rules: {
     // http://eslint.org/docs/rules/
     'camelcase': 'warn',
@@ -111,14 +102,6 @@ module.exports = {
         warnOnUnsupportedTypeScriptVersion: true,
       },
       plugins: ['@typescript-eslint'],
-      settings: {
-        jsdoc: {
-          tagNamePreference: {
-            'returns': 'returns',
-          },
-          mode: 'typescript',
-        },
-      },
 
       // If adding a typescript-eslint version of an existing ESLint rule,
       // make sure to disable the ESLint rule here.
