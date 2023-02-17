@@ -188,7 +188,7 @@ export class Modal {
    * @private
    */
   handleKeyDown_(e) {
-    if (e.keyCode === Blockly.utils.KeyCodes.TAB) {
+    if (e.key === 'Tab') {
       // If there are no elements or there is one element don't wrap.
       if (!this.firstFocusableEl_ ||
           this.firstFocusableEl_ === this.lastFocusableEl_) {
@@ -201,8 +201,7 @@ export class Modal {
       } else {
         this.handleForwardTab_(e);
       }
-    } else if (e.keyCode === Blockly.utils.KeyCodes.ESC &&
-        this.shouldCloseOnEsc) {
+    } else if (e.key === 'Escape' && this.shouldCloseOnEsc) {
       this.hide();
     }
     e.stopPropagation();
