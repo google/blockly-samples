@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ const EventsHandlers = require('./websocket/events_handlers');
 const UsersHandlers = require('./websocket/users_handlers');
 
 const WS_PORT = 3001;
- 
+
 const server = http.createServer(function(request, response) {
   response.writeHead(404);
   response.end();

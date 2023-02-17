@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Example of including Blockly using Parcel with 
+ * @fileoverview Example of including Blockly using Parcel with
  *               defaults: (English lang & JavaScript generator).
  * @author ettinger.boris@gmail.com (Boris Ettinger)
  */

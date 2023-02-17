@@ -4,26 +4,26 @@ id: theme-extension-identifier
 categories: blockly,codelab,theme
 status: Draft
 feedback link: https://github.com/google/blockly-samples/issues/new
- 
+
 # Customizing your themes
 
 ## Codelab overview
- 
+
 ### What you'll learn
- 
+
 In this codelab you will learn how to:
 - Add component styles.
 - Add a category style.
 - Add a block style.
- 
+
 
 ### What you'll build
 A very simple Blockly workspace with customized themes.
- 
+
 ### What you'll need
 - A browser
 - Basic knowledge of HTML, CSS, and JavaScript.
- 
+
 This codelab is focused on Blockly's theme extension. Non-relevant concepts
 are glossed over and provided for you to simple copy and paste.
 
@@ -81,12 +81,12 @@ function start() {
         toolbox: toolboxCategories,
         theme: Blockly.Themes.Halloween,
       });
- } 
+ }
 ```
 
 Note: At this point, we have just created a new theme. But it does not have any customizations. We will do that next.
 
-## Customize Components 
+## Customize Components
 
 Within the Halloween theme definition, you can customize the colours of multiple components:
 
@@ -117,10 +117,10 @@ Reload your web page. You should see a themed workspace!
 
 ![Fun with colours.](theme_components_workspace.png)
 
-## Customize Category Styles 
+## Customize Category Styles
 A category style currently only holds a colour property. It is the colour of the category on the toolbox.
-This value can either be defined as a hex value or as a hue. Usually these colours should be the same as 
-the colourPrimary on the majority of blocks in the category making it easy for users to tell what blocks 
+This value can either be defined as a hex value or as a hue. Usually these colours should be the same as
+the colourPrimary on the majority of blocks in the category making it easy for users to tell what blocks
 belong in what category.
 
 Update the Theme definition to have the category styles as below.
@@ -168,8 +168,8 @@ Clicking on a category will highlight the row with your new colour.
 ![Customized Block colors on the components](customized_categories.png)
 
 
-## Customize Block Styles 
-A block style currently only holds three different colour properties. They are 'colourPrimary', 
+## Customize Block Styles
+A block style currently only holds three different colour properties. They are 'colourPrimary',
 'colourSecondary' and 'colourTertiary'. This value can either be defined as a hex value or as a hue.
 For more information on block styles visit our themes [documentation](https://developers.google.com/blockly/guides/configure/web/themes#block_style)
 
@@ -241,7 +241,7 @@ Click on different blocks in the component and you should see the colours that y
 
 ## Summary
 
-In this codelab you have learned how to extend and customize themes for the blocks component. 
+In this codelab you have learned how to extend and customize themes for the blocks component.
 
 ### Additional information
 

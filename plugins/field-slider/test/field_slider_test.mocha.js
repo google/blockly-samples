@@ -84,9 +84,9 @@ suite('FieldSlider', function() {
     suite('Constraints', function() {
       const testCases = [
         {title: 'Float', json: {}, value: 123.456, expectedValue: 123.456},
-        {title: '0.01', json: {precision: .01}, value: 123.456,
+        {title: '0.01', json: {precision: 0.01}, value: 123.456,
           expectedValue: 123.46},
-        {title: '0.5', json: {precision: .5}, value: 123.456,
+        {title: '0.5', json: {precision: 0.5}, value: 123.456,
           expectedValue: 123.5},
         {title: '1', json: {precision: 1}, value: 123.456,
           expectedValue: 123},
@@ -286,7 +286,7 @@ suite('FieldSlider', function() {
       });
       test('JS Configuration - Ignore', function() {
         const field = new FieldSlider(
-            undefined, undefined, undefined, .5, undefined, {
+            undefined, undefined, undefined, 0.5, undefined, {
               precision: 1,
             });
         assertSliderField(field, -Infinity, Infinity, 1, 0);

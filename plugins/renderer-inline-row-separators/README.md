@@ -65,7 +65,7 @@ overrideOldBlockDefinitions();
 
 ### Adding the row separator feature to other renderers
 
-This plugin also exports a function called `addInlineRowSeparators` that you can use to add the same inline row separator feature to any class extending Blockly's Renderer, including your own. 
+This plugin also exports a function called `addInlineRowSeparators` that you can use to add the same inline row separator feature to any class extending Blockly's Renderer, including your own.
 
 ```js
 import * as Blockly from 'blockly';

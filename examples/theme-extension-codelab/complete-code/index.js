@@ -29,17 +29,17 @@ Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
      'colourPrimary': "#8b4513",
      'colourSecondary':"#ff0000",
      'colourTertiary':"#C5EAFF"
-   }, 
+   },
    'loop_blocks': {
      'colourPrimary': "#85E21F",
      'colourSecondary':"#ff0000",
      'colourTertiary':"#C5EAFF"
-   }, 
+   },
    'text_blocks': {
      'colourPrimary': "#FE9B13",
      'colourSecondary':"#ff0000",
      'colourTertiary':"#C5EAFF"
-   } 
+   }
   },
   'componentStyles': {
     'workspaceBackgroundColour': '#ff7518',

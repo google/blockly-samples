@@ -313,10 +313,10 @@ export class WorkspaceSearch {
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
     this.addEvent_(btn, 'keydown', this, (e) => {
-      if (e.keyCode === Blockly.utils.KeyCodes.ENTER) {
+      if (e.key === 'Enter') {
         onClickFn(e);
         e.preventDefault();
-      } else if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
+      } else if (e.key === 'Escape') {
         this.close();
       }
       e.stopPropagation();

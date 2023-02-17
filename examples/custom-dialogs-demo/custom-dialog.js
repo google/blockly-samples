@@ -133,11 +133,11 @@ CustomDialog.show = function(title, message, options) {
     dialogInput.focus();
 
     dialogInput.onkeyup = function(event) {
-      if (event.keyCode == 13) {
+      if (event.key === 'Enter') {
         // Process as OK when user hits enter.
         onOkay();
         return false;
-      } else if (event.keyCode == 27)  {
+      } else if (event.key === 'Escape')  {
         // Process as cancel when user hits esc.
         onCancel();
         return false;

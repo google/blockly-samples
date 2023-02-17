@@ -18,7 +18,7 @@ jobs:
     if: ${{ github.repository_owner == 'google' }}
 
     # Environment specific to releasing so we can isolate the npm token.
-    environment: release  
+    environment: release
 
     steps:
     - name: Checkout
