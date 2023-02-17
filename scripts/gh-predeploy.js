@@ -13,8 +13,6 @@ const gulp = require('gulp');
 const path = require('path');
 const showdown = require('showdown');
 
-gulp.header = require('gulp-header');
-
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
@@ -22,68 +20,80 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
  * Inject head HTML for a plugin demo page on gh-pages.
  * This looks for the end of the existing head tag and inserts a few additional lines of CSS,
  * as well as updating the title to match the plugin's name.
+ * @param {string} initialContents The initial page HTML, as a string.
+ * @param {!Object} packageJson The contents of the plugin's package.json.
  * @returns {string} The modified contents of the page, as a string.
  */
 function injectHeader(initialContents, packageJson) {
   let baseurl = '/blockly-samples';
 
-  let headerAdditions = `  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  let headerAdditions = `
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
   <link rel="icon" type="image/x-icon" href="${baseurl}/favicon.ico" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="${baseurl}/css/custom.css" />
-  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />`;
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+  <!-- END INJECTED HEADER -->`;
 
   // Replace the title with a more descriptive title.
-  let modifiedContents = initialContents.replace(/<title>.*<\/title>/, `<title>${packageJson.name} Demo</title>`);
-  // Add some CSS.
-  modifiedContents = modifiedContents.replace(/(<\s*\/\s*head\s*>)/, `${headerAdditions}$1`);
+  let modifiedContents = initialContents.replace(/<title>.*<\/title>/,
+      `<title>${packageJson.name} Demo</title>`);
+  // Add some CSS at the end of the header.
+  modifiedContents = modifiedContents.replace(/(<\s*\/\s*head\s*>)/,
+      `${headerAdditions}$1`);
   return modifiedContents;
 }
 
 /**
  * Create footer HTML for a plugin demo page on gh-pages.
- * @returns {string} The footer HTML, as a string.
+ * @param {string} initialContents The initial page HTML, as a string.
+ * @returns {string} The modified contents of the page, as a string.
  */
 function injectFooter(initialContents) {
-  let footer = `<!-- FOOTER  -->
- <footer id="footer">
-   <div class="footer-wrapper site-width">
-     <div class="link-list">
-       <label>Developer Resources</label>
-       <ul>
-         <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
-         <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
-         <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
-             Tools</a></li>
-       </ul>
-     </div>
-     <div class="link-list">
-       <label>Github</label>
-       <ul>
-         <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
-         <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
-       </ul>
-     </div>
-     <div class="link-list">
-       <label>Support</label>
-       <ul>
-         <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
-       </ul>
-       <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
-     </div>
-   </div>
- </footer>
- `
- // Insert the footer at the end of the body.
- return initialContents.replace(/(<\s*\/\s*body\s*>)/, `${footer}$1`)
+  let footer = `
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+`;
+
+  // Insert the footer at the end of the body.
+  return initialContents.replace(/(<\s*\/\s*body\s*>)/, `${footer}$1`)
 }
 
 /**
- * Inject nav bar HTML for a specific plugin
- * @param {!Object} packageJson 
- * @param {string} pluginDir 
- * @returns 
+ * Inject nav bar HTML for a specific plugin at the beginning of the body.
+ * @param {string} initialContents The initial page HTML, as a string.
+ * @param {!Object} packageJson The contents of the plugin's package.json.
+ * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ * @returns {string} The modified contents of the page, as a string.
  */
 function injectNavBar(inputString, packageJson, pluginDir) {
   // Build up information from package.json.
@@ -93,12 +103,13 @@ function injectNavBar(inputString, packageJson, pluginDir) {
   let codeLink = `https://github.com/google/blockly-samples/blob/master/plugins/${pluginDir}`;
 
   let npmLink = `https://www.npmjs.com/package/${packageJson.name}`;
-  // TODO: get rid of the NPM link if there's no package name
-  // Or possible just return early if there's no package name?
   let baseurl = '/blockly-samples';
 
-  // Assemble that information into a nav bar.
-  let navBar = `<nav id="toolbar">
+  // Assemble that information into a nav bar and tabs for getting to the
+  // playground and README pages.
+  let navBar = `
+  <!-- NAV BAR -->
+  <nav id="toolbar">
     <a href="${baseurl}" id="arrow-back">
       <i class="material-icons">close</i>
       <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
@@ -112,53 +123,41 @@ function injectNavBar(inputString, packageJson, pluginDir) {
     ${version}
     
     <a href="${codeLink}" class="button" target="_blank">View code</a>
-    <a href="https://www.npmjs.com/package/${packageJson.name}" class="button" target="_blank">View on npm</a>
-  </nav>`
-  
-  const pageTabs = createPageTabs(packageJson, pluginDir);
+    <a href="${npmLink}" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+  ${createPageTabs(pluginDir)}`
+
   // Find the start of the body and inject the nav bar just after the opening <body> tag,
   // preserving anything else in the tag (such as onload).
-  let modifiedContents = inputString.replace(/(<body.*>)/, `$1${navBar}${pageTabs}`);
-  return modifiedContents;
-}
-
-function addContent() {
-  return '';
-}
-
-/**
- * Create HTML for a single tab.
- * @param {*} tabInfo 
- * @param {*} pluginDir 
- * @returns 
- */
-function createTab(tabInfo, pluginDir) {
-  let pageRoot = `plugins/${pluginDir}`;
-  return `<li>
-  <a href="/blockly-samples/${pageRoot}/${tabInfo.link}">
-    ${tabInfo.label}
-  </a>
-</li>`;
+  // Also wrap all page content in a <main></main> tag.
+  let modifiedContent = inputString.replace(
+      /(<body.*>)/, `<main id="main" class="has-tabs">$1${navBar}`);
+  modifiedContent = modifiedContent.replace(/(<\/body>)/, `</main>$1`);
+  return modifiedContent;
 }
 
 /**
- * Create HTML for tabs for the playground and README pages.
- * @param {!Object} packageJson 
- * @param {string} pluginDir 
- * @returns 
+ * Create the tabs for switching between playground and README pages.
+ * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ * @returns {string} The HTML for the page tabs, as a string.
  */
-function createPageTabs(packageJson, pluginDir) {
-  let pages = [
-    { label: 'Playground', link: 'test/index' },
-    { label: 'README', link: 'README'}
-  ];
-  let tabString = `<!-- PAGE TABS -->
-  <ul id="tabs">`;
-  for (const page of pages) {
-    tabString += createTab(page, pluginDir);
-  }
-  tabString += '</ul>';
-  return tabString;
+function createPageTabs(pluginDir) {
+  return `
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/${pluginDir}/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/${pluginDir}/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->`;
 }
 
 /**
@@ -166,22 +165,21 @@ function createPageTabs(packageJson, pluginDir) {
  * This page has the plugin's test playground, but wraps it in a 
  * devsite-style header and footer, and includes the plugin's readme and 
  * links to the plugin source files on GitHub and published package on npm.
- * @param {string} pluginDir 
+ * @param {string} pluginDir The directory of the plugin that is currently being prepared.
  */
-function createPage(pluginDir) {
+function createPluginPage(pluginDir) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
   const initialContents = fs.readFileSync(`./plugins/${pluginDir}/test/index.html`).toString();
 
-  let modifiedContents = injectHeader(initialContents, packageJson);
-  modifiedContents = injectNavBar(modifiedContents, packageJson, pluginDir);
-  modifiedContents = injectFooter(modifiedContents);
+  let contents = injectHeader(initialContents, packageJson);
+  contents = injectNavBar(contents, packageJson, pluginDir);
+  contents = injectFooter(contents);
 
   const dirString = `./gh-pages/plugins/${pluginDir}/test`;
-  fs.mkdirSync(dirString, { recursive: true});
+  fs.mkdirSync(dirString, { recursive: true });
   const outputPath = `${dirString}/index.html`;
-  console.log('writing to ' + outputPath);
 
-  fs.writeFileSync(outputPath, modifiedContents, 'utf-8');
+  fs.writeFileSync(outputPath, contents, 'utf-8');
 }
 
 /**
@@ -195,23 +193,23 @@ function createReadmePage(pluginDir) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
   const initialContents = fs.readFileSync(`./plugins/${pluginDir}/README.md`).toString();
 
-  const showdown  = require('showdown');
   const converter = new showdown.Converter();
   converter.setFlavor('github');
-  const text      = initialContents;
-  const html      = converter.makeHtml(text);
+  const text = initialContents;
+  const html = converter.makeHtml(text);
 
   let initialPage = `<!DOCTYPE html>
-  
   <head>
     <title></title>
   </head>
-  <body>
+  <body class="root">
+    <main id="main" class="has-tabs">
     <article class="article-container site-width">
       <div class="article">
       ${html}
       </div>
     </article>
+    </main>
   </body>
  </html>
   `;
@@ -223,11 +221,10 @@ function createReadmePage(pluginDir) {
 
   // Make sure the directory exists, then write to it.
   const dirString = `./gh-pages/plugins/${pluginDir}/`;
-  fs.mkdirSync(dirString, { recursive: true});
+  fs.mkdirSync(dirString, { recursive: true });
   const outputPath = `${dirString}/README.html`;
-  console.log('writing to ' + outputPath);
 
-  fs.writeFileSync(outputPath, modifiedContents, 'utf-8'); 
+  fs.writeFileSync(outputPath, modifiedContents, 'utf-8');
 }
 
 /**
@@ -238,13 +235,13 @@ function createReadmePage(pluginDir) {
  */
 function preparePlugin(pluginDir) {
   console.log(`Preparing ${pluginDir} plugin for deployment.`);
-  createPage(pluginDir);
+  createPluginPage(pluginDir);
   createReadmePage(pluginDir);
-   return gulp.src(
-      [
-        './plugins/' + pluginDir + '/build/test_bundle.js',
-      ],
-      { base: './plugins/', allowEmpty: true })
+  return gulp.src(
+    [
+      './plugins/' + pluginDir + '/build/test_bundle.js',
+    ],
+    { base: './plugins/', allowEmpty: true })
     .pipe(gulp.dest('./gh-pages/plugins/'));
 }
 
@@ -260,7 +257,7 @@ function prepareToDeployPlugins(done) {
   const folders = fs.readdirSync(dir).filter(function (file) {
     return fs.statSync(path.join(dir, file)).isDirectory() &&
       fs.existsSync(path.join(dir, file, 'package.json')) &&
-      // Only prepare plugins with text pages.
+      // Only prepare plugins with test pages.
       fs.existsSync(path.join(dir, file, '/test/index.html'));
   });
   return gulp.parallel(folders.map(function (folder) {
@@ -271,5 +268,5 @@ function prepareToDeployPlugins(done) {
 }
 
 module.exports = {
-    predeployPlugins: prepareToDeployPlugins,
+  predeployPlugins: prepareToDeployPlugins,
 };
