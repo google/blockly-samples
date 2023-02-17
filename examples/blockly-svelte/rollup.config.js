@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Rollup configuration that is needed for build/development 
+ * @fileoverview Rollup configuration that is needed for build/development
  *               in Svelte
  * @author abbychau@gmail.com (Abby Chau)
  */

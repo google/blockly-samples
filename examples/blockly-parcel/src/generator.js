@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Example of including Blockly using Parcel with 
+ * @fileoverview Example of including Blockly using Parcel with
  *               the Python generator.
  * @author ettinger.boris@gmail.com (Boris Ettinger)
  */

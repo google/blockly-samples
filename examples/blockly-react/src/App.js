@@ -36,7 +36,7 @@ function App(props) {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <BlocklyComponent readOnly={false} 
+          <BlocklyComponent readOnly={false}
           trashcan={true} media={'media/'}
           move={{
             scrollbars: true,

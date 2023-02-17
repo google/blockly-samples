@@ -45,7 +45,7 @@ export default class WorkspaceClient {
     this.addEventsHandler = addEventsHandler;
     this.broadcastEventsHandler = broadcastEventsHandler;
     this.listener = new EventEmitter();
-  };  
+  };
 
 
   /**
@@ -141,7 +141,7 @@ export default class WorkspaceClient {
     this.counter += 1;
     this.notSent = [];
   };
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
   /**
    * Change status of WorkspaceClient once network call completes.
    * Change writeInProgress to true. If write was successful, the LocalEntry
