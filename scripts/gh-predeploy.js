@@ -11,6 +11,7 @@
 const fs = require('fs');
 const gulp = require('gulp');
 const path = require('path');
+const showdown = require('showdown');
 
 gulp.header = require('gulp-header');
 
@@ -31,13 +32,12 @@ function injectHeader(initialContents, packageJson) {
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="${baseurl}/css/custom.css" />
-  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
-</head>`;
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />`;
 
   // Replace the title with a more descriptive title.
   let modifiedContents = initialContents.replace(/<title>.*<\/title>/, `<title>${packageJson.name} Demo</title>`);
   // Add some CSS.
-  modifiedContents = modifiedContents.replace(/<\s*\/\s*head\s*>/, headerAdditions);
+  modifiedContents = modifiedContents.replace(/(<\s*\/\s*head\s*>)/, `${headerAdditions}$1`);
   return modifiedContents;
 }
 
@@ -45,7 +45,7 @@ function injectHeader(initialContents, packageJson) {
  * Create footer HTML for a plugin demo page on gh-pages.
  * @returns {string} The footer HTML, as a string.
  */
-function createFooter() {
+function injectFooter(initialContents) {
   let footer = `<!-- FOOTER  -->
  <footer id="footer">
    <div class="footer-wrapper site-width">
@@ -75,11 +75,12 @@ function createFooter() {
    </div>
  </footer>
  `
- return footer;
+ // Insert the footer at the end of the body.
+ return initialContents.replace(/(<\s*\/\s*body\s*>)/, `${footer}$1`)
 }
 
 /**
- * Iject nav bar HTML for a specific plugin
+ * Inject nav bar HTML for a specific plugin
  * @param {!Object} packageJson 
  * @param {string} pluginDir 
  * @returns 
@@ -93,6 +94,7 @@ function injectNavBar(inputString, packageJson, pluginDir) {
 
   let npmLink = `https://www.npmjs.com/package/${packageJson.name}`;
   // TODO: get rid of the NPM link if there's no package name
+  // Or possible just return early if there's no package name?
   let baseurl = '/blockly-samples';
 
   // Assemble that information into a nav bar.
@@ -113,9 +115,10 @@ function injectNavBar(inputString, packageJson, pluginDir) {
     <a href="https://www.npmjs.com/package/${packageJson.name}" class="button" target="_blank">View on npm</a>
   </nav>`
   
+  const pageTabs = createPageTabs(packageJson, pluginDir);
   // Find the start of the body and inject the nav bar just after the opening <body> tag,
   // preserving anything else in the tag (such as onload).
-  let modifiedContents = inputString.replace(/(<body.*>)/, `$1${navBar}`);
+  let modifiedContents = inputString.replace(/(<body.*>)/, `$1${navBar}${pageTabs}`);
   return modifiedContents;
 }
 
@@ -159,23 +162,6 @@ function createPageTabs(packageJson, pluginDir) {
 }
 
 /**
- * 
- * @param {!Object} packageJson 
- * @param {string} pluginDir 
- * @returns 
- */
-function createBody(packageJson, pluginDir) {
-  let body = `<body class="root">
-  ${createNavBar(packageJson)}
-  ${createPageTabs(packageJson, pluginDir)}
-  ${addContent(packageJson)}
-  </main>
-  ${createFooter(packageJson)}
-</body>`
-return body;
-}
-
-/**
  * Create the index.html page for the plugin's page on github pages.
  * This page has the plugin's test playground, but wraps it in a 
  * devsite-style header and footer, and includes the plugin's readme and 
@@ -188,17 +174,60 @@ function createPage(pluginDir) {
 
   let modifiedContents = injectHeader(initialContents, packageJson);
   modifiedContents = injectNavBar(modifiedContents, packageJson, pluginDir);
-  
-  // const contents = `${createHeader(packageJson)}
-  // ${createBody(packageJson, pluginDir)}`;
+  modifiedContents = injectFooter(modifiedContents);
 
-  const contents = `${modifiedContents}${createFooter(packageJson)}`;
   const dirString = `./gh-pages/plugins/${pluginDir}/test`;
   fs.mkdirSync(dirString, { recursive: true});
   const outputPath = `${dirString}/index.html`;
   console.log('writing to ' + outputPath);
 
-  fs.writeFileSync(outputPath, contents, 'utf-8');
+  fs.writeFileSync(outputPath, modifiedContents, 'utf-8');
+}
+
+/**
+ * Create the README page (in HTML) from the plugin's README.md file.
+ * This includes the same header, nav bar, and footer as the playground page for a
+ * given package.
+ * 
+ * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ */
+function createReadmePage(pluginDir) {
+  const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
+  const initialContents = fs.readFileSync(`./plugins/${pluginDir}/README.md`).toString();
+
+  const showdown  = require('showdown');
+  const converter = new showdown.Converter();
+  converter.setFlavor('github');
+  const text      = initialContents;
+  const html      = converter.makeHtml(text);
+
+  let initialPage = `<!DOCTYPE html>
+  
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <article class="article-container site-width">
+      <div class="article">
+      ${html}
+      </div>
+    </article>
+  </body>
+ </html>
+  `;
+
+  // Add the same header, nav bar, and footer as we used for the playground.
+  let modifiedContents = injectHeader(initialPage, packageJson);
+  modifiedContents = injectNavBar(modifiedContents, packageJson, pluginDir);
+  modifiedContents = injectFooter(modifiedContents);
+
+  // Make sure the directory exists, then write to it.
+  const dirString = `./gh-pages/plugins/${pluginDir}/`;
+  fs.mkdirSync(dirString, { recursive: true});
+  const outputPath = `${dirString}/README.html`;
+  console.log('writing to ' + outputPath);
+
+  fs.writeFileSync(outputPath, modifiedContents, 'utf-8'); 
 }
 
 /**
@@ -209,11 +238,11 @@ function createPage(pluginDir) {
  */
 function preparePlugin(pluginDir) {
   console.log(`Preparing ${pluginDir} plugin for deployment.`);
-  createPage(pluginDir)
+  createPage(pluginDir);
+  createReadmePage(pluginDir);
    return gulp.src(
       [
         './plugins/' + pluginDir + '/build/test_bundle.js',
-        './plugins/' + pluginDir + '/README.md',
       ],
       { base: './plugins/', allowEmpty: true })
     .pipe(gulp.dest('./gh-pages/plugins/'));
