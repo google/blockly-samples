@@ -62,8 +62,7 @@ import BlocklyComponent from './components/BlocklyComponent.vue'
 import './blocks/stocks';
 import './prompt';
 
-import BlocklyJS from 'blockly/javascript';
-
+import {javascriptGenerator} from 'blockly/javascript';
 export default {
   name: 'app',
   components: {
@@ -125,7 +124,7 @@ export default {
   },
   methods: {
     showCode() {
-      this.code = BlocklyJS.workspaceToCode(this.$refs["foo"].workspace);
+      this.code = javascriptGenerator.workspaceToCode(this.$refs["foo"].workspace);
     }
   }
 }

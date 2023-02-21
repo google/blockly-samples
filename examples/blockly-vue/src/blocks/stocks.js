@@ -26,6 +26,7 @@
 
 
 import * as Blockly from 'blockly/core';
+import {javascriptGenerator} from 'blockly/javascript';
 
 Blockly.Blocks["stock_buy_simple"] = {
   init: function() {
@@ -45,14 +46,14 @@ Blockly.Blocks["stock_buy_simple"] = {
   }
 };
 
-Blockly.JavaScript["stock_buy_simple"] = function(block) {
+javascriptGenerator["stock_buy_simple"] = function(block) {
   var number_id = block.getFieldValue("ID");
   var number_amount = block.getFieldValue("Amount");
   var number_price = block.getFieldValue("Price");
-  var value_number = Blockly.JavaScript.valueToCode(
+  var value_number = javascriptGenerator.valueToCode(
     block,
     "Number",
-    Blockly.JavaScript.ORDER_ATOMIC
+    javascriptGenerator.ORDER_ATOMIC
   );
   var code = `buy(${number_id},${number_amount},${number_price},${value_number});\n`;
   return code;
@@ -77,16 +78,16 @@ Blockly.Blocks["stock_buy_prog"] = {
   }
 };
 
-Blockly.JavaScript["stock_buy_prog"] = function(block) {
-  var value_number = Blockly.JavaScript.valueToCode(
+javascriptGenerator["stock_buy_prog"] = function(block) {
+  var value_number = javascriptGenerator.valueToCode(
     block,
     "Number",
-    Blockly.JavaScript.ORDER_ATOMIC
+    javascriptGenerator.ORDER_ATOMIC
   );
-  var value_name = Blockly.JavaScript.valueToCode(
+  var value_name = javascriptGenerator.valueToCode(
     block,
     "NAME",
-    Blockly.JavaScript.ORDER_ATOMIC
+    javascriptGenerator.ORDER_ATOMIC
   );
   var code = `buy(${value_number},${value_name},${value_name});\n`;
   return code;
@@ -109,13 +110,13 @@ Blockly.Blocks["stock_fetch_price"] = {
   }
 };
 
-Blockly.JavaScript["stock_fetch_price"] = function(block) {
-  var value_fetch = Blockly.JavaScript.valueToCode(
+javascriptGenerator["stock_fetch_price"] = function(block) {
+  var value_fetch = javascriptGenerator.valueToCode(
     block,
     "Fetch",
-    Blockly.JavaScript.ORDER_ATOMIC
+    javascriptGenerator.ORDER_ATOMIC
   );
-  var variable_variable = Blockly.JavaScript.nameDB_.getName(
+  var variable_variable = javascriptGenerator.nameDB_.getName(
     block.getFieldValue("variable"),
     Blockly.VARIABLE_CATEGORY_NAME
   );
