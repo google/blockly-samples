@@ -218,7 +218,7 @@ const procedureDefGetDefMixin = function() {
       Blockly.Procedures.findLegalName(this.getFieldValue('NAME'), this));
 
   // Events cannot be fired from instantiation when deserializing or dragging
-  // from the flyout. So make this consistant and never fire from instantiation.
+  // from the flyout. So make this consistent and never fire from instantiation.
   Blockly.Events.disable();
   this.workspace.getProcedureMap().add(mixin.getProcedureModel());
   Blockly.Events.enable();
