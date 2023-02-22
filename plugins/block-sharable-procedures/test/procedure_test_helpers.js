@@ -20,7 +20,7 @@ const sinon = require('sinon');
  * @param {string|!Array<string>} returnIds The return values to use for the
  *    created stub. If a single value is passed, then the stub always returns
  *    that value.
- * @return {!sinon.SinonStub} The created stub.
+ * @returns {!sinon.SinonStub} The created stub.
  */
 export function createGenUidStubWithReturns(returnIds) {
   const stub = sinon.stub(Blockly.utils.idGenerator.TEST_ONLY, 'genUid');
@@ -143,7 +143,7 @@ export function assertCallBlockStructure(
  *    return.
  * @param {Array<string>=} args An array of argument names.
  * @param {string=} name The name of the def block (defaults to 'proc name').
- * @return {Blockly.Block} The created block.
+ * @returns {Blockly.Block} The created block.
  */
 export function createProcDefBlock(
     workspace, hasReturn = false, args = [], name = 'proc name') {
@@ -165,7 +165,7 @@ export function createProcDefBlock(
  *    has return.
  * @param {string=} name The name of the caller block
  *     (defaults to 'proc name').
- * @return {Blockly.Block} The created block.
+ * @returns {Blockly.Block} The created block.
  */
 export function createProcCallBlock(
     workspace, hasReturn = false, name = 'proc name') {
