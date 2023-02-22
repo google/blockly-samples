@@ -9,6 +9,7 @@ import * as Blockly from 'blockly/core';
 import {ObservableProcedureModel} from './observable_procedure_model';
 import {ObservableParameterModel} from './observable_parameter_model';
 import {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
+import {ProcedureCreate} from './events_procedure_create';
 
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -216,7 +217,12 @@ const procedureDefGetDefMixin = function() {
   mixin.model_ = new ObservableProcedureModel(
       this.workspace,
       Blockly.Procedures.findLegalName(this.getFieldValue('NAME'), this));
+
+  // Events cannot be fired from instantiation when deserializing or dragging
+  // from the flyout. So make this consistent and never fire from instantiation.
+  Blockly.Events.disable();
   this.workspace.getProcedureMap().add(mixin.getProcedureModel());
+  Blockly.Events.enable();
 
   this.mixin(mixin, true);
 };
@@ -622,6 +628,10 @@ Blockly.Extensions.registerMixin(
 
 const procedureDefOnChangeMixin = {
   onchange: function(e) {
+    if (e.type === Blockly.Events.BLOCK_CREATE && e.blockId === this.id) {
+      Blockly.Events.fire(
+          new ProcedureCreate(this.workspace, this.getProcedureModel()));
+    }
     if (e.type === Blockly.Events.BLOCK_CHANGE && e.blockId === this.id &&
       e.element === 'disabled') {
       this.getProcedureModel().setEnabled(!e.newValue);
