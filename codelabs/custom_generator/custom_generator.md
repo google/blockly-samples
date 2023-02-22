@@ -182,7 +182,7 @@ If the server is already running, you can refresh the page to see your changes. 
 
 ![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
 
-The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon. 
+The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon.
 
 ## The basics
 
@@ -370,7 +370,7 @@ Calling `getFieldValue` on a dropdown field returns the value of the selected op
 
 ```js
 jsonGenerator['logic_boolean'] = function(block) {
-  const code = (block.getFieldValue('BOOL') == 'TRUE') ? 'true' : 'false';
+  const code = (block.getFieldValue('BOOL') === 'TRUE') ? 'true' : 'false';
   return [code, jsonGenerator.PRECEDENCE];
 };
 ```

@@ -27,8 +27,6 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param {Object=} config A map of options used to configure the field.
    *    See the [field creation documentation]{@link https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation}
    *    for a list of properties this parameter supports.
-   * @extends {Blockly.Field}
-   * @constructor
    * @throws {TypeError} If `menuGenerator` options are incorrectly structured.
    */
   constructor(menuGenerator, validator = undefined, config = undefined) {
@@ -87,7 +85,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @private
    */
   setColumnsInternal_(columns) {
-    columns = parseInt(columns);
+    columns = parseInt(String(columns));
     if (!isNaN(columns) && columns >= 1) {
       this.columns_ = columns;
     }
@@ -105,15 +103,18 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
     // Dropdown should match block colour unless other colours are specified
     // in the config.
-    const blockPrimaryColour = (this.sourceBlock_.isShadow()) ?
-        this.sourceBlock_.getParent().getColour() :
-        this.sourceBlock_.getColour();
-    const blockBorderColour = (this.sourceBlock_.isShadow()) ?
-        this.sourceBlock_.getParent().style.colourTertiary :
-        this.sourceBlock_.style.colourTertiary;
-    const primaryColour = this.primaryColour || blockPrimaryColour;
-    const borderColour = this.borderColour || blockBorderColour;
-    Blockly.DropDownDiv.setColour(primaryColour, borderColour);
+    const sourceBlock = this.getSourceBlock();
+    if (sourceBlock instanceof Blockly.BlockSvg) {
+      const blockPrimaryColour = (sourceBlock.isShadow()) ?
+          sourceBlock.getParent().getColour() :
+          sourceBlock.getColour();
+      const blockBorderColour = (sourceBlock.isShadow()) ?
+          sourceBlock.getParent().style.colourTertiary :
+          sourceBlock.style.colourTertiary;
+      const primaryColour = this.primaryColour || blockPrimaryColour;
+      const borderColour = this.borderColour || blockBorderColour;
+      Blockly.DropDownDiv.setColour(primaryColour, borderColour);
+    }
 
     Blockly.utils.dom.addClass(
         this.menu_.getElement(), 'fieldGridDropDownContainer');

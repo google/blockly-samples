@@ -5,7 +5,7 @@
  */
 
 /**
- * @fileoverview Example of including Blockly using Parcel with a 
+ * @fileoverview Example of including Blockly using Parcel with a
  *               custom locale: (French lang & JavaScript generator).
  * @author ettinger.boris@gmail.com (Boris Ettinger)
  */

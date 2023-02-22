@@ -96,12 +96,12 @@ export class FieldSlider extends Blockly.FieldNumber {
     const editor = this.dropdownCreate_();
 
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
-
-    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
-
-    const primary = sourceBlock.getColour() || '';
-    const tertiary = sourceBlock.getColourTertiary() || '';
-    Blockly.DropDownDiv.setColour(primary, tertiary);
+    const sourceBlock = this.getSourceBlock();
+    if (sourceBlock instanceof Blockly.BlockSvg) {
+      const primary = sourceBlock.getColour() || '';
+      const tertiary = sourceBlock.getColourTertiary() || '';
+      Blockly.DropDownDiv.setColour(primary, tertiary);
+    }
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));

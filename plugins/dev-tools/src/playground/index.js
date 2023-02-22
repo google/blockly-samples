@@ -600,10 +600,10 @@ function registerEditorCommands(editor, playground) {
   });
   document.addEventListener('keydown', (e) => {
     const ctrlCmd = e.metaKey || e.ctrlKey;
-    if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.S) {
+    if (ctrlCmd && e.key === 's') {
       save();
       e.preventDefault();
-    } else if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.ENTER) {
+    } else if (ctrlCmd && e.key === 'Enter') {
       if (!loadJson()) loadXml();
       e.preventDefault();
     }

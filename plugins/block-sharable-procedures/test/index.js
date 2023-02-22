@@ -9,12 +9,12 @@
  */
 
 import * as Blockly from 'blockly';
-import {createPlayground} from '@blockly/dev-tools';
-import '../src/index';
+import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
+import {blocks, unregisterProcedureBlocks} from '../src/index';
 
 
-// TODO: Edit list of blocks.
-const allBlocks = ['text_print'];
+unregisterProcedureBlocks();
+Blockly.common.defineBlocks(blocks);
 
 /**
  * Create a workspace.
@@ -29,15 +29,7 @@ function createWorkspace(blocklyDiv, options) {
 
 document.addEventListener('DOMContentLoaded', function() {
   const defaultOptions = {
-    toolbox: {
-      'kind': 'flyoutToolbox',
-      'contents': allBlocks.map((b) => {
-        return {
-          'kind': 'block',
-          'type': b,
-        };
-      }),
-    },
+    toolbox: toolboxCategories,
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);

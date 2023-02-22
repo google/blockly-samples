@@ -29,9 +29,9 @@
  import {javascriptGenerator} from 'blockly/javascript';
  import locale from 'blockly/msg/en';
  import 'blockly/blocks';
- 
+
  Blockly.setLocale(locale);
- 
+
  function BlocklyComponent(props) {
     const blocklyDiv = useRef();
     const toolbox = useRef();
@@ -43,7 +43,7 @@
         );
         console.log(code);
     }
- 
+
     useEffect(() => {
         const { initialXml, children, ...rest } = props;
             primaryWorkspace.current = Blockly.inject(
@@ -58,7 +58,7 @@
                 Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(initialXml), primaryWorkspace.current);
             }
     }, [primaryWorkspace, toolbox, blocklyDiv, props]);
- 
+
     return (
     <React.Fragment>
         <button onClick={generateCode}>Convert</button>
@@ -68,6 +68,5 @@
         </div>
     </React.Fragment>);
 }
- 
+
 export default BlocklyComponent;
- 

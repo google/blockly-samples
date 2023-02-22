@@ -38,9 +38,9 @@ languages. However, if you would like to support multiple languages the messages
 can be translated by assigning the following properties of Blockly.Msg
 - `PROCEDURE_VARIABLE` (Default: "variable:"): The label which signals the text
    input is a variable.
-   
+
 ```javascript
-Blockly.Msg['PROCEDURE_VARIABLE'] = 'variabele:';  // Dutch 
+Blockly.Msg['PROCEDURE_VARIABLE'] = 'variabele:';  // Dutch
 // Inject workspace, etc...
 ```
 

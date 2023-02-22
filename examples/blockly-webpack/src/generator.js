@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Example of including Blockly with using Webpack with 
+ * @fileoverview Example of including Blockly with using Webpack with
  *               the Python generator.
  * @author samelh@google.com (Sam El-Husseini)
  */

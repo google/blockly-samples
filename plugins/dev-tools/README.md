@@ -123,7 +123,7 @@ Blockly.inject('blocklyDiv', {renderer: 'debugRenderer'});
 ```
 
 ### Logger
-A lightweight workspace console logger. 
+A lightweight workspace console logger.
 
 ```js
 import {logger} from '@blockly/dev-tools';

@@ -38,7 +38,7 @@ var fuse;
  */
 function searchBoxInputHandler(e) {
   var value = e.target.value;
-  
+
   if (!value) {
     // Show / Reset all.
     linkEls.forEach(function(link) {

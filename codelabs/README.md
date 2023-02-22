@@ -15,7 +15,7 @@ all Blockly Codelabs.
 
 The sample Codelab runs you through how to author a Codelab using markdown.
 
-You can find additional details on the 
+You can find additional details on the
 [Codelab Markdown Formatting Guide](https://github.com/googlecodelabs/tools/tree/master/claat/parser/md)
 
 ## Adding assets
