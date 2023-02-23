@@ -61,18 +61,18 @@ try again.
 
 ### `npm run publish:manual`
 This script assumes that you have already run `npm run publish:prepare`. It will
-publish all of the changed plugins since the last release, using the `dist` directory. It
-runs the lerna command that uses conventional commits to determine a new version number
-for each plugin, and publishes the new versions to npm and to a github release and tag.
-Since all plugins should have the `prepublishOnly` lifecycle script configured, plugins
-will build themselves before the publish step, so that the correct files are uploaded.
+publish all of the changed plugins since the last release, using the `dist`
+directory. It runs the lerna command that uses conventional commits to determine
+a new version number for each plugin, and publishes the new versions to npm and
+to a github release and tag. Plugins do not automatically build themselves
+before publishing. You must have run `npm run publish:prepare` script ahead of
+time for this reason.
 
-If any plugin fails to build, hopefully that should have been caught by the
-`publish:prepare` script. If it fails during this step, then likely some plugins have
-already been published to npm, and some will not have due to the error. That may also
-occur if there is some other with npm while running this command. You can recover from
-this state by fixing the error, and then running `npm run publish:prepare` again followed
-by `npm run publish:unpublishedOnly` or `npm run publish:force`.
+If there is some error with npm while running this command, you may end up in a
+state where some plugins have been published to npm and not others, after lerna
+has already tagged the new releases. You can recover from this state by fixing
+the error, and then running `npm run publish:prepare` again followed by
+`npm run publish:unpublishedOnly` or `npm run publish:force`.
 
 ### `npm run publish:unpublishedOnly`
 This script assumes that you have already run `npm run publish:prepare`. It uses the `dist`
