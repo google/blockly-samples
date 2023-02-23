@@ -1,5 +1,5 @@
 {
-  "name": "@blockly/block-sharable-procedures",
+  "name": "@blockly/block-shareable-procedures",
   "version": "1.2.0",
   "description": "A plugin that adds procedure blocks which are backed by explicit data models.",
   "scripts": {
@@ -20,16 +20,16 @@
     "blockly",
     "blockly-plugin",
     "blockly-block",
-    "sharable-procedures"
+    "shareable-procedures"
   ],
-  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-sharable-procedures#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-shareable-procedures#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/google/blockly-samples.git",
-    "directory": "plugins/block-sharable-procedures"
+    "directory": "plugins/block-shareable-procedures"
   },
   "license": "Apache-2.0",
   "directories": {
