@@ -100,7 +100,6 @@ exports.createPlugin = function(pluginName, options) {
       'audit:fix': 'blockly-scripts auditFix',
       'build': 'blockly-scripts build',
       'clean': 'blockly-scripts clean',
-      'dist': 'blockly-scripts build prod',
       'lint': 'blockly-scripts lint',
       'predeploy': 'blockly-scripts predeploy',
       'start': 'blockly-scripts start',
