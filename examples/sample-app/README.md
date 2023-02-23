@@ -7,7 +7,7 @@ This app illustrates how to use Blockly together with common programming tools l
 ## Quick Start
 
 1. [Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) npm if you haven't before.
-2. Clone the blockly-samples repository and navigate to this `sample-app` directory (or make a copy of it) on the command line.
+2. Run [`npx @blockly/create-package app <application-name>`](https://www.npmjs.com/package/@blockly/create-package) to clone this application to your own machine.
 3. Run `npm install` to install the required dependencies.
 4. Run `npm run start` to run the development server and see the app in action.
 5. If you make any changes to the source code, just refresh the browser while the server is running to see them.
