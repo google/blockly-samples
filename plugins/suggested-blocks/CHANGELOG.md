@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.8](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.7...@blockly/suggested-blocks@2.0.8) (2023-02-23)
+
+
+### Bug Fixes
+
+* Fixed the suggested blocks plugin demo ([#1570](https://github.com/google/blockly-samples/issues/1570)) ([c231332](https://github.com/google/blockly-samples/commit/c231332d8a6080f1abad82dba10749fe939cc314))
+
+
+
 ## [2.0.7](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.6...@blockly/suggested-blocks@2.0.7) (2023-02-16)
 
 **Note:** Version bump only for package @blockly/suggested-blocks

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.2.1...@blockly/create-package@1.3.0) (2023-02-23)
+
+
+### Features
+
+* Add ability to create sample app ([#1553](https://github.com/google/blockly-samples/issues/1553)) ([b7aa6f4](https://github.com/google/blockly-samples/commit/b7aa6f46557ccb0e4da691b8b20f7bb2e47a1044))
+
+
+
 ## [1.2.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.2.0...@blockly/create-package@1.2.1) (2023-02-16)
 
 **Note:** Version bump only for package @blockly/create-package
