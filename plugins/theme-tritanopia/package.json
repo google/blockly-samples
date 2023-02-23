@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-tritanopia",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "A Blockly theme for people that have tritanopia.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",

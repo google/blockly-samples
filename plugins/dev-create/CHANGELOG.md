@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.1...@blockly/create-package@1.3.2) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
 ## [1.3.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.0...@blockly/create-package@1.3.1) (2023-02-23)
 
 

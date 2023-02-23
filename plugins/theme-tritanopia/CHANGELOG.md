@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/google/blockly-samples/compare/@blockly/theme-tritanopia@3.0.5...@blockly/theme-tritanopia@3.0.6) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
 ## [3.0.5](https://github.com/google/blockly-samples/compare/@blockly/theme-tritanopia@3.0.4...@blockly/theme-tritanopia@3.0.5) (2023-02-16)
 
 **Note:** Version bump only for package @blockly/theme-tritanopia

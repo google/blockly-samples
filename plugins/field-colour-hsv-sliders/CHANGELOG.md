@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.10](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.0.9...@blockly/field-colour-hsv-sliders@2.0.10) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
 ## [2.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.0.8...@blockly/field-colour-hsv-sliders@2.0.9) (2023-02-23)
 
 **Note:** Version bump only for package @blockly/field-colour-hsv-sliders
