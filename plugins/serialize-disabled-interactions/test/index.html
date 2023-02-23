@@ -2,7 +2,7 @@
 title: "@blockly/plugin-serialize-disabled-interactions Demo"
 packageName: "@blockly/plugin-serialize-disabled-interactions"
 description: "A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks."
-version: "2.0.7"
+version: "2.0.8"
 pageRoot: "plugins/serialize-disabled-interactions"
 pages:
   - label: "Playground"

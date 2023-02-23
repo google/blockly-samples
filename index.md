@@ -42,6 +42,10 @@ layout: index
 * [Theme Tritanopia](plugins/theme-tritanopia/test/index.html)
 * [Theme Deuteranopia](plugins/theme-deuteranopia/test/index.html)
 
+# Third Party Plugins
+These plugins are not published by the Blockly team. They are linked here for your convenience.
+* [Lexical Variables](https://www.npmjs.com/package/@mit-app-inventor/blockly-block-lexical-variables)
+
 # Examples
 
 ## Blockly in React

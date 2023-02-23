@@ -2,7 +2,7 @@
 title: "@blockly/block-plus-minus Demo"
 packageName: "@blockly/block-plus-minus"
 description: "A group of blocks that replace the built-in mutator UI with a +/- based UI."
-version: "4.0.7"
+version: "4.0.8"
 pageRoot: "plugins/block-plus-minus"
 pages:
   - label: "Playground"
@@ -51,9 +51,9 @@ languages. However, if you would like to support multiple languages the messages
 can be translated by assigning the following properties of Blockly.Msg
 - `PROCEDURE_VARIABLE` (Default: "variable:"): The label which signals the text
    input is a variable.
-   
+
 ```javascript
-Blockly.Msg['PROCEDURE_VARIABLE'] = 'variabele:';  // Dutch 
+Blockly.Msg['PROCEDURE_VARIABLE'] = 'variabele:';  // Dutch
 // Inject workspace, etc...
 ```
 

@@ -80,7 +80,7 @@ Note: Updating GitHub Pages is done automatically when publishing plugins throug
     ```
 
 2. Build and push
-    
+
     * to your personal gh-pages site:
 
         ```

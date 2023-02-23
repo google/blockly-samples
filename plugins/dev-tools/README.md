@@ -2,7 +2,7 @@
 title: "@blockly/dev-tools Demo"
 packageName: "@blockly/dev-tools"
 description: "A library of common utilities for Blockly extension development."
-version: "5.1.1"
+version: "5.2.0"
 pageRoot: "plugins/dev-tools"
 pages:
   - label: "Playground"
@@ -136,7 +136,7 @@ Blockly.inject('blocklyDiv', {renderer: 'debugRenderer'});
 ```
 
 ### Logger
-A lightweight workspace console logger. 
+A lightweight workspace console logger.
 
 ```js
 import {logger} from '@blockly/dev-tools';
