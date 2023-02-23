@@ -12,6 +12,13 @@
     "plugin",
     "template"
   ],
+  "files": [
+    "*",
+    "templates/sample-app/*"
+  ],
+  "scripts": {
+    "prepack": "cp -r ../../examples/sample-app ./templates"
+  },
   "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-create#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"

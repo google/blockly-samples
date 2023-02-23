@@ -20,7 +20,7 @@ exports.createApp = function(name, options) {
       `Creating a new Blockly application called ${name} in ${appPath}`);
 
   // Copy over files from sample-app directory.
-  const sampleDir = '../../../examples/sample-app';
+  const sampleDir = '../templates/sample-app';
   const excludes =
       ['node_modules', 'dist', 'package-lock.json', 'package.json']
           .map((file) => {
