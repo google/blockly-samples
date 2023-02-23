@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.0...@blockly/create-package@1.3.1) (2023-02-23)
+
+
+### Bug Fixes
+
+* Copy the sample-app files before publishing ([#1578](https://github.com/google/blockly-samples/issues/1578)) ([a7fd02e](https://github.com/google/blockly-samples/commit/a7fd02e1b1eea4e37cd61edab9207ae9f03d091b))
+
+
+
 ## [1.3.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.2.1...@blockly/create-package@1.3.0) (2023-02-23)
 
 
