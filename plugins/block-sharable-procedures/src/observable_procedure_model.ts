@@ -5,6 +5,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {ObservableParameterModel} from './observable_parameter_model';
 import {ProcedureChangeReturn} from './events_procedure_change_return';
 import {ProcedureCreate} from './events_procedure_create';
 import {ProcedureDelete} from './events_procedure_delete';
@@ -19,7 +20,7 @@ export class ObservableProcedureModel
 implements Blockly.procedures.IProcedureModel {
   private id: string;
   private name: string;
-  private parameters: Blockly.procedures.IParameterModel[] = [];
+  private parameters: ObservableParameterModel[] = [];
   private returnTypes: string[]|null = null;
   private enabled = true;
   private shouldFireEvents = false;
@@ -64,7 +65,7 @@ implements Blockly.procedures.IProcedureModel {
    * @returns This procedure model.
    */
   insertParameter(
-      parameterModel: Blockly.procedures.IParameterModel, index: number): this {
+      parameterModel: ObservableParameterModel, index: number): this {
     if (this.parameters[index] &&
         this.parameters[index].getId() === parameterModel.getId()) {
       return this;

@@ -27,12 +27,9 @@ export class ProcedureCreate extends ProcedureBase {
   run(forward: boolean) {
     const workspace = this.getEventWorkspace_();
     const procedureMap = workspace.getProcedureMap();
-    const procedureModel = procedureMap.get(this.procedure.getId());
     if (forward) {
-      if (procedureModel) return;
       procedureMap.add(this.procedure);
     } else {
-      if (!procedureModel) return;
       procedureMap.delete(this.procedure.getId());
     }
   }

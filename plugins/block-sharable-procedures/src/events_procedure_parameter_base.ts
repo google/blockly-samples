@@ -27,13 +27,26 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
   }
 
   /**
-   * Returns true if the given parameter is identical to this parameter.
-   * @param param The parameter to check for equivalence.
-   * @returns True if the parameter matches, false if it does not.
+   * Finds the parameter with the given ID in the procedure model with the given
+   * ID, if both things exist.
+   * @param workspace The workspace to search for the parameter.
+   * @param procedureId The ID of the procedure model to search for
+   *     the parameter.
+   * @param paramId The ID of the parameter to search for.
+   * @returns The parameter model that was found.
+   * @internal
    */
-  protected parameterMatches(
-      param?: Blockly.procedures.IParameterModel): boolean {
-    return param && param.getId() === this.parameter.getId();
+  static findMatchingParameter(
+      workspace: Blockly.Workspace,
+      procedureId: string,
+      paramId: string
+  ): ProcedureParameterPair {
+    const procedure = workspace.getProcedureMap().get(procedureId);
+    if (!procedure) return {procedure: undefined, parameter: undefined};
+    const parameter = procedure.getParameters()
+        .find((p) => p.getId() === paramId);
+    if (!parameter) return {procedure, parameter: undefined};
+    return {procedure, parameter};
   }
 
   /**
@@ -45,6 +58,11 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
     json['parameterId'] = this.parameter.getId();
     return json;
   }
+}
+
+export interface ProcedureParameterPair {
+  procedure?: Blockly.procedures.IProcedureModel;
+  parameter?: Blockly.procedures.IParameterModel;
 }
 
 export interface ProcedureParameterBaseJson extends ProcedureBaseJson {

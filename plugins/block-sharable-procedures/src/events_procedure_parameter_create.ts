@@ -18,6 +18,8 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
   /** A string used to check the type of the event. */
   type = TYPE;
 
+  parameter: ObservableParameterModel;
+
   /**
    * Constructs the procedure parameter create event.js.
    * @param workspace The workspace this event is associated with.
@@ -28,7 +30,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
   constructor(
       workspace: Blockly.Workspace,
       procedure: Blockly.procedures.IProcedureModel,
-      parameter: Blockly.procedures.IParameterModel,
+      parameter: ObservableParameterModel,
       readonly index: number) {
     super(workspace, procedure, parameter);
   }
@@ -47,12 +49,9 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
           'Cannot add a parameter to a procedure that does not exist ' +
           'in the procedure map');
     }
-    const parameterModel = procedureModel.getParameter(this.index);
     if (forward) {
-      if (this.parameterMatches(parameterModel)) return;
       procedureModel.insertParameter(this.parameter, this.index);
     } else {
-      if (!this.parameterMatches(parameterModel)) return;
       procedureModel.deleteParameter(this.index);
     }
   }
@@ -63,8 +62,9 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
    */
   toJson(): ProcedureParameterCreateJson {
     const json = super.toJson() as ProcedureParameterCreateJson;
-    json['parameter'] =
-        Blockly.serialization.procedures.saveParameter(this.parameter);
+    json['name'] = this.parameter.getName();
+    json['id'] = this.parameter.getId();
+    json['varId'] = this.parameter.getVariableModel().getId();
     json['index'] = this.index;
     return json;
   }
@@ -87,9 +87,10 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
           'target procedure does not exist');
     }
     return new ProcedureParameterCreate(
-        workspace, procedure,
-        Blockly.serialization.procedures.loadParameter(
-            ObservableParameterModel, json['parameter'], workspace),
+        workspace,
+        procedure,
+        new ObservableParameterModel(
+            workspace, json['name'], json['id'], json['varId']),
         json['index']);
   }
 }

@@ -47,12 +47,9 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
           'Cannot add a parameter to a procedure that does not exist ' +
           'in the procedure map');
     }
-    const parameterModel = procedureModel.getParameter(this.index);
     if (forward) {
-      if (!this.parameterMatches(parameterModel)) return;
       procedureModel.deleteParameter(this.index);
     } else {
-      if (this.parameterMatches(parameterModel)) return;
       procedureModel.insertParameter(this.parameter, this.index);
     }
   }
@@ -78,14 +75,13 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
       json: ProcedureParameterDeleteJson,
       workspace: Blockly.Workspace
   ): ProcedureParameterDelete {
-    const model = workspace.getProcedureMap().get(json['procedureId']);
-    if (!model) {
-      throw new Error(
-          'Cannot deserialize procedure delete event because the ' +
-          'target procedure does not exist');
+    const {procedure, parameter} = ProcedureParameterBase.findMatchingParameter(
+        workspace, json['procedureId'], json['parameterId']);
+    if (!parameter) {
+      throw new Error('Cannot delete a non existant parameter');
     }
-    const param = model.getParameter(json['index']);
-    return new ProcedureParameterDelete(workspace, model, param, json['index']);
+    return new ProcedureParameterDelete(
+        workspace, procedure, parameter, json['index']);
   }
 }
 
