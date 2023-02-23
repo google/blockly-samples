@@ -30,17 +30,18 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
    * Finds the parameter with the given ID in the procedure model with the given
    * ID, if both things exist.
    * @param workspace The workspace to search for the parameter.
-   * @param modelId The ID of the model to search for the parameter.
+   * @param procedureId The ID of the procedure model to search for
+   *     the parameter.
    * @param paramId The ID of the parameter to search for.
    * @returns The parameter model that was found.
    * @internal
    */
   static findMatchingParameter(
       workspace: Blockly.Workspace,
-      modelId: string,
+      procedureId: string,
       paramId: string
   ): ProcedureParameterPair {
-    const procedure = workspace.getProcedureMap().get(modelId);
+    const procedure = workspace.getProcedureMap().get(procedureId);
     if (!procedure) return {procedure: undefined, parameter: undefined};
     const parameter = procedure.getParameters()
         .find((p) => p.getId() === paramId);
