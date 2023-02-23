@@ -126,6 +126,9 @@ function publish(force) {
             `${force ? ' --force-publish=*' : ''}`,
         {cwd: releaseDir, stdio: 'inherit'});
 
+    console.log('Removing release directory.');
+    rimraf.sync(releaseDir);
+
     done();
   };
 }
@@ -166,6 +169,9 @@ function publishFromPackage(done) {
   execSync(
       `lerna publish --from-package`,
       {cwd: releaseDir, stdio: 'inherit'});
+
+  console.log('Removing release directory.');
+  rimraf.sync(releaseDir);
   done();
 }
 
