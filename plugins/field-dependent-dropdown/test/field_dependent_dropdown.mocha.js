@@ -111,6 +111,36 @@ suite('fieldDependentDropdown', function() {
     assert.equal(grandchildDropdown.getValue(), 'a11');
   });
 
+  test('redoing parent change redoes child options', function() {
+    const block = this.workspace.newBlock('dependent_dropdown_test');
+    const parentDropdown = block.getField('PARENT_FIELD');
+    const childDropdown = block.getField('CHILD_FIELD');
+    parentDropdown.setValue('b');
+    // Wait for the change events to get fired and recorded in history.
+    this.clock.runAll();
+    this.workspace.undo(false);
+    assert.deepEqual(
+        childDropdown.getOptions(true),
+        [['A1', 'a1'], ['A2', 'a2'], ['Shared', 'shared']]);
+    this.workspace.undo(true);
+    assert.deepEqual(
+        childDropdown.getOptions(true),
+        [['B1', 'b1'], ['B2', 'b2'], ['Shared', 'shared']]);
+  });
+
+  test('redoing parent change redoes child values', function() {
+    const block = this.workspace.newBlock('dependent_dropdown_test');
+    const parentDropdown = block.getField('PARENT_FIELD');
+    const childDropdown = block.getField('CHILD_FIELD');
+    parentDropdown.setValue('b');
+    // Wait for the change events to get fired and recorded in history.
+    this.clock.runAll();
+    this.workspace.undo(false);
+    assert.equal(childDropdown.getValue(), 'a1');
+    this.workspace.undo(true);
+    assert.equal(childDropdown.getValue(), 'b1');
+  });
+
   test('deserialized values affect available options', function() {
     const serializedWorkspace = {
       'blocks': {
@@ -134,7 +164,7 @@ suite('fieldDependentDropdown', function() {
         grandchildDropdown.getOptions(true), [['B21', 'b21'], ['B22', 'b22']]);
   });
 
-  test('deserializing preserves value not in default options', function() {
+  test('deserializing preserves values not in default options', function() {
     const serializedWorkspace = {
       'blocks': {
         'blocks': [{
