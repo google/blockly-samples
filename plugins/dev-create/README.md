@@ -2,7 +2,7 @@
 title: "@blockly/create-package Demo"
 packageName: "@blockly/create-package"
 description: "A tool for creating a Blockly plugin based on a template."
-version: "1.3.1"
+version: "1.3.2"
 pageRoot: "plugins/dev-create"
 pages:
   - label: "Playground"
