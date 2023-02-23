@@ -1,4 +1,4 @@
-# @blockly/block-sharable-procedures [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+# @blockly/block-shareable-procedures [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A set of [Blockly](https://www.npmjs.com/package/blockly) blocks that allow
 end-users to define procedures (i.e. functions). These blocks reference explicit
@@ -12,12 +12,12 @@ you can seamlessly upgrade your existing project to use the new blocks.
 
 ### Yarn
 ```
-yarn add @blockly/block-sharable-procedures
+yarn add @blockly/block-shareable-procedures
 ```
 
 ### npm
 ```
-npm install @blockly/block-sharable-procedures
+npm install @blockly/block-shareable-procedures
 ```
 
 ## Usage
