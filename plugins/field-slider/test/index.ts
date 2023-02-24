@@ -51,7 +51,7 @@ const toolbox = generateFieldTestBlocks('field_slider', [
  * @returns The created workspace.
  */
 function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+    options: Blockly.BlocklyOptions): Blockly.Workspace {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
