@@ -28,8 +28,10 @@ export class ProcedureCreate extends ProcedureBase {
     const workspace = this.getEventWorkspace_();
     const procedureMap = workspace.getProcedureMap();
     if (forward) {
+      if (procedureMap.get(this.procedure.getId())) return;
       procedureMap.add(this.procedure);
     } else {
+      if (!procedureMap.get(this.procedure.getId())) return;
       procedureMap.delete(this.procedure.getId());
     }
   }
