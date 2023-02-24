@@ -9,14 +9,14 @@ import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 
 
-const TYPE = 'procedure_delete';
-
 /**
  * Notifies listeners that a procedure data model has been deleted.
  */
 export class ProcedureDelete extends ProcedureBase {
+  static readonly TYPE = 'procedure_delete';
+
   /** A string used to check the type of the event. */
-  type = TYPE;
+  type = ProcedureDelete.TYPE;
 
   /**
    * Replays the event in the workspace.
@@ -63,4 +63,4 @@ export class ProcedureDelete extends ProcedureBase {
 export type ProcedureDeleteJson = ProcedureBaseJson;
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, TYPE, ProcedureDelete);
+    Blockly.registry.Type.EVENT, ProcedureDelete.TYPE, ProcedureDelete);

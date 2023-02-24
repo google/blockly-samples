@@ -8,14 +8,14 @@ import * as Blockly from 'blockly/core';
 import {ProcedureParameterBase, ProcedureParameterBaseJson} from './events_procedure_parameter_base';
 
 
-const TYPE = 'procedure_parameter_delete';
-
 /**
  * Notifies listeners that a parameter has been removed from a procedure.
  */
 export class ProcedureParameterDelete extends ProcedureParameterBase {
+  static readonly TYPE = 'procedure_parameter_delete';
+
   /** A string used to check the type of the event. */
-  type = TYPE;
+  type = ProcedureParameterDelete.TYPE;
 
   /**
    * Constructs the procedure parameter delete event.
@@ -91,4 +91,6 @@ export interface ProcedureParameterDeleteJson extends
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, TYPE, ProcedureParameterDelete);
+    Blockly.registry.Type.EVENT,
+    ProcedureParameterDelete.TYPE,
+    ProcedureParameterDelete);
