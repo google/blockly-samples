@@ -11,7 +11,7 @@
 
 import * as Blockly from 'blockly/core';
 import {FieldConfig} from 'blockly/core/field';
-import {MenuOption, FieldDropdown} from 'blockly/core/field_dropdown';
+import {MenuOption, FieldDropdown, FieldDropdownValidator} from 'blockly/core/field_dropdown';
 
 // NOTE: A future release of Blockly core will include these types from
 // FieldDropdown.
@@ -35,14 +35,7 @@ export interface FieldGridDropdownFromJsonConfig extends
   options?: MenuGenerator;
 }
 
-/* eslint-disable @typescript-eslint/ban-types */
-/**
- * NOTE: `Function` is banned by eslint. Eventually, a more precise
- * function type should be added at the corresponding source:
- * https://github.com/google/blockly/blob/master/core/field.ts
- */
-type FieldGridDropdownValidator = Function;
-/* eslint-enable @typescript-eslint/ban-types */
+type FieldGridDropdownValidator = FieldDropdownValidator;
 
 /**
  * Grid dropdown field.
@@ -133,7 +126,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param e Optional mouse event that triggered the field to open, or
    *  undefined if triggered programmatically.
    */
-  protected override showEditor_(e?: Event) {
+  protected override showEditor_(e?: MouseEvent) {
     super.showEditor_(e);
 
     const colours = this.getColours();
