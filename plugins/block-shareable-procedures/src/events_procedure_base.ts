@@ -10,10 +10,12 @@ import * as Blockly from 'blockly/core';
  * The base event for an event associated with a procedure.
  */
 export abstract class ProcedureBase extends Blockly.Events.Abstract {
-  isBlank = false;
-
   static readonly TYPE: string = 'procedure_base';
+
+  /** A string used to check the type of the event. */
   type = ProcedureBase.TYPE;
+
+  isBlank = false;
 
   /**
    * Constructs the base procedure event.

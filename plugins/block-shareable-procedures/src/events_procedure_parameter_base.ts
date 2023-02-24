@@ -14,6 +14,8 @@ import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
  */
 export abstract class ProcedureParameterBase extends ProcedureBase {
   static readonly TYPE: string = 'procedure_parameter_base';
+
+  /** A string used to check the type of the event. */
   type = ProcedureParameterBase.TYPE;
 
   /**

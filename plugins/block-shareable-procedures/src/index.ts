@@ -5,47 +5,35 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {blocks} from './blocks';
-import {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
-import {ObservableParameterModel} from './observable_parameter_model';
-import {ObservableProcedureModel} from './observable_procedure_model';
-import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
-import {ProcedureChangeReturn, ProcedureChangeReturnJson} from './events_procedure_change_return';
-import {ProcedureCreate, ProcedureCreateJson} from './events_procedure_create';
-import {ProcedureDelete, ProcedureDeleteJson} from './events_procedure_delete';
-import {ProcedureParameterBase, ProcedureParameterBaseJson} from './events_procedure_parameter_base';
-import {ProcedureParameterCreate, ProcedureParameterCreateJson} from './events_procedure_parameter_create';
-import {ProcedureParameterDelete, ProcedureParameterDeleteJson} from './events_procedure_parameter_delete';
-import {ProcedureParameterRename, ProcedureParameterRenameJson} from './events_procedure_parameter_rename';
-import {ProcedureRename, ProcedureRenameJson} from './events_procedure_rename';
-import {triggerProceduresUpdate} from './update_procedures';
-
+export {blocks} from './blocks';
+export {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
+export {ObservableParameterModel} from './observable_parameter_model';
+export {ObservableProcedureModel} from './observable_procedure_model';
+export {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 export {
-  blocks,
-  IProcedureBlock,
-  isProcedureBlock,
-  ObservableParameterModel,
-  ObservableProcedureModel,
-  ProcedureBase,
-  ProcedureBaseJson,
   ProcedureChangeReturn,
   ProcedureChangeReturnJson,
-  ProcedureCreate,
-  ProcedureCreateJson,
-  ProcedureDelete,
-  ProcedureDeleteJson,
+} from './events_procedure_change_return';
+export {ProcedureCreate, ProcedureCreateJson} from './events_procedure_create';
+export {ProcedureDelete, ProcedureDeleteJson} from './events_procedure_delete';
+export {
   ProcedureParameterBase,
   ProcedureParameterBaseJson,
+} from './events_procedure_parameter_base';
+export {
   ProcedureParameterCreate,
   ProcedureParameterCreateJson,
+} from './events_procedure_parameter_create';
+export {
   ProcedureParameterDelete,
   ProcedureParameterDeleteJson,
+} from './events_procedure_parameter_delete';
+export {
   ProcedureParameterRename,
   ProcedureParameterRenameJson,
-  ProcedureRename,
-  ProcedureRenameJson,
-  triggerProceduresUpdate,
-};
+} from './events_procedure_parameter_rename';
+export {ProcedureRename, ProcedureRenameJson} from './events_procedure_rename';
+export {triggerProceduresUpdate} from './update_procedures';
 
 /**
  * Unregisters all of the procedure blocks.
