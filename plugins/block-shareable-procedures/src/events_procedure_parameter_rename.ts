@@ -6,6 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 import {ProcedureParameterBase, ProcedureParameterBaseJson} from './events_procedure_parameter_base';
+import {ObservableParameterModel} from './observable_parameter_model';
 
 
 const TYPE = 'procedure_parameter_rename';
@@ -20,6 +21,9 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
   /** The new name of the procedure parameter. */
   private readonly newName: string;
 
+  /** The new ID the backing variable for the parameter. */
+  private readonly newVarId: string;
+
   /**
    * Constructs the procedure parameter rename event.
    * @param workspace The workpace this event is associated with.
@@ -29,16 +33,21 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
    * @param newName The (optional) new name of the procedure parameter. If not
    *     provided, the parameter model will be inspected to see what its current
    *     name is.
+   * @param newVarId The (optional) new id of the procedure parameter's backing
+   *     variable. If not provided, the parameter model will be inspected to
+   *     see what its current name is.
    */
   constructor(
       workspace: Blockly.Workspace,
       procedure: Blockly.procedures.IProcedureModel,
-      parameter: Blockly.procedures.IParameterModel,
+      parameter: ObservableParameterModel,
       readonly oldName: string,
-      newName?: string) {
+      newName?: string,
+      newVarId?: string) {
     super(workspace, procedure, parameter);
 
     this.newName = newName ?? parameter.getName();
+    this.newVarId = newVarId ?? parameter.getVariableModel().getId();
   }
 
   /**
@@ -52,7 +61,8 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
         this.procedure.getId(),
         this.parameter.getId());
     if (forward) {
-      parameter.setName(this.newName);
+      (parameter as ObservableParameterModel)
+          .setName(this.newName, this.newVarId);
     } else {
       parameter.setName(this.oldName);
     }
@@ -65,6 +75,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
   toJson(): ProcedureParameterRenameJson {
     const json = super.toJson() as ProcedureParameterRenameJson;
     json['newName'] = this.newName;
+    json['newVarId'] = this.newVarId;
     json['oldName'] = this.oldName;
     return json;
   }
@@ -87,7 +98,12 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
       throw new Error('Cannot delete a non existant parameter');
     }
     return new ProcedureParameterRename(
-        workspace, procedure, parameter, json['oldName'], json['newName']);
+        workspace,
+        procedure,
+        (parameter as ObservableParameterModel),
+        json['oldName'],
+        json['newName'],
+        json['newVarId']);
   }
 }
 
@@ -95,6 +111,7 @@ export interface ProcedureParameterRenameJson extends
     ProcedureParameterBaseJson {
   oldName: string;
   newName: string;
+  newVarId: string;
 }
 
 Blockly.registry.register(

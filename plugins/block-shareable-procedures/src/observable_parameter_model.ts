@@ -35,13 +35,15 @@ export class ObservableParameterModel implements
   /**
    * Sets the name of this parameter to the given name.
    * @param name The string to set the name to.
+   * @param id The optional ID the backing variable should have.
    * @returns This parameter model.
    */
-  setName(name: string): this {
+  setName(name: string, id?: string): this {
     if (name === this.variable.name) return this;
     const oldName = this.variable.name;
     this.variable =
-        this.workspace.getVariable(name) ?? this.workspace.createVariable(name);
+        this.workspace.getVariable(name) ??
+        this.workspace.createVariable(name, '', id);
     triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
       Blockly.Events.fire(
