@@ -105,7 +105,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @package
    * @nocollapse
    */
-  static override fromJson(config: FieldGridDropdownFromJsonConfig) {
+  static fromJson(config: FieldGridDropdownFromJsonConfig) {
     if (!config.options) {
       throw new Error(
           'options are required for the dropdown field. The ' +
@@ -137,7 +137,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param e Optional mouse event that triggered the field to open, or
    *  undefined if triggered programmatically.
    */
-  protected override showEditor_(e?: Event) {
+  protected showEditor_(e?: Event) {
     super.showEditor_(e);
 
     const colours = this.getColours();
