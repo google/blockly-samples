@@ -10,6 +10,10 @@
  */
 
 import * as Blockly from 'blockly/core';
+// NOTE: Importing from paths other than 'blockly/core' should be avoided.
+// The compiled blockly JS is not guarnateed to match the TS folder structure.
+// In the future, `FieldNumberConfig` and `FieldNumberValidator` should be
+// exported from `blockly/core`.
 import {FieldNumberConfig, FieldNumberValidator} from 'blockly/core/field_number';
 
 /**
