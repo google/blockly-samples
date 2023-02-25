@@ -464,7 +464,7 @@ const procedureDefMutator = {
       this.model_ = map.get(procedureId);
     }
 
-    if (state['params']) {
+    if (state['params'] && !this.getProcedureModel().getParameters().length) {
       for (let i = 0; i < state['params'].length; i++) {
         const {name, id, paramId} = state['params'][i];
         this.getProcedureModel().insertParameter(
