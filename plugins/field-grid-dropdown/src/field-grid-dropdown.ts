@@ -12,10 +12,10 @@
 import * as Blockly from 'blockly/core';
 // NOTE: Importing from paths other than 'blockly/core' should be avoided.
 // The compiled blockly JS is not guarnateed to match the TS folder structure.
-// In the future, `FieldConfig` and `MenuOption` should be exported from
-// `blockly/core`.
+// In the future, `FieldConfig`, `MenuOption`, and `FieldDropdownValidator`
+// should be exported from `blockly/core`.
 import {FieldConfig} from 'blockly/core/field';
-import {MenuOption} from 'blockly/core/field_dropdown';
+import {MenuOption, FieldDropdownValidator} from 'blockly/core/field_dropdown';
 
 // NOTE: A future release of Blockly core will include these types from
 // Blockly.FieldDropdown.
@@ -39,14 +39,7 @@ export interface FieldGridDropdownFromJsonConfig extends
   options?: MenuGenerator;
 }
 
-/* eslint-disable @typescript-eslint/ban-types */
-/**
- * NOTE: `Function` is banned by eslint. Eventually, a more precise
- * function type should be added at the corresponding source:
- * https://github.com/google/blockly/blob/master/core/field.ts
- */
-type FieldGridDropdownValidator = Function;
-/* eslint-enable @typescript-eslint/ban-types */
+type FieldGridDropdownValidator = FieldDropdownValidator;
 
 /**
  * Grid dropdown field.
@@ -112,7 +105,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
           'options property must be assigned an array of ' +
           '[humanReadableValue, languageNeutralValue] tuples.');
     }
-    // `this` might be a subclass of Blockly.FieldDropdown if that class doesn't
+    // `this` might be a subclass of FieldDropdown if that class doesn't
     // override the static fromJson method.
     return new FieldGridDropdown(config.options, undefined, config);
   }
@@ -137,7 +130,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param e Optional mouse event that triggered the field to open, or
    *  undefined if triggered programmatically.
    */
-  protected showEditor_(e?: Event) {
+  protected showEditor_(e?: MouseEvent) {
     super.showEditor_(e);
 
     const colours = this.getColours();
@@ -152,8 +145,8 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     }
     this.updateColumnsStyling_();
 
-    // NOTE: dropdownDispose is 'private' in Blockly.FieldDropdown. It is
-    // corrected in a later version to be 'protected', though until that is
+    // NOTE: dropdownDispose is 'private' in FieldDropdown. It is corrected
+    // in a later version to be 'protected', though until that is
     // available, bypass TypeScript blocking use of this field.
     Blockly.DropDownDiv.showPositionedByField(
         this, (this['dropdownDispose_']).bind(this));

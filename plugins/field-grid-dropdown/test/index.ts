@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
-import '../dist/index';
+import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
   {
@@ -233,21 +233,25 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
   },
 ]);
 
+
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @returns {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
+function createWorkspace(blocklyDiv: HTMLElement,
+    options: Blockly.BlocklyOptions): Blockly.Workspace {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
+  const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    createPlayground(rootElement, createWorkspace, defaultOptions);
+  }
 });
