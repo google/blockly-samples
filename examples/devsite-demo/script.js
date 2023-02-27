@@ -129,6 +129,9 @@ function languageChange() {
  * Called when the blocks change, or when the target language changes.
  */
 function regenerate(_e) {
+  if (Blockly.getMainWorkspace().isDragging()) {
+    return;  // Don't update code mid-drag.
+  }
   const generateLang = document.getElementById('generateDropdown').value;
   const generator = Blockly[generateLang];
   const playButton = document.getElementById('playButton');
