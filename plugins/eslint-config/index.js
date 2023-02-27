@@ -119,9 +119,6 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       settings: {
         jsdoc: {
-          tagNamePreference: {
-            'returns': 'returns',
-          },
           mode: 'typescript',
         },
       },
@@ -129,7 +126,6 @@ module.exports = {
       // If adding a typescript-eslint version of an existing ESLint rule,
       // make sure to disable the ESLint rule here.
       rules: {
-
         // The types are specified in TS rather than JsDoc.
         'jsdoc/no-types': 'warn',
         'jsdoc/require-param-type': 'off',
