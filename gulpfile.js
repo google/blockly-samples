@@ -15,12 +15,11 @@ const gulp = require('gulp');
 const jsgl = require('js-green-licenses');
 const path = require('path');
 const rimraf = require('rimraf');
-const yaml = require('json-to-pretty-yaml');
+const predeployTasks = require('./scripts/gh-predeploy');
 
 gulp.header = require('gulp-header');
 
 const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 /**
  * Run the license checker for all packages.
@@ -197,6 +196,7 @@ function checkVersions(done) {
 }
 
 /**
+<<<<<<< HEAD
  * Convert json to front matter YAML config.
  * @param {!Object} json The json config.
  * @returns {string} The front matter YAML config.
@@ -329,6 +329,8 @@ function prepareToDeployExamples(done) {
 }
 
 /**
+=======
+>>>>>>> b952839a (chore: move gh-pages examples preparation to a separate file)
  * Deploy all plugins to gh-pages.
  * @param {string=} repo The repo to deploy to.
  * @returns {Function} Gulp task.
@@ -395,7 +397,7 @@ function testGhPagesLocally(isBeta) {
   return gulp.series(
       gulp.parallel(
           preparePluginsForLocal(isBeta), prepareExamplesForLocal(isBeta)),
-      gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+      gulp.parallel(predeployTasks.predeployPlugins, predeployTasks.predeployExamples),
       function(done) {
         console.log('Starting server using "bundle exec jekyll serve"');
         execSync(
@@ -426,7 +428,7 @@ module.exports = {
   checkLicenses: checkLicenses,
   deploy: deployToGhPagesOrigin,
   deployUpstream: deployToGhPagesUpstream,
-  predeploy: gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+  predeploy: gulp.parallel(predeployTasks.predeployPlugins, predeployTasks.predeployExamples),
   prepareForPublish: prepareForPublish,
   publishManual: publishManual,
   forcePublish: forcePublish,
