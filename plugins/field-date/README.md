@@ -29,8 +29,8 @@ Blockly.Blocks["test_fields_date"] = {
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-date';

@@ -366,11 +366,10 @@ CustomConstantsProvider.prototype.shapeFor = function(connection) {
   switch (connection.type) {
     case Blockly.INPUT_VALUE:
     case Blockly.OUTPUT_VALUE:
-      // Includes doesn't work in IE.
-      if (checks && checks.indexOf('Number') != -1) {
+      if (checks && checks.includes('Number')) {
         return this.RECT_INPUT_OUTPUT;
       }
-      if (checks && checks.indexOf('String') != -1) {
+      if (checks && checks.includes('String')) {
         return this.RECT_INPUT_OUTPUT;
       }
       return this.PUZZLE_TAB;

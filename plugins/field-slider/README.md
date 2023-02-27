@@ -25,12 +25,12 @@ Blockly.Blocks["test_field_slider"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("slider: ")
-      .appendField(new FieldSlider(50), "FIELDNAME")
+      .appendField(new FieldSlider(50), "FIELDNAME");
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-slider';
