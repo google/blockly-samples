@@ -223,7 +223,7 @@ Then, we need to import the new generator:
 import {jsonGenerator} from './generators/json';
 ```
 
-Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workpace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
+Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workspace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
 
 ```js
 const runCode = () => {
