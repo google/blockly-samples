@@ -111,6 +111,27 @@ suite('Procedure Rename Event', function() {
           });
 
       test(
+          'attempting to rename a procedure with a different old name ' +
+          'does not work',
+          function() {
+            const otherNonDefaultName = 'other non-default name';
+            const final = this.createProcedureModel('test id')
+                .setName(NON_DEFAULT_NAME);
+            const event = this.createEventToState(final);
+            const testModel = this.createProcedureModel('test id')
+                .setName(otherNonDefaultName);
+            this.procedureMap.add(testModel);
+
+            event.run(/* forward= */ true);
+            this.clock.runAll();
+
+            assert.equal(
+                testModel.getName(),
+                otherNonDefaultName,
+                'Expected the procedure\'s name to be unchanged');
+          });
+
+      test(
           'deserializing the event and running it triggers the effect',
           function() {
             const initial = this.createProcedureModel('test id');
@@ -187,15 +208,33 @@ suite('Procedure Rename Event', function() {
       test(
           'attempting to rename a procedure that does not exist throws',
           function() {
-            const initial = this.createProcedureModel('test id');
             const undoable = this.createProcedureModel('test id');
-            initial.setName(NON_DEFAULT_NAME);
             undoable.setName(NON_DEFAULT_NAME);
             const event = this.createEventToState(undoable);
 
             assert.throws(() => {
               event.run(/* forward= */ false);
             });
+          });
+
+      test(
+          'attempting to rename a procedure with a different new name ' +
+          'does not work',
+          function() {
+            const otherNonDefaultName = 'other non-default name';
+            const undoable = this.createProcedureModel('test id');
+            const event = this.createEventToState(undoable);
+            const testModel = this.createProcedureModel('test id')
+                .setName(otherNonDefaultName);
+            this.procedureMap.add(testModel);
+
+            event.run(/* forward= */ false);
+            this.clock.runAll();
+
+            assert.equal(
+                testModel.getName(),
+                otherNonDefaultName,
+                'Expected the procedure\'s name to be unchanged');
           });
     });
   });

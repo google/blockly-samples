@@ -134,6 +134,29 @@ suite('Procedure Parameter Rename Event', function() {
           });
 
       test(
+          'attempting to rename a procedure with a different old name ' +
+          'does not work',
+          function() {
+            const otherNonDefaultName = 'other non-default name';
+            const {param: finalParam, proc: finalProc} =
+                this.createProcedureAndParameter('test procId', 'test paramId');
+            finalParam.setName(NON_DEFAULT_NAME);
+            const event = this.createEventToState(finalProc, finalParam);
+            const {param: testParam, proc: testProc} =
+                this.createProcedureAndParameter('test procId', 'test paramId');
+            testParam.setName(otherNonDefaultName);
+            this.procedureMap.add(testProc);
+
+            event.run(/* forward= */ true);
+            this.clock.runAll();
+
+            assert.equal(
+                testParam.getName(),
+                otherNonDefaultName,
+                'Expected the parameter\'s name to be unchanged');
+          });
+
+      test(
           'deserializing the event and running it triggers the effect',
           function() {
             const {param: initialParam, proc: initialProc} =
@@ -238,6 +261,29 @@ suite('Procedure Parameter Rename Event', function() {
             assert.throws(() => {
               event.run(/* forward= */ false);
             });
+          });
+
+      test(
+          'attempting to rename a procedure with a different old name ' +
+          'does not work',
+          function() {
+            const otherNonDefaultName = 'other non-default name';
+            const {param: undoableParam, proc: undoableProc} =
+                this.createProcedureAndParameter('test procId', 'test paramId');
+            undoableParam.setName(NON_DEFAULT_NAME);
+            const event = this.createEventToState(undoableProc, undoableParam);
+            const {param: testParam, proc: testProc} =
+                this.createProcedureAndParameter('test procId', 'test paramId');
+            testParam.setName(otherNonDefaultName);
+            this.procedureMap.add(testProc);
+
+            event.run(/* forward= */ false);
+            this.clock.runAll();
+
+            assert.equal(
+                testParam.getName(),
+                otherNonDefaultName,
+                'Expected the parameter\'s name to be unchanged');
           });
     });
   });
