@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   workspace1 = Blockly.inject('blockly1', options);
   workspace2 = Blockly.inject('blockly2', options);
+  workspace1.MAX_UNDO = 0;
+  workspace2.MAX_UNDO = 0;
   eventSharer1 = workspace1.addChangeListener(createEventSharer(workspace2));
   eventSharer2 = workspace2.addChangeListener(createEventSharer(workspace1));
 
