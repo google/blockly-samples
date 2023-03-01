@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   workspace1 = Blockly.inject('blockly1', options);
   workspace2 = Blockly.inject('blockly2', options);
+  // If we allow undoing operations, it can create event loops when sharing
+  // events between workspaces.
   workspace1.MAX_UNDO = 0;
   workspace2.MAX_UNDO = 0;
   eventSharer1 = workspace1.addChangeListener(createEventSharer(workspace2));
