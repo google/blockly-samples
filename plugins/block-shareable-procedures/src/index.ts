@@ -5,10 +5,11 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {ObservableParameterModel} from './observable_parameter_model';
+import {ObservableProcedureModel} from './observable_procedure_model';
+
 export {blocks} from './blocks';
 export {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
-export {ObservableParameterModel} from './observable_parameter_model';
-export {ObservableProcedureModel} from './observable_procedure_model';
 export {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 export {ProcedureChangeReturn, ProcedureChangeReturnJson} from './events_procedure_change_return';
 export {ProcedureCreate, ProcedureCreateJson} from './events_procedure_create';
@@ -19,6 +20,11 @@ export {ProcedureParameterDelete, ProcedureParameterDeleteJson} from './events_p
 export {ProcedureParameterRename, ProcedureParameterRenameJson} from './events_procedure_parameter_rename';
 export {ProcedureRename, ProcedureRenameJson} from './events_procedure_rename';
 export {triggerProceduresUpdate} from './update_procedures';
+
+export {
+  ObservableParameterModel,
+  ObservableProcedureModel,
+};
 
 /**
  * Unregisters all of the procedure blocks.
@@ -31,4 +37,16 @@ export function unregisterProcedureBlocks() {
   delete Blockly.Blocks['procedures_callnoreturn'];
   delete Blockly.Blocks['procedures_defreturn'];
   delete Blockly.Blocks['procedures_callreturn'];
+}
+
+/**
+ * Unregisters any existing procedure serializer, and registers a new one
+ * parameterized with the shareable procedure backing data models.
+ */
+export function registerProcedureSerializer() {
+  Blockly.serialization.registry.unregister('procedures');
+  Blockly.serialization.registry.register(
+      'procedures',
+      new Blockly.serialization.procedures.ProcedureSerializer(
+          ObservableProcedureModel, ObservableParameterModel));
 }
