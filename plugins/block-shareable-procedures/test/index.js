@@ -9,23 +9,17 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories} from '@blockly/dev-tools';
-import {blocks, unregisterProcedureBlocks, ObservableProcedureModel, ObservableParameterModel} from '../src/index';
+import {blocks, unregisterProcedureBlocks, registerProcedureSerializer} from '../src/index';
 import {ProcedureBase} from '../src/events_procedure_base';
 
 
 unregisterProcedureBlocks();
 Blockly.common.defineBlocks(blocks);
 
-Blockly.serialization.registry.unregister('procedures');
-Blockly.serialization.registry.register(
-    'procedures',
-    new Blockly.serialization.procedures.ProcedureSerializer(
-        ObservableProcedureModel, ObservableParameterModel));
+registerProcedureSerializer();
 
-export let workspace1;
-export let eventSharer1;
-export let workspace2;
-export let eventSharer2;
+let workspace1;
+let workspace2;
 
 document.addEventListener('DOMContentLoaded', function() {
   const options = {
@@ -37,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // events between workspaces.
   workspace1.MAX_UNDO = 0;
   workspace2.MAX_UNDO = 0;
-  eventSharer1 = workspace1.addChangeListener(createEventSharer(workspace2));
-  eventSharer2 = workspace2.addChangeListener(createEventSharer(workspace1));
+  workspace1.addChangeListener(createEventSharer(workspace2));
+  workspace2.addChangeListener(createEventSharer(workspace1));
 
   workspace1.addChangeListener(
       createSerializationListener(workspace1, 'save1'));
@@ -65,14 +59,12 @@ function createEventSharer(otherWorkspace) {
     try {
       event = Blockly.Events.fromJson(e.toJson(), otherWorkspace);
     } catch (e) {
-      console.log(
-          'Could not deserialize event. This is expected to happen. E.g. ' +
-          'when round-tripping parameter deletes, the delete in the ' +
-          'secondary workspace cannot be deserialized into the original ' +
-          'workspace.');
+      // Could not deserialize event. This is expected to happen. E.g.
+      // when round-tripping parameter deletes, the delete in the
+      // secondary workspace cannot be deserialized into the original
+      // workspace.
       return;
     }
-    console.log('running', event);
     event.run(true);
   };
 }
