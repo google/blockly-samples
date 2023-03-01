@@ -50,8 +50,10 @@ export class ProcedureRename extends ProcedureBase {
           'in the procedure map');
     }
     if (forward) {
+      if (procedureModel.getName() !== this.oldName) return;
       procedureModel.setName(this.newName);
     } else {
+      if (procedureModel.getName() !== this.newName) return;
       procedureModel.setName(this.oldName);
     }
   }

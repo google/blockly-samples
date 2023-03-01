@@ -61,9 +61,11 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
         this.procedure.getId(),
         this.parameter.getId());
     if (forward) {
+      if (parameter.getName() !== this.oldName) return;
       (parameter as ObservableParameterModel)
           .setName(this.newName, this.newVarId);
     } else {
+      if (parameter.getName() !== this.newName) return;
       parameter.setName(this.oldName);
     }
   }
