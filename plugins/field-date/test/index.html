@@ -2,7 +2,7 @@
 title: "@blockly/field-date Demo"
 packageName: "@blockly/field-date"
 description: "A Blockly date picker field that uses the Google Closure date picker."
-version: "6.0.9"
+version: "6.0.10"
 pageRoot: "plugins/field-date"
 pages:
   - label: "Playground"

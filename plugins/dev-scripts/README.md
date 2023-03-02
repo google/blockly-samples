@@ -2,7 +2,7 @@
 title: "@blockly/dev-scripts Demo"
 packageName: "@blockly/dev-scripts"
 description: "Configuration and scripts for Blockly plugins."
-version: "1.2.30"
+version: "1.2.31"
 pageRoot: "plugins/dev-scripts"
 pages:
   - label: "Playground"
