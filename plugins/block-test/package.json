@@ -7,7 +7,7 @@
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "yarn clean && yarn build",
     "start": "blockly-scripts start"
   },
   "main": "./dist/index.js",

@@ -36,6 +36,9 @@
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
   },
+  "installConfig": {
+    "hoistingLimits": "none"
+  },
   "engines": {
     "node": ">=10.0.0"
   }

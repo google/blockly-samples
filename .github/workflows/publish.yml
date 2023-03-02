@@ -45,15 +45,15 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
 
-    - name: NPM install
-      # Use CI so that we don't update dependencies in this step.
-      run: npm ci
+    - name: Yarn install
+      # Use --immutable so that we don't update dependencies in this step.
+      run: yarn install --immutable
 
     - name: Build
-      run: npm run build -- -- -- --skip-lint
+      run: yarn build -- -- --skip-lint
 
     - name: Test
-      run: npm run test -- -- -- --skip-lint
+      run: yarn test -- -- --skip-lint
 
     - name: Publish
       env:

@@ -4,52 +4,46 @@
 
 In this directory, you can run:
 
-### `npm run audit:fix`
+### `yarn audit:fix`
 This script runs `npm audit fix` on each of the Blockly plugins in this repo.
 
-### `npm run boot`
-This script runs `lerna bootstrap` which will run `npm install` in each plugin
-and ensure local plugins are symlinked, ready for development.
-When developing a plugin, always run `npm run boot` instead of `npm install`
-directly, as this ensures local plugins (eg: dev-tools) are locally linked.
-
-### `npm run build`
+### `yarn build`
 This script builds all of the Blockly plugins in this repo.
 
-### `npm run clean`
-This script runs `npm run clean` on each of the Blockly plugins.
+### `yarn clean`
+This script runs `yarn clean` on each of the Blockly plugins.
 In general, clean deletes the `/build` and `/dist` folders in these plugins.
 
-### `npm run clean:node`
+### `yarn clean:node`
 This script deletes `node_modules/` from each plugin in this repo.
 This may be useful if you feel your node modules have wound up in a bad state.
 
-### `npm run deploy`
+### `yarn deploy`
 This script packages each of the plugins's test playgrounds and deploys them to
 gh-pages. You can browse these plugin playgrounds at:
 https://YOURUSERNAME.github.io/blockly-samples/.
 
-### `npm run deploy:upstream`
-This script is similar to `npm run deploy` but it deploys the plugins to
+### `yarn deploy:upstream`
+This script is similar to `yarn deploy` but it deploys the plugins to
 `blockly-samples` upstream. You can browse these plugin playgrounds at:
 https://google.github.io/blockly-samples/.
 
-### `npm run license`
+### `yarn license`
 This script runs the `js-green-licenses` checker on all of the Blockly plugins.
 Run this script before release to make sure none of our plugin dependencies
 use packages with non-green licenses.
 
-### `npm run lint`
-This script runs `npm run lint` on each of the Blockly plugins in this repo.
+### `yarn lint`
+This script runs `yarn lint` on each of the Blockly plugins in this repo.
 
-### `npm run lint:fix`
+### `yarn lint:fix`
 This script runs lint with the `--fix` option on each of the Blockly plugins in
 this repo.
 
-### `npm run test`
-This script runs `npm run test` on each of the Blockly plugins in this repo.
+### `yarn test`
+This script runs `yarn test` on each of the Blockly plugins in this repo.
 
-### `npm run publish:prepare`
+### `yarn publish:prepare`
 This script will clone a copy of blockly-samples to a directory called `dist`,
 run `npm ci`, build and test all plugins, and then log in to the npm publishing
 service. It must be run before any of the other manual publishing commands are
@@ -59,40 +53,40 @@ If any plugin fails to build or some tests fail, this script should fail. Since
 nothing has been pushed to npm or github, you can simply correct the error and
 try again.
 
-### `npm run publish:manual`
-This script assumes that you have already run `npm run publish:prepare`. It will
+### `yarn publish:manual`
+This script assumes that you have already run `yarn publish:prepare`. It will
 publish all of the changed plugins since the last release, using the `dist`
 directory. It runs the lerna command that uses conventional commits to determine
 a new version number for each plugin, and publishes the new versions to npm and
 to a github release and tag. Plugins do not automatically build themselves
-before publishing. You must have run `npm run publish:prepare` script ahead of
+before publishing. You must have run `yarn publish:prepare` script ahead of
 time for this reason.
 
 If there is some error with npm while running this command, you may end up in a
 state where some plugins have been published to npm and not others, after lerna
 has already tagged the new releases. You can recover from this state by fixing
-the error, and then running `npm run publish:prepare` again followed by
-`npm run publish:unpublishedOnly` or `npm run publish:force`.
+the error, and then running `yarn publish:prepare` again followed by
+`yarn publish:unpublishedOnly` or `yarn publish:force`.
 
-### `npm run publish:unpublishedOnly`
-This script assumes that you have already run `npm run publish:prepare`. It uses the `dist`
+### `yarn publish:unpublishedOnly`
+This script assumes that you have already run `yarn publish:prepare`. It uses the `dist`
 directory created in that script. It uses lerna to check each plugin to see if the version
 in `package.json` matches the version on npm. If a version is not yet on npm, it will publish
 that plugin without updating its version number. Thus, this script should only be used
 after `lerna version` has been run in some form (most commonly, during a run of
-`npm run publish:manual` that subsequently failed).
+`yarn publish:manual` that subsequently failed).
 
-If this script fails, correct the error and re-run `npm run publish:prepare` and
-`npm run publish:unpublishedOnly`.
+If this script fails, correct the error and re-run `yarn publish:prepare` and
+`yarn publish:unpublishedOnly`.
 
-### `npm run publish:force`
-This script assumes you have already run `npm run publish:prepare`. It will use lerna
+### `yarn publish:force`
+This script assumes you have already run `yarn publish:prepare`. It will use lerna
 to force publish all packages, even those that have not changed. You can use this
 if you run into publishing problems to recover from error states, but you should prefer
-to use `npm run publish:unpublishedOnly` if possible.
+to use `yarn publish:unpublishedOnly` if possible.
 
-### `npm run publish:checkVersions`
-This script assumes you have already run `npm run publish:prepare`. It will run `lerna
+### `yarn publish:checkVersions`
+This script assumes you have already run `yarn publish:prepare`. It will run `lerna
 version` to generate the new version numbers using conventional commits that would be
 created during a full publish action, but it will not actually push the changes nor
 create any tags. This can be used to check which plugins would be published and under
@@ -101,15 +95,9 @@ latest tags pulled. This is taken care of by the `publish:prepare` script.
 
 ## Other Scripts
 
-### `npm run postinstall`
-This script runs `npm run boot` after install. This makes sure that `boot` is
-called after `npm install` is run.
-
-There shouldn't be a need for you to run this script directly.
-
-### `npm run deploy:prepare`
+### `yarn deploy:prepare`
 This script prepares each of the plugins for deployment. In general, the script
 cleans and builds the src and test directories of each plugin.
 
 You shouldn't need to run this script directly, instead it is run by
-`npm run deploy` and `npm run deploy:upstream`.
+`yarn deploy` and `yarn deploy:upstream`.

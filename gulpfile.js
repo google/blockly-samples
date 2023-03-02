@@ -70,17 +70,16 @@ function prepareForPublish(done) {
       `git clone https://github.com/google/blockly-samples ${releaseDir}`,
       {stdio: 'pipe'});
 
-  // Run npm ci.
-  console.log('Running npm ci to install.');
-  execSync(`npm ci`, {cwd: releaseDir, stdio: 'inherit'});
+  console.log('Running yarn to install.');
+  execSync(`yarn --immutable`, {cwd: releaseDir, stdio: 'inherit'});
 
   // Build all plugins.
   console.log('Building all plugins.');
-  execSync('npm run build', {cwd: releaseDir, stdio: 'inherit'});
+  execSync('yarn build', {cwd: releaseDir, stdio: 'inherit'});
 
   // Test all plugins.
   console.log('Testing all plugins.');
-  execSync('npm run test', {cwd: releaseDir, stdio: 'inherit'});
+  execSync('yarn test', {cwd: releaseDir, stdio: 'inherit'});
 
   // Login to npm.
   console.log('Logging in to npm.');
@@ -100,7 +99,7 @@ function exitIfNoReleaseDir(releaseDir, done) {
   if (!fs.existsSync(releaseDir)) {
     console.error(
         `No release directory ${releaseDir} exists. ` +
-            `Did you run 'npm run publish:prepare'?`);
+            `Did you run 'yarn publish:prepare'?`);
     done();
     process.exit(1);
   }
@@ -135,7 +134,7 @@ function publish(force) {
 
 /**
  * Publish all plugins that have changed since the last release.
- * Run `npm run publish:prepare` before running this script.
+ * Run `yarn publish:prepare` before running this script.
  * @param {Function} done Completed callback.
  * @returns {Function} Gulp task.
  */
@@ -157,7 +156,7 @@ function forcePublish(done) {
  * Publishes plugins that haven't previously been uploaded to npm.
  * Useful if a previous run of publishing failed after versions were
  * uploaded to github but not all packages were placed uploaded to npm.
- * You must run `npm run publish:prepare` first.
+ * You must run `yarn publish:prepare` first.
  * @param {Function} done Completed callback.
  */
 function publishFromPackage(done) {
@@ -355,11 +354,10 @@ function deployToGhPages(repo) {
 function preparePluginsForLocal(isBeta) {
   return (done) => {
     if (isBeta) {
-      execSync(`lerna add blockly@beta --dev`, {stdio: 'inherit'});
+      execSync(`yarn add blockly@beta --dev`, {stdio: 'inherit'});
     }
-    execSync(`npm run boot`, {stdio: 'inherit'});
     // Bundles all the plugins.
-    execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
+    execSync(`yarn deploy:prepare:plugins`, {stdio: 'inherit'});
     done();
   };
 }
@@ -372,14 +370,12 @@ function preparePluginsForLocal(isBeta) {
  */
 function prepareExamplesForLocal(isBeta) {
   return (done) => {
-    const examplesDirectory = 'examples';
     if (isBeta) {
       execSync(
-          `lerna add blockly@beta`, {cwd: examplesDirectory, stdio: 'inherit'});
+          `yarn add blockly@beta`, {stdio: 'inherit'});
     }
-    execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
     // Bundles any examples that define a predeploy script (ex. blockly-react).
-    execSync(`npm run deploy:prepare:examples`, {stdio: 'inherit'});
+    execSync(`yarn deploy:prepare:examples`, {stdio: 'inherit'});
     done();
   };
 }

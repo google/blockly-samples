@@ -5,7 +5,7 @@
   "scripts": {
     "audit": "npm audit fix",
     "update": "npm update",
-    "start": "npm run serve",
+    "start": "yarn serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"

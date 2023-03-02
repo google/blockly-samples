@@ -1,9 +1,4 @@
 {
-  "packages": [
-    "blockly-**",
-    "**-demo"
-  ],
-  "version": "independent",
-  "npmClient": "npm",
-  "useNx": false
+  "version": "0.0.0",
+  "packages": ["*"]
 }

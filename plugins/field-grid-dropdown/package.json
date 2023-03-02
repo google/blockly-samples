@@ -6,7 +6,7 @@
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
-    "predeploy": "npm run build && blockly-scripts predeploy",
+    "predeploy": "yarn build && blockly-scripts predeploy",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },

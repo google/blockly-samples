@@ -6,16 +6,14 @@ This sample shows how to load Blockly in a [React](https://reactjs.org/) project
 
 ## Running the sample
 
-### Installation
+## Prerequisites
 
-```
-npm install
-```
+Install [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/), and make sure you have run `yarn install` from the root of the repo first.
 
 ### Running
 
 ```
-npm run start
+yarn start
 ```
 
 ### Browse

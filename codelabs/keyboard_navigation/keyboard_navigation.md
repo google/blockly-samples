@@ -45,9 +45,9 @@ navigation plugin, which can be found in [`tests/index.js`](https://github.com/g
 
 To get the playground up and working follow these steps:
 1. Clone the [blockly-samples](https://github.com/google/blockly-samples) repository.
+1. Run `yarn install`
 1. Move to the [plugins/keyboard-navigation](https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/README.md) directory.
-1. Run `npm install`.
-1. Run `npm run start`.
+1. Run `yarn start`.
 
 If you would rather not pull the blockly-samples repository, you should also
 be able to follow along by creating a simple Blockly application that

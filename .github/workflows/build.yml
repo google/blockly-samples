@@ -22,17 +22,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Use latest npm
-      run: npm install -g npm@latest
-
-    - name: Npm Install
-      run: npm install
+    - name: Yarn Install
+      run: yarn install --immutable
 
     - name: Build
-      run: npm run build -- -- -- --skip-lint
+      run: yarn build -- -- --skip-lint
 
     - name: Test
-      run: npm run test -- -- -- --skip-lint
+      run: yarn test -- -- --skip-lint
 
   lint:
     timeout-minutes: 5
@@ -45,8 +42,8 @@ jobs:
       with:
         node-version: 16.x
 
-    - name: Npm Install
-      run: npm install
+    - name: Yarn Install
+      run: yarn install --immutable
 
     - name: Lint
-      run: npm run lint
+      run: yarn lint

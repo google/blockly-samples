@@ -53,27 +53,19 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 
 ## Prerequisites
 
-Install [node](https://nodejs.org/) and [npm](https://www.npmjs.com/get-npm).
+Install [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/), and make sure you have run `yarn install` from the root of the repo first.
 
 ## Running
 
 ```
 cd <any sample folder>
-npm install
-npm run start
+yarn start
 ```
 Browse to http://localhost:3000
 
 You may need to refer to a sample's README for further setup and running instructions.
 
 ## Development
-
-### Bootstrap
-
-```
-npm run boot
-```
-This will run ``npm install`` on every example.
 
 ### Maintenance
 

@@ -5,23 +5,23 @@
   "scripts": {
     "audit": "npm audit fix",
     "update": "npm update",
-    "build": "npm run build:frontend",
+    "build": "yarn build:frontend",
     "build:frontend": "rimraf ./build && webpack",
-    "serve-http": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-http\"",
-    "serve-websocket": "concurrently \"npm run serve:frontend\" \"npm run serve:backend-websocket\"",
+    "serve-http": "concurrently \"yarn serve:frontend\" \"yarn serve:backend-http\"",
+    "serve-websocket": "concurrently \"yarn serve:frontend\" \"yarn serve:backend-websocket\"",
     "serve:backend-http": "node server/http_server.js",
     "serve:backend-websocket": "node server/websocket_server.js",
     "serve:frontend": "webpack-dev-server",
-    "start": "npm run start-websocket",
-    "start-http": "npm run build && npm run serve-http",
-    "start-websocket": "npm run build && npm run serve-websocket",
+    "start": "yarn start-websocket",
+    "start-http": "yarn build && yarn serve-http",
+    "start-websocket": "yarn build && yarn serve-websocket",
     "test": "mocha test/*test.js"
   },
   "dependencies": {
+    "@vscode/sqlite3": "^5.0.8",
     "blockly": "^9.0.0",
     "socket.io": "^2.5.0",
-    "socket.io-client": "^2.3.0",
-    "@vscode/sqlite3": "^5.0.8"
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",

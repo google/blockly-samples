@@ -7,6 +7,10 @@ authored and stored. These plugin packages are released to npm under the
 A full list of published packages can be found by searching for the ``@blockly``
 tag on [npm](https://www.npmjs.com/search?q=%40blockly).
 
+Install [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/), and make sure
+you have run `yarn install` from the root of the repo first before running commands
+in plugin directories.
+
 ## Plugins
 
 ### Fields
@@ -98,11 +102,6 @@ create a modal for creating typed variables.
 
 ## Using Lerna
 
-[Lerna](https://lerna.js.org/) is being used to manage all the packages released
+
+[Lerna](https://lerna.js.org/) is being used to version and publish all the packages released
 under the ``@blockly`` npm scope.
-
-When you first check out the repo, or if additional packages are added, run
-``npm run boot`` from the project root to bootstrap all packages.
-
-Once you've bootstrapped the packages, you no longer need to run ``npm install``
-in each of the packages.

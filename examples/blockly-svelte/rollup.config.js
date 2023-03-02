@@ -45,7 +45,7 @@ export default {
       // we'll extract any component CSS out into
       // a separate file — better for performance
       css: css => {
-        css.write('public/bundle.css');
+        css.write('bundle.css');
       }
     }),
 
@@ -64,8 +64,8 @@ export default {
     // browser on changes when not in production
     !production && livereload('public'),
 
-    // If we're building for production (npm run build
-    // instead of npm run dev), minify
+    // If we're building for production (yarn build
+    // instead of yarn dev), minify
     production && terser()
   ],
   watch: {

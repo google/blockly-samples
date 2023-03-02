@@ -1,17 +1,16 @@
 {
-  "packages": [
-    "plugins/**/**/**"
-  ],
   "version": "independent",
-  "npmClient": "npm",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "command": {
     "publish": {
       "registry": "https://wombat-dressing-room.appspot.com"
+    },
+    "run": {
+      "scope": "@blockly/*"
     }
   },
   "changelogPreset": {
     "name": "conventionalcommits"
-  },
-  "ignoreChanges": ["plugins/**/package-lock.json"],
-  "useNx": false
+  }
 }

@@ -6,16 +6,14 @@ This sample shows how to load Blockly with [RequireJS](https://requirejs.org/) u
 
 Note: This sample actually references the Blockly ``UMD`` package built and published to ``npm``, but since it's UMD (Universal), we're able to load that package in an ``AMD`` environment.
 
-## Installation
+## Prerequisites
 
-```
-npm install
-```
+Install [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/), and make sure you have run `yarn install` from the root of the repo first.
 
 ## Running
 
 ```
-npm run start
+yarn start
 ```
 
 ## Browse

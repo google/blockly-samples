@@ -1,23 +1,18 @@
 # Blockly Realtime Collaboration Coding Sample [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 This sample demonstrates how to create a realtime collaboration environment on top of the Blockly framework.
 
-## Installation
-From the blockly-rtc directory run:
-
-```npm install```
-
 ## Running
 You can run the sample with either a websocket server (full-duplex communication) or a basic http server (half-duplex communication). The websocket server implementation includes a presence feature which detects when clients have disconnected from the session.
 
 To run the websocket implementation:
 
-```npm run start-websocket```
+```yarn start-websocket```
 
 Open http://localhost:3000/websocket.html
 
 To run the http implementation:
 
-```npm run start-http```
+```yarn start-http```
 
 Open http://localhost:3000/http.html
 

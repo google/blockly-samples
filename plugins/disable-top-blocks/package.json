@@ -8,7 +8,7 @@
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "start": "blockly-scripts start",
-    "predeploy": "npm run build && blockly-scripts predeploy"
+    "predeploy": "yarn build && blockly-scripts predeploy"
   },
   "main": "./dist/index.js",
   "module": "./src/index.js",

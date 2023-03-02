@@ -1,24 +1,26 @@
 {
   "name": "blockly-samples",
-  "version": "0.0.0",
+  "private": true,
   "description": "Samples for using Blockly",
   "author": "Blockly Team",
   "license": "Apache-2.0",
+  "workspaces": [
+    "plugins/*",
+    "examples/*"
+  ],
   "scripts": {
-    "audit:fix": "lerna run audit:fix && lerna bootstrap",
-    "boot": "lerna bootstrap",
+    "audit:fix": "lerna run audit:fix",
     "build": "lerna run build",
     "clean": "lerna run clean",
     "clean:node": "lerna clean --yes",
-    "deploy:prepare": "npm run deploy:prepare:plugins && npm run deploy:prepare:examples && gulp predeploy",
-    "deploy:prepare:examples": "cd examples && npm run predeploy",
-    "deploy:prepare:plugins": "npm run clean && lerna run predeploy",
-    "deploy": "npm run deploy:prepare && gulp deploy",
-    "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
+    "deploy:prepare": "yarn deploy:prepare:plugins && yarn deploy:prepare:examples && gulp predeploy",
+    "deploy:prepare:examples": "cd examples && lerna run predeploy",
+    "deploy:prepare:plugins": "yarn clean && lerna run predeploy",
+    "deploy": "yarn deploy:prepare && gulp deploy",
+    "deploy:upstream": "yarn deploy:prepare && gulp deployUpstream",
     "license": "gulp checkLicenses",
     "lint": "lerna run lint --no-bail",
-    "lint:fix": "lerna run lint -- -- --fix",
-    "postinstall": "npm run boot",
+    "lint:fix": "lerna run lint --ignore=@blockly/dev-scripts -- -- --fix && lerna run lint --scope=@blockly/dev-scripts -- --fix",
     "test": "lerna run test",
     "publish:prepare": "gulp prepareForPublish",
     "publish:manual": "gulp publishManual",
@@ -29,7 +31,7 @@
     "test:ghpages": "gulp testGhPages"
   },
   "devDependencies": {
-    "@blockly/eslint-config": "^2.1.7",
+    "@blockly/eslint-config": "workspace:*",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "eslint": "^7.15.0",
     "gh-pages": "^3.1.0",
@@ -46,5 +48,6 @@
   },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }

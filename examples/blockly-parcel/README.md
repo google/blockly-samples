@@ -6,16 +6,14 @@ This sample shows how to load Blockly with [Parcel V2 bundler](https://v2.parcel
 
 The example mirrors a similar sample for [Webpack bundler](../blockly-webpack/README.md).
 
-## Installation
+## Prerequisites
 
-```
-npm install
-```
+Install [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/), and make sure you have run `yarn install` from the root of the repo first.
 
 ## Running
 
 ```
-npm run start
+yarn start
 ```
 
 ### Browsing
@@ -28,5 +26,5 @@ npm run start
 ## Building
 
 ```
-npm run build
+yarn build
 ```

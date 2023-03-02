@@ -8,7 +8,7 @@
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "predeploy": "blockly-scripts predeploy",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "yarn clean && yarn build",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.30",
     "@blockly/dev-tools": "^5.2.1",
-    "@blockly/eslint-config": "^2.1.20",
+    "@blockly/eslint-config": "workspace:*",
     "blockly": "9.3.0-beta.0",
     "chai": "^4.3.7",
     "jsdom": "^16.4.0",

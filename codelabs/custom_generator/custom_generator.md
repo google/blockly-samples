@@ -36,9 +36,9 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 You will make all of your changes in a sample Blockly app, which you can find in blockly-samples at [`examples/sample-app`](https://github.com/google/blockly-samples/tree/master/examples/sample-app). This application contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
   1) Clone or download the blockly-samples repository if you haven't already.
-  2) Navigate to the `examples/sample-app` directory (or a copy of it) via the command line.
-  3) Run `npm install` to install the required dependencies.
-  4) Run `npm run start` to start the server and run the sample application.
+  2) Run `yarn install` to install the required dependencies.
+  3) Navigate to the `examples/sample-app` directory (or a copy of it) via the command line.
+  4) Run `yarn start` to start the server and run the sample application.
   5) The sample app will automatically run in the browser window that opens.
 
 The initial application has one custom block and includes JavaScript generator definitions for that block. Since we will be creating a JSON generator, we'll remove that custom block and add our own.
@@ -178,7 +178,7 @@ export const toolbox = {
 
 Our `index.js` file already handles importing the toolbox and using it in Blockly.
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. You should see the new blocks in the toolbox, like this:
+If the server is already running, you can refresh the page to see your changes. Otherwise, run `yarn start` to start the server. You should see the new blocks in the toolbox, like this:
 
 ![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
 

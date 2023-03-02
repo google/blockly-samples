@@ -8,16 +8,14 @@ A note about the built UMD module: Being UMD, you are able to load it in either 
 
 However, the package we publish contains all the defaults (Blockly core, blocks, the JavaScript generator and the EN lang files). If you need more flexibility, you'll want to take a look at some of the other samples for direction on how to integrate specific Blockly modules into your environment.
 
-## Installation
+## Prerequisites
 
-```
-npm install
-```
+Install [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/), and make sure you have run `yarn install` from the root of the repo first.
 
 ## Running
 
 ```
-npm run start
+yarn start
 ```
 
 ## Browse

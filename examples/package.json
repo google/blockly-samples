@@ -1,14 +1,3 @@
 {
-  "name": "blockly-examples",
-  "private": true,
-  "scripts": {
-    "audit": "lerna run audit",
-    "boot": "lerna bootstrap",
-    "postinstall": "npm run boot",
-    "predeploy": "lerna run predeploy",
-    "update": "lerna run update"
-  },
-  "devDependencies": {
-    "lerna": "^6.4.1"
-  }
+    "private": true
 }

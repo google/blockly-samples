@@ -8,7 +8,7 @@
     "clean": "blockly-scripts clean",
     "lint": "blockly-scripts lint",
     "predeploy": "blockly-scripts predeploy",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "yarn clean && yarn build",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
