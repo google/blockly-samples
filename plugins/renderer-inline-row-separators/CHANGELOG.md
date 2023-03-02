@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.7](https://github.com/google/blockly-samples/compare/@blockly/renderer-inline-row-separators@0.2.6...@blockly/renderer-inline-row-separators@0.2.7) (2023-03-02)
+
+**Note:** Version bump only for package @blockly/renderer-inline-row-separators
+
+
+
+
+
 ## [0.2.6](https://github.com/google/blockly-samples/compare/@blockly/renderer-inline-row-separators@0.2.5...@blockly/renderer-inline-row-separators@0.2.6) (2023-02-23)
 
 

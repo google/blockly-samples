@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@1.2.2...@blockly/block-shareable-procedures@1.2.3) (2023-03-02)
+
+
+### Bug Fixes
+
+* event cycles caused by deleting and adding parameters to models ([#1552](https://github.com/google/blockly-samples/issues/1552)) ([06f5186](https://github.com/google/blockly-samples/commit/06f5186edc93a7d4e3453fdceedc0c68ea2b34d8))
+* undoing moving params ([#1585](https://github.com/google/blockly-samples/issues/1585)) ([f425670](https://github.com/google/blockly-samples/commit/f4256704d4c24158c52bf175e0f2b5821e40e940))
+* undoing renames ([#1593](https://github.com/google/blockly-samples/issues/1593)) ([4ed6f93](https://github.com/google/blockly-samples/commit/4ed6f93c28a3e5a7ebacedf1c32d7daa0f8f7c13))
+
+
+
 ## [1.2.2](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@1.2.1...@blockly/block-shareable-procedures@1.2.2) (2023-02-23)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.2...@blockly/create-package@1.3.3) (2023-03-02)
+
+
+### Bug Fixes
+
+* do not include dist script in template ([#1580](https://github.com/google/blockly-samples/issues/1580)) ([4862db5](https://github.com/google/blockly-samples/commit/4862db56e55e084f16fa52319a58ad73f47737b0))
+
+
+
 ## [1.3.2](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.1...@blockly/create-package@1.3.2) (2023-02-23)
 
 
