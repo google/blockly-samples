@@ -38,6 +38,7 @@ Blockly.Blocks["test_field_bitmap"] = {
   }
 };
 ```
+
 ### JSON
 
 Example with default value:

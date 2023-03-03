@@ -374,9 +374,9 @@ export class WorkspaceSearch {
    * @private
    */
   onKeyDown_(e) {
-    if (e.keyCode === Blockly.utils.KeyCodes.ESC) {
+    if (e.key === 'Escape') {
       this.close();
-    } else if (e.keyCode === Blockly.utils.KeyCodes.ENTER) {
+    } else if (e.key === 'Enter') {
       if (this.searchOnInput) {
         this.next();
       } else {
@@ -395,7 +395,7 @@ export class WorkspaceSearch {
    */
   onWorkspaceKeyDown_(e) {
     // TODO: Look into handling keyboard shortcuts on workspace in Blockly.
-    if ((e.ctrlKey || e.metaKey) && e.keyCode === Blockly.utils.KeyCodes.F) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
       this.open();
       e.preventDefault();
       e.stopPropagation();

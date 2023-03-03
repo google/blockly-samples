@@ -35,8 +35,8 @@ Blockly.Blocks["test_field_template"] = {
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/plugin';

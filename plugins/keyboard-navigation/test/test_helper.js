@@ -76,11 +76,11 @@ export function createKeyDownEvent(keyCode, type, modifiers) {
     },
     preventDefault: function() {},
   };
-  if (modifiers && modifiers.length > 0) {
-    event.altKey = modifiers.indexOf(Blockly.utils.KeyCodes.ALT) > -1;
-    event.ctrlKey = modifiers.indexOf(Blockly.utils.KeyCodes.CTRL) > -1;
-    event.metaKey = modifiers.indexOf(Blockly.utils.KeyCodes.META) > -1;
-    event.shiftKey = modifiers.indexOf(Blockly.utils.KeyCodes.SHIFT) > -1;
+  if (modifiers && modifiers.length) {
+    event.altKey = modifiers.includes(Blockly.utils.KeyCodes.ALT);
+    event.ctrlKey = modifiers.includes(Blockly.utils.KeyCodes.CTRL);
+    event.metaKey = modifiers.includes(Blockly.utils.KeyCodes.META);
+    event.shiftKey = modifiers.includes(Blockly.utils.KeyCodes.SHIFT);
   }
   return event;
 }
