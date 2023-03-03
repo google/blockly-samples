@@ -401,7 +401,7 @@ The new definition of `shapeFor(connection)` will:
 /**
  * @override
  */
-CustomConstantsProvider.prototype.shapeFor = function(connection) {
+shapeFor(connection) {
   var checks = connection.getCheck();
   switch (connection.type) {
     case Blockly.INPUT_VALUE:
@@ -417,7 +417,7 @@ CustomConstantsProvider.prototype.shapeFor = function(connection) {
     case Blockly.NEXT_STATEMENT:
       return this.NOTCH;
     default:
-      throw Error('Unknown type');
+      throw Error('Unknown connection type');
   }
 ```
 
