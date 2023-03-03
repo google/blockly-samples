@@ -1,7 +1,7 @@
 {
-  "name": "generator-sample-app",
+  "name": "sample-app",
   "version": "1.0.0",
-  "description": "A sample app using Blockly and custom generators",
+  "description": "A sample app using Blockly",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
   "keywords": [
     "blockly"
   ],
+  "author": "Blockly team",
   "license": "Apache-2.0",
   "devDependencies": {
     "css-loader": "^6.7.1",
