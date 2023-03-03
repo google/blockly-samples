@@ -8,12 +8,7 @@ defaults:
       type: "pages"
     values:
       article: true
-  -
-    scope:
-      path: "plugins/**/*.html"
-      type: "pages"
-    values:
-      layout: "default"
+      
   -
     scope:
       path: "examples/**/*.html"
