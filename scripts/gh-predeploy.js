@@ -302,6 +302,7 @@ function prepareExample(baseDir, exampleDir, done) {
   }
   console.log(`Preparing ${exampleDir} example for deployment.`);
 
+  // Next steps checklist (TODO(#1549)):
   // TODO: Find README files and transform them into HTML.
   // TODO: Inject headers and footers into transformed readme files
   // TODO: Find .html (and .htm?) files and inject necessary headers and footers.
