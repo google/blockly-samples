@@ -2,8 +2,8 @@ author: Rachel Fenichel
 summary: Codelab showing how to create and use a custom generator.
 id: custom-generator
 categories: blockly,codelab,generator
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Build a custom generator
 

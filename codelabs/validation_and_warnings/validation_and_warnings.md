@@ -3,7 +3,7 @@ summary: How to validate blocks and display a warning indicator for invalid bloc
 id: validation-and-warnings
 categories: blockly,codelab,validation,warning
 status: Published
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Validating Blocks and Displaying a Warning Indicator
 

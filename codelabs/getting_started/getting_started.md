@@ -2,8 +2,8 @@ author: Rachel Fenichel, ewag
 summary: In this codelab, you’ll add Blockly editor to a simple web app, to allow users to program their own music keys.
 id: getting-started
 categories: blockly,codelab,quickstart
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Getting started with Blockly
 
