@@ -2,8 +2,8 @@ author: Abby Schmiedt
 summary: Codelab to configure keyboard navigation
 id: keyboard-navigation
 categories: blockly,codelab,accessibility,keyboard navigation
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Keyboard navigation
 

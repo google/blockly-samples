@@ -2,8 +2,8 @@ author: Abby Schmiedt
 summary: Codelab to customize a toolbox
 id: custom-toolbox
 categories: blockly,codelab,toolbox,customization
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Customizing a Blockly toolbox
 

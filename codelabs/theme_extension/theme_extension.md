@@ -2,8 +2,8 @@ author: Blockly Team
 summary: How to extend a theme in Blockly.
 id: theme-extension-identifier
 categories: blockly,codelab,theme
-status: Draft
-feedback link: https://github.com/google/blockly-samples/issues/new
+status: Published
+feedback link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Customizing your themes
 
