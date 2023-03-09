@@ -2,7 +2,7 @@
 title: "@blockly/field-date Demo"
 packageName: "@blockly/field-date"
 description: "A Blockly date picker field that uses the Google Closure date picker."
-version: "6.0.10"
+version: "6.0.11"
 pageRoot: "plugins/field-date"
 pages:
   - label: "Playground"
@@ -42,8 +42,8 @@ Blockly.Blocks["test_fields_date"] = {
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-date';

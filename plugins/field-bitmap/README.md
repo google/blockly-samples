@@ -2,7 +2,7 @@
 title: "@blockly/field-bitmap Demo"
 packageName: "@blockly/field-bitmap"
 description: "A field that lets users input a pixel grid with their mouse."
-version: "2.0.12"
+version: "2.0.13"
 pageRoot: "plugins/field-bitmap"
 pages:
   - label: "Playground"
@@ -51,6 +51,7 @@ Blockly.Blocks["test_field_bitmap"] = {
   }
 };
 ```
+
 ### JSON
 
 Example with default value:

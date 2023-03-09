@@ -2,7 +2,7 @@
 title: "@blockly/field-slider Demo"
 packageName: "@blockly/field-slider"
 description: "A Blockly slider field."
-version: "4.0.10"
+version: "4.0.11"
 pageRoot: "plugins/field-slider"
 pages:
   - label: "Playground"
@@ -38,12 +38,12 @@ Blockly.Blocks["test_field_slider"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("slider: ")
-      .appendField(new FieldSlider(50), "FIELDNAME")
+      .appendField(new FieldSlider(50), "FIELDNAME");
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-slider';
