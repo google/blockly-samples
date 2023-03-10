@@ -62,7 +62,7 @@ const storageKey = 'customRenderersWorkspace';
 
 A **Renderer** is the interface between your custom rendering code and the rest of Blockly. Blockly provides a base renderer with all required fields set to default values.
 
-To start, create a new directory at `src/renderers` and add a file inside named `javascript.js`.
+To start, create a new directory at `src/renderers` and add a file inside named `custom.js`.
 
 At the top of the file, you first need to import `blockly/core`:
 
@@ -115,7 +115,7 @@ In general you will want to override a subset of the constants, rather than all 
 - Call the superclass `constructor()` in your `constructor()`.
 - Set individual properties.
 
-Add this above the `CustomRenderer` definition in `src/renderers/javascript.js`:
+Add this above the `CustomRenderer` definition in `src/renderers/custom.js`:
 
 ```js
 class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
