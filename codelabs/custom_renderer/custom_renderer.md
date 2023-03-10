@@ -95,7 +95,10 @@ import './renderers/javascript';
 Now, add the the `renderer` property into the configuration struct passed to `Blockly.inject` so that it now looks like this:
 
 ```js
-const ws = Blockly.inject(blocklyDiv, {renderer: 'custom_renderer', toolbox});
+const ws = Blockly.inject(blocklyDiv, {
+  renderer: 'custom_renderer',
+  toolbox,
+});
 ```
 
 ### The result
