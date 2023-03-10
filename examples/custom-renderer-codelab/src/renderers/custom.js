@@ -5,12 +5,12 @@
  */
 
 /**
- * @fileoverview The full custom renderer built during the custom renderer
- * codelab, in ES6 syntax.
- * @author fenichel@google.com (Rachel Fenichel)
+ * @fileoverview The full custom renderer built during custom renderer codelab.
  */
 
-class CustomConstantsProvider extends Blockly.blockRendering.ConstantProvider {
+import * as Blockly from 'blockly/core';
+
+class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
   constructor() {
     // Set up all of the constants from the base provider.
     super();
@@ -36,6 +36,7 @@ class CustomConstantsProvider extends Blockly.blockRendering.ConstantProvider {
      * @override
      */
     this.CORNER_RADIUS = 2;
+
     /**
      * The height of the puzzle tab used for input and output connections.
      * @type {number}
@@ -43,11 +44,14 @@ class CustomConstantsProvider extends Blockly.blockRendering.ConstantProvider {
      */
     this.TAB_HEIGHT = 8;
   }
+
   /**
    * @override
    */
   init() {
+    // First, call init() in the base provider to store the default objects.
     super.init();
+
     // Add calls to create shape objects for the new connection shapes.
     this.RECT_PREV_NEXT = this.makeRectangularPreviousConn();
     this.RECT_INPUT_OUTPUT = this.makeRectangularInputConn();
@@ -72,27 +76,30 @@ class CustomConstantsProvider extends Blockly.blockRendering.ConstantProvider {
       case Blockly.NEXT_STATEMENT:
         return this.NOTCH;
       default:
-        throw Error('Unknown type');
+        throw Error('Unknown connection type');
     }
   }
 
   /**
-   * Return a rectangular notch for use with previous and next connections.
+   * @returns Rectangular notch for use with previous and next connections.
    */
   makeRectangularPreviousConn() {
     const width = this.NOTCH_WIDTH;
     const height = this.NOTCH_HEIGHT;
 
     /**
-     * Since previous and next connections share the same shape
-     * you can define a function to generate the path for both.
+     * Since previous and next connections share the same shape you can define
+     * a function to generate the path for both.
+     *
+     * @param dir Multiplier for the horizontal direction of the path (-1 or 1)
+     * @returns SVGPath line for use with previous and next connections.
      */
     function makeMainPath(dir) {
       return Blockly.utils.svgPaths.line(
           [
             Blockly.utils.svgPaths.point(0, height),
             Blockly.utils.svgPaths.point(dir * width, 0),
-            Blockly.utils.svgPaths.point(0, -height)
+            Blockly.utils.svgPaths.point(0, -height),
           ]);
     }
     const pathLeft = makeMainPath(1);
@@ -102,53 +109,55 @@ class CustomConstantsProvider extends Blockly.blockRendering.ConstantProvider {
       width: width,
       height: height,
       pathLeft: pathLeft,
-      pathRight: pathRight
+      pathRight: pathRight,
     };
   }
 
   /**
-   * Return a rectangular puzzle tab for use with input and output connections.
+   * @returns Rectangular puzzle tab for use with input and output connections.
    */
   makeRectangularInputConn() {
     const width = this.TAB_WIDTH;
     const height = this.TAB_HEIGHT;
 
     /**
-     * Since input and output connections share the same shape you can
-     * define a function to generate the path for both.
+     * Since input and output connections share the same shape you can define
+     * a function to generate the path for both.
+     *
+     * @param dir Multiplier for the vertical direction of the path (-1 or 1)
+     * @returns SVGPath line for use with input and output connections.
      */
-    function makeMainPath(up) {
+    function makeMainPath(dir) {
       return Blockly.utils.svgPaths.line(
           [
             Blockly.utils.svgPaths.point(-width, 0),
-            Blockly.utils.svgPaths.point(0, -1 * up * height),
-            Blockly.utils.svgPaths.point(width, 0)
+            Blockly.utils.svgPaths.point(0, dir * height),
+            Blockly.utils.svgPaths.point(width, 0),
           ]);
     }
-
-    const pathUp = makeMainPath(1);
-    const pathDown = makeMainPath(-1);
+    const pathUp = makeMainPath(-1);
+    const pathDown = makeMainPath(1);
 
     return {
       width: width,
       height: height,
+      pathUp: pathUp,
       pathDown: pathDown,
-      pathUp: pathUp
     };
   }
-};
+}
 
-class CustomRenderer extends Blockly.blockRendering.Renderer {
-  constructor(name) {
-    super(name);
+export class CustomRenderer extends Blockly.blockRendering.Renderer {
+  constructor() {
+    super();
   }
 
   /**
    * @override
    */
   makeConstants_() {
-    return new CustomConstantsProvider();
+    return new CustomConstantProvider();
   }
-};
+}
 
 Blockly.blockRendering.register('custom_renderer', CustomRenderer);
