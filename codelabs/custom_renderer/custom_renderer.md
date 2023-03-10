@@ -19,8 +19,8 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 You will build and use four renderers:
 
-1. A minimal custom renderer that extends `Blockly.blockRendering.Renderer` but makes no modifications to the default rendering style.
-![Screenshot of a renderer with a default appearance.](./custom_renderer.png)
+1. A minimal custom renderer that extends `Blockly.blockRendering.Renderer` but makes no modifications.
+![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
 1. A custom renderer which sets new values for the rendering-related constants `NOTCH_WIDTH`, `NOTCH_HEIGHT`,`CORNER_RADIUS`, and `TAB_HEIGHT` found in `Blockly.blockRendering.ConstantProvider`.
 ![Screenshot of a custom renderer with notches, corners, and tabs that have similar shapes as the default but with different widths, heights, and radiuses.](./custom_constants.png)
 1. A custom renderer which overrides the functions `Blockly.blockRendering.ConstantProvider.init()` and `Blockly.blockRendering.ConstantProvider.shapeFor(connection)` to define and return custom [SVG paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path).
@@ -58,9 +58,15 @@ Before setting up the rest of the application, let's change the storage key used
 const storageKey = 'customRenderersWorkspace';
 ```
 
+## Observe the built-in renderers
+
+First, visit [the advanced playground](https://blockly-demo.appspot.com/static/tests/playgrounds/advanced_playground.html) to observe what the built-in renderers look like.
+
+Click on the "Loops" entry and drag out a repeat block.  Now, change the selection in the "renderer" drop down to observe the look of each built-in renderer.  By default, the renderer named "Geras" is used.
+
 ## Define and register a custom renderer
 
-A **Renderer** is the interface between your custom rendering code and the rest of Blockly. Blockly provides a base renderer with all required fields set to default values.
+A **Renderer** is the interface between your custom rendering code and the rest of Blockly. Blockly provides a base renderer with all required fields already set to usable values.
 
 To start, create a new directory at `src/renderers` and add a file inside named `custom.js`.
 
@@ -103,9 +109,9 @@ const ws = Blockly.inject(blocklyDiv, {
 
 ### The result
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. Once the server is running, click on the `Loops` entry in your browser and drag out a repeat block. The resulting block will look the same as normal, since your custom renderer has merely extended the default renderer without changing anything.
+If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. Once the server is running, click on the `Loops` entry in your browser and drag out a repeat block. The resulting block will use the same values already defined in the base `Blockly.blockRendering.Renderer`.
 
-![Screenshot of a renderer with a default appearance.](./custom_renderer.png)
+![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
 
 ## Override constants
 
