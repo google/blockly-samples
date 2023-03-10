@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.3](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.2.2...@blockly/dev-tools@5.2.3) (2023-03-09)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
 ## [5.2.2](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.2.1...@blockly/dev-tools@5.2.2) (2023-03-02)
 
 **Note:** Version bump only for package @blockly/dev-tools
