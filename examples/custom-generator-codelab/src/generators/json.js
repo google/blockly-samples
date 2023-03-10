@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * @fileoverview The full custom JSON generator built during the custom
+ * generator codelab.
+ */
+
 import * as Blockly from 'blockly';
 
 export const jsonGenerator = new Blockly.Generator('JSON');
