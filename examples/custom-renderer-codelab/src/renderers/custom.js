@@ -1,3 +1,13 @@
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
+ * @fileoverview The full custom renderer built during custom renderer codelab.
+ */
+
 import * as Blockly from 'blockly/core';
 
 class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
