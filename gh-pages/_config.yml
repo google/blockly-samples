@@ -11,12 +11,6 @@ defaults:
       
   -
     scope:
-      path: "examples/**/*.html"
-      type: "pages"
-    values:
-      layout: "default"
-  -
-    scope:
       path: "examples/devsite-demo/index.html"
       type: "pages"
     values:

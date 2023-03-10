@@ -12,21 +12,21 @@ const fs = require('fs');
 const gulp = require('gulp');
 const path = require('path');
 const showdown = require('showdown');
-const yaml = require('json-to-pretty-yaml');
 gulp.header = require('gulp-header');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 /**
- * Inject head HTML for a plugin demo page on gh-pages.
- * This looks for the end of the existing head tag and inserts a few additional lines of CSS,
- * as well as updating the title to match the plugin's name.
+ * Inject head HTML for a plugin or example page on gh-pages.
+ * This finds the existing head tag and inserts a few additional lines of CSS,
+ * as well as updating the title to match the plugin or example's name.
  * @param {string} initialContents The initial page HTML, as a string.
- * @param {!Object} packageJson The contents of the plugin's package.json.
+ * @param {string} title The title to use for the page, which may be generated from the package
+ *    name or specified explicitly.
  * @returns {string} The modified contents of the page, as a string.
  */
-function injectHeader(initialContents, packageJson) {
+function injectHeader(initialContents, title) {
   let baseurl = '/blockly-samples';
 
   let headerAdditions = `
@@ -35,16 +35,15 @@ function injectHeader(initialContents, packageJson) {
   <link rel="icon" type="image/x-icon" href="${baseurl}/favicon.ico" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="${baseurl}/css/custom.css" />
-  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+  <link rel="stylesheet" href="${baseurl}/css/custom.css"/>
   <!-- END INJECTED HEADER -->`;
 
   // Replace the title with a more descriptive title.
   let modifiedContents = initialContents.replace(/<title>.*<\/title>/,
-      `<title>${packageJson.name} Demo</title>`);
-  // Add some CSS at the end of the header.
-  modifiedContents = modifiedContents.replace(/(<\s*\/\s*head\s*>)/,
-      `${headerAdditions}$1`);
+      `<title>${title}</title>`);
+  // Add some CSS at the beginning of the header. Any CSS the page already had will be higher priority.
+  modifiedContents = modifiedContents.replace(/<\s*head\s*>/,
+      `<head>${headerAdditions}`);
   return modifiedContents;
 }
 
@@ -97,7 +96,7 @@ function injectFooter(initialContents) {
  * @param {string} pluginDir The directory of the plugin that is currently being prepared.
  * @returns {string} The modified contents of the page, as a string.
  */
-function injectNavBar(inputString, packageJson, pluginDir) {
+function injectPluginNavBar(inputString, packageJson, pluginDir) {
   // Build up information from package.json.
   let title = `${packageJson.name} Demo`;
   let description = packageJson.description;
@@ -128,13 +127,16 @@ function injectNavBar(inputString, packageJson, pluginDir) {
     <a href="${npmLink}" class="button" target="_blank">View on npm</a>
   </nav>
   <!-- END NAV BAR -->
-  ${createPageTabs(pluginDir)}`
+  ${createPluginTabs(pluginDir)}`
 
   // Find the start of the body and inject the nav bar just after the opening <body> tag,
   // preserving anything else in the tag (such as onload).
   // Also wrap all page content in a <main></main> tag.
   let modifiedContent = inputString.replace(
-      /(<body.*>)/, `<main id="main" class="has-tabs">$1${navBar}`);
+    /<body(.*)>/,
+    `<body$1 class="root">
+    <main id="main" class="has-tabs">${navBar}`
+    );
   modifiedContent = modifiedContent.replace(/(<\/body>)/, `</main>$1`);
   return modifiedContent;
 }
@@ -144,20 +146,56 @@ function injectNavBar(inputString, packageJson, pluginDir) {
  * @param {string} pluginDir The directory of the plugin that is currently being prepared.
  * @returns {string} The HTML for the page tabs, as a string.
  */
-function createPageTabs(pluginDir) {
+function createPluginTabs(pluginDir) {
+  const baseurl = '/blockly-samples';
   return `
   <!-- PAGE TABS -->
   <ul id="tabs">
     <li>
-      <a href="/blockly-samples/plugins/${pluginDir}/test/index">
+      <a href="${baseurl}/plugins/${pluginDir}/test/index">
         Playground
       </a>
     </li>
     <li>
-      <a href="/blockly-samples/plugins/${pluginDir}/README">
+      <a href="${baseurl}/plugins/${pluginDir}/README">
         README
       </a>
     </li>
+  </ul>
+  <!-- END PAGE TABS -->
+  `;
+}
+
+/**
+ * Create the tabs for switching between pages in an example.
+ * The pages to include are specified in the example's package.json.
+ * @param {string} pageRoot The directory of the example that is currently being prepared.
+ * @returns {string} The HTML for the page tabs, as a string.
+ */
+function createExampleTabs(pageRoot, pages) {
+  // local testing:
+  //const baseurl = 'http://127.0.0.1:8080';
+  // gh-pages:
+  const baseurl = '/blockly-samples';
+  function createTab(page) {
+    return `
+      <li>
+        <a href="${baseurl}/${pageRoot}/${page.link}">
+          ${page.label}
+        </a>
+      </li>
+      `;
+  }
+
+  let tabsString = ``;
+
+  for (let i = 0; i < pages.length; i++) {
+    tabsString += createTab(pages[i]);
+  }
+  return `
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+  ${tabsString}
   </ul>
   <!-- END PAGE TABS -->`;
 }
@@ -172,9 +210,9 @@ function createPageTabs(pluginDir) {
 function createPluginPage(pluginDir) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
   const initialContents = fs.readFileSync(`./plugins/${pluginDir}/test/index.html`).toString();
-
-  let contents = injectHeader(initialContents, packageJson);
-  contents = injectNavBar(contents, packageJson, pluginDir);
+  let title = `${packageJson.name} Demo`;
+  let contents = injectHeader(initialContents, title);
+  contents = injectPluginNavBar(contents, packageJson, pluginDir);
   contents = injectFooter(contents);
 
   const dirString = `./gh-pages/plugins/${pluginDir}/test`;
@@ -217,8 +255,9 @@ function createReadmePage(pluginDir) {
   `;
 
   // Add the same header, nav bar, and footer as we used for the playground.
-  let modifiedContents = injectHeader(initialPage, packageJson);
-  modifiedContents = injectNavBar(modifiedContents, packageJson, pluginDir);
+  let title = `${packageJson.name} Demo`;
+  let modifiedContents = injectHeader(initialPage, title);
+  modifiedContents = injectPluginNavBar(modifiedContents, packageJson, pluginDir);
   modifiedContents = injectFooter(modifiedContents);
 
   // Make sure the directory exists, then write to it.
@@ -271,15 +310,79 @@ function prepareToDeployPlugins(done) {
 
 
 /**
- * Convert json to front matter YAML config.
- * @param {!Object} json The json config.
- * @return {string} The front matter YAML config.
+ * Inject nav bar HTML for a specific example at the beginning of the body.
+ * @param {string} inputString The initial page HTML, as a string.
+ * @param {!Object} packageJson The contents of the example's package.json.
+ * @param {string} pageRoot The location of the example's files relative to the root of
+ *     the repository.
+ * @param {string} title The title to display in the nav bar.
+ * @returns {string} The modified contents of the page, as a string.
  */
-function buildFrontMatter(json) {
-  return `---
-${yaml.stringify(json)}
----
-`;
+function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
+  // Build up information from package.json.
+  let description = packageJson.blocklyDemoConfig.description ?
+      `<div class="subtitle">${ packageJson.blocklyDemoConfig.description}</div>` : ``;
+  let codeLink = `https://github.com/google/blockly-samples/blob/master/${pageRoot}`;
+
+  const pages = packageJson.blocklyDemoConfig.pages;
+  const tabString = pages ? createExampleTabs(pageRoot, pages) : '';
+  let baseurl = '/blockly-samples';
+  // Assemble that information into a nav bar and tabs for getting to linked
+  // example pages.
+  let navBar = `
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="${baseurl}" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">${title}</div>
+      ${description}
+    </div>
+    
+    <a href="${codeLink}" class="button" target="_blank">View code</a>
+  </nav>
+  <!-- END NAV BAR -->
+  ${tabString}`
+
+  // Find the start of the body and inject the nav bar just after the opening <body> tag,
+  // preserving anything else in the tag (such as onload).
+  // Also wrap all page content in a <main></main> tag.
+  let modifiedContent = inputString.replace(
+      /<body(.*)>/,
+      `<body$1 class="root">
+      <main id="main" class="has-tabs">${navBar}`
+      );
+  modifiedContent = modifiedContent.replace(/<\/body>/, `</main>\n  </body>`);
+  return modifiedContent;
+}
+
+/**
+ * Inject appropriate headers and footers into the input HTML page so
+ * that it will display nicely on gh-pages. This includes a
+ * devsite-style header and footer, links to the source files, and links
+ * to other files within the same demo package.
+ * @param {string} pageRoot The directory of the example that is currently being
+ *     prepared (e.g. examples/interpreter-demo).
+ * @param {string} path The page of the page to create within the example's directory
+ *     (e.g. index.html).
+ */
+function createExamplePage(pageRoot, path) {
+  const packageJson = require(resolveApp(`${pageRoot}/package.json`));
+  const initialContents = fs.readFileSync(`${pageRoot}/${path}`).toString();
+
+  const { blocklyDemoConfig } = packageJson;
+
+  let contents = injectHeader(initialContents, blocklyDemoConfig.title);
+  contents = injectExampleNavBar(contents, packageJson, pageRoot, blocklyDemoConfig.title);
+  contents = injectFooter(contents);
+
+  const outputPath = `./gh-pages/${pageRoot}/${path}`;
+
+  fs.writeFileSync(outputPath, contents, 'utf-8');
 }
 
 /**
@@ -292,9 +395,14 @@ ${yaml.stringify(json)}
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function prepareExample(baseDir, exampleDir, done) {
+function newPrepareExample(baseDir, exampleDir, done) {
+  const pageRoot = `${baseDir}/${exampleDir}`;
+  // TODO: Why do I sometimes use path.join and sometimes just do
+  // string concatenation?
   const packageJson =
-    require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
+    require(resolveApp(path.join(pageRoot, 'package.json')));
+  
+  // Cancel early if the package.json says this is not a demo.
   const { blocklyDemoConfig } = packageJson;
   if (!blocklyDemoConfig) {
     done();
@@ -302,29 +410,33 @@ function prepareExample(baseDir, exampleDir, done) {
   }
   console.log(`Preparing ${exampleDir} example for deployment.`);
 
-  // Next steps checklist (TODO(#1549)):
-  // TODO: Find README files and transform them into HTML.
-  // TODO: Inject headers and footers into transformed readme files
-  // TODO: Find .html (and .htm?) files and inject necessary headers and footers.
-  // TODO: Generate page tabs based on demo config (handle multiple pages, such
-  //     as in the interpreter demos).
-  // TODO: Don't inject headers and footers in the devsite demo.
+  const fileList = blocklyDemoConfig.files;
 
-  blocklyDemoConfig.pageRoot = `${baseDir}/${exampleDir}`;
-  const pageRegex = /.*\.(html|htm|md)$/i;
-  const pages = blocklyDemoConfig.files.filter((f) => pageRegex.test(f));
+  // Create target folder, if it doesn't exist.
+  const dirString = `./gh-pages/examples/${exampleDir}/`;
+  fs.mkdirSync(dirString, { recursive: true });
 
-  let stream = gulp.src(
-    pages.map((f) => path.join(baseDir, exampleDir, f)),
-    { base: baseDir, allowEmpty: true })
-    .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
+  // Special case: do a straight copy for the devsite demo, with no wrappers.
+  if (packageJson.name == 'blockly-devsite-demo') {
+    return gulp.src(
+      fileList.map((f) => path.join(pageRoot, f)),
+        { base: baseDir, allowEmpty: true })
+      .pipe(gulp.dest('./gh-pages/examples/'));
+  }
+
+  // All other examples.
+  const pageRegex = /.*\.(html|htm)$/i;
+  const pages = fileList.filter((f) => pageRegex.test(f));
+  // Add headers and footers to HTML pages.
+  pages.forEach(page => createExamplePage(pageRoot, page));
   
   // Copy over all other files mentioned in the demoConfig to the correct directory.
-  const assets = blocklyDemoConfig.files.filter((f) => !pageRegex.test(f));
+  const assets = fileList.filter((f) => !pageRegex.test(f));
+  let stream;
   if (assets.length) {
-    stream = stream.pipe(gulp.src(
-      assets.map((f) => path.join(baseDir, exampleDir, f)),
-      { base: baseDir, allowEmpty: true }));
+    stream = gulp.src(
+      assets.map((f) => path.join(pageRoot, f)),
+      { base: baseDir, allowEmpty: true });
   }
   return stream.pipe(gulp.dest('./gh-pages/examples/'));
 }
@@ -345,7 +457,7 @@ function prepareToDeployExamples(done) {
   });
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployExample(done) {
-      return prepareExample(dir, folder, done);
+      return newPrepareExample(dir, folder, done);
     };
   }))(done);
 }
