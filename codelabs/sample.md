@@ -6,7 +6,7 @@ categories: Blockly
 tags:
 status: Published
 authors: The Blockly Team
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 ---
 
