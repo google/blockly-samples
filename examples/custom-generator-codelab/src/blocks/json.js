@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * @fileoverview All the custom JSON-related blocks defined in the custom
+ * generator codelab.
+ */
+
 import * as Blockly from 'blockly';
 
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([{
