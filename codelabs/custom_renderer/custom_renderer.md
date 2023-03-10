@@ -115,7 +115,7 @@ The **ConstantsProvider** `constructor()` sets all static properties, such as `N
 
 In general you will want to override a subset of the constants, rather than all of them. To do so:
 - Define a constants provider that extends the base `ConstantProvider`.
-- Call the superclass `constructor()` in your `constructor()`.
+- Call the superclass `super()` in your `constructor()`.
 - Set individual properties.
 
 Add this above the `CustomRenderer` definition in `src/renderers/custom.js`:
