@@ -106,7 +106,7 @@ If the server is already running, you can refresh the page to see your changes. 
 
 ## Override constants
 
-A **ConstantsProvider** holds all rendering-related constants.  This includes sizing information and colors. Blockly provides a base **ConstantsProvider** with all required fields set to default values.
+A **ConstantsProvider** holds all rendering-related constants.  This includes sizing information and colours. Blockly provides a base **ConstantsProvider** with all required fields set to default values.
 
 The **ConstantsProvider** `constructor()` sets all static properties, such as `NOTCH_WIDTH` and `NOTCH_HEIGHT`. For a full list of properties, see [constants.ts](https://github.com/google/blockly/blob/master/core/renderers/common/constants.ts).
 
