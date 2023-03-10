@@ -191,8 +191,6 @@ A connection's shape is stored as an object with information about its width, he
 ```js
 /**
  * Initialize shape objects based on the constants set in the constructor.
- *
- * @internal
  */
 init() {
   /**
@@ -221,7 +219,6 @@ The `shapeFor(connection)` function maps from connection to connection shape. He
  *
  * @param connection The connection to find a shape object for
  * @returns The shape object for the connection.
- * @internal
  */
 shapeFor(connection: RenderedConnection): Shape {
   switch (connection.type) {
