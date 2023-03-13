@@ -65,9 +65,9 @@ class RgbColour {
    */
   toHex(): string {
     return '#' +
-      RgbColour.componentToHex(this.r) +
-      RgbColour.componentToHex(this.g) +
-      RgbColour.componentToHex(this.b);
+        RgbColour.componentToHex(this.r) +
+        RgbColour.componentToHex(this.g) +
+        RgbColour.componentToHex(this.b);
   }
 
   /**
@@ -138,7 +138,7 @@ class HsvColour {
     const max: number = Math.max(Math.max(rgb.r, rgb.g), rgb.b);
     const min: number = Math.min(Math.min(rgb.r, rgb.g), rgb.b);
     this.v = max;
-    if (min == max) {
+    if (min === max) {
       this.h = 0;
       this.s = 0;
       return this;
@@ -148,9 +148,9 @@ class HsvColour {
     this.s = delta / max;
 
     let hue: number;
-    if (rgb.r == max) {
+    if (rgb.r === max) {
       hue = (rgb.g - rgb.b) / delta;
-    } else if (rgb.g == max) {
+    } else if (rgb.g === max) {
       hue = 2 + ((rgb.b - rgb.r) / delta);
     } else {
       hue = 4 + ((rgb.r - rgb.g) / delta);

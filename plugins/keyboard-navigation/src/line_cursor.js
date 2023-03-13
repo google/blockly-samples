@@ -31,7 +31,7 @@ export class LineCursor extends Blockly.BasicCursor {
   /**
    * Moves the cursor to the next previous connection, next connection or block
    * in the pre order traversal. Finds the next node in the pre order traversal.
-   * @return {Blockly.ASTNode} The next node, or null if the current node is
+   * @returns {Blockly.ASTNode} The next node, or null if the current node is
    *     not set or there is no next value.
    * @override
    */
@@ -58,7 +58,7 @@ export class LineCursor extends Blockly.BasicCursor {
   /**
    * Moves the cursor to the next input connection or field
    * in the pre order traversal.
-   * @return {Blockly.ASTNode} The next node, or null if the current node is
+   * @returns {Blockly.ASTNode} The next node, or null if the current node is
    *     not set or there is no next value.
    * @override
    */
@@ -77,7 +77,7 @@ export class LineCursor extends Blockly.BasicCursor {
   /**
    * Moves the cursor to the previous next connection or previous connection in
    * the pre order traversal.
-   * @return {Blockly.ASTNode} The previous node, or null if the current node
+   * @returns {Blockly.ASTNode} The previous node, or null if the current node
    *     is not set or there is no previous value.
    * @override
    */
@@ -103,8 +103,8 @@ export class LineCursor extends Blockly.BasicCursor {
   /**
    * Moves the cursor to the previous input connection or field in the pre order
    * traversal.
-   * @return {Blockly.ASTNode} The previous node, or null if the current node is
-   *     not set or there is no previous value.
+   * @returns {Blockly.ASTNode} The previous node, or null if the current node
+   *     is not set or there is no previous value.
    * @override
    */
   out() {
@@ -125,7 +125,7 @@ export class LineCursor extends Blockly.BasicCursor {
    * The previous and next method only traverse previous connections, next
    * connections and blocks.
    * @param {Blockly.ASTNode} node The AST node to check.
-   * @return {boolean} True if the node should be visited, false otherwise.
+   * @returns {boolean} True if the node should be visited, false otherwise.
    * @protected
    */
   validLineNode(node) {
@@ -153,7 +153,7 @@ export class LineCursor extends Blockly.BasicCursor {
    * Decides if the in and out methods should traverse the given node.
    * The in and out method only traverse fields and input connections.
    * @param {Blockly.ASTNode} node The AST node to check whether it is valid.
-   * @return {boolean} True if the node should be visited, false otherwise.
+   * @returns {boolean} True if the node should be visited, false otherwise.
    * @protected
    */
   validInLineNode(node) {

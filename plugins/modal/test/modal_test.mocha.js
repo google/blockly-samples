@@ -51,11 +51,11 @@ suite('Modal', function() {
     test('Events and button callback removed', function() {
       this.modal.init();
       const numEvents = this.modal.boundEvents_.length;
-      Blockly.unbindEvent_ = sinon.fake();
+      Blockly.browserEvents.unbind = sinon.fake();
       this.modal.dispose();
 
       assert.equal(document.querySelector('.blocklyModalOverlay'), null);
-      sinon.assert.callCount(Blockly.unbindEvent_, numEvents);
+      sinon.assert.callCount(Blockly.browserEvents.unbind, numEvents);
     });
   });
 
@@ -66,14 +66,14 @@ suite('Modal', function() {
     });
     /**
      * Make a fake event.
-     * @param {number} keyCode The keycode to use for the event.
+     * @param {string} key The key to use for the event.
      * @param {boolean} shift True if we want to emulate hitting the shift key.
      *    False otherwise.
-     * @return {Object} A fake event.
+     * @returns {Object} A fake event.
      */
-    function makeEvent(keyCode, shift) {
+    function makeEvent(key, shift) {
       const event = {
-        keyCode: keyCode,
+        key: key,
         shiftKey: shift,
       };
       event.stopPropagation = sinon.fake();
@@ -81,19 +81,19 @@ suite('Modal', function() {
       return event;
     }
     test('Tab pressed with only one element', function() {
-      const event = makeEvent(Blockly.utils.KeyCodes.TAB, false);
+      const event = makeEvent('Tab', false);
       this.modal.handleForwardTab_ = sinon.fake();
       this.modal.handleKeyDown_(event);
       sinon.assert.notCalled(this.modal.handleForwardTab_);
     });
     test('Shift tab pressed with only one element', function() {
-      const event = makeEvent(Blockly.utils.KeyCodes.TAB, true);
+      const event = makeEvent('Tab', true);
       this.modal.handleBackwardTab_ = sinon.fake();
       this.modal.handleKeyDown_(event);
       sinon.assert.notCalled(this.modal.handleBackwardTab_);
     });
     test('Escape pressed', function() {
-      const event = makeEvent(Blockly.utils.KeyCodes.ESC, false);
+      const event = makeEvent('Escape', false);
       this.modal.hide = sinon.fake();
       this.modal.handleKeyDown_(event);
       assert(this.modal.hide.calledOnce);

@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,7 +59,7 @@ async function addEventsHandler(req, res) {
     req.on('end', async () => {
       await database.addToServer(JSON.parse(data).entry)
       res.statusCode = 200;
-      res.end();  
+      res.end();
     });
   } catch {
     res.statusCode = 401;

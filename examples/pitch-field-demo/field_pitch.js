@@ -33,27 +33,21 @@ class FieldPitch extends Blockly.FieldTextInput {
    */
   static NOTES = 'C3 D3 E3 F3 G3 A3 B3 C4 D4 E4 F4 G4 A4'.split(/ /);
 
+  /**
+   * Array holding info needed to unbind events.
+   * Used for disposing.
+   * @type {!Array<!Blockly.browserEvents.Data>}
+   * @private
+   */
+  boundEvents_ = [];
+
   constructor(text) {
     super(text);
 
     // Disable spellcheck.
     this.setSpellcheck(false);
-
-    /**
-     * Click event data.
-     * @type {?Blockly.browserEvents.Data}
-     * @private
-     */
-    this.clickWrapper_ = null;
-
-    /**
-     * Move event data.
-     * @type {?Blockly.browserEvents.Data}
-     * @private
-     */
-    this.moveWrapper_ = null;
   }
-  
+
   /**
    * Construct a FieldPitch from a JSON arg object.
    * @param {!Object} options A JSON object with options (pitch).
@@ -62,7 +56,9 @@ class FieldPitch extends Blockly.FieldTextInput {
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldPitch(options['pitch']);
+    // `this` might be a subclass of FieldPitch if that class doesn't
+    // override the static fromJson method.
+    return new this(options['pitch']);
   }
 
   /**
@@ -91,12 +87,12 @@ class FieldPitch extends Blockly.FieldTextInput {
     // mousemove even if it's not in the middle of a drag.  In future we may
     // change this behaviour.  For now, using `bind` instead of
     // `conditionalBind` allows it to work without a mousedown/touchstart.
-    this.clickWrapper_ =
+    this.boundEvents_.push(
         Blockly.browserEvents.bind(this.imageElement_, 'click', this,
-        this.hide_);
-    this.moveWrapper_ =
+        this.hide_));
+    this.boundEvents_.push(
         Blockly.browserEvents.bind(this.imageElement_, 'mousemove', this,
-        this.onMouseMove);
+        this.onMouseMove));
 
     this.updateGraph_();
   }
@@ -118,14 +114,10 @@ class FieldPitch extends Blockly.FieldTextInput {
    * @private
    */
   dropdownDispose_() {
-    if (this.clickWrapper_) {
-      Blockly.browserEvents.unbind(this.clickWrapper_);
-      this.clickWrapper_ = null;
+    for (const event of this.boundEvents_) {
+      Blockly.browserEvents.unbind(event);
     }
-    if (this.moveWrapper_) {
-      Blockly.browserEvents.unbind(this.moveWrapper_);
-      this.moveWrapper_ = null;
-    }
+    this.boundEvents_.length = 0;
     this.imageElement_ = null;
   }
 

@@ -3,7 +3,7 @@ summary: How to validate blocks and display a warning indicator for invalid bloc
 id: validation-and-warnings
 categories: blockly,codelab,validation,warning
 status: Published
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Validating Blocks and Displaying a Warning Indicator
 
@@ -124,7 +124,7 @@ Reload `index.html` once again and try adding the new block to the workspace. Yo
 Now we are ready to start adding validation!
 
 ## Validating blocks
-When you're designing custom blocks, you may find that it doesn't make sense to use the block in certain ways. Depending on the intended purpose of your block, you may want to add constraints on the possible values that can be assigned to its fields, or on where it is used. 
+When you're designing custom blocks, you may find that it doesn't make sense to use the block in certain ways. Depending on the intended purpose of your block, you may want to add constraints on the possible values that can be assigned to its fields, or on where it is used.
 
 ### Basic field constraints
 Blockly generally allows users to enter negative values and decimal values for number fields, but for this custom block, let's make sure that only positive whole numbers are allowed. Add `'min': 0` and `'precision': 1` to the fields in the custom block definition so that they look like this:
@@ -150,12 +150,12 @@ Blockly generally allows users to enter negative values and decimal values for n
 
 Then reload `index.html`, drag the custom block to your workspace, and try entering various values such as negative numbers or decimals. Notice how invalid values are immediately converted to the nearest valid value!
 
-If you want, you can also add a `'max'` constraint to a number field.  
+If you want, you can also add a `'max'` constraint to a number field.
 
 ### Adding custom validation to a field
-The built-in constraints are very convenient, but sometimes you might need to add custom constraints. For example, let's say that our custom block needs the first number of the range to be even, and the last number to be odd. We can easily implement the even constraint by setting the `'precision'` constraint of the `FIRST` field to `2`, but the odd constraint requires a custom validator. 
+The built-in constraints are very convenient, but sometimes you might need to add custom constraints. For example, let's say that our custom block needs the first number of the range to be even, and the last number to be odd. We can easily implement the even constraint by setting the `'precision'` constraint of the `FIRST` field to `2`, but the odd constraint requires a custom validator.
 
-So far, we've been using Blockly's JSON API for defining custom blocks, but Blockly also has a JavaScript API with more advanced features, and one of those features is defining custom validators. Fortunately, we don't have to convert our entire custom block definition to the JavaScript API in order to take advantage of these advanced features, because Blockly has a system for adding JavaScript extensions to blocks that were defined with the JSON API. 
+So far, we've been using Blockly's JSON API for defining custom blocks, but Blockly also has a JavaScript API with more advanced features, and one of those features is defining custom validators. Fortunately, we don't have to convert our entire custom block definition to the JavaScript API in order to take advantage of these advanced features, because Blockly has a system for adding JavaScript extensions to blocks that were defined with the JSON API.
 
 Let's give our custom block a new extension called `list_range_validation`. Add `'extensions': ['list_range_validation']` to the end of the custom block definition in `index.js` like so:
 
@@ -210,9 +210,9 @@ Reload `index.html` now, then drag the custom block to your workspace and try se
 
 ## Displaying warnings
 
-Both Blockly's built-in validators and custom validators are nice because they immediately correct any errors so that there should never be any interruption in the validity of the blocks in the workspace or in the validity of the code that it generates. This results in a smooth, pleasant experience for the user, and you should take advantage of these validators whenever possible. 
+Both Blockly's built-in validators and custom validators are nice because they immediately correct any errors so that there should never be any interruption in the validity of the blocks in the workspace or in the validity of the code that it generates. This results in a smooth, pleasant experience for the user, and you should take advantage of these validators whenever possible.
 
-However, there may be invalid conditions that can't be corrected automatically because it's ambiguous what the desired result is. For example, it doesn't make much sense for our custom block to have a `FIRST` field with a greater value than the `LAST` field, but it's not obvious which of the two fields is "wrong." The best we can do is warn the user about the problem, and let them decide how to fix it. 
+However, there may be invalid conditions that can't be corrected automatically because it's ambiguous what the desired result is. For example, it doesn't make much sense for our custom block to have a `FIRST` field with a greater value than the `LAST` field, but it's not obvious which of the two fields is "wrong." The best we can do is warn the user about the problem, and let them decide how to fix it.
 
 In the case of our custom block, we want our extension to be notified whenever either field is updated, so that it can check both of the fields to determine whether the block is currently valid. We can set that up with a general change listener by adding this code inside the extension function after the custom validator:
 

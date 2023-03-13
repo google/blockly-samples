@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.11](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.10...@blockly/field-date@6.0.11) (2023-03-09)
+
+**Note:** Version bump only for package @blockly/field-date
+
+
+
+
+
+## [6.0.10](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.9...@blockly/field-date@6.0.10) (2023-03-02)
+
+**Note:** Version bump only for package @blockly/field-date
+
+
+
+
+
+## [6.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.8...@blockly/field-date@6.0.9) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
+## [6.0.8](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.7...@blockly/field-date@6.0.8) (2023-02-23)
+
+**Note:** Version bump only for package @blockly/field-date
+
+
+
+
+
+## [6.0.7](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.6...@blockly/field-date@6.0.7) (2023-02-16)
+
+**Note:** Version bump only for package @blockly/field-date
+
+
+
+
+
 ## [6.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.5...@blockly/field-date@6.0.6) (2023-02-09)
 
 **Note:** Version bump only for package @blockly/field-date

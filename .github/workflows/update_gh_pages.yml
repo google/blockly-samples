@@ -4,6 +4,12 @@ name: Update GitHub Pages
 
 on:
   workflow_dispatch:  # Manually trigger. Colon is required.
+    inputs:
+      branch:
+        description: 'Branch to publish from'
+        required: true
+        default: 'master'
+        type: string
   workflow_call: # Allow this workflow to be called from publish workflow.
 
 permissions:
@@ -17,7 +23,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: master
+        ref: ${{ inputs.branch || 'master' }}
 
     - name: Setup Node
       uses: actions/setup-node@v3

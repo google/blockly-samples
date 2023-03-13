@@ -58,12 +58,14 @@ class FieldDate extends Blockly.FieldTextInput {
   /**
    * Constructs a FieldDate from a JSON arg object.
    * @param {!Object} options A JSON object with options (date).
-   * @return {!FieldDate} The new field instance.
+   * @returns {!FieldDate} The new field instance.
    * @package
    * @nocollapse
    */
   static fromJson(options) {
-    return new FieldDate(options['date'], undefined, options['textEdit']);
+    // `this` might be a subclass of FieldDate if that class doesn't
+    // override the static fromJson method.
+    return new this(options['date'], undefined, options['textEdit']);
   }
 
   /**
@@ -87,7 +89,7 @@ class FieldDate extends Blockly.FieldTextInput {
   /**
    * Ensures that the input value is a valid date.
    * @param {*=} newValue The input value.
-   * @return {?string} A valid date, or null if invalid.
+   * @returns {?string} A valid date, or null if invalid.
    * @protected
    */
   doClassValidation_(newValue = undefined) {
@@ -205,7 +207,7 @@ class FieldDate extends Blockly.FieldTextInput {
 
   /**
    * Creates the date dropdown editor.
-   * @return {!goog.ui.DatePicker} The newly created date picker.
+   * @returns {!goog.ui.DatePicker} The newly created date picker.
    * @private
    */
   dropdownCreate_() {
@@ -377,7 +379,7 @@ Blockly.Css.register(`
   font-weight: bold;
 }
 
-.blocklyDatePicker .goog-date-picker-wday, 
+.blocklyDatePicker .goog-date-picker-wday,
 .blocklyDatePicker .goog-date-picker-other-month {
   color: #70757a;
   border-radius: 12px;
@@ -393,7 +395,7 @@ Blockly.Css.register(`
 
 .blocklyDatePicker button:hover,
 .blocklyDatePicker .goog-date-picker-date:hover {
-  background-color: rgb(218, 220, 224, .5);
+  background-color: rgb(218, 220, 224, 0.5);
 }
 `);
 
@@ -411,7 +413,7 @@ goog.getMsgOrig = goog.getMsg;
  * Used infrequently, only known case is TODAY button in date picker.
  * @param {string} str Translatable string, places holders in the form {$foo}.
  * @param {Object.<string, string>=} values Maps place holder name to value.
- * @return {string} Message with placeholders filled.
+ * @returns {string} Message with placeholders filled.
  */
 goog.getMsg = function(str, values = undefined) {
   const key = goog.getMsg.blocklyMsgMap[str];

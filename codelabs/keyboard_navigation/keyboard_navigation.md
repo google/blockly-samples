@@ -2,13 +2,13 @@ author: Abby Schmiedt
 summary: Codelab to configure keyboard navigation
 id: keyboard-navigation
 categories: blockly,codelab,accessibility,keyboard navigation
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Keyboard navigation
 
 ## Codelab overview
-Keyboard navigation is the first step in making Blockly more accessible. This guide focuses on how to modify keyboard navigation for testing purposes. 
+Keyboard navigation is the first step in making Blockly more accessible. This guide focuses on how to modify keyboard navigation for testing purposes.
 
 ### Prerequisites
 1. A basic understanding of how to use the Blockly playground locally. This can be found in [`tests/playground.html`](https://github.com/google/blockly/blob/master/tests/playground.html).
@@ -31,7 +31,7 @@ Over the course of this codelab you will build the following:
 1. A Blockly version greater than or equal to `5.20210325.0` and the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation).
 
 ## Terminology
-A **Marker** holds a location and is not movable. 
+A **Marker** holds a location and is not movable.
 
 A **Cursor** is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
 
@@ -41,7 +41,7 @@ The below image displays different parts of a block that a user can navigate to 
 ## Setup
 In this codelab you will add code to a Blockly playground that has the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation) initialized.
 We will be using the playground created in the keyboard
-navigation plugin, which can be found in [`tests/index.js`](https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/test/index.js). 
+navigation plugin, which can be found in [`tests/index.js`](https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/test/index.js).
 
 To get the playground up and working follow these steps:
 1. Clone the [blockly-samples](https://github.com/google/blockly-samples) repository.
@@ -79,7 +79,7 @@ In `test/index.js` after the workspace is initialized in `createWorkspace` call 
 workspace.getMarkerManager().setCursor(new CustomCursor());
 ```
 
-## Understand AST Nodes 
+## Understand AST Nodes
 When designing keyboard navigation we needed a way to organize all the different components in a workspace in a structured way. Our solution was to represent the workspace and its components as an abstract syntax tree ([AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)).
 
 The below image displays the AST for a workspace.
@@ -109,7 +109,7 @@ const inputNode = Blockly.ASTNode.createInputNode(input);
 ### Use AST nodes
 We use these nodes in our cursor to decide where to go and what to draw.
 
-Every node can: 
+Every node can:
 1. Return the node below it (`in()`)
 1. Return the node above it (`out()`)
 1. Return the previous node (`prev()`)
@@ -121,13 +121,13 @@ const stackNode = workspaceNode.in();
 ```
 
 ## Change the marker look
-The `Blockly.blockRendering.MarkerSvg` class contains the logic to draw cursors and markers. The  `Blockly.blockRendering.MarkerSvg` class decides what to draw depending on the current node the cursor or marker holds.  
+The `Blockly.blockRendering.MarkerSvg` class contains the logic to draw cursors and markers. The  `Blockly.blockRendering.MarkerSvg` class decides what to draw depending on the current node the cursor or marker holds.
 
 Create a new custom marker that will change the look of cursors and markers when they are on a block.
 
 ### Create a custom marker svg
 Add the below code to your `custom_marker_svg.js` file.
-Create a new class that extends `Blockly.blockRendering.MarkerSvg`. 
+Create a new class that extends `Blockly.blockRendering.MarkerSvg`.
 ```js
 class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
   constructor(workspace, constants, marker) {
@@ -187,7 +187,7 @@ Override `showAtLocation_`. This method is used to decide what to display at a g
   showAtLocation_(curNode) {
     let handled = false;
     // If the cursor is on a block call the new method we created to draw the cursor.
-    if (curNode.getType() == Blockly.ASTNode.types.BLOCK) {
+    if (curNode.getType() === Blockly.ASTNode.types.BLOCK) {
       this.showWithBlock_(curNode);
       handled = true;
     }
@@ -216,7 +216,7 @@ In order to have the cursor use `CustomMarkerSvg` we need to
 override the renderer. For more information on customizing a renderer see the
 custom renderer [codelab](https://blocklycodelabs.dev/codelabs/custom-renderer/index.html?index=..%2F..index#2).
 
-Add the below code to your `custom_marker_svg.js` file. 
+Add the below code to your `custom_marker_svg.js` file.
 ```js
 class CustomRenderer extends Blockly.geras.Renderer {
   constructor(name) {
@@ -255,7 +255,7 @@ Open the playground and drag a function block on to your workspace. Press **ctrl
 ## Change the cursor behavior
 
 ### Override the move methods
-In order to create a cursor that skips over previous and next connections override the methods that move the cursor. 
+In order to create a cursor that skips over previous and next connections override the methods that move the cursor.
 
 Add the below code to your `custom_cursor.js` file.
 ```js
@@ -361,7 +361,7 @@ prev() {
 }
 ```
 
-Change the `in` method so that it will skip over any previous connections and go straight to the block. 
+Change the `in` method so that it will skip over any previous connections and go straight to the block.
 ```js
 in() {
   const curNode = this.getCurNode();
@@ -369,7 +369,7 @@ in() {
     return null;
   }
   let newNode = curNode.in();
-  // If the newNode is a previous connection go to the next value in the level. 
+  // If the newNode is a previous connection go to the next value in the level.
   // This will be the block.
   if (newNode && newNode.getType() === Blockly.ASTNode.types.PREVIOUS) {
     newNode = newNode.next();
@@ -469,7 +469,7 @@ Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlW, 'moveToStack');
 
 As of version 9 of Blockly you can also add this key mapping when you first
 create the keyboard shortcut by adding a keyCodes property to your shortcut
-object. 
+object.
 
 ```js
 const moveToStack = {
@@ -488,7 +488,7 @@ the stack of blocks.
 
 ## Change current key mappings
 In this section, we update our key mappings so we can use the arrow
-keys for our cursor instead of the **WASD** keys. 
+keys for our cursor instead of the **WASD** keys.
 
 Before adding the key mappings below, import the shortcut names by adding the
 following line to your `index.js` file.

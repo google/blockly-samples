@@ -104,7 +104,7 @@ Blockly.defineBlocksWithJsonArray([
 const getDefNoReturn = {
   /**
    * Returns info about this block to be used by the Blockly.Procedures.
-   * @return {Array} An array of info.
+   * @returns {Array} An array of info.
    * @this {Blockly.Block}
    */
   getProcedureDef: function() {
@@ -129,7 +129,7 @@ Blockly.Extensions.registerMixin('get_procedure_def_no_return', getDefNoReturn);
 const getDefReturn = {
   /**
    * Returns info about this block to be used by the Blockly.Procedures.
-   * @return {Array} An array of info.
+   * @returns {Array} An array of info.
    * @this {Blockly.Block}
    */
   getProcedureDef: function() {
@@ -206,7 +206,7 @@ const procedureDefMutator = {
    * @param {boolean=} isForCaller If true include the procedure name and
    *     argument IDs. Used by Blockly.Procedures.mutateCallers for
    *     reconnection.
-   * @return {!Element} XML storage element.
+   * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function(isForCaller = false) {
@@ -264,7 +264,7 @@ const procedureDefMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return {{params: (!Array<{name: string, id: string}>|undefined),
+   * @returns {{params: (!Array<{name: string, id: string}>|undefined),
    *     hasStatements: (boolean|undefined)}} The state of this block, eg the
    *     parameters and statements.
    */
@@ -448,7 +448,7 @@ const procedureDefMutator = {
   /**
    * Validates text entered into the argument name field.
    * @param {string} newName The new text entered into the field.
-   * @return {?string} The field's new value.
+   * @returns {?string} The field's new value.
    * @this {Blockly.FieldTextInput}
    */
   validator_: function(newName) {
@@ -469,7 +469,7 @@ const procedureDefMutator = {
      * @param {{model: Blockly.VariableModel, argId:string}} argDatum The
      *     argDatum we want to make sure does not conflict with the argDatum
      *     associated with this field.
-     * @return {boolean} True if the given datum does not conflict with the
+     * @returns {boolean} True if the given datum does not conflict with the
      *     datum associated with this field.
      * @this {Blockly.FieldTextInput}
      */
@@ -481,8 +481,8 @@ const procedureDefMutator = {
     /**
      * Returns true if the variable associated with this field is only used
      * by this block, or callers of this procedure.
-     * @return {boolean} True if the variable associated with this field is only
-     *     used by this block, or callers of this procedure.
+     * @returns {boolean} True if the variable associated with this field is
+     *     only used by this block, or callers of this procedure.
      */
     const varOnlyUsedHere = () => {
       return workspace.getVariableUsesById(currId).every((block) => {
@@ -594,7 +594,7 @@ const procedureVars = function() {
   const mixin = {
     /**
      * Return all variables referenced by this block.
-     * @return {!Array.<string>} List of variable names.
+     * @returns {!Array.<string>} List of variable names.
      * @this {Blockly.Block}
      */
     getVars: function() {
@@ -603,7 +603,7 @@ const procedureVars = function() {
 
     /**
      * Return all variables referenced by this block.
-     * @return {!Array.<!Blockly.VariableModel>} List of variable models.
+     * @returns {!Array.<!Blockly.VariableModel>} List of variable models.
      * @this {Blockly.Block}
      */
     getVarModels: function() {

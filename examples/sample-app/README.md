@@ -7,14 +7,14 @@ This app illustrates how to use Blockly together with common programming tools l
 ## Quick Start
 
 1. [Install](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) npm if you haven't before.
-2. Clone the blockly-samples repository and navigate to this `sample-app` directory (or make a copy of it) on the command line.
+2. Run [`npx @blockly/create-package app <application-name>`](https://www.npmjs.com/package/@blockly/create-package) to clone this application to your own machine.
 3. Run `npm install` to install the required dependencies.
 4. Run `npm run start` to run the development server and see the app in action.
 5. If you make any changes to the source code, just refresh the browser while the server is running to see them.
 
 ## Tooling
 
-The application uses many of the same tools that the Blockly team uses to develop Blockly itself. Following is a brief overview, and you can read more about them on our [developer site](https://developers.google.com/blockly/guides/contribute/get-started/development_tools). 
+The application uses many of the same tools that the Blockly team uses to develop Blockly itself. Following is a brief overview, and you can read more about them on our [developer site](https://developers.google.com/blockly/guides/contribute/get-started/development_tools).
 
 - Structure: The application is built as an npm package. You can use npm to manage the dependencies of the application.
 - Modules: ES6 modules to handle imports to/exports from other files.
@@ -42,3 +42,9 @@ You can disable, reconfigure, or replace any of these tools at any time, but the
 - `toolbox.js` contains the toolbox definition for the app. The current toolbox contains nearly every block that Blockly provides out of the box. You probably want to replace this definition with your own toolbox that uses your custom blocks and only includes the default blocks that are relevant to your application.
 - `blocks/text.js` has code for a custom text block, just as an example of creating your own blocks. You probably want to delete this block, and add your own blocks in this directory.
 - `generators/javascript.js` contains the JavaScript generator for the custom text block. You'll need to include block generators for any custom blocks you create, in whatever programming language(s) your application will use.
+
+## Serving
+
+To run your app locally, run `npm run start` to run the development server. This mode generates source maps and ingests the source maps created by Blockly, so that you can debug using unminified code.
+
+To deploy your app so that others can use it, run `npm run build` to run a production build. This will bundle your code and minify it to reduce its size. You can then host the contents of the `dist` directory on a web server of your choosing. If you're just getting started, try using [GitHub Pages](https://pages.github.com/).

@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ async function updatePositionHandler(req, res) {
       const positionUpdate = JSON.parse(data).positionUpdate;
       await database.updatePosition(positionUpdate);
       res.statusCode = 200;
-      res.end();  
+      res.end();
     });
   } catch {
     res.statusCode = 401;
@@ -60,7 +60,7 @@ async function getPositionUpdatesHandler(res, workspaceId) {
     const positionUpdates = await database.getPositionUpdates(workspaceId);
     res.setHeader('Content-Type', 'application/json');
     res.statusCode = 200;
-    res.write(JSON.stringify({ positionUpdates }));  
+    res.write(JSON.stringify({ positionUpdates }));
     res.end();
   } catch {
     res.statusCode = 401;

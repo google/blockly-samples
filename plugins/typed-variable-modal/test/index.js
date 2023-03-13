@@ -19,13 +19,13 @@ import '../src/index.js';
  * Create a workspace.
  * @param {HTMLElement} blocklyDiv The blockly container div.
  * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @return {!Blockly.WorkspaceSvg} The created workspace.
+ * @returns {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
   /**
    * Create the typed variable flyout.
    * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
-   * @return {!Array.<!Element>} Array of XML block elements.
+   * @returns {!Array.<!Element>} Array of XML block elements.
    */
   const createFlyout = function(workspace) {
     let xmlList = [];
@@ -52,13 +52,15 @@ function createWorkspace(blocklyDiv, options) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  let toolboxString = toolboxCategories.replace('</xml>',
-      '<category name="Typed Variables" categorystyle="variable_category" ' +
-      'custom="CREATE_TYPED_VARIABLE"></category>');
-  toolboxString = toolboxString + '</xml>';
+  toolboxCategories['contents'].push({
+    'kind': 'category',
+    'name': 'Typed Variables',
+    'custom': 'CREATE_TYPED_VARIABLE',
+    'categorystyle': 'variable_category',
+  });
 
   const defaultOptions = {
-    toolbox: toolboxString,
+    toolbox: toolboxCategories,
   };
   createPlayground(document.getElementById('root'), createWorkspace,
       defaultOptions);

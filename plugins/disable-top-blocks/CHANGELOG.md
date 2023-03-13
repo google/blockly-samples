@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.11](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.10...@blockly/disable-top-blocks@0.2.11) (2023-03-09)
+
+**Note:** Version bump only for package @blockly/disable-top-blocks
+
+
+
+
+
+## [0.2.10](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.9...@blockly/disable-top-blocks@0.2.10) (2023-03-02)
+
+**Note:** Version bump only for package @blockly/disable-top-blocks
+
+
+
+
+
+## [0.2.9](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.8...@blockly/disable-top-blocks@0.2.9) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
+## [0.2.8](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.7...@blockly/disable-top-blocks@0.2.8) (2023-02-23)
+
+**Note:** Version bump only for package @blockly/disable-top-blocks
+
+
+
+
+
+## [0.2.7](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.6...@blockly/disable-top-blocks@0.2.7) (2023-02-16)
+
+**Note:** Version bump only for package @blockly/disable-top-blocks
+
+
+
+
+
 ## [0.2.6](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.2.5...@blockly/disable-top-blocks@0.2.6) (2023-02-09)
 
 **Note:** Version bump only for package @blockly/disable-top-blocks

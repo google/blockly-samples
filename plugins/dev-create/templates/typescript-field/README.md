@@ -31,12 +31,12 @@ Blockly.Blocks["test_field_template"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("template: ")
-      .appendField(new FieldTemplate(...), "FIELDNAME")
+      .appendField(new FieldTemplate(...), "FIELDNAME");
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/plugin';

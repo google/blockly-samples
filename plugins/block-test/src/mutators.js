@@ -51,7 +51,7 @@ Blockly.defineBlocksWithJsonArray([
 const MANY_BLOCKS_MUTATOR = {
   /**
    * Create XML to represent the block mutation.
-   * @return {Element} XML storage element.
+   * @returns {Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -70,7 +70,7 @@ const MANY_BLOCKS_MUTATOR = {
   },
   /**
    * Returns the state of this block as a json serializable object.
-   * @return {{colour: string}} The state of this block.
+   * @returns {{colour: string}} The state of this block.
    * @this {Blockly.Block}
    */
   saveExtraState: function() {
@@ -88,7 +88,7 @@ const MANY_BLOCKS_MUTATOR = {
   /**
    * Populate the mutator's dialog with this block's components.
    * @param {!Blockly.Workspace} workspace Mutator's workspace.
-   * @return {!Blockly.Block} Root block in mutator.
+   * @returns {!Blockly.Block} Root block in mutator.
    * @this {Blockly.Block}
    */
   decompose: function(workspace) {
@@ -153,7 +153,7 @@ Blockly.defineBlocksWithJsonArray([
 const NO_FLYOUT_MUTATOR = {
   /**
    * Create XML to represent the block mutation.
-   * @return {Element} XML storage element.
+   * @returns {Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -172,7 +172,7 @@ const NO_FLYOUT_MUTATOR = {
   },
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return {{colour: string}} The state of this block.
+   * @returns {{colour: string}} The state of this block.
    */
   saveExtraState: function() {
     return {'colour': this.colour_};
@@ -189,7 +189,7 @@ const NO_FLYOUT_MUTATOR = {
   /**
    * Populate the mutator's dialog with this block's components.
    * @param {!Blockly.Workspace} workspace Mutator's workspace.
-   * @return {!Blockly.Block} Root block in mutator.
+   * @returns {!Blockly.Block} Root block in mutator.
    * @this {Blockly.Block}
    */
   decompose: function(workspace) {

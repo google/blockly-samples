@@ -2,8 +2,8 @@ author: Rachel Fenichel
 summary: Codelab showing how to create and use a custom generator.
 id: custom-generator
 categories: blockly,codelab,generator
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Build a custom generator
 
@@ -182,7 +182,7 @@ If the server is already running, you can refresh the page to see your changes. 
 
 ![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
 
-The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon. 
+The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon.
 
 ## The basics
 
@@ -223,7 +223,7 @@ Then, we need to import the new generator:
 import {jsonGenerator} from './generators/json';
 ```
 
-Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workpace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
+Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workspace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
 
 ```js
 const runCode = () => {
@@ -370,7 +370,7 @@ Calling `getFieldValue` on a dropdown field returns the value of the selected op
 
 ```js
 jsonGenerator['logic_boolean'] = function(block) {
-  const code = (block.getFieldValue('BOOL') == 'TRUE') ? 'true' : 'false';
+  const code = (block.getFieldValue('BOOL') === 'TRUE') ? 'true' : 'false';
   return [code, jsonGenerator.PRECEDENCE];
 };
 ```

@@ -104,7 +104,7 @@ suite('UserDataManager', () => {
       this.BlocklyMarkerManager.markers_['mockId'] = marker;
       this.userDataManager.disposeMarker_('mockId');
       assert(this.BlocklyMarkerManager.unregisterMarker.calledOnceWith('mockId'));
-    });    
+    });
   });
 
   suite('updateMarkerPositions', () => {

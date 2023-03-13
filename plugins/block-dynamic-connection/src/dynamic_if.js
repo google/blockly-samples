@@ -46,7 +46,7 @@ Blockly.Blocks['dynamic_if'] = {
 
   /**
    * Create XML to represent if/elseif/else inputs.
-   * @return {!Element} XML storage element.
+   * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -138,7 +138,7 @@ Blockly.Blocks['dynamic_if'] = {
    * Finds the index of a connection. Used to determine where in the block to
    * insert new inputs.
    * @param {!Blockly.Connection} connection A connection on this block.
-   * @return {?number} The index of the connection in the this.inputList.
+   * @returns {?number} The index of the connection in the this.inputList.
    */
   findInputIndexForConnection: function(connection) {
     for (let i = 0; i < this.inputList.length; i++) {

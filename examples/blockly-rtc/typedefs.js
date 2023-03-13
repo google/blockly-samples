@@ -38,12 +38,12 @@
  * @property {number} entryNumber The numeric id assigned to an entry by the
  * client.
  */
- 
+
  /**
  * An update to the position of a user.
  * @typedef {Object} PositionUpdate
  * @property {string} workspaceId The workspaceId of the user.
- * @property {Position} position The position of the user. 
+ * @property {Position} position The position of the user.
  */
 
  /**

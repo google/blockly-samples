@@ -216,7 +216,7 @@ suite('WorkspaceClient', () => {
         {mockEvent: 'mockLocalEvent2'}
       ], this.workspaceClient.notSent);
     });
-      
+
     test('Entries contain local changes followed by external changes.', () => {
       this.workspaceClient.notSent = [
         {mockEvent:'mockLocalEvent1'},
@@ -336,7 +336,7 @@ suite('WorkspaceClient', () => {
       assert.equal(true, queryStub.calledOnce);
     });
   });
-  
+
   suite('queryDatabase_()', () => {
     test('Query fails.', async () => {
       sinon.stub(this.workspaceClient, 'getEventsHandler').rejects();

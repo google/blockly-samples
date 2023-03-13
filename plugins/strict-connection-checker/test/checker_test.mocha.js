@@ -24,7 +24,7 @@ suite('StrictConnectionChecker', function() {
    * Make a block stub that implements only `isShadow` and returns the given
    * value.
    * @param {boolean} isShadow Whether `isShadow` should return true or false.
-   * @return {!Object} A block stub.
+   * @returns {!Object} A block stub.
    * @package
    */
   function makeBlock(isShadow) {

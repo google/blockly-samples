@@ -63,10 +63,10 @@ Here are additional CSS classes to style your search bar:
     ```css
     '.blockly-ws-search {',
       'background: white;',
-      'border: solid lightgrey .5px;',
+      'border: solid lightgrey 0.5px;',
       'box-shadow: 0px 10px 20px grey;',
       'justify-content: center;',
-      'padding: .25em;',
+      'padding: 0.25em;',
       'position: absolute;',
       'z-index: 70;',
     '}'

@@ -51,7 +51,7 @@ export class FieldSlider extends Blockly.FieldNumber {
    * @param precision Precision for value.
    * @param validator A function that is called to validate
    *    changes to the field's value. Takes in a number & returns a validated
-   *    number, or null to abort the change.`
+   *    number, or null to abort the change.
    * @param config A map of options used to configure the field.
    *    See the [field creation documentation]{@link
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
@@ -65,14 +65,16 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Constructs a FieldSlider from a JSON arg object.
-   * @param options A JSON object with options (value, min, max, and
-   *                          precision).
+   * @param options A JSON object with options
+   *     (value, min, max, precision).
    * @returns The new field instance.
    * @package
    * @nocollapse
    */
   static fromJson(options: FieldSliderOptions): FieldSlider {
-    return new FieldSlider(
+    // `this` might be a subclass of FieldSlider if that class doesn't override
+    // the static fromJson method.
+    return new this(
         options.value, undefined, undefined, undefined, undefined, options);
   }
 
@@ -94,12 +96,12 @@ export class FieldSlider extends Blockly.FieldNumber {
     const editor = this.dropdownCreate_();
 
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
-
-    const sourceBlock = this.getSourceBlock() as Blockly.BlockSvg;
-
-    const primary = sourceBlock.getColour() || '';
-    const tertiary = sourceBlock.getColourTertiary() || '';
-    Blockly.DropDownDiv.setColour(primary, tertiary);
+    const sourceBlock = this.getSourceBlock();
+    if (sourceBlock instanceof Blockly.BlockSvg) {
+      const primary = sourceBlock.getColour() || '';
+      const tertiary = sourceBlock.getColourTertiary() || '';
+      Blockly.DropDownDiv.setColour(primary, tertiary);
+    }
 
     Blockly.DropDownDiv.showPositionedByField(
         this, this.dropdownDispose_.bind(this));

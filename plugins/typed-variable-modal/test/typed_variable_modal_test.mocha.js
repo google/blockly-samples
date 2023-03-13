@@ -21,7 +21,7 @@ suite('TypedVariableModal', function() {
    * @param {string} toolbox The toolbox.
    * @param {Array.<Array.<string>>} types An array holding arrays with the
    *     display name as the first value and the type as the second.
-   * @return {Blockly.WorkspaceSvg} The workspace to use for testing.
+   * @returns {Blockly.WorkspaceSvg} The workspace to use for testing.
    */
   function workspaceSetup(toolbox, types) {
     const options = {};
@@ -46,7 +46,7 @@ suite('TypedVariableModal', function() {
   }
   /**
    * Create a toolbox to test with.
-   * @return {string} The toolbox.
+   * @returns {string} The toolbox.
    */
   function getTestToolbox() {
     const toolbox = `

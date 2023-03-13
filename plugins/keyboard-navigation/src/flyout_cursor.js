@@ -28,7 +28,7 @@ export class FlyoutCursor extends Blockly.Cursor {
 
   /**
    * Moves the cursor to the next stack of blocks in the flyout.
-   * @return {Blockly.ASTNode} The next element, or null if the current node is
+   * @returns {Blockly.ASTNode} The next element, or null if the current node is
    *     not set or there is no next value.
    * @override
    */
@@ -47,7 +47,7 @@ export class FlyoutCursor extends Blockly.Cursor {
 
   /**
    * This is a no-op since a flyout cursor can not go in.
-   * @return {null} Always null.
+   * @returns {null} Always null.
    * @override
    */
   in() {
@@ -56,8 +56,8 @@ export class FlyoutCursor extends Blockly.Cursor {
 
   /**
    * Moves the cursor to the previous stack of blocks in the flyout.
-   * @return {Blockly.ASTNode} The previous element, or null if the current node
-   *     is not set or there is no previous value.
+   * @returns {Blockly.ASTNode} The previous element, or null if the current
+   *     node is not set or there is no previous value.
    * @override
    */
   prev() {
@@ -75,7 +75,7 @@ export class FlyoutCursor extends Blockly.Cursor {
 
   /**
    * This is a  no-op since a flyout cursor can not go out.
-   * @return {null} Always null.
+   * @returns {null} Always null.
    * @override
    */
   out() {

@@ -2,8 +2,8 @@ author: Blockly Team
 summary: How to add a context menu option in Blockly.
 id: context-menu-option
 categories: blockly,codelab,contextmenu
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Customizing your context menus
 

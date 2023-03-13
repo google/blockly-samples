@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.4](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.3...@blockly/create-package@1.3.4) (2023-03-09)
+
+**Note:** Version bump only for package @blockly/create-package
+
+
+
+
+
+## [1.3.3](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.2...@blockly/create-package@1.3.3) (2023-03-02)
+
+
+### Bug Fixes
+
+* do not include dist script in template ([#1580](https://github.com/google/blockly-samples/issues/1580)) ([4862db5](https://github.com/google/blockly-samples/commit/4862db56e55e084f16fa52319a58ad73f47737b0))
+
+
+
+## [1.3.2](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.1...@blockly/create-package@1.3.2) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
+## [1.3.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.0...@blockly/create-package@1.3.1) (2023-02-23)
+
+
+### Bug Fixes
+
+* Copy the sample-app files before publishing ([#1578](https://github.com/google/blockly-samples/issues/1578)) ([a7fd02e](https://github.com/google/blockly-samples/commit/a7fd02e1b1eea4e37cd61edab9207ae9f03d091b))
+
+
+
+## [1.3.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.2.1...@blockly/create-package@1.3.0) (2023-02-23)
+
+
+### Features
+
+* Add ability to create sample app ([#1553](https://github.com/google/blockly-samples/issues/1553)) ([b7aa6f4](https://github.com/google/blockly-samples/commit/b7aa6f46557ccb0e4da691b8b20f7bb2e47a1044))
+
+
+
+## [1.2.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.2.0...@blockly/create-package@1.2.1) (2023-02-16)
+
+**Note:** Version bump only for package @blockly/create-package
+
+
+
+
+
 ## [1.2.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.1.23...@blockly/create-package@1.2.0) (2023-02-09)
 
 

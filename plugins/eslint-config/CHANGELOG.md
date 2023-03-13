@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.21](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@2.1.20...@blockly/eslint-config@2.1.21) (2023-03-02)
+
+**Note:** Version bump only for package @blockly/eslint-config
+
+
+
+
+
+## [2.1.20](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@2.1.19...@blockly/eslint-config@2.1.20) (2023-02-16)
+
+
+### Bug Fixes
+
+* restore modes to eslint ([3ebb753](https://github.com/google/blockly-samples/commit/3ebb753b49190ecda816bac141ff85cef5d7a0f1))
+* restore returns preference ([7bae882](https://github.com/google/blockly-samples/commit/7bae882c82c5d422faa86524bbc28606d8e2d6d4))
+
+
+
 ## [2.1.19](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@2.1.18...@blockly/eslint-config@2.1.19) (2023-02-09)
 
 **Note:** Version bump only for package @blockly/eslint-config

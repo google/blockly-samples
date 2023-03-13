@@ -45,7 +45,7 @@ export class CodeGenerationTestCase {
    * Creates the block to use for this test case.
    * @param {!Blockly.Workspace} workspace The workspace context for this
    *    test.
-   * @return {!Blockly.Block} The block to use for the test case.
+   * @returns {!Blockly.Block} The block to use for the test case.
    */
   createBlock(workspace) {}
 }
@@ -109,7 +109,7 @@ export class SerializationTestCase {
  * Returns mocha test callback for code generation based on provided
  *    generator.
  * @param {!Blockly.Generator} generator The generator to use in test.
- * @return {function(!CodeGenerationTestCase):!Function} Function that
+ * @returns {function(!CodeGenerationTestCase):!Function} Function that
  *    returns mocha test callback based on test case.
  * @private
  */
@@ -148,7 +148,7 @@ export const runCodeGenerationTestSuites = (testSuites) => {
   /**
    * Creates function used to generate mocha test callback.
    * @param {!CodeGenerationTestSuite} suiteInfo The test suite information.
-   * @return {function(!CodeGenerationTestCase):!Function} Function that
+   * @returns {function(!CodeGenerationTestCase):!Function} Function that
    *    creates mocha test callback.
    */
   const createTestFn = (suiteInfo) => {
@@ -166,37 +166,40 @@ export const runSerializationTestSuite = (testCases) => {
   /**
    * Creates test callback for xmlToBlock test.
    * @param {!SerializationTestCase} testCase The test case information.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createSerializedDataToBlockTestCallback = (testCase) => {
     return function() {
       let block;
       if (testCase.json) {
         block = Blockly.serialization.blocks.append(
-            testCase.json, this.workspace);
+            testCase.json, this.workspace, {recordUndo: true});
       } else {
         block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             testCase.xml), this.workspace);
       }
+      if (globalThis.clock) globalThis.clock.runAll();
       testCase.assertBlockStructure(block);
     };
   };
   /**
    * Creates test callback for xml round trip test.
    * @param {!SerializationTestCase} testCase The test case information.
-   * @return {!Function} The test callback.
+   * @returns {!Function} The test callback.
    */
   const createRoundTripTestCallback = (testCase) => {
     return function() {
       if (testCase.json) {
         const block = Blockly.serialization.blocks.append(
-            testCase.json, this.workspace);
+            testCase.json, this.workspace, {recordUndo: true});
+        if (globalThis.clock) globalThis.clock.runAll();
         const generatedJson = Blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
         assert.deepEqual(generatedJson, expectedJson);
       } else {
         const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
             testCase.xml), this.workspace);
+        if (globalThis.clock) globalThis.clock.runAll();
         const generatedXml =
             Blockly.Xml.domToPrettyText(
                 Blockly.Xml.blockToDom(block));
@@ -206,10 +209,10 @@ export const runSerializationTestSuite = (testCases) => {
     };
   };
   suite('Serialization', function() {
-    suite('xmlToBlock', function() {
+    suite('append block', function() {
       runTestCases(testCases, createSerializedDataToBlockTestCallback);
     });
-    suite('xml round-trip', function() {
+    suite('serialization round-trip', function() {
       setup(function() {
         sinon.stub(Blockly.utils.idGenerator.TEST_ONLY, 'genUid')
             .returns('1');

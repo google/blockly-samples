@@ -44,8 +44,8 @@ Blockly.Blocks["test_field_grid_dropdown"] = {
   }
 };
 ```
-### JSON
 
+### JSON
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-grid-dropdown';

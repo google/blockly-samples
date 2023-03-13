@@ -2,8 +2,8 @@ author: Abby Schmiedt
 summary: Codelab to customize a toolbox
 id: custom-toolbox
 categories: blockly,codelab,toolbox,customization
-status: Draft
-Feedback Link: https://github.com/google/blockly-samples/issues/new
+status: Published
+Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 # Customizing a Blockly toolbox
 
@@ -12,7 +12,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new
 ### What you'll learn
 This codelab will focus on customizing the Blockly toolbox.
 
-In this codelab you will learn: 
+In this codelab you will learn:
 1. How to add a background color to a toolbox category.
 1. How to change the look of a selected category.
 1. How to add a custom CSS classes to a toolbox category.
@@ -74,7 +74,7 @@ directory. Include your new file by adding a script tag to `index.html`.
 <script src="custom_category.js"></script>
 ```
 
-In order to create a custom category we will create a new category that extends 
+In order to create a custom category we will create a new category that extends
 the default `Blockly.ToolboxCategory` class. Add the following code to your
 `custom_category.js` file.
 ```js
@@ -109,7 +109,7 @@ To test, open `index.html` in a browser. Your toolbox should look the same as it
 did before.
 
 ![The default toolbox. A list of categories with a strip of colour to the left.](./base_toolbox.png)
- 
+
 However, if you run the below commands in your console you will see that
 your toolbox is now using the `CustomCategory` class.
 
@@ -135,7 +135,7 @@ addColourBorder_(colour){
 The `colour` passed in is calculated from either the `categorystyle` or the `colour`
 attribute set on the category definition.
 
-For example, the "Logic" category definition looks like: 
+For example, the "Logic" category definition looks like:
 ```xml
 <category name="Logic" categorystyle="logic_category">
 ...
@@ -162,7 +162,7 @@ We are going to add some CSS to make it easier to read, and to space out our cat
 
 Create a file named `toolbox_style.css` in the same directory as `index.html`
 and include it in `index.html`:
- 
+
 ```
 <link rel="stylesheet" href="toolbox_style.css">
 ```
@@ -175,12 +175,12 @@ Copy and paste the following CSS into your `toolbox_style.css` file.
 }
 /* Adds padding around the group of categories and separators. */
 .blocklyToolboxContents {
-  padding: .5em;
+  padding: 0.5em;
 }
 /* Adds space between the categories, rounds the corners and adds space around the label. */
 .blocklyTreeRow {
   padding: 3px;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   border-radius: 4px;
 }
 ```
@@ -360,7 +360,7 @@ categories
 ![A toolbox with the blockly logo on top of the category label.](./image_toolbox.png)
 
 ## Adding a custom toolbox item
-In the previous sections we modified the toolbox by extending the base category class. 
+In the previous sections we modified the toolbox by extending the base category class.
 In this section we will make a completely new toolbox item and add it to our toolbox.
 
 For this example, we are going to create a toolbox label.
@@ -397,7 +397,7 @@ Navigate to `index.html`, and scroll down to the toolbox definition. Add a
 <toolboxlabel></toolboxlabel>
 ```
 
-Your toolbox definition should now look something like: 
+Your toolbox definition should now look something like:
 ```xml
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
 <toolboxlabel></toolboxlabel>
@@ -426,7 +426,7 @@ First, we are going to add an init method that will create the dom for our toolb
   }
 ```
 
-Next, we are going to return this element: 
+Next, we are going to return this element:
 
 ```js
   /** @override */
@@ -446,7 +446,7 @@ To make it possible to create different labels with different text and colour we
 are going to add `name` and `colour` attributes to our toolbox definition.
 
 Open `index.html` and navigate to the toolbox definition. Change your
-`toolboxlabel` element to look like the below line: 
+`toolboxlabel` element to look like the below line:
 ```xml
 <toolboxlabel name="Custom Toolbox" colour="darkslategrey"></toolboxlabel>
 ```

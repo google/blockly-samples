@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@5.0.12...@blockly/plugin-typed-variable-modal@5.0.13) (2023-03-09)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@5.0.11...@blockly/plugin-typed-variable-modal@5.0.12) (2023-03-02)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
+## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@5.0.10...@blockly/plugin-typed-variable-modal@5.0.11) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
+## [5.0.10](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@5.0.9...@blockly/plugin-typed-variable-modal@5.0.10) (2023-02-23)
+
+
+### Bug Fixes
+
+* Fixed the typed variable modal plugin demo ([#1571](https://github.com/google/blockly-samples/issues/1571)) ([3054131](https://github.com/google/blockly-samples/commit/3054131fd63b219107372ea6568ae1b0271ab31f))
+
+
+
+## [5.0.9](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@5.0.8...@blockly/plugin-typed-variable-modal@5.0.9) (2023-02-16)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
 ## [5.0.8](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@5.0.7...@blockly/plugin-typed-variable-modal@5.0.8) (2023-02-09)
 
 **Note:** Version bump only for package @blockly/plugin-typed-variable-modal

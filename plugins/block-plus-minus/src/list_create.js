@@ -45,7 +45,7 @@ const listCreateMutator = {
 
   /**
    * Creates XML to represent number of text inputs.
-   * @return {!Element} XML storage element.
+   * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
   mutationToDom: function() {
@@ -65,7 +65,7 @@ const listCreateMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
-   * @return {{itemCount: number}} The state of this block, ie the item count.
+   * @returns {{itemCount: number}} The state of this block, ie the item count.
    */
   saveExtraState: function() {
     return {

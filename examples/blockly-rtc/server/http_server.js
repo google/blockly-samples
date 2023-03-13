@@ -20,7 +20,7 @@
  * @author navil@google.com (Navil Perez)
  */
 
-const http = require('http'); 
+const http = require('http');
 const url = require('url');
 
 const EventsHandlers = require('./http/events_handlers');
@@ -44,7 +44,6 @@ http.createServer(async (req, res) => {
     res.statusCode = 404;
     res.end();
   };
-}).listen(PORT, () => { 
-    console.log('server start at port 3001'); 
+}).listen(PORT, () => {
+    console.log('server start at port 3001');
 });
-

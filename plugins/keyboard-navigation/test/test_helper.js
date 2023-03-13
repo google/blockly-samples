@@ -14,7 +14,7 @@ const Blockly = require('blockly/node');
  * @param {boolean} enableKeyboardNav True to enable keyboard navigation, false
  *     otherwise.
  * @param {boolean} readOnly True for a read only workspace, false otherwise.
- * @return {Blockly.WorkspaceSvg} The created workspace.
+ * @returns {Blockly.WorkspaceSvg} The created workspace.
  */
 export function createNavigationWorkspace(
     navigation, enableKeyboardNav, readOnly) {
@@ -55,7 +55,7 @@ export function createNavigationWorkspace(
  *     Blockly.utils.isTargetInput method.
  * @param {?Array<number>} modifiers A list of modifiers. Use
  *     Blockly.utils.KeyCodes enum.
- * @return {Object} The mocked keydown
+ * @returns {Object} The mocked keydown
  * event.
  */
 export function createKeyDownEvent(keyCode, type, modifiers) {
@@ -76,11 +76,11 @@ export function createKeyDownEvent(keyCode, type, modifiers) {
     },
     preventDefault: function() {},
   };
-  if (modifiers && modifiers.length > 0) {
-    event.altKey = modifiers.indexOf(Blockly.utils.KeyCodes.ALT) > -1;
-    event.ctrlKey = modifiers.indexOf(Blockly.utils.KeyCodes.CTRL) > -1;
-    event.metaKey = modifiers.indexOf(Blockly.utils.KeyCodes.META) > -1;
-    event.shiftKey = modifiers.indexOf(Blockly.utils.KeyCodes.SHIFT) > -1;
+  if (modifiers && modifiers.length) {
+    event.altKey = modifiers.includes(Blockly.utils.KeyCodes.ALT);
+    event.ctrlKey = modifiers.includes(Blockly.utils.KeyCodes.CTRL);
+    event.metaKey = modifiers.includes(Blockly.utils.KeyCodes.META);
+    event.shiftKey = modifiers.includes(Blockly.utils.KeyCodes.SHIFT);
   }
   return event;
 }

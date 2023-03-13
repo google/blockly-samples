@@ -29,7 +29,7 @@ field with grid layout.
 replace the built-in mutator UI with a +/- based UI.
 - [``@blockly/block-dynamic-connection``](block-dynamic-connection/): A group of
 blocks that add connections dynamically.
-- [``@blockly-block-sharable-procedures``](block-sharable-procedures): A group
+- [``@blockly-block-shareable-procedures``](block-shareable-procedures): A group
 of blocks that replace the built-in procedures with ones that can be shared
 between workspaces. (private - in development)
 - [``@blockly/block-test``](block-test/): A group of Blockly test blocks.

@@ -81,7 +81,7 @@ Blockly.Blocks['test_validators_text_B'] = {
   },
 
   validate: function(newValue) {
-    if (newValue.indexOf('b') != -1) {
+    if (newValue.indexOf('b') !== -1) {
       return null;
     }
     return newValue;

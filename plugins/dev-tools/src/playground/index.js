@@ -80,7 +80,7 @@ let PlaygroundAPI;
  *     to use.
  * @param {PlaygroundConfig=} config Optional Playground config.
  * @param {string=} vsEditorPath Optional editor path.
- * @return {Promise<PlaygroundAPI>} A promise to the playground API.
+ * @returns {Promise<PlaygroundAPI>} A promise to the playground API.
  */
 export function createPlayground(
     container, createWorkspace = Blockly.inject, defaultOptions = {
@@ -136,7 +136,7 @@ export function createPlayground(
          *     The Blockly generator.
          * @param {boolean=} isReadOnly Whether the editor should be set to
          *     read-only mode.
-         * @return {!PlaygroundTab} An object that represents the newly created
+         * @returns {!PlaygroundTab} An object that represents the newly created
          *     tab.
          */
         function registerGenerator(name, language, generator, isReadOnly) {
@@ -393,7 +393,7 @@ export function createPlayground(
 
         /**
          * Get the current GUI controls.
-         * @return {!dat.GUI} The GUI controls.
+         * @returns {!dat.GUI} The GUI controls.
          */
         const getGUI = function() {
           return gui;
@@ -401,7 +401,7 @@ export function createPlayground(
 
         /**
          * Get the current workspace.
-         * @return {!Blockly.WorkspaceSvg} The Blockly workspace.
+         * @returns {!Blockly.WorkspaceSvg} The Blockly workspace.
          */
         const getWorkspace = function() {
           return workspace;
@@ -409,7 +409,7 @@ export function createPlayground(
 
         /**
          * Get the current tab.
-         * @return {!PlaygroundTab} The current tab.
+         * @returns {!PlaygroundTab} The current tab.
          */
         const getCurrentTab = function() {
           return currentTab;
@@ -600,10 +600,10 @@ function registerEditorCommands(editor, playground) {
   });
   document.addEventListener('keydown', (e) => {
     const ctrlCmd = e.metaKey || e.ctrlKey;
-    if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.S) {
+    if (ctrlCmd && e.key === 's') {
       save();
       e.preventDefault();
-    } else if (ctrlCmd && e.keyCode === Blockly.utils.KeyCodes.ENTER) {
+    } else if (ctrlCmd && e.key === 'Enter') {
       if (!loadJson()) loadXml();
       e.preventDefault();
     }

@@ -123,7 +123,7 @@ copy all Blocks on the workspace to the backpack.
 menu - Paste all Blocks from the backpack to the workspace.
 
 ```javascript
-Blockly.Msg['EMPTY_BACKPACK'] = 'Opróżnij plecak';  // Polish 
+Blockly.Msg['EMPTY_BACKPACK'] = 'Opróżnij plecak';  // Polish
 // Inject workspace, etc...
 ```
 
@@ -173,7 +173,7 @@ workspace.configureContextMenu = (menuOptions, e) => {
   prevConfigureContextMenu &&
       prevConfigureContextMenu.call(null, menuOptions, e);
   ...
-}      
+}
 ```
 
 ### Backpack Flyout

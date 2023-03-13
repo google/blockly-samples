@@ -80,7 +80,7 @@ CustomDialog.show = function(title, message, options) {
     backdropDiv.style.cssText =
         'position: absolute;' +
         'top: 0; left: 0; right: 0; bottom: 0;' +
-        'background-color: rgba(0, 0, 0, .7);' +
+        'background-color: rgba(0, 0, 0, 0.7);' +
         'z-index: 100;';
     document.body.appendChild(backdropDiv);
 
@@ -133,11 +133,11 @@ CustomDialog.show = function(title, message, options) {
     dialogInput.focus();
 
     dialogInput.onkeyup = function(event) {
-      if (event.keyCode == 13) {
+      if (event.key === 'Enter') {
         // Process as OK when user hits enter.
         onOkay();
         return false;
-      } else if (event.keyCode == 27)  {
+      } else if (event.key === 'Escape')  {
         // Process as cancel when user hits esc.
         onCancel();
         return false;

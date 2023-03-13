@@ -1,6 +1,6 @@
 /**
  * @license
- * 
+ *
  * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,9 +33,11 @@ import "react-datepicker/dist/react-datepicker.css";
 class ReactDateField extends BlocklyReactField {
 
   static fromJson(options) {
-    return new ReactDateField(new Date(options['date']));
+    // `this` might be a subclass of ReactDateField if that class doesn't
+    // override the static fromJson method.
+    return new this(new Date(options['date']));
   }
-  
+
   onDateSelected_ = (date) => {
     this.setValue(new Date(date));
     Blockly.DropDownDiv.hideIfOwner(this, true);

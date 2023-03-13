@@ -1,0 +1,67 @@
+{
+  "name": "@blockly/block-shareable-procedures",
+  "version": "1.2.4",
+  "description": "A plugin that adds procedure blocks which are backed by explicit data models.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
+    "prepublishOnly": "npm run clean && npm run build",
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
+  },
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "blockly-block",
+    "shareable-procedures"
+  ],
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/block-shareable-procedures#readme",
+  "bugs": {
+    "url": "https://github.com/google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/blockly-samples.git",
+    "directory": "plugins/block-shareable-procedures"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "@blockly/dev-scripts": "^1.2.31",
+    "@blockly/dev-tools": "^5.2.3",
+    "@blockly/eslint-config": "^2.1.21",
+    "blockly": "9.3.0-beta.0",
+    "chai": "^4.3.7",
+    "jsdom": "^16.4.0",
+    "jsdom-global": "^3.0.2",
+    "sinon": "^15.0.1"
+  },
+  "peerDependencies": {
+    "blockly": "9.3.0-beta.0"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  },
+  "engines": {
+    "node": ">=8.17.0"
+  }
+}

@@ -38,7 +38,7 @@ let workspace = null;
 
 /**
  * Initialize a Blockly workspace, and add a change listener to update the display of generated code.
- * 
+ *
  * Called from index.html when the page initially loads.
  */
 function start() {
@@ -55,7 +55,7 @@ function start() {
 
 /**
  * Generate JavaScript code from the Blockly workspace, and execute it.
- * 
+ *
  * Called from index.html when the execute button is clicked.
  */
 function executeCode() {

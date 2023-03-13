@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.11](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.10...@blockly/suggested-blocks@2.0.11) (2023-03-09)
+
+**Note:** Version bump only for package @blockly/suggested-blocks
+
+
+
+
+
+## [2.0.10](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.9...@blockly/suggested-blocks@2.0.10) (2023-03-02)
+
+**Note:** Version bump only for package @blockly/suggested-blocks
+
+
+
+
+
+## [2.0.9](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.8...@blockly/suggested-blocks@2.0.9) (2023-02-23)
+
+
+### Bug Fixes
+
+* remove prepublishOnly scripts ([#1579](https://github.com/google/blockly-samples/issues/1579)) ([27da6cd](https://github.com/google/blockly-samples/commit/27da6cd04c38f6ba417f4e7446bb6218c475448d))
+
+
+
+## [2.0.8](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.7...@blockly/suggested-blocks@2.0.8) (2023-02-23)
+
+
+### Bug Fixes
+
+* Fixed the suggested blocks plugin demo ([#1570](https://github.com/google/blockly-samples/issues/1570)) ([c231332](https://github.com/google/blockly-samples/commit/c231332d8a6080f1abad82dba10749fe939cc314))
+
+
+
+## [2.0.7](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.6...@blockly/suggested-blocks@2.0.7) (2023-02-16)
+
+**Note:** Version bump only for package @blockly/suggested-blocks
+
+
+
+
+
 ## [2.0.6](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@2.0.5...@blockly/suggested-blocks@2.0.6) (2023-02-09)
 
 **Note:** Version bump only for package @blockly/suggested-blocks
