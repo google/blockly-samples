@@ -168,33 +168,42 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
           this.parentName + ' for the dependent dropdown.');
     }
 
-    if (parentField.getValidator()) {
-      throw new Error('The parent field with the name ' +
-          this.parentName + ' already has a validator.');
-    }
-
     this.dependencyData.parentField = parentField;
 
-    parentField.setValidator(
-        (newValue): undefined => this.updateOptionsBasedOnNewValue(newValue));
+    const oldValidator = parentField.getValidator();
+
+    // A validator function for the parent field that has the side effect of
+    // updating the options of this child dropdown field based on the new value
+    // of the parent field whenever it changes. The validator function is a good
+    // place to do this because it is called immediately while deserializing
+    // workspaces before the following fields are deserialized, so when the
+    // child value is deserialized the appropriate options will already be
+    // available. If the parent already had a validator function, it will be
+    // composed with this one and the new value returned from it will be the
+    // basis for determining the new available options.
+    parentField.setValidator((newValue) => {
+      if (oldValidator) {
+        const validatedValue = oldValidator(newValue);
+        // If a validator returns undefined, that means no change. Otherwise,
+        // use the returned value as the new value.
+        if (validatedValue !== undefined) {
+          newValue = validatedValue;
+        }
+      }
+      this.updateOptionsBasedOnNewValue(newValue);
+      return newValue;
+    });
     this.updateOptionsBasedOnNewValue(parentField.getValue());
   }
 
   /**
-   * A validator function for the parent field that has the side effect of
-   * updating the options of this child dropdown field based on the new value of
-   * the parent field whenever it changes. The validator function is a good
-   * place to do this because it is called immediately while deserializing
-   * workspaces before the following fields are deserialized, so when the child
-   * value is deserialized the appropriate options will already be available.
-   * @param newValue The newly assigned value being validated.
-   * @returns This validator always returns "undefined", meaning no change to
-   *     the validated parent value.
+   * Updates the options of this child dropdown field based on the new value of
+   * the parent field.
+   * @param newValue The newly assigned value.
    */
-  private updateOptionsBasedOnNewValue(
-      newValue: string | undefined): undefined {
+  private updateOptionsBasedOnNewValue(newValue: string | undefined): void {
     if (newValue == undefined) {
-      return undefined;
+      return;
     }
 
     const block = this.getSourceBlock();
@@ -210,7 +219,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
     if (!newChildOptions) {
       console.warn(
           'Could not find child options for the parent value: ' + newValue);
-      return undefined;
+      return;
     }
 
     // If the child field's value is still available in the new options, keep
@@ -258,7 +267,6 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
           oldChildOptions,
           newChildOptions));
     }
-    return undefined;
   }
 }
 

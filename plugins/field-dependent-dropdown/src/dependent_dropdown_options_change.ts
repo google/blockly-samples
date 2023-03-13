@@ -146,12 +146,11 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    * @returns False if something changed.
    */
   isNull(): boolean {
-    return !this.oldValue ||
-        !this.newValue ||
-        !this.oldOptions ||
-        !this.newOptions ||
-        (this.oldValue === this.newValue &&
+    const valuesAreEqual = this.oldValue === this.newValue;
+    const optionsAreEquivalent = (this.oldOptions === this.newOptions) ||
+        (Array.isArray(this.oldOptions) && Array.isArray(this.newOptions) &&
             arraysAreEquivalent(this.oldOptions, this.newOptions));
+    return valuesAreEqual && optionsAreEquivalent;
   }
 
   /**

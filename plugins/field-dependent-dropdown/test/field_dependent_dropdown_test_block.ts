@@ -1,5 +1,5 @@
 import * as Blockly from 'blockly';
-import '../src/index';
+import {ChildOptionMapping, FieldDependentDropdown} from '../src/index';
 
 Blockly.defineBlocksWithJsonArray([
   {
@@ -36,3 +36,31 @@ Blockly.defineBlocksWithJsonArray([
     'colour': 100,
   },
 ]);
+
+Blockly.Blocks['dependent_dropdown_validation_test'] = {
+  init: function() {
+    const parentFieldName = 'PARENT_FIELD';
+    const childFieldName = 'CHILD_FIELD';
+    const parentOptions: Blockly.MenuOption[] = [
+      ['Initial', 'initial'], ['Invalid', 'invalid'], ['Valid', 'valid'],
+    ];
+    const dependentOptions: ChildOptionMapping = {
+      'initial': [['Initial1', 'initial1'], ['Initial2', 'initial2']],
+      'invalid': [['Invalid1', 'invalid1'], ['Invalid2', 'invalid2']],
+      'valid': [['Valid1', 'valid1'], ['Valid2', 'valid2']],
+    };
+    const parentValidator: Blockly.FieldDropdownValidator = function(newValue) {
+      if (newValue == 'invalid') {
+        return 'valid';
+      }
+      return undefined;
+    };
+    this.appendDummyInput()
+        .appendField(
+            new Blockly.FieldDropdown(parentOptions, parentValidator),
+            parentFieldName)
+        .appendField(
+            new FieldDependentDropdown(parentFieldName, dependentOptions),
+            childFieldName);
+  },
+};

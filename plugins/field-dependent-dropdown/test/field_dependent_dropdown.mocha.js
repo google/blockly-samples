@@ -6,7 +6,7 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
-const Blockly = require('blockly');
+const Blockly = require('blockly/node');
 require('./field_dependent_dropdown_test_block');
 
 const assert = chai.assert;
@@ -73,6 +73,17 @@ suite('fieldDependentDropdown', function() {
     assert.equal(grandchildDropdown.getValue(), 'a11');
     parentDropdown.setValue('b');
     assert.equal(grandchildDropdown.getValue(), 'b11');
+  });
+
+  test('Parent field user validator composes with new validator', function() {
+    const block = this.workspace.newBlock('dependent_dropdown_validation_test');
+    const parentDropdown = block.getField('PARENT_FIELD');
+    const childDropdown = block.getField('CHILD_FIELD');
+    assert.equal(parentDropdown.getValue(), 'initial');
+    assert.equal(childDropdown.getValue(), 'initial1');
+    parentDropdown.setValue('invalid');
+    assert.equal(parentDropdown.getValue(), 'valid');
+    assert.equal(childDropdown.getValue(), 'valid1');
   });
 
   test('undoing parent change undoes child and grandchild options', function() {
