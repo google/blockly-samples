@@ -62,7 +62,7 @@ export declare class Backpack extends Blockly.DragTarget {
      * @param {!Array<!Blockly.utils.Rect>} savedPositions List of rectangles that
      *     are already on the workspace.
      */
-    position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Array<Blockly.utils.Rect>): void;
+    position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Blockly.utils.Rect[]): void;
     /**
      * Returns the count of items in the backpack.
      * @return {number} The count of items.
@@ -72,7 +72,7 @@ export declare class Backpack extends Blockly.DragTarget {
      * Returns backpack contents.
      * @return {!Array<string>} The backpack contents.
      */
-    getContents(): Array<string>;
+    getContents(): string[];
     /**
      * Handles when a block or bubble is dropped on this component.
      * Should not handle delete here.
@@ -97,7 +97,7 @@ export declare class Backpack extends Blockly.DragTarget {
      * @param {!Array<!Blockly.Block>} blocks The blocks to be added to the
      *     backpack.
      */
-    addBlocks(blocks: Array<Blockly.Block>): void;
+    addBlocks(blocks: Blockly.Block[]): void;
     /**
      * Removes the specified block from the backpack.
      * @param {!Blockly.Block} block The block to be removed from the backpack.
@@ -113,7 +113,7 @@ export declare class Backpack extends Blockly.DragTarget {
      * Adds multiple items to the backpack.
      * @param {!Array<string>} items The backpack contents to add.
      */
-    addItems(items: Array<string>): void;
+    addItems(items: string[]): void;
     /**
      * Removes item from the backpack.
      * @param {string} item Text representing the XML tree of a block to remove,
@@ -124,7 +124,7 @@ export declare class Backpack extends Blockly.DragTarget {
      * Sets backpack contents.
      * @param {!Array<string>} contents The new backpack contents.
      */
-    setContents(contents: Array<string>): void;
+    setContents(contents: string[]): void;
     /**
      * Empties the backpack's contents. If the contents-flyout is currently open
      * it will be closed.
