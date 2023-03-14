@@ -8,23 +8,25 @@
  * backpack plugin.
  * @author kozbial@google.com (Monica Kozbial)
  */
-export type BackpackContextMenuOptions = {
-    emptyBackpack?: boolean;
-    removeFromBackpack?: boolean;
-    copyToBackpack?: boolean;
-    copyAllToBackpack?: boolean;
-    pasteAllToBackpack?: boolean;
-    disablePreconditionChecks?: boolean;
-};
-export type BackpackOptions = {
-    allowEmptyBackpackOpen?: boolean;
-    useFilledBackpackImage?: boolean;
-    contextMenu?: BackpackContextMenuOptions;
-};
+export interface BackpackContextMenuOptions {
+  emptyBackpack?: boolean;
+  removeFromBackpack?: boolean;
+  copyToBackpack?: boolean;
+  copyAllToBackpack?: boolean;
+  pasteAllToBackpack?: boolean;
+  disablePreconditionChecks?: boolean;
+}
+export interface BackpackOptions {
+  allowEmptyBackpackOpen?: boolean;
+  useFilledBackpackImage?: boolean;
+  contextMenu?: BackpackContextMenuOptions;
+}
 /**
  * Returns a new options object with all properties set, using default values
  * if not specified in the optional options that were passed in.
  * @param {BackpackOptions=} options The options to use.
  * @return {!BackpackOptions} The created options object.
  */
-export declare function parseOptions(options?: BackpackOptions): BackpackOptions;
+export declare function parseOptions(
+  options?: BackpackOptions,
+): BackpackOptions;
