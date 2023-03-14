@@ -8,19 +8,17 @@
  * backpack plugin.
  * @author kozbial@google.com (Monica Kozbial)
  */
-export type BackpackOptions = {
-    allowEmptyBackpackOpen: boolean;
-    contextMenu: {
-        emptyBackpack: boolean;
-        removeFromBackpack: boolean;
-        copyToBackpack: boolean;
-        copyAllToBackpack: boolean;
-        pasteAllToBackpack: boolean;
-        disablePreconditionChecks: boolean;
-    };
-};
 export type BackpackContextMenuOptions = {
+    emptyBackpack?: boolean;
+    removeFromBackpack?: boolean;
+    copyToBackpack?: boolean;
+    copyAllToBackpack?: boolean;
+    pasteAllToBackpack?: boolean;
+    disablePreconditionChecks?: boolean;
+};
+export type BackpackOptions = {
     allowEmptyBackpackOpen?: boolean;
+    useFilledBackpackImage?: boolean;
     contextMenu?: BackpackContextMenuOptions;
 };
 /**
