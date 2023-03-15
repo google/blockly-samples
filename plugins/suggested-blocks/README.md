@@ -21,24 +21,40 @@ import {toolboxCategories} from '@blockly/dev-tools';
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
 function getNewCategories() {
-  const mostUsedCategory = '<category name="Frequently Used" custom="MOST_USED"></category>';
-  const recentlyUsedCategory = '<category name="Recently Used" custom="RECENTLY_USED"></category>';
-
-  // This type of insertion works in a pinch, but you would more so want to add
-  // the new categories wherever the rest of the categories are defined in the
-  // project (e.g. HTML, or a dedicated file for all the categories)
-  const indexToInsert = toolboxCategories.indexOf('</xml>');
-  // Insert the new categories into the existing toolbox XML string
-  return toolboxCategories.slice(0, indexToInsert) + mostUsedCategory + recentlyUsedCategory + toolboxCategories.slice(indexToInsert);
+  const mostUsedCategory = {
+    kind: 'category',
+    name: 'Frequently Used',
+    custom: 'MOST_USED'
+  };
+  const recentlyUsedCategory = {
+    kind: 'category',
+    name: 'Recently Used',
+    custom: 'RECENTLY_USED'
+  };
+  
+  // Insert the new categories into the existing toolboxCategories array
+  return [
+    ...toolboxCategories.slice(0, -1),
+    mostUsedCategory,
+    recentlyUsedCategory,
+    toolboxCategories.slice(-1)
+  ];
 }
+
+// Define the toolbox as a JSON object
+const toolbox = {
+  kind: 'categoryToolbox',
+  categories: getNewCategories()
+};
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: getNewCategories(),
+  toolbox: toolbox,
 });
 
 // Initialize the plugin
 SuggestedBlocks.init(workspace);
+
 ```
 
 ## API
