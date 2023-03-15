@@ -20,25 +20,53 @@ import * as Blockly from 'blockly';
 import {toolboxCategories} from '@blockly/dev-tools';
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
-function getNewCategories() {
-  const mostUsedCategory = '<category name="Frequently Used" custom="MOST_USED"></category>';
-  const recentlyUsedCategory = '<category name="Recently Used" custom="RECENTLY_USED"></category>';
+// Define the new categories in JSON format
+const mostUsedCategory = {
+  custom: 'MOST_USED',
+  name: 'Frequently Used',
+  blocks: []
+};
 
-  // This type of insertion works in a pinch, but you would more so want to add
-  // the new categories wherever the rest of the categories are defined in the
-  // project (e.g. HTML, or a dedicated file for all the categories)
-  const indexToInsert = toolboxCategories.indexOf('</xml>');
-  // Insert the new categories into the existing toolbox XML string
-  return toolboxCategories.slice(0, indexToInsert) + mostUsedCategory + recentlyUsedCategory + toolboxCategories.slice(indexToInsert);
-}
+const recentlyUsedCategory = {
+  custom: 'RECENTLY_USED',
+  name: 'Recently Used',
+  blocks: []
+};
+
+// Add the new categories to the existing categories list
+const categories = [
+  ...toolboxCategories,
+  mostUsedCategory,
+  recentlyUsedCategory
+];
+
+// Convert the categories to XML
+const toolboxXml = Blockly.utils.xml.createElement('xml');
+categories.forEach(category => {
+  if (typeof category === 'string') {
+    const xml = Blockly.utils.xml.textToDom(category);
+    toolboxXml.appendChild(xml);
+  } else {
+    const categoryXml = Blockly.utils.xml.createElement('category');
+    categoryXml.setAttribute('custom', category.custom);
+    categoryXml.setAttribute('name', category.name);
+    category.blocks.forEach(block => {
+      const blockXml = Blockly.utils.xml.createElement('block');
+      blockXml.setAttribute('type', block.type);
+      categoryXml.appendChild(blockXml);
+    });
+    toolboxXml.appendChild(categoryXml);
+  }
+});
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: getNewCategories(),
+  toolbox: toolboxXml,
 });
 
 // Initialize the plugin
 SuggestedBlocks.init(workspace);
+
 ```
 
 ## API
