@@ -7,6 +7,7 @@ layout: index
 ## Blocks
 * [Blocks Plus Minus](plugins/block-plus-minus/test/index.html)
 * [Blocks Dynamic Connection](plugins/block-dynamic-connection/test/index.html)
+* [Blocks Shareable Procedures](plugins/block-shareable-procedures/test/index.html)
 
 ## Fields
 * [Field Bitmap](plugins/field-bitmap/test/index.html)
