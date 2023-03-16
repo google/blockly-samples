@@ -26,6 +26,14 @@ const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
         /* eslint-enable @typescript-eslint/naming-convention */
       },
     },
+    {
+      'kind': 'block',
+      'type': 'dependent_dropdown_default_options_test',
+    },
+    {
+      'kind': 'block',
+      'type': 'dependent_dropdown_validation_test',
+    },
   ],
 };
 

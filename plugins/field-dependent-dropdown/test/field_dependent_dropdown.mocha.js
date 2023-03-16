@@ -75,6 +75,21 @@ suite('fieldDependentDropdown', function() {
     assert.equal(grandchildDropdown.getValue(), 'b11');
   });
 
+  test('Uses default options if parent field not in mapping', function() {
+    const block = this.workspace.newBlock(
+        'dependent_dropdown_default_options_test');
+    const parentTextInput = block.getField('PARENT_FIELD');
+    const childDropdown = block.getField('CHILD_FIELD');
+    assert.deepEqual(
+        childDropdown.getOptions(true), [['Default Option', 'defaultOption']]);
+    parentTextInput.setValue('a');
+    assert.deepEqual(
+        childDropdown.getOptions(true), [['A1', 'a1'], ['A2', 'a2']]);
+    parentTextInput.setValue('b');
+    assert.deepEqual(
+        childDropdown.getOptions(true), [['Default Option', 'defaultOption']]);
+  });
+
   test('Parent field user validator composes with new validator', function() {
     const block = this.workspace.newBlock('dependent_dropdown_validation_test');
     const parentDropdown = block.getField('PARENT_FIELD');

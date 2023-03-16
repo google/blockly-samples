@@ -25,6 +25,7 @@ type FieldConfig =
 export interface FieldDependentDropdownFromJsonConfig extends FieldConfig {
   parentName: string;
   optionMapping: ChildOptionMapping;
+  defaultOptions?: Blockly.MenuOption[];
 }
 
 /**
@@ -82,6 +83,12 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
   private optionMapping: ChildOptionMapping;
 
   /**
+   * An optional fallback set of options to use if the parent field's value does
+   * not match any of the keys in optionMapping.
+   */
+  private defaultOptions?: Blockly.MenuOption[];
+
+  /**
    * Constructs a new FieldDependentDropdown.
    * @param parentName The name of the parent field whose value determines this
    *    field's available options.
@@ -89,14 +96,17 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
    *    to the corresponding available options of this child field. The keys are
    *    the possible values of the parent field, and the values are the
    *    corresponding arrays of options for this child field.
-   * @param validator A function that is called to validate changes to this
-   *    field's value.
-   * @param config A map of general options used to configure the field, such as
-   *    a tooltip.
+   * @param defaultOptions An optional fallback set of options to use if the
+   *    parent field's value does not match any of the keys in optionMapping.
+   * @param validator An optional function that is called to validate changes to
+   *    this field's value.
+   * @param config An optional map of general options used to configure the
+   *    field, such as a tooltip.
    */
   constructor(
       parentName: string,
       optionMapping: ChildOptionMapping,
+      defaultOptions?: Blockly.MenuOption[],
       validator?: Blockly.FieldValidator,
       config?: FieldConfig) {
     // A menu generator needs to be passed to the super constructor, but it
@@ -128,6 +138,10 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
         }
       }
 
+      if (defaultOptions) {
+        return defaultOptions;
+      }
+
       // Fall back on basic default options.
       return [['', '']];
     };
@@ -135,6 +149,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
     super(menuGenerator, validator, config);
     this.parentName = parentName;
     this.optionMapping = optionMapping;
+    this.defaultOptions = defaultOptions;
     this.dependencyData = dependencyData;
   }
 
@@ -148,6 +163,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
     return new FieldDependentDropdown(
         options['parentName'],
         options['optionMapping'],
+        options['defaultOptions'],
         undefined,
         options);
   }
@@ -184,6 +200,11 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
     parentField.setValidator((newValue) => {
       if (oldValidator) {
         const validatedValue = oldValidator(newValue);
+        // If a validator returns null, that means the new value is invalid and
+        // the change should be canceled.
+        if (validatedValue === null) {
+          return null;
+        }
         // If a validator returns undefined, that means no change. Otherwise,
         // use the returned value as the new value.
         if (validatedValue !== undefined) {
@@ -215,11 +236,15 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
 
     const oldChildValue = this.getValue();
     const oldChildOptions = this.getOptions(false);
-    const newChildOptions = this.optionMapping[newValue];
+    let newChildOptions = this.optionMapping[newValue];
     if (!newChildOptions) {
-      console.warn(
-          'Could not find child options for the parent value: ' + newValue);
-      return;
+      if (this.defaultOptions) {
+        newChildOptions = this.defaultOptions;
+      } else {
+        console.warn(
+            'Could not find child options for the parent value: ' + newValue);
+        return;
+      }
     }
 
     // If the child field's value is still available in the new options, keep
@@ -231,8 +256,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
         oldChildValue :
         newChildOptions[0][1];
 
-    // Record the options on the dropdown so the option generator can access
-    // them.
+    // Record the options so that the option generator can access them.
     this.dependencyData.derivedOptions = newChildOptions;
 
     // Re-run the option generator to update the options on the dropdown.

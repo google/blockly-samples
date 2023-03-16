@@ -35,6 +35,26 @@ Blockly.defineBlocksWithJsonArray([
     ],
     'colour': 100,
   },
+  {
+    'type': 'dependent_dropdown_default_options_test',
+    'message0': 'Parent %1 Child %2',
+    'args0': [
+      {
+        'type': 'field_input',
+        'name': 'PARENT_FIELD',
+      },
+      {
+        'type': 'field_dependent_dropdown',
+        'name': 'CHILD_FIELD',
+        'parentName': 'PARENT_FIELD',
+        'optionMapping': {
+          'a': [['A1', 'a1'], ['A2', 'a2']],
+        },
+        'defaultOptions': [['Default Option', 'defaultOption']],
+      },
+    ],
+    'colour': 100,
+  },
 ]);
 
 Blockly.Blocks['dependent_dropdown_validation_test'] = {
@@ -56,11 +76,14 @@ Blockly.Blocks['dependent_dropdown_validation_test'] = {
       return undefined;
     };
     this.appendDummyInput()
+        .appendField('Parent')
         .appendField(
             new Blockly.FieldDropdown(parentOptions, parentValidator),
             parentFieldName)
+        .appendField('Child')
         .appendField(
             new FieldDependentDropdown(parentFieldName, dependentOptions),
             childFieldName);
+    this.setColour(100);
   },
 };
