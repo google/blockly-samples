@@ -20,7 +20,6 @@ const availableScripts = [
   'predeploy',
   'lint',
   'test',
-  'postinstall',
   'auditFix',
 ];
 
