@@ -27,7 +27,7 @@ To use it, you'll need to add this field to a block type definition, and add tha
 
 ```js
 import * as Blockly from 'blockly';
-import '@blockly/field-slider';
+import '@blockly/field-colour-hsv-sliders';
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'colour_hsv_sliders',

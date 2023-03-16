@@ -13,6 +13,7 @@ layout: index
 * [Field HSV Colour](plugins/field-colour-hsv-sliders/test/index.html)
 * [Field Date](plugins/field-date/test/index.html)
 * [Field Slider](plugins/field-slider/test/index.html)
+* [Field Dependent Dropdown](plugins/field-dependent-dropdown/test/index.html)
 * [Field Grid Dropdown](plugins/field-grid-dropdown/test/index.html)
 
 
