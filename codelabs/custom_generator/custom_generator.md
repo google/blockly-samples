@@ -177,7 +177,7 @@ export const toolbox = {
 
 Our `index.js` file already handles importing the toolbox and using it in Blockly.
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. You should see the new blocks in the toolbox, like this:
+If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm start` to start the server. You should see the new blocks in the toolbox, like this:
 
 ![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
 
