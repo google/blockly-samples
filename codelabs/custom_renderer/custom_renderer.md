@@ -40,18 +40,17 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 ### The application
 
-You will make all of your changes in a sample Blockly app, which you can find in blockly-samples at [`examples/sample-app`](https://github.com/google/blockly-samples/tree/master/examples/sample-app). This application contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1) Clone or download the blockly-samples repository if you haven't already.
-  2) Navigate to the `examples/sample-app` directory (or a copy of it) via the command line.
-  3) Run `npm install` to install the required dependencies.
-  4) Run `npm run start` to start the server and run the sample application.
-  5) The sample app will automatically run in the browser window that opens.
+You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+  1) Run `npx @blockly/create-package app custom-renderer-codelab`.  This will create your blockly application in the folder `custom-renderer-codelab`.
+  2) `cd` into your new directory: `cd custom-renderer-codelab`.
+  3) Run `npm start` to start the server and run the sample application.
+  4) The sample app will automatically run in the browser window that opens.
 
 The initial application uses the default renderer and contains no code or definitions for a custom renderer.
 
 You can view the complete code used in this codelab in blockly-samples under [`examples/custom-renderer-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-renderer-codelab).
 
-Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string:
+Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string.  `customRenderersWorkspace` will work:
 
 ```js
 // Use a unique storage key for this codelab
@@ -109,7 +108,7 @@ const ws = Blockly.inject(blocklyDiv, {
 
 ### The result
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. Once the server is running, click on the `Loops` entry in your browser and drag out a repeat block. The resulting block will use the same values already defined in the base `Blockly.blockRendering.Renderer`.
+If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm start` to start the server. Once the server is running, click on the `Loops` entry in your browser and drag out a repeat block. The resulting block will use the same values already defined in the base `Blockly.blockRendering.Renderer`.
 
 ![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
 
