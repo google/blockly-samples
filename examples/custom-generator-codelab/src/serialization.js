@@ -6,8 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 
-// Use a unique storage key for this codelab
-const storageKey = 'jsonGeneratorWorkspace';
+const storageKey = 'mainWorkspace';
 
 /**
  * Saves the state of the workspace to browser's local storage.
