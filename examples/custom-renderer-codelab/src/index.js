@@ -10,7 +10,6 @@ import {generator} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
-import './renderers/javascript';
 import './index.css';
 
 // Register the blocks and generator with Blockly
@@ -21,10 +20,7 @@ Object.assign(javascriptGenerator, generator);
 const codeDiv = document.getElementById('generatedCode').firstChild;
 const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
-const ws = Blockly.inject(blocklyDiv, {
-  renderer: 'custom_renderer',
-  toolbox,
-});
+const ws = Blockly.inject(blocklyDiv, {toolbox});
 
 // This function resets the code and output divs, shows the
 // generated code from the workspace, and evals the code.
@@ -62,3 +58,5 @@ ws.addChangeListener((e) => {
   }
   runCode();
 });
+
+
