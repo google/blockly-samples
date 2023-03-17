@@ -34,7 +34,7 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 ### The application
 
-You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
   1) Run `npx @blockly/create-package app custom-generator-codelab`.  This will create your blockly application in the folder `custom-generator-codelab`.
   2) `cd` into your new directory: `cd custom-generator-codelab`.
   3) Run `npm start` to start the server and run the sample application.
