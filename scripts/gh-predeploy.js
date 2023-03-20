@@ -459,7 +459,93 @@ function prepareToDeployExamples(done) {
   }))(done);
 }
 
+/**
+ * Create the index page for the blockly-samples GitHub Pages site.
+ * This page has some nice wrappers, a search bar, and a link to every plugin or example
+ * specified in in `index.md`.
+ */
+function createIndexPage() {
+  const initialContents = fs.readFileSync(`./gh-pages/index.md`).toString();
+
+  const converter = new showdown.Converter();
+  converter.setFlavor('github');
+  const text = initialContents;
+  const htmlContents = converter.makeHtml(text);
+  console.log(htmlContents);
+
+  const indexBase = `<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+</head>
+
+<body class="root">
+  <!-- HEADER -->
+  <nav id="toolbar">
+    <div class="site-width layout horizontal">
+      <a href="https://google.github.io/blockly-samples/"><img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+          alt="Blockly logo" /></a>
+      <div id="searchbar">
+        <div class="input-container">
+          <div prefix="" icon="search" role="button" tabindex="0" aria-disabled="false" class="icon">
+            <div class="icon-search">
+              <i class="material-icons">search</i>
+            </div>
+          </div>
+          <input is="iron-input" autofocus id="search-box" placeholder="Search" />
+        </div>
+      </div>
+    </div>
+    <a class="button" href="https://github.com/google/blockly-samples">View on GitHub</a>
+  </nav>
+  <main id="main" class="index">
+    <div class="drop-shadow"></div>
+    <header id="banner">
+      <div class="site-width">
+        <h2 class="banner-title">Welcome to blockly-samples!</h2>
+        <p>
+          Sample projects demonstrating how to integrate Blockly into your project
+        </p>
+      </div>
+    </header>
+    <div class="site-width">
+      <div class="container">
+        ${htmlContents}
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>
+`;
+
+  let contents = injectHeader(indexBase, "Plugins | blockly-samples");
+  contents = injectFooter(contents);
+
+  const outputPath = path.join('gh-pages', 'index.html');
+
+  fs.writeFileSync(outputPath, contents, 'utf-8');
+}
+
+/**
+ * Create pages for examples, plugins, and the index page to display on
+ * GitHub Pages.
+ */
+function predeployForGitHub(done) {
+  createIndexPage();
+  return gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples)(done);
+}
+
 module.exports = {
   predeployPlugins: prepareToDeployPlugins,
   predeployExamples: prepareToDeployExamples,
+  prepareIndex: createIndexPage,
+  predeployAll: predeployForGitHub
 };
