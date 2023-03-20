@@ -209,17 +209,16 @@ function createExampleTabs(pageRoot, pages) {
  */
 function createPluginPage(pluginDir) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
-  const initialContents = fs.readFileSync(`./plugins/${pluginDir}/test/index.html`).toString();
+  const initialContents = fs.readFileSync(path.join('plugins', pluginDir, 'test', 'index.html')).toString();
   let title = `${packageJson.name} Demo`;
   let contents = injectHeader(initialContents, title);
   contents = injectPluginNavBar(contents, packageJson, pluginDir);
   contents = injectFooter(contents);
+  
+  const dirPath = path.join('gh-pages', 'plugins', pluginDir, 'test');
+  fs.mkdirSync(dirPath, { recursive: true });
 
-  const dirString = `./gh-pages/plugins/${pluginDir}/test`;
-  fs.mkdirSync(dirString, { recursive: true });
-  const outputPath = `${dirString}/index.html`;
-
-  fs.writeFileSync(outputPath, contents, 'utf-8');
+  fs.writeFileSync(path.join(dirPath, 'index.html'), contents, 'utf-8');
 }
 
 /**
@@ -367,12 +366,12 @@ function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
  * to other files within the same demo package.
  * @param {string} pageRoot The directory of the example that is currently being
  *     prepared (e.g. examples/interpreter-demo).
- * @param {string} path The page of the page to create within the example's directory
+ * @param {string} pagePath The page of the page to create within the example's directory
  *     (e.g. index.html).
  */
-function createExamplePage(pageRoot, path) {
+function createExamplePage(pageRoot, pagePath) {
   const packageJson = require(resolveApp(`${pageRoot}/package.json`));
-  const initialContents = fs.readFileSync(`${pageRoot}/${path}`).toString();
+  const initialContents = fs.readFileSync(path.join(pageRoot, pagePath)).toString();
 
   const { blocklyDemoConfig } = packageJson;
 
@@ -380,7 +379,7 @@ function createExamplePage(pageRoot, path) {
   contents = injectExampleNavBar(contents, packageJson, pageRoot, blocklyDemoConfig.title);
   contents = injectFooter(contents);
 
-  const outputPath = `./gh-pages/${pageRoot}/${path}`;
+  const outputPath = path.join('gh-pages', pageRoot, pagePath);
 
   fs.writeFileSync(outputPath, contents, 'utf-8');
 }
@@ -395,12 +394,11 @@ function createExamplePage(pageRoot, path) {
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function newPrepareExample(baseDir, exampleDir, done) {
-  const pageRoot = `${baseDir}/${exampleDir}`;
+function prepareExample(baseDir, exampleDir, done) {
   // TODO: Why do I sometimes use path.join and sometimes just do
   // string concatenation?
   const packageJson =
-    require(resolveApp(path.join(pageRoot, 'package.json')));
+    require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
   
   // Cancel early if the package.json says this is not a demo.
   const { blocklyDemoConfig } = packageJson;
@@ -413,13 +411,12 @@ function newPrepareExample(baseDir, exampleDir, done) {
   const fileList = blocklyDemoConfig.files;
 
   // Create target folder, if it doesn't exist.
-  const dirString = `./gh-pages/examples/${exampleDir}/`;
-  fs.mkdirSync(dirString, { recursive: true });
+  fs.mkdirSync(path.join('gh-pages', baseDir, exampleDir), { recursive: true });
 
   // Special case: do a straight copy for the devsite demo, with no wrappers.
   if (packageJson.name == 'blockly-devsite-demo') {
     return gulp.src(
-      fileList.map((f) => path.join(pageRoot, f)),
+      fileList.map((f) => path.join(baseDir, exampleDir, f)),
         { base: baseDir, allowEmpty: true })
       .pipe(gulp.dest('./gh-pages/examples/'));
   }
@@ -428,14 +425,14 @@ function newPrepareExample(baseDir, exampleDir, done) {
   const pageRegex = /.*\.(html|htm)$/i;
   const pages = fileList.filter((f) => pageRegex.test(f));
   // Add headers and footers to HTML pages.
-  pages.forEach(page => createExamplePage(pageRoot, page));
+  pages.forEach(page => createExamplePage(`${baseDir}/${exampleDir}`, page));
   
   // Copy over all other files mentioned in the demoConfig to the correct directory.
   const assets = fileList.filter((f) => !pageRegex.test(f));
   let stream;
   if (assets.length) {
     stream = gulp.src(
-      assets.map((f) => path.join(pageRoot, f)),
+      assets.map((f) => path.join(baseDir, exampleDir, f)),
       { base: baseDir, allowEmpty: true });
   }
   return stream.pipe(gulp.dest('./gh-pages/examples/'));
@@ -457,7 +454,7 @@ function prepareToDeployExamples(done) {
   });
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployExample(done) {
-      return newPrepareExample(dir, folder, done);
+      return prepareExample(dir, folder, done);
     };
   }))(done);
 }
