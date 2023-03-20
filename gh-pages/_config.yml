@@ -1,17 +1,2 @@
 show_downloads: false
 google_analytics: UA-188438546-1
-
-defaults:
-  -
-    scope:
-      path: "**/*.md"
-      type: "pages"
-    values:
-      article: true
-      
-  -
-    scope:
-      path: "examples/devsite-demo/index.html"
-      type: "pages"
-    values:
-      layout: "devsite-demo"
