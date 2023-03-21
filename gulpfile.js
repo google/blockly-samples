@@ -293,7 +293,7 @@ module.exports = {
   checkLicenses: checkLicenses,
   deploy: deployToGhPagesOrigin,
   deployUpstream: deployToGhPagesUpstream,
-  predeploy: gulp.parallel(predeployTasks.predeployPlugins, predeployTasks.predeployExamples),
+  predeploy: predeployTasks.predeployAll,
   prepareForPublish: prepareForPublish,
   publishManual: publishManual,
   forcePublish: forcePublish,
