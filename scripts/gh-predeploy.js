@@ -137,7 +137,7 @@ function injectPluginNavBar(inputString, packageJson, pluginDir) {
     `<body$1 class="root">
     <main id="main" class="has-tabs">${navBar}`
     );
-  modifiedContent = modifiedContent.replace(/(<\/body>)/, `</main>$1`);
+  modifiedContent = modifiedContent.replace(/<body([^>]*)>/, `</main>$1`);
   return modifiedContent;
 }
 
@@ -189,9 +189,10 @@ function createExampleTabs(pageRoot, pages) {
 
   let tabsString = ``;
 
-  for (let i = 0; i < pages.length; i++) {
-    tabsString += createTab(pages[i]);
+  for (const page of pages) {
+    tabsString += createTab(page); 
   }
+
   return `
   <!-- PAGE TABS -->
   <ul id="tabs">
@@ -334,7 +335,7 @@ function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
     <a href="${baseurl}" id="arrow-back">
       <i class="material-icons">close</i>
       <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
-        alt="Blockly logo" />
+        alt="Blockly sample" />
     </a>
 
     <div class="title-grow">
@@ -355,7 +356,7 @@ function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
       `<body$1 class="root">
       <main id="main" class="has-tabs">${navBar}`
       );
-  modifiedContent = modifiedContent.replace(/<\/body>/, `</main>\n  </body>`);
+  modifiedContent = modifiedContent.replace(/<body([^>]*)>/, `</main>\n  </body>`);
   return modifiedContent;
 }
 
@@ -469,9 +470,7 @@ function createIndexPage() {
 
   const converter = new showdown.Converter();
   converter.setFlavor('github');
-  const text = initialContents;
-  const htmlContents = converter.makeHtml(text);
-  console.log(htmlContents);
+  const htmlContents = converter.makeHtml(initialContents);
 
   const indexBase = `<!DOCTYPE html>
 <html lang="en-US">
@@ -488,7 +487,7 @@ function createIndexPage() {
   <nav id="toolbar">
     <div class="site-width layout horizontal">
       <a href="https://google.github.io/blockly-samples/"><img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
-          alt="Blockly logo" /></a>
+          alt="Blockly" /></a>
       <div id="searchbar">
         <div class="input-container">
           <div prefix="" icon="search" role="button" tabindex="0" aria-disabled="false" class="icon">
@@ -526,7 +525,7 @@ function createIndexPage() {
 </html>
 `;
 
-  let contents = injectHeader(indexBase, "Plugins | blockly-samples");
+  let contents = injectHeader(indexBase, 'Plugins | blockly-samples');
   contents = injectFooter(contents);
 
   const outputPath = path.join('gh-pages', 'index.html');
@@ -547,5 +546,5 @@ module.exports = {
   predeployPlugins: prepareToDeployPlugins,
   predeployExamples: prepareToDeployExamples,
   prepareIndex: createIndexPage,
-  predeployAll: predeployForGitHub
+  predeployAll: predeployForGitHub,
 };
