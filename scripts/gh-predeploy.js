@@ -133,11 +133,11 @@ function injectPluginNavBar(inputString, packageJson, pluginDir) {
   // preserving anything else in the tag (such as onload).
   // Also wrap all page content in a <main></main> tag.
   let modifiedContent = inputString.replace(
-    /<body(.*)>/,
+    /<body([^>]*)>/,
     `<body$1 class="root">
     <main id="main" class="has-tabs">${navBar}`
     );
-  modifiedContent = modifiedContent.replace(/<body([^>]*)>/, `</main>$1`);
+  modifiedContent = modifiedContent.replace(/(<\/body>)/, `</main>$1`);
   return modifiedContent;
 }
 
@@ -352,11 +352,11 @@ function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
   // preserving anything else in the tag (such as onload).
   // Also wrap all page content in a <main></main> tag.
   let modifiedContent = inputString.replace(
-      /<body(.*)>/,
+      /<body([^>]*)>/,
       `<body$1 class="root">
       <main id="main" class="has-tabs">${navBar}`
       );
-  modifiedContent = modifiedContent.replace(/<body([^>]*)>/, `</main>\n  </body>`);
+  modifiedContent = modifiedContent.replace(/<\/body>/, `</main>\n  </body>`);
   return modifiedContent;
 }
 
