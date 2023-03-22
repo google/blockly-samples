@@ -143,6 +143,19 @@ Blockly.defineBlocksWithJsonArray([
 Blockly.Extensions.registerMutator(
     'test_noflyout_mutator', COLOR_CHANGE_MUTATOR, null, []);
 
+Blockly.defineBlocksWithJsonArray([
+  {
+    'type': 'test_mutators_changeableFlyout',
+    'message0': 'changeable flyout mutator',
+    'mutator': 'test_changeableFlyout_mutator',
+    'colour': '#000000',
+  },
+]);
+
+/** Register custom mutator used by the test_mutators_changeableFlyout block. */
+Blockly.Extensions.registerMutator(
+    'test_changeableFlyout_mutator', COLOR_CHANGE_MUTATOR, null, ['text']);
+
 
 /**
  * The Mutators category.
@@ -198,6 +211,10 @@ export const category = {
     {
       'kind': 'BLOCK',
       'type': 'test_mutators_many',
+    },
+    {
+      'kind': 'BLOCK',
+      'type': 'test_mutators_changeableFlyout',
     },
   ],
 };
