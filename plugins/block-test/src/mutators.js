@@ -56,7 +56,7 @@ const MANY_BLOCKS_MUTATOR = {
    */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('colour', this.colour_);
+    container.setAttribute('colour', this.getColour());
     return container;
   },
   /**
@@ -65,8 +65,7 @@ const MANY_BLOCKS_MUTATOR = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
-    this.colour_ = xmlElement.getAttribute('colour');
-    this.setColour(this.colour_);
+    this.setColour(xmlElement.getAttribute('colour'));
   },
   /**
    * Returns the state of this block as a json serializable object.
@@ -74,7 +73,7 @@ const MANY_BLOCKS_MUTATOR = {
    * @this {Blockly.Block}
    */
   saveExtraState: function() {
-    return {'colour': this.colour_};
+    return {'colour': this.getColour()};
   },
   /**
    * Applies the state to this block.
@@ -82,8 +81,7 @@ const MANY_BLOCKS_MUTATOR = {
    * @this {Blockly.Block}
    */
   loadExtraState: function(state) {
-    this.colour_ = state['colour'];
-    this.setColour(this.colour_);
+    this.setColour(state['colour']);
   },
   /**
    * Populate the mutator's dialog with this block's components.
@@ -92,9 +90,10 @@ const MANY_BLOCKS_MUTATOR = {
    * @this {Blockly.Block}
    */
   decompose: function(workspace) {
-    const containerBlock = workspace.newBlock('test_mutators_noflyout_block');
-    containerBlock.getField('COLOUR').setValue(this.colour_);
-    containerBlock.initSvg();
+    const containerBlock = Blockly.serialization.blocks.append(
+        {'type': 'test_mutator_colorChange'},
+        workspace);
+    containerBlock.getField('COLOUR').setValue(this.getColour());
     return containerBlock;
   },
   /**
@@ -103,8 +102,7 @@ const MANY_BLOCKS_MUTATOR = {
    * @this {Blockly.Block}
    */
   compose: function(containerBlock) {
-    this.colour_ = containerBlock.getFieldValue('COLOUR');
-    this.setColour(this.colour_);
+    this.setColour(containerBlock.getFieldValue('COLOUR'));
   },
 };
 
@@ -130,7 +128,7 @@ Blockly.defineBlocksWithJsonArray([
     'colour': '#000000',
   },
   {
-    'type': 'test_mutators_noflyout_block',
+    'type': 'test_mutator_colorChange',
     'message0': 'colour %1',
     'args0': [
       {
@@ -158,7 +156,7 @@ const NO_FLYOUT_MUTATOR = {
    */
   mutationToDom: function() {
     const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('colour', this.colour_);
+    container.setAttribute('colour', this.getColour());
     return container;
   },
   /**
@@ -167,15 +165,14 @@ const NO_FLYOUT_MUTATOR = {
    * @this {Blockly.Block}
    */
   domToMutation: function(xmlElement) {
-    this.colour_ = xmlElement.getAttribute('colour');
-    this.setColour(this.colour_);
+    this.setColour(xmlElement.getAttribute('colour'));
   },
   /**
    * Returns the state of this block as a JSON serializable object.
    * @returns {{colour: string}} The state of this block.
    */
   saveExtraState: function() {
-    return {'colour': this.colour_};
+    return {'colour': this.getColour()};
   },
   /**
    * Applies the given state to the block.
@@ -183,8 +180,7 @@ const NO_FLYOUT_MUTATOR = {
    * @this {Blockly.Block}
    */
   loadExtraState: function(state) {
-    this.colour_ = state['colour'];
-    this.setColour(this.colour_);
+    this.setColour(state['colour']);
   },
   /**
    * Populate the mutator's dialog with this block's components.
@@ -193,9 +189,10 @@ const NO_FLYOUT_MUTATOR = {
    * @this {Blockly.Block}
    */
   decompose: function(workspace) {
-    const containerBlock = workspace.newBlock('test_mutators_noflyout_block');
-    containerBlock.getField('COLOUR').setValue(this.colour_);
-    containerBlock.initSvg();
+    const containerBlock = Blockly.serialization.blocks.append(
+        {'type': 'test_mutator_colorChange'},
+        workspace);
+    containerBlock.getField('COLOUR').setValue(this.getColour());
     return containerBlock;
   },
   /**
@@ -204,8 +201,7 @@ const NO_FLYOUT_MUTATOR = {
    * @this {Blockly.Block}
    */
   compose: function(containerBlock) {
-    this.colour_ = containerBlock.getFieldValue('COLOUR');
-    this.setColour(this.colour_);
+    this.setColour(containerBlock.getFieldValue('COLOUR'));
   },
 };
 
@@ -229,35 +225,39 @@ export const category = {
     },
     {
       'kind': 'BLOCK',
-      'blockxml': `
-<block type="logic_compare">
-  <value name="A">
-    <shadow type="math_number">
-      <field name="NUM">10</field>
-    </shadow>
-  </value>
-  <value name="B">
-    <shadow type="math_number">
-      <field name="NUM">10</field>
-    </shadow>
-  </value>
-</block>`,
+      'type': 'logic_compare',
+      'inputs': {
+        'A': {
+          'shadow': {
+            'type': 'math_number',
+            'fields': {'NUM': 10},
+          },
+        },
+        'B': {
+          'shadow': {
+            'type': 'math_number',
+            'fields': {'NUM': 10},
+          },
+        },
+      },
     },
     {
       'kind': 'BLOCK',
-      'blockxml': `
-<block type="logic_compare">
-  <value name="A">
-    <block type="math_number">
-      <field name="NUM">10</field>
-    </block>
-  </value>
-  <value name="B">
-    <block type="math_number">
-      <field name="NUM">10</field>
-    </block>
-  </value>
-</block>`,
+      'type': 'logic_compare',
+      'inputs': {
+        'A': {
+          'block': {
+            'type': 'math_number',
+            'fields': {'NUM': 10},
+          },
+        },
+        'B': {
+          'block': {
+            'type': 'math_number',
+            'fields': {'NUM': 10},
+          },
+        },
+      },
     },
     {
       'kind': 'BLOCK',
