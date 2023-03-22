@@ -13,33 +13,19 @@
 import * as Blockly from 'blockly/core';
 
 
-const n = 20;
-const blocksIds = [];
-for (let i = 0; i < n; i++) {
-  blocksIds.push(`test_mutator_category_${i}`);
-}
-
-const defineBlocks = blocksIds.map((t) => ({
-  type: t,
-  message0: 'colour %1',
-  args0: [
-    {
-      type: 'field_colour',
-      name: 'COLOUR',
-      colour: '#ff0000',
-    },
-  ],
-  style: 'colour_blocks',
-}));
-
 Blockly.defineBlocksWithJsonArray([
   {
-    type: 'test_mutators_many',
-    message0: 'test many blocks mutator',
-    mutator: 'test_many_blocks_mutator',
-    colour: '#000000',
+    'type': 'test_mutator_colorChange',
+    'message0': 'colour %1',
+    'args0': [
+      {
+        'type': 'field_colour',
+        'name': 'COLOUR',
+        'colour': '#ff0000',
+      },
+    ],
+    'style': 'colour_blocks',
   },
-  ...defineBlocks,
 ]);
 
 /**
@@ -48,7 +34,7 @@ Blockly.defineBlocksWithJsonArray([
  * @package
  * @readonly
  */
-const MANY_BLOCKS_MUTATOR = {
+const COLOR_CHANGE_MUTATOR = {
   /**
    * Create XML to represent the block mutation.
    * @returns {Element} XML storage element.
@@ -106,16 +92,40 @@ const MANY_BLOCKS_MUTATOR = {
   },
 };
 
-if (Blockly.Extensions.isRegistered('test_many_blocks_mutator')) {
-  Blockly.Extensions.unregister('test_many_blocks_mutator');
+
+const n = 20;
+const blocksIds = [];
+for (let i = 0; i < n; i++) {
+  blocksIds.push(`test_mutator_category_${i}`);
 }
 
-/**
- * Register custom mutator used by the test_mutators_many block.
- */
+const defineBlocks = blocksIds.map((t) => ({
+  type: t,
+  message0: 'colour %1',
+  args0: [
+    {
+      type: 'field_colour',
+      name: 'COLOUR',
+      colour: '#ff0000',
+    },
+  ],
+  style: 'colour_blocks',
+}));
+
+Blockly.defineBlocksWithJsonArray([
+  {
+    type: 'test_mutators_many',
+    message0: 'test many blocks mutator',
+    mutator: 'test_many_blocks_mutator',
+    colour: '#000000',
+  },
+  ...defineBlocks,
+]);
+
+/** Register custom mutator used by the test_mutators_many block. */
 Blockly.Extensions.registerMutator(
     'test_many_blocks_mutator',
-    MANY_BLOCKS_MUTATOR,
+    COLOR_CHANGE_MUTATOR,
     null,
     [...blocksIds]
 );
@@ -127,89 +137,11 @@ Blockly.defineBlocksWithJsonArray([
     'mutator': 'test_noflyout_mutator',
     'colour': '#000000',
   },
-  {
-    'type': 'test_mutator_colorChange',
-    'message0': 'colour %1',
-    'args0': [
-      {
-        'type': 'field_colour',
-        'name': 'COLOUR',
-        'colour': '#ff0000',
-      },
-    ],
-    'style': 'colour_blocks',
-  },
 ]);
 
-
-/**
- * Mutator methods added to the test_mutators_noflyout block.
- * @mixin
- * @package
- * @readonly
- */
-const NO_FLYOUT_MUTATOR = {
-  /**
-   * Create XML to represent the block mutation.
-   * @returns {Element} XML storage element.
-   * @this {Blockly.Block}
-   */
-  mutationToDom: function() {
-    const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('colour', this.getColour());
-    return container;
-  },
-  /**
-   * Restore a block from XML.
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
-   */
-  domToMutation: function(xmlElement) {
-    this.setColour(xmlElement.getAttribute('colour'));
-  },
-  /**
-   * Returns the state of this block as a JSON serializable object.
-   * @returns {{colour: string}} The state of this block.
-   */
-  saveExtraState: function() {
-    return {'colour': this.getColour()};
-  },
-  /**
-   * Applies the given state to the block.
-   * @param {{colour: string}} state The state to apply.
-   * @this {Blockly.Block}
-   */
-  loadExtraState: function(state) {
-    this.setColour(state['colour']);
-  },
-  /**
-   * Populate the mutator's dialog with this block's components.
-   * @param {!Blockly.Workspace} workspace Mutator's workspace.
-   * @returns {!Blockly.Block} Root block in mutator.
-   * @this {Blockly.Block}
-   */
-  decompose: function(workspace) {
-    const containerBlock = Blockly.serialization.blocks.append(
-        {'type': 'test_mutator_colorChange'},
-        workspace);
-    containerBlock.getField('COLOUR').setValue(this.getColour());
-    return containerBlock;
-  },
-  /**
-   * Reconfigure this block based on the mutator dialog's components.
-   * @param {!Blockly.Block} containerBlock Root block in mutator.
-   * @this {Blockly.Block}
-   */
-  compose: function(containerBlock) {
-    this.setColour(containerBlock.getFieldValue('COLOUR'));
-  },
-};
-
-/**
- * Register custom mutator used by the test_mutators_noflyout block.
- */
+/** Register custom mutator used by the test_mutators_noflyout block. */
 Blockly.Extensions.registerMutator(
-    'test_noflyout_mutator', NO_FLYOUT_MUTATOR, null, []);
+    'test_noflyout_mutator', COLOR_CHANGE_MUTATOR, null, []);
 
 
 /**
