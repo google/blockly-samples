@@ -2,7 +2,7 @@
 title: "@blockly/theme-modern Demo"
 packageName: "@blockly/theme-modern"
 description: "A Blockly modern theme with darker block borders."
-version: "3.0.6"
+version: "3.0.7"
 pageRoot: "plugins/theme-modern"
 pages:
   - label: "Playground"
