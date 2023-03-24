@@ -10,6 +10,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 ## Codelab overview
 
 ### What you'll learn
+
 - How to create a custom language generator.
 - How to create block generator definitions for existing blocks.
 - How to create block generator definitions for new blocks.
@@ -23,8 +24,9 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 
 ### What you'll need
 
+- Comfort with the Blockly playground.
 - Familiarity with JSON and the JSON specification.
-- Comfort with defining blocks and toolboxes in Blockly.
+- Basic understanding of blocks and toolboxes in Blockly.
 - NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
 - Comfort using the command line/terminal.
 
