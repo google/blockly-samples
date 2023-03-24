@@ -10,6 +10,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 ## Codelab overview
 
 ### What you'll learn
+
 - How to define and register a custom renderer.
 - How to override renderer constants.
 - How to change the shape of connection notches.
@@ -31,6 +32,7 @@ You will build and use four renderers:
 ### What you'll need
 
 - Comfort with the Blockly playground.
+- Basic understanding of renderers and toolboxes in Blockly.
 - NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
 - Comfort using the command line/terminal.
 
