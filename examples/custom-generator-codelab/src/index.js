@@ -50,5 +50,3 @@ ws.addChangeListener((e) => {
   }
   runCode();
 });
-
-

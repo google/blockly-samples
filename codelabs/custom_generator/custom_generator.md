@@ -34,18 +34,17 @@ In this codelab you will add code to the Blockly playground to create and use a 
 
 ### The application
 
-You will make all of your changes in a sample Blockly app, which you can find in blockly-samples at [`examples/sample-app`](https://github.com/google/blockly-samples/tree/master/examples/sample-app). This application contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1) Clone or download the blockly-samples repository if you haven't already.
-  2) Navigate to the `examples/sample-app` directory (or a copy of it) via the command line.
-  3) Run `npm install` to install the required dependencies.
-  4) Run `npm run start` to start the server and run the sample application.
-  5) The sample app will automatically run in the browser window that opens.
+You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+  1) Run `npx @blockly/create-package app custom-generator-codelab`.  This will create your blockly application in the folder `custom-generator-codelab`.
+  2) `cd` into your new directory: `cd custom-generator-codelab`.
+  3) Run `npm start` to start the server and run the sample application.
+  4) The sample app will automatically run in the browser window that opens.
 
 The initial application has one custom block and includes JavaScript generator definitions for that block. Since we will be creating a JSON generator, we'll remove that custom block and add our own.
 
 You can view the complete code used in this codelab in blockly-samples under [`examples/custom-generator-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-generator-codelab).
 
-Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string:
+Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string. `jsonGeneratorWorkspace` will work:
 
 ```js
 // Use a unique storage key for this codelab
@@ -178,7 +177,7 @@ export const toolbox = {
 
 Our `index.js` file already handles importing the toolbox and using it in Blockly.
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm run start` to start the server. You should see the new blocks in the toolbox, like this:
+If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm start` to start the server. You should see the new blocks in the toolbox, like this:
 
 ![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
 
@@ -214,6 +213,8 @@ Next, let's hook up the new generator with the sample app. First, we'll remove t
 // Remove these lines!
 import {generator} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
+
+// Also remove this line! (further down)
 Object.assign(javascriptGenerator, generator);
 ```
 
@@ -226,10 +227,19 @@ import {jsonGenerator} from './generators/json';
 Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workspace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
 
 ```js
+// This function resets the code div and shows the
+// generated code from the workspace.
 const runCode = () => {
   const code = jsonGenerator.workspaceToCode(ws);
   codeDiv.innerText = code;
 };
+```
+
+Since we are not modifying the bottom panel, you can also delete this line:
+
+```js
+// Remove this line!
+const outputDiv = document.getElementById('output');
 ```
 
 After we define the block generators, we'll automatically show the generated code in the top left panel. Refresh the sample app page to see your changes so far.
