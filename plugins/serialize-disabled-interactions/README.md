@@ -28,11 +28,11 @@ In v9.3.0 this was changed to fix https://github.com/google/blockly/issues/6793.
 
 It is **strongly** recommended that instead of using this plugin, you upgrade
 to a version of Blockly >= v9.3.0. However if that is not possible, you can use
-this plugin to serialize these disabled-interaction attributes.
+v2.0 of this plugin (as v3.0 does not actually serialize these attributes).
 
-See the "Usage for Blockly versions < v9.3.0" section below for more
-information.
-
+Note that this plugin is being removed in the future, so by newly installing it
+now, you will be introducing a dependency you will be forced to remove in the
+future if they you to remain up-to-date with core Blockly.
 
 ## Installation
 
@@ -72,42 +72,6 @@ The resultant JSON will look like this:
 All of the keys are optional. For example, if all of the blocks on the workspace
 are deletable, the `'notDeletable'` key will be undefined. If all of the keys
 are undefined, then the `'disabledInteractions`' key is also undefined.
-
-## Usage for Blockly < v9.3.0
-
-Suppose:
-  1) You have the following block defined in XML
-  2) You would like to migrate to the JSON system.
-  3) You cannot update to a version of Blockly >= v9.3.0
-
-```xml
-<block type="my_start_block" deletable="false" movable="false" editable="false"/>
-```
-
-To solve for this, you can import this plugin and then change your JSON to look
-like the following:
-```javascript
-import '@blockly/plugin-serialize-disabled-interactions';
-
-const json = {
-  'blocks': {
-    'languageVersion': 0,
-    'blocks': [
-      {
-        'type': 'my_start_block',
-        'id': 'start_block_id'
-      }
-    ]
-  },
-  'disabledInteractions': {
-    'notDeletable': ['start_block_id'],
-    'notMovable': ['start_block_id'],
-    'notEditable': ['start_block_id']
-  }
-}
-```
-
-Any questions about how this works can be directed to the [forums](https://groups.google.com/g/blockly).
 
 ## License
 Apache 2.0
