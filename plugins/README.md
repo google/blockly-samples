@@ -31,7 +31,7 @@ replace the built-in mutator UI with a +/- based UI.
 blocks that add connections dynamically.
 - [``@blockly-block-shareable-procedures``](block-shareable-procedures): A group
 of blocks that replace the built-in procedures with ones that can be shared
-between workspaces. (private - in development)
+between workspaces.
 - [``@blockly/block-test``](block-test/): A group of Blockly test blocks.
 - [``@blockly/renderer-inline-row-separators``](renderer-inline-row-separators/):
 A renderer that allows putting inline value input connectors on separate rows,

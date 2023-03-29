@@ -44,16 +44,15 @@
     "@blockly/dev-scripts": "^1.2.32",
     "@blockly/dev-tools": "^5.2.4",
     "@blockly/eslint-config": "^2.1.21",
-    "blockly": "9.3.0-beta.0",
+    "blockly": "^9.3.0",
     "chai": "^4.3.7",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
     "sinon": "^15.0.1"
   },
   "peerDependencies": {
-    "blockly": "9.3.0-beta.0"
+    "blockly": "^9.3.0"
   },
-  "private": true,
   "publishConfig": {
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
