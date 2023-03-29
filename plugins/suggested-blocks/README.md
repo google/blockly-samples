@@ -43,7 +43,19 @@ SuggestedBlocks.init(workspace);
 
 ## API
 
-- `init`: Initializes the suggested blocks categories in the toolbox
+- `init`: Initializes the suggested blocks categories in the toolbox. Takes several arguments:
+  - `workspace`: The workspace to use the plugin with. If you have multiple
+    workspaces, you need to register the plugin for each workspace separately,
+    and the stats will be tracked separately.
+  - `numBlocksPerCategory` (optional): The maximum number of blocks to show in
+    each category. Defaults to 10.
+  - `waitForFinishedLoading` (optional): Whether to wait for the
+    [`Blockly.Events.FinishedLoading` event](https://developers.google.com/blockly/reference/js/blockly.events_namespace.finishedloading_class.md)
+    before taking action on any new `BlockCreate` events. If you disable event
+    firing while you load the initial state of the workspace, you'll need to set
+    this to `false`, or the plugin will never place blocks in either category.
+    By default, this value is `true`, so that events fired while loading initial
+    serialized state do not affect the statistics.
 
 ## License
 Apache 2.0
