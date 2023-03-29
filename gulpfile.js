@@ -208,6 +208,10 @@ function deployToGhPages(repo) {
         'gh-pages', {
           message: m,
           repo,
+          // Include .nojekyll file to tell GitHub to publish without building.
+          // By default, dotfiles are excluded.
+          // TODO: make the github action do the build step before publishing.
+          src: ['**/*', '.nojekyll']
         },
         done);
   };
