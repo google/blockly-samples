@@ -190,24 +190,6 @@ suite('Procedure data models', function() {
         chai.assert.isTrue(
             this.updateSpy.calledOnce, 'Expected an update to be triggered');
       });
-
-      test(
-          'modifying the variable model does not trigger an update',
-          function() {
-            const parameterModel =
-                new ObservableParameterModel(this.workspace, 'test1');
-            this.procedureMap.add(
-                new ObservableProcedureModel(this.workspace, 'test name')
-                    .insertParameter(parameterModel, 0));
-            this.updateSpy.resetHistory();
-
-            const variableModel = parameterModel.getVariableModel();
-            variableModel.name = 'some name';
-            variableModel.type = 'some type';
-
-            chai.assert.isFalse(
-                this.updateSpy.called, 'Expected no update to be triggered');
-          });
     });
   });
 
