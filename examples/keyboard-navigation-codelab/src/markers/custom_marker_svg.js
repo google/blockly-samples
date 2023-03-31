@@ -24,21 +24,22 @@ class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
     }
   }
 
-  /**
-   * @override
-   */
   showWithBlock_(curNode) {
     // Get the block from the AST Node
     const block = curNode.getLocation();
+
     // Get the path of the block.
     const blockPath = block.pathObject.svgPath.getAttribute('d');
+
     // Set the path for the cursor.
     this.blockPath_.setAttribute('d', blockPath);
 
     // Set the current marker.
     this.currentMarkerSvg = this.blockPath_;
+
     // Set the parent of the cursor as the block.
     this.setParent_(block);
+
     // Show the current marker.
     this.showCurrent_();
   }

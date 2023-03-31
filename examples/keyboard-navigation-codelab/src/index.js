@@ -32,7 +32,7 @@ const ws = Blockly.inject(blocklyDiv, {
 // Add CustomCursor to workspace
 ws.getMarkerManager().setCursor(new CustomCursor());
 
-// Initialize NavigationController plugin
+// Initialize NavigationController plugin and add to our workspace.
 const navigationController = new NavigationController();
 navigationController.init();
 navigationController.addWorkspace(ws);
