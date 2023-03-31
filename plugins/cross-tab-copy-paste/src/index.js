@@ -67,8 +67,8 @@ export class CrossTabCopyPaste {
       preconditionFn: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
         if (
-          Blockly.selected.isDeletable() &&
-          Blockly.selected.isMovable()) {
+          Blockly.getSelected().isDeletable() &&
+          Blockly.getSelected().isMovable()) {
           return 'enabled';
         }
         return 'disabled';

@@ -71,6 +71,10 @@ suite('Procedures', function() {
         .callsFake(() => {
           return this.workspace;
         });
+    window.requestAnimationFrame = this.sandbox.stub()
+        .callsFake((callback) => {
+          callback();
+        });
   });
 
   teardown(function() {
