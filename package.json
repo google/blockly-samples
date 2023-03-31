@@ -35,6 +35,7 @@
     "gh-pages": "^3.1.0",
     "gulp": "^4.0.2",
     "gulp-header": "^2.0.9",
+    "http-server": "^14.1.1",
     "js-green-licenses": "^1.1.0",
     "json-to-pretty-yaml": "^1.2.2",
     "lerna": "^6.5.1",

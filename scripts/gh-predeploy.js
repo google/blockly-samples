@@ -24,10 +24,11 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
  * @param {string} initialContents The initial page HTML, as a string.
  * @param {string} title The title to use for the page, which may be generated from the package
  *    name or specified explicitly.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @returns {string} The modified contents of the page, as a string.
  */
-function injectHeader(initialContents, title) {
-  let baseurl = '/blockly-samples';
+function injectHeader(initialContents, title, isLocal) {
+  let baseurl = isLocal ? '' : '/blockly-samples';
 
   let headerAdditions = `
   <!-- INJECTED HEADER -->
@@ -94,9 +95,10 @@ function injectFooter(initialContents) {
  * @param {string} initialContents The initial page HTML, as a string.
  * @param {!Object} packageJson The contents of the plugin's package.json.
  * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @returns {string} The modified contents of the page, as a string.
  */
-function injectPluginNavBar(inputString, packageJson, pluginDir) {
+function injectPluginNavBar(inputString, packageJson, pluginDir, isLocal) {
   // Build up information from package.json.
   let title = `${packageJson.name} Demo`;
   let description = packageJson.description;
@@ -104,7 +106,7 @@ function injectPluginNavBar(inputString, packageJson, pluginDir) {
   let codeLink = `https://github.com/google/blockly-samples/blob/master/plugins/${pluginDir}`;
 
   let npmLink = `https://www.npmjs.com/package/${packageJson.name}`;
-  let baseurl = '/blockly-samples';
+  let baseurl = isLocal ? '/' : '/blockly-samples';
 
   // Assemble that information into a nav bar and tabs for getting to the
   // playground and README pages.
@@ -127,7 +129,7 @@ function injectPluginNavBar(inputString, packageJson, pluginDir) {
     <a href="${npmLink}" class="button" target="_blank">View on npm</a>
   </nav>
   <!-- END NAV BAR -->
-  ${createPluginTabs(pluginDir)}`
+  ${createPluginTabs(pluginDir, isLocal)}`
 
   // Find the start of the body and inject the nav bar just after the opening <body> tag,
   // preserving anything else in the tag (such as onload).
@@ -144,10 +146,11 @@ function injectPluginNavBar(inputString, packageJson, pluginDir) {
 /**
  * Create the tabs for switching between playground and README pages.
  * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @returns {string} The HTML for the page tabs, as a string.
  */
-function createPluginTabs(pluginDir) {
-  const baseurl = '/blockly-samples';
+function createPluginTabs(pluginDir, isLocal) {
+  let baseurl = isLocal ? '' : '/blockly-samples';
   return `
   <!-- PAGE TABS -->
   <ul id="tabs">
@@ -170,13 +173,11 @@ function createPluginTabs(pluginDir) {
  * Create the tabs for switching between pages in an example.
  * The pages to include are specified in the example's package.json.
  * @param {string} pageRoot The directory of the example that is currently being prepared.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @returns {string} The HTML for the page tabs, as a string.
  */
-function createExampleTabs(pageRoot, pages) {
-  // local testing:
-  //const baseurl = 'http://127.0.0.1:8080';
-  // gh-pages:
-  const baseurl = '/blockly-samples';
+function createExampleTabs(pageRoot, pages, isLocal) {
+  let baseurl = isLocal ? '' : '/blockly-samples';
   function createTab(page) {
     return `
       <li>
@@ -207,13 +208,14 @@ function createExampleTabs(pageRoot, pages) {
  * devsite-style header and footer, and includes the plugin's readme and 
  * links to the plugin source files on GitHub and published package on npm.
  * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  */
-function createPluginPage(pluginDir) {
+function createPluginPage(pluginDir, isLocal) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
   const initialContents = fs.readFileSync(path.join('plugins', pluginDir, 'test', 'index.html')).toString();
   let title = `${packageJson.name} Demo`;
-  let contents = injectHeader(initialContents, title);
-  contents = injectPluginNavBar(contents, packageJson, pluginDir);
+  let contents = injectHeader(initialContents, title, isLocal);
+  contents = injectPluginNavBar(contents, packageJson, pluginDir, isLocal);
   contents = injectFooter(contents);
   
   const dirPath = path.join('gh-pages', 'plugins', pluginDir, 'test');
@@ -228,8 +230,9 @@ function createPluginPage(pluginDir) {
  * given package.
  * 
  * @param {string} pluginDir The directory of the plugin that is currently being prepared.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  */
-function createReadmePage(pluginDir) {
+function createReadmePage(pluginDir, isLocal) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
   const initialContents = fs.readFileSync(`./plugins/${pluginDir}/README.md`).toString();
 
@@ -256,8 +259,8 @@ function createReadmePage(pluginDir) {
 
   // Add the same header, nav bar, and footer as we used for the playground.
   let title = `${packageJson.name} Demo`;
-  let modifiedContents = injectHeader(initialPage, title);
-  modifiedContents = injectPluginNavBar(modifiedContents, packageJson, pluginDir);
+  let modifiedContents = injectHeader(initialPage, title, isLocal);
+  modifiedContents = injectPluginNavBar(modifiedContents, packageJson, pluginDir, isLocal);
   modifiedContents = injectFooter(modifiedContents);
 
   // Make sure the directory exists, then write to it.
@@ -272,12 +275,12 @@ function createReadmePage(pluginDir) {
  * Copy over files needed to deploy this plugin and its test page to 
  * github pages.
  * @param {string} pluginDir The directory with the plugin source files.
- * @returns 
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  */
-function preparePlugin(pluginDir) {
+function preparePlugin(pluginDir, isLocal) {
   console.log(`Preparing ${pluginDir} plugin for deployment.`);
-  createPluginPage(pluginDir);
-  createReadmePage(pluginDir);
+  createPluginPage(pluginDir, isLocal);
+  createReadmePage(pluginDir, isLocal);
   return gulp.src(
     [
       './plugins/' + pluginDir + '/build/test_bundle.js',
@@ -303,11 +306,32 @@ function prepareToDeployPlugins(done) {
   });
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployPlugin() {
-      return preparePlugin(folder);
+      return preparePlugin(folder, false);
     };
   }))(done);
 }
 
+/**
+ * Prepare plugins for deployment to gh-pages.
+ *
+ * For each plugin, copy relevant files to the gh-pages directory.
+ * @param {Function} done Completed callback.
+ * @return {Function} Gulp task.
+ */
+function prepareLocalPlugins(done) {
+  const dir = 'plugins';
+  const folders = fs.readdirSync(dir).filter(function (file) {
+    return fs.statSync(path.join(dir, file)).isDirectory() &&
+      fs.existsSync(path.join(dir, file, 'package.json')) &&
+      // Only prepare plugins with test pages.
+      fs.existsSync(path.join(dir, file, '/test/index.html'));
+  });
+  return gulp.parallel(folders.map(function (folder) {
+    return function preDeployPlugin() {
+      return preparePlugin(folder, true);
+    };
+  }))(done);
+}
 
 /**
  * Inject nav bar HTML for a specific example at the beginning of the body.
@@ -316,17 +340,18 @@ function prepareToDeployPlugins(done) {
  * @param {string} pageRoot The location of the example's files relative to the root of
  *     the repository.
  * @param {string} title The title to display in the nav bar.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @returns {string} The modified contents of the page, as a string.
  */
-function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
+function injectExampleNavBar(inputString, packageJson, pageRoot, title, isLocal) {
   // Build up information from package.json.
   let description = packageJson.blocklyDemoConfig.description ?
       `<div class="subtitle">${ packageJson.blocklyDemoConfig.description}</div>` : ``;
   let codeLink = `https://github.com/google/blockly-samples/blob/master/${pageRoot}`;
 
   const pages = packageJson.blocklyDemoConfig.pages;
-  const tabString = pages ? createExampleTabs(pageRoot, pages) : '';
-  let baseurl = '/blockly-samples';
+  const tabString = pages ? createExampleTabs(pageRoot, pages, isLocal) : '';
+  let baseurl = isLocal ? '/' : '/blockly-samples';
   // Assemble that information into a nav bar and tabs for getting to linked
   // example pages.
   let navBar = `
@@ -369,15 +394,16 @@ function injectExampleNavBar(inputString, packageJson, pageRoot, title) {
  *     prepared (e.g. examples/interpreter-demo).
  * @param {string} pagePath The page of the page to create within the example's directory
  *     (e.g. index.html).
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  */
-function createExamplePage(pageRoot, pagePath) {
+function createExamplePage(pageRoot, pagePath, isLocal) {
   const packageJson = require(resolveApp(`${pageRoot}/package.json`));
   const initialContents = fs.readFileSync(path.join(pageRoot, pagePath)).toString();
 
   const { blocklyDemoConfig } = packageJson;
 
-  let contents = injectHeader(initialContents, blocklyDemoConfig.title);
-  contents = injectExampleNavBar(contents, packageJson, pageRoot, blocklyDemoConfig.title);
+  let contents = injectHeader(initialContents, blocklyDemoConfig.title, isLocal);
+  contents = injectExampleNavBar(contents, packageJson, pageRoot, blocklyDemoConfig.title, isLocal);
   contents = injectFooter(contents);
 
   const outputPath = path.join('gh-pages', pageRoot, pagePath);
@@ -392,10 +418,11 @@ function createExamplePage(pageRoot, pagePath) {
  * @param {string} baseDir The base directory to use, eg: ./examples.
  * @param {string} exampleDir The subdirectory (inside examples/) for this
  *     example.
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function prepareExample(baseDir, exampleDir, done) {
+function prepareExample(baseDir, exampleDir, isLocal, done) {
   // TODO: Why do I sometimes use path.join and sometimes just do
   // string concatenation?
   const packageJson =
@@ -426,7 +453,7 @@ function prepareExample(baseDir, exampleDir, done) {
   const pageRegex = /.*\.(html|htm)$/i;
   const pages = fileList.filter((f) => pageRegex.test(f));
   // Add headers and footers to HTML pages.
-  pages.forEach(page => createExamplePage(`${baseDir}/${exampleDir}`, page));
+  pages.forEach(page => createExamplePage(`${baseDir}/${exampleDir}`, page, isLocal));
   
   // Copy over all other files mentioned in the demoConfig to the correct directory.
   const assets = fileList.filter((f) => !pageRegex.test(f));
@@ -455,17 +482,41 @@ function prepareToDeployExamples(done) {
   });
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployExample(done) {
-      return prepareExample(dir, folder, done);
+      return prepareExample(dir, folder, false, done);
     };
   }))(done);
 }
 
 /**
+ * Prepare examples/demos for deployment to gh-pages.
+ *
+ * For each examples, read the demo config, and copy relevant files to the
+ * gh-pages directory.
+ * @param {Function} done Completed callback.
+ * @return {Function} Gulp task.
+ */
+function prepareLocalExamples(done) {
+  const dir = 'examples';
+  const folders = fs.readdirSync(dir).filter((file) => {
+    return fs.statSync(path.join(dir, file)).isDirectory() &&
+      fs.existsSync(path.join(dir, file, 'package.json'));
+  });
+  return gulp.parallel(folders.map(function (folder) {
+    return function preDeployExample(done) {
+      return prepareExample(dir, folder, true, done);
+    };
+  }))(done);
+}
+
+
+/**
  * Create the index page for the blockly-samples GitHub Pages site.
  * This page has some nice wrappers, a search bar, and a link to every plugin or example
  * specified in in `index.md`.
+ * 
+ * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  */
-function createIndexPage() {
+function createIndexPage(isLocal) {
   const initialContents = fs.readFileSync(`./gh-pages/index.md`).toString();
 
   const converter = new showdown.Converter();
@@ -525,7 +576,7 @@ function createIndexPage() {
 </html>
 `;
 
-  let contents = injectHeader(indexBase, 'Plugins | blockly-samples');
+  let contents = injectHeader(indexBase, 'Plugins | blockly-samples', isLocal);
   contents = injectFooter(contents);
 
   const outputPath = path.join('gh-pages', 'index.html');
@@ -538,8 +589,13 @@ function createIndexPage() {
  * GitHub Pages.
  */
 function predeployForGitHub(done) {
-  createIndexPage();
+  createIndexPage(false);
   return gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples)(done);
+}
+
+function predeployForLocal(done) {
+  createIndexPage(true);
+  return gulp.parallel(prepareLocalPlugins, prepareLocalExamples)(done);
 }
 
 module.exports = {
@@ -547,4 +603,5 @@ module.exports = {
   predeployExamples: prepareToDeployExamples,
   prepareIndex: createIndexPage,
   predeployAll: predeployForGitHub,
+  predeployAllLocal: predeployForLocal,
 };
