@@ -10,12 +10,11 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {FieldNumberConfig, FieldNumberValidator} from 'blockly/core/field_number';
 
 /**
  * A config object for defining a field slider.
  */
-export type FieldSliderConfig = FieldNumberConfig;
+export type FieldSliderConfig = Blockly.FieldNumberConfig;
 
 /**
  * Options used to define a field slider from JSON.
@@ -24,7 +23,7 @@ export interface FieldSliderOptions extends FieldSliderConfig {
   value?: string | number;
 }
 
-export type FieldSliderValidator = FieldNumberValidator;
+export type FieldSliderValidator = Blockly.FieldNumberValidator;
 
 /**
  * Slider field.
@@ -134,7 +133,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     sliderInput.setAttribute('min', `${this.min_}`);
     sliderInput.setAttribute('max', `${this.max_}`);
     sliderInput.setAttribute('step', `${this.precision_}`);
-    sliderInput.setAttribute('value', this.getValue());
+    sliderInput.setAttribute('value', `${this.getValue()}`);
     sliderInput.setAttribute('tabindex', '0');
     sliderInput.className = 'fieldSlider';
     wrapper.appendChild(sliderInput);
@@ -172,7 +171,7 @@ export class FieldSlider extends Blockly.FieldNumber {
     if (!this.sliderInput) {
       return;
     }
-    this.sliderInput.setAttribute('value', this.getValue());
+    this.sliderInput.setAttribute('value', `${this.getValue()}`);
   }
   /* eslint-enable @typescript-eslint/naming-convention */
 }
