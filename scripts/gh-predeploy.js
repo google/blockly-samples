@@ -172,6 +172,7 @@ function createPluginTabs(pluginDir, isLocal) {
 /**
  * Create the tabs for switching between pages in an example.
  * The pages to include are specified in the example's package.json.
+ * Unlike plugins, examples may have as many tabs as they want.
  * @param {string} pageRoot The directory of the example that is currently being prepared.
  * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @returns {string} The HTML for the page tabs, as a string.
@@ -189,7 +190,6 @@ function createExampleTabs(pageRoot, pages, isLocal) {
   }
 
   let tabsString = ``;
-
   for (const page of pages) {
     tabsString += createTab(page); 
   }
@@ -290,20 +290,29 @@ function preparePlugin(pluginDir, isLocal) {
 }
 
 /**
- * Prepare plugins for deployment to gh-pages.
- *
- * For each plugin, copy relevant files to the gh-pages directory.
- * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * Find the folders that contain plugins with test pages.
+ * 
+ * @returns {Array.string} A list of directories that should be processed
+ *   for deployment to GitHub Pages.
  */
-function prepareToDeployPlugins(done) {
+function getPluginFolders() {
   const dir = 'plugins';
-  const folders = fs.readdirSync(dir).filter(function (file) {
+  return fs.readdirSync(dir).filter(function (file) {
     return fs.statSync(path.join(dir, file)).isDirectory() &&
       fs.existsSync(path.join(dir, file, 'package.json')) &&
       // Only prepare plugins with test pages.
       fs.existsSync(path.join(dir, file, '/test/index.html'));
   });
+}
+
+/**
+ * Prepare plugins for deployment to gh-pages.
+ *
+ * @param {Function} done Completed callback.
+ * @return {Function} Gulp task.
+ */
+function prepareToDeployPlugins(done) {
+  const folders = getPluginFolders();
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployPlugin() {
       return preparePlugin(folder, false);
@@ -312,20 +321,13 @@ function prepareToDeployPlugins(done) {
 }
 
 /**
- * Prepare plugins for deployment to gh-pages.
+ * Prepare plugins for local testing of the GitHub Pages site.
  *
- * For each plugin, copy relevant files to the gh-pages directory.
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
 function prepareLocalPlugins(done) {
-  const dir = 'plugins';
-  const folders = fs.readdirSync(dir).filter(function (file) {
-    return fs.statSync(path.join(dir, file)).isDirectory() &&
-      fs.existsSync(path.join(dir, file, 'package.json')) &&
-      // Only prepare plugins with test pages.
-      fs.existsSync(path.join(dir, file, '/test/index.html'));
-  });
+  const folders = getPluginFolders();
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployPlugin() {
       return preparePlugin(folder, true);
@@ -413,18 +415,16 @@ function createExamplePage(pageRoot, pagePath, isLocal) {
 
 /**
  * Copy over files listed in the blocklyDemoConfig.files section of the
- * package.json. Add variables needed for Jekyll processing.
+ * package.json and create the demo HTML pages.
  * The resulting code lives in gh-pages/examples/<exampleName>.
- * @param {string} baseDir The base directory to use, eg: ./examples.
  * @param {string} exampleDir The subdirectory (inside examples/) for this
  *     example.
  * @param {boolean} isLocal True if building for a local test. False if building for gh-pages.
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function prepareExample(baseDir, exampleDir, isLocal, done) {
-  // TODO: Why do I sometimes use path.join and sometimes just do
-  // string concatenation?
+function prepareExample(exampleDir, isLocal, done) {
+  const baseDir = 'examples';
   const packageJson =
     require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
   
@@ -467,26 +467,16 @@ function prepareExample(baseDir, exampleDir, isLocal, done) {
 }
 
 /**
- * Prepare examples/demos for deployment to gh-pages.
- *
- * For each examples, read the demo config, and copy relevant files to the
- * gh-pages directory.
- * @param {Function} done Completed callback.
- * @return {Function} Gulp task.
+ * Find the folders in examples that have package.json files.
+ * @returns {Array<string>} A list of directories to prepare.
  */
-function prepareToDeployExamples(done) {
+function getExampleFolders() {
   const dir = 'examples';
-  const folders = fs.readdirSync(dir).filter((file) => {
+  return fs.readdirSync(dir).filter((file) => {
     return fs.statSync(path.join(dir, file)).isDirectory() &&
       fs.existsSync(path.join(dir, file, 'package.json'));
   });
-  return gulp.parallel(folders.map(function (folder) {
-    return function preDeployExample(done) {
-      return prepareExample(dir, folder, false, done);
-    };
-  }))(done);
 }
-
 /**
  * Prepare examples/demos for deployment to gh-pages.
  *
@@ -495,15 +485,26 @@ function prepareToDeployExamples(done) {
  * @param {Function} done Completed callback.
  * @return {Function} Gulp task.
  */
-function prepareLocalExamples(done) {
-  const dir = 'examples';
-  const folders = fs.readdirSync(dir).filter((file) => {
-    return fs.statSync(path.join(dir, file)).isDirectory() &&
-      fs.existsSync(path.join(dir, file, 'package.json'));
-  });
+function prepareToDeployExamples(done) {
+  const folders = getExampleFolders();
   return gulp.parallel(folders.map(function (folder) {
     return function preDeployExample(done) {
-      return prepareExample(dir, folder, true, done);
+      return prepareExample(folder, false, done);
+    };
+  }))(done);
+}
+
+/**
+ * Prepare examples/demos for local testing of the GitHub Pages site.
+ * 
+ * @param {Function} done Completed callback.
+ * @return {Function} Gulp task.
+ */
+function prepareLocalExamples(done) {
+  const folders = getExampleFolders();
+  return gulp.parallel(folders.map(function (folder) {
+    return function preDeployExample(done) {
+      return prepareExample(folder, true, done);
     };
   }))(done);
 }
