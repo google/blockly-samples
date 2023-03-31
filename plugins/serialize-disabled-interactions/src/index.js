@@ -66,44 +66,12 @@ class DisabledInteractionsSerializer {
   /**
    * Serializes the disabled interactions associated with blocks on the given
    * workspace.
-   * @param {!Blockly.Workspace} workspace The workspace to save the disabled
+   * @param {!Blockly.Workspace} _workspace The workspace to save the disabled
    *     interactions of.
    * @returns {?State} The state of the workspace's disabled interactions, or
    *     null if there are none.
    */
-  save(workspace) {
-    const notDeletable = [];
-    const notMovable = [];
-    const notEditable = [];
-
-    const blocks = workspace.getAllBlocks(false);
-    for (let i = 0; i < blocks.length; i++) {
-      const block = blocks[i];
-      if (!block.isDeletable()) {
-        notDeletable.push(block.id);
-      }
-      if (!block.isMovable()) {
-        notMovable.push(block.id);
-      }
-      if (!block.isEditable()) {
-        notEditable.push(block.id);
-      }
-    }
-
-    const state = Object.create(null);
-    if (notDeletable.length) {
-      state['notDeletable'] = notDeletable;
-    }
-    if (notMovable.length) {
-      state['notMovable'] = notMovable;
-    }
-    if (notEditable.length) {
-      state['notEditable'] = notEditable;
-    }
-
-    if (notDeletable.length || notMovable.length || notEditable.length) {
-      return state;
-    }
+  save(_workspace) {
     return null;
   }
 

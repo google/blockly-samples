@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-serialize-disabled-interactions@2.0.12...@blockly/plugin-serialize-disabled-interactions@3.0.0) (2023-03-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove serialization from disabled interaction serializer (#1564)
+
+### Bug Fixes
+
+* remove serialization from disabled interaction serializer ([#1564](https://github.com/google/blockly-samples/issues/1564)) ([383d3dc](https://github.com/google/blockly-samples/commit/383d3dc57d9ae821d0f7b9ea8709c443362c62d4))
+
+
+
 ## [2.0.12](https://github.com/google/blockly-samples/compare/@blockly/plugin-serialize-disabled-interactions@2.0.11...@blockly/plugin-serialize-disabled-interactions@2.0.12) (2023-03-23)
 
 **Note:** Version bump only for package @blockly/plugin-serialize-disabled-interactions

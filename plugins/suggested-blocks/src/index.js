@@ -175,15 +175,22 @@ export class BlockSuggestor {
 
 /**
  * Main entry point to initialize the suggested blocks categories.
- * @param {*} workspace the workspace to load into
- * @param {*} numBlocksPerCategory how many blocks should be included per
- * category
+ * @param {Blockly.WorkspaceSvg} workspace the workspace to load into
+ * @param {number} numBlocksPerCategory how many blocks should be included per
+ * category. Defaults to 10.
+ * @param {boolean} waitForFinishedLoading whether to wait until we hear the
+ * FINISHED_LOADING event before responding to BLOCK_CREATE events. Set to false
+ * if you disable events during initial load. Defaults to true.
  */
-export const init = function(workspace, numBlocksPerCategory = 10) {
+export const init = function(
+    workspace, numBlocksPerCategory = 10, waitForFinishedLoading = true) {
   const suggestor = new BlockSuggestor(numBlocksPerCategory);
   workspace.registerToolboxCategoryCallback('MOST_USED', suggestor.getMostUsed);
   workspace.registerToolboxCategoryCallback('RECENTLY_USED',
       suggestor.getRecentlyUsed);
+  // If user says not to wait to hear FINISHED_LOADING event,
+  // then always respond to BLOCK_CREATE events.
+  if (!waitForFinishedLoading) suggestor.workspaceHasFinishedLoading = true;
   workspace.addChangeListener(suggestor.eventListener);
   suggestorLookup.set(workspace, suggestor);
 };
@@ -207,10 +214,10 @@ class BlockSuggestorSerializer {
   /**
    * Saves a target workspace's state to serialized JSON.
    * @param {Blockly.Workspace} workspace the workspace to save
-   * @returns {object} the serialized JSON
+   * @returns {object|undefined} the serialized JSON if present
    */
   save(workspace) {
-    return suggestorLookup.get(workspace).saveToSerializedData();
+    return suggestorLookup.get(workspace)?.saveToSerializedData();
   }
 
   /**
@@ -219,7 +226,7 @@ class BlockSuggestorSerializer {
    * @param {Blockly.Workspace} workspace the workspace to load into
    */
   load(state, workspace) {
-    suggestorLookup.get(workspace).loadFromSerializedData(state);
+    suggestorLookup.get(workspace)?.loadFromSerializedData(state);
   }
 
   /**
@@ -227,10 +234,9 @@ class BlockSuggestorSerializer {
    * @param {Blockly.Workspace} workspace the workspace to reset
    */
   clear(workspace) {
-    suggestorLookup.get(workspace).clearPriorBlockData();
+    suggestorLookup.get(workspace)?.clearPriorBlockData();
   }
 }
-
 
 Blockly.serialization.registry.register(
     'suggested-blocks', // Name
