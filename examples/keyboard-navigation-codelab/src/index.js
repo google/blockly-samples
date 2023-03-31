@@ -11,9 +11,10 @@ import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
 import './index.css';
-import {Constants, NavigationController} from '@blockly/keyboard-navigation';
+import {NavigationController} from '@blockly/keyboard-navigation';
+import {Constants} from '@blockly/keyboard-navigation';
 import {CustomCursor} from './cursors/custom';
-import './markers/custom';
+import './markers/custom_marker_svg';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
@@ -79,7 +80,7 @@ const ctrlW = Blockly.ShortcutRegistry.registry.createSerializedKey(
 
 const moveToStack = {
   name: 'moveToStack',
-  keyCodes: [ctrlW],
+  keyCodes: [ctrlW], // The custom key mapping.
   preconditionFn: function(workspace) {
     return workspace.keyboardAccessibilityMode;
   },
