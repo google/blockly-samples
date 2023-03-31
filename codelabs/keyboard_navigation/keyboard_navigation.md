@@ -8,51 +8,50 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 # Keyboard navigation
 
 ## Codelab overview
-Keyboard navigation is the first step in making Blockly more accessible. This guide focuses on how to modify keyboard navigation for testing purposes.
 
-### Prerequisites
-1. A basic understanding of how to use the Blockly playground locally. This can be found in [`tests/playground.html`](https://github.com/google/blockly/blob/master/tests/playground.html).
-1. Read through the keyboard navigation [documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
+Keyboard navigation is the first step in making Blockly more accessible. This guide focuses on how to modify keyboard navigation.
 
 ### What you'll learn
-In this codelab you will learn:
-1. How to change the behavior of a cursor.
-1. How to change the look of cursors and markers.
-1. How to add a shortcut.
-1. How to change the current key mappings.
+
+- How to change the behavior of a cursor.
+- How to change the look of cursors and markers.
+- How to add a shortcut.
+- How to change the current key mappings.
 
 ### What you'll build
-Over the course of this codelab you will build the following:
-1. A cursor that displays a red blinking image over the block.
-1. A cursor that skips over previous and next connections.
-1. A keyboard shortcut for moving your cursor to the top of a stack.
+
+- A cursor that displays a red blinking image over the block.
+- A cursor that skips over previous and next connections.
+- A keyboard shortcut for moving your cursor to the top of a stack.
 
 ### What you'll need
-1. A Blockly version greater than or equal to `5.20210325.0` and the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation).
+
+- Comfort with the Blockly playground.
+- NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
+- Familiarity with the blockly keyboard navigation [documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
+
+## Setup
+
+In this codelab you will install the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation) on top of the Blockly playground and then add code to create and use a custom `Cursor` and `Marker`.
+
+### The application
+
+You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+  1. Run `npx @blockly/create-package app keyboard-navigation-codelab`.  This will create your blockly application in the folder `keyboard-navigation-codelab`.
+  1. `cd` into your new directory: `keyboard-navigation-codelab`.
+  1. Install the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation):  `npm install @blockly/keyboard-navigation --save`
+  1. Run `npm start` to start the server and run the sample application.
+  1. The sample app will automatically run in the browser window that opens.
 
 ## Terminology
-A **Marker** holds a location and is not movable.
+A [**Marker**](https://developers.google.com/blockly/reference/js/blockly.marker_class) holds a location and is not movable.
 
-A **Cursor** is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
+A [**Cursor**](https://developers.google.com/blockly/reference/js/blockly.cursor_class) is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
 
 The below image displays different parts of a block that a user can navigate to using keyboard navigation.
 ![Displays the different parts of a block. The previous connection on the top of a block. The next connection on the bottom of a block. Input value as a cut out of a puzzle piece. The statement input as a connection inside of a block. The output connection as a puzzle piece.](./block_terms.png)
 
-## Setup
-In this codelab you will add code to a Blockly playground that has the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation) initialized.
-We will be using the playground created in the keyboard
-navigation plugin, which can be found in [`tests/index.js`](https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/test/index.js).
-
-To get the playground up and working follow these steps:
-1. Clone the [blockly-samples](https://github.com/google/blockly-samples) repository.
-1. Move to the [plugins/keyboard-navigation](https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/README.md) directory.
-1. Run `npm install`.
-1. Run `npm run start`.
-
-If you would rather not pull the blockly-samples repository, you should also
-be able to follow along by creating a simple Blockly application that
-uses the keyboard navigation plugin.
-
+## TODO: Integrate this below.
 To start, create a file named `custom_cursor.js` and a file named `custom_marker_svg.js` in the same folder as [`test/index.js`](https://github.com/google/blockly-samples/blob/master/plugins/keyboard-navigation/test/index.js).
 
 Note: you must include your custom code *after* including the Blockly library.
