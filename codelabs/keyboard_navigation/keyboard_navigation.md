@@ -33,7 +33,7 @@ Keyboard navigation is the first step in making Blockly more accessible. This gu
 
 ## Setup
 
-In this codelab you will install the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation) on top of the Blockly playground and then add code to create and use a custom `Cursor` and `Marker`.
+In this codelab you will install the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation) on top of the Blockly sample app and then add code to create and use a custom `Cursor` and `Marker`.
 
 ### The application
 
