@@ -24,7 +24,6 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 
 ### What you'll need
 
-- Comfort with the Blockly playground.
 - Familiarity with JSON and the JSON specification.
 - Basic understanding of blocks and toolboxes in Blockly.
 - NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
@@ -32,7 +31,7 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 
 ## Setup
 
-In this codelab you will add code to the Blockly playground to create and use a new generator.
+In this codelab you will add code to the Blockly sample app to create and use a new generator.
 
 ### The application
 

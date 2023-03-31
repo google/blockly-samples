@@ -31,14 +31,13 @@ You will build and use four renderers:
 
 ### What you'll need
 
-- Comfort with the Blockly playground.
 - Basic understanding of renderers and toolboxes in Blockly.
 - NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
 - Comfort using the command line/terminal.
 
 ## Setup
 
-In this codelab you will add code to the Blockly playground to create and use a new custom renderer.
+In this codelab you will add code to the Blockly sample app to create and use a new custom renderer.
 
 ### The application
 
