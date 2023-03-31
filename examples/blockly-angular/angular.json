@@ -128,5 +128,8 @@
         }
       }
     }},
-  "defaultProject": "blockly-angular-sample"
+  "defaultProject": "blockly-angular-sample",
+  "cli": {
+    "analytics": false
+  }
 }
