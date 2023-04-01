@@ -19,8 +19,6 @@ const predeployTasks = require('./scripts/gh-predeploy');
 
 gulp.header = require('gulp-header');
 
-const appDirectory = fs.realpathSync(process.cwd());
-
 /**
  * Run the license checker for all packages.
  * @returns {Promise} A promise.
@@ -210,7 +208,7 @@ function deployToGhPages(repo) {
           repo,
           // Include .nojekyll file to tell GitHub to publish without building.
           // By default, dotfiles are excluded.
-          // TODO: make the github action do the build step before publishing.
+          // TODO: make the github action include .nojekyll.
           src: ['**/*', '.nojekyll']
         },
         done);
