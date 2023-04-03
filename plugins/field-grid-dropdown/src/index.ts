@@ -14,7 +14,7 @@ import * as Blockly from 'blockly/core';
 /**
  * A config object for defining a field grid dropdown.
  */
-export interface FieldGridDropdownConfig extends Blockly.FieldConfig {
+export interface FieldGridDropdownConfig extends Blockly.FieldDropdownConfig {
   columns?: string | number;
   primaryColour?: string;
   borderColour?: string;
@@ -67,7 +67,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     super(menuGenerator, validator, config);
 
     if (config?.columns) {
-      this.setColumnsInternal_(config.columns);
+      this.setColumnsInternal(config.columns);
     }
 
     if (config && config.primaryColour) {
@@ -96,7 +96,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     }
     // `this` might be a subclass of FieldDropdown if that class doesn't
     // override the static fromJson method.
-    return new FieldGridDropdown(config.options, undefined, config);
+    return new this(config.options, undefined, config);
   }
 
   /* eslint-disable @typescript-eslint/naming-convention */
@@ -106,7 +106,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @param columns The number of columns. Is rounded to an integer value and
    *  must be greater than 0. Invalid values are ignored.
    */
-  private setColumnsInternal_(columns: string | number) {
+  private setColumnsInternal(columns: string | number) {
     const cols = typeof columns === 'string' ? parseInt(columns) : columns;
     if (!isNaN(cols) && cols >= 1) {
       this.columns = cols;
@@ -134,11 +134,8 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     }
     this.updateColumnsStyling_();
 
-    // NOTE: dropdownDispose is 'private' in FieldDropdown. It is corrected
-    // in a later version to be 'protected', though until that is
-    // available, bypass TypeScript blocking use of this field.
     Blockly.DropDownDiv.showPositionedByField(
-        this, (this['dropdownDispose_']).bind(this));
+        this, this.dropdownDispose_.bind(this));
   }
 
   /**
@@ -180,9 +177,6 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   }
 }
 
-// IRegisterableField should accept `T extends Field`.
-// This `fromJson` doesn't match, though it should be compatible. The options
-// rightfully should be required here.
 Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
 
 /**
