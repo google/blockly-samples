@@ -87,7 +87,7 @@ You can go back to the play mode by tapping **SAVE** and then **DONE** buttons.
 
 Now that you know what you'll be building, you need to add Blockly dependencies to your app.
 
-Blockly releases are [published on npm](https://www.npmjs.com/package/blockly) on a quarterly basis. For this codelab you will import blockly using [unpkg](https://unpkg.com), which lets you import all of the files you need with a single script tag.
+Blockly releases are [published on npm](https://www.npmjs.com/package/blockly) on a quarterly basis. For this codelab you will import blockly using [unpkg](https://unpkg.com), which lets you import all of the files you need with a single script tag. 
 
 ### Add the script tag
 
