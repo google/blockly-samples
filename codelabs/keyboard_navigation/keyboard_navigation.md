@@ -81,12 +81,9 @@ Import your cursor in `src/index.js`.
 import {CustomCursor} from './cursors/custom';
 ```
 
-Now tell the workspace to use your new cursor by calling `setCursor()` on the `MarkerManager`:
+After injecting the workspace, use its `MarkerManager` to set your new custom cursor:
 
 ```js
-// This line already exists, call `setCursor()` after this..
-const ws = Blockly.inject( // ...etc
-
 // Add CustomCursor to workspace
 ws.getMarkerManager().setCursor(new CustomCursor());
 ```
@@ -101,12 +98,9 @@ First, import `NavigationController` at the top of `index.js`:
 import {NavigationController} from '@blockly/keyboard-navigation';
 ```
 
-Then, instantiate an instance of `NavigationController`, initialize it, and add it to our workspace:
+Then, after injecting the workspace, instantiate an instance of `NavigationController`, initialize it, and add it to our workspace:
 
 ```js
-// This line already exists, initialize NavigationController after this..
-const ws = Blockly.inject( // ...etc
-
 // Initialize NavigationController plugin and add to our workspace.
 const navigationController = new NavigationController();
 navigationController.init();
