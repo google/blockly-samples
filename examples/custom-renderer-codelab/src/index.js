@@ -10,7 +10,7 @@ import {generator} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
-import './renderers/javascript';
+import './renderers/custom';
 import './index.css';
 
 // Register the blocks and generator with Blockly
