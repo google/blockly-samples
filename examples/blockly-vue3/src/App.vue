@@ -14,7 +14,7 @@ import { ref } from "vue";
 import BlocklyComponent from "./components/BlocklyComponent.vue";
 import "./blocks/stocks";
 
-import BlocklyJS from "blockly/javascript";
+import { javascriptGenerator } from "blockly/javascript";
 
 const foo = ref();
 const code = ref();
@@ -66,7 +66,7 @@ const options = {
         </xml>`,
 };
 
-const showCode = () => (code.value = BlocklyJS.workspaceToCode(foo.value.workspace));
+const showCode = () => (code.value = javascriptGenerator.workspaceToCode(foo.value.workspace));
 </script>
 
 <template>
