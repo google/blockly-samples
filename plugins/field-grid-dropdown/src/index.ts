@@ -99,7 +99,17 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     return new this(config.options, undefined, config);
   }
 
-  /* eslint-disable @typescript-eslint/naming-convention */
+  /**
+   * Sets the number of columns on the grid. Updates the styling to reflect.
+   * @param columns The number of columns. Is rounded to
+   *    an integer value and must be greater than 0. Invalid
+   *    values are ignored.
+   */
+  setColumns(columns: number) {
+    this.setColumnsInternal(columns);
+    this.updateColumnsStyling_();
+  }
+
   /**
    * Sets the number of columns on the grid.
    *
@@ -113,6 +123,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     }
   }
 
+  /* eslint-disable @typescript-eslint/naming-convention */
   /**
    * Create a dropdown menu under the text.
    *
