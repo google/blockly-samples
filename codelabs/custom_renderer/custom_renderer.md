@@ -10,6 +10,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 ## Codelab overview
 
 ### What you'll learn
+
 - How to define and register a custom renderer.
 - How to override renderer constants.
 - How to change the shape of connection notches.
@@ -30,21 +31,21 @@ You will build and use four renderers:
 
 ### What you'll need
 
-- Comfort with the Blockly playground.
+- Basic understanding of renderers and toolboxes in Blockly.
 - NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
 - Comfort using the command line/terminal.
 
 ## Setup
 
-In this codelab you will add code to the Blockly playground to create and use a new custom renderer.
+In this codelab you will add code to the Blockly sample app to create and use a new custom renderer.
 
 ### The application
 
 You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1) Run `npx @blockly/create-package app custom-renderer-codelab`.  This will create your blockly application in the folder `custom-renderer-codelab`.
-  2) `cd` into your new directory: `cd custom-renderer-codelab`.
-  3) Run `npm start` to start the server and run the sample application.
-  4) The sample app will automatically run in the browser window that opens.
+  1. Run `npx @blockly/create-package app custom-renderer-codelab`.  This will create your blockly application in the folder `custom-renderer-codelab`.
+  1. `cd` into your new directory: `cd custom-renderer-codelab`.
+  1. Run `npm start` to start the server and run the sample application.
+  1. The sample app will automatically run in the browser window that opens.
 
 The initial application uses the default renderer and contains no code or definitions for a custom renderer.
 
