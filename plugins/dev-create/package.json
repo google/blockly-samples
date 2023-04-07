@@ -17,7 +17,7 @@
     "templates/sample-app/*"
   ],
   "scripts": {
-    "prepack": "cp -r ../../examples/sample-app ./templates"
+    "prepack": "cp -r ../../examples/sample-app ./templates && cp -r ../../examples/sample-app-ts ./templates"
   },
   "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/dev-create#readme",
   "bugs": {
