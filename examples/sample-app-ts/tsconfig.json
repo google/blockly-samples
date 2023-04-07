@@ -9,7 +9,4 @@
         "target": "ES2015",
         "strict": true,
     },
-    // NOTE: `test/**/*` is automatically included in `blockly-scripts start`.
-    // Only src matters for production builds.
-    "exclude": ["test/**/*"]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "sample-app",
+  "name": "sample-app-typescript",
   "version": "1.0.0",
   "description": "A sample app using Blockly",
   "main": "index.js",
