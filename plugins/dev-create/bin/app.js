@@ -5,11 +5,6 @@ const execSync = require('child_process').execSync;
 const {checkAndCreateDir} = require('./common');
 
 exports.createApp = function(name, options) {
-  if (options.typescript) {
-    console.error('Not yet implemented');
-    process.exit(1);
-  }
-
   const root = process.cwd();
   const dir = options.dir ?? name;
   const appPath = path.join(root, dir);
@@ -20,7 +15,7 @@ exports.createApp = function(name, options) {
       `Creating a new Blockly application called ${name} in ${appPath}`);
 
   // Copy over files from sample-app directory.
-  const sampleDir = '../templates/sample-app';
+  const sampleDir = options.typescript ? '../templates/sample-app-ts' : '../templates/sample-app';
   const excludes =
       ['node_modules', 'dist', 'package-lock.json', 'package.json']
           .map((file) => {
