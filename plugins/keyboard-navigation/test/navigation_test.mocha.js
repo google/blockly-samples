@@ -1115,10 +1115,10 @@ suite('Navigation', function() {
       this.workspace = createNavigationWorkspace(this.navigation, true);
     });
     test('All listeners and markers removed', function() {
-      const numListeners = this.workspace.listeners_.length;
+      const numListeners = this.workspace.listeners.length;
       const markerName = this.navigation.MARKER_NAME;
       this.navigation.removeWorkspace(this.workspace);
-      chai.assert.equal(this.workspace.listeners_.length, numListeners - 1);
+      chai.assert.equal(this.workspace.listeners.length, numListeners - 1);
 
       const marker = this.workspace.getMarkerManager().getMarker(markerName);
       chai.assert.isNull(marker);
@@ -1129,13 +1129,13 @@ suite('Navigation', function() {
       chai.assert.isFalse(this.workspace.keyboardAccessibilityMode);
     });
     test('Dispose', function() {
-      const numListeners = this.workspace.listeners_.length;
+      const numListeners = this.workspace.listeners.length;
       const flyout = this.workspace.getFlyout();
-      const numFlyoutListeners = flyout.getWorkspace().listeners_.length;
+      const numFlyoutListeners = flyout.getWorkspace().listeners.length;
       this.navigation.dispose();
-      chai.assert.equal(this.workspace.listeners_.length, numListeners - 1);
+      chai.assert.equal(this.workspace.listeners.length, numListeners - 1);
       chai.assert.equal(
-          flyout.getWorkspace().listeners_.length, numFlyoutListeners - 1);
+          flyout.getWorkspace().listeners.length, numFlyoutListeners - 1);
     });
   });
 });
