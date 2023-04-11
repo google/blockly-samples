@@ -19,8 +19,6 @@ const predeployTasks = require('./scripts/gh-predeploy');
 
 gulp.header = require('gulp-header');
 
-const appDirectory = fs.realpathSync(process.cwd());
-
 /**
  * Run the license checker for all packages.
  * @returns {Promise} A promise.
@@ -210,7 +208,7 @@ function deployToGhPages(repo) {
           repo,
           // Include .nojekyll file to tell GitHub to publish without building.
           // By default, dotfiles are excluded.
-          // TODO: make the github action do the build step before publishing.
+          // TODO: make the github action include .nojekyll.
           src: ['**/*', '.nojekyll']
         },
         done);
@@ -266,11 +264,11 @@ function testGhPagesLocally(isBeta) {
   return gulp.series(
       gulp.parallel(
           preparePluginsForLocal(isBeta), prepareExamplesForLocal(isBeta)),
-      gulp.parallel(predeployTasks.predeployPlugins, predeployTasks.predeployExamples),
+      predeployTasks.predeployAllLocal,
       function(done) {
-        console.log('Starting server using "bundle exec jekyll serve"');
+        console.log('Starting server using http-server');
         execSync(
-            `bundle exec jekyll serve`, {cwd: 'gh-pages', stdio: 'inherit'});
+            `npx http-server`, {cwd: 'gh-pages', stdio: 'inherit'});
         done();
       });
 }
