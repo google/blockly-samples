@@ -141,10 +141,10 @@ export class CrossTabCopyPaste {
       preconditionFn: function(workspace) {
         return !workspace.options.readOnly &&
           !Blockly.Gesture.inProgress() &&
-          Blockly.selected &&
-          Blockly.selected.isDeletable() &&
-          Blockly.selected.isMovable() &&
-          !Blockly.selected.isInMutator;
+          Blockly.getSelected() &&
+          Blockly.getSelected().isDeletable() &&
+          Blockly.getSelected().isMovable() &&
+          !Blockly.getSelected().isInMutator;
       },
       callback: function(workspace, e) {
         // Prevent the default copy behavior,
@@ -153,7 +153,7 @@ export class CrossTabCopyPaste {
         e.preventDefault();
         workspace.hideChaff();
         const blockText = JSON.stringify(
-            convertBlockToSaveInfo(Blockly.selected));
+            convertBlockToSaveInfo(Blockly.getSelected()));
         localStorage.setItem('blocklyStash', blockText);
         return true;
       },
@@ -185,10 +185,10 @@ export class CrossTabCopyPaste {
       preconditionFn: function(workspace) {
         return !workspace.options.readOnly &&
           !Blockly.Gesture.inProgress() &&
-          Blockly.selected &&
-          Blockly.selected.isDeletable() &&
-          Blockly.selected.isMovable() &&
-          !Blockly.selected.workspace.isFlyout;
+          Blockly.getSelected() &&
+          Blockly.getSelected().isDeletable() &&
+          Blockly.segetSelected().isMovable() &&
+          !Blockly.getSelected().workspace.isFlyout;
       },
       callback: function(workspace, e) {
         // Prevent the default copy behavior,
@@ -196,10 +196,10 @@ export class CrossTabCopyPaste {
         // an error due to the lack of a selection.
         e.preventDefault();
         const blockText = JSON.stringify(
-            convertBlockToSaveInfo(Blockly.selected));
+            convertBlockToSaveInfo(Blockly.getSelected()));
         localStorage.setItem('blocklyStash', blockText);
         Blockly.Events.setGroup(true);
-        Blockly.selected.dispose(true);
+        Blockly.getSelected().dispose(true);
         Blockly.Events.setGroup(false);
         return true;
       },
