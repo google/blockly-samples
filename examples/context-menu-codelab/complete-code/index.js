@@ -61,7 +61,7 @@ function registerHelpOption() {
         'fields': {
           'TEXT': 'Now there is a block'
         }
-      });
+      }, scope.workspace);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     id: 'help_no_blocks',
