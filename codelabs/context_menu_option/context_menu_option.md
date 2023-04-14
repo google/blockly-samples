@@ -267,7 +267,7 @@ callback: function(scope) {
     'fields': {
       'TEXT': 'Now there is a block'
     }
-  });
+  }, scope.workspace);
 }
 ```
 
