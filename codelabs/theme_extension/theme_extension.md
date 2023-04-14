@@ -236,7 +236,7 @@ Blockly.Themes.Halloween = Blockly.Theme.defineTheme('halloween', {
 
 Click on different blocks in the component and you should see the colours that you applied show up.
 
-![Customized Block colors on the components](customized_categories.png)
+![Customized Block colors on the components](block_styles.png)
 
 
 ## Summary
