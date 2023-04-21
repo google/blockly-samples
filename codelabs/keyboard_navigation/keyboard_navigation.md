@@ -54,51 +54,17 @@ The below image displays different parts of a block that a user can navigate to 
 
 ![Displays the different parts of a block. The previous connection on the top of a block. The next connection on the bottom of a block. Input value as a cut out of a puzzle piece. The statement input as a connection inside of a block. The output connection as a puzzle piece.](./block_terms.png)
 
-
-## Define and set a custom cursor
-
-To start, create a new directory at `src/cursors` and add a file inside named `custom.js`.
-
-At the top of the file, you first need to import `blockly/core`:
-
-```js
-import * as Blockly from 'blockly/core';
-```
-
-Then define your new custom cursor and have it extend the base cursor, `Blockly.Cursor`:
-
-```js
-export class CustomCursor extends Blockly.Cursor {
-  constructor() {
-    super();
-  }
-}
-```
-
-Import your cursor in `src/index.js`.
-
-```js
-import {CustomCursor} from './cursors/custom';
-```
-
-After injecting the workspace, use its `MarkerManager` to set your new custom cursor:
-
-```js
-// Add CustomCursor to workspace
-ws.getMarkerManager().setCursor(new CustomCursor());
-```
-
 ## Initialize NavigationController plugin
 
-Now you must initialize `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
+First, you will want to initialize a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
 
-First, import `NavigationController` at the top of `index.js`:
+Import `NavigationController` at the top of `index.js`:
 
 ```js
 import {NavigationController} from '@blockly/keyboard-navigation';
 ```
 
-Then, after injecting the workspace, instantiate an instance of `NavigationController`, initialize it, and add it to our workspace:
+Then, somewhere after the existing code that injects the workspace, instantiate an instance of `NavigationController`, initialize it, and add it to your workspace:
 
 ```js
 // Initialize NavigationController plugin and add to our workspace.
@@ -314,12 +280,46 @@ Open the sample app and drag a function block on to your workspace. Press **ctrl
 
 ![The cursor flashing red](./flashing_cursor.gif)
 
+## Define and set a custom cursor
+
+Create a new directory at `src/cursors` and add a file inside named `custom.js`.
+
+At the top of the new file, you first need to import `blockly/core`:
+
+```js
+import * as Blockly from 'blockly/core';
+```
+
+Then define your new custom cursor and have it extend the base cursor, `Blockly.Cursor`:
+
+```js
+export class CustomCursor extends Blockly.Cursor {
+  constructor() {
+    super();
+  }
+}
+```
+
+Import your cursor at the top of `src/index.js`.
+
+```js
+import {CustomCursor} from './cursors/custom';
+```
+
+Somewhere after the existing code that injects the workspace, use its `MarkerManager` to set your new custom cursor:
+
+```js
+// Add CustomCursor to workspace
+ws.getMarkerManager().setCursor(new CustomCursor());
+```
+
 ## Change the cursor behavior
 
 ### Override the move methods
+
 In order to create a cursor that skips over previous and next connections you have to override the methods that move the cursor.
 
-Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition:
+Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition. These implementations are just a starting point that you will be improving in the next step:
 
 ```js
   next() {
@@ -331,7 +331,6 @@ Add the following code to `cursors/custom.js`, inside the `CustomCursor` class d
     // The next Blockly.ASTNode.
     let newNode = curNode.next();
     if (newNode) {
-      // This in charge of updating the current location and drawing the cursor.
       this.setCurNode(newNode);
     }
     return newNode;
@@ -376,11 +375,11 @@ Add the following code to `cursors/custom.js`, inside the `CustomCursor` class d
 
 ### Modify the move methods
 
-Add logic to the move methods to skip over the previous and next connections. We can reference the following image as we add logic to the move methods. The red boxes represent the nodes we want to skip.
+Now, you will add logic to the move methods to skip over the previous and next connections. You can reference the following image as you add logic to the move methods. The red boxes represent the nodes you want to skip.
 
 ![Displays the abstract syntax tree with the previous and next connection nodes highlighted in red.](./skip_connections.png)
 
-Change the `next` method so it will skip over any previous or next connections:
+Change the `next` method so it will skip over any previous or next connections and go straight to the next block:
 
 ```js
   next() {
@@ -402,7 +401,7 @@ Change the `next` method so it will skip over any previous or next connections:
   }
 ```
 
-Change the `prev` method so it will skip over any previous or next connections:
+Change the `prev` method so it will skip over any previous or next connections and go straight to the previous block:
 
 ```js
   prev() {
@@ -424,7 +423,7 @@ Change the `prev` method so it will skip over any previous or next connections:
   }
 ```
 
-Change the `in` method so that it will skip over any previous connections and go straight to the block:
+Change the `in` method so that it will skip over any previous connections and go straight to the contained block:
 
 ```js
   in() {
