@@ -46,7 +46,7 @@ You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/packa
 
 ## Terminology
 
-A [**Marker**](https://developers.google.com/blockly/reference/js/blockly.marker_class) holds a location and is not movable.
+A [**Marker**](https://developers.google.com/blockly/reference/js/blockly.marker_class) holds a location and is not movable.  A marker can be used to mark a location on the workspace that you can use later, such as marking the spot where you'll drop a block from the toolbox.
 
 A [**Cursor**](https://developers.google.com/blockly/reference/js/blockly.cursor_class) is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
 
