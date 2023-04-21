@@ -139,7 +139,7 @@ module.exports = (env) => {
         baseConfig: {
           extends: [require.resolve('@blockly/eslint-config')],
         },
-      }),      
+      }),
     ].filter(Boolean),
     externals: isProduction ? {
       'blockly/core': {
