@@ -73,6 +73,8 @@ navigationController.init();
 navigationController.addWorkspace(ws);
 ```
 
+At this point, your app will have default keyboard navigation enabled.  By pressing **ctrl + shift + k** you can enter into keyboard navigation mode.  From here you can use `WASD` style commands to navigate around.  To read up on these details see [the blockly keyboard navigation documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
+
 ## Understand AST Nodes
 
 When designing keyboard navigation we needed a way to organize all the different components in a workspace in a structured way. Our solution was to represent the workspace and its components as an abstract syntax tree ([AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)).
