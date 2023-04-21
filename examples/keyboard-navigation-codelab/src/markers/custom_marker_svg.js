@@ -72,7 +72,7 @@ class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
   }
 }
 
-class CustomRenderer extends Blockly.geras.Renderer {
+class CustomRenderer extends Blockly.thrasos.Renderer {
   constructor(name) {
     super(name);
   }
