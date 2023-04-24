@@ -53,7 +53,7 @@ suite('FieldDate', function() {
    * @param {FieldValueTestCase} testCase The test case.
    */
   const validTestCaseAssertField = function(field, testCase) {
-    assertFieldValue(field, testCase.value);
+    assertFieldValue(field, testCase.expectedValue);
   };
 
   runConstructorSuiteTests(
