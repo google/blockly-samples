@@ -105,6 +105,10 @@ suite('FieldColour', function() {
       validTestCaseAssertField, assertFieldDefault);
 
   suite('setValue', function() {
+    /**
+     * Create a mock block that may be used as the source block for a field.
+     * @returns {!Object} Mock block.
+     */
     function createBlockMock() {
       return {
         'id': 'test',
@@ -182,8 +186,8 @@ suite('FieldColour', function() {
     });
   });
 
-  /*
   suite('Customizations', function() {
+    /*
     suite('Colours and Titles', function() {
       function assertColoursAndTitles(field, colours, titles) {
         field.dropdownCreate();
@@ -261,6 +265,7 @@ suite('FieldColour', function() {
         assertColoursAndTitles(field, ['#ff0000'], ['grey']);
       });
     });
+
     suite('Columns', function() {
       function assertColumns(field, columns) {
         field.dropdownCreate();
@@ -296,8 +301,8 @@ suite('FieldColour', function() {
         assertColumns(field, 3);
       });
     });
+    */
   });
-  */
 
   suite('Serialization', function() {
     setup(function() {
