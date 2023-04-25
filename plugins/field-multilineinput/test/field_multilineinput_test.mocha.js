@@ -95,8 +95,8 @@ suite('FieldMultilineInput', function() {
     });
   });
 
-  /*
   suite('blockToCode', function() {
+    /*
     setup(function() {
       this.workspace = new Blockly.Workspace();
     });
@@ -152,8 +152,8 @@ suite('FieldMultilineInput', function() {
         ]},
     ];
     runCodeGenerationTestSuites(testSuites);
+    */
   });
-  */
 
   suite('Serialization', function() {
     setup(function() {
