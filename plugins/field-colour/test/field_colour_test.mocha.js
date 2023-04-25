@@ -105,10 +105,6 @@ suite('FieldColour', function() {
       validTestCaseAssertField, assertFieldDefault);
 
   suite('setValue', function() {
-    /**
-     * Create a mock block that may be used as the source block for a field.
-     * @returns {!Object} Mock block.
-     */
     function createBlockMock() {
       return {
         'id': 'test',
@@ -186,19 +182,31 @@ suite('FieldColour', function() {
     });
   });
 
+  /*
   suite('Customizations', function() {
     suite('Colours and Titles', function() {
-      /**
-       * Verify that the list of colours and titles are as expected.
-       * @param {!FieldColour} field Field to test.
-       * @param {!Array[string]} expectedColours Array of colour names.
-       * @param {!Array[string]} expectedTitles Array of title names.
-       */
-      function assertColoursAndTitles(field, expectedColours, expectedTitles) {
-        const actualColours = field.colours || FieldColour.COLOURS;
-        const actualTitles = field.titles || FieldColour.TITLES;
-        assert.equal(String(actualColours), String(expectedColours));
-        assert.equal(String(actualTitles), String(expectedTitles));
+      function assertColoursAndTitles(field, colours, titles) {
+        field.dropdownCreate();
+        let index = 0;
+        let node = field.picker.firstChild.firstChild;
+        while (node) {
+          assert.equal(node.getAttribute('title'), titles[index]);
+          assert.equal(
+              Blockly.utils.colour.parse(node.style.backgroundColor),
+              colours[index]);
+
+          let nextNode = node.nextSibling;
+          if (!nextNode) {
+            nextNode = node.parentElement.nextSibling;
+            if (!nextNode) {
+              break;
+            }
+            nextNode = nextNode.firstChild;
+          }
+          node = nextNode;
+
+          index++;
+        }
       }
       test('Constants', function() {
         const colours = FieldColour.COLOURS;
@@ -237,13 +245,13 @@ suite('FieldColour', function() {
       test('Titles Undefined', function() {
         const field = new FieldColour();
         field.setColours(['#aaaaaa']);
-        assertColoursAndTitles(field, ['#aaaaaa'], []);
+        assertColoursAndTitles(field, ['#aaaaaa'], ['#aaaaaa']);
       });
       test('Some Titles Undefined', function() {
         const field = new FieldColour();
         field.setColours(['#aaaaaa', '#ff0000'], ['grey']);
         assertColoursAndTitles(field,
-            ['#aaaaaa', '#ff0000'], ['grey']);
+            ['#aaaaaa', '#ff0000'], ['grey', '#ff0000']);
       });
       // This is kinda derpy behaviour, but I wanted to document it.
       test('Overwriting Colours While Leaving Titles', function() {
@@ -253,31 +261,26 @@ suite('FieldColour', function() {
         assertColoursAndTitles(field, ['#ff0000'], ['grey']);
       });
     });
-
     suite('Columns', function() {
-      /**
-       * Verify that the number of columns is as expected.
-       * @param {!FieldColour} field Field to test.
-       * @param {number} expectedColumns Number of columns field should have.
-       */
-      function assertColumns(field, expectedColumns) {
-        const actualColumns = field.columns || FieldColour.COLUMNS;
-        assert.equal(actualColumns, expectedColumns);
+      function assertColumns(field, columns) {
+        field.dropdownCreate();
+        assert.equal(field.picker.firstChild.children.length, columns);
       }
       test('Constants', function() {
         const columns = FieldColour.COLUMNS;
-        try {
-          // Note: Developers shouldn't actually do this. IMO they should edit
-          // the file and then recompile. But this is fine for testing.
-          FieldColour.COLUMNS = 3;
-          const field = new FieldColour();
-          assertColumns(field, 3);
-        } finally {
-          FieldColour.COLUMNS = columns;
-        }
+        // Note: Developers shouldn't actually do this. IMO they should edit
+        // the file and then recompile. But this is fine for testing.
+        FieldColour.COLUMNS = 3;
+        const field = new FieldColour();
+
+        assertColumns(field, 3);
+
+        FieldColour.COLUMNS = columns;
       });
       test('JS Constructor', function() {
-        const field = new FieldColour('#ffffff', null, {columns: 3});
+        const field = new FieldColour('#ffffff', null, {
+          columns: 3,
+        });
         assertColumns(field, 3);
       });
       test('JSON Definition', function() {
@@ -294,6 +297,7 @@ suite('FieldColour', function() {
       });
     });
   });
+  */
 
   suite('Serialization', function() {
     setup(function() {

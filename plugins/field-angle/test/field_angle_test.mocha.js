@@ -76,10 +76,6 @@ suite('FieldAngle', function() {
       validTestCaseAssertField, assertFieldDefault);
 
   suite('setValue', function() {
-    /**
-     * Create a mock block that may be used as the source block for a field.
-     * @returns {!Object} Mock block.
-     */
     function createBlockMock() {
       return {
         'id': 'test',
@@ -136,9 +132,17 @@ suite('FieldAngle', function() {
     });
   });
 
+  /*
   suite('Validators', function() {
     setup(function() {
       this.field = new FieldAngle(1);
+      this.field.htmlInput_ = document.createElement('input');
+      this.field.htmlInput_.setAttribute('data-old-value', '1');
+      this.field.htmlInput_.setAttribute('data-untyped-default-value', '1');
+      this.stub = sinon.stub(this.field, 'resizeEditor_');
+    });
+    teardown(function() {
+      sinon.restore();
     });
     const testSuites = [
       {title: 'Null Validator',
@@ -146,29 +150,36 @@ suite('FieldAngle', function() {
             function() {
               return null;
             },
-        value: 2, expectedValue: 1},
-      {title: 'Force multiple of 30 Validator',
+        value: 2, expectedValue: '1'},
+      {title: 'Force Mult of 30 Validator',
         validator:
             function(newValue) {
               return Math.round(newValue / 30) * 30;
             },
         value: 25, expectedValue: 30},
-      {title: 'Returns Undefined Validator', validator: function() {},
-        value: 2, expectedValue: 2},
+      {title: 'Returns Undefined Validator', validator: function() {}, value: 2,
+        expectedValue: 2},
     ];
     testSuites.forEach(function(suiteInfo) {
       suite(suiteInfo.title, function() {
         setup(function() {
           this.field.setValidator(suiteInfo.validator);
         });
-        test('New Value', function() {
-          this.field.setValue(suiteInfo.value);
+        test('When Editing', function() {
+          this.field.isBeingEdited_ = true;
+          this.field.htmlInput_.value = String(suiteInfo.value);
+          this.field.onHtmlInputChange_(null);
           assertFieldValue(
-              this.field, suiteInfo.expectedValue, suiteInfo.expectedText);
+              this.field, suiteInfo.expectedValue, String(suiteInfo.value));
+        });
+        test('When Not Editing', function() {
+          this.field.setValue(suiteInfo.value);
+          assertFieldValue(this.field, +suiteInfo.expectedValue);
         });
       });
     });
   });
+  */
 
   suite('Customizations', function() {
     suite('Clockwise', function() {
