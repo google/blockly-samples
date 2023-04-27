@@ -2,7 +2,7 @@
 title: "@blockly/block-shareable-procedures Demo"
 packageName: "@blockly/block-shareable-procedures"
 description: "A plugin that adds procedure blocks which are backed by explicit data models."
-version: "1.2.6"
+version: "1.2.7"
 pageRoot: "plugins/block-shareable-procedures"
 pages:
   - label: "Playground"

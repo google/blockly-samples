@@ -2,7 +2,7 @@
 title: "@blockly/plugin-workspace-search Demo"
 packageName: "@blockly/plugin-workspace-search"
 description: "A Blockly plugin that adds workspace search support."
-version: "6.0.12"
+version: "6.0.13"
 pageRoot: "plugins/workspace-search"
 pages:
   - label: "Playground"

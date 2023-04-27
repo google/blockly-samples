@@ -2,7 +2,7 @@
 title: "@blockly/field-bitmap Demo"
 packageName: "@blockly/field-bitmap"
 description: "A field that lets users input a pixel grid with their mouse."
-version: "2.0.14"
+version: "2.0.15"
 pageRoot: "plugins/field-bitmap"
 pages:
   - label: "Playground"

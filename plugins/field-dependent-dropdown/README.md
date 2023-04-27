@@ -2,7 +2,7 @@
 title: "@blockly/field-dependent-dropdown Demo"
 packageName: "@blockly/field-dependent-dropdown"
 description: "A Blockly dropdown field that automatically updates its available options depending on the value of another field."
-version: "1.1.0"
+version: "1.1.1"
 pageRoot: "plugins/field-dependent-dropdown"
 pages:
   - label: "Playground"
