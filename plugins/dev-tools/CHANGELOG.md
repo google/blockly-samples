@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.5](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.2.4...@blockly/dev-tools@5.2.5) (2023-04-27)
+
+
+### Bug Fixes
+
+* Correct date field test assertions ([#1673](https://github.com/google/blockly-samples/issues/1673)) ([9974e85](https://github.com/google/blockly-samples/commit/9974e85becaa8ad17e35b588b95391c85865dafd))
+
+
+
 ## [5.2.4](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.2.3...@blockly/dev-tools@5.2.4) (2023-03-23)
 
 **Note:** Version bump only for package @blockly/dev-tools
