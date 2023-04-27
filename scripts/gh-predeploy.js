@@ -123,7 +123,9 @@ function injectPluginNavBar(inputString, packageJson, pluginDir, isLocal) {
     <a href="${codeLink}" class="button" target="_blank">View code</a>
     <a href="${npmLink}" class="button" target="_blank">View on npm</a>
   </nav>
-  <!-- END NAV BAR -->
+  <!-- END NAV BAR -->`;
+
+  let tabs = `
   <!-- PAGE TABS -->
   <ul id="tabs">
     <li>
@@ -137,8 +139,7 @@ function injectPluginNavBar(inputString, packageJson, pluginDir, isLocal) {
       </a>
     </li>
   </ul>
-  <!-- END PAGE TABS -->
-`
+  <!-- END PAGE TABS -->`;
 
   // Find the start of the body and inject the nav bar just after the opening <body> tag,
   // preserving anything else in the tag (such as onload).
@@ -146,7 +147,11 @@ function injectPluginNavBar(inputString, packageJson, pluginDir, isLocal) {
   let modifiedContent = inputString.replace(
     /<body([^>]*)>/,
     `<body$1 class="root">
-    <main id="main" class="has-tabs">${navBar}`
+    ${navBar}
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      ${tabs}
+      `
     );
   modifiedContent = modifiedContent.replace(/(<\/body>)/, `</main>$1`);
   return modifiedContent;
@@ -224,11 +229,12 @@ function createReadmePage(pluginDir, isLocal) {
   const initialContents = 
       fs.readFileSync(`./plugins/${pluginDir}/README.md`).toString();
 
-  // TODO: Remove spurious line breaks. 
-  // By default, showdown preserves line breaks from the README file that are 
-  // just there to stay under 80 characters per line. 
   const converter = new showdown.Converter();
   converter.setFlavor('github');
+  // By default, showdown preserves line breaks from the README file that are 
+  // just there to stay under 80 characters per line. Turn that off.
+  converter.setOption('simpleLineBreaks', false);
+  converter.setOption('ghMentions', false);
   const text = initialContents;
   const html = converter.makeHtml(text);
 
@@ -237,13 +243,11 @@ function createReadmePage(pluginDir, isLocal) {
     <title></title>
   </head>
   <body class="root">
-    <main id="main" class="has-tabs">
     <article class="article-container site-width">
       <div class="article">
       ${html}
       </div>
     </article>
-    </main>
   </body>
  </html>
   `;
