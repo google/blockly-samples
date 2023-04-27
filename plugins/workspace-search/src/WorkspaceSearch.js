@@ -637,7 +637,7 @@ export class WorkspaceSearch {
       return;
     }
 
-    if (this.workspace_.hasOwnProperty('centerOnBlock')) {
+    if (typeof this.workspace_.centerOnBlock === 'function') {
       // if workspace supports centerOnBlock, let's use it
       this.workspace_.centerOnBlock(block.id, false);
       return;
