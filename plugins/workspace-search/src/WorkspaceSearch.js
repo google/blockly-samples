@@ -636,6 +636,13 @@ export class WorkspaceSearch {
       // Cannot scroll to block in a non-movable workspace.
       return;
     }
+
+    if (this.workspace_.hasOwnProperty('centerOnBlock')) {
+      // if workspace supports centerOnBlock, let's use it
+      this.workspace_.centerOnBlock(block.id, false);
+      return;
+    }
+
     // XY is in workspace coordinates.
     const xy = block.getRelativeToSurfaceXY();
     const scale = this.workspace_.scale;
