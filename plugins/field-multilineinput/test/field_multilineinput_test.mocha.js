@@ -95,66 +95,6 @@ suite('FieldMultilineInput', function() {
     });
   });
 
-  suite('blockToCode', function() {
-    /*
-    setup(function() {
-      this.workspace = new Blockly.Workspace();
-    });
-    const createBlockFn = (value) => {
-      return (workspace) => {
-        const block = workspace.newBlock('text_multiline');
-        const textField = block.getField('TEXT');
-        textField.setValue(value);
-        return block;
-      };
-    };
-    */
-    /**
-     * Test suites for code generation tests.
-     * @type {Array<CodeGenerationTestSuite>}
-     */
-    /*
-    const testSuites = [
-      {title: 'Dart', generator: dartGenerator,
-        testCases: [
-          {title: 'Empty string', expectedCode: '\'\'',
-            createBlock: createBlockFn('')},
-          {title: 'String with newline', expectedCode: '\'bark bark\' + \'\\n\' + \n\' bark bark bark\' + \'\\n\' + \n\' bark bar bark bark\' + \'\\n\' + \n\'\'',
-            createBlock: createBlockFn('bark bark\n bark bark bark\n bark bar bark bark\n')},
-        ]},
-      {title: 'JavaScript', generator: javascriptGenerator,
-        testCases: [
-          {title: 'Empty string', expectedCode: '\'\'',
-            createBlock: createBlockFn('')},
-          {title: 'String with newline', expectedCode: '\'bark bark\' + \'\\n\' +\n\' bark bark bark\' + \'\\n\' +\n\' bark bar bark bark\' + \'\\n\' +\n\'\'',
-            createBlock: createBlockFn('bark bark\n bark bark bark\n bark bar bark bark\n')},
-        ]},
-      {title: 'Lua', generator: luaGenerator,
-        testCases: [
-          {title: 'Empty string', expectedCode: '\'\'',
-            createBlock: createBlockFn('')},
-          {title: 'String with newline', expectedCode: '\'bark bark\' .. \'\\n\' ..\n\' bark bark bark\' .. \'\\n\' ..\n\' bark bar bark bark\' .. \'\\n\' ..\n\'\'',
-            createBlock: createBlockFn('bark bark\n bark bark bark\n bark bar bark bark\n')},
-        ]},
-      {title: 'PHP', generator: phpGenerator,
-        testCases: [
-          {title: 'Empty string', expectedCode: '\'\'',
-            createBlock: createBlockFn('')},
-          {title: 'String with newline', expectedCode: '\'bark bark\' . "\\n" .\n\' bark bark bark\' . "\\n" .\n\' bark bar bark bark\' . "\\n" .\n\'\'',
-            createBlock: createBlockFn('bark bark\n bark bark bark\n bark bar bark bark\n')},
-        ]},
-      {title: 'Python', generator: pythonGenerator,
-        testCases: [
-          {title: 'Empty string', expectedCode: '\'\'',
-            createBlock: createBlockFn('')},
-          {title: 'String with newline', expectedCode: '\'bark bark\' + \'\\n\' + \n\' bark bark bark\' + \'\\n\' + \n\' bark bar bark bark\' + \'\\n\' + \n\'\'',
-            createBlock: createBlockFn('bark bark\n bark bark bark\n bark bar bark bark\n')},
-        ]},
-    ];
-    runCodeGenerationTestSuites(testSuites);
-    */
-  });
-
   suite('Serialization', function() {
     setup(function() {
       this.workspace = new Blockly.Workspace();
