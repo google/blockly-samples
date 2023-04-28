@@ -81,7 +81,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * @param fieldElement The element to populate with info about the field's
    *     state.
    * @returns The element containing info about the field's state.
-   * @internal
    */
   override toXml(fieldElement: Element): Element {
     // Replace '\n' characters with HTML-escaped equivalent '&#10'.  This is
@@ -98,7 +97,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * called by Blockly.Xml.
    *
    * @param fieldElement The element containing info about the field's state.
-   * @internal
    */
   override fromXml(fieldElement: Element) {
     this.setValue((fieldElement.textContent as string).replace(/&#10;/g, '\n'));
@@ -110,7 +108,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * predate the load/saveState API and only define to/fromXml.
    *
    * @returns The state of this field.
-   * @internal
    */
   override saveState() {
     const legacyState = this.saveLegacyState(FieldMultilineInput);
@@ -126,7 +123,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * predate the load/saveState API and only define to/fromXml.
    *
    * @param state The state of the variable to assign to this variable field.
-   * @internal
    */
   override loadState(state: unknown) {
     if (this.loadLegacyState(Blockly.Field, state)) {
@@ -137,8 +133,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
 
   /**
    * Create the block UI for this field.
-   *
-   * @internal
    */
   override initView() {
     this.createBorderRect_();
@@ -450,7 +444,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * @param options A JSON object with options (text, and spellcheck).
    * @returns The new field instance.
    * @nocollapse
-   * @internal
    */
   static override fromJson(options: FieldMultilineInputFromJsonConfig):
       FieldMultilineInput {
