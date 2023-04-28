@@ -136,10 +136,10 @@ export class FieldAngle extends Blockly.FieldNumber {
     }
 
     // Allow individual settings to override the mode setting.
-    if (config.clockwise) this.clockwise = config.clockwise;
-    if (config.offset) this.offset = config.offset;
-    if (config.wrap) this.wrap = config.wrap;
-    if (config.round) this.round = config.round;
+    if (config.clockwise !== undefined) this.clockwise = config.clockwise;
+    if (config.offset !== undefined) this.offset = config.offset;
+    if (config.wrap !== undefined) this.wrap = config.wrap;
+    if (config.round !== undefined) this.round = config.round;
   }
 
   /**
@@ -150,7 +150,7 @@ export class FieldAngle extends Blockly.FieldNumber {
   override initView() {
     super.initView();
     // Add the degree symbol to the left of the number,
-    // even in RTL (issue #2380).
+    // even in RTL (https://github.com/google/blockly/issues/2380).
     this.symbol_ =
         Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.TSPAN, {});
     this.symbol_.appendChild(document.createTextNode('°'));
