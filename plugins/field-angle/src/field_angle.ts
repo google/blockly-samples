@@ -136,10 +136,10 @@ export class FieldAngle extends Blockly.FieldNumber {
     }
 
     // Allow individual settings to override the mode setting.
-    if (config.clockwise !== undefined) this.clockwise = config.clockwise;
-    if (config.offset !== undefined) this.offset = config.offset;
-    if (config.wrap !== undefined) this.wrap = config.wrap;
-    if (config.round !== undefined) this.round = config.round;
+    if (config.clockwise) this.clockwise = config.clockwise;
+    if (config.offset) this.offset = config.offset;
+    if (config.wrap) this.wrap = config.wrap;
+    if (config.round) this.round = config.round;
   }
 
   /**
