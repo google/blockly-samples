@@ -43,7 +43,7 @@
     "webpack-dev-server": "^4.0.0"
   },
   "peerDependencies": {
-    "typescript": "^4.3.2"
+    "typescript": "^5.0.2"
   },
   "peerDependenciesMeta": {
     "typescript": {

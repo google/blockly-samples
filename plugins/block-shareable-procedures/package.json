@@ -48,7 +48,8 @@
     "chai": "^4.3.7",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
-    "sinon": "^15.0.1"
+    "sinon": "^15.0.1",
+    "typescript": "^5.0.2"
   },
   "peerDependencies": {
     "blockly": "^9.3.0"
