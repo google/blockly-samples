@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.33](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.32...@blockly/dev-scripts@1.2.33) (2023-04-27)
+
+
+### Bug Fixes
+
+* Fix compatibility with Node 18 ([#1672](https://github.com/google/blockly-samples/issues/1672)) ([df1b943](https://github.com/google/blockly-samples/commit/df1b943e42ded5cd1dfc8d83c8388116c5607a31))
+
+
+
 ## [1.2.32](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.31...@blockly/dev-scripts@1.2.32) (2023-03-23)
 
 

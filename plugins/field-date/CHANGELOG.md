@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.12...@blockly/field-date@6.0.13) (2023-04-27)
+
+
+### Bug Fixes
+
+* Correct date field test assertions ([#1673](https://github.com/google/blockly-samples/issues/1673)) ([9974e85](https://github.com/google/blockly-samples/commit/9974e85becaa8ad17e35b588b95391c85865dafd))
+
+
+
 ## [6.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.0.11...@blockly/field-date@6.0.12) (2023-03-23)
 
 **Note:** Version bump only for package @blockly/field-date
