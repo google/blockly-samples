@@ -409,6 +409,7 @@ function createExamplePage(pageRoot, pagePath, demoConfig, isLocal) {
   contents = injectFooter(contents);
 
   const outputPath = path.join('gh-pages', pageRoot, pagePath);
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, contents, 'utf-8');
 }
 
