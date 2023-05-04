@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-serialize-disabled-interactions",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A Blockly plugin that serializes the deletable, movable, and editable attribues of blocks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.33",
-    "@blockly/dev-tools": "^5.2.5",
+    "@blockly/dev-tools": "^5.2.6",
     "blockly": "^9.3.0",
     "chai": "^4.3.4"
   },
