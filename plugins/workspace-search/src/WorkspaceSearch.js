@@ -447,7 +447,7 @@ export class WorkspaceSearch {
     currentBlock = this.blocks_[this.currentBlockIndex_];
 
     this.highlightCurrentSelection_(currentBlock);
-    this.scrollToVisible_(currentBlock);
+    this.workspace_.centerOnBlock(currentBlock.id, false);
   }
 
   /**
@@ -624,74 +624,5 @@ export class WorkspaceSearch {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'blockly-ws-search-highlight');
     });
-  }
-
-  /**
-   * Scrolls workspace to bring given block into view.
-   * @param {!Blockly.BlockSvg} block The block to bring into view.
-   * @protected
-   */
-  scrollToVisible_(block) {
-    if (!this.workspace_.isMovable()) {
-      // Cannot scroll to block in a non-movable workspace.
-      return;
-    }
-
-    if (typeof this.workspace_.centerOnBlock === 'function') {
-      // if workspace supports centerOnBlock, let's use it
-      this.workspace_.centerOnBlock(block.id, false);
-      return;
-    }
-
-    // XY is in workspace coordinates.
-    const xy = block.getRelativeToSurfaceXY();
-    const scale = this.workspace_.scale;
-
-    // Block bounds in pixels relative to the workspace origin (0,0 is centre).
-    const width = block.width * scale;
-    const height = block.height * scale;
-    const top = xy.y * scale;
-    const bottom = (xy.y + block.height) * scale;
-    // In RTL the block's position is the top right of the block, not top left.
-    const left = this.workspace_.RTL ? xy.x * scale - width : xy.x * scale;
-    const right = this.workspace_.RTL ? xy.x * scale : xy.x * scale + width;
-
-    const metrics = this.workspace_.getMetrics();
-
-    let targetLeft = metrics.viewLeft;
-    const overflowLeft = left < metrics.viewLeft;
-    const overflowRight = right > metrics.viewLeft + metrics.viewWidth;
-    const wideBlock = width > metrics.viewWidth;
-
-    if ((!wideBlock && overflowLeft) || (wideBlock && !this.workspace_.RTL)) {
-      // Scroll to show left side of block
-      targetLeft = left;
-    } else if ((!wideBlock && overflowRight) ||
-        (wideBlock && this.workspace_.RTL)) {
-      // Scroll to show right side of block
-      targetLeft = right - metrics.viewWidth;
-    }
-
-    let targetTop = metrics.viewTop;
-    const overflowTop = top < metrics.viewTop;
-    const overflowBottom = bottom > metrics.viewTop + metrics.viewHeight;
-    const tallBlock = height > metrics.viewHeight;
-
-    if (overflowTop || (tallBlock && overflowBottom)) {
-      // Scroll to show top of block
-      targetTop = top;
-    } else if (overflowBottom) {
-      // Scroll to show bottom of block
-      targetTop = bottom - metrics.viewHeight;
-    }
-    if (targetLeft !== metrics.viewLeft || targetTop !== metrics.viewTop) {
-      const activeEl = document.activeElement;
-      this.workspace_.scroll(-targetLeft, -targetTop);
-      if (activeEl) {
-        // Blockly.WidgetDiv.hide called in scroll is taking away focus.
-        // TODO: Review setFocused call in Blockly.WidgetDiv.hide.
-        activeEl.focus();
-      }
-    }
   }
 }
