@@ -26,6 +26,10 @@ main .article-container {
   padding: 24px 0;
 }
 
+div.article img  {
+  max-width: 100%;
+}
+
 main .article {
   background-color: #fff;
   color: #202124;
