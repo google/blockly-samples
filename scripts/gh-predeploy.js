@@ -368,8 +368,7 @@ function injectExampleNavBar(inputString, demoConfig, pageRoot, isLocal) {
     
     <a href="${codeLink}" class="button" target="_blank">View code</a>
   </nav>
-  <!-- END NAV BAR -->
-  ${tabString}`
+  <!-- END NAV BAR -->`;
 
   // Find the start of the body and inject the nav bar just after the opening
   // <body> tag, preserving anything else in the tag (such as onload).
@@ -377,7 +376,11 @@ function injectExampleNavBar(inputString, demoConfig, pageRoot, isLocal) {
   let modifiedContent = inputString.replace(
       /<body([^>]*)>/,
       `<body$1 class="root">
-      <main id="main" class="has-tabs">${navBar}`
+      ${navBar}
+      <main id="main" class="has-tabs">
+        <div class="drop-shadow"></div>
+        ${tabString}
+        `
       );
   modifiedContent = modifiedContent.replace(/<\/body>/, `</main>\n  </body>`);
   return modifiedContent;
