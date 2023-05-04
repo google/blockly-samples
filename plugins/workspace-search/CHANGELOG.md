@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.14](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@6.0.13...@blockly/plugin-workspace-search@6.0.14) (2023-05-04)
+
+
+### Bug Fixes
+
+* replace scrollToVisible_ with standard centerOnBlock ([#1678](https://github.com/google/blockly-samples/issues/1678)) ([e54a7e2](https://github.com/google/blockly-samples/commit/e54a7e268d4fe64c36ac529086c1c48527d215cf))
+
+
+
 ## [6.0.13](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@6.0.12...@blockly/plugin-workspace-search@6.0.13) (2023-04-27)
 
 **Note:** Version bump only for package @blockly/plugin-workspace-search

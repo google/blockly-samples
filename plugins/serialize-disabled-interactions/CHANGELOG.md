@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/plugin-serialize-disabled-interactions@3.0.1...@blockly/plugin-serialize-disabled-interactions@3.0.2) (2023-05-04)
+
+**Note:** Version bump only for package @blockly/plugin-serialize-disabled-interactions
+
+
+
+
+
 ## [3.0.1](https://github.com/google/blockly-samples/compare/@blockly/plugin-serialize-disabled-interactions@3.0.0...@blockly/plugin-serialize-disabled-interactions@3.0.1) (2023-04-27)
 
 **Note:** Version bump only for package @blockly/plugin-serialize-disabled-interactions

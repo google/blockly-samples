@@ -1,6 +1,6 @@
 {
   "name": "@blockly/shadow-block-converter",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "A workspace change listener that converts shadow blocks to real blocks when the user edits them.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.33",
-    "@blockly/dev-tools": "^5.2.5",
+    "@blockly/dev-tools": "^5.2.6",
     "blockly": "^9.0.0",
     "chai": "^4.2.0",
     "sinon": "^9.0.1"
