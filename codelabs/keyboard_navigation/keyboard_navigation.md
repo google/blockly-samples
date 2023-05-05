@@ -286,7 +286,7 @@ Open the sample app and drag a function block on to your workspace. Press **ctrl
 
 Create a new directory at `src/cursors` and add a file inside named `custom.js`.
 
-At the top of the new file, you first need to import `blockly/core`:
+At the top of the new file, add an import of `blockly/core`:
 
 ```js
 import * as Blockly from 'blockly/core';
