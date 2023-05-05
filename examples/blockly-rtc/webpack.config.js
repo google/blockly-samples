@@ -34,7 +34,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: '[name].js'
+        filename: '[name].js',
+        clean: true,
     },
     plugins: [
         new webpack.optimize.ModuleConcatenationPlugin(),
