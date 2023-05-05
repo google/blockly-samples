@@ -321,7 +321,7 @@ ws.getMarkerManager().setCursor(new CustomCursor());
 
 In order to create a cursor that skips over previous and next connections you have to override the methods that move the cursor.
 
-Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition. These implementations are just a starting point that you will be improving in the next step:
+Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition (these implementations are just a starting point that you will be improving in the next step):
 
 ```js
   next() {
