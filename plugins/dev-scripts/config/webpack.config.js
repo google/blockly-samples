@@ -18,6 +18,8 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
 
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -89,28 +91,6 @@ module.exports = (env) => {
     },
     module: {
       rules: [
-        // Run the linter.
-        !env.skipLint && {
-          test: /\.(js|mjs|ts)$/,
-          enforce: 'pre',
-          use: [
-            {
-              options: {
-                cache: true,
-                formatter: 'stylish',
-                emitWarning: isDevelopment,
-                eslintPath: require.resolve('eslint'),
-                resolvePluginsRelativeTo: __dirname,
-                useEslintrc: false,
-                baseConfig: {
-                  extends: [require.resolve('@blockly/eslint-config')],
-                },
-              },
-              loader: require.resolve('eslint-loader'),
-            },
-          ],
-          include: [resolveApp('./src/'), resolveApp('./test/')],
-        },
         // Load Blockly source maps.
         {
           test: /(blockly\/.*\.js)$/,
@@ -147,6 +127,18 @@ module.exports = (env) => {
       // installed in package.json. Ignoring canvas require errors.
       isTest && new webpack.IgnorePlugin({
         resourceRegExp: /canvas$/,
+      }),
+      // Run the linter.
+      !env.skipLint && new ESLintPlugin({
+        cache: true,
+        formatter: 'stylish',
+        emitWarning: isDevelopment,
+        eslintPath: require.resolve('eslint'),
+        resolvePluginsRelativeTo: __dirname,
+        useEslintrc: false,
+        baseConfig: {
+          extends: [require.resolve('@blockly/eslint-config')],
+        },
       }),
     ].filter(Boolean),
     externals: isProduction ? {

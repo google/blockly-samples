@@ -14,7 +14,7 @@ import {runTestCases, TestCase} from './common_test_helpers.mocha';
  */
 export class FieldValueTestCase {
   /**
-   * Class for a a field value test case.
+   * Class for a field value test case.
    */
   constructor() {
     /**

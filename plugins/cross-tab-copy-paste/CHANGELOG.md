@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.17](https://github.com/google/blockly-samples/compare/@blockly/plugin-cross-tab-copy-paste@2.0.16...@blockly/plugin-cross-tab-copy-paste@2.0.17) (2023-05-04)
+
+**Note:** Version bump only for package @blockly/plugin-cross-tab-copy-paste
+
+
+
+
+
+## [2.0.16](https://github.com/google/blockly-samples/compare/@blockly/plugin-cross-tab-copy-paste@2.0.15...@blockly/plugin-cross-tab-copy-paste@2.0.16) (2023-04-27)
+
+**Note:** Version bump only for package @blockly/plugin-cross-tab-copy-paste
+
+
+
+
+
 ## [2.0.15](https://github.com/google/blockly-samples/compare/@blockly/plugin-cross-tab-copy-paste@2.0.14...@blockly/plugin-cross-tab-copy-paste@2.0.15) (2023-04-13)
 
 

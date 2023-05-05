@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/google/blockly-samples/compare/@blockly/block-test@3.0.9...@blockly/block-test@3.1.0) (2023-05-04)
+
+
+### Features
+
+* add test block with resizable block in mutator ([#1638](https://github.com/google/blockly-samples/issues/1638)) ([ce6bebf](https://github.com/google/blockly-samples/commit/ce6bebfb7856950918ea1f0f48a5dce729354674))
+
+
+
+## [3.0.9](https://github.com/google/blockly-samples/compare/@blockly/block-test@3.0.8...@blockly/block-test@3.0.9) (2023-04-27)
+
+**Note:** Version bump only for package @blockly/block-test
+
+
+
+
+
 ## [3.0.8](https://github.com/google/blockly-samples/compare/@blockly/block-test@3.0.7...@blockly/block-test@3.0.8) (2023-03-23)
 
 **Note:** Version bump only for package @blockly/block-test
