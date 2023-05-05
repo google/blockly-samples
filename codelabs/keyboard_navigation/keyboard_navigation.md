@@ -64,7 +64,7 @@ Import `NavigationController` at the top of `index.js`:
 import {NavigationController} from '@blockly/keyboard-navigation';
 ```
 
-Then, somewhere after the existing code that injects the workspace, instantiate an instance of `NavigationController`, initialize it, and add it to your workspace:
+Then, somewhere after the existing code that injects the workspace, create an instance of `NavigationController`, initialize it, and add it to your workspace:
 
 ```js
 // Initialize NavigationController plugin and add to our workspace.
