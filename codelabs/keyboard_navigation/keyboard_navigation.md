@@ -46,7 +46,7 @@ Use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@block
 
 ## Terminology
 
-A [**Marker**](https://developers.google.com/blockly/reference/js/blockly.marker_class) holds a location and is not movable.  A marker can be used to mark a location on the workspace, such as marking the spot where the user can drop a block from the toolbox.
+A [**Marker**](https://developers.google.com/blockly/reference/js/blockly.marker_class) holds a location and is not movable.  A marker is used to mark a location on the workspace, such as marking the spot where the user can drop a block from the toolbox.
 
 A [**Cursor**](https://developers.google.com/blockly/reference/js/blockly.cursor_class) is a marker that can move. It extends a `Blockly.Marker` but adds logic to allow the marker to move through the blocks, inputs, fields, connections and workspace coordinates.
 
@@ -56,7 +56,7 @@ The below image displays different parts of a block that a user can navigate to 
 
 ## Initialize NavigationController plugin
 
-First, initialize a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
+First, import and set up a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
 
 Import `NavigationController` at the top of `index.js`:
 
@@ -73,11 +73,11 @@ navigationController.init();
 navigationController.addWorkspace(ws);
 ```
 
-At this point, the app will have default keyboard navigation enabled. Pressing **ctrl + shift + k** enters into keyboard navigation mode. From here, `WASD` style commands can be used to navigate around. Further details can be found in [the blockly keyboard navigation documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
+At this point, the app will have default keyboard navigation enabled. Pressing **ctrl + shift + k** will enter the user into keyboard navigation mode. From here, `WASD` style commands can be used to navigate around. Further details can be found in [the blockly keyboard navigation documentation](https://developers.google.com/blockly/guides/configure/web/keyboard-nav).
 
 ## Understand AST Nodes
 
-When designing keyboard navigation we needed a way to organize all the different components in a workspace in a structured way. Our solution was to represent the workspace and its components as an abstract syntax tree ([AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)).
+Blockly organizes all the different components in a workspace in a structured way by representing them as an abstract syntax tree ([AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)).
 
 The following image displays the AST for a workspace.
 
@@ -109,7 +109,7 @@ const inputNode = Blockly.ASTNode.createInputNode(input);
 
 ### Use AST nodes
 
-We use these nodes in our cursor to decide where to go and what to draw.
+These nodes are used in the cursor to decide where to go and what to draw.
 
 Every node can:
 1. Return the node below it (`in()`)
@@ -117,7 +117,7 @@ Every node can:
 1. Return the previous node (`prev()`)
 1. Return the next node (`next()`)
 
-For example, you can use the following code to get the stack node from a workspace node:
+For example, the following code can be used to get the stack node from a workspace node:
 
 ```js
 const stackNode = workspaceNode.in();
@@ -145,7 +145,7 @@ class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
 }
 ```
 
-Now, inside `CustomMarkerSvg`, override `createDomInternal_()`. This method is in charge of creating all dom elements for the marker. Add a new path element for when the cursor is on a block:
+Now, inside `CustomMarkerSvg`, override `createDomInternal_()`. This method is in charge of creating all DOM elements for the marker. Add a new path element for when the cursor is on a block:
 
 ```js
   /**
@@ -175,7 +175,7 @@ Next, create a method named `showWithBlock_(curNode)` that will:
 - Set the parent.
 - Show the current marker.
 
-We will call this method from within `showAtLocation_(curNode)`, when the user moves to a new block:
+This method will be called within `showAtLocation_(curNode)` when the user moves to a new block:
 
 ```js
   showWithBlock_(curNode) {
@@ -236,7 +236,7 @@ Finally, override the `hide()` method:
 
 ### Renderer setup
 
-In order to have the cursor use `CustomMarkerSvg`: override the renderer. For more information on customizing a renderer see the custom renderer [codelab](https://blocklycodelabs.dev/codelabs/custom-renderer/index.html).
+Override the renderer to have it use the cursor `CustomMarkerSvg`. For more information on customizing a renderer see the custom renderer [codelab](https://blocklycodelabs.dev/codelabs/custom-renderer/index.html).
 
 Add the following code to the bottom of `custom_marker_svg.js`, outside of the `CustomMarkerSvg` class definition:
 
@@ -306,7 +306,7 @@ Import the cursor at the top of `src/index.js`.
 import {CustomCursor} from './cursors/custom';
 ```
 
-Somewhere after the existing code that injects the workspace, use its `MarkerManager` to set a new custom cursor:
+Somewhere after the existing code that injects the workspace, use its `MarkerManager` to set the new custom cursor:
 
 ```js
 // Add CustomCursor to workspace
@@ -317,7 +317,7 @@ ws.getMarkerManager().setCursor(new CustomCursor());
 
 ### Override the move methods
 
-In order to create a cursor that skips over previous and next connections: override the methods that move the cursor.
+Override the methods that move the cursor in order to skip over previous and next connections.
 
 Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition (these implementations are just a starting point that will be improved upon in the next step):
 
@@ -375,7 +375,7 @@ Add the following code to `cursors/custom.js`, inside the `CustomCursor` class d
 
 ### Modify the move methods
 
-Now add logic to the move methods to skip over the previous and next connections. Reference the following image when adding logic to the move methods. The red boxes represent the nodes to skip.
+Now add logic to the move methods to skip over the previous and next connections. The following image represents the logic being added. The red boxes represent the nodes to skip.
 
 ![Displays the abstract syntax tree with the previous and next connection nodes highlighted in red.](./skip_connections.png)
 
@@ -511,7 +511,7 @@ const moveToStack = {
 };
 
 ```
-Once the shortcut is created, it can be registered by adding the following code to the bottom `index.js`:
+Once the shortcut is created, it can be registered by adding the following code to the bottom of `index.js`:
 
 ```js
 Blockly.ShortcutRegistry.registry.register(moveToStack);
@@ -519,10 +519,7 @@ Blockly.ShortcutRegistry.registry.register(moveToStack);
 
 ### Test it out
 
-Open the sample app and create a stack of blocks. Enter keyboard navigation
-mode by pressing **shift + control + K**. Move the cursor down a few
-blocks and then press **ctrl + W**. Notice how the cursor jumps to the top of
-the stack of blocks.
+Open the sample app and create a stack of blocks. Enter into keyboard navigation mode (**ctrl + shift + k**). Move the cursor down a few blocks and then press **ctrl + W**. Notice how the cursor jumps to the top of the stack of blocks.
 
 ![](./skip_to_top.gif)
 
@@ -537,7 +534,7 @@ following line to the top of `index.js`:
 import {Constants} from '@blockly/keyboard-navigation';
 ```
 
-Now set the keys for the next, previous, in and out actions at the bottom of `index.js`:
+Now set the keys for the next, previous, in, and out actions at the bottom of `index.js`:
 
 ```js
 Blockly.ShortcutRegistry.registry.removeAllKeyMappings(Constants.SHORTCUT_NAMES.OUT);
@@ -557,7 +554,7 @@ Note: For a full list of the shortcuts registered in the keyboard navigation plu
 
 ### Test it out
 
-Open the sample app and enter keyboard navigation mode (**ctrl + shift + k**). The arrow keys can now be used to move around instead of the default **WASD** keys.
+Open the sample app and enter into keyboard navigation mode (**ctrl + shift + k**). The arrow keys can now be used to move around instead of the default **WASD** keys.
 
 ## Summary
 
