@@ -243,7 +243,7 @@ In order to have the cursor use `CustomMarkerSvg` you need to override the rende
 Add the following code to the bottom of `custom_marker_svg.js`, outside of the `CustomMarkerSvg` class definition:
 
 ```js
-class CustomRenderer extends Blockly.thrasos.Renderer {
+class CustomRenderer extends Blockly.geras.Renderer {
   constructor(name) {
     super(name);
   }
