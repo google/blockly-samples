@@ -78,6 +78,7 @@ module.exports = (env) => {
       filename: outputFile,
       libraryTarget: 'umd',
       globalObject: 'this',
+      clean: true,
     },
     resolve: {
       alias: {
