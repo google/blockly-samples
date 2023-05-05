@@ -56,7 +56,7 @@ The below image displays different parts of a block that a user can navigate to 
 
 ## Initialize NavigationController plugin
 
-First, you will want to initialize a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
+First, initialize a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
 
 Import `NavigationController` at the top of `index.js`:
 
@@ -286,7 +286,7 @@ Open the sample app and drag a function block on to your workspace. Press **ctrl
 
 Create a new directory at `src/cursors` and add a file inside named `custom.js`.
 
-At the top of the new file, you first need to import `blockly/core`:
+At the top of the new file, add an import of `blockly/core`:
 
 ```js
 import * as Blockly from 'blockly/core';
@@ -321,7 +321,7 @@ ws.getMarkerManager().setCursor(new CustomCursor());
 
 In order to create a cursor that skips over previous and next connections you have to override the methods that move the cursor.
 
-Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition. These implementations are just a starting point that you will be improving in the next step:
+Add the following code to `cursors/custom.js`, inside the `CustomCursor` class definition (these implementations are just a starting point that you will be improving in the next step):
 
 ```js
   next() {
