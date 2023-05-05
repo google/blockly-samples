@@ -50,10 +50,10 @@ this repo.
 This script runs `npm run test` on each of the Blockly plugins in this repo.
 
 ### `npm run test:ghpages`
-This script builds all files needed to deploy plugins and examples to Github Pages, then starts a local server with that content.
+This script builds all files needed to deploy plugins and examples to GitHub Pages, then starts a local server with that content.
 
 ### `npm run test:ghpages:beta`
-This script installs a beta version of Blockly, builds all files needed to deploy plugins and examples to Github Pages, then starts a local server with that content.
+This script installs a beta version of Blockly, builds all files needed to deploy plugins and examples to GitHub Pages, then starts a local server with that content.
 
 ### `npm run publish:prepare`
 This script will clone a copy of blockly-samples to a directory called `dist`,
