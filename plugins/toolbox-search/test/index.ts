@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Plugin} from '../src/index';
+import '../src/index';
 
 /**
  * Create a workspace.
@@ -20,19 +20,19 @@ import {Plugin} from '../src/index';
  */
 function createWorkspace(blocklyDiv: HTMLElement,
     options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
-  const workspace = Blockly.inject(blocklyDiv, options);
-
-  // TODO: Initialize your plugin here.
-  const plugin = new Plugin(workspace);
-  plugin.init();
-
-  return workspace;
+  return Blockly.inject(blocklyDiv, options);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  toolboxCategories['contents'].push({
+    'kind': 'search',
+    'name': 'Search',
+    'contents': [],
+  });
+  console.log(toolboxCategories);
   const defaultOptions = {
     toolbox: toolboxCategories,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+      document.getElementById('root'), createWorkspace, defaultOptions);
 });

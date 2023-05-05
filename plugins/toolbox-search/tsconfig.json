@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "build",
-    "target": "es5",
+    "target": "es6",
     "allowJs": true,
     "sourceMap": true,
+    "moduleResolution": "nodenext",
     "lib": ["es6", "dom"]
   },
   "include": [
