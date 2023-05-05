@@ -56,7 +56,7 @@ The below image displays different parts of a block that a user can navigate to 
 
 ## Initialize NavigationController plugin
 
-First, you will want to initialize a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
+First, initialize a `NavigationController` in `index.js`.  `NavigationController` is the class in charge of registering all keyboard shortcuts.
 
 Import `NavigationController` at the top of `index.js`:
 
