@@ -44,8 +44,7 @@
     "blockly": "^9.0.0",
     "chai": "^4.2.0",
     "jsdom": "^19.0.0",
-    "jsdom-global": "^3.0.2",
-    "typescript": "^5.0.2"
+    "jsdom-global": "^3.0.2"
   },
   "peerDependencies": {
     "blockly": "^9.0.0"
