@@ -25,50 +25,29 @@ export class FieldAngle extends Blockly.FieldNumber {
   static readonly RADIUS: number = FieldAngle.HALF - 1;
 
   /**
-   * Default property describing which direction makes an angle field's value
-   * increase.  Angle increases clockwise (true) or counterclockwise (false).
-   */
-  static readonly CLOCKWISE = false;
-
-  /**
-   * The default offset of 0 degrees (and all angles).  Always offsets in the
-   * counterclockwise direction, regardless of the field's clockwise property.
-   * Usually either 0 (0 = right) or 90 (0 = up).
-   */
-  static readonly OFFSET = 0;
-
-  /**
-   * The default maximum angle to allow before wrapping.
-   * Usually either 360 (for 0 to 359.9) or 180 (for -179.9 to 180).
-   */
-  static readonly WRAP = 360;
-
-  /**
-   * The default amount to round angles to when using a mouse or keyboard nav
-   * input.  Must be a positive integer to support keyboard navigation.
-   */
-  static readonly ROUND = 15;
-
-  /**
    * Whether the angle should increase as the angle picker is moved clockwise
    * (true) or counterclockwise (false).
    */
-  private clockwise = FieldAngle.CLOCKWISE;
+  private clockwise = false;
 
   /**
-   * The offset of zero degrees (and all other angles).
+   * The offset of zero degrees (and all other angles).  Always offsets in the
+   * counterclockwise direction, regardless of the field's clockwise property.
+   * Usually either 0 (0 = right) or 90 (0 = up).
    */
-  private offset = FieldAngle.OFFSET;
+  private offset = 0;
 
   /**
    * The maximum angle to allow before wrapping.
+   * Usually either 360 (for 0 to 359.9) or 180 (for -179.9 to 180).
    */
-  private wrap = FieldAngle.WRAP;
+  private wrap = 360;
 
   /**
    * The amount to round angles to when using a mouse or keyboard nav input.
+   * Must be a positive integer to support keyboard navigation.
    */
-  private round = FieldAngle.ROUND;
+  private round = 15;
 
   /**
    * Array holding info needed to unbind events.

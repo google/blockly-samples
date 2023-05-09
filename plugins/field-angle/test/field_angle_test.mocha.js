@@ -185,14 +185,6 @@ suite('FieldAngle', function() {
         });
         assert.isTrue(field.clockwise);
       });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.CLOCKWISE = true;
-        const field = new FieldAngle();
-        assert.isTrue(field.clockwise);
-      });
     });
 
     suite('Offset', function() {
@@ -206,25 +198,6 @@ suite('FieldAngle', function() {
         const field = FieldAngle.fromJson({
           value: 0,
           offset: 90,
-        });
-        assert.equal(field.offset, 90);
-      });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.OFFSET = 90;
-        const field = new FieldAngle();
-        assert.equal(field.offset, 90);
-      });
-      test('Null', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.OFFSET = 90;
-        const field = FieldAngle.fromJson({
-          value: 0,
-          offset: null,
         });
         assert.equal(field.offset, 90);
       });
@@ -244,25 +217,6 @@ suite('FieldAngle', function() {
         });
         assert.equal(field.wrap, 180);
       });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.WRAP = 180;
-        const field = new FieldAngle();
-        assert.equal(field.wrap, 180);
-      });
-      test('Null', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.WRAP = 180;
-        const field = FieldAngle.fromJson({
-          value: 0,
-          wrap: null,
-        });
-        assert.equal(field.wrap, 180);
-      });
     });
 
     suite('Round', function() {
@@ -276,25 +230,6 @@ suite('FieldAngle', function() {
         const field = FieldAngle.fromJson({
           value: 0,
           round: 30,
-        });
-        assert.equal(field.round, 30);
-      });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.ROUND = 30;
-        const field = new FieldAngle();
-        assert.equal(field.round, 30);
-      });
-      test('Null', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.ROUND = 30;
-        const field = FieldAngle.fromJson({
-          value: 0,
-          round: null,
         });
         assert.equal(field.round, 30);
       });

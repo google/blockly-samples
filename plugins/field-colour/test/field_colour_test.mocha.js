@@ -65,7 +65,8 @@ suite('FieldColour', function() {
    * The expected default value for the field being tested.
    * @type {*}
    */
-  const defaultFieldValue = FieldColour.COLOURS[0];
+  const defaultFieldValue = FieldColour.prototype.DEFAULT_VALUE;
+
   /**
    * The expected default text for the field being tested.
    * @type {*}
@@ -200,20 +201,6 @@ suite('FieldColour', function() {
         assert.equal(String(actualColours), String(expectedColours));
         assert.equal(String(actualTitles), String(expectedTitles));
       }
-      test('Constants', function() {
-        const colours = FieldColour.COLOURS;
-        const titles = FieldColour.TITLES;
-        // Note: Developers shouldn't actually do this.  IMO they should
-        // change the file and then recompile.  But this is fine for testing.
-        FieldColour.COLOURS = ['#aaaaaa'];
-        FieldColour.TITLES = ['grey'];
-        const field = new FieldColour();
-
-        assertColoursAndTitles(field, ['#aaaaaa'], ['grey']);
-
-        FieldColour.COLOURS = colours;
-        FieldColour.TITLES = titles;
-      });
       test('JS Constructor', function() {
         const field = new FieldColour('#aaaaaa', null, {
           colourOptions: ['#aaaaaa'],
@@ -264,18 +251,6 @@ suite('FieldColour', function() {
         const actualColumns = field.columns || FieldColour.COLUMNS;
         assert.equal(actualColumns, expectedColumns);
       }
-      test('Constants', function() {
-        const columns = FieldColour.COLUMNS;
-        try {
-          // Note: Developers shouldn't actually do this. IMO they should edit
-          // the file and then recompile. But this is fine for testing.
-          FieldColour.COLUMNS = 3;
-          const field = new FieldColour();
-          assertColumns(field, 3);
-        } finally {
-          FieldColour.COLUMNS = columns;
-        }
-      });
       test('JS Constructor', function() {
         const field = new FieldColour('#ffffff', null, {columns: 3});
         assertColumns(field, 3);
