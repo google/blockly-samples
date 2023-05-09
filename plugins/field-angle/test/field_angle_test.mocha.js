@@ -42,7 +42,7 @@ suite('FieldAngle', function() {
   ];
   const addArgsAndJson = function(testCase) {
     testCase.args = [testCase.value];
-    testCase.json = {'angle': testCase.value};
+    testCase.json = {'value': testCase.value};
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);

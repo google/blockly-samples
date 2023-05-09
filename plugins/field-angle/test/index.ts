@@ -30,7 +30,8 @@ const toolbox = generateFieldTestBlocks('field_angle', [
   {
     label: 'Round',
     args: {
-      'round': 1,
+      'precision': 1,
+      'value': 123,
     },
   },
 ]);

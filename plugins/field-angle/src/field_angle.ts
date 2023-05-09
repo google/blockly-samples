@@ -24,6 +24,8 @@ export class FieldAngle extends Blockly.FieldNumber {
    */
   static readonly RADIUS: number = FieldAngle.HALF - 1;
 
+  static readonly DEFAULT_PRECISION = 15;
+
   /**
    * Whether the angle should increase as the angle picker is moved clockwise
    * (true) or counterclockwise (false).
@@ -42,12 +44,6 @@ export class FieldAngle extends Blockly.FieldNumber {
    * Usually either 360 (for 0 to 359.9) or 180 (for -179.9 to 180).
    */
   private wrap = 360;
-
-  /**
-   * The amount to round angles to when using a mouse or keyboard nav input.
-   * Must be a positive integer to support keyboard navigation.
-   */
-  private round = 15;
 
   /**
    * Array holding info needed to unbind events.
@@ -86,6 +82,11 @@ export class FieldAngle extends Blockly.FieldNumber {
     if (value === Blockly.Field.SKIP_SETUP) return;
     if (config) {
       this.configure_(config);
+      if (config.precision === undefined || config.precision === null) {
+        this.setPrecision(FieldAngle.DEFAULT_PRECISION);
+      }
+    } else {
+      this.setPrecision(FieldAngle.DEFAULT_PRECISION);
     }
     this.setValue(value);
     if (validator) {
@@ -118,7 +119,6 @@ export class FieldAngle extends Blockly.FieldNumber {
     if (config.clockwise) this.clockwise = config.clockwise;
     if (config.offset) this.offset = config.offset;
     if (config.wrap) this.wrap = config.wrap;
-    if (config.round) this.round = config.round;
   }
 
   /**
@@ -304,8 +304,8 @@ export class FieldAngle extends Blockly.FieldNumber {
    * @param angle New angle.
    */
   private displayMouseOrKeyboardValue(angle: number) {
-    if (this.round) {
-      angle = Math.round(angle / this.round) * this.round;
+    if (this.precision_) {
+      angle = Math.round(angle / this.precision_) * this.precision_;
     }
     angle = this.wrapValue(angle);
     if (angle !== this.value_) {
@@ -384,7 +384,7 @@ export class FieldAngle extends Blockly.FieldNumber {
     }
     if (multiplier) {
       const value = this.getValue() as number;
-      this.displayMouseOrKeyboardValue(value + multiplier * this.round);
+      this.displayMouseOrKeyboardValue(value + multiplier * this.precision_);
       e.preventDefault();
       e.stopPropagation();
     }
@@ -425,7 +425,7 @@ export class FieldAngle extends Blockly.FieldNumber {
   /**
    * Construct a FieldAngle from a JSON arg object.
    * @param options A JSON object with options
-   *     (angle, mode, clockwise, offset, wrap, round).
+   *     (value, mode, clockwise, offset, wrap, precision).
    * @returns The new field instance.
    * @nocollapse
    * @internal
@@ -433,7 +433,7 @@ export class FieldAngle extends Blockly.FieldNumber {
   static fromJson(options: FieldAngleFromJsonConfig): FieldAngle {
     // `this` might be a subclass of FieldAngle if that class doesn't override
     // the static fromJson method.
-    return new this(options.angle, undefined, options);
+    return new this(options.value, undefined, options);
   }
 }
 
@@ -483,13 +483,13 @@ Blockly.Css.register(`
  *   - clockwise: true
  *   - offset: 90
  *   - wrap: 0
- *   - round: 15
+ *   - precision: 15
  *
  * Protractor specifies:
  *   - clockwise: false
  *   - offset: 0
  *   - wrap: 0
- *   - round: 15
+ *   - precision: 15
  */
 export enum Mode {
   COMPASS = 'compass',
@@ -504,14 +504,13 @@ export interface FieldAngleConfig extends Blockly.FieldNumberConfig {
   clockwise?: boolean;
   offset?: number;
   wrap?: number;
-  round?: number;
 }
 
 /**
  * fromJson configuration options for the angle field.
  */
 export interface FieldAngleFromJsonConfig extends FieldAngleConfig {
-  angle?: number;
+  value?: number;
 }
 
 /**
