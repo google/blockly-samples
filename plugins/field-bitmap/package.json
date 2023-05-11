@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-bitmap",
-  "version": "2.0.16",
+  "version": "2.0.17",
   "description": "A field that lets users input a pixel grid with their mouse.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,8 +40,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.33",
-    "@blockly/dev-tools": "^5.2.6",
+    "@blockly/dev-scripts": "^1.2.34",
+    "@blockly/dev-tools": "^5.3.0",
     "blockly": "^9.0.0",
     "chai": "^4.3.6",
     "mocha": "^9.2.1"
