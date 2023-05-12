@@ -97,21 +97,9 @@ module.exports = (env) => {
           use: [require.resolve('source-map-loader')],
           enforce: 'pre',
         },
-        isTypescript ? {
+        isTypescript && {
           test: /\.tsx?$/,
           loader: require.resolve('ts-loader'),
-        } : {
-          test: /\.(js|mjs|ts)$/,
-          exclude: /(node_modules|build)/,
-          loader: require.resolve('babel-loader'),
-          options: {
-            babelrc: false,
-            configFile: false,
-            presets: [
-              require.resolve('@babel/preset-env'),
-            ].filter(Boolean),
-            compact: isProduction,
-          },
         },
       ].filter(Boolean),
     },
