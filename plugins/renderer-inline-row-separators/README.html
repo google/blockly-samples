@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/renderer-inline-row-separators Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/renderer-inline-row-separators Demo</div>
+      <div class="subtitle">A plugin to treat dummy inputs like line breaks.</div>
+    </div>
+    0.2.12
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/renderer-inline-row-separators" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/renderer-inline-row-separators" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/renderer-inline-row-separators/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/renderer-inline-row-separators/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyrenderer-inline-row-separators-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/renderer-inline-row-separators <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin to create a renderer that treats dummy inputs like row separators, allowing block designers to arrange multiple inline value input connectors on separate rows by inserting dummy inputs between them. Example blocks demonstrating the feature are provided, as well as a function to add the feature to your own renderer.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/renderer-inline-row-separators</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/renderer-inline-row-separators --save</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="using-the-modified-thrasos-renderer">Using the modified thrasos renderer</h3>
+<p>This plugin registers a renderer called <code>"thrasos-inline-row-separators"</code> based on Blockly's built-in <code>"thrasos"</code> renderer. To use it, install the plugin, import it (with side effects), then refer to the new renderer in your workspace options:</p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import '@blockly/renderer-inline-row-separators'; // import with side effects.
+
+function start() {
+  const workspace = Blockly.inject('blocklyDiv', {
+    toolbox: toolbox,
+    renderer: 'thrasos-inline-row-separators',
+  });
+}</code></pre>
+<p>Initially, not much will be different. However, if you define any block types that insert a dummy input between two inline value inputs, the inline value input connectors will be rendered on separate lines:</p>
+<pre><code class="js language-js">Blockly.common.defineBlocksWithJsonArray([
+  {
+    'type': 'inline_test',
+    'message0': 'input A %1 %2 input B %3',
+    'args0': [
+      {'type': 'input_value', 'name': 'A'},
+      {'type': 'input_dummy'},
+      {'type': 'input_value', 'name': 'B'},
+    ],
+    'inputsInline': true,
+  },
+]);</code></pre>
+<p><img src="readme-media/inline_row_example_screenshot.png" alt="A Blockly block demonstrating inline value input connectors on separate rows." /></p>
+<h3 id="using-inline-versions-of-built-in-blocks">Using inline versions of built-in blocks</h3>
+<p>This plugin also defines some alternative versions of built-in Blockly blocks that demonstrate the feature: <code>"inline_text_join"</code>, <code>"inline_lists_create_with"</code>, and <code>"inline_procedures_defreturn"</code>. You can replace the built-in blocks <code>"text_join"</code>, <code>"lists_create_with"</code>, and <code>"procedures_defreturn"</code> with these alternatives (which allows you to use Blockly's built-in code generators with the inline version of these blocks) by importing and calling <code>overrideOldBlockDefinitions()</code>:</p>
+<pre><code class="js language-js">import {overrideOldBlockDefinitions} from '@blockly/renderer-inline-row-separators';
+
+overrideOldBlockDefinitions();</code></pre>
+<p><img src="readme-media/inline_row_separators_screenshot.png" alt="A Blockly workspace showing blocks with inline value input connectors on separate rows." /></p>
+<h3 id="adding-the-row-separator-feature-to-other-renderers">Adding the row separator feature to other renderers</h3>
+<p>This plugin also exports a function called <code>addInlineRowSeparators</code> that you can use to add the same inline row separator feature to any class extending Blockly's Renderer, including your own.</p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {addInlineRowSeparators} from '@blockly/renderer-inline-row-separators';
+
+const NewRenderer = addInlineRowSeparators(YourRenderer, YourRenderInfo);
+Blockly.blockRendering.register('new-renderer', NewRenderer);</code></pre>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

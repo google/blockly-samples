@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/field-slider Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/field-slider Demo</div>
+      <div class="subtitle">A Blockly slider field.</div>
+    </div>
+    4.0.16
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-slider" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/field-slider" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/field-slider/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/field-slider/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyfield-slider-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/field-slider <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> slider field.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/field-slider</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/field-slider --save</code></pre>
+<h2 id="usage">Usage</h2>
+<p>This field is an extension of the Blockly.FieldNumber field. See the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation">Blockly.FieldNumber documentation</a> on what parameters and configurations this field supports.</p>
+<h3 id="javascript">JavaScript</h3>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {FieldSlider} from '@blockly/field-slider';
+Blockly.Blocks["test_field_slider"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("slider: ")
+      .appendField(new FieldSlider(50), "FIELDNAME");
+  }
+};</code></pre>
+<h3 id="json">JSON</h3>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import '@blockly/field-slider';
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "test_field_slider",
+        "message0": "slider: %1",
+        "args0": [
+            {
+                "type": "field_slider",
+                "name": "FIELDNAME",
+                "value": 50
+            }
+        ]
+    }]);</code></pre>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

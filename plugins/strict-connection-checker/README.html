@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/plugin-strict-connection-checker Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-strict-connection-checker Demo</div>
+      <div class="subtitle">A Blockly plugin that makes connection checks strict.</div>
+    </div>
+    2.0.15
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/strict-connection-checker" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/plugin-strict-connection-checker" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/strict-connection-checker/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/strict-connection-checker/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyplugin-strict-connection-checker-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/plugin-strict-connection-checker <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that imposes stricter rules for connection check arrays than the default checker in Blockly, but uses the same rules for dragging and safety.</p>
+<p>This checker still expects nullable arrays of string for connection type checks, and still looks for intersections in the arrays. Unlike the default checker, null checks arrays are only compatible with other null arrays.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/plugin-strict-connection-checker</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/plugin-strict-connection-checker --save</code></pre>
+<h2 id="usage">Usage</h2>
+<p>The plugin exports a <code>pluginInfo</code> object for use in the options struct.</p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {pluginInfo as StrictConnectionsPluginInfo} from '@blockly/plugin-strict-connection-checker';
+
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: toolboxCategories,
+  plugins: {
+      ...StrictConnectionsPluginInfo,
+    },
+});</code></pre>
+<p>Note that this uses the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">spread operator</a> (<code>...</code>) to copy the contents of <code>pluginInfo</code> into the <code>plugins</code> section of the struct.</p>
+<h2 id="api">API</h2>
+<p>This plugin exports a class, <code>StrictConnectionChecker</code>, and registers it as a connection checker with Blockly. You should not need to instantiate it directly.</p>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

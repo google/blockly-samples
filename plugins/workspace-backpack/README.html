@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/workspace-backpack Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/workspace-backpack Demo</div>
+      <div class="subtitle">A Blockly plugin that adds Backpack support.</div>
+    </div>
+    3.1.4
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-backpack" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/workspace-backpack" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/workspace-backpack/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/workspace-backpack/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyworkspace-backpack-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/workspace-backpack <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds a Backpack to the workspace.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/workspace-backpack</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/workspace-backpack --save</code></pre>
+<h2 id="features">Features</h2>
+<h3 id="context-menus">Context Menus</h3>
+<p>The following context menu options are available for the backpack:</p>
+<ul>
+<li>"Copy all Blocks" to Backpack in main Workspace</li>
+<li>"Paste all Blocks" from Backpack in main Workspace</li>
+<li>"Remove from Backpack" on Block stack in Backpack Flyout</li>
+<li>"Copy to Backpack" on a Block stack in main Workspace</li>
+<li>"Empty" option when right clicking the Backpack that is disabled if the Backpack is empty</li>
+</ul>
+<p>![An animated picture of all the context menu options in use](
+<a href="https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu.gif">https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu.gif</a>)</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {Backpack} from '@blockly/workspace-backpack';
+
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: toolboxCategories,
+});
+
+// Initialize plugin.
+const backpack = new Backpack(workspace);
+backpack.init();</code></pre>
+<h3 id="configuration">Configuration</h3>
+<p>This plugin takes an optional configuration object.</p>
+<pre><code>{
+  allowEmptyBackpackOpen: (boolean|undefined),
+  useFilledBackpackImage: (boolean|undefined),
+  contextMenu: {
+    emptyBackpack: (boolean|undefined),
+    removeFromBackpack: (boolean|undefined),
+    copyToBackpack: (boolean|undefined),
+    copyAllToBackpack: (boolean|undefined),
+    pasteAllToBackpack: (boolean|undefined),
+    disablePreconditionChecks: (boolean|undefined),
+  },
+}</code></pre>
+<p>The configuration options are passed in to the constructor. In this
+configuration object, you can currently configure which context menu options are
+registered at <code>init</code>.</p>
+<pre><code class="js language-js">const backpackOptions = {
+  allowEmptyBackpackOpen: true,
+  useFilledBackpackImage: true,
+  contextMenu: {
+    emptyBackpack: true,
+    removeFromBackpack: true,
+    copyToBackpack: false,
+  },
+};
+const backpack = new Backpack(workspace,  backpackOptions);</code></pre>
+<p>The following options are the default values used for any property in the
+passed in options that is undefined:</p>
+<pre><code class="js language-js">const defaultOptions = {
+  allowEmptyBackpackOpen: true,
+  useFilledBackpackImage: false,
+  contextMenu: {
+    emptyBackpack: true,
+    removeFromBackpack: true,
+    copyToBackpack: true,
+    copyAllToBackpack: false,
+    pasteAllToBackpack: false,
+    disablePreconditionChecks: false,
+  },
+};</code></pre>
+<p>The <code>allowEmptyBackpackOpen</code> property, if set to <code>false</code>, will prevent the backpack flyout from
+being opened if the backpack is empty.</p>
+<p>The <code>useFilledBackpackImage</code> property, if set to <code>true</code>, will change the
+backpack image when the backpack has something in it.</p>
+<p>The <code>disablePreconditionChecks</code> property will prevent the "Copy to Backpack"
+context menu option from disabling the context menu option if the block is
+already in the Backpack. Setting this flag to <code>true</code> to disable the check can be
+beneficial for performance if you expect blocks stacks to be very large.</p>
+<p>![An animated picture of the "Copy to Backpack" context menu](
+<a href="https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu-precondition.gif">https://github.com/google/blockly-samples/raw/master/plugins/workspace-backpack/readme-media/context-menu-precondition.gif</a>)</p>
+<p>Note: Currently the empty Backpack context menu is registered globally, while
+the others are registered per workspace.</p>
+<h3 id="blockly-languages">Blockly Languages</h3>
+<p>We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the messages
+can be translated by assigning the following properties of Blockly.Msg</p>
+<ul>
+<li><code>EMPTY_BACKPACK</code> (Default: "Empty") context menu - Empty the backpack.</li>
+<li><code>REMOVE_FROM_BACKPACK</code> (Default: "Remove from Backpack") context menu - Remove
+the selected Block from the backpack.</li>
+<li><code>COPY_TO_BACKPACK</code> (Default: "Copy to Backpack") context menu - Copy the
+selected Block to the backpack.</li>
+<li><code>COPY_ALL_TO_BACKPACK</code> (Default: "Copy All Blocks to Backpack") Context menu -
+copy all Blocks on the workspace to the backpack.</li>
+<li><code>PASTE_ALL_FROM_BACKPACK</code> (Default: "Paste All Blocks from Backpack") context
+menu - Paste all Blocks from the backpack to the workspace.</li>
+</ul>
+<pre><code class="javascript language-javascript">Blockly.Msg['EMPTY_BACKPACK'] = 'Opróżnij plecak';  // Polish
+// Inject workspace, etc...</code></pre>
+<h2 id="api">API</h2>
+<ul>
+<li><p><code>init</code>: Initializes the backpack.</p></li>
+<li><p><code>dispose</code>: Disposes of backpack.</p></li>
+<li><p><code>getCount</code>: Returns the count of items in the backpack.</p></li>
+<li><p><code>getContents</code> Returns backpack contents.</p></li>
+<li><p><code>empty</code>: Empties the backpack's contents. If the contents-flyout is currently
+open it will be closed.</p></li>
+<li><p><code>addBlock</code>: Adds Block to backpack.</p></li>
+<li><p><code>addBlocks</code>: Adds Blocks to backpack.</p></li>
+<li><p><code>removeBlock</code>: Removes Block to backpack.</p></li>
+<li><p><code>addItem</code>: Adds item to backpack.</p></li>
+<li><p><code>removeItem</code>: Removes item from the backpack.</p></li>
+<li><p><code>setContents</code>: Sets backpack contents.</p></li>
+<li><p><code>isOpen</code>: Returns whether the backpack is open.</p></li>
+<li><p><code>open</code>: Opens the backpack flyout.</p></li>
+<li><p><code>close</code>: Closes the backpack flyout.</p></li>
+<li><p><code>handleBlockDrop</code>: Handles a block drop on this backpack.</p></li>
+<li><p><code>onDragEnter</code>: Handle mouse over.</p></li>
+<li><p><code>onDragExit</code>: Handle mouse exit.</p></li>
+<li><p><code>getBoundingRectangle</code>: Returns the bounding rectangle of the UI element in
+pixel units relative to the Blockly injection div.</p></li>
+<li><p><code>position</code>: Positions the backpack UI element.</p></li>
+</ul>
+<h2 id="compatibility">Compatibility</h2>
+<h3 id="multiple-backpacks-per-workspace">Multiple Backpacks per Workspace</h3>
+<p>This plugin also currently only supports one Backpack per Workspace.</p>
+<h3 id="blocklyconfigurecontextmenu">Blockly.configureContextMenu</h3>
+<p>This plugin registers a custom context menu by overriding
+<code>Blockly.configureContextMenu</code> in <code>init</code> in order to support the context menu
+for emptying the Backpack.
+If you also override <code>Blockly.configureContextMenu</code> after initializing this
+plugin, you must also call the old <code>Blockly.configureContextMenu</code> function.
+Example:</p>
+<pre><code>const prevConfigureContextMenu = workspace.configureContextMenu;
+workspace.configureContextMenu = (menuOptions, e) =&gt; {
+  prevConfigureContextMenu &amp;&amp;
+      prevConfigureContextMenu.call(null, menuOptions, e);
+  ...
+}</code></pre>
+<h3 id="backpack-flyout">Backpack Flyout</h3>
+<p>The Backpack Flyout uses the registered Flyout for either
+<code>Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX</code> or
+<code>Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX</code>, similar to the implementation
+for <code>Blockly.Trashcan</code>. If a custom class is registered for either of these
+types, then the Backpack Flyout may need to be tested for compatibility.</p>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

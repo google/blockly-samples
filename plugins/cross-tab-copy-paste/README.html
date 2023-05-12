@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/plugin-cross-tab-copy-paste Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-cross-tab-copy-paste Demo</div>
+      <div class="subtitle">Allows you to copy blocks with cross-tab.</div>
+    </div>
+    2.0.18
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/cross-tab-copy-paste" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/plugin-cross-tab-copy-paste" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/cross-tab-copy-paste/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/cross-tab-copy-paste/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyplugin-cross-tab-copy-paste-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/plugin-cross-tab-copy-paste <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds context menu items and keyboard shortcuts to allow users to copy and paste a block between tabs.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/plugin-cross-tab-copy-paste</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/plugin-cross-tab-copy-paste --save</code></pre>
+<h2 id="usage">Usage</h2>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {CrossTabCopyPaste} from '@blockly/plugin-cross-tab-copy-paste';
+
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: toolboxCategories,
+});
+
+const options = {
+  contextMenu: true,
+  shortcut: true,
+}
+
+// Initialize plugin.
+const plugin = new CrossTabCopyPaste();
+plugin.init(options, () =&gt; {
+    console.log('Use this error callback to handle TypeError while pasting');
+  });
+
+// optional: Remove the duplication command from Blockly's context menu.
+Blockly.ContextMenuRegistry.registry.unregister('blockDuplicate');
+
+// optional: You can change the position of the menu added to the context menu.
+Blockly.ContextMenuRegistry.registry.getItem('blockCopyToStorage').weight = 2;
+Blockly.ContextMenuRegistry.registry.getItem('blockPasteFromStorage').weight = 3;</code></pre>
+<h2 id="options">Options</h2>
+<ul>
+<li><code>contextMenu</code> <code>{boolean}</code>: Register copy, cut, and paste commands in the Blockly context menu.</li>
+<li><code>shortcut</code> <code>{boolean}</code>: Register cut (ctr + x), copy (ctr + c) and paste (ctr + v) in the keybord shortcut.</li>
+</ul>
+<h2 id="error-callback">Error Callback</h2>
+<ul>
+<li><code>typeErrorCallback</code> <code>{Function}</code>: is an extra parameter to the init method, one can pass a callback to the cross-tab-copy-paste plugin that is called when the plugin triggers a TypeError error when pasting.</li>
+</ul>
+<h2 id="localization">Localization</h2>
+<p>You can change the displayed words.</p>
+<h3 id="english">English</h3>
+<pre><code class="js language-js">Blockly.Msg['CROSS_TAB_COPY'] = 'Copy';
+Blockly.Msg['CROSS_TAB_PASTE'] = 'Paste';</code></pre>
+<h3 id="japanese">Japanese</h3>
+<pre><code class="js language-js">Blockly.Msg['CROSS_TAB_COPY'] = 'コピー';
+Blockly.Msg['CROSS_TAB_PASTE'] = '貼り付け';</code></pre>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/field-bitmap Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/field-bitmap Demo</div>
+      <div class="subtitle">A field that lets users input a pixel grid with their mouse.</div>
+    </div>
+    2.0.17
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-bitmap" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/field-bitmap" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/field-bitmap/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/field-bitmap/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyfield-bitmap-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/field-bitmap <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> field that allows for user-inputted pixel grids. The image value is stored as a 2D array of 1s and 0s, and supports any size. The user can paint over pixels with their mouse, or randomize the grid.</p>
+<p>Note: this field does not support serialization to XML.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/field-bitmap</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/field-bitmap --save</code></pre>
+<h2 id="usage">Usage</h2>
+<p>This field accepts up to 3 parameters:</p>
+<ul>
+<li><code>"value"</code> to specify an initial value. Must be a 2D rectangular array of 1s and 0s.
+If not provided, the default is an empty grid of the specified size.</li>
+<li><code>"width"</code> to specify an initial width, if there is no initial value.
+If not provided, the default is a width of 5.</li>
+<li><code>"height"</code> to specify an initial height, if there is no initial value.
+If not provided, the default is a height of 5.</li>
+</ul>
+<h3 id="javascript">JavaScript</h3>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {FieldBitmap} from 'blockly-field-bitmap';
+Blockly.Blocks["test_field_bitmap"] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("bitmap: ")
+      .appendField(new FieldBitmap(...), "FIELDNAME");
+  }
+};</code></pre>
+<h3 id="json">JSON</h3>
+<p>Example with default value:</p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import '@blockly/field-bitmap';
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "test_field_bitmap",
+        "message0": "bitmap: %1",
+        "args0": [
+            {
+                "type": "field_bitmap",
+                "name": "FIELDNAME",
+                "value": [
+                    [0, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 0, 1, 1, 0],
+                    [0, 0, 0, 0, 0, 0, 0],
+                    [0, 1, 1, 1, 1, 1, 0],
+                    [0, 1, 0, 0, 0, 1, 0],
+                    [0, 0, 1, 1, 1, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0],
+                ],
+            }
+        ]
+    }]);</code></pre>
+<p>Example with width and height:</p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import '@blockly/field-bitmap';
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "test_field_bitmap",
+        "message0": "bitmap: %1",
+        "args0": [
+            {
+                "type": "field_bitmap",
+                "name": "FIELDNAME",
+                "width": 8,
+                "height": 8
+            }
+        ]
+    }]);</code></pre>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

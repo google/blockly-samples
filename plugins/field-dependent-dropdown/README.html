@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/field-dependent-dropdown Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/field-dependent-dropdown Demo</div>
+      <div class="subtitle">A Blockly dropdown field that automatically updates its available options depending on the value of another field.</div>
+    </div>
+    1.1.3
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-dependent-dropdown" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/field-dependent-dropdown" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/field-dependent-dropdown/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/field-dependent-dropdown/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyfield-dependent-dropdown-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/field-dependent-dropdown <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> dropdown field where the options depend on the value of a parent field.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/field-dependent-dropdown</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/field-dependent-dropdown --save</code></pre>
+<h2 id="usage">Usage</h2>
+<p>This plugin adds a field type <code>FieldDependentDropdown</code> that is an extension of <code>Blockly.FieldDropdown</code> and is registered as <code>'field_dependent_dropdown'</code> for the JSON API. You can associate it with a parent field that is attached to the same block, along with a mapping from the parent field's possible values to the desired menu options for this child field. Whenever the parent field's value changes, this field will automatically change its own available options to the options that correspond to the new parent value. You can also provide a set of default options that will be used if the parent field's value doesn't match any of the keys in your option mapping.</p>
+<p>These changes are recorded properly in the undo history, and the fields can be <a href="https://developers.google.com/blockly/guides/configure/web/serialization">serialized and later deserialized</a> while preserving their options, values, and validity. You can also create chains of dependent dropdowns that depend on other dependent dropdowns. </p>
+<p>Note that the parent field must be attached to the block before the child field, and the child field will attach a validator function to the parent field to intercept changes to its value. If you want to add your own <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/validators">custom field validator</a> to the parent field, you need to use <a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks#json_format_versus_javascript_api">the JavaScript API to define your block</a> and <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creating_a_dropdown_validator">pass your validator to the parent field's constructor</a>. If you try to set the parent's validator later, you'll overwrite the one added by this plugin.</p>
+<p>To create a dependent dropdown, you'll need to add this field type to a block definition, and add that block to your toolbox. See below for an example of defining a block that uses this field. </p>
+<h3 id="json">JSON</h3>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import '@blockly/field-dependent-dropdown'; // Import with side effects.
+
+Blockly.defineBlocksWithJsonArray([
+  {
+    'type': 'dependent_dropdown_example',
+    'message0': 'Category %1 Animal %2',
+    'args0': [
+      {
+        'type': 'field_dropdown',
+        'name': 'ANIMAL_CATEGORY',
+        'options': [['Mammal', 'mammal'], ['Bird', 'bird'], ['Cryptid', 'cryptid']]
+      },
+      {
+        'type': 'field_dependent_dropdown',
+        'name': 'ANIMAL',
+        'parentName': 'ANIMAL_CATEGORY',
+        'optionMapping': {
+          'mammal': [['Dog', 'dog'], ['Cat', 'cat'], ['Hamster', 'hamster']],
+          'bird': [['Parakeet', 'parakeet'], ['Canary', 'canary']]
+        }
+        'defaultOptions': [['None available', 'noneAvailable']],
+      }
+    ]
+  }
+]);</code></pre>
+<h3 id="javascript">JavaScript</h3>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {FieldDependentDropdown} from '@blockly/field-dependent-dropdown';
+
+Blockly.Blocks['dependent_dropdown_example'] = {
+  init: function() {
+    const parentFieldName = 'ANIMAL_CATEGORY';
+    const childFieldName = 'ANIMAL';
+    const parentOptions = 
+        [['Mammal', 'mammal'], ['Bird', 'bird'], ['Cryptid', 'cryptid']];
+    const optionMapping = {
+      'mammal': [['Dog', 'dog'], ['Cat', 'cat'], ['Hamster', 'hamster']],
+      'bird': [['Parakeet', 'parakeet'], ['Canary', 'canary']],
+    };
+    const defaultOptions = [['None available', 'noneAvailable']];
+    this.appendDummyInput()
+        .appendField('Category')
+        .appendField(
+            new Blockly.FieldDropdown(parentOptions),
+            parentFieldName)
+        .appendField('Animal')
+        .appendField(
+            new FieldDependentDropdown(
+                parentFieldName,
+                optionMapping,
+                defaultOptions),
+            childFieldName);
+  },
+};</code></pre>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

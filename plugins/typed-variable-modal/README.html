@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/plugin-typed-variable-modal Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-typed-variable-modal Demo</div>
+      <div class="subtitle">A Blockly plugin to create a modal for creating typed variables.</div>
+    </div>
+    5.0.17
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/typed-variable-modal" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/plugin-typed-variable-modal" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/typed-variable-modal/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/typed-variable-modal/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyplugin-typed-variable-modal-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/plugin-typed-variable-modal <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds the ability
+to create a modal for creating typed variables.</p>
+<h2 id="installation">Installation</h2>
+<pre><code>npm install @blockly/plugin-typed-variable-modal --save</code></pre>
+<h2 id="usage">Usage</h2>
+<p>To add a Typed Variable Modal to your application you will have to create a
+custom dynamically populated flyout category. More information on custom flyouts
+can be
+found <a href="https://developers.google.com/blockly/guides/configure/web/toolbox?hl=en#dynamic_categories">here</a>.</p>
+<h4 id="import">Import</h4>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import { TypedVariableModal } from '@blockly/plugin-typed-variable-modal';</code></pre>
+<p>or</p>
+<pre><code class="js language-js">&lt;script src="https://unpkg.com/@blockly/plugin-typed-variable-modal"&gt;&lt;/script&gt;</code></pre>
+<h4 id="setup">Setup</h4>
+<p>Create your workspace.</p>
+<pre><code class="js language-js">workspace = Blockly.inject('blocklyDiv', {
+    toolbox: toolbox
+});</code></pre>
+<p>Add a custom category to your toolbox.</p>
+<pre><code class="xml language-xml">&lt;category name="Colours" custom="CREATE_TYPED_VARIABLE"&gt;&lt;/category&gt;</code></pre>
+<p>Define a callback to provide the category content.</p>
+<pre><code class="js language-js">const createFlyout = function(workspace) {
+    let xmlList = [];
+    // Add your button and give it a callback name.
+    const button = document.createElement('button');
+    button.setAttribute('text', 'Create Typed Variable');
+    button.setAttribute('callbackKey', 'callbackName');
+
+    xmlList.push(button);
+
+    // This gets all the variables that the user creates and adds them to the
+    // flyout.
+    const blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(workspace);
+    xmlList = xmlList.concat(blockList);
+    return xmlList;
+};</code></pre>
+<p>Register the callback for the toolbox category.</p>
+<pre><code class="js language-js">workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout);</code></pre>
+<p>Create your Typed Variable Modal using the workspace, callbackName for the
+button and your types.</p>
+<pre><code class="js language-js">const typedVarModal = new TypedVariableModal(workspace, 'callbackName', [["PENGUIN", "Penguin"], ["GIRAFFE", "Giraffe"]]);
+typedVarModal.init();</code></pre>
+<h4 id="blockly-languages">Blockly Languages</h4>
+<p>We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the
+different messages in the typed variable modal can be set by calling <code>typedVarModal.setLocale(messages)</code>.</p>
+<p>Messages that need to be translated for a Typed Variable Modal:</p>
+<ul>
+<li><code>TYPED_VAR_MODAL_CONFIRM_BUTTON</code> (Default: "Ok"): The label for the confirmation button.</li>
+<li><code>TYPED_VAR_MODAL_VARIABLE_NAME_LABEL</code> (Default: "Variable Name: "): The label in front of the variable input.</li>
+<li><code>TYPED_VAR_MODAL_TYPES_LABEL</code> (Default: "Variable Types"): The label in front of the types.</li>
+<li><code>TYPED_VAR_MODAL_CANCEL_BUTTON</code> (Default: "Cancel"): The label for the cancel button.</li>
+<li><code>TYPED_VAR_MODAL_TITLE</code> (Default: "Create Typed Variable"): The modal title.</li>
+<li><code>TYPED_VAR_MODAL_INVALID_NAME</code>
+(Default: "Name is not valid. Please choose a different name.") The message used
+when a user gives an invalid variable name. Name is invalid if it is the message
+used for renaming a variable, creating a variable, or an empty string.</li>
+</ul>
+<h2 id="api">API</h2>
+<ul>
+<li><code>init</code>: Create a typed variable modal and register it with the given button name.</li>
+<li><code>dispose</code>: Dispose of the typed variable modal.</li>
+<li><code>show</code>: Shows the modal and focus on the first focusable element.</li>
+<li><code>hide</code>: Hide the modal.</li>
+<li><code>render</code>: Create all the dom elements for the modal.</li>
+<li><code>setLocale</code>: Change the language for the typed variable modal.</li>
+</ul>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

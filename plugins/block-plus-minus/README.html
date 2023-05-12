@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/block-plus-minus Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/block-plus-minus Demo</div>
+      <div class="subtitle">A group of blocks that replace the built-in mutator UI with a +/- based UI.</div>
+    </div>
+    4.0.15
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/block-plus-minus" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/block-plus-minus" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/block-plus-minus/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/block-plus-minus/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyblock-plus-minus-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/block-plus-minus <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A group of <a href="https://www.npmjs.com/package/blockly">Blockly</a> blocks that replace the built-in mutator UI with a +/-
+based UI.</p>
+<p>Currently this only affects the built-in blocks that use mutators (controls_if, text_join, list_create_with,
+procedures_defnoreturn, and procedures_defreturn).</p>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/If.png" alt="" /></p>
+<p>But the ability to easily add this to your own mutators may be added
+in the future.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/block-plus-minus</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/block-plus-minus --save</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="import">Import</h3>
+<pre><code class="js language-js">import Blockly from 'blockly';
+import '@blockly/block-plus-minus';</code></pre>
+<h3 id="blockly-languages">Blockly Languages</h3>
+<p>We do not currently support translating the text in this plugin to different
+languages. However, if you would like to support multiple languages the messages
+can be translated by assigning the following properties of Blockly.Msg</p>
+<ul>
+<li><code>PROCEDURE_VARIABLE</code> (Default: "variable:"): The label which signals the text
+input is a variable.</li>
+</ul>
+<pre><code class="javascript language-javascript">Blockly.Msg['PROCEDURE_VARIABLE'] = 'variabele:';  // Dutch
+// Inject workspace, etc...</code></pre>
+<h3 id="xml">XML</h3>
+<p>Blocks will automatically use the +/- UI when loaded from XML. But here is some example XML incase you are trying to
+add specific mutations of blocks:</p>
+<h4 id="if">If</h4>
+<pre><code class="xml language-xml">&lt;block type="controls_if"&gt;&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/If.png" alt="" /></p>
+<pre><code class="xml language-xml">&lt;block type="controls_if"&gt;
+    &lt;mutation elseif="1"&gt;&lt;/mutation&gt;
+&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/IfElseIf.png" alt="" /></p>
+<pre><code class="xml language-xml">&lt;block type="controls_if"&gt;
+    &lt;mutation elseif="1" else="1"&gt;&lt;/mutation&gt;
+&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/IfElseIfElse.png" alt="" /></p>
+<h4 id="text-join">Text Join</h4>
+<pre><code class="xml language-xml">&lt;block type="text_join"&gt;&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/TextJoin.png" alt="" /></p>
+<pre><code class="xml language-xml">&lt;block type="text_join"&gt;
+    &lt;mutation items="0"&gt;&lt;/mutation&gt;
+&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/TextJoinNone.png" alt="" /></p>
+<h4 id="list-create">List Create</h4>
+<pre><code class="xml language-xml">&lt;block type="lists_create_with"&gt;&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/ListCreateWith.png" alt="" /></p>
+<pre><code class="xml language-xml">&lt;block type="lists_create_with"&gt;
+    &lt;mutation items="0"&gt;&lt;/mutation&gt;
+&lt;/block&gt;</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/block-plus-minus/readme-media/ListCreateWithNone.png" alt="" /></p>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

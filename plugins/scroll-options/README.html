@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/plugin-scroll-options Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-scroll-options Demo</div>
+      <div class="subtitle">A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block.</div>
+    </div>
+    3.0.16
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/scroll-options" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/plugin-scroll-options" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/scroll-options/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/scroll-options/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyplugin-scroll-options-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/plugin-scroll-options <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds additional
+scroll features.</p>
+<p>This plugin adds two features related to scrolling:</p>
+<ul>
+<li>Users can scroll the workspace with the mousewheel while dragging a block
+("wheel scroll").</li>
+<li>The workspace will automatically scroll when a block is dragged near the
+edge of the workspace ("edge scroll").</li>
+</ul>
+<p>Each of these options can be enabled or disabled independently, if you only want
+one of these behaviors. The edge scrolling behavior can also be configured with
+options such as fast and slow scroll speeds and the distance from the edge of
+the workspace that the block should be before autoscrolling is activated. See
+the Usage and API sections for more details on how to configure these behaviors.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/plugin-scroll-options</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/plugin-scroll-options --save</code></pre>
+<h2 id="usage">Usage</h2>
+<p>Basic usage. If you don't pass any options to <code>init</code>, then you will get the
+default behavior, which enables both scroll options and uses the default
+parameters for edge scrolling.</p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {ScrollOptions, ScrollBlockDragger, ScrollMetricsManager} from '@blockly/plugin-scroll-options';
+
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: toolboxCategories,
+  plugins: {
+      // These are both required.
+      'blockDragger': ScrollBlockDragger,
+      'metricsManager': ScrollMetricsManager,
+    },
+  move: {
+    wheel: true, // Required for wheel scroll to work.
+  },
+});
+
+// Initialize plugin.
+const plugin = new ScrollOptions(workspace);
+plugin.init();</code></pre>
+<p>If you want to disable one (or both) behaviors from the start, you can pass
+options to <code>init</code>.</p>
+<pre><code class="js language-js">plugin.init({enableWheelScroll: false, enableEdgeScroll: false});</code></pre>
+<p>If you want to supply custom configuration to the edge scrolling behavior, you
+can also pass in that option to <code>init</code>.</p>
+<pre><code class="js language-js">plugin.init({edgeScrollOptions: {slowBlockSpeed: 0.1}});</code></pre>
+<p>This can be combined with the previous example to disable wheel scroll at the
+same time. For more details on the edge scroll options, see the next section.</p>
+<h2 id="api">API</h2>
+<p>The plugin is configured during initialization for convenience. It can also be
+configured, or reconfigured, at any time afterwards using the following methods
+on <code>ScrollOptions</code>:</p>
+<ul>
+<li><code>enableWheelScroll</code>/<code>disableWheelScroll</code></li>
+<li><code>enableEdgeScroll</code>/<code>disableEdgeScroll</code></li>
+<li><code>updateEdgeScrollOptions</code></li>
+</ul>
+<p><strong>IMPORTANT</strong>: Currently, the options to configure the edge scroll behavior are
+provided statically due to the way a BlockDragger is initialized. Thus, each
+instance of the plugin will share the same settings, even if you call
+<code>updateEdgeScrollOptions</code> on different instances of the plugin (i.e., on
+different workspaces). You can have some workspaces using the plugin and some
+not, but any that are using the plugin will share the settings. If this is a
+blocking issue for you, please file an issue on blockly-samples.</p>
+<p>The edge scroll options are provided in an object with the following properties
+(default values in parentheses):</p>
+<ul>
+<li><code>slowBlockSpeed</code> (0.28), <code>fastBlockSpeed</code> (1.4): Pixels per ms to scroll
+based on how far the block is from the edge of the viewport.</li>
+<li><code>slowBlockStartDistance</code> (0): Distance in workspace units that the edge of
+the block is from the edge of the viewport before the corresponding scroll
+speed will be used. Can be negative to start scrolling before the block
+extends over the edge.</li>
+<li><code>fastBlockStartDistance</code> (50): Same as above, for fast speed. Must be larger
+than <code>slowBlockStartDistance</code>.</li>
+<li><code>oversizeBlockThreshold</code> (0.85): If a block takes up this percentage of the
+viewport or more, it will be considered oversized. Rather than using the
+block edge, we use the mouse cursor plus the given margin size to activate
+block-based scrolling.</li>
+<li><code>oversizeBlockMargin</code> (15): Cursor margin to use for oversized blocks. A
+bigger value will cause the workspace to scroll sooner, i.e., the mouse can
+be further inward from the edge when scrolling begins.</li>
+<li><code>slowMouseSpeed</code> (0.5), <code>fastMouseSpeed</code> (1.6): Pixels per ms to scroll
+based on how far the mouse is from the edge of the viewport.</li>
+<li><code>slowMouseStartDistance</code> (0): Distance in workspace units that the mouse is
+from the edge of the viewport before the corresponding scroll speed will be
+used. Can be negative to start scrolling before the mouse extends over the
+edge.</li>
+<li><code>fastMouseStartDistance</code> (35): Same as above, for fast speed. Must be larger
+than <code>slowMouseStartDistance</code>.</li>
+</ul>
+<p>Each of these options is configured with the default value shown, which is
+specified in <code>ScrollBlockDragger.js</code>. When you call <code>updateEdgeScrollOptions</code>,
+only the properties actually included in the <code>options</code> parameter will be set.
+Any unspecified options will use the previously set value (where the initial
+value is from the default options). Therefore, do not pass in any options with
+explicit <code>undefined</code> or <code>null</code> values. The plugin will break. Just leave them
+out of the object if you don't want to change the default value.</p>
+<p>This method is safe to call multiple times. Subsequent calls will add onto
+previous calls, not completely overwrite them. That is, if you call this with:</p>
+<pre><code class="js language-js">updateEdgeScrollOptions({fastMouseSpeed: 5});
+updateEdgeScrollOptions({slowMouseSpeed: 2});</code></pre>
+<p>Then the final options used will include both <code>fastMouseSpeed: 5</code> and
+<code>slowMouseSpeed: 2</code> with all other options being the default values.</p>
+<p>You can call <code>ScrollBlockDragger.resetOptions()</code> to restore all default options.</p>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

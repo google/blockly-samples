@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/plugin-workspace-search Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/plugin-workspace-search Demo</div>
+      <div class="subtitle">A Blockly plugin that adds workspace search support.</div>
+    </div>
+    6.0.15
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-search" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/plugin-workspace-search" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/workspace-search/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/workspace-search/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklyplugin-workspace-search-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/plugin-workspace-search <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds workspace search support.</p>
+<h2 id="installation">Installation</h2>
+<pre><code>npm install @blockly/plugin-workspace-search --save</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="es6-imports">ES6 Imports</h3>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import { WorkspaceSearch } from '@blockly/plugin-workspace-search';
+
+const workspace = Blockly.inject('blocklyDiv');
+const workspaceSearch = new WorkspaceSearch(workspace);
+
+workspaceSearch.init();</code></pre>
+<h3 id="script-tag">Script Tag</h3>
+<pre><code class="js language-js">&lt;script src="./node_modules/@blockly/plugin-workspace-search/dist/index.js"&gt;&lt;/script&gt;</code></pre>
+<p>To open workspace search use either command + f or control + f. To close the search bar hit escape or the 'x' in the top right corner.</p>
+<h2 id="api">API</h2>
+<ul>
+<li><code>init</code>: Initializes the workspace search bar.</li>
+<li><code>dispose</code>: Disposes of workspace search.</li>
+<li><code>open</code>: Opens the search bar.</li>
+<li><code>close</code>: Closes the search bar.</li>
+<li><code>previous</code>: Selects the previous block.</li>
+<li><code>next</code>: Selects the next block.</li>
+<li><code>setSearchPlaceholder</code>: Sets the placeholder text for the search bar text input.</li>
+<li><code>addActionBtn</code>: Add a button to the action div. This must be called after the init function has been called.</li>
+<li><code>clearBlocks</code>: Clears the selection group and current block.</li>
+<li><code>searchAndHighlight</code>: Searches the workspace for the current search term and highlights matching blocks.</li>
+</ul>
+<h2 id="styling">Styling</h2>
+<p>The generated search bar looks like:</p>
+<pre><code class="html language-html">&lt;div class="ws-search'&gt;
+  &lt;div class="ws-search-container'&gt;
+    &lt;div class="ws-search-content'&gt;
+      &lt;div class="ws-search-input'&gt;
+        [... text input goes here ...]
+      &lt;/div&gt;
+      [... actions div goes here ...]
+    &lt;/div&gt;
+    [... close button goes here ...]
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>Here are additional CSS classes to style your search bar:</p>
+<ul>
+<li><code>blockly-ws-search</code>: Applies to the outer-most div.<ul>
+<li>Default styling:
+<code>css
+'.blockly-ws-search {',
+'background: white;',
+'border: solid lightgrey 0.5px;',
+'box-shadow: 0px 10px 20px grey;',
+'justify-content: center;',
+'padding: 0.25em;',
+'position: absolute;',
+'z-index: 70;',
+'}'
+</code></li></ul></li>
+<li><code>blockly-ws-search-container</code>: Applies to the search container.</li>
+<li><code>blockly-ws-search-content</code>: Applies to the search content.</li>
+<li><code>blockly-ws-search-input</code>: Applies to the input wrapper. (Default: <code>border: none;</code>)</li>
+<li><code>blockly-ws-search-actions</code>: Applies to the action div.</li>
+<li><code>blockly-ws-search-current</code>: Highlights the provided block as the "current selection". (Default: <code>fill: grey;</code>)</li>
+<li><code>blockly-ws-search-highlight</code>: Adds highlight to the provided blocks. (Default: <code>fill: black;</code>)</li>
+</ul>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  

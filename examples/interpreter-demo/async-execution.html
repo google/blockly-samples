@@ -1,36 +1,15 @@
----
-title: "JS Interpreter"
-files:
-  - "index.html"
-  - "async-execution.html"
-  - "backwards.html"
-  - "step-execution.html"
-  - "acorn_interpreter.js"
-  - "acorn.js"
-  - "interpreter.js"
-  - "serialize.js"
-  - "diff_match_patch.js"
-  - "toolbox.js"
-  - "wait_block.js"
-  - "./node_modules/blockly/*_compressed.js"
-  - "./node_modules/blockly/*_compressed.js.map"
-  - "./node_modules/blockly/msg/en.js"
-  - "./node_modules/blockly/media/*"
-pages:
-  - label: "Step Execution"
-    link: "step-execution.html"
-  - label: "Async Execution"
-    link: "async-execution.html"
-  - label: "Backwards Execution"
-    link: "backwards.html"
-pageRoot: "examples/interpreter-demo"
-
----
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
   <meta charset="utf-8">
-  <title>Blockly Demo: Asynchronous Execution with JS-Interpreter</title>
+  <title>JS Interpreter</title>
   <!-- acorn_interpreter.js is copied from the JS-Interpreter project
     without modification. -->
   <script src="acorn_interpreter.js"></script>
@@ -51,7 +30,51 @@ pageRoot: "examples/interpreter-demo"
     }
   </style>
 </head>
-<body>
+<body class="root">
+      
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly sample" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">JS Interpreter</div>
+      
+    </div>
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/examples/interpreter-demo" class="button" target="_blank">View code</a>
+  </nav>
+  <!-- END NAV BAR -->
+      <main id="main" class="has-tabs">
+        <div class="drop-shadow"></div>
+        
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+  
+    <li>
+      <a href="/blockly-samples/examples/interpreter-demo/step-execution.html">
+        Step Execution
+      </a>
+    </li>
+    
+    <li>
+      <a href="/blockly-samples/examples/interpreter-demo/async-execution.html">
+        Async Execution
+      </a>
+    </li>
+    
+    <li>
+      <a href="/blockly-samples/examples/interpreter-demo/backwards.html">
+        Backwards Execution
+      </a>
+    </li>
+    
+  </ul>
+  <!-- END PAGE TABS -->
+        
   <h1>Asynchronous Execution with JS-Interpreter</h1>
 
   <p>This is a demo of executing code asynchronously (e.g., waiting for delays or user input) using the JavaScript interpreter.</p>
@@ -430,5 +453,36 @@ pageRoot: "examples/interpreter-demo"
       }
     });
   </script>
+</main>
+  
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
 </body>
 </html>

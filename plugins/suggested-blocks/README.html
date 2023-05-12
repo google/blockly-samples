@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>@blockly/suggested-blocks Demo</title>
+  </head>
+  <body class="root" class="root">
+    
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples/" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly logo" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">@blockly/suggested-blocks Demo</div>
+      <div class="subtitle">A plugin that adds toolbox panes with suggested blocks based on the user's past usage of blocks.</div>
+    </div>
+    2.0.16
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/plugins/suggested-blocks" class="button" target="_blank">View code</a>
+    <a href="https://www.npmjs.com/package/@blockly/suggested-blocks" class="button" target="_blank">View on npm</a>
+  </nav>
+  <!-- END NAV BAR -->
+    <main id="main" class="has-tabs">
+      <div class="drop-shadow"></div>
+      
+  <!-- PAGE TABS -->
+  <ul id="tabs">
+    <li>
+      <a href="/blockly-samples/plugins/suggested-blocks/test/index">
+        Playground
+      </a>
+    </li>
+    <li>
+      <a href="/blockly-samples/plugins/suggested-blocks/README">
+        README
+      </a>
+    </li>
+  </ul>
+  <!-- END PAGE TABS -->
+      
+    <article class="article-container site-width">
+      <div class="article">
+      <h1 id="blocklysuggested-blocks-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/suggested-blocks <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that suggests blocks for the user based on which blocks they've used already in the workspace.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="yarn">Yarn</h3>
+<pre><code>yarn add @blockly/suggested-blocks</code></pre>
+<h3 id="npm">npm</h3>
+<pre><code>npm install @blockly/suggested-blocks --save</code></pre>
+<h2 id="usage">Usage</h2>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {toolboxCategories} from '@blockly/dev-tools';
+import * as SuggestedBlocks from '@blockly/suggested-blocks';
+
+function getNewCategories() {
+  const mostUsedCategory = '&lt;category name="Frequently Used" custom="MOST_USED"&gt;&lt;/category&gt;';
+  const recentlyUsedCategory = '&lt;category name="Recently Used" custom="RECENTLY_USED"&gt;&lt;/category&gt;';
+
+  // This type of insertion works in a pinch, but you would more so want to add
+  // the new categories wherever the rest of the categories are defined in the
+  // project (e.g. HTML, or a dedicated file for all the categories)
+  const indexToInsert = toolboxCategories.indexOf('&lt;/xml&gt;');
+  // Insert the new categories into the existing toolbox XML string
+  return toolboxCategories.slice(0, indexToInsert) + mostUsedCategory + recentlyUsedCategory + toolboxCategories.slice(indexToInsert);
+}
+
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: getNewCategories(),
+});
+
+// Initialize the plugin
+SuggestedBlocks.init(workspace);</code></pre>
+<h2 id="api">API</h2>
+<ul>
+<li><code>init</code>: Initializes the suggested blocks categories in the toolbox. Takes several arguments:<ul>
+<li><code>workspace</code>: The workspace to use the plugin with. If you have multiple
+workspaces, you need to register the plugin for each workspace separately,
+and the stats will be tracked separately.</li>
+<li><code>numBlocksPerCategory</code> (optional): The maximum number of blocks to show in
+each category. Defaults to 10.</li>
+<li><code>waitForFinishedLoading</code> (optional): Whether to wait for the
+<a href="https://developers.google.com/blockly/reference/js/blockly.events_namespace.finishedloading_class.md"><code>Blockly.Events.FinishedLoading</code> event</a>
+before taking action on any new <code>BlockCreate</code> events. If you disable event
+firing while you load the initial state of the workspace, you'll need to set
+this to <code>false</code>, or the plugin will never place blocks in either category.
+By default, this value is <code>true</code>, so that events fired while loading initial
+serialized state do not affect the statistics.</li></ul></li>
+</ul>
+<h2 id="license">License</h2>
+<p>Apache 2.0</p>
+      </div>
+    </article>
+  </main>
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+ </html>
+  
