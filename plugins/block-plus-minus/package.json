@@ -1,6 +1,6 @@
 {
   "name": "@blockly/block-plus-minus",
-  "version": "4.0.15",
+  "version": "4.0.16",
   "description": "A group of blocks that replace the built-in mutator UI with a +/- based UI.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -39,8 +39,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.34",
-    "@blockly/dev-tools": "^5.3.0",
+    "@blockly/dev-scripts": "^1.2.35",
+    "@blockly/dev-tools": "^5.3.1",
     "blockly": "^9.0.0",
     "chai": "^4.2.0",
     "mocha": "^10.2.0",
