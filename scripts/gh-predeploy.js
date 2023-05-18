@@ -568,6 +568,9 @@ function createIndexPage(isLocal) {
         <p>
           Sample projects demonstrating how to integrate Blockly into your project
         </p>
+        <div style="background: #12b5cb; padding: 20px; border-radius: 8px; text-decoration: underline; text-decoration-color: white; display: flex; justify-content: center; margin-top: 16px;">
+          <a style="color:white" href="https://sites.google.com/view/2023blocklysummit/rsvp">RSVP for the 2023 Blockly Summit by May 19!</a>
+        </div>
       </div>
     </header>
     <div class="site-width">
