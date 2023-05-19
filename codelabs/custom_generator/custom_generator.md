@@ -20,7 +20,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 You will build a JSON generator that implements the [JSON language spec](https://www.json.org/json-en.html).
 
-![Screenshot of the toolbox and workspace we will build in this codelab. It contains blocks that implement the JSON spec, like member, object, lists, strings, and numbers.](./json_workspace.png)
+![Screenshot of the toolbox and workspace built in this codelab. It contains blocks that implement the JSON spec, like member, object, lists, strings, and numbers.](./json_workspace.png)
 
 ### What you'll need
 
@@ -31,21 +31,21 @@ You will build a JSON generator that implements the [JSON language spec](https:/
 
 ## Setup
 
-In this codelab you will add code to the Blockly sample app to create and use a new generator.
+This codelab will demonstrate how to add code to the Blockly sample app to create and use a new generator.
 
 ### The application
 
-You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1. Run `npx @blockly/create-package app custom-generator-codelab`.  This will create your blockly application in the folder `custom-generator-codelab`.
-  1. `cd` into your new directory: `cd custom-generator-codelab`.
+Use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+  1. Run `npx @blockly/create-package app custom-generator-codelab`.  This will create a blockly application in the folder `custom-generator-codelab`.
+  1. `cd` into the new directory: `cd custom-generator-codelab`.
   1. Run `npm start` to start the server and run the sample application.
   1. The sample app will automatically run in the browser window that opens.
 
-The initial application has one custom block and includes JavaScript generator definitions for that block. Since we will be creating a JSON generator, we'll remove that custom block and add our own.
+The initial application has one custom block and includes JavaScript generator definitions for that block. Since this codelab will be creating a JSON generator instead, it will remove that custom block and add its own.
 
-You can view the complete code used in this codelab in blockly-samples under [`examples/custom-generator-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-generator-codelab).
+The complete code used in this codelab can be viewed in blockly-samples under [`examples/custom-generator-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-generator-codelab).
 
-Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string. `jsonGeneratorWorkspace` will work:
+Before setting up the rest of the application, change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that it doesn't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string. `jsonGeneratorWorkspace` will work:
 
 ```js
 // Use a unique storage key for this codelab
@@ -54,7 +54,7 @@ const storageKey = 'jsonGeneratorWorkspace';
 
 ### Blocks
 
-For this codelab you will use two custom blocks, as well as five blocks from Blockly's standard set.
+This codelab will use two custom blocks, as well as five blocks from Blockly's standard set.
 
 The custom blocks represent the *Object* and *Member* sections of the JSON specification.
 
@@ -69,7 +69,7 @@ The blocks are:
 
 ### Custom block definitions
 
-Create a new file in the `src/blocks/` directory called `json.js`. This will hold our custom JSON-related blocks. Add the following code:
+Create a new file in the `src/blocks/` directory called `json.js`. This will hold the custom JSON-related blocks. Add the following code:
 
 ```js
 import * as Blockly from 'blockly';
@@ -115,7 +115,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([{
 ```
 
 This code creates the block definitions, but it doesn't register the definitions with Blockly to make the blocks usable. We'll do that in `src/index.js`.
-Currently, we import `blocks` from the original sample file, `text.js`. Instead, we want to import the definitions we just added. Remove the original import:
+Currently, the app imports `blocks` from the original sample file, `text.js`. Instead, it should import the definitions that were just added. Remove the original import:
 
 ```js
 // Remove this!
@@ -128,7 +128,7 @@ and add the import for the new blocks:
 import {blocks} from './blocks/json';
 ```
 
-Later in this file, we register the block definitions with Blockly (this code is already present and you do not need to add it):
+Later in the file the block definitions are registered with Blockly (this code is already present and does not need to be added):
 
 ```js
 Blockly.common.defineBlocks(blocks);
@@ -136,7 +136,7 @@ Blockly.common.defineBlocks(blocks);
 
 ### Toolbox definition
 
-Next, we need to define a toolbox that includes these custom blocks. For this example we have a flyout-only toolbox with seven blocks in it.
+Next, define a toolbox that includes these custom blocks. For this example, there's a flyout-only toolbox with seven blocks in it.
 
 The file `src/toolbox.js` contains the original sample toolbox. Replace the entire contents of that file with this code:
 
@@ -178,15 +178,15 @@ export const toolbox = {
 
 Our `index.js` file already handles importing the toolbox and using it in Blockly.
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm start` to start the server. You should see the new blocks in the toolbox, like this:
+If the server is already running, refresh the page to see changes. Otherwise, run `npm start` to start the server. New blocks should now exist in the toolbox, like this:
 
-![Screenshot of toolbox showing our added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
+![Screenshot of toolbox showing the added blocks, including the new member and object blocks, plus the built-in number, text, boolean, null, and list blocks.](./toolbox_blocks.png)
 
 The app is still trying to generate and run JavaScript for the workspace, instead of JSON. We will change that soon.
 
 ## The basics
 
-A *language generator* defines basic properties of your language, such as how indentation works. *Block generators* define how individual blocks are turned into code, and must be defined for every block you use.
+A *language generator* defines the basic properties of a language, such as how indentation works. *Block generators* define how individual blocks are turned into code, and must be defined for every block used.
 
 A language generator has a single entry point: `workspaceToCode`. This function takes in a workspace and:
 - Initializes the generator and any necessary state by calling `init`.
@@ -194,11 +194,11 @@ A language generator has a single entry point: `workspaceToCode`. This function 
 - Cleans up any leftover state by calling `finish`.
 - Returns the generated code.
 
-### Create your language generator
+### Create the language generator
 
-The first step is to define and call your language generator.
+The first step is to define and call the custom language generator.
 
-A custom language generator is simply an instance of `Blockly.Generator`. Create a new file `src/generators/json.js`. In it, import Blockly, call the `Blockly.Generator` constructor, passing in your generator's name, and store the result.
+A custom language generator is simply an instance of `Blockly.Generator`. Create a new file `src/generators/json.js`. In it, import Blockly and call the `Blockly.Generator` constructor, passing in the generator's name and storing the result.
 
 ```js
 import * as Blockly from 'blockly';
@@ -208,7 +208,7 @@ export const jsonGenerator = new Blockly.Generator('JSON');
 
 ### Generate code
 
-Next, let's hook up the new generator with the sample app. First, we'll remove the old code that imports the new block generator properties and assigns them to the `javascriptGenerator`. Remove these lines from `src/index.js`:
+Next, hook up the new generator with the sample app. First, remove the old code that imports the new block generator properties and assigns them to the `javascriptGenerator`. Remove these lines from `src/index.js`:
 
 ```js
 // Remove these lines!
@@ -219,13 +219,13 @@ import {javascriptGenerator} from 'blockly/javascript';
 Object.assign(javascriptGenerator, generator);
 ```
 
-Then, we need to import the new generator:
+Now import the new generator:
 
 ```js
 import {jsonGenerator} from './generators/json';
 ```
 
-Next, we need to change the output of the sample app. Currently, there are two panels in the app next to the workspace. One shows the generated JavaScript code, and one executes it. We need to change it to show the generated JSON code instead of JavaScript. And since we can't execute JSON, we will leave the bottom panel blank and not show anything there. Change the `runCode` function to match the following:
+Currently, there are two panels in the app next to the workspace. One shows the generated JavaScript code, and one executes it. The one panel showing the generated Javascript code will be changed to show the generated JSON code instead. Since JSON can't be directly executed, the panel that shows the execution will be left blank. Change the `runCode` function to the following:
 
 ```js
 // This function resets the code div and shows the
@@ -236,24 +236,24 @@ const runCode = () => {
 };
 ```
 
-Since we are not modifying the bottom panel, you can also delete this line:
+Since the bottom panel is not being modified, delete this line:
 
 ```js
 // Remove this line!
 const outputDiv = document.getElementById('output');
 ```
 
-After we define the block generators, we'll automatically show the generated code in the top left panel. Refresh the sample app page to see your changes so far.
+The generated code will now be shown automatically in the top left panel. Refresh the sample app page to see the changes so far.
 
 ### Test it
 
-Put a number block on the workspace and check the generator output area. It's empty, so let's check the console. You should see an error:
+Put a number block on the workspace and check the generator output area. It's empty, so check the console. You should see an error:
 
 ```
 Language "JSON" does not know how to generate code for block type "math_number".
 ```
 
-This error occurs because you need to write a block generator for each type of block. Read the next section for more details.
+This error occurs because there has to be a block generator for each type of block. Read the next section for more details.
 
 ## Block generator overview
 
@@ -264,7 +264,7 @@ Block generators are defined on the language generator object. For instance, her
 ```js
 sampleGenerator['sample_block'] = function(block) {
   return 'my code string';
-}
+};
 ```
 
 ### Statement blocks
@@ -278,7 +278,7 @@ For example, this code defines a block generator that always returns the same fu
 ```js
 sampleGenerator['left_turn_block'] = function(block) {
   return 'turnLeft()';
-}
+};
 ```
 
 ### Value blocks
@@ -292,7 +292,7 @@ For example, this code defines a block generator that always returns `1 + 1`:
 ```js
 sampleGenerator['two_block'] = function(block) {
   return ['1 + 1', sampleGenerator.ORDER_ADDITION];
-}
+};
 ```
 
 ### Operator precedence
@@ -303,9 +303,9 @@ Operator precedence rules determine how the correct order of operations is maint
 
 --> Read more about [operator precedence in Blockly](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence).
 
-Since JSON does not allow values that are expressions, you do not need to consider operator precedence for the generator that you are building in this codelab. You can use the same value everywhere a precedence value is required. In this case, we'll call it `PRECEDENCE`.
+Since JSON does not allow values that are expressions, the code does not need to consider operator precedence for the generator being built in this codelab. The same value can be used everywhere a precedence value is required. In this codelab, use `PRECEDENCE`.
 
-You need to be able to access this value inside your block generators, so add `PRECEDENCE` to your language generator:
+Since the code needs to be able to access this value inside the block generators, add `PRECEDENCE` to the language generator:
 
 ```js
 jsonGenerator.PRECEDENCE = 0;
@@ -313,9 +313,9 @@ jsonGenerator.PRECEDENCE = 0;
 
 ## Value block generators
 
-In this step you will build the generators for the simple value blocks: `logic_null`, `text`, `math_number`, and `logic_boolean`.
+This step will build the generators for the simple value blocks: `logic_null`, `text`, `math_number`, and `logic_boolean`.
 
-You will use `getFieldValue` on several types of fields.
+It will use `getFieldValue` on several types of fields.
 
 ### Null
 
@@ -360,9 +360,9 @@ The `math_number` block has a number field.
 
 ![The number block has an input for a user to type a number](./number_block.png)
 
-Like the `text` block, you can use `getFieldValue`. Unlike the text block, you don't need to wrap it in additional quotation marks, because in the JSON code, it won't be a string.
+Like the `text` block, the `math_number` block can use `getFieldValue`. Unlike the text block, the function doesn't need to wrap it in additional quotation marks, because in the JSON code, it won't be a string.
 
-However, like all generated code and as with `null` above, we need to return the code as a string from the generator.
+However, like all generated code and as with `null` above, the function needs to return the code as a string from the generator.
 
 ```js
 jsonGenerator['math_number'] = function(block) {
@@ -396,7 +396,7 @@ jsonGenerator['logic_boolean'] = function(block) {
 
 ## Member block generator
 
-In this step you will build the generator for the `member` block. You will use `getFieldValue`, and add `valueToCode` to your tool kit.
+This step will build the generator for the `member` block. It will use the function `getFieldValue`, and introduce the function `valueToCode`.
 
 The member block has a text input field and a value input.
 
@@ -405,16 +405,16 @@ The member block has a text input field and a value input.
 The generated code looks like `"property name": "property value"`.
 
 ### Field value
-The property name is the value of the text input, which we get with `getFieldValue`:
+The **property name** is the value of the text input, which is fetched via `getFieldValue`:
 
 ```js
- const name = block.getFieldValue('MEMBER_NAME');
+const name = block.getFieldValue('MEMBER_NAME');
 ```
 
-Remember that in `src/blocks/json.js` we defined this block to have a text input field called `MEMBER_NAME` - that's the field whose value we're getting here.
+Recall: the name of the value being fetched is `MEMBER_NAME` because that is how it was defined in `src/blocks/json.js`.
 
 ### Input value
-The property value is whatever is attached to the value input. A variety of blocks could be attached there:  `logic_null`, `text`, `math_number`, `logic_boolean`, or even an array (`lists_create_with`). Use `valueToCode` to get the correct value:
+The **property value** is whatever is attached to the value input. A variety of blocks could be attached there:  `logic_null`, `text`, `math_number`, `logic_boolean`, or even an array (`lists_create_with`). Use `valueToCode` to get the correct value:
 
 ```js
 const value = jsonGenerator.valueToCode(block, 'MEMBER_VALUE',
@@ -426,7 +426,7 @@ const value = jsonGenerator.valueToCode(block, 'MEMBER_VALUE',
 - Generates the code for that block
 - Returns the code as a string
 
-If no block is attached, `valueToCode` returns `null`. In another generator you might need to replace `null` with a different default value; in JSON, `null` is fine.
+If no block is attached, `valueToCode` returns `null`. In another generator, `valueToCode` might need to replace `null` with a different default value; in JSON, `null` is fine.
 
 The third argument is related to operator precedence. It is used to determine if parentheses need to be added around the value. In JSON, parentheses will never be added, as discussed in an earlier section.
 
@@ -454,7 +454,7 @@ jsonGenerator['member'] = function(block) {
 
 ## Array block generator
 
-In this step you will build the generator for the array block. You will learn how to indent code and handle a variable number of inputs.
+This step will build the generator for the array block. You will learn how to indent code and handle a variable number of inputs.
 
 The array block uses a mutator to dynamically change the number of inputs it has.
 
@@ -488,9 +488,9 @@ for (let i = 0; i < block.itemCount_; i++) {
 }
 ```
 
-Notice that we skip empty inputs by checking if `valueCode` is `null`.
+Notice that the code skips empty inputs by checking if `valueCode` is `null`.
 
-If you want to include empty inputs, use the string `'null'` as the value.
+To include empty inputs, use the string `'null'` as the value:
 
 ```js
 const values = [];
@@ -551,15 +551,15 @@ jsonGenerator['lists_create_with'] = function(block) {
 
 ### Test it
 
-Test the block generator by adding an array to your onscreen blocks and populating it.
+Test the block generator by adding an array to the onscreen blocks and populating it.
 
-What code does it generate if you have no inputs?
+What code does it generate if there are no inputs?
 
-What if you have five inputs, one of which is empty?
+What if there are five inputs, one of which is empty?
 
 ## Object block generator
 
-In this section you will write the generator for the `object` block. You will learn how to use `statementToCode`.
+This section will write the generator for the `object` block and will demonstrate how to use `statementToCode`.
 
 The `object` block generates code for a JSON Object. It has a single statement input, in which member blocks may be stacked.
 
@@ -577,7 +577,7 @@ The generated code looks like this:
 
 ### Get the contents
 
-We'll use `statementToCode` to get the code for the blocks attached to the statement input of our `object` block.
+We'll use `statementToCode` to get the code for the blocks attached to the statement input of the `object` block.
 
 `statementToCode` does three things:
 - Finds the first block connected to the named statement input (the second argument)
@@ -633,7 +633,7 @@ The `scrub_` function is called on every block from `blockToCode`. It takes in t
 - `code` is the code generated for this block, which includes code from all attached value blocks.
 - `opt_thisOnly` is an optional `boolean`. If true, code should be generated for this block but no subsequent blocks.
 
-By default, `scrub_` simply returns the passed-in code. A common pattern is to override the function to also generate code for any blocks that follow the current block in a stack. In this case, we will add commas and newlines between object members:
+By default, `scrub_` simply returns the passed-in code. A common pattern is to override the function to also generate code for any blocks that follow the current block in a stack. In this case, the code will add commas and newlines between object members:
 
 ```js
 jsonGenerator.scrub_ = function(block, code, thisOnly) {
@@ -648,20 +648,20 @@ jsonGenerator.scrub_ = function(block, code, thisOnly) {
 
 ### Testing scrub_
 
-Create a stack of `member` blocks on the workspace. You should see generated code for all of your blocks, not just the first one.
+Create a stack of `member` blocks on the workspace. There should be generated code for all of the blocks, not just the first one.
 
-Next, add an `object` block and drag your `member` blocks into it. This case tests `statementToCode`, and should generate code for all of your blocks.
+Next, add an `object` block and drag the `member` blocks into it. This case tests `statementToCode`, and should generate code for all of of the blocks.
 
 ## Summary
 
-In this codelab you:
-- Built a custom language generator to generate JSON.
-- Defined block generators for built in blocks and for custom blocks.
-- Used your generator in a sample app.
-- Learned how to use the core generator functions: `statementToCode`, `valueToCode`, `blockToCode`, and `getFieldValue`.
-- Learned how to generate code for stacks of blocks.
+In this codelab you learned:
+- How to build a custom language generator to generate JSON.
+- How to define block generators for built in blocks and for custom blocks.
+- How to use a custom generator in a sample app.
+- How to use the core generator functions: `statementToCode`, `valueToCode`, `blockToCode`, and `getFieldValue`.
+- How to generate code for stacks of blocks.
 
-JSON is a simple language, and there are many additional features you may want to implement in your generator. Blockly's built-in language generators are a good place to learn more about some additional features:
+JSON is a simple language, and there are many additional features that could be implemented in a custom generator. Blockly's built-in language generators are a good place to learn more about some additional features:
 - Variable definition and use.
 - Function definition and use.
 - Initialization and cleanup.
@@ -669,4 +669,4 @@ JSON is a simple language, and there are many additional features you may want t
 - Handling comments.
 - Handling parentheses with operator precedence.
 
-Blockly ships with five language generators: Python, Dart, JavaScript, PHP, and Lua. You can find the language generators and block generators in the [generators directory](https://github.com/google/blockly/tree/master/generators).
+Blockly ships with five language generators: Python, Dart, JavaScript, PHP, and Lua. The language generators and block generators can be found in the [generators directory](https://github.com/google/blockly/tree/master/generators).
