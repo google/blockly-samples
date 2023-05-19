@@ -101,6 +101,9 @@ class FieldDate extends Blockly.FieldTextInput {
     if (!date || date.toIsoString(true) != newValue) {
       return null;
     }
+    console.log('date - ', date);
+    console.log('newValue - ', newValue);
+    // hi
     return newValue;
   }
 
@@ -320,7 +323,7 @@ FieldDate.prototype.CURSOR = 'text';
  * @type {string}
  * @private
  */
-FieldDate.prototype.DROPDOWN_BORDER_COLOUR = 'silver';
+FieldDate.prototype.DROPDOWN_BORDER_COLOUR = 'green';
 
 /**
  * Background colour for the dropdown div showing the date picker. Must be a
@@ -328,7 +331,7 @@ FieldDate.prototype.DROPDOWN_BORDER_COLOUR = 'silver';
  * @type {string}
  * @private
  */
-FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'white';
+FieldDate.prototype.DROPDOWN_BACKGROUND_COLOUR = 'cyan';
 
 /**
  * The default value for this field (current date).
@@ -345,7 +348,7 @@ Blockly.Css.register(`
 .blocklyDatePicker th,
 .blocklyDatePicker td {
   font: 13px Arial, sans-serif;
-  color: #3c4043;
+  color: red; //#3c4043;
 }
 
 .blocklyDatePicker th,
@@ -364,7 +367,7 @@ Blockly.Css.register(`
   padding: 6px 6px;
   margin: 1px 0;
   border: 0;
-  color: #3c4043;
+  color: purple; //#3c4043;
   font-weight: bold;
   background: transparent;
 }

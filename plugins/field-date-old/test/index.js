@@ -19,6 +19,7 @@ const toolbox = generateFieldTestBlocks('field_date', [
     'args': {
       'date': '2020-02-20',
       'textEdit': 'false',
+      'tooltip': 'Some toolipt!'
     },
   },
   {
