@@ -187,7 +187,7 @@ export class CrossTabCopyPaste {
           !Blockly.Gesture.inProgress() &&
           Blockly.getSelected() &&
           Blockly.getSelected().isDeletable() &&
-          Blockly.segetSelected().isMovable() &&
+          Blockly.getSelected().isMovable() &&
           !Blockly.getSelected().workspace.isFlyout;
       },
       callback: function(workspace, e) {
