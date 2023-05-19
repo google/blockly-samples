@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.35](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.34...@blockly/dev-scripts@1.2.35) (2023-05-18)
+
+**Note:** Version bump only for package @blockly/dev-scripts
+
+
+
+
+
+## [1.2.34](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.33...@blockly/dev-scripts@1.2.34) (2023-05-11)
+
+
+### Bug Fixes
+
+* Clean the dist directory before every build. ([#1685](https://github.com/google/blockly-samples/issues/1685)) ([71b1544](https://github.com/google/blockly-samples/commit/71b1544e1810f375798ca339b87816d6921c8ce5))
+
+
+
 ## [1.2.33](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.32...@blockly/dev-scripts@1.2.33) (2023-04-27)
 
 

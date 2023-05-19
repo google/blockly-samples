@@ -12,7 +12,7 @@ node_modules/
 # Generated files
 dist/
 build/
-gh-pages/_site
+gh-pages/index.html
 gh-pages/plugins
 gh-pages/examples
 .DS_Store

@@ -15,12 +15,9 @@ const gulp = require('gulp');
 const jsgl = require('js-green-licenses');
 const path = require('path');
 const rimraf = require('rimraf');
-const yaml = require('json-to-pretty-yaml');
+const predeployTasks = require('./scripts/gh-predeploy');
 
 gulp.header = require('gulp-header');
-
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 /**
  * Run the license checker for all packages.
@@ -197,138 +194,6 @@ function checkVersions(done) {
 }
 
 /**
- * Convert json to front matter YAML config.
- * @param {!Object} json The json config.
- * @returns {string} The front matter YAML config.
- */
-function buildFrontMatter(json) {
-  return `---
-${yaml.stringify(json)}
----
-`;
-}
-
-/**
- * Copy over the test page (index.html and bundled js) and the readme for
- * this plugin. Add variables as needed for Jekyll.
- * The resulting code lives in gh-pages/plugins/<pluginName>.
- * @param {string} pluginDir The subdirectory (inside plugins/) for this plugin.
- * @returns {Function} Gulp task.
- */
-function preparePlugin(pluginDir) {
-  const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
-  const files = [
-    `plugins/${pluginDir}/test/index.html`,
-    `plugins/${pluginDir}/README.md`,
-  ];
-  console.log(`Preparing ${pluginDir} plugin for deployment.`);
-  return gulp
-      .src(files, {base: 'plugins/', allowEmpty: true})
-      // Add front matter tags to index and readme pages for Jekyll processing.
-      .pipe(gulp.header(buildFrontMatter({
-        title: `${packageJson.name} Demo`,
-        packageName: packageJson.name,
-        description: packageJson.description,
-        version: packageJson.version,
-        pageRoot: `plugins/${pluginDir}`,
-        pages: [
-          {
-            label: 'Playground',
-            link: 'test/index',
-          },
-          {
-            label: 'README',
-            link: 'README',
-          },
-        ],
-      })))
-      .pipe(gulp.src(
-          [
-            './plugins/' + pluginDir + '/build/test_bundle.js',
-          ],
-          {base: './plugins/', allowEmpty: true}))
-      .pipe(gulp.dest('./gh-pages/plugins/'));
-}
-
-/**
- * Prepare plugins for deployment to gh-pages.
- *
- * For each plugin, copy relevant files to the gh-pages directory.
- * @param {Function} done Completed callback.
- * @returns {Function} Gulp task.
- */
-function prepareToDeployPlugins(done) {
-  const dir = 'plugins';
-  const folders = fs.readdirSync(dir).filter(function(file) {
-    return fs.statSync(path.join(dir, file)).isDirectory() &&
-        fs.existsSync(path.join(dir, file, 'package.json'));
-  });
-  return gulp.parallel(folders.map(function(folder) {
-    return function preDeployPlugin() {
-      return preparePlugin(folder);
-    };
-  }))(done);
-}
-
-
-/**
- * Copy over files listed in the blocklyDemoConfig.files section of the
- * package.json. Add variables needed for Jekyll processing.
- * The resulting code lives in gh-pages/examples/<exampleName>.
- * @param {string} baseDir The base directory to use, eg: ./examples.
- * @param {string} exampleDir The subdirectory (inside examples/) for this
- *     example.
- * @param {Function} done Completed callback.
- * @returns {Function} Gulp task.
- */
-function prepareExample(baseDir, exampleDir, done) {
-  const packageJson =
-      require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
-  const {blocklyDemoConfig} = packageJson;
-  if (!blocklyDemoConfig) {
-    done();
-    return;
-  }
-  console.log(`Preparing ${exampleDir} example for deployment.`);
-  blocklyDemoConfig.pageRoot = `${baseDir}/${exampleDir}`;
-  const pageRegex = /.*\.(html|htm|md)$/i;
-  const pages = blocklyDemoConfig.files.filter((f) => pageRegex.test(f));
-  const assets = blocklyDemoConfig.files.filter((f) => !pageRegex.test(f));
-
-  let stream = gulp.src(
-      pages.map((f) => path.join(baseDir, exampleDir, f)),
-      {base: baseDir, allowEmpty: true})
-      .pipe(gulp.header(buildFrontMatter(blocklyDemoConfig)));
-  if (assets.length) {
-    stream = stream.pipe(gulp.src(
-        assets.map((f) => path.join(baseDir, exampleDir, f)),
-        {base: baseDir, allowEmpty: true}));
-  }
-  return stream.pipe(gulp.dest('./gh-pages/examples/'));
-}
-
-/**
- * Prepare examples/demos for deployment to gh-pages.
- *
- * For each examples, read the demo config, and copy relevant files to the
- * gh-pages directory.
- * @param {Function} done Completed callback.
- * @returns {Function} Gulp task.
- */
-function prepareToDeployExamples(done) {
-  const dir = 'examples';
-  const folders = fs.readdirSync(dir).filter((file) => {
-    return fs.statSync(path.join(dir, file)).isDirectory() &&
-        fs.existsSync(path.join(dir, file, 'package.json'));
-  });
-  return gulp.parallel(folders.map(function(folder) {
-    return function preDeployExample(done) {
-      return prepareExample(dir, folder, done);
-    };
-  }))(done);
-}
-
-/**
  * Deploy all plugins to gh-pages.
  * @param {string=} repo The repo to deploy to.
  * @returns {Function} Gulp task.
@@ -341,6 +206,10 @@ function deployToGhPages(repo) {
         'gh-pages', {
           message: m,
           repo,
+          // Include .nojekyll file to tell GitHub to publish without building.
+          // By default, dotfiles are excluded.
+          // TODO: make the github action include .nojekyll.
+          src: ['**/*', '.nojekyll']
         },
         done);
   };
@@ -395,11 +264,11 @@ function testGhPagesLocally(isBeta) {
   return gulp.series(
       gulp.parallel(
           preparePluginsForLocal(isBeta), prepareExamplesForLocal(isBeta)),
-      gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+      predeployTasks.predeployAllLocal,
       function(done) {
-        console.log('Starting server using "bundle exec jekyll serve"');
+        console.log('Starting server using http-server');
         execSync(
-            `bundle exec jekyll serve`, {cwd: 'gh-pages', stdio: 'inherit'});
+            `npx http-server`, {cwd: 'gh-pages', stdio: 'inherit'});
         done();
       });
 }
@@ -426,7 +295,7 @@ module.exports = {
   checkLicenses: checkLicenses,
   deploy: deployToGhPagesOrigin,
   deployUpstream: deployToGhPagesUpstream,
-  predeploy: gulp.parallel(prepareToDeployPlugins, prepareToDeployExamples),
+  predeploy: predeployTasks.predeployAll,
   prepareForPublish: prepareForPublish,
   publishManual: publishManual,
   forcePublish: forcePublish,

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.10](https://github.com/google/blockly-samples/compare/@blockly/theme-dark@4.0.9...@blockly/theme-dark@4.0.10) (2023-05-18)
+
+**Note:** Version bump only for package @blockly/theme-dark
+
+
+
+
+
+## [4.0.9](https://github.com/google/blockly-samples/compare/@blockly/theme-dark@4.0.8...@blockly/theme-dark@4.0.9) (2023-05-11)
+
+**Note:** Version bump only for package @blockly/theme-dark
+
+
+
+
+
 ## [4.0.8](https://github.com/google/blockly-samples/compare/@blockly/theme-dark@4.0.7...@blockly/theme-dark@4.0.8) (2023-04-27)
 
 **Note:** Version bump only for package @blockly/theme-dark

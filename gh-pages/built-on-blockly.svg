@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="125" height="20" role="img" aria-label="Built on: Blockly">
+  <title>Built on: Blockly</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1" />
+    <stop offset="1" stop-opacity=".1" />
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="125" height="20" rx="3" fill="#fff" />
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="76" height="20" fill="#5f6368" />
+    <rect x="76" width="49" height="20" fill="#4285f4" />
+    <rect width="125" height="20" fill="url(#s)" />
+  </g>
+  <g text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <g transform="translate(10 2.5) scale(0.073)">
+      <path fill="#4285f4" d="M20.1 32C13.4 32 8 37.4 8 44.1V149c0 6.7 5.4 12.1 12.1 12.1H25a20 20 0 0 0 38.5 0H84a8 8 0 0 0 8-8V40l-8-8z"/>
+      <path fill="#c8d1db" d="M80 32V85l-16.6-9.4a3.6 3.6 0 0 0-5.4 3.1v40.7c0 2.7 3 4.4 5.4 3l16.6-9.3V161h45.4c6.4 0 11.6-5.2 11.6-11.5v-106c0-6.4-5.2-11.5-11.5-11.5z"/>
+    </g>
+    <text aria-hidden="true" x="505" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="430">Built on</text>
+    <text x="505" y="140" transform="scale(.1)" fill="#fff" textLength="430">Built on</text>
+    <text aria-hidden="true" x="995" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="390">Blockly</text>
+    <text x="995" y="140" transform="scale(.1)" fill="#fff" textLength="390">Blockly</text>
+  </g>
+</svg>

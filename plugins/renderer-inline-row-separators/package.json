@@ -1,6 +1,6 @@
 {
   "name": "@blockly/renderer-inline-row-separators",
-  "version": "0.2.11",
+  "version": "0.2.13",
   "description": "A plugin to treat dummy inputs like line breaks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -39,8 +39,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.33",
-    "@blockly/dev-tools": "^5.2.6",
+    "@blockly/dev-scripts": "^1.2.35",
+    "@blockly/dev-tools": "^5.3.1",
     "blockly": "^9.0.0",
     "chai": "^4.2.0",
     "jsdom": "^19.0.0",

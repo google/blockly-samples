@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.1](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.3.0...@blockly/dev-tools@5.3.1) (2023-05-18)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [5.3.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.2.6...@blockly/dev-tools@5.3.0) (2023-05-11)
+
+
+### Features
+
+* Add angle, colour, and multiline fields. (Rebase of [#1674](https://github.com/google/blockly-samples/issues/1674)) ([#1693](https://github.com/google/blockly-samples/issues/1693)) ([1b447f4](https://github.com/google/blockly-samples/commit/1b447f41d6293f14e846b8a4d82d289a5637a99a))
+
+
+
 ## [5.2.6](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.2.5...@blockly/dev-tools@5.2.6) (2023-05-04)
 
 **Note:** Version bump only for package @blockly/dev-tools
