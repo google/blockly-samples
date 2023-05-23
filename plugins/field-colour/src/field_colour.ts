@@ -15,47 +15,6 @@ import * as Blockly from 'blockly/core';
  * Class for a colour input field.
  */
 export class FieldColour extends Blockly.Field<string> {
-  /**
-   * An array of colour strings for the palette.
-   * Copied from goog.ui.ColorPicker.SIMPLE_GRID_COLORS
-   * All colour pickers use this unless overridden with setColours.
-   */
-  static COLOURS: string[] = [
-    // grays
-    '#ffffff', '#cccccc', '#c0c0c0', '#999999', '#666666', '#333333', '#000000',
-    // reds
-    '#ffcccc', '#ff6666', '#ff0000', '#cc0000', '#990000', '#660000', '#330000',
-    // oranges
-    '#ffcc99', '#ff9966', '#ff9900', '#ff6600', '#cc6600', '#993300', '#663300',
-    // yellows
-    '#ffff99', '#ffff66', '#ffcc66', '#ffcc33', '#cc9933', '#996633', '#663333',
-    // olives
-    '#ffffcc', '#ffff33', '#ffff00', '#ffcc00', '#999900', '#666600', '#333300',
-    // greens
-    '#99ff99', '#66ff99', '#33ff33', '#33cc00', '#009900', '#006600', '#003300',
-    // turquoises
-    '#99ffff', '#33ffff', '#66cccc', '#00cccc', '#339999', '#336666', '#003333',
-    // blues
-    '#ccffff', '#66ffff', '#33ccff', '#3366ff', '#3333ff', '#000099', '#000066',
-    // purples
-    '#ccccff', '#9999ff', '#6666cc', '#6633ff', '#6600cc', '#333399', '#330099',
-    // violets
-    '#ffccff', '#ff99ff', '#cc66cc', '#cc33cc', '#993399', '#663366', '#330033',
-  ];
-
-  /**
-   * An array of tooltip strings for the palette.  If not the same length as
-   * COLOURS, the colour's hex code will be used for any missing titles.
-   * All colour pickers use this unless overridden with setColours.
-   */
-  static TITLES: string[] = [];
-
-  /**
-   * Number of columns in the palette.
-   * All colour pickers use this unless overridden with setColumns.
-   */
-  static COLUMNS = 7;
-
   /** The field's colour picker element. */
   private picker: HTMLElement|null = null;
 
@@ -86,20 +45,43 @@ export class FieldColour extends Blockly.Field<string> {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override isDirty_ = false;
 
-  /** Array of colours used by this field.  If null, use the global list. */
-  private colours: string[]|null = null;
+  /**
+   * An array of colour strings for the palette.
+   * Copied from goog.ui.ColorPicker.SIMPLE_GRID_COLORS
+   */
+  private colours: string[] = [
+    // grays
+    '#ffffff', '#cccccc', '#c0c0c0', '#999999', '#666666', '#333333', '#000000',
+    // reds
+    '#ffcccc', '#ff6666', '#ff0000', '#cc0000', '#990000', '#660000', '#330000',
+    // oranges
+    '#ffcc99', '#ff9966', '#ff9900', '#ff6600', '#cc6600', '#993300', '#663300',
+    // yellows
+    '#ffff99', '#ffff66', '#ffcc66', '#ffcc33', '#cc9933', '#996633', '#663333',
+    // olives
+    '#ffffcc', '#ffff33', '#ffff00', '#ffcc00', '#999900', '#666600', '#333300',
+    // greens
+    '#99ff99', '#66ff99', '#33ff33', '#33cc00', '#009900', '#006600', '#003300',
+    // turquoises
+    '#99ffff', '#33ffff', '#66cccc', '#00cccc', '#339999', '#336666', '#003333',
+    // blues
+    '#ccffff', '#66ffff', '#33ccff', '#3366ff', '#3333ff', '#000099', '#000066',
+    // purples
+    '#ccccff', '#9999ff', '#6666cc', '#6633ff', '#6600cc', '#333399', '#330099',
+    // violets
+    '#ffccff', '#ff99ff', '#cc66cc', '#cc33cc', '#993399', '#663366', '#330033',
+  ];
 
   /**
-   * Array of colour tooltips used by this field.  If null, use the global
-   * list.
+   * An array of tooltip strings for the palette.  If not the same length as
+   * COLOURS, the colour's hex code will be used for any missing titles.
    */
-  private titles: string[]|null = null;
+  private titles: string[] = [];
 
   /**
-   * Number of colour columns used by this field.  If 0, use the global
-   * setting.  By default use the global constants for columns.
+   * Number of columns in the palette.
    */
-  private columns = 0;
+  private columns = 7;
 
   /**
    * @param value The initial value of the field.  Should be in '#rrggbb'
@@ -339,8 +321,8 @@ export class FieldColour extends Blockly.Field<string> {
       return;
     }
 
-    const colours = this.colours || FieldColour.COLOURS;
-    const columns = this.columns || FieldColour.COLUMNS;
+    const colours = this.colours;
+    const columns = this.columns;
 
     // Get the current x and y coordinates.
     let x = this.highlightedIndex % columns;
@@ -427,9 +409,8 @@ export class FieldColour extends Blockly.Field<string> {
       return null;
     }
 
-    const columns = this.columns || FieldColour.COLUMNS;
-    const x = this.highlightedIndex % columns;
-    const y = Math.floor(this.highlightedIndex / columns);
+    const x = this.highlightedIndex % this.columns;
+    const y = Math.floor(this.highlightedIndex / this.columns);
     const row = this.picker?.childNodes[y];
     if (!row) {
       return null;
@@ -464,9 +445,8 @@ export class FieldColour extends Blockly.Field<string> {
 
   /** Create a colour picker dropdown editor. */
   private dropdownCreate() {
-    const columns = this.columns || FieldColour.COLUMNS;
-    const colours = this.colours || FieldColour.COLOURS;
-    const titles = this.titles || FieldColour.TITLES;
+    const columns = this.columns;
+    const colours = this.colours;
     const selectedColour = this.getValue();
     // Create the palette.
     const table = document.createElement('table');
@@ -490,7 +470,7 @@ export class FieldColour extends Blockly.Field<string> {
       (row as Element).appendChild(cell);
       // This becomes the value, if clicked.
       cell.setAttribute('data-colour', colours[i]);
-      cell.title = titles[i] || colours[i];
+      cell.title = this.titles[i] || colours[i];
       cell.id = Blockly.utils.idGenerator.getNextUniqueId();
       cell.setAttribute('data-index', `${i}`);
       Blockly.utils.aria.setRole(cell, Blockly.utils.aria.Role.GRIDCELL);
@@ -546,7 +526,7 @@ export class FieldColour extends Blockly.Field<string> {
 }
 
 /** The default value for this field. */
-FieldColour.prototype.DEFAULT_VALUE = FieldColour.COLOURS[0];
+FieldColour.prototype.DEFAULT_VALUE = '#ffffff';
 
 // Unregister legacy field_colour that was in core.  Delete this once
 // core Blockly no longer defines field_colour.

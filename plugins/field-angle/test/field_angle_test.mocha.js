@@ -23,26 +23,26 @@ suite('FieldAngle', function() {
     {title: 'Null', value: null},
     {title: 'NaN', value: NaN},
     {title: 'Non-Parsable String', value: 'bad'},
-    {title: 'Infinity', value: Infinity, expectedValue: Infinity},
-    {title: 'Negative Infinity', value: -Infinity, expectedValue: -Infinity},
-    {title: 'Infinity String', value: 'Infinity', expectedValue: Infinity},
-    {title: 'Negative Infinity String', value: '-Infinity',
-      expectedValue: -Infinity},
+    {title: 'Infinity', value: Infinity},
+    {title: 'Negative Infinity', value: -Infinity},
+    {title: 'Infinity String', value: 'Infinity'},
+    {title: 'Negative Infinity String', value: '-Infinity'},
   ];
   /**
    * Configuration for field tests with valid values.
    * @type {Array<FieldCreationTestCase>}
    */
   const validValueTestCases = [
-    {title: 'Integer', value: 1, expectedValue: 1},
-    {title: 'Float', value: 1.5, expectedValue: 1.5},
-    {title: 'Integer String', value: '1', expectedValue: 1},
-    {title: 'Float String', value: '1.5', expectedValue: 1.5},
-    {title: '> 360°', value: 362, expectedValue: 2},
+    {title: 'Integer', value: 16, expectedValue: 15},
+    {title: 'Float', value: 14.5, expectedValue: 15},
+    {title: 'Integer String', value: '30', expectedValue: 30},
+    {title: 'Float String', value: '0.75', expectedValue: 0},
+    {title: '> 360°', value: 360 + 16, expectedValue: 15},
+    {title: '< 0°', value: -16, expectedValue: 360 - 15},
   ];
   const addArgsAndJson = function(testCase) {
     testCase.args = [testCase.value];
-    testCase.json = {'angle': testCase.value};
+    testCase.json = {'value': testCase.value};
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);
@@ -87,11 +87,9 @@ suite('FieldAngle', function() {
         'workspace': {
           'rendered': false,
         },
-        'isShadow': function() {
-          return false;
-        },
         'renameVarById': Blockly.Block.prototype.renameVarById,
         'updateVarName': Blockly.Block.prototype.updateVarName,
+        'isShadow': () => false,
         'isDeadOrDying': () => false,
       };
     }
@@ -104,41 +102,27 @@ suite('FieldAngle', function() {
           validValueTestCases, invalidValueTestCases, defaultFieldValue);
       test('With source block', function() {
         this.field.setSourceBlock(createBlockMock());
-        this.field.setValue(2.5);
-        assertFieldValue(this.field, 2.5);
+        this.field.setValue(12.5);
+        assertFieldValue(this.field, 15);
       });
     });
     suite('Value -> New Value', function() {
-      const initialValue = 1;
       setup(function() {
-        this.field = new FieldAngle(initialValue);
+        this.field = new FieldAngle(12.5);
       });
       runSetValueTests(
-          validValueTestCases, invalidValueTestCases, initialValue);
+          validValueTestCases, invalidValueTestCases, 15);
       test('With source block', function() {
         this.field.setSourceBlock(createBlockMock());
-        this.field.setValue(2.5);
-        assertFieldValue(this.field, 2.5);
-      });
-    });
-    suite('Value -> New Value', function() {
-      const initialValue = 1;
-      setup(function() {
-        this.field = new FieldAngle(initialValue);
-      });
-      runSetValueTests(
-          validValueTestCases, invalidValueTestCases, initialValue);
-      test('With source block', function() {
-        this.field.setSourceBlock(createBlockMock());
-        this.field.setValue(2.5);
-        assertFieldValue(this.field, 2.5);
+        this.field.setValue(-15);
+        assertFieldValue(this.field, 360 - 15);
       });
     });
   });
 
   suite('Validators', function() {
     setup(function() {
-      this.field = new FieldAngle(1);
+      this.field = new FieldAngle(15);
     });
     const testSuites = [
       {title: 'Null Validator',
@@ -146,15 +130,15 @@ suite('FieldAngle', function() {
             function() {
               return null;
             },
-        value: 2, expectedValue: 1},
-      {title: 'Force multiple of 30 Validator',
+        value: 30, expectedValue: 15},
+      {title: 'Force multiple of 90 Validator',
         validator:
             function(newValue) {
-              return Math.round(newValue / 30) * 30;
+              return Math.round(newValue / 90) * 90;
             },
-        value: 25, expectedValue: 30},
+        value: 60, expectedValue: 90},
       {title: 'Returns Undefined Validator', validator: function() {},
-        value: 2, expectedValue: 2},
+        value: 30, expectedValue: 30},
     ];
     testSuites.forEach(function(suiteInfo) {
       suite(suiteInfo.title, function() {
@@ -185,14 +169,6 @@ suite('FieldAngle', function() {
         });
         assert.isTrue(field.clockwise);
       });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.CLOCKWISE = true;
-        const field = new FieldAngle();
-        assert.isTrue(field.clockwise);
-      });
     });
 
     suite('Offset', function() {
@@ -209,94 +185,41 @@ suite('FieldAngle', function() {
         });
         assert.equal(field.offset, 90);
       });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.OFFSET = 90;
-        const field = new FieldAngle();
-        assert.equal(field.offset, 90);
-      });
-      test('Null', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.OFFSET = 90;
-        const field = FieldAngle.fromJson({
-          value: 0,
-          offset: null,
-        });
-        assert.equal(field.offset, 90);
-      });
     });
 
-    suite('Wrap', function() {
+    suite('Min/Max', function() {
       test('JS Configuration', function() {
         const field = new FieldAngle(0, null, {
-          wrap: 180,
+          min: -180,
+          max: 180,
         });
-        assert.equal(field.wrap, 180);
+        assert.equal(field.getMin(), -180);
+        assert.equal(field.getMax(), 180);
       });
       test('JSON Definition', function() {
         const field = FieldAngle.fromJson({
           value: 0,
-          wrap: 180,
+          min: -180,
+          max: 180,
         });
-        assert.equal(field.wrap, 180);
-      });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.WRAP = 180;
-        const field = new FieldAngle();
-        assert.equal(field.wrap, 180);
-      });
-      test('Null', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.WRAP = 180;
-        const field = FieldAngle.fromJson({
-          value: 0,
-          wrap: null,
-        });
-        assert.equal(field.wrap, 180);
+        assert.equal(field.getMin(), -180);
+        assert.equal(field.getMax(), 180);
       });
     });
 
-    suite('Round', function() {
+    suite('Precision', function() {
       test('JS Configuration', function() {
         const field = new FieldAngle(0, null, {
-          round: 30,
+          precision: 30,
         });
-        assert.equal(field.round, 30);
+        assert.equal(field.getPrecision(), 30);
       });
       test('JSON Definition', function() {
         const field = FieldAngle.fromJson({
           value: 0,
-          round: 30,
+          precision: 30,
         });
-        assert.equal(field.round, 30);
-      });
-      test('Constant', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.ROUND = 30;
-        const field = new FieldAngle();
-        assert.equal(field.round, 30);
-      });
-      test('Null', function() {
-        // Note: Generally constants should be set at compile time, not
-        // runtime (since they are constants) but for testing purposes we
-        // can do this.
-        FieldAngle.ROUND = 30;
-        const field = FieldAngle.fromJson({
-          value: 0,
-          round: null,
-        });
-        assert.equal(field.round, 30);
+        assert.equal(field.getPrecision(), 30);
       });
     });
 
@@ -368,14 +291,6 @@ suite('FieldAngle', function() {
 
     test('Simple', function() {
       this.assertValue(90);
-    });
-
-    test('Max precision', function() {
-      this.assertValue(1.000000000000001);
-    });
-
-    test('Smallest number', function() {
-      this.assertValue(5e-324);
     });
   });
 });
