@@ -257,15 +257,17 @@ export class FieldAngle extends Blockly.FieldNumber {
         }, svg);
 
     // Draw markers around the edge.
-    const displayRange = this.displayMax - this.displayMin;
-    let minorTickAngle = 360 / displayRange * this.minorTick;
-    let majorTickAngle = 360 / displayRange * this.majorTick;
     const minValueDegrees = Blockly.utils.math.toDegrees(
         this.fieldAngleToRadians(this.min_));
     const maxValueDegrees = Blockly.utils.math.toDegrees(
         this.fieldAngleToRadians(this.max_));
-
     const thisField = this;
+
+    /**
+     * Draw a set of ticks on the gauge.
+     * @param tickAngle Angle between each tick.
+     * @param length Length of the tick (minor=5, major=10).
+     */
     function drawTicks(tickAngle: number, length: number) {
       let min = Math.ceil(minValueDegrees / tickAngle) * tickAngle;
       let max = Math.floor(maxValueDegrees / tickAngle) * tickAngle;
@@ -300,9 +302,12 @@ export class FieldAngle extends Blockly.FieldNumber {
       }
     }
 
+    const displayRange = this.displayMax - this.displayMin;
+    const minorTickAngle = 360 / displayRange * this.minorTick;
     if (minorTickAngle) {
       drawTicks(minorTickAngle, 5);
     }
+    const majorTickAngle = 360 / displayRange * this.majorTick;
     if (majorTickAngle) {
       drawTicks(majorTickAngle, 10);
     }
