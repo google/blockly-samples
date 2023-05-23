@@ -30,8 +30,37 @@ const toolbox = generateFieldTestBlocks('field_angle', [
   {
     label: 'Round',
     args: {
-      'precision': 1,
+      'precision': 0.1,
       'value': 123,
+    },
+  },
+  {
+    label: 'Radians',
+    args: {
+      'precision': 0.1,
+      'clockwise': true,
+      'value': 0,
+      'min': 0,
+      'max': Math.PI,
+      'displayMin': -Math.PI,
+      'displayMax': Math.PI,
+      'minorTick': Math.PI / 8,
+      'majorTick': Math.PI,
+      'symbol': ' rad',
+    },
+  },
+  {
+    label: 'Quadrant',
+    args: {
+      'precision': 1,
+      'value': 0,
+      'min': 0,
+      'max': 2,
+      'displayMin': 0,
+      'displayMax': 8,
+      'minorTick': 0,
+      'majorTick': 1,
+      'symbol': '',
     },
   },
 ]);

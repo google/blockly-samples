@@ -25,8 +25,8 @@ suite('FieldColour', function() {
     {title: 'Non-Parsable String', value: 'bad-string'},
     {title: 'Integer', value: 1},
     {title: 'Float', value: 1.5},
-    {title: 'Infinity', value: Infinity, expectedValue: Infinity},
-    {title: 'Negative Infinity', value: -Infinity, expectedValue: -Infinity},
+    {title: 'Infinity', value: Infinity},
+    {title: 'Negative Infinity', value: -Infinity},
   ];
   /**
    * Configuration for field tests with valid values.
@@ -117,11 +117,9 @@ suite('FieldColour', function() {
         'workspace': {
           'rendered': false,
         },
-        'isShadow': function() {
-          return false;
-        },
         'renameVarById': Blockly.Block.prototype.renameVarById,
         'updateVarName': Blockly.Block.prototype.updateVarName,
+        'isShadow': () => false,
         'isDeadOrDying': () => false,
       };
     }

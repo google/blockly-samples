@@ -25,6 +25,8 @@ export class FieldAngle extends Blockly.FieldNumber {
   static readonly RADIUS: number = FieldAngle.HALF - 1;
 
   static readonly DEFAULT_PRECISION = 15;
+  static readonly DEFAULT_MIN = 0;
+  static readonly DEFAULT_MAX = 360;
 
   /**
    * Whether the angle should increase as the angle picker is moved clockwise
@@ -33,17 +35,40 @@ export class FieldAngle extends Blockly.FieldNumber {
   private clockwise = false;
 
   /**
-   * The offset of zero degrees (and all other angles).  Always offsets in the
+   * The angle (in degrees) at which displayMin is pointed.  Always in the
    * counterclockwise direction, regardless of the field's clockwise property.
    * Usually either 0 (0 = right) or 90 (0 = up).
    */
   private offset = 0;
 
   /**
-   * The maximum angle to allow before wrapping.
-   * Usually either 360 (for 0 to 359.9) or 180 (for -179.9 to 180).
+   * Smallest value displayed on the gauge.  Usually 0 or -180.
    */
-  private wrap = 360;
+  private displayMin = 0;
+
+  /**
+   * Largest value displayed on the gauge.  Usually 360 or 180.
+   */
+  private displayMax = 360;
+
+  /**
+   * Distance between minor tick marks on dial.  Zero to disable.
+   * If displayMin/Max span 360, then majorTick would usually be 15.
+   * May not be negative.
+   */
+  private minorTick = 15;
+
+  /**
+   * Distance between major tick marks on dial.  Zero to disable.
+   * If displayMin/Max span 360, then majorTick would usually be 45.
+   * May not be negative.
+   */
+  private majorTick = 45;
+
+  /**
+   * Unit symbol to append to the number when not being edited.
+   */
+  private symbol = '°';
 
   /**
    * Array holding info needed to unbind events.
@@ -60,7 +85,7 @@ export class FieldAngle extends Blockly.FieldNumber {
 
   /** The degree symbol for this field. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected symbol_: SVGTSpanElement|null = null;
+  protected symbolElement: SVGTSpanElement|null = null;
 
   /**
    * @param value The initial value of the field.  Should cast to a number.
@@ -82,10 +107,18 @@ export class FieldAngle extends Blockly.FieldNumber {
     if (value === Blockly.Field.SKIP_SETUP) return;
     if (config) {
       this.configure_(config);
+      if (config.min === undefined || config.min === null) {
+        this.setMin(FieldAngle.DEFAULT_MIN);
+      }
+      if (config.max === undefined || config.max === null) {
+        this.setMax(FieldAngle.DEFAULT_MAX);
+      }
       if (config.precision === undefined || config.precision === null) {
         this.setPrecision(FieldAngle.DEFAULT_PRECISION);
       }
     } else {
+      this.setMin(FieldAngle.DEFAULT_MIN);
+      this.setMax(FieldAngle.DEFAULT_MAX);
       this.setPrecision(FieldAngle.DEFAULT_PRECISION);
     }
     this.setValue(value);
@@ -116,9 +149,21 @@ export class FieldAngle extends Blockly.FieldNumber {
     }
 
     // Allow individual settings to override the mode setting.
-    if (config.clockwise) this.clockwise = config.clockwise;
-    if (config.offset) this.offset = config.offset;
-    if (config.wrap) this.wrap = config.wrap;
+    if (config.clockwise !== undefined) this.clockwise = config.clockwise;
+    if (config.offset !== undefined) this.offset = config.offset;
+    if (config.displayMin !== undefined) this.displayMin = config.displayMin;
+    if (config.displayMax !== undefined) this.displayMax = config.displayMax;
+    if (config.minorTick !== undefined) this.minorTick = config.minorTick;
+    if (config.majorTick !== undefined) this.majorTick = config.majorTick;
+    if (config.symbol !== undefined) this.symbol = config.symbol;
+
+    // Sanity check the inputs.
+    if (this.displayMin >= this.displayMax) {
+      throw Error('Display min must be larger than display max');
+    }
+    if (this.minorTick < 0 || this.majorTick < 0) {
+      throw Error('Ticks cannot be negative');
+    }
   }
 
   /**
@@ -128,12 +173,14 @@ export class FieldAngle extends Blockly.FieldNumber {
    */
   override initView() {
     super.initView();
-    // Add the degree symbol to the left of the number,
-    // even in RTL (https://github.com/google/blockly/issues/2380).
-    this.symbol_ =
-        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.TSPAN, {});
-    this.symbol_.appendChild(document.createTextNode('°'));
-    this.getTextElement().appendChild(this.symbol_);
+    if (this.symbol) {
+      // Add the degree symbol to the left of the number,
+      // even in RTL (https://github.com/google/blockly/issues/2380).
+      this.symbolElement =
+          Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.TSPAN, {});
+      this.symbolElement.appendChild(document.createTextNode(this.symbol));
+      this.getTextElement().appendChild(this.symbolElement);
+    }
   }
 
   /**
@@ -209,18 +256,43 @@ export class FieldAngle extends Blockly.FieldNumber {
           'class': 'blocklyAngleLine',
         }, svg);
     // Draw markers around the edge.
-    for (let angle = 0; angle < 360; angle += 15) {
+    const displayRange = this.displayMax - this.displayMin;
+    const minDisplayAngle = -this.offset;
+    const maxDisplayAngle = minDisplayAngle + (this.clockwise ? 1 : -1) * 360;
+    let minorTickAngle = 360 / displayRange * this.minorTick;
+    let majorTickAngle = 360 / displayRange * this.majorTick;
+    const countClockwise = minDisplayAngle < maxDisplayAngle;
+    if (!countClockwise) {
+      minorTickAngle *= -1;
+      majorTickAngle *= -1;
+    }
+    const thisField = this;
+    function createTick(angle: number, length: number) {
       Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.LINE, {
             'x1': FieldAngle.HALF + FieldAngle.RADIUS,
             'y1': FieldAngle.HALF,
-            'x2': FieldAngle.HALF + FieldAngle.RADIUS -
-                (angle % 45 === 0 ? 10 : 5),
+            'x2': FieldAngle.HALF + FieldAngle.RADIUS - length,
             'y2': FieldAngle.HALF,
             'class': 'blocklyAngleMarks',
             'transform': 'rotate(' + angle + ',' + FieldAngle.HALF + ',' +
                 FieldAngle.HALF + ')',
           }, svg);
+    }
+
+    if (minorTickAngle) {
+      for (let angle = minDisplayAngle;
+          countClockwise ? angle <= maxDisplayAngle : angle >= maxDisplayAngle;
+          angle += minorTickAngle) {
+        createTick(angle, 5);
+      }
+    }
+    if (majorTickAngle) {
+      for (let angle = minDisplayAngle;
+          countClockwise ? angle <= maxDisplayAngle : angle >= maxDisplayAngle;
+          angle += majorTickAngle) {
+        createTick(angle, 10);
+      }
     }
 
     // The angle picker is different from other fields in that it updates on
@@ -273,27 +345,38 @@ export class FieldAngle extends Blockly.FieldNumber {
     }
     const dx = e.clientX - bBox.left - FieldAngle.HALF;
     const dy = e.clientY - bBox.top - FieldAngle.HALF;
-    let angle = Math.atan(-dy / dx);
+    let angle = Math.atan2(-dy, dx);
     if (isNaN(angle)) {
       // This shouldn't happen, but let's not let this error propagate further.
       return;
     }
-    angle = Blockly.utils.math.toDegrees(angle);
-    // 0: East, 90: North, 180: West, 270: South.
-    if (dx < 0) {
-      angle += 180;
-    } else if (dy > 0) {
-      angle += 360;
-    }
-
-    // Do offsetting.
-    if (this.clockwise) {
-      angle = this.offset + 360 - angle;
-    } else {
-      angle = 360 - (this.offset - angle);
-    }
-
+    angle = this.radiansToFieldAngle(angle);
     this.displayMouseOrKeyboardValue(angle);
+  }
+
+  /**
+   * Convert an on-screen angle into a value for this field.
+   * @param angle
+   * @returns
+   */
+  private radiansToFieldAngle(angle: number): number {
+    // Convert angle from radians (-π to π) to turns (-0.5 to 0.5).
+    angle /= 2 * Math.PI;
+    // Compensate for offset.
+    angle -= this.offset / 360;
+    // Flip if clockwise.
+    if (this.clockwise) {
+      angle *= -1;
+    }
+    // Normalize to positive.
+    angle %= 1;
+    if (angle < 0) {
+      angle += 1;
+    }
+    // Convert angle from turns (0.0 to 1.0) to the display min/max range.
+    angle *= this.displayMax - this.displayMin;
+    angle += this.displayMin;
+    return angle;
   }
 
   /**
@@ -304,12 +387,9 @@ export class FieldAngle extends Blockly.FieldNumber {
    * @param angle New angle.
    */
   private displayMouseOrKeyboardValue(angle: number) {
-    if (this.precision_) {
-      angle = Math.round(angle / this.precision_) * this.precision_;
-    }
-    angle = this.wrapValue(angle);
-    if (angle !== this.value_) {
-      this.setEditorValue_(angle);
+    const validAngle = this.doClassValidation_(angle);
+    if (validAngle !== null && validAngle !== this.value_) {
+      this.setEditorValue_(validAngle);
     }
   }
 
@@ -318,26 +398,31 @@ export class FieldAngle extends Blockly.FieldNumber {
     if (!this.gauge || !this.line) {
       return;
     }
-    // Always display the input (i.e. getText) even if it is invalid.
-    let angleDegrees = Number(this.getText()) + this.offset;
-    angleDegrees %= 360;
-    let angleRadians = Blockly.utils.math.toRadians(angleDegrees);
+    let angle = Number(this.getText());
+    // Convert angle from the display min/max range to turns (0.0 to 1.0).
+    angle -= this.displayMin;
+    angle /= this.displayMax - this.displayMin
+    // Compensate for offset.
+    angle += this.offset / 360;
+    // Convert angle from turns to radians.
+    angle *= 2 * Math.PI;
+
     let path = `M ${FieldAngle.HALF},${FieldAngle.HALF}`;
     let x2 = FieldAngle.HALF;
     let y2 = FieldAngle.HALF;
-    if (!isNaN(angleRadians)) {
+    if (!isNaN(angle)) {
       const clockwiseFlag = Number(this.clockwise);
       const angle1 = Blockly.utils.math.toRadians(this.offset);
       const x1 = Math.cos(angle1) * FieldAngle.RADIUS;
       const y1 = Math.sin(angle1) * -FieldAngle.RADIUS;
       if (clockwiseFlag) {
-        angleRadians = 2 * angle1 - angleRadians;
+        angle = 2 * angle1 - angle;
       }
-      x2 += Math.cos(angleRadians) * FieldAngle.RADIUS;
-      y2 -= Math.sin(angleRadians) * FieldAngle.RADIUS;
+      x2 += Math.cos(angle) * FieldAngle.RADIUS;
+      y2 -= Math.sin(angle) * FieldAngle.RADIUS;
       // Don't ask how the flag calculations work.  They just do.
       let largeFlag =
-          Math.abs(Math.floor((angleRadians - angle1) / Math.PI) % 2);
+          Math.abs(Math.floor((angle - angle1) / Math.PI) % 2);
       if (clockwiseFlag) {
         largeFlag = 1 - largeFlag;
       }
@@ -398,26 +483,58 @@ export class FieldAngle extends Blockly.FieldNumber {
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override doClassValidation_(newValue?: unknown): number|null {
-    const value = Number(newValue);
+    // The obvious approach would be to call super.doClassValidation_ to handle
+    // min/max limitations.  However angle pickers out of range need to clamp
+    // to the closest min/max point, which may involve a wrap to the opposite
+    // end of the numeric scale.
+    // E.g. min/max is 0/180 on a 0/360 display, and value is 365.
+    // FieldNumber would clamp 365 to max (180), but 0 is closer on the dial.
+    if (newValue === null) {
+      return null;
+    }
+    let value = Number(newValue);
     if (isNaN(value) || !isFinite(value)) {
       return null;
     }
-    return this.wrapValue(value);
+    // Get the value in range.
+    value = this.wrapValue(value);
+    // Round to nearest multiple of precision.
+    if (this.precision_) {
+      value = Math.round(value / this.precision_) * this.precision_;
+    }
+    // Deal with 6.6000000000000005 IEEE float errors.
+    // Clean up floating point errors.
+    value = Number(value.toFixed(10));
+    // Clamp the value between min and max, noting wrapping.
+    const displayRange = this.displayMax - this.displayMin;
+    const valueRange = this.max_ - this.min_;
+    if (value < this.min_) {
+      const undershoot = this.min_ - value;
+      const overshoot = displayRange - undershoot - valueRange;
+      value = (undershoot < overshoot) ? this.min_ : this.max_;
+    }
+    if (value > this.max_) {
+      const overshoot = value - this.max_;
+      const undershoot = displayRange - overshoot - valueRange;
+      value = (undershoot < overshoot) ? this.min_ : this.max_;
+    }
+    return value;
   }
 
   /**
-   * Wraps the value so that it is in the range (-360 + wrap, wrap).
+   * Wraps the value so that it is in the min/max display range (e.g. 0 to 360).
    *
    * @param value The value to wrap.
    * @returns The wrapped value.
    */
   private wrapValue(value: number): number {
-    value %= 360;
-    if (value < 0) {
-      value += 360;
+    const displayRange = this.displayMax - this.displayMin;
+    value %= displayRange;
+    while (value < this.displayMin) {
+      value += displayRange;
     }
-    if (value > this.wrap) {
-      value -= 360;
+    while (value >= this.displayMax) {
+      value -= displayRange;
     }
     return value;
   }
@@ -425,7 +542,7 @@ export class FieldAngle extends Blockly.FieldNumber {
   /**
    * Construct a FieldAngle from a JSON arg object.
    * @param options A JSON object with options
-   *     (value, mode, clockwise, offset, wrap, precision).
+   *     (value, mode, clockwise, offset, min, max, precision).
    * @returns The new field instance.
    * @nocollapse
    * @internal
@@ -482,14 +599,26 @@ Blockly.Css.register(`
  * Compass specifies:
  *   - clockwise: true
  *   - offset: 90
- *   - wrap: 0
+ *   - min: 0
+ *   - max: 360
  *   - precision: 15
+ *   - displayMin: 0
+ *   - displayMax: 360
+ *   - minorTick: 15
+ *   - majorTick: 45
+ *   - symbol: '°'
  *
  * Protractor specifies:
  *   - clockwise: false
  *   - offset: 0
- *   - wrap: 0
+ *   - min: 0
+ *   - max: 360
  *   - precision: 15
+ *   - displayMin: 0
+ *   - displayMax: 360
+ *   - minorTick: 15
+ *   - majorTick: 45
+ *   - symbol: '°'
  */
 export enum Mode {
   COMPASS = 'compass',
@@ -503,7 +632,11 @@ export interface FieldAngleConfig extends Blockly.FieldNumberConfig {
   mode?: Mode;
   clockwise?: boolean;
   offset?: number;
-  wrap?: number;
+  displayMin?: number;
+  displayMax?: number;
+  minorTick?: number;
+  majorTick?: number;
+  symbol: string;
 }
 
 /**
