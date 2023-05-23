@@ -676,7 +676,7 @@ export interface FieldAngleConfig extends Blockly.FieldNumberConfig {
   displayMax?: number;
   minorTick?: number;
   majorTick?: number;
-  symbol: string;
+  symbol?: string;
 }
 
 /**
