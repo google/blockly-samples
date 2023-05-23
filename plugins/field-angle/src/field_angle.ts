@@ -255,44 +255,56 @@ export class FieldAngle extends Blockly.FieldNumber {
           'y1': FieldAngle.HALF,
           'class': 'blocklyAngleLine',
         }, svg);
+
     // Draw markers around the edge.
     const displayRange = this.displayMax - this.displayMin;
-    const minDisplayAngle = -this.offset;
-    const maxDisplayAngle = minDisplayAngle + (this.clockwise ? 1 : -1) * 360;
     let minorTickAngle = 360 / displayRange * this.minorTick;
     let majorTickAngle = 360 / displayRange * this.majorTick;
-    const countClockwise = minDisplayAngle < maxDisplayAngle;
-    if (!countClockwise) {
-      minorTickAngle *= -1;
-      majorTickAngle *= -1;
-    }
+    const minValueDegrees = Blockly.utils.math.toDegrees(
+        this.fieldAngleToRadians(this.min_));
+    const maxValueDegrees = Blockly.utils.math.toDegrees(
+        this.fieldAngleToRadians(this.max_));
+
     const thisField = this;
-    function createTick(angle: number, length: number) {
-      Blockly.utils.dom.createSvgElement(
-          Blockly.utils.Svg.LINE, {
-            'x1': FieldAngle.HALF + FieldAngle.RADIUS,
-            'y1': FieldAngle.HALF,
-            'x2': FieldAngle.HALF + FieldAngle.RADIUS - length,
-            'y2': FieldAngle.HALF,
-            'class': 'blocklyAngleMarks',
-            'transform': 'rotate(' + angle + ',' + FieldAngle.HALF + ',' +
-                FieldAngle.HALF + ')',
-          }, svg);
+    function drawTicks(tickAngle: number, length: number) {
+      let min = Math.ceil(minValueDegrees / tickAngle) * tickAngle;
+      let max = Math.floor(maxValueDegrees / tickAngle) * tickAngle;
+
+      if (thisField.clockwise) {
+        if (min < max) {
+          min += 360;
+        }
+      } else {
+        if (min > max) {
+          max += 360;
+        }
+      }
+      if (max === min) {
+        // Technically this could actually be zero, but more likely it's whole.
+        max += 360;
+      }
+      if (min > max) {
+        [min, max] = [max, min];
+      }
+      for (let angle = min; angle <= max; angle += tickAngle) {
+        Blockly.utils.dom.createSvgElement(
+            Blockly.utils.Svg.LINE, {
+              'x1': FieldAngle.HALF + FieldAngle.RADIUS,
+              'y1': FieldAngle.HALF,
+              'x2': FieldAngle.HALF + FieldAngle.RADIUS - length,
+              'y2': FieldAngle.HALF,
+              'class': 'blocklyAngleMarks',
+              'transform': 'rotate(' + -angle + ',' + FieldAngle.HALF + ',' +
+                  FieldAngle.HALF + ')',
+            }, svg);
+      }
     }
 
     if (minorTickAngle) {
-      for (let angle = minDisplayAngle;
-          countClockwise ? angle <= maxDisplayAngle : angle >= maxDisplayAngle;
-          angle += minorTickAngle) {
-        createTick(angle, 5);
-      }
+      drawTicks(minorTickAngle, 5);
     }
     if (majorTickAngle) {
-      for (let angle = minDisplayAngle;
-          countClockwise ? angle <= maxDisplayAngle : angle >= maxDisplayAngle;
-          angle += majorTickAngle) {
-        createTick(angle, 10);
-      }
+      drawTicks(majorTickAngle, 10);
     }
 
     // The angle picker is different from other fields in that it updates on
@@ -356,8 +368,8 @@ export class FieldAngle extends Blockly.FieldNumber {
 
   /**
    * Convert an on-screen angle into a value for this field.
-   * @param angle
-   * @returns
+   * @param angle Radians where 0: East, π/2: North, π or -π: West, -π/2: South.
+   * @returns Angle value for this field, scaled and offset as specified.
    */
   private radiansToFieldAngle(angle: number): number {
     // Convert angle from radians (-π to π) to turns (-0.5 to 0.5).
@@ -376,6 +388,34 @@ export class FieldAngle extends Blockly.FieldNumber {
     // Convert angle from turns (0.0 to 1.0) to the display min/max range.
     angle *= this.displayMax - this.displayMin;
     angle += this.displayMin;
+    return angle;
+  }
+
+  /**
+   * Convert a value for this field into an on-screen angle.
+   * @param angle Angle value for this field, scaled and offset as specified.
+   * @returns Radians where 0: East, π/2: North, π or -π: West, -π/2: South.
+   */
+  private fieldAngleToRadians(angle: number): number {
+    // Convert angle from the display min/max range to turns (0.0 to 1.0).
+    angle -= this.displayMin;
+    angle /= this.displayMax - this.displayMin;
+    // Flip if clockwise.
+    if (this.clockwise) {
+      angle *= -1;
+    }
+    // Compensate for offset.
+    angle += this.offset / 360;
+    // Normalize to span equally across zero (-0.5 to 0.5).
+    angle %= 1;
+    if (angle > 0.5) {
+      angle -= 1;
+    }
+    if (angle < -0.5) {
+      angle += 1;
+    }
+    // Convert angle from turns to radians.
+    angle *= 2 * Math.PI;
     return angle;
   }
 
@@ -399,28 +439,23 @@ export class FieldAngle extends Blockly.FieldNumber {
       return;
     }
     let angle = Number(this.getText());
-    // Convert angle from the display min/max range to turns (0.0 to 1.0).
-    angle -= this.displayMin;
-    angle /= this.displayMax - this.displayMin
-    // Compensate for offset.
-    angle += this.offset / 360;
-    // Convert angle from turns to radians.
-    angle *= 2 * Math.PI;
+    if (isNaN(angle)) {
+      // This shouldn't happen, but let's not let this error propagate further.
+      return;
+    }
+    angle = this.fieldAngleToRadians(angle);
 
     let path = `M ${FieldAngle.HALF},${FieldAngle.HALF}`;
     let x2 = FieldAngle.HALF;
     let y2 = FieldAngle.HALF;
     if (!isNaN(angle)) {
-      const clockwiseFlag = Number(this.clockwise);
       const angle1 = Blockly.utils.math.toRadians(this.offset);
       const x1 = Math.cos(angle1) * FieldAngle.RADIUS;
       const y1 = Math.sin(angle1) * -FieldAngle.RADIUS;
-      if (clockwiseFlag) {
-        angle = 2 * angle1 - angle;
-      }
       x2 += Math.cos(angle) * FieldAngle.RADIUS;
       y2 -= Math.sin(angle) * FieldAngle.RADIUS;
       // Don't ask how the flag calculations work.  They just do.
+      const clockwiseFlag = Number(this.clockwise);
       let largeFlag =
           Math.abs(Math.floor((angle - angle1) / Math.PI) % 2);
       if (clockwiseFlag) {
