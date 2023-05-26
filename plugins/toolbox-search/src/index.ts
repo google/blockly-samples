@@ -32,7 +32,15 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.searchField = document.createElement('input');
     this.searchField.type = 'search';
     this.searchField.placeholder = 'Search';
-    this.searchField.addEventListener('keyup', this.matchBlocks.bind(this));
+    this.searchField.addEventListener('keyup', (event) => {
+      if (event.key === 'Escape') {
+        this.searchField.blur();
+        this.parentToolbox_.clearSelection();
+        return true;
+      }
+      
+      this.matchBlocks();
+    });
     this.searchField.addEventListener('search', this.matchBlocks.bind(this));
     this.rowContents_.replaceChildren(this.searchField);
     return dom;
@@ -159,7 +167,6 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 }
 
 // TODO: Keyboard shortcut to focus
-// Dismiss on escape
 // verify rtl
 // fix styling
 // Localization
