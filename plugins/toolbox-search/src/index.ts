@@ -35,16 +35,15 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.searchField = document.createElement('input');
     this.searchField.type = 'search';
     this.searchField.placeholder = 'Search';
+    this.searchField.style.marginLeft = '8px';
     this.searchField.addEventListener('keyup', (event) => {
       if (event.key === 'Escape') {
-        this.searchField.blur();
         this.parentToolbox_.clearSelection();
         return true;
       }
 
       this.matchBlocks();
     });
-    this.searchField.addEventListener('search', this.matchBlocks.bind(this));
     this.rowContents_.replaceChildren(this.searchField);
     return dom;
   }
@@ -75,10 +74,8 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       name: ToolboxSearchCategory.START_SEARCH_SHORTCUT,
       callback: () => {
         const position = this.getPosition();
-        if (position < 0) return;
-        this.searchField.focus();
+        if (position < 0) return false;
         this.parentToolbox_.selectItemByPosition(position);
-        this.matchBlocks();
         return true;
       },
       keyCodes: [shortcut],
@@ -170,10 +167,21 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    * @param e The click event.
    */
   override onClick(e: Event) {
-    this.searchField.focus();
+    super.onClick(e);
     e.preventDefault();
     e.stopPropagation();
-    this.matchBlocks();
+    this.setSelected(this.parentToolbox_.getSelectedItem() === this);
+  }
+  
+  override setSelected(isSelected: boolean) {
+    super.setSelected(isSelected);
+    if (isSelected) {
+      this.searchField.focus();
+      this.matchBlocks();
+    } else {
+      this.searchField.value = '';
+      this.searchField.blur();
+    }
   }
 
   /**
@@ -206,9 +214,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 }
 
 // verify rtl
-// fix styling
 // Localization
-// clear search when hiding chaff
 
 Blockly.registry.register(
     Blockly.registry.Type.TOOLBOX_ITEM,
