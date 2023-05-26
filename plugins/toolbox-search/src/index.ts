@@ -241,9 +241,6 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   }
 }
 
-// verify rtl
-// Localization
-
 Blockly.registry.register(
     Blockly.registry.Type.TOOLBOX_ITEM,
     ToolboxSearchCategory.SEARCH_CATEGORY_KIND, ToolboxSearchCategory);
