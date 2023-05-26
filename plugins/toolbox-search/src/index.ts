@@ -172,7 +172,11 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     e.stopPropagation();
     this.setSelected(this.parentToolbox_.getSelectedItem() === this);
   }
-  
+
+  /**
+   * Handles changes in the selection state of this category.
+   * @param isSelected Whether or not the category is now selected.
+   */
   override setSelected(isSelected: boolean) {
     super.setSelected(isSelected);
     if (isSelected) {
