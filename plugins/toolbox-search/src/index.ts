@@ -49,7 +49,8 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.searchField = document.createElement('input');
     this.searchField.type = 'search';
     this.searchField.placeholder = 'Search';
-    this.searchField.style.marginLeft = '8px';
+    this.workspace_.RTL ? this.searchField.style.marginRight = '8px' :
+        this.searchField.style.marginLeft = '8px';
     this.searchField.addEventListener('keyup', (event) => {
       if (event.key === 'Escape') {
         this.parentToolbox_.clearSelection();
