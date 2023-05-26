@@ -24,13 +24,27 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private trigramsToBlocks = new Map<string, Set<string>>();
 
   /**
+   * Initializes a ToolboxSearchCategory.
+   * @param categoryDef The information needed to create a category in the
+   *     toolbox.
+   * @param parentToolbox The parent toolbox for the category.
+   * @param opt_parent The parent category or null if the category does not have
+   *     a parent.
+   */
+  constructor(
+      categoryDef: Blockly.utils.toolbox.CategoryInfo,
+      parentToolbox: Blockly.IToolbox,
+      opt_parent?: Blockly.ICollapsibleToolboxItem) {
+    super(categoryDef, parentToolbox, opt_parent);
+    this.generateBlockIndex();
+    this.registerShortcut();
+  }
+
+  /**
    * Initializes the search field toolbox category.
    * @returns The <div> that will be displayed in the toolbox.
    */
   protected override createDom_(): HTMLDivElement {
-    this.generateBlockIndex();
-    this.registerShortcut();
-
     const dom = super.createDom_();
     this.searchField = document.createElement('input');
     this.searchField.type = 'search';
@@ -214,6 +228,15 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       });
     }
     this.parentToolbox_.refreshSelection();
+  }
+
+  /**
+   * Disposes of this category.
+   */
+  override dispose() {
+    super.dispose();
+    Blockly.ShortcutRegistry.registry.unregister(
+        ToolboxSearchCategory.START_SEARCH_SHORTCUT);
   }
 }
 
