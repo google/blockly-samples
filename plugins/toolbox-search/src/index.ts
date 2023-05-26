@@ -17,6 +17,8 @@ import * as Blockly from 'blockly/core';
  * in its flyout.
  */
 export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
+  private static readonly START_SEARCH_SHORTCUT = 'startSearch';
+  static readonly SEARCH_CATEGORY_KIND = 'search';
   private searchField?: HTMLInputElement;
   private blockCreationWorkspace = new Blockly.Workspace();
   private trigramsToBlocks = new Map<string, Set<string>>();
@@ -27,6 +29,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   protected override createDom_(): HTMLDivElement {
     this.generateBlockIndex();
+    this.registerShortcut();
 
     const dom = super.createDom_();
     this.searchField = document.createElement('input');
@@ -38,12 +41,48 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
         this.parentToolbox_.clearSelection();
         return true;
       }
-      
+
       this.matchBlocks();
     });
     this.searchField.addEventListener('search', this.matchBlocks.bind(this));
     this.rowContents_.replaceChildren(this.searchField);
     return dom;
+  }
+
+  /**
+   * Returns the numerical position of this category in its parent toolbox.
+   * @returns The zero-based index of this category in its parent toolbox, or -1
+   *    if it cannot be determined, e.g. if this is a nested category.
+   */
+  private getPosition() {
+    const categories = this.workspace_.options.languageTree.contents;
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].kind === ToolboxSearchCategory.SEARCH_CATEGORY_KIND) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  /**
+   * Registers a shortcut for displaying the toolbox search category.
+   */
+  private registerShortcut() {
+    const shortcut = Blockly.ShortcutRegistry.registry.createSerializedKey(
+        Blockly.utils.KeyCodes.B, [Blockly.utils.KeyCodes.CTRL]);
+    Blockly.ShortcutRegistry.registry.register({
+      name: ToolboxSearchCategory.START_SEARCH_SHORTCUT,
+      callback: () => {
+        const position = this.getPosition();
+        if (position < 0) return;
+        this.searchField.focus();
+        this.parentToolbox_.selectItemByPosition(position);
+        this.matchBlocks();
+        return true;
+      },
+      keyCodes: [shortcut],
+    });
   }
 
   /**
@@ -166,11 +205,11 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   }
 }
 
-// TODO: Keyboard shortcut to focus
 // verify rtl
 // fix styling
 // Localization
 // clear search when hiding chaff
 
 Blockly.registry.register(
-    Blockly.registry.Type.TOOLBOX_ITEM, 'search', ToolboxSearchCategory);
+    Blockly.registry.Type.TOOLBOX_ITEM,
+    ToolboxSearchCategory.SEARCH_CATEGORY_KIND, ToolboxSearchCategory);
