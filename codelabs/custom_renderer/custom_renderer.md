@@ -18,7 +18,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 ### What you'll build
 
-This codelab build and use four renderers:
+This codelab builds and uses four renderers:
 
 1. A minimal custom renderer that extends `Blockly.blockRendering.Renderer` but makes no modifications.
 ![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
