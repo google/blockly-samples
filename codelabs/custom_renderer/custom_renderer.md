@@ -18,7 +18,7 @@ Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
 ### What you'll build
 
-You will build and use four renderers:
+This codelab builds and uses four renderers:
 
 1. A minimal custom renderer that extends `Blockly.blockRendering.Renderer` but makes no modifications.
 ![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
@@ -37,21 +37,21 @@ You will build and use four renderers:
 
 ## Setup
 
-In this codelab you will add code to the Blockly sample app to create and use a new custom renderer.
+This codelab will add code to the Blockly sample app to create and use a new custom renderer.
 
 ### The application
 
-You will use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1. Run `npx @blockly/create-package app custom-renderer-codelab`.  This will create your blockly application in the folder `custom-renderer-codelab`.
-  1. `cd` into your new directory: `cd custom-renderer-codelab`.
+Use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+  1. Run `npx @blockly/create-package app custom-renderer-codelab`.  This will create a blockly application in the folder `custom-renderer-codelab`.
+  1. `cd` into the new directory: `cd custom-renderer-codelab`.
   1. Run `npm start` to start the server and run the sample application.
   1. The sample app will automatically run in the browser window that opens.
 
 The initial application uses the default renderer and contains no code or definitions for a custom renderer.
 
-You can view the complete code used in this codelab in blockly-samples under [`examples/custom-renderer-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-renderer-codelab).
+The complete code used in this codelab can be viewed in blockly-samples under [`examples/custom-renderer-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-renderer-codelab).
 
-Before setting up the rest of the application, let's change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that we don't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string.  `customRenderersWorkspace` will work:
+Before setting up the rest of the application, change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that it doesn't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string. `customRenderersWorkspace` will work:
 
 ```js
 // Use a unique storage key for this codelab
@@ -66,17 +66,17 @@ Click on the "Loops" entry and drag out a repeat block.  Now, change the selecti
 
 ## Define and register a custom renderer
 
-A **Renderer** is the interface between your custom rendering code and the rest of Blockly. Blockly provides a base renderer with all required fields already set to usable values.
+A **Renderer** is the interface between custom rendering code and the rest of Blockly. Blockly provides a base renderer with all required fields already set to usable values.
 
 To start, create a new directory at `src/renderers` and add a file inside named `custom.js`.
 
-At the top of the file, you first need to import `blockly/core`:
+At the top of the file, import `blockly/core`:
 
 ```js
 import * as Blockly from 'blockly/core';
 ```
 
-Then define your new custom renderer and have it extend the base renderer:
+Then define a new custom renderer and have it extend the base renderer:
 
 ```js
 class CustomRenderer extends Blockly.blockRendering.Renderer {
@@ -86,13 +86,13 @@ class CustomRenderer extends Blockly.blockRendering.Renderer {
 }
 ```
 
-After defining your renderer you need to tell Blockly that it exists. Register your renderer and give it the name `custom_renderer`:
+After defining the renderer, register it with Blockly and give it the name `custom_renderer`:
 
 ```js
 Blockly.blockRendering.register('custom_renderer', CustomRenderer);
 ```
 
-To use your custom renderer, you first need to import your new file into `src/index.js`.  Add this import at the top of `src/index.js`:
+To use the custom renderer, import the new file at the top of `src/index.js`:
 
 ```js
 import './renderers/javascript';
@@ -109,7 +109,7 @@ const ws = Blockly.inject(blocklyDiv, {
 
 ### The result
 
-If the server is already running, you can refresh the page to see your changes. Otherwise, run `npm start` to start the server. Once the server is running, click on the `Loops` entry in your browser and drag out a repeat block. The resulting block will use the same values already defined in the base `Blockly.blockRendering.Renderer`.
+If the server is already running, refresh the page to see the new changes. Otherwise, run `npm start` to start the server. Once the server is running, click on the `Loops` entry in the browser and drag out a repeat block. The resulting block will use the same values already defined in the base `Blockly.blockRendering.Renderer`.
 
 ![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
 
@@ -119,9 +119,9 @@ A **ConstantsProvider** holds all rendering-related constants.  This includes si
 
 The **ConstantsProvider** `constructor()` sets all static properties, such as `NOTCH_WIDTH` and `NOTCH_HEIGHT`. For a full list of properties, see [constants.ts](https://github.com/google/blockly/blob/master/core/renderers/common/constants.ts).
 
-In general you will want to override a subset of the constants, rather than all of them. To do so:
+Only override the necessary subset of the constants, rather than all of them. To do so:
 - Define a constants provider that extends the base `ConstantProvider`.
-- Call the superclass `super()` in your `constructor()`.
+- Call the superclass `super()` in the `constructor()`.
 - Set individual properties.
 
 Add this above the `CustomRenderer` definition in `src/renderers/custom.js`:
@@ -164,7 +164,7 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
 }
 ```
 
-To use your new **CustomConstantProvider**, you must override `makeConstants_()` inside your `CustomRenderer` class. Below the `constructor()`, add:
+To use the new **CustomConstantProvider**, override `makeConstants_()` inside the `CustomRenderer` class. Below the `constructor()`, add:
 
 ```js
   /**
@@ -177,7 +177,7 @@ To use your new **CustomConstantProvider**, you must override `makeConstants_()`
 
 ### The result
 
-If you return to your browser, click on the `Loops` entry and drag out a repeat block, you'll see the resulting block has triangular previous and next connections, and skinny input and output connections. Note that the general shapes of the connections have not changed--only parameters such as width and height.
+Return to the browser, click on the `Loops` entry, and drag out a repeat block.  The resulting block should have triangular previous and next connections, and skinny input and output connections. Note that the general shapes of the connections have not changed--only parameters such as width and height.
 
 ![Screenshot of a custom renderer with notches, corners, and tabs that have similar shapes as the default but with different widths, heights, and radiuses.](./custom_constants.png)
 
@@ -191,11 +191,11 @@ The outline of the block is a single [SVG path](https://developer.mozilla.org/en
 
 Each sub-path is a string of [path commands](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#path_commands) that describe the appropriate shape. These commands must use relative (rather than absolute) coordinates.
 
-While you can write SVG path commands as strings, Blockly provides a set of [utility functions](https://developers.google.com/blockly/reference/js/blockly.utils_namespace.svgpaths_namespace) to make writing and reading paths easier.
+SVG path commands can be written as strings, but Blockly provides a set of [utility functions](https://developers.google.com/blockly/reference/js/blockly.utils_namespace.svgpaths_namespace) to make writing and reading paths easier.
 
 ### `init()`
 
-A connection's shape is stored as an object with information about its width, height, and sub-path. These objects are created in the `ConstantProvider`s `init()` function. Here is the start of the default implementation. You can find the complete definition inside [`constants.ts`](https://github.com/google/blockly/blob/develop/core/renderers/common/constants.ts).
+A connection's shape is stored as an object with information about its width, height, and sub-path. These objects are created in the `ConstantProvider`s `init()` function. Here is the start of the default implementation. The complete definition can be found inside [`constants.ts`](https://github.com/google/blockly/blob/develop/core/renderers/common/constants.ts).
 
 ```js
 /**
@@ -219,7 +219,7 @@ init() {
 
 ### `shapeFor(connection)`
 
-The `shapeFor(connection)` function maps from connection to connection shape. Here is the default implementation, which you can find inside [`constants.ts`](https://github.com/google/blockly/blob/develop/core/renderers/common/constants.ts). It returns a puzzle tab for input/output connections and a notch for previous/next connections:
+The `shapeFor(connection)` function maps from connection to connection shape. Here is the default implementation, which can be found inside [`constants.ts`](https://github.com/google/blockly/blob/develop/core/renderers/common/constants.ts). It returns a puzzle tab for input/output connections and a notch for previous/next connections:
 
 ```js
 /**
@@ -245,7 +245,7 @@ shapeFor(connection: RenderedConnection): Shape {
 
 ## Change connection shapes
 
-In this step you will define and use new shapes for previous/next connections and input/output connections. This takes three steps:
+This step will define and use new shapes for previous/next connections and input/output connections. This takes three steps:
 1. Define new shape objects.
 1. Override `init()` to store the new shape objects.
 1. Override `shapeFor(connection)` to return the new objects.
@@ -260,7 +260,7 @@ Previous and next connections are defined by the same object. The object has fou
 - `pathLeft`: The sub-path that describes the connection when drawn from left-to-right.
 - `pathRight`: The sub-path that describes the connection when drawn from right-to-left.
 
-Define a new function called `makeRectangularPreviousConn()` and put it inside your `CustomConstantProvider` class definition. Note that `NOTCH_WIDTH` and `NOTCH_HEIGHT` have already been overridden in the `constructor()` so you'll reuse them in your implementation.
+Define a new function called `makeRectangularPreviousConn()` and put it inside the `CustomConstantProvider` class definition. Note that `NOTCH_WIDTH` and `NOTCH_HEIGHT` have already been overridden in the `constructor()`, so they'll be reused:
 
 ```js
   /**
@@ -307,7 +307,7 @@ Input and output connections are defined by the same object. The object has four
 - `pathUp`: The sub-path that describes the connection when drawn from top-to-bottom.
 - `pathDown`: The sub-path that describes the connection when drawn from bottom-to-top.
 
-Define a new function called `makeRectangularInputConn()` and put it inside your `CustomConstantProvider` class definition. Note that `TAB_WIDTH` and `TAB_HEIGHT` have already been overridden in the `constructor()` so you'll reuse them in your implementation.
+Define a new function called `makeRectangularInputConn()` and put it inside the `CustomConstantProvider` class definition. Note that `TAB_WIDTH` and `TAB_HEIGHT` have already been overridden in the `constructor()` so they'll be reused:
 
 ```js
   /**
@@ -346,7 +346,7 @@ Define a new function called `makeRectangularInputConn()` and put it inside your
 
 ### Override init()
 
-Override the `init()` function in your `CustomConstantProvider` class definition and store the new shape objects as `RECT_PREV_NEXT` and `RECT_INPUT_OUTPUT`. Make sure you call the superclass `init()` function to store other objects that you have not overridden.
+Override the `init()` function in the `CustomConstantProvider` class definition and store the new shape objects as `RECT_PREV_NEXT` and `RECT_INPUT_OUTPUT`. Make sure to call the superclass `init()` function to store other objects that have not been overridden.
 
 ```js
   /**
@@ -364,7 +364,7 @@ Override the `init()` function in your `CustomConstantProvider` class definition
 
 ### Override shapeFor(connection)
 
-Next, override the `shapeFor(connection)` function in your `CustomConstantProvider` class definition and return your new custom objects:
+Next, override the `shapeFor(connection)` function in the `CustomConstantProvider` class definition and return the new custom objects:
 
 ```js
   /**
@@ -386,17 +386,17 @@ Next, override the `shapeFor(connection)` function in your `CustomConstantProvid
 
 ### The result
 
-If you return to your browser, click on the `Loops` entry and drag out a repeat block, you'll see the resulting block has rectangular connections for all four connection types.
+Return to the browser, click on the `Loops` entry, and drag out a repeat block.  The resulting block should have rectangular connections for all four connection types.
 
 ![[Screenshot of a custom renderer with notches, corners, and tabs with fundamentally different shapes than the defaults.]](./custom_notches.png)
 
 ## Typed connection shapes
 
-In this step you will create a renderer that sets connection shapes at runtime based on a connection's type checks. You will use the default connection shapes and the shapes defined in the previous steps.
+This step will create a renderer that sets connection shapes at runtime based on a connection's type checks. It will use the default connection shapes and the shapes defined in the previous steps.
 
 ### Override `shapeFor(connection)`
 
-Override the `shapeFor(connection)` function in your `CustomConstantProvider` class definition to return a different connection shape based on the `checks` returned from `connection.getCheck()`. Note you will need to delete the previous definition of `shapeFor(connection)` created in previous steps.
+Override the `shapeFor(connection)` function in the `CustomConstantProvider` class definition to return a different connection shape based on the `checks` returned from `connection.getCheck()`. Note the previous definition of `shapeFor(connection)` created in previous steps will need to be deleted.
 
 The new definition of `shapeFor(connection)` will:
 - Return a rectangular tab for inputs and outputs that accept `Number`s and `String`s.
@@ -429,17 +429,17 @@ shapeFor(connection) {
 
 ### The result
 
-In order to fully test this change, you'll need to take a few steps in the browser:
+Take these steps to fully test this change in the browser:
 1. Click on the `Loops` entry and drag out a repeat block.
-1. Click on the `Logic` entry and drag the conditional `if` block into the repeat block that you placed on the workspace in the previous step.
+1. Click on the `Logic` entry and drag the conditional `if` block into the repeat block that was placed on the workspace in the previous step.
 
-You should now see an entry similar to the screenshot below, in which the `Number` inputs and outputs are rectangular, but the boolean input on the `if` block is a puzzle tab.
+There should be an entry similar to the screenshot below, in which the `Number` inputs and outputs are rectangular, but the boolean input on the `if` block is a puzzle tab.
 ![Screenshot of a custom renderer with rectangles for the Number input/outputs and a puzzle tab for the Boolean input/output attached to an "if" block](./typed_connection_shapes.png)
 
 ## Summary
 
-Custom renderers are a powerful way to change the look and feel of Blockly.  In this codelab you:
-- Declared and registered a custom renderer by extending `Blockly.blockRendering.Renderer`.
-- Overrode renderer constants such as `NOTCH_HEIGHT` in `Blockly.blockRendering.ConstantProvider`.
-- Modified connection shapes by creating custom [SVG paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path), storing them in `init()`, and finally returning them in `shapeFor(connection)`.
-- Updated the mapping from connection to connection shape by adding logic in `shapeFor(connection)`.
+Custom renderers are a powerful way to change the look and feel of Blockly.  In this codelab you learned:
+- How to declare and register a custom renderer by extending `Blockly.blockRendering.Renderer`.
+- How to override renderer constants such as `NOTCH_HEIGHT` in `Blockly.blockRendering.ConstantProvider`.
+- How to modify connection shapes by creating custom [SVG paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path), storing them in `init()`, and finally returning them in `shapeFor(connection)`.
+- How to update the mapping from connection to connection shape by adding logic in `shapeFor(connection)`.
