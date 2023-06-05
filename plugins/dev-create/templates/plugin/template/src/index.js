@@ -25,7 +25,7 @@ export class Plugin {
      * @type {!Blockly.WorkspaceSvg}
      * @protected
      */
-    this.workspace_ = workspace;
+    this.workspace = workspace;
   }
 
   /**
