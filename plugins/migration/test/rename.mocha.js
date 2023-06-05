@@ -340,12 +340,37 @@ const bar = module.newNameForExistingExport;`;
           },
         ],
       };
+      const oldString = 'const foo = module.oldExportName.suffix;';
+
+      const newString =
+          (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
+
+      assert.deepEqual(newString, 'const foo = module.getExport().suffix;');
+    });
+
+    test('exports with get+set methods are changed to include FIXME comment',
+         function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldName: 'module',
+            exports: {
+              'oldExportName': {
+                getMethod: 'getExport',
+                setMethod: 'setExport',
+              },
+            },
+          },
+        ],
+      };
       const oldString = 'const foo = module.oldExportName;';
 
       const newString =
           (new Renamer(database, '0.0.0', '1.0.0')).rename(oldString);
 
-      assert.deepEqual(newString, 'const foo = module.getExport();');
+      assert.match(newString, /FIXME/, 'contains FIXME comment');
+      assert.match(newString, /module\.getExport\(/, 'contains get example');
+      assert.match(newString, /module\.setExport\(/, 'contains set example');
     });
 
     test('exports with set methods trigger console output', function() {
@@ -746,6 +771,23 @@ const bar = module.newNameForExistingExport;`;
           (new Renamer(database, '0.0.0', '2.0.0')).rename(oldString);
 
       assert.deepEqual(newString, 'base.moduleA1');
+    });
+
+    test('partial matches are ignored', function() {
+      const database = {
+        '1.0.0': [
+          {
+            oldname: 'moduleA',
+            newname: 'moduleB',
+          },
+        ],
+      };
+      const oldString = 'moduleAA';
+
+      const newString = 
+          (new Renamer(database, '0.0.0', '2.0.0')).rename(oldString);
+
+      assert.deepEqual(newString, 'moduleAA');
     });
   });
 
