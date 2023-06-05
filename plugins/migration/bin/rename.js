@@ -194,21 +194,32 @@ class VersionRenamer {
   rename(str) {
     for (const entry of this.renamings_) {
       if (str.startsWith(entry.old)) {
-        if (entry.get || entry.set) {
-          process.stderr.write(`NOTE: ${entry.old} has been removed.\n`);
-          if (entry.get) {
-            process.stderr.write(`    - Call ${entry.get}() instead of ` +
-                'reading it.\n');
-          }
-          if (entry.set) {
-            process.stderr.write(`    - Call ${entry.set}(/* new value */) ` +
-                'instead of setting it.\n');
-          }
-          process.stderr.write(
-              'You will need to manually verify this update.\n');
-          return (entry.get || entry.set) + '()' + str.slice(entry.old.length);
+        const suffix = str.slice(entry.old.length);
+        if (suffix && suffix[0] !== '.') {  // Did not match a whole identifier.
+          continue;
         }
-        return entry.new + str.slice(entry.old.length);
+        if (!entry.get && !entry.set) {  // Normal case (no getter/setter).
+          return entry.new + suffix;
+        }
+        process.stderr.write(`NOTE: ${entry.old} has been removed.\n`);
+        if (entry.get) {
+          process.stderr.write(`    - Call ${entry.get}() instead of ` +
+              'reading it.\n');
+        }
+        if (entry.set) {
+          process.stderr.write(`    - Call ${entry.set}(/* new value */) ` +
+              'instead of setting it.\n');
+        }
+        process.stderr.write('You will need to manually verify this update.\n');
+        
+        if (entry.get && suffix) {  // foo.bar.baz => foo.getBar().baz
+          return `${entry.get}()${suffix}`;
+        }
+        const get = entry.set ? `call ${entry.get}() to get get value` :
+            `can no longer be read`;
+        const set = entry.set ? `call ${entry.set}(new_value) to set value` :
+            `can no longer be set`;
+        return `/* FIXME: ${entry.old} has been replaced: ${get}; ${set}. */`;
       }
     }
     return str;
