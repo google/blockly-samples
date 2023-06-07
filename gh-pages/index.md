@@ -43,6 +43,7 @@
 # Third Party Plugins
 These plugins are not published by the Blockly team. They are linked here for your convenience.
 * [Lexical Variables](https://www.npmjs.com/package/@mit-app-inventor/blockly-block-lexical-variables)
+* [Workspace Multi-Select](https://www.npmjs.com/package/@mit-app-inventor/blockly-plugin-workspace-multiselect)
 
 # Examples
 
