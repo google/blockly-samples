@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/google/blockly-samples/compare/@blockly/migrate@1.1.2...@blockly/migrate@1.1.3) (2023-06-08)
+
+
+### Bug Fixes
+
+* **migration:** Fix bugs in renaming script ([#1709](https://github.com/google/blockly-samples/issues/1709)) ([b66c7b0](https://github.com/google/blockly-samples/commit/b66c7b00d793339ac41bb06b22a3953bf6e199fe))
+
+
+
 ## [1.1.2](https://github.com/google/blockly-samples/compare/@blockly/migrate@1.1.1...@blockly/migrate@1.1.2) (2023-02-16)
 
 **Note:** Version bump only for package @blockly/migrate

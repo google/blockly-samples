@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.4.0...@blockly/create-package@1.4.1) (2023-06-08)
+
+
+### Bug Fixes
+
+* remove types from ts templates for lint ([#1708](https://github.com/google/blockly-samples/issues/1708)) ([4029e7c](https://github.com/google/blockly-samples/commit/4029e7ced7c916ea0df335c9c930f3dbbbd2db76))
+
+
+
 ## [1.4.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.3.4...@blockly/create-package@1.4.0) (2023-04-13)
 
 
