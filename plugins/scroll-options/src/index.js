@@ -145,6 +145,12 @@ export class ScrollOptions {
 
     // Figure out the desired location to scroll to.
     const scrollDelta = Blockly.browserEvents.getScrollDeltaPixels(e);
+    if (e.shiftKey) {
+      // Scroll horizontally (based on vertical scroll delta).
+      const temp = scrollDelta.x;
+      scrollDelta.x = scrollDelta.y;
+      scrollDelta.y = temp;
+    }
     const x = this.workspace_.scrollX - scrollDelta.x;
     const y = this.workspace_.scrollY - scrollDelta.y;
 
