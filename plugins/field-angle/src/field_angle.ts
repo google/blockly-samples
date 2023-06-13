@@ -24,9 +24,11 @@ export class FieldAngle extends Blockly.FieldNumber {
    */
   static readonly RADIUS: number = FieldAngle.HALF - 1;
 
+  /* eslint-disable @typescript-eslint/naming-convention */
   static readonly DEFAULT_PRECISION = 15;
   static readonly DEFAULT_MIN = 0;
   static readonly DEFAULT_MAX = 360;
+  /* eslint-enable @typescript-eslint/naming-convention */
 
   /**
    * Whether the angle should increase as the angle picker is moved clockwise
@@ -261,18 +263,17 @@ export class FieldAngle extends Blockly.FieldNumber {
         this.fieldAngleToRadians(this.min_));
     const maxValueDegrees = Blockly.utils.math.toDegrees(
         this.fieldAngleToRadians(this.max_));
-    const thisField = this;
 
     /**
      * Draw a set of ticks on the gauge.
      * @param tickAngle Angle between each tick.
      * @param length Length of the tick (minor=5, major=10).
      */
-    function drawTicks(tickAngle: number, length: number) {
+    const drawTicks = (tickAngle: number, length: number) => {
       let min = Math.ceil(minValueDegrees / tickAngle) * tickAngle;
       let max = Math.floor(maxValueDegrees / tickAngle) * tickAngle;
 
-      if (thisField.clockwise) {
+      if (this.clockwise) {
         if (min < max) {
           min += 360;
         }
@@ -300,7 +301,7 @@ export class FieldAngle extends Blockly.FieldNumber {
                   FieldAngle.HALF + ')',
             }, svg);
       }
-    }
+    };
 
     const displayRange = this.displayMax - this.displayMin;
     const minorTickAngle = 360 / displayRange * this.minorTick;
