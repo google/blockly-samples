@@ -442,17 +442,36 @@ export class Backpack extends Blockly.DragTarget {
   }
 
   /**
-   * Converts the provided block into a JSON string.
+   * Converts the provided block into a JSON string and
+   * cleans the JSON of any unnecessary attributes
    * @param {!Blockly.Block} block The block to convert.
    * @returns {string} The JSON object as a string
    * @private
    */
   blockToJsonString(block) {
     const json = Blockly.serialization.blocks.save(block);
-    // Add a BLOCK parameter so that the flyout can categorize it
-    json.kind = 'BLOCK';
-    // Does not allow the same block to be added to the backpack
-    delete json['id'];
+
+    // The keys to remove
+    const keys = ['id', 'height', 'width', 'pinned', 'enabled'];
+
+    // Traverse the JSON recursively
+    const traverseJson = function(json, keys) {
+      for (const key in json) {
+        if (key) {
+          const val = json[key];
+          if (keys.includes(key)) delete json[key];
+
+          // Add a 'kind' key so the flyout can recognize it as a block
+          else if (key == 'type') json.kind = 'BLOCK';
+
+          if (val != null && typeof val == 'object') {
+            traverseJson(json[key], keys);
+          }
+        }
+      }
+    };
+
+    traverseJson(json, keys);
     return JSON.stringify(json);
   }
 
