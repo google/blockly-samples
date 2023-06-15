@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.18](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@3.0.17...@blockly/plugin-scroll-options@3.0.18) (2023-06-15)
+
+
+### Bug Fixes
+
+* horizontal scrolling enabled when draging blocks in scroll-options plugin ([#1714](https://github.com/google/blockly-samples/issues/1714)) ([0117364](https://github.com/google/blockly-samples/commit/01173648529f92a017fa7a623d598bfc6f2eb4a6))
+
+
+
 ## [3.0.17](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@3.0.16...@blockly/plugin-scroll-options@3.0.17) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/plugin-scroll-options
