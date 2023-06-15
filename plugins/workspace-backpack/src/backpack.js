@@ -464,7 +464,7 @@ export class Backpack extends Blockly.DragTarget {
           if (keys.includes(key)) {
             delete json[key];
           }
-          if (json[key] && typeof json[key] == 'object') {
+          if (json[key] && typeof json[key] === 'object') {
             traverseJson(json[key], keys);
           }
         }
