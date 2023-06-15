@@ -445,13 +445,15 @@ export class Backpack extends Blockly.DragTarget {
    * Converts the provided block into a JSON string.
    * @param {!Blockly.Block} block The block to convert.
    * @returns {string} The JSON object as a string
+   * @private
    */
-  blockToJSONString_(block) {
+  blockToJsonString(block) {
     const json = Blockly.serialization.blocks.save(block);
     // Add a BLOCK parameter so that the flyout can categorize it
     json.kind = 'BLOCK';
-    const jsonString = JSON.stringify(json);
-    return jsonString;
+    // Does not allow the same block to be added to the backpack
+    delete json['id'];
+    return JSON.stringify(json);
   }
 
   /**
@@ -461,8 +463,7 @@ export class Backpack extends Blockly.DragTarget {
    *     provided block.
    */
   containsBlock(block) {
-    const blockJSONString = this.blockToJSONString_(block);
-    return this.contents_.indexOf(blockJSONString) !== -1;
+    return this.contents_.indexOf(this.blockToJsonString(block)) !== -1;
   }
 
   /**
@@ -470,7 +471,7 @@ export class Backpack extends Blockly.DragTarget {
    * @param {!Blockly.Block} block The block to be added to the backpack.
    */
   addBlock(block) {
-    this.addItem(this.blockToJSONString_(block));
+    this.addItem(this.blockToJsonString(block));
   }
 
 
@@ -480,8 +481,7 @@ export class Backpack extends Blockly.DragTarget {
    *     backpack.
    */
   addBlocks(blocks) {
-    const jsonStrings = blocks.map(this.blockToJSONString_);
-    this.addItems(jsonStrings);
+    this.addItems(blocks.map(this.blockToJsonString));
   }
 
 
@@ -490,7 +490,7 @@ export class Backpack extends Blockly.DragTarget {
    * @param {!Blockly.Block} block The block to be removed from the backpack.
    */
   removeBlock(block) {
-    this.removeItem(this.blockToJSONString_(block));
+    this.removeItem(this.blockToJsonString(block));
   }
 
   /**
@@ -835,7 +835,7 @@ class BackpackSerializer {
      * Should be after blocks, procedures, and variables.
      * @type {number}
      */
-    this.priority = Blockly.serialization.priorities.VARIABLES - 10;
+    this.priority = Blockly.serialization.priorities.BLOCKS - 10;
   }
 
   /**
@@ -844,7 +844,6 @@ class BackpackSerializer {
    * @returns {object|undefined} the serialized JSON if present
    */
   save(workspace) {
-    console.trace();
     const componentManager = workspace.getComponentManager();
     const backpack = componentManager.getComponent('backpack');
     return backpack.getContents().map((text) => JSON.parse(text));
@@ -856,7 +855,6 @@ class BackpackSerializer {
    * @param {Blockly.Workspace} workspace the workspace to load into
    */
   load(state, workspace) {
-    console.trace();
     const jsonStrings = state.map((j) => JSON.stringify(j));
     const componentManager = workspace.getComponentManager();
     const backpack = componentManager.getComponent('backpack');
