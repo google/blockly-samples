@@ -10,7 +10,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {cleanBlockXML, registerContextMenus} from './backpack_helpers';
+import {registerContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
 import {BackpackContextMenuOptions, BackpackOptions, parseOptions} from './options';
 
@@ -59,7 +59,7 @@ export class Backpack extends Blockly.DragTarget {
     this.flyout_ = null;
 
     /**
-     * A list of XML (stored as strings) representing blocks in the backpack.
+     * A list of JSON (stored as strings) representing blocks in the backpack.
      * @type {!Array<string>}
      * @protected
      */
@@ -440,14 +440,39 @@ export class Backpack extends Blockly.DragTarget {
       this.addBlock(/** @type {!Blockly.BlockSvg} */ (dragElement));
     }
   }
+
   /**
-   * Converts the provided block into a cleaned XML string.
+   * Converts the provided block into a JSON string and
+   * cleans the JSON of any unnecessary attributes
    * @param {!Blockly.Block} block The block to convert.
-   * @returns {string} The cleaned XML string.
+   * @returns {string} The JSON object as a string.
    * @private
    */
-  blockToCleanXmlString_(block) {
-    return cleanBlockXML(Blockly.Xml.blockToDom(block));
+  blockToJsonString(block) {
+    const json = Blockly.serialization.blocks.save(block);
+
+    // Add a 'kind' key so the flyout can recognize it as a block.
+    json.kind = 'BLOCK';
+
+    // The keys to remove.
+    const keys = ['id', 'height', 'width', 'pinned', 'enabled'];
+
+    // Traverse the JSON recursively.
+    const traverseJson = function(json, keys) {
+      for (const key in json) {
+        if (key) {
+          if (keys.includes(key)) {
+            delete json[key];
+          }
+          if (json[key] && typeof json[key] === 'object') {
+            traverseJson(json[key], keys);
+          }
+        }
+      }
+    };
+
+    traverseJson(json, keys);
+    return JSON.stringify(json);
   }
 
   /**
@@ -457,8 +482,7 @@ export class Backpack extends Blockly.DragTarget {
    *     provided block.
    */
   containsBlock(block) {
-    const cleanedBlockXml = this.blockToCleanXmlString_(block);
-    return this.contents_.indexOf(cleanedBlockXml) !== -1;
+    return this.contents_.indexOf(this.blockToJsonString(block)) !== -1;
   }
 
   /**
@@ -466,7 +490,7 @@ export class Backpack extends Blockly.DragTarget {
    * @param {!Blockly.Block} block The block to be added to the backpack.
    */
   addBlock(block) {
-    this.addItem(this.blockToCleanXmlString_(block));
+    this.addItem(this.blockToJsonString(block));
   }
 
 
@@ -476,8 +500,7 @@ export class Backpack extends Blockly.DragTarget {
    *     backpack.
    */
   addBlocks(blocks) {
-    const cleanedBlocks = blocks.map(this.blockToCleanXmlString_);
-    this.addItems(cleanedBlocks);
+    this.addItems(blocks.map(this.blockToJsonString));
   }
 
 
@@ -486,12 +509,12 @@ export class Backpack extends Blockly.DragTarget {
    * @param {!Blockly.Block} block The block to be removed from the backpack.
    */
   removeBlock(block) {
-    this.removeItem(this.blockToCleanXmlString_(block));
+    this.removeItem(this.blockToJsonString(block));
   }
 
   /**
    * Adds item to backpack.
-   * @param {string} item Text representing the XML tree of a block to add,
+   * @param {string} item Text representing the JSON of a block to add,
    *     cleaned of all unnecessary attributes.
    */
   addItem(item) {
@@ -512,7 +535,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Removes item from the backpack.
-   * @param {string} item Text representing the XML tree of a block to remove,
+   * @param {string} item Text representing the JSON of a block to remove,
    * cleaned of all unnecessary attributes.
    */
   removeItem(item) {
@@ -604,8 +627,8 @@ export class Backpack extends Blockly.DragTarget {
     if (!this.isOpenable_()) {
       return;
     }
-    const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
-    this.flyout_.show(xml);
+    const jsons = this.contents_.map((text) => JSON.parse(text));
+    this.flyout_.show(jsons);
     Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
   }
 
@@ -617,8 +640,8 @@ export class Backpack extends Blockly.DragTarget {
     if (!this.isOpen()) {
       return;
     }
-    const xml = this.contents_.map((text) => Blockly.Xml.textToDom(text));
-    this.flyout_.show(xml);
+    const json = this.contents_.map((text) => JSON.parse(text));
+    this.flyout_.show(json);
   }
 
   /**
@@ -817,3 +840,57 @@ Blockly.Css.register(`
   opacity: 0.8;
 }
 `);
+
+
+/**
+ * Custom serializer so that the backpack can save and later recall which
+ * blocks have been saved in a workspace.
+ */
+class BackpackSerializer {
+  /** Constructs the backpack serializer */
+  constructor() {
+    /**
+     * The priority for deserializing block suggestion data.
+     * Should be after blocks, procedures, and variables.
+     * @type {number}
+     */
+    this.priority = Blockly.serialization.priorities.BLOCKS - 10;
+  }
+
+  /**
+   * Saves a target workspace's state to serialized JSON.
+   * @param {Blockly.Workspace} workspace the workspace to save
+   * @returns {object|undefined} the serialized JSON if present
+   */
+  save(workspace) {
+    const componentManager = workspace.getComponentManager();
+    const backpack = componentManager.getComponent('backpack');
+    return backpack.getContents().map((text) => JSON.parse(text));
+  }
+
+  /**
+   * Loads a serialized state into the target workspace.
+   * @param {object} state the serialized state JSON
+   * @param {Blockly.Workspace} workspace the workspace to load into
+   */
+  load(state, workspace) {
+    const jsonStrings = state.map((j) => JSON.stringify(j));
+    const componentManager = workspace.getComponentManager();
+    const backpack = componentManager.getComponent('backpack');
+    backpack.setContents(jsonStrings);
+  }
+
+  /**
+   * Resets the state of a workspace.
+   * @param {Blockly.Workspace} workspace the workspace to reset
+   */
+  clear(workspace) {
+    const componentManager = workspace.getComponentManager();
+    const backpack = componentManager.getComponent('backpack');
+    backpack.empty();
+  }
+}
+
+Blockly.serialization.registry.register(
+    'backpack',
+    new BackpackSerializer());
