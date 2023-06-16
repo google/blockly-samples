@@ -119,7 +119,7 @@ function publish(force) {
     // creates the release on GitHub.
     console.log(`Publishing ${force ? 'all' : 'changed'} plugins.`);
     execSync(
-        `lerna publish --conventional-commits --create-release github` +
+        `lerna publish --no-private --conventional-commits --create-release github` +
             `${force ? ' --force-publish=*' : ''}`,
         {cwd: releaseDir, stdio: 'inherit'});
 
@@ -164,7 +164,7 @@ function publishFromPackage(done) {
   // Run lerna publish. Will not update versions.
   console.log(`Publishing plugins from package.json versions.`);
   execSync(
-      `lerna publish --from-package`,
+      `lerna publish --no-private --from-package`,
       {cwd: releaseDir, stdio: 'inherit'});
 
   console.log('Removing release directory.');
@@ -187,7 +187,7 @@ function checkVersions(done) {
       'These version numbers will not be pushed and no tags will be created,',
       'even if you answer yes to the prompt.');
   execSync(
-      `lerna version --conventional-commits --no-git-tag-version --no-push`,
+      `lerna version --no-private --conventional-commits --no-git-tag-version --no-push`,
       {cwd: releaseDir, stdio: 'inherit'});
 
   done();
