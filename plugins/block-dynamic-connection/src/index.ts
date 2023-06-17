@@ -11,11 +11,11 @@
 
 import * as Blockly from 'blockly/core';
 import './insertion_marker_manager_monkey_patch';
-import './dynamic_if.js';
-import './dynamic_text_join.js';
-import './dynamic_list_create.js';
+import './dynamic_if';
+import './dynamic_text_join';
+import './dynamic_list_create';
 
-export const overrideOldBlockDefinitions = function() {
+export const overrideOldBlockDefinitions = function(): void {
   Blockly.Blocks['lists_create_with'] = Blockly.Blocks['dynamic_list_create'];
   Blockly.Blocks['text_join'] = Blockly.Blocks['dynamic_text_join'];
   Blockly.Blocks['controls_if'] = Blockly.Blocks['dynamic_if'];

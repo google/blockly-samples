@@ -13,43 +13,65 @@
 
 import * as Blockly from 'blockly/core';
 
-Blockly.InsertionMarkerManager.prototype.update = function(dxy, dragTarget) {
-  const newCandidate = this.getCandidate(dxy);
+// MonkeyPatchedInsertionMarkerManager overrides the update and dispose methods,
+// and adds a new property called pendingBlocks.
+interface MonkeyPatchedInsertionMarkerManager
+    extends Blockly.InsertionMarkerManager {
+  pendingBlocks: Set<Blockly.Block>;
+}
 
-  this.wouldDeleteBlock = this.shouldDelete(!!newCandidate, dragTarget);
+// MonkeyPatchedInsertionMarkerManager relies on the dynmaic blocks adding a
+// new method called finalizeConnections.
+interface DynamicBlock extends Blockly.Block {
+  finalizeConnections(): void;
+}
 
-  const shouldUpdate =
-      this.wouldDeleteBlock || this.shouldUpdatePreviews(newCandidate, dxy);
+// Override the update method, possibly adding the candidate to pendingBlocks.
+// Hack: Private methods of InsertionMarkerManager are called using the array
+// index syntax, bypassing access checking. The private methods are also missing
+// type information in the d.ts files and are considered to return any here.
+Blockly.InsertionMarkerManager.prototype.update =
+    function(
+        this: MonkeyPatchedInsertionMarkerManager,
+        dxy: Blockly.utils.Coordinate,
+        dragTarget: Blockly.IDragTarget | null): void {
+      const newCandidate = this['getCandidate'](dxy);
 
-  if (shouldUpdate) {
-    // Begin monkey patch
-    if (newCandidate &&
-        newCandidate.closest &&
-        newCandidate.closest.sourceBlock_.onPendingConnection) {
-      newCandidate.closest.sourceBlock_
-          .onPendingConnection(newCandidate.closest);
-      if (!this.pendingBlocks) {
-        this.pendingBlocks = new Set();
+      this.wouldDeleteBlock = this['shouldDelete'](!!newCandidate, dragTarget);
+
+      const shouldUpdate: boolean = this.wouldDeleteBlock ||
+          this['shouldUpdatePreviews'](newCandidate, dxy);
+
+      if (shouldUpdate) {
+        // Begin monkey patch
+        if (newCandidate &&
+            newCandidate.closest &&
+            newCandidate.closest.sourceBlock_.onPendingConnection) {
+          newCandidate.closest.sourceBlock_
+              .onPendingConnection(newCandidate.closest);
+          if (!this.pendingBlocks) {
+            this.pendingBlocks = new Set();
+          }
+          this.pendingBlocks.add(newCandidate.closest.sourceBlock_);
+        }
+        // End monkey patch
+        // Don't fire events for insertion marker creation or movement.
+        Blockly.Events.disable();
+        this['maybeHidePreview'](newCandidate);
+        this['maybeShowPreview'](newCandidate);
+        Blockly.Events.enable();
       }
-      this.pendingBlocks.add(newCandidate.closest.sourceBlock_);
-    }
-    // End monkey patch
-    // Don't fire events for insertion marker creation or movement.
-    Blockly.Events.disable();
-    this.maybeHidePreview(newCandidate);
-    this.maybeShowPreview(newCandidate);
-    Blockly.Events.enable();
-  }
-};
+    };
 
 const oldDispose = Blockly.InsertionMarkerManager.prototype.dispose;
-Blockly.InsertionMarkerManager.prototype.dispose = function() {
-  if (this.pendingBlocks) {
-    this.pendingBlocks.forEach((block) => {
-      if (block.finalizeConnections) {
-        block.finalizeConnections();
+Blockly.InsertionMarkerManager.prototype.dispose =
+    function(this: MonkeyPatchedInsertionMarkerManager) {
+      if (this.pendingBlocks) {
+        this.pendingBlocks.forEach((block) => {
+          if ((block as DynamicBlock).finalizeConnections) {
+            (block as DynamicBlock).finalizeConnections();
+          }
+        });
       }
-    });
-  }
-  oldDispose.call(this);
-};
+      oldDispose.call(this);
+    };

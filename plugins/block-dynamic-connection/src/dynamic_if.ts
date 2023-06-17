@@ -11,25 +11,20 @@
 
 import * as Blockly from 'blockly/core';
 
+type DynamicIfBlock = Blockly.Block | (typeof Blockly.Blocks)['dynamic_if'];
+
 Blockly.Blocks['dynamic_if'] = {
-  /**
-   * Counter for the next input to add to this block.
-   * @type {number}
-   */
+  /** Counter for the next input to add to this block. */
   inputCounter: 1,
 
-  /**
-   * Minimum number of inputs for this block.
-   * @type {number}
-   */
+  /** Minimum number of inputs for this block. */
   minInputs: 1,
 
   /**
    * Block for if/elseif/else statements. Must have one if input.
    * Can have any number of elseif inputs and optionally one else input.
-   * @this {Blockly.Block}
    */
-  init: function() {
+  init: function(this: DynamicIfBlock): void {
     this.setHelpUrl(Blockly.Msg['CONTROLS_IF_HELPURL']);
     this.setStyle('logic_blocks');
 
@@ -46,40 +41,38 @@ Blockly.Blocks['dynamic_if'] = {
 
   /**
    * Create XML to represent if/elseif/else inputs.
-   * @returns {!Element} XML storage element.
-   * @this {Blockly.Block}
+   * @returns XML storage element.
    */
-  mutationToDom: function() {
+  mutationToDom: function(this: DynamicIfBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
     const inputNames = this.inputList
-        .filter((input) => input.name.includes('IF'))
-        .map((input) => input.name.replace('IF', '')).join(',');
+        .filter((input: Blockly.Input) => input.name.includes('IF'))
+        .map((input: Blockly.Input) => input.name.replace('IF', '')).join(',');
     container.setAttribute('inputs', inputNames);
     const hasElse = !!this.getInput('ELSE');
-    container.setAttribute('else', hasElse);
+    container.setAttribute('else', String(hasElse));
     container.setAttribute('next', this.inputCounter);
     return container;
   },
 
   /**
    * Parse XML to restore the inputs.
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function(this: DynamicIfBlock, xmlElement: Element): void {
     if (xmlElement.getAttribute('inputs')) {
-      this.deserializeInputs_(xmlElement);
+      this.deserializeInputs(xmlElement);
     } else {
-      this.deserializeCounts_(xmlElement);
+      this.deserializeCounts(xmlElement);
     }
   },
 
   /**
    * Parses XML based on the 'inputs' attribute (non-standard).
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  deserializeInputs_: function(xmlElement) {
+  deserializeInputs: function(
+      this: DynamicIfBlock, xmlElement: Element): void {
     const inputs = xmlElement.getAttribute('inputs');
     if (inputs) {
       const inputNumbers = inputs.split(',');
@@ -109,18 +102,17 @@ Blockly.Blocks['dynamic_if'] = {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
     }
-    const next = parseInt(xmlElement.getAttribute('next'));
+    const next = parseInt(xmlElement.getAttribute('next')!);
     this.inputCounter = next;
   },
 
   /**
    * Parses XML based on the 'elseif' and 'else' attributes (standard).
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  deserializeCounts_: function(xmlElement) {
-    const elseifCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
-    const elseCount = parseInt(xmlElement.getAttribute('else'), 10) || 0;
+  deserializeCounts: function(this: DynamicIfBlock, xmlElement: Element): void {
+    const elseifCount = parseInt(xmlElement.getAttribute('elseif')!, 10) || 0;
+    const elseCount = parseInt(xmlElement.getAttribute('else')!, 10) || 0;
     for (let i = 1; i <= elseifCount; i++) {
       this.appendValueInput('IF' + i).setCheck('Boolean').appendField(
           Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
@@ -137,10 +129,11 @@ Blockly.Blocks['dynamic_if'] = {
   /**
    * Finds the index of a connection. Used to determine where in the block to
    * insert new inputs.
-   * @param {!Blockly.Connection} connection A connection on this block.
-   * @returns {?number} The index of the connection in the this.inputList.
+   * @param connection A connection on this block.
+   * @returns The index of the connection in the this.inputList.
    */
-  findInputIndexForConnection: function(connection) {
+  findInputIndexForConnection: function(
+      this: DynamicIfBlock, connection: Blockly.Connection): number | null {
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
       if (input.connection == connection) {
@@ -152,9 +145,9 @@ Blockly.Blocks['dynamic_if'] = {
 
   /**
    * Inserts a boolean value input and statement input at the specified index.
-   * @param {number} index Index of the input before which to add new inputs.
+   * @param index Index of the input before which to add new inputs.
    */
-  insertElseIf: function(index) {
+  insertElseIf: function(this: DynamicIfBlock, index: number): void {
     const caseNumber = this.inputCounter;
     this
         .appendValueInput('IF' + caseNumber)
@@ -169,10 +162,11 @@ Blockly.Blocks['dynamic_if'] = {
 
   /**
    * Called when a block is dragged over one of the connections on this block.
-   * @param {!Blockly.Connection} connection The connection on this block that
-   * has a pending connection.
+   * @param connection The connection on this block that has a pending
+   *     connection.
    */
-  onPendingConnection: function(connection) {
+  onPendingConnection: function(
+      this: DynamicIfBlock, connection: Blockly.Connection): void {
     if (connection.type === Blockly.NEXT_STATEMENT && !this.getInput('ELSE')) {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
@@ -200,10 +194,10 @@ Blockly.Blocks['dynamic_if'] = {
   },
 
   /**
-   * Called when a block drag ends if the dragged block had a pending connection
-   * with this block.
+   * Called by a monkey-patched version of InsertionMarkerManager when a block
+   * drag ends if the dragged block had a pending connection with this block.
    */
-  finalizeConnections: function() {
+  finalizeConnections: function(this: DynamicIfBlock): void {
     const toRemove = [];
     // Remove Else If inputs if neither the if nor the do has a connected block.
     for (let i = 2; i < this.inputList.length - 1; i += 2) {
