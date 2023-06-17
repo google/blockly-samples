@@ -161,7 +161,8 @@ Blockly.Blocks['dynamic_if'] = {
   },
 
   /**
-   * Called when a block is dragged over one of the connections on this block.
+   * Called by a monkey-patched version of InsertionMarkerManager when a block
+   * is dragged over one of the connections on this block.
    * @param connection The connection on this block that has a pending
    *     connection.
    */

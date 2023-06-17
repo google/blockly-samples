@@ -20,9 +20,10 @@ interface MonkeyPatchedInsertionMarkerManager
   pendingBlocks: Set<Blockly.Block>;
 }
 
-// MonkeyPatchedInsertionMarkerManager relies on the dynmaic blocks adding a
-// new method called finalizeConnections.
+// MonkeyPatchedInsertionMarkerManager relies on the dynamic blocks adding new
+// methods called onPendingConnection and finalizeConnections.
 interface DynamicBlock extends Blockly.Block {
+  onPendingConnection(connection: Blockly.Connection): void;
   finalizeConnections(): void;
 }
 
