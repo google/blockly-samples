@@ -144,7 +144,7 @@ export class Modal {
    * @protected
    */
   widgetCreate_() {
-    const widgetDiv = Blockly.WidgetDiv.DIV;
+    const widgetDiv = Blockly.WidgetDiv.getDiv();
     Blockly.utils.dom.addClass(this.htmlDiv_, 'blocklyModalOpen');
     widgetDiv.appendChild(this.htmlDiv_);
   }
