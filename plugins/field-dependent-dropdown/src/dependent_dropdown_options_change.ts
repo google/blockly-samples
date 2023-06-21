@@ -107,7 +107,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Encode the event as JSON.
-   * @returns JSON representation.
+   * @return JSON representation.
    */
   toJson(): DependentDropdownOptionsChangeJson {
     const json = super.toJson() as DependentDropdownOptionsChangeJson;
@@ -131,6 +131,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
   /**
    * Decode the JSON event.
    * @param json JSON representation.
+   * @return The deserialized event.
    */
   static fromJson(
       json: DependentDropdownOptionsChangeJson,
@@ -152,7 +153,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Does this event leave all state as it was before?
-   * @returns False if something changed.
+   * @return False if something changed.
    */
   isNull(): boolean {
     const valuesAreEqual = this.oldValue === this.newValue;
