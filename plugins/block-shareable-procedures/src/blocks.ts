@@ -342,7 +342,7 @@ const procedureDefUpdateShapeMixin = {
         this.moveInputBefore('STACK', 'RETURN');
       }
       // Restore the stack, if one was saved.
-      Blockly.Mutator.reconnect(this.statementConnection_, this, 'STACK');
+      this.statementConnection_?.(this, 'STACK');
       this.statementConnection_ = null;
     } else {
       // Save the stack, then disconnect it.
