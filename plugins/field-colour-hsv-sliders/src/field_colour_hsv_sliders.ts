@@ -204,7 +204,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
   private static readonly helperRgb: RgbColour = new RgbColour();
 
   /** Array holding info needed to unbind events. Used for disposing. */
-  private boundEvents: Blockly.browserEvents.Data[] = [];
+  private hsvBoundEvents: Blockly.browserEvents.Data[] = [];
 
   /** HTML span element to display the current hue. */
   private hueReadout: HTMLSpanElement | null = null;
@@ -304,13 +304,13 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
     this.brightnessSlider = FieldColourHsvSliders.createSliderInContainer(
         FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX, 1, container);
 
-    this.boundEvents.push(
+    this.hsvBoundEvents.push(
         Blockly.browserEvents.conditionalBind(
             this.hueSlider, 'input', this, this.onSliderChange));
-    this.boundEvents.push(
+    this.hsvBoundEvents.push(
         Blockly.browserEvents.conditionalBind(
             this.saturationSlider, 'input', this, this.onSliderChange));
-    this.boundEvents.push(
+    this.hsvBoundEvents.push(
         Blockly.browserEvents.conditionalBind(
             this.brightnessSlider, 'input', this, this.onSliderChange));
 
@@ -320,7 +320,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
       button.classList.add('fieldColourEyedropper');
       container.appendChild(document.createElement('hr'));
       container.appendChild(button);
-      this.boundEvents.push(
+      this.hsvBoundEvents.push(
           Blockly.browserEvents.conditionalBind(
               button, 'click', this, this.onEyedropperEvent));
     }
@@ -332,10 +332,10 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
 
   /** Disposes of events and DOM-references belonging to the colour editor. */
   private dropdownDisposeSliders(): void {
-    for (const event of this.boundEvents) {
+    for (const event of this.hsvBoundEvents) {
       Blockly.browserEvents.unbind(event);
     }
-    this.boundEvents.length = 0;
+    this.hsvBoundEvents.length = 0;
     this.hueReadout = null;
     this.hueSlider = null;
     this.saturationReadout = null;
@@ -458,7 +458,7 @@ export class FieldColourHsvSliders extends Blockly.FieldColour {
     }
 
     const hsv: HsvColour = FieldColourHsvSliders.helperHsv.loadFromRgb(
-        FieldColourHsvSliders.helperRgb.loadFromHex(this.getValue()));
+        FieldColourHsvSliders.helperRgb.loadFromHex(this.getValue() ?? ''));
 
     this.hueSlider.value =
         String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX);

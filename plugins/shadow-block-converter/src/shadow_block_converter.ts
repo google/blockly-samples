@@ -72,10 +72,19 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    * @param json JSON representation.
    * @override
    */
-  fromJson(json: BlockChangeJson) {
-    super.fromJson(json);
-    this.oldValue = json['oldValue'];
-    this.newValue = json['newValue'];
+  static fromJson(
+      json: BlockChangeJson,
+      workspace: Blockly.Workspace,
+      event?: any,
+  ): BlockShadowChange {
+    const newEvent = super.fromJson(
+        json,
+        workspace,
+        event
+    ) as BlockShadowChange;
+    newEvent.oldValue = json['oldValue'];
+    newEvent.newValue = json['newValue'];
+    return event;
   }
 
   /**

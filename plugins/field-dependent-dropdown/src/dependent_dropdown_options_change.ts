@@ -132,13 +132,22 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    * Decode the JSON event.
    * @param json JSON representation.
    */
-  fromJson(json: DependentDropdownOptionsChangeJson): void {
-    super.fromJson(json);
-    this.name = json['name'];
-    this.oldValue = json['oldValue'];
-    this.newValue = json['newValue'];
-    this.oldOptions = json['oldOptions'];
-    this.newOptions = json['newOptions'];
+  static fromJson(
+      json: DependentDropdownOptionsChangeJson,
+      workspace: Blockly.Workspace,
+      event?: any
+  ): DependentDropdownOptionsChange {
+    const newEvent = super.fromJson(
+        json,
+        workspace,
+        event
+    ) as DependentDropdownOptionsChange;
+    newEvent.name = json['name'];
+    newEvent.oldValue = json['oldValue'];
+    newEvent.newValue = json['newValue'];
+    newEvent.oldOptions = json['oldOptions'];
+    newEvent.newOptions = json['newOptions'];
+    return newEvent;
   }
 
   /**
