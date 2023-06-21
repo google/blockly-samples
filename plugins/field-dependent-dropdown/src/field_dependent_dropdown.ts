@@ -132,9 +132,12 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
       // If the parent field exists, and its value is a key in the provided
       // option mapping, use the corresponding options.
       if (dependencyData.parentField) {
-        const options = optionMapping[dependencyData.parentField.getValue()];
-        if (options) {
-          return options;
+        const value = dependencyData.parentField.getValue();
+        if (value) {
+          const options = optionMapping[value];
+          if (options) {
+            return options;
+          }
         }
       }
 
@@ -214,7 +217,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
       this.updateOptionsBasedOnNewValue(newValue);
       return newValue;
     });
-    this.updateOptionsBasedOnNewValue(parentField.getValue());
+    this.updateOptionsBasedOnNewValue(parentField.getValue() ?? undefined);
   }
 
   /**
@@ -286,8 +289,8 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
       Blockly.Events.fire(new DependentDropdownOptionsChange(
           block,
           this.name,
-          oldChildValue,
-          newChildValue,
+          oldChildValue ?? undefined,
+          newChildValue ?? undefined,
           oldChildOptions,
           newChildOptions));
     }

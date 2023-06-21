@@ -221,7 +221,8 @@ export function createPlayground(
               isFirstLoad = false;
               try {
                 Blockly.Xml.domToWorkspace(
-                    Blockly.utils.xml.textToDom(initialWorkspaceXml), workspace);
+                    Blockly.utils.xml.textToDom(initialWorkspaceXml),
+                    workspace);
               } catch (e) {
                 console.warn('Failed to auto import.', e);
               }

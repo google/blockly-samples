@@ -184,9 +184,9 @@ export function shadowBlockConversionChangeListener(
     const shadowBlock = shadowBlocks[i];
 
     // If connected blocks need to be converted too, add them to the list.
-    const outputBlock: Block | null =
+    const outputBlock: Block | null | undefined =
         shadowBlock.outputConnection?.targetBlock();
-    const previousBlock: Block | null =
+    const previousBlock: Block | null | undefined =
         shadowBlock.previousConnection?.targetBlock();
     if (outputBlock?.isShadow()) {
       shadowBlocks.push(outputBlock);
