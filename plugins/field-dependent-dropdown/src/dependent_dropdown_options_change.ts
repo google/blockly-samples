@@ -17,7 +17,7 @@ import type {FieldDependentDropdown} from './field_dependent_dropdown';
  * comparing any child elements that are also arrays.
  * @param a The first array to compare.
  * @param b The second array to compare.
- * @returns Whether the arrays are deeply equivalent.
+ * @return Whether the arrays are deeply equivalent.
  */
 function arraysAreEquivalent<T>(a: T[], b: T[]): boolean {
   return a.length === b.length && a.every((aElement, index) => {
