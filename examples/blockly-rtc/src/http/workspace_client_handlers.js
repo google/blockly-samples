@@ -32,7 +32,7 @@ export async function getSnapshot() {
   const response = await fetch('/api/snapshot/query');
   const responseJson = await response.json();
   const snapshot = responseJson.snapshot;
-  snapshot.xml = Blockly.Xml.textToDom(snapshot.xml);
+  snapshot.xml = Blockly.utils.xml.textToDom(snapshot.xml);
   if (response.status === 200) {
     return snapshot;
   } else {
