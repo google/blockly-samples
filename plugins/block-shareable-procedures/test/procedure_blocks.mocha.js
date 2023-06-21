@@ -67,7 +67,8 @@ suite('Procedures', function() {
             },
           };
         });
-    this.findParentWsStub = this.sandbox.stub(Blockly.Mutator, 'findParentWs')
+    this.findParentWsStub = this.sandbox
+        .stub(Blockly.Workspace.prototype, 'getRootWorkspace')
         .callsFake(() => {
           return this.workspace;
         });

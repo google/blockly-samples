@@ -313,7 +313,8 @@ const procedureDefUpdateShapeMixin = {
    * the state of the procedure model.
    */
   updateMutator_: function() {
-    if (!this.mutator?.isVisible()) return;
+    const mutator = this.getIcon(Blockly.icons.MutatorIcon.TYPE);
+    if (!mutator?.bubbleIsVisible()) return;
 
     const mutatorWorkspace = this.mutator.getWorkspace();
     for (const p of this.getProcedureModel().getParameters()) {
