@@ -20,12 +20,6 @@ const packageJson = require(resolveApp('package.json'));
 
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-// Create the eslint cache directory if it doesn't exist.
-const eslintCacheLocation = path.join('node_modules', '.cache', '.eslint');
-if (!fs.existsSync(eslintCacheLocation)) {
-  fs.mkdirSync(eslintCacheLocation, {recursive: true});
-}
-
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -126,7 +120,7 @@ module.exports = (env) => {
       // Run the linter.
       !env.skipLint && new ESLintPlugin({
         cache: true,
-        cacheLocation: eslintCacheLocation,
+        cacheLocation: path.join('node_modules/.cache/eslint/'),
         formatter: 'stylish',
         emitWarning: isDevelopment,
         eslintPath: require.resolve('eslint'),

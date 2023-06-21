@@ -30,11 +30,7 @@ console.log(`Running lint for ${packageJson.name}`);
 // Create the eslint engine.
 const eslintConfig = require('@blockly/eslint-config');
 
-// Create the cache directory if it doesn't exist.
-const cacheLocation = path.join('node_modules', '.cache', '.eslint');
-if (!fs.existsSync(cacheLocation)) {
-  fs.mkdirSync(cacheLocation, {recursive: true});
-}
+const cacheLocation = path.join('node_modules/.cache/.eslint/');
 
 const args = process.argv.slice(2);
 const shouldFix = args.includes('--fix');
