@@ -17,7 +17,7 @@ import type {FieldDependentDropdown} from './field_dependent_dropdown';
  * comparing any child elements that are also arrays.
  * @param a The first array to compare.
  * @param b The second array to compare.
- * @return Whether the arrays are deeply equivalent.
+ * @returns Whether the arrays are deeply equivalent.
  */
 function arraysAreEquivalent<T>(a: T[], b: T[]): boolean {
   return a.length === b.length && a.every((aElement, index) => {
@@ -107,7 +107,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Encode the event as JSON.
-   * @return JSON representation.
+   * @returns JSON representation.
    */
   toJson(): DependentDropdownOptionsChangeJson {
     const json = super.toJson() as DependentDropdownOptionsChangeJson;
@@ -131,7 +131,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
   /**
    * Decode the JSON event.
    * @param json JSON representation.
-   * @return The deserialized event.
+   * @returns The deserialized event.
    */
   static fromJson(
       json: DependentDropdownOptionsChangeJson,
@@ -153,7 +153,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Does this event leave all state as it was before?
-   * @return False if something changed.
+   * @returns False if something changed.
    */
   isNull(): boolean {
     const valuesAreEqual = this.oldValue === this.newValue;
