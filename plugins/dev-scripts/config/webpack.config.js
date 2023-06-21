@@ -120,6 +120,7 @@ module.exports = (env) => {
       // Run the linter.
       !env.skipLint && new ESLintPlugin({
         cache: true,
+        cacheLocation: path.join('node_modules/.cache/eslint/'),
         formatter: 'stylish',
         emitWarning: isDevelopment,
         eslintPath: require.resolve('eslint'),
