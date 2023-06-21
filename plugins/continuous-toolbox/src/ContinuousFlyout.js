@@ -216,7 +216,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     const edgeWidth = this.width_ - this.CORNER_RADIUS;
     const edgeHeight =
         targetWorkspaceMetrics.viewHeight - 2 * this.CORNER_RADIUS;
-    this.setBackgroundPath_(edgeWidth, edgeHeight);
+    this.setBackgroundPath(edgeWidth, edgeHeight);
 
     // Y is always 0 since this is a vertical flyout.
     const y = 0;
