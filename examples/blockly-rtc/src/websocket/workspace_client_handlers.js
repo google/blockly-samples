@@ -36,7 +36,7 @@ const socket = io();
 export async function getSnapshot() {
   return new Promise((resolve, reject) => {
     socket.emit('getSnapshot', (snapshot) => {
-      snapshot.xml = Blockly.Xml.textToDom(snapshot.xml);
+      snapshot.xml = Blockly.utils.xml.textToDom(snapshot.xml);
       resolve(snapshot);
     });
   });

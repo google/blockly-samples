@@ -81,7 +81,7 @@ Blockly.defineBlocksWithJsonArray([
 const insertConnectionStacks = function(button) {
   const workspace = button.getTargetWorkspace();
   Blockly.Xml.domToWorkspace(
-      Blockly.Xml.textToDom(
+      Blockly.utils.xml.textToDom(
           /* eslint-disable max-len */
           '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="test_connections_stack_next">\n' +

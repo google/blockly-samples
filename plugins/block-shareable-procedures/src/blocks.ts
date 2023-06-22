@@ -313,7 +313,8 @@ const procedureDefUpdateShapeMixin = {
    * the state of the procedure model.
    */
   updateMutator_: function() {
-    if (!this.mutator?.isVisible()) return;
+    const mutator = this.getIcon(Blockly.icons.MutatorIcon.TYPE);
+    if (!mutator?.bubbleIsVisible()) return;
 
     const mutatorWorkspace = this.mutator.getWorkspace();
     for (const p of this.getProcedureModel().getParameters()) {
@@ -341,7 +342,7 @@ const procedureDefUpdateShapeMixin = {
         this.moveInputBefore('STACK', 'RETURN');
       }
       // Restore the stack, if one was saved.
-      Blockly.Mutator.reconnect(this.statementConnection_, this, 'STACK');
+      this.statementConnection_?.(this, 'STACK');
       this.statementConnection_ = null;
     } else {
       // Save the stack, then disconnect it.

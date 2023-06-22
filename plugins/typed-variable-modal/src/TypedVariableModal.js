@@ -88,7 +88,7 @@ export class TypedVariableModal extends Modal {
           'Name is not valid. Please choose a different name.',
     };
 
-    Blockly.utils.object.mixin(messages, optMessages);
+    Object.assign(messages, optMessages);
 
     this.setLocale(messages);
 
