@@ -105,7 +105,7 @@ You can drag this block out from the toolbox into the workspace, but if you try 
 
 ```js
 // Define how to generate JavaScript from the custom block.
-Blockly.JavaScript['list_range'] = function(block) {
+javascript.javascriptGenerator['list_range'] = function(block) {
   const first = this.getFieldValue('FIRST');
   const last = this.getFieldValue('LAST');
   const numbers = [];
@@ -113,7 +113,7 @@ Blockly.JavaScript['list_range'] = function(block) {
     numbers.push(i);
   }
   const code = '[' + numbers.join(', ') + ']';
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, javascript.Order.NONE];
 };
 ```
 

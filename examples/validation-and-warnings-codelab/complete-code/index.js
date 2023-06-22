@@ -57,7 +57,7 @@ Blockly.Extensions.register('list_range_validation', function() {
 });
 
 // Define how to generate JavaScript from the custom block.
-Blockly.JavaScript['list_range'] = function(block) {
+javascript.javascriptGenerator.forBlock['list_range'] = function(block) {
   const first = this.getFieldValue('FIRST');
   const last = this.getFieldValue('LAST');
   const numbers = [];
@@ -65,7 +65,7 @@ Blockly.JavaScript['list_range'] = function(block) {
     numbers.push(i);
   }
   const code = '[' + numbers.join(', ') + ']';
-  return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, javascript.Order.NONE];
 };
 
 // Define which blocks are available in the toolbox.
@@ -122,7 +122,7 @@ let workspace = null;
   });
 
   workspace.addChangeListener(event => {
-    const code = Blockly.JavaScript.workspaceToCode(workspace);
+    const code = javascript.javascriptGenerator.workspaceToCode(workspace);
     document.getElementById('generatedCodeContainer').value = code;
   });
 }
@@ -133,6 +133,6 @@ let workspace = null;
  * Called from index.html when the execute button is clicked.
  */
 function executeCode() {
-  const code = Blockly.JavaScript.workspaceToCode(workspace);
+  const code = javascript.javascriptGenerator.workspaceToCode(workspace);
   eval(code);
 }
