@@ -12,6 +12,9 @@
 * [Field Slider](plugins/field-slider/test/index.html)
 * [Field Dependent Dropdown](plugins/field-dependent-dropdown/test/index.html)
 * [Field Grid Dropdown](plugins/field-grid-dropdown/test/index.html)
+* [Field Colour](/plugins/field-colour/test/index.html)
+* [Field Angle](/plugins/field-angle/test/index.html)
+* [Field Multiline Text](/plugins/field-multilineinput/test/index.html)
 
 
 ## Plugins
