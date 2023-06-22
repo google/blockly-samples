@@ -190,69 +190,52 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     return 0;
   }
 
-  /**
-   * Overrides the position function solely to change the x coord in RTL mode.
-   * The base function allows the workspace to go "under" the flyout, so
-   * to calculate the left edge of the flyout in RTL you would just subtract
-   * the flyout width from the total viewWidth to get x. However, in our
-   * flyout, the workspace already starts at the left edge of the flyout, so
-   * we don't need to subtract the flyout width again.
-   * Ideally there would be a smaller method for us to override instead,
-   * but for now we copy/paste this method and make our fixes.
-   * @override
-   */
-  position() {
+  /** @override */
+  getX() {
     if (!this.isVisible()) {
-      return;
+      return 0;
     }
-    const targetWorkspaceMetrics = this.targetWorkspace.getMetrics();
-    if (!targetWorkspaceMetrics) {
-      // Hidden components will return null.
-      return;
-    }
-    // Record the height for Blockly.Flyout.getMetrics_
-    this.height_ = targetWorkspaceMetrics.viewHeight;
-
-    const edgeWidth = this.width_ - this.CORNER_RADIUS;
-    const edgeHeight =
-        targetWorkspaceMetrics.viewHeight - 2 * this.CORNER_RADIUS;
-    this.setBackgroundPath(edgeWidth, edgeHeight);
-
-    // Y is always 0 since this is a vertical flyout.
-    const y = 0;
+    const metricsManager = this.targetWorkspace.getMetricsManager();
+    const absoluteMetrics = metricsManager.getAbsoluteMetrics();
+    const viewMetrics = metricsManager.getViewMetrics();
+    const toolboxMetrics = metricsManager.getToolboxMetrics();
     let x = 0;
-    // If this flyout is the toolbox flyout.
-    if (this.targetWorkspace.toolboxPosition == this.toolboxPosition_) {
+
+    // If this flyout is not the trashcan flyout (e.g. toolbox or mutator).
+    // Trashcan flyout is opposite the main flyout.
+    if (this.targetWorkspace.toolboxPosition === this.toolboxPosition_) {
       // If there is a category toolbox.
-      if (targetWorkspaceMetrics.toolboxWidth) {
-        if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
-          x = targetWorkspaceMetrics.toolboxWidth;
+      // Simple (flyout-only) toolbox.
+      if (this.targetWorkspace.getToolbox()) {
+        if (this.toolboxPosition_ === Blockly.utils.toolbox.Position.LEFT) {
+          x = toolboxMetrics.width;
         } else {
-          // TODO(https://github.com/google/blockly/issues/4396): Use a better
-          // API to adjust this value.
-          // This is the only line that changed from the original.
-          x = targetWorkspaceMetrics.viewWidth;
+          // This is the one thing that has been changed from the base
+          // implementation, to account for RTL. This makes it so blocks cannot
+          // go under the flyout in RTL mode.
+          x = viewMetrics.width;
         }
       } else {
-        if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
+        if (this.toolboxPosition_ === Blockly.utils.toolbox.Position.LEFT) {
           x = 0;
         } else {
-          x = targetWorkspaceMetrics.viewWidth;
+          // The simple flyout does not cover the workspace.
+          x = viewMetrics.width;
         }
       }
     } else {
-      if (this.toolboxPosition_ == Blockly.TOOLBOX_AT_LEFT) {
+      if (this.toolboxPosition_ === Blockly.utils.toolbox.Position.LEFT) {
         x = 0;
       } else {
         // Because the anchor point of the flyout is on the left, but we want
         // to align the right edge of the flyout with the right edge of the
         // blocklyDiv, we calculate the full width of the div minus the width
         // of the flyout.
-        x = targetWorkspaceMetrics.viewWidth +
-            targetWorkspaceMetrics.absoluteLeft - this.width_;
+        x = viewMetrics.width + absoluteMetrics.left - this.width_;
       }
     }
-    this.positionAt_(this.width_, this.height_, x, y);
+
+    return x;
   }
 
   /**
