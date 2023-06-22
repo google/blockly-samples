@@ -58,7 +58,7 @@ jobs:
     - name: Publish
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npx lerna publish --conventional-commits --create-release github --yes
+      run: npx lerna publish --no-private --conventional-commits --create-release github --yes
 
   update-gh-pages:
     name: Update GitHub Pages

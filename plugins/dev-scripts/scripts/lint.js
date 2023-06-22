@@ -30,6 +30,8 @@ console.log(`Running lint for ${packageJson.name}`);
 // Create the eslint engine.
 const eslintConfig = require('@blockly/eslint-config');
 
+const cacheLocation = path.join('node_modules/.cache/.eslint/');
+
 const args = process.argv.slice(2);
 const shouldFix = args.includes('--fix');
 const linter = new ESLint({
@@ -38,6 +40,8 @@ const linter = new ESLint({
   useEslintrc: false,
   resolvePluginsRelativeTo: __dirname,
   fix: shouldFix,
+  cache: true,
+  cacheLocation: cacheLocation,
 });
 
 /**
