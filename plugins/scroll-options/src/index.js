@@ -77,16 +77,9 @@ export class ScrollOptions {
       return;
     }
 
-    let element;
-    const dragSurface = this.workspace_.getBlockDragSurface();
-    if (dragSurface) {
-      element = dragSurface.getSvgRoot();
-    } else {
-      element = this.workspace_.svgGroup_;
-    }
-
+    // TODO(blockly/#7157): We should maybe add an accessor for the svgGroup_?
     this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
-        element, 'wheel', this, this.onMouseWheel_);
+        this.workspace_.svgGroup_, 'wheel', this, this.onMouseWheel_);
   }
 
   /**
