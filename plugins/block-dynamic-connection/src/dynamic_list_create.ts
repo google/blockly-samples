@@ -11,10 +11,15 @@
 
 import * as Blockly from 'blockly/core';
 
-type DynamicListCreateBlock =
-    Blockly.Block | (typeof Blockly.Blocks)['dynamic_list_create'];
+/** Type of a block that has the dynamicListCreateMixin. */
+type DynamicListCreateBlock = Blockly.Block & DynamicListCreateMixin;
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/** This interface avoids a "circular reference" compile error. */
+interface DynamicListCreateMixin extends DynamicListCreateMixinType {}
+/* eslint-enable @typescript-eslint/no-empty-interface */
+type DynamicListCreateMixinType = typeof dynamicListCreateMixin;
 
-Blockly.Blocks['dynamic_list_create'] = {
+const dynamicListCreateMixin = {
   /** Counter for the next input to add to this block. */
   inputCounter: 2,
 
@@ -22,7 +27,7 @@ Blockly.Blocks['dynamic_list_create'] = {
   minInputs: 2,
 
   /** Block for concatenating any number of strings. */
-  init: function(this: DynamicListCreateBlock): void {
+  init(this: DynamicListCreateBlock): void {
     this.setHelpUrl(Blockly.Msg['LISTS_CREATE_WITH_HELPURL']);
     this.setStyle('list_blocks');
     this.appendValueInput('ADD0')
@@ -36,12 +41,12 @@ Blockly.Blocks['dynamic_list_create'] = {
    * Create XML to represent number of text inputs.
    * @returns XML storage element.
    */
-  mutationToDom: function(this: DynamicListCreateBlock): Element {
+  mutationToDom(this: DynamicListCreateBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
     const inputNames =
         this.inputList.map((input: Blockly.Input) => input.name).join(',');
     container.setAttribute('inputs', inputNames);
-    container.setAttribute('next', this.inputCounter);
+    container.setAttribute('next', String(this.inputCounter));
     return container;
   },
 
@@ -49,8 +54,7 @@ Blockly.Blocks['dynamic_list_create'] = {
    * Parse XML to restore the text inputs.
    * @param xmlElement XML storage element.
    */
-  domToMutation: function(
-      this: DynamicListCreateBlock, xmlElement: Element): void {
+  domToMutation(this: DynamicListCreateBlock, xmlElement: Element): void {
     if (xmlElement.getAttribute('inputs')) {
       this.deserializeInputs(xmlElement);
     } else {
@@ -62,8 +66,7 @@ Blockly.Blocks['dynamic_list_create'] = {
    * Parses XML based on the 'inputs' attribute (non-standard).
    * @param xmlElement XML storage element.
    */
-  deserializeInputs: function(
-      this: DynamicListCreateBlock, xmlElement: Element): void {
+  deserializeInputs(this: DynamicListCreateBlock, xmlElement: Element): void {
     const items = xmlElement.getAttribute('inputs');
     if (items) {
       const inputNames = items.split(',');
@@ -72,7 +75,7 @@ Blockly.Blocks['dynamic_list_create'] = {
       this.inputList[0]
           .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
     }
-    const next = parseInt(xmlElement.getAttribute('next')!);
+    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
     this.inputCounter = next;
   },
 
@@ -80,10 +83,9 @@ Blockly.Blocks['dynamic_list_create'] = {
    * Parses XML based on the 'items' attribute (standard).
    * @param xmlElement XML storage element.
    */
-  deserializeCounts: function(
-      this: DynamicListCreateBlock, xmlElement: Element): void {
+  deserializeCounts(this: DynamicListCreateBlock, xmlElement: Element): void {
     const itemCount = Math.max(
-        parseInt(xmlElement.getAttribute('items')!, 10), this.minInputs);
+        parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
     // Two inputs are added automatically.
     for (let i = this.minInputs; i < itemCount; i++) {
       this.appendValueInput('ADD' + i);
@@ -97,7 +99,7 @@ Blockly.Blocks['dynamic_list_create'] = {
    * @returns The index before which to insert a new input, or null if no input
    *     should be added.
    */
-  getIndexForNewInput: function(
+  getIndexForNewInput(
       this: DynamicListCreateBlock,
       connection: Blockly.Connection): number | null {
     if (!connection.targetConnection) {
@@ -119,8 +121,12 @@ Blockly.Blocks['dynamic_list_create'] = {
     }
 
     const nextInput = this.inputList[connectionIndex + 1];
-    const nextConnection = nextInput && nextInput.connection.targetConnection;
-    if (nextConnection && !nextConnection.sourceBlock_.isInsertionMarker()) {
+    const nextConnection =
+        nextInput &&
+        nextInput.connection &&
+        nextInput.connection.targetConnection;
+    if (nextConnection &&
+        !nextConnection.getSourceBlock().isInsertionMarker()) {
       return connectionIndex + 1;
     }
 
@@ -129,12 +135,12 @@ Blockly.Blocks['dynamic_list_create'] = {
   },
 
   /**
-   * Called by a monkey-patched version of InsertionMarkerManager when a block
-   * is dragged over one of the connections on this block.
+   * Called by a monkey-patched version of InsertionMarkerManager when
+   * a block is dragged over one of the connections on this block.
    * @param connection The connection on this block that has a pending
    *     connection.
    */
-  onPendingConnection: function(
+  onPendingConnection(
       this: DynamicListCreateBlock, connection: Blockly.Connection): void {
     const insertIndex = this.getIndexForNewInput(connection);
     if (insertIndex == null) {
@@ -148,12 +154,11 @@ Blockly.Blocks['dynamic_list_create'] = {
    * Called by a monkey-patched version of InsertionMarkerManager when a block
    * drag ends if the dragged block had a pending connection with this block.
    */
-  finalizeConnections: function(this: DynamicListCreateBlock): void {
+  finalizeConnections(this: DynamicListCreateBlock): void {
     if (this.inputList.length > this.minInputs) {
       let toRemove: string[] = [];
       this.inputList.forEach((input: Blockly.Input) => {
-        const targetConnection = input.connection!.targetConnection;
-        if (!targetConnection) {
+        if (!input.connection || !input.connection.targetConnection) {
           toRemove.push(input.name);
         }
       });
@@ -172,3 +177,5 @@ Blockly.Blocks['dynamic_list_create'] = {
     }
   },
 };
+
+Blockly.Blocks['dynamic_list_create'] = dynamicListCreateMixin;

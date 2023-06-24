@@ -11,10 +11,15 @@
 
 import * as Blockly from 'blockly/core';
 
-type DynamicTextJoinBlock =
-    Blockly.Block | (typeof Blockly.Blocks)['dynamic_text_join'];
+/** Type of a block that has the dynamicTextJoinMixin. */
+type DynamicTextJoinBlock = Blockly.Block & DynamicTextJoinMixin;
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/** This interface avoids a "circular reference" compile error. */
+interface DynamicTextJoinMixin extends DynamicTextJoinMixinType {}
+/* eslint-enable @typescript-eslint/no-empty-interface */
+type DynamicTextJoinMixinType = typeof dynamicTextJoinMixin;
 
-Blockly.Blocks['dynamic_text_join'] = {
+const dynamicTextJoinMixin = {
   /** Counter for the next input to add to this block. */
   inputCounter: 2,
 
@@ -22,7 +27,7 @@ Blockly.Blocks['dynamic_text_join'] = {
   minInputs: 2,
 
   /** Block for concatenating any number of strings. */
-  init: function(this: DynamicTextJoinBlock): void {
+  init(this: DynamicTextJoinBlock): void {
     this.setHelpUrl(Blockly.Msg['TEXT_JOIN_HELPURL']);
     this.setStyle('text_blocks');
     this.appendValueInput('ADD0')
@@ -36,12 +41,12 @@ Blockly.Blocks['dynamic_text_join'] = {
    * Create XML to represent number of text inputs.
    * @returns XML storage element.
    */
-  mutationToDom: function(this: DynamicTextJoinBlock): Element {
+  mutationToDom(this: DynamicTextJoinBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
     const inputNames =
         this.inputList.map((input: Blockly.Input) => input.name).join(',');
     container.setAttribute('inputs', inputNames);
-    container.setAttribute('next', this.inputCounter);
+    container.setAttribute('next', String(this.inputCounter));
     return container;
   },
 
@@ -49,8 +54,7 @@ Blockly.Blocks['dynamic_text_join'] = {
    * Parse XML to restore the text inputs.
    * @param xmlElement XML storage element.
    */
-  domToMutation: function(
-      this: DynamicTextJoinBlock, xmlElement: Element): void {
+  domToMutation(this: DynamicTextJoinBlock, xmlElement: Element): void {
     if (xmlElement.getAttribute('inputs')) {
       this.deserializeInputs(xmlElement);
     } else {
@@ -62,8 +66,7 @@ Blockly.Blocks['dynamic_text_join'] = {
    * Parses XML based on the 'inputs' attribute (non-standard).
    * @param xmlElement XML storage element.
    */
-  deserializeInputs: function(
-      this: DynamicTextJoinBlock, xmlElement: Element): void {
+  deserializeInputs(this: DynamicTextJoinBlock, xmlElement: Element): void {
     const items = xmlElement.getAttribute('inputs');
     if (items) {
       const inputNames = items.split(',');
@@ -72,7 +75,7 @@ Blockly.Blocks['dynamic_text_join'] = {
       this.inputList[0]
           .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     }
-    const next = parseInt(xmlElement.getAttribute('next')!);
+    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
     this.inputCounter = next;
   },
 
@@ -80,10 +83,9 @@ Blockly.Blocks['dynamic_text_join'] = {
    * Parses XML based on the 'items' attribute (standard).
    * @param xmlElement XML storage element.
    */
-  deserializeCounts: function(
-      this: DynamicTextJoinBlock, xmlElement: Element): void {
+  deserializeCounts(this: DynamicTextJoinBlock, xmlElement: Element): void {
     const itemCount = Math.max(
-        parseInt(xmlElement.getAttribute('items')!, 10), this.minInputs);
+        parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
     // Two inputs are added automatically.
     for (let i = this.minInputs; i < itemCount; i++) {
       this.appendValueInput('ADD' + i);
@@ -97,7 +99,7 @@ Blockly.Blocks['dynamic_text_join'] = {
    * @returns The index before which to insert a new input, or null if no input
    *     should be added.
    */
-  getIndexForNewInput: function(
+  getIndexForNewInput(
       this: DynamicTextJoinBlock,
       connection: Blockly.Connection): number | null {
     if (!connection.targetConnection) {
@@ -119,8 +121,12 @@ Blockly.Blocks['dynamic_text_join'] = {
     }
 
     const nextInput = this.inputList[connectionIndex + 1];
-    const nextConnection = nextInput && nextInput.connection.targetConnection;
-    if (nextConnection && !nextConnection.sourceBlock_.isInsertionMarker()) {
+    const nextConnection =
+        nextInput &&
+        nextInput.connection &&
+        nextInput.connection.targetConnection;
+    if (nextConnection &&
+        !nextConnection.getSourceBlock().isInsertionMarker()) {
       return connectionIndex + 1;
     }
 
@@ -129,12 +135,12 @@ Blockly.Blocks['dynamic_text_join'] = {
   },
 
   /**
-   * Called by a monkey-patched version of InsertionMarkerManager when a block
-   * is dragged over one of the connections on this block.
+   * Called by a monkey-patched version of InsertionMarkerManager when
+   * a block is dragged over one of the connections on this block.
    * @param connection The connection on this block that has a pending
    *     connection.
    */
-  onPendingConnection: function(
+  onPendingConnection(
       this: DynamicTextJoinBlock, connection: Blockly.Connection): void {
     const insertIndex = this.getIndexForNewInput(connection);
     if (insertIndex == null) {
@@ -148,12 +154,11 @@ Blockly.Blocks['dynamic_text_join'] = {
    * Called by a monkey-patched version of InsertionMarkerManager when a block
    * drag ends if the dragged block had a pending connection with this block.
    */
-  finalizeConnections: function(this: DynamicTextJoinBlock): void {
+  finalizeConnections(this: DynamicTextJoinBlock): void {
     if (this.inputList.length > this.minInputs) {
       let toRemove: string[] = [];
       this.inputList.forEach((input: Blockly.Input) => {
-        const targetConnection = input.connection!.targetConnection;
-        if (!targetConnection) {
+        if (!input.connection || !input.connection.targetConnection) {
           toRemove.push(input.name);
         }
       });
@@ -172,3 +177,5 @@ Blockly.Blocks['dynamic_text_join'] = {
     }
   },
 };
+
+Blockly.Blocks['dynamic_text_join'] = dynamicTextJoinMixin;
