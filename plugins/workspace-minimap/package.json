@@ -1,0 +1,58 @@
+{
+  "name": "@blockly/workspace-minimap",
+  "version": "0.0.0",
+  "description": "A Blockly plugin.",
+  "scripts": {
+    "audit:fix": "blockly-scripts auditFix",
+    "build": "blockly-scripts build",
+    "clean": "blockly-scripts clean",
+    "lint": "blockly-scripts lint",
+    "predeploy": "blockly-scripts predeploy",
+    "start": "blockly-scripts start",
+    "test": "blockly-scripts test"
+  },
+  "priavte": true,
+  "main": "./dist/index.js",
+  "module": "./src/index.js",
+  "unpkg": "./dist/index.js",
+  "author": "Blockly Team",
+  "keywords": [
+    "blockly",
+    "blockly-plugin",
+    "workspace-minimap"
+  ],
+  "homepage": "git@github.com:google/blockly-samples/tree/master/plugins/workspace-minimap#readme",
+  "bugs": {
+    "url": "git@github.com:google/blockly-samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:google/blockly-samples.git",
+    "directory": "plugins/workspace-minimap"
+  },
+  "license": "Apache-2.0",
+  "directories": {
+    "dist": "dist",
+    "src": "src"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "devDependencies": {
+    "blockly": "^9.3.3",
+    "@blockly/dev-scripts": "^1.2.36",
+    "@blockly/dev-tools": "^5.3.2",
+    "typescript": "^5.1.3"
+  },
+  "peerDependencies": {
+    "blockly": "^9.3.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
+  "eslintConfig": {
+    "extends": "@blockly/eslint-config"
+  }
+}
