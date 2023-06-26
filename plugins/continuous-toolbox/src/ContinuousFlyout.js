@@ -192,50 +192,15 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /** @override */
   getX() {
-    if (!this.isVisible()) {
-      return 0;
-    }
-    const metricsManager = this.targetWorkspace.getMetricsManager();
-    const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-    const viewMetrics = metricsManager.getViewMetrics();
-    const toolboxMetrics = metricsManager.getToolboxMetrics();
-    let x = 0;
-
-    // If this flyout is not the trashcan flyout (e.g. toolbox or mutator).
-    // Trashcan flyout is opposite the main flyout.
-    if (this.targetWorkspace.toolboxPosition === this.toolboxPosition_) {
-      // If there is a category toolbox.
-      // Simple (flyout-only) toolbox.
-      if (this.targetWorkspace.getToolbox()) {
-        if (this.toolboxPosition_ === Blockly.utils.toolbox.Position.LEFT) {
-          x = toolboxMetrics.width;
-        } else {
-          // This is the one thing that has been changed from the base
-          // implementation, to account for RTL. This makes it so blocks cannot
-          // go under the flyout in RTL mode.
-          x = viewMetrics.width;
-        }
-      } else {
-        if (this.toolboxPosition_ === Blockly.utils.toolbox.Position.LEFT) {
-          x = 0;
-        } else {
-          // The simple flyout does not cover the workspace.
-          x = viewMetrics.width;
-        }
-      }
-    } else {
-      if (this.toolboxPosition_ === Blockly.utils.toolbox.Position.LEFT) {
-        x = 0;
-      } else {
-        // Because the anchor point of the flyout is on the left, but we want
-        // to align the right edge of the flyout with the right edge of the
-        // blocklyDiv, we calculate the full width of the div minus the width
-        // of the flyout.
-        x = viewMetrics.width + absoluteMetrics.left - this.width_;
-      }
+    if (this.isVisible() &&
+        this.targetWorkspace.toolboxPosition === this.toolboxPosition_ &&
+        this.targetWorkspace.getToolbox() &&
+        this.toolboxPosition_ !== Blockly.utils.toolbox.Position.LEFT) {
+      // This makes it so blocks cannot go under the flyout in RTL mode.
+      return this.targetWorkspace.getMetricsManager().getViewMetrics().width;
     }
 
-    return x;
+    return super.getX();
   }
 
   /**
