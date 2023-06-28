@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.2](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.1.1...@blockly/field-date@6.1.2) (2023-06-22)
+
+**Note:** Version bump only for package @blockly/field-date
+
+
+
+
+
 ## [6.1.1](https://github.com/google/blockly-samples/compare/@blockly/field-date@6.1.0...@blockly/field-date@6.1.1) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/field-date

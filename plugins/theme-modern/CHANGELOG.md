@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.11](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@3.0.10...@blockly/theme-modern@3.0.11) (2023-06-22)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
 ## [3.0.10](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@3.0.9...@blockly/theme-modern@3.0.10) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/theme-modern

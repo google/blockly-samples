@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.36](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.35...@blockly/dev-scripts@1.2.36) (2023-06-22)
+
+
+### Bug Fixes
+
+* put eslint cache files in a better spot ([#1723](https://github.com/google/blockly-samples/issues/1723)) ([ac34524](https://github.com/google/blockly-samples/commit/ac34524e434870ffd40c9141965d6477e359967c))
+
+
+
 ## [1.2.35](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.34...@blockly/dev-scripts@1.2.35) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/dev-scripts
