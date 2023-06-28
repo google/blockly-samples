@@ -83,9 +83,7 @@ if (isTypescript) {
 
   // Register TypeScript type checker hooks.
   const tsCheckerHooks = ForkTsCheckerWebpackPlugin.getCompilerHooks(compiler);
-  tsCheckerHooks.receive.tap('done', (diagnostics, lints) => {
-    const allMsgs = [...diagnostics, ...lints];
-
+  tsCheckerHooks.issues.tap('done', (issues) => {
     const formatTypecheckerMessage = (message) => {
       const {severity, file, line, character} = message;
 
@@ -109,13 +107,15 @@ if (isTypescript) {
     };
 
     tsMessagesResolver({
-      errors: allMsgs
+      errors: issues
           .filter((msg) => msg.severity === 'error')
           .map(formatTypecheckerMessage),
-      warnings: allMsgs
+      warnings: issues
           .filter((msg) => msg.severity === 'warning')
           .map(formatTypecheckerMessage),
     });
+
+    return issues;
   });
 }
 
