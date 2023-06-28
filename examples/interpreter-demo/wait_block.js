@@ -13,25 +13,25 @@
  */
 
 Blockly.defineBlocksWithJsonArray([{
-  "type": "wait_seconds",
-  "message0": " wait %1 seconds",
-  "args0": [{
-    "type": "field_number",
-    "name": "SECONDS",
-    "min": 0,
-    "max": 600,
-    "value": 1,
+  'type': 'wait_seconds',
+  'message0': ' wait %1 seconds',
+  'args0': [{
+    'type': 'field_number',
+    'name': 'SECONDS',
+    'min': 0,
+    'max': 600,
+    'value': 1,
   }],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": "%{BKY_LOOPS_HUE}",
+  'previousStatement': null,
+  'nextStatement': null,
+  'colour': '%{BKY_LOOPS_HUE}',
 }]);
 
 /**
  * Generator for wait block creates call to new method
  * <code>waitForSeconds()</code>.
  */
-Blockly.JavaScript['wait_seconds'] = function(block) {
+javascript.javascriptGenerator.forBlock['wait_seconds'] = function(block) {
   const seconds = Number(block.getFieldValue('SECONDS'));
   const code = 'waitForSeconds(' + seconds + ');\n';
   return code;
@@ -43,12 +43,12 @@ Blockly.JavaScript['wait_seconds'] = function(block) {
  */
 function initInterpreterWaitForSeconds(interpreter, globalObject) {
   // Ensure function name does not conflict with variable names.
-  Blockly.JavaScript.addReservedWords('waitForSeconds');
+  javascript.javascriptGenerator.addReservedWords('waitForSeconds');
 
   const wrapper = interpreter.createAsyncFunction(
-    function(timeInSeconds, callback) {
+      function(timeInSeconds, callback) {
       // Delay the call to the callback.
-      setTimeout(callback, timeInSeconds * 1000);
-    });
+        setTimeout(callback, timeInSeconds * 1000);
+      });
   interpreter.setProperty(globalObject, 'waitForSeconds', wrapper);
 }

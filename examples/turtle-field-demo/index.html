@@ -12,12 +12,6 @@
     <title>Turtle Field</title>
     <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="blocks.js"></script>
-    <script>
-      var goog = {
-        provide: function() {},
-        require: function() {}
-      };
-    </script>
     <script src="field_turtle.js"></script>
     <script src="https://unpkg.com/blockly/msg/en.js"></script>
     <style>
@@ -110,7 +104,7 @@
 
       function fromXml() {
         var input = document.getElementById('importExport');
-        var xml = Blockly.Xml.textToDom(input.value);
+        var xml = Blockly.utils.xml.textToDom(input.value);
         Blockly.Xml.domToWorkspace(xml, workspace);
       }
 

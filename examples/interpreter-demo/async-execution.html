@@ -358,8 +358,8 @@
     const demoWorkspace = Blockly.inject('blocklyDiv',
         {media: './node_modules/blockly/media/',
          toolbox: toolboxJson});
-    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-    Blockly.JavaScript.addReservedWords('highlightBlock');
+    javascript.javascriptGenerator.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+    javascript.javascriptGenerator.addReservedWords('highlightBlock');
     Blockly.serialization.workspaces.load(startBlocks, demoWorkspace)
 
     const outputArea = document.getElementById('output');
@@ -415,7 +415,7 @@
         // First statement of this code.
         // Clear the program output.
         resetStepUi(true);
-        const latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        const latestCode = javascript.javascriptGenerator.workspaceToCode(demoWorkspace);
         runButton.disabled = 'disabled';
 
         // And then show generated code in an alert.

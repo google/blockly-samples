@@ -13,7 +13,7 @@ Blockly.Blocks['test_pitch_field'] = {
   init: function() {
     this.appendDummyInput()
         .appendField('pitch')
-        .appendField(new CustomFields.FieldPitch('7'), 'PITCH');
+        .appendField(new FieldPitch('7'), 'PITCH');
     this.setStyle('loop_blocks');
-  }
+  },
 };

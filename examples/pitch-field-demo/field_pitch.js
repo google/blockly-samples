@@ -6,20 +6,9 @@
  */
 
 /**
- * @fileoverview Music pitch input field. Borrowed from Blockly Games.
- * @author fraser@google.com (Neil Fraser)
- * @author samelh@google.com (Sam El-Husseini)
+ * @fileoverview Music pitch input field. Based on the field in Blockly Games.
  */
 'use strict';
-
-goog.provide('CustomFields.FieldPitch');
-
-goog.require('Blockly.browserEvents');
-goog.require('Blockly.FieldTextInput');
-goog.require('Blockly.utils.math');
-
-
-var CustomFields = CustomFields || {};
 
 /**
  * Class for an editable pitch field.
@@ -68,7 +57,7 @@ class FieldPitch extends Blockly.FieldTextInput {
   showEditor_() {
     super.showEditor_();
 
-    const div = Blockly.WidgetDiv.DIV;
+    const div = Blockly.WidgetDiv.getDiv();
     if (!div.firstChild) {
       // Mobile interface uses Blockly.dialog.setPrompt().
       return;
@@ -78,10 +67,10 @@ class FieldPitch extends Blockly.FieldTextInput {
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
     Blockly.DropDownDiv.setColour(this.sourceBlock_.style.colourPrimary,
-      this.sourceBlock_.style.colourTertiary);
+        this.sourceBlock_.style.colourTertiary);
 
     Blockly.DropDownDiv.showPositionedByField(
-      this, this.dropdownDispose_.bind(this));
+        this, this.dropdownDispose_.bind(this));
 
     // The pitch picker is different from other fields in that it updates on
     // mousemove even if it's not in the middle of a drag.  In future we may
@@ -89,10 +78,10 @@ class FieldPitch extends Blockly.FieldTextInput {
     // `conditionalBind` allows it to work without a mousedown/touchstart.
     this.boundEvents_.push(
         Blockly.browserEvents.bind(this.imageElement_, 'click', this,
-        this.hide_));
+            this.hide_));
     this.boundEvents_.push(
         Blockly.browserEvents.bind(this.imageElement_, 'mousemove', this,
-        this.onMouseMove));
+            this.onMouseMove));
 
     this.updateGraph_();
   }
@@ -234,5 +223,3 @@ class FieldPitch extends Blockly.FieldTextInput {
 }
 
 Blockly.fieldRegistry.register('field_pitch', FieldPitch);
-
-CustomFields.FieldPitch = FieldPitch;
