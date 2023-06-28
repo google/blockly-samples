@@ -40,14 +40,14 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.35",
     "@blockly/dev-tools": "^5.3.1",
-    "blockly": "^10.0.0-beta.0",
+    "blockly": "^10.0.0",
     "google-closure-compiler": "^20200920.0.0",
     "google-closure-library": "^20200830.0.0",
     "gulp": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5"
   },
   "peerDependencies": {
-    "blockly": "^9.0.0"
+    "blockly": "^10.0.0"
   },
   "publishConfig": {
     "access": "public",
