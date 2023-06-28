@@ -48,7 +48,7 @@ function start() {
   });
 
   workspace.addChangeListener(event => {
-    const code = Blockly.JavaScript.workspaceToCode(workspace);
+    const code = javascript.javascriptGenerator.workspaceToCode(workspace);
     document.getElementById('generatedCodeContainer').value = code;
   });
 }
@@ -59,6 +59,6 @@ function start() {
  * Called from index.html when the execute button is clicked.
  */
 function executeCode() {
-  const code = Blockly.JavaScript.workspaceToCode(workspace);
+  const code = javascript.javascriptGenerator.workspaceToCode(workspace);
   eval(code);
 }
