@@ -41,11 +41,11 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.36",
     "@blockly/dev-tools": "^5.3.2",
-    "blockly": "^9.3.0",
+    "blockly": "^10.0.0",
     "chai": "^4.3.4"
   },
   "peerDependencies": {
-    "blockly": "^9.3.0"
+    "blockly": "^10.0.0"
   },
   "publishConfig": {
     "access": "public",

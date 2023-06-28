@@ -221,7 +221,8 @@ export function createPlayground(
               isFirstLoad = false;
               try {
                 Blockly.Xml.domToWorkspace(
-                    Blockly.Xml.textToDom(initialWorkspaceXml), workspace);
+                    Blockly.utils.xml.textToDom(initialWorkspaceXml),
+                    workspace);
               } catch (e) {
                 console.warn('Failed to auto import.', e);
               }
@@ -513,7 +514,7 @@ function registerEditorCommands(editor, playground) {
     const xml = editor.getModel().getValue();
     const workspace = playground.getWorkspace();
     try {
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+      Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(xml), workspace);
     } catch (e) {
       // If this fails that's fine.
       return false;

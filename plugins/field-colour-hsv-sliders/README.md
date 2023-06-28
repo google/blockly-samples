@@ -28,6 +28,8 @@ To use it, you'll need to add this field to a block type definition, and add tha
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-colour-hsv-sliders';
+import {javascriptGenerator, Order} from 'blockly/javascript';
+
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'colour_hsv_sliders',
@@ -43,9 +45,9 @@ Blockly.defineBlocksWithJsonArray([
     'style': 'colour_blocks'
   }
 ]);
-Blockly.JavaScript['colour_hsv_sliders'] = function(block) {
-  const code = Blockly.JavaScript.quote_(block.getFieldValue('COLOUR'));
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+javascriptGenerator.forBlock['colour_hsv_sliders'] = function(block) {
+  const code = javascriptGenerator.quote_(block.getFieldValue('COLOUR'));
+  return [code, Order.ATOMIC];
 };
 ```
 
@@ -54,6 +56,8 @@ Blockly.JavaScript['colour_hsv_sliders'] = function(block) {
 ```js
 import * as Blockly from 'blockly';
 import {FieldColourHsvSliders} from '@blockly/field-colour-hsv-sliders';
+import {javascriptGenerator, Order} from 'blockly/javascript';
+
 Blockly.Blocks['colour_hsv_sliders'] = {
   init: function () {
     this.appendDummyInput()
@@ -63,9 +67,9 @@ Blockly.Blocks['colour_hsv_sliders'] = {
     this.setStyle('colour_blocks');
   }
 };
-Blockly.JavaScript['colour_hsv_sliders'] = function(block) {
-  const code = Blockly.JavaScript.quote_(block.getFieldValue('COLOUR'));
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+javascriptGenerator['colour_hsv_sliders'] = function(block) {
+  const code = javascriptGenerator.quote_(block.getFieldValue('COLOUR'));
+  return [code, Order.ATOMIC];
 };
 ```
 

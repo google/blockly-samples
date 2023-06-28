@@ -41,7 +41,7 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^1.2.36",
     "@blockly/dev-tools": "^5.3.2",
-    "blockly": "^9.0.0",
+    "blockly": "^10.0.0",
     "chai": "^4.2.0",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
@@ -49,7 +49,7 @@
     "sinon": "^9.0.1"
   },
   "peerDependencies": {
-    "blockly": "^9.0.0"
+    "blockly": "^10.0.0"
   },
   "publishConfig": {
     "access": "public",

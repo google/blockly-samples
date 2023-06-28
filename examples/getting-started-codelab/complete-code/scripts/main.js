@@ -9,7 +9,7 @@
 
   function handlePlay(event) {
     loadWorkspace(event.target);
-    let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+    let code = javascript.javascriptGenerator.workspaceToCode(Blockly.getMainWorkspace());
     code += 'MusicMaker.play();';
     // Eval can be dangerous. For more controlled execution, check
     // https://github.com/NeilFraser/JS-Interpreter.

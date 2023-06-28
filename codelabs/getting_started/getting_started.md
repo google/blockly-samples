@@ -376,7 +376,7 @@ When Blockly generates JavaScript code for blocks in a workspace, it translates 
 Add the following code to the bottom of `scripts/sound_blocks.js`:
 
 ```js
-Blockly.JavaScript['play_sound'] = function(block) {
+javascript.javascriptGenerator.forBlock['play_sound'] = function(block) {
   let value = '\'' + block.getFieldValue('VALUE') + '\'';
   return 'MusicMaker.queueSound(' + value + ');\n';
 };
@@ -404,12 +404,12 @@ The function `handlePlay` is already defined in `scripts/main.js`, but it's empt
 loadWorkspace(event.target);
 ```
 
-Next, you need to generate the code out of that workspace, which you can do with a call to `Blockly.JavaScript.workspaceToCode`.
+Next, you need to generate the code out of that workspace, which you can do with a call to `javascript.javascriptGenerator.workspaceToCode`.
 
 The user's code will consist of many `MusicMaker.queueSound` calls. At the end of our generated script, add a call to `MusicMaker.play` to play all the sounds added to the queue:
 
 ```js
-let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+let code = javascript.javascriptGenerator.workspaceToCode(Blockly.getMainWorkspace());
 code += 'MusicMaker.play();';
 ```
 
@@ -430,7 +430,7 @@ The end result should look like this:
 ```js
 function handlePlay(event) {
   loadWorkspace(event.target);
-  let code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+  let code = javascript.javascriptGenerator.workspaceToCode(Blockly.getMainWorkspace());
   code += 'MusicMaker.play();';
   try {
     eval(code);

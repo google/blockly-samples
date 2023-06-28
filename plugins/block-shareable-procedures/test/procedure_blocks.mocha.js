@@ -67,7 +67,8 @@ suite('Procedures', function() {
             },
           };
         });
-    this.findParentWsStub = this.sandbox.stub(Blockly.Mutator, 'findParentWs')
+    this.findParentWsStub = this.sandbox
+        .stub(Blockly.Workspace.prototype, 'getRootWorkspace')
         .callsFake(() => {
           return this.workspace;
         });
@@ -1178,7 +1179,7 @@ suite('Procedures', function() {
       test('callers that can find models do not create defs', function() {
         this.workspace.getProcedureMap().add(
             new ObservableProcedureModel(this.workspace, 'do something'));
-        Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
+        Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(`
             <block type="procedures_callnoreturn">
               <mutation name="do something"/>
             </block>`
@@ -1191,7 +1192,7 @@ suite('Procedures', function() {
       });
 
       test('callers without defs create new defs', function() {
-        const callBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
+        const callBlock = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(`
             <block type="procedures_callreturn">
               <mutation name="do something"/>
             </block>`
@@ -1203,7 +1204,7 @@ suite('Procedures', function() {
       });
 
       test('callers without mutations create unnamed defs', function() {
-        const callBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+        const callBlock = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
             '<block type="procedures_callreturn"></block>'
         ), this.workspace);
         globalThis.clock.runAll();
@@ -1213,7 +1214,7 @@ suite('Procedures', function() {
       });
 
       test('callers with missing args create new defs', function() {
-        const defBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
+        const defBlock = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(`
             <block type="procedures_defreturn">
               <field name="NAME">do something</field>
               <mutation>
@@ -1221,7 +1222,7 @@ suite('Procedures', function() {
               </mutation>
             </block>
         `), this.workspace);
-        const callBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+        const callBlock = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
             '<block type="procedures_callreturn">' +
             '  <mutation name="do something"/>' +
             '</block>'
@@ -1232,7 +1233,7 @@ suite('Procedures', function() {
       });
 
       test('callers with mismatched args create new defs', function() {
-        const defBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
+        const defBlock = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(`
             <block type="procedures_defreturn">
               <field name="NAME">do something</field>
               <mutation>
@@ -1240,7 +1241,7 @@ suite('Procedures', function() {
               </mutation>
             </block>
         `), this.workspace);
-        const callBlock = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(`
+        const callBlock = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(`
             <block type="procedures_callreturn">
               <mutation name="do something">
                 <arg name="y"></arg>
@@ -1256,7 +1257,7 @@ suite('Procedures', function() {
       test(
           'callers whose defs are deserialized later do not create defs',
           function() {
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(`
+            Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(`
                 <xml>
                   <block type="procedures_callreturn">
                     <mutation name="do something">
@@ -1639,7 +1640,7 @@ suite('Procedures', function() {
 
     suite('xml', function() {
       test('procedure names get deserialized', function() {
-        const xml = Blockly.Xml.textToDom(
+        const xml = Blockly.utils.xml.textToDom(
             `<block type="procedures_defnoreturn">` +
             `  <field name="NAME">test name</field>` +
             `</block>`);
@@ -1655,7 +1656,7 @@ suite('Procedures', function() {
       });
 
       test('procedure parameter names get deserialized', function() {
-        const xml = Blockly.Xml.textToDom(
+        const xml = Blockly.utils.xml.textToDom(
             `<block type="procedures_defnoreturn">` +
             `  <mutation>` +
             `    <arg name="test name 1" varid="test var id 1"/>` +
@@ -1680,7 +1681,7 @@ suite('Procedures', function() {
       });
 
       test('procedure variables get matching IDs', function() {
-        const xml = Blockly.Xml.textToDom(
+        const xml = Blockly.utils.xml.textToDom(
             `<xml>` +
             `  <variables>` +
             `    <variable id ="test param id">test param name</variable>` +

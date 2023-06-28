@@ -97,7 +97,8 @@ suite('Insert/Modify', function() {
       <block type="row_block"></block>
     </xml>`,
     });
-    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xmlText), this.workspace);
+    Blockly.Xml.domToWorkspace(
+        Blockly.utils.xml.textToDom(xmlText), this.workspace);
     this.navigation = new Navigation();
     this.navigation.addWorkspace(this.workspace);
 

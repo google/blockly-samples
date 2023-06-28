@@ -189,7 +189,7 @@ Blockly.defineBlocksWithJsonArray([
 const insertConnectionStatements = function(button) {
   const workspace = button.getTargetWorkspace();
   Blockly.Xml.domToWorkspace(
-      Blockly.Xml.textToDom(
+      Blockly.utils.xml.textToDom(
           '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
           '  <block type="test_connections_statement_blue">\n' +
           '    <statement name="NAME">\n' +

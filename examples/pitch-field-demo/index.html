@@ -5,12 +5,6 @@
     <title>Blockly Demo: Custom Pitch Field</title>
     <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="blocks.js"></script>
-    <script>
-      var goog = {
-        provide: function() {},
-        require: function() {}
-      };
-    </script>
     <script src="field_pitch.js"></script>
     <script src="./node_modules/blockly/msg/en.js"></script>
     <style>
@@ -70,7 +64,7 @@
 
       function fromXml() {
         var input = document.getElementById('importExport');
-        var xml = Blockly.Xml.textToDom(input.value);
+        var xml = Blockly.utils.xml.textToDom(input.value);
         Blockly.Xml.domToWorkspace(xml, workspace);
       }
 
