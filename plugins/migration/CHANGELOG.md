@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/google/blockly-samples/compare/@blockly/migrate@1.1.3...@blockly/migrate@2.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+
 ## [1.1.3](https://github.com/google/blockly-samples/compare/@blockly/migrate@1.1.2...@blockly/migrate@1.1.3) (2023-06-08)
 
 

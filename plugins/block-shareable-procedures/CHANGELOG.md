@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@1.2.11...@blockly/block-shareable-procedures@2.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+### Bug Fixes
+
+* procedure blocks build ([4ffd49e](https://github.com/google/blockly-samples/commit/4ffd49e452881b77ec1b9942da1bed7aae559f1f))
+
+
+
 ## [1.2.11](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@1.2.10...@blockly/block-shareable-procedures@1.2.11) (2023-06-22)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures

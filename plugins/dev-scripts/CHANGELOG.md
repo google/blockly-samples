@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.36...@blockly/dev-scripts@2.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+### Reverts
+
+* Revert "chore(deps): Bump semver and fork-ts-checker-webpack-plugin (#1731)" (#1742) ([550eb33](https://github.com/google/blockly-samples/commit/550eb33ac1b88163b4f819e45d31e84f2821b6bf)), closes [#1731](https://github.com/google/blockly-samples/issues/1731) [#1742](https://github.com/google/blockly-samples/issues/1742)
+
+
+
 ## [1.2.36](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@1.2.35...@blockly/dev-scripts@1.2.36) (2023-06-22)
 
 

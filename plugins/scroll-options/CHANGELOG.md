@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@3.0.19...@blockly/plugin-scroll-options@4.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+* make scroll options work without drag surfaces (#1666)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+### Bug Fixes
+
+* make scroll options work without drag surfaces ([#1666](https://github.com/google/blockly-samples/issues/1666)) ([5744a28](https://github.com/google/blockly-samples/commit/5744a28b39d175bd4d00e598273f73adff2873d7))
+
+
+
 ## [3.0.19](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@3.0.18...@blockly/plugin-scroll-options@3.0.19) (2023-06-22)
 
 **Note:** Version bump only for package @blockly/plugin-scroll-options
