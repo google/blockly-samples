@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Minimap} from '../src/index';
+import {Minimap, PositionedMinimap} from '../src/index';
 
 /**
  * Create a workspace.
