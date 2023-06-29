@@ -207,8 +207,8 @@ export class DebugDrawer {
       colour = 'goldenrod';
       fill = colour;
     }
-    // TODO: This method is still internal, so we're going to have continual
-    //   problems. We should consider making it public.
+    // TODO(blockly/7227): This method is still internal, so we're going to
+    //   have continual problems. We should consider making it public.
     const offset = conn.getOffsetInBlock();
     this.debugElements_.push(Blockly.utils.dom.createSvgElement('circle',
         {
