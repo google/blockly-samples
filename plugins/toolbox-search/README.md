@@ -2,7 +2,7 @@
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds a toolbox category for searching
 blocks. The category displays a search field in the toolbox, and filters the available blocks as you
-type.
+type. The Blockly docs have [more information about toolbox definitions and categories](https://developers.google.com/blockly/guides/configure/web/toolbox#categories).
 
 ## Installation
 
@@ -17,6 +17,7 @@ npm install blockly-toolbox-search --save
 ```
 
 ## Usage
+```
 import * as Blockly from 'blockly';
 import 'blockly-toolbox-search';
 
