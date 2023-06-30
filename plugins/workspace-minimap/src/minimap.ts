@@ -53,9 +53,8 @@ export class Minimap {
      * Creates the mirroring between workspaces. Passes on all desired events
      * to the minimap from the primary workspace.
      * @param event The primary workspace event.
-     * @private
      */
-    mirror(event: Blockly.Events.Abstract): void {
+    private mirror(event: Blockly.Events.Abstract): void {
       if (BlockEvents.indexOf(event.type) > -1) {
         const json = event.toJson();
         const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
