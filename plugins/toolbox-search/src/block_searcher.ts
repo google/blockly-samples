@@ -15,11 +15,17 @@ export class BlockSearcher {
 
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
+   *
+   * This method must be called before blockIdsMatching(). Behind the
+   * scenes, it creates a workspace, loads the specified block types on it,
+   * indexes their types/IDs and human-readable text, and cleans up after
+   * itself.
    * @param blockIds A list of block IDs to index.
    */
   indexBlocks(blockIds: string[]) {
+    const blockCreationWorkspace = new Blockly.Workspace();
     blockIds.forEach((blockId) => {
-      const block = this.blockCreationWorkspace.newBlock(blockId);
+      const block = blockCreationWorkspace.newBlock(blockId);
       this.indexBlockText(blockId.replaceAll('_', ' '), blockId);
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
@@ -27,8 +33,6 @@ export class BlockSearcher {
         });
       });
     });
-    // Clean up the temporary blocks that were created for indexing.
-    this.blockCreationWorkspace.clear();
   }
 
   /**
