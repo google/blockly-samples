@@ -16,20 +16,20 @@ export class BlockSearcher {
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
    *
-   * This method must be called before blockIdsMatching(). Behind the
+   * This method must be called before blockTypesMatching(). Behind the
    * scenes, it creates a workspace, loads the specified block types on it,
-   * indexes their types/IDs and human-readable text, and cleans up after
+   * indexes their types and human-readable text, and cleans up after
    * itself.
-   * @param blockIds A list of block IDs to index.
+   * @param blockTypes A list of block types to index.
    */
-  indexBlocks(blockIds: string[]) {
+  indexBlocks(blockTypes: string[]) {
     const blockCreationWorkspace = new Blockly.Workspace();
-    blockIds.forEach((blockId) => {
-      const block = blockCreationWorkspace.newBlock(blockId);
-      this.indexBlockText(blockId.replaceAll('_', ' '), blockId);
+    blockTypes.forEach((blockType) => {
+      const block = blockCreationWorkspace.newBlock(blockType);
+      this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
-          this.indexBlockText(field.getText(), blockId);
+          this.indexBlockText(field.getText(), blockType);
         });
       });
     });
@@ -38,9 +38,9 @@ export class BlockSearcher {
   /**
    * Filters the available blocks based on the current query string.
    * @param query The text to use to match blocks against.
-   * @returns A list of IDs of blocks matching the query.
+   * @returns A list of block types matching the query.
    */
-  blockIdsMatching(query: string): string[] {
+  blockTypesMatching(query: string): string[] {
     return [...this.generateTrigrams(query).map((trigram) => {
       return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
     }).reduce((matches, current) => {
@@ -50,14 +50,14 @@ export class BlockSearcher {
 
   /**
    * Generates trigrams for the given text and associates them with the given
-   * block ID.
+   * block type.
    * @param text The text to generate trigrams of.
-   * @param blockId The block ID to associate the trigrams with.
+   * @param blockType The block type to associate the trigrams with.
    */
-  private indexBlockText(text: string, blockId: string) {
+  private indexBlockText(text: string, blockType: string) {
     this.generateTrigrams(text).forEach((trigram) => {
       const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-      blockSet.add(blockId);
+      blockSet.add(blockType);
       this.trigramsToBlocks.set(trigram, blockSet);
     });
   }

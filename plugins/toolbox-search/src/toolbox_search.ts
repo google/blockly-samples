@@ -158,13 +158,14 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private matchBlocks() {
     const query = this.searchField.value;
 
-    this.flyoutItems_ = query ? this.blockSearcher.blockIdsMatching(query).map(
-        (blockId) => {
-          return {
-            kind: 'block',
-            type: blockId,
-          };
-        }) : [];
+    this.flyoutItems_ = query ?
+        this.blockSearcher.blockTypesMatching(query).map(
+            (blockType) => {
+              return {
+                kind: 'block',
+                type: blockType,
+              };
+            }) : [];
 
     if (!this.flyoutItems_.length) {
       this.flyoutItems_.push({
