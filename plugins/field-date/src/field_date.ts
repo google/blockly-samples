@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit plugin overview.
-// TODO: Mark this as a breaking change!
 /**
  * @fileoverview Plugin overview.
  */
@@ -58,8 +56,9 @@ export class FieldDate extends Blockly.FieldTextInput {
    * Ensures that the input value is a valid date.
    * @param newValue The input value. Ex: '2023-04-28'
    * @returns A valid date ISO string, or null if invalid.
+   * @override
    */
-  protected override doClassValidation_(newValue?: string): string | null {
+  protected doClassValidation_(newValue?: string): string | null {
     const newDate = typeof newValue === 'string' ? new Date(newValue) : null;
     if (!newDate || isNaN(newDate.getTime())) return null;
 
@@ -74,16 +73,14 @@ export class FieldDate extends Blockly.FieldTextInput {
    * Get the text to display on the block when the input hasn't spawned in.
    *
    * @returns The text to display on the block.
+   * @override
    */
-  protected override getText_(): string | null {
+  protected getText_(): string | null {
     const value = this.getValue();
     if (!value) return null;
-    // NOTE: There may be discrepancies between the text and the input based on 
-    // browser. For example, 'en-US' would display the text '2/14/2020', then 
+    // NOTE: There may be discrepancies between the text and the input based on
+    // browser. For example, 'en-US' would display the text '2/14/2020', then
     // clicking in Safari on iOS would display 'Feb 14, 2020'.
-
-    // TODO: Should we handle these distinctions? Anytime browser format 
-    // updated, we would need to update here.
     return getLocaleDateString(value);
   }
 
@@ -117,9 +114,10 @@ export class FieldDate extends Blockly.FieldTextInput {
    * Updates the size of the field based on the text.
    *
    * @param margin margin to use when positioning the text element.
+   * @override
    */
-  protected override updateSize_(margin?: number) {
-    // Add margin so that the date input's datepicker icon doesn't clip with 
+  protected updateSize_(margin?: number) {
+    // Add margin so that the date input's datepicker icon doesn't clip with
     // the text when sized for the date.
     super.updateSize_((margin ?? 0) + 20);
   }
@@ -129,11 +127,11 @@ export class FieldDate extends Blockly.FieldTextInput {
    */
   private showDropdown(): void {
     if (!this.htmlInput_) return;
-    Blockly.utils.dom.addClass(this.htmlInput_!, 'blocklyDateInput');
+    Blockly.utils.dom.addClass(this.htmlInput_, 'blocklyDateInput');
 
     // NOTE: HTMLInputElement.showPicker() is not available in earlier
     // TypeScript versions (like 4.7.4), so casting to `any` to be compatible
-    // with dev scripts. Additionally, it's not available for date inputs for 
+    // with dev scripts. Additionally, it's not available for date inputs for
     // Safari. For browser compatibility of showPicker, see:
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/showPicker
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -199,18 +197,17 @@ function getLocaleDateString(dateString: string): string {
   // Ex: "5/12/2023", "12/05/2023", "12.5.2023", "2023/5/12", "१२/५/२०२३"
   const language = navigator.language ?? 'en-US';
   // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options
-  return Intl.DateTimeFormat(language, {
-    // NOTE: Print the date for GMT+0 since the date object assumes midnight at 
-    // GMT+0.
+  return new Intl.DateTimeFormat(language, {
+    // Print the date for GMT+0 since the date object assumes midnight at GMT+0.
     timeZone: 'UTC',
   }).format(date);
 }
 
 /**
- * NOTE: There are a few minor ways to tweak the datepicker CSS, though they're 
+ * NOTE: There are a few minor ways to tweak the datepicker CSS, though they're
  * not consistent across browsers.
  * @see{@link https://developer.mozilla.org/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls#date_pickers}
- * 
+ *
  * Below are a few ways this can be tweaked on *some* browsers:
  * Blockly.Css.register(`
  * ::-webkit-datetime-edit { }
@@ -224,9 +221,9 @@ function getLocaleDateString(dateString: string): string {
  * `);
  */
 if (Blockly.utils.userAgent.MAC) {
-  // NOTE: By default, 4 px padding total are added within the User Agent 
-  // Shadow Content on Safari on MAC. Remove the padding so the inner input 
-  // matches the outer input's height and, by extension, the height of the text 
+  // NOTE: By default, 4 px padding total are added within the User Agent
+  // Shadow Content on Safari on MAC. Remove the padding so the inner input
+  // matches the outer input's height and, by extension, the height of the text
   // node.
   Blockly.Css.register(`
 input.blocklyDateInput::-webkit-datetime-edit,
@@ -251,8 +248,6 @@ export type FieldDateConfig = Blockly.FieldTextInputConfig;
 export interface FieldDateFromJsonConfig extends FieldDateConfig {
   date?: string;
   // NOTE: spellcheck is defined for FieldInput though irrelevant for FieldDate.
-  // TODO: Confirm 'never' options. Should these be allowed with FieldDate? If
-  // so, how would they be used?
   spellcheck?: never;
   tooltip?: never;
 }

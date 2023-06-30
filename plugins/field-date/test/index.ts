@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {
-    // NOTE: Will need to update @blockly/dev-tools package JSON to keep it's version of Blockly in sync with this package's. Both call for ^9.0.0, though the package-locks result in each installing different versions.
-    createPlayground(rootElement, createWorkspace as any, defaultOptions as any);
+    // NOTE: Will need to update @blockly/dev-tools package JSON to keep it's
+    // version of Blockly in sync with this package's. Both call for ^9.0.0,
+    // though the package-locks result in each installing different versions.
+    createPlayground(rootElement, createWorkspace, defaultOptions);
   }
 });
