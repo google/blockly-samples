@@ -154,7 +154,7 @@
       }
       var demoWorkspace = new Blockly.Workspace();
       Blockly.serialization.workspaces.load(json, demoWorkspace);
-      var code = Blockly.Python.workspaceToCode(demoWorkspace);
+      var code = python.pythonGenerator.workspaceToCode(demoWorkspace);
       // Create a headless workspace.
       document.getElementById('code_output').value = code;
     }

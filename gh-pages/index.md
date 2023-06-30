@@ -12,6 +12,9 @@
 * [Field Slider](plugins/field-slider/test/index.html)
 * [Field Dependent Dropdown](plugins/field-dependent-dropdown/test/index.html)
 * [Field Grid Dropdown](plugins/field-grid-dropdown/test/index.html)
+* [Field Colour](plugins/field-colour/test/index.html)
+* [Field Angle](plugins/field-angle/test/index.html)
+* [Field Multiline Text](plugins/field-multilineinput/test/index.html)
 
 
 ## Plugins
@@ -27,7 +30,6 @@
 * [Zoom to Fit](plugins/zoom-to-fit/test/index.html)
 * [Keyboard Navigation](plugins/keyboard-navigation/test/index.html)
 * [Scroll Options](plugins/scroll-options/test/index.html)
-* [Serialize Disabled Interactions](plugins/serialize-disabled-interactions/test/index.html)
 * [Shadow Block Converter](plugins/shadow-block-converter/test/index.html)
 * [Suggested Blocks](plugins/suggested-blocks/test/index.html)
 * [Cross Tab Copy Paste](plugins/cross-tab-copy-paste/test/index.html)

@@ -161,7 +161,7 @@ function createProcDefBlock(
     workspace, hasReturn = false, nameId = 'proc name', hasStatements = true) {
   const type = hasReturn ?
       'procedures_defreturn' : 'procedures_defnoreturn';
-  return Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+  return Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
       '<block type="' + type + '">' +
       ((hasStatements) ? '' :
           '    <mutation statements="false"></mutation>\n') +
@@ -182,7 +182,7 @@ function createProcCallBlock(
     workspace, hasReturn = false, nameId = 'proc name') {
   const type = hasReturn ?
       'procedures_callreturn' : 'procedures_callnoreturn';
-  return Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+  return Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
       '<block type="' + type + '">' +
       '  <mutation name="' + nameId + '"/>' +
       '</block>'

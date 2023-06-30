@@ -10,19 +10,6 @@
  */
 'use strict';
 
-// You must provide the constructor for your custom field.
-goog.provide('CustomFields.FieldTurtle');
-
-// You must require the abstract field class to inherit from.
-goog.require('Blockly.Field');
-goog.require('Blockly.fieldRegistry');
-goog.require('Blockly.utils');
-goog.require('Blockly.utils.dom');
-goog.require('Blockly.utils.object');
-goog.require('Blockly.utils.Size');
-
-var CustomFields = CustomFields || {};
-
 class FieldTurtle extends Blockly.Field {
   // Since this field is editable we must also define serializable as true
   // (for backwards compatibility reasons serializable is false by default).
@@ -732,5 +719,3 @@ class FieldTurtle extends Blockly.Field {
 // Blockly needs to know the JSON name of this field. Usually this is
 // registered at the bottom of the field class.
 Blockly.fieldRegistry.register('field_turtle', FieldTurtle);
-
-CustomFields.FieldTurtle = FieldTurtle;

@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "@blockly/workspace-backpack": "^3.0.0",
-    "blockly": "^9.0.0"
+    "blockly": "^10.0.0"
   }
 }

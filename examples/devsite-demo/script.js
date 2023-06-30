@@ -133,9 +133,9 @@ function regenerate(_e) {
     return;  // Don't update code mid-drag.
   }
   const generateLang = document.getElementById('generateDropdown').value;
-  const generator = Blockly[generateLang];
+  const generator = window[generateLang][`${generateLang}Generator`];
   const playButton = document.getElementById('playButton');
-  playButton.style.display = (generateLang === 'JavaScript') ? 'block' : 'none';
+  playButton.style.display = (generateLang === 'javascript') ? 'block' : 'none';
   const code = generator.workspaceToCode(Blockly.getMainWorkspace());
   const codeHolder = document.getElementById('codeHolder');
   codeHolder.innerHTML = '';  // Delete old code.
@@ -165,7 +165,7 @@ function execute() {
         interpreter.createNativeFunction(promptWrapper));
   };
 
-  const code = Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+  const code = javascript.javascriptGenerator.workspaceToCode(Blockly.getMainWorkspace());
   const myInterpreter = new Interpreter(code, initFunc);
   let stepsAllowed = 10000;
   while (myInterpreter.step() && stepsAllowed) {

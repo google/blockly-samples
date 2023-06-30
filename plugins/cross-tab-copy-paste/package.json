@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-cross-tab-copy-paste",
-  "version": "2.0.20",
+  "version": "3.0.0",
   "description": "Allows you to copy blocks with cross-tab.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,12 +40,12 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^1.2.35",
-    "@blockly/dev-tools": "^5.3.1",
-    "blockly": "^9.0.0"
+    "@blockly/dev-scripts": "^2.0.0",
+    "@blockly/dev-tools": "^6.0.0",
+    "blockly": "^10.0.0"
   },
   "peerDependencies": {
-    "blockly": "^9.0.0"
+    "blockly": "^10.0.0"
   },
   "publishConfig": {
     "access": "public",

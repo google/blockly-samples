@@ -55,7 +55,7 @@ export function spaghetti(workspace, depth) {
   }
   xml = '<xml xmlns="https://developers.google.com/blockly/xml">' + xml +
       '</xml>';
-  const dom = Blockly.Xml.textToDom(xml);
+  const dom = Blockly.utils.xml.textToDom(xml);
   console.time('Spaghetti domToWorkspace');
   Blockly.Xml.domToWorkspace(dom, workspace);
   console.timeEnd('Spaghetti domToWorkspace');

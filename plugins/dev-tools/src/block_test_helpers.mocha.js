@@ -175,7 +175,7 @@ export const runSerializationTestSuite = (testCases) => {
         block = Blockly.serialization.blocks.append(
             testCase.json, this.workspace, {recordUndo: true});
       } else {
-        block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+        block = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
             testCase.xml), this.workspace);
       }
       if (globalThis.clock) globalThis.clock.runAll();
@@ -197,7 +197,7 @@ export const runSerializationTestSuite = (testCases) => {
         const expectedJson = testCase.expectedJson || testCase.json;
         assert.deepEqual(generatedJson, expectedJson);
       } else {
-        const block = Blockly.Xml.domToBlock(Blockly.Xml.textToDom(
+        const block = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
             testCase.xml), this.workspace);
         if (globalThis.clock) globalThis.clock.runAll();
         const generatedXml =

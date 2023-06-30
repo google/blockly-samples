@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@3.1.5...@blockly/workspace-backpack@4.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+* Added a custom serializer to the backpack plugin so that its state is saved (when using JSON serialization): (#1716)
+
+### Features
+
+* Added a custom serializer to the backpack plugin so that its state is saved (when using JSON serialization): ([#1716](https://github.com/google/blockly-samples/issues/1716)) ([a9359dd](https://github.com/google/blockly-samples/commit/a9359dde0dd3edb24a141305d4cc52759b5f594d))
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+
 ## [3.1.5](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@3.1.4...@blockly/workspace-backpack@3.1.5) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/workspace-backpack

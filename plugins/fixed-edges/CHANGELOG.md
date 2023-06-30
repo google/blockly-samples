@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@2.0.17...@blockly/fixed-edges@3.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+
+## [2.0.17](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@2.0.16...@blockly/fixed-edges@2.0.17) (2023-06-22)
+
+**Note:** Version bump only for package @blockly/fixed-edges
+
+
+
+
+
 ## [2.0.16](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@2.0.15...@blockly/fixed-edges@2.0.16) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/fixed-edges

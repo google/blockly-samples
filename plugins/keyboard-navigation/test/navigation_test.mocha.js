@@ -457,6 +457,8 @@ suite('Navigation', function() {
 
       this.workspace.getCursor().drawer_ = null;
       this.basicBlock = this.workspace.newBlock('basic_block');
+      this.basicBlock.initSvg();
+      this.basicBlock.render();
     });
     teardown(function() {
       this.navigation.removeWorkspace(this.workspace);
@@ -568,6 +570,8 @@ suite('Navigation', function() {
         this.workspace.getCursor().drawer_ = null;
 
         this.fieldBlock1 = this.workspace.newBlock('field_block');
+        this.fieldBlock1.initSvg();
+        this.fieldBlock1.render();
       });
 
       teardown(function() {

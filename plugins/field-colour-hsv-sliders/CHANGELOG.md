@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.1.5...@blockly/field-colour-hsv-sliders@3.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+### Bug Fixes
+
+* renaming build problems ([7087469](https://github.com/google/blockly-samples/commit/7087469ccdaf27e040cd67a386c9284aa6b1cd67))
+* update all usages of generators in script tags for blockly v10 ([#1734](https://github.com/google/blockly-samples/issues/1734)) ([19faf29](https://github.com/google/blockly-samples/commit/19faf29428e3903a60da7c2679818cf8c63b7309))
+
+
+
+## [2.1.5](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.1.4...@blockly/field-colour-hsv-sliders@2.1.5) (2023-06-22)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
 ## [2.1.4](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@2.1.3...@blockly/field-colour-hsv-sliders@2.1.4) (2023-05-18)
 
 **Note:** Version bump only for package @blockly/field-colour-hsv-sliders

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.4.1...@blockly/create-package@2.0.0) (2023-06-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to use blockly-v10.0.0 (#1744)
+
+### Features
+
+* update all plugins to use blockly-v10.0.0 ([#1744](https://github.com/google/blockly-samples/issues/1744)) ([6cc88cb](https://github.com/google/blockly-samples/commit/6cc88cbef39d4ad664a668d3d46eb29ba7292f9c))
+
+
+
 ## [1.4.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@1.4.0...@blockly/create-package@1.4.1) (2023-06-08)
 
 

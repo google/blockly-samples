@@ -207,11 +207,14 @@ export class DebugDrawer {
       colour = 'goldenrod';
       fill = colour;
     }
+    // TODO(blockly/7227): This method is still internal, so we're going to
+    //   have continual problems. We should consider making it public.
+    const offset = conn.getOffsetInBlock();
     this.debugElements_.push(Blockly.utils.dom.createSvgElement('circle',
         {
           'class': 'blockRenderDebug',
-          'cx': conn.offsetInBlock_.x,
-          'cy': conn.offsetInBlock_.y,
+          'cx': offset.x,
+          'cy': offset.y,
           'r': size,
           'fill': fill,
           'stroke': colour,
