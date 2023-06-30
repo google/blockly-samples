@@ -9,6 +9,7 @@
  * in its flyout.
  */
 import * as Blockly from 'blockly/core';
+import {BlockSearcher} from './block_searcher';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -20,8 +21,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private static readonly START_SEARCH_SHORTCUT = 'startSearch';
   static readonly SEARCH_CATEGORY_KIND = 'search';
   private searchField?: HTMLInputElement;
-  private blockCreationWorkspace = new Blockly.Workspace();
-  private trigramsToBlocks = new Map<string, Set<string>>();
+  private blockSearcher = new BlockSearcher();
 
   /**
    * Initializes a ToolboxSearchCategory.
@@ -36,7 +36,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       parentToolbox: Blockly.IToolbox,
       opt_parent?: Blockly.ICollapsibleToolboxItem) {
     super(categoryDef, parentToolbox, opt_parent);
-    this.generateBlockIndex();
+    this.initBlockSearcher();
     this.registerShortcut();
   }
 
@@ -119,62 +119,11 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
    */
-  private generateBlockIndex() {
+  private initBlockSearcher() {
     const availableBlocks = new Set<string>();
     this.workspace_.options.languageTree.contents.map(
         (item) => this.getAvailableBlocks(item, availableBlocks));
-
-    availableBlocks.forEach((blockId) => {
-      const block = this.blockCreationWorkspace.newBlock(blockId);
-      this.indexBlockText(blockId.replaceAll('_', ' '), blockId);
-      block.inputList.forEach((input) => {
-        input.fieldRow.forEach((field) => {
-          this.indexBlockText(field.getText(), blockId);
-        });
-      });
-    });
-  }
-
-  /**
-   * Generates trigrams for the given text and associates them with the given
-   * block ID.
-   * @param text The text to generate trigrams of.
-   * @param blockId The block ID to associate the trigrams with.
-   */
-  private indexBlockText(text, blockId) {
-    this.generateTrigrams(text).forEach((trigram) => {
-      const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-      blockSet.add(blockId);
-      this.trigramsToBlocks.set(trigram, blockSet);
-    });
-  }
-
-  /**
-   * Generates a list of trigrams for a given string.
-   * @param input The string to generate trigrams of.
-   * @returns A list of trigrams of the given string.
-   */
-  private generateTrigrams(input: string): string[] {
-    const normalizedInput = input.toLowerCase();
-    if (!normalizedInput) return [];
-    if (normalizedInput.length <= 3) return [normalizedInput];
-
-    const trigrams: string[] = [];
-    for (let start = 0; start < normalizedInput.length - 3; start++) {
-      trigrams.push(normalizedInput.substring(start, start + 3));
-    }
-
-    return trigrams;
-  }
-
-  /**
-   * Returns the intersection of two sets.
-   * @param a The first set.
-   * @param b The second set.
-   * @returns The intersection of the two sets.
-   */
-  private getIntersection(a: Set<string>, b: Set<string>): Set<string> {
-    return new Set([...a].filter((value) => b.has(value)));
+    this.blockSearcher.indexBlocks([...availableBlocks]);
   }
 
   /**
@@ -209,17 +158,13 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private matchBlocks() {
     const query = this.searchField.value;
 
-    this.flyoutItems_ = query ? [...this.generateTrigrams(query).map(
-        (trigram) => {
-          return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-        }).reduce((matches, current) => {
-      return this.getIntersection(matches, current);
-    }).values()].map((blockId) => {
-      return {
-        kind: 'block',
-        type: blockId,
-      };
-    }) : [];
+    this.flyoutItems_ = query ? this.blockSearcher.blockIdsMatching(query).map(
+        (blockId) => {
+          return {
+            kind: 'block',
+            type: blockId,
+          };
+        }) : [];
 
     if (!this.flyoutItems_.length) {
       this.flyoutItems_.push({
