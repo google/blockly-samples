@@ -12,12 +12,11 @@
 import * as Blockly from 'blockly/core';
 import {registerContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
-import {BackpackContextMenuOptions, BackpackOptions, parseOptions} from './options';
+import {parseOptions} from './options';
 
 /**
  * Class for backpack that can be used save blocks from the workspace for
  * future use.
- * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
  * @implements {Blockly.IAutoHideable}
  * @implements {Blockly.IPositionable}
  * @extends {Blockly.DragTarget}
@@ -27,7 +26,8 @@ export class Backpack extends Blockly.DragTarget {
    * Constructor for a backpack.
    * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace that
    *     the backpack will be added to.
-   * @param {!BackpackOptions=} backpackOptions The backpack options to use.
+   * @param {!import("./options").BackpackOptions=} backpackOptions The backpack
+   *     options to use.
    */
   constructor(targetWorkspace, backpackOptions) {
     super();
@@ -47,7 +47,7 @@ export class Backpack extends Blockly.DragTarget {
 
     /**
      * The backpack options.
-     * @type {!BackpackOptions}
+     * @type {!import("./options").BackpackOptions}
      */
     this.options_ = parseOptions(backpackOptions);
 
