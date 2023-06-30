@@ -11,15 +11,17 @@
 
 import * as Blockly from 'blockly/core';
 
-/** Type of a block that has the dynamicIfMixin. */
+/** Type of a block that has the DYNAMIC_IF_MIXIN. */
 type DynamicIfBlock = Blockly.Block & DynamicIfMixin;
 /* eslint-disable @typescript-eslint/no-empty-interface */
 /** This interface avoids a "circular reference" compile error. */
 interface DynamicIfMixin extends DynamicIfMixinType {}
 /* eslint-enable @typescript-eslint/no-empty-interface */
-type DynamicIfMixinType = typeof dynamicIfMixin;
+type DynamicIfMixinType = typeof DYNAMIC_IF_MIXIN;
 
-const dynamicIfMixin = {
+/* eslint-disable @typescript-eslint/naming-convention */
+const DYNAMIC_IF_MIXIN = {
+  /* eslint-enable @typescript-eslint/naming-convention */
   /** Counter for the next input to add to this block. */
   inputCounter: 1,
 
@@ -212,10 +214,8 @@ const dynamicIfMixin = {
     for (let i = 2; i < this.inputList.length - 1; i += 2) {
       const ifConnection = this.inputList[i];
       const doConnection = this.inputList[i + 1];
-      if ((!ifConnection.connection ||
-              !ifConnection.connection.targetConnection) &&
-          (!doConnection.connection ||
-              !doConnection.connection.targetConnection)) {
+      if (!ifConnection.connection?.targetConnection &&
+          !doConnection.connection?.targetConnection) {
         toRemove.push(ifConnection.name);
         toRemove.push(doConnection.name);
       }
@@ -224,8 +224,7 @@ const dynamicIfMixin = {
 
     // Remove Else input if it doesn't have a connected block.
     const elseInput = this.getInput('ELSE');
-    if (elseInput &&
-        (!elseInput.connection || !elseInput.connection.targetConnection)) {
+    if (elseInput && !elseInput.connection?.targetConnection) {
       this.removeInput(elseInput.name);
     }
 
@@ -235,8 +234,8 @@ const dynamicIfMixin = {
       const doInput = this.inputList[1];
       const nextInput = this.inputList[2];
       if (nextInput.name.includes('IF') &&
-          (!ifInput.connection || !ifInput.connection.targetConnection) &&
-          (!doInput.connection || !doInput.connection.targetConnection)) {
+          !ifInput.connection?.targetConnection &&
+          !doInput.connection?.targetConnection) {
         this.removeInput(ifInput.name);
         this.removeInput(doInput.name);
         nextInput.removeField('elseif');
@@ -246,4 +245,4 @@ const dynamicIfMixin = {
   },
 };
 
-Blockly.Blocks['dynamic_if'] = dynamicIfMixin;
+Blockly.Blocks['dynamic_if'] = DYNAMIC_IF_MIXIN;

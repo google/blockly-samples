@@ -45,9 +45,7 @@ Blockly.InsertionMarkerManager.prototype.update =
 
       if (shouldUpdate) {
         // Begin monkey patch
-        if (newCandidate &&
-            newCandidate.closest &&
-            newCandidate.closest.sourceBlock_.onPendingConnection) {
+        if (newCandidate?.closest?.sourceBlock_.onPendingConnection) {
           newCandidate.closest.sourceBlock_
               .onPendingConnection(newCandidate.closest);
           if (!this.pendingBlocks) {

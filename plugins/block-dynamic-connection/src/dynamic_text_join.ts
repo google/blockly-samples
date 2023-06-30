@@ -11,15 +11,17 @@
 
 import * as Blockly from 'blockly/core';
 
-/** Type of a block that has the dynamicTextJoinMixin. */
+/** Type of a block that has the DYNAMIC_TEXT_JOIN_MIXIN. */
 type DynamicTextJoinBlock = Blockly.Block & DynamicTextJoinMixin;
 /* eslint-disable @typescript-eslint/no-empty-interface */
 /** This interface avoids a "circular reference" compile error. */
 interface DynamicTextJoinMixin extends DynamicTextJoinMixinType {}
 /* eslint-enable @typescript-eslint/no-empty-interface */
-type DynamicTextJoinMixinType = typeof dynamicTextJoinMixin;
+type DynamicTextJoinMixinType = typeof DYNAMIC_TEXT_JOIN_MIXIN;
 
-const dynamicTextJoinMixin = {
+/* eslint-disable @typescript-eslint/naming-convention */
+const DYNAMIC_TEXT_JOIN_MIXIN = {
+  /* eslint-enable @typescript-eslint/naming-convention */
   /** Counter for the next input to add to this block. */
   inputCounter: 2,
 
@@ -122,9 +124,7 @@ const dynamicTextJoinMixin = {
 
     const nextInput = this.inputList[connectionIndex + 1];
     const nextConnection =
-        nextInput &&
-        nextInput.connection &&
-        nextInput.connection.targetConnection;
+        nextInput?.connection?.targetConnection;
     if (nextConnection &&
         !nextConnection.getSourceBlock().isInsertionMarker()) {
       return connectionIndex + 1;
@@ -158,7 +158,7 @@ const dynamicTextJoinMixin = {
     if (this.inputList.length > this.minInputs) {
       let toRemove: string[] = [];
       this.inputList.forEach((input: Blockly.Input) => {
-        if (!input.connection || !input.connection.targetConnection) {
+        if (!input.connection?.targetConnection) {
           toRemove.push(input.name);
         }
       });
@@ -178,4 +178,4 @@ const dynamicTextJoinMixin = {
   },
 };
 
-Blockly.Blocks['dynamic_text_join'] = dynamicTextJoinMixin;
+Blockly.Blocks['dynamic_text_join'] = DYNAMIC_TEXT_JOIN_MIXIN;

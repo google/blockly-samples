@@ -11,15 +11,17 @@
 
 import * as Blockly from 'blockly/core';
 
-/** Type of a block that has the dynamicListCreateMixin. */
+/** Type of a block that has the DYNAMIC_LIST_CREATE_MIXIN. */
 type DynamicListCreateBlock = Blockly.Block & DynamicListCreateMixin;
 /* eslint-disable @typescript-eslint/no-empty-interface */
 /** This interface avoids a "circular reference" compile error. */
 interface DynamicListCreateMixin extends DynamicListCreateMixinType {}
 /* eslint-enable @typescript-eslint/no-empty-interface */
-type DynamicListCreateMixinType = typeof dynamicListCreateMixin;
+type DynamicListCreateMixinType = typeof DYNAMIC_LIST_CREATE_MIXIN;
 
-const dynamicListCreateMixin = {
+/* eslint-disable @typescript-eslint/naming-convention */
+const DYNAMIC_LIST_CREATE_MIXIN = {
+  /* eslint-enable @typescript-eslint/naming-convention */
   /** Counter for the next input to add to this block. */
   inputCounter: 2,
 
@@ -121,10 +123,7 @@ const dynamicListCreateMixin = {
     }
 
     const nextInput = this.inputList[connectionIndex + 1];
-    const nextConnection =
-        nextInput &&
-        nextInput.connection &&
-        nextInput.connection.targetConnection;
+    const nextConnection = nextInput?.connection?.targetConnection;
     if (nextConnection &&
         !nextConnection.getSourceBlock().isInsertionMarker()) {
       return connectionIndex + 1;
@@ -158,7 +157,7 @@ const dynamicListCreateMixin = {
     if (this.inputList.length > this.minInputs) {
       let toRemove: string[] = [];
       this.inputList.forEach((input: Blockly.Input) => {
-        if (!input.connection || !input.connection.targetConnection) {
+        if (!input.connection?.targetConnection) {
           toRemove.push(input.name);
         }
       });
@@ -178,4 +177,4 @@ const dynamicListCreateMixin = {
   },
 };
 
-Blockly.Blocks['dynamic_list_create'] = dynamicListCreateMixin;
+Blockly.Blocks['dynamic_list_create'] = DYNAMIC_LIST_CREATE_MIXIN;
