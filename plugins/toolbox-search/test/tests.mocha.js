@@ -20,10 +20,10 @@ suite('BlockSearcher', () => {
     // lists_split: make <list from text> with delimiter ,
     searcher.indexBlocks(['lists_sort', 'lists_split']);
 
-    const numericMatches = searcher.blockIdsMatching('numeric');
+    const numericMatches = searcher.blockTypesMatching('numeric');
     assert.sameMembers(['lists_sort'], numericMatches);
 
-    const listFromTextMatches = searcher.blockIdsMatching('list from text');
+    const listFromTextMatches = searcher.blockTypesMatching('list from text');
     assert.sameMembers(['lists_split'], listFromTextMatches);
   });
 
@@ -31,18 +31,18 @@ suite('BlockSearcher', () => {
     const searcher = new BlockSearcher();
     searcher.indexBlocks(['lists_create_with']);
 
-    const lowercaseMatches = searcher.blockIdsMatching('create list');
+    const lowercaseMatches = searcher.blockTypesMatching('create list');
     assert.sameMembers(['lists_create_with'], lowercaseMatches);
 
-    const uppercaseMatches = searcher.blockIdsMatching('CREATE LIST');
+    const uppercaseMatches = searcher.blockTypesMatching('CREATE LIST');
     assert.sameMembers(['lists_create_with'], uppercaseMatches);
 
-    const ransomNoteMatches = searcher.blockIdsMatching('cReATe LiST');
+    const ransomNoteMatches = searcher.blockTypesMatching('cReATe LiST');
     assert.sameMembers(['lists_create_with'], ransomNoteMatches);
   });
 
   test('returns an empty list when no matches are found', () => {
     const searcher = new BlockSearcher();
-    assert.isEmpty(searcher.blockIdsMatching('abc123'));
+    assert.isEmpty(searcher.blockTypesMatching('abc123'));
   });
 });
