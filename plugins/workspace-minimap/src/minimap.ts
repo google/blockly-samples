@@ -25,42 +25,41 @@ const BlockEvents = [
  * A minimap is a miniature version of your blocks that appears on
  * top of your main workspace. This gives you an overview of what
  * your code looks like, and how it is organized.
- * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
  */
 export class Minimap {
-    protected workspace: Blockly.WorkspaceSvg;
-    protected minimap: Blockly.WorkspaceSvg;
+    protected primaryWorkspace: Blockly.WorkspaceSvg;
+    protected minimapWorkspace: Blockly.WorkspaceSvg;
     /**
      * Constructor for a minimap
-     * @param {Blockly.WorkspaceSvg} workspace The workspace to sit in.
+     * @param workspace The workspace to mirror
      */
     constructor(workspace: Blockly.WorkspaceSvg) {
-      this.workspace = workspace;
+      this.primaryWorkspace = workspace;
       const options = {
         readOnly: true,
       };
-      this.minimap = Blockly.inject('minimapDiv', options);
-      this.mirror = this.mirror.bind(this);
+      this.minimapWorkspace = Blockly.inject('minimapDiv', options);
     }
 
     /**
      * Initialize.
      */
     init(): void {
-      this.workspace.addChangeListener(this.mirror);
+      this.mirror = this.mirror.bind(this);
+      this.primaryWorkspace.addChangeListener(this.mirror);
     }
 
     /**
      * Creates the mirroring between workspaces. Passes on all desired events
-     * to the minimap from the primary worskpace.
-     * @param {Blockly.Events.Abstract} event The primary workspace event.
-     * @protected
+     * to the minimap from the primary workspace.
+     * @param event The primary workspace event.
+     * @private
      */
     mirror(event: Blockly.Events.Abstract): void {
       if (BlockEvents.indexOf(event.type) > -1) {
         const json = event.toJson();
-        const duplciateEvent = Blockly.Events.fromJson(json, this.minimap);
-        duplciateEvent.run(true);
+        const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
+        duplicate.run(true);
       }
     }
 }
