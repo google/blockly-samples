@@ -92,6 +92,11 @@ adds Backpack support.
 
 - [``@blockly/serialize-disabled-interactions``](serialize-disabled-interactions/): A serializer that serializes movable, deltable, and editable attributes.
 
+### Toolbox
+
+- [``@blockly/toolbox-search``](toolbox-search/): A toolbox category that provides a
+search field to filter the available blocks in the toolbox.
+
 ### Other
 
 - [``@blockly/plugin-modal``](modal/): A Blockly plugin that creates a modal.
