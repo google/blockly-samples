@@ -1,9 +1,8 @@
 # blockly-toolbox-search [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-<!--
-  - TODO: Edit plugin description.
-  -->
-A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds a toolbox category for searching
+blocks. The category displays a search field in the toolbox, and filters the available blocks as you
+type.
 
 ## Installation
 
@@ -18,29 +17,25 @@ npm install blockly-toolbox-search --save
 ```
 
 ## Usage
-
-<!--
-  - TODO: Update usage.
-  -->
-```js
 import * as Blockly from 'blockly';
-import {Plugin} from 'blockly-toolbox-search';
+import 'blockly-toolbox-search';
+
+const toolboxCategories = {
+  'contents': [
+    /* Other toolbox categories with blocks go here */
+    {
+      'kind': 'search',
+      'name': 'Search',
+      'contents': [],
+    }
+  ]
+};
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
 });
-
-// Initialize plugin.
-const plugin = new Plugin(workspace);
-plugin.init();
 ```
-
-## API
-
-<!--
-  - TODO: describe the API.
-  -->
 
 ## License
 Apache 2.0
