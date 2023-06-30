@@ -14,12 +14,12 @@
 import * as Blockly from 'blockly/core';
 
 // Events that should be send over to the minimap from the primary workspace
-const BlockEvents = [
+const BlockEvents = new Set([
   Blockly.Events.BLOCK_CHANGE,
   Blockly.Events.BLOCK_CREATE,
   Blockly.Events.BLOCK_DELETE,
   Blockly.Events.BLOCK_DRAG,
-  Blockly.Events.BLOCK_MOVE];
+  Blockly.Events.BLOCK_MOVE]);
 
 /**
  * A minimap is a miniature version of your blocks that appears on
@@ -45,8 +45,7 @@ export class Minimap {
      * Initialize.
      */
     init(): void {
-      this.mirror = this.mirror.bind(this);
-      this.primaryWorkspace.addChangeListener(this.mirror);
+      this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
     }
 
     /**
@@ -55,8 +54,10 @@ export class Minimap {
      * @param event The primary workspace event.
      */
     private mirror(event: Blockly.Events.Abstract): void {
-      if (BlockEvents.indexOf(event.type) > -1) {
+      // TODO: shadow blocks get mirrored too (not supposed to happen)
+      if (BlockEvents.has(event.type)) {
         const json = event.toJson();
+        console.log(json);
         const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
         duplicate.run(true);
       }
