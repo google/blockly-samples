@@ -117,7 +117,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   }
 
   /**
-   * Populates the cached map of trigrams to the blocks they correspond to.
+   * Builds the BlockSearcher index based on the available blocks.
    */
   private initBlockSearcher() {
     const availableBlocks = new Set<string>();
