@@ -14,12 +14,12 @@
 import * as Blockly from 'blockly/core';
 
 // Events that should be send over to the minimap from the primary workspace
-const BLOCK_EVENTS_ = [
-    Blockly.Events.BLOCK_CHANGE,
-    Blockly.Events.BLOCK_CREATE,
-    Blockly.Events.BLOCK_DELETE,
-    Blockly.Events.BLOCK_DRAG,
-    Blockly.Events.BLOCK_MOVE];
+const BlockEvents = [
+  Blockly.Events.BLOCK_CHANGE,
+  Blockly.Events.BLOCK_CREATE,
+  Blockly.Events.BLOCK_DELETE,
+  Blockly.Events.BLOCK_DRAG,
+  Blockly.Events.BLOCK_MOVE];
 
 /**
  * A minimap is a miniature version of your blocks that appears on
@@ -28,26 +28,26 @@ const BLOCK_EVENTS_ = [
  * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
  */
 export class Minimap {
-    protected workspace_: Blockly.WorkspaceSvg;
-    protected minimap_: Blockly.WorkspaceSvg;
+    protected workspace: Blockly.WorkspaceSvg;
+    protected minimap: Blockly.WorkspaceSvg;
     /**
      * Constructor for a minimap
-     * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
+     * @param {Blockly.WorkspaceSvg} workspace The workspace to sit in.
      */
     constructor(workspace: Blockly.WorkspaceSvg) {
-        this.workspace_ = workspace;
-        const options = {
-            readOnly: true,
-        }
-        this.minimap_ = Blockly.inject('minimapDiv', options);
-        this.mirror = this.mirror.bind(this);
+      this.workspace = workspace;
+      const options = {
+        readOnly: true,
+      };
+      this.minimap = Blockly.inject('minimapDiv', options);
+      this.mirror = this.mirror.bind(this);
     }
-  
+
     /**
      * Initialize.
      */
     init(): void {
-        this.workspace_.addChangeListener(this.mirror);
+      this.workspace.addChangeListener(this.mirror);
     }
 
     /**
@@ -57,11 +57,10 @@ export class Minimap {
      * @protected
      */
     mirror(event: Blockly.Events.Abstract): void {
-        if (BLOCK_EVENTS_.indexOf(event.type) > -1) {
-            const json = event.toJson();
-            const duplciateEvent = Blockly.Events.fromJson(json, this.minimap_);
-            duplciateEvent.run(true);
-        }
+      if (BlockEvents.indexOf(event.type) > -1) {
+        const json = event.toJson();
+        const duplciateEvent = Blockly.Events.fromJson(json, this.minimap);
+        duplciateEvent.run(true);
+      }
     }
-  }
-  
+}

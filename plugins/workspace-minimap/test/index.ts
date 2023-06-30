@@ -30,4 +30,4 @@ function createWorkspace(blocklyDiv: HTMLElement,
 
 const ws = Blockly.inject('primaryDiv', {toolbox: toolboxCategories});
 const mp = new Minimap(ws);
-mp.init()
+mp.init();

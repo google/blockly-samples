@@ -18,20 +18,19 @@ import {Minimap} from './minimap';
  * @implements {Blockly.IPositionable}
  */
 export class PositionedMinimap {
-    protected minimap_: Minimap;
+    protected minimap: Minimap;
     /**
      * Constructor for a minimap
      * @param {Minimap} minimap The workspace to sit in.
      */
     constructor(minimap: Minimap) {
-      this.minimap_ = minimap;
+      this.minimap = minimap;
     }
-  
+
     /**
      * Initialize.
      */
     init(): void {
     //   this.work
     }
-  }
-  
+}
