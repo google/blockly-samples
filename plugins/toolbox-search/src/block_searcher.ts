@@ -27,6 +27,8 @@ export class BlockSearcher {
         });
       });
     });
+    // Clean up the temporary blocks that were created for indexing.
+    this.blockCreationWorkspace.clear();
   }
 
   /**
