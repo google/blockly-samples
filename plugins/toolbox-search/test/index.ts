@@ -10,13 +10,13 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import '../src/index';
+import '../src/toolbox_search';
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @returns {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @returns The created workspace.
  */
 function createWorkspace(blocklyDiv: HTMLElement,
     options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
@@ -29,8 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     'name': 'Search',
     'contents': [],
   });
-  console.log(toolboxCategories);
-  const defaultOptions = {
+  const defaultOptions: Blockly.BlocklyOptions = {
     toolbox: toolboxCategories,
   };
   createPlayground(
