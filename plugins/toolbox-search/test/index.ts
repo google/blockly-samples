@@ -24,13 +24,14 @@ function createWorkspace(blocklyDiv: HTMLElement,
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  toolboxCategories['contents'].push({
+  const toolbox = Object.assign({}, toolboxCategories);
+  toolbox['contents'].push({
     'kind': 'search',
     'name': 'Search',
     'contents': [],
   });
   const defaultOptions: Blockly.BlocklyOptions = {
-    toolbox: toolboxCategories,
+    toolbox,
   };
   createPlayground(
       document.getElementById('root'), createWorkspace, defaultOptions);
