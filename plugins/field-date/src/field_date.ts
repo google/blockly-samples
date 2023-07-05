@@ -165,22 +165,9 @@ export class FieldDate extends Blockly.FieldTextInput {
  * invalid date.
  */
 function getHTMLInputDateValue(date: Date): string {
-  const year = date.getUTCFullYear();
-  if (isNaN(year)) return '';
-  const month = date.getUTCMonth() + 1;
-  const dayOfTheMonth = date.getUTCDate();
-  return `${year}-${getTwoDigits(month)}-${getTwoDigits(dayOfTheMonth)}`;
-}
-
-/**
- * Get the two digit string for a single or two digit number.
- *
- * @param num A one or two digit number.
- * @returns The two digit string for a number.
- */
-function getTwoDigits(num: number): string {
-  const numStr = `${num}`;
-  return numStr.length === 1 ? `0${numStr}` : numStr;
+  return date.toLocaleDateString('en-US')
+    .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
+    .replace(/-(\d)(?!\d)/g, '-0$1');
 }
 
 /**

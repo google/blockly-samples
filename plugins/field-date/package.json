@@ -45,10 +45,8 @@
     "@blockly/dev-scripts": "^2.0.0",
     "@blockly/dev-tools": "^6.0.1",
     "blockly": "^10.0.0",
-    "google-closure-compiler": "^20200920.0.0",
-    "google-closure-library": "^20200830.0.0",
-    "gulp": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5"
+    "chai": "^4.2.0",
+    "sinon": "^9.0.1"
   },
   "peerDependencies": {
     "blockly": "^10.0.0"
