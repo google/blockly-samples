@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Minimap} from '../src/index';
+import {Minimap, PositionedMinimap} from '../src/index';
 
 /**
  * Create a workspace.
@@ -28,10 +28,6 @@ function createWorkspace(blocklyDiv: HTMLElement,
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const defaultOptions = {
-    toolbox: toolboxCategories,
-  };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
-});
+const ws = Blockly.inject('primaryDiv', {toolbox: toolboxCategories});
+const mp = new Minimap(ws);
+mp.init();
