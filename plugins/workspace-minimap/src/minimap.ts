@@ -37,6 +37,14 @@ export class Minimap {
       this.primaryWorkspace = workspace;
       const options = {
         readOnly: true,
+        move: {
+          scrollbars: {
+            vertical: true,
+            horizontal: true,
+          },
+          drag: false,
+          wheel: false,
+        },
       };
       this.minimapWorkspace = Blockly.inject('minimapDiv', options);
     }
@@ -46,6 +54,7 @@ export class Minimap {
      */
     init(): void {
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
+      this.minimapWorkspace.scrollbar.setContainerVisible(false);
     }
 
     /**
@@ -55,10 +64,17 @@ export class Minimap {
      */
     private mirror(event: Blockly.Events.Abstract): void {
       // TODO: shadow blocks get mirrored too (not supposed to happen)
-      if (BlockEvents.has(event.type)) {
-        const json = event.toJson();
-        const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
-        duplicate.run(true);
+      // TODO: on connect the zoom cuts off the moved block
+
+      if (!BlockEvents.has(event.type)) {
+        return; // Filter out events.
       }
+      // Run the event in the minimap.
+      const json = event.toJson();
+      const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
+      duplicate.run(true);
+
+      // Resize and center the minimap.
+      this.minimapWorkspace.zoomToFit();
     }
 }
