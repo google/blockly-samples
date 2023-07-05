@@ -57,7 +57,6 @@ export class Minimap {
       // TODO: shadow blocks get mirrored too (not supposed to happen)
       if (BlockEvents.has(event.type)) {
         const json = event.toJson();
-        console.log(json);
         const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
         duplicate.run(true);
       }
