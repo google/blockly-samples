@@ -49,7 +49,10 @@
   "peerDependencies": {
     "blockly": "^10.0.0"
   },
-  "publishConfig": {},
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   }
