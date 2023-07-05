@@ -55,18 +55,20 @@ export class FieldDate extends Blockly.FieldTextInput {
   /**
    * Ensures that the input value is a valid date.
    * @param newValue The input value. Ex: '2023-04-28'
-   * @returns A valid date ISO string, or null if invalid.
+   * @returns A valid date string, or null if invalid.
    * @override
    */
   protected doClassValidation_(newValue?: string): string | null {
+    if (!newValue) return null;
+
     const newDate = typeof newValue === 'string' ? new Date(newValue) : null;
     if (!newDate || isNaN(newDate.getTime())) return null;
 
-    // NOTE: Although `newValue` is already in the correct format for
-    // `FieldDate` here (yyyy-mm-dd), convert `newDate` anyway to allow
-    // subclasses to try and save any date-compatible strings and correct back
-    // to yyyy-mm-dd format.
-    return getHTMLInputDateValue(newDate);
+    // NOTE: 'newValue' should be a valid date format here.
+    if (isISOFormat(newValue)) return newValue;
+
+    // Assume the time needs to be corrected.
+    return toLocalISOString(newDate);
   }
 
   /**
@@ -155,22 +157,6 @@ export class FieldDate extends Blockly.FieldTextInput {
 }
 
 /**
- * Get the date in yyyy-mm-dd format to supply to the `value` attribute for an
- * HTML Input.
- *
- * @see {@link https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html}
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Date_and_time_formats#date_strings}
- * @param date The date to return the correctly formatted string for.
- * @returns The yyyy-mm-dd formatted date string or and empty string for an
- * invalid date.
- */
-function getHTMLInputDateValue(date: Date): string {
-  return date.toLocaleDateString('en-US')
-    .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
-    .replace(/-(\d)(?!\d)/g, '-0$1');
-}
-
-/**
  * Get the string formatted locally to the user.
  * @param dateString A string in the format 'yyyy-mm-dd'
  * @returns the locale date string for the date.
@@ -241,5 +227,36 @@ export interface FieldDateFromJsonConfig extends FieldDateConfig {
 
 export type FieldDateValidator = Blockly.FieldTextInputValidator;
 
+/**
+ * Validate a string value to see if it matches the format.
+ * @param value The value to validate the format for.
+ * @returns true if the value is in 'yyyy-mm-dd' format.
+ * @example
+ * isISOFormat('2000-02-20T00:00:00Z') === false
+ * isISOFormat('2000-02-20') === true
+ */
+export function isISOFormat(value: string): boolean {
+  const valueMatch = value.match(/\d\d\d\d-\d\d-\d\d/);
+  // If it matches ####-##-## and is the same as its input string,
+  // then assume this is the right format
+  return valueMatch !== null && valueMatch[0] === valueMatch.input;
+}
+
+/**
+ * Convert the date to ISO format for the current timezone.
+ * @param date The date to convert to an ISO string.
+ * @returns The string in 'yyyy-mm-dd' format, though for the current timezone.
+ * Ex: new Date('2000-02-20')
+ */
+export function toLocalISOString(date: Date) {
+  // NOTE: If the date is Feb 20, 2000 at 23:00 for GMT-6, it would be
+  // '2000-02-21' at GMT+0, which is what `date.toISOString()` would return.
+  // For a user whose timezone is GMT-6, this should return '2000-02-20'.
+  // For a user whose timezone is GMT-5, that date should return '2000-02-21'.
+  return date.toLocaleDateString('en-US')
+      .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
+      .replace(/-(\d)(?!\d)/g, '-0$1');
+}
+
 // NOTE: Set default here instead of in class so it's available at Field.
-FieldDate.prototype.DEFAULT_VALUE = getHTMLInputDateValue(new Date());
+FieldDate.prototype.DEFAULT_VALUE = toLocalISOString(new Date());

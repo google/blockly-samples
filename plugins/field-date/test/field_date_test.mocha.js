@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const {testHelpers} = require('@blockly/dev-tools');
-const {FieldDate} = require('../src/index');
+import {assert} from 'chai';
+import {testHelpers} from '@blockly/dev-tools';
+import {FieldDate} from '../src/index';
 
 const {
   assertFieldValue, FieldCreationTestCase, FieldValueTestCase,
@@ -139,6 +140,111 @@ suite('FieldDate', function() {
       test('New Value', function() {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '3030-03-30', '3/30/3030');
+      });
+    });
+  });
+
+  suite('Time Zones', function() {
+    // https://nodejs.org/api/cli.html#tz
+    const INITIAL_TZ = process.env.TZ;
+    const TZ_STRINGS = {
+      WESTERN: 'America/New_York',
+      UNIVERSAL: 'Etc/Universal',
+      EASTERN: 'Europe/Paris',
+    };
+    const TZ_OFFSET = {
+      WESTERN: '-05:00',
+      UNIVERSAL: '+00:00',
+      EASTERN: '+01:00',
+    };
+
+    suite('Western', () => {
+      setup(() => {
+        process.env.TZ = TZ_STRINGS.WESTERN;
+      });
+
+      test('should return the same date when provided a date string', () => {
+        const dateString = '2000-01-23';
+        const fieldDate = new FieldDate(dateString);
+        assert.equal(fieldDate.getValue(), dateString);
+      });
+
+      test('should return the same date for 23:00 western datetime', () => {
+        const dateString = '2000-01-23';
+        const dateTimeString = dateString + 'T23:00:00' + TZ_OFFSET.WESTERN;
+        const fieldDate = new FieldDate(dateTimeString);
+        assert.equal(fieldDate.getValue(), dateString);
+      });
+
+      test('should return the day before for 00:00 universal datetime', () => {
+        const dateString = '2000-01-23';
+        const dateTimeString = dateString + 'T00:00:00' + TZ_OFFSET.UNIVERSAL;
+        const fieldDate = new FieldDate(dateTimeString);
+        assert.equal(fieldDate.getValue(), '2000-01-22');
+      });
+
+      teardown(() => {
+        process.env.TSZ = INITIAL_TZ;
+      });
+    });
+
+    suite('Universal', () => {
+      setup(() => {
+        process.env.TZ = TZ_STRINGS.UNIVERSAL;
+      });
+
+      test('should return the same date when provided a date string', () => {
+        const dateString = '2000-01-23';
+        const fieldDate = new FieldDate(dateString);
+        assert.equal(fieldDate.getValue(), dateString);
+      });
+
+      test('should return the day after for 23:00 western datetime', () => {
+        const dateString = '2000-01-23';
+        const dateTimeString = dateString + 'T23:00:00' + TZ_OFFSET.WESTERN;
+        const fieldDate = new FieldDate(dateTimeString);
+        assert.equal(fieldDate.getValue(), '2000-01-24');
+      });
+
+      test('should return the same date for 00:00 universal datetime', () => {
+        const dateString = '2000-01-23';
+        const dateTimeString = dateString + 'T00:00:00' + TZ_OFFSET.UNIVERSAL;
+        const fieldDate = new FieldDate(dateTimeString);
+        assert.equal(fieldDate.getValue(), dateString);
+      });
+
+      teardown(() => {
+        process.env.TSZ = INITIAL_TZ;
+      });
+    });
+
+    suite('Eastern', () => {
+      setup(() => {
+        process.env.TZ = TZ_STRINGS.EASTERN;
+      });
+
+      test('should return the same date when provided a date string', () => {
+        const dateString = '2000-01-23';
+        const fieldDate = new FieldDate(dateString);
+        assert.equal(fieldDate.getValue(), dateString);
+      });
+
+      test('should return the day after for 23:00 universal datetime', () => {
+        const dateString = '2000-01-23';
+        const dateTimeString = dateString + 'T23:00:00' + TZ_OFFSET.UNIVERSAL;
+        const fieldDate = new FieldDate(dateTimeString);
+        assert.equal(fieldDate.getValue(), '2000-01-24');
+      });
+
+      test('should return the same date for 00:00 eastern datetime', () => {
+        const dateString = '2000-01-23';
+        const dateTimeString = dateString + 'T00:00:00' + TZ_OFFSET.EASTERN;
+        const fieldDate = new FieldDate(dateTimeString);
+        assert.equal(fieldDate.getValue(), dateString);
+      });
+
+      teardown(() => {
+        process.env.TSZ = INITIAL_TZ;
       });
     });
   });
