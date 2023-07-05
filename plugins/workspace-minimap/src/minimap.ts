@@ -53,8 +53,11 @@ export class Minimap {
      * Initialize.
      */
     init(): void {
-      this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
+      this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
+      window.addEventListener('resize', (e) => {
+        this.minimapWorkspace.zoomToFit();
+      });
     }
 
     /**
