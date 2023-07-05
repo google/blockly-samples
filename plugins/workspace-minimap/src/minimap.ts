@@ -67,7 +67,6 @@ export class Minimap {
      */
     private mirror(event: Blockly.Events.Abstract): void {
       // TODO: shadow blocks get mirrored too (not supposed to happen)
-      // TODO: on connect the zoom cuts off the moved block
 
       if (!BlockEvents.has(event.type)) {
         return; // Filter out events.
@@ -78,6 +77,9 @@ export class Minimap {
       duplicate.run(true);
 
       // Resize and center the minimap.
-      this.minimapWorkspace.zoomToFit();
+      // We need to wait for the event to finish rendering to do the zoom.
+      Blockly.renderManagement.finishQueuedRenders().then(() => {
+        this.minimapWorkspace.zoomToFit();
+      });
     }
 }
