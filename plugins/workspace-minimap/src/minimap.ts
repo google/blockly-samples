@@ -55,7 +55,9 @@ export class Minimap {
     init(): void {
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
-      window.addEventListener('resize', () => {
+      Blockly.browserEvents.bind(this.minimapWorkspace.svgGroup_,
+          'mousedown', this, this.controls);
+      window.addEventListener('resize', (e) => {
         this.minimapWorkspace.zoomToFit();
       });
     }
@@ -81,5 +83,28 @@ export class Minimap {
       Blockly.renderManagement.finishQueuedRenders().then(() => {
         this.minimapWorkspace.zoomToFit();
       });
+    }
+
+    /**
+     * Changes the primary workspace viewport when interacting with the minimap
+     * @param event The minimap browser event.
+     */
+    private controls(event: PointerEvent): void {
+      // Calculates the scale between the minimap and primary workspace.
+      const primaryMetrics = this.primaryWorkspace.getMetrics();
+      const contentDiv = this.minimapWorkspace.svgBlockCanvas_.
+          getBoundingClientRect();
+      const scale = primaryMetrics.contentWidth / contentDiv.width;
+
+      // Calculates the location of the click in the minimap.
+      const wsDiv = this.minimapWorkspace.svgGroup_.
+          getBoundingClientRect();
+      const offsetX = event.offsetX - (wsDiv.width - contentDiv.width) / 2;
+      const offsetY = event.offsetY - (wsDiv.height - contentDiv.height) / 2;
+
+      // Converts the click from the minimap to the primary worskspace.
+      const x = -primaryMetrics.scrollLeft - offsetX * scale;
+      const y = -primaryMetrics.scrollTop - offsetY * scale;
+      this.primaryWorkspace.scroll(x, y);
     }
 }
