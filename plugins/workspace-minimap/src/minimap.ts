@@ -55,19 +55,9 @@ export class Minimap {
     init(): void {
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
-
-      // There could be a performance penalty from doing this live
-      // since this callback gets invoked continuously during a window resize.
-      const debounce = (fn: () => void, ms = 200) => {
-        let timeoutId: ReturnType<typeof setTimeout>;
-        return function(this: object, ...args: object[]) {
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => fn.apply(this, args), ms);
-        };
-      };
-
-      window.addEventListener('resize',
-          debounce(() => this.minimapWorkspace.zoomToFit()));
+      window.addEventListener('resize', () => {
+        this.minimapWorkspace.zoomToFit();
+      });
     }
 
     /**
