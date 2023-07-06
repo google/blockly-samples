@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@6.0.0...@blockly/dev-tools@6.0.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* debug renderer for v10 ([#1747](https://github.com/google/blockly-samples/issues/1747)) ([3914045](https://github.com/google/blockly-samples/commit/3914045ab25ffbf05c25c3b7e17fee7963e4ec60))
+
+
+
 ## [6.0.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@5.3.2...@blockly/dev-tools@6.0.0) (2023-06-28)
 
 
