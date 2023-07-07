@@ -1,6 +1,6 @@
 # @blockly/field-date [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) date picker field that uses the Google Closure date picker ([goog.ui.DatePicker](https://google.github.io/closure-library/source/closure/goog/demos/)).
+A [Blockly](https://www.npmjs.com/package/blockly) plugin that uses a browser default "date" input.
 
 ## Installation
 
@@ -17,9 +17,10 @@ npm install @blockly/field-date --save
 ## Usage
 
 ### JavaScript
+
 ```js
 import * as Blockly from 'blockly';
-import FieldDate from '@blockly/field-date';
+import {FieldDate} from '@blockly/field-date';
 
 Blockly.Blocks["test_fields_date"] = {
   init: function () {
@@ -31,6 +32,7 @@ Blockly.Blocks["test_fields_date"] = {
 ```
 
 ### JSON
+
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/field-date';
@@ -49,8 +51,5 @@ Blockly.defineBlocksWithJsonArray([
     }]);
 ```
 
-[View the developer documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/date) for further usage examples.
-
 ## License
-
 Apache 2.0

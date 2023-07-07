@@ -87,10 +87,17 @@ that allows a user to copy and paste blocks between tabs.
 that automatically converts shadow blocks to real blocks when the user edits them.
 - [``@blockly/workspace-backpack``](workspace-backpack/): A Blockly plugin that
 adds Backpack support.
+- [``@blockly/workspace-minimap``](workspace-minimap/): A Blockly plugin that
+adds a minimap of the workspace to the workspace. (private; in development)
 
 ### Serializers
 
 - [``@blockly/serialize-disabled-interactions``](serialize-disabled-interactions/): A serializer that serializes movable, deltable, and editable attributes.
+
+### Toolbox
+
+- [``@blockly/toolbox-search``](toolbox-search/): A toolbox category that provides a
+search field to filter the available blocks in the toolbox.
 
 ### Other
 
