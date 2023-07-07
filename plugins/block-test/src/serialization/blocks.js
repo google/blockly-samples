@@ -74,7 +74,8 @@ Blockly.Blocks['test_extra_state_xml'].init = function() {
   this.itemCount_ = 3;
   this.updateShape_();
   this.setOutput(true, 'Array');
-  this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+  this.setMutator(
+      new Blockly.icons.MutatorIcon(['lists_create_with_item'], this));
 };
 
 Blockly.Blocks['test_extra_state_jso'] =
@@ -86,7 +87,8 @@ Blockly.Blocks['test_extra_state_jso'].init = function() {
   this.itemCount_ = 3;
   this.updateShape_();
   this.setOutput(true, 'Array');
-  this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+  this.setMutator(
+      new Blockly.icons.MutatorIcon(['lists_create_with_item'], this));
 };
 
 Blockly.Blocks['test_extra_state_both'] =
@@ -96,5 +98,6 @@ Blockly.Blocks['test_extra_state_both'].init = function() {
   this.itemCount_ = 3;
   this.updateShape_();
   this.setOutput(true, 'Array');
-  this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+  this.setMutator(
+      new Blockly.icons.MutatorIcon(['lists_create_with_item'], this));
 };
