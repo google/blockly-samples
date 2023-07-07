@@ -111,33 +111,33 @@ suite('FieldDate', function() {
     teardown(function() {
       this.field.setValidator(null);
     });
-    suite('Null Validator', function() {
+    suite('when validator returns null', function() {
       setup(function() {
         this.field.setValidator(() => {
           return null;
         });
       });
-      test('New Value', function() {
+      test('should not set the new value', function() {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '2020-02-20', '2/20/2020');
       });
     });
-    suite('Force Day 20s Validator', function() {
+    suite('when validator sets day to 20s', function() {
       setup(function() {
         this.field.setValidator(function(newValue) {
           return newValue.substr(0, 8) + '2' + newValue.substr(9, 1);
         });
       });
-      test('New Value', function() {
+      test('should set the value to a "20s" date', function() {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '3030-03-20', '3/20/3030');
       });
     });
-    suite('Returns Undefined Validator', function() {
+    suite('when validator returns undefined', function() {
       setup(function() {
         this.field.setValidator(() => {});
       });
-      test('New Value', function() {
+      test('should set the value without changing it', function() {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '3030-03-30', '3/30/3030');
       });

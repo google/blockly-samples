@@ -33,9 +33,12 @@ export class FieldDate extends Blockly.FieldTextInput {
    *    changes to the field's value. Takes in a date string & returns a
    *    validated date string ('YYYY-MM-DD' format), or null to abort the
    *    change.
+   * @param config A map of options used to configure the field.
    */
-  constructor(value?: string, validator?: FieldDateValidator) {
-    super(value, validator);
+  constructor(
+      value?: string, validator?: FieldDateValidator,
+      config?: FieldDateConfig) {
+    super(value, validator, config);
   }
 
   /**
@@ -46,14 +49,17 @@ export class FieldDate extends Blockly.FieldTextInput {
    * @nocollapse
    */
   static fromJson(options: FieldDateFromJsonConfig): FieldDate {
+    const {date, ...fieldDateConfig} = options;
     // `this` might be a subclass of FieldDate if that class doesn't
     // override the static fromJson method.
-    return new this(options.date, undefined);
+    return new this(date, undefined, fieldDateConfig);
   }
 
   /* eslint-disable @typescript-eslint/naming-convention */
   /**
-   * Ensures that the input value is a valid date.
+   * Ensures that the input value is a valid date. Additionally, if the date
+   * string provided includes a time, the time will be removed and the date for
+   * relative to the user's timezone will be used.
    * @param newValue The input value. Ex: '2023-04-28'
    * @returns A valid date string, or null if invalid.
    * @override
@@ -99,16 +105,19 @@ export class FieldDate extends Blockly.FieldTextInput {
    * editor.
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
-   * @param _quietInput Quiet input.
    * @override
    */
-  protected showEditor_(e?: Event, _quietInput?: boolean) {
-    if (this.sourceBlock_) {
-      // NOTE: Disable modal inputs to use default browser inputs on mobile.
-      this.sourceBlock_.workspace.options.modalInputs = false;
-    }
+  protected showEditor_(e?: Event) {
+    // Pass in `true` for `quietInput` to disable modal inputs for the date
+    // block without setting `this.sourceBlock_.workspace.options.modalInputs`,
+    // which would impact the entire workspace.
+    super.showEditor_(e, true);
 
-    super.showEditor_(e, _quietInput);
+    // Even though `quietInput` was set true, focus on the element.
+    this.htmlInput_?.focus({
+      preventScroll: true,
+    });
+    this.htmlInput_?.select();
     this.showDropdown();
   }
 
@@ -213,16 +222,16 @@ Blockly.fieldRegistry.register('field_date', FieldDate);
 /**
  * A config object for defining a field date.
  */
-export type FieldDateConfig = Blockly.FieldTextInputConfig;
+export interface FieldDateConfig extends Blockly.FieldTextInputConfig {
+  // NOTE: spellcheck is defined for FieldInput though irrelevant for FieldDate.
+  spellcheck?: never;
+}
 
 /**
  * Options used to define a field date from JSON.
  */
 export interface FieldDateFromJsonConfig extends FieldDateConfig {
   date?: string;
-  // NOTE: spellcheck is defined for FieldInput though irrelevant for FieldDate.
-  spellcheck?: never;
-  tooltip?: never;
 }
 
 export type FieldDateValidator = Blockly.FieldTextInputValidator;

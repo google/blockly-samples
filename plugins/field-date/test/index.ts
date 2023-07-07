@@ -10,14 +10,38 @@
 
 import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
+import {FieldDateFromJsonConfig} from '../src/index';
 import '../src/index';
+
+// NOTE: The args type should be updated to allow the JsonConfig types.
+interface Args {
+  [key: string]: unknown;
+}
+
+const basicConfig: FieldDateFromJsonConfig = {
+  date: '2020-02-20',
+};
+
+const tooltipConfig: FieldDateFromJsonConfig = {
+  date: '2021-03-13',
+  tooltip: 'This date block has a tooltip!',
+};
+
+const emptyConfig: FieldDateFromJsonConfig = {
+};
 
 const toolbox = generateFieldTestBlocks('field_date', [
   {
-    label: 'Date Input',
-    args: {
-      'date': '2020-02-20',
-    },
+    label: 'Basic Date Input',
+    args: basicConfig as Args,
+  },
+  {
+    label: 'Tooltip Date Input',
+    args: tooltipConfig as Args,
+  },
+  {
+    label: 'Default Date Input',
+    args: emptyConfig as Args,
   },
 ]);
 
