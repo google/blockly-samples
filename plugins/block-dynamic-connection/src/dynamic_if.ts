@@ -11,25 +11,28 @@
 
 import * as Blockly from 'blockly/core';
 
-Blockly.Blocks['dynamic_if'] = {
-  /**
-   * Counter for the next input to add to this block.
-   * @type {number}
-   */
+/** Type of a block that has the DYNAMIC_IF_MIXIN. */
+type DynamicIfBlock = Blockly.Block & DynamicIfMixin;
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/** This interface avoids a "circular reference" compile error. */
+interface DynamicIfMixin extends DynamicIfMixinType {}
+/* eslint-enable @typescript-eslint/no-empty-interface */
+type DynamicIfMixinType = typeof DYNAMIC_IF_MIXIN;
+
+/* eslint-disable @typescript-eslint/naming-convention */
+const DYNAMIC_IF_MIXIN = {
+  /* eslint-enable @typescript-eslint/naming-convention */
+  /** Counter for the next input to add to this block. */
   inputCounter: 1,
 
-  /**
-   * Minimum number of inputs for this block.
-   * @type {number}
-   */
+  /** Minimum number of inputs for this block. */
   minInputs: 1,
 
   /**
    * Block for if/elseif/else statements. Must have one if input.
    * Can have any number of elseif inputs and optionally one else input.
-   * @this {Blockly.Block}
    */
-  init: function() {
+  init(this: DynamicIfBlock): void {
     this.setHelpUrl(Blockly.Msg['CONTROLS_IF_HELPURL']);
     this.setStyle('logic_blocks');
 
@@ -46,40 +49,37 @@ Blockly.Blocks['dynamic_if'] = {
 
   /**
    * Create XML to represent if/elseif/else inputs.
-   * @returns {!Element} XML storage element.
-   * @this {Blockly.Block}
+   * @returns XML storage element.
    */
-  mutationToDom: function() {
+  mutationToDom(this: DynamicIfBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
     const inputNames = this.inputList
-        .filter((input) => input.name.includes('IF'))
-        .map((input) => input.name.replace('IF', '')).join(',');
+        .filter((input: Blockly.Input) => input.name.includes('IF'))
+        .map((input: Blockly.Input) => input.name.replace('IF', '')).join(',');
     container.setAttribute('inputs', inputNames);
     const hasElse = !!this.getInput('ELSE');
-    container.setAttribute('else', hasElse);
-    container.setAttribute('next', this.inputCounter);
+    container.setAttribute('else', String(hasElse));
+    container.setAttribute('next', String(this.inputCounter));
     return container;
   },
 
   /**
    * Parse XML to restore the inputs.
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  domToMutation: function(xmlElement) {
+  domToMutation(this: DynamicIfBlock, xmlElement: Element): void {
     if (xmlElement.getAttribute('inputs')) {
-      this.deserializeInputs_(xmlElement);
+      this.deserializeInputs(xmlElement);
     } else {
-      this.deserializeCounts_(xmlElement);
+      this.deserializeCounts(xmlElement);
     }
   },
 
   /**
    * Parses XML based on the 'inputs' attribute (non-standard).
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  deserializeInputs_: function(xmlElement) {
+  deserializeInputs(this: DynamicIfBlock, xmlElement: Element): void {
     const inputs = xmlElement.getAttribute('inputs');
     if (inputs) {
       const inputNumbers = inputs.split(',');
@@ -109,18 +109,18 @@ Blockly.Blocks['dynamic_if'] = {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
     }
-    const next = parseInt(xmlElement.getAttribute('next'));
+    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
     this.inputCounter = next;
   },
 
   /**
    * Parses XML based on the 'elseif' and 'else' attributes (standard).
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  deserializeCounts_: function(xmlElement) {
-    const elseifCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
-    const elseCount = parseInt(xmlElement.getAttribute('else'), 10) || 0;
+  deserializeCounts(this: DynamicIfBlock, xmlElement: Element): void {
+    const elseifCount = parseInt(
+        xmlElement.getAttribute('elseif') ?? '0', 10) || 0;
+    const elseCount = parseInt(xmlElement.getAttribute('else') ?? '0', 10) || 0;
     for (let i = 1; i <= elseifCount; i++) {
       this.appendValueInput('IF' + i).setCheck('Boolean').appendField(
           Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
@@ -137,10 +137,11 @@ Blockly.Blocks['dynamic_if'] = {
   /**
    * Finds the index of a connection. Used to determine where in the block to
    * insert new inputs.
-   * @param {!Blockly.Connection} connection A connection on this block.
-   * @returns {?number} The index of the connection in the this.inputList.
+   * @param connection A connection on this block.
+   * @returns The index of the connection in the this.inputList.
    */
-  findInputIndexForConnection: function(connection) {
+  findInputIndexForConnection(
+      this: DynamicIfBlock, connection: Blockly.Connection): number | null {
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
       if (input.connection == connection) {
@@ -152,9 +153,9 @@ Blockly.Blocks['dynamic_if'] = {
 
   /**
    * Inserts a boolean value input and statement input at the specified index.
-   * @param {number} index Index of the input before which to add new inputs.
+   * @param index Index of the input before which to add new inputs.
    */
-  insertElseIf: function(index) {
+  insertElseIf(this: DynamicIfBlock, index: number): void {
     const caseNumber = this.inputCounter;
     this
         .appendValueInput('IF' + caseNumber)
@@ -168,11 +169,13 @@ Blockly.Blocks['dynamic_if'] = {
   },
 
   /**
-   * Called when a block is dragged over one of the connections on this block.
-   * @param {!Blockly.Connection} connection The connection on this block that
-   * has a pending connection.
+   * Called by a monkey-patched version of InsertionMarkerManager when
+   * a block is dragged over one of the connections on this block.
+   * @param connection The connection on this block that has a pending
+   *     connection.
    */
-  onPendingConnection: function(connection) {
+  onPendingConnection(
+      this: DynamicIfBlock, connection: Blockly.Connection): void {
     if (connection.type === Blockly.NEXT_STATEMENT && !this.getInput('ELSE')) {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
@@ -187,11 +190,13 @@ Blockly.Blocks['dynamic_if'] = {
       if (!nextIfInput || nextIfInput.name == 'ELSE') {
         this.insertElseIf(inputIndex + 2);
       } else {
-        const nextIfConnection = nextIfInput &&
-          nextIfInput.connection.targetConnection;
+        const nextIfConnection =
+            nextIfInput &&
+            nextIfInput.connection &&
+            nextIfInput.connection.targetConnection;
         if (
           nextIfConnection &&
-          !nextIfConnection.sourceBlock_.isInsertionMarker()
+          !nextIfConnection.getSourceBlock().isInsertionMarker()
         ) {
           this.insertElseIf(inputIndex + 2);
         }
@@ -200,17 +205,17 @@ Blockly.Blocks['dynamic_if'] = {
   },
 
   /**
-   * Called when a block drag ends if the dragged block had a pending connection
-   * with this block.
+   * Called by a monkey-patched version of InsertionMarkerManager when a block
+   * drag ends if the dragged block had a pending connection with this block.
    */
-  finalizeConnections: function() {
+  finalizeConnections(this: DynamicIfBlock): void {
     const toRemove = [];
     // Remove Else If inputs if neither the if nor the do has a connected block.
     for (let i = 2; i < this.inputList.length - 1; i += 2) {
       const ifConnection = this.inputList[i];
       const doConnection = this.inputList[i + 1];
-      if (!ifConnection.connection.targetConnection &&
-          !doConnection.connection.targetConnection) {
+      if (!ifConnection.connection?.targetConnection &&
+          !doConnection.connection?.targetConnection) {
         toRemove.push(ifConnection.name);
         toRemove.push(doConnection.name);
       }
@@ -219,7 +224,7 @@ Blockly.Blocks['dynamic_if'] = {
 
     // Remove Else input if it doesn't have a connected block.
     const elseInput = this.getInput('ELSE');
-    if (elseInput && !elseInput.connection.targetConnection) {
+    if (elseInput && !elseInput.connection?.targetConnection) {
       this.removeInput(elseInput.name);
     }
 
@@ -229,8 +234,8 @@ Blockly.Blocks['dynamic_if'] = {
       const doInput = this.inputList[1];
       const nextInput = this.inputList[2];
       if (nextInput.name.includes('IF') &&
-          !ifInput.connection.targetConnection &&
-          !doInput.connection.targetConnection) {
+          !ifInput.connection?.targetConnection &&
+          !doInput.connection?.targetConnection) {
         this.removeInput(ifInput.name);
         this.removeInput(doInput.name);
         nextInput.removeField('elseif');
@@ -239,3 +244,5 @@ Blockly.Blocks['dynamic_if'] = {
     }
   },
 };
+
+Blockly.Blocks['dynamic_if'] = DYNAMIC_IF_MIXIN;

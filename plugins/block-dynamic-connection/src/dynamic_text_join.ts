@@ -11,24 +11,25 @@
 
 import * as Blockly from 'blockly/core';
 
-Blockly.Blocks['dynamic_text_join'] = {
-  /**
-   * Counter for the next input to add to this block.
-   * @type {number}
-   */
+/** Type of a block that has the DYNAMIC_TEXT_JOIN_MIXIN. */
+type DynamicTextJoinBlock = Blockly.Block & DynamicTextJoinMixin;
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/** This interface avoids a "circular reference" compile error. */
+interface DynamicTextJoinMixin extends DynamicTextJoinMixinType {}
+/* eslint-enable @typescript-eslint/no-empty-interface */
+type DynamicTextJoinMixinType = typeof DYNAMIC_TEXT_JOIN_MIXIN;
+
+/* eslint-disable @typescript-eslint/naming-convention */
+const DYNAMIC_TEXT_JOIN_MIXIN = {
+  /* eslint-enable @typescript-eslint/naming-convention */
+  /** Counter for the next input to add to this block. */
   inputCounter: 2,
 
-  /**
-   * Minimum number of inputs for this block.
-   * @type {number}
-   */
+  /** Minimum number of inputs for this block. */
   minInputs: 2,
 
-  /**
-   * Block for concatenating any number of strings.
-   * @this {Blockly.Block}
-   */
-  init: function() {
+  /** Block for concatenating any number of strings. */
+  init(this: DynamicTextJoinBlock): void {
     this.setHelpUrl(Blockly.Msg['TEXT_JOIN_HELPURL']);
     this.setStyle('text_blocks');
     this.appendValueInput('ADD0')
@@ -40,36 +41,34 @@ Blockly.Blocks['dynamic_text_join'] = {
 
   /**
    * Create XML to represent number of text inputs.
-   * @returns {!Element} XML storage element.
-   * @this {Blockly.Block}
+   * @returns XML storage element.
    */
-  mutationToDom: function() {
+  mutationToDom(this: DynamicTextJoinBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
-    const inputNames = this.inputList.map((input) => input.name).join(',');
+    const inputNames =
+        this.inputList.map((input: Blockly.Input) => input.name).join(',');
     container.setAttribute('inputs', inputNames);
-    container.setAttribute('next', this.inputCounter);
+    container.setAttribute('next', String(this.inputCounter));
     return container;
   },
 
   /**
    * Parse XML to restore the text inputs.
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  domToMutation: function(xmlElement) {
+  domToMutation(this: DynamicTextJoinBlock, xmlElement: Element): void {
     if (xmlElement.getAttribute('inputs')) {
-      this.deserializeInputs_(xmlElement);
+      this.deserializeInputs(xmlElement);
     } else {
-      this.deserializeCounts_(xmlElement);
+      this.deserializeCounts(xmlElement);
     }
   },
 
   /**
    * Parses XML based on the 'inputs' attribute (non-standard).
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  deserializeInputs_: function(xmlElement) {
+  deserializeInputs(this: DynamicTextJoinBlock, xmlElement: Element): void {
     const items = xmlElement.getAttribute('inputs');
     if (items) {
       const inputNames = items.split(',');
@@ -78,18 +77,17 @@ Blockly.Blocks['dynamic_text_join'] = {
       this.inputList[0]
           .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     }
-    const next = parseInt(xmlElement.getAttribute('next'));
+    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
     this.inputCounter = next;
   },
 
   /**
    * Parses XML based on the 'items' attribute (standard).
-   * @param {!Element} xmlElement XML storage element.
-   * @this {Blockly.Block}
+   * @param xmlElement XML storage element.
    */
-  deserializeCounts_: function(xmlElement) {
+  deserializeCounts(this: DynamicTextJoinBlock, xmlElement: Element): void {
     const itemCount = Math.max(
-        parseInt(xmlElement.getAttribute('items'), 10), this.minInputs);
+        parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
     // Two inputs are added automatically.
     for (let i = this.minInputs; i < itemCount; i++) {
       this.appendValueInput('ADD' + i);
@@ -99,18 +97,19 @@ Blockly.Blocks['dynamic_text_join'] = {
 
   /**
    * Check whether a new input should be added and determine where it should go.
-   * @param {!Blockly.Connection} connection The connection that has a
-   *     pending connection.
-   * @returns {number} The index before which to insert a new input,
-   *     or null if no input should be added.
+   * @param connection The connection that has a pending connection.
+   * @returns The index before which to insert a new input, or null if no input
+   *     should be added.
    */
-  getIndexForNewInput: function(connection) {
+  getIndexForNewInput(
+      this: DynamicTextJoinBlock,
+      connection: Blockly.Connection): number | null {
     if (!connection.targetConnection) {
       // this connection is available
       return null;
     }
 
-    let connectionIndex;
+    let connectionIndex = -1;
     for (let i = 0; i < this.inputList.length; i++) {
       if (this.inputList[i].connection == connection) {
         connectionIndex = i;
@@ -124,8 +123,10 @@ Blockly.Blocks['dynamic_text_join'] = {
     }
 
     const nextInput = this.inputList[connectionIndex + 1];
-    const nextConnection = nextInput && nextInput.connection.targetConnection;
-    if (nextConnection && !nextConnection.sourceBlock_.isInsertionMarker()) {
+    const nextConnection =
+        nextInput?.connection?.targetConnection;
+    if (nextConnection &&
+        !nextConnection.getSourceBlock().isInsertionMarker()) {
       return connectionIndex + 1;
     }
 
@@ -134,11 +135,13 @@ Blockly.Blocks['dynamic_text_join'] = {
   },
 
   /**
-   * Called when a block is dragged over one of the connections on this block.
-   * @param {!Blockly.Connection} connection The connection on this block that
-   *     has a pending connection.
+   * Called by a monkey-patched version of InsertionMarkerManager when
+   * a block is dragged over one of the connections on this block.
+   * @param connection The connection on this block that has a pending
+   *     connection.
    */
-  onPendingConnection: function(connection) {
+  onPendingConnection(
+      this: DynamicTextJoinBlock, connection: Blockly.Connection): void {
     const insertIndex = this.getIndexForNewInput(connection);
     if (insertIndex == null) {
       return;
@@ -148,15 +151,14 @@ Blockly.Blocks['dynamic_text_join'] = {
   },
 
   /**
-   * Called when a block drag ends if the dragged block had a pending connection
-   * with this block.
+   * Called by a monkey-patched version of InsertionMarkerManager when a block
+   * drag ends if the dragged block had a pending connection with this block.
    */
-  finalizeConnections: function() {
+  finalizeConnections(this: DynamicTextJoinBlock): void {
     if (this.inputList.length > this.minInputs) {
-      let toRemove = [];
-      this.inputList.forEach((input) => {
-        const targetConnection = input.connection.targetConnection;
-        if (!targetConnection) {
+      let toRemove: string[] = [];
+      this.inputList.forEach((input: Blockly.Input) => {
+        if (!input.connection?.targetConnection) {
           toRemove.push(input.name);
         }
       });
@@ -175,3 +177,5 @@ Blockly.Blocks['dynamic_text_join'] = {
     }
   },
 };
+
+Blockly.Blocks['dynamic_text_join'] = DYNAMIC_TEXT_JOIN_MIXIN;
