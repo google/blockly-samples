@@ -59,7 +59,7 @@ export class Minimap {
           'mousedown', this, this.onClick);
       Blockly.browserEvents.bind(this.minimapWorkspace.svgGroup_,
           'mousemove', this, this.onMouseMove);
-      window.addEventListener('resize', (e) => {
+      window.addEventListener('resize', () => {
         this.minimapWorkspace.zoomToFit();
       });
     }
@@ -88,25 +88,47 @@ export class Minimap {
     }
 
     /**
-     * Changes the primary workspace viewport when clicking on the minimap
+     * Converts a mouse event on the minimap into scroll coordinates for
+     * the primary viewport.
+     * @param offsetX The x offset of the mouse event.
+     * @param offsetY The y offset of the mouse event.
+     * @returns (x, y) ptimary workspace scroll coordinates.
+     */
+    private minimapToPrimaryClick(
+        offsetX: number, offsetY: number): [number, number] {
+      // Get the metrics from the workspaces
+      const primaryMetrics = this.primaryWorkspace.getMetrics();
+      const minimapMetrics = this.minimapWorkspace.getMetrics();
+
+      // Calculates the location of the click relative to the
+      // top left of the minimap content.
+      offsetX -= (minimapMetrics.svgWidth - minimapMetrics.contentWidth) / 2;
+      offsetY -= (minimapMetrics.svgHeight - minimapMetrics.contentHeight) / 2;
+
+      // Calculates the scale between the minimap and primary workspace
+      // and applies it to the offset.
+      const scale = primaryMetrics.contentWidth / minimapMetrics.contentWidth;
+      offsetX *= scale;
+      offsetY *= scale;
+
+      // Calculates the location of the click relative to the
+      // top left of the primary workspace content.
+      let x = -primaryMetrics.contentLeft - offsetX;
+      let y = -primaryMetrics.contentTop - offsetY;
+
+      // Centers the click in the primary viewport.
+      x += primaryMetrics.viewWidth / 2;
+      y += primaryMetrics.viewHeight / 2;
+
+      return [x, y];
+    }
+
+    /**
+     * Changes the primary workspace viewport when clicking on the minimap.
      * @param event The minimap browser event.
      */
     private onClick(event: PointerEvent): void {
-      // Calculates the scale between the minimap and primary workspace.
-      const primaryMetrics = this.primaryWorkspace.getMetrics();
-      const contentDiv = this.minimapWorkspace.svgBlockCanvas_.
-          getBoundingClientRect();
-      const scale = primaryMetrics.contentWidth / contentDiv.width;
-
-      // Calculates the location of the click in the minimap.
-      const wsDiv = this.minimapWorkspace.svgGroup_.
-          getBoundingClientRect();
-      const offsetX = event.offsetX - (wsDiv.width - contentDiv.width) / 2;
-      const offsetY = event.offsetY - (wsDiv.height - contentDiv.height) / 2;
-
-      // Converts the click from the minimap to the primary worskspace.
-      const x = -primaryMetrics.scrollLeft - offsetX * scale;
-      const y = -primaryMetrics.scrollTop - offsetY * scale;
+      const [x, y] = this.minimapToPrimaryClick(event.offsetX, event.offsetY);
       this.primaryWorkspace.scroll(x, y);
     }
 
