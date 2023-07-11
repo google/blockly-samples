@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Single-direction Scrolling</title>
@@ -7,23 +8,28 @@
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/msg/en.js"></script>
   <style>
-    html, body {
+    html,
+    body {
       height: 100%;
       margin: 0;
     }
+
     .description {
       flex: 0 1 auto;
     }
+
     .demo {
       display: flex;
       flex-flow: column;
       height: 100%;
     }
+
     #blocklyDiv {
       flex: 1 1 auto;
     }
   </style>
 </head>
+
 <body>
   <div class="demo">
     <p class="description">This is a simple demo of configuring single-direction scrollbars.</p>
@@ -31,38 +37,64 @@
     <div id="blocklyDiv"></div>
   </div>
 
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <block type="controls_if"></block>
-    <block type="logic_compare"></block>
-    <block type="controls_repeat_ext"></block>
-    <block type="math_number">
-      <field name="NUM">123</field>
-    </block>
-    <block type="math_arithmetic"></block>
-    <block type="text"></block>
-    <block type="text_print"></block>
-  </xml>
-
   <script>
-    var demoWorkspace = Blockly.inject('blocklyDiv',
+    var toolbox = {
+      "kind": "flyoutToolbox",
+      "contents": [
         {
-          media: './node_modules/blockly/media/',
-          toolbox: document.getElementById('toolbox'),
-          grid:
-              {
-                spacing: 25,
-                length: 3,
-                colour: '#ccc',
-                snap: true
-              },
-          move: {
-            scrollbars: {
-              vertical: true,
-              horizontal: false
-            }
+          "kind": "block",
+          "type": "controls_if"
+        },
+        {
+          "kind": "block",
+          "type": "logic_compare"
+        },
+        {
+          "kind": "block",
+          "type": "controls_repeat_ext"
+        },
+        {
+          "kind": "block",
+          "type": "math_number",
+          "fields": {
+            "NUM": 123
           }
-        });
+        },
+        {
+          "kind": "block",
+          "type": "math_arithmetic"
+        },
+        {
+          "kind": "block",
+          "type": "text"
+        },
+        {
+          "kind": "block",
+          "type": "text_print"
+        }
+      ]
+    };
+
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+      {
+        media: './node_modules/blockly/media/',
+        toolbox: toolbox,
+        grid:
+        {
+          spacing: 25,
+          length: 3,
+          colour: '#ccc',
+          snap: true
+        },
+        move: {
+          scrollbars: {
+            vertical: true,
+            horizontal: false
+          }
+        }
+      });
   </script>
 
-  </body>
+</body>
+
 </html>
