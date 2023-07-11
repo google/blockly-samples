@@ -29,6 +29,7 @@ const BlockEvents = new Set([
 export class Minimap {
     protected primaryWorkspace: Blockly.WorkspaceSvg;
     protected minimapWorkspace: Blockly.WorkspaceSvg;
+    private onMouseMoveWrapper: Blockly.browserEvents.Data;
     /**
      * Constructor for a minimap
      * @param workspace The workspace to mirror
@@ -55,13 +56,13 @@ export class Minimap {
     init(): void {
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
-      Blockly.browserEvents.bind(this.minimapWorkspace.svgGroup_,
-          'mousedown', this, this.onClick);
-      Blockly.browserEvents.bind(this.minimapWorkspace.svgGroup_,
-          'mousemove', this, this.onMouseMove);
       window.addEventListener('resize', () => {
         this.minimapWorkspace.zoomToFit();
       });
+      Blockly.browserEvents.bind(
+          this.minimapWorkspace.svgGroup_, 'mousedown', this, this.onClickDown);
+      Blockly.browserEvents.bind(
+          this.minimapWorkspace.svgGroup_, 'mouseup', this, this.onClickUp);
     }
 
     /**
@@ -92,9 +93,9 @@ export class Minimap {
      * the primary viewport.
      * @param offsetX The x offset of the mouse event.
      * @param offsetY The y offset of the mouse event.
-     * @returns (x, y) ptimary workspace scroll coordinates.
+     * @returns (x, y) primary workspace scroll coordinates.
      */
-    private minimapToPrimaryClick(
+    private minimapToPrimaryCoords(
         offsetX: number, offsetY: number): [number, number] {
       // Get the metrics from the workspaces
       const primaryMetrics = this.primaryWorkspace.getMetrics();
@@ -124,21 +125,36 @@ export class Minimap {
     }
 
     /**
-     * Changes the primary workspace viewport when clicking on the minimap.
-     * @param event The minimap browser event.
+     * Scrolls the primary workspace viewport based on a minimap event.
+     * @param event The minimap broswer event.
      */
-    private onClick(event: PointerEvent): void {
-      const [x, y] = this.minimapToPrimaryClick(event.offsetX, event.offsetY);
+    private primaryScroll(event: PointerEvent): void {
+      const [x, y] = this.minimapToPrimaryCoords(event.offsetX, event.offsetY);
       this.primaryWorkspace.scroll(x, y);
     }
 
     /**
-     * On a drag in the minimap, update the primary workspace viewport.
+     * Updates the primary workspace viewport based on a click in the minimap.
+     * @param event The minimap browser event.
+     */
+    private onClickDown(event: PointerEvent): void {
+      this.onMouseMoveWrapper = Blockly.browserEvents.bind(
+          this.minimapWorkspace.svgGroup_, 'mousemove', this, this.onMouseMove);
+      this.primaryScroll(event);
+    }
+
+    /**
+     * Unbinds the minimap mousemove when the mouse is not clicked.
+     */
+    private onClickUp(): void {
+      Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
+    }
+
+    /**
+     * Updates the primary workspace viewport based on a drag in the minimap.
      * @param event The minimap browser event.
      */
     private onMouseMove(event: PointerEvent): void {
-      if (event.buttons === 1) {
-        this.onClick(event);
-      }
+      this.primaryScroll(event);
     }
 }
