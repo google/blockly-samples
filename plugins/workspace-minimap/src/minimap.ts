@@ -126,7 +126,7 @@ export class Minimap {
 
     /**
      * Scrolls the primary workspace viewport based on a minimap event.
-     * @param event The minimap broswer event.
+     * @param event The minimap browser event.
      */
     private primaryScroll(event: PointerEvent): void {
       const [x, y] = this.minimapToPrimaryCoords(event.offsetX, event.offsetY);
