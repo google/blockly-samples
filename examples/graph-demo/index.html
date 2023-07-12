@@ -408,12 +408,12 @@ Blockly.defineBlocksWithJsonArray([{
   "helpUrl": Blockly.Msg['VARIABLES_SET_HELPURL']
 }]);
 
-javascript.javascriptGenerator.forBlock['graph_set_y'] = function(block) {
+javascript.javascriptGenerator.forBlock['graph_set_y'] = function(block, generator) {
   // block.setDeletable cannot be set from json
   block.setDeletable(false);
 
   // y variable setter.
-  var argument0 = javascript.javascriptGenerator.valueToCode(block, 'VALUE',
+  var argument0 = generator.valueToCode(block, 'VALUE',
       javascript.Order.ASSIGNMENT) || '';
   return 'y = ' + argument0 + ';';
 };

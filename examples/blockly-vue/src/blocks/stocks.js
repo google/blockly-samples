@@ -26,7 +26,7 @@
 
 
 import * as Blockly from 'blockly/core';
-import {javascriptGenerator} from 'blockly/javascript';
+import {javascriptGenerator, Order} from 'blockly/javascript';
 
 Blockly.Blocks["stock_buy_simple"] = {
   init: function() {
@@ -46,14 +46,14 @@ Blockly.Blocks["stock_buy_simple"] = {
   }
 };
 
-javascriptGenerator["stock_buy_simple"] = function(block) {
+javascriptGenerator.forBlock["stock_buy_simple"] = function(block, generator) {
   var number_id = block.getFieldValue("ID");
   var number_amount = block.getFieldValue("Amount");
   var number_price = block.getFieldValue("Price");
-  var value_number = javascriptGenerator.valueToCode(
+  var value_number = generator.valueToCode(
     block,
     "Number",
-    javascriptGenerator.ORDER_ATOMIC
+    Order.ATOMIC
   );
   var code = `buy(${number_id},${number_amount},${number_price},${value_number});\n`;
   return code;
@@ -78,16 +78,16 @@ Blockly.Blocks["stock_buy_prog"] = {
   }
 };
 
-javascriptGenerator["stock_buy_prog"] = function(block) {
-  var value_number = javascriptGenerator.valueToCode(
+javascriptGenerator.forBlock["stock_buy_prog"] = function(block, generator) {
+  var value_number = generator.valueToCode(
     block,
     "Number",
-    javascriptGenerator.ORDER_ATOMIC
+    Order.ATOMIC
   );
-  var value_name = javascriptGenerator.valueToCode(
+  var value_name = generator.valueToCode(
     block,
     "NAME",
-    javascriptGenerator.ORDER_ATOMIC
+    Order.ATOMIC
   );
   var code = `buy(${value_number},${value_name},${value_name});\n`;
   return code;
@@ -110,15 +110,15 @@ Blockly.Blocks["stock_fetch_price"] = {
   }
 };
 
-javascriptGenerator["stock_fetch_price"] = function(block) {
-  var value_fetch = javascriptGenerator.valueToCode(
+javascriptGenerator.forBlock["stock_fetch_price"] = function(block, generator) {
+  var value_fetch = generator.valueToCode(
     block,
     "Fetch",
-    javascriptGenerator.ORDER_ATOMIC
+    Order.ATOMIC
   );
-  var variable_variable = javascriptGenerator.nameDB_.getName(
+  var variable_variable = generator.nameDB_.getName(
     block.getFieldValue("variable"),
-    Blockly.VARIABLE_CATEGORY_NAME
+    Blockly.names.NameType.VARIABLE
   );
   var code = `fetch_price(${value_fetch},${variable_variable});\n`;
   return code;

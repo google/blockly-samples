@@ -45,10 +45,12 @@ Blockly.defineBlocksWithJsonArray([
     'style': 'colour_blocks'
   }
 ]);
-javascriptGenerator.forBlock['colour_hsv_sliders'] = function(block) {
-  const code = javascriptGenerator.quote_(block.getFieldValue('COLOUR'));
-  return [code, Order.ATOMIC];
-};
+
+javascriptGenerator.forBlock['colour_hsv_sliders'] =
+    function(block, generator) {
+      const code = generator.quote_(block.getFieldValue('COLOUR'));
+      return [code, Order.ATOMIC];
+    };
 ```
 
 ### JavaScript
@@ -67,10 +69,11 @@ Blockly.Blocks['colour_hsv_sliders'] = {
     this.setStyle('colour_blocks');
   }
 };
-javascriptGenerator['colour_hsv_sliders'] = function(block) {
-  const code = javascriptGenerator.quote_(block.getFieldValue('COLOUR'));
-  return [code, Order.ATOMIC];
-};
+javascriptGenerator.forBlock['colour_hsv_sliders'] =
+    function(block, generator) {
+      const code = generator.quote_(block.getFieldValue('COLOUR'));
+      return [code, Order.ATOMIC];
+    };
 ```
 
 ## License

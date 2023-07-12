@@ -146,7 +146,7 @@ Blockly.defineBlocksWithJsonArray([
 
 Blockly.Blocks['test_basic_empty_with_mutator'] = {
   init: function() {
-    this.setMutator(new Blockly.Mutator(['math_number']));
+    this.setMutator(new Blockly.icons.MutatorIcon(['math_number'], this));
   },
 };
 

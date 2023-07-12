@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {javascriptGenerator} from 'blockly/javascript';
+import {Order} from 'blockly/javascript';
 import * as Blockly from 'blockly/core';
 
 // Export all the code generators for our custom blocks,
@@ -12,15 +12,15 @@ import * as Blockly from 'blockly/core';
 // This file has no side effects!
 export const generator = Object.create(null);
 
-generator['add_text'] = function(block: Blockly.Block) {
-  const text = javascriptGenerator.valueToCode(block, 'TEXT',
-      javascriptGenerator.ORDER_NONE) || '\'\'';
-  const color = javascriptGenerator.valueToCode(block, 'COLOR',
-      javascriptGenerator.ORDER_ATOMIC) || '\'#ffffff\'';
+generator.forEach['add_text'] = function(
+    block: Blockly.Block, generator: Blockly.CodeGenerator) {
+  const text = generator.valueToCode(block, 'TEXT', Order.NONE) || '\'\'';
+  const color = generator.valueToCode(block, 'COLOR', Order.ATOMIC) ||
+       '\'#ffffff\'';
 
-  const addText = javascriptGenerator.provideFunction_(
+  const addText = generator.provideFunction_(
       'addText',
-      ['function ' + javascriptGenerator.FUNCTION_NAME_PLACEHOLDER_ +
+      ['function ' + generator.FUNCTION_NAME_PLACEHOLDER_ +
           '(text, color) {',
       '  // Add text to the output area.',
       '  const outputDiv = document.getElementById(\'output\');',
