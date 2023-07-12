@@ -7,22 +7,141 @@
 /**
  * @fileoverview Backpack demo initialization.
  */
+var toolbox = {
+  "kind": "categoryToolbox",
+  "contents": [
+    {
+      "kind": "category",
+      "name": "Logic",
+      "categorystyle": "logic_category",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "controls_if"
+        },
+        {
+          "kind": "block",
+          "type": "logic_compare"
+        },
+        {
+          "kind": "block",
+          "type": "logic_operation"
+        },
+        {
+          "kind": "block",
+          "type": "logic_negate"
+        },
+        {
+          "kind": "block",
+          "type": "logic_boolean"
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Loops",
+      "categorystyle": "loop_category",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "controls_repeat_ext",
+          "values": {
+            "TIMES": {
+              "block": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 10
+                }
+              },
+            }
+          },
+        },
+        {
+          "kind": "block",
+          "type": "controls_flow_statements"
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Math",
+      "categorystyle": "math_category",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "math_number",
+          "fields": {
+            "NUM": 123
+          }
+        },
+        {
+          "kind": "block",
+          "type": "math_arithmetic"
+        },
+        {
+          "kind": "block",
+          "type": "math_single"
+        },
+        {
+          "kind": "block",
+          "type": "math_number_property"
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Text",
+      "categorystyle": "text_category",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "text"
+        },
+        {
+          "kind": "block",
+          "type": "text_multiline"
+        },
+        {
+          "kind": "block",
+          "type": "text_print"
+        },
+        {
+          "kind": "block",
+          "type": "text_prompt_ext"
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "name": "Variables",
+      "categorystyle": "variable_category",
+      "custom": "VARIABLE"
+    },
+    {
+      "kind": "category",
+      "name": "Functions",
+      "categorystyle": "procedure_category",
+      "custom": "PROCEDURE"
+    }
+  ]
+};
+
 
 function init() {
   // Inject primary workspace.
   const primaryWorkspace = Blockly.inject('primaryDiv',
-      {
-        media: './node_modules/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
-        trashcan: true,
-      });
+    {
+      media: './node_modules/blockly/media/',
+      toolbox: toolbox,
+      trashcan: true,
+    });
   // Inject secondary workspace.
   var secondaryWorkspace = Blockly.inject('secondaryDiv',
-      {
-        media: './node_modules/blockly/media/',
-        toolbox: document.getElementById('toolbox'),
-        trashcan: true,
-      });
+    {
+      media: './node_modules/blockly/media/',
+      toolbox: toolbox,
+      trashcan: true,
+    });
 
   // Add backpacks
   const primaryBackpack = new NotificationBackpack(primaryWorkspace);
