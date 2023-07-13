@@ -25,9 +25,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [750, 750].toString(),
+      assert.deepEqual(
+          converted,
+          [850, 750],
           'Incorrect top left click');
     });
 
@@ -39,9 +39,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [250, 250].toString(),
+      assert.deepEqual(
+          converted,
+          [250, 250],
           'Incorrect center click');
     });
 
@@ -53,9 +53,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [-250, -250].toString(),
+      assert.deepEqual(
+          converted,
+          [-250, -250],
           'Incorrect bottom right click');
     });
   });
@@ -74,9 +74,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [2750, 2000].toString(),
+      assert.deepEqual(
+          converted,
+          [2750, 2000],
           'Incorrect top left click');
     });
 
@@ -88,9 +88,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [1750, 1000].toString(),
+      assert.deepEqual(
+          converted,
+          [1750, 1000],
           'Incorrect center click');
     });
 
@@ -102,9 +102,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [750, 0].toString(),
+      assert.deepEqual(
+          converted,
+          [750, 0],
           'Incorrect bottom right click');
     });
   });
@@ -123,9 +123,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [500, -250].toString(),
+      assert.deepEqual(
+          converted,
+          [500, -250],
           'Incorrect top left click');
     });
 
@@ -137,9 +137,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [-500, -1250].toString(),
+      assert.deepEqual(
+          converted,
+          [-500, -1250],
           'Incorrect center click');
     });
 
@@ -151,9 +151,9 @@ suite('Interactions Suite (Shape, Size, Location)', function() {
           this.primaryMetrics, this.minimapMetrics,
           click.x, click.y);
 
-      assert.strictEqual(
-          converted.toString(),
-          [-1500, -2250].toString(),
+      assert.deepEqual(
+          converted,
+          [-1500, -2250],
           'Incorrect bottom right click');
     });
   });
