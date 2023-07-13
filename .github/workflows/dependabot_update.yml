@@ -1,0 +1,58 @@
+# This workflow runs `lerna bootstrap` after dependabot updates a package-lock file.
+# Without it, package-locks become cluttered with incorrect dependencies that
+# normally would be removed by lerna. It wouldn't be necessary if we weren't using
+# lerna bootstrap.
+
+name: Clean up after dependabot
+
+# Triggered when a PR is (re)opened or synchronized
+on: pull_request
+
+permissions:
+  pull-requests: write # This action adds commits to PRs
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    # Only run on dependabot PRs
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Check out the dependabot PR so commits are added there
+      - name: Checkout PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr checkout ${{ github.event.pull_request.number }}
+
+      # This uses a reverse-engineered email for the github actions bot. See
+      # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+      - name: Git identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '<41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Lerna bootstrap
+        run: |
+          npm run boot
+          cd examples && npm run boot
+
+      # If any package-locks were updated by lerna bootstrap, commit them
+      # Using `[dependabot skip]` in the commit message allows dependabot
+      # to continue making changes to this PR after it is updated
+      - name: Commit changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ $(git status | grep '.package-lock.json') ]]; then
+            git commit -am "chore: update package-locks [dependabot skip]"
+            git push
+          else
+            echo "No changes detected"
+          fi
