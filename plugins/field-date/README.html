@@ -23,7 +23,7 @@
       <div class="title">@blockly/field-date Demo</div>
       <div class="subtitle">A Blockly date picker field that uses the Google Closure date picker.</div>
     </div>
-    7.0.1
+    8.0.0
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-date" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-date" class="button" target="_blank">View on npm</a>
@@ -50,7 +50,7 @@
     <article class="article-container site-width">
       <div class="article">
       <h1 id="blocklyfield-date-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/field-date <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
-<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> date picker field that uses the Google Closure date picker (<a href="https://google.github.io/closure-library/source/closure/goog/demos/">goog.ui.DatePicker</a>).</p>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that uses a browser default "date" input.</p>
 <h2 id="installation">Installation</h2>
 <h3 id="yarn">Yarn</h3>
 <pre><code>yarn add @blockly/field-date</code></pre>
@@ -59,7 +59,7 @@
 <h2 id="usage">Usage</h2>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import FieldDate from '@blockly/field-date';
+import {FieldDate} from '@blockly/field-date';
 
 Blockly.Blocks["test_fields_date"] = {
   init: function () {
@@ -84,7 +84,6 @@ Blockly.defineBlocksWithJsonArray([
             }
         ]
     }]);</code></pre>
-<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/date">View the developer documentation</a> for further usage examples.</p>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

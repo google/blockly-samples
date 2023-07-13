@@ -23,7 +23,7 @@
       <div class="title">@blockly/field-colour-hsv-sliders Demo</div>
       <div class="subtitle">A Blockly colour field using HSV sliders.</div>
     </div>
-    3.0.1
+    4.0.0
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour-hsv-sliders" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour-hsv-sliders" class="button" target="_blank">View on npm</a>
@@ -81,10 +81,12 @@ Blockly.defineBlocksWithJsonArray([
     'style': 'colour_blocks'
   }
 ]);
-javascriptGenerator.forBlock['colour_hsv_sliders'] = function(block) {
-  const code = javascriptGenerator.quote_(block.getFieldValue('COLOUR'));
-  return [code, Order.ATOMIC];
-};</code></pre>
+
+javascriptGenerator.forBlock['colour_hsv_sliders'] =
+    function(block, generator) {
+      const code = generator.quote_(block.getFieldValue('COLOUR'));
+      return [code, Order.ATOMIC];
+    };</code></pre>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldColourHsvSliders} from '@blockly/field-colour-hsv-sliders';
@@ -99,10 +101,11 @@ Blockly.Blocks['colour_hsv_sliders'] = {
     this.setStyle('colour_blocks');
   }
 };
-javascriptGenerator['colour_hsv_sliders'] = function(block) {
-  const code = javascriptGenerator.quote_(block.getFieldValue('COLOUR'));
-  return [code, Order.ATOMIC];
-};</code></pre>
+javascriptGenerator.forBlock['colour_hsv_sliders'] =
+    function(block, generator) {
+      const code = generator.quote_(block.getFieldValue('COLOUR'));
+      return [code, Order.ATOMIC];
+    };</code></pre>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>
