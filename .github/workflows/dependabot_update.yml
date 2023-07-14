@@ -38,10 +38,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Lerna bootstrap
+      # Running npm ci also runs lerna bootstrap,
+      # which does the magic update we need to remove local dependencies.
+      - name: Npm clean install
         run: |
-          npm run boot
-          cd examples && npm run boot
+          npm ci
+          cd examples && npm ci
 
       # If any package-locks were updated by lerna bootstrap, commit them
       # Using `[dependabot skip]` in the commit message allows dependabot
