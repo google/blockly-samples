@@ -36,7 +36,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Lerna bootstrap
         run: |
@@ -46,6 +46,7 @@ jobs:
       # If any package-locks were updated by lerna bootstrap, commit them
       # Using `[dependabot skip]` in the commit message allows dependabot
       # to continue making changes to this PR after it is updated
+      # https://docs.github.com/en/code-security/dependabot/working-with-dependabot/managing-pull-requests-for-dependency-updates#allowing-dependabot-to-rebase-and-force-push-over-extra-commits
       - name: Commit changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
