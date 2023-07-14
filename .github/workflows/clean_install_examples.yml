@@ -23,6 +23,11 @@ jobs:
 
       - name: Check install status
         run: |
-          echo "If this step fails, reproduce locally by running `npm run clean:node && cd examples && npx lerna clean --yes` first"
           npm ci
           cd examples && npm ci
+
+      - name: Pro-tip in case of failure
+        if: ${{ failure() }}
+        run: |
+          echo "To reproduce locally, you need to replicate the fresh install process and get rid of all node_modules directories. Try running"
+          echo "npm run clean:node && cd examples && npx lerna clean --yes && npm ci"
