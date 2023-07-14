@@ -148,6 +148,13 @@ Blockly.Blocks['test_basic_empty_with_mutator'] = {
   init: function() {
     this.setMutator(new Blockly.icons.MutatorIcon(['math_number'], this));
   },
+
+  decompose: function(workspace) {
+    const topBlock = workspace.newBlock('math_number');
+    topBlock.initSvg();
+    return topBlock;
+  },
+  compose: function() {},
 };
 
 
