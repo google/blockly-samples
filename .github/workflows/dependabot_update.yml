@@ -40,7 +40,7 @@ jobs:
 
       # Running npm ci also runs lerna bootstrap,
       # which does the magic update we need to remove local dependencies.
-      - name: Npm clean install
+      - name: Fix package locks
         run: |
           npm ci
           cd examples && npm ci
