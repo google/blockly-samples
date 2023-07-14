@@ -89,35 +89,34 @@ export class Minimap {
     }
 
     /**
-     * Converts a mouse event on the minimap into scroll coordinates for
-     * the primary viewport.
+     * Converts the coorindates from a mouse event on the minimap
+     * into scroll coordinates for the primary viewport.
+     * @param primaryMetrics The metrics from the primary workspace.
+     * @param minimapMetrics The metrics from the minimap workspace.
      * @param offsetX The x offset of the mouse event.
      * @param offsetY The y offset of the mouse event.
      * @returns (x, y) primary workspace scroll coordinates.
      */
-    private minimapToPrimaryCoords(
-        offsetX: number, offsetY: number): [number, number] {
-      // Get the metrics from the workspaces
-      const primaryMetrics = this.primaryWorkspace.getMetrics();
-      const minimapMetrics = this.minimapWorkspace.getMetrics();
-
-      // Calculates the location of the click relative to the
-      // top left of the minimap content.
+    static minimapToPrimaryCoords(
+        primaryMetrics: Blockly.utils.Metrics,
+        minimapMetrics: Blockly.utils.Metrics,
+        offsetX: number,
+        offsetY: number): [number, number] {
+      // Gets the coordinate relative to the top left of the minimap content.
       offsetX -= (minimapMetrics.svgWidth - minimapMetrics.contentWidth) / 2;
       offsetY -= (minimapMetrics.svgHeight - minimapMetrics.contentHeight) / 2;
 
-      // Calculates the scale between the minimap and primary workspace
-      // and applies it to the offset.
-      const scale = primaryMetrics.contentWidth / minimapMetrics.contentWidth;
+      // Scales the coordinate to the primary workspace.
+      const scale =
+          primaryMetrics.contentWidth / minimapMetrics.contentWidth;
       offsetX *= scale;
       offsetY *= scale;
 
-      // Calculates the location of the click relative to the
-      // top left of the primary workspace content.
+      // Gets the coordinate relative to the top left of the primary content.
       let x = -primaryMetrics.contentLeft - offsetX;
       let y = -primaryMetrics.contentTop - offsetY;
 
-      // Centers the click in the primary viewport.
+      // Centers the coordinate in the primary viewport.
       x += primaryMetrics.viewWidth / 2;
       y += primaryMetrics.viewHeight / 2;
 
@@ -129,7 +128,11 @@ export class Minimap {
      * @param event The minimap browser event.
      */
     private primaryScroll(event: PointerEvent): void {
-      const [x, y] = this.minimapToPrimaryCoords(event.offsetX, event.offsetY);
+      const [x, y] = Minimap.minimapToPrimaryCoords(
+          this.primaryWorkspace.getMetrics(),
+          this.minimapWorkspace.getMetrics(),
+          event.offsetX,
+          event.offsetY);
       this.primaryWorkspace.scroll(x, y);
     }
 
@@ -147,6 +150,8 @@ export class Minimap {
      * Unbinds the minimap mousemove when the mouse is not clicked.
      */
     private onClickUp(): void {
+      // TODO: If you start the click in the minimap and end it in the primary
+      //       the then this function is never unbinded
       Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
     }
 
