@@ -1,0 +1,33 @@
+# This workflow checks that examples can be installed cleanly.
+# It only runs on PRs that affect the `examples/` directory.
+
+name: Check examples install status
+
+on: 
+  pull_request:
+    paths:
+      - 'examples/**'
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Check install status
+        run: |
+          npm ci
+          cd examples && npm ci
+
+      - name: Pro-tip in case of failure
+        if: ${{ failure() }}
+        run: |
+          echo "To reproduce locally, you need to replicate the fresh install process and get rid of all node_modules directories. Try running"
+          echo "npm run clean:node && cd examples && npx lerna clean --yes && npm ci"
