@@ -9,9 +9,9 @@ import {Order} from 'blockly/javascript';
 // Export all the code generators for our custom blocks,
 // but don't register them with Blockly yet.
 // This file has no side effects!
-export const generator = Object.create(null);
+export const forBlock = Object.create(null);
 
-generator.forBlock['add_text'] = function(block, generator) {
+forBlock['add_text'] = function(block, generator) {
   const text = generator.valueToCode(block, 'TEXT', Order.NONE) || '\'\'';
   const color = generator.valueToCode(block, 'COLOR', Order.ATOMIC) ||
       '\'#ffffff\'';
