@@ -92,35 +92,105 @@ This package is also used in mocha tests, and exports a suite of useful test hel
 You can find the full list of helpers [here](https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js).
 
 ### Debug Renderer
-The debug renderer is a helpful tool to debug blocks when building a custom
-renderer. It displays the different elements on a block such as the rows,
-elements and connections shown below.
+The [debug renderer][dev-tools] is a renderer plugin that wraps your normal
+renderer, and visualizes the measurements the [render info][render-info]
+collects. This is extremely helpful for understanding what your renderer thinks
+about the block it is trying to render.
 
-![A block showing the rows.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerRows.png)
-![A block showing the elements.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerElements.png)
-![A block showing the connections.](https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerConnections.png)
+#### What it surfaces
 
-If you want to use the debug a custom renderer with the playground, you can
-simply set your renderer in the `defaultOptions` passed into `createPlayground`.
-The debug renderer can then be turned on/off by toggling the 'debugEnabled'
-option under the 'Debug' folder.
+The debug renderer can show you several different things.
 
-If you want to modify the rectangles that are drawn or you are not using the
-playground, you can follow the example below.
+<table>
+  <tr>
+    <th>Debug info</th>
+    <th>Image</th>
+    <th>Description</th>
+  </tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/rows">Rows</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/row.png"/></td>
+    <td>The bounds of the individual rows in a block.</td>
+  <tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/rows#row_spacer">Row spacers</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/row-spacer.png"/></td>
+    <td>The bounds of the row spacers in a block.</td>
+  </tr>
+  <tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/elements">Elements</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/element.png"/></td>
+    <td>The bounds of the elements in a block.</td>
+  </tr>
+  <tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/elements#element_spacer">Element spacers</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/element-spacer.png"/></td>
+    <td>The bounds of the element spacers in a block.</td>
+  </tr>
+  <tr>
+    <td>Connections</td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/connection.png"/></td>
+    <td>
+      The locations of the connection points, with large circles for next and
+      input connections (parent connections) and small circles for output and
+      previous connections (child connections).
+  </td>
+  </tr>
+  <tr>
+    <td>Block bounds</td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/block-bounds.png"/></td>
+    <td>
+      The bounds of the block, not including any child blocks.
+    </td>
+  </tr>
+  <tr>
+    <td>Connectioned block bounds</td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/block-bounds-with-children.png"/></td>
+    <td>
+      The bounds of the block, including child blocks.
+    </td>
+  </tr>
+  <tr>
+    <td>Render / paint</td>
+    <td></td>
+    <td>
+      Flashes the block red when the renderer rerenders the block, equivalent
+      to <a href="https://developer.chrome.com/docs/devtools/rendering/performance/#paint-flashing">paint flashing</a>
+      in Chrome.
+    </td>
+  </tr>
+</table>
+
+#### How to use it
+
+The debug renderer wraps your existing renderer, and then you can register and
+use it just like any other renderer.
 
 ```js
 import {createNewRenderer, DebugDrawer} from '@blockly/dev-tools';
 
-class CustomDebugDrawer extends DebugDrawer {
-  // Add custom functionality here.
-}
-
 const DebugRenderer = createNewRenderer(YourCustomRenderer);
-DebugRenderer.DebugDrawerClass = CustomDebugDrawer;
 Blockly.blockRendering.register('debugRenderer', DebugRenderer);
 
 Blockly.inject('blocklyDiv', {renderer: 'debugRenderer'});
 ```
+
+To see the different information the debug renderer surfaces, you can modify
+the config from the browser console.
+
+```js
+DebugRenderer.config = {
+  rows: true,
+  rowSpacers: true,
+  elems: true,
+  elemSpacers: true,
+  connections: true,
+  blockBounds: true,
+  connectedBlockBounds: true,
+  render: true,
+}
+```
+
+[render-info]: https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/info
+[dev-tools]: https://www.npmjs.com/package/@blockly/dev-tools
 
 ### Logger
 A lightweight workspace console logger.
