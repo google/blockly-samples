@@ -40,7 +40,7 @@ if (ws) {
   runCode();
 
   // Every time the workspace changes state, save the changes to storage.
-  ws.addChangeListener((e: Blockly.Events.UiBase) => {
+  ws.addChangeListener((e: Blockly.Events.Abstract) => {
     // UI events are things like scrolling, zooming, etc.
     // No need to save after one of these.
     if (e.isUiEvent) return;
@@ -49,7 +49,7 @@ if (ws) {
 
 
   // Whenever the workspace changes meaningfully, run the code again.
-  ws.addChangeListener((e: Blockly.Events.UiBase) => {
+  ws.addChangeListener((e: Blockly.Events.Abstract) => {
     // Don't run the code when the workspace finishes loading; we're
     // already running it once when the application starts.
     // Don't run the code during drags; we might have invalid state.
