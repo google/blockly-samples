@@ -136,7 +136,7 @@ The debug renderer can show you several different things.
   </tr>
   <tr>
     <td>Block bounds</td>
-    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/.png"/></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/block-bounds.png"/></td>
     <td>
       The bounds of the block, not including any child blocks.
     </td>
