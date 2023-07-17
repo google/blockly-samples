@@ -12,24 +12,27 @@ import * as Blockly from 'blockly/core';
 // This file has no side effects!
 export const forBlock = Object.create(null);
 
-forBlock['add_text'] = function(
-    block: Blockly.Block, generator: Blockly.CodeGenerator) {
-  const text = generator.valueToCode(block, 'TEXT', Order.NONE) || '\'\'';
-  const color = generator.valueToCode(block, 'COLOR', Order.ATOMIC) ||
-       '\'#ffffff\'';
+forBlock['add_text'] = function (
+  block: Blockly.Block,
+  generator: Blockly.CodeGenerator
+) {
+  const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
+  const color =
+    generator.valueToCode(block, 'COLOR', Order.ATOMIC) || "'#ffffff'";
 
   const addText = generator.provideFunction_(
-      'addText',
-      ['function ' + generator.FUNCTION_NAME_PLACEHOLDER_ +
-          '(text, color) {',
-      '  // Add text to the output area.',
-      '  const outputDiv = document.getElementById(\'output\');',
-      '  const textEl = document.createElement(\'p\');',
-      '  textEl.innerText = text;',
-      '  textEl.style.color = color;',
-      '  outputDiv.appendChild(textEl);',
-      '}']);
-    // Generate the function call for this block.
+    'addText',
+    `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text, color) {
+
+  // Add text to the output area.
+  const outputDiv = document.getElementById('output');
+  const textEl = document.createElement('p');
+  textEl.innerText = text;
+  textEl.style.color = color;
+  outputDiv.appendChild(textEl);
+}`
+  );
+  // Generate the function call for this block.
   const code = `${addText}(${text}, ${color});\n`;
   return code;
 };
