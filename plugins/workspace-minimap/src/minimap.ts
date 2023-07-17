@@ -27,43 +27,54 @@ const BlockEvents = new Set([
  * your code looks like, and how it is organized.
  */
 export class Minimap {
-    protected primaryWorkspace: Blockly.WorkspaceSvg;
-    protected minimapWorkspace: Blockly.WorkspaceSvg;
+    private primaryWorkspace: Blockly.WorkspaceSvg;
+    minimapWorkspace: Blockly.WorkspaceSvg;
     private onMouseMoveWrapper: Blockly.browserEvents.Data;
     /**
-     * Constructor for a minimap
-     * @param workspace The workspace to mirror
+     * Constructor for a minimap.
+     * @param workspace The workspace to mirror.
      */
     constructor(workspace: Blockly.WorkspaceSvg) {
       this.primaryWorkspace = workspace;
-      const options = {
-        readOnly: true,
-        move: {
-          scrollbars: {
-            vertical: true,
-            horizontal: true,
-          },
-          drag: false,
-          wheel: false,
-        },
-      };
-      this.minimapWorkspace = Blockly.inject('minimapDiv', options);
     }
 
     /**
      * Initialize.
      */
     init(): void {
+      // Create a wrapper div for the minimap injection.
+      const minimapWrapper = document.createElement('div');
+      minimapWrapper.id = 'minimapWrapper_' + this.primaryWorkspace.id;
+      minimapWrapper.className = 'minimapWrapper';
+
+      // Make the wrapper a sibling to the primary injection div.
+      const developerDiv = this.primaryWorkspace.getInjectionDiv().parentNode;
+      developerDiv.appendChild(minimapWrapper);
+
+      // Inject the minimap workspace
+      this.minimapWorkspace = Blockly.inject(minimapWrapper.id,
+          {
+            readOnly: true,
+            move: {
+              scrollbars: true,
+              drag: false,
+              wheel: false,
+            },
+            zoom: {
+              maxScale: null,
+              minScale: null,
+            },
+          });
+
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
-      window.addEventListener('resize', () => {
-        this.minimapWorkspace.zoomToFit();
-      });
+      this.minimapWorkspace.zoomToFit();
       Blockly.browserEvents.bind(
           this.minimapWorkspace.svgGroup_, 'mousedown', this, this.onClickDown);
       Blockly.browserEvents.bind(
-          this.minimapWorkspace.svgGroup_, 'mouseup', this, this.onClickUp);
+          developerDiv, 'mouseup', this, this.onClickUp);
     }
+
 
     /**
      * Creates the mirroring between workspaces. Passes on all desired events
@@ -150,9 +161,9 @@ export class Minimap {
      * Unbinds the minimap mousemove when the mouse is not clicked.
      */
     private onClickUp(): void {
-      // TODO: If you start the click in the minimap and end it in the primary
-      //       the then this function is never unbinded
-      Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
+      if (this.onMouseMoveWrapper) {
+        Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
+      }
     }
 
     /**
