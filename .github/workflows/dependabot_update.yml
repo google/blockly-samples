@@ -34,8 +34,8 @@ jobs:
       # https://github.com/actions/checkout/issues/13#issuecomment-724415212
       - name: Git identity
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '<41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'blockly[bot]'
+          git config --global user.email 'blockly-github-robot@google.com'
 
       - name: Setup node
         uses: actions/setup-node@v3
