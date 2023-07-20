@@ -12,7 +12,8 @@ on:
       - "plugins/**"
 
 permissions:
-  pull-requests: write # This action adds commits to PRs
+  pull-requests: write # This action modifies PRs
+  contents: write # This action adds commits to PRs
 
 jobs:
   update:
