@@ -100,6 +100,10 @@ h3 {
   line-height: 32px;
 }
 
+h4 {
+  font-size: 20px;
+}
+
 a {
   text-decoration: none;
   color: #0F79D0;
@@ -308,61 +312,89 @@ a.button:focus {
 Index
 *******************************************************************************/
 
-main.index ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-  line-height: 2rem;
-}
-main.index ul.fluid {
-  float: left;
-}
+main.index ul,
 main.index li {
-  padding: 1rem;
-  flex-shrink: 0;
-}
-main.index li a {
-  background-color: #fff;
-  max-width: 200px;
-  height: 100px;
-  border: 2px solid transparent;
-  border-radius: 3px;
-  box-shadow: 0 1px rgba(0,0,0,.15);
-  flex: 1 0 330px;
-  flex-direction: column;
-  margin: 0 16px 16px 0;
-  max-width: 330px;
-  position: relative;
-  border-bottom-color: #4285f4;
-  padding: 1rem;
+  list-style: revert;
+  padding: revert;
 }
 
-main.index li a:hover,
-main.index li a:focus,
-main.index li a.selected {
-  border-color: #4285f4;
-}
-
-main.index h1 {
-  font-family: "Google Sans",Roboto,Arial,sans-serif;
-  font-weight: 400;
-  letter-spacing: 0;
-  font-size: 1.5rem;
-  line-height: 2rem;
-  padding: 1rem 0;
-}
-
-main.index h2:not(.banner-title) {
-  letter-spacing: .07272727em;
-  font-family: Roboto,Arial,sans-serif;
-  font-size: .6875rem;
-  font-weight: 500;
-  line-height: 1rem;
-  text-transform: uppercase;
+main.index ul {
+  margin-bottom: 2rem;
 }
 
 main.index .container {
   padding: 1rem 0;
+}
+
+main.index h1, 
+main.index h2,
+main.index h3,
+main.index h4,
+main.index h5,
+main.index h6,
+main.index p {
+  padding-bottom: 1rem;
+}
+
+main.index .card {
+  border: 1px solid #dadce0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  overflow: hidden;
+  background-color: #fff;
+  position: relative;
+}
+
+main.index .card:hover {
+  box-shadow: 0px 0px 8px rgba(0.3, 0.3, 0.3, 0.15);
+}
+
+main.index .card.vertical {
+  flex-direction: column-reverse;
+  align-items: start;
+}
+
+main.index .card:link,
+main.index .card:visited,
+main.index .card:hover,
+main.index .card:active {
+  text-decoration: none;
+  color: #333;
+}
+
+main.index .card:not(.vertical) img, 
+main.index .card:not(.vertical) video {
+  max-width: 60%;
+}
+
+main.index .card.vertical img {
+  max-width: 100%;
+}
+
+main.index .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 16px;
+  margin-bottom: 64px;
+}
+
+main.index .third-party:hover:after,
+main.index .third-party:focus:after {
+  content: '⚠️ This is a third-party plugin. The Blockly team does not publish or support it.';
+  display: inline;
+  position: absolute;
+  width: 100%;
+  background-color: #008bc7;
+  left: 0;
+  color: white;
+  bottom: 0;
+  text-align: center;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0px -2px 5px rgba(0.3, 0.3, 0.3, 0.15);
 }
