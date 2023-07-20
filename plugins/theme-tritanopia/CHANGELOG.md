@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/theme-tritanopia@4.0.0...@blockly/theme-tritanopia@5.0.0) (2023-07-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* updated `plugins/field-date` to TypeScript (#1705)
+
+### Features
+
+* updated `plugins/field-date` to TypeScript ([#1705](https://github.com/google/blockly-samples/issues/1705)) ([e5531ff](https://github.com/google/blockly-samples/commit/e5531fffe188ee361a16fe48ed126b34e51a8d30))
+
+
+
 ## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/theme-tritanopia@3.0.12...@blockly/theme-tritanopia@4.0.0) (2023-06-28)
 
 
