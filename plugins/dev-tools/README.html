@@ -23,7 +23,7 @@
       <div class="title">@blockly/dev-tools Demo</div>
       <div class="subtitle">A library of common utilities for Blockly extension development.</div>
     </div>
-    7.0.0
+    7.0.1
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/dev-tools" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/dev-tools" class="button" target="_blank">View on npm</a>
@@ -111,29 +111,90 @@ const toolbox = generateFieldTestBlocks('field_template', [
 <p>This package is also used in mocha tests, and exports a suite of useful test helpers.
 You can find the full list of helpers <a href="https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js">here</a>.</p>
 <h3 id="debug-renderer">Debug Renderer</h3>
-<p>The debug renderer is a helpful tool to debug blocks when building a custom
-renderer. It displays the different elements on a block such as the rows,
-elements and connections shown below.</p>
-<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerRows.png" alt="A block showing the rows." />
-<img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerElements.png" alt="A block showing the elements." />
-<img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/DebuggerConnections.png" alt="A block showing the connections." /></p>
-<p>If you want to use the debug a custom renderer with the playground, you can
-simply set your renderer in the <code>defaultOptions</code> passed into <code>createPlayground</code>.
-The debug renderer can then be turned on/off by toggling the 'debugEnabled'
-option under the 'Debug' folder.</p>
-<p>If you want to modify the rectangles that are drawn or you are not using the
-playground, you can follow the example below.</p>
+<p>The <a href="https://www.npmjs.com/package/@blockly/dev-tools">debug renderer</a> is a renderer plugin that wraps your normal
+renderer, and visualizes the measurements the <a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/info">render info</a>
+collects. This is extremely helpful for understanding what your renderer thinks
+about the block it is trying to render.</p>
+<h4 id="what-it-surfaces">What it surfaces</h4>
+<p>The debug renderer can show you several different things.</p>
+<table>
+  <tr>
+    <th>Debug info</th>
+    <th>Image</th>
+    <th>Description</th>
+  </tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/rows">Rows</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/row.png"/></td>
+    <td>The bounds of the individual rows in a block.</td>
+  <tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/rows#row_spacer">Row spacers</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/row-spacer.png"/></td>
+    <td>The bounds of the row spacers in a block.</td>
+  </tr>
+  <tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/elements">Elements</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/element.png"/></td>
+    <td>The bounds of the elements in a block.</td>
+  </tr>
+  <tr>
+    <td><a href="https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/elements#element_spacer">Element spacers</a></td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/element-spacer.png"/></td>
+    <td>The bounds of the element spacers in a block.</td>
+  </tr>
+  <tr>
+    <td>Connections</td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/connection.png"/></td>
+    <td>
+      The locations of the connection points, with large circles for next and
+      input connections (parent connections) and small circles for output and
+      previous connections (child connections).
+  </td>
+  </tr>
+  <tr>
+    <td>Block bounds</td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/block-bounds.png"/></td>
+    <td>
+      The bounds of the block, not including any child blocks.
+    </td>
+  </tr>
+  <tr>
+    <td>Connectioned block bounds</td>
+    <td><img src="https://github.com/google/blockly-samples/raw/master/plugins/dev-tools/readme-media/block-bounds-with-children.png"/></td>
+    <td>
+      The bounds of the block, including child blocks.
+    </td>
+  </tr>
+  <tr>
+    <td>Render / paint</td>
+    <td></td>
+    <td>
+      Flashes the block red when the renderer rerenders the block, equivalent
+      to <a href="https://developer.chrome.com/docs/devtools/rendering/performance/#paint-flashing">paint flashing</a>
+      in Chrome.
+    </td>
+  </tr>
+</table>
+<h4 id="how-to-use-it">How to use it</h4>
+<p>The debug renderer wraps your existing renderer, and then you can register and
+use it just like any other renderer.</p>
 <pre><code class="js language-js">import {createNewRenderer, DebugDrawer} from '@blockly/dev-tools';
 
-class CustomDebugDrawer extends DebugDrawer {
-  // Add custom functionality here.
-}
-
 const DebugRenderer = createNewRenderer(YourCustomRenderer);
-DebugRenderer.DebugDrawerClass = CustomDebugDrawer;
 Blockly.blockRendering.register('debugRenderer', DebugRenderer);
 
 Blockly.inject('blocklyDiv', {renderer: 'debugRenderer'});</code></pre>
+<p>To see the different information the debug renderer surfaces, you can modify
+the config from the browser console.</p>
+<pre><code class="js language-js">DebugRenderer.config = {
+  rows: true,
+  rowSpacers: true,
+  elems: true,
+  elemSpacers: true,
+  connections: true,
+  blockBounds: true,
+  connectedBlockBounds: true,
+  render: true,
+}</code></pre>
 <h3 id="logger">Logger</h3>
 <p>A lightweight workspace console logger.</p>
 <pre><code class="js language-js">import {logger} from '@blockly/dev-tools';
