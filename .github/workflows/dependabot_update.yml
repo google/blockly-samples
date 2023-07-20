@@ -44,7 +44,9 @@ jobs:
       # Running npm ci also runs lerna bootstrap,
       # which does the magic update we need to remove local dependencies.
       - name: Fix package locks
-        run: npm ci
+        run: |
+          npm ci
+          git status
 
       # If any package-locks were updated by lerna bootstrap, commit them
       # Using `[dependabot skip]` in the commit message allows dependabot
