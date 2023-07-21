@@ -212,6 +212,13 @@ export class FieldBitmap extends Blockly.Field {
     return true;
   }
 
+  getScaledBBox() {
+    const boundingBox = this.fieldGroup_.getBoundingClientRect();
+    return new Blockly.utils.Rect(
+        boundingBox.top, boundingBox.bottom, boundingBox.left,
+        boundingBox.right);
+  }
+
   /**
    * Creates the bitmap editor and add event listeners.
    * @returns {!Element} The newly created dropdown menu.
