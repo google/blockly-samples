@@ -35,6 +35,7 @@ export class FieldBitmap extends Blockly.Field {
     super(value, validator, config);
 
     this.SERIALIZABLE = true;
+    this.CURSOR = 'default';
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -209,7 +210,13 @@ export class FieldBitmap extends Blockly.Field {
    * @returns {boolean} True since it is always editable.
    */
   updateEditable() {
-    return true;
+    const editable = super.updateEditable();
+    // Blockly.Field's implementation sets these classes as appropriate, but
+    // since this field has no text they just mess up the rendering of the
+    // grid lines.
+    Blockly.utils.dom.removeClass(this.fieldGroup_, 'blocklyNonEditableText');
+    Blockly.utils.dom.removeClass(this.fieldGroup_, 'blocklyEditableText');
+    return editable;
   }
 
   getScaledBBox() {
