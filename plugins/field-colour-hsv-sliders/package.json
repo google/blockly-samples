@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-colour-hsv-sliders",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A Blockly colour field using HSV sliders.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -42,7 +42,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
-    "@blockly/dev-tools": "^7.0.1",
+    "@blockly/dev-tools": "^7.0.2",
     "blockly": "^10.0.0"
   },
   "peerDependencies": {

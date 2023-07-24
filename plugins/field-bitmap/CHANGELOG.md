@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.1...@blockly/field-bitmap@4.0.2) (2023-07-24)
+
+
+### Bug Fixes
+
+* Fix the positioning of the dropdown div relative to the bitmap field. ([#1809](https://github.com/google/blockly-samples/issues/1809)) ([54a6ee6](https://github.com/google/blockly-samples/commit/54a6ee64ff03b6cb11e070d130a88d656aeced22))
+
+
+
 ## [4.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.0...@blockly/field-bitmap@4.0.1) (2023-07-20)
 
 **Note:** Version bump only for package @blockly/field-bitmap

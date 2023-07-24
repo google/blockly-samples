@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.0](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.3.3...@blockly/block-dynamic-connection@0.4.0) (2023-07-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* update dyanamic connection and test block plugins to blockly v10 (#1812)
+
+### Bug Fixes
+
+* update dyanamic connection and test block plugins to blockly v10 ([#1812](https://github.com/google/blockly-samples/issues/1812)) ([37a2a4d](https://github.com/google/blockly-samples/commit/37a2a4d868f9707a055d08f204003bfb54af7d4c))
+
+
+
 ## [0.3.3](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.3.2...@blockly/block-dynamic-connection@0.3.3) (2023-07-20)
 
 **Note:** Version bump only for package @blockly/block-dynamic-connection

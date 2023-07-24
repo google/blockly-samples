@@ -1,6 +1,6 @@
 {
   "name": "@blockly/block-test",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "A group of Blockly test blocks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
