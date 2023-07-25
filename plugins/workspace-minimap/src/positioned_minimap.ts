@@ -15,9 +15,7 @@ import {Minimap} from './minimap';
 /**
  * A positionable version of minimap that implements IPositionable.
  */
-export class PositionedMinimap implements Blockly.IPositionable {
-    protected minimap: Minimap;
-    protected primaryWorkspace: Blockly.WorkspaceSvg;
+export class PositionedMinimap extends Minimap implements Blockly.IPositionable {
     protected margin: number;
     protected top: number;
     protected left: number;
@@ -29,8 +27,7 @@ export class PositionedMinimap implements Blockly.IPositionable {
      * @param workspace The workspace to mirror.
      */
     constructor(workspace: Blockly.WorkspaceSvg) {
-      this.primaryWorkspace = workspace;
-      this.minimap = new Minimap(this.primaryWorkspace);
+      super(workspace);
       this.id = 'minimap';
       this.margin = 20;
       this.top = 0;
@@ -43,7 +40,7 @@ export class PositionedMinimap implements Blockly.IPositionable {
      * Initialize.
      */
     init(): void {
-      this.minimap.init();
+      super.init();
       this.primaryWorkspace.getComponentManager().addComponent({
         component: this,
         weight: 3,
@@ -70,24 +67,27 @@ export class PositionedMinimap implements Blockly.IPositionable {
      */
     position(metrics: Blockly.MetricsManager.UiMetrics,
         savedPositions: Blockly.utils.Rect[]): void {
-      const hasVerticalScrollbars = this.primaryWorkspace.scrollbar &&
-          this.primaryWorkspace.scrollbar.canScrollHorizontally();
-      const hasHorizontalScrollbars = this.primaryWorkspace.scrollbar &&
-          this.primaryWorkspace.scrollbar.canScrollVertically();
+      // Aliases.
+      const workspace = this.primaryWorkspace;
+      const scrollbars = workspace.scrollbar;
+
+      const hasVerticalScrollbars = scrollbars &&
+        scrollbars.isVisible() && scrollbars.canScrollVertically();
+      const hasHorizontalScrollbars = scrollbars &&
+        scrollbars.isVisible() && scrollbars.canScrollHorizontally();
 
       if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-           (this.primaryWorkspace.horizontalLayout &&
-            !this.primaryWorkspace.RTL)) {
+           (workspace.horizontalLayout && !workspace.RTL)) {
         // Right edge placement.
         this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
             this.width - this.margin;
-        if (hasVerticalScrollbars && !this.primaryWorkspace.RTL) {
+        if (hasVerticalScrollbars && !workspace.RTL) {
           this.left -= Blockly.Scrollbar.scrollbarThickness;
         }
       } else {
         // Left edge placement.
         this.left = this.margin;
-        if (hasVerticalScrollbars && this.primaryWorkspace.RTL) {
+        if (hasVerticalScrollbars && workspace.RTL) {
           this.left += Blockly.Scrollbar.scrollbarThickness;
         }
       }
@@ -121,6 +121,8 @@ export class PositionedMinimap implements Blockly.IPositionable {
           i = -1;
         }
       }
+
+      // Update the Css.
       this.setMinimapCss();
     }
 
@@ -128,7 +130,7 @@ export class PositionedMinimap implements Blockly.IPositionable {
      * Updates the CSS attribute for the minimap.
      */
     private setMinimapCss(): void {
-      const injectDiv = this.minimap.getMinimapInjectionDiv();
+      const injectDiv = this.minimapWorkspace.getInjectionDiv();
       // TODO: Styling properties will be added later this is a placeholder.
       injectDiv.parentElement.setAttribute('style',
           `z-index: 2;
@@ -138,6 +140,6 @@ export class PositionedMinimap implements Blockly.IPositionable {
           top: ${this.top}px;
           left: ${this.left}px;
           box-shadow: 2px 2px 10px grey;`);
-      this.minimap.svgResize();
+      Blockly.svgResize(this.minimapWorkspace);
     }
 }

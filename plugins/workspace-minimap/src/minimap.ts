@@ -27,8 +27,8 @@ const BlockEvents = new Set([
  * your code looks like, and how it is organized.
  */
 export class Minimap {
-    private primaryWorkspace: Blockly.WorkspaceSvg;
-    private minimapWorkspace: Blockly.WorkspaceSvg;
+    protected primaryWorkspace: Blockly.WorkspaceSvg;
+    protected minimapWorkspace: Blockly.WorkspaceSvg;
     private onMouseMoveWrapper: Blockly.browserEvents.Data;
     /**
      * Constructor for a minimap.
@@ -48,36 +48,41 @@ export class Minimap {
       minimapWrapper.className = 'minimapWrapper';
 
       // Make the wrapper a sibling to the primary injection div.
-      const developerDiv = this.primaryWorkspace.getInjectionDiv().parentNode;
-      developerDiv.appendChild(minimapWrapper);
+      const primaryInjectParentDiv =
+        this.primaryWorkspace.getInjectionDiv().parentNode;
+      primaryInjectParentDiv.appendChild(minimapWrapper);
 
-      // Inject the minimap workspace
+      // Inject the minimap workspace.
       this.minimapWorkspace = Blockly.inject(minimapWrapper.id,
           {
-            readOnly: true,
             // Inherit the layout of the primary workspace.
             rtl: this.primaryWorkspace.RTL,
-            // Inlcude the scrollbars so that internal scrolling is enabled and
+            // Include the scrollbars so that internal scrolling is enabled and
             // remove direct interaction with the minimap workspace.
             move: {
               scrollbars: true,
               drag: false,
               wheel: false,
             },
-            // Removes the scale bounds of the minimap so that it can
-            // correctly resize.
+            // Remove the scale bounds of the minimap so that it can
+            // correctly zoomToFit.
             zoom: {
               maxScale: null,
               minScale: null,
             },
+            readOnly: true,
           });
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
+
+      // The mouseup binds to the parent container div instead of the minimap
+      // because if a drag begins on the minimap and ends outside of it the
+      // mousemove should still unbind.
       Blockly.browserEvents.bind(
           this.minimapWorkspace.svgGroup_, 'mousedown', this, this.onClickDown);
       Blockly.browserEvents.bind(
-          developerDiv, 'mouseup', this, this.onClickUp);
+          primaryInjectParentDiv, 'mouseup', this, this.onClickUp);
     }
 
 
@@ -177,20 +182,5 @@ export class Minimap {
      */
     private onMouseMove(event: PointerEvent): void {
       this.primaryScroll(event);
-    }
-
-    /**
-     * Gets the injection div for the minimap workspace.
-     * @returns The injection div element for the minimap.
-     */
-    getMinimapInjectionDiv(): Element {
-      return this.minimapWorkspace.getInjectionDiv();
-    }
-
-    /**
-     * Resizes the minimap svg.
-     */
-    svgResize(): void {
-      Blockly.svgResize(this.minimapWorkspace);
     }
 }
