@@ -28,7 +28,7 @@ const BlockEvents = new Set([
  */
 export class Minimap {
     private primaryWorkspace: Blockly.WorkspaceSvg;
-    minimapWorkspace: Blockly.WorkspaceSvg;
+    private minimapWorkspace: Blockly.WorkspaceSvg;
     private onMouseMoveWrapper: Blockly.browserEvents.Data;
     /**
      * Constructor for a minimap.
@@ -55,11 +55,17 @@ export class Minimap {
       this.minimapWorkspace = Blockly.inject(minimapWrapper.id,
           {
             readOnly: true,
+            // Inherit the layout of the primary workspace.
+            rtl: this.primaryWorkspace.RTL,
+            // Inlcude the scrollbars so that internal scrolling is enabled and
+            // remove direct interaction with the minimap workspace.
             move: {
               scrollbars: true,
               drag: false,
               wheel: false,
             },
+            // Removes the scale bounds of the minimap so that it can
+            // correctly resize.
             zoom: {
               maxScale: null,
               minScale: null,
@@ -68,7 +74,6 @@ export class Minimap {
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
-      this.minimapWorkspace.zoomToFit();
       Blockly.browserEvents.bind(
           this.minimapWorkspace.svgGroup_, 'mousedown', this, this.onClickDown);
       Blockly.browserEvents.bind(
@@ -172,5 +177,20 @@ export class Minimap {
      */
     private onMouseMove(event: PointerEvent): void {
       this.primaryScroll(event);
+    }
+
+    /**
+     * Gets the injection div for the minimap workspace.
+     * @returns The injection div element for the minimap.
+     */
+    getMinimapInjectionDiv(): Element {
+      return this.minimapWorkspace.getInjectionDiv();
+    }
+
+    /**
+     * Resizes the minimap svg.
+     */
+    svgResize(): void {
+      Blockly.svgResize(this.minimapWorkspace);
     }
 }

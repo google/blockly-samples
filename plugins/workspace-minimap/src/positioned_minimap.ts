@@ -43,15 +43,13 @@ export class PositionedMinimap implements Blockly.IPositionable {
      * Initialize.
      */
     init(): void {
+      this.minimap.init();
       this.primaryWorkspace.getComponentManager().addComponent({
         component: this,
         weight: 3,
         capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
       });
-      this.minimap.init();
-      this.setMinimapCss();
       this.primaryWorkspace.resize();
-      Blockly.svgResize(this.minimap.minimapWorkspace);
     }
 
     /**
@@ -130,7 +128,7 @@ export class PositionedMinimap implements Blockly.IPositionable {
      * Updates the CSS attribute for the minimap.
      */
     private setMinimapCss(): void {
-      const injectDiv = this.minimap.minimapWorkspace.getInjectionDiv();
+      const injectDiv = this.minimap.getMinimapInjectionDiv();
       // TODO: Styling properties will be added later this is a placeholder.
       injectDiv.parentElement.setAttribute('style',
           `z-index: 2;
@@ -140,5 +138,6 @@ export class PositionedMinimap implements Blockly.IPositionable {
           top: ${this.top}px;
           left: ${this.left}px;
           box-shadow: 2px 2px 10px grey;`);
+      this.minimap.svgResize();
     }
 }
