@@ -20,7 +20,7 @@ class NotificationBackpack extends Backpack {
 
     /**
      * The SVG group containing notification circle that shows either the
-     * total count of items or the number of items added since the backapck
+     * total count of items or the number of items added since the backpack
      * flyout was last opened.
      * @type {?SVGElement}
      * @private
