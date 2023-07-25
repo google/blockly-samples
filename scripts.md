@@ -119,3 +119,4 @@ cleans and builds the src and test directories of each plugin.
 
 You shouldn't need to run this script directly, instead it is run by
 `npm run deploy` and `npm run deploy:upstream`.
+
