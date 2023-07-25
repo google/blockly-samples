@@ -140,7 +140,7 @@ Every context menu option is registered with a **scope type**, which is either `
 ### Add to block scope
 You registered your context menu option on the workspace scope but not the block scope. As a result, you will see it when you right-click on the workspace but not when you right-click on a block.
 
-If you want your option to be shown for both workspaces and blocks, you must register it once for each scope type. Add code to `registerFirstContextMenuOptions` to copy and reregister the workspace item:
+If you want your option to be shown for both workspaces and blocks, you must register it once for each scope type. Add code to `registerFirstContextMenuOptions` to copy and re-register the workspace item:
 
 ```js
   let blockItem = {...workspaceItem}
@@ -149,7 +149,7 @@ If you want your option to be shown for both workspaces and blocks, you must reg
   Blockly.ContextMenuRegistry.registry.register(blockItem);
 ```
 
-Notice that this code uses the JavaScript spread operator to copy the original item object, then replaces the scope type and id. Simply updating `workspaceItem` and reregistering it would modify the original registry item in place, leading to unintended behaviour.
+Notice that this code uses the JavaScript spread operator to copy the original item object, then replaces the scope type and id. Simply updating `workspaceItem` and re-registering it would modify the original registry item in place, leading to unintended behaviour.
 
 ### Test it
 
