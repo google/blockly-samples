@@ -183,7 +183,7 @@ For this codelab we will inject into a div with the id `"blocklyDiv"`, which you
 
 ### Create the workspace
 
-Now add code to inject the Blockly editor just afer the code you used to define your toolbox:
+Now add code to inject the Blockly editor just after the code you used to define your toolbox:
 
 ```js
 Blockly.inject('blocklyDiv', {

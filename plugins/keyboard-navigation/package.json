@@ -1,6 +1,6 @@
 {
   "name": "@blockly/keyboard-navigation",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A Blockly plugin that adds keyboard navigation support.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
-    "@blockly/dev-tools": "^7.0.1",
+    "@blockly/dev-tools": "^7.0.2",
     "blockly": "^10.0.0",
     "chai": "^4.2.0",
     "jsdom": "^16.4.0",
