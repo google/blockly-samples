@@ -7,7 +7,7 @@
 /**
  * @fileoverview Backpack demo initialization.
  */
-var toolbox = {
+const toolbox = {
   'kind': 'categoryToolbox',
   'contents': [
     {
