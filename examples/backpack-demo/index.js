@@ -74,17 +74,55 @@ var toolbox = {
             "NUM": 123
           }
         },
+          {
+            "kind": "block",
+            "type": "math_arithmetic",
+            "values": {
+              "A": {
+                "shadow": {
+                  "type": "math_number",
+                  "fields": {
+                    "NUM": 1
+                  }
+                }
+              },
+              "B": {
+                "shadow": {
+                  "type": "math_number",
+                  "fields": {
+                    "NUM": 1
+                  }
+                }
+              }
+            }
+          },
         {
           "kind": "block",
-          "type": "math_arithmetic"
+          "type": "math_single",
+          "values": {
+            "NUM": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 9
+                }
+              }
+            }
+          },
         },
         {
           "kind": "block",
-          "type": "math_single"
-        },
-        {
-          "kind": "block",
-          "type": "math_number_property"
+          "type": "math_number_property",
+          "values": {
+            "NUMBER_TO_CHECK": {
+              "shadow": {
+                "type": "math_number",
+                "fields": {
+                  "NUM": 0
+                }
+              }
+            }
+          },
         }
       ]
     },
@@ -102,12 +140,37 @@ var toolbox = {
           "type": "text_multiline"
         },
         {
-          "kind": "block",
-          "type": "text_print"
+          "kind": "label",
+          "text": "Input/Output:",
+          "web-class": "ioLabel"
         },
         {
           "kind": "block",
-          "type": "text_prompt_ext"
+          "type": "text_print",
+          "values": {
+            "TEXT": {
+              "shadow": {
+                "type": "text",
+                "fields": {
+                  "TEXT": "abc"
+                }
+              }
+            }
+          },
+        },
+        {
+          "kind": "block",
+          "type": "text_prompt_ext",
+          "values":{
+            "TEXT":{
+              "shadow":{
+                "type": "text",
+                "fields": {
+                  "TEXT": "abc"
+                }
+              }
+            }
+          }
         }
       ]
     },
