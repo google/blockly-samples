@@ -153,20 +153,50 @@ suite('Converting click coordinates from minimap to primary workspace',
     });
 
 
-const workspace = new Blockly.WorkspaceSvg(new Blockly.Options({}));
-this.minimap = new PositionedMinimap(workspace);
+// LTR-vert-start-backpack
+// LTR-vert-start-!scrollbar
+// LTR-vert-start
+// LTR-vert-end
+// LTR-hori-start
+// LTR-hori-end
+// RTL-vert-start
+// RTL-vert-end
+// RTL-hori-start
+// RTL-hori-end
 
 suite('Positioning the minimap in the primary workspace', function() {
   suite('LTR', function() {
     suite('Vertical', function() {
+      setup(function() {
+        const options = new Blockly.Options({
+          RTL: false,
+          horizontalLayout: false,
+        });
+        const workspace = new Blockly.WorkspaceSvg(options);
+        this.minimap = new PositionedMinimap(workspace);
+      });
       test('Start', function() {
-
+        // TODO: spike how to configure start/end.
       });
       test('End', function() {
 
       });
+      test('with Backpack plugin', function() {
+
+      });
+      test('no scrollbars', function() {
+
+      });
     });
     suite('Horizontal', function() {
+      setup(function() {
+        const options = new Blockly.Options({
+          RTL: false,
+          horizontalLayout: true,
+        });
+        const workspace = new Blockly.WorkspaceSvg(options);
+        this.minimap = new PositionedMinimap(workspace);
+      });
       test('Start', function() {
 
       });
@@ -177,6 +207,14 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
   suite('RTL', function() {
     suite('Vertical', function() {
+      setup(function() {
+        const options = new Blockly.Options({
+          RTL: true,
+          horizontalLayout: false,
+        });
+        const workspace = new Blockly.WorkspaceSvg(options);
+        this.minimap = new PositionedMinimap(workspace);
+      });
       test('Start', function() {
 
       });
@@ -185,6 +223,14 @@ suite('Positioning the minimap in the primary workspace', function() {
       });
     });
     suite('Horizontal', function() {
+      setup(function() {
+        const options = new Blockly.Options({
+          RTL: true,
+          horizontalLayout: true,
+        });
+        const workspace = new Blockly.WorkspaceSvg(options);
+        this.minimap = new PositionedMinimap(workspace);
+      });
       test('Start', function() {
 
       });
