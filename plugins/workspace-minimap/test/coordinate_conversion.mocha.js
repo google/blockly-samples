@@ -7,10 +7,12 @@
 
 const chai = require('chai');
 const assert = chai.assert;
+const Blockly = require('blockly');
 const {Minimap} = require('../src/minimap');
+const {PositionedMinimap} = require('../src/positioned_minimap');
 
 
-suite('Converting click coordinates from minimap to primary workspace)',
+suite('Converting click coordinates from minimap to primary workspace',
     function() {
       suite('Square, medium, and ceentered content', function() {
         setup(function() {
@@ -149,3 +151,46 @@ suite('Converting click coordinates from minimap to primary workspace)',
         });
       });
     });
+
+
+const workspace = new Blockly.WorkspaceSvg(new Blockly.Options({}));
+this.minimap = new PositionedMinimap(workspace);
+
+suite('Positioning the minimap in the primary workspace', function() {
+  suite('LTR', function() {
+    suite('Vertical', function() {
+      test('Start', function() {
+
+      });
+      test('End', function() {
+
+      });
+    });
+    suite('Horizontal', function() {
+      test('Start', function() {
+
+      });
+      test('End', function() {
+
+      });
+    });
+  });
+  suite('RTL', function() {
+    suite('Vertical', function() {
+      test('Start', function() {
+
+      });
+      test('End', function() {
+
+      });
+    });
+    suite('Horizontal', function() {
+      test('Start', function() {
+
+      });
+      test('End', function() {
+
+      });
+    });
+  });
+});
