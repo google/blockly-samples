@@ -153,6 +153,29 @@ export class Backpack extends Blockly.DragTarget {
      * @private
      */
     this.SPRITE_SIZE_ = 80;
+
+    this.registerSerializer();
+  }
+
+  /**
+   * Registers serializer if options.skipSerializerRegistration is false
+   * and it hasn't been registered already.
+   * @private
+   */
+  registerSerializer() {
+    if (this.options_.skipSerializerRegistration) {
+      return;
+    }
+
+    if (Blockly.registry.hasItem(
+        Blockly.registry.Type.SERIALIZER,
+        'backpack')) {
+      return;
+    }
+
+    Blockly.serialization.registry.register(
+        'backpack',
+        new BackpackSerializer());
   }
 
   /**
@@ -890,6 +913,4 @@ class BackpackSerializer {
   }
 }
 
-Blockly.serialization.registry.register(
-    'backpack',
-    new BackpackSerializer());
+
