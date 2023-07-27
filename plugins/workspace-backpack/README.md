@@ -47,6 +47,7 @@ This plugin takes an optional configuration object.
 {
   allowEmptyBackpackOpen: (boolean|undefined),
   useFilledBackpackImage: (boolean|undefined),
+  skipSerializerRegistration: (boolean|undefined),
   contextMenu: {
     emptyBackpack: (boolean|undefined),
     removeFromBackpack: (boolean|undefined),
@@ -80,6 +81,7 @@ passed in options that is undefined:
 const defaultOptions = {
   allowEmptyBackpackOpen: true,
   useFilledBackpackImage: false,
+  skipSerializerRegistration: false,
   contextMenu: {
     emptyBackpack: true,
     removeFromBackpack: true,
@@ -96,6 +98,8 @@ being opened if the backpack is empty.
 
 The `useFilledBackpackImage` property, if set to `true`, will change the
 backpack image when the backpack has something in it.
+
+The `skipSerializerRegistration` property, if set to `true`, will not register the backpack serializer with the workspace serializer. Set this to `true` if you don't want the backpack to be serialized alongside the workspace.
 
 The `disablePreconditionChecks` property will prevent the "Copy to Backpack"
 context menu option from disabling the context menu option if the block is
