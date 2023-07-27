@@ -19,6 +19,7 @@ export interface BackpackContextMenuOptions {
 export interface BackpackOptions {
   allowEmptyBackpackOpen?: boolean;
   useFilledBackpackImage?: boolean;
+  skipSerializerRegistration?: boolean;
   contextMenu?: BackpackContextMenuOptions;
 }
 /**

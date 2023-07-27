@@ -26,6 +26,7 @@ export let BackpackContextMenuOptions;
  * @typedef {{
  *    allowEmptyBackpackOpen: (boolean|undefined),
  *    useFilledBackpackImage: (boolean|undefined),
+ *    skipSerializerRegistration: (boolean|undefined),
  *    contextMenu:(!BackpackContextMenuOptions|undefined)
  * }}
  */
@@ -41,6 +42,7 @@ export function parseOptions(options) {
   const defaults = {
     allowEmptyBackpackOpen: true,
     useFilledBackpackImage: false,
+    skipSerializerRegistration: false,
     contextMenu: {
       emptyBackpack: true,
       removeFromBackpack: true,
@@ -60,6 +62,9 @@ export function parseOptions(options) {
         options.allowEmptyBackpackOpen ?? defaults.allowEmptyBackpackOpen,
     useFilledBackpackImage:
         options.useFilledBackpackImage ?? defaults.useFilledBackpackImage,
+    skipSerializerRegistration:
+        options.skipSerializerRegistration ??
+            defaults.skipSerializerRegistration,
     contextMenu: {
       ...defaults.contextMenu,
       ...options.contextMenu,
