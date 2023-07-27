@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.2...@blockly/field-bitmap@4.0.3) (2023-07-27)
+
+
+### Bug Fixes
+
+* Use the normal, non-drag cursor when hovering over a bitmap field. ([#1810](https://github.com/google/blockly-samples/issues/1810)) ([a4f8e8d](https://github.com/google/blockly-samples/commit/a4f8e8d1c22e38fa00a27bbeaca3ef9f637cbe82))
+
+
+
 ## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.1...@blockly/field-bitmap@4.0.2) (2023-07-24)
 
 

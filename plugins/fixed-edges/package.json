@@ -1,6 +1,6 @@
 {
   "name": "@blockly/fixed-edges",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A plugin that provides a MetricsManager that can be used to prevent the workspace from expanding to the top/left/right/bottom when blocks are dragged to that edge.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
