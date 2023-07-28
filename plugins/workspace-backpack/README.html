@@ -5,6 +5,7 @@
   <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
     <title>@blockly/workspace-backpack Demo</title>
@@ -85,6 +86,7 @@ backpack.init();</code></pre>
 <pre><code>{
   allowEmptyBackpackOpen: (boolean|undefined),
   useFilledBackpackImage: (boolean|undefined),
+  skipSerializerRegistration: (boolean|undefined),
   contextMenu: {
     emptyBackpack: (boolean|undefined),
     removeFromBackpack: (boolean|undefined),
@@ -112,6 +114,7 @@ passed in options that is undefined:</p>
 <pre><code class="js language-js">const defaultOptions = {
   allowEmptyBackpackOpen: true,
   useFilledBackpackImage: false,
+  skipSerializerRegistration: false,
   contextMenu: {
     emptyBackpack: true,
     removeFromBackpack: true,
@@ -125,6 +128,7 @@ passed in options that is undefined:</p>
 being opened if the backpack is empty.</p>
 <p>The <code>useFilledBackpackImage</code> property, if set to <code>true</code>, will change the
 backpack image when the backpack has something in it.</p>
+<p>The <code>skipSerializerRegistration</code> property, if set to <code>true</code>, will not register the backpack serializer with the workspace serializer. Set this to <code>true</code> if you don't want the backpack to be serialized alongside the workspace.</p>
 <p>The <code>disablePreconditionChecks</code> property will prevent the "Copy to Backpack"
 context menu option from disabling the context menu option if the block is
 already in the Backpack. Setting this flag to <code>true</code> to disable the check can be

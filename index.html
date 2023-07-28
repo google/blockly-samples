@@ -7,12 +7,13 @@
   <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
   <meta charset='utf-8'>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,maximum-scale=2">
-  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+  <title>Blockly Plugins & Demos</title>
 </head>
 
 <body class="root">
@@ -21,16 +22,6 @@
     <div class="site-width layout horizontal">
       <a href="https://google.github.io/blockly-samples/"><img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
           alt="Blockly" /></a>
-      <div id="searchbar">
-        <div class="input-container">
-          <div prefix="" icon="search" role="button" tabindex="0" aria-disabled="false" class="icon">
-            <div class="icon-search">
-              <i class="material-icons">search</i>
-            </div>
-          </div>
-          <input is="iron-input" autofocus id="search-box" placeholder="Search" />
-        </div>
-      </div>
     </div>
     <a class="button" href="https://github.com/google/blockly-samples">View on GitHub</a>
   </nav>
@@ -38,133 +29,489 @@
     <div class="drop-shadow"></div>
     <header id="banner">
       <div class="site-width">
-        <h2 class="banner-title">Welcome to blockly-samples!</h2>
+        <h1 class="banner-title">Blockly Plugins & Demos</h1>
         <p>
-          Sample projects demonstrating how to integrate Blockly into your project
+          Explore reusable Blockly plugins or view demos of how to use different Blockly features in your app or service.
         </p>
       </div>
     </header>
     <div class="site-width">
       <div class="container">
-        <h1 id="plugins">Plugins</h1>
-<h2 id="blocks">Blocks</h2>
+        <h2 id="plugins">
+  Plugins
+</h2>
+<p>
+  Plugins are NPM packages that extend or modify Blockly's functionality and can be included in any Blockly-based project.
+</p>
+<br>
+<h3 id="fields">
+  Fields
+</h3>
+<p>
+  Field plugins add new kinds of fields that can be incorporated into custom blocks, allowing your users to enter information in different ways. Learn more about how to <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/customizing-fields/overview">create and customize fields</a>.
+</p>
+<div class="grid">
+  <a class="card" href="plugins/field-bitmap/test/index.html">
+    <img srcset="media/bitmap-field.png 2x" alt="">
+    <div>
+      <h4>
+        Bitmap Field
+      </h4>
+      <p>
+        A field that lets users input a pixel grid by clicking or tapping.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/field-date/test/index.html">
+    <img srcset="media/date-field.png 2x" alt="">
+    <div>
+      <h4>
+        Date Field
+      </h4>
+      <p>
+        A field that lets users enter a date using a date picker control.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/field-colour/test/index.html">
+    <img srcset="media/colour-field.png 2x" alt="">
+    <div>
+      <h4>
+        Colour Field
+      </h4>
+      <p>
+        A field that lets users choose a colour. Although the core Blockly library includes this field, it will be removed before the end of 2023, so developers should use this plugin instead.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/field-colour-hsv-sliders/test/index.html">
+    <img srcset="media/hsv-field.png 2x" alt="">
+    <div>
+      <h4>
+        HSV Colour Field
+      </h4>
+      <p>
+        A field that lets users choose a colour using hue, saturation and value (brightness) sliders, or by using an eyedropper tool to pick an onscreen colour.
+      </p>
+    </div>
+  </a>  
+  <a class="card" href="plugins/field-slider/test/index.html">
+    <img srcset="media/slider-field.png 2x" alt="">
+    <div>
+      <h4>
+        Slider Field
+      </h4>
+      <p>
+        A field that allows users to enter a value using a slider.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/field-angle/test/index.html">
+    <img srcset="media/angle-field.png 2x" alt="">
+    <div>
+      <h4>
+        Angle Field
+      </h4>
+      <p>
+        A field that lets users graphically choose an angle.
+      </p>
+    </div>
+  </a>    
+  <a class="card" href="plugins/field-grid-dropdown/test/index.html">
+    <img srcset="media/dropdown-grid-field.png 2x" alt="">
+    <div>
+      <h4>
+        Dropdown Grid Field
+      </h4>
+      <p>
+        A dropdown field that displays the available choices in a grid.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/field-multilineinput/test/index.html">
+    <img srcset="media/multiline-field.png 2x" alt="">
+    <div>
+      <h4>
+        Multi-Line Text Field
+      </h4>
+      <p>
+        A field that lets users enter multiple lines of text.
+      </p>
+    </div>
+  </a>      
+  <a class="card vertical" href="plugins/field-dependent-dropdown/test/index.html">
+    <video autoplay playsinline muted loop width="375px">
+      <source src="media/dependent-dropdown-field.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Dependent Dropdown Field
+      </h4>
+      <p>
+        A dropdown field whose available values depend on the chosen value in a separate dropdown field.
+      </p>
+    </div>
+  </a>
+</div>
+
+<h3 id="blocks">
+  Blocks
+</h3>
+<p>
+  These plugins provide new types of blocks or modify the behavior of existing ones. Learn more about <a href="https://developers.google.com/blockly/guides/create-custom-blocks/overview">creating custom blocks</a>.
+</p>
+<div class="grid">
+  <a class="card" href="plugins/block-dynamic-connection/test/index.html">
+    <video autoplay playsinline muted loop width="229px">
+      <source src="media/dynamic-connections.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Dynamic Connection Blocks
+      </h4>
+      <p>
+        A plugin that provides custom text, list and conditional blocks that dynamically add and remove inputs as the user interacts with them.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/block-plus-minus/test/index.html">
+    <video autoplay playsinline muted loop width="211px">
+      <source src="media/plus-minus.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        +/- Mutator Blocks
+      </h4>
+      <p>
+        Custom logic, list, text, and function blocks that use + and - controls to add and remove inputs instead of the normal mutator interface.
+      </p>
+    </div>
+  </a>  
+  <a class="card" href="plugins/renderer-inline-row-separators/test/index.html">
+    <img srcset="media/inline-inputs.png 2x">
+    <div>
+      <h4>
+        Inline Input Blocks
+      </h4>
+      <p>
+        A custom renderer and example blocks that treat dummy inputs between value inputs as line breaks, rendering the value inputs on separate lines inside of the block.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/block-shareable-procedures/test/index.html">
+    <img srcset="media/procedure-blocks.png 2x">
+    <div>
+      <h4>
+        Procedure Blocks
+      </h4>
+      <p>
+        These blocks allow users to define and call procedures. These have more functionality than the equivalent blocks in core, which allows them to be shared between workspaces. The Blockly team recommends that developers use these instead.
+      </p>
+    </div>
+  </a>
+  <a class="card third-party" href="https://www.npmjs.com/package/@mit-app-inventor/blockly-block-lexical-variables">
+    <img src="media/lexical-variables.png">
+    <div>
+      <h4>
+        Lexical Variables
+      </h4>
+      <p>
+        A third-party plugin that provides blocks for creating and accessing lexical (local) variables.
+      </p>
+    </div>
+  </a>
+</div>
+
+<h3 id="workspace">
+  Workspace
+</h3>
+<p>
+  These plugins add new features and functionality to the Blockly workspace.
+</p>
+<div class="grid">
+  <a class="card" href="plugins/workspace-backpack/test/index.html">
+    <img srcset="media/backpack.png 2x">
+    <div>
+      <h4>
+        Backpack
+      </h4>
+      <p>
+        A plugin that adds a lets users store block stacks in a "backpack" for later retrieval and reuse.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/zoom-to-fit/test/index.html">
+    <img srcset="media/zoom-to-fit.png 2x">
+    <div>
+      <h4>
+        Zoom to Fit
+      </h4>
+      <p>
+        A plugin that adds a zoom-to-fit control to the workspace that will adjust the zoom level to show all blocks.
+      </p>
+    </div>
+  </a>  
+  <a class="card" href="plugins/workspace-search/test/index.html">
+    <img srcset="media/workspace-search.png 2x">
+    <div>
+      <h4>
+        Workspace Search
+      </h4>
+      <p>
+        A plugin that adds a search field to the workspace and highlights matching blocks as the user types.
+      </p>
+    </div>
+  </a>  
+  <a class="card" href="plugins/content-highlight/test/index.html">
+    <img srcset="media/content-highlight.png 2x">
+    <div>
+      <h4>
+        Content Highlight
+      </h4>
+      <p>
+        A plugin that draws a bounding box around all of the blocks in the workspace.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/scroll-options/test/index.html">
+    <video autoplay playsinline muted loop width="281px">
+      <source src="media/scroll-options.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Scroll Options
+      </h4>
+      <p>
+        A plugin that adds support for automatically scrolling the workspace when blocks are dragged to the edge and for scrolling while dragging a block.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/fixed-edges/test/index.html">
+    <video autoplay playsinline muted loop width="241px">
+      <source src="media/fixed-edges.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Fixed Edges
+      </h4>
+      <p>
+        A plugin that provides a MetricsManager that can be used to prevent workspace expansion in certain directions.
+      </p>
+    </div>
+  </a>
+  <a class="card vertical" href="plugins/modal/test/index.html">
+    <img srcset="media/modal.png 2x">
+    <div>
+      <h4>
+        Modal Dialog
+      </h4>
+      <p>
+        A plugin that allows you to display a modal dialog atop the workspace.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/keyboard-navigation/test/index.html">
+    <video autoplay playsinline muted loop width="195px">
+      <source src="media/keyboard-navigation.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Keyboard Navigation
+      </h4>
+      <p>
+        A plugin that allows users to manipulate and connect blocks using a keyboard-driven cursor.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/shadow-block-converter/test/index.html">
+    <video autoplay playsinline muted loop width="241px">
+      <source src="media/shadow-converter.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Shadow Block Converter
+      </h4>
+      <p>
+        A plugin that converts shadow blocks to normal blocks when they are edited.
+      </p>
+    </div>
+  </a>  
+  <a class="card" href="plugins/disable-top-blocks/test/index.html">
+    <img srcset="media/disable-top-blocks.png 2x">
+    <div>
+      <h4>
+        Disable Top Blocks
+      </h4>
+      <p>
+        A plugin that disables all top-level blocks that have a previous connection. Useful for event-driven environments where all code execution must begin from top-level start/event blocks.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/cross-tab-copy-paste/test/index.html">
+    <video autoplay playsinline muted loop width="581px">
+      <source src="media/cross-tab-copy-paste.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Cross-Tab Copy & Paste
+      </h4>
+      <p>
+        A plugin allows copying and pasting blocks between Blockly workspaces in separate tabs or windows.
+      </p>
+    </div>
+  </a>    
+  <a class="card third-party" href="https://www.npmjs.com/package/@mit-app-inventor/blockly-plugin-workspace-multiselect">
+    <video autoplay playsinline muted loop width="394px">
+      <source src="media/multi-select.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Multi-Select
+      </h4>
+      <p>
+        A third-party plugin that allows selecting and manipulating multiple block stacks at once.
+      </p>
+    </div>
+  </a>      
+</div>
+
+<h3 id="toolbox">
+  Toolbox
+</h3>
+<p>
+  These plugins add new features and functionality to the Blockly toolbox. Learn more about <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">customizing the toolbox</a>.
+</p>
+<div class="grid">
+  <a class="card" href="plugins/continuous-toolbox/test/index.html">
+    <video autoplay playsinline muted loop>
+      <source src="media/continuous-toolbox.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Continuous Toolbox
+      </h4>
+      <p>
+        A toolbox that presents all available blocks in a continuously scrollable list.
+      </p>
+    </div>
+  </a>
+  <a class="card" href="plugins/toolbox-search/test/index.html">
+    <video autoplay playsinline muted loop>
+      <source src="media/toolbox-search.mp4" type="video/mp4">
+    </video>
+    <div>
+      <h4>
+        Toolbox Search
+      </h4>
+      <p>
+        A toolbox category that adds a search field to the toolbox and filters available blocks as you type.
+      </p>
+    </div>
+  </a>  
+</div>
+
+<h3 id="themes">
+  Themes
+</h3>
+<p>
+  Themes let you customize the visual appearance of Blockly. Learn more about <a href="https://developers.google.com/blockly/guides/configure/web/appearance/overview">creating custom themes</a>.
+</p>
+<div class="grid">
+  <a class="card vertical" href="plugins/theme-dark/test/index.html">
+    <img srcset="media/dark-theme.png 2x">
+    <div>
+      <h4>
+        Dark Theme
+      </h4>
+      <p>
+        A theme that uses darker colours than the default.
+      </p>
+    </div>
+  </a>
+  <a class="card vertical" href="plugins/theme-modern/test/index.html">
+    <img srcset="media/modern-theme.png 2x">
+    <div>
+      <h4>
+        Modern Theme
+      </h4>
+      <p>
+        A slight variant of the default Blockly theme that uses darker borders and flatter blocks.
+      </p>
+    </div>
+  </a>
+  <a class="card vertical" href="plugins/theme-highcontrast/test/index.html">
+    <img srcset="media/high-contrast-theme.png 2x">
+    <div>
+      <h4>
+        High Contrast Theme
+      </h4>
+      <p>
+        A theme that improves accessibility by using more contrasting colours and darker text to make blocks more legible.
+      </p>
+    </div>
+  </a>
+  <a class="card vertical" href="plugins/theme-tritanopia/test/index.html">
+    <img srcset="media/tritanopia-theme.png 2x">
+    <div>
+      <h4>
+        Tritanopia Theme
+      </h4>
+      <p>
+        A theme that makes Blockly more accessible for individuals with tritanopia, a form of colourblindness.
+      </p>
+    </div>
+  </a>  
+  <a class="card vertical" href="plugins/theme-deuteranopia/test/index.html">
+    <img srcset="media/deuteranopia-theme.png 2x">
+    <div>
+      <h4>
+        Deuteranopia Theme
+      </h4>
+      <p>
+        A theme that makes Blockly more accessible for individuals with deuteranopia, a form of colourblindness.
+      </p>
+    </div>
+  </a>  
+</div>
+
+<h2>Examples</h2>
+<p>These self-contained example projects demonstrate techniques to include and extend the Blockly library.</p>
 <ul>
-<li><a href="plugins/block-plus-minus/test/index.html">Blocks Plus Minus</a></li>
-<li><a href="plugins/block-dynamic-connection/test/index.html">Blocks Dynamic Connection</a></li>
-<li><a href="plugins/block-shareable-procedures/test/index.html">Blocks Shareable Procedures</a></li>
-</ul>
-<h2 id="fields">Fields</h2>
-<ul>
-<li><a href="plugins/field-bitmap/test/index.html">Field Bitmap</a></li>
-<li><a href="plugins/field-colour-hsv-sliders/test/index.html">Field HSV Colour</a></li>
-<li><a href="plugins/field-date/test/index.html">Field Date</a></li>
-<li><a href="plugins/field-slider/test/index.html">Field Slider</a></li>
-<li><a href="plugins/field-dependent-dropdown/test/index.html">Field Dependent Dropdown</a></li>
-<li><a href="plugins/field-grid-dropdown/test/index.html">Field Grid Dropdown</a></li>
-<li><a href="plugins/field-colour/test/index.html">Field Colour</a></li>
-<li><a href="plugins/field-angle/test/index.html">Field Angle</a></li>
-<li><a href="plugins/field-multilineinput/test/index.html">Field Multiline Text</a></li>
-</ul>
-<h2 id="plugins-1">Plugins</h2>
-<ul>
-<li><a href="plugins/modal/test/index.html">Modal</a></li>
-<li><a href="plugins/typed-variable-modal/test/index.html">Typed Variable Modal</a></li>
-<li><a href="plugins/workspace-backpack/test/index.html">Backpack</a></li>
-<li><a href="plugins/workspace-search/test/index.html">Workspace Search</a></li>
-<li><a href="plugins/content-highlight/test/index.html">Workspace Content Highlight</a></li>
-<li><a href="plugins/strict-connection-checker/test/index.html">Strict Connection Checker</a></li>
-<li><a href="plugins/continuous-toolbox/test/index.html">Continuous Toolbox</a></li>
-<li><a href="plugins/disable-top-blocks/test/index.html">Disable Top Blocks</a></li>
-<li><a href="plugins/fixed-edges/test/index.html">Fixed Edges</a></li>
-<li><a href="plugins/zoom-to-fit/test/index.html">Zoom to Fit</a></li>
-<li><a href="plugins/keyboard-navigation/test/index.html">Keyboard Navigation</a></li>
-<li><a href="plugins/scroll-options/test/index.html">Scroll Options</a></li>
-<li><a href="plugins/shadow-block-converter/test/index.html">Shadow Block Converter</a></li>
-<li><a href="plugins/suggested-blocks/test/index.html">Suggested Blocks</a></li>
-<li><a href="plugins/cross-tab-copy-paste/test/index.html">Cross Tab Copy Paste</a></li>
-<li><a href="plugins/renderer-inline-row-separators/test/index.html">Inline Row Separators</a></li>
-<li><a href="plugins/toolbox-search/test/index.html">Toolbox Search</a></li>
-</ul>
-<h2 id="themes">Themes</h2>
-<ul>
-<li><a href="plugins/theme-dark/test/index.html">Theme Dark</a></li>
-<li><a href="plugins/theme-modern/test/index.html">Theme Modern</a></li>
-<li><a href="plugins/theme-highcontrast/test/index.html">Theme High Contrast</a></li>
-<li><a href="plugins/theme-tritanopia/test/index.html">Theme Tritanopia</a></li>
-<li><a href="plugins/theme-deuteranopia/test/index.html">Theme Deuteranopia</a></li>
-</ul>
-<h1 id="third-party-plugins">Third Party Plugins</h1>
-<p>These plugins are not published by the Blockly team. They are linked here for your convenience.</p>
-<ul>
-<li><a href="https://www.npmjs.com/package/@mit-app-inventor/blockly-block-lexical-variables">Lexical Variables</a></li>
-<li><a href="https://www.npmjs.com/package/@mit-app-inventor/blockly-plugin-workspace-multiselect">Workspace Multi-Select</a></li>
-</ul>
-<h1 id="examples">Examples</h1>
-<h2 id="blockly-in-react">Blockly in React</h2>
-<ul>
-<li><a href="examples/blockly-react/build/index.html">Blockly React</a></li>
-</ul>
-<h1 id="demos">Demos</h1>
-<h2 id="inject-blockly">Inject Blockly</h2>
-<ul>
-<li><a href="examples/fixed-demo/index.html">Fixed Blockly</a></li>
-<li><a href="examples/resizable-demo/index.html">Resizable Blockly</a></li>
-</ul>
-<h2 id="toolbox">Toolbox</h2>
-<ul>
-<li><a href="examples/toolbox-demo/index.html">Defining the Toolbox</a></li>
-</ul>
-<h2 id="configuration">Configuration</h2>
-<ul>
-<li><a href="examples/max-blocks-demo/index.html">Maximum Block Limit</a></li>
-<li><a href="examples/rtl-demo/index.html">RTL</a></li>
-<li><a href="examples/single-direction-scroll-demo/index.html">Single-direction Scrolling</a></li>
-</ul>
-<h2 id="generator">Generator</h2>
-<ul>
-<li><a href="examples/generator-demo/index.html">Generate JavaScript</a></li>
-</ul>
-<h2 id="headless">Headless</h2>
-<ul>
-<li><a href="examples/headless-demo/index.html">Headless</a></li>
-</ul>
-<h2 id="js-interpreter">JS Interpreter</h2>
-<ul>
-<li><a href="examples/interpreter-demo/step-execution.html">Step by step execution in JavaScript</a></li>
-<li><a href="examples/interpreter-demo/async-execution.html">Asynchronous execution in JavaScript</a></li>
-<li><a href="examples/interpreter-demo/backwards.html">Backwards execution in JavaScript</a></li>
-</ul>
-<h2 id="custom-dialogs">Custom Dialogs</h2>
-<ul>
-<li><a href="examples/custom-dialogs-demo/index.html">Custom Dialogs</a></li>
-</ul>
-<h2 id="custom-fields">Custom Fields</h2>
-<ul>
-<li><a href="examples/pitch-field-demo/index.html">Pitch Field</a></li>
-<li><a href="examples/turtle-field-demo/index.html">Turtle Field</a></li>
-</ul>
-<h2 id="backpack">Backpack</h2>
-<ul>
-<li><a href="examples/backpack-demo/index.html">Shared Backpacks</a></li>
-</ul>
-<h2 id="tooltips">Tooltips</h2>
-<ul>
-<li><a href="examples/custom-tooltips-demo/index.html">Custom Tooltips</a></li>
-</ul>
-<h2 id="graph">Graph</h2>
-<ul>
-<li><a href="examples/graph-demo/index.html">Graph</a></li>
-</ul>
-<h2 id="mirrored-blockly">Mirrored Blockly</h2>
-<ul>
-<li><a href="examples/mirror-demo/index.html">Mirrored Blockly</a></li>
+  <li>
+    Customization
+    <ul>
+      <li><a href="examples/turtle-field-demo/index.html">Turtle Fields</a>: A demo of creating custom block fields.</li>
+      <li><a href="examples/pitch-field-demo/index.html">Pitch Field</a>: Another demo of creating custom block fields.</li>
+      <li><a href="examples/custom-dialogs-demo/index.html">Custom Dialogs</a>: A demo overriding Blockly browser dialogs with custom implementations.</li>
+      <li><a href="examples/custom-tooltips-demo/index.html">Custom Tooltips</a>: An example of using a custom tooltip renderer.</li>
+      <li><a href="examples/toolbox-demo/index.html">Custom Toolbox</a>: A demo of a complex category structure for the toolbox.</li>
+    </ul>
+  </li>
+  <li>
+    Workspace
+    <ul>
+      <li><a href="examples/max-blocks-demo/index.html">Block Limit</a>: A demo limiting the total number of blocks allowed for academic exercises.</li>
+      <li><a href="examples/mirror-demo/index.html">Mirrored Blockly</a>: A demo using two Blockly instances connected as leader-follower.</li>
+      <li><a href="examples/resizable-demo/index.html">Resizable Workspace</a>: A demo of injecting Blockly into a page as a resizable element.</li>
+      <li><a href="examples/fixed-demo/index.html">Fixed Size Workspace</a>: A demo injecting Blockly into a page as a fixed element.</li>
+      <li><a href="examples/single-direction-scroll-demo/index.html">Single Direction Scrolling</a>: A demo of configuring single-direction scrollbars.</li>
+      <li><a href="examples/rtl-demo/index.html">RTL</a>: A demo of what Blockly looks like in right-to-left mode (for Arabic and Hebrew).</li>
+      <li><a href="examples/backpack-demo/index.html">Shared Backpack</a>: A demo of two Blockly instances with a shared backpack.</li>
+    </ul>
+  </li>
+  <li>
+    Code Generation & Execution
+    <ul>
+      <li><a href="examples/generator-demo/index.html">Generating and Running Code</a>: A demo of generating code from blocks and evaluating it.</li>
+      <li><a href="examples/graph-demo/index.html">Real-Time Code Generation</a>: A demo of using event listeners to generate code and provide instant feedback as blocks are changed.</li>
+      <li><a href="examples/headless-demo/index.html">Headless Blockly</a>: A demo of generating Python code from XML with no graphics.</li>
+      <li><a href="examples/interpreter-demo/step-execution.html">Block-by-Block Code Execution</a>: A demo of executing code step-by-step with a sandboxed JavaScript interpreter. See also <a href="examples/interpreter-demo/backwards.html">backwards execution</a> and <a href="examples/interpreter-demo/async-execution.html">async execution</a> demos.</li>
+    </ul>
+  </li>
 </ul>
       </div>
     </div>
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
-  <script src="js/index.js"></script>
 
   <!-- FOOTER  -->
   <footer id="footer">
