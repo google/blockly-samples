@@ -9,6 +9,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {FieldColour} from '@blockly/field-colour';
 
 // Experimental API: https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper
 declare interface EyeDropper {
@@ -176,7 +177,7 @@ class HsvColour {
 /**
  * Class for a colour input field that displays HSV slider widgets when clicked.
  */
-export class FieldColourHsvSliders extends Blockly.FieldColour {
+export class FieldColourHsvSliders extends FieldColour {
   /* eslint-disable @typescript-eslint/naming-convention */
   /** The maximum value of the hue slider range. */
   private static readonly HUE_SLIDER_MAX = 360;
