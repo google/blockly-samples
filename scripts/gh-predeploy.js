@@ -36,6 +36,7 @@ function injectHeader(initialContents, title, isLocal) {
   <link rel="icon" type="image/x-icon" href="${baseURL}favicon.ico" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="${baseURL}css/custom.css"/>
   <!-- END INJECTED HEADER -->`;
 
@@ -518,18 +519,14 @@ function prepareLocalExamples(done) {
 
 /**
  * Create the index page for the blockly-samples GitHub Pages site.
- * This page has some nice wrappers, a search bar, and a link to every
- * plugin or example specified in in `index.md`.
+ * This page has some nice wrappers and links to plugins and demos
+ * sourced from _index.html.
  *
  * @param {boolean} isLocal True if building for a local test. False if
  *   building for gh-pages.
  */
 function createIndexPage(isLocal) {
-  const initialContents = fs.readFileSync(`./gh-pages/index.md`).toString();
-
-  const converter = new showdown.Converter();
-  converter.setFlavor('github');
-  const htmlContents = converter.makeHtml(initialContents);
+  const htmlContents = fs.readFileSync(`./gh-pages/_index.html`).toString();
 
   const indexBase = `<!DOCTYPE html>
 <html lang="en-US">
@@ -538,7 +535,7 @@ function createIndexPage(isLocal) {
   <meta charset='utf-8'>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,maximum-scale=2">
-  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+  <title></title>
 </head>
 
 <body class="root">
@@ -547,16 +544,6 @@ function createIndexPage(isLocal) {
     <div class="site-width layout horizontal">
       <a href="https://google.github.io/blockly-samples/"><img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
           alt="Blockly" /></a>
-      <div id="searchbar">
-        <div class="input-container">
-          <div prefix="" icon="search" role="button" tabindex="0" aria-disabled="false" class="icon">
-            <div class="icon-search">
-              <i class="material-icons">search</i>
-            </div>
-          </div>
-          <input is="iron-input" autofocus id="search-box" placeholder="Search" />
-        </div>
-      </div>
     </div>
     <a class="button" href="https://github.com/google/blockly-samples">View on GitHub</a>
   </nav>
@@ -564,9 +551,9 @@ function createIndexPage(isLocal) {
     <div class="drop-shadow"></div>
     <header id="banner">
       <div class="site-width">
-        <h2 class="banner-title">Welcome to blockly-samples!</h2>
+        <h1 class="banner-title">Blockly Plugins & Demos</h1>
         <p>
-          Sample projects demonstrating how to integrate Blockly into your project
+          Explore reusable Blockly plugins or view demos of how to use different Blockly features in your app or service.
         </p>
       </div>
     </header>
@@ -576,15 +563,12 @@ function createIndexPage(isLocal) {
       </div>
     </div>
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
-  <script src="js/index.js"></script>
 </body>
 
 </html>
 `;
 
-  let contents = injectHeader(indexBase, 'Plugins | blockly-samples', isLocal);
+  let contents = injectHeader(indexBase, 'Blockly Plugins & Demos', isLocal);
   contents = injectFooter(contents);
   const outputPath = path.join('gh-pages', 'index.html');
   fs.writeFileSync(outputPath, contents, 'utf-8');
