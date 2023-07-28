@@ -40,6 +40,9 @@
     "dist",
     "src"
   ],
+  "dependencies": {
+    "@blockly/field-colour": "^3.0.2"
+  },
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
     "@blockly/dev-tools": "^7.0.2",
