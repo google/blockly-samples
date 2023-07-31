@@ -498,6 +498,26 @@ export class Backpack extends Blockly.DragTarget {
   }
 
   /**
+   * Converts serialized XML to its equivalent serialized JSON string
+   * @param {!string} blockXml The XML serialized block.
+   * @returns {string} The JSON object as a string.
+   * @private
+   */
+  blockXmlToJsonString(blockXml) {
+    if (!blockXml.startsWith('<block')) {
+      throw new Error('Unrecognized XML format');
+    }
+
+    const workspace = new Blockly.Workspace();
+    const block = Blockly.Xml.domToBlock(
+        Blockly.utils.xml.textToDom(blockXml),
+        workspace,
+    );
+
+    return this.blockToJsonString(block);
+  }
+
+  /**
    * Returns whether the backpack contains a duplicate of the provided Block.
    * @param {!Blockly.Block} block The block to check.
    * @returns {boolean} Whether the backpack contains a duplicate of the
@@ -574,7 +594,12 @@ export class Backpack extends Blockly.DragTarget {
    */
   setContents(contents) {
     this.contents_ = [];
-    this.contents_ = this.filterDuplicates_(contents);
+    this.contents_ = this.filterDuplicates_(
+        // Support XML serialized content for backwards compatiblity: https://github.com/google/blockly-samples/issues/1827
+        contents.map((content) => content.startsWith('<block') ?
+          this.blockXmlToJsonString(content) :
+          content)
+    );
     this.onContentChange_();
   }
 
