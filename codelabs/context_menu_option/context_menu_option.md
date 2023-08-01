@@ -344,7 +344,7 @@ Blockly.ContextMenuRegistry.registry.unregister('workspaceDelete');
 
 ### Default options
 
-For a list of the default options that Blockly provides, look at [contextmenu_items.js](https://github.com/google/blockly/blob/master/core/contextmenu_items.js). Each entry contains both the `id` and the `weight`.
+For a list of the default options that Blockly provides, look at [contextmenu_items.ts](https://github.com/google/blockly/blob/master/core/contextmenu_items.ts). Each entry contains both the `id` and the `weight`.
 
 ## Summary
 
