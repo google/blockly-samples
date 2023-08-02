@@ -509,12 +509,15 @@ export class Backpack extends Blockly.DragTarget {
     }
 
     const workspace = new Blockly.Workspace();
-    const block = Blockly.Xml.domToBlock(
-        Blockly.utils.xml.textToDom(blockXml),
-        workspace,
-    );
-
-    return this.blockToJsonString(block);
+    try {
+      const block = Blockly.Xml.domToBlock(
+          Blockly.utils.xml.textToDom(blockXml),
+          workspace,
+      );
+      return this.blockToJsonString(block);
+    } finally {
+      workspace.dispose();
+    }
   }
 
   /**
