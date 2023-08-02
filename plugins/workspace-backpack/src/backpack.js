@@ -499,7 +499,7 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Converts serialized XML to its equivalent serialized JSON string
-   * @param {!string} blockXml The XML serialized block.
+   * @param {string} blockXml The XML serialized block.
    * @returns {string} The JSON object as a string.
    * @private
    */
