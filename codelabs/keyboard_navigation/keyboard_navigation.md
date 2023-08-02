@@ -37,7 +37,7 @@ This codelab will demonstrate how to install the [keyboard navigation plugin](ht
 
 ### The application
 
-Use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
+Use the [`npx @blockly/create-package app`](https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
   1. Run `npx @blockly/create-package app keyboard-navigation-codelab`.  This will create a blockly application in the folder `keyboard-navigation-codelab`.
   1. `cd` into the new directory: `cd keyboard-navigation-codelab`.
   1. Install the [keyboard navigation plugin](https://www.npmjs.com/package/@blockly/keyboard-navigation):  `npm install @blockly/keyboard-navigation --save`

@@ -6,7 +6,7 @@
 
 import * as Blockly from 'blockly';
 import {blocks} from './blocks/text';
-import {generator} from './generators/javascript';
+import {forBlock} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
@@ -18,7 +18,7 @@ import './markers/custom_marker_svg';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
-Object.assign(javascriptGenerator, generator);
+Object.assign(javascriptGenerator.forBlock, forBlock);
 
 // Set up UI elements and inject Blockly with custom renderer
 const codeDiv = document.getElementById('generatedCode').firstChild;
@@ -26,7 +26,6 @@ const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
 const ws = Blockly.inject(blocklyDiv, {
   toolbox: toolbox,
-  renderer: 'custom_renderer',
 });
 
 // Add CustomCursor to workspace
