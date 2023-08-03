@@ -21,6 +21,12 @@ import {Navigation} from './navigation';
  * Class for registering shortcuts for keyboard navigation.
  */
 export class NavigationController {
+  /** Data copied by the copy or cut keyboard shortcuts. */
+  copyData = null;
+
+  /** The workspace a copy or cut keyboard shortcut happened in. */
+  copyWorkspace = null;
+
   /**
    * Constructor used for registering shortcuts.
    * This will register any default shortcuts for keyboard navigation.
@@ -715,9 +721,12 @@ export class NavigationController {
         return false;
       },
       callback: (workspace) => {
-        const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
+        const sourceBlock =/** @type {Blockly.BlockSvg} */ (
+          workspace.getCursor().getCurNode().getSourceBlock());
         workspace.hideChaff();
-        Blockly.clipboard.copy(sourceBlock);
+        this.copyData = sourceBlock.toCopyData();
+        this.copyWorkspace = sourceBlock.workspace;
+        return !!this.copyData;
       },
     };
 
@@ -752,7 +761,8 @@ export class NavigationController {
             !workspace.options.readOnly && !Blockly.Gesture.inProgress();
       },
       callback: () => {
-        return this.navigation.paste();
+        if (!this.copyData || !this.copyWorkspace) return false;
+        return this.navigation.paste(this.copyData, this.copyWorkspace);
       },
     };
 
@@ -797,8 +807,10 @@ export class NavigationController {
         return false;
       },
       callback: (workspace) => {
-        const sourceBlock = workspace.getCursor().getCurNode().getSourceBlock();
-        Blockly.clipboard.copy(sourceBlock);
+        const sourceBlock =/** @type {Blockly.BlockSvg} */ (
+          workspace.getCursor().getCurNode().getSourceBlock());
+        this.copyData = sourceBlock.toCopyData();
+        this.copyWorkspace = sourceBlock.workspace;
         this.navigation.moveCursorOnBlockDelete(workspace, sourceBlock);
         sourceBlock.checkAndDelete();
         return true;
