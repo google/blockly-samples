@@ -679,7 +679,7 @@ export class Backpack extends Blockly.DragTarget {
     }
     const jsons = this.contents_.map((text) => JSON.parse(text));
     this.flyout_.show(jsons);
-    this.workspace_.scrollbar.setVisible(false);
+    this.workspace_.scrollbar?.setVisible(false);
     Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
   }
 
@@ -703,7 +703,7 @@ export class Backpack extends Blockly.DragTarget {
       return;
     }
     this.flyout_.hide();
-    this.workspace_.scrollbar.setVisible(true);
+    this.workspace_.scrollbar?.setVisible(true);
     Blockly.Events.fire(new BackpackOpen(false, this.workspace_.id));
   }
 
