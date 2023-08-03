@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.0.2...@blockly/workspace-backpack@5.1.0) (2023-08-03)
+
+
+### Features
+
+* add option skip backpack serializer registration ([#1829](https://github.com/google/blockly-samples/issues/1829)) ([c139845](https://github.com/google/blockly-samples/commit/c1398453dca6eff82f729db6a2e39e7fbdfcade3))
+
+
+### Bug Fixes
+
+* support xml serialized blocks in setContents() of workspace-back… ([#1835](https://github.com/google/blockly-samples/issues/1835)) ([43718ce](https://github.com/google/blockly-samples/commit/43718ce93b38039fdcf2b0fca89eb80101c765a1))
+
+
+
 ## [5.0.2](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.0.1...@blockly/workspace-backpack@5.0.2) (2023-07-24)
 
 **Note:** Version bump only for package @blockly/workspace-backpack

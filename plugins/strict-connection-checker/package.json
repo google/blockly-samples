@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-strict-connection-checker",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A connection checker that prevents blocks that don't provide type information from being connected to blocks that do.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
