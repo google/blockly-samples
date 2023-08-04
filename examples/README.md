@@ -36,7 +36,6 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 
 ### Integrating Blockly
 
-- [``blockly-requirejs-sample``](blockly-requirejs/): Loads RequireJS from a CDN and loads Blockly using ``AMD``.
 - [``blockly-umd-sample``](blockly-umd/): Loads the UMD build of Blockly (``blockly.min.js``), both from node_modules and from Unpkg.
 - [``blockly-webpack-sample``](blockly-webpack/): Using Blockly in Webpack.
 - [``blockly-node-sample``](blockly-node/): Using Blockly in Node.js, loaded using require (``CommonJS``).
