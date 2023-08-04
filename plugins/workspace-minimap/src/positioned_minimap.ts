@@ -22,6 +22,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
     protected width: number;
     protected height: number;
     id: string;
+
     /**
      * Constructor for a positionable minimap.
      * @param workspace The workspace to mirror.

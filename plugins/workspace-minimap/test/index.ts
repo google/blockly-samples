@@ -19,10 +19,10 @@ const positionedMinimap = new PositionedMinimap(positionedWorkspace);
 positionedMinimap.init();
 
 // Creates the primary workspace and adds the minimap.
-const unpositionedWorkspace = Blockly.inject('unpositionedRoot',
-    {toolbox: toolboxCategories});
-const unpositionedMinimap = new Minimap(unpositionedWorkspace);
-unpositionedMinimap.init();
+// const unpositionedWorkspace = Blockly.inject('unpositionedRoot',
+//     {toolbox: toolboxCategories});
+// const unpositionedMinimap = new Minimap(unpositionedWorkspace);
+// unpositionedMinimap.init();
 
 
 const seedTest = (workspace: Blockly.WorkspaceSvg): void => {

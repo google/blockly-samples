@@ -12,6 +12,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {FocusMode} from './focus_mode';
 
 // Events that should be send over to the minimap from the primary workspace
 const BlockEvents = new Set([
@@ -29,6 +30,7 @@ const BlockEvents = new Set([
 export class Minimap {
     protected primaryWorkspace: Blockly.WorkspaceSvg;
     protected minimapWorkspace: Blockly.WorkspaceSvg;
+    protected focusMode: FocusMode;
     private onMouseMoveWrapper: Blockly.browserEvents.Data;
     /**
      * Constructor for a minimap.
@@ -83,6 +85,11 @@ export class Minimap {
           this.minimapWorkspace.svgGroup_, 'mousedown', this, this.onClickDown);
       Blockly.browserEvents.bind(
           primaryInjectParentDiv, 'mouseup', this, this.onClickUp);
+
+      // Initializes focus mode.
+      this.focusMode = new FocusMode(
+          this.primaryWorkspace, this.minimapWorkspace);
+      this.focus();
     }
 
 
@@ -182,5 +189,19 @@ export class Minimap {
      */
     private onMouseMove(event: PointerEvent): void {
       this.primaryScroll(event);
+    }
+
+    /**
+     * Turns on focus mode; A highlight on the user's viewport in the minimap.
+     */
+    focus(): void {
+      this.focusMode.init();
+    }
+
+    /**
+     * Turns off focus mode.
+     */
+    unfocus(): void {
+      this.focusMode.dispose();
     }
 }
