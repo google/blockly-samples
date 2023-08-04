@@ -11,6 +11,13 @@
 
 import * as Blockly from 'blockly/core';
 
+const BlockEvents = new Set([
+  Blockly.Events.VIEWPORT_CHANGE,
+  Blockly.Events.BLOCK_CHANGE,
+  Blockly.Events.BLOCK_CREATE,
+  Blockly.Events.BLOCK_DELETE,
+  Blockly.Events.BLOCK_DRAG,
+  Blockly.Events.BLOCK_MOVE]);
 
 /**
  * A class that highlights the user's viewport on the minimap.
@@ -24,6 +31,7 @@ export class FocusMode {
     private background: SVGElement;
     private id: string;
 
+
     /**
      * Constructor for focus mode.
      * @param primary The primary workspaceSvg.
@@ -35,21 +43,22 @@ export class FocusMode {
       this.id = this.minimapWorkspace.id;
     }
 
+
     /**
      * Initializes focus mode.
      */
     init() {
-      // Make the group element.
+      // Make the svg group element.
       this.svgGroup = Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.G, {'class': 'focusMode'}, null);
 
-      // Mask under group.
+      // Make the mask under the svg group.
       const mask = Blockly.utils.dom.createSvgElement(
           new Blockly.utils.Svg('mask'),
           {'id': 'focusModeMask' + this.id},
           this.svgGroup);
 
-      // Backround under group.
+      // Make the backround under the svg group.
       this.background = Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.RECT, {
             'x': 0,
@@ -59,7 +68,7 @@ export class FocusMode {
             'mask': 'url(#focusModeMask' + this.id + ')',
           }, this.svgGroup);
 
-      // White layer under mask.
+      // Make the white layer under the svg mask.
       Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.RECT, {
             'x': 0,
@@ -69,7 +78,7 @@ export class FocusMode {
             'fill': 'white',
           }, mask);
 
-      // Black layer under mask.
+      // Make the black layer under the mask.
       this.rect = Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.RECT, {
             'x': 0,
@@ -81,10 +90,8 @@ export class FocusMode {
 
       // Theme.
       this.background.setAttribute('fill', '#e6e6e6');
-      this.svgGroup.setAttribute('opacity', '1');
-      this.svgGroup.style.transition = 'opacity ' + .25 + 's';
 
-      // Add the group to the minimap.
+      // Add the svg group to the minimap.
       const parentSvg = this.minimapWorkspace.getParentSvg();
       if (parentSvg.firstChild) {
         parentSvg.insertBefore(this.svgGroup, parentSvg.firstChild);
@@ -92,20 +99,13 @@ export class FocusMode {
         parentSvg.appendChild(this.svgGroup);
       }
 
+      window.addEventListener('resize', () => void this.update());
       this.onChangeWrapper = this.onChange.bind(this);
       this.primaryWorkspace.addChangeListener(this.onChangeWrapper);
 
-      const primaryMetrics = this.primaryWorkspace.getMetricsManager();
-      const minimapMetrics = this.minimapWorkspace.getMetricsManager();
-
-      this.position(primaryMetrics, minimapMetrics);
-      this.resize(primaryMetrics, minimapMetrics);
-
-      window.addEventListener('resize', () => {
-        this.resize(this.primaryWorkspace.getMetricsManager(),
-            this.minimapWorkspace.getMetricsManager());
-      });
+      this.update();
     }
+
 
     /**
      * Disposes of the focus mode.
@@ -121,72 +121,51 @@ export class FocusMode {
       }
     }
 
+
     /**
      * Handles events triggered on the primary workspace.
      * @param event The event.
      */
     private onChange(event: Blockly.Events.Abstract): void {
-      if (event.type === Blockly.Events.VIEWPORT_CHANGE) {
-        const primary = this.primaryWorkspace.getMetricsManager();
-        const minimap = this.minimapWorkspace.getMetricsManager();
-        this.resize(primary, minimap);
-        this.position(primary, minimap);
+      if (BlockEvents.has(event.type)) {
+        this.update();
       }
     }
 
 
     /**
-     * Resizes the content highlight.
-     * @param primaryMetrics Primary workspace metrics.
-     * @param minimapMetrics Minimap workspace metrics.
+     * Positions and sizes the highlight on the minimap
+     * based on the primary workspace.
      */
-    private resize(primaryMetrics: Blockly.IMetricsManager,
-        minimapMetrics: Blockly.IMetricsManager): void {
-      const scale = primaryMetrics.getContentMetrics(true).width /
-          primaryMetrics.getViewMetrics(true).width;
-      const width = minimapMetrics.getContentMetrics(false).width / scale;
-      const height = minimapMetrics.getContentMetrics(false).height / scale;
+    private update(): void {
+      // Get the metrics.
+      const primaryMetrics = this.primaryWorkspace.getMetricsManager();
+      const minimapMetrics = this.minimapWorkspace.getMetricsManager();
 
-      console.log('scale ', scale);
-      console.log('width, height: ', width, height);
+      // Get the workscape to pixel scale on the minimap.
+      const scale = minimapMetrics.getContentMetrics().width /
+        minimapMetrics.getContentMetrics(true).width;
 
+      // Get the viewport size on a minimap scale.
+      const width = primaryMetrics.getViewMetrics().width * scale;
+      const height = primaryMetrics.getViewMetrics().height * scale;
+
+      // Get the viewport position in relation to the content.
+      let left = (primaryMetrics.getViewMetrics().left -
+        primaryMetrics.getContentMetrics().left) * scale;
+      let top = (primaryMetrics.getViewMetrics().top -
+        primaryMetrics.getContentMetrics().top) * scale;
+
+      // Account for the padding outside the content on the minimap.
+      left += (minimapMetrics.getSvgMetrics().width -
+        minimapMetrics.getContentMetrics().width) / 2;
+      top += (minimapMetrics.getSvgMetrics().height -
+        minimapMetrics.getContentMetrics().height) / 2;
+
+      // Set the svg attributes.
+      this.rect.setAttribute('transform',
+          'translate(' + left + ',' + top + ')');
       this.rect.setAttribute('width', width.toString());
       this.rect.setAttribute('height', height.toString());
-      this.print();
-    }
-
-
-    /**
-     * Positions the highlight on the minimap based on the primary viewport.
-     * @param primaryMetrics Primary workspace metrics.
-     * @param minimapMetrics Minimap workspace metrics.
-     */
-    private position(primaryMetrics: Blockly.IMetricsManager,
-        minimapMetrics: Blockly.IMetricsManager): void {
-      const scale = minimapMetrics.getContentMetrics(false).width /
-        minimapMetrics.getContentMetrics(true).width;
-      const left = primaryMetrics.getViewMetrics(false).left * scale;
-      const top = primaryMetrics.getViewMetrics(false).top * scale;
-      this.rect.setAttribute('transform',
-          'translate(' + left + ',' + top + ') scale(' + 1 +')');
-      this.print();
-    }
-
-    /**
-     * Prints stuff.
-     */
-    private print(): void {
-      const p = this.primaryWorkspace.getMetricsManager();
-      const m = this.minimapWorkspace.getMetricsManager();
-      console.log('Primaty Viewport width (w,p): ',
-          p.getViewMetrics(true).width, p.getViewMetrics(false).width);
-      console.log('Primaty Viewport left (w,p): ',
-          p.getViewMetrics(true).left, p.getViewMetrics(false).left);
-
-      console.log('Primary contet width (w,p): ',
-          p.getContentMetrics(true).width, p.getContentMetrics(false).width);
-      console.log('Minimap contet width (w,p): ',
-          m.getContentMetrics(true).width, m.getContentMetrics(false).width);
-      console.log('------------------------------');
     }
 }
