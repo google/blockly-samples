@@ -36,8 +36,6 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 
 ### Integrating Blockly
 
-- [``blockly-webpack-sample``](blockly-webpack/): Using Blockly in Webpack.
-- [``blockly-node-sample``](blockly-node/): Using Blockly in Node.js, loaded using require (``CommonJS``).
 - [``blockly-angular-sample``](blockly-angular/): Blockly in an Angular project, defines an Angular Blockly Component.
 - [``blockly-react-sample``](blockly-react/): Blockly in a React project, defines a React Blockly Component.
 - [``blockly-svelte-sample``](blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
