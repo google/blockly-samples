@@ -5,7 +5,8 @@
  */
 
 /**
- * @fileoverview A positionable version of the minimap.
+ * @fileoverview A class that highlights the user's
+ * viewport on the minimap.
  * @author cesarades@google.com (Cesar Ades)
  */
 
@@ -19,12 +20,12 @@ const BlockEvents = new Set([
   Blockly.Events.BLOCK_DRAG,
   Blockly.Events.BLOCK_MOVE]);
 
+const BorderRadius = 6;
+
 /**
  * A class that highlights the user's viewport on the minimap.
  */
 export class FocusMode {
-    private primaryWorkspace: Blockly.WorkspaceSvg;
-    private minimapWorkspace: Blockly.WorkspaceSvg;
     private onChangeWrapper: (e: Blockly.Events.Abstract) => void;
     private svgGroup: SVGElement;
     private rect: SVGElement;
@@ -34,13 +35,12 @@ export class FocusMode {
 
     /**
      * Constructor for focus mode.
-     * @param primary The primary workspaceSvg.
-     * @param minimap The minimap workspaceSvg.
+     * @param primaryWorkspace The primary workspaceSvg.
+     * @param minimapWorkspace The minimap workspaceSvg.
      */
-    constructor(primary: Blockly.WorkspaceSvg, minimap: Blockly.WorkspaceSvg) {
-      this.primaryWorkspace = primary;
-      this.minimapWorkspace = minimap;
-      this.id = this.minimapWorkspace.id;
+    constructor(private primaryWorkspace: Blockly.WorkspaceSvg,
+        private minimapWorkspace: Blockly.WorkspaceSvg) {
+      this.id = String(Math.random()).substring(2);
     }
 
 
@@ -83,8 +83,8 @@ export class FocusMode {
           Blockly.utils.Svg.RECT, {
             'x': 0,
             'y': 0,
-            'rx': Blockly.Bubble.BORDER_WIDTH,
-            'ry': Blockly.Bubble.BORDER_WIDTH,
+            'rx': BorderRadius,
+            'ry': BorderRadius,
             'fill': 'black',
           }, mask);
 
@@ -113,12 +113,15 @@ export class FocusMode {
      * to prevent memory leaks.
      */
     dispose() {
-      if (this.svgGroup) {
-        Blockly.utils.dom.removeNode(this.svgGroup);
-      }
       if (this.onChangeWrapper) {
         this.primaryWorkspace.removeChangeListener(this.onChangeWrapper);
       }
+      if (this.svgGroup) {
+        Blockly.utils.dom.removeNode(this.svgGroup);
+      }
+      this.svgGroup = null;
+      this.rect = null;
+      this.background = null;
     }
 
 
@@ -142,25 +145,26 @@ export class FocusMode {
       const primaryMetrics = this.primaryWorkspace.getMetricsManager();
       const minimapMetrics = this.minimapWorkspace.getMetricsManager();
 
+      const primaryView = primaryMetrics.getViewMetrics();
+      const primaryContent = primaryMetrics.getContentMetrics();
+      const minimapContent = minimapMetrics.getContentMetrics();
+      const minimapSvg = minimapMetrics.getSvgMetrics();
+
       // Get the workscape to pixel scale on the minimap.
-      const scale = minimapMetrics.getContentMetrics().width /
+      const scale = minimapContent.width /
         minimapMetrics.getContentMetrics(true).width;
 
       // Get the viewport size on a minimap scale.
-      const width = primaryMetrics.getViewMetrics().width * scale;
-      const height = primaryMetrics.getViewMetrics().height * scale;
+      const width = primaryView.width * scale;
+      const height = primaryView.height * scale;
 
       // Get the viewport position in relation to the content.
-      let left = (primaryMetrics.getViewMetrics().left -
-        primaryMetrics.getContentMetrics().left) * scale;
-      let top = (primaryMetrics.getViewMetrics().top -
-        primaryMetrics.getContentMetrics().top) * scale;
+      let left = (primaryView.left - primaryContent.left) * scale;
+      let top = (primaryView.top - primaryContent.top) * scale;
 
       // Account for the padding outside the content on the minimap.
-      left += (minimapMetrics.getSvgMetrics().width -
-        minimapMetrics.getContentMetrics().width) / 2;
-      top += (minimapMetrics.getSvgMetrics().height -
-        minimapMetrics.getContentMetrics().height) / 2;
+      left += (minimapSvg.width - minimapContent.width) / 2;
+      top += (minimapSvg.height - minimapContent.height) / 2;
 
       // Set the svg attributes.
       this.rect.setAttribute('transform',

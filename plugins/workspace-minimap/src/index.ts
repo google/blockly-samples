@@ -12,4 +12,3 @@
  */
 export {Minimap} from './minimap';
 export {PositionedMinimap} from './positioned_minimap';
-export {FocusMode} from './focus_mode';

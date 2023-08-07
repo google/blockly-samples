@@ -89,7 +89,7 @@ export class Minimap {
       // Initializes focus mode.
       this.focusMode = new FocusMode(
           this.primaryWorkspace, this.minimapWorkspace);
-      this.focus();
+      this.enableFocusMode();
     }
 
 
@@ -194,14 +194,14 @@ export class Minimap {
     /**
      * Turns on focus mode; A highlight on the user's viewport in the minimap.
      */
-    focus(): void {
+    enableFocusMode(): void {
       this.focusMode.init();
     }
 
     /**
      * Turns off focus mode.
      */
-    unfocus(): void {
+    disableFocusMode(): void {
       this.focusMode.dispose();
     }
 }
