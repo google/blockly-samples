@@ -25,17 +25,17 @@ const borderRadius = 6;
 /**
  * A class that highlights the user's viewport on the minimap.
  */
-export class FocusMode {
+export class FocusRegion {
     private onChangeWrapper: (e: Blockly.Events.Abstract) => void;
     private svgGroup: SVGElement;
     private rect: SVGElement;
     private background: SVGElement;
     private id: string;
-    private initialized: boolean;
+    private initialized = false;
 
 
     /**
-     * Constructor for focus mode.
+     * Constructor for the focus region.
      * @param primaryWorkspace The primary workspaceSvg.
      * @param minimapWorkspace The minimap workspaceSvg.
      */
@@ -46,27 +46,27 @@ export class FocusMode {
 
 
     /**
-     * Initializes focus mode.
+     * Initializes focus region.
      */
     init() {
       // Make the svg group element.
       this.svgGroup = Blockly.utils.dom.createSvgElement(
-          Blockly.utils.Svg.G, {'class': 'focusMode'}, null);
+          Blockly.utils.Svg.G, {'class': 'focusRegion'}, null);
 
       // Make the mask under the svg group.
       const mask = Blockly.utils.dom.createSvgElement(
           new Blockly.utils.Svg('mask'),
-          {'id': 'focusModeMask' + this.id},
+          {'id': 'focusRegionMask' + this.id},
           this.svgGroup);
 
-      // Make the backround under the svg group.
+      // Make the background under the svg group.
       this.background = Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.RECT, {
             'x': 0,
             'y': 0,
             'width': '100%',
             'height': '100%',
-            'mask': 'url(#focusModeMask' + this.id + ')',
+            'mask': 'url(#focusRegionMask' + this.id + ')',
           }, this.svgGroup);
 
       // Make the white layer under the svg mask.
@@ -110,7 +110,7 @@ export class FocusMode {
 
 
     /**
-     * Disposes of the focus mode.
+     * Disposes of the focus region.
      * Unlinks from all DOM elements and remove all event listeners
      * to prevent memory leaks.
      */
@@ -170,15 +170,14 @@ export class FocusMode {
       top += (minimapSvg.height - minimapContent.height) / 2;
 
       // Set the svg attributes.
-      this.rect.setAttribute('transform',
-          'translate(' + left + ',' + top + ')');
+      this.rect.setAttribute('transform', `translate(${left},${top})`);
       this.rect.setAttribute('width', width.toString());
       this.rect.setAttribute('height', height.toString());
     }
 
     /**
-     * Returns whether focus mode is initialized or not.
-     * @returns True if focus mode is initialized else false.
+     * Returns whether focus region is initialized or not.
+     * @returns True if focus region is initialized else false.
      */
     isEnabled(): boolean {
       return this.initialized;
