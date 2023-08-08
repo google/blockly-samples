@@ -12,7 +12,7 @@
 
 import * as Blockly from 'blockly/core';
 
-const BlockEvents = new Set([
+const blockEvents = new Set([
   Blockly.Events.VIEWPORT_CHANGE,
   Blockly.Events.BLOCK_CHANGE,
   Blockly.Events.BLOCK_CREATE,
@@ -20,7 +20,7 @@ const BlockEvents = new Set([
   Blockly.Events.BLOCK_DRAG,
   Blockly.Events.BLOCK_MOVE]);
 
-const BorderRadius = 6;
+const borderRadius = 6;
 
 /**
  * A class that highlights the user's viewport on the minimap.
@@ -31,6 +31,7 @@ export class FocusMode {
     private rect: SVGElement;
     private background: SVGElement;
     private id: string;
+    private initialized: boolean;
 
 
     /**
@@ -83,8 +84,8 @@ export class FocusMode {
           Blockly.utils.Svg.RECT, {
             'x': 0,
             'y': 0,
-            'rx': BorderRadius,
-            'ry': BorderRadius,
+            'rx': borderRadius,
+            'ry': borderRadius,
             'fill': 'black',
           }, mask);
 
@@ -104,6 +105,7 @@ export class FocusMode {
       this.primaryWorkspace.addChangeListener(this.onChangeWrapper);
 
       this.update();
+      this.initialized = true;
     }
 
 
@@ -122,6 +124,7 @@ export class FocusMode {
       this.svgGroup = null;
       this.rect = null;
       this.background = null;
+      this.initialized = false;
     }
 
 
@@ -130,7 +133,7 @@ export class FocusMode {
      * @param event The event.
      */
     private onChange(event: Blockly.Events.Abstract): void {
-      if (BlockEvents.has(event.type)) {
+      if (blockEvents.has(event.type)) {
         this.update();
       }
     }
@@ -171,5 +174,13 @@ export class FocusMode {
           'translate(' + left + ',' + top + ')');
       this.rect.setAttribute('width', width.toString());
       this.rect.setAttribute('height', height.toString());
+    }
+
+    /**
+     * Returns whether focus mode is initialized or not.
+     * @returns True if focus mode is initialized else false.
+     */
+    isEnabled(): boolean {
+      return this.initialized;
     }
 }
