@@ -9,6 +9,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const Blockly = require('blockly');
 const {Minimap} = require('../src/minimap');
+const {Backpack} = require('../../workspace-backpack/src/index');
 const {PositionedMinimap} = require('../src/positioned_minimap');
 
 
@@ -167,75 +168,67 @@ suite('Converting click coordinates from minimap to primary workspace',
 suite('Positioning the minimap in the primary workspace', function() {
   suite('LTR', function() {
     suite('Vertical', function() {
-      setup(function() {
+      test('LTR Vertical Start', function() {
         const options = new Blockly.Options({
           RTL: false,
           horizontalLayout: false,
+          toolboxPosition: 'start',
         });
         const workspace = new Blockly.WorkspaceSvg(options);
-        this.minimap = new PositionedMinimap(workspace);
-      });
-      test('Start', function() {
-        // TODO: spike how to configure start/end.
-      });
-      test('End', function() {
+        const minimap = new PositionedMinimap(workspace);
+        minimap.init();
 
+        const boundingRect = minimap.getBoundingRectangle();
+        console.log(boundingRect);
+        assert.deepEqual(boundingRect, 10, 'LTR Vertical Start - Incorrect');
       });
-      test('with Backpack plugin', function() {
 
-      });
-      test('no scrollbars', function() {
-
-      });
-    });
-    suite('Horizontal', function() {
-      setup(function() {
+      test('LTR Vertical End', function() {
         const options = new Blockly.Options({
           RTL: false,
-          horizontalLayout: true,
-        });
-        const workspace = new Blockly.WorkspaceSvg(options);
-        this.minimap = new PositionedMinimap(workspace);
-      });
-      test('Start', function() {
-
-      });
-      test('End', function() {
-
-      });
-    });
-  });
-  suite('RTL', function() {
-    suite('Vertical', function() {
-      setup(function() {
-        const options = new Blockly.Options({
-          RTL: true,
           horizontalLayout: false,
+          toolboxPosition: 'end',
         });
         const workspace = new Blockly.WorkspaceSvg(options);
-        this.minimap = new PositionedMinimap(workspace);
-      });
-      test('Start', function() {
+        const minimap = new PositionedMinimap(workspace);
+        minimap.init();
 
+        const boundingRect = minimap.getBoundingRectangle();
+        console.log(boundingRect);
+        assert.deepEqual(boundingRect, 10, 'LTR Vertical End - Incorrect');
       });
-      test('End', function() {
 
-      });
-    });
-    suite('Horizontal', function() {
-      setup(function() {
+      test('LTR Vertical Start with Backpack', function() {
         const options = new Blockly.Options({
-          RTL: true,
-          horizontalLayout: true,
+          RTL: false,
+          horizontalLayout: false,
+          toolboxPosition: 'start',
         });
         const workspace = new Blockly.WorkspaceSvg(options);
-        this.minimap = new PositionedMinimap(workspace);
-      });
-      test('Start', function() {
+        const backpack = new Backpack(workspace);
+        const minimap = new PositionedMinimap(workspace);
+        backpack.init();
+        minimap.init();
 
+        const boundingRect = minimap.getBoundingRectangle();
+        console.log(boundingRect);
+        assert.deepEqual(boundingRect, 10, 'LTR Vertical Start bp - Incorrect');
       });
-      test('End', function() {
 
+      test('LTR Vertical Start with no scrollbars', function() {
+        const options = new Blockly.Options({
+          RTL: false,
+          horizontalLayout: false,
+          toolboxPosition: 'start',
+          move: {scrollbars: false},
+        });
+        const workspace = new Blockly.WorkspaceSvg(options);
+        const minimap = new PositionedMinimap(workspace);
+        minimap.init();
+
+        const boundingRect = minimap.getBoundingRectangle();
+        console.log(boundingRect);
+        assert.deepEqual(boundingRect, 10, 'LTR Vertical Start ns - Incorrect');
       });
     });
   });
