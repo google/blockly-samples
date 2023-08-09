@@ -117,6 +117,7 @@ export class FocusRegion {
     dispose() {
       if (this.onChangeWrapper) {
         this.primaryWorkspace.removeChangeListener(this.onChangeWrapper);
+        this.onChangeWrapper = null;
       }
       if (this.svgGroup) {
         Blockly.utils.dom.removeNode(this.svgGroup);
@@ -174,6 +175,7 @@ export class FocusRegion {
       this.rect.setAttribute('width', width.toString());
       this.rect.setAttribute('height', height.toString());
     }
+
 
     /**
      * Returns whether focus region is initialized or not.
