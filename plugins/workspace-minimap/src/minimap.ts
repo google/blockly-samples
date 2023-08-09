@@ -32,6 +32,9 @@ export class Minimap {
     protected minimapWorkspace: Blockly.WorkspaceSvg;
     protected focusRegion: FocusRegion;
     private onMouseMoveWrapper: Blockly.browserEvents.Data;
+    protected focusEnabled = false;
+
+
     /**
      * Constructor for a minimap.
      * @param workspace The workspace to mirror.
@@ -77,6 +80,9 @@ export class Minimap {
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
+      window.addEventListener('resize', () => {
+        this.minimapWorkspace.zoomToFit();
+      });
 
       // The mouseup binds to the parent container div instead of the minimap
       // because if a drag begins on the minimap and ends outside of it the
@@ -90,6 +96,7 @@ export class Minimap {
       this.focusRegion = new FocusRegion(
           this.primaryWorkspace, this.minimapWorkspace);
       this.enableFocusRegion();
+      this.focusEnabled = true;
     }
 
 
@@ -115,6 +122,7 @@ export class Minimap {
         this.minimapWorkspace.zoomToFit();
       });
     }
+
 
     /**
      * Converts the coorindates from a mouse event on the minimap
@@ -151,6 +159,7 @@ export class Minimap {
       return [x, y];
     }
 
+
     /**
      * Scrolls the primary workspace viewport based on a minimap event.
      * @param event The minimap browser event.
@@ -164,6 +173,7 @@ export class Minimap {
       this.primaryWorkspace.scroll(x, y);
     }
 
+
     /**
      * Updates the primary workspace viewport based on a click in the minimap.
      * @param event The minimap browser event.
@@ -174,6 +184,7 @@ export class Minimap {
       this.primaryScroll(event);
     }
 
+
     /**
      * Unbinds the minimap mousemove when the mouse is not clicked.
      */
@@ -183,6 +194,7 @@ export class Minimap {
       }
     }
 
+
     /**
      * Updates the primary workspace viewport based on a drag in the minimap.
      * @param event The minimap browser event.
@@ -191,6 +203,7 @@ export class Minimap {
       this.primaryScroll(event);
     }
 
+
     /**
      * Enables the focus region; A highlight of the viewport in the minimap.
      */
@@ -198,10 +211,20 @@ export class Minimap {
       this.focusRegion.init();
     }
 
+
     /**
      * Disables the focus region.
      */
     disableFocusRegion(): void {
       this.focusRegion.dispose();
+    }
+
+
+    /**
+     * Returns whether the focus region is enabled.
+     * @returns True if the focus region is enabled.
+     */
+    isFocusEnabled(): boolean {
+      return this.focusEnabled;
     }
 }
