@@ -12,6 +12,8 @@
 import * as Blockly from 'blockly/core';
 import {Minimap} from './minimap';
 
+const minWidth = 200;
+
 /**
  * A positionable version of minimap that implements IPositionable.
  */
@@ -23,6 +25,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
     protected height: number;
     id: string;
 
+
     /**
      * Constructor for a positionable minimap.
      * @param workspace The workspace to mirror.
@@ -33,9 +36,10 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
       this.margin = 20;
       this.top = 0;
       this.left = 0;
-      this.width = 225; // TODO: Bumping size responsiveness to future branch.
+      this.width = 225;
       this.height = 150;
     }
+
 
     /**
      * Initialize.
@@ -50,6 +54,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
       this.primaryWorkspace.resize();
     }
 
+
     /**
      * Returns the bounding rectangle of the UI element in pixel units
      * relative to the Blockly injection div.
@@ -61,6 +66,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
           this.left, this.left + this.width);
     }
 
+
     /**
      * Positions the minimap.
      * @param metrics The workspace metrics.
@@ -68,6 +74,8 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
      */
     position(metrics: Blockly.MetricsManager.UiMetrics,
         savedPositions: Blockly.utils.Rect[]): void {
+      this.resize();
+
       // Aliases.
       const workspace = this.primaryWorkspace;
       const scrollbars = workspace.scrollbar;
@@ -126,6 +134,17 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
       // Update the Css.
       this.setMinimapCss();
     }
+
+
+    /**
+     * Sizes the minimap.
+     */
+    resize(): void {
+      const viewWidth = this.primaryWorkspace.getMetrics().viewWidth;
+      this.width = Math.max(minWidth, viewWidth / 5);
+      this.height = this.width * 2 / 3;
+    }
+
 
     /**
      * Updates the CSS attribute for the minimap.

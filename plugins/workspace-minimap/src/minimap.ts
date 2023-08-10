@@ -12,10 +12,10 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {FocusRegion} from './focus_mode';
+import {FocusRegion} from './focus_region';
 
 // Events that should be send over to the minimap from the primary workspace
-const BlockEvents = new Set([
+const blockEvents = new Set([
   Blockly.Events.BLOCK_CHANGE,
   Blockly.Events.BLOCK_CREATE,
   Blockly.Events.BLOCK_DELETE,
@@ -31,7 +31,12 @@ export class Minimap {
     protected primaryWorkspace: Blockly.WorkspaceSvg;
     protected minimapWorkspace: Blockly.WorkspaceSvg;
     protected focusRegion: FocusRegion;
-    private onMouseMoveWrapper: Blockly.browserEvents.Data;
+    protected onMouseMoveWrapper: Blockly.browserEvents.Data;
+    protected onMouseDownWrapper: Blockly.browserEvents.Data;
+    protected onMouseUpWrapper: Blockly.browserEvents.Data;
+    protected minimapWrapper: HTMLDivElement;
+
+
     /**
      * Constructor for a minimap.
      * @param workspace The workspace to mirror.
@@ -40,22 +45,23 @@ export class Minimap {
       this.primaryWorkspace = workspace;
     }
 
+
     /**
      * Initialize.
      */
     init(): void {
       // Create a wrapper div for the minimap injection.
-      const minimapWrapper = document.createElement('div');
-      minimapWrapper.id = 'minimapWrapper_' + this.primaryWorkspace.id;
-      minimapWrapper.className = 'minimapWrapper';
+      this.minimapWrapper = document.createElement('div');
+      this.minimapWrapper.id = 'minimapWrapper' + this.primaryWorkspace.id;
+      this.minimapWrapper.className = 'minimapWrapper';
 
       // Make the wrapper a sibling to the primary injection div.
       const primaryInjectParentDiv =
         this.primaryWorkspace.getInjectionDiv().parentNode;
-      primaryInjectParentDiv.appendChild(minimapWrapper);
+      primaryInjectParentDiv.appendChild(this.minimapWrapper);
 
       // Inject the minimap workspace.
-      this.minimapWorkspace = Blockly.inject(minimapWrapper.id,
+      this.minimapWorkspace = Blockly.inject(this.minimapWrapper.id,
           {
             // Inherit the layout of the primary workspace.
             rtl: this.primaryWorkspace.RTL,
@@ -77,19 +83,44 @@ export class Minimap {
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
       this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
+      window.addEventListener('resize', () => {
+        this.minimapWorkspace.zoomToFit();
+      });
 
       // The mouseup binds to the parent container div instead of the minimap
       // because if a drag begins on the minimap and ends outside of it the
       // mousemove should still unbind.
-      Blockly.browserEvents.bind(
+      this.onMouseDownWrapper = Blockly.browserEvents.bind(
           this.minimapWorkspace.svgGroup_, 'mousedown', this, this.onClickDown);
-      Blockly.browserEvents.bind(
+      this.onMouseUpWrapper = Blockly.browserEvents.bind(
           primaryInjectParentDiv, 'mouseup', this, this.onClickUp);
 
       // Initializes the focus region.
       this.focusRegion = new FocusRegion(
           this.primaryWorkspace, this.minimapWorkspace);
       this.enableFocusRegion();
+    }
+
+    /**
+     * Disposes the minimap.
+     * Unlinks from all DOM elements and remove all event listeners
+     * to prevent memory leaks.
+     */
+    dispose() {
+      if (this.isFocusEnabled()) {
+        this.disableFocusRegion();
+      }
+      this.minimapWorkspace.dispose();
+      Blockly.utils.dom.removeNode(this.minimapWrapper);
+      if (this.onMouseMoveWrapper) {
+        Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
+      }
+      if (this.onMouseDownWrapper) {
+        Blockly.browserEvents.unbind(this.onMouseDownWrapper);
+      }
+      if (this.onMouseUpWrapper) {
+        Blockly.browserEvents.unbind(this.onMouseUpWrapper);
+      }
     }
 
 
@@ -101,7 +132,7 @@ export class Minimap {
     private mirror(event: Blockly.Events.Abstract): void {
       // TODO: shadow blocks get mirrored too (not supposed to happen)
 
-      if (!BlockEvents.has(event.type)) {
+      if (!blockEvents.has(event.type)) {
         return; // Filter out events.
       }
       // Run the event in the minimap.
@@ -115,6 +146,7 @@ export class Minimap {
         this.minimapWorkspace.zoomToFit();
       });
     }
+
 
     /**
      * Converts the coorindates from a mouse event on the minimap
@@ -151,6 +183,7 @@ export class Minimap {
       return [x, y];
     }
 
+
     /**
      * Scrolls the primary workspace viewport based on a minimap event.
      * @param event The minimap browser event.
@@ -164,6 +197,7 @@ export class Minimap {
       this.primaryWorkspace.scroll(x, y);
     }
 
+
     /**
      * Updates the primary workspace viewport based on a click in the minimap.
      * @param event The minimap browser event.
@@ -174,6 +208,7 @@ export class Minimap {
       this.primaryScroll(event);
     }
 
+
     /**
      * Unbinds the minimap mousemove when the mouse is not clicked.
      */
@@ -183,6 +218,7 @@ export class Minimap {
       }
     }
 
+
     /**
      * Updates the primary workspace viewport based on a drag in the minimap.
      * @param event The minimap browser event.
@@ -191,6 +227,7 @@ export class Minimap {
       this.primaryScroll(event);
     }
 
+
     /**
      * Enables the focus region; A highlight of the viewport in the minimap.
      */
@@ -198,10 +235,20 @@ export class Minimap {
       this.focusRegion.init();
     }
 
+
     /**
      * Disables the focus region.
      */
     disableFocusRegion(): void {
       this.focusRegion.dispose();
+    }
+
+
+    /**
+     * Returns whether the focus region is enabled.
+     * @returns True if the focus region is enabled.
+     */
+    isFocusEnabled(): boolean {
+      return this.focusRegion.isEnabled();
     }
 }
