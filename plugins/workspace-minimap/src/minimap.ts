@@ -79,6 +79,7 @@ export class Minimap {
               minScale: null,
             },
             readOnly: true,
+            theme: this.primaryWorkspace.getTheme(),
           });
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
