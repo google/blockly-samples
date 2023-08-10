@@ -51,8 +51,8 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
         weight: 3,
         capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
       });
-      window.addEventListener('resize', () => void this.size());
-      this.size();
+      window.addEventListener('resize', () => void this.resize());
+      this.resize();
       this.primaryWorkspace.resize();
     }
 
@@ -139,10 +139,10 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
     /**
      * Sizes the minimap.
      */
-    size(): void {
+    resize(): void {
       const viewWidth = this.primaryWorkspace.getMetrics().viewWidth;
       this.width = Math.max(minWidth, viewWidth / 5);
-      this.height = this.width / 1.5;
+      this.height = this.width * 2 / 3;
     }
 
 

@@ -12,7 +12,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {FocusRegion} from './focus_mode';
+import {FocusRegion} from './focus_region';
 
 // Events that should be send over to the minimap from the primary workspace
 const blockEvents = new Set([
@@ -34,7 +34,6 @@ export class Minimap {
     protected onMouseMoveWrapper: Blockly.browserEvents.Data;
     protected onMouseDownWrapper: Blockly.browserEvents.Data;
     protected onMouseUpWrapper: Blockly.browserEvents.Data;
-    protected focusEnabled = false;
     protected minimapWrapper: HTMLDivElement;
 
 
@@ -53,8 +52,7 @@ export class Minimap {
     init(): void {
       // Create a wrapper div for the minimap injection.
       this.minimapWrapper = document.createElement('div');
-      this.minimapWrapper.id =
-        'minimapWrapper' + String(Math.random()).substring(2);
+      this.minimapWrapper.id = 'minimapWrapper' + this.primaryWorkspace.id;
       this.minimapWrapper.className = 'minimapWrapper';
 
       // Make the wrapper a sibling to the primary injection div.
@@ -98,6 +96,8 @@ export class Minimap {
           primaryInjectParentDiv, 'mouseup', this, this.onClickUp);
 
       // Initializes the focus region.
+      this.focusRegion = new FocusRegion(
+          this.primaryWorkspace, this.minimapWorkspace);
       this.enableFocusRegion();
     }
 
@@ -232,10 +232,7 @@ export class Minimap {
      * Enables the focus region; A highlight of the viewport in the minimap.
      */
     enableFocusRegion(): void {
-      this.focusRegion = new FocusRegion(
-          this.primaryWorkspace, this.minimapWorkspace);
       this.focusRegion.init();
-      this.focusEnabled = true;
     }
 
 
@@ -243,11 +240,7 @@ export class Minimap {
      * Disables the focus region.
      */
     disableFocusRegion(): void {
-      if (this.focusRegion) {
-        this.focusRegion.dispose();
-      }
-      this.focusRegion = null;
-      this.focusEnabled = false;
+      this.focusRegion.dispose();
     }
 
 
@@ -256,6 +249,6 @@ export class Minimap {
      * @returns True if the focus region is enabled.
      */
     isFocusEnabled(): boolean {
-      return this.focusEnabled;
+      return this.focusRegion.isEnabled();
     }
 }
