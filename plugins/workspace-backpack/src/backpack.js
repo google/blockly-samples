@@ -379,10 +379,12 @@ export class Backpack extends Blockly.DragTarget {
     if (!this.initialized_) {
       return;
     }
-    const hasVerticalScrollbars = this.workspace_.scrollbar &&
-        this.workspace_.scrollbar.canScrollHorizontally();
-    const hasHorizontalScrollbars = this.workspace_.scrollbar &&
-        this.workspace_.scrollbar.canScrollVertically();
+
+    const scrollbars = this.workspace_.scrollbar;
+    const hasVerticalScrollbars = scrollbars &&
+      scrollbars.isVisible() && scrollbars.canScrollVertically();
+    const hasHorizontalScrollbars = scrollbars &&
+      scrollbars.isVisible() && scrollbars.canScrollHorizontally();
 
     if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
         (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
@@ -431,7 +433,7 @@ export class Backpack extends Blockly.DragTarget {
     }
 
     this.svgGroup_.setAttribute('transform',
-        'translate(' + this.left_ + ',' + this.top_ + ')');
+        `translate(${this.left_},${this.top_})`);
   }
 
   /**
