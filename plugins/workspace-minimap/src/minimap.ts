@@ -215,6 +215,7 @@ export class Minimap {
     private onClickUp(): void {
       if (this.onMouseMoveWrapper) {
         Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
+        this.onMouseMoveWrapper = null;
       }
     }
 

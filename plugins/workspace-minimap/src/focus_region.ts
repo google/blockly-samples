@@ -149,10 +149,15 @@ export class FocusRegion {
       const primaryMetrics = this.primaryWorkspace.getMetricsManager();
       const minimapMetrics = this.minimapWorkspace.getMetricsManager();
 
-      const primaryView = primaryMetrics.getViewMetrics();
-      const primaryContent = primaryMetrics.getContentMetrics();
+      const primaryView = primaryMetrics.getViewMetrics(true);
+      const primaryContent = primaryMetrics.getContentMetrics(true);
       const minimapContent = minimapMetrics.getContentMetrics();
       const minimapSvg = minimapMetrics.getSvgMetrics();
+
+      // Return if there is no content.
+      if (primaryContent.width === 0) {
+        return;
+      }
 
       // Get the workscape to pixel scale on the minimap.
       const scale = minimapContent.width /
