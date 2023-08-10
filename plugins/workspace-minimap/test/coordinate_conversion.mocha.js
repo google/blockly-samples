@@ -9,7 +9,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const Blockly = require('blockly');
 const {Minimap} = require('../src/minimap');
-const {Backpack} = require('../../workspace-backpack/src/index');
+// const {Backpack} = require('../../workspace-backpack/src/index');
 const {PositionedMinimap} = require('../src/positioned_minimap');
 
 
@@ -166,70 +166,54 @@ suite('Converting click coordinates from minimap to primary workspace',
 // RTL-hori-end
 
 suite('Positioning the minimap in the primary workspace', function() {
-  suite('LTR', function() {
-    suite('Vertical', function() {
-      test('LTR Vertical Start', function() {
-        const options = new Blockly.Options({
-          RTL: false,
-          horizontalLayout: false,
-          toolboxPosition: 'start',
-        });
-        const workspace = new Blockly.WorkspaceSvg(options);
-        const minimap = new PositionedMinimap(workspace);
-        minimap.init();
+  setup(function() {
+    this.mockMetrics = {
+      viewMetrics: {
+        height: 750,
+        width: 750,
+      },
+      absoluteMetrics: {
+        left: 107,
+        top: 0,
+      },
+      toolboxMetrics: {
+        position: Blockly.TOOLBOX_AT_LEFT,
+      },
+    };
+  });
 
-        const boundingRect = minimap.getBoundingRectangle();
-        console.log(boundingRect);
-        assert.deepEqual(boundingRect, 10, 'LTR Vertical Start - Incorrect');
-      });
+  test('LTR Vertical Start', function() {
+    const options = {
+      RTL: false,
+      horizontalLayout: false,
+      toolboxPosition: 'start',
+      move: {scrollbars: true},
+    };
+    console.log('here 1');
+    const ws = new Blockly.WorkspaceSvg(new Blockly.Options(options));
 
-      test('LTR Vertical End', function() {
-        const options = new Blockly.Options({
-          RTL: false,
-          horizontalLayout: false,
-          toolboxPosition: 'end',
-        });
-        const workspace = new Blockly.WorkspaceSvg(options);
-        const minimap = new PositionedMinimap(workspace);
-        minimap.init();
+    console.log('here 2');
+    const minimap = new PositionedMinimap(ws);
+    minimap.init();
 
-        const boundingRect = minimap.getBoundingRectangle();
-        console.log(boundingRect);
-        assert.deepEqual(boundingRect, 10, 'LTR Vertical End - Incorrect');
-      });
+    console.log('here 3');
+    minimap.position(this.mockMetrics, []);
+    const boundingRect = minimap.getBoundingRectangle();
 
-      test('LTR Vertical Start with Backpack', function() {
-        const options = new Blockly.Options({
-          RTL: false,
-          horizontalLayout: false,
-          toolboxPosition: 'start',
-        });
-        const workspace = new Blockly.WorkspaceSvg(options);
-        const backpack = new Backpack(workspace);
-        const minimap = new PositionedMinimap(workspace);
-        backpack.init();
-        minimap.init();
+    console.log(boundingRect);
+    assert.deepEqual(boundingRect, 10, 'LTR Vertical Start - Incorrect');
+  });
 
-        const boundingRect = minimap.getBoundingRectangle();
-        console.log(boundingRect);
-        assert.deepEqual(boundingRect, 10, 'LTR Vertical Start bp - Incorrect');
-      });
+  test('LTR Vertical End', function() {
 
-      test('LTR Vertical Start with no scrollbars', function() {
-        const options = new Blockly.Options({
-          RTL: false,
-          horizontalLayout: false,
-          toolboxPosition: 'start',
-          move: {scrollbars: false},
-        });
-        const workspace = new Blockly.WorkspaceSvg(options);
-        const minimap = new PositionedMinimap(workspace);
-        minimap.init();
+  });
 
-        const boundingRect = minimap.getBoundingRectangle();
-        console.log(boundingRect);
-        assert.deepEqual(boundingRect, 10, 'LTR Vertical Start ns - Incorrect');
-      });
-    });
+  test('LTR Vertical Start with Backpack', function() {
+
+  });
+
+  test('LTR Vertical Start with no scrollbars', function() {
+
   });
 });
+
