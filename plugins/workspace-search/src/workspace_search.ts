@@ -26,37 +26,37 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * HTML container for the search bar.
    */
-  private htmlDiv_: HTMLElement|null = null;
+  private htmlDiv: HTMLElement|null = null;
   
   /**
    * The div that holds the search bar actions.
    */
-  protected actionDiv_: HTMLElement|null = null;
+  protected actionDiv: HTMLElement|null = null;
   
   /**
    * The text input for the search bar.
    */
-  private inputElement_: HTMLInputElement|null = null;
+  private inputElement: HTMLInputElement|null = null;
   
   /**
    * The placeholder text for the search bar input.
    */
-  private textInputPlaceholder_ = 'Search';
+  private textInputPlaceholder = 'Search';
   
   /**
    * A list of blocks that came up in the search.
    */
-  protected blocks_: Blockly.BlockSvg[] = [];
+  protected blocks: Blockly.BlockSvg[] = [];
   
   /**
    * Index of the currently "selected" block in the blocks array.
    */
-  protected currentBlockIndex_ = -1;
+  protected currentBlockIndex = -1;
   
   /**
    * The search text.
    */
-  protected searchText_ = '';
+  protected searchText = '';
   
   /**
    * Whether to search as input changes as opposed to on enter.
@@ -77,19 +77,19 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * Array holding info needed to unbind events.
    * Used for disposing.
    */
-  private boundEvents_: Blockly.browserEvents.Data[] = [];
+  private boundEvents: Blockly.browserEvents.Data[] = [];
   
   /**
    * Class for workspace search.
    * @param workspace The workspace the search bar sits in.
    */
-  constructor(private workspace_: Blockly.WorkspaceSvg) {}
+  constructor(private workspace: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the workspace search bar.
    */
   init() {
-    this.workspace_.getComponentManager().addComponent({
+    this.workspace.getComponentManager().addComponent({
       component: this,
       weight: 0,
       capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
@@ -98,7 +98,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     this.createDom();
     this.setVisible(false);
 
-    this.workspace_.resize();
+    this.workspace.resize();
   }
 
   /**
@@ -107,16 +107,16 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * to prevent memory leaks.
    */
   dispose() {
-    for (const event of this.boundEvents_) {
+    for (const event of this.boundEvents) {
       Blockly.browserEvents.unbind(event);
     }
-    this.boundEvents_.length = 0;
-    if (this.htmlDiv_) {
-      this.htmlDiv_.remove();
-      this.htmlDiv_ = null;
+    this.boundEvents.length = 0;
+    if (this.htmlDiv) {
+      this.htmlDiv.remove();
+      this.htmlDiv = null;
     }
-    this.actionDiv_ = null;
-    this.inputElement_ = null;
+    this.actionDiv = null;
+    this.inputElement = null;
   }
 
   /**
@@ -137,12 +137,12 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      *   </div>
      * </div>
      */
-    const injectionDiv = this.workspace_.getInjectionDiv();
+    const injectionDiv = this.workspace.getInjectionDiv();
     this.addEvent(injectionDiv, 'keydown', this, (evt: KeyboardEvent) => this
         .onWorkspaceKeyDown(evt));
 
-    this.htmlDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-ws-search');
+    this.htmlDiv = document.createElement('div');
+    Blockly.utils.dom.addClass(this.htmlDiv, 'blockly-ws-search');
 
     const searchContainer = document.createElement('div');
     Blockly.utils.dom.addClass(searchContainer, 'blockly-ws-search-container');
@@ -153,22 +153,22 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
-    this.inputElement_ = this.createTextInput();
-    this.addEvent(this.inputElement_, 'keydown', this, (evt: KeyboardEvent) => this
+    this.inputElement = this.createTextInput();
+    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) => this
         .onKeyDown(evt));
-    this.addEvent(this.inputElement_, 'input', this, () => this
+    this.addEvent(this.inputElement, 'input', this, () => this
         .onInput());
-    this.addEvent(this.inputElement_, 'click', this, () => {
-      this.searchAndHighlight(this.searchText_, this.preserveSelected);
-      this.inputElement_.select();
+    this.addEvent(this.inputElement, 'click', this, () => {
+      this.searchAndHighlight(this.searchText, this.preserveSelected);
+      this.inputElement.select();
     });
 
-    inputWrapper.appendChild(this.inputElement_);
+    inputWrapper.appendChild(this.inputElement);
     searchContent.appendChild(inputWrapper);
 
-    this.actionDiv_ = document.createElement('div');
-    Blockly.utils.dom.addClass(this.actionDiv_, 'blockly-ws-search-actions');
-    searchContent.appendChild(this.actionDiv_);
+    this.actionDiv = document.createElement('div');
+    Blockly.utils.dom.addClass(this.actionDiv, 'blockly-ws-search-actions');
+    searchContent.appendChild(this.actionDiv);
 
     const nextBtn = this.createNextBtn();
     if (nextBtn) {
@@ -186,9 +186,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       searchContainer.appendChild(closeBtn);
     }
 
-    this.htmlDiv_.appendChild(searchContainer);
+    this.htmlDiv.appendChild(searchContainer);
 
-    injectionDiv.insertBefore(this.htmlDiv_, this.workspace_.getParentSvg());
+    injectionDiv.insertBefore(this.htmlDiv, this.workspace.getParentSvg());
   }
 
   /**
@@ -201,7 +201,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   private addEvent(node: Element, name: string, thisObject: Object, func: Function) {
     const event =
         Blockly.browserEvents.conditionalBind(node, name, thisObject, func);
-    this.boundEvents_.push(event);
+    this.boundEvents.push(event);
   }
 
   /**
@@ -213,7 +213,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   addActionBtn(btn: HTMLButtonElement, onClickFn: () => void) {
     this.addBtnListener(btn, onClickFn);
-    this.actionDiv_.appendChild(btn);
+    this.actionDiv.appendChild(btn);
   }
 
   /**
@@ -223,7 +223,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   protected createTextInput(): HTMLInputElement {
     const textInput = document.createElement('input');
     textInput.type = 'text';
-    textInput.setAttribute('placeholder', this.textInputPlaceholder_);
+    textInput.setAttribute('placeholder', this.textInputPlaceholder);
     return textInput;
   }
 
@@ -306,16 +306,16 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    *     are already on the workspace.
    */
   position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Blockly.utils.Rect[]) {
-    if (this.workspace_.RTL) {
-      this.htmlDiv_.style.left = metrics.absoluteMetrics.left + 'px';
+    if (this.workspace.RTL) {
+      this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
     } else {
       if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_RIGHT) {
-        this.htmlDiv_.style.right = metrics.toolboxMetrics.width + 'px';
+        this.htmlDiv.style.right = metrics.toolboxMetrics.width + 'px';
       } else {
-        this.htmlDiv_.style.right = '0';
+        this.htmlDiv.style.right = '0';
       }
     }
-    this.htmlDiv_.style.top = metrics.absoluteMetrics.top + 'px';
+    this.htmlDiv.style.top = metrics.absoluteMetrics.top + 'px';
   }
 
   /**
@@ -323,8 +323,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   private onInput() {
     if (this.searchOnInput) {
-      const inputValue = this.inputElement_.value.trim();
-      if (inputValue !== this.searchText_) {
+      const inputValue = this.inputElement.value.trim();
+      if (inputValue !== this.searchText) {
         this.searchAndHighlight(inputValue, this.preserveSelected);
       }
     }
@@ -341,8 +341,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       if (this.searchOnInput) {
         this.next();
       } else {
-        const inputValue = this.inputElement_.value.trim();
-        if (inputValue !== this.searchText_) {
+        const inputValue = this.inputElement.value.trim();
+        if (inputValue !== this.searchText) {
           this.searchAndHighlight(inputValue, this.preserveSelected);
         }
       }
@@ -366,14 +366,14 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * Selects the previous block.
    */
   previous() {
-    this.setCurrentBlock(this.currentBlockIndex_ - 1);
+    this.setCurrentBlock(this.currentBlockIndex - 1);
   }
 
   /**
    * Selects the next block.
    */
   next() {
-    this.setCurrentBlock(this.currentBlockIndex_ + 1);
+    this.setCurrentBlock(this.currentBlockIndex + 1);
   }
 
   /**
@@ -381,10 +381,10 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param placeholderText The placeholder text.
    */
   setSearchPlaceholder(placeholderText: string) {
-    this.textInputPlaceholder_ = placeholderText;
-    if (this.inputElement_) {
-      this.inputElement_.setAttribute('placeholder',
-          this.textInputPlaceholder_);
+    this.textInputPlaceholder = placeholderText;
+    if (this.inputElement) {
+      this.inputElement.setAttribute('placeholder',
+          this.textInputPlaceholder);
     }
   }
 
@@ -393,20 +393,20 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param index Index of block to set as current. Number is wrapped.
    */
   protected setCurrentBlock(index: number) {
-    if (!this.blocks_.length) {
+    if (!this.blocks.length) {
       return;
     }
-    let currentBlock = this.blocks_[this.currentBlockIndex_];
+    let currentBlock = this.blocks[this.currentBlockIndex];
     if (currentBlock) {
       this.unhighlightCurrentSelection(currentBlock);
     }
-    this.currentBlockIndex_ =
-        (index % this.blocks_.length + this.blocks_.length) %
-        this.blocks_.length;
-    currentBlock = this.blocks_[this.currentBlockIndex_];
+    this.currentBlockIndex =
+        (index % this.blocks.length + this.blocks.length) %
+        this.blocks.length;
+    currentBlock = this.blocks[this.currentBlockIndex];
 
     this.highlightCurrentSelection(currentBlock);
-    this.workspace_.centerOnBlock(currentBlock.id, false);
+    this.workspace.centerOnBlock(currentBlock.id, false);
   }
 
   /**
@@ -414,9 +414,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   open() {
     this.setVisible(true);
-    this.inputElement_.focus();
-    if (this.searchText_) {
-      this.searchAndHighlight(this.searchText_);
+    this.inputElement.focus();
+    if (this.searchText) {
+      this.searchAndHighlight(this.searchText);
     }
   }
 
@@ -425,7 +425,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   close() {
     this.setVisible(false);
-    this.workspace_.markFocused();
+    this.workspace.markFocused();
     this.clearBlocks();
   }
 
@@ -434,7 +434,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param show Whether to set the search bar as visible.
    */
   private setVisible(show: boolean) {
-    this.htmlDiv_.style.display = show ? 'flex' : 'none';
+    this.htmlDiv.style.display = show ? 'flex' : 'none';
   }
 
   /**
@@ -445,15 +445,15 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    *    if it is included in the new matching blocks.
    */
   searchAndHighlight(searchText: string, preserveCurrent?: boolean) {
-    const oldCurrentBlock = this.blocks_[this.currentBlockIndex_];
-    this.searchText_ = searchText.trim();
+    const oldCurrentBlock = this.blocks[this.currentBlockIndex];
+    this.searchText = searchText.trim();
     this.clearBlocks();
-    this.blocks_ = this.getMatchingBlocks(
-        this.workspace_, this.searchText_, this.caseSensitive);
-    this.highlightSearchGroup(this.blocks_);
+    this.blocks = this.getMatchingBlocks(
+        this.workspace, this.searchText, this.caseSensitive);
+    this.highlightSearchGroup(this.blocks);
     let currentIdx = 0;
     if (preserveCurrent) {
-      currentIdx = this.blocks_.indexOf(oldCurrentBlock);
+      currentIdx = this.blocks.indexOf(oldCurrentBlock);
       currentIdx = currentIdx > -1 ? currentIdx : 0;
     }
     this.setCurrentBlock(currentIdx);
@@ -525,13 +525,13 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * Clears the selection group and current block.
    */
   clearBlocks() {
-    this.unhighlightSearchGroup(this.blocks_);
-    const currentBlock = this.blocks_[this.currentBlockIndex_];
+    this.unhighlightSearchGroup(this.blocks);
+    const currentBlock = this.blocks[this.currentBlockIndex];
     if (currentBlock) {
       this.unhighlightCurrentSelection(currentBlock);
     }
-    this.currentBlockIndex_ = -1;
-    this.blocks_ = [];
+    this.currentBlockIndex = -1;
+    this.blocks = [];
   }
 
   /**
