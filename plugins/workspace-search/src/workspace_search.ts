@@ -139,8 +139,8 @@ export class WorkspaceSearch {
      * </div>
      */
     const injectionDiv = this.workspace_.getInjectionDiv();
-    this.addEvent_(injectionDiv, 'keydown', this, (evt) => this
-        .onWorkspaceKeyDown_(/** @type {KeyboardEvent} */ evt));
+    this.addEvent_(injectionDiv, 'keydown', this, (evt: KeyboardEvent) => this
+        .onWorkspaceKeyDown_(evt));
 
     this.htmlDiv_ = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv_, 'blockly-ws-search');
@@ -155,9 +155,9 @@ export class WorkspaceSearch {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement_ = this.createTextInput_();
-    this.addEvent_(this.inputElement_, 'keydown', this, (evt) => this
-        .onKeyDown_(/** @type {KeyboardEvent} */ evt));
-    this.addEvent_(this.inputElement_, 'input', this, () =>this
+    this.addEvent_(this.inputElement_, 'keydown', this, (evt: KeyboardEvent) => this
+        .onKeyDown_(evt));
+    this.addEvent_(this.inputElement_, 'input', this, () => this
         .onInput_());
     this.addEvent_(this.inputElement_, 'click', this, () => {
       this.searchAndHighlight(this.searchText_, this.preserveSelected);
@@ -194,12 +194,12 @@ export class WorkspaceSearch {
 
   /**
    * Helper method for adding an event.
-   * @param {!Element} node Node upon which to listen.
-   * @param {string} name Event name to listen to (e.g. 'mousedown').
-   * @param {Object} thisObject The value of 'this' in the function.
-   * @param {!Function} func Function to call when event is triggered.
+   * @param node Node upon which to listen.
+   * @param name Event name to listen to (e.g. 'mousedown').
+   * @param thisObject The value of 'this' in the function.
+   * @param func Function to call when event is triggered.
    */
-  private addEvent_(node, name, thisObject, func) {
+  private addEvent_(node: Element, name: string, thisObject: Object, func: Function) {
     const event =
         Blockly.browserEvents.conditionalBind(node, name, thisObject, func);
     this.boundEvents_.push(event);
@@ -208,20 +208,20 @@ export class WorkspaceSearch {
   /**
    * Add a button to the action div. This must be called after the init function
    * has been called.
-   * @param {!HTMLButtonElement} btn The button to add the event listener to.
-   * @param {!Function} onClickFn The function to call when the user clicks on
+   * @param btn The button to add the event listener to.
+   * @param onClickFn The function to call when the user clicks on
    *     or hits enter on the button.
    */
-  addActionBtn(btn, onClickFn) {
+  addActionBtn(btn: HTMLButtonElement, onClickFn: () => void) {
     this.addBtnListener_(btn, onClickFn);
     this.actionDiv_.appendChild(btn);
   }
 
   /**
    * Creates the text input for the search bar.
-   * @returns {!HTMLInputElement} A text input for the search bar.
+   * @returns A text input for the search bar.
    */
-  protected createTextInput_() {
+  protected createTextInput_(): HTMLInputElement {
     const textInput = document.createElement('input');
     textInput.type = 'text';
     textInput.setAttribute('placeholder', this.textInputPlaceholder_);
@@ -230,35 +230,35 @@ export class WorkspaceSearch {
 
   /**
    * Creates the button used to get the next block in the list.
-   * @returns {!HTMLButtonElement} The next button.
+   * @returns The next button.
    */
-  protected createNextBtn_() {
+  protected createNextBtn_(): HTMLButtonElement {
     return this.createBtn_('blockly-ws-search-next-btn', 'Find next');
   }
 
   /**
    * Creates the button used to get the previous block in the list.
-   * @returns {!HTMLButtonElement} The previous button.
+   * @returns The previous button.
    */
-  protected createPreviousBtn_() {
+  protected createPreviousBtn_(): HTMLButtonElement {
     return this.createBtn_('blockly-ws-search-previous-btn', 'Find previous');
   }
 
   /**
    * Creates the button used for closing the search bar.
-   * @returns {!HTMLButtonElement} A button for closing the search bar.
+   * @returns A button for closing the search bar.
    */
-  protected createCloseBtn_() {
+  protected createCloseBtn_(): HTMLButtonElement {
     return this.createBtn_('blockly-ws-search-close-btn', 'Close search bar');
   }
 
   /**
    * Creates a button for the workspace search bar.
-   * @param {string} className The class name for the button.
-   * @param {string} text The text to display to the screen reader.
-   * @returns {!HTMLButtonElement} The created button.
+   * @param className The class name for the button.
+   * @param text The text to display to the screen reader.
+   * @returns The created button.
    */
-  private createBtn_(className, text) {
+  private createBtn_(className: string, text: string): HTMLButtonElement {
     // Create the button
     const btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
@@ -268,15 +268,15 @@ export class WorkspaceSearch {
 
   /**
    * Add event listener for clicking and keydown on the given button.
-   * @param {!HTMLButtonElement} btn The button to add the event listener to.
-   * @param {!Function} onClickFn The function to call when the user clicks on
+   * @param btn The button to add the event listener to.
+   * @param onClickFn The function to call when the user clicks on
    *      or hits enter on the button.
    */
-  private addBtnListener_(btn, onClickFn) {
+  private addBtnListener_(btn: HTMLButtonElement, onClickFn: (e: Event) => void) {
     this.addEvent_(btn, 'click', this, onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
-    this.addEvent_(btn, 'keydown', this, (e) => {
+    this.addEvent_(btn, 'keydown', this, (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
         onClickFn(e);
         e.preventDefault();
@@ -290,11 +290,11 @@ export class WorkspaceSearch {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @returns {?Blockly.utils.Rect} The component’s bounding box. Null in this
+   * @returns The component’s bounding box. Null in this
    *     case since we don't need other elements to avoid the workspace search
    *     field.
    */
-  getBoundingRectangle() {
+  getBoundingRectangle(): Blockly.utils.Rect|null {
     return null;
   }
 
@@ -302,11 +302,11 @@ export class WorkspaceSearch {
    * Positions the zoom-to-fit control.
    * It is positioned in the opposite corner to the corner the
    * categories/toolbox starts at.
-   * @param {!Blockly.MetricsManager.UiMetrics} metrics The workspace metrics.
-   * @param {!Array<!Blockly.utils.Rect>} savedPositions List of rectangles that
+   * @param metrics The workspace metrics.
+   * @param savedPositions List of rectangles that
    *     are already on the workspace.
    */
-  position(metrics, savedPositions) {
+  position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Blockly.utils.Rect[]) {
     if (this.workspace_.RTL) {
       this.htmlDiv_.style.left = metrics.absoluteMetrics.left + 'px';
     } else {
@@ -333,9 +333,9 @@ export class WorkspaceSearch {
 
   /**
    * Handles a key down for the search bar.
-   * @param {KeyboardEvent} e The key down event.
+   * @param e The key down event.
    */
-  private onKeyDown_(e) {
+  private onKeyDown_(e: KeyboardEvent) {
     if (e.key === 'Escape') {
       this.close();
     } else if (e.key === 'Enter') {
@@ -352,9 +352,9 @@ export class WorkspaceSearch {
 
   /**
    * Opens the search bar when Control F or Command F are used on the workspace.
-   * @param {KeyboardEvent} e The key down event.
+   * @param e The key down event.
    */
-  private onWorkspaceKeyDown_(e) {
+  private onWorkspaceKeyDown_(e: KeyboardEvent) {
     // TODO: Look into handling keyboard shortcuts on workspace in Blockly.
     if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
       this.open();
@@ -379,9 +379,9 @@ export class WorkspaceSearch {
 
   /**
    * Sets the placeholder text for the search bar text input.
-   * @param {string} placeholderText The placeholder text.
+   * @param placeholderText The placeholder text.
    */
-  setSearchPlaceholder(placeholderText) {
+  setSearchPlaceholder(placeholderText: string) {
     this.textInputPlaceholder_ = placeholderText;
     if (this.inputElement_) {
       this.inputElement_.setAttribute('placeholder',
@@ -391,9 +391,9 @@ export class WorkspaceSearch {
 
   /**
    * Changes the currently "selected" block and adds extra highlight.
-   * @param {number} index Index of block to set as current. Number is wrapped.
+   * @param index Index of block to set as current. Number is wrapped.
    */
-  protected setCurrentBlock_(index) {
+  protected setCurrentBlock_(index: number) {
     if (!this.blocks_.length) {
       return;
     }
@@ -432,20 +432,20 @@ export class WorkspaceSearch {
 
   /**
    * Shows or hides the workspace search bar.
-   * @param {boolean} show Whether to set the search bar as visible.
+   * @param show Whether to set the search bar as visible.
    */
-  private setVisible_(show) {
+  private setVisible_(show: boolean) {
     this.htmlDiv_.style.display = show ? 'flex' : 'none';
   }
 
   /**
    * Searches the workspace for the current search term and highlights matching
    * blocks.
-   * @param {string} searchText The search text.
-   * @param {boolean=} preserveCurrent Whether to preserve the current block
+   * @param searchText The search text.
+   * @param preserveCurrent Whether to preserve the current block
    *    if it is included in the new matching blocks.
    */
-  searchAndHighlight(searchText, preserveCurrent) {
+  searchAndHighlight(searchText: string, preserveCurrent?: boolean) {
     const oldCurrentBlock = this.blocks_[this.currentBlockIndex_];
     this.searchText_ = searchText.trim();
     this.clearBlocks();
@@ -462,13 +462,11 @@ export class WorkspaceSearch {
 
   /**
    * Returns pool of blocks to search from.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace to get blocks from.
-   * @returns {!Array.<!Blockly.BlockSvg>} The search pool of blocks to use.
+   * @param workspace The workspace to get blocks from.
+   * @returns The search pool of blocks to use.
    */
-  private getSearchPool_(workspace) {
-    const blocks = (
-      /** @type {!Array.<!Blockly.BlockSvg>} */
-      workspace.getAllBlocks(true));
+  private getSearchPool_(workspace: Blockly.WorkspaceSvg): Blockly.BlockSvg[] {
+    const blocks = workspace.getAllBlocks(true);
     return blocks.filter((block) => {
       // Filter out blocks contained inside of another collapsed block.
       const surroundParent = block.getSurroundParent();
@@ -478,13 +476,13 @@ export class WorkspaceSearch {
 
   /**
    * Returns whether the given block matches the search text.
-   * @param {!Blockly.BlockSvg} block The block to check.
-   * @param {string} searchText The search text. Note if the search is case
+   * @param block The block to check.
+   * @param searchText The search text. Note if the search is case
    *    insensitive, this will be passed already converted to lowercase letters.
-   * @param {boolean} caseSensitive Whether the search is caseSensitive.
-   * @returns {boolean} True if the block is a match, false otherwise.
+   * @param caseSensitive Whether the search is caseSensitive.
+   * @returns True if the block is a match, false otherwise.
    */
-  protected isBlockMatch_(block, searchText, caseSensitive) {
+  protected isBlockMatch_(block: Blockly.BlockSvg, searchText: string, caseSensitive: boolean): boolean {
     let blockText = '';
     if (block.isCollapsed()) {
       // Search the whole string for collapsed blocks.
@@ -506,13 +504,13 @@ export class WorkspaceSearch {
 
   /**
    * Returns blocks that match the given search text.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace to search.
-   * @param {string} searchText The search text.
-   * @param {boolean} caseSensitive Whether the search should be case sensitive.
-   * @returns {!Array.<Blockly.BlockSvg>} The blocks that match the search
+   * @param workspace The workspace to search.
+   * @param searchText The search text.
+   * @param caseSensitive Whether the search should be case sensitive.
+   * @returns The blocks that match the search
    *    text.
    */
-  protected getMatchingBlocks_(workspace, searchText, caseSensitive) {
+  protected getMatchingBlocks_(workspace: Blockly.WorkspaceSvg, searchText: string, caseSensitive: boolean): Blockly.BlockSvg[] {
     if (!searchText) {
       return [];
     }
@@ -540,27 +538,27 @@ export class WorkspaceSearch {
   /**
    * Adds "current selection" highlight to the provided block.
    * Highlights the provided block as the "current selection".
-   * @param {!Blockly.BlockSvg} currentBlock The block to highlight.
+   * @param currentBlock The block to highlight.
    */
-  protected highlightCurrentSelection_(currentBlock) {
+  protected highlightCurrentSelection_(currentBlock: Blockly.BlockSvg) {
     const path = currentBlock.pathObject.svgPath;
     Blockly.utils.dom.addClass(path, 'blockly-ws-search-current');
   }
 
   /**
    * Removes "current selection" highlight from provided block.
-   * @param {Blockly.BlockSvg} currentBlock The block to unhighlight.
+   * @param currentBlock The block to unhighlight.
    */
-  protected unhighlightCurrentSelection_(currentBlock) {
+  protected unhighlightCurrentSelection_(currentBlock: Blockly.BlockSvg) {
     const path = currentBlock.pathObject.svgPath;
     Blockly.utils.dom.removeClass(path, 'blockly-ws-search-current');
   }
 
   /**
    * Adds highlight to the provided blocks.
-   * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to highlight.
+   * @param blocks The blocks to highlight.
    */
-  protected highlightSearchGroup_(blocks) {
+  protected highlightSearchGroup_(blocks: Blockly.BlockSvg[]) {
     blocks.forEach((block) => {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.addClass(blockPath, 'blockly-ws-search-highlight');
@@ -569,9 +567,9 @@ export class WorkspaceSearch {
 
   /**
    * Removes highlight from the provided blocks.
-   * @param {!Array.<Blockly.BlockSvg>} blocks The blocks to unhighlight.
+   * @param blocks The blocks to unhighlight.
    */
-  protected unhighlightSearchGroup_(blocks) {
+  protected unhighlightSearchGroup_(blocks: Blockly.BlockSvg[]) {
     blocks.forEach((block) => {
       const blockPath = block.pathObject.svgPath;
       Blockly.utils.dom.removeClass(blockPath, 'blockly-ws-search-highlight');
