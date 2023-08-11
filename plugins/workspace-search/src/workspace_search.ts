@@ -20,99 +20,71 @@ import * as Blockly from 'blockly/core';
  */
 export class WorkspaceSearch {
   /**
-   * Class for workspace search.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace the search bar sits
-   *     in.
+   * The unique id for this component.
    */
-  constructor(workspace) {
-    /**
-     * The workspace the search bar sits in.
-     * @type {!Blockly.WorkspaceSvg}
-     * @private
-     */
-    this.workspace_ = workspace;
-
-    /**
-     * The unique id for this component.
-     * @type {string}
-     */
-    this.id = 'workspaceSearch';
-
-    /**
-     * HTML container for the search bar.
-     * @type {?HTMLElement}
-     * @private
-     */
-    this.htmlDiv_ = null;
-
-    /**
-     * The div that holds the search bar actions.
-     * @type {?HTMLElement}
-     * @protected
-     */
-    this.actionDiv_ = null;
-
-    /**
-     * The text input for the search bar.
-     * @type {?HTMLInputElement}
-     * @private
-     */
-    this.inputElement_ = null;
-
-    /**
-     * The placeholder text for the search bar input.
-     * @type {string}
-     * @private
-     */
-    this.textInputPlaceholder_ = 'Search';
-
-    /**
-     * A list of blocks that came up in the search.
-     * @type {!Array.<Blockly.BlockSvg>}
-     * @protected
-     */
-    this.blocks_ = [];
-
-    /**
-     * Index of the currently "selected" block in the blocks array.
-     * @type {number}
-     * @protected
-     */
-    this.currentBlockIndex_ = -1;
-
-    /**
-     * The search text.
-     * @type {string}
-     * @protected
-     */
-    this.searchText_ = '';
-
-    /**
-     * Whether to search as input changes as opposed to on enter.
-     * @type {boolean}
-     */
-    this.searchOnInput = true;
-
-    /**
-     * Whether search should be case sensitive.
-     * @type {boolean}
-     */
-    this.caseSensitive = false;
-
-    /**
-     * Whether search should preserve the currently selected block by default.
-     * @type {boolean}
-     */
-    this.preserveSelected = true;
-
-    /**
-     * Array holding info needed to unbind events.
-     * Used for disposing.
-     * @type {!Array<!Blockly.browserEvents.Data>}
-     * @private
-     */
-    this.boundEvents_ = [];
-  }
+  id = 'workspaceSearch';
+  
+  /**
+   * HTML container for the search bar.
+   */
+  private htmlDiv_: HTMLElement|null = null;
+  
+  /**
+   * The div that holds the search bar actions.
+   */
+  protected actionDiv_: HTMLElement|null = null;
+  
+  /**
+   * The text input for the search bar.
+   */
+  private inputElement_: HTMLInputElement|null = null;
+  
+  /**
+   * The placeholder text for the search bar input.
+   */
+  private textInputPlaceholder_ = 'Search';
+  
+  /**
+   * A list of blocks that came up in the search.
+   */
+  protected blocks_: Blockly.BlockSvg[] = [];
+  
+  /**
+   * Index of the currently "selected" block in the blocks array.
+   */
+  protected currentBlockIndex_ = -1;
+  
+  /**
+   * The search text.
+   */
+  protected searchText_ = '';
+  
+  /**
+   * Whether to search as input changes as opposed to on enter.
+   */
+  searchOnInput = true;
+  
+  /**
+   * Whether search should be case sensitive.
+   */
+  caseSensitive = false;
+  
+  /**
+   * Whether search should preserve the currently selected block by default.
+   */
+  preserveSelected = true;
+  
+  /**
+   * Array holding info needed to unbind events.
+   * Used for disposing.
+   */
+  private boundEvents_: Blockly.browserEvents.Data[] = [];
+  
+  /**
+   * Class for workspace search.
+   * @param workspace The workspace the search bar sits in.
+   */
+  constructor(private workspace_: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the workspace search bar.
