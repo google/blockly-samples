@@ -16,9 +16,8 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Class for workspace search.
- * @implements {Blockly.IPositionable}
  */
-export class WorkspaceSearch {
+export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * The unique id for this component.
    */
