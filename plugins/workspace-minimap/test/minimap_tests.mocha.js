@@ -9,7 +9,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const Blockly = require('blockly');
 const {Minimap} = require('../src/minimap');
-// const {Backpack} = require('../../workspace-backpack/src/index');
 const {PositionedMinimap} = require('../src/positioned_minimap');
 
 
@@ -154,17 +153,6 @@ suite('Converting click coordinates from minimap to primary workspace',
     });
 
 
-// LTR-vert-start-backpack
-// LTR-vert-start-!scrollbar
-// LTR-vert-start
-// LTR-vert-end
-// LTR-hori-start
-// LTR-hori-end
-// RTL-vert-start
-// RTL-vert-end
-// RTL-hori-start
-// RTL-hori-end
-
 suite('Positioning the minimap in the primary workspace', function() {
   setup(function() {
     this.mockMetrics = {
@@ -207,10 +195,7 @@ suite('Positioning the minimap in the primary workspace', function() {
     this.options.RTL = false;
     this.options.horizontalLayout = false;
     this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {
-      top: 0,
-      left: 107,
-    };
+    this.mockMetrics.absoluteMetrics = {top: 0, left: 107};
     this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_LEFT;
 
     const minimap = new PositionedMinimap(this.options);
@@ -225,10 +210,7 @@ suite('Positioning the minimap in the primary workspace', function() {
     this.options.RTL = false;
     this.options.horizontalLayout = false;
     this.options.toolboxPosition = 'end';
-    this.mockMetrics.absoluteMetrics = {
-      top: 0,
-      left: 0,
-    };
+    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
     this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_RIGHT;
 
     const minimap = new PositionedMinimap(this.options);
@@ -243,10 +225,7 @@ suite('Positioning the minimap in the primary workspace', function() {
     this.options.RTL = false;
     this.options.horizontalLayout = true;
     this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {
-      top: 35,
-      left: 0,
-    };
+    this.mockMetrics.absoluteMetrics = {top: 35, left: 0};
     this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
 
     const minimap = new PositionedMinimap(this.options);
@@ -257,33 +236,11 @@ suite('Positioning the minimap in the primary workspace', function() {
     assert.equal(position.left, 765, 'LTR Horizontal Start: Incorrect left');
   });
 
-  test('LTR Horizontal Start (no scrollbar)', function() {
-    this.options.RTL = false;
-    this.options.horizontalLayout = true;
-    this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {
-      top: 35,
-      left: 0,
-    };
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
-    this.options.scrollbar = false;
-
-    const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
-    const position = minimap.getBoundingRectangle();
-
-    assert.equal(position.top, 55, 'LTR Horizontal Start: Incorrect top');
-    assert.equal(position.left, 780, 'LTR Horizontal Start: Incorrect left');
-  });
-
   test('LTR Horizontal End', function() {
     this.options.RTL = false;
     this.options.horizontalLayout = true;
     this.options.toolboxPosition = 'end';
-    this.mockMetrics.absoluteMetrics = {
-      top: 0,
-      left: 0,
-    };
+    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
     this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_BOTTOM;
 
     const minimap = new PositionedMinimap(this.options);
@@ -295,22 +252,81 @@ suite('Positioning the minimap in the primary workspace', function() {
     assert.equal(position.left, 765, 'LTR Horizontal End: Incorrect left');
   });
 
+  test('LTR Horizontal Start (no scrollbar)', function() {
+    this.options.RTL = false;
+    this.options.horizontalLayout = true;
+    this.options.toolboxPosition = 'start';
+    this.mockMetrics.absoluteMetrics = {top: 35, left: 0};
+    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
+    this.options.scrollbar = false;
+
+    const minimap = new PositionedMinimap(this.options);
+    minimap.position(this.mockMetrics, []);
+    const position = minimap.getBoundingRectangle();
+
+    assert.equal(position.top, 55, 'LTR Horizontal Start: Incorrect top');
+    assert.equal(position.left, 780, 'LTR Horizontal Start: Incorrect left');
+  });
+
   test('RTL Vertical Start', function() {
     this.options.RTL = true;
     this.options.horizontalLayout = false;
     this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {
-      top: 0,
-      left: 0,
-    };
+    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
     this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_RIGHT;
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
-    console.log(position);
+
+    assert.equal(position.top, 20, 'RTL Vertical Start: Incorrect top');
+    assert.equal(position.left, 35, 'RTL Vertical Start: Incorrect left');
+  });
+
+  test('RTL Vertical End', function() {
+    this.options.RTL = true;
+    this.options.horizontalLayout = false;
+    this.options.toolboxPosition = 'end';
+    this.mockMetrics.absoluteMetrics = {top: 0, left: 107};
+    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_LEFT;
+
+    const minimap = new PositionedMinimap(this.options);
+    minimap.position(this.mockMetrics, []);
+    const position = minimap.getBoundingRectangle();
+
     assert.equal(position.top, 20, 'RTL Vertical End: Incorrect top');
-    assert.equal(position.left, 872, 'RTL Vertical End: Incorrect left');
+    assert.equal(position.left, 887, 'RTL Vertical End: Incorrect left');
+  });
+
+  test('RTL Horizontal Start', function() {
+    this.options.RTL = true;
+    this.options.horizontalLayout = true;
+    this.options.toolboxPosition = 'start';
+    this.mockMetrics.absoluteMetrics = {top: 35, left: 0};
+    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
+
+    const minimap = new PositionedMinimap(this.options);
+    minimap.position(this.mockMetrics, []);
+    const position = minimap.getBoundingRectangle();
+
+    assert.equal(position.top, 55, 'RTL Horizontal Start: Incorrect top');
+    assert.equal(position.left, 35, 'RTL Horizontal Start: Incorrect left');
+  });
+
+  test('RTL Horizontal End', function() {
+    this.options.RTL = true;
+    this.options.horizontalLayout = true;
+    this.options.toolboxPosition = 'end';
+    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
+    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_BOTTOM;
+
+    const minimap = new PositionedMinimap(this.options);
+    minimap.position(this.mockMetrics, []);
+    const position = minimap.getBoundingRectangle();
+
+    assert.equal(parseInt(position.top), 831,
+        'RTL Horizontal End: Incorrect top');
+    assert.equal(position.left, 35, 'RTL Horizontal End: Incorrect left');
   });
 });
 
