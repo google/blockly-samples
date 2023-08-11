@@ -257,12 +257,12 @@ This error occurs because there has to be a block generator for each type of blo
 
 ## Block generator overview
 
-At its core, a block generator is a function that takes in a block, translates the block into code, and returns that code as a string.
+At its core, a block generator is a function that takes in a block (and optionally the language generator instance), translates the block into code, and returns that code as a string.
 
-Block generators are defined on the language generator object. For instance, here is the code to add a block generator for blocks of type `sample_block` on a language generator object (`sampleGenerator`).
+Each language generator has a property called `forBlock`, which is a dictionary object where all block generator functions must be placed. For instance, here is the code to add a block generator for blocks of type `sample_block` on a language generator object (`sampleGenerator`).
 
 ```js
-sampleGenerator['sample_block'] = function(block) {
+sampleGenerator.forBlock['sample_block'] = function(block, generator) {
   return 'my code string';
 };
 ```
@@ -276,7 +276,7 @@ A statement block's generator simply returns a string.
 For example, this code defines a block generator that always returns the same function call.
 
 ```js
-sampleGenerator['left_turn_block'] = function(block) {
+sampleGenerator.forBlock['left_turn_block'] = function(block, generator) {
   return 'turnLeft()';
 };
 ```
@@ -285,13 +285,13 @@ sampleGenerator['left_turn_block'] = function(block) {
 
 Value blocks represent code that returns a value.
 
-A value block's generator returns an array containing a string and a [precedence value](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence).
+A value block's generator returns an array containing a string and a [precedence value](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence). The built-in generators have predefined operator precedence values exported as an `Order` enum.
 
-For example, this code defines a block generator that always returns `1 + 1`:
+This code defines a block generator that always returns `1 + 1`:
 
 ```js
-sampleGenerator['two_block'] = function(block) {
-  return ['1 + 1', sampleGenerator.ORDER_ADDITION];
+sampleGenerator.forBlock['two_block'] = function(block, generator) {
+  return ['1 + 1', Order.ADDITION];
 };
 ```
 
@@ -303,12 +303,14 @@ Operator precedence rules determine how the correct order of operations is maint
 
 --> Read more about [operator precedence in Blockly](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence).
 
-Since JSON does not allow values that are expressions, the code does not need to consider operator precedence for the generator being built in this codelab. The same value can be used everywhere a precedence value is required. In this codelab, use `PRECEDENCE`.
+Since JSON does not allow values that are expressions, the code does not need to consider operator precedence for the generator being built in this codelab. The same value can be used everywhere a precedence value is required. Since parentheses never need to be added to the JSON, call this value `ATOMIC`.
 
-Since the code needs to be able to access this value inside the block generators, add `PRECEDENCE` to the language generator:
+Declare a new enum called `Order` and add the `ATOMIC` value:
 
 ```js
-jsonGenerator.PRECEDENCE = 0;
+const Order = {
+  ATOMIC: 0,
+}
 ```
 
 ## Value block generators
@@ -327,8 +329,8 @@ No matter what, it generates the code `'null'`. Notice that this is a string, be
 
 
 ```js
-jsonGenerator['logic_null'] = function(block) {
-  return ['null', jsonGenerator.PRECEDENCE];
+jsonGenerator.forBlock['logic_null'] = function(block) {
+  return ['null', Order.ATOMIC];
 };
 ```
 
@@ -347,10 +349,10 @@ const textValue = block.getFieldValue('TEXT');
 Since this is a string in the generated code, wrap the value in quotation marks and return it:
 
 ```js
-jsonGenerator['text'] = function(block) {
+jsonGenerator.forBlock['text'] = function(block) {
   const textValue = block.getFieldValue('TEXT');
   const code = `"${textValue}"`;
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 ```
 
@@ -365,9 +367,9 @@ Like the `text` block, the `math_number` block can use `getFieldValue`. Unlike t
 However, like all generated code and as with `null` above, the function needs to return the code as a string from the generator.
 
 ```js
-jsonGenerator['math_number'] = function(block) {
+jsonGenerator.forBlock['math_number'] = function(block) {
   const code = String(block.getFieldValue('NUM'));
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 ```
 
@@ -380,9 +382,9 @@ The `logic_boolean` block has a dropdown field named `BOOL`.
 Calling `getFieldValue` on a dropdown field returns the value of the selected option, which may not be the same as the display text. In this case the dropdown has two possible values: `TRUE` and `FALSE`.
 
 ```js
-jsonGenerator['logic_boolean'] = function(block) {
+jsonGenerator.forBlock['logic_boolean'] = function(block) {
   const code = (block.getFieldValue('BOOL') === 'TRUE') ? 'true' : 'false';
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 ```
 
@@ -392,7 +394,6 @@ jsonGenerator['logic_boolean'] = function(block) {
 - `getFieldValue` finds the field with the specified name and returns its value.
 - The type of the return value from `getFieldValue` depends on the type of the field.
   - Each field type must document what its value represents.
-
 
 ## Member block generator
 
@@ -405,6 +406,7 @@ The member block has a text input field and a value input.
 The generated code looks like `"property name": "property value"`.
 
 ### Field value
+
 The **property name** is the value of the text input, which is fetched via `getFieldValue`:
 
 ```js
@@ -414,11 +416,12 @@ const name = block.getFieldValue('MEMBER_NAME');
 Recall: the name of the value being fetched is `MEMBER_NAME` because that is how it was defined in `src/blocks/json.js`.
 
 ### Input value
+
 The **property value** is whatever is attached to the value input. A variety of blocks could be attached there:  `logic_null`, `text`, `math_number`, `logic_boolean`, or even an array (`lists_create_with`). Use `valueToCode` to get the correct value:
 
 ```js
-const value = jsonGenerator.valueToCode(block, 'MEMBER_VALUE',
-    jsonGenerator.PRECEDENCE);
+const value = generator.valueToCode(block, 'MEMBER_VALUE',
+    Order.ATOMIC);
 ```
 
 `valueToCode` does three things:
@@ -431,6 +434,7 @@ If no block is attached, `valueToCode` returns `null`. In another generator, `va
 The third argument is related to operator precedence. It is used to determine if parentheses need to be added around the value. In JSON, parentheses will never be added, as discussed in an earlier section.
 
 ### Build the code string
+
 Next, assemble the arguments `name` and `value` into the correct code, of the form `"name": value`.
 
 ```js
@@ -442,15 +446,14 @@ const code = `"${name}": ${value}`;
 All together, here is block generator for the member block:
 
 ```js
-jsonGenerator['member'] = function(block) {
+jsonGenerator.forBlock['member'] = function(block, generator) {
   const name = block.getFieldValue('MEMBER_NAME');
-  const value = jsonGenerator.valueToCode(
-      block, 'MEMBER_VALUE', jsonGenerator.PRECEDENCE);
+  const value = generator.valueToCode(
+      block, 'MEMBER_VALUE', Order.ATOMIC);
   const code = `"${name}": ${value}`;
   return code;
 };
 ```
-
 
 ## Array block generator
 
@@ -480,8 +483,8 @@ Each value input on the block has a name: `ADD0`, `ADD1`, etc. Use `valueToCode`
 ```js
 const values = [];
 for (let i = 0; i < block.itemCount_; i++) {
-  const valueCode = jsonGenerator.valueToCode(block, 'ADD' + i,
-      jsonGenerator.PRECEDENCE);
+  const valueCode = generator.valueToCode(block, 'ADD' + i,
+      Order.ATOMIC);
   if (valueCode) {
     values.push(valueCode);
   }
@@ -495,8 +498,8 @@ To include empty inputs, use the string `'null'` as the value:
 ```js
 const values = [];
 for (let i = 0; i < block.itemCount_; i++) {
-  const valueCode =  jsonGenerator.valueToCode(block, 'ADD' + i,
-      jsonGenerator.PRECEDENCE) || 'null';
+  const valueCode =  generator.valueToCode(block, 'ADD' + i,
+      Order.ATOMIC) || 'null';
   values.push(valueCode);
 }
 ```
@@ -515,7 +518,7 @@ Next, use `prefixLines` to add indentation at the beginning of each line:
 
 ```js
 const indentedValueString =
-    jsonGenerator.prefixLines(valueString, jsonGenerator.INDENT);
+    generator.prefixLines(valueString, jsonGenerator.INDENT);
 ```
 
 `INDENT` is a property on the generator. It defaults to two spaces, but language generators may override it to increase indent or change to tabs.
@@ -524,7 +527,7 @@ Finally, wrap the indented values in brackets and return the string:
 
 ```js
 const codeString = '[\n' + indentedValueString + '\n]';
-return [codeString, jsonGenerator.PRECEDENCE];
+return [codeString, Order.ATOMIC];
 ```
 
 ### Putting it all together
@@ -532,20 +535,20 @@ return [codeString, jsonGenerator.PRECEDENCE];
 Here is the final array block generator:
 
 ```js
-jsonGenerator['lists_create_with'] = function(block) {
+jsonGenerator.forBlock['lists_create_with'] = function(block, generator) {
   const values = [];
   for (let i = 0; i < block.itemCount_; i++) {
-    const valueCode = jsonGenerator.valueToCode(block, 'ADD' + i,
-        jsonGenerator.PRECEDENCE);
+    const valueCode = generator.valueToCode(block, 'ADD' + i,
+        Order.ATOMIC);
     if (valueCode) {
       values.push(valueCode);
     }
   }
   const valueString = values.join(',\n');
   const indentedValueString =
-      jsonGenerator.prefixLines(valueString, jsonGenerator.INDENT);
+      generator.prefixLines(valueString, generator.INDENT);
   const codeString = '[\n' + indentedValueString + '\n]';
-  return [codeString, jsonGenerator.PRECEDENCE];
+  return [codeString, Order.ATOMIC];
 };
 ```
 
@@ -588,7 +591,7 @@ In this case the input name is `'MEMBERS'`.
 
 ```js
 const statement_members =
-    jsonGenerator.statementToCode(block, 'MEMBERS');
+    generator.statementToCode(block, 'MEMBERS');
 ```
 
 ### Format and return
@@ -597,7 +600,7 @@ Wrap the statements in curly brackets and return the code, using the default pre
 
 ```js
 const code = '{\n' + statement_members + '\n}';
-return [code, jsonGenerator.PRECEDENCE];
+return [code, Order.ATOMIC];
 ```
 Note that `statementToCode` handles the indentation automatically.
 
@@ -606,11 +609,11 @@ Note that `statementToCode` handles the indentation automatically.
 Here is the full block generator:
 
 ```js
-jsonGenerator['object'] = function(block) {
+jsonGenerator.forBlock['object'] = function(block, generator) {
   const statementMembers =
-      jsonGenerator.statementToCode(block, 'MEMBERS');
+      generator.statementToCode(block, 'MEMBERS');
   const code = '{\n' + statementMembers + '\n}';
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 ```
 

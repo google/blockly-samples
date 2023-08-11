@@ -13,7 +13,9 @@ import * as Blockly from 'blockly';
 
 export const jsonGenerator = new Blockly.Generator('JSON');
 
-jsonGenerator.PRECEDENCE = 0;
+const Order = {
+  ATOMIC: 0,
+};
 
 jsonGenerator.scrub_ = function(block, code, thisOnly) {
   const nextBlock =
@@ -24,53 +26,53 @@ jsonGenerator.scrub_ = function(block, code, thisOnly) {
   return code;
 };
 
-jsonGenerator['logic_null'] = function(block) {
-  return ['null', jsonGenerator.PRECEDENCE];
+jsonGenerator.forBlock['logic_null'] = function(block) {
+  return ['null', Order.ATOMIC];
 };
 
-jsonGenerator['text'] = function(block) {
+jsonGenerator.forBlock['text'] = function(block) {
   const textValue = block.getFieldValue('TEXT');
   const code = `"${textValue}"`;
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 
-jsonGenerator['math_number'] = function(block) {
+jsonGenerator.forBlock['math_number'] = function(block) {
   const code = String(block.getFieldValue('NUM'));
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 
-jsonGenerator['logic_boolean'] = function(block) {
+jsonGenerator.forBlock['logic_boolean'] = function(block) {
   const code = (block.getFieldValue('BOOL') == 'TRUE') ? 'true' : 'false';
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };
 
-jsonGenerator['member'] = function(block) {
+jsonGenerator.forBlock['member'] = function(block, generator) {
   const name = block.getFieldValue('MEMBER_NAME');
-  const value = jsonGenerator.valueToCode(
-      block, 'MEMBER_VALUE', jsonGenerator.PRECEDENCE);
+  const value = generator.valueToCode(
+      block, 'MEMBER_VALUE', Order.ATOMIC);
   const code = `"${name}": ${value}`;
   return code;
 };
 
-jsonGenerator['lists_create_with'] = function(block) {
+jsonGenerator.forBlock['lists_create_with'] = function(block, generator) {
   const values = [];
   for (let i = 0; i < block.itemCount_; i++) {
-    const valueCode = jsonGenerator.valueToCode(block, 'ADD' + i,
-        jsonGenerator.PRECEDENCE);
+    const valueCode = generator.valueToCode(block, 'ADD' + i,
+        Order.ATOMIC);
     if (valueCode) {
       values.push(valueCode);
     }
   }
   const valueString = values.join(',\n');
   const indentedValueString =
-      jsonGenerator.prefixLines(valueString, jsonGenerator.INDENT);
+      generator.prefixLines(valueString, generator.INDENT);
   const codeString = '[\n' + indentedValueString + '\n]';
-  return [codeString, jsonGenerator.PRECEDENCE];
+  return [codeString, Order.ATOMIC];
 };
 
-jsonGenerator['object'] = function(block) {
+jsonGenerator.forBlock['object'] = function(block, generator) {
   const statementMembers =
-      jsonGenerator.statementToCode(block, 'MEMBERS');
+      generator.statementToCode(block, 'MEMBERS');
   const code = '{\n' + statementMembers + '\n}';
-  return [code, jsonGenerator.PRECEDENCE];
+  return [code, Order.ATOMIC];
 };

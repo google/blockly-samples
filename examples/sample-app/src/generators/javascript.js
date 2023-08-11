@@ -17,8 +17,8 @@ forBlock['add_text'] = function (block, generator) {
     generator.valueToCode(block, 'COLOR', Order.ATOMIC) || "'#ffffff'";
 
   const addText = generator.provideFunction_(
-    'addText',
-    `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text, color) {
+      'addText',
+      `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text, color) {
 
   // Add text to the output area.
   const outputDiv = document.getElementById('output');
