@@ -23,8 +23,6 @@ const CONTENT_CHANGE_EVENTS_ = [
 
 /**
  * The default padding to use for the content highlight in workspace units.
- * @type {number}
- * @private
  */
 const DEFAULT_PADDING_ = 10;
 
@@ -40,67 +38,55 @@ const ANIMATION_TIME = 0.25;
  */
 export class ContentHighlight {
   /**
+   * The width of the highlight rectangle in workspace units.
+   */
+  private width_ = 0;
+  
+  /**
+   * The height of the highlight rectangle in workspace units.
+   */
+  private height_ = 0;
+  
+  /**
+   * The top offset of the highlight rectangle in pixels.
+   */
+  private top_ = 0;
+  
+  /**
+   * The left offset of the highlight rectangle in pixels.
+   */
+  private left_ = 0;
+  
+  /**
+   * The last scale value applied on the content highlight.
+   */
+  private lastScale_ = 1;
+  
+  /**
+   * The cached content metrics for the workspace in workspace units.
+   */
+  private cachedContentMetrics_?: Blockly.MetricsManager.ContainerRegion;
+  
+  private padding_ = DEFAULT_PADDING_;
+  
+  private svgGroup_?: SVGGElement;
+  private rect_?: SVGRectElement;
+  private background_?: SVGRectElement;
+  private onChangeWrapper_?: () => void;
+
+  /**
    * Constructor for the content highlight plugin.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
    *     be added to.
    */
-  constructor(workspace) {
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
-    this.workspace_ = workspace;
-
-    /**
-     * The width of the highlight rectangle in workspace units.
-     * @type {number}
-     * @private
-     */
-    this.width_ = 0;
-
-    /**
-     * The height of the highlight rectangle in workspace units.
-     * @type {number}
-     * @private
-     */
-    this.height_ = 0;
-
-    /**
-     * The top offset of the highlight rectangle in pixels.
-     * @type {number}
-     * @private
-     */
-    this.top_ = 0;
-
-    /**
-     * The left offset of the highlight rectangle in pixels.
-     * @type {number}
-     * @private
-     */
-    this.left_ = 0;
-
-    /**
-     * The last scale value applied on the content highlight.
-     * @type {number}
-     * @private
-     */
-    this.lastScale_ = 1;
-
-    /**
-     * The cached content metrics for the workspace in workspace units.
-     * @type {!Blockly.MetricsManager.ContainerRegion|undefined}
-     * @private
-     */
-    this.cachedContentMetrics_ = undefined;
-  }
+  constructor(protected workspace_: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the plugin.
-   * @param {number=} padding The padding to use for the content area highlight
+   * @param padding The padding to use for the content area highlight
    *    rectangle, in workspace units.
    */
-  init(padding) {
+  init(padding: number) {
     padding = Number(padding);
     /**
      * The padding to use around the content area.
