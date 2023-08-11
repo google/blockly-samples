@@ -84,10 +84,8 @@ export class ContentHighlight {
    * @param padding The padding to use for the content area highlight
    *    rectangle, in workspace units.
    */
-  init(padding: number) {
-    padding = Number(padding);
-
-    this.padding = isNaN(padding) ? DEFAULT_PADDING : padding;
+  init(padding?: number) {
+    this.padding = padding || DEFAULT_PADDING
 
     /** @type {SVGElement} */
     this.svgGroup = Blockly.utils.dom.createSvgElement(
@@ -121,7 +119,7 @@ export class ContentHighlight {
           'y': 0,
           'width': '100%',
           'height': '100%',
-          'mask': 'url(#contentAreaHighlightMask' + rnd + ')',
+          'mask': `url(#contentAreaHighlightMask${rnd})`,
         }, this.svgGroup);
 
     this.applyColor();
@@ -132,7 +130,7 @@ export class ContentHighlight {
     this.position(this.cachedContentMetrics, absoluteMetrics);
 
     // Apply transition animation for opacity changes.
-    this.svgGroup.style.transition = 'opacity ' + ANIMATION_TIME + 's';
+    this.svgGroup.style.transition = `opacity ${ANIMATION_TIME}s`;
 
     const parentSvg = this.workspace.getParentSvg();
     if (parentSvg.firstChild) {
@@ -253,7 +251,7 @@ export class ContentHighlight {
       this.lastScale = scale;
       this.rect.setAttribute(
           'transform',
-          'translate(' + left + ',' + top + ') scale(' + scale +')');
+          `translate(${left}, ${top}) scale(${scale})`);
     }
   }
 }
