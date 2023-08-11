@@ -12,8 +12,6 @@ import * as Blockly from 'blockly';
 
 /**
  * List of events that cause a change in content area size.
- * @const
- * @private
  */
 const CONTENT_CHANGE_EVENTS_ = [
   Blockly.Events.VIEWPORT_CHANGE,
@@ -65,6 +63,9 @@ export class ContentHighlight {
    */
   private cachedContentMetrics_?: Blockly.MetricsManager.ContainerRegion;
   
+  /**
+   * The padding to use around the content area.
+   */
   private padding_ = DEFAULT_PADDING_;
   
   private svgGroup_?: SVGGElement;
@@ -74,8 +75,7 @@ export class ContentHighlight {
 
   /**
    * Constructor for the content highlight plugin.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
-   *     be added to.
+   * @param workspace The workspace that the plugin will be added to.
    */
   constructor(protected workspace_: Blockly.WorkspaceSvg) {}
 
@@ -86,10 +86,7 @@ export class ContentHighlight {
    */
   init(padding: number) {
     padding = Number(padding);
-    /**
-     * The padding to use around the content area.
-     * @const {number}
-     */
+
     this.padding_ = isNaN(padding) ? DEFAULT_PADDING_ : padding;
 
     /** @type {SVGElement} */
