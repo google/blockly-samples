@@ -13,7 +13,7 @@ import * as Blockly from 'blockly';
 /**
  * List of events that cause a change in content area size.
  */
-const CONTENT_CHANGE_EVENTS_ = [
+const CONTENT_CHANGE_EVENTS = [
   Blockly.Events.VIEWPORT_CHANGE,
   Blockly.Events.BLOCK_MOVE,
   Blockly.Events.BLOCK_DELETE,
@@ -22,7 +22,7 @@ const CONTENT_CHANGE_EVENTS_ = [
 /**
  * The default padding to use for the content highlight in workspace units.
  */
-const DEFAULT_PADDING_ = 10;
+const DEFAULT_PADDING = 10;
 
 /**
  * Length of opacity change transition in seconds.
@@ -36,48 +36,48 @@ export class ContentHighlight {
   /**
    * The width of the highlight rectangle in workspace units.
    */
-  private width_ = 0;
+  private width = 0;
   
   /**
    * The height of the highlight rectangle in workspace units.
    */
-  private height_ = 0;
+  private height = 0;
   
   /**
    * The top offset of the highlight rectangle in pixels.
    */
-  private top_ = 0;
+  private top = 0;
   
   /**
    * The left offset of the highlight rectangle in pixels.
    */
-  private left_ = 0;
+  private left = 0;
   
   /**
    * The last scale value applied on the content highlight.
    */
-  private lastScale_ = 1;
+  private lastScale = 1;
   
   /**
    * The cached content metrics for the workspace in workspace units.
    */
-  private cachedContentMetrics_?: Blockly.MetricsManager.ContainerRegion;
+  private cachedContentMetrics?: Blockly.MetricsManager.ContainerRegion;
   
   /**
    * The padding to use around the content area.
    */
-  private padding_ = DEFAULT_PADDING_;
+  private padding = DEFAULT_PADDING;
   
-  private svgGroup_?: SVGGElement;
-  private rect_?: SVGRectElement;
-  private background_?: SVGRectElement;
-  private onChangeWrapper_?: () => void;
+  private svgGroup?: SVGGElement;
+  private rect?: SVGRectElement;
+  private background?: SVGRectElement;
+  private onChangeWrapper?: () => void;
 
   /**
    * Constructor for the content highlight plugin.
    * @param workspace The workspace that the plugin will be added to.
    */
-  constructor(protected workspace_: Blockly.WorkspaceSvg) {}
+  constructor(protected workspace: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the plugin.
@@ -87,10 +87,10 @@ export class ContentHighlight {
   init(padding: number) {
     padding = Number(padding);
 
-    this.padding_ = isNaN(padding) ? DEFAULT_PADDING_ : padding;
+    this.padding = isNaN(padding) ? DEFAULT_PADDING : padding;
 
     /** @type {SVGElement} */
-    this.svgGroup_ = Blockly.utils.dom.createSvgElement(
+    this.svgGroup = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.G,
         {'class': 'contentAreaHighlight'}, null);
 
@@ -98,7 +98,7 @@ export class ContentHighlight {
     const mask = Blockly.utils.dom.createSvgElement(
         new Blockly.utils.Svg('mask'), {
           'id': 'contentAreaHighlightMask' + rnd,
-        }, this.svgGroup_);
+        }, this.svgGroup);
     Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT, {
           'x': 0,
@@ -107,7 +107,7 @@ export class ContentHighlight {
           'height': '100%',
           'fill': 'white',
         }, mask);
-    this.rect_ = Blockly.utils.dom.createSvgElement(
+    this.rect = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT, {
           'x': 0,
           'y': 0,
@@ -115,34 +115,34 @@ export class ContentHighlight {
           'ry': Blockly.Bubble.BORDER_WIDTH,
           'fill': 'black',
         }, mask);
-    this.background_ = Blockly.utils.dom.createSvgElement(
+    this.background = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT, {
           'x': 0,
           'y': 0,
           'width': '100%',
           'height': '100%',
           'mask': 'url(#contentAreaHighlightMask' + rnd + ')',
-        }, this.svgGroup_);
+        }, this.svgGroup);
 
     this.applyColor();
-    const metricsManager = this.workspace_.getMetricsManager();
-    this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
-    this.resize(this.cachedContentMetrics_);
+    const metricsManager = this.workspace.getMetricsManager();
+    this.cachedContentMetrics = metricsManager.getContentMetrics(true);
+    this.resize(this.cachedContentMetrics);
     const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-    this.position(this.cachedContentMetrics_, absoluteMetrics);
+    this.position(this.cachedContentMetrics, absoluteMetrics);
 
     // Apply transition animation for opacity changes.
-    this.svgGroup_.style.transition = 'opacity ' + ANIMATION_TIME + 's';
+    this.svgGroup.style.transition = 'opacity ' + ANIMATION_TIME + 's';
 
-    const parentSvg = this.workspace_.getParentSvg();
+    const parentSvg = this.workspace.getParentSvg();
     if (parentSvg.firstChild) {
-      parentSvg.insertBefore(this.svgGroup_, parentSvg.firstChild);
+      parentSvg.insertBefore(this.svgGroup, parentSvg.firstChild);
     } else {
-      parentSvg.appendChild(this.svgGroup_);
+      parentSvg.appendChild(this.svgGroup);
     }
 
-    this.onChangeWrapper_ = this.onChange.bind(this);
-    this.workspace_.addChangeListener(this.onChangeWrapper_);
+    this.onChangeWrapper = this.onChange.bind(this);
+    this.workspace.addChangeListener(this.onChangeWrapper);
   }
 
   /**
@@ -151,11 +151,11 @@ export class ContentHighlight {
    * to prevent memory leaks.
    */
   dispose() {
-    if (this.svgGroup_) {
-      Blockly.utils.dom.removeNode(this.svgGroup_);
+    if (this.svgGroup) {
+      Blockly.utils.dom.removeNode(this.svgGroup);
     }
-    if (this.onChangeWrapper_) {
-      this.workspace_.removeChangeListener(this.onChangeWrapper_);
+    if (this.onChangeWrapper) {
+      this.workspace.removeChangeListener(this.onChangeWrapper);
     }
   }
 
@@ -166,22 +166,22 @@ export class ContentHighlight {
   private onChange(event: Blockly.Events.Abstract) {
     if (event.type === Blockly.Events.THEME_CHANGE) {
       this.applyColor();
-    } else if (CONTENT_CHANGE_EVENTS_.indexOf(event.type) !== -1) {
-      const metricsManager = this.workspace_.getMetricsManager();
+    } else if (CONTENT_CHANGE_EVENTS.indexOf(event.type) !== -1) {
+      const metricsManager = this.workspace.getMetricsManager();
       if (event.type !== Blockly.Events.VIEWPORT_CHANGE) {
         // The content metrics change when it's not a viewport change event.
-        this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
-        this.resize(this.cachedContentMetrics_);
+        this.cachedContentMetrics = metricsManager.getContentMetrics(true);
+        this.resize(this.cachedContentMetrics);
       }
       const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-      this.position(this.cachedContentMetrics_, absoluteMetrics);
+      this.position(this.cachedContentMetrics, absoluteMetrics);
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
       this.handleBlockDrag(event as Blockly.Events.BlockDrag);
     } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
       // Resizes the content highlight when it is a block change event
-      const metricsManager = this.workspace_.getMetricsManager();
-      this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
-      this.resize(this.cachedContentMetrics_);
+      const metricsManager = this.workspace.getMetricsManager();
+      this.cachedContentMetrics = metricsManager.getContentMetrics(true);
+      this.resize(this.cachedContentMetrics);
     }
   }
 
@@ -192,14 +192,14 @@ export class ContentHighlight {
    */
   private handleBlockDrag(event: Blockly.Events.BlockDrag) {
     const opacity = event.isStart ? '0' : '1';
-    this.svgGroup_.setAttribute('opacity', opacity);
+    this.svgGroup.setAttribute('opacity', opacity);
   }
 
   /**
    * Applies the color fill for the highlight based on the current theme.
    */
   private applyColor() {
-    const theme = this.workspace_.getTheme();
+    const theme = this.workspace.getTheme();
     const bgColor =
         theme.getComponentStyle('workspaceBackgroundColour') || '#ffffff';
 
@@ -209,7 +209,7 @@ export class ContentHighlight {
         Blockly.utils.colour.blend('#fff', bgColor, 0.1);
     const color = (bgColor === '#ffffff' || bgColor === '#fff') ?
         colorDarkened : colorLightened;
-    this.background_.setAttribute('fill', color);
+    this.background.setAttribute('fill', color);
   }
 
   /**
@@ -218,16 +218,16 @@ export class ContentHighlight {
    */
   private resize(contentMetrics: Blockly.MetricsManager.ContainerRegion) {
     const width = contentMetrics.width ? contentMetrics.width +
-        2 * this.padding_ : 0;
+        2 * this.padding : 0;
     const height = contentMetrics.height ? contentMetrics.height +
-        2 * this.padding_ : 0;
-    if (width !== this.width_) {
-      this.width_ = width;
-      this.rect_.setAttribute('width', `${width}`);
+        2 * this.padding : 0;
+    if (width !== this.width) {
+      this.width = width;
+      this.rect.setAttribute('width', `${width}`);
     }
-    if (height !== this.height_) {
-      this.height_ = height;
-      this.rect_.setAttribute('height', `${height}`);
+    if (height !== this.height) {
+      this.height = height;
+      this.rect.setAttribute('height', `${height}`);
     }
   }
 
@@ -238,20 +238,20 @@ export class ContentHighlight {
    */
   private position(contentMetrics: Blockly.MetricsManager.ContainerRegion, absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics) {
     // Compute top/left manually to avoid unnecessary extra computation.
-    const viewTop = -this.workspace_.scrollY;
-    const viewLeft = -this.workspace_.scrollX;
-    const scale = this.workspace_.scale;
+    const viewTop = -this.workspace.scrollY;
+    const viewLeft = -this.workspace.scrollX;
+    const scale = this.workspace.scale;
     const top = absoluteMetrics.top + contentMetrics.top * scale - viewTop -
-        this.padding_ * scale;
+        this.padding * scale;
     const left = absoluteMetrics.left + contentMetrics.left * scale - viewLeft -
-        this.padding_ * scale;
+        this.padding * scale;
 
-    if (top !== this.top_ || left !== this.left_ ||
-        this.lastScale_ !== scale) {
-      this.top_ = top;
-      this.left_ = left;
-      this.lastScale_ = scale;
-      this.rect_.setAttribute(
+    if (top !== this.top || left !== this.left ||
+        this.lastScale !== scale) {
+      this.top = top;
+      this.left = left;
+      this.lastScale = scale;
+      this.rect.setAttribute(
           'transform',
           'translate(' + left + ',' + top + ') scale(' + scale +')');
     }
