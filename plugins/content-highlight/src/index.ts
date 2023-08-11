@@ -13,7 +13,7 @@ import * as Blockly from 'blockly';
 /**
  * List of events that cause a change in content area size.
  */
-const CONTENT_CHANGE_EVENTS = [
+const contentChangeEvents = [
   Blockly.Events.VIEWPORT_CHANGE,
   Blockly.Events.BLOCK_MOVE,
   Blockly.Events.BLOCK_DELETE,
@@ -22,12 +22,12 @@ const CONTENT_CHANGE_EVENTS = [
 /**
  * The default padding to use for the content highlight in workspace units.
  */
-const DEFAULT_PADDING = 10;
+const defaultPadding = 10;
 
 /**
  * Length of opacity change transition in seconds.
  */
-const ANIMATION_TIME = 0.25;
+const animationTime = 0.25;
 
 /**
  * A plugin that highlights the area where content exists on the workspace.
@@ -66,7 +66,7 @@ export class ContentHighlight {
   /**
    * The padding to use around the content area.
    */
-  private padding = DEFAULT_PADDING;
+  private padding = defaultPadding;
 
   private svgGroup?: SVGGElement;
   private rect?: SVGRectElement;
@@ -85,7 +85,7 @@ export class ContentHighlight {
    *    rectangle, in workspace units.
    */
   init(padding?: number) {
-    this.padding = padding || DEFAULT_PADDING;
+    this.padding = padding || defaultPadding;
 
     /** @type {SVGElement} */
     this.svgGroup = Blockly.utils.dom.createSvgElement(
@@ -127,7 +127,7 @@ export class ContentHighlight {
     this.position(this.cachedContentMetrics, absoluteMetrics);
 
     // Apply transition animation for opacity changes.
-    this.svgGroup.style.transition = `opacity ${ANIMATION_TIME}s`;
+    this.svgGroup.style.transition = `opacity ${animationTime}s`;
 
     const parentSvg = this.workspace.getParentSvg();
     if (parentSvg.firstChild) {
@@ -161,7 +161,7 @@ export class ContentHighlight {
   private onChange(event: Blockly.Events.Abstract) {
     if (event.type === Blockly.Events.THEME_CHANGE) {
       this.applyColor();
-    } else if (CONTENT_CHANGE_EVENTS.indexOf(event.type) !== -1) {
+    } else if (contentChangeEvents.indexOf(event.type) !== -1) {
       const metricsManager = this.workspace.getMetricsManager();
       if (event.type !== Blockly.Events.VIEWPORT_CHANGE) {
         // The content metrics change when it's not a viewport change event.
