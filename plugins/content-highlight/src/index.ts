@@ -28,8 +28,6 @@ const DEFAULT_PADDING_ = 10;
 
 /**
  * Length of opacity change transition in seconds.
- * @type {number}
- * @const
  */
 const ANIMATION_TIME = 0.25;
 
@@ -129,12 +127,12 @@ export class ContentHighlight {
           'mask': 'url(#contentAreaHighlightMask' + rnd + ')',
         }, this.svgGroup_);
 
-    this.applyColor_();
+    this.applyColor();
     const metricsManager = this.workspace_.getMetricsManager();
     this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
-    this.resize_(this.cachedContentMetrics_);
+    this.resize(this.cachedContentMetrics_);
     const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-    this.position_(this.cachedContentMetrics_, absoluteMetrics);
+    this.position(this.cachedContentMetrics_, absoluteMetrics);
 
     // Apply transition animation for opacity changes.
     this.svgGroup_.style.transition = 'opacity ' + ANIMATION_TIME + 's';
@@ -146,7 +144,7 @@ export class ContentHighlight {
       parentSvg.appendChild(this.svgGroup_);
     }
 
-    this.onChangeWrapper_ = this.onChange_.bind(this);
+    this.onChangeWrapper_ = this.onChange.bind(this);
     this.workspace_.addChangeListener(this.onChangeWrapper_);
   }
 
@@ -168,25 +166,25 @@ export class ContentHighlight {
    * Handles events triggered on the workspace.
    * @param event The event.
    */
-  private onChange_(event: Blockly.Events.Abstract) {
+  private onChange(event: Blockly.Events.Abstract) {
     if (event.type === Blockly.Events.THEME_CHANGE) {
-      this.applyColor_();
+      this.applyColor();
     } else if (CONTENT_CHANGE_EVENTS_.indexOf(event.type) !== -1) {
       const metricsManager = this.workspace_.getMetricsManager();
       if (event.type !== Blockly.Events.VIEWPORT_CHANGE) {
         // The content metrics change when it's not a viewport change event.
         this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
-        this.resize_(this.cachedContentMetrics_);
+        this.resize(this.cachedContentMetrics_);
       }
       const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-      this.position_(this.cachedContentMetrics_, absoluteMetrics);
+      this.position(this.cachedContentMetrics_, absoluteMetrics);
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
-      this.handleBlockDrag_(event as Blockly.Events.BlockDrag);
+      this.handleBlockDrag(event as Blockly.Events.BlockDrag);
     } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
       // Resizes the content highlight when it is a block change event
       const metricsManager = this.workspace_.getMetricsManager();
       this.cachedContentMetrics_ = metricsManager.getContentMetrics(true);
-      this.resize_(this.cachedContentMetrics_);
+      this.resize(this.cachedContentMetrics_);
     }
   }
 
@@ -195,7 +193,7 @@ export class ContentHighlight {
    * is passed.
    * @param event The BlockDrag event.
    */
-  private handleBlockDrag_(event: Blockly.Events.BlockDrag) {
+  private handleBlockDrag(event: Blockly.Events.BlockDrag) {
     const opacity = event.isStart ? '0' : '1';
     this.svgGroup_.setAttribute('opacity', opacity);
   }
@@ -203,7 +201,7 @@ export class ContentHighlight {
   /**
    * Applies the color fill for the highlight based on the current theme.
    */
-  private applyColor_() {
+  private applyColor() {
     const theme = this.workspace_.getTheme();
     const bgColor =
         theme.getComponentStyle('workspaceBackgroundColour') || '#ffffff';
@@ -221,7 +219,7 @@ export class ContentHighlight {
    * Resizes the content highlight.
    * @param contentMetrics The content metrics for the workspace in workspace coordinates.
    */
-  private resize_(contentMetrics: Blockly.MetricsManager.ContainerRegion) {
+  private resize(contentMetrics: Blockly.MetricsManager.ContainerRegion) {
     const width = contentMetrics.width ? contentMetrics.width +
         2 * this.padding_ : 0;
     const height = contentMetrics.height ? contentMetrics.height +
@@ -241,7 +239,7 @@ export class ContentHighlight {
    * @param contentMetrics The content metrics for the workspace in workspace coordinates.
    * @param absoluteMetrics The absolute metrics for the workspace.
    */
-  private position_(contentMetrics: Blockly.MetricsManager.ContainerRegion, absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics) {
+  private position(contentMetrics: Blockly.MetricsManager.ContainerRegion, absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics) {
     // Compute top/left manually to avoid unnecessary extra computation.
     const viewTop = -this.workspace_.scrollY;
     const viewLeft = -this.workspace_.scrollX;
