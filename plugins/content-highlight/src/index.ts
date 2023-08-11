@@ -37,37 +37,37 @@ export class ContentHighlight {
    * The width of the highlight rectangle in workspace units.
    */
   private width = 0;
-  
+
   /**
    * The height of the highlight rectangle in workspace units.
    */
   private height = 0;
-  
+
   /**
    * The top offset of the highlight rectangle in pixels.
    */
   private top = 0;
-  
+
   /**
    * The left offset of the highlight rectangle in pixels.
    */
   private left = 0;
-  
+
   /**
    * The last scale value applied on the content highlight.
    */
   private lastScale = 1;
-  
+
   /**
    * The cached content metrics for the workspace in workspace units.
    */
   private cachedContentMetrics?: Blockly.MetricsManager.ContainerRegion;
-  
+
   /**
    * The padding to use around the content area.
    */
   private padding = DEFAULT_PADDING;
-  
+
   private svgGroup?: SVGGElement;
   private rect?: SVGRectElement;
   private background?: SVGRectElement;
@@ -85,36 +85,33 @@ export class ContentHighlight {
    *    rectangle, in workspace units.
    */
   init(padding?: number) {
-    this.padding = padding || DEFAULT_PADDING
+    this.padding = padding || DEFAULT_PADDING;
 
     /** @type {SVGElement} */
     this.svgGroup = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.G,
-        {'class': 'contentAreaHighlight'}, null);
+        Blockly.utils.Svg.G, {'class': 'contentAreaHighlight'}, null);
 
     const rnd = String(Math.random()).substring(2);
-    const mask = Blockly.utils.dom.createSvgElement(
-        new Blockly.utils.Svg('mask'), {
+    const mask =
+        Blockly.utils.dom.createSvgElement(new Blockly.utils.Svg('mask'), {
           'id': 'contentAreaHighlightMask' + rnd,
         }, this.svgGroup);
-    Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.RECT, {
-          'x': 0,
-          'y': 0,
-          'width': '100%',
-          'height': '100%',
-          'fill': 'white',
-        }, mask);
-    this.rect = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.RECT, {
-          'x': 0,
-          'y': 0,
-          'rx': Blockly.Bubble.BORDER_WIDTH,
-          'ry': Blockly.Bubble.BORDER_WIDTH,
-          'fill': 'black',
-        }, mask);
-    this.background = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.RECT, {
+    Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.RECT, {
+      'x': 0,
+      'y': 0,
+      'width': '100%',
+      'height': '100%',
+      'fill': 'white',
+    }, mask);
+    this.rect = Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.RECT, {
+      'x': 0,
+      'y': 0,
+      'rx': Blockly.Bubble.BORDER_WIDTH,
+      'ry': Blockly.Bubble.BORDER_WIDTH,
+      'fill': 'black',
+    }, mask);
+    this.background =
+        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.RECT, {
           'x': 0,
           'y': 0,
           'width': '100%',
@@ -201,24 +198,24 @@ export class ContentHighlight {
     const bgColor =
         theme.getComponentStyle('workspaceBackgroundColour') || '#ffffff';
 
-    const colorDarkened =
-        Blockly.utils.colour.blend('#000', bgColor, 0.1);
-    const colorLightened =
-        Blockly.utils.colour.blend('#fff', bgColor, 0.1);
+    const colorDarkened = Blockly.utils.colour.blend('#000', bgColor, 0.1);
+    const colorLightened = Blockly.utils.colour.blend('#fff', bgColor, 0.1);
     const color = (bgColor === '#ffffff' || bgColor === '#fff') ?
-        colorDarkened : colorLightened;
+                      colorDarkened :
+                      colorLightened;
     this.background.setAttribute('fill', color);
   }
 
   /**
    * Resizes the content highlight.
-   * @param contentMetrics The content metrics for the workspace in workspace coordinates.
+   * @param contentMetrics The content metrics for the workspace in workspace
+   *     coordinates.
    */
   private resize(contentMetrics: Blockly.MetricsManager.ContainerRegion) {
-    const width = contentMetrics.width ? contentMetrics.width +
-        2 * this.padding : 0;
-    const height = contentMetrics.height ? contentMetrics.height +
-        2 * this.padding : 0;
+    const width =
+        contentMetrics.width ? contentMetrics.width + 2 * this.padding : 0;
+    const height =
+        contentMetrics.height ? contentMetrics.height + 2 * this.padding : 0;
     if (width !== this.width) {
       this.width = width;
       this.rect.setAttribute('width', `${width}`);
@@ -231,26 +228,26 @@ export class ContentHighlight {
 
   /**
    * Positions the highlight on the workspace based on the workspace metrics.
-   * @param contentMetrics The content metrics for the workspace in workspace coordinates.
+   * @param contentMetrics The content metrics for the workspace in workspace
+   *     coordinates.
    * @param absoluteMetrics The absolute metrics for the workspace.
    */
-  private position(contentMetrics: Blockly.MetricsManager.ContainerRegion, absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics) {
+  private position(contentMetrics: Blockly.MetricsManager.ContainerRegion,
+      absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics) {
     // Compute top/left manually to avoid unnecessary extra computation.
     const viewTop = -this.workspace.scrollY;
     const viewLeft = -this.workspace.scrollX;
     const scale = this.workspace.scale;
     const top = absoluteMetrics.top + contentMetrics.top * scale - viewTop -
-        this.padding * scale;
+                this.padding * scale;
     const left = absoluteMetrics.left + contentMetrics.left * scale - viewLeft -
-        this.padding * scale;
+                 this.padding * scale;
 
-    if (top !== this.top || left !== this.left ||
-        this.lastScale !== scale) {
+    if (top !== this.top || left !== this.left || this.lastScale !== scale) {
       this.top = top;
       this.left = left;
       this.lastScale = scale;
-      this.rect.setAttribute(
-          'transform',
+      this.rect.setAttribute('transform',
           `translate(${left}, ${top}) scale(${scale})`);
     }
   }
