@@ -23,6 +23,7 @@ suite('Navigation', function() {
   setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
+    window.cancelAnimationFrame = function() {};
     this.controller = new NavigationController();
     this.controller.init();
     this.navigation = this.controller.navigation;

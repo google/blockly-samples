@@ -87,6 +87,7 @@ suite('Insert/Modify', function() {
         </xml>`;
 
     defineTestBlocks();
+    window.cancelAnimationFrame = function() {};
 
 
     this.workspace = Blockly.inject('blocklyDiv', {
