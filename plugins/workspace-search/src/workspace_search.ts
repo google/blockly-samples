@@ -12,7 +12,7 @@
 
 import * as Blockly from 'blockly/core';
 
-import {injectSearchCss} from './css.js';
+import {injectSearchCss} from './css';
 
 /**
  * Class for workspace search.
