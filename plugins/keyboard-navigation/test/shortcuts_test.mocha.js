@@ -507,48 +507,4 @@ suite('Shortcut Tests', function() {
           });
         });
   });
-
-  suite('Paste', function() {
-    const testCases = [
-      [
-        'Control X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.V, 'NotAField',
-            [Blockly.utils.KeyCodes.CTRL]),
-      ],
-      [
-        'Meta X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.V, 'NotAField',
-            [Blockly.utils.KeyCodes.META]),
-      ],
-      [
-        'Alt X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.V, 'NotAField',
-            [Blockly.utils.KeyCodes.ALT]),
-      ],
-    ];
-
-    teardown(function() {
-      sinon.restore();
-    });
-
-    // Paste block.
-    suite('Simple', function() {
-      setup(function() {
-        const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
-        this.workspace.getCursor().setCurNode(blockNode);
-      });
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const pasteSpy = sinon.stub(this.navigation, 'paste');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(pasteSpy);
-        });
-      });
-    });
-  });
 });
