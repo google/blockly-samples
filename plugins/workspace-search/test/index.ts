@@ -9,17 +9,20 @@
  * @author kozbial@gmail.com (Monica Kozbial)
  */
 
+import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
+
 import {WorkspaceSearch} from '../src/index';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @returns {!Blockly.WorkspaceSvg} The created workspace.
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
+function createWorkspace(blocklyDiv: HTMLElement,
+    options: Blockly.BlocklyOptions):
+    Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   const workspaceSearch = new WorkspaceSearch(workspace);
