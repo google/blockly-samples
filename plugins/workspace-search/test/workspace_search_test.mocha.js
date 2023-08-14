@@ -205,7 +205,7 @@ suite('WorkspaceSearch', function() {
         this.fieldWithOutput,
       ];
       assertEqualsSearchGroup(
-          this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
+          this.blocks, this.workspaceSearch.blocks, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
       assert.equal(isBlockHighlighted(this.fieldWithOutputCollapsed),
           false,
@@ -214,7 +214,7 @@ suite('WorkspaceSearch', function() {
 
     test('Match no blocks', function() {
       this.workspaceSearch.searchAndHighlight('none', false);
-      assertEqualsSearchGroup(this.blocks, this.workspaceSearch.blocks_, []);
+      assertEqualsSearchGroup(this.blocks, this.workspaceSearch.blocks, []);
       assertNoExtraCurrentStyling(this.blocks);
     });
 
@@ -227,7 +227,7 @@ suite('WorkspaceSearch', function() {
         this.testStatementBlockWithInputCollapsed,
       ];
       assertEqualsSearchGroup(
-          this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
+          this.blocks, this.workspaceSearch.blocks, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
 
@@ -239,13 +239,13 @@ suite('WorkspaceSearch', function() {
         this.fieldWithOutput,
       ];
       assertEqualsSearchGroup(
-          this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
+          this.blocks, this.workspaceSearch.blocks, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
 
     test('Preserve current, in results', function() {
       this.workspaceSearch.searchAndHighlight('test');
-      this.workspaceSearch.setCurrentBlock_(1);
+      this.workspaceSearch.setCurrentBlock(1);
       // this.testStatementBlock should be current.
       const expectedBlocks = [
         this.testBlock,
@@ -257,13 +257,13 @@ suite('WorkspaceSearch', function() {
       ];
       this.workspaceSearch.searchAndHighlight('test', true);
       assertEqualsSearchGroup(
-          this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
+          this.blocks, this.workspaceSearch.blocks, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[1]);
     });
 
     test('Preserve current, not in results', function() {
       this.workspaceSearch.searchAndHighlight('test');
-      this.workspaceSearch.setCurrentBlock_(1);
+      this.workspaceSearch.setCurrentBlock(1);
       // this.testStatementBlock should be current.
       this.workspaceSearch.searchAndHighlight('string', true);
       const expectedBlocks = [
@@ -272,7 +272,7 @@ suite('WorkspaceSearch', function() {
         this.fieldWithOutput,
       ];
       assertEqualsSearchGroup(
-          this.blocks, this.workspaceSearch.blocks_, expectedBlocks);
+          this.blocks, this.workspaceSearch.blocks, expectedBlocks);
       assertNoExtraCurrentStyling(this.blocks, expectedBlocks[0]);
     });
   });
@@ -304,7 +304,7 @@ suite('WorkspaceSearch', function() {
       this.testBlock = this.workspace.newBlock('test_block');
       this.testStatementBlock = this.workspace.newBlock('test_statement_block');
       this.blocks = [this.testBlock, this.testStatementBlock];
-      this.workspaceSearch.blocks_ = this.blocks;
+      this.workspaceSearch.blocks = this.blocks;
     });
 
     teardown(function() {
@@ -315,19 +315,19 @@ suite('WorkspaceSearch', function() {
 
     test('next() with unset current', function() {
       this.workspaceSearch.next();
-      const currentIndex = this.workspaceSearch.currentBlockIndex_;
+      const currentIndex = this.workspaceSearch.currentBlockIndex;
       assert.equal(currentIndex, 0);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
     });
 
     test('next() wrap around', function() {
-      this.workspaceSearch.currentBlockIndex_ = 0;
+      this.workspaceSearch.currentBlockIndex = 0;
       this.workspaceSearch.next();
-      let currentIndex = this.workspaceSearch.currentBlockIndex_;
+      let currentIndex = this.workspaceSearch.currentBlockIndex;
       assert.equal(currentIndex, 1);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[1]);
       this.workspaceSearch.next();
-      currentIndex = this.workspaceSearch.currentBlockIndex_;
+      currentIndex = this.workspaceSearch.currentBlockIndex;
       assert.equal(currentIndex, 0);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
     });
@@ -360,7 +360,7 @@ suite('WorkspaceSearch', function() {
       this.testBlock = this.workspace.newBlock('test_block');
       this.testStatementBlock = this.workspace.newBlock('test_statement_block');
       this.blocks = [this.testBlock, this.testStatementBlock];
-      this.workspaceSearch.blocks_ = this.blocks;
+      this.workspaceSearch.blocks = this.blocks;
     });
 
     teardown(function() {
@@ -375,13 +375,13 @@ suite('WorkspaceSearch', function() {
     });
 
     test('previous() wrap around', function() {
-      this.workspaceSearch.currentBlockIndex_ = 1;
+      this.workspaceSearch.currentBlockIndex = 1;
       this.workspaceSearch.previous();
-      let currentIndex = this.workspaceSearch.currentBlockIndex_;
+      let currentIndex = this.workspaceSearch.currentBlockIndex;
       assert.equal(currentIndex, 0);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[0]);
       this.workspaceSearch.previous();
-      currentIndex = this.workspaceSearch.currentBlockIndex_;
+      currentIndex = this.workspaceSearch.currentBlockIndex;
       assert.equal(currentIndex, 1);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[1]);
     });
