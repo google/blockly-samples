@@ -119,6 +119,51 @@ suite('Shortcut Tests', function() {
     this.workspace.dispose();
   });
 
+  suite('Delete Block', function() {
+    setup(function() {
+      const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
+      this.workspace.getCursor().setCurNode(blockNode);
+    });
+
+    teardown(function() {
+      sinon.restore();
+    });
+
+    const testCases = [
+      [
+        'Delete',
+        createKeyDownEvent(Blockly.utils.KeyCodes.DELETE, 'NotAField'),
+      ],
+      [
+        'Backspace',
+        createKeyDownEvent(Blockly.utils.KeyCodes.BACKSPACE, 'NotAField'),
+      ],
+    ];
+    // Delete a block.
+    suite('Simple', function() {
+      testCases.forEach(function(testCase) {
+        const testCaseName = testCase[0];
+        const keyEvent = testCase[1];
+        test(testCaseName, function() {
+          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
+          const moveCursorSpy =
+              sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
+          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
+          sinon.assert.calledOnce(moveCursorSpy);
+          sinon.assert.calledOnce(deleteSpy);
+        });
+      });
+    });
+    // Do not delete a block if workspace is in readOnly mode.
+    suite('Not called when readOnly is true', function() {
+      testCases.forEach(function(testCase) {
+        const testCaseName = testCase[0];
+        const keyEvent = testCase[1];
+        runReadOnlyTest(testCaseName, keyEvent);
+      });
+    });
+  });
+
   suite('Copy', function() {
     teardown(function() {
       sinon.restore();
@@ -216,51 +261,6 @@ suite('Shortcut Tests', function() {
         const testCaseName = testCase[0];
         const keyEvent = testCase[1];
         testBlockIsNotDeletable(testCaseName, keyEvent);
-      });
-    });
-  });
-
-  suite('Delete Block', function() {
-    setup(function() {
-      const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
-      this.workspace.getCursor().setCurNode(blockNode);
-    });
-
-    teardown(function() {
-      sinon.restore();
-    });
-
-    const testCases = [
-      [
-        'Delete',
-        createKeyDownEvent(Blockly.utils.KeyCodes.DELETE, 'NotAField'),
-      ],
-      [
-        'Backspace',
-        createKeyDownEvent(Blockly.utils.KeyCodes.BACKSPACE, 'NotAField'),
-      ],
-    ];
-    // Delete a block.
-    suite('Simple', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
-          const moveCursorSpy =
-              sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(moveCursorSpy);
-          sinon.assert.calledOnce(deleteSpy);
-        });
-      });
-    });
-    // Do not delete a block if workspace is in readOnly mode.
-    suite('Not called when readOnly is true', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        runReadOnlyTest(testCaseName, keyEvent);
       });
     });
   });
