@@ -120,7 +120,7 @@ suite('Shortcut Tests', function() {
     this.workspace.dispose();
   });
 
-  suite.only('Deleting blocks', function() {
+  suite('Deleting blocks', function() {
     setup(function() {
       const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
       this.workspace.getCursor().setCurNode(blockNode);
@@ -173,47 +173,56 @@ suite('Shortcut Tests', function() {
         });
   });
 
-  suite('Copy', function() {
+  suite('Copy and paste', function() {
     teardown(function() {
       sinon.restore();
     });
     const testCases = [
-      [
-        'Control C',
-        createKeyDownEvent(
+      {
+        name: 'Control',
+        copyEvent: createKeyDownEvent(
             Blockly.utils.KeyCodes.C, 'NotAField',
             [Blockly.utils.KeyCodes.CTRL]),
-      ],
-      [
-        'Meta C',
-        createKeyDownEvent(
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.CTRL]),
+      },
+      {
+        name: 'Meta',
+        copyEvent: createKeyDownEvent(
             Blockly.utils.KeyCodes.C, 'NotAField',
             [Blockly.utils.KeyCodes.META]),
-      ],
-      [
-        'Alt C',
-        createKeyDownEvent(
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.META]),
+      },
+      {
+        name: 'Alt',
+        copyEvent: createKeyDownEvent(
             Blockly.utils.KeyCodes.C, 'NotAField',
             [Blockly.utils.KeyCodes.ALT]),
-      ],
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.ALT]),
+      },
     ];
 
-    // Copy a block.
-    suite('Simple', function() {
+    suite.only('copy and paste keybinds duplicate blocks', function() {
       setup(function() {
         const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
         this.workspace.getCursor().setCurNode(blockNode);
       });
 
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-          const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(copySpy);
-          sinon.assert.calledOnce(hideChaffSpy);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.copyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              2,
+              'Expected the block to be duplicated.');
         });
       });
     });
@@ -226,9 +235,7 @@ suite('Shortcut Tests', function() {
         this.workspace.getCursor().setCurNode(workspaceNode);
       });
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testCursorIsNotOnBlock(testCaseName, keyEvent);
+        testCursorIsNotOnBlock(testCase.name, testCase.copyEvent);
       });
     });
 
@@ -240,36 +247,28 @@ suite('Shortcut Tests', function() {
         this.workspace.getCursor().setCurNode(blockNode);
       });
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testCursorOnShadowBlock(testCaseName, keyEvent);
+        testCursorOnShadowBlock(testCase.name, testCase.copyEvent);
       });
     });
 
     // Do not copy a block if a workspace is in readonly mode.
     suite('Not called when readOnly is true', function() {
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        runReadOnlyTest(testCaseName, keyEvent);
+        runReadOnlyTest(testCase.name, testCase.copyEvent);
       });
     });
 
     // Do not copy a block if a gesture is in progress.
     suite('Gesture in progress', function() {
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testGestureInProgress(testCaseName, keyEvent);
+        testGestureInProgress(testCase.name, testCase.copyEvent);
       });
     });
 
     // Do not copy a block if is is not deletable.
     suite('Block is not deletable', function() {
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testBlockIsNotDeletable(testCaseName, keyEvent);
+        testBlockIsNotDeletable(testCase.name, testCase.copyEvent);
       });
     });
   });
