@@ -5,6 +5,7 @@
  */
 
 const sinon = require('sinon');
+const chai = require('chai');
 
 const Blockly = require('blockly/node');
 
@@ -119,7 +120,7 @@ suite('Shortcut Tests', function() {
     this.workspace.dispose();
   });
 
-  suite('Delete Block', function() {
+  suite.only('Deleting blocks', function() {
     setup(function() {
       const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
       this.workspace.getCursor().setCurNode(blockNode);
@@ -130,38 +131,46 @@ suite('Shortcut Tests', function() {
     });
 
     const testCases = [
-      [
-        'Delete',
-        createKeyDownEvent(Blockly.utils.KeyCodes.DELETE, 'NotAField'),
-      ],
-      [
-        'Backspace',
-        createKeyDownEvent(Blockly.utils.KeyCodes.BACKSPACE, 'NotAField'),
-      ],
+      {
+        name: 'Delete',
+        deleteEvent:
+            createKeyDownEvent(Blockly.utils.KeyCodes.DELETE, 'NotAField'),
+      },
+      {
+        name: 'Backspace',
+        deleteEvent:
+            createKeyDownEvent(Blockly.utils.KeyCodes.BACKSPACE, 'NotAField'),
+      },
     ];
-    // Delete a block.
-    suite('Simple', function() {
+
+    suite('delete keybinds trigger deletion', function() {
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
-          const moveCursorSpy =
-              sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(moveCursorSpy);
-          sinon.assert.calledOnce(deleteSpy);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.deleteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              0,
+              'Expected the block to be deleted.');
         });
       });
     });
-    // Do not delete a block if workspace is in readOnly mode.
-    suite('Not called when readOnly is true', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        runReadOnlyTest(testCaseName, keyEvent);
-      });
-    });
+
+    suite(
+        'delete keybinds do not trigger deletion if workspace is readonly',
+        function() {
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              this.workspace.options.readOnly = true;
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.deleteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be deleted.');
+            });
+          });
+        });
   });
 
   suite('Copy', function() {
