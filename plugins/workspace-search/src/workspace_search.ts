@@ -197,8 +197,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param thisObject The value of 'this' in the function.
    * @param func Function to call when event is triggered.
    */
-  private addEvent(node: Element, name: string, thisObject: Object,
-      func: Function) {
+  private addEvent(node: Element, name: string, thisObject: object,
+      func: (event: Event) => void) {
     const event =
         Blockly.browserEvents.conditionalBind(node, name, thisObject, func);
     this.boundEvents.push(event);
