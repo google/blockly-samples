@@ -111,6 +111,7 @@ suite('Shortcut Tests', function() {
     this.workspace = createNavigationWorkspace(this.navigation, true);
     this.controller.addWorkspace(this.workspace);
     this.basicBlock = this.workspace.newBlock('basic_block');
+    window.cancelAnimationFrame = function() {};
   });
 
   teardown(function() {
@@ -173,7 +174,7 @@ suite('Shortcut Tests', function() {
         });
   });
 
-  suite('Copy and paste', function() {
+  suite.only('Copy and paste', function() {
     teardown(function() {
       sinon.restore();
     });
@@ -207,7 +208,7 @@ suite('Shortcut Tests', function() {
       },
     ];
 
-    suite.only('copy and paste keybinds duplicate blocks', function() {
+    suite('copy and paste keybinds duplicate blocks', function() {
       setup(function() {
         const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
         this.workspace.getCursor().setCurNode(blockNode);
@@ -227,50 +228,105 @@ suite('Shortcut Tests', function() {
       });
     });
 
-    // Do not copy the block if the cursor is on the workspace.
-    suite('Cursor is not on a block', function() {
+    suite(
+        'copy and paste does nothing if the cursor is not on a block',
+        function() {
+          setup(function() {
+            const workspaceNode = Blockly.ASTNode.createWorkspaceNode(
+                this.workspace, new Blockly.utils.Coordinate(100, 100));
+            this.workspace.getCursor().setCurNode(workspaceNode);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.copyEvent);
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
+
+    suite(
+        'copy and paste do nothing if the cursor is on a shadow block',
+        function() {
+          setup(function() {
+            this.basicBlock.setShadow(true);
+            const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
+            this.workspace.getCursor().setCurNode(blockNode);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.copyEvent);
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
+
+    suite('copy and paste do nothing if the workspace is readonly', function() {
       setup(function() {
-        const workspaceNode = Blockly.ASTNode.createWorkspaceNode(
-            this.workspace, new Blockly.utils.Coordinate(100, 100));
-        this.workspace.getCursor().setCurNode(workspaceNode);
+        this.workspace.options.readonly = true;
       });
       testCases.forEach(function(testCase) {
-        testCursorIsNotOnBlock(testCase.name, testCase.copyEvent);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.copyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be duplicated.');
+        });
       });
     });
 
-    // Do not copy a block if the block is a shadow block
-    suite('Cursor is on a shadow block', function() {
+    suite('copy and paste do nothing if a gesture is in progress', function() {
       setup(function() {
-        this.basicBlock.setShadow(true);
-        const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
-        this.workspace.getCursor().setCurNode(blockNode);
+        sinon.stub(Blockly.Gesture, 'inProgress').returns(true);
       });
       testCases.forEach(function(testCase) {
-        testCursorOnShadowBlock(testCase.name, testCase.copyEvent);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.copyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be duplicated.');
+        });
       });
     });
 
-    // Do not copy a block if a workspace is in readonly mode.
-    suite('Not called when readOnly is true', function() {
-      testCases.forEach(function(testCase) {
-        runReadOnlyTest(testCase.name, testCase.copyEvent);
-      });
-    });
-
-    // Do not copy a block if a gesture is in progress.
-    suite('Gesture in progress', function() {
-      testCases.forEach(function(testCase) {
-        testGestureInProgress(testCase.name, testCase.copyEvent);
-      });
-    });
-
-    // Do not copy a block if is is not deletable.
-    suite('Block is not deletable', function() {
-      testCases.forEach(function(testCase) {
-        testBlockIsNotDeletable(testCase.name, testCase.copyEvent);
-      });
-    });
+    suite(
+        'copy and paste do nothing if the block is not deletable',
+        function() {
+          setup(function() {
+            this.basicBlock.setDeletable(false);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.copyEvent);
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
   });
 
   suite('Cut', function() {
