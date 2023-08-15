@@ -82,6 +82,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
 
     /**
      * Sizes the minimap.
+     * @internal
      */
     setSize(): void {
       const viewWidth = this.primaryWorkspace.getMetrics().viewWidth;
@@ -94,6 +95,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
      * Calculates the position of the minimap over the primary workspace.
      * @param metrics The workspace metrics.
      * @param savedPositions List of rectangles already on the workspace.
+     * @internal
      */
     setPosition(metrics: Blockly.MetricsManager.UiMetrics,
         savedPositions: Blockly.utils.Rect[]): void {
