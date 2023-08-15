@@ -17,6 +17,11 @@ suite('Shortcut Tests', function() {
   setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
+    // We are running these tests in node even thought they require a rendered
+    // workspace, which doesn't exactly work. The rendering system expects
+    // cancelAnimationFrame to be defined so we need to define it.
+    window.cancelAnimationFrame = function() {};
+
     Blockly.utils.dom.getFastTextWidthWithSizeString = function() {
       return 10;
     };
@@ -32,10 +37,10 @@ suite('Shortcut Tests', function() {
     this.workspace = createNavigationWorkspace(this.navigation, true);
     this.controller.addWorkspace(this.workspace);
     this.basicBlock = this.workspace.newBlock('basic_block');
-    window.cancelAnimationFrame = function() {};
   });
 
   teardown(function() {
+    window.cancelAnimationFrame = undefined;
     this.jsdomCleanup();
     this.controller.dispose();
     delete Blockly.Blocks['basic_block'];
