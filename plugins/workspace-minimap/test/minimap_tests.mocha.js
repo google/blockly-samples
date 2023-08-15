@@ -203,7 +203,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 20, 'LTR Vertical Start: Incorrect top');
@@ -222,7 +223,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 20, 'LTR Vertical End: Incorrect top');
@@ -241,7 +243,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 55, 'LTR Horizontal Start: Incorrect top');
@@ -260,7 +263,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(parseInt(position.top), 831,
@@ -281,7 +285,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 55, 'LTR Horizontal Start: Incorrect top');
@@ -300,7 +305,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 20, 'RTL Vertical Start: Incorrect top');
@@ -319,7 +325,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 20, 'RTL Vertical End: Incorrect top');
@@ -338,7 +345,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(position.top, 55, 'RTL Horizontal Start: Incorrect top');
@@ -357,7 +365,8 @@ suite('Positioning the minimap in the primary workspace', function() {
     });
 
     const minimap = new PositionedMinimap(this.options);
-    minimap.position(this.mockMetrics, []);
+    minimap.setSize();
+    minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
     assert.equal(parseInt(position.top), 831,
