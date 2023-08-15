@@ -192,11 +192,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('LTR Vertical Start', function() {
-    this.options.RTL = false;
-    this.options.horizontalLayout = false;
-    this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {top: 0, left: 107};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_LEFT;
+    Object.assign(this.options, {
+      RTL: false,
+      horizontalLayout: false,
+      toolboxPosition: 'start',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 0, left: 107},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_LEFT},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -207,11 +211,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('LTR Vertical End', function() {
-    this.options.RTL = false;
-    this.options.horizontalLayout = false;
-    this.options.toolboxPosition = 'end';
-    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_RIGHT;
+    Object.assign(this.options, {
+      RTL: false,
+      horizontalLayout: false,
+      toolboxPosition: 'end',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 0, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_RIGHT},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -222,11 +230,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('LTR Horizontal Start', function() {
-    this.options.RTL = false;
-    this.options.horizontalLayout = true;
-    this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {top: 35, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
+    Object.assign(this.options, {
+      RTL: false,
+      horizontalLayout: true,
+      toolboxPosition: 'start',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 35, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_TOP},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -237,11 +249,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('LTR Horizontal End', function() {
-    this.options.RTL = false;
-    this.options.horizontalLayout = true;
-    this.options.toolboxPosition = 'end';
-    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_BOTTOM;
+    Object.assign(this.options, {
+      RTL: false,
+      horizontalLayout: true,
+      toolboxPosition: 'end',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 0, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_BOTTOM},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -253,12 +269,16 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('LTR Horizontal Start (no scrollbar)', function() {
-    this.options.RTL = false;
-    this.options.horizontalLayout = true;
-    this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {top: 35, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
-    this.options.scrollbar = false;
+    Object.assign(this.options, {
+      RTL: false,
+      horizontalLayout: true,
+      toolboxPosition: 'start',
+      scrollbar: false,
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 35, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_TOP},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -269,11 +289,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('RTL Vertical Start', function() {
-    this.options.RTL = true;
-    this.options.horizontalLayout = false;
-    this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_RIGHT;
+    Object.assign(this.options, {
+      RTL: true,
+      horizontalLayout: false,
+      toolboxPosition: 'start',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 0, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_RIGHT},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -284,11 +308,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('RTL Vertical End', function() {
-    this.options.RTL = true;
-    this.options.horizontalLayout = false;
-    this.options.toolboxPosition = 'end';
-    this.mockMetrics.absoluteMetrics = {top: 0, left: 107};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_LEFT;
+    Object.assign(this.options, {
+      RTL: true,
+      horizontalLayout: false,
+      toolboxPosition: 'end',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 0, left: 107},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_LEFT},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -299,11 +327,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('RTL Horizontal Start', function() {
-    this.options.RTL = true;
-    this.options.horizontalLayout = true;
-    this.options.toolboxPosition = 'start';
-    this.mockMetrics.absoluteMetrics = {top: 35, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_TOP;
+    Object.assign(this.options, {
+      RTL: true,
+      horizontalLayout: true,
+      toolboxPosition: 'start',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 35, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_TOP},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
@@ -314,11 +346,15 @@ suite('Positioning the minimap in the primary workspace', function() {
   });
 
   test('RTL Horizontal End', function() {
-    this.options.RTL = true;
-    this.options.horizontalLayout = true;
-    this.options.toolboxPosition = 'end';
-    this.mockMetrics.absoluteMetrics = {top: 0, left: 0};
-    this.mockMetrics.toolboxMetrics.position = Blockly.TOOLBOX_AT_BOTTOM;
+    Object.assign(this.options, {
+      RTL: true,
+      horizontalLayout: true,
+      toolboxPosition: 'end',
+    });
+    Object.assign(this.mockMetrics, {
+      absoluteMetrics: {top: 0, left: 0},
+      toolboxMetrics: {position: Blockly.TOOLBOX_AT_BOTTOM},
+    });
 
     const minimap = new PositionedMinimap(this.options);
     minimap.position(this.mockMetrics, []);
