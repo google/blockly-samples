@@ -267,7 +267,7 @@ suite('Positioning the minimap in the primary workspace', function() {
     minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
-    assert.equal(parseInt(position.top), 831,
+    assert.equal(Math.round(position.top), 832,
         'LTR Horizontal End: Incorrect top');
     assert.equal(position.left, 765, 'LTR Horizontal End: Incorrect left');
   });
@@ -369,7 +369,7 @@ suite('Positioning the minimap in the primary workspace', function() {
     minimap.setPosition(this.mockMetrics, []);
     const position = minimap.getBoundingRectangle();
 
-    assert.equal(parseInt(position.top), 831,
+    assert.equal(Math.round(position.top), 832,
         'RTL Horizontal End: Incorrect top');
     assert.equal(position.left, 35, 'RTL Horizontal End: Incorrect left');
   });
