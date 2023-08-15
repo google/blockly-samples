@@ -1126,16 +1126,22 @@ export class Navigation {
   }
 
   /**
-   * Pastes the coped block to the marked location.
+   * Pastes the copied block to the marked location.
+   * @param {Blockly.BlockCopyData} copyData The data
+   *     to paste into the workspace.
+   * @param {Blockly.WorkspaceSvg} workspace The workspace to paste the data
+   *     into.
    * @returns {boolean} True if the paste was sucessful, false otherwise.
    * @package
    */
-  paste() {
+  paste(copyData, workspace) {
     let isHandled = false;
     Blockly.Events.setGroup(true);
-    const block = Blockly.clipboard.paste();
+    const block = /** @type {Blockly.BlockSvg} */ (
+      Blockly.clipboard.paste(copyData, workspace)
+    );
     if (block) {
-      isHandled = this.insertPastedBlock(block.workspace, block);
+      isHandled = this.insertPastedBlock(workspace, block);
     }
     Blockly.Events.setGroup(false);
     return isHandled;
