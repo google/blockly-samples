@@ -23,6 +23,10 @@ suite('Navigation', function() {
   setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
+    // We are running these tests in node even thought they require a rendered
+    // workspace, which doesn't exactly work. The rendering system expects
+    // cancelAnimationFrame to be defined so we need to define it.
+    window.cancelAnimationFrame = function() {};
     this.controller = new NavigationController();
     this.controller.init();
     this.navigation = this.controller.navigation;
@@ -30,6 +34,7 @@ suite('Navigation', function() {
 
   teardown(function() {
     this.controller.dispose();
+    window.cancelAnimationFrame = undefined;
     this.jsdomCleanup();
   });
 

@@ -5,6 +5,7 @@
  */
 
 const sinon = require('sinon');
+const chai = require('chai');
 
 const Blockly = require('blockly/node');
 
@@ -13,88 +14,14 @@ const {createNavigationWorkspace, createKeyDownEvent} =
     require('./test_helper');
 
 suite('Shortcut Tests', function() {
-  /**
-   * Creates a test for not running keyDown events when the workspace is in read
-   * only mode.
-   * @param {string} testCaseName The name of the test case.
-   * @param {Object} keyEvent Mocked key down event. Use createKeyDownEvent.
-   */
-  function runReadOnlyTest(testCaseName, keyEvent) {
-    test(testCaseName, function() {
-      this.workspace.options.readOnly = true;
-      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-      sinon.assert.notCalled(hideChaffSpy);
-    });
-  }
-
-  /**
-   * Creates a test for not runnin a shortcut when a gesture is in progress.
-   * @param {string} testCaseName The name of the test case.
-   * @param {Object} keyEvent Mocked key down event. Use createKeyDownEvent.
-   */
-  function testGestureInProgress(testCaseName, keyEvent) {
-    test(testCaseName, function() {
-      sinon.stub(Blockly.Gesture, 'inProgress').returns(true);
-      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-      const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-      sinon.assert.notCalled(copySpy);
-      sinon.assert.notCalled(hideChaffSpy);
-    });
-  }
-
-  /**
-   * Creates a test for not running a shortcut when a the cursor is not on a
-   * block.
-   * @param {string} testCaseName The name of the test case.
-   * @param {Object} keyEvent Mocked key down event. Use createKeyDownEvent.
-   */
-  function testCursorOnShadowBlock(testCaseName, keyEvent) {
-    test(testCaseName, function() {
-      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-      const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-      sinon.assert.notCalled(copySpy);
-      sinon.assert.notCalled(hideChaffSpy);
-    });
-  }
-
-  /**
-   * Creates a test for not running a shortcut when the block is not deletable.
-   * @param {string} testCaseName The name of the test case.
-   * @param {Object} keyEvent Mocked key down event. Use createKeyDownEvent.
-   */
-  function testBlockIsNotDeletable(testCaseName, keyEvent) {
-    test(testCaseName, function() {
-      sinon.stub(this.basicBlock, 'isDeletable').returns(false);
-      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-      const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-      sinon.assert.notCalled(copySpy);
-      sinon.assert.notCalled(hideChaffSpy);
-    });
-  }
-
-  /**
-   * Creates a test for not running a shortcut when the cursor is not on a
-   * block.
-   * @param {string} testCaseName The name of the test case.
-   * @param {Object} keyEvent Mocked key down event. Use createKeyDownEvent.
-   */
-  function testCursorIsNotOnBlock(testCaseName, keyEvent) {
-    test(testCaseName, function() {
-      const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-      const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-      Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-      sinon.assert.notCalled(copySpy);
-      sinon.assert.notCalled(hideChaffSpy);
-    });
-  }
-
   setup(function() {
     this.jsdomCleanup =
         require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
+    // We are running these tests in node even thought they require a rendered
+    // workspace, which doesn't exactly work. The rendering system expects
+    // cancelAnimationFrame to be defined so we need to define it.
+    window.cancelAnimationFrame = function() {};
+
     Blockly.utils.dom.getFastTextWidthWithSizeString = function() {
       return 10;
     };
@@ -113,114 +40,14 @@ suite('Shortcut Tests', function() {
   });
 
   teardown(function() {
+    window.cancelAnimationFrame = undefined;
     this.jsdomCleanup();
     this.controller.dispose();
     delete Blockly.Blocks['basic_block'];
     this.workspace.dispose();
   });
 
-  suite('Copy', function() {
-    teardown(function() {
-      sinon.restore();
-    });
-    const testCases = [
-      [
-        'Control C',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.C, 'NotAField',
-            [Blockly.utils.KeyCodes.CTRL]),
-      ],
-      [
-        'Meta C',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.C, 'NotAField',
-            [Blockly.utils.KeyCodes.META]),
-      ],
-      [
-        'Alt C',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.C, 'NotAField',
-            [Blockly.utils.KeyCodes.ALT]),
-      ],
-    ];
-
-    // Copy a block.
-    suite('Simple', function() {
-      setup(function() {
-        const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
-        this.workspace.getCursor().setCurNode(blockNode);
-      });
-
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const hideChaffSpy = sinon.spy(this.workspace, 'hideChaff');
-          const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(copySpy);
-          sinon.assert.calledOnce(hideChaffSpy);
-        });
-      });
-    });
-
-    // Do not copy the block if the cursor is on the workspace.
-    suite('Cursor is not on a block', function() {
-      setup(function() {
-        const workspaceNode = Blockly.ASTNode.createWorkspaceNode(
-            this.workspace, new Blockly.utils.Coordinate(100, 100));
-        this.workspace.getCursor().setCurNode(workspaceNode);
-      });
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testCursorIsNotOnBlock(testCaseName, keyEvent);
-      });
-    });
-
-    // Do not copy a block if the block is a shadow block
-    suite('Cursor is on a shadow block', function() {
-      setup(function() {
-        this.basicBlock.setShadow(true);
-        const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
-        this.workspace.getCursor().setCurNode(blockNode);
-      });
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testCursorOnShadowBlock(testCaseName, keyEvent);
-      });
-    });
-
-    // Do not copy a block if a workspace is in readonly mode.
-    suite('Not called when readOnly is true', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        runReadOnlyTest(testCaseName, keyEvent);
-      });
-    });
-
-    // Do not copy a block if a gesture is in progress.
-    suite('Gesture in progress', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testGestureInProgress(testCaseName, keyEvent);
-      });
-    });
-
-    // Do not copy a block if is is not deletable.
-    suite('Block is not deletable', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testBlockIsNotDeletable(testCaseName, keyEvent);
-      });
-    });
-  });
-
-  suite('Delete Block', function() {
+  suite('Deleting blocks', function() {
     setup(function() {
       const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
       this.workspace.getCursor().setCurNode(blockNode);
@@ -231,185 +58,379 @@ suite('Shortcut Tests', function() {
     });
 
     const testCases = [
-      [
-        'Delete',
-        createKeyDownEvent(Blockly.utils.KeyCodes.DELETE, 'NotAField'),
-      ],
-      [
-        'Backspace',
-        createKeyDownEvent(Blockly.utils.KeyCodes.BACKSPACE, 'NotAField'),
-      ],
+      {
+        name: 'Delete',
+        deleteEvent:
+            createKeyDownEvent(Blockly.utils.KeyCodes.DELETE, 'NotAField'),
+      },
+      {
+        name: 'Backspace',
+        deleteEvent:
+            createKeyDownEvent(Blockly.utils.KeyCodes.BACKSPACE, 'NotAField'),
+      },
     ];
-    // Delete a block.
-    suite('Simple', function() {
+
+    suite('delete keybinds trigger deletion', function() {
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
-          const moveCursorSpy =
-              sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(moveCursorSpy);
-          sinon.assert.calledOnce(deleteSpy);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.deleteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              0,
+              'Expected the block to be deleted.');
         });
       });
     });
-    // Do not delete a block if workspace is in readOnly mode.
-    suite('Not called when readOnly is true', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        runReadOnlyTest(testCaseName, keyEvent);
-      });
-    });
+
+    suite(
+        'delete keybinds do not trigger deletion if workspace is readonly',
+        function() {
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              this.workspace.options.readOnly = true;
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.deleteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be deleted.');
+            });
+          });
+        });
   });
 
-  suite('Cut', function() {
-    const testCases = [
-      [
-        'Control X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.X, 'NotAField',
-            [Blockly.utils.KeyCodes.CTRL]),
-      ],
-      [
-        'Meta X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.X, 'NotAField',
-            [Blockly.utils.KeyCodes.META]),
-      ],
-      [
-        'Alt X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.X, 'NotAField',
-            [Blockly.utils.KeyCodes.ALT]),
-      ],
-    ];
-
+  suite('Copy and paste', function() {
     teardown(function() {
       sinon.restore();
     });
+    const testCases = [
+      {
+        name: 'Control',
+        copyEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.C, 'NotAField',
+            [Blockly.utils.KeyCodes.CTRL]),
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.CTRL]),
+      },
+      {
+        name: 'Meta',
+        copyEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.C, 'NotAField',
+            [Blockly.utils.KeyCodes.META]),
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.META]),
+      },
+      {
+        name: 'Alt',
+        copyEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.C, 'NotAField',
+            [Blockly.utils.KeyCodes.ALT]),
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.ALT]),
+      },
+    ];
 
-    // Cut block.
-    suite('Cursor is not on a block', function() {
+    suite('copy and paste keybinds duplicate blocks', function() {
       setup(function() {
         const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
         this.workspace.getCursor().setCurNode(blockNode);
       });
+
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const deleteSpy = sinon.spy(this.basicBlock, 'checkAndDelete');
-          const copySpy = sinon.spy(Blockly.clipboard, 'copy');
-          const moveCursorSpy =
-              sinon.spy(this.navigation, 'moveCursorOnBlockDelete');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(copySpy);
-          sinon.assert.calledOnce(deleteSpy);
-          sinon.assert.calledOnce(moveCursorSpy);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.copyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              2,
+              'Expected the block to be duplicated.');
         });
       });
     });
 
-    // Do not copy the block if the cursor is on the workspace.
-    suite('Cursor is not on a block', function() {
+    suite(
+        'copy and paste does nothing if the cursor is not on a block',
+        function() {
+          setup(function() {
+            const workspaceNode = Blockly.ASTNode.createWorkspaceNode(
+                this.workspace, new Blockly.utils.Coordinate(100, 100));
+            this.workspace.getCursor().setCurNode(workspaceNode);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.copyEvent);
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
+
+    suite(
+        'copy and paste do nothing if the cursor is on a shadow block',
+        function() {
+          setup(function() {
+            this.basicBlock.setShadow(true);
+            const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
+            this.workspace.getCursor().setCurNode(blockNode);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.copyEvent);
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
+
+    suite('copy and paste do nothing if the workspace is readonly', function() {
       setup(function() {
-        const workspaceNode = Blockly.ASTNode.createWorkspaceNode(
-            this.workspace, new Blockly.utils.Coordinate(100, 100));
-        this.workspace.getCursor().setCurNode(workspaceNode);
+        this.workspace.options.readonly = true;
       });
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testCursorIsNotOnBlock(testCaseName, keyEvent);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.copyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be duplicated.');
+        });
       });
     });
 
-    // Do not copy a block if the block is a shadow block
-    suite('Cursor is on a shadow block', function() {
+    suite('copy and paste do nothing if a gesture is in progress', function() {
       setup(function() {
-        this.basicBlock.setShadow(true);
-        const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
-        this.workspace.getCursor().setCurNode(blockNode);
+        sinon.stub(Blockly.Gesture, 'inProgress').returns(true);
       });
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testCursorOnShadowBlock(testCaseName, keyEvent);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.copyEvent);
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be duplicated.');
+        });
       });
     });
 
-    // Do not copy a block if a workspace is in readonly mode.
-    suite('Not called when readOnly is true', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        runReadOnlyTest(testCaseName, keyEvent);
-      });
-    });
-
-    // Do not copy a block if a gesture is in progress.
-    suite('Gesture in progress', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testGestureInProgress(testCaseName, keyEvent);
-      });
-    });
-
-    // Do not copy a block if is is not deletable.
-    suite('Block is not deletable', function() {
-      testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        testBlockIsNotDeletable(testCaseName, keyEvent);
-      });
-    });
+    suite(
+        'copy and paste do nothing if the block is not deletable',
+        function() {
+          setup(function() {
+            this.basicBlock.setDeletable(false);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.copyEvent);
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
   });
 
-  suite('Paste', function() {
-    const testCases = [
-      [
-        'Control X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.V, 'NotAField',
-            [Blockly.utils.KeyCodes.CTRL]),
-      ],
-      [
-        'Meta X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.V, 'NotAField',
-            [Blockly.utils.KeyCodes.META]),
-      ],
-      [
-        'Alt X',
-        createKeyDownEvent(
-            Blockly.utils.KeyCodes.V, 'NotAField',
-            [Blockly.utils.KeyCodes.ALT]),
-      ],
-    ];
-
+  suite('Cut and paste', function() {
     teardown(function() {
       sinon.restore();
     });
+    const testCases = [
+      {
+        name: 'Control',
+        cutEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.X, 'NotAField',
+            [Blockly.utils.KeyCodes.CTRL]),
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.CTRL]),
+      },
+      {
+        name: 'Meta',
+        cutEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.X, 'NotAField',
+            [Blockly.utils.KeyCodes.META]),
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.META]),
+      },
+      {
+        name: 'Alt',
+        cutEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.X, 'NotAField',
+            [Blockly.utils.KeyCodes.ALT]),
+        pasteEvent: createKeyDownEvent(
+            Blockly.utils.KeyCodes.V, 'NotAField',
+            [Blockly.utils.KeyCodes.ALT]),
+      },
+    ];
 
-    // Paste block.
-    suite('Simple', function() {
+    suite('cut and paste keybinds duplicate blocks', function() {
       setup(function() {
         const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
         this.workspace.getCursor().setCurNode(blockNode);
       });
+
       testCases.forEach(function(testCase) {
-        const testCaseName = testCase[0];
-        const keyEvent = testCase[1];
-        test(testCaseName, function() {
-          const pasteSpy = sinon.stub(this.navigation, 'paste');
-          Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, keyEvent);
-          sinon.assert.calledOnce(pasteSpy);
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.cutEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              0,
+              'Expected the block to be deleted.');
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to be duplicated.');
         });
       });
     });
+
+    suite(
+        'cut and paste does nothing if the cursor is not on a block',
+        function() {
+          setup(function() {
+            const workspaceNode = Blockly.ASTNode.createWorkspaceNode(
+                this.workspace, new Blockly.utils.Coordinate(100, 100));
+            this.workspace.getCursor().setCurNode(workspaceNode);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.cutEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be deleted.');
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
+
+    suite(
+        'cut and paste do nothing if the cursor is on a shadow block',
+        function() {
+          setup(function() {
+            this.basicBlock.setShadow(true);
+            const blockNode = Blockly.ASTNode.createBlockNode(this.basicBlock);
+            this.workspace.getCursor().setCurNode(blockNode);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.cutEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be deleted.');
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
+
+    suite('cut and paste do nothing if the workspace is readonly', function() {
+      setup(function() {
+        this.workspace.options.readonly = true;
+      });
+      testCases.forEach(function(testCase) {
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.cutEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be deleted.');
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be duplicated.');
+        });
+      });
+    });
+
+    suite('cut and paste do nothing if a gesture is in progress', function() {
+      setup(function() {
+        sinon.stub(Blockly.Gesture, 'inProgress').returns(true);
+      });
+      testCases.forEach(function(testCase) {
+        test(testCase.name, function() {
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.cutEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be deleted.');
+          Blockly.ShortcutRegistry.registry.onKeyDown(
+              this.workspace, testCase.pasteEvent);
+          chai.assert.equal(
+              this.workspace.getTopBlocks().length,
+              1,
+              'Expected the block to not be duplicated.');
+        });
+      });
+    });
+
+    suite(
+        'cut and paste do nothing if the block is not deletable',
+        function() {
+          setup(function() {
+            this.basicBlock.setDeletable(false);
+          });
+          testCases.forEach(function(testCase) {
+            test(testCase.name, function() {
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.cutEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be deleted.');
+              Blockly.ShortcutRegistry.registry.onKeyDown(
+                  this.workspace, testCase.pasteEvent);
+              chai.assert.equal(
+                  this.workspace.getTopBlocks().length,
+                  1,
+                  'Expected the block to not be duplicated.');
+            });
+          });
+        });
   });
 });
