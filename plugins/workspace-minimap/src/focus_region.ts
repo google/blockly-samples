@@ -89,9 +89,6 @@ export class FocusRegion {
             'fill': 'black',
           }, mask);
 
-      // Theme.
-      this.background.setAttribute('fill', '#e6e6e6');
-
       // Add the svg group to the minimap.
       const parentSvg = this.minimapWorkspace.getParentSvg();
       if (parentSvg.firstChild) {
@@ -190,3 +187,9 @@ export class FocusRegion {
       return this.initialized;
     }
 }
+
+Blockly.Css.register(`
+.focusRegion {
+  fill: #e6e6e6;
+}
+`);
