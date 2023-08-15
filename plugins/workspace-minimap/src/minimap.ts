@@ -102,6 +102,7 @@ export class Minimap {
       this.enableFocusRegion();
     }
 
+
     /**
      * Disposes the minimap.
      * Unlinks from all DOM elements and remove all event listeners
