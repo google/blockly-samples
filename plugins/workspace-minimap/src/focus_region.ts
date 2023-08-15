@@ -51,7 +51,7 @@ export class FocusRegion {
     init() {
       // Make the svg group element.
       this.svgGroup = Blockly.utils.dom.createSvgElement(
-          Blockly.utils.Svg.G, {'class': 'focusRegion'}, null);
+          Blockly.utils.Svg.G, {'class': 'blockly-focus-region'}, null);
 
       // Make the mask under the svg group.
       const mask = Blockly.utils.dom.createSvgElement(
@@ -88,9 +88,6 @@ export class FocusRegion {
             'ry': borderRadius,
             'fill': 'black',
           }, mask);
-
-      // Theme.
-      this.background.setAttribute('fill', '#e6e6e6');
 
       // Add the svg group to the minimap.
       const parentSvg = this.minimapWorkspace.getParentSvg();
@@ -190,3 +187,9 @@ export class FocusRegion {
       return this.initialized;
     }
 }
+
+Blockly.Css.register(`
+.blockly-focus-region {
+  fill: #e6e6e6;
+}
+`);

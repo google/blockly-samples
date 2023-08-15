@@ -53,7 +53,7 @@ export class Minimap {
       // Create a wrapper div for the minimap injection.
       this.minimapWrapper = document.createElement('div');
       this.minimapWrapper.id = 'minimapWrapper' + this.primaryWorkspace.id;
-      this.minimapWrapper.className = 'minimapWrapper';
+      this.minimapWrapper.className = 'blockly-minimap';
 
       // Make the wrapper a sibling to the primary injection div.
       const primaryInjectParentDiv =
@@ -101,6 +101,7 @@ export class Minimap {
           this.primaryWorkspace, this.minimapWorkspace);
       this.enableFocusRegion();
     }
+
 
     /**
      * Disposes the minimap.
