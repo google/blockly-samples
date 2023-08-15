@@ -74,8 +74,31 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
      */
     position(metrics: Blockly.MetricsManager.UiMetrics,
         savedPositions: Blockly.utils.Rect[]): void {
-      this.resize();
+      this.setSize();
+      this.setPosition(metrics, savedPositions);
+      this.setAttributes();
+    }
 
+
+    /**
+     * Sizes the minimap.
+     * @internal
+     */
+    setSize(): void {
+      const viewWidth = this.primaryWorkspace.getMetrics().viewWidth;
+      this.width = Math.max(minWidth, viewWidth / 5);
+      this.height = this.width * 2 / 3;
+    }
+
+
+    /**
+     * Calculates the position of the minimap over the primary workspace.
+     * @param metrics The workspace metrics.
+     * @param savedPositions List of rectangles already on the workspace.
+     * @internal
+     */
+    setPosition(metrics: Blockly.MetricsManager.UiMetrics,
+        savedPositions: Blockly.utils.Rect[]): void {
       // Aliases.
       const workspace = this.primaryWorkspace;
       const scrollbars = workspace.scrollbar;
@@ -130,26 +153,13 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
           i = -1;
         }
       }
-
-      // Update the Css.
-      this.setMinimapCss();
     }
 
 
     /**
-     * Sizes the minimap.
+     * Sets the CSS attribute for the minimap.
      */
-    resize(): void {
-      const viewWidth = this.primaryWorkspace.getMetrics().viewWidth;
-      this.width = Math.max(minWidth, viewWidth / 5);
-      this.height = this.width * 2 / 3;
-    }
-
-
-    /**
-     * Updates the CSS attribute for the minimap.
-     */
-    private setMinimapCss(): void {
+    private setAttributes(): void {
       const injectDiv = this.minimapWorkspace.getInjectionDiv();
       // TODO: Styling properties will be added later this is a placeholder.
       injectDiv.parentElement.setAttribute('style',
