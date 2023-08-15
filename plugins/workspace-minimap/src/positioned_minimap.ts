@@ -174,7 +174,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
 
 
 Blockly.Css.register(`
-.minimap {
+.blockly-minimap {
   box-shadow: 2px 2px 10px grey;
 }
 `);
