@@ -76,6 +76,7 @@ suite('Procedures', function() {
         .callsFake((callback) => {
           callback();
         });
+    window.cancelAnimationFrame = this.sandbox.stub();
   });
 
   teardown(function() {
