@@ -5,7 +5,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {convertBlockToSaveInfo} from './utility';
 
 
 /**
@@ -75,9 +74,8 @@ export class CrossTabCopyPaste {
       },
       callback: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-        const blockText = JSON.stringify(
-            convertBlockToSaveInfo(scope.block));
-        localStorage.setItem('blocklyStash', blockText);
+        localStorage.setItem(
+            'blocklyStash', JSON.stringify(scope.block.toCopyData()));
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
       id: 'blockCopyToStorage',
@@ -111,10 +109,9 @@ export class CrossTabCopyPaste {
       },
       callback: function(
           /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-        const blockText = localStorage.getItem('blocklyStash');
-        const saveInfo = JSON.parse(blockText);
+        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
         try {
-          scope.workspace.paste(saveInfo['saveInfo']);
+          Blockly.clipboard.paste(copyData, scope.workspace);
         } catch (e) {
           if (e instanceof TypeError && typeErrorCallback) {
             typeErrorCallback();
@@ -151,10 +148,11 @@ export class CrossTabCopyPaste {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
+        const block = Blockly.getSelected();
+        if (!block || !Blockly.isCopyable(block)) return false;
         workspace.hideChaff();
-        const blockText = JSON.stringify(
-            convertBlockToSaveInfo(Blockly.getSelected()));
-        localStorage.setItem('blocklyStash', blockText);
+        localStorage.setItem(
+            'blocklyStash', JSON.stringify(block.toCopyData()));
         return true;
       },
     };
@@ -195,11 +193,12 @@ export class CrossTabCopyPaste {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const blockText = JSON.stringify(
-            convertBlockToSaveInfo(Blockly.getSelected()));
-        localStorage.setItem('blocklyStash', blockText);
+        const block = /** @type {Blockly.BlockSvg} */ (Blockly.getSelected());
+        if (!block || !Blockly.isCopyable(block)) return false;
+        localStorage.setItem(
+            'blocklyStash', JSON.stringify(block.toCopyData()));
         Blockly.Events.setGroup(true);
-        Blockly.getSelected().dispose(true);
+        block.dispose(true);
         Blockly.Events.setGroup(false);
         return true;
       },
@@ -243,10 +242,9 @@ export class CrossTabCopyPaste {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const blockText = localStorage.getItem('blocklyStash');
-        const saveInfo = JSON.parse(blockText);
+        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
         try {
-          workspace.paste(saveInfo['saveInfo']);
+          Blockly.clipboard.paste(copyData, workspace);
         } catch (e) {
           if (e instanceof TypeError && typeErrorCallback) {
             typeErrorCallback();
