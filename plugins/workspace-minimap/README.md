@@ -1,6 +1,9 @@
 # @blockly/workspace-minimap [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that adds a minimap to the workspace. A minimap is a miniature version of your blocks that appears on top of your main workspace. This gives you an overview of what your code looks like, and how it is organized.
+There is a focus region within the minimap that highlights the users's current viewport; this is on by default.
+
+![Minimap example](/workspace-minimap/readme-media/sample_minimap.png)
 
 ## Installation
 
@@ -16,7 +19,7 @@ npm install @blockly/workspace-minimap --save
 
 ## Usage
 ### Positioned Minimap
-A positioned minimap is an embedded component that lies on top of the primary workspace.
+A positioned minimap is an embedded component that lies on top of the primary workspace.When using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. 
 
 ```js
 import * as Blockly from 'blockly';
@@ -61,14 +64,12 @@ minimap.init();
 ```
 
 ### Configuration
-The minimap takes a workspace as input and it inherits all of its properites (RTL, Theme, etc.).
+The minimap takes a workspace as input and it inherits its RTL and theme properties (so that they don't need ot be configured manually).
 Additional styling of the minimap is possible with CSS. Use the `blockly-minimap` class for the minimap (box-shadow, etc.) and `blockly-focus-region` for the focus region (fill color, etc.).
-
-It is worth noting that when using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. 
 
 ## API
 - `init`: Initializes the minimap.
-- `dispose`: Disposes of minimap.
+- `dispose`: Disposes of the minimap.
 
 - `isFocusEnabled`: Returns whether the focus region is enabled.
 - `enableFocusRegion`: Turns on the focus region in the minimap.
