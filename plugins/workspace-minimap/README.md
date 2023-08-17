@@ -64,7 +64,7 @@ minimap.init();
 ```
 
 ### Configuration
-The minimap takes a workspace as input and it inherits its RTL and theme properties (so that they don't need ot be configured manually).
+The minimap takes a workspace as input and it inherits its RTL and theme properties (so that they don't need to be configured manually).
 Additional styling of the minimap is possible with CSS. Use the `blockly-minimap` class for the minimap (box-shadow, etc.) and `blockly-focus-region` for the focus region (fill color, etc.).
 
 ## API
