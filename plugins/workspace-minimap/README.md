@@ -19,7 +19,7 @@ npm install @blockly/workspace-minimap --save
 
 ## Usage
 ### Positioned Minimap
-A positioned minimap is an embedded component that lies on top of the primary workspace.When using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. 
+A positioned minimap is an embedded component that lies on top of the primary workspace. When using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. 
 
 ```js
 import * as Blockly from 'blockly';
