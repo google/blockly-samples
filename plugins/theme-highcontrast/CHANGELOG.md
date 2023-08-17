@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/google/blockly-samples/compare/@blockly/theme-highcontrast@5.0.0...@blockly/theme-highcontrast@5.0.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* Show all blocks in theme demo toolboxes. ([#1846](https://github.com/google/blockly-samples/issues/1846)) ([46dce3f](https://github.com/google/blockly-samples/commit/46dce3f6031c7bb906e992767c17951a91dd1f6d))
+
+
+
 ## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/theme-highcontrast@4.0.0...@blockly/theme-highcontrast@5.0.0) (2023-07-20)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.1.3...@blockly/toolbox-search@1.1.4) (2023-08-17)
+
+**Note:** Version bump only for package @blockly/toolbox-search
+
+
+
+
+
 ## [1.1.3](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.1.2...@blockly/toolbox-search@1.1.3) (2023-07-24)
 
 **Note:** Version bump only for package @blockly/toolbox-search
