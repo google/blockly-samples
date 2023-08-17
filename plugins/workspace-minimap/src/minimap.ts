@@ -132,10 +132,12 @@ export class Minimap {
      * @param event The primary workspace event.
      */
     private mirror(event: Blockly.Events.Abstract): void {
-      // TODO: shadow blocks get mirrored too (not supposed to happen)
-
       if (!blockEvents.has(event.type)) {
         return; // Filter out events.
+      }
+      if (event.type === Blockly.Events.BLOCK_CREATE &&
+        (event as any).xml.tagName === 'shadow') {
+        return; // Filter out shadow blocks.
       }
       // Run the event in the minimap.
       const json = event.toJson();
