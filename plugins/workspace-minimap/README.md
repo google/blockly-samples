@@ -33,7 +33,7 @@ minimap.init();
 ```
 
 ### Unpositioned Minimap
-A raw minimap is an embedded component in the primary workspace that lays on top of the workspace.
+A raw minimap is an object whose size and position is configured using css.
 
 ```js
 import * as Blockly from 'blockly';
@@ -45,26 +45,39 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 // Initialize plugin.
-const minimap = new PositionedMinimap(workspace);
+const minimap = new Minimap(workspace);
 minimap.init();
 ```
 
+```css
+.blockly-minimap {
+  position: absolute;
+  box-shadow: none;
+  width: 200px;
+  height: 150px;
+  top: 0px;
+  left: 50vw;
+}
+```
+
 ### Configuration
-This plugin takes an optional configuration object...
+The minimap takes a workspace as input and it inherits all of its properites (RTL, Theme, etc.).
+Additional styling of the minimap is possible with CSS. Use the `blockly-minimap` class for the minimap (box-shadow, etc.) and `blockly-focus-region` for the focus region (fill color, etc.).
+
+It is worth noting that when using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. 
 
 ## API
-
-API description coming soon...
 - `init`: Initializes the minimap.
 - `dispose`: Disposes of minimap.
-
-- `position`: Positions the minimap UI element.
-- `getBoundingRectangle`: Returns the bounding rectangle of the UI element in
-pixel units relative to the Blockly injection div.
 
 - `isFocusEnabled`: Returns whether the focus region is enabled.
 - `enableFocusRegion`: Turns on the focus region in the minimap.
 - `disableFocusRegion`: Turns off the focus region in the minimap.
+
+The following methods are also accessible with PositionedMinimap instances.
+- `position`: Positions the minimap UI element.
+- `getBoundingRectangle`: Returns the bounding rectangle of the UI element in
+pixel units relative to the Blockly injection div.
 
 ## License
 Apache 2.0
