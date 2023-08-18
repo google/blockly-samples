@@ -115,7 +115,6 @@ module.exports = {
 
         // typescript-eslint specific options
         warnOnUnsupportedTypeScriptVersion: true,
-        project: ["tsconfig.json"],
       },
       plugins: ['@typescript-eslint'],
       settings: {
