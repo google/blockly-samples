@@ -8,7 +8,7 @@
  * @fileoverview UI control for zoom-to-fit.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * Class for zoom to fit control.
@@ -17,85 +17,60 @@ import Blockly from 'blockly/core';
  * @constructor
  */
 export class ZoomToFitControl {
+  
+  /**
+   * The unique id for this component.
+   */
+  id = 'zoomToFit';
+  
+  /**
+   * The SVG group containing the zoom-to-fit control.
+   */
+  private svgGroup_: SVGElement|null = null;
+  
+  /**
+   * Left coordinate of the zoom-to-fit control.
+   */
+  private left_ = 0;
+  
+  /**
+   * Top coordinate of the zoom-to-fit control.
+   */
+  private top_ = 0;
+  
+  /**
+   * Width of the zoom-to-fit control.
+   */
+  private readonly WIDTH_ = 32;
+  
+  /**
+   * Height of the zoom-to-fit control.
+   */
+  private readonly HEIGHT_ = 32;
+  
+  /**
+   * Distance between zoom-to-fit control and bottom or top edge of workspace.
+   */
+  private readonly MARGIN_VERTICAL_ = 20;
+  
+  /**
+   * Distance between zoom-to-fit control and right or left edge of workspace.
+   */
+  private readonly MARGIN_HORIZONTAL_ = 20;
+  
+  /**
+   * Whether this has been initialized.
+   */
+  private initialized_ = false;
+  
+  private onZoomToFitWrapper_: Blockly.browserEvents.Data|null = null;
+
   /**
    * Constructor for zoom-to-fit control.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace that the zoom-to-fit
    *     control will be added to.
    */
-  constructor(workspace) {
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
-    this.workspace_ = workspace;
-
-    /**
-     * The unique id for this component.
-     * @type {string}
-     */
-    this.id = 'zoomToFit';
-
-    /**
-     * The SVG group containing the zoom-to-fit control.
-     * @type {SVGElement}
-     * @private
-     */
-    this.svgGroup_ = null;
-
-    /**
-     * Left coordinate of the zoom-to-fit control.
-     * @type {number}
-     * @private
-     */
-    this.left_ = 0;
-
-    /**
-     * Top coordinate of the zoom-to-fit control.
-     * @type {number}
-     * @private
-     */
-    this.top_ = 0;
-
-    /**
-     * Width of the zoom-to-fit control.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.WIDTH_ = 32;
-
-    /**
-     * Height of the zoom-to-fit control.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.HEIGHT_ = 32;
-
-    /**
-     * Distance between zoom-to-fit control and bottom or top edge of workspace.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.MARGIN_VERTICAL_ = 20;
-
-    /**
-     * Distance between zoom-to-fit control and right or left edge of workspace.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.MARGIN_HORIZONTAL_ = 20;
-
-    /**
-     * Whether this has been initialized.
-     * @type {boolean}
-     * @private
-     */
-    this.initialized_ = false;
-  }
+  constructor(protected workspace_: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the zoom reset control.
