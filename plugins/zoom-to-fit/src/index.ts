@@ -99,8 +99,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   private createDom() {
     this.svgGroup = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.IMAGE, {
-          'height': this.HEIGHT + 'px',
-          'width': this.WIDTH + 'px',
+          'height': `${this.HEIGHT}px`,
+          'width': `${this.WIDTH}px`,
           'class': 'zoomToFit',
         });
     this.svgGroup.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
@@ -200,12 +200,12 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     }
 
     this.svgGroup.setAttribute('transform',
-        'translate(' + this.left + ',' + this.top + ')');
+        `translate(${this.left}, ${this.top})`);
   }
 }
 
 /**
- * Base64 encoded data uri for zoom to fit  icon.
+ * Base64 encoded data uri for zoom to fit icon.
  */
 const ZOOM_TO_FIT_SVG_DATAURI =
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
