@@ -423,7 +423,7 @@ export class Backpack extends Blockly.DragTarget implements
     const json = Blockly.serialization.blocks.save(block);
 
     // Add a 'kind' key so the flyout can recognize it as a block.
-    json.kind = 'BLOCK';
+    (json as any).kind = 'BLOCK';
 
     // The keys to remove.
     const keys = ['id', 'height', 'width', 'pinned', 'enabled'];
