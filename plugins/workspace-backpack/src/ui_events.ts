@@ -13,7 +13,6 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Name of event that records a backpack open.
- * @const
  */
 export const BACKPACK_OPEN = 'backpack_open';
 
@@ -22,35 +21,26 @@ export const BACKPACK_OPEN = 'backpack_open';
  */
 export class BackpackOpen extends Blockly.Events.UiBase {
   /**
-   * Class for a backpack open event.
-   * @param {boolean=} isOpen Whether the backpack flyout is opening (false
-   *    if closing). Undefined for a blank event.
-   * @param {string=} workspaceId The workspace identifier for this event.
-   *    Undefined for a blank event.
-   * @extends {Blockly.Events.UiBase}
-   * @constructor
+   * Type of this event.
    */
-  constructor(isOpen, workspaceId) {
+  type = BACKPACK_OPEN;
+
+  /**
+   * Class for a backpack open event.
+   * @param isOpen Whether the backpack flyout is opening (false
+   *    if closing). Undefined for a blank event.
+   * @param workspaceId The workspace identifier for this event.
+   *    Undefined for a blank event.
+   */
+  constructor(public isOpen?: boolean, workspaceId?: string) {
     super(workspaceId);
-
-    /**
-     * Whether the backpack flyout is opening (false if closing).
-     * @type {boolean|undefined}
-     */
-    this.isOpen = isOpen;
-
-    /**
-     * Type of this event.
-     * @type {string}
-     */
-    this.type = BACKPACK_OPEN;
   }
 
   /**
    * Encode the event as JSON.
-   * @returns {!Object} JSON representation.
+   * @returns JSON representation.
    */
-  toJson() {
+  override toJson(): BackpackOpenEventJson {
     const json = super.toJson();
     json['isOpen'] = this.isOpen;
     return json;
@@ -58,20 +48,26 @@ export class BackpackOpen extends Blockly.Events.UiBase {
 
   /**
    * Decode the JSON event.
-   * @param {!Object} json JSON representation.
+   * @param json JSON representation.
    */
-  fromJson(json) {
-    super.fromJson(json);
-    this.isOpen = json['isOpen'];
+  static fromJson(
+      json: BackpackOpenEventJson, workspace: Blockly.Workspace, event: any) {
+    const newEvent = super.fromJson(json, workspace, event) as BackpackOpen;
+    newEvent.isOpen = json['isOpen'];
+    return newEvent;
   }
 }
 
-Blockly.registry.register(Blockly.registry.Type.EVENT, BACKPACK_OPEN,
-    BackpackOpen);
+export interface BackpackOpenEventJson extends
+    Blockly.Events.AbstractEventJson {
+  isOpen?: boolean;
+}
+
+Blockly.registry.register(
+    Blockly.registry.Type.EVENT, BACKPACK_OPEN, BackpackOpen);
 
 /**
  * Name of event that records a backpack change.
- * @const
  */
 export const BACKPACK_CHANGE = 'backpack_change';
 
@@ -80,22 +76,10 @@ export const BACKPACK_CHANGE = 'backpack_change';
  */
 export class BackpackChange extends Blockly.Events.UiBase {
   /**
-   * Class for a backpack change event.
-   * @param {string=} workspaceId The workspace identifier for this event.
-   *    Undefined for a blank event.
-   * @extends {Blockly.Events.UiBase}
-   * @constructor
+   * Type of this event.
    */
-  constructor(workspaceId) {
-    super(workspaceId);
-
-    /**
-     * Type of this event.
-     * @type {string}
-     */
-    this.type = BACKPACK_CHANGE;
-  }
+  type = BACKPACK_CHANGE;
 }
 
-Blockly.registry.register(Blockly.registry.Type.EVENT, BACKPACK_CHANGE,
-    BackpackChange);
+Blockly.registry.register(
+    Blockly.registry.Type.EVENT, BACKPACK_CHANGE, BackpackChange);
