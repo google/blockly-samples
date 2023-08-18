@@ -60,7 +60,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 
   /**
    * Constructor for zoom-to-fit control.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the zoom-to-fit
+   * @param workspace The workspace that the zoom-to-fit
    *     control will be added to.
    */
   constructor(protected workspace_: Blockly.WorkspaceSvg) {}
@@ -206,7 +206,6 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 
 /**
  * Base64 encoded data uri for zoom to fit  icon.
- * @type {string}
  */
 const ZOOM_TO_FIT_SVG_DATAURI =
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
