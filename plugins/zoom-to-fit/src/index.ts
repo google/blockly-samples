@@ -95,9 +95,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 
   /**
    * Creates DOM for ui element.
-   * @private
    */
-  createDom_() {
+  private createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.IMAGE, {
           'height': this.HEIGHT_ + 'px',
@@ -117,9 +116,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 
   /**
    * Handle click event.
-   * @private
    */
-  onClick_() {
+  private onClick_() {
     this.workspace_.zoomToFit();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
         null, this.workspace_.id, 'zoom_reset_control');
