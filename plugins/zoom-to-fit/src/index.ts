@@ -4,19 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * @fileoverview UI control for zoom-to-fit.
- */
-
 import * as Blockly from 'blockly/core';
 
 /**
  * Class for zoom to fit control.
- * @param {!Blockly.WorkspaceSvg} workspace The workspace to sit in.
- * @implements {Blockly.IPositionable}
- * @constructor
  */
-export class ZoomToFitControl {
+export class ZoomToFitControl implements Blockly.IPositionable {
   
   /**
    * The unique id for this component.
