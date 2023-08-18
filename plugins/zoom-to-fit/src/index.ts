@@ -10,52 +10,51 @@ import * as Blockly from 'blockly/core';
  * Class for zoom to fit control.
  */
 export class ZoomToFitControl implements Blockly.IPositionable {
-  
   /**
    * The unique id for this component.
    */
   id = 'zoomToFit';
-  
+
   /**
    * The SVG group containing the zoom-to-fit control.
    */
   private svgGroup: SVGElement|null = null;
-  
+
   /**
    * Left coordinate of the zoom-to-fit control.
    */
   private left = 0;
-  
+
   /**
    * Top coordinate of the zoom-to-fit control.
    */
   private top = 0;
-  
+
   /**
    * width of the zoom-to-fit control.
    */
   private readonly width = 32;
-  
+
   /**
    * height of the zoom-to-fit control.
    */
   private readonly height = 32;
-  
+
   /**
    * Distance between zoom-to-fit control and bottom or top edge of workspace.
    */
   private readonly marginVertical = 20;
-  
+
   /**
    * Distance between zoom-to-fit control and right or left edge of workspace.
    */
   private readonly marginHorizontal = 20;
-  
+
   /**
    * Whether this has been initialized.
    */
   private initialized = false;
-  
+
   private onZoomToFitWrapper: Blockly.browserEvents.Data|null = null;
 
   /**
@@ -97,8 +96,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * Creates DOM for ui element.
    */
   private createDom() {
-    this.svgGroup = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.IMAGE, {
+    this.svgGroup =
+        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.IMAGE, {
           'height': `${this.height}px`,
           'width': `${this.width}px`,
           'class': 'zoomToFit',
@@ -106,8 +105,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     this.svgGroup.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
         zoomToFitSvgDataUri);
 
-    Blockly.utils.dom.insertAfter(
-        this.svgGroup, this.workspace.getBubbleCanvas());
+    Blockly.utils.dom.insertAfter(this.svgGroup,
+        this.workspace.getBubbleCanvas());
 
     // Attach listener.
     this.onZoomToFitWrapper = Blockly.browserEvents.conditionalBind(
@@ -124,16 +123,14 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     Blockly.Events.fire(uiEvent);
   }
 
-
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
    * @returns The component’s bounding box.
    */
   getBoundingRectangle(): Blockly.utils.Rect {
-    return new Blockly.utils.Rect(
-        this.top, this.top + this.height,
-        this.left, this.left + this.width);
+    return new Blockly.utils.Rect(this.top, this.top + this.height, this.left,
+        this.left + this.width);
   }
 
   /**
@@ -144,20 +141,23 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * @param savedPositions List of rectangles that
    *     are already on the workspace.
    */
-  position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Blockly.utils.Rect[]) {
+  position(metrics: Blockly.MetricsManager.UiMetrics,
+      savedPositions: Blockly.utils.Rect[]) {
     if (!this.initialized) {
       return;
     }
-    const hasVerticalScrollbars = this.workspace.scrollbar &&
+    const hasVerticalScrollbars =
+        this.workspace.scrollbar &&
         this.workspace.scrollbar.canScrollHorizontally();
-    const hasHorizontalScrollbars = this.workspace.scrollbar &&
+    const hasHorizontalScrollbars =
+        this.workspace.scrollbar &&
         this.workspace.scrollbar.canScrollVertically();
 
     if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
         (this.workspace.horizontalLayout && !this.workspace.RTL)) {
       // Right corner placement.
       this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.width - this.marginHorizontal;
+                  this.width - this.marginHorizontal;
       if (hasVerticalScrollbars && !this.workspace.RTL) {
         this.left -= Blockly.Scrollbar.scrollbarThickness;
       }
@@ -174,7 +174,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     if (startAtBottom) {
       // Bottom corner placement
       this.top = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-          this.height - this.marginVertical;
+                 this.height - this.marginVertical;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
         this.top -= Blockly.Scrollbar.scrollbarThickness;
