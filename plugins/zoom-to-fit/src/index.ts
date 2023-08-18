@@ -32,24 +32,24 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   private top = 0;
   
   /**
-   * Width of the zoom-to-fit control.
+   * width of the zoom-to-fit control.
    */
-  private readonly WIDTH = 32;
+  private readonly width = 32;
   
   /**
-   * Height of the zoom-to-fit control.
+   * height of the zoom-to-fit control.
    */
-  private readonly HEIGHT = 32;
+  private readonly height = 32;
   
   /**
    * Distance between zoom-to-fit control and bottom or top edge of workspace.
    */
-  private readonly MARGIN_VERTICAL = 20;
+  private readonly marginVertical = 20;
   
   /**
    * Distance between zoom-to-fit control and right or left edge of workspace.
    */
-  private readonly MARGIN_HORIZONTAL = 20;
+  private readonly marginHorizontal = 20;
   
   /**
    * Whether this has been initialized.
@@ -99,12 +99,12 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   private createDom() {
     this.svgGroup = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.IMAGE, {
-          'height': `${this.HEIGHT}px`,
-          'width': `${this.WIDTH}px`,
+          'height': `${this.height}px`,
+          'width': `${this.width}px`,
           'class': 'zoomToFit',
         });
     this.svgGroup.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
-        ZOOM_TO_FIT_SVG_DATAURI);
+        zoomToFitSvgDataUri);
 
     Blockly.utils.dom.insertAfter(
         this.svgGroup, this.workspace.getBubbleCanvas());
@@ -132,8 +132,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    */
   getBoundingRectangle(): Blockly.utils.Rect {
     return new Blockly.utils.Rect(
-        this.top, this.top + this.HEIGHT,
-        this.left, this.left + this.WIDTH);
+        this.top, this.top + this.height,
+        this.left, this.left + this.width);
   }
 
   /**
@@ -157,13 +157,13 @@ export class ZoomToFitControl implements Blockly.IPositionable {
         (this.workspace.horizontalLayout && !this.workspace.RTL)) {
       // Right corner placement.
       this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH - this.MARGIN_HORIZONTAL;
+          this.width - this.marginHorizontal;
       if (hasVerticalScrollbars && !this.workspace.RTL) {
         this.left -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Left corner placement.
-      this.left = this.MARGIN_HORIZONTAL;
+      this.left = this.marginHorizontal;
       if (hasVerticalScrollbars && this.workspace.RTL) {
         this.left += Blockly.Scrollbar.scrollbarThickness;
       }
@@ -174,14 +174,14 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     if (startAtBottom) {
       // Bottom corner placement
       this.top = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-          this.HEIGHT - this.MARGIN_VERTICAL;
+          this.height - this.marginVertical;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
         this.top -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Upper corner placement
-      this.top = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL;
+      this.top = metrics.absoluteMetrics.top + this.marginVertical;
     }
 
     // Check for collision and bump if needed.
@@ -189,9 +189,9 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
         if (startAtBottom) { // Bump up.
-          this.top = otherEl.top - this.HEIGHT - this.MARGIN_VERTICAL;
+          this.top = otherEl.top - this.height - this.marginVertical;
         } else { // Bump down.
-          this.top = otherEl.bottom + this.MARGIN_VERTICAL;
+          this.top = otherEl.bottom + this.marginVertical;
         }
         // Recheck other savedPositions
         boundingRect = this.getBoundingRectangle();
@@ -207,7 +207,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 /**
  * Base64 encoded data uri for zoom to fit icon.
  */
-const ZOOM_TO_FIT_SVG_DATAURI =
+const zoomToFitSvgDataUri =
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
     '9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCIgZm' +
     'lsbD0iIzU0NkU3QSI+PHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+PH' +
