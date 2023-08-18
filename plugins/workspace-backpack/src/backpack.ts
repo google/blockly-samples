@@ -114,7 +114,7 @@ export class Backpack extends Blockly.DragTarget implements
    */
   constructor(
       protected workspace: Blockly.WorkspaceSvg,
-      backpackOptions: BackpackOptions) {
+      backpackOptions?: BackpackOptions) {
     super();
     this.options = parseOptions(backpackOptions);
     this.registerSerializer();
