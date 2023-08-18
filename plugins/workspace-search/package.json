@@ -41,10 +41,12 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
     "@blockly/dev-tools": "^7.0.2",
+    "@typescript-eslint/parser": "^6.4.0",
     "blockly": "^10.0.0",
     "jsdom": "^19.0.0",
     "jsdom-global": "3.0.2",
-    "sinon": "^9.0.1"
+    "sinon": "^9.0.1",
+    "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "blockly": "^10.0.0"

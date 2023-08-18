@@ -4,12 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * @fileoverview Class responsible for workspace search.
- * @author aschmiedt@google.com (Abby Schmiedt)
- * @author kozbial@google.com (Monica Kozbial)
- */
-
 import * as Blockly from 'blockly/core';
 
 import {injectSearchCss} from './css';
@@ -299,7 +293,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   }
 
   /**
-   * Positions the zoom-to-fit control.
+   * Positions the workspace search field.
    * It is positioned in the opposite corner to the corner the
    * categories/toolbox starts at.
    * @param metrics The workspace metrics.
