@@ -13,7 +13,7 @@ import * as Blockly from 'blockly/core';
 import {registerContextMenus} from './backpack_helpers';
 import {BackpackChange, BackpackOpen} from './ui_events';
 import {parseOptions} from './options';
-// import {BackpackOptions} from './options';
+import {BackpackOptions} from './options';
 
 /**
  * Class for backpack that can be used save blocks from the workspace for
@@ -23,137 +23,101 @@ import {parseOptions} from './options';
  * @extends {Blockly.DragTarget}
  */
 export class Backpack extends Blockly.DragTarget {
+  
+  /**
+   * The unique id for this component.
+   */
+  id = 'backpack';
+  
+  /**
+   * The backpack options.
+   */
+  private options_: BackpackOptions;
+  
+  /**
+   * The backpack flyout. Initialized during init.
+   */
+  protected flyout_: Blockly.IFlyout|null = null;
+  
+  /**
+   * A list of JSON (stored as strings) representing blocks in the backpack.
+   */
+  protected contents_: string[] = [];
+  
+  /**
+   * Array holding info needed to unbind events.
+   * Used for disposing.
+   */
+  private boundEvents_: Blockly.browserEvents.Data[] = [];
+  
+  /**
+   * Left coordinate of the backpack.
+   */
+  protected left_ = 0;
+  
+  /**
+   * Top coordinate of the backpack.
+   */
+  protected top_ = 0;
+  
+  /**
+   * Width of the backpack. Used for clip path.
+   */
+  protected readonly WIDTH_ = 40;
+  
+  /**
+   * Height of the backpack. Used for clip path.
+   */
+  protected readonly HEIGHT_ = 60;
+  
+  /**
+   * Distance between backpack and bottom or top edge of workspace.
+   */
+  protected readonly MARGIN_VERTICAL_ = 20;
+  
+  /**
+   * Distance between backpack and right or left edge of workspace.
+   */
+  protected readonly MARGIN_HORIZONTAL_ = 20;
+  
+  /**
+   * Extent of hotspot on all sides beyond the size of the image.
+   */
+  protected readonly HOTSPOT_MARGIN_ = 10;
+  
+  /**
+   * The SVG group containing the backpack.
+   */
+  protected svgGroup_: SVGElement|null = null;
+  
+  protected svgImg_: SVGImageElement|null = null;
+  
+  /**
+   * Top offset for backpack in svg.
+   */
+  private SPRITE_TOP_ = 10;
+  
+  /**
+   * Left offset for backpack in svg.
+   */
+  private SPRITE_LEFT_ = 20;
+  
+  /**
+   * Width/Height of svg.
+   */
+  private readonly SPRITE_SIZE_ = 80;
+  
+  protected initialized_ = false;
+  
   /**
    * Constructor for a backpack.
-   * @param {!Blockly.WorkspaceSvg} targetWorkspace The target workspace that
+   * @param targetWorkspace The target workspace that
    *     the backpack will be added to.
    * @param backpackOptions The backpack options to use.
    */
-  constructor(targetWorkspace, backpackOptions) {
+  constructor(protected workspace_: Blockly.WorkspaceSvg, backpackOptions: BackpackOptions) {
     super();
-
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
-    this.workspace_ = targetWorkspace;
-
-    /**
-     * The unique id for this component.
-     * @type {string}
-     */
-    this.id = 'backpack';
-
-    /**
-     * The backpack options.
-     */
     this.options_ = parseOptions(backpackOptions);
-
-    /**
-     * The backpack flyout. Initialized during init.
-     * @type {?Blockly.IFlyout}
-     * @protected
-     */
-    this.flyout_ = null;
-
-    /**
-     * A list of JSON (stored as strings) representing blocks in the backpack.
-     * @type {!Array<string>}
-     * @protected
-     */
-    this.contents_ = [];
-
-    /**
-     * Array holding info needed to unbind events.
-     * Used for disposing.
-     * @type {!Array<!Blockly.browserEvents.Data>}
-     * @private
-     */
-    this.boundEvents_ = [];
-
-    /**
-     * Left coordinate of the backpack.
-     * @type {number}
-     * @protected
-     */
-    this.left_ = 0;
-
-    /**
-     * Top coordinate of the backpack.
-     * @type {number}
-     * @protected
-     */
-    this.top_ = 0;
-
-    /**
-     * Width of the backpack. Used for clip path.
-     * @type {number}
-     * @const
-     * @protected
-     */
-    this.WIDTH_ = 40;
-
-    /**
-     * Height of the backpack. Used for clip path.
-     * @type {number}
-     * @const
-     * @protected
-     */
-    this.HEIGHT_ = 60;
-
-    /**
-     * Distance between backpack and bottom or top edge of workspace.
-     * @type {number}
-     * @const
-     * @protected
-     */
-    this.MARGIN_VERTICAL_ = 20;
-
-    /**
-     * Distance between backpack and right or left edge of workspace.
-     * @type {number}
-     * @const
-     * @protected
-     */
-    this.MARGIN_HORIZONTAL_ = 20;
-
-    /**
-     * Extent of hotspot on all sides beyond the size of the image.
-     * @const {number}
-     * @protected
-     */
-    this.HOTSPOT_MARGIN_ = 10;
-
-    /**
-     * The SVG group containing the backpack.
-     * @type {?SVGElement}
-     * @protected
-     */
-    this.svgGroup_ = null;
-
-    /**
-     * Top offset for backpack in svg.
-     * @type {number}
-     * @private
-     */
-    this.SPRITE_TOP_ = 10;
-
-    /**
-     * Left offset for backpack in svg.
-     * @type {number}
-     * @private
-     */
-    this.SPRITE_LEFT_ = 20;
-
-    /**
-     * Width/Height of svg.
-     * @type {number}
-     * @const
-     * @private
-     */
-    this.SPRITE_SIZE_ = 80;
-
     this.registerSerializer();
   }
 
@@ -194,9 +158,7 @@ export class Backpack extends Blockly.DragTarget {
     this.initFlyout_();
     this.createDom_();
     this.attachListeners_();
-    registerContextMenus(
-        /** @type {!BackpackContextMenuOptions} */ this.options_.contextMenu,
-        this.workspace_);
+    registerContextMenus(this.options_.contextMenu, this.workspace_);
     this.initialized_ = true;
     this.workspace_.resize();
   }
@@ -223,8 +185,7 @@ export class Backpack extends Blockly.DragTarget {
   initFlyout_() {
     // Create flyout options.
     const flyoutWorkspaceOptions = new Blockly.Options(
-        /** @type {!Blockly.BlocklyOptions} */
-        ({
+        {
           'scrollbars': true,
           'parentWorkspace': this.workspace_,
           'rtl': this.workspace_.RTL,
@@ -234,7 +195,7 @@ export class Backpack extends Blockly.DragTarget {
           'move': {
             'scrollbars': true,
           },
-        }));
+        });
     // Create vertical or horizontal flyout.
     if (this.workspace_.horizontalLayout) {
       flyoutWorkspaceOptions.toolboxPosition =
@@ -317,33 +278,33 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Helper method for adding an event.
-   * @param {!Element} node Node upon which to listen.
-   * @param {string} name Event name to listen to (e.g. 'mousedown').
-   * @param {Object} thisObject The value of 'this' in the function.
-   * @param {!Function} func Function to call when event is triggered.
+   * @param node Node upon which to listen.
+   * @param name Event name to listen to (e.g. 'mousedown').
+   * @param thisObject The value of 'this' in the function.
+   * @param func Function to call when event is triggered.
    * @private
    */
-  addEvent_(node, name, thisObject, func) {
+  addEvent_(node: Element, name: string, thisObject: object, func: (event: Event) => void) {
     const event = Blockly.browserEvents.bind(node, name, thisObject, func);
     this.boundEvents_.push(event);
   }
 
   /**
    * Returns the backpack flyout.
-   * @returns {?Blockly.IFlyout} The backpack flyout.
+   * @returns The backpack flyout.
    * @public
    */
-  getFlyout() {
+  getFlyout(): Blockly.IFlyout|null {
     return this.flyout_;
   }
 
   /**
    * Returns the bounding rectangle of the drag target area in pixel units
    * relative to viewport.
-   * @returns {?Blockly.utils.Rect} The component's bounding box. Null if drag
+   * @returns The component's bounding box. Null if drag
    *   target area should be ignored.
    */
-  getClientRect() {
+  getClientRect(): Blockly.utils.Rect|null {
     if (!this.svgGroup_) {
       return null;
     }
@@ -359,9 +320,9 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
-   * @returns {!Blockly.utils.Rect} The component’s bounding box.
+   * @returns The component’s bounding box.
    */
-  getBoundingRectangle() {
+  getBoundingRectangle(): Blockly.utils.Rect {
     return new Blockly.utils.Rect(
         this.top_, this.top_ + this.HEIGHT_,
         this.left_, this.left_ + this.WIDTH_);
@@ -371,11 +332,11 @@ export class Backpack extends Blockly.DragTarget {
    * Positions the backpack.
    * It is positioned in the opposite corner to the corner the
    * categories/toolbox starts at.
-   * @param {!Blockly.MetricsManager.UiMetrics} metrics The workspace metrics.
-   * @param {!Array<!Blockly.utils.Rect>} savedPositions List of rectangles that
+   * @param metrics The workspace metrics.
+   * @param savedPositions List of rectangles that
    *     are already on the workspace.
    */
-  position(metrics, savedPositions) {
+  position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Blockly.utils.Rect[]) {
     if (!this.initialized_) {
       return;
     }
@@ -438,17 +399,17 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns the count of items in the backpack.
-   * @returns {number} The count of items.
+   * @returns The count of items.
    */
-  getCount() {
+  getCount(): number {
     return this.contents_.length;
   }
 
   /**
    * Returns backpack contents.
-   * @returns {!Array<string>} The backpack contents.
+   * @returns The backpack contents.
    */
-  getContents() {
+  getContents(): string[] {
     // Return a shallow copy of the contents array.
     return [...this.contents_];
   }
@@ -456,23 +417,23 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Handles when a block or bubble is dropped on this component.
    * Should not handle delete here.
-   * @param {!Blockly.IDraggable} dragElement The block or bubble currently
+   * @param dragElement The block or bubble currently
    *   being dragged.
    */
-  onDrop(dragElement) {
+  onDrop(dragElement: Blockly.IDraggable) {
     if (dragElement instanceof Blockly.BlockSvg) {
-      this.addBlock(/** @type {!Blockly.BlockSvg} */ (dragElement));
+      this.addBlock(dragElement);
     }
   }
 
   /**
    * Converts the provided block into a JSON string and
    * cleans the JSON of any unnecessary attributes
-   * @param {!Blockly.Block} block The block to convert.
-   * @returns {string} The JSON object as a string.
+   * @param block The block to convert.
+   * @returns The JSON object as a string.
    * @private
    */
-  blockToJsonString(block) {
+  blockToJsonString(block: Blockly.Block): string {
     const json = Blockly.serialization.blocks.save(block);
 
     // Add a 'kind' key so the flyout can recognize it as a block.
@@ -501,11 +462,11 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Converts serialized XML to its equivalent serialized JSON string
-   * @param {string} blockXml The XML serialized block.
-   * @returns {string} The JSON object as a string.
+   * @param blockXml The XML serialized block.
+   * @returns The JSON object as a string.
    * @private
    */
-  blockXmlToJsonString(blockXml) {
+  blockXmlToJsonString(blockXml: string): string {
     if (!blockXml.startsWith('<block')) {
       throw new Error('Unrecognized XML format');
     }
@@ -524,55 +485,55 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns whether the backpack contains a duplicate of the provided Block.
-   * @param {!Blockly.Block} block The block to check.
-   * @returns {boolean} Whether the backpack contains a duplicate of the
+   * @param block The block to check.
+   * @returns Whether the backpack contains a duplicate of the
    *     provided block.
    */
-  containsBlock(block) {
+  containsBlock(block: Blockly.Block): boolean {
     return this.contents_.indexOf(this.blockToJsonString(block)) !== -1;
   }
 
   /**
    * Adds the specified block to backpack.
-   * @param {!Blockly.Block} block The block to be added to the backpack.
+   * @param block The block to be added to the backpack.
    */
-  addBlock(block) {
+  addBlock(block: Blockly.Block) {
     this.addItem(this.blockToJsonString(block));
   }
 
 
   /**
    * Adds the provided blocks to backpack.
-   * @param {!Array<!Blockly.Block>} blocks The blocks to be added to the
+   * @param blocks The blocks to be added to the
    *     backpack.
    */
-  addBlocks(blocks) {
+  addBlocks(blocks: Blockly.Block[]) {
     this.addItems(blocks.map(this.blockToJsonString));
   }
 
 
   /**
    * Removes the specified block from the backpack.
-   * @param {!Blockly.Block} block The block to be removed from the backpack.
+   * @param block The block to be removed from the backpack.
    */
-  removeBlock(block) {
+  removeBlock(block: Blockly.Block) {
     this.removeItem(this.blockToJsonString(block));
   }
 
   /**
    * Adds item to backpack.
-   * @param {string} item Text representing the JSON of a block to add,
+   * @param item Text representing the JSON of a block to add,
    *     cleaned of all unnecessary attributes.
    */
-  addItem(item) {
+  addItem(item: string) {
     this.addItems([item]);
   }
 
   /**
    * Adds multiple items to the backpack.
-   * @param {!Array<string>} items The backpack contents to add.
+   * @param items The backpack contents to add.
    */
-  addItems(items) {
+  addItems(items: string[]) {
     const addedItems = this.filterDuplicates_(items);
     if (addedItems.length) {
       this.contents_.unshift(...addedItems);
@@ -582,10 +543,10 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Removes item from the backpack.
-   * @param {string} item Text representing the JSON of a block to remove,
+   * @param item Text representing the JSON of a block to remove,
    * cleaned of all unnecessary attributes.
    */
-  removeItem(item) {
+  removeItem(item: string) {
     const itemIndex = this.contents_.indexOf(item);
     if (itemIndex !== -1) {
       this.contents_.splice(itemIndex, 1);
@@ -595,9 +556,9 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Sets backpack contents.
-   * @param {!Array<string>} contents The new backpack contents.
+   * @param contents The new backpack contents.
    */
-  setContents(contents) {
+  setContents(contents: string[]) {
     this.contents_ = [];
     this.contents_ = this.filterDuplicates_(
         // Support XML serialized content for backwards compatiblity: https://github.com/google/blockly-samples/issues/1827
@@ -644,11 +605,11 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns a filtered list without duplicates within itself and without any
    * shared elements with this.contents_.
-   * @param {!Array<string>} array The array of items to filter.
-   * @returns {!Array<string>} The filtered list.
+   * @param array The array of items to filter.
+   * @returns The filtered list.
    * @private
    */
-  filterDuplicates_(array) {
+  filterDuplicates_(array: string[]): string[] {
     return array.filter((item, idx) => {
       return array.indexOf(item) === idx && this.contents_.indexOf(item) === -1;
     });
@@ -656,19 +617,19 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Returns whether the backpack is open-able.
-   * @returns {boolean} Whether the backpack is open-able.
+   * @returns Whether the backpack is open-able.
    * @protected
    */
-  isOpenable_() {
+  isOpenable_(): boolean {
     return !this.isOpen() &&
     this.options_.allowEmptyBackpackOpen ? true : this.getCount() > 0;
   }
 
   /**
    * Returns whether the backpack is open.
-   * @returns {boolean} Whether the backpack is open.
+   * @returns Whether the backpack is open.
    */
-  isOpen() {
+  isOpen(): boolean {
     return this.flyout_.isVisible();
   }
 
@@ -721,10 +682,10 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Hides the component. Called in Blockly.hideChaff.
-   * @param {boolean} onlyClosePopups Whether only popups should be closed.
+   * @param onlyClosePopups Whether only popups should be closed.
    *     Flyouts should not be closed if this is true.
    */
-  autoHide(onlyClosePopups) {
+  autoHide(onlyClosePopups: boolean) {
     // The backpack flyout always autocloses because it overlays the backpack UI
     // (no backpack to click to close it).
     if (!onlyClosePopups) {
@@ -734,10 +695,10 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handle click event.
-   * @param {!MouseEvent} e Mouse event.
+   * @param e Mouse event.
    * @protected
    */
-  onClick_(e) {
+  onClick_(e: MouseEvent) {
     if (Blockly.browserEvents.isRightButton(e)) {
       return;
     }
@@ -749,10 +710,10 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles when a cursor with a block or bubble enters this drag target.
-   * @param {!Blockly.IDraggable} dragElement The block or bubble currently
+   * @param dragElement The block or bubble currently
    *   being dragged.
    */
-  onDragEnter(dragElement) {
+  onDragEnter(dragElement: Blockly.IDraggable) {
     if (dragElement instanceof Blockly.BlockSvg) {
       this.updateHoverStying_(true);
     }
@@ -760,10 +721,10 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles when a cursor with a block or bubble exits this drag target.
-   * @param {!Blockly.IDraggable} _dragElement The block or bubble currently
+   * @param _dragElement The block or bubble currently
    *   being dragged.
    */
-  onDragExit(_dragElement) {
+  onDragExit(_dragElement: Blockly.IDraggable) {
     this.updateHoverStying_(false);
   }
 
@@ -787,17 +748,15 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Adds or removes styling to darken the backpack to show it is interactable.
-   * @param {boolean} addClass True to add styling, false to remove.
+   * @param addClass True to add styling, false to remove.
    * @protected
    */
-  updateHoverStying_(addClass) {
+  updateHoverStying_(addClass: boolean) {
     const backpackDarken = 'blocklyBackpackDarken';
     if (addClass) {
-      Blockly.utils.dom.addClass(
-          /** @type {!SVGElement} */ (this.svgImg_), backpackDarken);
+      Blockly.utils.dom.addClass(this.svgImg_, backpackDarken);
     } else {
-      Blockly.utils.dom.removeClass(
-          /** @type {!SVGElement} */ (this.svgImg_), backpackDarken);
+      Blockly.utils.dom.removeClass(this.svgImg_, backpackDarken);
     }
   }
 
@@ -805,21 +764,21 @@ export class Backpack extends Blockly.DragTarget {
    * Returns whether the provided block or bubble should not be moved after
    * being dropped on this component. If true, the element will return to where
    * it was when the drag started.
-   * @param {!Blockly.IDraggable} dragElement The block or bubble currently
+   * @param dragElement The block or bubble currently
    *   being dragged.
-   * @returns {boolean} Whether the block or bubble provided should be returned
+   * @returns Whether the block or bubble provided should be returned
    *   to drag start.
    */
-  shouldPreventMove(dragElement) {
+  shouldPreventMove(dragElement: Blockly.IDraggable): boolean {
     return dragElement instanceof Blockly.BlockSvg;
   }
 
   /**
    * Prevents a workspace scroll and click event if the backpack is openable.
-   * @param {!Event} e A mouse down event.
+   * @param e A mouse down event.
    * @protected
    */
-  blockMouseDownWhenOpenable_(e) {
+  blockMouseDownWhenOpenable_(e: MouseEvent) {
     if (!Blockly.browserEvents.isRightButton(e) && this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
@@ -828,7 +787,6 @@ export class Backpack extends Blockly.DragTarget {
 
 /**
  * Base64 encoded data uri for backpack  icon.
- * @type {string}
  */
 const BACKPACK_SVG_DATAURI =
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
@@ -846,7 +804,6 @@ const BACKPACK_SVG_DATAURI =
 
 /**
  * Base64 encoded data uri for backpack  icon when filled.
- * @type {string}
  */
 const BACKPACK_FILLED_SVG_DATAURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
     'lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYX' +
@@ -911,46 +868,42 @@ Blockly.Css.register(`
  * blocks have been saved in a workspace.
  */
 class BackpackSerializer {
-  /** Constructs the backpack serializer */
-  constructor() {
-    /**
-     * The priority for deserializing block suggestion data.
-     * Should be after blocks, procedures, and variables.
-     * @type {number}
-     */
-    this.priority = Blockly.serialization.priorities.BLOCKS - 10;
-  }
+  /**
+   * The priority for deserializing block suggestion data.
+   * Should be after blocks, procedures, and variables.
+   */
+  priority = Blockly.serialization.priorities.BLOCKS - 10;
 
   /**
    * Saves a target workspace's state to serialized JSON.
-   * @param {Blockly.Workspace} workspace the workspace to save
-   * @returns {object|undefined} the serialized JSON if present
+   * @param workspace the workspace to save
+   * @returns the serialized JSON if present
    */
-  save(workspace) {
+  save(workspace: Blockly.WorkspaceSvg): object[] {
     const componentManager = workspace.getComponentManager();
-    const backpack = componentManager.getComponent('backpack');
-    return backpack.getContents().map((text) => JSON.parse(text));
+    const backpack = componentManager.getComponent('backpack') as Backpack;
+    return backpack?.getContents().map((text) => JSON.parse(text));
   }
 
   /**
    * Loads a serialized state into the target workspace.
-   * @param {object} state the serialized state JSON
-   * @param {Blockly.Workspace} workspace the workspace to load into
+   * @param state the serialized state JSON
+   * @param workspace the workspace to load into
    */
-  load(state, workspace) {
+  load(state: object[], workspace: Blockly.WorkspaceSvg) {
     const jsonStrings = state.map((j) => JSON.stringify(j));
     const componentManager = workspace.getComponentManager();
-    const backpack = componentManager.getComponent('backpack');
-    backpack.setContents(jsonStrings);
+    const backpack = componentManager.getComponent('backpack') as Backpack;
+    backpack?.setContents(jsonStrings);
   }
 
   /**
    * Resets the state of a workspace.
-   * @param {Blockly.Workspace} workspace the workspace to reset
+   * @param workspace the workspace to reset
    */
-  clear(workspace) {
+  clear(workspace: Blockly.WorkspaceSvg) {
     const componentManager = workspace.getComponentManager();
-    const backpack = componentManager.getComponent('backpack');
-    backpack.empty();
+    const backpack = componentManager.getComponent('backpack') as Backpack;
+    backpack?.empty();
   }
 }
