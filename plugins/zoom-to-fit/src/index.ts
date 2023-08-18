@@ -19,64 +19,64 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   /**
    * The SVG group containing the zoom-to-fit control.
    */
-  private svgGroup_: SVGElement|null = null;
+  private svgGroup: SVGElement|null = null;
   
   /**
    * Left coordinate of the zoom-to-fit control.
    */
-  private left_ = 0;
+  private left = 0;
   
   /**
    * Top coordinate of the zoom-to-fit control.
    */
-  private top_ = 0;
+  private top = 0;
   
   /**
    * Width of the zoom-to-fit control.
    */
-  private readonly WIDTH_ = 32;
+  private readonly WIDTH = 32;
   
   /**
    * Height of the zoom-to-fit control.
    */
-  private readonly HEIGHT_ = 32;
+  private readonly HEIGHT = 32;
   
   /**
    * Distance between zoom-to-fit control and bottom or top edge of workspace.
    */
-  private readonly MARGIN_VERTICAL_ = 20;
+  private readonly MARGIN_VERTICAL = 20;
   
   /**
    * Distance between zoom-to-fit control and right or left edge of workspace.
    */
-  private readonly MARGIN_HORIZONTAL_ = 20;
+  private readonly MARGIN_HORIZONTAL = 20;
   
   /**
    * Whether this has been initialized.
    */
-  private initialized_ = false;
+  private initialized = false;
   
-  private onZoomToFitWrapper_: Blockly.browserEvents.Data|null = null;
+  private onZoomToFitWrapper: Blockly.browserEvents.Data|null = null;
 
   /**
    * Constructor for zoom-to-fit control.
    * @param workspace The workspace that the zoom-to-fit
    *     control will be added to.
    */
-  constructor(protected workspace_: Blockly.WorkspaceSvg) {}
+  constructor(protected workspace: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the zoom reset control.
    */
   init() {
-    this.workspace_.getComponentManager().addComponent({
+    this.workspace.getComponentManager().addComponent({
       component: this,
       weight: 2,
       capabilities: [Blockly.ComponentManager.Capability.POSITIONABLE],
     });
-    this.createDom_();
-    this.initialized_ = true;
-    this.workspace_.resize();
+    this.createDom();
+    this.initialized = true;
+    this.workspace.resize();
   }
   /**
    * Disposes of workspace search.
@@ -84,43 +84,43 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * to prevent memory leaks.
    */
   dispose() {
-    if (this.svgGroup_) {
-      Blockly.utils.dom.removeNode(this.svgGroup_);
+    if (this.svgGroup) {
+      Blockly.utils.dom.removeNode(this.svgGroup);
     }
-    if (this.onZoomToFitWrapper_) {
-      Blockly.browserEvents.unbind(this.onZoomToFitWrapper_);
-      this.onZoomToFitWrapper_ = null;
+    if (this.onZoomToFitWrapper) {
+      Blockly.browserEvents.unbind(this.onZoomToFitWrapper);
+      this.onZoomToFitWrapper = null;
     }
   }
 
   /**
    * Creates DOM for ui element.
    */
-  private createDom_() {
-    this.svgGroup_ = Blockly.utils.dom.createSvgElement(
+  private createDom() {
+    this.svgGroup = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.IMAGE, {
-          'height': this.HEIGHT_ + 'px',
-          'width': this.WIDTH_ + 'px',
+          'height': this.HEIGHT + 'px',
+          'width': this.WIDTH + 'px',
           'class': 'zoomToFit',
         });
-    this.svgGroup_.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
+    this.svgGroup.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
         ZOOM_TO_FIT_SVG_DATAURI);
 
     Blockly.utils.dom.insertAfter(
-        this.svgGroup_, this.workspace_.getBubbleCanvas());
+        this.svgGroup, this.workspace.getBubbleCanvas());
 
     // Attach listener.
-    this.onZoomToFitWrapper_ = Blockly.browserEvents.conditionalBind(
-        this.svgGroup_, 'mousedown', null, this.onClick_.bind(this));
+    this.onZoomToFitWrapper = Blockly.browserEvents.conditionalBind(
+        this.svgGroup, 'mousedown', null, this.onClick.bind(this));
   }
 
   /**
    * Handle click event.
    */
-  private onClick_() {
-    this.workspace_.zoomToFit();
+  private onClick() {
+    this.workspace.zoomToFit();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
-        null, this.workspace_.id, 'zoom_reset_control');
+        null, this.workspace.id, 'zoom_reset_control');
     Blockly.Events.fire(uiEvent);
   }
 
@@ -132,8 +132,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    */
   getBoundingRectangle(): Blockly.utils.Rect {
     return new Blockly.utils.Rect(
-        this.top_, this.top_ + this.HEIGHT_,
-        this.left_, this.left_ + this.WIDTH_);
+        this.top, this.top + this.HEIGHT,
+        this.left, this.left + this.WIDTH);
   }
 
   /**
@@ -145,27 +145,27 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    *     are already on the workspace.
    */
   position(metrics: Blockly.MetricsManager.UiMetrics, savedPositions: Blockly.utils.Rect[]) {
-    if (!this.initialized_) {
+    if (!this.initialized) {
       return;
     }
-    const hasVerticalScrollbars = this.workspace_.scrollbar &&
-        this.workspace_.scrollbar.canScrollHorizontally();
-    const hasHorizontalScrollbars = this.workspace_.scrollbar &&
-        this.workspace_.scrollbar.canScrollVertically();
+    const hasVerticalScrollbars = this.workspace.scrollbar &&
+        this.workspace.scrollbar.canScrollHorizontally();
+    const hasHorizontalScrollbars = this.workspace.scrollbar &&
+        this.workspace.scrollbar.canScrollVertically();
 
     if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-        (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
+        (this.workspace.horizontalLayout && !this.workspace.RTL)) {
       // Right corner placement.
-      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH_ - this.MARGIN_HORIZONTAL_;
-      if (hasVerticalScrollbars && !this.workspace_.RTL) {
-        this.left_ -= Blockly.Scrollbar.scrollbarThickness;
+      this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
+          this.WIDTH - this.MARGIN_HORIZONTAL;
+      if (hasVerticalScrollbars && !this.workspace.RTL) {
+        this.left -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Left corner placement.
-      this.left_ = this.MARGIN_HORIZONTAL_;
-      if (hasVerticalScrollbars && this.workspace_.RTL) {
-        this.left_ += Blockly.Scrollbar.scrollbarThickness;
+      this.left = this.MARGIN_HORIZONTAL;
+      if (hasVerticalScrollbars && this.workspace.RTL) {
+        this.left += Blockly.Scrollbar.scrollbarThickness;
       }
     }
 
@@ -173,15 +173,15 @@ export class ZoomToFitControl implements Blockly.IPositionable {
         metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
     if (startAtBottom) {
       // Bottom corner placement
-      this.top_ = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-          this.HEIGHT_ - this.MARGIN_VERTICAL_;
+      this.top = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
+          this.HEIGHT - this.MARGIN_VERTICAL;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
-        this.top_ -= Blockly.Scrollbar.scrollbarThickness;
+        this.top -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Upper corner placement
-      this.top_ = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL_;
+      this.top = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL;
     }
 
     // Check for collision and bump if needed.
@@ -189,9 +189,9 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
         if (startAtBottom) { // Bump up.
-          this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_VERTICAL_;
+          this.top = otherEl.top - this.HEIGHT - this.MARGIN_VERTICAL;
         } else { // Bump down.
-          this.top_ = otherEl.bottom + this.MARGIN_VERTICAL_;
+          this.top = otherEl.bottom + this.MARGIN_VERTICAL;
         }
         // Recheck other savedPositions
         boundingRect = this.getBoundingRectangle();
@@ -199,8 +199,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
       }
     }
 
-    this.svgGroup_.setAttribute('transform',
-        'translate(' + this.left_ + ',' + this.top_ + ')');
+    this.svgGroup.setAttribute('transform',
+        'translate(' + this.left + ',' + this.top + ')');
   }
 }
 
