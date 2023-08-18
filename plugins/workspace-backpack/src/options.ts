@@ -56,9 +56,8 @@ export function parseOptions(options?: BackpackOptions): BackpackOptions {
         options.allowEmptyBackpackOpen ?? defaults.allowEmptyBackpackOpen,
     useFilledBackpackImage:
         options.useFilledBackpackImage ?? defaults.useFilledBackpackImage,
-    skipSerializerRegistration:
-        options.skipSerializerRegistration ??
-            defaults.skipSerializerRegistration,
+    skipSerializerRegistration: options.skipSerializerRegistration ??
+        defaults.skipSerializerRegistration,
     contextMenu: {
       ...defaults.contextMenu,
       ...options.contextMenu,
