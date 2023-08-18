@@ -18,11 +18,8 @@ import {BackpackOptions} from './options';
 /**
  * Class for backpack that can be used save blocks from the workspace for
  * future use.
- * @implements {Blockly.IAutoHideable}
- * @implements {Blockly.IPositionable}
- * @extends {Blockly.DragTarget}
  */
-export class Backpack extends Blockly.DragTarget {
+export class Backpack extends Blockly.DragTarget implements Blockly.IAutoHideable, Blockly.IPositionable {
   
   /**
    * The unique id for this component.
