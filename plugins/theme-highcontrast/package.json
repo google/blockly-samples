@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-highcontrast",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A Blockly high contrast theme.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",

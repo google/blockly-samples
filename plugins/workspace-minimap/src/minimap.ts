@@ -53,7 +53,7 @@ export class Minimap {
       // Create a wrapper div for the minimap injection.
       this.minimapWrapper = document.createElement('div');
       this.minimapWrapper.id = 'minimapWrapper' + this.primaryWorkspace.id;
-      this.minimapWrapper.className = 'minimapWrapper';
+      this.minimapWrapper.className = 'blockly-minimap';
 
       // Make the wrapper a sibling to the primary injection div.
       const primaryInjectParentDiv =
@@ -79,6 +79,7 @@ export class Minimap {
               minScale: null,
             },
             readOnly: true,
+            theme: this.primaryWorkspace.getTheme(),
           });
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
@@ -100,6 +101,7 @@ export class Minimap {
           this.primaryWorkspace, this.minimapWorkspace);
       this.enableFocusRegion();
     }
+
 
     /**
      * Disposes the minimap.
@@ -130,10 +132,12 @@ export class Minimap {
      * @param event The primary workspace event.
      */
     private mirror(event: Blockly.Events.Abstract): void {
-      // TODO: shadow blocks get mirrored too (not supposed to happen)
-
       if (!blockEvents.has(event.type)) {
         return; // Filter out events.
+      }
+      if (event.type === Blockly.Events.BLOCK_CREATE &&
+        (event as any).xml.tagName === 'shadow') {
+        return; // Filter out shadow blocks.
       }
       // Run the event in the minimap.
       const json = event.toJson();

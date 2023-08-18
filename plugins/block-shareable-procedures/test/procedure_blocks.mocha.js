@@ -473,6 +473,7 @@ suite('Procedures', function() {
                 .connect(rowBlock1.outputConnection);
             callBlock.getInput('ARG1').connection
                 .connect(rowBlock2.outputConnection);
+            globalThis.clock.runAll();
 
             procModel.deleteParameter(1);
             procModel.insertParameter(param2, 0);
@@ -1033,6 +1034,7 @@ suite('Procedures', function() {
               .connect(block1.outputConnection);
           callBlock.getInput('ARG1').connection
               .connect(block2.outputConnection);
+          globalThis.clock.runAll();
 
           // Reorder the parameters.
           paramBlock2.previousConnection.disconnect();

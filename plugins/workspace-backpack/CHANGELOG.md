@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.1.0...@blockly/workspace-backpack@5.1.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* Backpack plugin inverted scrollbars in position method ([#1852](https://github.com/google/blockly-samples/issues/1852)) ([3e90e61](https://github.com/google/blockly-samples/commit/3e90e61278389cc8d208a0f5945206c9682031d5))
+
+
+
 ## [5.1.0](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.0.2...@blockly/workspace-backpack@5.1.0) (2023-08-03)
 
 
