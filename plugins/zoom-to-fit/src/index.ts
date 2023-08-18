@@ -31,12 +31,12 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   private top = 0;
 
   /**
-   * width of the zoom-to-fit control.
+   * Width of the zoom-to-fit control.
    */
   private readonly width = 32;
 
   /**
-   * height of the zoom-to-fit control.
+   * Height of the zoom-to-fit control.
    */
   private readonly height = 32;
 
