@@ -10,35 +10,29 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
-/**
- * @typedef {{
- *   emptyBackpack:(boolean|undefined),
- *   removeFromBackpack:(boolean|undefined),
- *   copyToBackpack:(boolean|undefined),
- *   copyAllToBackpack:(boolean|undefined),
- *   pasteAllToBackpack:(boolean|undefined),
- *   disablePreconditionChecks:(boolean|undefined)
- * }}
- */
-export let BackpackContextMenuOptions;
+export interface BackpackContextMenuOptions {
+  emptyBackpack?: boolean;
+  removeFromBackpack?: boolean;
+  copyToBackpack?: boolean;
+  copyAllToBackpack?: boolean;
+  pasteAllToBackpack?: boolean;
+  disablePreconditionChecks?: boolean;
+}
 
-/**
- * @typedef {{
- *    allowEmptyBackpackOpen: (boolean|undefined),
- *    useFilledBackpackImage: (boolean|undefined),
- *    skipSerializerRegistration: (boolean|undefined),
- *    contextMenu:(!BackpackContextMenuOptions|undefined)
- * }}
- */
-export let BackpackOptions;
+export interface BackpackOptions {
+  allowEmptyBackpackOpen?: boolean;
+  useFilledBackpackImage?: boolean;
+  skipSerializerRegistration?: boolean;
+  contextMenu?: BackpackContextMenuOptions;
+}
 
 /**
  * Returns a new options object with all properties set, using default values
  * if not specified in the optional options that were passed in.
- * @param {BackpackOptions=} options The options to use.
- * @returns {!BackpackOptions} The created options object.
+ * @param options The options to use.
+ * @returns The created options object.
  */
-export function parseOptions(options) {
+export function parseOptions(options?: BackpackOptions): BackpackOptions {
   const defaults = {
     allowEmptyBackpackOpen: true,
     useFilledBackpackImage: false,
