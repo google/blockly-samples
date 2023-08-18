@@ -124,9 +124,8 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Registers serializer if options.skipSerializerRegistration is false
    * and it hasn't been registered already.
-   * @private
    */
-  registerSerializer() {
+  private registerSerializer() {
     if (this.options_.skipSerializerRegistration) {
       return;
     }
@@ -180,9 +179,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Creates and initializes the flyout and inserts it into the dom.
-   * @protected
    */
-  initFlyout_() {
+  protected initFlyout_() {
     // Create flyout options.
     const flyoutWorkspaceOptions = new Blockly.Options(
         {
@@ -226,9 +224,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Creates DOM for UI element.
-   * @protected
    */
-  createDom_() {
+  protected createDom_() {
     this.svgGroup_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.G, {}, null);
     const rnd = Blockly.utils.idGenerator.genUid();
@@ -263,9 +260,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Attaches event listeners.
-   * @protected
    */
-  attachListeners_() {
+  protected attachListeners_() {
     this.addEvent_(
         this.svgGroup_, 'mousedown', this, this.blockMouseDownWhenOpenable_);
     this.addEvent_(
@@ -282,9 +278,8 @@ export class Backpack extends Blockly.DragTarget {
    * @param name Event name to listen to (e.g. 'mousedown').
    * @param thisObject The value of 'this' in the function.
    * @param func Function to call when event is triggered.
-   * @private
    */
-  addEvent_(node: Element, name: string, thisObject: object, func: (event: Event) => void) {
+  private addEvent_(node: Element, name: string, thisObject: object, func: (event: Event) => void) {
     const event = Blockly.browserEvents.bind(node, name, thisObject, func);
     this.boundEvents_.push(event);
   }
@@ -292,7 +287,6 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns the backpack flyout.
    * @returns The backpack flyout.
-   * @public
    */
   getFlyout(): Blockly.IFlyout|null {
     return this.flyout_;
@@ -431,9 +425,8 @@ export class Backpack extends Blockly.DragTarget {
    * cleans the JSON of any unnecessary attributes
    * @param block The block to convert.
    * @returns The JSON object as a string.
-   * @private
    */
-  blockToJsonString(block: Blockly.Block): string {
+  private blockToJsonString(block: Blockly.Block): string {
     const json = Blockly.serialization.blocks.save(block);
 
     // Add a 'kind' key so the flyout can recognize it as a block.
@@ -464,9 +457,8 @@ export class Backpack extends Blockly.DragTarget {
    * Converts serialized XML to its equivalent serialized JSON string
    * @param blockXml The XML serialized block.
    * @returns The JSON object as a string.
-   * @private
    */
-  blockXmlToJsonString(blockXml: string): string {
+  private blockXmlToJsonString(blockXml: string): string {
     if (!blockXml.startsWith('<block')) {
       throw new Error('Unrecognized XML format');
     }
@@ -586,9 +578,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles content change.
-   * @protected
    */
-  onContentChange_() {
+  protected onContentChange_() {
     this.maybeRefreshFlyoutContents_();
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
 
@@ -607,9 +598,8 @@ export class Backpack extends Blockly.DragTarget {
    * shared elements with this.contents_.
    * @param array The array of items to filter.
    * @returns The filtered list.
-   * @private
    */
-  filterDuplicates_(array: string[]): string[] {
+  private filterDuplicates_(array: string[]): string[] {
     return array.filter((item, idx) => {
       return array.indexOf(item) === idx && this.contents_.indexOf(item) === -1;
     });
@@ -618,9 +608,8 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Returns whether the backpack is open-able.
    * @returns Whether the backpack is open-able.
-   * @protected
    */
-  isOpenable_(): boolean {
+  protected isOpenable_(): boolean {
     return !this.isOpen() &&
     this.options_.allowEmptyBackpackOpen ? true : this.getCount() > 0;
   }
@@ -653,9 +642,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Refreshes backpack flyout contents if the flyout is open.
-   * @protected
    */
-  maybeRefreshFlyoutContents_() {
+  protected maybeRefreshFlyoutContents_() {
     if (!this.isOpen()) {
       return;
     }
@@ -696,9 +684,8 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Handle click event.
    * @param e Mouse event.
-   * @protected
    */
-  onClick_(e: MouseEvent) {
+  protected onClick_(e: MouseEvent) {
     if (Blockly.browserEvents.isRightButton(e)) {
       return;
     }
@@ -730,9 +717,8 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles a mouseover event.
-   * @private
    */
-  onMouseOver_() {
+  private onMouseOver_() {
     if (this.isOpenable_()) {
       this.updateHoverStying_(true);
     }
@@ -740,18 +726,16 @@ export class Backpack extends Blockly.DragTarget {
 
   /**
    * Handles a mouseout event.
-   * @private
    */
-  onMouseOut_() {
+  private onMouseOut_() {
     this.updateHoverStying_(false);
   }
 
   /**
    * Adds or removes styling to darken the backpack to show it is interactable.
    * @param addClass True to add styling, false to remove.
-   * @protected
    */
-  updateHoverStying_(addClass: boolean) {
+  protected updateHoverStying_(addClass: boolean) {
     const backpackDarken = 'blocklyBackpackDarken';
     if (addClass) {
       Blockly.utils.dom.addClass(this.svgImg_, backpackDarken);
@@ -776,9 +760,8 @@ export class Backpack extends Blockly.DragTarget {
   /**
    * Prevents a workspace scroll and click event if the backpack is openable.
    * @param e A mouse down event.
-   * @protected
    */
-  blockMouseDownWhenOpenable_(e: MouseEvent) {
+  protected blockMouseDownWhenOpenable_(e: MouseEvent) {
     if (!Blockly.browserEvents.isRightButton(e) && this.isOpenable_()) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
