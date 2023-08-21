@@ -15,8 +15,17 @@ npm install @blockly/field-colour --save
 ```
 
 ## Usage
-See the [Blockly Colour Input Field documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour) on what parameters and configurations this field supports.
 
+This field accepts up to 4 parameters:
+  * "colour" to specify the default colour. Defaults to the first value in the
+    "colourOptions" array. Should be a "#rrggbb" string.
+  * "colourOptions" to specify the colour options in the dropdown. Defaults to
+    a set of 70 colors, including grays, reds, oranges, yellows, olives, greens,
+    turquoises, blues, purples, and violets. Should be "#rrggbb" strings.
+  * "colourTitles" to specify the tooltips for the colour options. Defaults to
+    the "#rrggbb" values of the provided colour options.
+  * "columns" to specify the number of columns the colour dropdown should have.
+    Defaults to 7.
 
 ### JavaScript
 ```js
@@ -26,7 +35,7 @@ Blockly.Blocks["test_field_colour"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("colour: ")
-      .appendField(new FieldColour(90), "FIELDNAME");
+      .appendField(new FieldColour("#ffcccc"), "FIELDNAME");
   }
 };
 ```
@@ -43,11 +52,17 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "field_colour",
                 "name": "FIELDNAME",
-                "value": 50
+                "colour": "#ffcccc"
             }
         ]
     }]);
 ```
+
+### API Reference
+
+* `setColours`: Sets the colour options, and optionally the titles for the
+  options. The colourss should be an array of #rrggbb strings.
+* `setColumns`: Sets the number of columns the dropdown should have.
 
 ## License
 
