@@ -461,12 +461,19 @@ const procedureDefMutator = {
       this.model_ = map.get(procedureId);
     }
 
-    if (state['params'] && !this.getProcedureModel().getParameters().length) {
-      for (let i = 0; i < state['params'].length; i++) {
-        const {name, id, paramId} = state['params'][i];
-        this.getProcedureModel().insertParameter(
-            new ObservableParameterModel(this.workspace, name, paramId, id), i);
+    const model = this.getProcedureModel();
+    const newParams = state['params'] ?? [];
+    const newIds = new Set(newParams.map((p) => p.id));
+    const currParams = model.getParameters();
+    for (let i = currParams.length - 1; i >= 0; i--) {
+      if (!newIds.has(currParams[i].getId)) {
+        model.deleteParameter(i);
       }
+    }
+    for (let i = 0; i < newParams.length; i++) {
+      const {name, id, paramId} = state['params'][i];
+      this.getProcedureModel().insertParameter(
+          new ObservableParameterModel(this.workspace, name, paramId, id), i);
     }
 
     this.doProcedureUpdate();
