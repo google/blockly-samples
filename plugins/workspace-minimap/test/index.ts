@@ -12,6 +12,9 @@ import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import {Minimap, PositionedMinimap} from '../src/index';
 
+let minimap = null;
+let workspace = null;
+
 /**
  * Create a workspace.
  * @param blocklyDiv The blockly container div.
@@ -21,8 +24,11 @@ import {Minimap, PositionedMinimap} from '../src/index';
 function createWorkspace(blocklyDiv: HTMLElement,
     options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
   // Creates the primary workspace and adds the minimap.
-  const workspace = Blockly.inject(blocklyDiv, options);
-  const minimap = new PositionedMinimap(workspace);
+  if (minimap) {
+    minimap.dispose();
+  }
+  workspace = Blockly.inject(blocklyDiv, options);
+  minimap = new PositionedMinimap(workspace);
   minimap.init();
 
   return workspace;
