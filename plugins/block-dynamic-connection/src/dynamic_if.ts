@@ -38,6 +38,10 @@ const DYNAMIC_IF_MIXIN = {
   /** Minimum number of inputs for this block. */
   minInputs: 1,
 
+  elseifCount: 0,
+
+  elseCount: 0,
+
   /**
    * Block for if/elseif/else statements. Must have one if input.
    * Can have any number of elseif inputs and optionally one else input.
@@ -61,15 +65,16 @@ const DYNAMIC_IF_MIXIN = {
    * Create XML to represent if/elseif/else inputs.
    * @returns XML storage element.
    */
-  mutationToDom(this: DynamicIfBlock): Element {
+  mutationToDom(this: DynamicIfBlock): Element|null {
+    if (!this.elseifCount && !this.elseCount) return null;
+
     const container = Blockly.utils.xml.createElement('mutation');
-    const inputNames = this.inputList
-        .filter((input: Blockly.Input) => input.name.includes('IF'))
-        .map((input: Blockly.Input) => input.name.replace('IF', '')).join(',');
-    container.setAttribute('inputs', inputNames);
-    const hasElse = !!this.getInput('ELSE');
-    container.setAttribute('else', String(hasElse));
-    container.setAttribute('next', String(this.inputCounter));
+    if (this.elseifCount) {
+      container.setAttribute('elseif', `${this.elseifCount}`);
+    }
+    if (this.elseCount) {
+      container.setAttribute('else', '1');
+    }
     return container;
   },
 
@@ -121,6 +126,7 @@ const DYNAMIC_IF_MIXIN = {
     }
     const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
     this.inputCounter = next;
+    this.finalizeConnections();
   },
 
   /**
@@ -128,20 +134,20 @@ const DYNAMIC_IF_MIXIN = {
    * @param xmlElement XML storage element.
    */
   deserializeCounts(this: DynamicIfBlock, xmlElement: Element): void {
-    const elseifCount = parseInt(
+    this.elseifCount = parseInt(
         xmlElement.getAttribute('elseif') ?? '0', 10) || 0;
-    const elseCount = parseInt(xmlElement.getAttribute('else') ?? '0', 10) || 0;
-    for (let i = 1; i <= elseifCount; i++) {
+    this.elseCount = parseInt(xmlElement.getAttribute('else') ?? '0', 10) || 0;
+    for (let i = 1; i <= this.elseifCount; i++) {
       this.appendValueInput('IF' + i).setCheck('Boolean').appendField(
           Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
       this.appendStatementInput('DO' + i).appendField(
           Blockly.Msg['CONTROLS_IF_MSG_THEN']);
     }
-    if (elseCount) {
+    if (this.elseCount) {
       this.appendStatementInput('ELSE').appendField(
           Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
     }
-    this.inputCounter = elseifCount + 1;
+    this.inputCounter = this.elseifCount + 1;
   },
 
   /**
@@ -229,6 +235,9 @@ const DYNAMIC_IF_MIXIN = {
 
     this.addCaseInputs(targetCaseConns);
     if (targetElseConn) this.addElseInput(targetElseConn);
+
+    this.elseifCount = targetCaseConns.length;
+    this.elseCount = targetElseConn ? 1 : 0;
   },
 
   /**
