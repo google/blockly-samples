@@ -11,7 +11,6 @@
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
-  "private": true,
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
