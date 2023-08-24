@@ -31,15 +31,13 @@ interface CaseInputPair {
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_IF_MIXIN = {
-  /* eslint-enable @typescript-eslint/naming-convention */
-  /** Counter for the next input to add to this block. */
-  inputCounter: 1,
-
   /** Minimum number of inputs for this block. */
   minInputs: 1,
 
+  /** Count of else-if cases. */
   elseifCount: 0,
 
+  /** Count of else cases (either 0 or 1). */
   elseCount: 0,
 
   /**
@@ -124,8 +122,6 @@ const DYNAMIC_IF_MIXIN = {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
     }
-    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
-    this.inputCounter = next;
     this.finalizeConnections();
   },
 
@@ -147,7 +143,6 @@ const DYNAMIC_IF_MIXIN = {
       this.appendStatementInput('ELSE').appendField(
           Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
     }
-    this.inputCounter = this.elseifCount + 1;
   },
 
   /**
@@ -170,20 +165,20 @@ const DYNAMIC_IF_MIXIN = {
   /**
    * Inserts a boolean value input and statement input at the specified index.
    * @param index Index of the input before which to add new inputs.
-   * @param caseNumber The clause/case name to apply to the new inputs.
+   * @param id An ID to append to the case statement input names to make them
+   *     unique.
    * @returns The added inputs.
    */
   insertElseIf(
-      this: DynamicIfBlock, index: number, caseNumber: number
+      this: DynamicIfBlock, index: number, id: string | number
   ): CaseInputPair {
-    const ifInput = this.appendValueInput('IF' + caseNumber)
+    const ifInput = this.appendValueInput('IF' + id)
         .setCheck('Boolean')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
-    const doInput = this.appendStatementInput('DO' + caseNumber)
+    const doInput = this.appendStatementInput('DO' + id)
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
-    this.moveInputBefore('IF' + caseNumber, this.inputList[index].name);
-    this.moveInputBefore('DO' + caseNumber, this.inputList[index + 1].name);
-    this.inputCounter++;
+    this.moveInputBefore('IF' + id, this.inputList[index].name);
+    this.moveInputBefore('DO' + id, this.inputList[index + 1].name);
     return {ifInput, doInput};
   },
 
@@ -207,7 +202,7 @@ const DYNAMIC_IF_MIXIN = {
     if (connection.targetConnection && input.name.includes('IF')) {
       const nextIfInput = this.inputList[inputIndex + 2];
       if (!nextIfInput || nextIfInput.name == 'ELSE') {
-        this.insertElseIf(inputIndex + 2, this.inputCounter);
+        this.insertElseIf(inputIndex + 2, Blockly.utils.idGenerator.genUid());
       } else {
         const nextIfConnection =
             nextIfInput &&
@@ -217,7 +212,7 @@ const DYNAMIC_IF_MIXIN = {
           nextIfConnection &&
           !nextIfConnection.getSourceBlock().isInsertionMarker()
         ) {
-          this.insertElseIf(inputIndex + 2, this.inputCounter);
+          this.insertElseIf(inputIndex + 2, Blockly.utils.idGenerator.genUid());
         }
       }
     }
