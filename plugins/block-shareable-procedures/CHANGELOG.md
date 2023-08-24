@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@3.0.3...@blockly/block-shareable-procedures@3.0.4) (2023-08-24)
+
+
+### Bug Fixes
+
+* shareable procedures incorrectly reconnecting caller child blocks during mutation for ([#1865](https://github.com/google/blockly-samples/issues/1865)) ([c0ce651](https://github.com/google/blockly-samples/commit/c0ce651edc2c3064a039ce465782a681e398f51a))
+
+
+
 ## [3.0.3](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@3.0.2...@blockly/block-shareable-procedures@3.0.3) (2023-08-17)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures

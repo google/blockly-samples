@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.0](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.1.1...@blockly/workspace-backpack@5.2.0) (2023-08-24)
+
+
+### Features
+
+* have backpack hide scrollbars when flyout opens ([#1842](https://github.com/google/blockly-samples/issues/1842)) ([b5f6f0b](https://github.com/google/blockly-samples/commit/b5f6f0b073bd465e20b54036322b808737b20c73))
+
+
+
 ## [5.1.1](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.1.0...@blockly/workspace-backpack@5.1.1) (2023-08-17)
 
 
