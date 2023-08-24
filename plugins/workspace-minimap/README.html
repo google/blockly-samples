@@ -24,7 +24,7 @@
       <div class="title">@blockly/workspace-minimap Demo</div>
       <div class="subtitle">A Blockly plugin.</div>
     </div>
-    0.0.0
+    0.1.0
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-minimap" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/workspace-minimap" class="button" target="_blank">View on npm</a>
@@ -51,13 +51,30 @@
     <article class="article-container site-width">
       <div class="article">
       <h1 id="blocklyworkspace-minimap-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/workspace-minimap <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
-<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds a minimap to the workspace. A minimap is a miniature version of your blocks that appears on top of your main workspace. This gives you an overview of what your code looks like, and how it is organized.</p>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin that adds a minimap to the workspace. A minimap is a miniature version of your blocks that appears on top of your main workspace. This gives you an overview of what your code looks like, and how it is organized.
+There is a focus region within the minimap that highlights the users's current viewport; this is on by default.</p>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/workspace-minimap/readme-media/sample_minimap.png" alt="Minimap example" /></p>
 <h2 id="installation">Installation</h2>
 <h3 id="yarn">Yarn</h3>
 <pre><code>yarn add @blockly/workspace-minimap</code></pre>
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/workspace-minimap --save</code></pre>
 <h2 id="usage">Usage</h2>
+<h3 id="positioned-minimap">Positioned Minimap</h3>
+<p>A positioned minimap is an embedded component that lies on top of the primary workspace. When using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. </p>
+<pre><code class="js language-js">import * as Blockly from 'blockly';
+import {PositionedMinimap} from '@blockly/workspace-minimap';
+
+// Inject Blockly.
+const workspace = Blockly.inject('blocklyDiv', {
+  toolbox: toolboxCategories,
+});
+
+// Initialize plugin.
+const minimap = new PositionedMinimap(workspace);
+minimap.init();</code></pre>
+<h3 id="unpositioned-minimap">Unpositioned Minimap</h3>
+<p>A raw minimap is an object whose size and position is configured using css.</p>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {Minimap} from '@blockly/workspace-minimap';
 
@@ -69,8 +86,31 @@ const workspace = Blockly.inject('blocklyDiv', {
 // Initialize plugin.
 const minimap = new Minimap(workspace);
 minimap.init();</code></pre>
+<pre><code class="css language-css">.blockly-minimap {
+  position: absolute;
+  box-shadow: none;
+  width: 200px;
+  height: 150px;
+  top: 0px;
+  left: 50vw;
+}</code></pre>
+<h3 id="configuration">Configuration</h3>
+<p>The minimap takes a workspace as input and it inherits its RTL and theme properties (so that they don't need to be configured manually).
+Additional styling of the minimap is possible with CSS. Use the <code>blockly-minimap</code> class for the minimap (box-shadow, etc.) and <code>blockly-focus-region</code> for the focus region (fill color, etc.).</p>
 <h2 id="api">API</h2>
-<p>API description coming soon…</p>
+<ul>
+<li><p><code>init</code>: Initializes the minimap.</p></li>
+<li><p><code>dispose</code>: Disposes of the minimap.</p></li>
+<li><p><code>isFocusEnabled</code>: Returns whether the focus region is enabled.</p></li>
+<li><p><code>enableFocusRegion</code>: Turns on the focus region in the minimap.</p></li>
+<li><p><code>disableFocusRegion</code>: Turns off the focus region in the minimap.</p></li>
+</ul>
+<p>The following methods are also accessible with PositionedMinimap instances.</p>
+<ul>
+<li><code>position</code>: Positions the minimap UI element.</li>
+<li><code>getBoundingRectangle</code>: Returns the bounding rectangle of the UI element in
+pixel units relative to the Blockly injection div.</li>
+</ul>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>
