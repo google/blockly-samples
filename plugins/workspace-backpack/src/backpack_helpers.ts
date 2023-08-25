@@ -59,7 +59,7 @@ function registerRemoveFromBackpack() {
       const ws = scope.block.workspace;
       if (ws.isFlyout && ws.targetWorkspace) {
         const backpack = ws.targetWorkspace.getComponentManager().getComponent(
-                             'backpack') as Backpack;
+            'backpack') as Backpack;
         if (backpack && backpack.getFlyout().getWorkspace().id === ws.id) {
           return 'enabled';
         }
@@ -95,7 +95,7 @@ function registerCopyToBackpack(disablePreconditionContainsCheck: boolean) {
         return;
       }
       const backpack = scope.block.workspace.getComponentManager().getComponent(
-                           'backpack') as Backpack;
+          'backpack') as Backpack;
       const backpackCount = backpack.getCount();
       return `${Blockly.Msg['COPY_TO_BACKPACK']} (${backpackCount})`;
     },
@@ -115,7 +115,7 @@ function registerCopyToBackpack(disablePreconditionContainsCheck: boolean) {
     },
     callback: function(scope: Blockly.ContextMenuRegistry.Scope) {
       const backpack = scope.block.workspace.getComponentManager().getComponent(
-                           'backpack') as Backpack;
+          'backpack') as Backpack;
       backpack.addBlock(scope.block);
     },
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
@@ -174,7 +174,7 @@ function registerPasteAllBackpack() {
         return;
       }
       const backpack = scope.workspace.getComponentManager().getComponent(
-                           'backpack') as Backpack;
+          'backpack') as Backpack;
       const backpackCount = backpack.getCount();
       return `${Blockly.Msg['PASTE_ALL_FROM_BACKPACK']} (${backpackCount})`;
     },
@@ -195,7 +195,7 @@ function registerPasteAllBackpack() {
       const contents = backpack.getContents();
       contents.forEach((blockText) => {
         const block = Blockly.serialization.blocks.append(
-                          JSON.parse(blockText), ws) as Blockly.BlockSvg;
+            JSON.parse(blockText), ws) as Blockly.BlockSvg;
         block.scheduleSnapAndBump();
       });
     },

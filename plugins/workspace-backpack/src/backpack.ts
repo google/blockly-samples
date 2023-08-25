@@ -60,27 +60,27 @@ export class Backpack extends Blockly.DragTarget implements
   /**
    * Width of the backpack. Used for clip path.
    */
-  protected readonly WIDTH = 40;
+  protected readonly width = 40;
 
   /**
    * Height of the backpack. Used for clip path.
    */
-  protected readonly HEIGHT = 60;
+  protected readonly height = 60;
 
   /**
    * Distance between backpack and bottom or top edge of workspace.
    */
-  protected readonly MARGIN_VERTICAL = 20;
+  protected readonly marginVertical = 20;
 
   /**
    * Distance between backpack and right or left edge of workspace.
    */
-  protected readonly MARGIN_HORIZONTAL = 20;
+  protected readonly marginHorizontal = 20;
 
   /**
    * Extent of hotspot on all sides beyond the size of the image.
    */
-  protected readonly HOTSPOT_MARGIN = 10;
+  protected readonly hotspotMargin = 10;
 
   /**
    * The SVG group containing the backpack.
@@ -92,23 +92,23 @@ export class Backpack extends Blockly.DragTarget implements
   /**
    * Top offset for backpack in svg.
    */
-  private SPRITE_TOP = 10;
+  private spriteTop = 10;
 
   /**
    * Left offset for backpack in svg.
    */
-  private SPRITE_LEFT = 20;
+  private spriteLeft = 20;
 
   /**
    * Width/Height of svg.
    */
-  private readonly SPRITE_SIZE = 80;
+  private readonly spriteSize = 80;
 
   protected initialized = false;
 
   /**
    * Constructor for a backpack.
-   * @param targetWorkspace The target workspace that
+   * @param workspace The target workspace that
    *     the backpack will be added to.
    * @param backpackOptions The backpack options to use.
    */
@@ -130,7 +130,7 @@ export class Backpack extends Blockly.DragTarget implements
     }
 
     if (Blockly.registry.hasItem(
-            Blockly.registry.Type.SERIALIZER, 'backpack')) {
+        Blockly.registry.Type.SERIALIZER, 'backpack')) {
       return;
     }
 
@@ -230,22 +230,22 @@ export class Backpack extends Blockly.DragTarget implements
         this.svgGroup);
     Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT, {
-          'width': this.WIDTH,
-          'height': this.HEIGHT,
+          'width': this.width,
+          'height': this.height,
         },
         clip);
     this.svgImg = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.IMAGE, {
           'class': 'blocklyBackpack',
           'clip-path': 'url(#blocklyBackpackClipPath' + rnd + ')',
-          'width': this.SPRITE_SIZE + 'px',
-          'x': -this.SPRITE_LEFT,
-          'height': this.SPRITE_SIZE + 'px',
-          'y': -this.SPRITE_TOP,
+          'width': this.spriteSize + 'px',
+          'x': -this.spriteLeft,
+          'height': this.spriteSize + 'px',
+          'y': -this.spriteTop,
         },
         this.svgGroup);
     this.svgImg.setAttributeNS(
-        Blockly.utils.dom.XLINK_NS, 'xlink:href', BACKPACK_SVG_DATAURI);
+        Blockly.utils.dom.XLINK_NS, 'xlink:href', backpackSvgDataUri);
 
     Blockly.utils.dom.insertAfter(
         this.svgGroup, this.workspace.getBubbleCanvas());
@@ -296,10 +296,10 @@ export class Backpack extends Blockly.DragTarget implements
     }
 
     const clientRect = this.svgGroup.getBoundingClientRect();
-    const top = clientRect.top + this.SPRITE_TOP - this.HOTSPOT_MARGIN;
-    const bottom = top + this.HEIGHT + 2 * this.HOTSPOT_MARGIN;
-    const left = clientRect.left + this.SPRITE_LEFT - this.HOTSPOT_MARGIN;
-    const right = left + this.WIDTH + 2 * this.HOTSPOT_MARGIN;
+    const top = clientRect.top + this.spriteTop - this.hotspotMargin;
+    const bottom = top + this.height + 2 * this.hotspotMargin;
+    const left = clientRect.left + this.spriteLeft - this.hotspotMargin;
+    const right = left + this.width + 2 * this.hotspotMargin;
     return new Blockly.utils.Rect(top, bottom, left, right);
   }
 
@@ -310,7 +310,7 @@ export class Backpack extends Blockly.DragTarget implements
    */
   getBoundingRectangle(): Blockly.utils.Rect {
     return new Blockly.utils.Rect(
-        this.top, this.top + this.HEIGHT, this.left, this.left + this.WIDTH);
+        this.top, this.top + this.height, this.left, this.left + this.width);
   }
 
   /**
@@ -338,13 +338,13 @@ export class Backpack extends Blockly.DragTarget implements
         (this.workspace.horizontalLayout && !this.workspace.RTL)) {
       // Right corner placement.
       this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH - this.MARGIN_HORIZONTAL;
+          this.width - this.marginHorizontal;
       if (hasVerticalScrollbars && !this.workspace.RTL) {
         this.left -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Left corner placement.
-      this.left = this.MARGIN_HORIZONTAL;
+      this.left = this.marginHorizontal;
       if (hasVerticalScrollbars && this.workspace.RTL) {
         this.left += Blockly.Scrollbar.scrollbarThickness;
       }
@@ -355,24 +355,24 @@ export class Backpack extends Blockly.DragTarget implements
     if (startAtBottom) {
       // Bottom corner placement
       this.top = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-          this.HEIGHT - this.MARGIN_VERTICAL;
+          this.height - this.marginVertical;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
         this.top -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Upper corner placement
-      this.top = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL;
+      this.top = metrics.absoluteMetrics.top + this.marginVertical;
     }
 
     // Check for collision and bump if needed.
     let boundingRect = this.getBoundingRectangle();
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
-        if (startAtBottom) {  // Bump up.
-          this.top = otherEl.top - this.HEIGHT - this.MARGIN_VERTICAL;
-        } else {  // Bump down.
-          this.top = otherEl.bottom + this.MARGIN_VERTICAL;
+        if (startAtBottom) { // Bump up.
+          this.top = otherEl.top - this.height - this.marginVertical;
+        } else { // Bump down.
+          this.top = otherEl.bottom + this.marginVertical;
         }
         // Recheck other savedPositions
         boundingRect = this.getBoundingRectangle();
@@ -423,7 +423,7 @@ export class Backpack extends Blockly.DragTarget implements
     const json = Blockly.serialization.blocks.save(block);
 
     // Add a 'kind' key so the flyout can recognize it as a block.
-    (json as any).kind = 'BLOCK';
+    (json as Blockly.utils.toolbox.FlyoutItemInfo).kind = 'BLOCK';
 
     // The keys to remove.
     const keys = ['id', 'height', 'width', 'pinned', 'enabled'];
@@ -581,10 +581,10 @@ export class Backpack extends Blockly.DragTarget implements
     if (this.contents.length > 0) {
       this.svgImg.setAttributeNS(
           Blockly.utils.dom.XLINK_NS, 'xlink:href',
-          BACKPACK_FILLED_SVG_DATAURI);
+          backpackFilledSvgDataUri);
     } else {
       this.svgImg.setAttributeNS(
-          Blockly.utils.dom.XLINK_NS, 'xlink:href', BACKPACK_SVG_DATAURI);
+          Blockly.utils.dom.XLINK_NS, 'xlink:href', backpackSvgDataUri);
     }
   }
 
@@ -704,10 +704,10 @@ export class Backpack extends Blockly.DragTarget implements
 
   /**
    * Handles when a cursor with a block or bubble exits this drag target.
-   * @param _dragElement The block or bubble currently
+   * @param dragElement The block or bubble currently
    *   being dragged.
    */
-  onDragExit(_dragElement: Blockly.IDraggable) {
+  onDragExit(dragElement: Blockly.IDraggable) {
     this.updateHoverStying(false);
   }
 
@@ -759,7 +759,7 @@ export class Backpack extends Blockly.DragTarget implements
    */
   protected blockMouseDownWhenOpenable(e: MouseEvent) {
     if (!Blockly.browserEvents.isRightButton(e) && this.isOpenable()) {
-      e.stopPropagation();  // Don't start a workspace scroll.
+      e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
 }
@@ -767,7 +767,7 @@ export class Backpack extends Blockly.DragTarget implements
 /**
  * Base64 encoded data uri for backpack  icon.
  */
-const BACKPACK_SVG_DATAURI =
+const backpackSvgDataUri =
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
     '9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiBoZWlnaHQ9IjI0cHgiIH' +
     'ZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIGZpbGw9IiM0NTVBNjQiPjxnPjxyZW' +
@@ -784,7 +784,7 @@ const BACKPACK_SVG_DATAURI =
 /**
  * Base64 encoded data uri for backpack  icon when filled.
  */
-const BACKPACK_FILLED_SVG_DATAURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
+const backpackFilledSvgDataUri = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
     'lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYX' +
     'RlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2Zw' +
     'ogICB3aWR0aD0iMjQiCiAgIGhlaWdodD0iMjQiCiAgIHZpZXdCb3g9IjAgMCAyNCAyNCIKIC' +

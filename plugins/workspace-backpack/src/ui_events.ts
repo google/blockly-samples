@@ -14,7 +14,7 @@ import * as Blockly from 'blockly/core';
 /**
  * Name of event that records a backpack open.
  */
-export const BACKPACK_OPEN = 'backpack_open';
+export const backpackOpen = 'backpack_open';
 
 /**
  * A UI event representing a backpack opening or closing.
@@ -23,7 +23,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
   /**
    * Type of this event.
    */
-  type = BACKPACK_OPEN;
+  type = backpackOpen;
 
   /**
    * Class for a backpack open event.
@@ -40,7 +40,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
    * Encode the event as JSON.
    * @returns JSON representation.
    */
-  override toJson(): BackpackOpenEventJson {
+  toJson(): BackpackOpenEventJson {
     const json = super.toJson();
     json['isOpen'] = this.isOpen;
     return json;
@@ -49,9 +49,13 @@ export class BackpackOpen extends Blockly.Events.UiBase {
   /**
    * Decode the JSON event.
    * @param json JSON representation.
+   * @param workspace A workspace to create the event on.
+   * @param event an instance of BackpackOpen to deserialize into.
+   * @returns A newly deserialized BackpackOpen event.
    */
   static fromJson(
-      json: BackpackOpenEventJson, workspace: Blockly.Workspace, event: any) {
+      json: BackpackOpenEventJson, workspace: Blockly.Workspace,
+      event: unknown): BackpackOpen {
     const newEvent = super.fromJson(json, workspace, event) as BackpackOpen;
     newEvent.isOpen = json['isOpen'];
     return newEvent;
@@ -64,12 +68,12 @@ export interface BackpackOpenEventJson extends
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, BACKPACK_OPEN, BackpackOpen);
+    Blockly.registry.Type.EVENT, backpackOpen, BackpackOpen);
 
 /**
  * Name of event that records a backpack change.
  */
-export const BACKPACK_CHANGE = 'backpack_change';
+export const backpackChange = 'backpack_change';
 
 /**
  * A UI event representing a change in a backpack's contents.
@@ -78,8 +82,8 @@ export class BackpackChange extends Blockly.Events.UiBase {
   /**
    * Type of this event.
    */
-  type = BACKPACK_CHANGE;
+  type = backpackChange;
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, BACKPACK_CHANGE, BackpackChange);
+    Blockly.registry.Type.EVENT, backpackChange, BackpackChange);
