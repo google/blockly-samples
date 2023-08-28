@@ -64,6 +64,7 @@ const DYNAMIC_IF_MIXIN = {
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicIfBlock): Element|null {
+    this.finalizeConnections();
     if (!this.elseifCount && !this.elseCount) return null;
 
     const container = Blockly.utils.xml.createElement('mutation');
@@ -122,7 +123,6 @@ const DYNAMIC_IF_MIXIN = {
       this.appendStatementInput('ELSE')
           .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
     }
-    this.finalizeConnections();
   },
 
   /**
@@ -231,7 +231,7 @@ const DYNAMIC_IF_MIXIN = {
     this.addCaseInputs(targetCaseConns);
     if (targetElseConn) this.addElseInput(targetElseConn);
 
-    this.elseifCount = targetCaseConns.length;
+    this.elseifCount = Math.max(targetCaseConns.length - 1, 0);
     this.elseCount = targetElseConn ? 1 : 0;
   },
 
