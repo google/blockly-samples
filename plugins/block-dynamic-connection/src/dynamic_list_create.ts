@@ -23,7 +23,7 @@ type DynamicListCreateMixinType = typeof DYNAMIC_LIST_CREATE_MIXIN;
 const DYNAMIC_LIST_CREATE_MIXIN = {
   /* eslint-enable @typescript-eslint/naming-convention */
   /** Counter for the next input to add to this block. */
-  inputCounter: 2,
+  inputCounter: 3,
 
   /** Minimum number of inputs for this block. */
   minInputs: 2,
@@ -34,7 +34,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     this.setStyle('list_blocks');
     this.appendValueInput('ADD0')
         .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
-    this.appendValueInput('ADD1');
+    for (let i = 1; i < this.minInputs; i++) this.appendValueInput(`ADD${i}`);
     this.setOutput(true, 'Array');
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
   },
@@ -101,7 +101,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * @returns The index before which to insert a new input, or null if no input
    *     should be added.
    */
-  getIndexForNewInput(
+  findInputIndexForConnection(
       this: DynamicListCreateBlock,
       connection: Blockly.Connection): number | null {
     if (!connection.targetConnection) {
@@ -141,7 +141,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    */
   onPendingConnection(
       this: DynamicListCreateBlock, connection: Blockly.Connection): void {
-    const insertIndex = this.getIndexForNewInput(connection);
+    const insertIndex = this.findInputIndexForConnection(connection);
     if (insertIndex == null) {
       return;
     }
@@ -154,25 +154,58 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * drag ends if the dragged block had a pending connection with this block.
    */
   finalizeConnections(this: DynamicListCreateBlock): void {
-    if (this.inputList.length > this.minInputs) {
-      let toRemove: string[] = [];
-      this.inputList.forEach((input: Blockly.Input) => {
-        if (!input.connection?.targetConnection) {
-          toRemove.push(input.name);
-        }
-      });
+    const targetConns =
+        this.inputList.map((i) => i.connection?.targetConnection);
+    this.deleteDynamicInputs();
+    this.addItemInputs(this.removeUnnecessaryEmptyConns(targetConns));
+  },
 
-      if (this.inputList.length - toRemove.length < this.minInputs) {
-        // Always show at least two inputs
-        toRemove = toRemove.slice(this.minInputs);
+  /**
+   * Deletes all inputs except for the first one, which is static.
+   */
+  deleteDynamicInputs(this: DynamicListCreateBlock): void {
+    for (let i = this.inputList.length - 1; i >= 1; i--) {
+      this.removeInput(this.inputList[i].name);
+    }
+  },
+
+  /**
+   * Filters the given target connections so that empty connections are removed,
+   * unless we need those to reach the minimum input count. Empty connections
+   * are removed starting at the end of the array.
+   * @param targetConns The list of connections associated with inputs.
+   * @returns A filtered list of connections (or null/undefined) which should
+   *     be attached to inputs.
+   */
+  removeUnnecessaryEmptyConns(
+      targetConns: Array<Blockly.Connection | undefined | null>
+  ): Array<Blockly.Connection | undefined | null> {
+    const filteredConns = [...targetConns];
+    for (let i = filteredConns.length - 1; i >= 0; i--) {
+      if (!filteredConns[i] && filteredConns.length > this.minInputs) {
+        filteredConns.splice(i, 1);
       }
-      toRemove.forEach((inputName) => this.removeInput(inputName));
-      // The first input should have the block text. If we removed the
-      // first input, add the block text to the new first input.
-      if (this.inputList[0].fieldRow.length == 0) {
-        this.inputList[0]
-            .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
-      }
+    }
+    return filteredConns;
+  },
+
+  /**
+   * Adds inputs based on the given array of target cons. An input is added for
+   * every entry in the array (if it does not already exist). If the entry is
+   * a connection and not null/undefined the connection will be connected to
+   * the input.
+   * @param targetConns The connections defining the inputs to add.
+   */
+  addItemInputs(
+      this: DynamicListCreateBlock,
+      targetConns: Array<Blockly.Connection | undefined | null>,
+  ): void {
+    for (let i = 0; i < targetConns.length; i++) {
+      let input = this.getInput(`ADD${i}`);
+      if (!input) input = this.appendValueInput(`ADD${i}`);
+
+      const targetConn = targetConns[i];
+      if (targetConn) input.connection?.connect(targetConn);
     }
   },
 };
