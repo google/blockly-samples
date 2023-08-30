@@ -64,7 +64,12 @@ const DYNAMIC_IF_MIXIN = {
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicIfBlock): Element|null {
+    // If we call finalizeConnections here without disabling events, we get into
+    // an event loop.
+    Blockly.Events.disable();
     this.finalizeConnections();
+    Blockly.Events.enable();
+
     if (!this.elseifCount && !this.elseCount) return null;
 
     const container = Blockly.utils.xml.createElement('mutation');
