@@ -111,7 +111,12 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @param state The state to apply to this block, ie the item count.
    */
   loadExtraState: function(
-      this: DynamicTextJoinBlock, state: {[x: string]: any}) {
+      this: DynamicTextJoinBlock, state: ({[x: string]: any} | string)) {
+    if (typeof state === 'string') {
+      this.domToMutation(Blockly.utils.xml.textToDom(state));
+      return;
+    }
+
     this.itemCount = state['itemCount'];
     // minInputs are added automatically.
     for (let i = this.minInputs; i < this.itemCount; i++) {

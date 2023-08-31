@@ -438,6 +438,101 @@ suite('Text join block', function() {
         assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
       },
     },
+    {
+      title: 'multiple inputs with children - json with stringified old XML',
+      json: {
+        'type': 'dynamic_text_join',
+        'id': '1',
+        'extraState':
+            '<mutation inputs="ADD0,ADD1,ADD2,ADD3" next="4"></mutation>',
+        'inputs': {
+          'ADD0': {
+            'block': {
+              'type': 'text',
+              'id': '2',
+              'fields': {
+                'TEXT': 'a',
+              },
+            },
+          },
+          'ADD1': {
+            'block': {
+              'type': 'text',
+              'id': '3',
+              'fields': {
+                'TEXT': 'b',
+              },
+            },
+          },
+          'ADD2': {
+            'block': {
+              'type': 'text',
+              'id': '4',
+              'fields': {
+                'TEXT': 'c',
+              },
+            },
+          },
+          'ADD3': {
+            'block': {
+              'type': 'text',
+              'id': '5',
+              'fields': {
+                'TEXT': 'd',
+              },
+            },
+          },
+        },
+      },
+      expectedJson: {
+        'type': 'dynamic_text_join',
+        'id': '1',
+        'extraState': {
+          'itemCount': 4,
+        },
+        'inputs': {
+          'ADD0': {
+            'block': {
+              'type': 'text',
+              'id': '2',
+              'fields': {
+                'TEXT': 'a',
+              },
+            },
+          },
+          'ADD1': {
+            'block': {
+              'type': 'text',
+              'id': '3',
+              'fields': {
+                'TEXT': 'b',
+              },
+            },
+          },
+          'ADD2': {
+            'block': {
+              'type': 'text',
+              'id': '4',
+              'fields': {
+                'TEXT': 'c',
+              },
+            },
+          },
+          'ADD3': {
+            'block': {
+              'type': 'text',
+              'id': '5',
+              'fields': {
+                'TEXT': 'd',
+              },
+            },
+          },
+        },
+      },
+      assertBlockStructure: (block) => {
+        assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
+      },
+    },
   ];
   testHelpers.runSerializationTestSuite(testCases);
 });

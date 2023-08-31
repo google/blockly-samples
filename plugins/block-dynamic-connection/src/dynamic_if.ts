@@ -171,7 +171,12 @@ const DYNAMIC_IF_MIXIN = {
    * @param state The state to apply to this block, ie the else if count
    *     and else state.
    */
-  loadExtraState: function(this: DynamicIfBlock, state: IfExtraState) {
+  loadExtraState: function(this: DynamicIfBlock, state: IfExtraState | string) {
+    if (typeof state === 'string') {
+      this.domToMutation(Blockly.utils.xml.textToDom(state));
+      return;
+    }
+
     this.elseifCount = state['elseIfCount'] || 0;
     this.elseCount = state['hasElse'] ? 1 : 0;
     for (let i = 1; i <= this.elseifCount; i++) {
