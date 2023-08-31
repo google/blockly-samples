@@ -28,8 +28,12 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
   /** Minimum number of inputs for this block. */
   minInputs: 2,
 
+  itemCount: 0,
+
   /** Block for concatenating any number of strings. */
   init(this: DynamicListCreateBlock): void {
+    this.itemCount = this.minInputs;
+
     this.setHelpUrl(Blockly.Msg['LISTS_CREATE_WITH_HELPURL']);
     this.setStyle('list_blocks');
     this.appendValueInput('ADD0')
@@ -45,10 +49,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    */
   mutationToDom(this: DynamicListCreateBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
-    const inputNames =
-        this.inputList.map((input: Blockly.Input) => input.name).join(',');
-    container.setAttribute('inputs', inputNames);
-    container.setAttribute('next', String(this.inputCounter));
+    container.setAttribute('items', `${this.itemCount}`);
     return container;
   },
 
@@ -86,13 +87,13 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * @param xmlElement XML storage element.
    */
   deserializeCounts(this: DynamicListCreateBlock, xmlElement: Element): void {
-    const itemCount = Math.max(
+    this.itemCount = Math.max(
         parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
-    // Two inputs are added automatically.
-    for (let i = this.minInputs; i < itemCount; i++) {
+    // minInputs are added automatically.
+    for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);
     }
-    this.inputCounter = itemCount;
+    this.inputCounter = this.itemCount + 1;
   },
 
   /**
@@ -155,9 +156,11 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    */
   finalizeConnections(this: DynamicListCreateBlock): void {
     const targetConns =
-        this.inputList.map((i) => i.connection?.targetConnection);
+        this.removeUnnecessaryEmptyConns(
+            this.inputList.map((i) => i.connection?.targetConnection));
     this.deleteDynamicInputs();
-    this.addItemInputs(this.removeUnnecessaryEmptyConns(targetConns));
+    this.addItemInputs(targetConns);
+    this.itemCount = targetConns.length;
   },
 
   /**
