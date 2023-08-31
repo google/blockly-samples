@@ -513,14 +513,11 @@ function registerEditorCommands(editor, playground) {
   const loadXml = () => {
     const xml = editor.getModel().getValue();
     const workspace = playground.getWorkspace();
-    Blockly.Events.disable();
     try {
       Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(xml), workspace);
     } catch (e) {
       // If this fails that's fine.
       return false;
-    } finally {
-      Blockly.Events.enable();
     }
     return true;
   };
