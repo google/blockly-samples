@@ -97,6 +97,29 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
   },
 
   /**
+   * Returns the state of this block as a JSON serializable object.
+   * @returns The state of this block, ie the item count.
+   */
+  saveExtraState: function(this: DynamicTextJoinBlock): {itemCount: number} {
+    return {
+      'itemCount': this.itemCount,
+    };
+  },
+
+  /**
+   * Applies the given state to this block.
+   * @param state The state to apply to this block, ie the item count.
+   */
+  loadExtraState: function(
+      this: DynamicTextJoinBlock, state: {[x: string]: any}) {
+    this.itemCount = state['itemCount'];
+    // minInputs are added automatically.
+    for (let i = this.minInputs; i < this.itemCount; i++) {
+      this.appendValueInput('ADD' + i);
+    }
+  },
+
+  /**
    * Check whether a new input should be added and determine where it should go.
    * @param connection The connection that has a pending connection.
    * @returns The index before which to insert a new input, or null if no input
