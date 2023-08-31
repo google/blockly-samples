@@ -28,8 +28,13 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
   /** Minimum number of inputs for this block. */
   minInputs: 2,
 
+  /** Count of the item inputs. */
+  itemCount: 0,
+
   /** Block for concatenating any number of strings. */
   init(this: DynamicTextJoinBlock): void {
+    this.itemCount = this.minInputs;
+
     this.setHelpUrl(Blockly.Msg['TEXT_JOIN_HELPURL']);
     this.setStyle('text_blocks');
     this.addFirstInput();
@@ -44,10 +49,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    */
   mutationToDom(this: DynamicTextJoinBlock): Element {
     const container = Blockly.utils.xml.createElement('mutation');
-    const inputNames =
-        this.inputList.map((input: Blockly.Input) => input.name).join(',');
-    container.setAttribute('inputs', inputNames);
-    container.setAttribute('next', String(this.inputCounter));
+    container.setAttribute('items', `${this.itemCount}`);
     return container;
   },
 
@@ -85,13 +87,13 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @param xmlElement XML storage element.
    */
   deserializeCounts(this: DynamicTextJoinBlock, xmlElement: Element): void {
-    const itemCount = Math.max(
+    this.itemCount = Math.max(
         parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
-    // Two inputs are added automatically.
-    for (let i = this.minInputs; i < itemCount; i++) {
+    // minInputs are added automatically.
+    for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);
     }
-    this.inputCounter = itemCount;
+    this.inputCounter = this.itemCount + 1;
   },
 
   /**
@@ -159,6 +161,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
             this.inputList.map((i) => i.connection?.targetConnection));
     this.tearDownBlock();
     this.addItemInputs(targetConns);
+    this.itemCount = targetConns.length;
   },
 
   /** Deletes all inputs on this block so it can be rebuilt. */
