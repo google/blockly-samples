@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@3.0.4...@blockly/block-shareable-procedures@3.0.5) (2023-08-31)
+
+
+### Bug Fixes
+
+* loading parameters for shareable procedure blocks ([#1874](https://github.com/google/blockly-samples/issues/1874)) ([117469b](https://github.com/google/blockly-samples/commit/117469bb225e5fad11f377b33866e10753cbd7b4))
+
+
+
 ## [3.0.4](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@3.0.3...@blockly/block-shareable-procedures@3.0.4) (2023-08-24)
 
 

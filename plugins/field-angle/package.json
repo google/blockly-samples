@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-angle",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "A Blockly angle field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
