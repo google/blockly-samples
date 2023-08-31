@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-multilineinput Demo</div>
       <div class="subtitle">A Blockly multilineinput field.</div>
     </div>
-    3.0.3
+    3.0.4
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-multilineinput" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-multilineinput" class="button" target="_blank">View on npm</a>
@@ -58,20 +58,32 @@
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-multilineinput --save</code></pre>
 <h2 id="usage">Usage</h2>
-<p>See the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/multiline-text-input">Blockly Multiline Text Input Field documentation</a> on what parameters and configurations this field supports.</p>
+<p>This field accepts up to 3 parameters:</p>
+<ul>
+<li>"text" to specify the default text. Defaults to <code>""</code>.</li>
+<li>"maxLines" to specify the maximum number of lines displayed before scrolling
+functionality is enabled. Defaults to <code>Infinity</code>.</li>
+<li>"spellcheck" to specify whether spell checking is enabled. Defaults to
+<code>true</code>.</li>
+</ul>
+<p>The multiline input field is a subclass of Blockly.FieldInput</p>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldMultilineInput} from '@blockly/field-multilineinput';
+
 Blockly.Blocks["test_field_multilineinput"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("multilineinput: ")
-      .appendField(new FieldMultilineInput(90), "FIELDNAME");
+      .appendField(
+          new FieldMultilineInput("some text \n with newlines"),
+          "FIELDNAME");
   }
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-multilineinput';
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "test_field_multilineinput",
@@ -80,10 +92,18 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "field_multilineinput",
                 "name": "FIELDNAME",
-                "value": 50
+                "text": "some text \n with newlines"
             }
-        ]
     }]);</code></pre>
+<h3 id="api-reference">API reference</h3>
+<ul>
+<li><code>setMaxLines</code>: Sets the maximum number of displayed lines before
+scrolling functionality is enabled.</li>
+<li><code>getMaxLines</code>: Returns the maximum number of displayed lines before
+scrolling functionality is enabled.</li>
+<li><code>setSpellcheck</code>: Sets whether spell checking is enabled.</li>
+<li><code>getSpellcheck</code>: Returns whether spell checking is enabled.</li>
+</ul>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-colour Demo</div>
       <div class="subtitle">A Blockly colour field.</div>
     </div>
-    3.0.3
+    3.0.4
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour" class="button" target="_blank">View on npm</a>
@@ -58,7 +58,18 @@
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-colour --save</code></pre>
 <h2 id="usage">Usage</h2>
-<p>See the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour">Blockly Colour Input Field documentation</a> on what parameters and configurations this field supports.</p>
+<p>This field accepts up to 4 parameters:</p>
+<ul>
+<li>"colour" to specify the default colour. Defaults to the first value in the
+"colourOptions" array. Should be a "#rrggbb" string.</li>
+<li>"colourOptions" to specify the colour options in the dropdown. Defaults to
+a set of 70 colors, including grays, reds, oranges, yellows, olives, greens,
+turquoises, blues, purples, and violets. Should be "#rrggbb" strings.</li>
+<li>"colourTitles" to specify the tooltips for the colour options. Defaults to
+the "#rrggbb" values of the provided colour options.</li>
+<li>"columns" to specify the number of columns the colour dropdown should have.
+Defaults to 7.</li>
+</ul>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldColour} from '@blockly/field-colour';
@@ -66,7 +77,7 @@ Blockly.Blocks["test_field_colour"] = {
   init: function () {
     this.appendDummyInput()
       .appendField("colour: ")
-      .appendField(new FieldColour(90), "FIELDNAME");
+      .appendField(new FieldColour("#ffcccc"), "FIELDNAME");
   }
 };</code></pre>
 <h3 id="json">JSON</h3>
@@ -80,10 +91,16 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "field_colour",
                 "name": "FIELDNAME",
-                "value": 50
+                "colour": "#ffcccc"
             }
         ]
     }]);</code></pre>
+<h3 id="api-reference">API Reference</h3>
+<ul>
+<li><code>setColours</code>: Sets the colour options, and optionally the titles for the
+options. The colourss should be an array of #rrggbb strings.</li>
+<li><code>setColumns</code>: Sets the number of columns the dropdown should have.</li>
+</ul>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>
