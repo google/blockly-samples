@@ -485,6 +485,47 @@ suite('If block', function() {
             block, [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/], 'dynamic_if');
       },
     },
+    {
+      title: 'one if one else with children - json',
+      json: {
+        'type': 'dynamic_if',
+        'id': '1',
+        'extraState': {
+          'elseIfCount': 1,
+          'hasElse': true,
+        },
+        'inputs': {
+          'IF0': {
+            'block': {
+              'type': 'logic_boolean',
+              'id': '2',
+              'fields': {
+                'BOOL': 'TRUE',
+              },
+            },
+          },
+          'IF1': {
+            'block': {
+              'type': 'logic_boolean',
+              'id': '3',
+              'fields': {
+                'BOOL': 'TRUE',
+              },
+            },
+          },
+          'ELSE': {
+            'block': {
+              'type': 'text_print',
+              'id': '4',
+            },
+          },
+        },
+      },
+      assertBlockStructure: (block) => {
+        assertBlockStructure(
+            block, [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/], 'dynamic_if');
+      },
+    },
   ];
   testHelpers.runSerializationTestSuite(testCases);
 });

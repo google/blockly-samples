@@ -29,6 +29,12 @@ interface CaseInputPair {
   doInput: Blockly.Input;
 }
 
+/** Extra state for serializing controls_if blocks. */
+interface IfExtraState {
+  elseIfCount?: number;
+  hasElse?: boolean;
+}
+
 /* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_IF_MIXIN = {
   /**
@@ -134,6 +140,40 @@ const DYNAMIC_IF_MIXIN = {
     this.elseifCount = parseInt(
         xmlElement.getAttribute('elseif') ?? '0', 10) || 0;
     this.elseCount = parseInt(xmlElement.getAttribute('else') ?? '0', 10) || 0;
+    for (let i = 1; i <= this.elseifCount; i++) {
+      this.insertElseIf(this.inputList.length, i);
+    }
+    if (this.elseCount) {
+      this.addElseInput();
+    }
+  },
+
+  /**
+   * Returns the state of this block as a JSON serializable object.
+   * @returns The state of this block, ie the else if count and else state.
+   */
+  saveExtraState: function(this: DynamicIfBlock): IfExtraState | null {
+    if (!this.elseifCount && !this.elseCount) {
+      return null;
+    }
+    const state = Object.create(null);
+    if (this.elseifCount) {
+      state['elseIfCount'] = this.elseifCount;
+    }
+    if (this.elseCount) {
+      state['hasElse'] = true;
+    }
+    return state;
+  },
+
+  /**
+   * Applies the given state to this block.
+   * @param state The state to apply to this block, ie the else if count
+   *     and else state.
+   */
+  loadExtraState: function(this: DynamicIfBlock, state: IfExtraState) {
+    this.elseifCount = state['elseIfCount'] || 0;
+    this.elseCount = state['hasElse'] ? 1 : 0;
     for (let i = 1; i <= this.elseifCount; i++) {
       this.insertElseIf(this.inputList.length, i);
     }
