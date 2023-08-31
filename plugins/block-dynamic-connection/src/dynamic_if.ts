@@ -122,8 +122,7 @@ const DYNAMIC_IF_MIXIN = {
     }
     const hasElse = xmlElement.getAttribute('else');
     if (hasElse == 'true') {
-      this.appendStatementInput('ELSE')
-          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
+      this.addElseInput();
     }
   },
 
@@ -136,14 +135,10 @@ const DYNAMIC_IF_MIXIN = {
         xmlElement.getAttribute('elseif') ?? '0', 10) || 0;
     this.elseCount = parseInt(xmlElement.getAttribute('else') ?? '0', 10) || 0;
     for (let i = 1; i <= this.elseifCount; i++) {
-      this.appendValueInput('IF' + i).setCheck('Boolean').appendField(
-          Blockly.Msg['CONTROLS_IF_MSG_ELSEIF']);
-      this.appendStatementInput('DO' + i).appendField(
-          Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+      this.insertElseIf(this.inputList.length, i);
     }
     if (this.elseCount) {
-      this.appendStatementInput('ELSE').appendField(
-          Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+      this.addElseInput();
     }
   },
 
@@ -193,8 +188,7 @@ const DYNAMIC_IF_MIXIN = {
   onPendingConnection(
       this: DynamicIfBlock, connection: Blockly.Connection): void {
     if (connection.type === Blockly.NEXT_STATEMENT && !this.getInput('ELSE')) {
-      this.appendStatementInput('ELSE')
-          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'], 'else');
+      this.addElseInput();
     }
     const inputIndex = this.findInputIndexForConnection(connection);
     if (inputIndex === null) {
@@ -232,7 +226,9 @@ const DYNAMIC_IF_MIXIN = {
 
     this.addFirstCase();
     this.addCaseInputs(targetCaseConns);
-    if (targetElseConn) this.addElseInput(targetElseConn);
+    if (targetElseConn) {
+      this.addElseInput().connection?.connect(targetElseConn);
+    }
 
     this.elseifCount = Math.max(targetCaseConns.length - 1, 0);
     this.elseCount = targetElseConn ? 1 : 0;
@@ -288,13 +284,12 @@ const DYNAMIC_IF_MIXIN = {
   },
 
   /**
-   * Adds an else input to this block, and attaches the given connection to it.
-   * @param targetElseConn The connection to connect to the new else input.
+   * Adds an else input to this block.
+   * @returns The appended input.
    */
-  addElseInput(this: DynamicIfBlock, targetElseConn: Blockly.Connection): void {
-    this.appendStatementInput('ELSE')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'])
-        .connection?.connect(targetElseConn);
+  addElseInput(this: DynamicIfBlock): Blockly.Input {
+    return this.appendStatementInput('ELSE')
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
   },
 
   /**
