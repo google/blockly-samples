@@ -45,6 +45,12 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicTextJoinBlock): Element {
+    // If we call finalizeConnections here without disabling events, we get into
+    // an event loop.
+    Blockly.Events.disable();
+    this.finalizeConnections();
+    Blockly.Events.enable();
+
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('items', `${this.itemCount}`);
     return container;
