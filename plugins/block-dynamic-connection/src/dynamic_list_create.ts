@@ -22,12 +22,10 @@ type DynamicListCreateMixinType = typeof DYNAMIC_LIST_CREATE_MIXIN;
 /* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_LIST_CREATE_MIXIN = {
   /* eslint-enable @typescript-eslint/naming-convention */
-  /** Counter for the next input to add to this block. */
-  inputCounter: 3,
-
   /** Minimum number of inputs for this block. */
   minInputs: 2,
 
+  /** Count of item inputs. */
   itemCount: 0,
 
   /** Block for concatenating any number of strings. */
@@ -78,8 +76,6 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
       this.inputList[0]
           .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
     }
-    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
-    this.inputCounter = next;
   },
 
   /**
@@ -93,7 +89,6 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);
     }
-    this.inputCounter = this.itemCount + 1;
   },
 
   /**
@@ -146,7 +141,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     if (insertIndex == null) {
       return;
     }
-    this.appendValueInput('ADD' + (this.inputCounter++));
+    this.appendValueInput(`ADD${Blockly.utils.idGenerator.genUid()}`);
     this.moveNumberedInputBefore(this.inputList.length - 1, insertIndex);
   },
 
