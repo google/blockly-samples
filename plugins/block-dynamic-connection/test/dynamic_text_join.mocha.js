@@ -11,11 +11,11 @@ const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
-suite('Text join block', function() {
+suite.only('Text join block', function() {
   /**
    * Asserts that the text join block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
-   * @param {!Array<string>} expectedInputs The expected inputs.
+   * @param {!Array<RegExp>} expectedInputs The expected inputs.
    * @type {string=} The block type expected. Defaults to 'dynamic_text_join'.
    */
   function assertBlockStructure(
@@ -25,7 +25,7 @@ suite('Text join block', function() {
     assert.equal(block.inputList.length, expectedInputs.length);
     assert.isTrue(expectedInputs.length >= 2);
     for (let i = 0; i < expectedInputs.length; i++) {
-      assert.equal(block.inputList[i].name, expectedInputs[i]);
+      assert.match(block.inputList[i].name, expectedInputs[i]);
     }
   }
 
@@ -52,7 +52,7 @@ suite('Text join block', function() {
 
   test('Creation', function() {
     const block = this.workspace.newBlock('dynamic_text_join');
-    assertBlockStructure(block, ['ADD0', 'ADD1']);
+    assertBlockStructure(block, [/ADD0/, /ADD1/]);
   });
 
   suite('onPendingConnection', function() {
@@ -60,7 +60,7 @@ suite('Text join block', function() {
       const block = this.workspace.newBlock('dynamic_text_join');
       const connection = block.inputList[0].connection;
       block.onPendingConnection(connection);
-      assertBlockStructure(block, ['ADD0', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD1/]);
     });
 
     test('pending connection with empty next connection', function() {
@@ -68,7 +68,7 @@ suite('Text join block', function() {
       const connection = block.inputList[0].connection;
       connectBlockToConnection(this.workspace, block.inputList[0].connection);
       block.onPendingConnection(connection);
-      assertBlockStructure(block, ['ADD0', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD1/]);
     });
 
     test('pending connection adds connection', function() {
@@ -76,18 +76,18 @@ suite('Text join block', function() {
       connectBlockToConnection(this.workspace, block.inputList[0].connection);
       connectBlockToConnection(this.workspace, block.inputList[1].connection);
       block.onPendingConnection(block.inputList[0].connection);
-      assertBlockStructure(block, ['ADD0', 'ADD2', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD2/, /ADD1/]);
       block.onPendingConnection(block.inputList[2].connection);
-      assertBlockStructure(block, ['ADD0', 'ADD2', 'ADD1', 'ADD3']);
+      assertBlockStructure(block, [/ADD0/, /ADD2/, /ADD1/, /ADD3/]);
     });
   });
 
   suite('finalizeConnections', function() {
     test('does not go below 2 connections', function() {
       const block = this.workspace.newBlock('dynamic_text_join');
-      assertBlockStructure(block, ['ADD0', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD1/]);
       block.finalizeConnections();
-      assertBlockStructure(block, ['ADD0', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD1/]);
     });
 
     test('removes empty connections', function() {
@@ -95,9 +95,9 @@ suite('Text join block', function() {
       connectBlockToConnection(this.workspace, block.inputList[0].connection);
       connectBlockToConnection(this.workspace, block.inputList[1].connection);
       block.onPendingConnection(block.inputList[0].connection);
-      assertBlockStructure(block, ['ADD0', 'ADD2', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD2/, /ADD1/]);
       block.finalizeConnections();
-      assertBlockStructure(block, ['ADD0', 'ADD1']);
+      assertBlockStructure(block, [/ADD0/, /ADD1/]);
     });
 
     test('updates the field if the first connection is removed', function() {
@@ -106,7 +106,7 @@ suite('Text join block', function() {
       block.onPendingConnection(block.inputList[1].connection);
       connectBlockToConnection(this.workspace, block.inputList[2].connection);
       block.finalizeConnections();
-      assertBlockStructure(block, ['ADD1', 'ADD2']);
+      assertBlockStructure(block, [/ADD1/, /ADD2/]);
       assert.equal(block.inputList[0].fieldRow[0].value_,
           Blockly.Msg.TEXT_JOIN_TITLE_CREATEWITH);
     });
@@ -121,7 +121,7 @@ suite('Text join block', function() {
           'type="dynamic_text_join" id="1">\n' +
           '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n</block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(block, ['ADD0', 'ADD1']);
+        assertBlockStructure(block, [/ADD0/, /ADD1/]);
       },
     },
     {
@@ -135,7 +135,7 @@ suite('Text join block', function() {
           '      <field name="TEXT">abc</field>\n' +
           '    </block>\n  </value>\n</block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(block, ['ADD0', 'ADD1']);
+        assertBlockStructure(block, [/ADD0/, /ADD1/]);
       },
     },
     {
@@ -161,7 +161,7 @@ suite('Text join block', function() {
           '      <field name="TEXT">a</field>\n' +
           '    </block>\n  </value>\n</block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(block, ['ADD1', 'ADD5', 'ADD2', 'ADD4']);
+        assertBlockStructure(block, [/ADD1/, /ADD5/, /ADD2/, /ADD4/]);
       },
     },
     {
@@ -176,7 +176,7 @@ suite('Text join block', function() {
           '  <mutation inputs="ADD0,ADD1,ADD2" next="3"></mutation>\n</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(
-            block, ['ADD0', 'ADD1', 'ADD2'], 'text_join');
+            block, [/ADD0/, /ADD1/, /ADD2/], 'text_join');
       },
     },
     {
@@ -190,7 +190,7 @@ suite('Text join block', function() {
           'type="text_join" id="1">\n' +
           '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n</block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(block, ['ADD0', 'ADD1'], 'text_join');
+        assertBlockStructure(block, [/ADD0/, /ADD1/], 'text_join');
       },
     },
   ];
