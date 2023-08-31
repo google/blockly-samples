@@ -11,7 +11,7 @@ const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
-suite.only('List create block', function() {
+suite('List create block', function() {
   /**
    * Asserts that the list create block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
@@ -257,7 +257,6 @@ suite.only('List create block', function() {
     },
     {
       title: 'multiple non-sequential inputs with children - old serialization',
-      skip: true,
       xml:
           '<block xmlns="https://developers.google.com/blockly/xml"' +
           ' type="dynamic_list_create" id="1">\n' +

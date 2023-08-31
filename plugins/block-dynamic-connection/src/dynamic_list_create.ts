@@ -34,8 +34,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
     this.setHelpUrl(Blockly.Msg['LISTS_CREATE_WITH_HELPURL']);
     this.setStyle('list_blocks');
-    this.appendValueInput('ADD0')
-        .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
+    this.addFirstInput();
     for (let i = 1; i < this.minInputs; i++) this.appendValueInput(`ADD${i}`);
     this.setOutput(true, 'Array');
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
@@ -159,16 +158,16 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     const targetConns =
         this.removeUnnecessaryEmptyConns(
             this.inputList.map((i) => i.connection?.targetConnection));
-    this.deleteDynamicInputs();
+    this.tearDownBlock();
     this.addItemInputs(targetConns);
     this.itemCount = targetConns.length;
   },
 
   /**
-   * Deletes all inputs except for the first one, which is static.
+   * Deletes all inputs on the block so it can be rebuilt.
    */
-  deleteDynamicInputs(this: DynamicListCreateBlock): void {
-    for (let i = this.inputList.length - 1; i >= 1; i--) {
+  tearDownBlock(this: DynamicListCreateBlock): void {
+    for (let i = this.inputList.length - 1; i >= 0; i--) {
       this.removeInput(this.inputList[i].name);
     }
   },
@@ -204,13 +203,25 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
       this: DynamicListCreateBlock,
       targetConns: Array<Blockly.Connection | undefined | null>,
   ): void {
-    for (let i = 0; i < targetConns.length; i++) {
-      let input = this.getInput(`ADD${i}`);
-      if (!input) input = this.appendValueInput(`ADD${i}`);
+    const input = this.addFirstInput();
+    const firstConn = targetConns[0];
+    if (firstConn) input.connection?.connect(firstConn);
+
+    for (let i = 1; i < targetConns.length; i++) {
+      const input = this.appendValueInput(`ADD${i}`);
 
       const targetConn = targetConns[i];
       if (targetConn) input.connection?.connect(targetConn);
     }
+  },
+
+  /**
+   * Adds the top input with the label to this block.
+   * @returns The added input.
+   */
+  addFirstInput(this: DynamicListCreateBlock): Blockly.Input {
+    return this.appendValueInput('ADD0')
+        .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
   },
 };
 
