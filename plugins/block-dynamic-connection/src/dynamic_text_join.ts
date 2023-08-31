@@ -22,9 +22,6 @@ type DynamicTextJoinMixinType = typeof DYNAMIC_TEXT_JOIN_MIXIN;
 /* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_TEXT_JOIN_MIXIN = {
   /* eslint-enable @typescript-eslint/naming-convention */
-  /** Counter for the next input to add to this block. */
-  inputCounter: 2,
-
   /** Minimum number of inputs for this block. */
   minInputs: 2,
 
@@ -78,8 +75,6 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
       this.inputList[0]
           .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     }
-    const next = parseInt(xmlElement.getAttribute('next') ?? '0', 10) || 0;
-    this.inputCounter = next;
   },
 
   /**
@@ -93,7 +88,6 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);
     }
-    this.inputCounter = this.itemCount + 1;
   },
 
   /**
@@ -147,7 +141,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     if (insertIndex == null) {
       return;
     }
-    this.appendValueInput('ADD' + (this.inputCounter++));
+    this.appendValueInput(`ADD${Blockly.utils.idGenerator.genUid()}`);
     this.moveNumberedInputBefore(this.inputList.length - 1, insertIndex);
   },
 
