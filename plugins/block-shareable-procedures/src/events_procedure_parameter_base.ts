@@ -29,6 +29,7 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
       procedure: Blockly.procedures.IProcedureModel,
       readonly parameter: Blockly.procedures.IParameterModel) {
     super(workspace, procedure);
+    this.recordUndo = false;
   }
 
   /**
