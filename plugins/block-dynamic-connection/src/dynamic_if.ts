@@ -31,7 +31,10 @@ interface CaseInputPair {
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_IF_MIXIN = {
-  /** Minimum number of inputs for this block. */
+  /**
+   * Minimum number of inputs for this block.
+   * @deprecated This is unused.
+   */
   minInputs: 1,
 
   /** Count of else-if cases. */
@@ -47,13 +50,7 @@ const DYNAMIC_IF_MIXIN = {
   init(this: DynamicIfBlock): void {
     this.setHelpUrl(Blockly.Msg['CONTROLS_IF_HELPURL']);
     this.setStyle('logic_blocks');
-
-    this.appendValueInput('IF0')
-        .setCheck('Boolean')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
-    this.appendStatementInput('DO0')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
-
+    this.addFirstCase();
     this.setNextStatement(true);
     this.setPreviousStatement(true);
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
@@ -231,8 +228,9 @@ const DYNAMIC_IF_MIXIN = {
     const targetCaseConns = this.collectTargetCaseConns();
     const targetElseConn = this.getInput('ELSE')?.connection?.targetConnection;
 
-    this.deleteDynamicInputs();
+    this.tearDownBlock();
 
+    this.addFirstCase();
     this.addCaseInputs(targetCaseConns);
     if (targetElseConn) this.addElseInput(targetElseConn);
 
@@ -260,12 +258,9 @@ const DYNAMIC_IF_MIXIN = {
     return targetConns;
   },
 
-  /**
-   * Deletes all of the inputs on this block except for the default "if"
-   * and "do" inputs.
-   */
-  deleteDynamicInputs(this: DynamicIfBlock): void {
-    for (let i = this.inputList.length - 1; i >= 2; i--) {
+  /** Deletes all inputs on the block so it can be rebuilt. */
+  tearDownBlock(this: DynamicIfBlock): void {
+    for (let i = this.inputList.length - 1; i >= 0; i--) {
       this.removeInput(this.inputList[i].name);
     }
   },
@@ -300,6 +295,18 @@ const DYNAMIC_IF_MIXIN = {
     this.appendStatementInput('ELSE')
         .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE'])
         .connection?.connect(targetElseConn);
+  },
+
+  /**
+   * Adds the first 'IF' and 'DO' inputs and their associated labels to this
+   * block.
+   */
+  addFirstCase(this: DynamicIfBlock): void {
+    this.appendValueInput('IF0')
+        .setCheck('Boolean')
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
+    this.appendStatementInput('DO0')
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
   },
 };
 
