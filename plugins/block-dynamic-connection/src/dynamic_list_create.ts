@@ -35,7 +35,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     this.setHelpUrl(Blockly.Msg['LISTS_CREATE_WITH_HELPURL']);
     this.setStyle('list_blocks');
     this.addFirstInput();
-    for (let i = 1; i < this.minInputs; i++) this.appendValueInput(`ADD${i}`);
+    for (let i = 1; i < this.minInputs; i++) {
+      this.appendValueInput(`ADD${i}`);
+    }
     this.setOutput(true, 'Array');
     this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
   },
