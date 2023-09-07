@@ -165,9 +165,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     this.itemCount = targetConns.length;
   },
 
-  /**
-   * Deletes all inputs on the block so it can be rebuilt.
-   */
+  /** Deletes all inputs on the block so it can be rebuilt. */
   tearDownBlock(this: DynamicListCreateBlock): void {
     for (let i = this.inputList.length - 1; i >= 0; i--) {
       this.removeInput(this.inputList[i].name);
