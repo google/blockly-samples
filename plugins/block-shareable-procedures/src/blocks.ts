@@ -1003,7 +1003,7 @@ const procedureCallerUpdateShapeMixin = {
    * data model.
    */
   updateParameters_: function() {
-    this.ensureArgsMapIsInitialized_();
+    this.syncArgsMap_();
     this.deleteAllArgInputs_();
     this.addParametersLabel__();
     this.createArgInputs_();
@@ -1017,7 +1017,7 @@ const procedureCallerUpdateShapeMixin = {
    * not remove entries from the array, since blocks can be disconnected
    * temporarily during mutation (which triggers this method).
    */
-  ensureArgsMapIsInitialized_: function() {
+  syncArgsMap_: function() {
     // We look at the prevParams array because the current state of the block
     // matches the old params, not the new params state.
     for (const [i, p] of this.prevParams_.entries()) {

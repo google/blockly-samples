@@ -24,7 +24,6 @@ let workspace2;
 
 document.addEventListener('DOMContentLoaded', function() {
   injectTwoWorkspaces();
-  // injectOneWorkspace();
 });
 
 /**
