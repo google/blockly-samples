@@ -123,6 +123,7 @@ export function createPlayground(
         // Load / Save playground state.
         const playgroundState = new LocalStorageState(`playgroundState_${id}`, {
           activeTab: 'XML',
+          playgroundOpen: true,
           autoGenerate: config && config.auto != undefined ? config.auto : true,
           workspaceXml: '',
         });
@@ -377,18 +378,26 @@ export function createPlayground(
         guiElement.style.minWidth = '100%';
         guiContainer.appendChild(guiElement);
 
-        // Create minimize button
-        minimizeButton.addEventListener('click', (e) => {
-          if (playgroundDiv.style.display === 'none') {
+        // Click handler to toggle the playground.
+        const togglePlayground = (e) => {
+          const shouldOpen = playgroundDiv.style.display === 'none';
+          if (shouldOpen) {
             playgroundDiv.style.display = 'flex';
             minimizeButton.textContent = 'Collapse';
           } else {
             playgroundDiv.style.display = 'none';
             minimizeButton.textContent = 'Expand';
           }
-
+          playgroundState.set('playgroundOpen', shouldOpen);
+          playgroundState.save();
           Blockly.svgResize(workspace);
-        });
+        };
+        minimizeButton.addEventListener('click', togglePlayground);
+
+        // Start minimized if the playground was previously closed.
+        if (playgroundState.get('playgroundOpen') === false) {
+          togglePlayground();
+        }
 
         // Playground API.
 
