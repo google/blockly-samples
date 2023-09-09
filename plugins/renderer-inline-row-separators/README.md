@@ -2,6 +2,16 @@
 
 A [Blockly](https://www.npmjs.com/package/blockly) plugin to create a renderer that treats dummy inputs like row separators, allowing block designers to arrange multiple inline value input connectors on separate rows by inserting dummy inputs between them. Example blocks demonstrating the feature are provided, as well as a function to add the feature to your own renderer.
 
+## When to use
+
+### For Blockly versions >= v10.2.0
+
+This plugin is deprecated because its functionality will be made obsolete by a new feature being introduced in [Blockly v10.2.0](https://github.com/google/blockly/releases/tag/blockly-v10.2.0): row separators can now be easily added either by adding newline characters ("\n") in the message field of JSON block definitions, or by adding EndRowInputs to blocks via the JavaScript API. For more information, see the [Block Inputs documentation](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks#block_inputs).
+
+### For Blockly versions < v10.2.0
+
+It is strongly recommended that instead of using this plugin, you upgrade to a version of Blockly >= v10.2.0. However if that is not possible, you can use the current version of this plugin. Note that this plugin will be removed in the future, so by newly installing it now, you will be introducing a dependency you will be forced to remove in the future if you want to remain up-to-date with core Blockly.
+
 ## Installation
 
 ### Yarn
