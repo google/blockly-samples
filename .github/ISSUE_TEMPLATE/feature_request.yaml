@@ -1,4 +1,4 @@
-name: Feature request
+name: Make a feature request ✨
 description: Suggest an idea for this project
 labels: 'type: feature request, triage'
 body:
@@ -18,7 +18,7 @@ body:
     id: component
     attributes:
       label: Component
-      description: Which component has a bug?
+      description: Which component does this request apply to?
       placeholder: e.g. workspace search plugin, custom generator codelab, RTL demo
   - type: textarea
     id: problem

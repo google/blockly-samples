@@ -1,13 +1,13 @@
-name: Bug Report
+name: Report a bug 🐛
 description: Create a report to help us improve
 labels: 'type: bug, triage'
 body:
   - type: markdown
     attributes:
       value: >
-        If you're asking a question about how to use Blockly in your application,
-        please ask questions on the mailing list, instead of filing issues:
-        https://groups.google.com/forum/#!forum/blockly
+        Thank you for taking the time to fill out a bug report!
+        If you have a question about how to use Blockly in your application,
+        please ask on the [forum](https://groups.google.com/forum/#!forum/blockly) instead of filing an issue.
   - type: checkboxes
     id: duplicates
     attributes:
