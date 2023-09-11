@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question ❓
+    url: https://groups.google.com/forum/#!forum/blockly
+    about: Go to the Blockly developer forum, where you can ask and answer questions.
