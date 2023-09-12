@@ -11,7 +11,7 @@ const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
-suite.only('Text join block', function() {
+suite('Text join block', function() {
   /**
    * Asserts that the text join block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
@@ -361,6 +361,176 @@ suite.only('Text join block', function() {
           '  <mutation items="2"></mutation>\n</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/], 'lists_create_with');
+      },
+    },
+    {
+      title: 'two inputs one child - json',
+      json: {
+        'type': 'dynamic_text_join',
+        'id': '1',
+        'extraState': {
+          'itemCount': 2,
+        },
+        'inputs': {
+          'ADD1': {
+            'block': {
+              'type': 'text',
+              'id': 2,
+              'fields': {
+                'TEXT': 'abc',
+              },
+            },
+          },
+        },
+      },
+      assertBlockStructure: (block) => {
+        assertBlockStructure(block, [/ADD0/, /ADD1/]);
+      },
+    },
+    {
+      title: 'multiple inputs with children - json',
+      json: {
+        'type': 'dynamic_text_join',
+        'id': '1',
+        'extraState': {
+          'itemCount': 4,
+        },
+        'inputs': {
+          'ADD0': {
+            'block': {
+              'type': 'text',
+              'id': '2',
+              'fields': {
+                'TEXT': 'a',
+              },
+            },
+          },
+          'ADD1': {
+            'block': {
+              'type': 'text',
+              'id': '3',
+              'fields': {
+                'TEXT': 'b',
+              },
+            },
+          },
+          'ADD2': {
+            'block': {
+              'type': 'text',
+              'id': '4',
+              'fields': {
+                'TEXT': 'c',
+              },
+            },
+          },
+          'ADD3': {
+            'block': {
+              'type': 'text',
+              'id': '5',
+              'fields': {
+                'TEXT': 'd',
+              },
+            },
+          },
+        },
+      },
+      assertBlockStructure: (block) => {
+        assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
+      },
+    },
+    {
+      title: 'multiple inputs with children - json with stringified old XML',
+      json: {
+        'type': 'dynamic_text_join',
+        'id': '1',
+        'extraState':
+            '<mutation inputs="ADD0,ADD1,ADD2,ADD3" next="4"></mutation>',
+        'inputs': {
+          'ADD0': {
+            'block': {
+              'type': 'text',
+              'id': '2',
+              'fields': {
+                'TEXT': 'a',
+              },
+            },
+          },
+          'ADD1': {
+            'block': {
+              'type': 'text',
+              'id': '3',
+              'fields': {
+                'TEXT': 'b',
+              },
+            },
+          },
+          'ADD2': {
+            'block': {
+              'type': 'text',
+              'id': '4',
+              'fields': {
+                'TEXT': 'c',
+              },
+            },
+          },
+          'ADD3': {
+            'block': {
+              'type': 'text',
+              'id': '5',
+              'fields': {
+                'TEXT': 'd',
+              },
+            },
+          },
+        },
+      },
+      expectedJson: {
+        'type': 'dynamic_text_join',
+        'id': '1',
+        'extraState': {
+          'itemCount': 4,
+        },
+        'inputs': {
+          'ADD0': {
+            'block': {
+              'type': 'text',
+              'id': '2',
+              'fields': {
+                'TEXT': 'a',
+              },
+            },
+          },
+          'ADD1': {
+            'block': {
+              'type': 'text',
+              'id': '3',
+              'fields': {
+                'TEXT': 'b',
+              },
+            },
+          },
+          'ADD2': {
+            'block': {
+              'type': 'text',
+              'id': '4',
+              'fields': {
+                'TEXT': 'c',
+              },
+            },
+          },
+          'ADD3': {
+            'block': {
+              'type': 'text',
+              'id': '5',
+              'fields': {
+                'TEXT': 'd',
+              },
+            },
+          },
+        },
+      },
+      assertBlockStructure: (block) => {
+        assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
       },
     },
   ];
