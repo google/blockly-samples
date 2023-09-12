@@ -27,7 +27,6 @@ export abstract class ProcedureBase extends Blockly.Events.Abstract {
       readonly procedure: Blockly.procedures.IProcedureModel) {
     super();
     this.workspaceId = workspace.id;
-    this.recordUndo = false;
   }
 
   /**
