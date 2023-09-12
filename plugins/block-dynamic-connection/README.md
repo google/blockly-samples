@@ -18,14 +18,14 @@ import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';
 ## API
 - `overrideOldBlockDefinitions`: Replaces the Blockly default blocks with the
   dynamic connection blocks. This enables projects to use the dynamic block
-  plugin without changing existing XML.
+  plugin without changing existing XML/JSON.
 
 
 ## Blocks
 
-* dynamic_text_join replaces text_join
-* dynamic_list_create replaces lists_create_with
-* dynamic_if replaces controls_if
+* `dynamic_text_join` replaces `text_join`
+* `dynamic_list_create` replaces `lists_create_with`
+* `dynamic_if` replaces `controls_if`
 
 ## License
 Apache 2.0
