@@ -20,7 +20,8 @@ interface PlaygroundAPI {
   addCheckboxAction: (name: string, callback:
       (workspace: Blockly.Workspace, value: boolean) => void,
     folder?: string, defaultValue?: boolean) => dat.GUIController;
-  addGenerator: () => void;
+  addGenerator: (label: string, generator: Blockly.Generator,
+    language?: string) => void;
   getCurrentTab: () => PlaygroundTab;
   getGUI: () => DevTools.GUI;
   getWorkspace: () => Blockly.WorkspaceSvg;
