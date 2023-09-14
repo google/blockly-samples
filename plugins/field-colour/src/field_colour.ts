@@ -199,12 +199,45 @@ export class FieldColour extends Blockly.Field<string> {
       constants.FIELD_COLOUR_DEFAULT_WIDTH,
       constants.FIELD_COLOUR_DEFAULT_HEIGHT,
     );
-    if (!constants.FIELD_COLOUR_FULL_BLOCK) {
-      this.createBorderRect_();
-      this.getBorderRect().style['fillOpacity'] = '1';
-    } else if (this.sourceBlock_ instanceof Blockly.BlockSvg) {
-      this.clickTarget_ = this.sourceBlock_.getSvgRoot();
+    this.createBorderRect_();
+    this.getBorderRect().style['fillOpacity'] = '1';
+    this.getBorderRect().setAttribute('stroke', '#fff');
+    if (this.isFullBlockField()) {
+      this.clickTarget_ = (this.sourceBlock_ as Blockly.BlockSvg).getSvgRoot();
     }
+  }
+
+  /**
+   * Defines whether this field should take up the full block or not.
+   */
+  protected isFullBlockField(): boolean {
+    const block = this.getSourceBlock();
+    if (!block) throw new Blockly.UnattachedFieldError();
+
+    const constants = this.getConstants();
+    return block.isSimpleReporter() && !!constants?.FIELD_COLOUR_FULL_BLOCK;
+  }
+
+  /**
+   * @returns True if this block is a value block with a single editable field.
+   * @internal
+   */
+  blockIsSimpleReporter(): boolean {
+    const block = this.getSourceBlock();
+    if (!block) throw new Blockly.UnattachedFieldError();
+
+    if (!block.outputConnection) return false;
+
+    let nFields = 0;
+    for (const input of block.inputList) {
+      if (input.connection) return false;
+      // TODO: This comment is innacurate. Not sure what we want the spec to be.
+      // Count the number of fields excluding text fields.
+      for (const _ of input.fieldRow) {
+        nFields++;
+      }
+    }
+    return nFields <= 1;
   }
 
   /**
@@ -213,20 +246,97 @@ export class FieldColour extends Blockly.Field<string> {
    * @internal
    */
   override applyColour() {
-    const constants = this.getConstants();
-    // This can't happen, but TypeScript thinks it can and lint forbids `!.`.
-    if (!constants) throw Error('Constants not found');
-    if (!constants.FIELD_COLOUR_FULL_BLOCK) {
-      if (this.borderRect_) {
-        this.borderRect_.style.fill = this.getValue() as string;
-      }
-    } else if (this.sourceBlock_ instanceof Blockly.BlockSvg) {
-      this.sourceBlock_.pathObject.svgPath.setAttribute(
-        'fill',
-        this.getValue() as string,
-      );
-      this.sourceBlock_.pathObject.svgPath.setAttribute('stroke', '#fff');
+    const block = this.getSourceBlock() as Blockly.BlockSvg | null;
+    if (!block) throw new Blockly.UnattachedFieldError();
+
+    if (!this.fieldGroup_) return;
+
+    const borderRect = this.borderRect_;
+    if (!borderRect) {
+      throw new Error('The border rect has not been initialized');
     }
+
+    if (!this.isFullBlockField()) {
+      borderRect.style.display = 'block';
+      borderRect.style.fill = this.getValue() as string;
+    } else {
+      borderRect.style.display = 'none';
+      // In general, do *not* let fields control the color of blocks. Having the
+      // field control the color is unexpected, and could have performance
+      // impacts.
+      block.pathObject.svgPath.setAttribute('fill', this.getValue() as string);
+      block.pathObject.svgPath.setAttribute('stroke', '#fff');
+    }
+  }
+
+  /**
+   * Returns the height and width of the field.
+   *
+   * This should *in general* be the only place render_ gets called from.
+   *
+   * @returns Height and width.
+   */
+  override getSize(): Blockly.utils.Size {
+    if (this.getConstants()?.FIELD_COLOUR_FULL_BLOCK) {
+      // In general, do *not* let fields control the color of blocks. Having the
+      // field control the color is unexpected, and could have performance
+      // impacts.
+      // Full block fields have more control of the block than they should
+      // (i.e. updating fill colour) so they always need to be rerendered.
+      this.render_();
+      this.isDirty_ = false;
+    }
+    return super.getSize();
+  }
+
+  /**
+   * Updates the colour of the block to reflect whether this is a full
+   * block field or not.
+   */
+  protected override render_() {
+    super.render_();
+
+    const block = this.getSourceBlock() as Blockly.BlockSvg | null;
+    if (!block) throw new Blockly.UnattachedFieldError();
+    // In general, do *not* let fields control the color of blocks. Having the
+    // field control the color is unexpected, and could have performance
+    // impacts.
+    // Whenever we render, the field may no longer be a full-block-field so
+    // we need to update the colour.
+    if (this.getConstants()!.FIELD_COLOUR_FULL_BLOCK) block.applyColour();
+  }
+
+  /**
+   * Updates the size of the field based on whether it is a full block field
+   * or not.
+   *
+   * @param margin margin to use when positioning the field.
+   */
+  protected updateSize_(margin?: number) {
+    const constants = this.getConstants();
+    const xOffset =
+      margin !== undefined
+        ? margin
+        : !this.isFullBlockField()
+        ? constants!.FIELD_BORDER_RECT_X_PADDING
+        : 0;
+    let totalWidth = xOffset * 2;
+    let contentWidth = 0;
+    if (!this.isFullBlockField()) {
+      contentWidth = constants!.FIELD_COLOUR_DEFAULT_WIDTH;
+      totalWidth += contentWidth;
+    }
+
+    let totalHeight = constants!.FIELD_TEXT_HEIGHT;
+    if (!this.isFullBlockField()) {
+      totalHeight = Math.max(totalHeight, constants!.FIELD_BORDER_RECT_HEIGHT);
+    }
+
+    this.size_.height = totalHeight;
+    this.size_.width = totalWidth;
+
+    this.positionTextElement_(xOffset, contentWidth);
+    this.positionBorderRect_();
   }
 
   /**
@@ -241,27 +351,6 @@ export class FieldColour extends Blockly.Field<string> {
       return null;
     }
     return Blockly.utils.colour.parse(newValue);
-  }
-
-  /**
-   * Update the value of this colour field, and update the displayed colour.
-   *
-   * @param newValue The value to be saved.  The default validator guarantees
-   *     that this is a colour in '#rrggbb' format.
-   */
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected override doValueUpdate_(newValue: string) {
-    this.value_ = newValue;
-    if (this.borderRect_) {
-      this.borderRect_.style.fill = newValue;
-    } else if (
-      this.sourceBlock_ &&
-      this.sourceBlock_.rendered &&
-      this.sourceBlock_ instanceof Blockly.BlockSvg
-    ) {
-      this.sourceBlock_.pathObject.svgPath.setAttribute('fill', newValue);
-      this.sourceBlock_.pathObject.svgPath.setAttribute('stroke', '#fff');
-    }
   }
 
   /**
