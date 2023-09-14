@@ -27,7 +27,7 @@
     "@typescript-eslint/parser": "^5.0.0",
     "babel-eslint": "^10.1.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^46.2.6"
+    "eslint-plugin-jsdoc": "^46.8.0"
   },
   "peerDependencies": {
     "eslint": "7.x"

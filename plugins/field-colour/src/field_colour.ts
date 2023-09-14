@@ -209,6 +209,7 @@ export class FieldColour extends Blockly.Field<string> {
 
   /**
    * Defines whether this field should take up the full block or not.
+   * @returns True if this field should take up the full block. False otherwise.
    */
   protected isFullBlockField(): boolean {
     const block = this.getSourceBlock();
@@ -228,16 +229,10 @@ export class FieldColour extends Blockly.Field<string> {
 
     if (!block.outputConnection) return false;
 
-    let nFields = 0;
     for (const input of block.inputList) {
-      if (input.connection) return false;
-      // TODO: This comment is innacurate. Not sure what we want the spec to be.
-      // Count the number of fields excluding text fields.
-      for (const _ of input.fieldRow) {
-        nFields++;
-      }
+      if (input.connection || input.fieldRow.length > 1) return false;
     }
-    return nFields <= 1;
+    return true;
   }
 
   /**
@@ -293,6 +288,7 @@ export class FieldColour extends Blockly.Field<string> {
    * Updates the colour of the block to reflect whether this is a full
    * block field or not.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override render_() {
     super.render_();
 
@@ -312,14 +308,13 @@ export class FieldColour extends Blockly.Field<string> {
    *
    * @param margin margin to use when positioning the field.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   protected updateSize_(margin?: number) {
     const constants = this.getConstants();
     const xOffset =
-      margin !== undefined
-        ? margin
-        : !this.isFullBlockField()
-        ? constants!.FIELD_BORDER_RECT_X_PADDING
-        : 0;
+      margin !== undefined ?
+          margin : !this.isFullBlockField() ?
+            constants!.FIELD_BORDER_RECT_X_PADDING : 0;
     let totalWidth = xOffset * 2;
     let contentWidth = 0;
     if (!this.isFullBlockField()) {
