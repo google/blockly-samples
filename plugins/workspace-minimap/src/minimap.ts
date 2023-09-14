@@ -80,6 +80,7 @@ export class Minimap {
             },
             readOnly: true,
             theme: this.primaryWorkspace.getTheme(),
+            renderer: this.primaryWorkspace.options.renderer
           });
 
       this.minimapWorkspace.scrollbar.setContainerVisible(false);
