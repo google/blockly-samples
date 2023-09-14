@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.0.3...@blockly/dev-tools@7.1.0) (2023-09-14)
+
+
+### Features
+
+* make playground open state persistent ([#1921](https://github.com/google/blockly-samples/issues/1921)) ([#1921](https://github.com/google/blockly-samples/issues/1921)) ([f06f64f](https://github.com/google/blockly-samples/commit/f06f64f8ab2785f587dda1875d5b2b194ed7e7f3))
+
+
+### Bug Fixes
+
+* args and types for PlaygroundAPI.addGenerator ([#1889](https://github.com/google/blockly-samples/issues/1889)) ([#1889](https://github.com/google/blockly-samples/issues/1889)) ([f5598a6](https://github.com/google/blockly-samples/commit/f5598a65a26761c3854af06ee7a5a13b46d5ffdb))
+
+
+
 ## [7.0.3](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.0.2...@blockly/dev-tools@7.0.3) (2023-08-17)
 
 **Note:** Version bump only for package @blockly/dev-tools

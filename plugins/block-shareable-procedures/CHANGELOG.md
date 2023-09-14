@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@3.0.5...@blockly/block-shareable-procedures@3.0.6) (2023-09-14)
+
+
+### Bug Fixes
+
+* caller args disconnecting shareable procedures ([#1918](https://github.com/google/blockly-samples/issues/1918)) ([b11bf6a](https://github.com/google/blockly-samples/commit/b11bf6a4a863dd513c3d6f6686236916b8c5a0a7))
+* deleting procedures with callers not being undoable ([#1917](https://github.com/google/blockly-samples/issues/1917)) ([3d26841](https://github.com/google/blockly-samples/commit/3d268418f6e4be8d8f739fa21d582a9dc48342d7))
+
+
+
 ## [3.0.5](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@3.0.4...@blockly/block-shareable-procedures@3.0.5) (2023-08-31)
 
 
