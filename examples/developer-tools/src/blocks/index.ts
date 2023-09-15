@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import {factoryBase} from './factory_base';
 import * as Blockly from 'blockly';
 import {inputDummy, inputStatement, inputValue, inputEndRow} from './inputs';
