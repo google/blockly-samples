@@ -435,7 +435,6 @@ export class FieldAngle extends Blockly.FieldNumber {
   private displayMouseOrKeyboardValue(angle: number) {
     const validAngle = this.doClassValidation_(angle);
     if (validAngle !== null && validAngle !== this.value_) {
-      // this.setEditorValue_(validAngle);
       // Intermediate value changes from user input are not confirmed until the
       // user closes the editor, and may be numerous. Inhibit reporting these as
       // normal block change events, and instead report them as special
