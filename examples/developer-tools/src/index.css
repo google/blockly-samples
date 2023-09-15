@@ -1,5 +1,6 @@
 #blockFactoryContainer {
   display: flex;
+  height: 100vh;
 }
 
 #mainWorkspace {
