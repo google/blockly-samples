@@ -9,6 +9,8 @@
  * @author kozbial@google.com (Monica Kozbial)
  */
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import * as Blockly from 'blockly/core';
 
 import {registerContextMenus} from './backpack_helpers';
@@ -30,40 +32,40 @@ export class Backpack extends Blockly.DragTarget implements
   private options: BackpackOptions;
 
   // The backpack flyout. Initialized during init.
-  protected flyout: Blockly.IFlyout|null = null;
+  protected flyout_: Blockly.IFlyout|null = null;
 
   // A list of JSON (stored as strings) representing blocks in the backpack.
-  protected contents: string[] = [];
+  protected contents_: string[] = [];
 
   // Array holding info needed to unbind events. Used for disposing.
   private boundEvents: Blockly.browserEvents.Data[] = [];
 
   // Left coordinate of the backpack in pixels.
-  protected left = 0;
+  protected left_ = 0;
 
   // Top coordinate of the backpack in pixels.
-  protected top = 0;
+  protected top_ = 0;
 
   // Width of the backpack in pixels. Used for clip path.
-  protected readonly width = 40;
+  protected readonly WIDTH_ = 40;
 
   // Height of the backpack in pixels. Used for clip path.
-  protected readonly height = 60;
+  protected readonly HEIGHT_ = 60;
 
   // Distance between backpack and bottom or top edge of workspace in pixels.
-  protected readonly marginVertical = 20;
+  protected readonly MARGIN_VERTICAL_ = 20;
 
   // Distance between backpack and right or left edge of workspace in pixels.
-  protected readonly marginHorizontal = 20;
+  protected readonly MARGIN_HORIZONTAL_ = 20;
 
   // Extent of hotspot on all sides beyond the size of the image in pixels.
-  protected readonly hotspotMargin = 10;
+  protected readonly HOTSPOT_MARGIN_ = 10;
 
   // The SVG group containing the backpack.
-  protected svgGroup: SVGElement|null = null;
+  protected svgGroup_: SVGElement|null = null;
 
   // The SVG image of the backpack.
-  protected svgImg: SVGImageElement|null = null;
+  protected svgImg_: SVGImageElement|null = null;
 
   // Top offset for backpack svg in pixels.
   private spriteTop = 10;
@@ -74,16 +76,16 @@ export class Backpack extends Blockly.DragTarget implements
   // Width/Height of svg in pixels.
   private readonly spriteSize = 80;
 
-  protected initialized = false;
+  protected initialized_ = false;
 
   /**
    * Constructor for a backpack.
-   * @param workspace The target workspace that
+   * @param workspace_ The target workspace that
    *     the backpack will be added to.
    * @param backpackOptions The backpack options to use.
    */
   constructor(
-      protected workspace: Blockly.WorkspaceSvg,
+      protected workspace_: Blockly.WorkspaceSvg,
       backpackOptions?: BackpackOptions) {
     super();
     this.options = parseOptions(backpackOptions);
@@ -112,7 +114,7 @@ export class Backpack extends Blockly.DragTarget implements
    * Initializes the backpack.
    */
   init() {
-    this.workspace.getComponentManager().addComponent({
+    this.workspace_.getComponentManager().addComponent({
       component: this,
       weight: 2,
       capabilities: [
@@ -124,9 +126,9 @@ export class Backpack extends Blockly.DragTarget implements
     this.initFlyout();
     this.createDom();
     this.attachListeners();
-    registerContextMenus(this.options.contextMenu, this.workspace);
-    this.initialized = true;
-    this.workspace.resize();
+    registerContextMenus(this.options.contextMenu, this.workspace_);
+    this.initialized_ = true;
+    this.workspace_.resize();
   }
 
   /**
@@ -135,8 +137,8 @@ export class Backpack extends Blockly.DragTarget implements
    * to prevent memory leaks.
    */
   dispose() {
-    if (this.svgGroup) {
-      Blockly.utils.dom.removeNode(this.svgGroup);
+    if (this.svgGroup_) {
+      Blockly.utils.dom.removeNode(this.svgGroup_);
     }
     for (const event of this.boundEvents) {
       Blockly.browserEvents.unbind(event);
@@ -151,60 +153,60 @@ export class Backpack extends Blockly.DragTarget implements
     // Create flyout options.
     const flyoutWorkspaceOptions = new Blockly.Options({
       'scrollbars': true,
-      'parentWorkspace': this.workspace,
-      'rtl': this.workspace.RTL,
-      'oneBasedIndex': this.workspace.options.oneBasedIndex,
-      'renderer': this.workspace.options.renderer,
-      'rendererOverrides': this.workspace.options.rendererOverrides,
+      'parentWorkspace': this.workspace_,
+      'rtl': this.workspace_.RTL,
+      'oneBasedIndex': this.workspace_.options.oneBasedIndex,
+      'renderer': this.workspace_.options.renderer,
+      'rendererOverrides': this.workspace_.options.rendererOverrides,
       'move': {
         'scrollbars': true,
       },
     });
     // Create vertical or horizontal flyout.
-    if (this.workspace.horizontalLayout) {
+    if (this.workspace_.horizontalLayout) {
       flyoutWorkspaceOptions.toolboxPosition =
-          (this.workspace.toolboxPosition ===
+          (this.workspace_.toolboxPosition ===
            Blockly.utils.toolbox.Position.TOP) ?
           Blockly.utils.toolbox.Position.BOTTOM :
           Blockly.utils.toolbox.Position.TOP;
       const HorizontalFlyout = Blockly.registry.getClassFromOptions(
           Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
-          this.workspace.options, true);
-      this.flyout = new HorizontalFlyout(flyoutWorkspaceOptions);
+          this.workspace_.options, true);
+      this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
     } else {
       flyoutWorkspaceOptions.toolboxPosition =
-          (this.workspace.toolboxPosition ===
+          (this.workspace_.toolboxPosition ===
            Blockly.utils.toolbox.Position.RIGHT) ?
           Blockly.utils.toolbox.Position.LEFT :
           Blockly.utils.toolbox.Position.RIGHT;
       const VerticalFlyout = Blockly.registry.getClassFromOptions(
           Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
-          this.workspace.options, true);
-      this.flyout = new VerticalFlyout(flyoutWorkspaceOptions);
+          this.workspace_.options, true);
+      this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
     }
     // Add flyout to DOM.
-    const parentNode = this.workspace.getParentSvg().parentNode;
-    parentNode.appendChild(this.flyout.createDom(Blockly.utils.Svg.SVG));
-    this.flyout.init(this.workspace);
+    const parentNode = this.workspace_.getParentSvg().parentNode;
+    parentNode.appendChild(this.flyout_.createDom(Blockly.utils.Svg.SVG));
+    this.flyout_.init(this.workspace_);
   }
 
   /**
    * Creates DOM for UI element.
    */
   protected createDom() {
-    this.svgGroup =
+    this.svgGroup_ =
         Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.G, {}, null);
     const rnd = Blockly.utils.idGenerator.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.CLIPPATH, {'id': 'blocklyBackpackClipPath' + rnd},
-        this.svgGroup);
+        this.svgGroup_);
     Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.RECT, {
-          'width': this.width,
-          'height': this.height,
+          'width': this.WIDTH_,
+          'height': this.HEIGHT_,
         },
         clip);
-    this.svgImg = Blockly.utils.dom.createSvgElement(
+    this.svgImg_ = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.IMAGE, {
           'class': 'blocklyBackpack',
           'clip-path': 'url(#blocklyBackpackClipPath' + rnd + ')',
@@ -213,12 +215,12 @@ export class Backpack extends Blockly.DragTarget implements
           'height': this.spriteSize + 'px',
           'y': -this.spriteTop,
         },
-        this.svgGroup);
-    this.svgImg.setAttributeNS(
+        this.svgGroup_);
+    this.svgImg_.setAttributeNS(
         Blockly.utils.dom.XLINK_NS, 'xlink:href', backpackSvgDataUri);
 
     Blockly.utils.dom.insertAfter(
-        this.svgGroup, this.workspace.getBubbleCanvas());
+        this.svgGroup_, this.workspace_.getBubbleCanvas());
   }
 
   /**
@@ -226,10 +228,10 @@ export class Backpack extends Blockly.DragTarget implements
    */
   protected attachListeners() {
     this.addEvent(
-        this.svgGroup, 'mousedown', this, this.blockMouseDownWhenOpenable);
-    this.addEvent(this.svgGroup, 'mouseup', this, this.onClick);
-    this.addEvent(this.svgGroup, 'mouseover', this, this.onMouseOver);
-    this.addEvent(this.svgGroup, 'mouseout', this, this.onMouseOut);
+        this.svgGroup_, 'mousedown', this, this.blockMouseDownWhenOpenable);
+    this.addEvent(this.svgGroup_, 'mouseup', this, this.onClick);
+    this.addEvent(this.svgGroup_, 'mouseover', this, this.onMouseOver);
+    this.addEvent(this.svgGroup_, 'mouseout', this, this.onMouseOut);
   }
 
   /**
@@ -251,7 +253,7 @@ export class Backpack extends Blockly.DragTarget implements
    * @returns The backpack flyout.
    */
   getFlyout(): Blockly.IFlyout|null {
-    return this.flyout;
+    return this.flyout_;
   }
 
   /**
@@ -261,15 +263,15 @@ export class Backpack extends Blockly.DragTarget implements
    *   target area should be ignored.
    */
   getClientRect(): Blockly.utils.Rect|null {
-    if (!this.svgGroup) {
+    if (!this.svgGroup_) {
       return null;
     }
 
-    const clientRect = this.svgGroup.getBoundingClientRect();
-    const top = clientRect.top + this.spriteTop - this.hotspotMargin;
-    const bottom = top + this.height + 2 * this.hotspotMargin;
-    const left = clientRect.left + this.spriteLeft - this.hotspotMargin;
-    const right = left + this.width + 2 * this.hotspotMargin;
+    const clientRect = this.svgGroup_.getBoundingClientRect();
+    const top = clientRect.top + this.spriteTop - this.HOTSPOT_MARGIN_;
+    const bottom = top + this.HEIGHT_ + 2 * this.HOTSPOT_MARGIN_;
+    const left = clientRect.left + this.spriteLeft - this.HOTSPOT_MARGIN_;
+    const right = left + this.WIDTH_ + 2 * this.HOTSPOT_MARGIN_;
     return new Blockly.utils.Rect(top, bottom, left, right);
   }
 
@@ -280,7 +282,8 @@ export class Backpack extends Blockly.DragTarget implements
    */
   getBoundingRectangle(): Blockly.utils.Rect {
     return new Blockly.utils.Rect(
-        this.top, this.top + this.height, this.left, this.left + this.width);
+        this.top_, this.top_ + this.HEIGHT_, this.left_,
+        this.left_ + this.WIDTH_);
   }
 
   /**
@@ -294,29 +297,29 @@ export class Backpack extends Blockly.DragTarget implements
   position(
       metrics: Blockly.MetricsManager.UiMetrics,
       savedPositions: Blockly.utils.Rect[]) {
-    if (!this.initialized) {
+    if (!this.initialized_) {
       return;
     }
 
-    const scrollbars = this.workspace.scrollbar;
+    const scrollbars = this.workspace_.scrollbar;
     const hasVerticalScrollbars = scrollbars && scrollbars.isVisible() &&
         scrollbars.canScrollVertically();
     const hasHorizontalScrollbars = scrollbars && scrollbars.isVisible() &&
         scrollbars.canScrollHorizontally();
 
     if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-        (this.workspace.horizontalLayout && !this.workspace.RTL)) {
+        (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
       // Right corner placement.
-      this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.width - this.marginHorizontal;
-      if (hasVerticalScrollbars && !this.workspace.RTL) {
-        this.left -= Blockly.Scrollbar.scrollbarThickness;
+      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
+          this.WIDTH_ - this.MARGIN_HORIZONTAL_;
+      if (hasVerticalScrollbars && !this.workspace_.RTL) {
+        this.left_ -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Left corner placement.
-      this.left = this.marginHorizontal;
-      if (hasVerticalScrollbars && this.workspace.RTL) {
-        this.left += Blockly.Scrollbar.scrollbarThickness;
+      this.left_ = this.MARGIN_HORIZONTAL_;
+      if (hasVerticalScrollbars && this.workspace_.RTL) {
+        this.left_ += Blockly.Scrollbar.scrollbarThickness;
       }
     }
 
@@ -324,15 +327,15 @@ export class Backpack extends Blockly.DragTarget implements
         metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_BOTTOM;
     if (startAtBottom) {
       // Bottom corner placement
-      this.top = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-          this.height - this.marginVertical;
+      this.top_ = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
+          this.HEIGHT_ - this.MARGIN_VERTICAL_;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
-        this.top -= Blockly.Scrollbar.scrollbarThickness;
+        this.top_ -= Blockly.Scrollbar.scrollbarThickness;
       }
     } else {
       // Upper corner placement
-      this.top = metrics.absoluteMetrics.top + this.marginVertical;
+      this.top_ = metrics.absoluteMetrics.top + this.MARGIN_VERTICAL_;
     }
 
     // Check for collision and bump if needed.
@@ -340,9 +343,9 @@ export class Backpack extends Blockly.DragTarget implements
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
         if (startAtBottom) { // Bump up.
-          this.top = otherEl.top - this.height - this.marginVertical;
+          this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_VERTICAL_;
         } else { // Bump down.
-          this.top = otherEl.bottom + this.marginVertical;
+          this.top_ = otherEl.bottom + this.MARGIN_VERTICAL_;
         }
         // Recheck other savedPositions
         boundingRect = this.getBoundingRectangle();
@@ -350,8 +353,8 @@ export class Backpack extends Blockly.DragTarget implements
       }
     }
 
-    this.svgGroup.setAttribute(
-        'transform', `translate(${this.left},${this.top})`);
+    this.svgGroup_.setAttribute(
+        'transform', `translate(${this.left_},${this.top_})`);
   }
 
   /**
@@ -359,7 +362,7 @@ export class Backpack extends Blockly.DragTarget implements
    * @returns The count of items.
    */
   getCount(): number {
-    return this.contents.length;
+    return this.contents_.length;
   }
 
   /**
@@ -368,7 +371,7 @@ export class Backpack extends Blockly.DragTarget implements
    */
   getContents(): string[] {
     // Return a shallow copy of the contents array.
-    return [...this.contents];
+    return [...this.contents_];
   }
 
   /**
@@ -445,7 +448,7 @@ export class Backpack extends Blockly.DragTarget implements
    *     provided block.
    */
   containsBlock(block: Blockly.Block): boolean {
-    return this.contents.indexOf(this.blockToJsonString(block)) !== -1;
+    return this.contents_.indexOf(this.blockToJsonString(block)) !== -1;
   }
 
   /**
@@ -491,7 +494,7 @@ export class Backpack extends Blockly.DragTarget implements
   addItems(items: string[]) {
     const addedItems = this.filterDuplicates(items);
     if (addedItems.length) {
-      this.contents.unshift(...addedItems);
+      this.contents_.unshift(...addedItems);
       this.onContentChange();
     }
   }
@@ -502,9 +505,9 @@ export class Backpack extends Blockly.DragTarget implements
    * cleaned of all unnecessary attributes.
    */
   removeItem(item: string) {
-    const itemIndex = this.contents.indexOf(item);
+    const itemIndex = this.contents_.indexOf(item);
     if (itemIndex !== -1) {
-      this.contents.splice(itemIndex, 1);
+      this.contents_.splice(itemIndex, 1);
       this.onContentChange();
     }
   }
@@ -514,8 +517,8 @@ export class Backpack extends Blockly.DragTarget implements
    * @param contents The new backpack contents.
    */
   setContents(contents: string[]) {
-    this.contents = [];
-    this.contents = this.filterDuplicates(
+    this.contents_ = [];
+    this.contents_ = this.filterDuplicates(
         // Support XML serialized content for backwards compatiblity:
         // https://github.com/google/blockly-samples/issues/1827
         contents.map(
@@ -533,8 +536,8 @@ export class Backpack extends Blockly.DragTarget implements
     if (!this.getCount()) {
       return;
     }
-    if (this.contents.length) {
-      this.contents = [];
+    if (this.contents_.length) {
+      this.contents_ = [];
       this.onContentChange();
     }
     this.close();
@@ -545,28 +548,28 @@ export class Backpack extends Blockly.DragTarget implements
    */
   protected onContentChange() {
     this.maybeRefreshFlyoutContents();
-    Blockly.Events.fire(new BackpackChange(this.workspace.id));
+    Blockly.Events.fire(new BackpackChange(this.workspace_.id));
 
     if (!this.options.useFilledBackpackImage) return;
-    if (this.contents.length > 0) {
-      this.svgImg.setAttributeNS(
+    if (this.contents_.length > 0) {
+      this.svgImg_.setAttributeNS(
           Blockly.utils.dom.XLINK_NS, 'xlink:href',
           backpackFilledSvgDataUri);
     } else {
-      this.svgImg.setAttributeNS(
+      this.svgImg_.setAttributeNS(
           Blockly.utils.dom.XLINK_NS, 'xlink:href', backpackSvgDataUri);
     }
   }
 
   /**
    * Returns a filtered list without duplicates within itself and without any
-   * shared elements with this.contents.
+   * shared elements with this.contents_.
    * @param array The array of items to filter.
    * @returns The filtered list.
    */
   private filterDuplicates(array: string[]): string[] {
     return array.filter((item, idx) => {
-      return array.indexOf(item) === idx && this.contents.indexOf(item) === -1;
+      return array.indexOf(item) === idx && this.contents_.indexOf(item) === -1;
     });
   }
 
@@ -585,7 +588,7 @@ export class Backpack extends Blockly.DragTarget implements
    * @returns Whether the backpack is open.
    */
   isOpen(): boolean {
-    return this.flyout.isVisible();
+    return this.flyout_.isVisible();
   }
 
   /**
@@ -595,15 +598,15 @@ export class Backpack extends Blockly.DragTarget implements
     if (!this.isOpenable()) {
       return;
     }
-    const jsons = this.contents.map((text) => JSON.parse(text));
-    this.flyout.show(jsons);
+    const jsons = this.contents_.map((text) => JSON.parse(text));
+    this.flyout_.show(jsons);
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
-    if (this.workspace.scrollbar &&
-    /** @type {*} */ (this.workspace.scrollbar).setVisible) {
-      /** @type {*} */ (this.workspace.scrollbar).setVisible(false);
+    if (this.workspace_.scrollbar &&
+    /** @type {*} */ (this.workspace_.scrollbar).setVisible) {
+      /** @type {*} */ (this.workspace_.scrollbar).setVisible(false);
     }
-    Blockly.Events.fire(new BackpackOpen(true, this.workspace.id));
+    Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
   }
 
   /**
@@ -613,8 +616,8 @@ export class Backpack extends Blockly.DragTarget implements
     if (!this.isOpen()) {
       return;
     }
-    const json = this.contents.map((text) => JSON.parse(text));
-    this.flyout.show(json);
+    const json = this.contents_.map((text) => JSON.parse(text));
+    this.flyout_.show(json);
   }
 
   /**
@@ -624,14 +627,14 @@ export class Backpack extends Blockly.DragTarget implements
     if (!this.isOpen()) {
       return;
     }
-    this.flyout.hide();
+    this.flyout_.hide();
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
-    if (this.workspace.scrollbar &&
-    /** @type {*} */ (this.workspace.scrollbar).setVisible) {
-      /** @type {*} */ (this.workspace.scrollbar).setVisible(true);
+    if (this.workspace_.scrollbar &&
+    /** @type {*} */ (this.workspace_.scrollbar).setVisible) {
+      /** @type {*} */ (this.workspace_.scrollbar).setVisible(true);
     }
-    Blockly.Events.fire(new BackpackOpen(false, this.workspace.id));
+    Blockly.Events.fire(new BackpackOpen(false, this.workspace_.id));
   }
 
   /**
@@ -657,7 +660,7 @@ export class Backpack extends Blockly.DragTarget implements
     }
     this.open();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
-        null, this.workspace.id, 'backpack');
+        null, this.workspace_.id, 'backpack');
     Blockly.Events.fire(uiEvent);
   }
 
@@ -704,9 +707,9 @@ export class Backpack extends Blockly.DragTarget implements
   protected updateHoverStying(addClass: boolean) {
     const backpackDarken = 'blocklyBackpackDarken';
     if (addClass) {
-      Blockly.utils.dom.addClass(this.svgImg, backpackDarken);
+      Blockly.utils.dom.addClass(this.svgImg_, backpackDarken);
     } else {
-      Blockly.utils.dom.removeClass(this.svgImg, backpackDarken);
+      Blockly.utils.dom.removeClass(this.svgImg_, backpackDarken);
     }
   }
 
