@@ -209,10 +209,8 @@ function registerPasteAllBackpack() {
 
 /**
  * Register all context menu options.
- * @param contextMenuOptions The backpack context
- *    menu options.
- * @param workspace The workspace to register the
- *    context menu options.
+ * @param contextMenuOptions The backpack context menu options.
+ * @param workspace The workspace to register the context menu options.
  */
 export function registerContextMenus(
     contextMenuOptions: BackpackContextMenuOptions,
