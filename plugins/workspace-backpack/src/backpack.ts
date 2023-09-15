@@ -602,10 +602,12 @@ export class Backpack extends Blockly.DragTarget implements
     this.flyout_.show(jsons);
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     if (this.workspace_.scrollbar &&
-    /** @type {*} */ (this.workspace_.scrollbar).setVisible) {
-      /** @type {*} */ (this.workspace_.scrollbar).setVisible(false);
+    (this.workspace_.scrollbar as any).setVisible) {
+      (this.workspace_.scrollbar as any).setVisible(false);
     }
+    /* eslint-enable @typescript-eslint/no-explicit-any */
     Blockly.Events.fire(new BackpackOpen(true, this.workspace_.id));
   }
 
@@ -630,10 +632,12 @@ export class Backpack extends Blockly.DragTarget implements
     this.flyout_.hide();
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     if (this.workspace_.scrollbar &&
-    /** @type {*} */ (this.workspace_.scrollbar).setVisible) {
-      /** @type {*} */ (this.workspace_.scrollbar).setVisible(true);
+      (this.workspace_.scrollbar as any).setVisible) {
+      (this.workspace_.scrollbar as any).setVisible(true);
     }
+    /* eslint-enable @typescript-eslint/no-explicit-any */
     Blockly.Events.fire(new BackpackOpen(false, this.workspace_.id));
   }
 
