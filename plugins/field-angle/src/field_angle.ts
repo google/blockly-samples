@@ -448,12 +448,13 @@ export class FieldAngle extends Blockly.FieldNumber {
         this.value_ !== oldValue
       ) {
         Blockly.Events.fire(
-          new (Blockly.Events.get(Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
-            this.sourceBlock_,
-            this.name || null,
-            oldValue,
-            this.value_
-          )
+            new (Blockly.Events.get(
+                Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+                this.sourceBlock_,
+                this.name || null,
+                oldValue,
+                this.value_
+            )
         );
       }
     }
