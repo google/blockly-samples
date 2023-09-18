@@ -109,7 +109,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       schema.contents.forEach((contents) => {
         this.getAvailableBlocks(contents, allBlocks);
       });
-    } else if (schema.kind === 'block') {
+    } else if (schema.kind.toLowerCase() === 'block') {
       if ('type' in schema && schema.type) {
         allBlocks.add(schema.type);
       }
