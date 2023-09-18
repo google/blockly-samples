@@ -98,6 +98,7 @@ export class FocusRegion {
       }
 
       window.addEventListener('resize', () => void this.update());
+      window.addEventListener('load', () => void this.update());
       this.onChangeWrapper = this.onChange.bind(this);
       this.primaryWorkspace.addChangeListener(this.onChangeWrapper);
 
