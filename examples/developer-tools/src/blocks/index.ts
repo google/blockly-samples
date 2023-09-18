@@ -8,6 +8,9 @@ import {factoryBase} from './factory_base';
 import * as Blockly from 'blockly';
 import {inputDummy, inputStatement, inputValue, inputEndRow} from './inputs';
 
+// import for side effects for now
+import '../output-generators/factory_base';
+
 export const registerAllBlocks = function() {
   Blockly.common.defineBlocks({
     'factory_base': factoryBase,
