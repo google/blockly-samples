@@ -50,15 +50,6 @@ export const factoryBase = {
     this.setHelpUrl(
         'https://developers.google.com/blockly/guides/create-custom-blocks/block-factory');
   },
-  mutationToDom: function() {
-    const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('connections', this.getFieldValue('CONNECTIONS'));
-    return container;
-  },
-  domToMutation: function(xmlElement: Element) {
-    const connections = xmlElement.getAttribute('connections');
-    this.updateShape(connections);
-  },
   spawnOutputShadow: function(option: string) {
     // Helper method for deciding which type of outputs this block needs
     // to attach shadow blocks to.

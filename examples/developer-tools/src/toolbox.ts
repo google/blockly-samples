@@ -14,19 +14,31 @@ export const toolbox = {
       'contents': [
         {
           'kind': 'block',
-          'type': 'input_value',
+          'type': 'input',
+          'fields': {
+            'INPUT_TYPE': 'input_value',
+          },
         },
         {
           'kind': 'block',
-          'type': 'input_statement',
+          'type': 'input',
+          'fields': {
+            'INPUT_TYPE': 'input_statement',
+          },
         },
         {
           'kind': 'block',
-          'type': 'input_dummy',
+          'type': 'input',
+          'fields': {
+            'INPUT_TYPE': 'input_dummy',
+          },
         },
         {
           'kind': 'block',
-          'type': 'input_end_row',
+          'type': 'input',
+          'fields': {
+            'INPUT_TYPE': 'input_end_row',
+          },
         },
       ],
     },

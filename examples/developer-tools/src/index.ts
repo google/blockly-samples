@@ -32,7 +32,6 @@ const startBlocks = {
         'deletable': false,
         'x': 53,
         'y': 23,
-        'extraState': '<mutation connections="NONE"></mutation>',
         'fields': {
           'NAME': 'block_type',
           'INLINE': 'AUTO',
