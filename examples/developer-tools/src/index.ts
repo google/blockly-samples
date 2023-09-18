@@ -22,6 +22,9 @@ const definitionDiv = document.getElementById('definition').firstChild;
 const previewWorkspace = Blockly.inject(previewDiv, {});
 const mainWorkspace = Blockly.inject(mainWorkspaceDiv, {toolbox});
 
+// Disable orphan blocks on the main workspace
+mainWorkspace.addChangeListener(Blockly.Events.disableOrphans);
+
 
 const startBlocks = {
   'blocks': {
