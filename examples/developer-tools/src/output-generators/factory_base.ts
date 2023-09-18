@@ -17,9 +17,27 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function(
   const tooltip = generator.valueToCode(block, 'TOOLTIP', Order.ATOMIC) || '';
   const helpUrl = generator.valueToCode(block, 'HELPURL', Order.ATOMIC) || '';
 
+  let messageString = '';
+  let numInputs = 0;
+  let bl = block.getInput('INPUTS').connection.targetBlock();
+
+  while (bl) {
+    numInputs++;
+    messageString += `%${numInputs} `;
+    bl = bl.nextConnection?.targetBlock();
+  }
+
+  let args0 = '';
+  const inputsStack = generator.statementToCode(block, 'INPUTS');
+  if (inputsStack) {
+    args0 = `"args0": [
+  ${inputsStack}
+  ],`;
+  }
   return `{
   "type": ${blockName},
-  "message0": "",
+  "message0": ${generator.quote_(messageString)},
+  ${args0}
   "tooltip": ${tooltip},
   "helpUrl": ${helpUrl}
 }`;

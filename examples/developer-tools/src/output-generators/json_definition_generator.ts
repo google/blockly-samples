@@ -137,7 +137,10 @@ export class JsonDefinitionGenerator extends Blockly.CodeGenerator {
   scrub_(block: Blockly.Block, code: string, thisOnly = false) {
     const nextBlock =
         block.nextConnection && block.nextConnection.targetBlock();
-    const nextCode = thisOnly ? '' : this.blockToCode(nextBlock);
+    let nextCode = thisOnly ? '' : this.blockToCode(nextBlock);
+    if (nextCode) {
+      nextCode = ',\n  ' + nextCode;
+    }
     return code + nextCode;
   }
 }

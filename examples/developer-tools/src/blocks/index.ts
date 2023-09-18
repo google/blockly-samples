@@ -10,6 +10,7 @@ import {input} from './input';
 
 // import for side effects for now
 import '../output-generators/factory_base';
+import '../output-generators/input';
 
 export const registerAllBlocks = function() {
   Blockly.common.defineBlocks({
