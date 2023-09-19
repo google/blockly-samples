@@ -32,7 +32,9 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     this.workspace_.addChangeListener((e) => {
       if (e.type === Blockly.Events.BLOCK_CREATE ||
           e.type === Blockly.Events.BLOCK_DELETE) {
-        this.refreshSelection();
+        if (flyout.isVisible()) {
+          this.refreshSelection();
+        }
       }
     });
   }
@@ -86,6 +88,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
       const target = this.getFlyout()
           .getCategoryScrollPosition(newItem.name_).y;
       this.getFlyout().scrollTo(target);
+      this.refreshSelection();
     }
   }
 
@@ -143,6 +146,14 @@ export class ContinuousToolbox extends Blockly.Toolbox {
       return flyout.getClientRect();
     }
     return super.getClientRect();
+  }
+
+  /**
+   * Controls the auto-closing behavior of the flyout
+   * @param {boolean} isEnabled true to enable auto-close
+   */
+  setAutoClose(isEnabled) {
+    this.getFlyout().autoClose = isEnabled;
   }
 }
 
