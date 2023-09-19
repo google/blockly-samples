@@ -216,7 +216,7 @@ export class FieldColour extends Blockly.Field<string> {
     if (!block) throw new Blockly.UnattachedFieldError();
 
     const constants = this.getConstants();
-    return block.isSimpleReporter() && !!constants?.FIELD_COLOUR_FULL_BLOCK;
+    return this.blockIsSimpleReporter() && !!constants?.FIELD_COLOUR_FULL_BLOCK;
   }
 
   /**
