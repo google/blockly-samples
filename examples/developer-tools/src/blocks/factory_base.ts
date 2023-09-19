@@ -71,7 +71,7 @@ export const factoryBase = {
   },
   connectOutputShadow: function(outputType: string) {
     // Helper method to create & connect shadow block.
-    const type = this.workspace.newBlock('type_null');
+    const type = this.workspace.newBlock('type');
     type.setShadow(true);
     type.outputConnection.connect(this.getInput(outputType).connection);
     type.initSvg();
@@ -107,7 +107,7 @@ export const factoryBase = {
   },
   addTypeInput: function(name: string, label: string) {
     this.appendValueInput(name)
-        .setCheck('Type')
+        .setCheck(['Type', 'TypeArray'])
         .appendField(label);
     this.moveInputBefore(name, 'COLOUR');
   },

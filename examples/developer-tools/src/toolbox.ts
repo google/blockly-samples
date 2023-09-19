@@ -42,5 +42,20 @@ export const toolbox = {
         },
       ],
     },
+    {
+      'kind': 'category',
+      'name': 'Type',
+      'categorystyle': 'logic_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'type_group',
+        },
+        {
+          'kind': 'block',
+          'type': 'type',
+        },
+      ],
+    },
   ],
 };

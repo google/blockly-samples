@@ -95,7 +95,7 @@ export const input = {
           'type': 'input_value',
           'name': 'TYPE',
           'align': 'RIGHT',
-          'check': 'Type',
+          'check': ['Type', 'TypeArray'],
         },
       ],
       'previousStatement': 'Input',

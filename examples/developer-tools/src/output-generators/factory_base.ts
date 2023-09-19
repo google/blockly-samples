@@ -34,10 +34,17 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function(
   ${inputsStack}
   ],`;
   }
+
+  let output = '';
+  if (this.getInput('OUTPUTTYPE')) {
+    output = `"output": ${generator.valueToCode(block, 'OUTPUTTYPE', Order.ATOMIC) || 'null'},`;
+  }
+
   return `{
   "type": ${blockName},
   "message0": ${generator.quote_(messageString)},
   ${args0}
+  ${output}
   "tooltip": ${tooltip},
   "helpUrl": ${helpUrl}
 }`;
