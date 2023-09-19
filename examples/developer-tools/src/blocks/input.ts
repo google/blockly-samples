@@ -35,7 +35,10 @@ const inputNameCheck = function(referenceBlock: Blockly.Block) {
 // Inputs that should take a "type" input for connection checks
 const inputsWithTypeInputs = new Set(['input_value', 'input_statement']);
 
-const inputTypeValidator = function(value: string): string {
+const inputTypeValidator = function(
+    this: Blockly.Block,
+    value: string
+): string {
   if (inputsWithTypeInputs.has(value)) {
     if (!this.getInput('TYPE')) {
       this.appendValueInput('TYPE')
@@ -44,12 +47,17 @@ const inputTypeValidator = function(value: string): string {
           .appendField('type');
     }
   } else {
-    if (this.getInput('TYPE')) {
-      this.removeInput('TYPE');
-    }
+    this.removeInput('TYPE', true);
   }
 
   return value;
+};
+
+const tooltip: Record<string, string> = {
+  input_value: 'A value socket for horizontal connections.',
+  input_statement: 'A statement socket for enclosed vertical stacks.',
+  input_dummy: 'For adding fields without any block connections. Alignment options (left, right, centre) only affect multi-row blocks.',
+  input_end_row: 'For adding fields without any block connections that will be rendered on a separate row from any following inputs. Alignment options (left, right, centre) only affect multi-row blocks.',
 };
 
 export const input = {
@@ -74,8 +82,11 @@ export const input = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip('');
-    this.setHelpUrl('');
+    this.setTooltip((): string => {
+      const value = this.getFieldValue('INPUT_TYPE');
+      return tooltip[value];
+    });
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=71');
   },
   onchange: function() {
     inputNameCheck(this);

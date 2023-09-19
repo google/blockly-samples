@@ -127,6 +127,15 @@ export const typeGroupItem = {
   },
 };
 
+const tooltip: Record<string, string> = {
+  'null': 'Any type is allowed.',
+  'Boolean': 'Booleans (true/false) are allowed.',
+  'Number': 'Numbers (int/float) are allowed.',
+  'String': 'Strings (text) are allowed.',
+  'Array': 'Arrays (lists) are allowed.',
+  'CUSTOM': 'Custom type to allow.',
+};
+
 export const type = {
   init: function(this: Blockly.Block & {customType?: string}) {
     this.appendDummyInput('TYPE').appendField(new Blockly.FieldDropdown([
@@ -148,7 +157,10 @@ export const type = {
       return value;
     }), 'TYPEDROPDOWN');
     this.setOutput(true, 'Type');
-    this.setTooltip('todo');
+    this.setTooltip((): string => {
+      const selectedType = this.getFieldValue('TYPEDROPDOWN');
+      return tooltip[selectedType];
+    });
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602');
     this.setColour(230);
   },
