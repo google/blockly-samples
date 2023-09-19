@@ -161,13 +161,13 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
      */
     private setAttributes(): void {
       const injectDiv = this.minimapWorkspace.getInjectionDiv();
-      injectDiv.parentElement.setAttribute('style',
-          `z-index: 2;
-          position: absolute;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          top: ${this.top}px;
-          left: ${this.left}px;`);
+      const style = injectDiv.parentElement.style;
+      style.zIndex = 2;
+      style.position = 'absolute';
+      style.width = `${this.width}px`;
+      style.height = `${this.height}px`;
+      style.top = `${this.top}px`;
+      style.left = `${this.left}px;`;
       Blockly.svgResize(this.minimapWorkspace);
     }
 }
