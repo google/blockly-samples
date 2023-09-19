@@ -1,46 +1,69 @@
 import * as Blockly from 'blockly';
 import {JsonDefinitionGenerator, Order, jsonDefinitionGenerator} from './json_definition_generator';
 
-jsonDefinitionGenerator.forBlock['type'] = function(block: Blockly.Block, generator: JsonDefinitionGenerator): [string, number] {
+/**
+ * JSON definition for a single "type" block.
+ * @param block
+ * @param generator
+ * @returns A type string corresponding to the option chosen.
+ *    If custom option is chosen and not specified, returns null.
+ */
+jsonDefinitionGenerator.forBlock['type'] = function(
+    block: Blockly.Block,
+    generator: JsonDefinitionGenerator
+): [string, number] {
   const selected = block.getFieldValue('TYPEDROPDOWN');
   let output = '';
   switch (selected) {
     case 'null': {
-      output = 'null';
+      output = null;
       break;
     }
     case 'CUSTOM': {
-      const customValue = block.getFieldValue('CUSTOMTYPE');
-      if (!customValue) {
-        output = '';
-      } else {
-        output = generator.quote_(customValue);
-      }
+      output = block.getFieldValue('CUSTOMTYPE') || null;
       break;
     }
     default: {
-      output = generator.quote_(selected);
+      output = selected;
     }
   }
 
-  return [output, Order.ATOMIC];
+  return [JSON.stringify(output), Order.ATOMIC];
 };
 
-jsonDefinitionGenerator.forBlock['type_group'] = function(block: Blockly.Block, generator: JsonDefinitionGenerator): [string, number] {
+/**
+ * JSON Definition for the "any of" types block.
+ * @param block
+ * @param generator
+ * @returns stringified version of:
+ *     - null if the list is empty or contains the "any" type
+ *     - a single type string if that is the only type present in the list
+ *     - an array of all types in the list, deduplicated
+ */
+jsonDefinitionGenerator.forBlock['type_group'] = function(
+    block: Blockly.Block,
+    generator: JsonDefinitionGenerator
+): [string, number] {
   const types = new Set<string>();
   for (const input of block.inputList) {
     const value = generator.valueToCode(block, input.name, Order.ATOMIC);
-    if (value === 'null') {
+    if (!value) continue; // No block connected to this input
+    const type = JSON.parse(value) || '';
+    if (type === null) {
       // If the list contains 'any' then the type check is simplified to 'any'
-      return ['null', Order.ATOMIC];
+      return [JSON.stringify(null), Order.ATOMIC];
     }
-    if (value) types.add(value);
+    if (type) types.add(type);
   }
+
   if (types.size === 0) {
-    return ['', Order.ATOMIC];
+    // This shouldn't be possible, but for safety.
+    return [JSON.stringify(null), Order.ATOMIC];
   }
   if (types.size === 1) {
-    return [Array.from(types)[0], Order.ATOMIC];
+    // If there's only one type, we return it directly instead of
+    // returning an array with one member.
+    return [JSON.stringify(Array.from(types)[0]), Order.ATOMIC];
   }
-  return [`[${Array.from(types).join(', ')}]`, Order.ATOMIC];
+  return [JSON.stringify(Array.from(types)), Order.ATOMIC];
 };
