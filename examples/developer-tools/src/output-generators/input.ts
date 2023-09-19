@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import {JsonDefinitionGenerator, Order, jsonDefinitionGenerator} from './json_definition_generator';
 import * as Blockly from 'blockly';
 
