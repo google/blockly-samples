@@ -54,6 +54,44 @@ export const toolbox = {
         {
           'kind': 'block',
           'type': 'type',
+          'fields': {
+            'TYPEDROPDOWN': 'null',
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'type',
+          'fields': {
+            'TYPEDROPDOWN': 'Boolean',
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'type',
+          'fields': {
+            'TYPEDROPDOWN': 'Number',
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'type',
+          'fields': {
+            'TYPEDROPDOWN': 'String',
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'type',
+          'fields': {
+            'TYPEDROPDOWN': 'Array',
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'type',
+          'fields': {
+            'TYPEDROPDOWN': 'CUSTOM',
+          },
         },
       ],
     },
