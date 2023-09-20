@@ -23,59 +23,62 @@ import {BackpackChange, BackpackOpen} from './ui_events';
  */
 export class Backpack extends Blockly.DragTarget implements
     Blockly.IAutoHideable, Blockly.IPositionable {
-  // The unique id for this component.
+  /** The unique id for this component. */
   id = 'backpack';
 
-  // The backpack options, such as which context menus to show, whether to
-  // allow opening the backpack when empty and whether to use a different
-  // image when the backpack contains blocks.
+  /**
+   * The backpack options, such as which context menus to show, whether to
+   * allow opening the backpack when empty and whether to use a different
+   * image when the backpack contains blocks.
+   */
   private options: BackpackOptions;
 
-  // The backpack flyout. Initialized during init.
+  /** The backpack flyout. Initialized during init. */
   protected flyout_: Blockly.IFlyout|null = null;
 
-  // A list of JSON (stored as strings) representing blocks in the backpack.
+  /** A list of JSON (stored as strings) representing blocks in the backpack. */
   protected contents_: string[] = [];
 
-  // Array holding info needed to unbind events. Used for disposing.
+  /** Array holding info needed to unbind events. Used for disposing. */
   private boundEvents: Blockly.browserEvents.Data[] = [];
 
-  // Left coordinate of the backpack in pixels.
+  /** Left coordinate of the backpack in pixels. */
   protected left_ = 0;
 
-  // Top coordinate of the backpack in pixels.
+  /** Top coordinate of the backpack in pixels. */
   protected top_ = 0;
 
-  // Width of the backpack in pixels. Used for clip path.
+  /** Width of the backpack in pixels. Used for clip path. */
   protected readonly WIDTH_ = 40;
 
-  // Height of the backpack in pixels. Used for clip path.
+  /** Height of the backpack in pixels. Used for clip path. */
   protected readonly HEIGHT_ = 60;
 
-  // Distance between backpack and bottom or top edge of workspace in pixels.
+  /** Distance between backpack and bottom/top edge of workspace in pixels. */
   protected readonly MARGIN_VERTICAL_ = 20;
 
-  // Distance between backpack and right or left edge of workspace in pixels.
+  /** Distance between backpack and right/left edge of workspace in pixels. */
   protected readonly MARGIN_HORIZONTAL_ = 20;
 
-  // Extent of hotspot on all sides beyond the size of the image in pixels.
+  /** Extent of hotspot on all sides beyond the size of the image in pixels. */
   protected readonly HOTSPOT_MARGIN_ = 10;
 
-  // The SVG group containing the backpack.
+  /** The SVG group containing the backpack. */
   protected svgGroup_: SVGElement|null = null;
 
-  // The SVG image of the backpack.
+  /** The SVG image of the backpack. */
   protected svgImg_: SVGImageElement|null = null;
 
-  // Top offset for backpack svg in pixels.
+  /** Top offset for backpack svg in pixels. */
   private spriteTop = 10;
 
-  // Left offset for backpack svg in pixels.
+  /** Left offset for backpack svg in pixels. */
   private spriteLeft = 20;
 
-  // Width/Height of svg in pixels.
+  /** Width/Height of svg in pixels. */
   private readonly spriteSize = 80;
 
+  /** Whether or not the plugin has been initialized. */
   protected initialized_ = false;
 
   /**
