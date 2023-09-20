@@ -9,6 +9,7 @@ import {registerAllBlocks} from './blocks';
 import {toolbox} from './toolbox';
 import './index.css';
 import {jsonDefinitionGenerator} from './output-generators/json_definition_generator';
+import {load, save} from './serialization';
 
 // Put Blockly in the global scope for easy debugging.
 (window as any).Blockly = Blockly;
@@ -25,53 +26,11 @@ const mainWorkspace = Blockly.inject(mainWorkspaceDiv, {toolbox});
 // Disable orphan blocks on the main workspace
 mainWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 
+// Load either saved state or new state
+load(mainWorkspace);
 
-const startBlocks = {
-  'blocks': {
-    'languageVersion': 0,
-    'blocks': [
-      {
-        'type': 'factory_base',
-        'deletable': false,
-        'x': 53,
-        'y': 23,
-        'fields': {
-          'NAME': 'block_type',
-          'INLINE': 'AUTO',
-          'CONNECTIONS': 'NONE',
-        },
-        'inputs': {
-          'TOOLTIP': {
-            'block': {
-              'type': 'text',
-              'deletable': false,
-              'movable': false,
-              'fields': {
-                'TEXT': '',
-              },
-            },
-          },
-          'HELPURL': {
-            'block': {
-              'type': 'text',
-              'deletable': false,
-              'movable': false,
-              'fields': {
-                'TEXT': '',
-              },
-            },
-          },
-        },
-      },
-    ],
-  },
-};
-
-Blockly.serialization.workspaces.load(startBlocks, mainWorkspace);
 
 let blockName = '';
-
-
 // Whenever the workspace changes meaningfully, update the preview.
 mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
   // Don't run the code when the workspace finishes loading; we're
@@ -82,6 +41,7 @@ mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
     return;
   }
 
+  save(mainWorkspace);
   previewWorkspace.clear();
 
   // If we previously had a block registered, delete it.
