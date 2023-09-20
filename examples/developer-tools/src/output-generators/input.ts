@@ -39,5 +39,10 @@ jsonDefinitionGenerator.forBlock['input'] = function(
     code.check = JSON.parse(typeValue);
   }
 
-  return JSON.stringify(code);
+  // All fields associated with an input are in the argument list just
+  // ahead of their input, so prepend the field code to the final
+  // input code.
+  const fields = generator.statementToCode(block, 'FIELDS');
+
+  return fields + (fields ? ',\n' : '') + JSON.stringify(code);
 };

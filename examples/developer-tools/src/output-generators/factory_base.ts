@@ -10,20 +10,14 @@ import {JsonDefinitionGenerator, jsonDefinitionGenerator, Order} from './json_de
 
 /**
  * Builds the 'message0' part of the JSON block definition.
- * TODO: handle fields as well.
- * @param block
+ * @param numMessages
  * @returns A message string with one placeholder '%i`
  *    for each field and input in the block.
  */
-const buildMessageString = function(block: Blockly.Block) {
+const buildMessageString = function(numMessages: number) {
   let messageString = '';
-  let numInputs = 0;
-  let bl = block.getInput('INPUTS').connection.targetBlock();
-
-  while (bl) {
-    numInputs++;
-    messageString += `%${numInputs} `;
-    bl = bl.nextConnection?.targetBlock();
+  for (let i = 1; i <= numMessages; i++) {
+    messageString += `%${i} `;
   }
   return messageString;
 };
@@ -43,7 +37,6 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function(
     helpUrl: helpUrl,
   };
 
-  code.message0 = buildMessageString(block);
 
   const inputsStack = generator.statementToCode(block, 'INPUTS');
   if (inputsStack) {
@@ -51,6 +44,9 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function(
     // Can possibly fix this in scrub?
     const args0 = JSON.parse(`[${inputsStack}]`);
     code.args0 = args0;
+    code.message0 = buildMessageString(args0.length);
+  } else {
+    code.message0 = '';
   }
 
 

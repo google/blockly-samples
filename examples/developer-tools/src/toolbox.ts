@@ -44,8 +44,27 @@ export const toolbox = {
     },
     {
       'kind': 'category',
+      'name': 'Fields',
+      'categorystyle': 'text_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'field_input',
+        },
+        {
+          'kind': 'block',
+          'type': 'field_number',
+        },
+        {
+          'kind': 'block',
+          'type': 'field_dropdown',
+        },
+      ],
+    },
+    {
+      'kind': 'category',
       'name': 'Type',
-      'categorystyle': 'logic_category',
+      'categorystyle': 'math_category',
       'contents': [
         {
           'kind': 'block',
