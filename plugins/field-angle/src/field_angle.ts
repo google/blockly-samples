@@ -435,7 +435,27 @@ export class FieldAngle extends Blockly.FieldNumber {
   private displayMouseOrKeyboardValue(angle: number) {
     const validAngle = this.doClassValidation_(angle);
     if (validAngle !== null && validAngle !== this.value_) {
-      this.setEditorValue_(validAngle);
+      // Intermediate value changes from user input are not confirmed until the
+      // user closes the editor, and may be numerous. Inhibit reporting these as
+      // normal block change events, and instead report them as special
+      // intermediate changes that do not get recorded in undo history.
+      const oldValue = this.value_;
+      this.setEditorValue_(angle, false);
+      if (
+        this.sourceBlock_ &&
+        Blockly.Events.isEnabled() &&
+        this.value_ !== oldValue
+      ) {
+        Blockly.Events.fire(
+            new (Blockly.Events.get(
+                Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+                this.sourceBlock_,
+                this.name || null,
+                oldValue,
+                this.value_
+            )
+        );
+      }
     }
   }
 
