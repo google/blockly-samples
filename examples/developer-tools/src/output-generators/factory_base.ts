@@ -10,16 +10,34 @@ import {JsonDefinitionGenerator, jsonDefinitionGenerator, Order} from './json_de
 
 /**
  * Builds the 'message0' part of the JSON block definition.
- * @param numMessages
- * @returns A message string with one placeholder '%i`
- *    for each field and input in the block.
+ * The message should have label fields' text inlined into the message.
+ * Doing so makes the message more translatable as fields can be moved around.
+ * @param argsList The list of fields and inputs generated from the input stack.
+ * @returns An object containing:
+ *    - a message string with one placeholder '%i`
+ *      for each field and input in the block
+ *    - the new args list, with field lables removed
  */
-const buildMessageString = function(numMessages: number) {
+const buildMessageString = function(argsList: Array<Record<string, unknown>>) {
+  let i = 0;
   let messageString = '';
-  for (let i = 1; i <= numMessages; i++) {
-    messageString += `%${i} `;
+  const newArgs = [];
+  for (const arg of argsList) {
+    if (arg.type === 'field_label') {
+      // Label fields get added directly to the message string.
+      // They are removed from the arg list so they don't appear twice.
+      messageString += `${arg.text} `;
+    } else {
+      i++;
+      messageString += `%${i} `;
+      newArgs.push(arg);
+    }
   }
-  return messageString;
+
+  return {
+    message: messageString.trim(),
+    args: newArgs,
+  };
 };
 
 jsonDefinitionGenerator.forBlock['factory_base'] = function(
@@ -43,8 +61,9 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function(
     // If there is a stack, they come back as the inner pieces of an array
     // Can possibly fix this in scrub?
     const args0 = JSON.parse(`[${inputsStack}]`);
-    code.args0 = args0;
-    code.message0 = buildMessageString(args0.length);
+    const {args, message} = buildMessageString(args0);
+    code.message0 = message;
+    code.args0 = args;
   } else {
     code.message0 = '';
   }

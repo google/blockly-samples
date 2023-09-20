@@ -49,6 +49,10 @@ export const toolbox = {
       'contents': [
         {
           'kind': 'block',
+          'type': 'field_label',
+        },
+        {
+          'kind': 'block',
           'type': 'field_input',
         },
         {

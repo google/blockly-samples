@@ -32,6 +32,22 @@ const fieldNameCheck = function(referenceBlock: Blockly.Block) {
 };
 
 /**
+ * Label (non-serializable) field.
+ */
+export const fieldLabel = {
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput('FIRST')
+        .appendField('text')
+        .appendField(new Blockly.FieldTextInput(''), 'TEXT');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('Static text that serves as a label.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=88');
+  },
+};
+
+/**
  * Text input field.
  */
 export const fieldInput = {
