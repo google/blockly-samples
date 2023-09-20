@@ -38,12 +38,32 @@ export const fieldLabel = {
   init: function() {
     this.setColour(160);
     this.appendDummyInput('FIRST')
-        .appendField('text')
+        .appendField('label')
         .appendField(new Blockly.FieldTextInput(''), 'TEXT');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Static text that serves as a label.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=88');
+  },
+};
+
+export const fieldLabelSerializable = {
+  // Text value that is saved to XML.
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput('FIRST')
+        .appendField('label')
+        .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+        .appendField(',')
+        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('Static text that serves as a label, and is saved with' +
+      ' block data. Use only if you want to modify this label at runtime.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=88');
+  },
+  onchange: function() {
+    fieldNameCheck(this);
   },
 };
 
@@ -93,6 +113,70 @@ export const fieldNumber = {
   },
   onchange: function() {
     fieldNameCheck(this);
+  },
+};
+
+export const fieldCheckbox = {
+  // Checkbox.
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendField('checkbox')
+        .appendField(new Blockly.FieldCheckbox('TRUE'), 'CHECKED')
+        .appendField(',')
+        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('Checkbox field.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=485');
+  },
+  onchange: function() {
+    fieldNameCheck(this);
+  },
+};
+
+export const fieldVariable = {
+  // Dropdown for variables.
+  init: function() {
+    this.setColour(160);
+    this.appendDummyInput()
+        .appendField('variable')
+        .appendField(new Blockly.FieldTextInput('item'), 'TEXT')
+        .appendField(',')
+        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('Dropdown menu for variable names.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=510');
+  },
+  onchange: function() {
+    fieldNameCheck(this);
+  },
+};
+
+export const fieldImage = {
+  // Image.
+  init: function() {
+    this.setColour(160);
+    const src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
+    this.appendDummyInput()
+        .appendField('image')
+        .appendField(new Blockly.FieldTextInput(src), 'SRC');
+    this.appendDummyInput()
+        .appendField('width')
+        .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
+        .appendField('height')
+        .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
+        .appendField('alt text')
+        .appendField(new Blockly.FieldTextInput('*'), 'ALT')
+        .appendField('flip RTL')
+        .appendField(new Blockly.FieldCheckbox('FALSE'), 'FLIP_RTL');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('Static image (JPEG, PNG, GIF, SVG, BMP).\n' +
+                    'Retains aspect ratio regardless of height and width.\n' +
+                    'Alt text is for when collapsed.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=567');
   },
 };
 

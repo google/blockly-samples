@@ -53,6 +53,10 @@ export const toolbox = {
         },
         {
           'kind': 'block',
+          'type': 'field_label_serializable',
+        },
+        {
+          'kind': 'block',
           'type': 'field_input',
         },
         {
@@ -62,6 +66,18 @@ export const toolbox = {
         {
           'kind': 'block',
           'type': 'field_dropdown',
+        },
+        {
+          'kind': 'block',
+          'type': 'field_checkbox',
+        },
+        {
+          'kind': 'block',
+          'type': 'field_variable',
+        },
+        {
+          'kind': 'block',
+          'type': 'field_image',
         },
       ],
     },
