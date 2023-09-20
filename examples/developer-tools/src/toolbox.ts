@@ -134,5 +134,75 @@ export const toolbox = {
         },
       ],
     },
+    {
+      'kind': 'category',
+      'name': 'Colour',
+      'categorystyle': 'colour_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 20,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 65,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 120,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 160,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 210,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 230,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 260,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 290,
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'colour_hue',
+          'fields': {
+            'HUE': 330,
+          },
+        },
+      ],
+    },
   ],
 };
