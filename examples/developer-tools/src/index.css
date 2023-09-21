@@ -1,25 +1,55 @@
+body {
+  margin: 0;
+}
+
 #blockFactoryContainer {
   display: flex;
   height: 100vh;
+  box-sizing: border-box;
 }
 
 #mainWorkspace {
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 0;
+  margin: 8px;
+  min-width: 500px;
 }
 
 #outputPane {
-  flex-basis: 0;
-  flex-grow: 1;
   display: flex;
+  flex-basis: 0;
   flex-direction: column;
+  flex-grow: 1;
+  overflow-y: scroll;
 }
 
 #outputPane > * {
-  flex-grow: 1;
+  flex-basis: 20%;
+  margin: 8px;
+  min-height: 100px;
+}
+
+#preview {
+  min-height: 200px;
 }
 
 #definition {
   overflow:scroll;
+}
+
+@media screen and (max-width: 800px) {
+  #blockFactoryContainer {
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+
+  #mainWorkspace {
+    flex-grow: 2;
+    min-height: 400px;
+  }
+
+  #outputDiv {
+    height: fit-content;
+  }
 }
