@@ -4,6 +4,7 @@
   "description": "Samples for using Blockly",
   "author": "Blockly Team",
   "license": "Apache-2.0",
+  "type": "module",
   "scripts": {
     "audit:fix": "lerna run audit:fix && lerna bootstrap",
     "boot": "lerna bootstrap",
@@ -16,7 +17,7 @@
     "deploy": "npm run deploy:prepare && gulp deploy",
     "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
     "license": "gulp checkLicenses",
-    "lint": "lerna run lint --no-bail",
+    "lint": "eslint .",
     "lint:fix": "lerna run lint -- -- --fix",
     "postinstall": "npm run boot",
     "test": "lerna run test",
@@ -29,9 +30,15 @@
     "test:ghpages": "gulp testGhPages"
   },
   "devDependencies": {
-    "@blockly/eslint-config": "^3.0.0",
+    "@babel/eslint-parser": "^7.22.15",
+    "@eslint/eslintrc": "^2.1.2",
+    "@eslint/js": "^8.49.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
     "conventional-changelog-conventionalcommits": "^5.0.0",
-    "eslint": "^7.15.0",
+    "eslint": "^8.49.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-jsdoc": "^46.8.2",
     "gh-pages": "^3.1.0",
     "gulp": "^4.0.2",
     "gulp-header": "^2.0.9",
@@ -45,7 +52,7 @@
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
   },
-  "eslintConfig": {
-    "extends": "@blockly/eslint-config"
+  "dependencies": {
+    "globals": "^13.22.0"
   }
 }
