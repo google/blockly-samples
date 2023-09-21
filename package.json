@@ -4,7 +4,6 @@
   "description": "Samples for using Blockly",
   "author": "Blockly Team",
   "license": "Apache-2.0",
-  "type": "module",
   "scripts": {
     "audit:fix": "lerna run audit:fix && lerna bootstrap",
     "boot": "lerna bootstrap",

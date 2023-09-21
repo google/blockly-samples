@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import jsdoc from 'eslint-plugin-jsdoc';
-import js from '@eslint/js';
-import {FlatCompat} from '@eslint/eslintrc';
-import babelParser from '@babel/eslint-parser';
-import globals from 'globals';
-import tsParser from '@typescript-eslint/parser';
-import typescript from '@typescript-eslint/eslint-plugin';
-import eslintConfigPrettier from "eslint-config-prettier";
+const jsdoc = require('eslint-plugin-jsdoc');
+const js = require('@eslint/js');
+const {FlatCompat} = require('@eslint/eslintrc');
+const babelParser = require('@babel/eslint-parser');
+const globals = require('globals');
+const tsParser = require('@typescript-eslint/parser');
+const typescript = require('@typescript-eslint/eslint-plugin');
+const eslintConfigPrettier = require("eslint-config-prettier");
 
 // Used to convert the Google eslint config into flat config format.
 const compat = new FlatCompat();
 
-export default [
+module.exports = [
   {
     ignores: ['examples/', 'codelabs/', 'gh-pages/', '**/dist/', '**/build/'],
   },
