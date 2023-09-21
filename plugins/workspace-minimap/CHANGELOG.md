@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.1...@blockly/workspace-minimap@0.1.2) (2023-09-21)
+
+
+### Bug Fixes
+
+* Minimap focus region on reload ([#1890](https://github.com/google/blockly-samples/issues/1890)) ([646fcbc](https://github.com/google/blockly-samples/commit/646fcbc309a86639d17b2f966e5d2d75e50c9f0d))
+* minimap rendering issue ([#1931](https://github.com/google/blockly-samples/issues/1931)) ([641c0c2](https://github.com/google/blockly-samples/commit/641c0c217182f404870c39f28fa534dacefbfecd))
+
+
+
 ## [0.1.1](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.0...@blockly/workspace-minimap@0.1.1) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/workspace-minimap

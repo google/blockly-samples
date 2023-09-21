@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.5...@blockly/field-angle@3.0.6) (2023-09-21)
+
+
+### Bug Fixes
+
+* Fire intermediate events instead of change events while dragging angle field ([#1933](https://github.com/google/blockly-samples/issues/1933)) ([dc79b14](https://github.com/google/blockly-samples/commit/dc79b14e4bc402e76cff960a4d72d4ac3a4365a5))
+
+
+
 ## [3.0.5](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.4...@blockly/field-angle@3.0.5) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/field-angle

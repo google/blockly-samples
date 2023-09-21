@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.1.5...@blockly/toolbox-search@1.1.6) (2023-09-21)
+
+
+### Bug Fixes
+
+* toolbox search with XML toolboxes of kind BLOCK ([#1930](https://github.com/google/blockly-samples/issues/1930)) ([05475bd](https://github.com/google/blockly-samples/commit/05475bd81dad40e91be42a84c5d1db6287c7a3ff))
+
+
+
 ## [1.1.5](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.1.4...@blockly/toolbox-search@1.1.5) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/toolbox-search
