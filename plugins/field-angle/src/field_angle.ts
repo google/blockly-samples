@@ -238,8 +238,8 @@ export class FieldAngle extends Blockly.FieldNumber {
       'version': '1.1',
       'height': FieldAngle.HALF * 2 + 'px',
       'width': FieldAngle.HALF * 2 + 'px',
-      'style': 'touch-action: none',
     });
+    svg.style.touchAction = 'none';
     const circle = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.CIRCLE, {
           'cx': FieldAngle.HALF,
