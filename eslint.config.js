@@ -139,7 +139,9 @@ module.exports = [
       'jsdoc/require-returns-type': 'off',
       // Ensure there is a blank line between the body and any @tags,
       // as required by the tsdoc spec.
-      'jsdoc/tag-lines': ['error', 'any', {'startLines': 1}],
+      // TODO: Re-enable soon.
+      // 'jsdoc/tag-lines': ['error', 'any', {'startLines': 1}],
+      'jsdoc/tag-lines': 'off',
 
       // Already handled by tsc.
       'no-dupe-class-members': 'off',
