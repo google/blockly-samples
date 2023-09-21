@@ -11,6 +11,7 @@ import babelParser from '@babel/eslint-parser';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
 import typescript from '@typescript-eslint/eslint-plugin';
+import eslintConfigPrettier from "eslint-config-prettier";
 
 // Used to convert the Google eslint config into flat config format.
 const compat = new FlatCompat();
@@ -22,6 +23,7 @@ export default [
   js.configs.recommended, // eslint-recommended
   ...compat.extends('eslint-config-google'),
   jsdoc.configs['flat/recommended'], // jsdoc-recommended
+  eslintConfigPrettier, // Must be last in the list of imported configs so it can override.
   // Following is default configuration that applies to all files.
   {
     languageOptions: {
@@ -64,14 +66,6 @@ export default [
       'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
       // Allow TODO comments.
       'no-warning-comments': 'off',
-      // Allow long import lines.
-      'max-len': [
-        'error',
-        {
-          'ignorePattern': '^(import|export)',
-          'ignoreUrls': true,
-        },
-      ],
       'no-invalid-this': 'off',
       // valid-jsdoc does not work properly for interface methods.
       // https://github.com/eslint/eslint/issues/9978
@@ -197,18 +191,6 @@ export default [
         },
       ],
       '@typescript-eslint/consistent-type-assertions': 'error',
-      '@typescript-eslint/member-delimiter-style': ['error',
-        {
-          'multiline': {
-            'delimiter': 'semi',
-            'requireLast': true,
-          },
-          'singleline': {
-            'delimiter': 'semi',
-            'requireLast': false,
-          },
-        },
-      ],
 
       'no-array-constructor': 'off',
       '@typescript-eslint/no-array-constructor': 'error',
@@ -227,13 +209,10 @@ export default [
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/prefer-namespace-keyword': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
-      '@typescript-eslint/type-annotation-spacing': 'error',
-
       '@typescript-eslint/consistent-type-definitions': 'error',
       '@typescript-eslint/explicit-member-accessibility': ['error',
         {'accessibility': 'no-public'}],
       '@typescript-eslint/no-require-imports': 'error',
-      '@typescript-eslint/semi': ['error', 'always'],
     },
   },
 ];
