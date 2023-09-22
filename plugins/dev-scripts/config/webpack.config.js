@@ -98,6 +98,10 @@ module.exports = (env) => {
           use: [require.resolve('source-map-loader')],
           enforce: 'pre',
         },
+        {
+          test: /\.(avif|bmp|cur|gif|jpe?g|png|svg|webp|mp3|ogg|wav)$/,
+          type: 'asset/inline',
+        },
         isTypescript && {
           test: /\.tsx?$/,
           loader: require.resolve('ts-loader'),

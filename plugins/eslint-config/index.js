@@ -219,6 +219,8 @@ module.exports = {
           {'accessibility': 'no-public'}],
         '@typescript-eslint/no-require-imports': 'error',
         '@typescript-eslint/semi': ['error', 'always'],
+        'spaced-comment': ['error', 'always',
+          {'markers': ['/']}],
       },
     },
   ],

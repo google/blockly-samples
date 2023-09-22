@@ -51,6 +51,7 @@
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
   },
+  "types": "./config/blockly-env.d.ts",
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
   },
