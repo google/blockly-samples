@@ -41,8 +41,9 @@ const toolbox = {
     },
   ]
 };
+```
 
-// Inject Blockly. (OSD)
+// Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolbox,
 });
