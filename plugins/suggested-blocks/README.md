@@ -41,7 +41,7 @@ const toolbox = {
     },
   ]
 };
-```
+
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -50,7 +50,7 @@ const workspace = Blockly.inject('blocklyDiv', {
 
 // Initialize the plugin
 SuggestedBlocks.init(workspace);
-
+```
 ## API
 
 - `init`: Initializes the suggested blocks categories in the toolbox. Takes several arguments:
