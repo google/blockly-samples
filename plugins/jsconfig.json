@@ -4,6 +4,8 @@
     "target": "es6",
     "checkJs": true,
     "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "exclude": [
     "**/node_modules",
