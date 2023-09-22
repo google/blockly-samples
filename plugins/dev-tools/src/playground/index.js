@@ -121,11 +121,12 @@ export function createPlayground(
             editor.createContextKey('isEditorJson', true);
 
         // Load / Save playground state.
+        // setting active tab as JSON
         const playgroundState = new LocalStorageState(`playgroundState_${id}`, {
-          activeTab: 'XML',
+          activeTab: 'JSON',
           playgroundOpen: true,
           autoGenerate: config && config.auto != undefined ? config.auto : true,
-          workspaceXml: '',
+          workspaceJson: {},
         });
         playgroundState.load();
 
@@ -218,12 +219,11 @@ export function createPlayground(
          */
         const updateEditor = () => {
           if (playgroundState.get('autoGenerate')) {
-            if (initialWorkspaceXml && isFirstLoad) {
+            if (initialWorkspaceJson && isFirstLoad) {
               isFirstLoad = false;
               try {
-                Blockly.Xml.domToWorkspace(
-                    Blockly.utils.xml.textToDom(initialWorkspaceXml),
-                    workspace);
+                Blockly.serialization.workspaces.load(
+                    JSON.parse(initialWorkspaceJson), workspace);
               } catch (e) {
                 console.warn('Failed to auto import.', e);
               }
@@ -235,12 +235,12 @@ export function createPlayground(
 
             let code = '';
             try {
-              code = Blockly.Xml.domToPrettyText(
-                  Blockly.Xml.workspaceToDom(workspace));
+              code = JSON.stringify(
+                  Blockly.serialization.workspaces.save(workspace), null, 2);
             } catch (e) {
               console.warn('Failed to auto save.', e);
             }
-            playgroundState.set('workspaceXml', code);
+            playgroundState.set('workspaceJson', code);
             playgroundState.save();
           }
         };
@@ -312,14 +312,15 @@ export function createPlayground(
           editor.focus();
         });
 
-        // Initialized saved XML and bind change listener.
-        const initialWorkspaceXml = playgroundState.get('workspaceXml') || '';
-        const xmlTab = tabs['XML'];
-        const xmlModel = xmlTab.state.model;
+
+        // Initialized saved JSON and bind change listener.
+        const initialWorkspaceJson = playgroundState.get('workspaceJson') || {};
+        const jsonTab = tabs['JSON'];
+        const jsonModel = jsonTab.state.model;
         let isFirstLoad = true;
-        xmlModel.setValue(initialWorkspaceXml);
-        xmlModel.onDidChangeContent(() => {
-          playgroundState.set('workspaceXml', xmlModel.getValue());
+        jsonModel.setValue(initialWorkspaceJson);
+        jsonModel.onDidChangeContent(() => {
+          playgroundState.set('workspaceJson', jsonModel.getValue());
           playgroundState.save();
         });
 
