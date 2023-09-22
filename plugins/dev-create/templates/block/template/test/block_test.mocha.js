@@ -26,7 +26,8 @@ suite('BlockTemplate', function() {
    * @param {!Blockly.Block} block The block to check.
    */
   function assertBlockStructure(block) {
-    // TODO add relevant parameters and implement.
+    // TODO replace with meaningful assertions.
+    assert.exists(block);
   }
 
   setup(function() {
@@ -39,8 +40,8 @@ suite('BlockTemplate', function() {
 
   suite('Creation', function() {
     // TODO Add basic test for creation of block using newBlock call.
-    // const block = this.workspace.newBlock('block_type');
-    // assertBlockStructure(block);
+    const block = this.workspace.newBlock('block_type');
+    assertBlockStructure(block);
   });
 
   suite('Code generation', function() {
