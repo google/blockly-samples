@@ -26,10 +26,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/code-frame": "^7.8.3",
-    "@blockly/eslint-config": "^3.0.0",
     "chalk": "^4.0.0",
-    "eslint": "^7.15.0",
-    "eslint-webpack-plugin": "^3.0.0",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "mocha": "^9.2.0",
     "rimraf": "^3.0.2",

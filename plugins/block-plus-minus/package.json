@@ -6,7 +6,7 @@
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
-    "lint": "blockly-scripts lint",
+    "lint": "eslint .",
     "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start",
