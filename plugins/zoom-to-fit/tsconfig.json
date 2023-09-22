@@ -10,7 +10,9 @@
     // Point at the local Blockly. See #1934. Remove if we add hoisting.
     "paths": {
       "blockly/*": ["node_modules/blockly/*"]
-    }
+    },
+    "declaration": true,
+    "declarationMap": true,
   },
   "include": [
     "src", "test"
