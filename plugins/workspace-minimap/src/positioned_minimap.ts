@@ -167,7 +167,7 @@ export class PositionedMinimap extends Minimap implements Blockly.IPositionable 
       style.width = `${this.width}px`;
       style.height = `${this.height}px`;
       style.top = `${this.top}px`;
-      style.left = `${this.left}px;`;
+      style.left = `${this.left}px`;
       Blockly.svgResize(this.minimapWorkspace);
     }
 }
