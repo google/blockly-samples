@@ -12,7 +12,7 @@
       "blockly/*": ["node_modules/blockly/*"]
     },
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": true
   },
   "include": [
     "src", "test"
