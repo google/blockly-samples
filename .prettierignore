@@ -5,8 +5,10 @@ codelabs/*
 gh-pages/*
 
 # All build artifacts, etc.
-*/dist/*
-*/build/*
-*/node_modules/*
-*/CHANGELOG.md
+**/dist/*
+**/build/*
+**/node_modules/*
+**/CHANGELOG.md
+CHANGELOG.md
+PULL_REQUEST_TEMPLATE.md
 
