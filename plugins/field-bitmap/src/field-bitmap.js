@@ -36,6 +36,8 @@ export class FieldBitmap extends Blockly.Field {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
+    // Add property in the constructor
+    this.initialValue_ = this.getValue();
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -242,6 +244,9 @@ export class FieldBitmap extends Blockly.Field {
     );
     dropdownEditor.appendChild(pixelContainer);
 
+    // Store the initial value at the start of the edit
+    this.initialValue_ = this.getValue();
+
     this.bindEvent_(dropdownEditor, 'mouseup', this.onMouseUp_);
     this.bindEvent_(dropdownEditor, 'mouseleave', this.onMouseUp_);
     this.bindEvent_(dropdownEditor, 'dragstart', (e) => {
@@ -370,6 +375,18 @@ export class FieldBitmap extends Blockly.Field {
     }
     this.boundEvents_.length = 0;
     this.editorPixels_ = null;
+
+    // Fire a BLOCK_CHANGE event with the initial value at the start of the edit
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              this.value_
+          )
+      );
+    }
   }
 
   /**
@@ -432,9 +449,23 @@ export class FieldBitmap extends Blockly.Field {
    */
   randomizePixels_() {
     const getRandBinary = () => Math.floor(Math.random() * 2);
+    const oldValue = this.getValue();
     const newVal = this.getEmptyArray_();
     this.forAllCells_((r, c) => {
       newVal[r][c] = getRandBinary();
+      // Pass false to prevent firing a change even
+      this.setValue(newVal, false);
+      if (this.getSourceBlock()) {
+        Blockly.Events.fire(
+            new (Blockly.Events.get(
+                Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+                this.sourceBlock_,
+                this.name || null,
+                oldValue,
+                this.getValue()
+            )
+        );
+      }
     });
     this.setValue(newVal);
   }
@@ -444,10 +475,24 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   clearPixels_() {
+    const oldValue = this.getValue();
     const newVal = this.getEmptyArray_();
     this.forAllCells_((r, c) => {
       newVal[r][c] = 0;
     });
+    // Pass false to prevent firing a change even
+    this.setValue(newVal, false);
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              oldValue,
+              this.getValue()
+          )
+      );
+    }
     this.setValue(newVal);
   }
 
@@ -459,8 +504,23 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   setPixel_(r, c, newValue) {
+    // storing the old value of the field before making any changes.
+    const oldValue = this.getValue();
     const newGrid = JSON.parse(JSON.stringify(this.getValue()));
     newGrid[r][c] = newValue;
+    // Pass false to prevent firing a change event
+    this.setValue(newGrid, false);
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              oldValue,
+              this.getValue()
+          )
+      );
+    }
     this.setValue(newGrid);
   }
 
