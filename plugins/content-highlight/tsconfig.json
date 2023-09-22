@@ -7,6 +7,8 @@
     "sourceMap": true,
     "moduleResolution": "nodenext",
     "lib": ["es2021", "dom"],
+    "declaration": true,
+    "declarationMap": true,
     // Point at the local Blockly. See #1934. Remove if we add hoisting.
     "paths": {
       "blockly/*": ["node_modules/blockly/*"]
