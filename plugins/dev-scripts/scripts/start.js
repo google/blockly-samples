@@ -37,13 +37,10 @@ const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
 
 console.log(`Running start for ${packageJson.name}`);
 
-const args = process.argv.slice(2);
-const skipLint = args.includes('--skip-lint');
 // Create the webpack configuration for the development environment.
 // Build the test directory.
 const config = webpackConfig({
   mode: 'development',
-  skipLint: skipLint,
 });
 if (!config.entry) {
   console.log(`${chalk.red(`Configuration error.`)}

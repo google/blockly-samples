@@ -18,8 +18,6 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
 
-const ESLintPlugin = require('eslint-webpack-plugin');
-
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -114,22 +112,10 @@ module.exports = (env) => {
       }),
       // canvas should only be required by jsdom if the 'canvas' package is
       // installed in package.json. Ignoring canvas require errors.
-      isTest && new webpack.IgnorePlugin({
-        resourceRegExp: /canvas$/,
-      }),
-      // Run the linter.
-      !env.skipLint && new ESLintPlugin({
-        cache: true,
-        cacheLocation: path.join('node_modules/.cache/eslint/'),
-        formatter: 'stylish',
-        emitWarning: isDevelopment,
-        eslintPath: require.resolve('eslint'),
-        resolvePluginsRelativeTo: __dirname,
-        useEslintrc: false,
-        baseConfig: {
-          extends: [require.resolve('@blockly/eslint-config')],
-        },
-      }),
+      isTest &&
+        new webpack.IgnorePlugin({
+          resourceRegExp: /canvas$/,
+        }),
     ].filter(Boolean),
     externals: isProduction ? {
       'blockly/core': {

@@ -50,10 +50,10 @@ jobs:
       run: npm ci
 
     - name: Build
-      run: npm run build -- -- -- --skip-lint
+      run: npm run build
 
     - name: Test
-      run: npm run test -- -- -- --skip-lint
+      run: npm run test
 
     - name: Publish
       env:
