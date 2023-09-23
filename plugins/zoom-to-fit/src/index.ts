@@ -6,6 +6,8 @@
 
 import * as Blockly from 'blockly/core';
 
+import zoomToFitSvgDataUri from '../media/zoom_reset.svg';
+
 /**
  * Class for zoom to fit control.
  */
@@ -203,18 +205,6 @@ export class ZoomToFitControl implements Blockly.IPositionable {
         `translate(${this.left}, ${this.top})`);
   }
 }
-
-/**
- * Base64 encoded data uri for zoom to fit icon.
- */
-const zoomToFitSvgDataUri =
-    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
-    '9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCIgZm' +
-    'lsbD0iIzU0NkU3QSI+PHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+PH' +
-    'BhdGggZD0iTTUgNi40Mkw4LjA5IDkuNSA5LjUgOC4wOSA2LjQxIDVIOVYzSDN2Nmgyem0xMC' +
-    '0zLjQxdjJoMi41N0wxNC41IDguMDlsMS40MSAxLjQxTDE5IDYuNDFWOWgyVjMuMDF6bTQgMT' +
-    'QuNTdsLTMuMDktMy4wOC0xLjQxIDEuNDFMMTcuNTkgMTlIMTV2Mmg2di02aC0yek04LjA5ID' +
-    'E0LjVMNSAxNy41OVYxNUgzdjZoNnYtMkg2LjQybDMuMDgtMy4wOXoiLz48L3N2Zz4=';
 
 Blockly.Css.register(`
 .zoomToFit {
