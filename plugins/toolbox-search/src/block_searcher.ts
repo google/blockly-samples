@@ -26,7 +26,7 @@ export class BlockSearcher {
     const blockCreationWorkspace = new Blockly.Workspace();
     blockTypes.forEach((blockType) => {
       const block = blockCreationWorkspace.newBlock(blockType);
-      this.indexBlockText(blockType.replaceAll('_', ''), blockType);
+      this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
           this.indexDropdownOption(field, blockType);
@@ -45,9 +45,9 @@ export class BlockSearcher {
     if (field instanceof Blockly.FieldDropdown) {
       field.getOptions(true).forEach((option) => {
         if (typeof option[0] === 'string') {
-          return this.indexBlockText(option[0], blockType);
+          this.indexBlockText(option[0], blockType);
         } else if ('alt' in option[0]) {
-          return this.indexBlockText(option[0].alt, blockType);
+          this.indexBlockText(option[0].alt, blockType);
         }
       });
     }
