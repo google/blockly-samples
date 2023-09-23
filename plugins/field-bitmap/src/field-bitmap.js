@@ -19,6 +19,7 @@ const PIXEL_SIZE = 15;
 const FILLED_PIXEL_COLOR = '#363d80';
 const EMPTY_PIXEL_COLOR = '#fff';
 
+
 /**
  * Field for inputting a small bitmap image.
  * Includes a grid of clickable pixels that's exported as a bitmap.
@@ -36,8 +37,11 @@ export class FieldBitmap extends Blockly.Field {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
+
     // Add property in the constructor
-    this.initialValue_ = this.getValue();
+    this.initialValue_ = null;
+    console.log('this.initialValue_:');
+    console.log(JSON.stringify(this.initialValue_));
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -234,6 +238,7 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownCreate_() {
+    console.log('inside dropdownCreate');
     const dropdownEditor = this.createElementWithClassname_(
         'div',
         'dropdownEditor'
@@ -243,9 +248,6 @@ export class FieldBitmap extends Blockly.Field {
         'pixelContainer'
     );
     dropdownEditor.appendChild(pixelContainer);
-
-    // Store the initial value at the start of the edit
-    this.initialValue_ = this.getValue();
 
     this.bindEvent_(dropdownEditor, 'mouseup', this.onMouseUp_);
     this.bindEvent_(dropdownEditor, 'mouseleave', this.onMouseUp_);
@@ -300,6 +302,13 @@ export class FieldBitmap extends Blockly.Field {
         }
       });
     }
+
+    // Store the initial value at the start of the edit
+    this.initialValue_ = this.getValue();
+    console.log('this.editorPixels_:');
+    console.log(JSON.stringify(this.editorPixels_));
+    console.log('this.initialValue_ inside dropdownCreate:');
+    console.log(JSON.stringify(this.initialValue_));
 
     return dropdownEditor;
   }
@@ -370,24 +379,27 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownDispose_() {
+    // Fire BLOCK_CHANGE event with the initial and
+    // final values
+    if (this.getSourceBlock() && this.initialValue_ !== null) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(Blockly.Events.BLOCK_CHANGE))(
+              this.sourceBlock_,
+              'field',
+              this.name || null,
+              this.initialValue_,
+              this.getValue()
+          )
+      );
+    }
+
     for (const event of this.boundEvents_) {
       Blockly.browserEvents.unbind(event);
     }
     this.boundEvents_.length = 0;
     this.editorPixels_ = null;
-
-    // Fire a BLOCK_CHANGE event with the initial value at the start of the edit
-    if (this.getSourceBlock()) {
-      Blockly.Events.fire(
-          new (Blockly.Events.get(
-              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
-              this.sourceBlock_,
-              this.name || null,
-              this.value_
-          )
-      );
-    }
   }
+
 
   /**
    * Constructs an array of zeros with the specified width and height.
@@ -448,25 +460,29 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   randomizePixels_() {
+    console.log('in randomizePixels');
     const getRandBinary = () => Math.floor(Math.random() * 2);
-    const oldValue = this.getValue();
     const newVal = this.getEmptyArray_();
     this.forAllCells_((r, c) => {
       newVal[r][c] = getRandBinary();
-      // Pass false to prevent firing a change even
-      this.setValue(newVal, false);
-      if (this.getSourceBlock()) {
-        Blockly.Events.fire(
-            new (Blockly.Events.get(
-                Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
-                this.sourceBlock_,
-                this.name || null,
-                oldValue,
-                this.getValue()
-            )
-        );
-      }
     });
+
+    /*
+    Do the same as setPixel for the randomizePixels method.
+    */
+    const oldValue = this.initialValue_;
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              oldValue,
+              this.setValue(oldValue, false)
+          )
+      );
+    }
+
     this.setValue(newVal);
   }
 
@@ -475,13 +491,16 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   clearPixels_() {
-    const oldValue = this.getValue();
+    console.log('inside  clearPixels');
     const newVal = this.getEmptyArray_();
     this.forAllCells_((r, c) => {
       newVal[r][c] = 0;
     });
-    // Pass false to prevent firing a change even
-    this.setValue(newVal, false);
+
+    /*
+    Do the same as setPixel for the clearPixels method.
+    */
+    const oldValue = this.initialValue_;
     if (this.getSourceBlock()) {
       Blockly.Events.fire(
           new (Blockly.Events.get(
@@ -489,10 +508,11 @@ export class FieldBitmap extends Blockly.Field {
               this.sourceBlock_,
               this.name || null,
               oldValue,
-              this.getValue()
+              this.setValue(oldValue, false)
           )
       );
     }
+
     this.setValue(newVal);
   }
 
@@ -504,12 +524,17 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   setPixel_(r, c, newValue) {
-    // storing the old value of the field before making any changes.
-    const oldValue = this.getValue();
+    console.log('inside setPixel');
+    console.log(`Pixel at row ${r}, column ${c} changed to ${newValue}`);
     const newGrid = JSON.parse(JSON.stringify(this.getValue()));
     newGrid[r][c] = newValue;
-    // Pass false to prevent firing a change event
-    this.setValue(newGrid, false);
+
+    /*
+    Modify the setPixel method to fire BLOCK_FIELD_INTERMEDIATE_CHANGE
+    events. Make sure to call setValue still, but pass false for the
+    second parameter.
+    */
+    const oldValue = this.initialValue_;
     if (this.getSourceBlock()) {
       Blockly.Events.fire(
           new (Blockly.Events.get(
@@ -517,10 +542,11 @@ export class FieldBitmap extends Blockly.Field {
               this.sourceBlock_,
               this.name || null,
               oldValue,
-              this.getValue()
+              this.setValue(oldValue, false)
           )
       );
     }
+
     this.setValue(newGrid);
   }
 
