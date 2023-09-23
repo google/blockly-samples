@@ -40,8 +40,6 @@ export class FieldBitmap extends Blockly.Field {
 
     // Add property in the constructor
     this.initialValue_ = null;
-    console.log('this.initialValue_:');
-    console.log(JSON.stringify(this.initialValue_));
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -238,7 +236,6 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownCreate_() {
-    console.log('inside dropdownCreate');
     const dropdownEditor = this.createElementWithClassname_(
         'div',
         'dropdownEditor'
@@ -305,10 +302,6 @@ export class FieldBitmap extends Blockly.Field {
 
     // Store the initial value at the start of the edit
     this.initialValue_ = this.getValue();
-    console.log('this.editorPixels_:');
-    console.log(JSON.stringify(this.editorPixels_));
-    console.log('this.initialValue_ inside dropdownCreate:');
-    console.log(JSON.stringify(this.initialValue_));
 
     return dropdownEditor;
   }
@@ -460,7 +453,6 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   randomizePixels_() {
-    console.log('in randomizePixels');
     const getRandBinary = () => Math.floor(Math.random() * 2);
     const newVal = this.getEmptyArray_();
     this.forAllCells_((r, c) => {
@@ -491,7 +483,6 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   clearPixels_() {
-    console.log('inside  clearPixels');
     const newVal = this.getEmptyArray_();
     this.forAllCells_((r, c) => {
       newVal[r][c] = 0;
@@ -524,8 +515,6 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   setPixel_(r, c, newValue) {
-    console.log('inside setPixel');
-    console.log(`Pixel at row ${r}, column ${c} changed to ${newValue}`);
     const newGrid = JSON.parse(JSON.stringify(this.getValue()));
     newGrid[r][c] = newValue;
 
