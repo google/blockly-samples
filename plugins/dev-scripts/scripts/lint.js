@@ -44,6 +44,10 @@ const linter = new ESLint({
   cacheLocation: cacheLocation,
 });
 
+console.log(
+  'blockly-scripts lint is deprecated! Run eslint directly using the CLI.',
+);
+
 /**
  * Lint this directory.
  * @param {string} dir The directory to lint.
