@@ -160,7 +160,23 @@ export class FieldSlider extends Blockly.FieldNumber {
    * Sets the text to match the slider's position.
    */
   private onSliderChange_() {
-    this.setEditorValue_(this.sliderInput?.value);
+    // Intermediate value changes from user input are not confirmed until the
+    // user closes the editor, and may be numerous. Inhibit reporting these as
+    // normal block change events, and instead report them as special
+    // intermediate changes that do not get recorded in undo history.
+    const oldValue = this.value_;
+    this.setEditorValue_(this.sliderInput?.value, false);
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              oldValue,
+              this.value_
+          )
+      );
+    }
     this.resizeEditor_();
   }
 
