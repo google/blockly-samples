@@ -71,6 +71,7 @@ const DYNAMIC_IF_MIXIN = {
     // an event loop.
     Blockly.Events.disable();
     this.finalizeConnections();
+    if (this instanceof Blockly.BlockSvg) this.initSvg();
     Blockly.Events.enable();
 
     if (!this.elseifCount && !this.elseCount) return null;

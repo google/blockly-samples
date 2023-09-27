@@ -51,6 +51,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     // an event loop.
     Blockly.Events.disable();
     this.finalizeConnections();
+    if (this instanceof Blockly.BlockSvg) this.initSvg();
     Blockly.Events.enable();
 
     const container = Blockly.utils.xml.createElement('mutation');
