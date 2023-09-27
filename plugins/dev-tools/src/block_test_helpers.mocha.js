@@ -196,7 +196,7 @@ export const runSerializationTestSuite = (testCases) => {
         if (globalThis.clock) globalThis.clock.runAll();
         const generatedJson = Blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
-            // console.trace();Blockly.Events.enable();
+        Blockly.Events.enable();
         assert.deepEqual(generatedJson, expectedJson);
       } else {
         Blockly.Events.disable();
