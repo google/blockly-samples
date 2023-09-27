@@ -444,9 +444,9 @@ suite('List create block', function() {
         'type': 'dynamic_list_create',
         'id': '1',
         'extraState':
-            '<mutation inputs="ADD0,ADD1,ADD2,ADD3" next="4"></mutation>',
+            '<mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>',
         'inputs': {
-          'ADD0': {
+          'ADD1': {
             'block': {
               'type': 'text',
               'id': '2',
@@ -455,7 +455,7 @@ suite('List create block', function() {
               },
             },
           },
-          'ADD1': {
+          'ADD5': {
             'block': {
               'type': 'text',
               'id': '3',
@@ -473,7 +473,7 @@ suite('List create block', function() {
               },
             },
           },
-          'ADD3': {
+          'ADD4': {
             'block': {
               'type': 'text',
               'id': '5',

@@ -532,7 +532,7 @@ suite('If block', function() {
         'type': 'dynamic_if',
         'id': '1',
         'extraState':
-            '<mutation inputs="1,2" else="true" next="3"></mutation>',
+            '<mutation inputs="1,3,2" else="true" next="4"></mutation>',
         'inputs': {
           'IF1': {
             'block': {
@@ -543,7 +543,7 @@ suite('If block', function() {
               },
             },
           },
-          'IF2': {
+          'IF3': {
             'block': {
               'type': 'logic_boolean',
               'id': '3',
@@ -552,10 +552,19 @@ suite('If block', function() {
               },
             },
           },
+          'IF2': {
+            'block': {
+              'type': 'logic_boolean',
+              'id': '4',
+              'fields': {
+                'BOOL': 'TRUE',
+              },
+            },
+          },
           'ELSE': {
             'block': {
               'type': 'text_print',
-              'id': '4',
+              'id': '5',
             },
           },
         },
@@ -564,7 +573,7 @@ suite('If block', function() {
         'type': 'dynamic_if',
         'id': '1',
         'extraState': {
-          'elseIfCount': 1,
+          'elseIfCount': 2,
           'hasElse': true,
         },
         'inputs': {
@@ -586,17 +595,28 @@ suite('If block', function() {
               },
             },
           },
+          'IF2': {
+            'block': {
+              'type': 'logic_boolean',
+              'id': '4',
+              'fields': {
+                'BOOL': 'TRUE',
+              },
+            },
+          },
           'ELSE': {
             'block': {
               'type': 'text_print',
-              'id': '4',
+              'id': '5',
             },
           },
         },
       },
       assertBlockStructure: (block) => {
         assertBlockStructure(
-            block, [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/], 'dynamic_if');
+            block,
+            [/IF0/, /DO0/, /IF1/, /DO1/, /IF2/, /DO2/, /ELSE/],
+            'dynamic_if');
       },
     },
   ];
