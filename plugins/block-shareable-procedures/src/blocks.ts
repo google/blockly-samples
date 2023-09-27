@@ -209,7 +209,6 @@ const procedureDefGetDefMixin = function() {
      * disposed.
      */
     destroy: function() {
-      if (this.isInsertionMarker()) return;
       this.workspace.getProcedureMap().delete(this.getProcedureModel().getId());
     },
   };
