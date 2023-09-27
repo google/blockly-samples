@@ -12,7 +12,7 @@
     "clean:node": "lerna clean --yes",
     "deploy:prepare": "npm run deploy:prepare:plugins && npm run deploy:prepare:examples && gulp predeploy",
     "deploy:prepare:examples": "cd examples && npm run predeploy",
-    "deploy:prepare:plugins": "npm run clean && lerna run predeploy",
+    "deploy:prepare:plugins": "npm run clean && lerna run build && lerna run predeploy",
     "deploy": "npm run deploy:prepare && gulp deploy",
     "deploy:upstream": "npm run deploy:prepare && gulp deployUpstream",
     "license": "gulp checkLicenses",

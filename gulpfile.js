@@ -224,7 +224,7 @@ function deployToGhPages(repo) {
 function preparePluginsForLocal(isBeta) {
   return (done) => {
     if (isBeta) {
-      execSync(`lerna add blockly@beta --dev`, {stdio: 'inherit'});
+      execSync(`npx lerna exec -- npm install blockly@beta --force `, {stdio: 'inherit'});
     }
     execSync(`npm run boot`, {stdio: 'inherit'});
     // Bundles all the plugins.
@@ -244,7 +244,7 @@ function prepareExamplesForLocal(isBeta) {
     const examplesDirectory = 'examples';
     if (isBeta) {
       execSync(
-          `lerna add blockly@beta`, {cwd: examplesDirectory, stdio: 'inherit'});
+          `npx lerna exec -- npm install blockly@beta --force`, {cwd: examplesDirectory, stdio: 'inherit'});
     }
     execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
     // Bundles any examples that define a predeploy script (ex. blockly-react).
