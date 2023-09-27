@@ -190,16 +190,13 @@ export const runSerializationTestSuite = (testCases) => {
   const createRoundTripTestCallback = (testCase) => {
     return function() {
       if (testCase.json) {
-        Blockly.Events.disable();
         const block = Blockly.serialization.blocks.append(
             testCase.json, this.workspace, {recordUndo: true});
         if (globalThis.clock) globalThis.clock.runAll();
         const generatedJson = Blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
-        Blockly.Events.enable();
         assert.deepEqual(generatedJson, expectedJson);
       } else {
-        Blockly.Events.disable();
         const block = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
             testCase.xml), this.workspace);
         if (globalThis.clock) globalThis.clock.runAll();
@@ -207,7 +204,6 @@ export const runSerializationTestSuite = (testCases) => {
             Blockly.Xml.domToPrettyText(
                 Blockly.Xml.blockToDom(block));
         const expectedXml = testCase.expectedXml || testCase.xml;
-        Blockly.Events.enable();
         assert.equal(generatedXml, expectedXml);
       }
     };
