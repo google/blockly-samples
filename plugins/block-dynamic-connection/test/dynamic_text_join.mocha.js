@@ -439,14 +439,15 @@ suite('Text join block', function() {
       },
     },
     {
-      title: 'multiple inputs with children - json with stringified old XML',
+      title: 'multiple non-sequential inputs with children - ' +
+          'json with stringified old XML',
       json: {
         'type': 'dynamic_text_join',
         'id': '1',
         'extraState':
-            '<mutation inputs="ADD0,ADD1,ADD2,ADD3" next="4"></mutation>',
+            '<mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>',
         'inputs': {
-          'ADD0': {
+          'ADD1': {
             'block': {
               'type': 'text',
               'id': '2',
@@ -455,7 +456,7 @@ suite('Text join block', function() {
               },
             },
           },
-          'ADD1': {
+          'ADD5': {
             'block': {
               'type': 'text',
               'id': '3',
@@ -473,7 +474,7 @@ suite('Text join block', function() {
               },
             },
           },
-          'ADD3': {
+          'ADD4': {
             'block': {
               'type': 'text',
               'id': '5',

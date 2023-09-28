@@ -154,6 +154,13 @@ const DYNAMIC_IF_MIXIN = {
    * @returns The state of this block, ie the else if count and else state.
    */
   saveExtraState: function(this: DynamicIfBlock): IfExtraState | null {
+    // If we call finalizeConnections here without disabling events, we get into
+    // an event loop.
+    Blockly.Events.disable();
+    this.finalizeConnections();
+    if (this instanceof Blockly.BlockSvg) this.initSvg();
+    Blockly.Events.enable();
+
     if (!this.elseifCount && !this.elseCount) {
       return null;
     }

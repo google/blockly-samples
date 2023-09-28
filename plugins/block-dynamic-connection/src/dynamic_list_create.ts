@@ -104,6 +104,13 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * @returns The state of this block, ie the item count.
    */
   saveExtraState: function(this: DynamicListCreateBlock): {itemCount: number} {
+    // If we call finalizeConnections here without disabling events, we get into
+    // an event loop.
+    Blockly.Events.disable();
+    this.finalizeConnections();
+    if (this instanceof Blockly.BlockSvg) this.initSvg();
+    Blockly.Events.enable();
+
     return {
       'itemCount': this.itemCount,
     };
