@@ -24,7 +24,7 @@
       <div class="title">@blockly/block-dynamic-connection Demo</div>
       <div class="subtitle">A group of blocks that add connections dynamically.</div>
     </div>
-    0.4.3
+    0.5.0
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/block-dynamic-connection" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/block-dynamic-connection" class="button" target="_blank">View on npm</a>
@@ -62,15 +62,14 @@ import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';</co
 <ul>
 <li><code>overrideOldBlockDefinitions</code>: Replaces the Blockly default blocks with the
 dynamic connection blocks. This enables projects to use the dynamic block
-plugin without changing existing XML.
-Note that if you enable this, you will <strong>never</strong> be able to switch back to
-non-dynamic connections, because this changes the way mutations are
-serialized.</li>
+plugin without changing existing XML/JSON.</li>
 </ul>
-<h2 id="xml">XML</h2>
-<pre><code class="xml language-xml">&lt;block type="dynamic_text_join"&gt;&lt;/block&gt;
-&lt;block type="dynamic_list_create"&gt;&lt;/block&gt;
-&lt;block type="dynamic_if"&gt;&lt;/block&gt;</code></pre>
+<h2 id="blocks">Blocks</h2>
+<ul>
+<li><code>dynamic_text_join</code> replaces <code>text_join</code></li>
+<li><code>dynamic_list_create</code> replaces <code>lists_create_with</code></li>
+<li><code>dynamic_if</code> replaces <code>controls_if</code></li>
+</ul>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

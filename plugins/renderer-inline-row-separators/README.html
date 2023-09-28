@@ -52,6 +52,11 @@
       <div class="article">
       <h1 id="blocklyrenderer-inline-row-separators-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/renderer-inline-row-separators <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
 <p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin to create a renderer that treats dummy inputs like row separators, allowing block designers to arrange multiple inline value input connectors on separate rows by inserting dummy inputs between them. Example blocks demonstrating the feature are provided, as well as a function to add the feature to your own renderer.</p>
+<h2 id="when-to-use">When to use</h2>
+<h3 id="for-blockly-versions--v1020">For Blockly versions &gt;= v10.2.0</h3>
+<p>This plugin is deprecated because its functionality will be made obsolete by a new feature being introduced in <a href="https://github.com/google/blockly/releases/tag/blockly-v10.2.0">Blockly v10.2.0</a>: row separators can now be easily added either by adding newline characters ("\n") in the message field of JSON block definitions, or by adding EndRowInputs to blocks via the JavaScript API. For more information, see the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks#block_inputs">Block Inputs documentation</a>.</p>
+<h3 id="for-blockly-versions--v1020-1">For Blockly versions &lt; v10.2.0</h3>
+<p>It is strongly recommended that instead of using this plugin, you upgrade to a version of Blockly &gt;= v10.2.0. However if that is not possible, you can use the current version of this plugin. Note that this plugin will be removed in the future, so by newly installing it now, you will be introducing a dependency you will be forced to remove in the future if you want to remain up-to-date with core Blockly.</p>
 <h2 id="installation">Installation</h2>
 <h3 id="yarn">Yarn</h3>
 <pre><code>yarn add @blockly/renderer-inline-row-separators</code></pre>
