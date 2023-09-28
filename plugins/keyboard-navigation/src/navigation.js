@@ -872,21 +872,14 @@ export class Navigation {
       if (!destConnection.isSuperior()) {
         const rootBlock = movingBlock.getRootBlock();
 
-        // DO NOT DO CHECKS BASED ON BLOCKLY VERSION.
-        // We have to do this because are calling an internal method, which we
-        // should not be doing.
-        if (/** @type {string} */ (Blockly.VERSION) === '10.2.0') {
-          const originalOffsetToTarget = {
-            x: destConnection.x - movingConnection.x,
-            y: destConnection.y - movingConnection.y,
-          };
-          const originalOffsetInBlock =
-              movingConnection.getOffsetInBlock().clone();
-          rootBlock.positionNearConnection(
-              movingConnection, originalOffsetToTarget, originalOffsetInBlock);
-        } else {
-          rootBlock.positionNearConnection(movingConnection, destConnection);
-        }
+        const originalOffsetToTarget = {
+          x: destConnection.x - movingConnection.x,
+          y: destConnection.y - movingConnection.y,
+        };
+        const originalOffsetInBlock =
+            movingConnection.getOffsetInBlock().clone();
+        rootBlock.positionNearConnection(
+            movingConnection, originalOffsetToTarget, originalOffsetInBlock);
       }
       destConnection.connect(movingConnection);
       return true;
