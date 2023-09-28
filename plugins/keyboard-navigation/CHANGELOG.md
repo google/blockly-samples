@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.7](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.4.6...@blockly/keyboard-navigation@0.4.7) (2023-09-28)
+
+
+### Bug Fixes
+
+* make keyboard nav compatible with v10.2.0 ([#1990](https://github.com/google/blockly-samples/issues/1990)) ([e0915b3](https://github.com/google/blockly-samples/commit/e0915b36afb7d049665673e89c4340bc01cdf08c))
+
+
+
 ## [0.4.6](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.4.5...@blockly/keyboard-navigation@0.4.6) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/keyboard-navigation
