@@ -117,10 +117,13 @@ export function addSubCommand(command) {
  *   fileNames: !Array<string>}} The required info.
  */
 export function extractRequiredInfo(command) {
+  const jsTsFileMatcher = new RegExp('^(t|j)s', 'i');
   return {
     fromVersion: command.opts().from,
     toVersion: command.opts().to || 'latest',
-    fileNames: command.processedArgs[0],
+    fileNames: command.processedArgs[0].filter((filename) => {
+      return jsTsFileMatcher.test(filename.split('.').pop());
+    }),
   };
 }
 
