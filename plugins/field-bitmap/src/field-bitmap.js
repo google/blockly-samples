@@ -389,7 +389,7 @@ export class FieldBitmap extends Blockly.Field {
     }
     this.boundEvents_.length = 0;
     this.editorPixels_ = null;
-    // Set this.initialValue_ to null.
+    // Set this.initialValue_ back to null.
     this.initialValue_ = null;
   }
 
@@ -517,7 +517,7 @@ export class FieldBitmap extends Blockly.Field {
               this.sourceBlock_,
               this.name || null,
               this.getValue(),
-              this.setValue(newValue)
+              this.setValue(newGrid)
           )
       );
     }
