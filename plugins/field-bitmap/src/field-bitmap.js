@@ -37,8 +37,6 @@ export class FieldBitmap extends Blockly.Field {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
-
-    // Add property in the constructor
     this.initialValue_ = null;
 
     // Configure value, height, and width
@@ -300,7 +298,7 @@ export class FieldBitmap extends Blockly.Field {
       });
     }
 
-    // Store the initial value at the start of the edit
+    // Store the initial value at the start of the edit.
     this.initialValue_ = this.getValue();
 
     return dropdownEditor;
@@ -372,9 +370,9 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownDispose_() {
-    // Fire BLOCK_CHANGE event with the initial and
-    // final values
-    if (this.getSourceBlock() && this.initialValue_ !== null) {
+    if (this.getSourceBlock() &&
+        this.initialValue_ !== null &&
+        this.initialValue_ !== this.getValue()) {
       Blockly.Events.fire(
           new (Blockly.Events.get(Blockly.Events.BLOCK_CHANGE))(
               this.sourceBlock_,
@@ -391,6 +389,8 @@ export class FieldBitmap extends Blockly.Field {
     }
     this.boundEvents_.length = 0;
     this.editorPixels_ = null;
+    // Set this.initialValue_ to null.
+    this.initialValue_ = null;
   }
 
 
@@ -459,23 +459,19 @@ export class FieldBitmap extends Blockly.Field {
       newVal[r][c] = getRandBinary();
     });
 
-    /*
-    Do the same as setPixel for the randomizePixels method.
-    */
-    const oldValue = this.initialValue_;
     if (this.getSourceBlock()) {
       Blockly.Events.fire(
           new (Blockly.Events.get(
               Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
               this.sourceBlock_,
               this.name || null,
-              oldValue,
-              this.setValue(oldValue, false)
+              this.getValue(),
+              this.setValue(newVal)
           )
       );
     }
 
-    this.setValue(newVal);
+    this.setValue(newVal, false);
   }
 
   /**
@@ -488,23 +484,19 @@ export class FieldBitmap extends Blockly.Field {
       newVal[r][c] = 0;
     });
 
-    /*
-    Do the same as setPixel for the clearPixels method.
-    */
-    const oldValue = this.initialValue_;
     if (this.getSourceBlock()) {
       Blockly.Events.fire(
           new (Blockly.Events.get(
               Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
               this.sourceBlock_,
               this.name || null,
-              oldValue,
-              this.setValue(oldValue, false)
+              this.getValue(),
+              this.setValue(newVal)
           )
       );
     }
 
-    this.setValue(newVal);
+    this.setValue(newVal, false);
   }
 
   /**
@@ -518,25 +510,19 @@ export class FieldBitmap extends Blockly.Field {
     const newGrid = JSON.parse(JSON.stringify(this.getValue()));
     newGrid[r][c] = newValue;
 
-    /*
-    Modify the setPixel method to fire BLOCK_FIELD_INTERMEDIATE_CHANGE
-    events. Make sure to call setValue still, but pass false for the
-    second parameter.
-    */
-    const oldValue = this.initialValue_;
     if (this.getSourceBlock()) {
       Blockly.Events.fire(
           new (Blockly.Events.get(
               Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
               this.sourceBlock_,
               this.name || null,
-              oldValue,
-              this.setValue(oldValue, false)
+              this.getValue(),
+              this.setValue(newValue)
           )
       );
     }
 
-    this.setValue(newGrid);
+    this.setValue(newGrid, false);
   }
 
   /**
