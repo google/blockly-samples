@@ -20,6 +20,7 @@ const path = require('path');
 const fs = require('fs');
 
 const chalk = require('chalk');
+const esbuild = require('esbuild');
 const webpack = require('webpack');
 const webpackConfig = require('../config/webpack.config');
 
@@ -44,7 +45,7 @@ Make sure a ${chalk.red('src/index.(js|ts)')} file is included in your package.
 }
 
 // Create and run the webpack compiler.
-webpack(config, (err, stats) => {
+const compiler = webpack(config, (err, stats) => {
   const statsData = stats.toJson({
     all: false,
     warnings: true,
@@ -75,3 +76,31 @@ webpack(config, (err, stats) => {
     console.log(messages.warnings.join('\n\n'));
   }
 });
+
+
+compiler.hooks.done.tap('esbuild', () => {
+  let entry;
+  ['js', 'ts']
+      .filter((ext) => fs.existsSync(resolveApp(`./src/index.${ext}`)))
+      .forEach((ext) => {
+        entry = `./src/index.${ext}`;
+      });
+
+  esbuild.build({
+    entryPoints: [entry],
+    outfile: 'dist/index.esm.js',
+    bundle: true,
+    sourcemap: true,
+    minify: true,
+    format: 'esm',
+    external: [
+      'blockly/core',
+      'blockly/javascript',
+      'blockly/python',
+      'blockly/dart',
+      'blockly/php',
+      'blockly/lua',
+    ],
+  });
+});
+
