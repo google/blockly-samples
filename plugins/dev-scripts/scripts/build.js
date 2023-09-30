@@ -79,6 +79,9 @@ const compiler = webpack(config, (err, stats) => {
 
 
 compiler.hooks.done.tap('esbuild', () => {
+  if (packageJson.name === '@blockly/dev-tools') {
+    return;
+  }
   let entry;
   ['js', 'ts']
       .filter((ext) => fs.existsSync(resolveApp(`./src/index.${ext}`)))
