@@ -466,7 +466,7 @@ export class FieldBitmap extends Blockly.Field {
               this.sourceBlock_,
               this.name || null,
               this.getValue(),
-              this.setValue(newVal)
+              newVal
           )
       );
     }
@@ -491,7 +491,7 @@ export class FieldBitmap extends Blockly.Field {
               this.sourceBlock_,
               this.name || null,
               this.getValue(),
-              this.setValue(newVal)
+              newVal
           )
       );
     }
@@ -517,7 +517,7 @@ export class FieldBitmap extends Blockly.Field {
               this.sourceBlock_,
               this.name || null,
               this.getValue(),
-              this.setValue(newValue)
+              newGrid
           )
       );
     }
