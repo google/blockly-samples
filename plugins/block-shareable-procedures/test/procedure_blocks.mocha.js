@@ -29,7 +29,8 @@ const {ProcedureCreate} = require('../src/events_procedure_create');
 suite('Procedures', function() {
   setup(function() {
     this.jsdomCleanup =
-        require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>');
+        require('jsdom-global')('<!DOCTYPE html><div id="blocklyDiv"></div>',
+            {pretendToBeVisual: true});
 
     this.sandbox = sinon.createSandbox();
     globalThis.clock = this.sandbox.useFakeTimers();
@@ -72,11 +73,6 @@ suite('Procedures', function() {
         .callsFake(() => {
           return this.workspace;
         });
-    window.requestAnimationFrame = this.sandbox.stub()
-        .callsFake((callback) => {
-          callback();
-        });
-    window.cancelAnimationFrame = this.sandbox.stub();
   });
 
   teardown(function() {
