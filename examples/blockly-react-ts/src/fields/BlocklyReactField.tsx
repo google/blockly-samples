@@ -23,53 +23,50 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import * as Blockly from 'blockly/core';
-
+import * as Blockly from "blockly/core";
 
 class BlocklyReactField extends Blockly.Field {
+  SERIALIZABLE = true;
+  root_: ReactDOM.Root | null = null;
 
-  SERIALIZABLE = true
-
-  static fromJson(options) {
+  static fromJson(options: Record<string, string>) {
     // `this` might be a subclass of BlocklyReactField if that class doesn't
     // override the static fromJson method.
-    return new this(options['text']);
+    return new this(options.text);
   }
 
   showEditor_() {
-    this.div_ = Blockly.DropDownDiv.getContentDiv();
-    ReactDOM.render(this.render(),
-      this.div_);
+    this.root_ = ReactDOM.createRoot(Blockly.DropDownDiv.getContentDiv());
+    this.root_.render(this.render());
 
-    var border = this.sourceBlock_.style.colourTertiary;
-    console.log(border);
-    Blockly.DropDownDiv.setColour(this.sourceBlock_.getColour(), border);
+    const border = (this.sourceBlock_ as Blockly.Block & { style: Blockly.Theme.BlockStyle }).style
+      .colourTertiary;
+    Blockly.DropDownDiv.setColour(this.sourceBlock_!.getColour(), border);
 
     Blockly.DropDownDiv.showPositionedByField(
-      this, this.dropdownDispose_.bind(this));
+      this,
+      this.dropdownDispose_.bind(this),
+    );
   }
 
   dropdownDispose_() {
-    ReactDOM.unmountComponentAtNode(this.div_);
+    this.root_!.unmount();
   }
 
   render() {
-    return <FieldRenderComponent />
+    return <FieldRenderComponent />;
   }
 }
 
 class FieldRenderComponent extends React.Component {
-
   render() {
-    return <div style={{ color: '#fff' }}>
-      Hello from React!
-        </div>;
+    return <div style={{ color: "#fff" }}>Hello from React!</div>;
   }
 }
 
-Blockly.fieldRegistry.register('field_react_component', BlocklyReactField);
+Blockly.fieldRegistry.register("field_react_component", BlocklyReactField);
 
 export default BlocklyReactField;
