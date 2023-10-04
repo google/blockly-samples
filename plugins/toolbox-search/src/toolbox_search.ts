@@ -161,9 +161,45 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.flyoutItems_ = query ?
         this.blockSearcher.blockTypesMatching(query).map(
             (blockType) => {
+              // check the block if it has dropdowns
+              // get the block
+              const block = this.workspace_.newBlock(blockType);
+              // get the inputs
+              const inputs = block.inputList;
+              // iterate through the inputs
+              for (let input of inputs) {
+                // get the fields
+                const fields = input.fieldRow;
+                // iterate through the fields
+                for (let field of fields) {
+                  // check if the field is a dropdown
+                  if (field instanceof Blockly.FieldDropdown) {
+                    // get the options
+                    const options = field.getOptions();
+                    // iterate through the options
+                    for (let option of options) {
+                      // check if the query is in the option
+                      // make sure the option is text
+                      if (typeof option[0] === 'string' && 
+                           option[0].toLowerCase().includes(query.toLowerCase())) {
+                        
+                        let fields = {}
+                        fields[field.name] = option[1]
+                        return {
+                          kind: 'block',
+                          type: blockType,
+                          fields: fields
+                        };
+                      }
+                    };
+                  }
+                }
+              }
+
               return {
                 kind: 'block',
                 type: blockType,
+                
               };
             }) : [];
 

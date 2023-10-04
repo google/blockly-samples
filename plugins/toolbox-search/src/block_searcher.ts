@@ -30,6 +30,20 @@ export class BlockSearcher {
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
           this.indexBlockText(field.getText(), blockType);
+          // Index the text of dropdown options.
+          // check if this is a dropdown
+          if (field instanceof Blockly.FieldDropdown) {
+            // get the options
+            const options = field.getOptions();
+            // iterate through the options
+            options.forEach((option) => {
+              // index the text of the option
+              // only add the option[0] if it is text
+              if (typeof option[0] === 'string') {
+                this.indexBlockText(option[0], blockType);
+              }
+            });
+          }
         });
       });
     });
