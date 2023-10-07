@@ -10,6 +10,7 @@
  */
 import * as Blockly from 'blockly/core';
 import {BlockSearcher} from './block_searcher';
+import type {BlockInfo} from 'blockly/core/utils/toolbox';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -161,10 +162,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.flyoutItems_ = query ?
         this.blockSearcher.blockTypesMatching(query).map(
             (blockType) => {
-              return {
-                kind: 'block',
-                type: blockType,
-              };
+              return this.generateFlyoutItem(blockType, query);
             }) : [];
 
     if (!this.flyoutItems_.length) {
@@ -175,6 +173,40 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       });
     }
     this.parentToolbox_.refreshSelection();
+  }
+
+  /**
+   * Generate BlockInfo for the block, with fields value if there is a dropdown
+   * field matching the search query.
+   * @param blockType The block type that we want to return the info of.
+   * @param query The search query.
+   * @returns The json representation of block.
+   */
+  private generateFlyoutItem(blockType: string, query: string): BlockInfo {
+    const block = this.workspace_.newBlock(blockType);
+    for (const input of block.inputList) {
+      for (const field of input.fieldRow) {
+        if (field instanceof Blockly.FieldDropdown) {
+          for (const option of field.getOptions(true)) {
+            if (typeof option[0] === 'string' &&
+              option[0].toLowerCase().includes(query.toLowerCase())) {
+              return {
+                kind: 'block',
+                type: blockType,
+                fields: {
+                  [field.name]: option[1],
+                },
+              };
+            }
+          }
+        }
+      }
+    }
+
+    return {
+      kind: 'block',
+      type: blockType,
+    };
   }
 
   /**
