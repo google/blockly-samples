@@ -1,0 +1,34 @@
+{
+  "name": "blockly-python-interpreter-demo",
+  "version": "0.0.0",
+  "private": true,
+  "blocklyDemoConfig": {
+    "title": "Python Interpreter",
+    "files": [
+      "index.html",
+      "async-execution.html",
+      "mini-coi.js",
+      "step-execution.html",
+      "interpreter.js",
+      "toolbox.js",
+      "wait_block.js",
+      "./node_modules/blockly/*_compressed.js",
+      "./node_modules/blockly/*_compressed.js.map",
+      "./node_modules/blockly/msg/en.js",
+      "./node_modules/blockly/media/*"
+    ],
+    "pages": [
+      {
+        "label": "Step Execution",
+        "link": "step-execution.html"
+      },
+      {
+        "label": "Async Execution",
+        "link": "async-execution.html"
+      }
+    ]
+  },
+  "dependencies": {
+    "blockly": "^10.0.0"
+  }
+}

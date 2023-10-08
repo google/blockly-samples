@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Step Execution with Python Interpreter</title>
+  <script src="mini-coi.js"></script>
+  <script src="toolbox.js"></script>
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/python_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
+  <script src="interpreter.js"></script>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Step Execution with Python Interpreter</h1>
+
+  <p>This is a demo of executing code step-by-step with a sandboxed Python interpreter.</p>
+
+  <p>The generator's <code>python.pythonGenerator.STATEMENT_PREFIX</code> is assigned
+  <code>'highlightBlock(%1);\nbreakpoint()\n'</code>, where <code>%1</code> is the block ID.
+  The call to <code>highlightBlock()</code> will highlight the identified block
+  and <code>breakpoint()</code> will pause the execution.</p>
+
+  <p>Each press of the "Step Python" button will run the interpreter one step.
+  That is, until <code>highlightBlock()</code> has highlighted the block that
+  will be executed on the next step.</p>
+
+  <p>
+    <button onclick="stepCode()" id="stepButton">Step Python</button>
+  </p>
+
+  <div style="width: 100%">
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 480px; width: 58%"></div>
+    <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 480px; width: 38%;">
+    </textarea>
+  </div>
+
+  <script>
+    const startBlocks = {
+      "blocks": {
+        "blocks": [
+          {
+            "type": "variables_set",
+            "x": 20,
+            "y": 20,
+            "inline": true,
+            "fields": {
+              "VAR": {"id": "n"}
+            },
+            "inputs": {
+              "VALUE": {
+                "block": {
+                  "type": "math_number",
+                  "fields": {"NUM": 1}
+                }
+              }
+            },
+            "next": {
+              "block": {
+                "type": "controls_repeat_ext",
+                "inline": true,
+                "inputs": {
+                  "TIMES": {
+                    "block": {
+                      "type": "math_number",
+                      "fields": {"NUM": 4}
+                    }
+                  },
+                  "DO": {
+                    "block": {
+                      "type": "variables_set",
+                      "inline": true,
+                      "fields": {
+                        "VAR": {"id": "n"}
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "block": {
+                            "type": "math_arithmetic",
+                            "fields": {"OP": "MULTIPLY"},
+                            "inputs": {
+                              "A": {
+                                "block": {
+                                  "type": "variables_get",
+                                  "fields": {
+                                    "VAR": {"id": "n"}
+                                  }
+                                }
+                              },
+                              "B": {
+                                "block": {
+                                  "type": "math_number",
+                                  "fields": {"NUM": 2}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "next": {
+                        "block": {
+                          "type": "text_print",
+                          "inputs": {
+                            "TEXT": {
+                              "block": {
+                                "type": "variables_get",
+                                "fields": {
+                                  "VAR": {"id": "n"}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "variables": [
+        {
+          "name": "n",
+          "id": "n"
+        }
+      ]
+    };
+
+    const demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: './node_modules/blockly/media/',
+         toolbox: toolboxJson});
+    python.pythonGenerator.STATEMENT_PREFIX = 'highlightBlock(%1)\nbreakpoint()\n';
+    python.pythonGenerator.addReservedWords('highlightBlock');
+    python.pythonGenerator.addReservedWords('nbreakpoint');
+    Blockly.serialization.workspaces.load(startBlocks, demoWorkspace);
+
+    const outputArea = document.getElementById('output');
+    const stepButton = document.getElementById('stepButton');
+    let myInterpreter = null;
+
+    function initApi(interpreter, globalObject) {
+      // Add an API function for the alert() block, generated for "text_print" blocks.
+      const wrapperAlert = function alert(text) {
+        text = arguments.length ? text : '';
+        outputArea.value += '\n' + text;
+      };
+      interpreter.setProperty(globalObject, 'print',
+          interpreter.createNativeFunction(wrapperAlert));
+
+      // Add an API function for the prompt() block.
+      const wrapperPrompt = function prompt(text) {
+        return window.prompt(text);
+      };
+      interpreter.setProperty(globalObject, 'input',
+          interpreter.createNativeFunction(wrapperPrompt));
+
+      // Add an API function for highlighting blocks.
+      const wrapperHighlight = function(id) {
+        id = String(id || '');
+        return highlightBlock(id);
+      };
+      interpreter.setProperty(globalObject, 'highlightBlock',
+          interpreter.createNativeFunction(wrapperHighlight));
+    }
+
+    // Each step will run the interpreter until the highlightPause is true.
+    let highlightPause = false;
+
+    function highlightBlock(id) {
+      demoWorkspace.highlightBlock(id);
+      highlightPause = true;
+    }
+
+    function resetStepUi(clearOutput) {
+      demoWorkspace.highlightBlock(null);
+      highlightPause = false;
+
+      if (clearOutput) {
+        outputArea.value = 'Program output:\n=================';
+      }
+
+      if (myInterpreter) {
+        myInterpreter.abort();
+      }
+      myInterpreter = null;
+    }
+
+    function stepCode() {
+      if (!myInterpreter) {
+        // First statement of this code.
+        // Clear the program output.
+        resetStepUi(true);
+        const latestCode = python.pythonGenerator.workspaceToCode(demoWorkspace);
+        myInterpreter = new Interpreter(latestCode, initApi);
+
+        // And then show generated code in an alert.
+        // In a timeout to allow the outputArea.value to reset first.
+        setTimeout(function() {
+          alert('Ready to execute the following code\n' +
+              '===================================\n' + latestCode);
+          highlightPause = true;
+          stepCode();
+        }, 1);
+        return;
+      }
+      highlightPause = false;
+      let hasMoreCode;
+      
+      try {
+        hasMoreCode = myInterpreter.step();
+      } finally {
+        if (!hasMoreCode) {
+          // Program complete, no more code to execute.
+          outputArea.value += '\n\n<< Program complete >>';
+
+          resetStepUi(false);
+
+          // Cool down, to discourage accidentally restarting the program.
+          stepButton.disabled = 'disabled';
+          setTimeout(function() {
+            stepButton.disabled = '';
+          }, 2000);
+        }
+      }
+    }
+
+    demoWorkspace.addChangeListener(function(event) {
+      if (!event.isUiEvent) {
+        // Something changed.  Interpreter needs to be reloaded.
+        resetStepUi(true);
+      }
+    });
+  </script>
+</body>
+</html>
