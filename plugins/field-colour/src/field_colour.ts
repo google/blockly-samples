@@ -294,12 +294,9 @@ export class FieldColour extends Blockly.Field<string> {
 
     const block = this.getSourceBlock() as Blockly.BlockSvg | null;
     if (!block) throw new Blockly.UnattachedFieldError();
-    // In general, do *not* let fields control the color of blocks. Having the
-    // field control the color is unexpected, and could have performance
-    // impacts.
-    // Whenever we render, the field may no longer be a full-block-field so
-    // we need to update the colour.
-    if (this.getConstants()!.FIELD_COLOUR_FULL_BLOCK) block.applyColour();
+    // Calling applyColour updates the UI (full-block vs non-full-block) for the
+    // colour field, and the colour of the field/block.
+    block.applyColour();
   }
 
   /**
@@ -311,26 +308,20 @@ export class FieldColour extends Blockly.Field<string> {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   protected updateSize_(margin?: number) {
     const constants = this.getConstants();
-    const xOffset =
-      margin !== undefined ?
-          margin : !this.isFullBlockField() ?
-            constants!.FIELD_BORDER_RECT_X_PADDING : 0;
-    let totalWidth = xOffset * 2;
-    let contentWidth = 0;
-    if (!this.isFullBlockField()) {
-      contentWidth = constants!.FIELD_COLOUR_DEFAULT_WIDTH;
-      totalWidth += contentWidth;
-    }
-
-    let totalHeight = constants!.FIELD_TEXT_HEIGHT;
-    if (!this.isFullBlockField()) {
-      totalHeight = Math.max(totalHeight, constants!.FIELD_BORDER_RECT_HEIGHT);
+    let totalWidth;
+    let totalHeight;
+    if (this.isFullBlockField()) {
+      const xOffset = margin ?? 0;
+      totalWidth = xOffset * 2;
+      totalHeight = constants!.FIELD_TEXT_HEIGHT;
+    } else {
+      totalWidth = constants!.FIELD_COLOUR_DEFAULT_WIDTH;
+      totalHeight = constants!.FIELD_COLOUR_DEFAULT_HEIGHT;
     }
 
     this.size_.height = totalHeight;
     this.size_.width = totalWidth;
 
-    this.positionTextElement_(xOffset, contentWidth);
     this.positionBorderRect_();
   }
 
