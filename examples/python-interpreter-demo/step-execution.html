@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Step Execution with Python Interpreter</title>
-  <script src="mini-coi.js"></script>
   <script src="toolbox.js"></script>
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
@@ -27,9 +26,9 @@
   <p>This is a demo of executing code step-by-step with a sandboxed Python interpreter.</p>
 
   <p>The generator's <code>python.pythonGenerator.STATEMENT_PREFIX</code> is assigned
-  <code>'highlightBlock(%1);\nbreakpoint()\n'</code>, where <code>%1</code> is the block ID.
+  <code>'highlightBlock(%1);\nawait breakpoint()\n'</code>, where <code>%1</code> is the block ID.
   The call to <code>highlightBlock()</code> will highlight the identified block
-  and <code>breakpoint()</code> will pause the execution.</p>
+  and the call to <code>await breakpoint()</code> will pause the execution.</p>
 
   <p>Each press of the "Step Python" button will run the interpreter one step.
   That is, until <code>highlightBlock()</code> has highlighted the block that
@@ -143,7 +142,7 @@
     const demoWorkspace = Blockly.inject('blocklyDiv',
         {media: './node_modules/blockly/media/',
          toolbox: toolboxJson});
-    python.pythonGenerator.STATEMENT_PREFIX = 'highlightBlock(%1)\nbreakpoint()\n';
+    python.pythonGenerator.STATEMENT_PREFIX = 'highlightBlock(%1)\nawait breakpoint()\n';
     python.pythonGenerator.addReservedWords('highlightBlock');
     python.pythonGenerator.addReservedWords('nbreakpoint');
     Blockly.serialization.workspaces.load(startBlocks, demoWorkspace);
@@ -169,12 +168,8 @@
           interpreter.createNativeFunction(wrapperPrompt));
 
       // Add an API function for highlighting blocks.
-      const wrapperHighlight = function(id) {
-        id = String(id || '');
-        return highlightBlock(id);
-      };
       interpreter.setProperty(globalObject, 'highlightBlock',
-          interpreter.createNativeFunction(wrapperHighlight));
+          interpreter.createNativeFunction(highlightBlock));
     }
 
     // Each step will run the interpreter until the highlightPause is true.

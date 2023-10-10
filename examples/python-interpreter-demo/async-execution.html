@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Asynchronous Execution with Python Interpreter</title>
-  <script src="mini-coi.js"></script>
   <script src="./node_modules/blockly/blockly_compressed.js"></script>
   <script src="./node_modules/blockly/blocks_compressed.js"></script>
   <script src="./node_modules/blockly/python_compressed.js"></script>
@@ -328,12 +327,8 @@
           interpreter.createNativeFunction(wrapperPrompt));
 
       // Add an API function for highlighting blocks.
-      const wrapper = function(id) {
-        id = String(id || '');
-        return highlightBlock(id);
-      };
       interpreter.setProperty(globalObject, 'highlightBlock',
-          interpreter.createNativeFunction(wrapper));
+          interpreter.createNativeFunction(highlightBlock));
 
       // Add an API for the wait block.  See wait_block.js
       initInterpreterWaitForSeconds(interpreter, globalObject);

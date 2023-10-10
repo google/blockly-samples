@@ -11,12 +11,6 @@
  * @author zoeyli@google.com (Zoey Li)
  */
 
-var XWorker;
-
-import('https://esm.sh/polyscript@0.4.11').then(
-  module => { XWorker = module.XWorker; }
-);
-
 /**
  * Create a new interpreter.
  * @param {string|!Object} code Raw JavaScript text or AST.
@@ -26,6 +20,7 @@ import('https://esm.sh/polyscript@0.4.11').then(
  * @constructor
  */
 var Interpreter = function(code, opt_initFunc) {
+  this.isBootstrapped_ = false;
   this.code_ = code;
   this.globalScope_ = {};
   this.initFunc_ = opt_initFunc;
@@ -34,13 +29,13 @@ var Interpreter = function(code, opt_initFunc) {
 
 /**
  * Create a new native asynchronous function.
- * @param {!Function} asyncFunc JavaScript function.
+ * @param {!Function} callbackFunc JavaScript function.
  * @returns {!Function} New function.
  */
-Interpreter.prototype.createAsyncFunction = function(asyncFunc) {
+Interpreter.prototype.createAsyncFunction = function(callbackFunc) {
   return (...args) => {
     return new Promise((resolve) => {
-      asyncFunc(...args, resolve);
+      callbackFunc(...args, resolve);
     });
   };
 }
@@ -117,36 +112,49 @@ Interpreter.prototype.abort = function() {
 };
 
 Interpreter.prototype.bootstrapAndRun_ = function() {
-  if (!this.worker_) {
+  if (!this.isBootstrapped_) {
+    this.isBootstrapped_ = true;
     this.finished_ = false;
     this.paused_ = false;
-    var workerCode = [
-      'from polyscript import xworker',
-      'for name in getattr(xworker.sync, "interpreter.globalFuncs")():',
-      '  globals()[name] = getattr(xworker.sync, name)',
-      this.code_,
-      'import js',
-      'js.postMessage(0)',
-    ];
+    globalThis["interpreter$globalFuncs"] = () => this.globalScope_;
+    globalThis["interpreter$globalFuncNames"] = () => Object.keys(this.globalScope_);
+    if (crossOriginIsolated) {
+      var workerCode = [
+        'from polyscript import xworker',
+        'for name in getattr(xworker.window, "interpreter$globalFuncNames")():',
+        '  globals()[name] = getattr(getattr(xworker.window, "interpreter$globalFuncs")(), name)',
+        this.code_,
+        'import js',
+        'js.postMessage(0)',
+      ];
 
-    this.worker_ = XWorker(
-      URL.createObjectURL(
-        new Blob([workerCode.join('\n')], { type: "text/plain" }),
-      ),
-      { type: "micropython" },
-    );
-
-    for (var name in this.globalScope_) {
-      this.worker_.sync[name] = this.globalScope_[name];
+      loadMicropythonInWorker_().then((XWorker) => {
+        var worker = XWorker(
+          URL.createObjectURL(
+            new Blob([workerCode.join('\n')], { type: "text/plain" }),
+          ),
+          { type: "micropython", async: true },
+        );
+    
+        worker.addEventListener("message", this.done_.bind(this));
+      });
+    } else {
+      var pythonCode = [
+        'import js',
+        'for name in list(getattr(js, "interpreter$globalFuncNames")()):',
+        '  globals()[name] = getattr(getattr(js, "interpreter$globalFuncs")(), name)',
+        this.code_,
+      ];
+  
+      loadMicropython_().then((interpreter) => {
+        Promise.resolve(interpreter.runPythonAsync(pythonCode.join('\n'))).then(this.done_.bind(this));
+      });
     }
-
-    this.worker_.sync["interpreter.globalFuncs"] = () => Object.keys(this.globalScope_);
-    this.worker_.addEventListener("message", this.done_.bind(this));
   }
 }
 
 Interpreter.prototype.breakpoint_ = function() {
-  if (this.worker_ && !this.finished_ && !this.paused_) {
+  if (this.isBootstrapped_ && !this.finished_ && !this.paused_) {
     this.paused_ = true;
     return new Promise((resolve, reject) => {
       this.resume_ = resolve;
@@ -160,4 +168,23 @@ Interpreter.prototype.done_ = function() {
   this.paused_ = false;
   this.resume_ = null;
   this.abort_ = null;
+}
+
+function loadMicropython_() {
+  var INTERPRETER_BASE_PATH = "./node_modules/@micropython/micropython-webassembly-pyscript";
+  return new Promise((resolve) => {
+    import(INTERPRETER_BASE_PATH + "/micropython.mjs").then((module) => {
+      module.loadMicroPython({ url: INTERPRETER_BASE_PATH + "/micropython.wasm"}).then((interpreter) => {
+        resolve(interpreter);
+      })
+    });
+  });
+}
+
+function loadMicropythonInWorker_() {
+  return new Promise((resolve) => {
+    import('https://esm.sh/polyscript@0.4.12').then(module => {
+      resolve(module.XWorker);
+    });
+  });
 }

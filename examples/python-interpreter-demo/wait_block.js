@@ -31,7 +31,7 @@ Blockly.defineBlocksWithJsonArray([{
  */
 python.pythonGenerator.forBlock['wait_seconds'] = function(block) {
   const seconds = Number(block.getFieldValue('SECONDS'));
-  const code = 'waitForSeconds(' + seconds + ');\n';
+  const code = 'await waitForSeconds(' + seconds + ');\n';
   return code;
 };
 
@@ -45,7 +45,7 @@ function initInterpreterWaitForSeconds(interpreter, globalObject) {
 
   const wrapper = interpreter.createAsyncFunction(
       function(timeInSeconds, callback) {
-      // Delay the call to the callback.
+        // Delay the call to the callback.
         setTimeout(callback, timeInSeconds * 1000);
       });
   interpreter.setProperty(globalObject, 'waitForSeconds', wrapper);
