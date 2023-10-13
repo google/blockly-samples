@@ -10,6 +10,7 @@
       "mini-coi.js",
       "step-execution.html",
       "interpreter.js",
+      "interpreter-worker.js",
       "toolbox.js",
       "wait_block.js",
       "./node_modules/@micropython/micropython-webassembly-pyscript/micropython.*",
