@@ -38,7 +38,6 @@ Interpreter.prototype.createAsyncFunction = function (callbackFunc) {
     for (var _key = 0; _key < arguments.length; _key++) {
       args[_key] = arguments[_key];
     }
-
     return new Promise(function (resolve) {
       callbackFunc.apply(void 0, args.concat([resolve]));
     });
@@ -121,26 +120,40 @@ Interpreter.prototype.bootstrapAndRun_ = function () {
     this.isBootstrapped_ = true;
     this.finished_ = false;
     this.paused_ = false;
-    globalThis["interpreter$globalFuncs"] = function () {
-      return _this.globalScope_;
-    };
-    globalThis["interpreter$globalFuncNames"] = function () {
-      return Object.keys(_this.globalScope_);
-    };
-    if (crossOriginIsolated) {
-      var workerCode = ['from polyscript import xworker', 'for name in getattr(xworker.window, "interpreter$globalFuncNames")():', '  globals()[name] = getattr(getattr(xworker.window, "interpreter$globalFuncs")(), name)', this.code_, 'import js', 'js.postMessage(0)'];
-      loadMicropythonInWorker_().then(function (XWorker) {
-        var worker = XWorker(URL.createObjectURL(new Blob([workerCode.join('\n')], {
-          type: "text/plain"
-        })), {
-          type: "micropython",
-          async: true
-        });
-        worker.addEventListener("message", _this.done_.bind(_this));
+    if (typeof Worker !== "undefined") {
+      if (!worker) {
+        worker = new Worker("./interpreter-worker.js");
+      }
+      worker.onmessage = function (event) {
+        if (event.data.name === "interpreter$done_") {
+          _this.done_();
+        } else if (_this.globalScope_[event.data.name]) {
+          Promise.resolve(_this.globalScope_[event.data.name].apply(void 0, event.data.args)).then(function (result) {
+            event.ports[0].postMessage({ result });
+          });
+        }
+      };
+      worker.postMessage({
+        code: this.code_,
+        ffi: Object.keys(_this.globalScope_)
       });
     } else {
-      var pythonCode = ['import js', 'for name in list(getattr(js, "interpreter$globalFuncNames")()):', '  globals()[name] = getattr(getattr(js, "interpreter$globalFuncs")(), name)', this.code_];
-      loadMicropython_().then(function (interpreter) {
+      globalThis["interpreter$ffiImpl"] = function () {
+        return _this.globalScope_;
+      };
+      globalThis["interpreter$ffi"] = function () {
+        return Object.keys(_this.globalScope_);
+      };
+      var pythonCode = [
+        'import js',
+        'for name in list(getattr(js, "interpreter$ffi")()):',
+        '  globals()[name] = getattr(getattr(js, "interpreter$ffiImpl")(), name)',
+        this.code_
+      ];
+      if (!micropythonPromise) {
+        micropythonPromise = loadMicropython_();
+      }
+      micropythonPromise.then(function (interpreter) {
         Promise.resolve(interpreter.runPythonAsync(pythonCode.join('\n'))).then(_this.done_.bind(_this));
       });
     }
@@ -162,6 +175,8 @@ Interpreter.prototype.done_ = function () {
   this.resume_ = null;
   this.abort_ = null;
 };
+var worker;
+var micropythonPromise;
 function loadMicropython_() {
   var INTERPRETER_BASE_PATH = "./node_modules/@micropython/micropython-webassembly-pyscript";
   return new Promise(function (resolve) {
@@ -171,13 +186,6 @@ function loadMicropython_() {
       }).then(function (interpreter) {
         resolve(interpreter);
       });
-    });
-  });
-}
-function loadMicropythonInWorker_() {
-  return new Promise(function (resolve) {
-    import('https://esm.sh/polyscript@0.4.12').then(function (module) {
-      resolve(module.XWorker);
     });
   });
 }
