@@ -229,6 +229,10 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       return false;
     }
 
+    if (!block.isEnabled()) {
+      return false;
+    }
+
     for (const input of block.inputList) {
       for (const field of input.fieldRow) {
         // No variables.
