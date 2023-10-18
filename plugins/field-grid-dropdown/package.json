@@ -11,7 +11,6 @@
     "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
-  "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
