@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.5](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.4...@blockly/continuous-toolbox@5.0.5) (2023-10-19)
+
+
+### Bug Fixes
+
+* fix continuous toolbox not enabling blocks ([#2016](https://github.com/google/blockly-samples/issues/2016)) ([4d8aaf2](https://github.com/google/blockly-samples/commit/4d8aaf2fbcd00bd36fdb5394db17c93efb167c12))
+
+
+
 ## [5.0.4](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.3...@blockly/continuous-toolbox@5.0.4) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/continuous-toolbox
