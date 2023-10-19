@@ -32,11 +32,13 @@
   "license": "Apache 2.0",
   "directories": {
     "dist": "dist",
-    "src": "src"
+    "src": "src",
+    "media": "media"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "media"
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
