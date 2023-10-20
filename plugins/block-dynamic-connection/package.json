@@ -45,7 +45,8 @@
     "@blockly/dev-tools": "^7.1.0",
     "blockly": "^10.0.0",
     "chai": "^4.2.0",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "blockly": "^10.0.0"
