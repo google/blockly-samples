@@ -126,7 +126,7 @@ export function createPlayground(
           activeTab: 'JSON',
           playgroundOpen: true,
           autoGenerate: config && config.auto != undefined ? config.auto : true,
-          workspaceJson: {},
+          workspaceJson: '',
         });
         playgroundState.load();
 
@@ -314,7 +314,7 @@ export function createPlayground(
 
 
         // Initialized saved JSON and bind change listener.
-        const initialWorkspaceJson = playgroundState.get('workspaceJson') || {};
+        const initialWorkspaceJson = playgroundState.get('workspaceJson') || '';
         const jsonTab = tabs['JSON'];
         const jsonModel = jsonTab.state.model;
         let isFirstLoad = true;
