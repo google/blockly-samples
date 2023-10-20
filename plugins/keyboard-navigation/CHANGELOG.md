@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.0](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.4.7...@blockly/keyboard-navigation@0.5.0) (2023-09-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* changes for v10.2.0 (#1989)
+
+### release
+
+* changes for v10.2.0 ([#1989](https://github.com/google/blockly-samples/issues/1989)) ([4d81ea7](https://github.com/google/blockly-samples/commit/4d81ea7254412ef199a270fc740c2f45755a2725)), closes [#1844](https://github.com/google/blockly-samples/issues/1844) [#1845](https://github.com/google/blockly-samples/issues/1845) [#1863](https://github.com/google/blockly-samples/issues/1863) [#1880](https://github.com/google/blockly-samples/issues/1880) [#1885](https://github.com/google/blockly-samples/issues/1885) [#1886](https://github.com/google/blockly-samples/issues/1886) [#1887](https://github.com/google/blockly-samples/issues/1887) [#1888](https://github.com/google/blockly-samples/issues/1888) [#1919](https://github.com/google/blockly-samples/issues/1919) [#1920](https://github.com/google/blockly-samples/issues/1920) [#1983](https://github.com/google/blockly-samples/issues/1983) [#1984](https://github.com/google/blockly-samples/issues/1984) [#1985](https://github.com/google/blockly-samples/issues/1985) [#1991](https://github.com/google/blockly-samples/issues/1991)
+
+
+
+## [0.4.7](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.4.6...@blockly/keyboard-navigation@0.4.7) (2023-09-28)
+
+
+### Bug Fixes
+
+* make keyboard nav compatible with v10.2.0 ([#1990](https://github.com/google/blockly-samples/issues/1990)) ([e0915b3](https://github.com/google/blockly-samples/commit/e0915b36afb7d049665673e89c4340bc01cdf08c))
+
+
+
 ## [0.4.6](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.4.5...@blockly/keyboard-navigation@0.4.6) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/keyboard-navigation

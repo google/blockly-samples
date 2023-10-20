@@ -32,4 +32,4 @@ v2.0 of this plugin (as v3.0 does not actually serialize these attributes).
 
 Note that this plugin is being removed in the future, so by newly installing it
 now, you will be introducing a dependency you will be forced to remove in the
-future if they you to remain up-to-date with core Blockly.
+future if you want to remain up-to-date with core Blockly.

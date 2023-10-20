@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.2...@blockly/workspace-minimap@0.1.3) (2023-09-22)
+
+
+### Bug Fixes
+
+* Remove semicolon ([#1947](https://github.com/google/blockly-samples/issues/1947)) ([d182940](https://github.com/google/blockly-samples/commit/d182940e7be6535344d4bda750c834eead6396d9))
+
+
+
 ## [0.1.2](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.1...@blockly/workspace-minimap@0.1.2) (2023-09-21)
 
 

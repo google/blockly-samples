@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/google/blockly-samples/compare/@blockly/migrate@2.0.0...@blockly/migrate@2.0.1) (2023-10-12)
+
+
+### Bug Fixes
+
+* Only run the migration script against JS/TS files. ([#2011](https://github.com/google/blockly-samples/issues/2011)) ([00cddca](https://github.com/google/blockly-samples/commit/00cddca13126fe6eb2ef61e4e4069815955c60d7))
+
+
+
 ## [2.0.0](https://github.com/google/blockly-samples/compare/@blockly/migrate@1.1.3...@blockly/migrate@2.0.0) (2023-06-28)
 
 

@@ -8,7 +8,7 @@
 import * as Blockly from 'blockly/core';
 import {ObservableProcedureModel} from './observable_procedure_model';
 import {ObservableParameterModel} from './observable_parameter_model';
-import {IProcedureBlock, isProcedureBlock} from './i_procedure_block';
+import {IProcedureBlock} from './i_procedure_block';
 import {ProcedureCreate} from './events_procedure_create';
 
 
@@ -209,7 +209,6 @@ const procedureDefGetDefMixin = function() {
      * disposed.
      */
     destroy: function() {
-      if (this.isInsertionMarker()) return;
       this.workspace.getProcedureMap().delete(this.getProcedureModel().getId());
     },
   };
@@ -417,25 +416,29 @@ const procedureDefMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
+   * @param doFullSerialization Tells the block if it should serialize
+   *     its entire state (including data stored in the backing procedure
+   *     model). Used for copy-paste.
    * @returns The state of this block, eg the parameters and statements.
    */
-  saveExtraState: function() {
+  saveExtraState: function(doFullSerialization) {
     const state = Object.create(null);
     state['procedureId'] = this.getProcedureModel().getId();
 
-    const params = this.getProcedureModel().getParameters();
-    if (!params.length && this.hasStatements_) return state;
-
-    if (params.length) {
-      state['params'] = params.map((p) => {
-        return {
-          'name': p.getName(),
-          'id': p.getVariableModel().getId(),
-          // Ideally this would be id, and the other would be varId,
-          // but backwards compatibility :/
-          'paramId': p.getId(),
-        };
-      });
+    if (doFullSerialization) {
+      state['fullSerialization'] = true;
+      const params = this.getProcedureModel().getParameters();
+      if (params.length) {
+        state['params'] = params.map((p) => {
+          return {
+            'name': p.getName(),
+            'id': p.getVariableModel().getId(),
+            // Ideally this would be id, and the other would be varId,
+            // but backwards compatibility :/
+            'paramId': p.getId(),
+          };
+        });
+      }
     }
     if (!this.hasStatements_) {
       state['hasStatements'] = false;
@@ -450,11 +453,9 @@ const procedureDefMutator = {
    */
   loadExtraState: function(state) {
     const map = this.workspace.getProcedureMap();
+
     const procedureId = state['procedureId'];
-    if (procedureId && procedureId != this.model_.getId() &&
-      map.has(procedureId) &&
-      (this.isInsertionMarker() ||
-        this.noBlockHasClaimedModel_(procedureId))) {
+    if (map.has(procedureId) && !state['fullSerialization']) {
       if (map.has(this.model_.getId())) {
         map.delete(this.model_.getId());
       }
@@ -478,21 +479,6 @@ const procedureDefMutator = {
 
     this.doProcedureUpdate();
     this.setStatements_(state['hasStatements'] === false ? false : true);
-  },
-
-  /**
-   * Returns true if there is no definition block currently associated with the
-   * given procedure ID. False otherwise.
-   * @param procedureId The ID of the procedure to check for a claiming
-   *     block.
-   * @returns True if there is no definition block currently associated
-   *     with the given procedure ID. False otherwise.
-   */
-  noBlockHasClaimedModel_(procedureId) {
-    const model = this.workspace.getProcedureMap().get(procedureId);
-    return this.workspace.getAllBlocks(false).every(
-        (b) => !isProcedureBlock(b) || !b.isProcedureDef() ||
-        b.getProcedureModel() !== model);
   },
 
   /**
