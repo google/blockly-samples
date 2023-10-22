@@ -25,6 +25,8 @@
 
   <p>This is a demo of executing code asynchronously (e.g., waiting for delays or user input) using the Python interpreter.</p>
 
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-python#python-interpreter">More info on running code with Python-Interpreter</a></p>
+
   <p>
     <button onclick="runCode()" id="runButton">Run Python</button>
   </p>
@@ -345,6 +347,10 @@
 
       if (clearOutput) {
         outputArea.value = 'Program output:\n=================';
+      }
+
+      if (myInterpreter) {
+        myInterpreter.abort();
       }
       myInterpreter = null;
     }

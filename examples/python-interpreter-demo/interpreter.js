@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2013 Google LLC
+ * Copyright 2013 Zoey Li
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -112,53 +112,40 @@ Interpreter.prototype.abort = function () {
     this.paused_ = false;
     this.finished_ = true;
     this.abort_();
+  } else if (worker_ && !this.paused_ && !this.finished_) {
+    worker_.terminate();
+    worker_ = null;
+    this.isBootstrapped_ = false;
   }
 };
+
 Interpreter.prototype.bootstrapAndRun_ = function () {
   var _this = this;
   if (!this.isBootstrapped_) {
     this.isBootstrapped_ = true;
     this.finished_ = false;
     this.paused_ = false;
-    if (typeof Worker !== "undefined") {
-      if (!worker) {
-        worker = new Worker("./interpreter-worker.js");
-      }
-      worker.onmessage = function (event) {
-        if (event.data.name === "interpreter$done_") {
-          _this.done_();
-        } else if (_this.globalScope_[event.data.name]) {
-          Promise.resolve(_this.globalScope_[event.data.name].apply(void 0, event.data.args)).then(function (result) {
-            event.ports[0].postMessage({ result });
-          });
-        }
-      };
-      worker.postMessage({
-        code: this.code_,
-        ffi: Object.keys(_this.globalScope_)
-      });
-    } else {
-      globalThis["interpreter$ffiImpl"] = function () {
-        return _this.globalScope_;
-      };
-      globalThis["interpreter$ffi"] = function () {
-        return Object.keys(_this.globalScope_);
-      };
-      var pythonCode = [
-        'import js',
-        'for name in list(getattr(js, "interpreter$ffi")()):',
-        '  globals()[name] = getattr(getattr(js, "interpreter$ffiImpl")(), name)',
-        this.code_
-      ];
-      if (!micropythonPromise) {
-        micropythonPromise = loadMicropython_();
-      }
-      micropythonPromise.then(function (interpreter) {
-        Promise.resolve(interpreter.runPythonAsync(pythonCode.join('\n'))).then(_this.done_.bind(_this));
-      });
+    if (!worker_) {
+      worker_ = new Worker("./python-worker.js");
     }
+    worker_.onmessage = function (event) {
+      if (event.data.name === "interpreter$done") {
+        _this.done_();
+      } else if (_this.globalScope_[event.data.name]) {
+        Promise.resolve(
+          _this.globalScope_[event.data.name].apply(void 0, event.data.args),
+        ).then(function (result) {
+          event.ports[0].postMessage({ result });
+        });
+      }
+    };
+    worker_.postMessage({
+      code: this.code_,
+      ffi: Object.keys(_this.globalScope_)
+    });
   }
 };
+
 Interpreter.prototype.breakpoint_ = function () {
   var _this = this;
   if (this.isBootstrapped_ && !this.finished_ && !this.paused_) {
@@ -169,23 +156,12 @@ Interpreter.prototype.breakpoint_ = function () {
     });
   }
 };
+
 Interpreter.prototype.done_ = function () {
   this.finished_ = true;
   this.paused_ = false;
   this.resume_ = null;
   this.abort_ = null;
 };
-var worker;
-var micropythonPromise;
-function loadMicropython_() {
-  var INTERPRETER_BASE_PATH = "./node_modules/@micropython/micropython-webassembly-pyscript";
-  return new Promise(function (resolve) {
-    import(INTERPRETER_BASE_PATH + "/micropython.mjs").then(function (module) {
-      module.loadMicroPython({
-        url: INTERPRETER_BASE_PATH + "/micropython.wasm"
-      }).then(function (interpreter) {
-        resolve(interpreter);
-      });
-    });
-  });
-}
+
+var worker_;

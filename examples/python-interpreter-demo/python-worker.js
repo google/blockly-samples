@@ -1,3 +1,16 @@
+/**
+ * @license
+ * Copyright 2013 Zoey Li
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+'use strict';
+
+/**
+ * @fileoverview Worker code for Python interpreter.
+ * @author zoeyli@google.com (Zoey Li)
+ */
+
 function loadMicropython_() {
   var INTERPRETER_BASE_PATH = "./node_modules/@micropython/micropython-webassembly-pyscript";
   return new Promise(function (resolve) {
@@ -10,13 +23,15 @@ function loadMicropython_() {
     });
   });
 }
+
 var micropythonPromise = loadMicropython_();
+
 globalThis.onmessage = function (event) {
   globalThis["interpreter$ffi"] = function () {
     return event.data.ffi;
   };
   event.data.ffi.forEach(function (name) {
-    globalThis["interpreter$" + name] = function () {
+    globalThis["interpreter_hook$" + name] = function () {
       var _arguments = arguments;
       return new Promise(function (resolve) {
         var channel = new MessageChannel();
@@ -36,17 +51,21 @@ globalThis.onmessage = function (event) {
       });
     };
   });
+
   var pythonCode = [
     'import js',
     'for name in list(getattr(js, "interpreter$ffi")()):',
-    '  globals()[name] = getattr(js, "interpreter$" + name)',
+    '  globals()[name] = getattr(js, "interpreter_hook$" + name)',
     event.data.code
   ];
+
   micropythonPromise.then(function (interpreter) {
-    Promise.resolve(interpreter.runPythonAsync(pythonCode.join('\n'))).then(function () {
-      globalThis.postMessage({
-        name: "interpreter$done_"
-      });
-    });
+    Promise.resolve(interpreter.runPythonAsync(pythonCode.join('\n'))).then(
+      function () {
+        globalThis.postMessage({
+          name: "interpreter$done"
+        });
+      },
+    );
   });
 };
