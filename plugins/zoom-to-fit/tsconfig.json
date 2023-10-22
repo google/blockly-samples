@@ -5,6 +5,7 @@
     "target": "es6",
     "allowJs": true,
     "sourceMap": true,
+    "strict": true,
     "moduleResolution": "nodenext",
     "lib": ["es2021", "dom"],
     // Point at the local Blockly. See #1934. Remove if we add hoisting.
