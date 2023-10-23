@@ -198,10 +198,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
         i = -1;
       }
     }
-    if (this.svgGroup) {
-      this.svgGroup.setAttribute('transform',
+      this.svgGroup?.setAttribute('transform',
           `translate(${this.left}, ${this.top})`);
-    }
   }
 }
 
