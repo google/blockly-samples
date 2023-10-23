@@ -26,7 +26,7 @@
   <p>This is a demo of executing code step-by-step with a sandboxed Python interpreter.</p>
 
   <p>The generator's <code>python.pythonGenerator.STATEMENT_PREFIX</code> is assigned
-  <code>'highlightBlock(%1);\nawait breakpoint()\n'</code>, where <code>%1</code> is the block ID.
+  <code>'highlightBlock(%1)\nawait breakpoint()\n'</code>, where <code>%1</code> is the block ID.
   The call to <code>highlightBlock()</code> will highlight the identified block
   and the call to <code>await breakpoint()</code> will pause the execution.</p>
 
@@ -34,7 +34,7 @@
   That is, until <code>highlightBlock()</code> has highlighted the block that
   will be executed on the next step.</p>
 
-  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-python#python-interpreter">More info on running code with Python-Interpreter</a></p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/app-integration/running-python">More info on running code with Python-Interpreter</a></p>
 
   <p>
     <button onclick="stepCode()" id="stepButton">Step Python</button>
@@ -146,7 +146,7 @@
          toolbox: toolboxJson});
     python.pythonGenerator.STATEMENT_PREFIX = 'highlightBlock(%1)\nawait breakpoint()\n';
     python.pythonGenerator.addReservedWords('highlightBlock');
-    python.pythonGenerator.addReservedWords('nbreakpoint');
+    python.pythonGenerator.addReservedWords('breakpoint');
     Blockly.serialization.workspaces.load(startBlocks, demoWorkspace);
 
     const outputArea = document.getElementById('output');
