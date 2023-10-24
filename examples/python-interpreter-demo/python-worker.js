@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2013 Zoey Li
+ * Copyright 2023 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
