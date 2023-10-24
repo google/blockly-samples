@@ -16,5 +16,5 @@
   },
   // NOTE: `test/**/*` is automatically included in `blockly-scripts start`.
   // Only src matters for production builds.
-  "exclude": ["test", "build", "dist"]
+  "include": ["src"]
 }
