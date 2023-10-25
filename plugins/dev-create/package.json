@@ -14,7 +14,8 @@
   ],
   "files": [
     "*",
-    "templates/sample-app/*"
+    "templates/sample-app/*",
+    "templates/sample-app-ts/*"
   ],
   "scripts": {
     "prepack": "cp -r ../../examples/sample-app ./templates && cp -r ../../examples/sample-app-ts ./templates"
