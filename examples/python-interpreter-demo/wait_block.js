@@ -31,7 +31,7 @@ Blockly.defineBlocksWithJsonArray([{
  */
 python.pythonGenerator.forBlock['wait_seconds'] = function(block) {
   const seconds = Number(block.getFieldValue('SECONDS'));
-  const code = 'await waitForSeconds(' + seconds + ');\n';
+  const code = 'await waitForSeconds(' + seconds + ')\n';
   return code;
 };
 

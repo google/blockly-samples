@@ -7,10 +7,9 @@
     "files": [
       "index.html",
       "async-execution.html",
-      "mini-coi.js",
       "step-execution.html",
       "interpreter.js",
-      "interpreter-worker.js",
+      "python-worker.js",
       "toolbox.js",
       "wait_block.js",
       "./node_modules/@micropython/micropython-webassembly-pyscript/micropython.*",
