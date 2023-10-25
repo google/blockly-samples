@@ -19,6 +19,7 @@ const PIXEL_SIZE = 15;
 const FILLED_PIXEL_COLOR = '#363d80';
 const EMPTY_PIXEL_COLOR = '#fff';
 
+
 /**
  * Field for inputting a small bitmap image.
  * Includes a grid of clickable pixels that's exported as a bitmap.
@@ -36,6 +37,7 @@ export class FieldBitmap extends Blockly.Field {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
+    this.initialValue_ = null;
 
     // Configure value, height, and width
     if (this.getValue() !== null) {
@@ -296,6 +298,9 @@ export class FieldBitmap extends Blockly.Field {
       });
     }
 
+    // Store the initial value at the start of the edit.
+    this.initialValue_ = this.getValue();
+
     return dropdownEditor;
   }
 
@@ -365,12 +370,29 @@ export class FieldBitmap extends Blockly.Field {
    * @private
    */
   dropdownDispose_() {
+    if (this.getSourceBlock() &&
+        this.initialValue_ !== null &&
+        this.initialValue_ !== this.getValue()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(Blockly.Events.BLOCK_CHANGE))(
+              this.sourceBlock_,
+              'field',
+              this.name || null,
+              this.initialValue_,
+              this.getValue()
+          )
+      );
+    }
+
     for (const event of this.boundEvents_) {
       Blockly.browserEvents.unbind(event);
     }
     this.boundEvents_.length = 0;
     this.editorPixels_ = null;
+    // Set this.initialValue_ back to null.
+    this.initialValue_ = null;
   }
+
 
   /**
    * Constructs an array of zeros with the specified width and height.
@@ -436,7 +458,20 @@ export class FieldBitmap extends Blockly.Field {
     this.forAllCells_((r, c) => {
       newVal[r][c] = getRandBinary();
     });
-    this.setValue(newVal);
+
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              this.getValue(),
+              newVal
+          )
+      );
+    }
+
+    this.setValue(newVal, false);
   }
 
   /**
@@ -448,7 +483,20 @@ export class FieldBitmap extends Blockly.Field {
     this.forAllCells_((r, c) => {
       newVal[r][c] = 0;
     });
-    this.setValue(newVal);
+
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              this.getValue(),
+              newVal
+          )
+      );
+    }
+
+    this.setValue(newVal, false);
   }
 
   /**
@@ -461,7 +509,20 @@ export class FieldBitmap extends Blockly.Field {
   setPixel_(r, c, newValue) {
     const newGrid = JSON.parse(JSON.stringify(this.getValue()));
     newGrid[r][c] = newValue;
-    this.setValue(newGrid);
+
+    if (this.getSourceBlock()) {
+      Blockly.Events.fire(
+          new (Blockly.Events.get(
+              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
+              this.sourceBlock_,
+              this.name || null,
+              this.getValue(),
+              newGrid
+          )
+      );
+    }
+
+    this.setValue(newGrid, false);
   }
 
   /**

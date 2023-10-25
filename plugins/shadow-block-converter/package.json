@@ -12,6 +12,7 @@
     "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
@@ -42,7 +43,8 @@
     "@blockly/dev-tools": "^7.1.0",
     "blockly": "^10.0.0",
     "chai": "^4.2.0",
-    "sinon": "^9.0.1"
+    "sinon": "^9.0.1",
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "blockly": "^10.0.0"

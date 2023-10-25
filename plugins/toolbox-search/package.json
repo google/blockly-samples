@@ -12,6 +12,7 @@
     "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "unpkg": "./dist/index.js",
   "author": "",
   "keywords": [

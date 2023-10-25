@@ -29,10 +29,28 @@ export class BlockSearcher {
       this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
+          this.indexDropdownOption(field, blockType);
           this.indexBlockText(field.getText(), blockType);
         });
       });
     });
+  }
+
+  /**
+   * Check if the field is a dropdown, and index every text in the option
+   * @param field We need to check the type of field
+   * @param blockType The block type to associate the trigrams with.
+   */
+  private indexDropdownOption(field: Blockly.Field, blockType: string) {
+    if (field instanceof Blockly.FieldDropdown) {
+      field.getOptions(true).forEach((option) => {
+        if (typeof option[0] === 'string') {
+          this.indexBlockText(option[0], blockType);
+        } else if ('alt' in option[0]) {
+          this.indexBlockText(option[0].alt, blockType);
+        }
+      });
+    }
   }
 
   /**
