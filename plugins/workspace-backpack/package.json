@@ -13,7 +13,6 @@
   },
   "main": "./dist/index.js",
   "types": "./src/index.d.ts",
-  "module": "./src/index.js",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
@@ -43,7 +42,8 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
     "@blockly/dev-tools": "^7.1.0",
-    "blockly": "^10.0.0"
+    "blockly": "^10.0.0",
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "blockly": "^10.0.0"

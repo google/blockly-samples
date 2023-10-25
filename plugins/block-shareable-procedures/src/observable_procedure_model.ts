@@ -223,7 +223,6 @@ implements Blockly.procedures.IProcedureModel {
 
   /**
    * Tells the procedure model it should fire events.
-   *
    * @internal
    */
   startPublishing() {
@@ -236,7 +235,6 @@ implements Blockly.procedures.IProcedureModel {
 
   /**
    * Tells the procedure model it should not fire events.
-   *
    * @internal
    */
   stopPublishing() {

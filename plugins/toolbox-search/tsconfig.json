@@ -1,20 +1,21 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "build",
-    "target": "es6",
-    "allowJs": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
-    "moduleResolution": "nodenext",
+    "module": "es2015",
+    "moduleResolution": "bundler",
+    "target": "es6",
     "lib": ["es2021", "dom"],
+    "strict": false,
     // Point at the local Blockly. See #1934. Remove if we add hoisting.
     "paths": {
       "blockly/*": ["node_modules/blockly/*"]
-    },
-    "declaration": true,
-    "declarationMap": true
+    }
   },
-  "include": [
-    "src", "test"
-  ],
+  // NOTE: `test/**/*` is automatically included in `blockly-scripts start`.
+  // Only src matters for production builds.
+  "include": ["src"]
 }
