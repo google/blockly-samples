@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css?family=Google+Sans:400,500");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+.app-container {
+  --bg: white;
+  --font-family: 'Google Sans';
+}
+
+.app-container {
+  background-color: #f8f9fa;
+  border-radius: 30px;
+  bottom: 0;
+  height: 352px;
+  left: 0;
+  margin: 10px;
+  overflow: visible;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+.main {
+  bottom: 8px;
+  position: absolute;
+  top: 8px;
+}
+
+#blocklyDiv {
+  background: var(--bg);
+  left: 8px;
+  margin: 20px;
+  max-height: 300px;
+  padding: 20px;
+  right: 420px;
+}
+
+.blocklyToolboxDiv {
+  background-color: var(--bg);
+}
+
+.blocklyTreeRow {
+  height: 15px;
+  line-height: 15px;
+}
+
+.blocklyTreeRowContentContainer {
+  border-left: 20px;
+}
+
+.blocklyTreeIcon {
+  width: 8px;
+}
+
+.blocklyTreeLabel,
+select,
+option {
+  font-family: var(--font-family) !important;
+}
+
+#blockly-0 {
+  border-left: 15px solid #aecbfa !important;
+}
+
+#blockly-1 {
+  border-left: 15px solid #a8dab5 !important;
+}
+
+#blockly-2 {
+  border-left: 15px solid #4285f4 !important;
+}
+
+#blockly-3 {
+  border-left: 15px solid #fde293 !important;
+}
+
+#blockly-4 {
+  border-left: 15px solid #34a853 !important;
+}
+
+#blockly-5 {
+  border-left: 15px solid #ea4335 !important;
+}
+
+#blockly-7 {
+  border-left: 15px solid #f6aea9 !important;
+}
+
+#blockly-8 {
+  border-left: 15px solid #fbbc04 !important;
+}
+
+.blocklyTreeSeparator {
+  border-bottom: unset;
+}
+
+.blocklyMainBackground,
+.blocklyPathLight {
+  stroke: var(--bg);
+}
+
+.blocklyPathDark {
+  fill: var(--bg);
+}
+
+.blocklyText {
+  fill: black !important;
+  font: 400 16px var(--font-family) !important;
+}
+
+#outputDiv {
+  background-color: var(--bg);
+  margin: 20px;
+  overflow: scroll;
+  padding: 20px;
+  right: 8px;
+  width: 340px;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  height: 1px;
+}
+
+.play-button {
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #1a73e8;
+  cursor: pointer;
+  display: inline-block;
+  font: 500 14px/36px var(--font-family);
+  padding: 0 16px;
+  position: absolute;
+  right: 52px;
+  top: 36px;
+}
+
+.play-button:hover {
+  background: #e8f0fe;
+  border: 1px solid #d2e3fc;
+}
+
+.play-button .material-icons {
+  cursor: default;
+  font-size: 18px;
+  height: 18px;
+  margin: 0 8px 0 -4px;
+  pointer-events: none;
+  position: relative;
+  top: -1px;
+  vertical-align: middle;
+  width: 18px;
+}
+
+/* Prettify adds some unwanted styles - clobber them. */
+#codeHolder {
+  border: none;
+  padding-inline: 20px;
+}
