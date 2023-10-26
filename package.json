@@ -19,7 +19,7 @@
     "format:check": "prettier --check .",
     "license": "gulp checkLicenses",
     "lint": "eslint .",
-    "lint:fix": "lerna run lint -- -- --fix",
+    "lint:fix": "eslint . --fix",
     "postinstall": "npm run boot",
     "test": "lerna run test",
     "publish:prepare": "gulp prepareForPublish",
