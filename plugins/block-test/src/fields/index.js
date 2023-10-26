@@ -17,7 +17,9 @@ import {category as fieldDropdowns, onInit as initDropdowns} from './dropdowns';
 import {category as fieldImages, onInit as initImages} from './images';
 import {category as fieldEmoji, onInit as initEmoji} from './emojis';
 import {
-  category as fieldValidators, onInit as initValidators} from './validators';
+  category as fieldValidators,
+  onInit as initValidators,
+} from './validators';
 
 /**
  * The fields category.
@@ -36,7 +38,6 @@ export const category = {
     fieldValidators,
   ],
 };
-
 
 /**
  * Initialize this toolbox category.

@@ -32,7 +32,10 @@ export class BackpackOpen extends Blockly.Events.UiBase {
    * @param workspaceId The workspace identifier for this event.
    *    Undefined for a blank event.
    */
-  constructor(public isOpen?: boolean, workspaceId?: string) {
+  constructor(
+    public isOpen?: boolean,
+    workspaceId?: string,
+  ) {
     super(workspaceId);
   }
 
@@ -54,21 +57,26 @@ export class BackpackOpen extends Blockly.Events.UiBase {
    * @returns A newly deserialized BackpackOpen event.
    */
   static fromJson(
-      json: BackpackOpenEventJson, workspace: Blockly.Workspace,
-      event: unknown): BackpackOpen {
+    json: BackpackOpenEventJson,
+    workspace: Blockly.Workspace,
+    event: unknown,
+  ): BackpackOpen {
     const newEvent = super.fromJson(json, workspace, event) as BackpackOpen;
     newEvent.isOpen = json['isOpen'];
     return newEvent;
   }
 }
 
-export interface BackpackOpenEventJson extends
-    Blockly.Events.AbstractEventJson {
+export interface BackpackOpenEventJson
+  extends Blockly.Events.AbstractEventJson {
   isOpen?: boolean;
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, backpackOpen, BackpackOpen);
+  Blockly.registry.Type.EVENT,
+  backpackOpen,
+  BackpackOpen,
+);
 
 /**
  * Name of event that records a backpack change.
@@ -86,4 +94,7 @@ export class BackpackChange extends Blockly.Events.UiBase {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, backpackChange, BackpackChange);
+  Blockly.registry.Type.EVENT,
+  backpackChange,
+  BackpackChange,
+);

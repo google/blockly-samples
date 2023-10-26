@@ -11,7 +11,6 @@
 
 import semver from 'semver';
 
-
 /**
  * The version associated with the unreleased version of Blockly.
  * @const {string}
@@ -31,8 +30,9 @@ const LATEST = 'latest';
  * @returns  {string} The coerced version.
  */
 export function coerce(version) {
-  return version === DEV_VERSION || version === LATEST?
-      version : semver.coerce(version).toString();
+  return version === DEV_VERSION || version === LATEST
+    ? version
+    : semver.coerce(version).toString();
 }
 
 /**

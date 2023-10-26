@@ -17,29 +17,31 @@ import {createRequire} from 'module';
 const require = createRequire(import.meta.url);
 const scriptPackageJson = require('../package.json');
 
-
 const SCRIPT_NAME = scriptPackageJson.name;
 
 const ROOT_COMMAND = new Command(SCRIPT_NAME)
-    .version(
-        scriptPackageJson.version,
-        '-v, --version',
-        'output the version of this script')
-    .usage(`${chalk.blue('<migration>')} ` +
-        `${chalk.green('--from <from-version>')}` +
-        '[--to <to-version>] [options] ' +
-        `${chalk.green('<file...>')}`);
+  .version(
+    scriptPackageJson.version,
+    '-v, --version',
+    'output the version of this script',
+  )
+  .usage(
+    `${chalk.blue('<migration>')} ` +
+      `${chalk.green('--from <from-version>')}` +
+      '[--to <to-version>] [options] ' +
+      `${chalk.green('<file...>')}`,
+  );
 
 const HELP_COMMAND = new Command('help')
-    .argument('[version]', 'the version of Blockly to provide info about')
-    .description('display this help, or help for the specific version')
-    .action(function() {
-      if (this.args.length) {
-        showVersionHelp(this.args[0]);
-      } else {
-        ROOT_COMMAND.help();
-      }
-    });
+  .argument('[version]', 'the version of Blockly to provide info about')
+  .description('display this help, or help for the specific version')
+  .action(function () {
+    if (this.args.length) {
+      showVersionHelp(this.args[0]);
+    } else {
+      ROOT_COMMAND.help();
+    }
+  });
 
 ROOT_COMMAND.addCommand(HELP_COMMAND);
 
@@ -92,11 +94,10 @@ export function createSubCommand(name, targetVersionRange, description) {
   migrations.push(migration);
 
   return new Command(name)
-      .description(description)
-      .requiredOption(
-          '--from <from-version>', 'Blockly version to migrate from')
-      .option('--to <to-version>', 'Blockly version to migrate to')
-      .argument('<file...>', 'Files to migrate');
+    .description(description)
+    .requiredOption('--from <from-version>', 'Blockly version to migrate from')
+    .option('--to <to-version>', 'Blockly version to migrate to')
+    .argument('<file...>', 'Files to migrate');
 }
 
 /**

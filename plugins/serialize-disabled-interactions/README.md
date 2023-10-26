@@ -14,7 +14,7 @@ attributes is now handled by core in versions of Blockly >= v9.3.0.
 If you had previously used this plugin to serialize workspaces, you should use
 v3.0 of the plugin. This version will deserialize the old saves, but it will no
 longer serialize the disabled properties (since that is now handled by core).
-Once all  of your saves have been "cleaned" you can safely remove your use of
+Once all of your saves have been "cleaned" you can safely remove your use of
 this plugin.
 
 ### For Blockly versions < v9.3.0

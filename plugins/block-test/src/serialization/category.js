@@ -52,9 +52,10 @@ export const category = {
     },
     {
       'kind': 'BLOCK',
-      'blockxml': '<block type="test_extra_state_xml">' +
-          '<mutation items="2"></mutation>' +
-          '</block>',
+      'blockxml':
+        '<block type="test_extra_state_xml">' +
+        '<mutation items="2"></mutation>' +
+        '</block>',
     },
     {
       'kind': 'BLOCK',
@@ -124,13 +125,14 @@ export const category = {
     },
     {
       'kind': 'BLOCK',
-      'blockxml': '<block type="text_print">' +
-          '<value name="TEXT">' +
-          '<shadow type="test_extra_state_xml">' +
-          '<mutation items="2"></mutation>' +
-          '</shadow>' +
-          '</value>' +
-          '</block>',
+      'blockxml':
+        '<block type="text_print">' +
+        '<value name="TEXT">' +
+        '<shadow type="test_extra_state_xml">' +
+        '<mutation items="2"></mutation>' +
+        '</shadow>' +
+        '</value>' +
+        '</block>',
     },
     {
       'kind': 'BLOCK',
@@ -168,19 +170,18 @@ export const category = {
  * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
  */
 export function onInit(workspace) {
-  const randomizeText = function(button) {
+  const randomizeText = function (button) {
     const targetWorkspace = button.getTargetWorkspace();
     const blocks = [
       ...targetWorkspace.getBlocksByType(
-          'test_field_serialization_no_overrides'),
-      ...targetWorkspace.getBlocksByType(
-          'test_field_serialization_xml'),
-      ...targetWorkspace.getBlocksByType(
-          'test_field_serialization_jso'),
-      ...targetWorkspace.getBlocksByType(
-          'test_field_serialization_both')];
+        'test_field_serialization_no_overrides',
+      ),
+      ...targetWorkspace.getBlocksByType('test_field_serialization_xml'),
+      ...targetWorkspace.getBlocksByType('test_field_serialization_jso'),
+      ...targetWorkspace.getBlocksByType('test_field_serialization_both'),
+    ];
     const possible = 'ABCDEF';
-    for (let i = 0, block; block = blocks[i]; i++) {
+    for (let i = 0, block; (block = blocks[i]); i++) {
       let text = '';
       for (let j = 0; j < 4; j++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -190,4 +191,3 @@ export function onInit(workspace) {
   };
   workspace.registerButtonCallback('randomizeText', randomizeText);
 }
-

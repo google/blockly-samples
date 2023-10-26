@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_align_dummy_right',
@@ -31,8 +30,8 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     'type': 'test_align_all',
-    'message0': 'text %1 long text left %2 text centre %3 much longer text ' +
-        'right %4',
+    'message0':
+      'text %1 long text left %2 text centre %3 much longer text ' + 'right %4',
     'args0': [
       {
         'type': 'input_dummy',
@@ -54,8 +53,8 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     'type': 'test_align_with_external_input',
-    'message0': 'text right %1 long text centre %2 text left %3 much longer ' +
-        'text %4',
+    'message0':
+      'text right %1 long text centre %2 text left %3 much longer ' + 'text %4',
     'args0': [
       {
         'type': 'input_dummy',
@@ -78,7 +77,6 @@ Blockly.defineBlocksWithJsonArray([
     'style': 'math_blocks',
   },
 ]);
-
 
 /**
  * The Align category.

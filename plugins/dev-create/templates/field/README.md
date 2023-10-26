@@ -3,16 +3,19 @@
 <!--
   - TODO: Add field description.
   -->
+
 A [Blockly](https://www.npmjs.com/package/blockly) ... field.
 
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/plugin
 ```
 
 ### npm
+
 ```
 npm install @blockly/plugin --save
 ```
@@ -24,6 +27,7 @@ npm install @blockly/plugin --save
   -->
 
 ### JavaScript
+
 ```js
 import * as Blockly from 'blockly';
 import {FieldTemplate} from '@blockly/plugin';
@@ -37,6 +41,7 @@ Blockly.Blocks["test_field_template"] = {
 ```
 
 ### JSON
+
 ```js
 import * as Blockly from 'blockly';
 import '@blockly/plugin';

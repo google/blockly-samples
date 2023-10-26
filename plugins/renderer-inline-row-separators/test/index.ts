@@ -95,12 +95,14 @@ const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   return Blockly.inject(blocklyDiv, options);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
     renderer: 'thrasos-inline-row-separators',

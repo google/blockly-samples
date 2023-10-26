@@ -6,11 +6,13 @@ zoom-to-fit control to the workspace.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/zoom-to-fit
 ```
 
 ### npm
+
 ```
 npm install @blockly/zoom-to-fit --save
 ```
@@ -36,8 +38,9 @@ zoomToFit.init();
 - `init`: Initializes the zoom-to-fit control.
 - `dispose`: Disposes of the zoom-to-fit control.
 - `getBoundingRectangle`: Returns the bounding rectangle of the UI element in
-pixel units relative to the Blockly injection div.
+  pixel units relative to the Blockly injection div.
 - `position`: Positions the zoom-to-fit control.
 
 ## License
+
 Apache 2.0

@@ -2,5 +2,5 @@
 
 module.exports = {
   ui: 'tdd',
-  require: ['jsdom-global/register']
+  require: ['jsdom-global/register'],
 };

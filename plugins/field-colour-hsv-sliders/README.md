@@ -7,16 +7,19 @@ A [Blockly](https://www.npmjs.com/package/blockly) colour field using HSV slider
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/field-colour-hsv-sliders
 ```
 
 ### npm
+
 ```
 npm install @blockly/field-colour-hsv-sliders --save
 ```
 
 ## Usage
+
 This plugin adds a field type `FieldColourHsvSliders` that is registered to the name `'field_colour_hsv_sliders'`. This field is an extension of the `Blockly.FieldColour` field and outputs values in the same hexadecimal string format `'#rrggbb'` even though the UI represents the colour in the HSV colour space. See the [Blockly.FieldColour documentation](https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/colour#creation) on what parameters and configurations this field supports, although unlike `Blockly.FieldColour`, this field does not use colour swatches and thus ignores options related to the swatches such as `'colourOptions'`.
 
 The UI also provides an eye dropper button that can be used to take a colour from anywhere on the screen [on supported platforms](https://caniuse.com/?search=eyedropper). Chrome, Edge, and Opera support the eye dropper feature, except [on Chromebooks](https://bugs.chromium.org/p/chromium/issues/detail?id=1348921) and on mobile devices. There is also [a known bug in Chrome on some versions of Linux](https://bugs.chromium.org/p/chromium/issues/detail?id=1227633) where the eye dropper may be visible but does not work correctly.
@@ -38,19 +41,21 @@ Blockly.defineBlocksWithJsonArray([
       {
         'type': 'field_colour_hsv_sliders',
         'name': 'COLOUR',
-        'colour': '#ff0000'
-      }
+        'colour': '#ff0000',
+      },
     ],
     'output': 'Colour',
-    'style': 'colour_blocks'
-  }
+    'style': 'colour_blocks',
+  },
 ]);
 
-javascriptGenerator.forBlock['colour_hsv_sliders'] =
-    function(block, generator) {
-      const code = generator.quote_(block.getFieldValue('COLOUR'));
-      return [code, Order.ATOMIC];
-    };
+javascriptGenerator.forBlock['colour_hsv_sliders'] = function (
+  block,
+  generator,
+) {
+  const code = generator.quote_(block.getFieldValue('COLOUR'));
+  return [code, Order.ATOMIC];
+};
 ```
 
 ### JavaScript
@@ -67,13 +72,15 @@ Blockly.Blocks['colour_hsv_sliders'] = {
       .appendField(new FieldColourHsvSliders('#ff0000'), 'COLOUR');
     this.setOutput(true, 'Colour');
     this.setStyle('colour_blocks');
-  }
+  },
 };
-javascriptGenerator.forBlock['colour_hsv_sliders'] =
-    function(block, generator) {
-      const code = generator.quote_(block.getFieldValue('COLOUR'));
-      return [code, Order.ATOMIC];
-    };
+javascriptGenerator.forBlock['colour_hsv_sliders'] = function (
+  block,
+  generator,
+) {
+  const code = generator.quote_(block.getFieldValue('COLOUR'));
+  return [code, Order.ATOMIC];
+};
 ```
 
 ## License

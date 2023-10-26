@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_style_hat',
@@ -133,7 +132,6 @@ Blockly.defineBlocksWithJsonArray([
     'colour': '#AAAAAA',
   },
 ]);
-
 
 /**
  * The Style category.

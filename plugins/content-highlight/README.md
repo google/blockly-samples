@@ -8,11 +8,13 @@ content on the workspace.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/workspace-content-highlight
 ```
 
 ### npm
+
 ```
 npm install @blockly/workspace-content-highlight --save
 ```
@@ -39,4 +41,5 @@ contentHighlight.init();
 - `dispose`: Disposes of content highlight.
 
 ## License
+
 Apache 2.0

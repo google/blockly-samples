@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 /**
  * Defines the state type returned by this serializer.
  */
@@ -102,8 +101,10 @@ class DisabledInteractionsSerializer {
    * @param {!Blockly.Workspace} _workspace The workspace to clear the state
    *     of.
    */
-  clear(_workspace) { }
+  clear(_workspace) {}
 }
 
 Blockly.serialization.registry.register(
-    'disabledInteractions', new DisabledInteractionsSerializer());
+  'disabledInteractions',
+  new DisabledInteractionsSerializer(),
+);

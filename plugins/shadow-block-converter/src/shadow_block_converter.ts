@@ -13,7 +13,6 @@ import {Block} from 'blockly/core/block';
 import {Abstract} from 'blockly/core/events/events_abstract';
 import {BlockChangeJson} from 'blockly/core/events/events_block_change';
 
-
 /**
  * A new blockly event class specifically for recording changes to the shadow
  * state of a block. This implementation is similar to and could be merged with
@@ -73,14 +72,14 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    * @override
    */
   static fromJson(
-      json: BlockChangeJson,
-      workspace: Blockly.Workspace,
-      event?: any,
+    json: BlockChangeJson,
+    workspace: Blockly.Workspace,
+    event?: any,
   ): BlockShadowChange {
     const newEvent = super.fromJson(
-        json,
-        workspace,
-        event
+      json,
+      workspace,
+      event,
     ) as BlockShadowChange;
     newEvent.oldValue = json['oldValue'];
     newEvent.newValue = json['newValue'];
@@ -105,14 +104,16 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
     const workspace = this.getEventWorkspace_();
     if (!this.blockId) {
       throw new Error(
-          'The block ID is undefined. Either pass a block to ' +
-          'the constructor, or call fromJson');
+        'The block ID is undefined. Either pass a block to ' +
+          'the constructor, or call fromJson',
+      );
     }
     const block = workspace.getBlockById(this.blockId);
     if (!block) {
       throw new Error(
-          'The associated block is undefined. Either pass a ' +
-          'block to the constructor, or call fromJson');
+        'The associated block is undefined. Either pass a ' +
+          'block to the constructor, or call fromJson',
+      );
     }
 
     const value = forward ? this.newValue : this.oldValue;
@@ -121,9 +122,10 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT,
-    BlockShadowChange.EVENT_TYPE,
-    BlockShadowChange);
+  Blockly.registry.Type.EVENT,
+  BlockShadowChange.EVENT_TYPE,
+  BlockShadowChange,
+);
 
 /**
  * Add this function to your workspace as a change listener to automatically
@@ -137,8 +139,7 @@ Blockly.registry.register(
  *
  * @param event An event broadcast by the workspace.
  */
-export function shadowBlockConversionChangeListener(
-    event: Abstract) {
+export function shadowBlockConversionChangeListener(event: Abstract) {
   // Auto-converting shadow blocks to real blocks should happen in response to
   // new user action events (which get recorded as undo events) but not when
   // undoing or redoing events (which do not get recorded again).
@@ -194,9 +195,9 @@ export function shadowBlockConversionChangeListener(
 
     // If connected blocks need to be converted too, add them to the list.
     const outputBlock: Block | null | undefined =
-        shadowBlock.outputConnection?.targetBlock();
+      shadowBlock.outputConnection?.targetBlock();
     const previousBlock: Block | null | undefined =
-        shadowBlock.previousConnection?.targetBlock();
+      shadowBlock.previousConnection?.targetBlock();
     if (outputBlock?.isShadow()) {
       shadowBlocks.push(outputBlock);
     }

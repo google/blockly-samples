@@ -126,8 +126,7 @@ const FREQUENCY_TIEBREAK_TEST_CASE = {
   ],
 };
 
-
-suite('Suggested blocks', function() {
+suite('Suggested blocks', function () {
   /**
    * Asserts that the list of blocks matches the expected list.
    * @param {Array <object>} blockList list of block JSON objects
@@ -148,11 +147,12 @@ suite('Suggested blocks', function() {
     clock.tick(10);
   };
 
-  setup(function() {
+  setup(function () {
     // Create a workspace and integrate with the suggested blocks plugin
     this.workspace = new Blockly.Workspace();
     this.suggestor = new SuggestedBlocks.BlockSuggestor(
-        /* numBlocksPerCategory= */ 10);
+      /* numBlocksPerCategory= */ 10,
+    );
     this.workspace.addChangeListener(this.suggestor.eventListener);
     this.workspace.fireChangeListener({type: Blockly.Events.FINISHED_LOADING});
 
@@ -163,7 +163,7 @@ suite('Suggested blocks', function() {
     }
   });
 
-  test('No blocks, shows label', function() {
+  test('No blocks, shows label', function () {
     // (No setup code needed because no blocks created)
 
     const mostUsed = this.suggestor.getMostUsed();
@@ -175,54 +175,68 @@ suite('Suggested blocks', function() {
     assert.equal(recentlyUsed[0].kind, 'LABEL');
   });
 
-  test('Standard case, most used', function() {
+  test('Standard case, most used', function () {
     simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getMostUsed(),
-        STANDARD_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getMostUsed(),
+      STANDARD_TEST_CASE.expectedFrequentBlocks,
+    );
   });
 
-  test('Standard case, recently used', function() {
+  test('Standard case, recently used', function () {
     simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(),
-        STANDARD_TEST_CASE.expectedRecentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getRecentlyUsed(),
+      STANDARD_TEST_CASE.expectedRecentBlocks,
+    );
   });
 
-  test('Many blocks case, most used', function() {
+  test('Many blocks case, most used', function () {
     simulateTestCase(MANY_UNIQUE_BLOCKS_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getMostUsed(),
-        MANY_UNIQUE_BLOCKS_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getMostUsed(),
+      MANY_UNIQUE_BLOCKS_TEST_CASE.expectedFrequentBlocks,
+    );
   });
 
-  test('Many blocks case, recently used', function() {
+  test('Many blocks case, recently used', function () {
     simulateTestCase(MANY_UNIQUE_BLOCKS_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(),
-        MANY_UNIQUE_BLOCKS_TEST_CASE.expectedRecentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getRecentlyUsed(),
+      MANY_UNIQUE_BLOCKS_TEST_CASE.expectedRecentBlocks,
+    );
   });
 
-  test('Frequency tiebreak case, most used', function() {
+  test('Frequency tiebreak case, most used', function () {
     simulateTestCase(FREQUENCY_TIEBREAK_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getMostUsed(),
-        FREQUENCY_TIEBREAK_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getMostUsed(),
+      FREQUENCY_TIEBREAK_TEST_CASE.expectedFrequentBlocks,
+    );
   });
 
-  test('Frequency tiebreak case, recently used', function() {
+  test('Frequency tiebreak case, recently used', function () {
     simulateTestCase(FREQUENCY_TIEBREAK_TEST_CASE, this.workspace, this.clock);
-    assertSuggestedListEquals(this.suggestor.getRecentlyUsed(),
-        FREQUENCY_TIEBREAK_TEST_CASE.expectedRecentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getRecentlyUsed(),
+      FREQUENCY_TIEBREAK_TEST_CASE.expectedRecentBlocks,
+    );
   });
 
-  test('Can serialize/de-serialize', function() {
+  test('Can serialize/de-serialize', function () {
     simulateTestCase(STANDARD_TEST_CASE, this.workspace, this.clock);
 
     const serializedData = this.suggestor.saveToSerializedData();
     this.suggestor.clearPriorBlockData();
     this.suggestor.loadFromSerializedData(serializedData);
 
-    assertSuggestedListEquals(this.suggestor.getMostUsed(),
-        STANDARD_TEST_CASE.expectedFrequentBlocks);
+    assertSuggestedListEquals(
+      this.suggestor.getMostUsed(),
+      STANDARD_TEST_CASE.expectedFrequentBlocks,
+    );
   });
 
-  teardown(function() {
+  teardown(function () {
     this.workspace.dispose();
     this.suggestor = null;
   });

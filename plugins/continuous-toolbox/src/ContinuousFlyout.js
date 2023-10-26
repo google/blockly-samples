@@ -49,7 +49,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     this.recyclingEnabled_ = true;
 
     this.workspace_.setMetricsManager(
-        new ContinuousFlyoutMetrics(this.workspace_, this));
+      new ContinuousFlyoutMetrics(this.workspace_, this),
+    );
 
     this.workspace_.addChangeListener((e) => {
       if (e.type === Blockly.Events.VIEWPORT_CHANGE) {
@@ -79,8 +80,11 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   recordScrollPositions() {
     this.scrollPositions = [];
-    const categoryLabels = this.buttons_.filter((button) => button.isLabel() &&
-        this.getParentToolbox_().getCategoryByName(button.getButtonText()));
+    const categoryLabels = this.buttons_.filter(
+      (button) =>
+        button.isLabel() &&
+        this.getParentToolbox_().getCategoryByName(button.getButtonText()),
+    );
     for (const button of categoryLabels) {
       if (button.isLabel()) {
         this.scrollPositions.push({
@@ -139,8 +143,10 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     // Set the scroll target to either the scaled position or the lowest
     // possible scroll point, whichever is smaller.
     const metrics = this.workspace_.getMetrics();
-    this.scrollTarget = Math.min(position * this.workspace_.scale,
-        metrics.scrollHeight - metrics.viewHeight);
+    this.scrollTarget = Math.min(
+      position * this.workspace_.scale,
+      metrics.scrollHeight - metrics.viewHeight,
+    );
 
     this.stepScrollAnimation_();
   }
@@ -163,7 +169,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       return;
     }
     this.workspace_.scrollbar.setY(
-        currentScrollPos + diff * this.scrollAnimationFraction);
+      currentScrollPos + diff * this.scrollAnimationFraction,
+    );
 
     requestAnimationFrame(this.stepScrollAnimation_.bind(this));
   }
@@ -180,7 +187,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   calculateBottomPadding(contentMetrics, viewMetrics) {
     if (this.scrollPositions.length > 0) {
       const lastCategory =
-          this.scrollPositions[this.scrollPositions.length - 1];
+        this.scrollPositions[this.scrollPositions.length - 1];
       const lastPosition = lastCategory.position.y * this.workspace_.scale;
       const lastCategoryHeight = contentMetrics.height - lastPosition;
       if (lastCategoryHeight < viewMetrics.height) {
@@ -192,10 +199,12 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /** @override */
   getX() {
-    if (this.isVisible() &&
-        this.targetWorkspace.toolboxPosition === this.toolboxPosition_ &&
-        this.targetWorkspace.getToolbox() &&
-        this.toolboxPosition_ !== Blockly.utils.toolbox.Position.LEFT) {
+    if (
+      this.isVisible() &&
+      this.targetWorkspace.toolboxPosition === this.toolboxPosition_ &&
+      this.targetWorkspace.getToolbox() &&
+      this.toolboxPosition_ !== Blockly.utils.toolbox.Position.LEFT
+    ) {
       // This makes it so blocks cannot go under the flyout in RTL mode.
       return this.targetWorkspace.getMetricsManager().getViewMetrics().width;
     }
@@ -247,8 +256,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       }
       // Check children.
       if (input.connection) {
-        const targetBlock = /** @type {Blockly.BlockSvg} */
-            (input.connection.targetBlock());
+        const targetBlock =
+          /** @type {Blockly.BlockSvg} */
+          (input.connection.targetBlock());
         if (targetBlock && !this.blockIsRecyclable_(targetBlock)) {
           return false;
         }

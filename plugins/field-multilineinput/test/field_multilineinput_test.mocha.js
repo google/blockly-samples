@@ -9,11 +9,15 @@ const {FieldMultilineInput} = require('../src/index');
 const {assert} = require('chai');
 
 const {
-  assertFieldValue, FieldCreationTestCase, FieldValueTestCase,
-  runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
+  assertFieldValue,
+  FieldCreationTestCase,
+  FieldValueTestCase,
+  runConstructorSuiteTests,
+  runFromJsonSuiteTests,
+  runSetValueTests,
 } = testHelpers;
 
-suite('FieldMultilineInput', function() {
+suite('FieldMultilineInput', function () {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -40,7 +44,7 @@ suite('FieldMultilineInput', function() {
     {title: 'Number (Falsy)', value: 0, expectedValue: '0'},
     {title: 'NaN', value: NaN, expectedValue: 'NaN'},
   ];
-  const addArgsAndJson = function(testCase) {
+  const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
     testCase.json = {'text': testCase.value};
   };
@@ -56,7 +60,7 @@ suite('FieldMultilineInput', function() {
    * Asserts that the field property values are set to default.
    * @param {!FieldMultilineInput} field The field to check.
    */
-  const assertFieldDefault = function(field) {
+  const assertFieldDefault = function (field) {
     assertFieldValue(field, defaultFieldValue);
   };
 
@@ -65,50 +69,66 @@ suite('FieldMultilineInput', function() {
    * @param {FieldMultilineInput} field The field to check.
    * @param {FieldValueTestCase} testCase The test case.
    */
-  const validTestCaseAssertField = function(field, testCase) {
+  const validTestCaseAssertField = function (field, testCase) {
     assertFieldValue(field, testCase.expectedValue);
   };
 
   runConstructorSuiteTests(
-      FieldMultilineInput, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+    FieldMultilineInput,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertFieldDefault,
+  );
 
   runFromJsonSuiteTests(
-      FieldMultilineInput, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+    FieldMultilineInput,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertFieldDefault,
+  );
 
-  suite('setValue', function() {
-    suite('Empty -> New Value', function() {
-      setup(function() {
+  suite('setValue', function () {
+    suite('Empty -> New Value', function () {
+      setup(function () {
         this.field = new FieldMultilineInput();
       });
       runSetValueTests(
-          validValueTestCases, invalidValueTestCases, defaultFieldValue);
+        validValueTestCases,
+        invalidValueTestCases,
+        defaultFieldValue,
+      );
     });
-    suite('Value -> New Value', function() {
+    suite('Value -> New Value', function () {
       const initialValue = 'oldValue';
-      setup(function() {
+      setup(function () {
         this.field = new FieldMultilineInput(initialValue);
       });
       runSetValueTests(
-          validValueTestCases, invalidValueTestCases, initialValue);
+        validValueTestCases,
+        invalidValueTestCases,
+        initialValue,
+      );
     });
   });
 
-  suite('Serialization', function() {
-    setup(function() {
+  suite('Serialization', function () {
+    setup(function () {
       this.workspace = new Blockly.Workspace();
-      Blockly.defineBlocksWithJsonArray([{
-        'type': 'row_block',
-        'message0': '%1',
-        'args0': [
-          {
-            'type': 'input_value',
-            'name': 'INPUT',
-          },
-        ],
-        'output': null,
-      }]);
+      Blockly.defineBlocksWithJsonArray([
+        {
+          'type': 'row_block',
+          'message0': '%1',
+          'args0': [
+            {
+              'type': 'input_value',
+              'name': 'INPUT',
+            },
+          ],
+          'output': null,
+        },
+      ]);
 
       this.assertValue = (value) => {
         const block = this.workspace.newBlock('row_block');
@@ -119,15 +139,15 @@ suite('FieldMultilineInput', function() {
       };
     });
 
-    teardown(function() {
+    teardown(function () {
       this.workspace.dispose();
     });
 
-    test('Single line', function() {
+    test('Single line', function () {
       this.assertValue('this is a single line');
     });
 
-    test('Multiple lines', function() {
+    test('Multiple lines', function () {
       this.assertValue('this\nis\n  multiple\n    lines');
     });
   });

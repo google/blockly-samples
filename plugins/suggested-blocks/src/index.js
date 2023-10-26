@@ -59,7 +59,7 @@ export class BlockSuggestor {
    * Includes a secondary sort by most recent blocks.
    * @returns {!Array<!Blockly.utils.toolbox.BlockInfo>}A list of block JSON
    */
-  getMostUsed = function() {
+  getMostUsed = function () {
     // Store the frequency of each block, as well as the index first appears at.
     const countMap = new Map();
     const recencyMap = new Map();
@@ -76,8 +76,12 @@ export class BlockSuggestor {
       freqUsedBlockTypes.push(key);
     }
     // Use recency as a tiebreak.
-    freqUsedBlockTypes.sort((a, b) => countMap.get(b) - countMap.get(a) +
-        0.01 * (recencyMap.get(a) - recencyMap.get(b)));
+    freqUsedBlockTypes.sort(
+      (a, b) =>
+        countMap.get(b) -
+        countMap.get(a) +
+        0.01 * (recencyMap.get(a) - recencyMap.get(b)),
+    );
 
     return this.generateBlockData(freqUsedBlockTypes);
   };
@@ -86,7 +90,7 @@ export class BlockSuggestor {
    * Generates a list of the 10 most recently used blocks.
    * @returns {Array <object>} A list of block JSON objects
    */
-  getRecentlyUsed = function() {
+  getRecentlyUsed = function () {
     const uniqueRecentBlocks = [...new Set(this.recentlyUsedBlocks)];
     const recencyMap = new Map();
     for (const [index, key] of this.recentlyUsedBlocks.entries()) {
@@ -96,23 +100,24 @@ export class BlockSuggestor {
     }
     uniqueRecentBlocks.sort((a, b) => recencyMap[a] - recencyMap[b]);
     return this.generateBlockData(uniqueRecentBlocks);
-  }
+  };
 
   /**
    * Converts a list of block types to a full-fledge list of block data.
    * @param {Array<string>} blockTypeList the list of block types
    * @returns {Array<JSON>} the block data list
    */
-  generateBlockData = function(blockTypeList) {
-    const blockList = blockTypeList.slice(0, this.numBlocksPerCategory).map(
-        (key) => {
-          const json = (this.defaultJsonForBlockLookup[key] || {});
-          json['kind'] = 'BLOCK';
-          json['type'] = key;
-          json['x'] = null;
-          json['y'] = null;
-          return json;
-        });
+  generateBlockData = function (blockTypeList) {
+    const blockList = blockTypeList
+      .slice(0, this.numBlocksPerCategory)
+      .map((key) => {
+        const json = this.defaultJsonForBlockLookup[key] || {};
+        json['kind'] = 'BLOCK';
+        json['type'] = key;
+        json['x'] = null;
+        json['y'] = null;
+        return json;
+      });
 
     if (blockList.length == 0) {
       blockList.push({
@@ -121,7 +126,7 @@ export class BlockSuggestor {
       });
     }
     return blockList;
-  }
+  };
 
   /**
    * Loads the state of this object from a serialized JSON.
@@ -160,8 +165,10 @@ export class BlockSuggestor {
       this.workspaceHasFinishedLoading = true;
       return;
     }
-    if (e.type == Blockly.Events.BLOCK_CREATE &&
-      this.workspaceHasFinishedLoading) {
+    if (
+      e.type == Blockly.Events.BLOCK_CREATE &&
+      this.workspaceHasFinishedLoading
+    ) {
       const newBlockType = e.json.type;
       // If this is the first time creating this block, store its default
       // configuration so we know how exactly to render it in the toolbox.
@@ -182,12 +189,17 @@ export class BlockSuggestor {
  * FINISHED_LOADING event before responding to BLOCK_CREATE events. Set to false
  * if you disable events during initial load. Defaults to true.
  */
-export const init = function(
-    workspace, numBlocksPerCategory = 10, waitForFinishedLoading = true) {
+export const init = function (
+  workspace,
+  numBlocksPerCategory = 10,
+  waitForFinishedLoading = true,
+) {
   const suggestor = new BlockSuggestor(numBlocksPerCategory);
   workspace.registerToolboxCategoryCallback('MOST_USED', suggestor.getMostUsed);
-  workspace.registerToolboxCategoryCallback('RECENTLY_USED',
-      suggestor.getRecentlyUsed);
+  workspace.registerToolboxCategoryCallback(
+    'RECENTLY_USED',
+    suggestor.getRecentlyUsed,
+  );
   // If user says not to wait to hear FINISHED_LOADING event,
   // then always respond to BLOCK_CREATE events.
   if (!waitForFinishedLoading) suggestor.workspaceHasFinishedLoading = true;
@@ -239,5 +251,6 @@ class BlockSuggestorSerializer {
 }
 
 Blockly.serialization.registry.register(
-    'suggested-blocks', // Name
-    new BlockSuggestorSerializer());
+  'suggested-blocks', // Name
+  new BlockSuggestorSerializer(),
+);

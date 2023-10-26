@@ -9,11 +9,13 @@ people that have protanopia (the inability to perceive red light).
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/theme-deuteranopia
 ```
 
 ### npm
+
 ```
 npm install @blockly/theme-deuteranopia --save
 ```
@@ -27,8 +29,8 @@ import Theme from '@blockly/theme-deuteranopia';
 Blockly.inject('blocklyDiv', {
   theme: Theme,
 });
-
 ```
 
 ## License
+
 Apache 2.0

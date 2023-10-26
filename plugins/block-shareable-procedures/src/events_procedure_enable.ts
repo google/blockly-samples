@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2022 Google LLC
@@ -7,7 +6,6 @@
 
 import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
-
 
 /**
  * Notifies listeners that the procedure data model has been enabled or
@@ -31,9 +29,10 @@ export class ProcedureEnable extends ProcedureBase {
    *     its current state.
    */
   constructor(
-      workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel,
-      newState?: boolean) {
+    workspace: Blockly.Workspace,
+    procedure: Blockly.procedures.IProcedureModel,
+    newState?: boolean,
+  ) {
     super(workspace, procedure);
 
     if (newState === undefined) {
@@ -51,12 +50,14 @@ export class ProcedureEnable extends ProcedureBase {
    *     backward (undo).
    */
   run(forward: boolean) {
-    const procedureModel =
-        this.getEventWorkspace_().getProcedureMap().get(this.procedure.getId());
+    const procedureModel = this.getEventWorkspace_()
+      .getProcedureMap()
+      .get(this.procedure.getId());
     if (!procedureModel) {
       throw new Error(
-          'Cannot change the enabled state of a procedure that does not ' +
-          'exist in the procedure map');
+        'Cannot change the enabled state of a procedure that does not ' +
+          'exist in the procedure map',
+      );
     }
     if (forward) {
       procedureModel.setEnabled(this.newState);
@@ -82,13 +83,16 @@ export class ProcedureEnable extends ProcedureBase {
    * @returns The new procedure enable event.
    * @internal
    */
-  static fromJson(json: ProcedureEnableJson, workspace: Blockly.Workspace):
-      ProcedureEnable {
+  static fromJson(
+    json: ProcedureEnableJson,
+    workspace: Blockly.Workspace,
+  ): ProcedureEnable {
     const model = workspace.getProcedureMap().get(json['procedureId']);
     if (!model) {
       throw new Error(
-          'Cannot deserialize procedure enable event because the ' +
-          'target procedure does not exist');
+        'Cannot deserialize procedure enable event because the ' +
+          'target procedure does not exist',
+      );
     }
     return new ProcedureEnable(workspace, model, json['newState']);
   }
@@ -99,4 +103,7 @@ export interface ProcedureEnableJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, ProcedureEnable.TYPE, ProcedureEnable);
+  Blockly.registry.Type.EVENT,
+  ProcedureEnable.TYPE,
+  ProcedureEnable,
+);

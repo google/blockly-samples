@@ -13,9 +13,8 @@ const {testHelpers} = require('@blockly/dev-tools');
 const {ObservableProcedureModel} = require('../src/observable_procedure_model');
 const {ProcedureEnable} = require('../src/events_procedure_enable');
 
-
-suite('Procedure Enable Event', function() {
-  setup(function() {
+suite('Procedure Enable Event', function () {
+  setup(function () {
     this.sandbox = sinon.createSandbox();
     this.clock = this.sandbox.useFakeTimers();
     this.workspace = new Blockly.Workspace();
@@ -24,15 +23,14 @@ suite('Procedure Enable Event', function() {
     this.workspace.addChangeListener(this.eventSpy);
   });
 
-  teardown(function() {
+  teardown(function () {
     this.sandbox.restore();
   });
 
-  suite('running', function() {
-    setup(function() {
+  suite('running', function () {
+    setup(function () {
       this.createProcedureModel = (id) => {
-        return new ObservableProcedureModel(
-            this.workspace, 'test name', id);
+        return new ObservableProcedureModel(this.workspace, 'test name', id);
       };
 
       this.createEventToState = (procedureModel) => {
@@ -40,8 +38,8 @@ suite('Procedure Enable Event', function() {
       };
     });
 
-    suite('forward', function() {
-      test('the procedure with the matching ID is toggled', function() {
+    suite('forward', function () {
+      test('the procedure with the matching ID is toggled', function () {
         const initial = this.createProcedureModel('test id');
         const final = this.createProcedureModel('test id');
         final.setEnabled(!final.getEnabled()); // Set it to the non-default.
@@ -52,12 +50,13 @@ suite('Procedure Enable Event', function() {
         this.clock.runAll();
 
         assert.equal(
-            initial.getEnabled(),
-            final.getEnabled(),
-            'Expected the procedure\'s enabled state to be flipped');
+          initial.getEnabled(),
+          final.getEnabled(),
+          "Expected the procedure's enabled state to be flipped",
+        );
       });
 
-      test('toggling a procedure fires an enable event', function() {
+      test('toggling a procedure fires an enable event', function () {
         const initial = this.createProcedureModel('test id');
         const final = this.createProcedureModel('test id');
         final.setEnabled(!final.getEnabled()); // Set it to the non-default.
@@ -69,13 +68,14 @@ suite('Procedure Enable Event', function() {
         this.clock.runAll();
 
         eventTestHelpers.assertEventFiredShallow(
-            this.eventSpy,
-            ProcedureEnable,
-            {procedure: initial},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureEnable,
+          {procedure: initial},
+          this.workspace.id,
+        );
       });
 
-      test('noop toggles do not fire enable events', function() {
+      test('noop toggles do not fire enable events', function () {
         const initial = this.createProcedureModel('test id');
         const final = this.createProcedureModel('test id');
         const event = this.createEventToState(final);
@@ -86,46 +86,46 @@ suite('Procedure Enable Event', function() {
         this.clock.runAll();
 
         testHelpers.assertEventNotFired(
-            this.eventSpy,
-            ProcedureEnable,
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureEnable,
+          this.workspace.id,
+        );
       });
 
-      test(
-          'attempting to toggle a procedure that does not exist throws',
-          function() {
-            const final = this.createProcedureModel('test id');
-            final.setEnabled(!final.getEnabled()); // Set it to the non-default.
-            const event = this.createEventToState(final);
+      test('attempting to toggle a procedure that does not exist throws', function () {
+        const final = this.createProcedureModel('test id');
+        final.setEnabled(!final.getEnabled()); // Set it to the non-default.
+        const event = this.createEventToState(final);
 
-            assert.throws(() => {
-              event.run(/* forward= */ true);
-            });
-          });
+        assert.throws(() => {
+          event.run(/* forward= */ true);
+        });
+      });
 
-      test(
-          'deserializing the event and running it triggers the effect',
-          function() {
-            const initial = this.createProcedureModel('test id');
-            const final = this.createProcedureModel('test id');
-            final.setEnabled(!final.getEnabled()); // Set it to the non-default.
-            const event = this.createEventToState(final);
-            this.procedureMap.add(initial);
+      test('deserializing the event and running it triggers the effect', function () {
+        const initial = this.createProcedureModel('test id');
+        const final = this.createProcedureModel('test id');
+        final.setEnabled(!final.getEnabled()); // Set it to the non-default.
+        const event = this.createEventToState(final);
+        this.procedureMap.add(initial);
 
-            const newEvent = Blockly.Events.fromJson(
-                event.toJson(), this.workspace);
-            newEvent.run(/* forward= */ true);
-            this.clock.runAll();
+        const newEvent = Blockly.Events.fromJson(
+          event.toJson(),
+          this.workspace,
+        );
+        newEvent.run(/* forward= */ true);
+        this.clock.runAll();
 
-            assert.equal(
-                initial.getEnabled(),
-                final.getEnabled(),
-                'Expected the procedure\'s enabled state to be flipped');
-          });
+        assert.equal(
+          initial.getEnabled(),
+          final.getEnabled(),
+          "Expected the procedure's enabled state to be flipped",
+        );
+      });
     });
 
-    suite('backward', function() {
-      test('the procedure with the matching ID is toggled', function() {
+    suite('backward', function () {
+      test('the procedure with the matching ID is toggled', function () {
         const initial = this.createProcedureModel('test id');
         const undoable = this.createProcedureModel('test id');
         // Set them to be non-default.
@@ -139,12 +139,13 @@ suite('Procedure Enable Event', function() {
         this.clock.runAll();
 
         assert.equal(
-            initial.getEnabled(),
-            defaultEnabled,
-            'Expected the procedure\'s enabled state to be flipped');
+          initial.getEnabled(),
+          defaultEnabled,
+          "Expected the procedure's enabled state to be flipped",
+        );
       });
 
-      test('toggling a procedure fires an enable event', function() {
+      test('toggling a procedure fires an enable event', function () {
         const initial = this.createProcedureModel('test id');
         const undoable = this.createProcedureModel('test id');
         // Set them to be non-default.
@@ -159,13 +160,14 @@ suite('Procedure Enable Event', function() {
         this.clock.runAll();
 
         eventTestHelpers.assertEventFiredShallow(
-            this.eventSpy,
-            ProcedureEnable,
-            {procedure: initial},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureEnable,
+          {procedure: initial},
+          this.workspace.id,
+        );
       });
 
-      test('noop toggles do not fire enable events', function() {
+      test('noop toggles do not fire enable events', function () {
         const initial = this.createProcedureModel('test id');
         const undoable = this.createProcedureModel('test id');
         // Set them to be non-default.
@@ -179,37 +181,38 @@ suite('Procedure Enable Event', function() {
         this.clock.runAll();
 
         testHelpers.assertEventNotFired(
-            this.eventSpy,
-            ProcedureEnable,
-            {},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureEnable,
+          {},
+          this.workspace.id,
+        );
       });
 
-      test(
-          'attempting to toggle a procedure that does not exist throws',
-          function() {
-            const initial = this.createProcedureModel('test id');
-            const undoable = this.createProcedureModel('test id');
-            // Set them to be non-default.
-            const defaultEnabled = initial.getEnabled();
-            initial.setEnabled(!defaultEnabled);
-            undoable.setEnabled(!defaultEnabled);
-            const event = this.createEventToState(undoable);
+      test('attempting to toggle a procedure that does not exist throws', function () {
+        const initial = this.createProcedureModel('test id');
+        const undoable = this.createProcedureModel('test id');
+        // Set them to be non-default.
+        const defaultEnabled = initial.getEnabled();
+        initial.setEnabled(!defaultEnabled);
+        undoable.setEnabled(!defaultEnabled);
+        const event = this.createEventToState(undoable);
 
-            assert.throws(() => {
-              event.run(/* forward= */ false);
-            });
-          });
+        assert.throws(() => {
+          event.run(/* forward= */ false);
+        });
+      });
     });
   });
 
-  suite('serialization', function() {
-    test('events round-trip through JSON', function() {
+  suite('serialization', function () {
+    test('events round-trip through JSON', function () {
       const model = new ObservableProcedureModel(
-          this.workspace, 'test name', 'test id');
+        this.workspace,
+        'test name',
+        'test id',
+      );
       this.procedureMap.add(model);
-      const origEvent = new ProcedureEnable(
-          this.workspace, model);
+      const origEvent = new ProcedureEnable(this.workspace, model);
 
       const json = origEvent.toJson();
       const newEvent = Blockly.Events.fromJson(json, this.workspace);

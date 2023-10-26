@@ -9,12 +9,7 @@ import * as sinon from 'sinon';
 import * as commonTestHelpers from './common_test_helpers.mocha';
 import * as Blockly from 'blockly/core';
 
-const {
-  runTestCases,
-  runTestSuites,
-  TestCase,
-  TestSuite,
-} = commonTestHelpers;
+const {runTestCases, runTestSuites, TestCase, TestSuite} = commonTestHelpers;
 
 /**
  * Code generation test case configuration.
@@ -115,7 +110,7 @@ export class SerializationTestCase {
  */
 const createCodeGenerationTestFn_ = (generator) => {
   return (testCase) => {
-    return function() {
+    return function () {
       const block = testCase.createBlock(this.workspace);
       let code;
       let innerOrder;
@@ -129,11 +124,13 @@ const createCodeGenerationTestFn_ = (generator) => {
           code = code[0];
         }
       }
-      const assertFunc = (typeof testCase.expectedCode === 'string') ?
-          assert.equal : assert.match;
+      const assertFunc =
+        typeof testCase.expectedCode === 'string' ? assert.equal : assert.match;
       assertFunc(code, testCase.expectedCode);
-      if (!testCase.useWorkspaceToCode &&
-          testCase.expectedInnerOrder !== undefined) {
+      if (
+        !testCase.useWorkspaceToCode &&
+        testCase.expectedInnerOrder !== undefined
+      ) {
         assert.equal(innerOrder, testCase.expectedInnerOrder);
       }
     };
@@ -169,14 +166,19 @@ export const runSerializationTestSuite = (testCases) => {
    * @returns {!Function} The test callback.
    */
   const createSerializedDataToBlockTestCallback = (testCase) => {
-    return function() {
+    return function () {
       let block;
       if (testCase.json) {
         block = Blockly.serialization.blocks.append(
-            testCase.json, this.workspace, {recordUndo: true});
+          testCase.json,
+          this.workspace,
+          {recordUndo: true},
+        );
       } else {
-        block = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
-            testCase.xml), this.workspace);
+        block = Blockly.Xml.domToBlock(
+          Blockly.utils.xml.textToDom(testCase.xml),
+          this.workspace,
+        );
       }
       if (globalThis.clock) globalThis.clock.runAll();
       testCase.assertBlockStructure(block);
@@ -188,37 +190,41 @@ export const runSerializationTestSuite = (testCases) => {
    * @returns {!Function} The test callback.
    */
   const createRoundTripTestCallback = (testCase) => {
-    return function() {
+    return function () {
       if (testCase.json) {
         const block = Blockly.serialization.blocks.append(
-            testCase.json, this.workspace, {recordUndo: true});
+          testCase.json,
+          this.workspace,
+          {recordUndo: true},
+        );
         if (globalThis.clock) globalThis.clock.runAll();
         const generatedJson = Blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
         assert.deepEqual(generatedJson, expectedJson);
       } else {
-        const block = Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
-            testCase.xml), this.workspace);
+        const block = Blockly.Xml.domToBlock(
+          Blockly.utils.xml.textToDom(testCase.xml),
+          this.workspace,
+        );
         if (globalThis.clock) globalThis.clock.runAll();
-        const generatedXml =
-            Blockly.Xml.domToPrettyText(
-                Blockly.Xml.blockToDom(block));
+        const generatedXml = Blockly.Xml.domToPrettyText(
+          Blockly.Xml.blockToDom(block),
+        );
         const expectedXml = testCase.expectedXml || testCase.xml;
         assert.equal(generatedXml, expectedXml);
       }
     };
   };
-  suite('Serialization', function() {
-    suite('append block', function() {
+  suite('Serialization', function () {
+    suite('append block', function () {
       runTestCases(testCases, createSerializedDataToBlockTestCallback);
     });
-    suite('serialization round-trip', function() {
-      setup(function() {
-        sinon.stub(Blockly.utils.idGenerator.TEST_ONLY, 'genUid')
-            .returns('1');
+    suite('serialization round-trip', function () {
+      setup(function () {
+        sinon.stub(Blockly.utils.idGenerator.TEST_ONLY, 'genUid').returns('1');
       });
 
-      teardown(function() {
+      teardown(function () {
         sinon.restore();
       });
 

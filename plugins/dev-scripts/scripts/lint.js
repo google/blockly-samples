@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const ESLint = require('eslint').ESLint;
-// eslint-disable-next-line no-unused-vars
+
 const LintResult = require('eslint').LintResult;
 
 const appDirectory = fs.realpathSync(process.cwd());
@@ -43,6 +43,10 @@ const linter = new ESLint({
   cache: true,
   cacheLocation: cacheLocation,
 });
+
+console.log(
+  'blockly-scripts lint is deprecated! Run eslint directly using the CLI.',
+);
 
 /**
  * Lint this directory.

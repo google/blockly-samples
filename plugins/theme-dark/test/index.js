@@ -878,7 +878,7 @@ const toolbox = {
 
 // Do not use the advanced playground here because it will create a circular
 // dependency with the @blockly/dev-tools package.
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   Blockly.inject('root', {
     theme: Theme,
     toolbox,

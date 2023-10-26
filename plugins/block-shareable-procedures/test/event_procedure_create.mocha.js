@@ -14,9 +14,8 @@ const {ObservableProcedureModel} = require('../src/observable_procedure_model');
 const {ProcedureCreate} = require('../src/events_procedure_create');
 const {ProcedureDelete} = require('../src/events_procedure_delete');
 
-
-suite('Procedure Create Event', function() {
-  setup(function() {
+suite('Procedure Create Event', function () {
+  setup(function () {
     this.sandbox = sinon.createSandbox();
     this.clock = this.sandbox.useFakeTimers();
     this.workspace = new Blockly.Workspace();
@@ -25,15 +24,14 @@ suite('Procedure Create Event', function() {
     this.workspace.addChangeListener(this.eventSpy);
   });
 
-  teardown(function() {
+  teardown(function () {
     this.sandbox.restore();
   });
 
-  suite('running', function() {
-    setup(function() {
+  suite('running', function () {
+    setup(function () {
       this.createProcedureModel = (name, id) => {
-        return new ObservableProcedureModel(
-            this.workspace, name, id);
+        return new ObservableProcedureModel(this.workspace, name, id);
       };
 
       this.createEventToState = (procedureModel) => {
@@ -41,8 +39,8 @@ suite('Procedure Create Event', function() {
       };
     });
 
-    suite('forward', function() {
-      test('a procedure model is created if it does not exist', function() {
+    suite('forward', function () {
+      test('a procedure model is created if it does not exist', function () {
         const model = this.createProcedureModel('test name', 'test id');
         const event = this.createEventToState(model);
 
@@ -52,16 +50,18 @@ suite('Procedure Create Event', function() {
         const createdProc = this.procedureMap.get('test id');
         assert.isDefined(createdProc, 'Expected the procedure to exist');
         assert.equal(
-            createdProc.getName(),
-            model.getName(),
-            'Expected the procedure\'s name to match the model');
+          createdProc.getName(),
+          model.getName(),
+          "Expected the procedure's name to match the model",
+        );
         assert.equal(
-            createdProc.getId(),
-            model.getId(),
-            'Expected the procedure\'s id to match the model');
+          createdProc.getId(),
+          model.getId(),
+          "Expected the procedure's id to match the model",
+        );
       });
 
-      test('creating a procedure model fires a create event', function() {
+      test('creating a procedure model fires a create event', function () {
         const model = this.createProcedureModel('test name', 'test id');
         const event = this.createEventToState(model);
 
@@ -70,31 +70,34 @@ suite('Procedure Create Event', function() {
         this.clock.runAll();
 
         eventTestHelpers.assertEventFiredShallow(
-            this.eventSpy,
-            ProcedureCreate,
-            {procedure: this.procedureMap.get('test id')},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureCreate,
+          {procedure: this.procedureMap.get('test id')},
+          this.workspace.id,
+        );
       });
 
       test(
-          'a procedure model is not created if a model with a ' +
+        'a procedure model is not created if a model with a ' +
           'matching ID exists',
-          function() {
-            const model = this.createProcedureModel('test name', 'test id');
-            const event = this.createEventToState(model);
-            this.procedureMap.add(model);
+        function () {
+          const model = this.createProcedureModel('test name', 'test id');
+          const event = this.createEventToState(model);
+          this.procedureMap.add(model);
 
-            event.run(/* forward= */ true);
-            this.clock.runAll();
+          event.run(/* forward= */ true);
+          this.clock.runAll();
 
-            assert.equal(
-                this.procedureMap.get('test id'),
-                model,
-                'Expected the model in the procedure map to be the same ' +
-                'as the original model');
-          });
+          assert.equal(
+            this.procedureMap.get('test id'),
+            model,
+            'Expected the model in the procedure map to be the same ' +
+              'as the original model',
+          );
+        },
+      );
 
-      test('not creating a model does not fire a create event', function() {
+      test('not creating a model does not fire a create event', function () {
         const model = this.createProcedureModel('test name', 'test id');
         const event = this.createEventToState(model);
         this.procedureMap.add(model);
@@ -104,30 +107,30 @@ suite('Procedure Create Event', function() {
         this.clock.runAll();
 
         testHelpers.assertEventNotFired(
-            this.eventSpy,
-            ProcedureCreate,
-            {},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureCreate,
+          {},
+          this.workspace.id,
+        );
       });
     });
 
-    suite('backward', function() {
-      test(
-          'a procedure model is deleted if a model with a matching ID exists',
-          function() {
-            const model = this.createProcedureModel('test name', 'test id');
-            const event = this.createEventToState(model);
-            this.procedureMap.add(model);
+    suite('backward', function () {
+      test('a procedure model is deleted if a model with a matching ID exists', function () {
+        const model = this.createProcedureModel('test name', 'test id');
+        const event = this.createEventToState(model);
+        this.procedureMap.add(model);
 
-            event.run(/* forward= */ false);
-            this.clock.runAll();
+        event.run(/* forward= */ false);
+        this.clock.runAll();
 
-            assert.isUndefined(
-                this.procedureMap.get('test id'),
-                'Expected the procedure to be deleted');
-          });
+        assert.isUndefined(
+          this.procedureMap.get('test id'),
+          'Expected the procedure to be deleted',
+        );
+      });
 
-      test('deleting a model fires a delete event', function() {
+      test('deleting a model fires a delete event', function () {
         const model = this.createProcedureModel('test name', 'test id');
         const event = this.createEventToState(model);
         this.procedureMap.add(model);
@@ -137,13 +140,14 @@ suite('Procedure Create Event', function() {
         this.clock.runAll();
 
         eventTestHelpers.assertEventFiredShallow(
-            this.eventSpy,
-            ProcedureDelete,
-            {procedure: model},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureDelete,
+          {procedure: model},
+          this.workspace.id,
+        );
       });
 
-      test('not deleting a model does not fire a delete event', function() {
+      test('not deleting a model does not fire a delete event', function () {
         const model = this.createProcedureModel('test name', 'test id');
         const event = this.createEventToState(model);
 
@@ -152,20 +156,23 @@ suite('Procedure Create Event', function() {
         this.clock.runAll();
 
         testHelpers.assertEventNotFired(
-            this.eventSpy,
-            ProcedureDelete,
-            {},
-            this.workspace.id);
+          this.eventSpy,
+          ProcedureDelete,
+          {},
+          this.workspace.id,
+        );
       });
     });
   });
 
-  suite('serialization', function() {
-    test('events round-trip through JSON', function() {
+  suite('serialization', function () {
+    test('events round-trip through JSON', function () {
       const model = new ObservableProcedureModel(
-          this.workspace, 'test name', 'test id');
-      const origEvent =
-          new ProcedureCreate(this.workspace, model);
+        this.workspace,
+        'test name',
+        'test id',
+      );
+      const origEvent = new ProcedureCreate(this.workspace, model);
 
       const json = origEvent.toJson();
       const newEvent = Blockly.Events.fromJson(json, this.workspace);

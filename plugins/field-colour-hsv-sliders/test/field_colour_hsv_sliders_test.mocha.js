@@ -4,17 +4,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const {assertColourHsvSlidersField, assertColourHsvSlidersFieldDefault} =
-    require('./field_colour_hsv_sliders_test_helpers.mocha');
+const {
+  assertColourHsvSlidersField,
+  assertColourHsvSlidersFieldDefault,
+} = require('./field_colour_hsv_sliders_test_helpers.mocha');
 const {testHelpers} = require('@blockly/dev-tools');
 const {FieldColourHsvSliders} = require('../src/index');
 
 const {
-  FieldCreationTestCase, FieldValueTestCase, runConstructorSuiteTests,
-  runFromJsonSuiteTests, runSetValueTests,
+  FieldCreationTestCase,
+  FieldValueTestCase,
+  runConstructorSuiteTests,
+  runFromJsonSuiteTests,
+  runSetValueTests,
 } = testHelpers;
 
-suite('FieldColourHsvSliders', function() {
+suite('FieldColourHsvSliders', function () {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -38,18 +43,38 @@ suite('FieldColourHsvSliders', function() {
    * @type {Array<FieldCreationTestCase>}
    */
   const validValueTestCases = [
-    {title: 'Red', value: '#ff0000', expectedValue: '#ff0000',
-      expectedText: '#f00'},
-    {title: 'Black', value: '#000000', expectedValue: '#000000',
-      expectedText: '#000'},
-    {title: 'White', value: '#ffffff', expectedValue: '#ffffff',
-      expectedText: '#fff'},
-    {title: 'Gray', value: '#7f7f7f', expectedValue: '#7f7f7f',
-      expectedText: '#7f7f7f'},
-    {title: 'Shortened String', value: 'bad', expectedValue: '#bbaadd',
-      expectedText: '#bad'},
+    {
+      title: 'Red',
+      value: '#ff0000',
+      expectedValue: '#ff0000',
+      expectedText: '#f00',
+    },
+    {
+      title: 'Black',
+      value: '#000000',
+      expectedValue: '#000000',
+      expectedText: '#000',
+    },
+    {
+      title: 'White',
+      value: '#ffffff',
+      expectedValue: '#ffffff',
+      expectedText: '#fff',
+    },
+    {
+      title: 'Gray',
+      value: '#7f7f7f',
+      expectedValue: '#7f7f7f',
+      expectedText: '#7f7f7f',
+    },
+    {
+      title: 'Shortened String',
+      value: 'bad',
+      expectedValue: '#bbaadd',
+      expectedText: '#bad',
+    },
   ];
-  const addArgsAndJson = function(testCase) {
+  const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
     testCase.json = {'colour': testCase.value};
   };
@@ -61,33 +86,52 @@ suite('FieldColourHsvSliders', function() {
    * @param {FieldColourHsvSliders} field The field to check.
    * @param {FieldValueTestCase} testCase The test case.
    */
-  const validTestCaseAssertField = function(field, testCase) {
+  const validTestCaseAssertField = function (field, testCase) {
     assertColourHsvSlidersField(
-        field, testCase.expectedValue, testCase.expectedText);
+      field,
+      testCase.expectedValue,
+      testCase.expectedText,
+    );
   };
 
   runConstructorSuiteTests(
-      FieldColourHsvSliders, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertColourHsvSlidersFieldDefault);
+    FieldColourHsvSliders,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertColourHsvSlidersFieldDefault,
+  );
 
-  runFromJsonSuiteTests(FieldColourHsvSliders, validValueTestCases,
-      invalidValueTestCases, validTestCaseAssertField,
-      assertColourHsvSlidersFieldDefault);
+  runFromJsonSuiteTests(
+    FieldColourHsvSliders,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertColourHsvSlidersFieldDefault,
+  );
 
-  suite('setValue', function() {
-    suite('Empty -> New Value', function() {
-      setup(function() {
+  suite('setValue', function () {
+    suite('Empty -> New Value', function () {
+      setup(function () {
         this.field = new FieldColourHsvSliders();
       });
       runSetValueTests(
-          validValueTestCases, invalidValueTestCases, '#ffffff', '#fff');
+        validValueTestCases,
+        invalidValueTestCases,
+        '#ffffff',
+        '#fff',
+      );
     });
-    suite('Value -> New Value', function() {
-      setup(function() {
+    suite('Value -> New Value', function () {
+      setup(function () {
         this.field = new FieldColourHsvSliders(1);
       });
       runSetValueTests(
-          validValueTestCases, invalidValueTestCases, '#ffffff', '#fff');
+        validValueTestCases,
+        invalidValueTestCases,
+        '#ffffff',
+        '#fff',
+      );
     });
   });
 });

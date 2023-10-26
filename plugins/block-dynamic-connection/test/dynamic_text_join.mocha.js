@@ -11,7 +11,7 @@ const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
-suite('Text join block', function() {
+suite('Text join block', function () {
   /**
    * Asserts that the text join block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
@@ -19,7 +19,9 @@ suite('Text join block', function() {
    * @type {string=} The block type expected. Defaults to 'dynamic_text_join'.
    */
   function assertBlockStructure(
-      block, expectedInputs, type = 'dynamic_text_join'
+    block,
+    expectedInputs,
+    type = 'dynamic_text_join',
   ) {
     assert.equal(block.type, type);
     assert.equal(block.inputList.length, expectedInputs.length);
@@ -40,7 +42,7 @@ suite('Text join block', function() {
     connection.connect(targetConnection);
   }
 
-  setup(function() {
+  setup(function () {
     this.workspace = new Blockly.Workspace();
     overrideOldBlockDefinitions();
 
@@ -53,28 +55,29 @@ suite('Text join block', function() {
     Blockly.Blocks['dynamic_text_5_inputs'] = def5;
   });
 
-  teardown(function() {
+  teardown(function () {
     this.workspace.dispose();
     delete Blockly.Blocks['dynamic_text_5_inputs'];
   });
 
-  suite('Creation', function() {
-    test('the default definition has two inputs', function() {
+  suite('Creation', function () {
+    test('the default definition has two inputs', function () {
       const block = this.workspace.newBlock('dynamic_text_join');
       assertBlockStructure(block, [/ADD0/, /ADD1/]);
     });
 
-    test('minInputs controls the number of inputs', function() {
+    test('minInputs controls the number of inputs', function () {
       const block = this.workspace.newBlock('dynamic_text_5_inputs');
       assertBlockStructure(
-          block,
-          [/ADD0/, /ADD1/, /ADD2/, /ADD3/, /ADD4/],
-          'dynamic_text_5_inputs');
+        block,
+        [/ADD0/, /ADD1/, /ADD2/, /ADD3/, /ADD4/],
+        'dynamic_text_5_inputs',
+      );
     });
   });
 
-  suite('adding inputs', function() {
-    test('attaching min items does not add an input', function() {
+  suite('adding inputs', function () {
+    test('attaching min items does not add an input', function () {
       const block = this.workspace.newBlock('dynamic_text_1_input');
       const connection = block.getInput('ADD0').connection;
 
@@ -83,7 +86,7 @@ suite('Text join block', function() {
       assertBlockStructure(block, [/ADD0/], 'dynamic_text_1_input');
     });
 
-    test('attaching three items creates an input', function() {
+    test('attaching three items creates an input', function () {
       const block = this.workspace.newBlock('dynamic_text_1_input');
       const connection = block.getInput('ADD0').connection;
       connectBlockToConnection(this.workspace, connection);
@@ -94,19 +97,20 @@ suite('Text join block', function() {
     });
   });
 
-  suite('finalizing inputs', function() {
-    test('the block does not go below min inputs', function() {
+  suite('finalizing inputs', function () {
+    test('the block does not go below min inputs', function () {
       const block = this.workspace.newBlock('dynamic_text_5_inputs');
 
       block.finalizeConnections();
 
       assertBlockStructure(
-          block,
-          [/ADD0/, /ADD1/, /ADD2/, /ADD3/, /ADD4/],
-          'dynamic_text_5_inputs');
+        block,
+        [/ADD0/, /ADD1/, /ADD2/, /ADD3/, /ADD4/],
+        'dynamic_text_5_inputs',
+      );
     });
 
-    test('an extra input with no blocks is removed', function() {
+    test('an extra input with no blocks is removed', function () {
       const block = this.workspace.newBlock('dynamic_text_1_input');
       const connection = block.getInput('ADD0').connection;
       connectBlockToConnection(this.workspace, connection);
@@ -117,7 +121,7 @@ suite('Text join block', function() {
       assertBlockStructure(block, [/ADD0/], 'dynamic_text_1_input');
     });
 
-    test('an extra input with blocks is kept', function() {
+    test('an extra input with blocks is kept', function () {
       const block = this.workspace.newBlock('dynamic_text_1_input');
       const connection = block.getInput('ADD0').connection;
       connectBlockToConnection(this.workspace, connection);
@@ -129,7 +133,7 @@ suite('Text join block', function() {
       assertBlockStructure(block, [/ADD0/, /ADD1/], 'dynamic_text_1_input');
     });
 
-    test('extra inputs are removed starting at the end', function() {
+    test('extra inputs are removed starting at the end', function () {
       const block = this.workspace.newBlock('dynamic_text_5_inputs');
       const connection0 = block.getInput('ADD0').connection;
       const connection1 = block.getInput('ADD1').connection;
@@ -140,13 +144,15 @@ suite('Text join block', function() {
       block.finalizeConnections();
 
       assertBlockStructure(
-          block,
-          [/ADD0/, /ADD1/, /ADD2/, /ADD3/, /ADD4/],
-          'dynamic_text_5_inputs');
+        block,
+        [/ADD0/, /ADD1/, /ADD2/, /ADD3/, /ADD4/],
+        'dynamic_text_5_inputs',
+      );
       assert.isOk(block.getInputTargetBlock('ADD0'));
       assert.isNotOk(
-          block.getInputTargetBlock('ADD1'),
-          'Expected the empty input created by pending to still exist.');
+        block.getInputTargetBlock('ADD1'),
+        'Expected the empty input created by pending to still exist.',
+      );
       assert.isOk(block.getInputTargetBlock('ADD2'));
     });
   });
@@ -156,9 +162,9 @@ suite('Text join block', function() {
       title: 'empty XML',
       xml: '<block type="dynamic_text_join"/>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="2"></mutation>\n</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml" ' +
+        'type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="2"></mutation>\n</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/]);
       },
@@ -166,15 +172,15 @@ suite('Text join block', function() {
     {
       title: 'default state - old serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n' +
+        '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="2"></mutation>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="2"></mutation>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/]);
       },
@@ -182,25 +188,25 @@ suite('Text join block', function() {
     {
       title: 'two inputs with one child - old serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">abc</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation inputs="ADD0,ADD1" next="2"></mutation>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">abc</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="2"></mutation>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">abc</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="2"></mutation>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">abc</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/]);
       },
@@ -208,49 +214,49 @@ suite('Text join block', function() {
     {
       title: 'multiple inputs with children - old serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation inputs="ADD0,ADD1,ADD2,ADD3" next="4"></mutation>\n' +
-          '  <value name="ADD0">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">b</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="3">\n' +
-          '      <field name="TEXT">d</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD2">\n' +
-          '    <block type="text" id="4">\n' +
-          '      <field name="TEXT">c</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD3">\n' +
-          '    <block type="text" id="5">\n' +
-          '      <field name="TEXT">a</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation inputs="ADD0,ADD1,ADD2,ADD3" next="4"></mutation>\n' +
+        '  <value name="ADD0">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">b</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="3">\n' +
+        '      <field name="TEXT">d</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD2">\n' +
+        '    <block type="text" id="4">\n' +
+        '      <field name="TEXT">c</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD3">\n' +
+        '    <block type="text" id="5">\n' +
+        '      <field name="TEXT">a</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="4"></mutation>\n' +
-          '  <value name="ADD0">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">b</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="3">\n' +
-          '      <field name="TEXT">d</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD2">\n' +
-          '    <block type="text" id="4">\n' +
-          '      <field name="TEXT">c</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD3">\n' +
-          '    <block type="text" id="5">\n' +
-          '      <field name="TEXT">a</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="4"></mutation>\n' +
+        '  <value name="ADD0">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">b</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="3">\n' +
+        '      <field name="TEXT">d</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD2">\n' +
+        '    <block type="text" id="4">\n' +
+        '      <field name="TEXT">c</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD3">\n' +
+        '    <block type="text" id="5">\n' +
+        '      <field name="TEXT">a</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
       },
@@ -258,49 +264,49 @@ suite('Text join block', function() {
     {
       title: 'multiple non-sequential inputs with children - old serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">b</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD5">\n' +
-          '    <block type="text" id="3">\n' +
-          '      <field name="TEXT">d</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD2">\n' +
-          '    <block type="text" id="4">\n' +
-          '      <field name="TEXT">c</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD4">\n' +
-          '    <block type="text" id="5">\n' +
-          '      <field name="TEXT">a</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">b</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD5">\n' +
+        '    <block type="text" id="3">\n' +
+        '      <field name="TEXT">d</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD2">\n' +
+        '    <block type="text" id="4">\n' +
+        '      <field name="TEXT">c</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD4">\n' +
+        '    <block type="text" id="5">\n' +
+        '      <field name="TEXT">a</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="4"></mutation>\n' +
-          '  <value name="ADD0">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">b</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="3">\n' +
-          '      <field name="TEXT">d</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD2">\n' +
-          '    <block type="text" id="4">\n' +
-          '      <field name="TEXT">c</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD3">\n' +
-          '    <block type="text" id="5">\n' +
-          '      <field name="TEXT">a</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="4"></mutation>\n' +
+        '  <value name="ADD0">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">b</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="3">\n' +
+        '      <field name="TEXT">d</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD2">\n' +
+        '    <block type="text" id="4">\n' +
+        '      <field name="TEXT">c</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD3">\n' +
+        '    <block type="text" id="5">\n' +
+        '      <field name="TEXT">a</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
       },
@@ -308,15 +314,15 @@ suite('Text join block', function() {
     {
       title: 'two inputs one child - standard serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="2"></mutation>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">abc</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="2"></mutation>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">abc</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/]);
       },
@@ -324,27 +330,27 @@ suite('Text join block', function() {
     {
       title: 'multiple inputs with children - standard serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_text_join" id="1">\n' +
-          '  <mutation items="4"></mutation>\n' +
-          '  <value name="ADD0">\n' +
-          '    <block type="text" id="2">\n' +
-          '      <field name="TEXT">b</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD1">\n' +
-          '    <block type="text" id="3">\n' +
-          '      <field name="TEXT">d</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD2">\n' +
-          '    <block type="text" id="4">\n' +
-          '      <field name="TEXT">c</field>\n' +
-          '    </block>\n  </value>\n' +
-          '  <value name="ADD3">\n' +
-          '    <block type="text" id="5">\n' +
-          '      <field name="TEXT">a</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_text_join" id="1">\n' +
+        '  <mutation items="4"></mutation>\n' +
+        '  <value name="ADD0">\n' +
+        '    <block type="text" id="2">\n' +
+        '      <field name="TEXT">b</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD1">\n' +
+        '    <block type="text" id="3">\n' +
+        '      <field name="TEXT">d</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD2">\n' +
+        '    <block type="text" id="4">\n' +
+        '      <field name="TEXT">c</field>\n' +
+        '    </block>\n  </value>\n' +
+        '  <value name="ADD3">\n' +
+        '    <block type="text" id="5">\n' +
+        '      <field name="TEXT">a</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/, /ADD2/, /ADD3/]);
       },
@@ -356,9 +362,9 @@ suite('Text join block', function() {
         '  <mutation items="0"></mutation>' +
         '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="lists_create_with" id="1">\n' +
-          '  <mutation items="2"></mutation>\n</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml" ' +
+        'type="lists_create_with" id="1">\n' +
+        '  <mutation items="2"></mutation>\n</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/ADD0/, /ADD1/], 'lists_create_with');
       },
@@ -439,13 +445,14 @@ suite('Text join block', function() {
       },
     },
     {
-      title: 'multiple non-sequential inputs with children - ' +
-          'json with stringified old XML',
+      title:
+        'multiple non-sequential inputs with children - ' +
+        'json with stringified old XML',
       json: {
         'type': 'dynamic_text_join',
         'id': '1',
         'extraState':
-            '<mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>',
+          '<mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>',
         'inputs': {
           'ADD1': {
             'block': {

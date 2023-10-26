@@ -34,14 +34,14 @@ function checkLicenses() {
   // Check root package.json.
   promises.push(checker.checkLocalDirectory('.'));
   fs.readdirSync(pluginsDir)
-      .filter((file) => {
-        return fs.statSync(path.join(pluginsDir, file)).isDirectory();
-      })
-      .forEach((plugin) => {
-        const pluginDir = path.join(pluginsDir, plugin);
-        // Check each plugin package.json.
-        promises.push(checker.checkLocalDirectory(pluginDir));
-      });
+    .filter((file) => {
+      return fs.statSync(path.join(pluginsDir, file)).isDirectory();
+    })
+    .forEach((plugin) => {
+      const pluginDir = path.join(pluginsDir, plugin);
+      // Check each plugin package.json.
+      promises.push(checker.checkLocalDirectory(pluginDir));
+    });
   return Promise.all(promises);
 }
 
@@ -61,11 +61,14 @@ function prepareForPublish(done) {
   }
 
   // Clone a fresh copy of blockly-samples.
-  console.log(`Checking out a fresh copy of blockly-samples under ` +
-      `${path.resolve(releaseDir)}`);
+  console.log(
+    `Checking out a fresh copy of blockly-samples under ` +
+      `${path.resolve(releaseDir)}`,
+  );
   execSync(
-      `git clone https://github.com/google/blockly-samples ${releaseDir}`,
-      {stdio: 'pipe'});
+    `git clone https://github.com/google/blockly-samples ${releaseDir}`,
+    {stdio: 'pipe'},
+  );
 
   // Run npm ci.
   console.log('Running npm ci to install.');
@@ -81,9 +84,9 @@ function prepareForPublish(done) {
 
   // Login to npm.
   console.log('Logging in to npm.');
-  execSync(
-      `npm login --registry https://wombat-dressing-room.appspot.com`,
-      {stdio: 'inherit'});
+  execSync(`npm login --registry https://wombat-dressing-room.appspot.com`, {
+    stdio: 'inherit',
+  });
   done();
 }
 
@@ -96,8 +99,9 @@ function exitIfNoReleaseDir(releaseDir, done) {
   // Check that release directory exists.
   if (!fs.existsSync(releaseDir)) {
     console.error(
-        `No release directory ${releaseDir} exists. ` +
-            `Did you run 'npm run publish:prepare'?`);
+      `No release directory ${releaseDir} exists. ` +
+        `Did you run 'npm run publish:prepare'?`,
+    );
     done();
     process.exit(1);
   }
@@ -119,9 +123,10 @@ function publish(force) {
     // creates the release on GitHub.
     console.log(`Publishing ${force ? 'all' : 'changed'} plugins.`);
     execSync(
-        `lerna publish --no-private --conventional-commits --create-release github` +
-            `${force ? ' --force-publish=*' : ''}`,
-        {cwd: releaseDir, stdio: 'inherit'});
+      `lerna publish --no-private --conventional-commits --create-release github` +
+        `${force ? ' --force-publish=*' : ''}`,
+      {cwd: releaseDir, stdio: 'inherit'},
+    );
 
     console.log('Removing release directory.');
     rimraf.sync(releaseDir);
@@ -163,9 +168,10 @@ function publishFromPackage(done) {
 
   // Run lerna publish. Will not update versions.
   console.log(`Publishing plugins from package.json versions.`);
-  execSync(
-      `lerna publish --no-private --from-package`,
-      {cwd: releaseDir, stdio: 'inherit'});
+  execSync(`lerna publish --no-private --from-package`, {
+    cwd: releaseDir,
+    stdio: 'inherit',
+  });
 
   console.log('Removing release directory.');
   rimraf.sync(releaseDir);
@@ -183,12 +189,15 @@ function checkVersions(done) {
   exitIfNoReleaseDir(releaseDir, done);
 
   // Check version numbers that would be created.
-  console.log('Running lerna version.',
-      'These version numbers will not be pushed and no tags will be created,',
-      'even if you answer yes to the prompt.');
+  console.log(
+    'Running lerna version.',
+    'These version numbers will not be pushed and no tags will be created,',
+    'even if you answer yes to the prompt.',
+  );
   execSync(
-      `lerna version --no-private --conventional-commits --no-git-tag-version --no-push`,
-      {cwd: releaseDir, stdio: 'inherit'});
+    `lerna version --no-private --conventional-commits --no-git-tag-version --no-push`,
+    {cwd: releaseDir, stdio: 'inherit'},
+  );
 
   done();
 }
@@ -203,15 +212,17 @@ function deployToGhPages(repo) {
     const d = new Date();
     const m = `Deploying ${d.getMonth() + 1}-${d.getDate()}-${d.getFullYear()}`;
     ghpages.publish(
-        'gh-pages', {
-          message: m,
-          repo,
-          // Include .nojekyll file to tell GitHub to publish without building.
-          // By default, dotfiles are excluded.
-          // TODO: make the github action include .nojekyll.
-          src: ['**/*', '.nojekyll']
-        },
-        done);
+      'gh-pages',
+      {
+        message: m,
+        repo,
+        // Include .nojekyll file to tell GitHub to publish without building.
+        // By default, dotfiles are excluded.
+        // TODO: make the github action include .nojekyll.
+        src: ['**/*', '.nojekyll'],
+      },
+      done,
+    );
   };
 }
 
@@ -224,7 +235,9 @@ function deployToGhPages(repo) {
 function preparePluginsForLocal(isBeta) {
   return (done) => {
     if (isBeta) {
-      execSync(`npx lerna exec -- npm install blockly@beta --force `, {stdio: 'inherit'});
+      execSync(`npx lerna exec -- npm install blockly@beta --force `, {
+        stdio: 'inherit',
+      });
     }
     execSync(`npm run boot`, {stdio: 'inherit'});
     // Bundles all the plugins.
@@ -243,8 +256,10 @@ function prepareExamplesForLocal(isBeta) {
   return (done) => {
     const examplesDirectory = 'examples';
     if (isBeta) {
-      execSync(
-          `npx lerna exec -- npm install blockly@beta --force`, {cwd: examplesDirectory, stdio: 'inherit'});
+      execSync(`npx lerna exec -- npm install blockly@beta --force`, {
+        cwd: examplesDirectory,
+        stdio: 'inherit',
+      });
     }
     execSync(`npm run boot`, {cwd: examplesDirectory, stdio: 'inherit'});
     // Bundles any examples that define a predeploy script (ex. blockly-react).
@@ -262,15 +277,17 @@ function prepareExamplesForLocal(isBeta) {
  */
 function testGhPagesLocally(isBeta) {
   return gulp.series(
-      gulp.parallel(
-          preparePluginsForLocal(isBeta), prepareExamplesForLocal(isBeta)),
-      predeployTasks.predeployAllLocal,
-      function(done) {
-        console.log('Starting server using http-server');
-        execSync(
-            `npx http-server`, {cwd: 'gh-pages', stdio: 'inherit'});
-        done();
-      });
+    gulp.parallel(
+      preparePluginsForLocal(isBeta),
+      prepareExamplesForLocal(isBeta),
+    ),
+    predeployTasks.predeployAllLocal,
+    function (done) {
+      console.log('Starting server using http-server');
+      execSync(`npx http-server`, {cwd: 'gh-pages', stdio: 'inherit'});
+      done();
+    },
+  );
 }
 
 /**

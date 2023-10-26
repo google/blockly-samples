@@ -21,27 +21,45 @@ const assert = chai.assert;
  *     statement input or not.
  */
 function assertDefBlockStructure(
-    defBlock, hasReturn = false, args = [], hasStatements = true) {
+  defBlock,
+  hasReturn = false,
+  args = [],
+  hasStatements = true,
+) {
   if (hasStatements) {
-    assert.isNotNull(defBlock.getInput('STACK'),
-        'Def block should have STACK input');
+    assert.isNotNull(
+      defBlock.getInput('STACK'),
+      'Def block should have STACK input',
+    );
   } else {
-    assert.isNull(defBlock.getInput('STACK'),
-        'Def block should not have STACK input');
+    assert.isNull(
+      defBlock.getInput('STACK'),
+      'Def block should not have STACK input',
+    );
   }
   if (hasReturn) {
-    assert.isNotNull(defBlock.getInput('RETURN'),
-        'Def block should have RETURN input');
+    assert.isNotNull(
+      defBlock.getInput('RETURN'),
+      'Def block should have RETURN input',
+    );
   } else {
-    assert.isNull(defBlock.getInput('RETURN'),
-        'Def block should not have RETURN input');
+    assert.isNull(
+      defBlock.getInput('RETURN'),
+      'Def block should not have RETURN input',
+    );
   }
   if (args.length) {
-    assert.include(defBlock.toString(), 'with',
-        'Def block string should include "with"');
+    assert.include(
+      defBlock.toString(),
+      'with',
+      'Def block string should include "with"',
+    );
   } else {
-    assert.notInclude(defBlock.toString(), 'with',
-        'Def block string should not include "with"');
+    assert.notInclude(
+      defBlock.toString(),
+      'with',
+      'Def block string should not include "with"',
+    );
   }
 
   assertDefBlockArgsStructure_(defBlock, hasReturn, args, hasStatements);
@@ -74,7 +92,11 @@ function assertCallBlockStructure(callBlock, args = []) {
  * @private
  */
 function assertDefBlockArgsStructure_(
-    defBlock, hasReturn, args, hasStatements) {
+  defBlock,
+  hasReturn,
+  args,
+  hasStatements,
+) {
   // inputList also contains "TOP" input and optionally "RETURN" and "STACK"
   let defArgCount = defBlock.inputList.length - 1;
   if (hasReturn) {
@@ -84,8 +106,11 @@ function assertDefBlockArgsStructure_(
     defArgCount--;
   }
 
-  assert.equal(defArgCount, args.length,
-      'def block has the expected number of args');
+  assert.equal(
+    defArgCount,
+    args.length,
+    'def block has the expected number of args',
+  );
 
   assert.sameOrderedMembers(defBlock.getVars(), args);
 
@@ -99,15 +124,21 @@ function assertDefBlockArgsStructure_(
     const defInput = defBlock.inputList[i + 1];
     assert.equal(defInput.type, Blockly.DUMMY_INPUT);
     assert.equal(defInput.name, argIds[i]);
-    assert.equal(defInput.fieldRow[2].getValue(), expectedName,
-        'def block consts did not match expected');
+    assert.equal(
+      defInput.fieldRow[2].getValue(),
+      expectedName,
+      'def block consts did not match expected',
+    );
   }
 
   // Assert the last input is not a dummy. Sometimes
   // arg inputs don't get moved which is bad.
   const lastInput = defBlock.inputList[defBlock.inputList.length - 1];
-  assert.notEqual(lastInput.type, Blockly.DUMMY_INPUT,
-      'last input is not a dummy');
+  assert.notEqual(
+    lastInput.type,
+    Blockly.DUMMY_INPUT,
+    'last input is not a dummy',
+  );
 }
 
 /**
@@ -118,16 +149,22 @@ function assertDefBlockArgsStructure_(
  */
 function assertCallBlockArgsStructure_(callBlock, args) {
   // inputList also contains "TOPROW"
-  assert.equal(callBlock.inputList.length - 1, args.length,
-      'call block has the expected number of args');
+  assert.equal(
+    callBlock.inputList.length - 1,
+    args.length,
+    'call block has the expected number of args',
+  );
 
   for (let i = 0; i < args.length; i++) {
     const expectedName = args[i];
     const callInput = callBlock.inputList[i + 1];
     assert.equal(callInput.type, Blockly.INPUT_VALUE);
     assert.equal(callInput.name, 'ARG' + i);
-    assert.equal(callInput.fieldRow[0].getValue(), expectedName,
-        'Call block consts did not match expected.');
+    assert.equal(
+      callInput.fieldRow[0].getValue(),
+      expectedName,
+      'Call block consts did not match expected.',
+    );
   }
 }
 
@@ -143,7 +180,12 @@ function assertCallBlockArgsStructure_(callBlock, args) {
  *     a statement input or not.
  */
 function assertProcBlocksStructure(
-    def, call, hasReturn = false, args = [], hasStatements = true) {
+  def,
+  call,
+  hasReturn = false,
+  args = [],
+  hasStatements = true,
+) {
   assertDefBlockStructure(def, hasReturn, args, hasStatements);
   assertCallBlockStructure(call, args);
 }
@@ -158,16 +200,27 @@ function assertProcBlocksStructure(
  * @returns {Blockly.Block} The created block.
  */
 function createProcDefBlock(
-    workspace, hasReturn = false, nameId = 'proc name', hasStatements = true) {
-  const type = hasReturn ?
-      'procedures_defreturn' : 'procedures_defnoreturn';
-  return Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
-      '<block type="' + type + '">' +
-      ((hasStatements) ? '' :
-          '    <mutation statements="false"></mutation>\n') +
-      '  <field name="NAME">' + nameId + '</field>' +
-      '</block>'
-  ), workspace);
+  workspace,
+  hasReturn = false,
+  nameId = 'proc name',
+  hasStatements = true,
+) {
+  const type = hasReturn ? 'procedures_defreturn' : 'procedures_defnoreturn';
+  return Blockly.Xml.domToBlock(
+    Blockly.utils.xml.textToDom(
+      '<block type="' +
+        type +
+        '">' +
+        (hasStatements
+          ? ''
+          : '    <mutation statements="false"></mutation>\n') +
+        '  <field name="NAME">' +
+        nameId +
+        '</field>' +
+        '</block>',
+    ),
+    workspace,
+  );
 }
 
 /**
@@ -179,14 +232,23 @@ function createProcDefBlock(
  * @returns {Blockly.Block} The created block.
  */
 function createProcCallBlock(
-    workspace, hasReturn = false, nameId = 'proc name') {
-  const type = hasReturn ?
-      'procedures_callreturn' : 'procedures_callnoreturn';
-  return Blockly.Xml.domToBlock(Blockly.utils.xml.textToDom(
-      '<block type="' + type + '">' +
-      '  <mutation name="' + nameId + '"/>' +
-      '</block>'
-  ), workspace);
+  workspace,
+  hasReturn = false,
+  nameId = 'proc name',
+) {
+  const type = hasReturn ? 'procedures_callreturn' : 'procedures_callnoreturn';
+  return Blockly.Xml.domToBlock(
+    Blockly.utils.xml.textToDom(
+      '<block type="' +
+        type +
+        '">' +
+        '  <mutation name="' +
+        nameId +
+        '"/>' +
+        '</block>',
+    ),
+    workspace,
+  );
 }
 
 module.exports = {

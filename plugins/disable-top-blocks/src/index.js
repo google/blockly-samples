@@ -24,20 +24,24 @@ export class DisableTopBlocks {
    */
   init() {
     const disableMenuItem =
-        Blockly.ContextMenuRegistry.registry.getItem('blockDisable');
+      Blockly.ContextMenuRegistry.registry.getItem('blockDisable');
     this.oldPreconditionFn = disableMenuItem.preconditionFn;
-    disableMenuItem.preconditionFn =
-        function(/** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
-          const block = scope.block;
-          if (!block.isInFlyout && block.workspace.options.disable &&
-              block.isEditable()) {
-            if (block.getInheritedDisabled() || isOrphan(block)) {
-              return 'disabled';
-            }
-            return 'enabled';
-          }
-          return 'hidden';
-        };
+    disableMenuItem.preconditionFn = function (
+      /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+    ) {
+      const block = scope.block;
+      if (
+        !block.isInFlyout &&
+        block.workspace.options.disable &&
+        block.isEditable()
+      ) {
+        if (block.getInheritedDisabled() || isOrphan(block)) {
+          return 'disabled';
+        }
+        return 'enabled';
+      }
+      return 'hidden';
+    };
   }
 
   /**
@@ -47,7 +51,7 @@ export class DisableTopBlocks {
    */
   dispose() {
     const disableMenuItem =
-        Blockly.ContextMenuRegistry.registry.getItem('blockDisable');
+      Blockly.ContextMenuRegistry.registry.getItem('blockDisable');
     disableMenuItem.preconditionFn = this.oldPreconditionFn;
   }
 }
@@ -67,6 +71,5 @@ function isOrphan(block) {
   if (parent && isOrphan(parent)) {
     return true;
   }
-  return !parent &&
-      !!(block.outputConnection || block.previousConnection);
+  return !parent && !!(block.outputConnection || block.previousConnection);
 }

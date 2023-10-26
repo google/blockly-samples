@@ -12,7 +12,6 @@ import * as Blockly from 'blockly';
 import {createPlayground} from '@blockly/dev-tools';
 import '../src/index.js';
 
-
 /**
  * Create a workspace.
  * @param {HTMLElement} blocklyDiv The blockly container div.
@@ -24,8 +23,7 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-const toolbox =
-{
+const toolbox = {
   'kind': 'categoryToolbox',
   'contents': [
     {
@@ -80,10 +78,13 @@ const toolbox =
   ],
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolbox,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

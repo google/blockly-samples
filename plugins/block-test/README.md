@@ -5,11 +5,13 @@ A set of [Blockly](https://www.npmjs.com/package/blockly) test blocks.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/block-test
 ```
 
 ### npm
+
 ```
 npm install @blockly/block-test --save
 ```
@@ -17,6 +19,7 @@ npm install @blockly/block-test --save
 ## Usage
 
 ### Import
+
 ```js
 import * as Blockly from 'blockly';
 import {toolboxTestBlocks, toolboxTestBlocksInit} from '@blockly/block-test';
@@ -32,4 +35,5 @@ toolboxTestBlocksInit(workspace);
 ```
 
 ## License
+
 Apache 2.0

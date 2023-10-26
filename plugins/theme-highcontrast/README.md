@@ -8,11 +8,13 @@ for the blocks to create contrast between the block color and the white text.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/theme-highcontrast
 ```
 
 ### npm
+
 ```
 npm install @blockly/theme-highcontrast --save
 ```
@@ -26,8 +28,8 @@ import Theme from '@blockly/theme-highcontrast';
 Blockly.inject('blocklyDiv', {
   theme: Theme,
 });
-
 ```
 
 ## License
+
 Apache 2.0

@@ -5,10 +5,10 @@ scroll features.
 
 This plugin adds two features related to scrolling:
 
--   Users can scroll the workspace with the mousewheel while dragging a block
-    ("wheel scroll").
--   The workspace will automatically scroll when a block is dragged near the
-    edge of the workspace ("edge scroll").
+- Users can scroll the workspace with the mousewheel while dragging a block
+  ("wheel scroll").
+- The workspace will automatically scroll when a block is dragged near the
+  edge of the workspace ("edge scroll").
 
 Each of these options can be enabled or disabled independently, if you only want
 one of these behaviors. The edge scrolling behavior can also be configured with
@@ -38,16 +38,20 @@ parameters for edge scrolling.
 
 ```js
 import * as Blockly from 'blockly';
-import {ScrollOptions, ScrollBlockDragger, ScrollMetricsManager} from '@blockly/plugin-scroll-options';
+import {
+  ScrollOptions,
+  ScrollBlockDragger,
+  ScrollMetricsManager,
+} from '@blockly/plugin-scroll-options';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
-      // These are both required.
-      'blockDragger': ScrollBlockDragger,
-      'metricsManager': ScrollMetricsManager,
-    },
+    // These are both required.
+    'blockDragger': ScrollBlockDragger,
+    'metricsManager': ScrollMetricsManager,
+  },
   move: {
     wheel: true, // Required for wheel scroll to work.
   },
@@ -81,9 +85,9 @@ The plugin is configured during initialization for convenience. It can also be
 configured, or reconfigured, at any time afterwards using the following methods
 on `ScrollOptions`:
 
--   `enableWheelScroll`/`disableWheelScroll`
--   `enableEdgeScroll`/`disableEdgeScroll`
--   `updateEdgeScrollOptions`
+- `enableWheelScroll`/`disableWheelScroll`
+- `enableEdgeScroll`/`disableEdgeScroll`
+- `updateEdgeScrollOptions`
 
 **IMPORTANT**: Currently, the options to configure the edge scroll behavior are
 provided statically due to the way a BlockDragger is initialized. Thus, each
@@ -96,29 +100,29 @@ blocking issue for you, please file an issue on blockly-samples.
 The edge scroll options are provided in an object with the following properties
 (default values in parentheses):
 
--   `slowBlockSpeed` (0.28), `fastBlockSpeed` (1.4): Pixels per ms to scroll
-    based on how far the block is from the edge of the viewport.
--   `slowBlockStartDistance` (0): Distance in workspace units that the edge of
-    the block is from the edge of the viewport before the corresponding scroll
-    speed will be used. Can be negative to start scrolling before the block
-    extends over the edge.
--   `fastBlockStartDistance` (50): Same as above, for fast speed. Must be larger
-    than `slowBlockStartDistance`.
--   `oversizeBlockThreshold` (0.85): If a block takes up this percentage of the
-    viewport or more, it will be considered oversized. Rather than using the
-    block edge, we use the mouse cursor plus the given margin size to activate
-    block-based scrolling.
--   `oversizeBlockMargin` (15): Cursor margin to use for oversized blocks. A
-    bigger value will cause the workspace to scroll sooner, i.e., the mouse can
-    be further inward from the edge when scrolling begins.
--   `slowMouseSpeed` (0.5), `fastMouseSpeed` (1.6): Pixels per ms to scroll
-    based on how far the mouse is from the edge of the viewport.
--   `slowMouseStartDistance` (0): Distance in workspace units that the mouse is
-    from the edge of the viewport before the corresponding scroll speed will be
-    used. Can be negative to start scrolling before the mouse extends over the
-    edge.
--   `fastMouseStartDistance` (35): Same as above, for fast speed. Must be larger
-    than `slowMouseStartDistance`.
+- `slowBlockSpeed` (0.28), `fastBlockSpeed` (1.4): Pixels per ms to scroll
+  based on how far the block is from the edge of the viewport.
+- `slowBlockStartDistance` (0): Distance in workspace units that the edge of
+  the block is from the edge of the viewport before the corresponding scroll
+  speed will be used. Can be negative to start scrolling before the block
+  extends over the edge.
+- `fastBlockStartDistance` (50): Same as above, for fast speed. Must be larger
+  than `slowBlockStartDistance`.
+- `oversizeBlockThreshold` (0.85): If a block takes up this percentage of the
+  viewport or more, it will be considered oversized. Rather than using the
+  block edge, we use the mouse cursor plus the given margin size to activate
+  block-based scrolling.
+- `oversizeBlockMargin` (15): Cursor margin to use for oversized blocks. A
+  bigger value will cause the workspace to scroll sooner, i.e., the mouse can
+  be further inward from the edge when scrolling begins.
+- `slowMouseSpeed` (0.5), `fastMouseSpeed` (1.6): Pixels per ms to scroll
+  based on how far the mouse is from the edge of the viewport.
+- `slowMouseStartDistance` (0): Distance in workspace units that the mouse is
+  from the edge of the viewport before the corresponding scroll speed will be
+  used. Can be negative to start scrolling before the mouse extends over the
+  edge.
+- `fastMouseStartDistance` (35): Same as above, for fast speed. Must be larger
+  than `slowMouseStartDistance`.
 
 Each of these options is configured with the default value shown, which is
 specified in `ScrollBlockDragger.js`. When you call `updateEdgeScrollOptions`,

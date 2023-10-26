@@ -5,9 +5,11 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {ProcedureParameterBase, ProcedureParameterBaseJson} from './events_procedure_parameter_base';
+import {
+  ProcedureParameterBase,
+  ProcedureParameterBaseJson,
+} from './events_procedure_parameter_base';
 import {ObservableParameterModel} from './observable_parameter_model';
-
 
 /**
  * Notifies listeners that a parameter has been added to a procedure model.
@@ -28,10 +30,11 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
    * @param index The index the parameter was inserted at.
    */
   constructor(
-      workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel,
-      parameter: ObservableParameterModel,
-      readonly index: number) {
+    workspace: Blockly.Workspace,
+    procedure: Blockly.procedures.IProcedureModel,
+    parameter: ObservableParameterModel,
+    readonly index: number,
+  ) {
     super(workspace, procedure, parameter);
   }
 
@@ -46,8 +49,9 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
     const procedureModel = procedureMap.get(this.procedure.getId());
     if (!procedureModel) {
       throw new Error(
-          'Cannot add a parameter to a procedure that does not exist ' +
-          'in the procedure map');
+        'Cannot add a parameter to a procedure that does not exist ' +
+          'in the procedure map',
+      );
     }
     if (forward) {
       procedureModel.insertParameter(this.parameter, this.index);
@@ -77,31 +81,38 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
    * @internal
    */
   static fromJson(
-      json: ProcedureParameterCreateJson,
-      workspace: Blockly.Workspace
+    json: ProcedureParameterCreateJson,
+    workspace: Blockly.Workspace,
   ): ProcedureParameterCreate {
     const procedure = workspace.getProcedureMap().get(json['procedureId']);
     if (!procedure) {
       throw new Error(
-          'Cannot deserialize parameter create event because the ' +
-          'target procedure does not exist');
+        'Cannot deserialize parameter create event because the ' +
+          'target procedure does not exist',
+      );
     }
     return new ProcedureParameterCreate(
+      workspace,
+      procedure,
+      new ObservableParameterModel(
         workspace,
-        procedure,
-        new ObservableParameterModel(
-            workspace, json['name'], json['id'], json['varId']),
-        json['index']);
+        json['name'],
+        json['id'],
+        json['varId'],
+      ),
+      json['index'],
+    );
   }
 }
 
-export interface ProcedureParameterCreateJson extends
-    ProcedureParameterBaseJson {
+export interface ProcedureParameterCreateJson
+  extends ProcedureParameterBaseJson {
   parameter: Blockly.serialization.procedures.ParameterState;
   index: number;
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT,
-    ProcedureParameterCreate.TYPE,
-    ProcedureParameterCreate);
+  Blockly.registry.Type.EVENT,
+  ProcedureParameterCreate.TYPE,
+  ProcedureParameterCreate,
+);

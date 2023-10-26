@@ -15,17 +15,28 @@ import '../src/index';
 const toolbox = generateFieldTestBlocks('field_colour', [
   {
     label: 'Standard',
-    args: {
-    },
+    args: {},
   },
   {
     label: 'Custom',
     args: {
       colour: '#ff4040',
-      colourOptions:
-        ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
-      colourTitles:
-        ['dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue'],
+      colourOptions: [
+        '#ff4040',
+        '#ff8080',
+        '#ffc0c0',
+        '#4040ff',
+        '#8080ff',
+        '#c0c0ff',
+      ],
+      colourTitles: [
+        'dark pink',
+        'pink',
+        'light pink',
+        'dark blue',
+        'blue',
+        'light blue',
+      ],
       columns: 3,
     },
   },
@@ -37,13 +48,15 @@ const toolbox = generateFieldTestBlocks('field_colour', [
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };

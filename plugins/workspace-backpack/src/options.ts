@@ -53,11 +53,11 @@ export function parseOptions(options?: BackpackOptions): BackpackOptions {
 
   return {
     allowEmptyBackpackOpen:
-        options.allowEmptyBackpackOpen ?? defaults.allowEmptyBackpackOpen,
+      options.allowEmptyBackpackOpen ?? defaults.allowEmptyBackpackOpen,
     useFilledBackpackImage:
-        options.useFilledBackpackImage ?? defaults.useFilledBackpackImage,
-    skipSerializerRegistration: options.skipSerializerRegistration ??
-        defaults.skipSerializerRegistration,
+      options.useFilledBackpackImage ?? defaults.useFilledBackpackImage,
+    skipSerializerRegistration:
+      options.skipSerializerRegistration ?? defaults.skipSerializerRegistration,
     contextMenu: {
       ...defaults.contextMenu,
       ...options.contextMenu,

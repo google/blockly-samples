@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_basic_empty',
@@ -145,18 +144,17 @@ Blockly.defineBlocksWithJsonArray([
 ]);
 
 Blockly.Blocks['test_basic_empty_with_mutator'] = {
-  init: function() {
+  init: function () {
     this.setMutator(new Blockly.icons.MutatorIcon(['math_number'], this));
   },
 
-  decompose: function(workspace) {
+  decompose: function (workspace) {
     const topBlock = workspace.newBlock('math_number');
     topBlock.initSvg();
     return topBlock;
   },
-  compose: function() {},
+  compose: function () {},
 };
-
 
 /**
  * The Basic Category.

@@ -3,16 +3,19 @@
 <!--
   - TODO: Edit plugin description.
   -->
+
 A [Blockly](https://www.npmjs.com/package/blockly) plugin that ...
 
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/plugin
 ```
 
 ### npm
+
 ```
 npm install @blockly/plugin --save
 ```
@@ -22,6 +25,7 @@ npm install @blockly/plugin --save
 <!--
   - TODO: Update usage.
   -->
+
 ```js
 import * as Blockly from 'blockly';
 import {Plugin} from '@blockly/plugin';
@@ -43,4 +47,5 @@ plugin.init();
   -->
 
 ## License
+
 Apache 2.0

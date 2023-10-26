@@ -6,11 +6,13 @@ fixed edges more easily configurable.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/fixed-edges
 ```
 
 ### npm
+
 ```
 npm install @blockly/fixed-edges --save
 ```
@@ -39,7 +41,8 @@ const workspace = Blockly.inject('blocklyDiv', {
 ## API
 
 - `setFixedEdges`: Configures which edges are fixed. This does not prevent fixed
-edges set by no scrollbars or single-direction scrollbars.
+  edges set by no scrollbars or single-direction scrollbars.
 
 ## License
+
 Apache 2.0

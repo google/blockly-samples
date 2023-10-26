@@ -1,4 +1,3 @@
-
 import {TypedVariableModal} from '../src/TypedVariableModal.js';
 
 /**
@@ -52,7 +51,7 @@ export class InputModal extends TypedVariableModal {
     const randomBtn = document.createElement('button');
     randomBtn.className = 'blocklyModalBtn';
     randomBtn.innerText = 'Create random name';
-    this.addEvent_(randomBtn, 'click', this, ()=> this.randomName());
+    this.addEvent_(randomBtn, 'click', this, () => this.randomName());
     footerContainer.appendChild(randomBtn);
     footerContainer.appendChild(this.createCancelBtn_());
   }

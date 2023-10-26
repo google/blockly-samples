@@ -19,23 +19,27 @@ export class HashState {
    * @param {Object} state The state.
    */
   static parse(hash, state) {
-    decodeURIComponent(hash)
-        .replace(/#?([^=&]+)=([^=&]+)/gm, function(_m0, key, value) {
-          let current = state;
-          let i;
-          while ((i = key.indexOf('.')) > -1) {
-            current[key.substr(0, i)] = current[key.substr(0, i)] || {};
-            current = current[key.substr(0, i)];
-            key = key.substr(i + 1);
-          }
-          // Parse the value.
-          if (value == 'true' || value == 'false') { // Boolean.
-            value = (value == 'true');
-          } else if (!isNaN(value)) { // Number.
-            value = Number(value);
-          }
-          current[key] = value;
-        });
+    decodeURIComponent(hash).replace(
+      /#?([^=&]+)=([^=&]+)/gm,
+      function (_m0, key, value) {
+        let current = state;
+        let i;
+        while ((i = key.indexOf('.')) > -1) {
+          current[key.substr(0, i)] = current[key.substr(0, i)] || {};
+          current = current[key.substr(0, i)];
+          key = key.substr(i + 1);
+        }
+        // Parse the value.
+        if (value == 'true' || value == 'false') {
+          // Boolean.
+          value = value == 'true';
+        } else if (!isNaN(value)) {
+          // Number.
+          value = Number(value);
+        }
+        current[key] = value;
+      },
+    );
   }
 
   /**
@@ -53,7 +57,7 @@ export class HashState {
         for (const p in cur) {
           if (Object.prototype.hasOwnProperty.call(cur, p)) {
             isEmpty = false;
-            flatten(cur[p], prop ? prop+'.'+p : p);
+            flatten(cur[p], prop ? prop + '.' + p : p);
           }
         }
         if (isEmpty && prop != '') {
@@ -62,6 +66,8 @@ export class HashState {
       }
     };
     flatten(state, '');
-    return Object.keys(result).map((k) => `${k}=${result[k]}`).join('&');
+    return Object.keys(result)
+      .map((k) => `${k}=${result[k]}`)
+      .join('&');
   }
 }

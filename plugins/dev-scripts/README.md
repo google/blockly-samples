@@ -15,10 +15,6 @@ playground in the browser. The page will reload if you make edits.
 
 Builds the package into the `dist` directory.
 
-### `blockly-scripts lint`
-
-Runs eslint on the `src` and `test` directories.
-
 ### `blockly-scripts clean`
 
 Deletes the `dist` and `build` directories if they exist.

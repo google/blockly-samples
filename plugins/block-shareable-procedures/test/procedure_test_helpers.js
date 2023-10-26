@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2023 Google LLC
@@ -10,7 +9,6 @@ const Blockly = require('blockly/node');
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-
 
 /**
  * Creates stub for Blockly.utils.idGenerator.genUid that returns the
@@ -56,16 +54,22 @@ export function assertBlockVarModels(block, varIds) {
  */
 export function assertCallBlockArgsStructure(callBlock, args) {
   // inputList also contains "TOPROW"
-  assert.equal(callBlock.inputList.length - 1, args.length,
-      'call block has the expected number of args');
+  assert.equal(
+    callBlock.inputList.length - 1,
+    args.length,
+    'call block has the expected number of args',
+  );
 
   for (let i = 0; i < args.length; i++) {
     const expectedName = args[i];
     const callInput = callBlock.inputList[i + 1];
     assert.equal(callInput.type, Blockly.ConnectionType.INPUT_VALUE);
     assert.equal(callInput.name, 'ARG' + i);
-    assert.equal(callInput.fieldRow[0].getValue(), expectedName,
-        'Call block consts did not match expected.');
+    assert.equal(
+      callInput.fieldRow[0].getValue(),
+      expectedName,
+      'Call block consts did not match expected.',
+    );
   }
   assert.sameOrderedMembers(callBlock.getVars(), args);
 }
@@ -82,31 +86,46 @@ export function assertCallBlockArgsStructure(callBlock, args) {
  *     statement input or not.
  */
 export function assertDefBlockStructure(
-    defBlock,
-    hasReturn = false,
-    args = [],
-    varIds = [],
-    hasStatements = true) {
+  defBlock,
+  hasReturn = false,
+  args = [],
+  varIds = [],
+  hasStatements = true,
+) {
   if (hasStatements) {
-    assert.isNotNull(defBlock.getInput('STACK'),
-        'Def block should have STACK input');
+    assert.isNotNull(
+      defBlock.getInput('STACK'),
+      'Def block should have STACK input',
+    );
   } else {
-    assert.isNull(defBlock.getInput('STACK'),
-        'Def block should not have STACK input');
+    assert.isNull(
+      defBlock.getInput('STACK'),
+      'Def block should not have STACK input',
+    );
   }
   if (hasReturn) {
-    assert.isNotNull(defBlock.getInput('RETURN'),
-        'Def block should have RETURN input');
+    assert.isNotNull(
+      defBlock.getInput('RETURN'),
+      'Def block should have RETURN input',
+    );
   } else {
-    assert.isNull(defBlock.getInput('RETURN'),
-        'Def block should not have RETURN input');
+    assert.isNull(
+      defBlock.getInput('RETURN'),
+      'Def block should not have RETURN input',
+    );
   }
   if (args.length) {
-    assert.include(defBlock.toString(), 'with',
-        'Def block string should include "with"');
+    assert.include(
+      defBlock.toString(),
+      'with',
+      'Def block string should include "with"',
+    );
   } else {
-    assert.notInclude(defBlock.toString(), 'with',
-        'Def block string should not include "with"');
+    assert.notInclude(
+      defBlock.toString(),
+      'with',
+      'Def block string should not include "with"',
+    );
   }
 
   assert.sameOrderedMembers(defBlock.getVars(), args);
@@ -122,7 +141,11 @@ export function assertDefBlockStructure(
  * @param {string=} name The name we expect the caller to have.
  */
 export function assertCallBlockStructure(
-    callBlock, args = [], varIds = [], name = undefined) {
+  callBlock,
+  args = [],
+  varIds = [],
+  name = undefined,
+) {
   if (args.length) {
     assert.include(callBlock.toString(), 'with');
   } else {
@@ -146,16 +169,23 @@ export function assertCallBlockStructure(
  * @returns {Blockly.Block} The created block.
  */
 export function createProcDefBlock(
-    workspace, hasReturn = false, args = [], name = 'proc name') {
-  return Blockly.serialization.blocks.append({
-    'type': hasReturn ? 'procedures_defreturn' : 'procedures_defnoreturn',
-    'fields': {
-      'NAME': name,
+  workspace,
+  hasReturn = false,
+  args = [],
+  name = 'proc name',
+) {
+  return Blockly.serialization.blocks.append(
+    {
+      'type': hasReturn ? 'procedures_defreturn' : 'procedures_defnoreturn',
+      'fields': {
+        'NAME': name,
+      },
+      'extraState': {
+        'params': args.map((a) => ({'name': a})),
+      },
     },
-    'extraState': {
-      'params': args.map((a) => ({'name': a})),
-    },
-  }, workspace);
+    workspace,
+  );
 }
 
 /**
@@ -168,11 +198,17 @@ export function createProcDefBlock(
  * @returns {Blockly.Block} The created block.
  */
 export function createProcCallBlock(
-    workspace, hasReturn = false, name = 'proc name') {
-  return Blockly.serialization.blocks.append({
-    'type': hasReturn ? 'procedures_callreturn' : 'procedures_callnoreturn',
-    'extraState': {
-      'name': name,
+  workspace,
+  hasReturn = false,
+  name = 'proc name',
+) {
+  return Blockly.serialization.blocks.append(
+    {
+      'type': hasReturn ? 'procedures_callreturn' : 'procedures_callnoreturn',
+      'extraState': {
+        'name': name,
+      },
     },
-  }, workspace);
+    workspace,
+  );
 }

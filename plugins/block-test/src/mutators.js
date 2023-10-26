@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_mutator_colorChange',
@@ -40,7 +39,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @returns {Element} XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function() {
+  mutationToDom: function () {
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('colour', this.getColour());
     return container;
@@ -50,7 +49,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @param {!Element} xmlElement XML storage element.
    * @this {Blockly.Block}
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function (xmlElement) {
     this.setColour(xmlElement.getAttribute('colour'));
   },
   /**
@@ -58,7 +57,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @returns {{colour: string}} The state of this block.
    * @this {Blockly.Block}
    */
-  saveExtraState: function() {
+  saveExtraState: function () {
     return {'colour': this.getColour()};
   },
   /**
@@ -66,7 +65,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @param {{color: string}} state The state to apply.
    * @this {Blockly.Block}
    */
-  loadExtraState: function(state) {
+  loadExtraState: function (state) {
     this.setColour(state['colour']);
   },
   /**
@@ -75,10 +74,11 @@ const COLOR_CHANGE_MUTATOR = {
    * @returns {!Blockly.Block} Root block in mutator.
    * @this {Blockly.Block}
    */
-  decompose: function(workspace) {
+  decompose: function (workspace) {
     const containerBlock = Blockly.serialization.blocks.append(
-        {'type': 'test_mutator_colorChange'},
-        workspace);
+      {'type': 'test_mutator_colorChange'},
+      workspace,
+    );
     containerBlock.getField('COLOUR').setValue(this.getColour());
     return containerBlock;
   },
@@ -87,11 +87,10 @@ const COLOR_CHANGE_MUTATOR = {
    * @param {!Blockly.Block} containerBlock Root block in mutator.
    * @this {Blockly.Block}
    */
-  compose: function(containerBlock) {
+  compose: function (containerBlock) {
     this.setColour(containerBlock.getFieldValue('COLOUR'));
   },
 };
-
 
 const n = 20;
 const blocksIds = [];
@@ -124,10 +123,10 @@ Blockly.defineBlocksWithJsonArray([
 
 /** Register custom mutator used by the test_mutators_many block. */
 Blockly.Extensions.registerMutator(
-    'test_many_blocks_mutator',
-    COLOR_CHANGE_MUTATOR,
-    null,
-    [...blocksIds]
+  'test_many_blocks_mutator',
+  COLOR_CHANGE_MUTATOR,
+  null,
+  [...blocksIds],
 );
 
 Blockly.defineBlocksWithJsonArray([
@@ -141,7 +140,11 @@ Blockly.defineBlocksWithJsonArray([
 
 /** Register custom mutator used by the test_mutators_noflyout block. */
 Blockly.Extensions.registerMutator(
-    'test_noflyout_mutator', COLOR_CHANGE_MUTATOR, null, []);
+  'test_noflyout_mutator',
+  COLOR_CHANGE_MUTATOR,
+  null,
+  [],
+);
 
 Blockly.defineBlocksWithJsonArray([
   {
@@ -154,8 +157,11 @@ Blockly.defineBlocksWithJsonArray([
 
 /** Register custom mutator used by the test_mutators_changeableFlyout block. */
 Blockly.Extensions.registerMutator(
-    'test_changeableFlyout_mutator', COLOR_CHANGE_MUTATOR, null, ['text']);
-
+  'test_changeableFlyout_mutator',
+  COLOR_CHANGE_MUTATOR,
+  null,
+  ['text'],
+);
 
 /**
  * The Mutators category.

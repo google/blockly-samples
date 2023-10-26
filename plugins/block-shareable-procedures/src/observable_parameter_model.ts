@@ -9,12 +9,13 @@ import {ProcedureParameterRename} from './events_procedure_parameter_rename';
 import {triggerProceduresUpdate} from './update_procedures';
 
 /** Represents a procedure parameter. */
-export class ObservableParameterModel implements
-    Blockly.procedures.IParameterModel {
+export class ObservableParameterModel
+  implements Blockly.procedures.IParameterModel
+{
   private id: string;
   private variable: Blockly.VariableModel;
   private shouldFireEvents = false;
-  private procedureModel: Blockly.procedures.IProcedureModel|null = null;
+  private procedureModel: Blockly.procedures.IProcedureModel | null = null;
 
   /**
    * Constructor for the procedure parameter.
@@ -25,11 +26,15 @@ export class ObservableParameterModel implements
    *     associated with.
    */
   constructor(
-      private readonly workspace: Blockly.Workspace, name: string, id?: string,
-      varId?: string) {
+    private readonly workspace: Blockly.Workspace,
+    name: string,
+    id?: string,
+    varId?: string,
+  ) {
     this.id = id ?? Blockly.utils.idGenerator.genUid();
-    this.variable = this.workspace.getVariable(name) ??
-        workspace.createVariable(name, '', varId);
+    this.variable =
+      this.workspace.getVariable(name) ??
+      workspace.createVariable(name, '', varId);
   }
 
   /**
@@ -42,13 +47,18 @@ export class ObservableParameterModel implements
     if (name === this.variable.name) return this;
     const oldName = this.variable.name;
     this.variable =
-        this.workspace.getVariable(name) ??
-        this.workspace.createVariable(name, '', id);
+      this.workspace.getVariable(name) ??
+      this.workspace.createVariable(name, '', id);
     triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
       Blockly.Events.fire(
-          new ProcedureParameterRename(
-              this.workspace, this.procedureModel, this, oldName));
+        new ProcedureParameterRename(
+          this.workspace,
+          this.procedureModel,
+          this,
+          oldName,
+        ),
+      );
     }
     return this;
   }
@@ -63,8 +73,9 @@ export class ObservableParameterModel implements
    */
   setTypes(types: string[]): this {
     throw new Error(
-        'The built-in ParameterModel does not support typing. You need to ' +
-        'implement your own custom ParameterModel.');
+      'The built-in ParameterModel does not support typing. You need to ' +
+        'implement your own custom ParameterModel.',
+    );
   }
 
   /**

@@ -16,7 +16,7 @@ import * as Blockly from 'blockly/core';
 // MonkeyPatchedInsertionMarkerManager overrides the update and dispose methods,
 // and adds a new property called pendingBlocks.
 interface MonkeyPatchedInsertionMarkerManager
-    extends Blockly.InsertionMarkerManager {
+  extends Blockly.InsertionMarkerManager {
   pendingBlocks: Set<Blockly.Block>;
 }
 
@@ -31,46 +31,48 @@ interface DynamicBlock extends Blockly.Block {
 // Hack: Private methods of InsertionMarkerManager are called using the array
 // index syntax, bypassing access checking. The private methods are also missing
 // type information in the d.ts files and are considered to return any here.
-Blockly.InsertionMarkerManager.prototype.update =
-    function(
-        this: MonkeyPatchedInsertionMarkerManager,
-        dxy: Blockly.utils.Coordinate,
-        dragTarget: Blockly.IDragTarget | null): void {
-      const newCandidate = this['getCandidate'](dxy);
+Blockly.InsertionMarkerManager.prototype.update = function (
+  this: MonkeyPatchedInsertionMarkerManager,
+  dxy: Blockly.utils.Coordinate,
+  dragTarget: Blockly.IDragTarget | null,
+): void {
+  const newCandidate = this['getCandidate'](dxy);
 
-      this.wouldDeleteBlock = this['shouldDelete'](!!newCandidate, dragTarget);
+  this.wouldDeleteBlock = this['shouldDelete'](!!newCandidate, dragTarget);
 
-      const shouldUpdate: boolean = this.wouldDeleteBlock ||
-          this['shouldUpdatePreviews'](newCandidate, dxy);
+  const shouldUpdate: boolean =
+    this.wouldDeleteBlock || this['shouldUpdatePreviews'](newCandidate, dxy);
 
-      if (shouldUpdate) {
-        // Begin monkey patch
-        if (newCandidate?.closest?.sourceBlock_.onPendingConnection) {
-          newCandidate.closest.sourceBlock_
-              .onPendingConnection(newCandidate.closest);
-          if (!this.pendingBlocks) {
-            this.pendingBlocks = new Set();
-          }
-          this.pendingBlocks.add(newCandidate.closest.sourceBlock_);
-        }
-        // End monkey patch
-        // Don't fire events for insertion marker creation or movement.
-        Blockly.Events.disable();
-        this['maybeHidePreview'](newCandidate);
-        this['maybeShowPreview'](newCandidate);
-        Blockly.Events.enable();
+  if (shouldUpdate) {
+    // Begin monkey patch
+    if (newCandidate?.closest?.sourceBlock_.onPendingConnection) {
+      newCandidate.closest.sourceBlock_.onPendingConnection(
+        newCandidate.closest,
+      );
+      if (!this.pendingBlocks) {
+        this.pendingBlocks = new Set();
       }
-    };
+      this.pendingBlocks.add(newCandidate.closest.sourceBlock_);
+    }
+    // End monkey patch
+    // Don't fire events for insertion marker creation or movement.
+    Blockly.Events.disable();
+    this['maybeHidePreview'](newCandidate);
+    this['maybeShowPreview'](newCandidate);
+    Blockly.Events.enable();
+  }
+};
 
 const oldDispose = Blockly.InsertionMarkerManager.prototype.dispose;
-Blockly.InsertionMarkerManager.prototype.dispose =
-    function(this: MonkeyPatchedInsertionMarkerManager) {
-      if (this.pendingBlocks) {
-        this.pendingBlocks.forEach((block) => {
-          if ((block as DynamicBlock).finalizeConnections) {
-            (block as DynamicBlock).finalizeConnections();
-          }
-        });
+Blockly.InsertionMarkerManager.prototype.dispose = function (
+  this: MonkeyPatchedInsertionMarkerManager,
+) {
+  if (this.pendingBlocks) {
+    this.pendingBlocks.forEach((block) => {
+      if ((block as DynamicBlock).finalizeConnections) {
+        (block as DynamicBlock).finalizeConnections();
       }
-      oldDispose.call(this);
-    };
+    });
+  }
+  oldDispose.call(this);
+};

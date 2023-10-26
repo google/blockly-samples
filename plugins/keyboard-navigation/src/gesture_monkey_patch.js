@@ -14,7 +14,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 const oldDoWorkspaceClick = Blockly.Gesture.prototype.doWorkspaceClick_;
 
 /**
@@ -24,13 +23,15 @@ const oldDoWorkspaceClick = Blockly.Gesture.prototype.doWorkspaceClick_;
  * @this {Blockly.Gesture}
  * @override
  */
-Blockly.Gesture.prototype.doWorkspaceClick_ = function(e) {
+Blockly.Gesture.prototype.doWorkspaceClick_ = function (e) {
   oldDoWorkspaceClick.call(this, e);
   const ws = this.creatorWorkspace_;
   if (e.shiftKey && ws.keyboardAccessibilityMode) {
     const screenCoord = new Blockly.utils.Coordinate(e.clientX, e.clientY);
-    const wsCoord =
-        Blockly.utils.svgMath.screenToWsCoordinates(ws, screenCoord);
+    const wsCoord = Blockly.utils.svgMath.screenToWsCoordinates(
+      ws,
+      screenCoord,
+    );
     const wsNode = Blockly.ASTNode.createWorkspaceNode(ws, wsCoord);
     ws.getCursor().setCurNode(wsNode);
   }
@@ -44,11 +45,15 @@ const oldDoBlockClick = Blockly.Gesture.prototype.doBlockClick_;
  * @this {Blockly.Gesture}
  * @override
  */
-Blockly.Gesture.prototype.doBlockClick_ = function(e) {
+Blockly.Gesture.prototype.doBlockClick_ = function (e) {
   oldDoBlockClick.call(this, e);
-  if (!this.targetBlock_.isInFlyout && this.mostRecentEvent_.shiftKey &&
-      this.targetBlock_.workspace.keyboardAccessibilityMode) {
-    this.creatorWorkspace_.getCursor().setCurNode(
-        Blockly.ASTNode.createTopNode(this.targetBlock_));
+  if (
+    !this.targetBlock_.isInFlyout &&
+    this.mostRecentEvent_.shiftKey &&
+    this.targetBlock_.workspace.keyboardAccessibilityMode
+  ) {
+    this.creatorWorkspace_
+      .getCursor()
+      .setCurNode(Blockly.ASTNode.createTopNode(this.targetBlock_));
   }
 };

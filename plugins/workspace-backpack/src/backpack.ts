@@ -21,8 +21,10 @@ import {BackpackChange, BackpackOpen} from './ui_events';
  * Class for backpack that can be used save blocks from the workspace for
  * future use.
  */
-export class Backpack extends Blockly.DragTarget implements
-    Blockly.IAutoHideable, Blockly.IPositionable {
+export class Backpack
+  extends Blockly.DragTarget
+  implements Blockly.IAutoHideable, Blockly.IPositionable
+{
   /** The unique id for this component. */
   id = 'backpack';
 
@@ -34,7 +36,7 @@ export class Backpack extends Blockly.DragTarget implements
   private options: BackpackOptions;
 
   /** The backpack flyout. Initialized during init. */
-  protected flyout_: Blockly.IFlyout|null = null;
+  protected flyout_: Blockly.IFlyout | null = null;
 
   /** A list of JSON (stored as strings) representing blocks in the backpack. */
   protected contents_: string[] = [];
@@ -64,10 +66,10 @@ export class Backpack extends Blockly.DragTarget implements
   protected readonly HOTSPOT_MARGIN_ = 10;
 
   /** The SVG group containing the backpack. */
-  protected svgGroup_: SVGElement|null = null;
+  protected svgGroup_: SVGElement | null = null;
 
   /** The SVG image of the backpack. */
-  protected svgImg_: SVGImageElement|null = null;
+  protected svgImg_: SVGImageElement | null = null;
 
   /** Top offset for backpack svg in pixels. */
   private spriteTop = 10;
@@ -88,8 +90,9 @@ export class Backpack extends Blockly.DragTarget implements
    * @param backpackOptions The backpack options to use.
    */
   constructor(
-      protected workspace_: Blockly.WorkspaceSvg,
-      backpackOptions?: BackpackOptions) {
+    protected workspace_: Blockly.WorkspaceSvg,
+    backpackOptions?: BackpackOptions,
+  ) {
     super();
     this.options = parseOptions(backpackOptions);
     this.registerSerializer();
@@ -104,13 +107,16 @@ export class Backpack extends Blockly.DragTarget implements
       return;
     }
 
-    if (Blockly.registry.hasItem(
-        Blockly.registry.Type.SERIALIZER, 'backpack')) {
+    if (
+      Blockly.registry.hasItem(Blockly.registry.Type.SERIALIZER, 'backpack')
+    ) {
       return;
     }
 
     Blockly.serialization.registry.register(
-        'backpack', new BackpackSerializer());
+      'backpack',
+      new BackpackSerializer(),
+    );
   }
 
   /**
@@ -168,23 +174,25 @@ export class Backpack extends Blockly.DragTarget implements
     // Create vertical or horizontal flyout.
     if (this.workspace_.horizontalLayout) {
       flyoutWorkspaceOptions.toolboxPosition =
-          (this.workspace_.toolboxPosition ===
-           Blockly.utils.toolbox.Position.TOP) ?
-          Blockly.utils.toolbox.Position.BOTTOM :
-          Blockly.utils.toolbox.Position.TOP;
+        this.workspace_.toolboxPosition === Blockly.utils.toolbox.Position.TOP
+          ? Blockly.utils.toolbox.Position.BOTTOM
+          : Blockly.utils.toolbox.Position.TOP;
       const HorizontalFlyout = Blockly.registry.getClassFromOptions(
-          Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
-          this.workspace_.options, true);
+        Blockly.registry.Type.FLYOUTS_HORIZONTAL_TOOLBOX,
+        this.workspace_.options,
+        true,
+      );
       this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
     } else {
       flyoutWorkspaceOptions.toolboxPosition =
-          (this.workspace_.toolboxPosition ===
-           Blockly.utils.toolbox.Position.RIGHT) ?
-          Blockly.utils.toolbox.Position.LEFT :
-          Blockly.utils.toolbox.Position.RIGHT;
+        this.workspace_.toolboxPosition === Blockly.utils.toolbox.Position.RIGHT
+          ? Blockly.utils.toolbox.Position.LEFT
+          : Blockly.utils.toolbox.Position.RIGHT;
       const VerticalFlyout = Blockly.registry.getClassFromOptions(
-          Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
-          this.workspace_.options, true);
+        Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
+        this.workspace_.options,
+        true,
+      );
       this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
     }
     // Add flyout to DOM.
@@ -197,33 +205,47 @@ export class Backpack extends Blockly.DragTarget implements
    * Creates DOM for UI element.
    */
   protected createDom() {
-    this.svgGroup_ =
-        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.G, {}, null);
+    this.svgGroup_ = Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.G,
+      {},
+      null,
+    );
     const rnd = Blockly.utils.idGenerator.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.CLIPPATH, {'id': 'blocklyBackpackClipPath' + rnd},
-        this.svgGroup_);
+      Blockly.utils.Svg.CLIPPATH,
+      {'id': 'blocklyBackpackClipPath' + rnd},
+      this.svgGroup_,
+    );
     Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.RECT, {
-          'width': this.WIDTH_,
-          'height': this.HEIGHT_,
-        },
-        clip);
+      Blockly.utils.Svg.RECT,
+      {
+        'width': this.WIDTH_,
+        'height': this.HEIGHT_,
+      },
+      clip,
+    );
     this.svgImg_ = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.IMAGE, {
-          'class': 'blocklyBackpack',
-          'clip-path': 'url(#blocklyBackpackClipPath' + rnd + ')',
-          'width': this.spriteSize + 'px',
-          'x': -this.spriteLeft,
-          'height': this.spriteSize + 'px',
-          'y': -this.spriteTop,
-        },
-        this.svgGroup_);
+      Blockly.utils.Svg.IMAGE,
+      {
+        'class': 'blocklyBackpack',
+        'clip-path': 'url(#blocklyBackpackClipPath' + rnd + ')',
+        'width': this.spriteSize + 'px',
+        'x': -this.spriteLeft,
+        'height': this.spriteSize + 'px',
+        'y': -this.spriteTop,
+      },
+      this.svgGroup_,
+    );
     this.svgImg_.setAttributeNS(
-        Blockly.utils.dom.XLINK_NS, 'xlink:href', backpackSvgDataUri);
+      Blockly.utils.dom.XLINK_NS,
+      'xlink:href',
+      backpackSvgDataUri,
+    );
 
     Blockly.utils.dom.insertAfter(
-        this.svgGroup_, this.workspace_.getBubbleCanvas());
+      this.svgGroup_,
+      this.workspace_.getBubbleCanvas(),
+    );
   }
 
   /**
@@ -231,7 +253,11 @@ export class Backpack extends Blockly.DragTarget implements
    */
   protected attachListeners() {
     this.addEvent(
-        this.svgGroup_, 'mousedown', this, this.blockMouseDownWhenOpenable);
+      this.svgGroup_,
+      'mousedown',
+      this,
+      this.blockMouseDownWhenOpenable,
+    );
     this.addEvent(this.svgGroup_, 'mouseup', this, this.onClick);
     this.addEvent(this.svgGroup_, 'mouseover', this, this.onMouseOver);
     this.addEvent(this.svgGroup_, 'mouseout', this, this.onMouseOut);
@@ -245,8 +271,11 @@ export class Backpack extends Blockly.DragTarget implements
    * @param func Function to call when event is triggered.
    */
   private addEvent(
-      node: Element, name: string, thisObject: object,
-      func: (event: Event) => void) {
+    node: Element,
+    name: string,
+    thisObject: object,
+    func: (event: Event) => void,
+  ) {
     const event = Blockly.browserEvents.bind(node, name, thisObject, func);
     this.boundEvents.push(event);
   }
@@ -255,7 +284,7 @@ export class Backpack extends Blockly.DragTarget implements
    * Returns the backpack flyout.
    * @returns The backpack flyout.
    */
-  getFlyout(): Blockly.IFlyout|null {
+  getFlyout(): Blockly.IFlyout | null {
     return this.flyout_;
   }
 
@@ -265,7 +294,7 @@ export class Backpack extends Blockly.DragTarget implements
    * @returns The component's bounding box. Null if drag
    *   target area should be ignored.
    */
-  getClientRect(): Blockly.utils.Rect|null {
+  getClientRect(): Blockly.utils.Rect | null {
     if (!this.svgGroup_) {
       return null;
     }
@@ -285,8 +314,11 @@ export class Backpack extends Blockly.DragTarget implements
    */
   getBoundingRectangle(): Blockly.utils.Rect {
     return new Blockly.utils.Rect(
-        this.top_, this.top_ + this.HEIGHT_, this.left_,
-        this.left_ + this.WIDTH_);
+      this.top_,
+      this.top_ + this.HEIGHT_,
+      this.left_,
+      this.left_ + this.WIDTH_,
+    );
   }
 
   /**
@@ -298,23 +330,31 @@ export class Backpack extends Blockly.DragTarget implements
    *     are already on the workspace.
    */
   position(
-      metrics: Blockly.MetricsManager.UiMetrics,
-      savedPositions: Blockly.utils.Rect[]) {
+    metrics: Blockly.MetricsManager.UiMetrics,
+    savedPositions: Blockly.utils.Rect[],
+  ) {
     if (!this.initialized_) {
       return;
     }
 
     const scrollbars = this.workspace_.scrollbar;
-    const hasVerticalScrollbars = scrollbars && scrollbars.isVisible() &&
-        scrollbars.canScrollVertically();
-    const hasHorizontalScrollbars = scrollbars && scrollbars.isVisible() &&
-        scrollbars.canScrollHorizontally();
+    const hasVerticalScrollbars =
+      scrollbars && scrollbars.isVisible() && scrollbars.canScrollVertically();
+    const hasHorizontalScrollbars =
+      scrollbars &&
+      scrollbars.isVisible() &&
+      scrollbars.canScrollHorizontally();
 
-    if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-        (this.workspace_.horizontalLayout && !this.workspace_.RTL)) {
+    if (
+      metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
+      (this.workspace_.horizontalLayout && !this.workspace_.RTL)
+    ) {
       // Right corner placement.
-      this.left_ = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-          this.WIDTH_ - this.MARGIN_HORIZONTAL_;
+      this.left_ =
+        metrics.absoluteMetrics.left +
+        metrics.viewMetrics.width -
+        this.WIDTH_ -
+        this.MARGIN_HORIZONTAL_;
       if (hasVerticalScrollbars && !this.workspace_.RTL) {
         this.left_ -= Blockly.Scrollbar.scrollbarThickness;
       }
@@ -327,11 +367,14 @@ export class Backpack extends Blockly.DragTarget implements
     }
 
     const startAtBottom =
-        metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_BOTTOM;
+      metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_BOTTOM;
     if (startAtBottom) {
       // Bottom corner placement
-      this.top_ = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-          this.HEIGHT_ - this.MARGIN_VERTICAL_;
+      this.top_ =
+        metrics.absoluteMetrics.top +
+        metrics.viewMetrics.height -
+        this.HEIGHT_ -
+        this.MARGIN_VERTICAL_;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
         this.top_ -= Blockly.Scrollbar.scrollbarThickness;
@@ -345,9 +388,11 @@ export class Backpack extends Blockly.DragTarget implements
     let boundingRect = this.getBoundingRectangle();
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
-        if (startAtBottom) { // Bump up.
+        if (startAtBottom) {
+          // Bump up.
           this.top_ = otherEl.top - this.HEIGHT_ - this.MARGIN_VERTICAL_;
-        } else { // Bump down.
+        } else {
+          // Bump down.
           this.top_ = otherEl.bottom + this.MARGIN_VERTICAL_;
         }
         // Recheck other savedPositions
@@ -357,7 +402,9 @@ export class Backpack extends Blockly.DragTarget implements
     }
 
     this.svgGroup_.setAttribute(
-        'transform', `translate(${this.left_},${this.top_})`);
+      'transform',
+      `translate(${this.left_},${this.top_})`,
+    );
   }
 
   /**
@@ -405,7 +452,7 @@ export class Backpack extends Blockly.DragTarget implements
     const keys = ['id', 'height', 'width', 'pinned', 'enabled'];
 
     // Traverse the JSON recursively.
-    const traverseJson = function(json, keys) {
+    const traverseJson = function (json, keys) {
       for (const key in json) {
         if (key) {
           if (keys.includes(key)) {
@@ -435,8 +482,8 @@ export class Backpack extends Blockly.DragTarget implements
     const workspace = new Blockly.Workspace();
     try {
       const block = Blockly.Xml.domToBlock(
-          Blockly.utils.xml.textToDom(blockXml),
-          workspace,
+        Blockly.utils.xml.textToDom(blockXml),
+        workspace,
       );
       return this.blockToJsonString(block);
     } finally {
@@ -462,7 +509,6 @@ export class Backpack extends Blockly.DragTarget implements
     this.addItem(this.blockToJsonString(block));
   }
 
-
   /**
    * Adds the provided blocks to backpack.
    * @param blocks The blocks to be added to the
@@ -471,7 +517,6 @@ export class Backpack extends Blockly.DragTarget implements
   addBlocks(blocks: Blockly.Block[]) {
     this.addItems(blocks.map(this.blockToJsonString));
   }
-
 
   /**
    * Removes the specified block from the backpack.
@@ -522,12 +567,14 @@ export class Backpack extends Blockly.DragTarget implements
   setContents(contents: string[]) {
     this.contents_ = [];
     this.contents_ = this.filterDuplicates(
-        // Support XML serialized content for backwards compatiblity:
-        // https://github.com/google/blockly-samples/issues/1827
-        contents.map(
-            (content) => content.startsWith('<block') ?
-                this.blockXmlToJsonString(content) :
-                content));
+      // Support XML serialized content for backwards compatiblity:
+      // https://github.com/google/blockly-samples/issues/1827
+      contents.map((content) =>
+        content.startsWith('<block')
+          ? this.blockXmlToJsonString(content)
+          : content,
+      ),
+    );
     this.onContentChange();
   }
 
@@ -556,11 +603,16 @@ export class Backpack extends Blockly.DragTarget implements
     if (!this.options.useFilledBackpackImage) return;
     if (this.contents_.length > 0) {
       this.svgImg_.setAttributeNS(
-          Blockly.utils.dom.XLINK_NS, 'xlink:href',
-          backpackFilledSvgDataUri);
+        Blockly.utils.dom.XLINK_NS,
+        'xlink:href',
+        backpackFilledSvgDataUri,
+      );
     } else {
       this.svgImg_.setAttributeNS(
-          Blockly.utils.dom.XLINK_NS, 'xlink:href', backpackSvgDataUri);
+        Blockly.utils.dom.XLINK_NS,
+        'xlink:href',
+        backpackSvgDataUri,
+      );
     }
   }
 
@@ -581,9 +633,9 @@ export class Backpack extends Blockly.DragTarget implements
    * @returns Whether the backpack is open-able.
    */
   protected isOpenable(): boolean {
-    return !this.isOpen() && this.options.allowEmptyBackpackOpen ?
-        true :
-        this.getCount() > 0;
+    return !this.isOpen() && this.options.allowEmptyBackpackOpen
+      ? true
+      : this.getCount() > 0;
   }
 
   /**
@@ -606,8 +658,10 @@ export class Backpack extends Blockly.DragTarget implements
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    if (this.workspace_.scrollbar &&
-    (this.workspace_.scrollbar as any).setVisible) {
+    if (
+      this.workspace_.scrollbar &&
+      (this.workspace_.scrollbar as any).setVisible
+    ) {
       (this.workspace_.scrollbar as any).setVisible(false);
     }
     /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -636,8 +690,10 @@ export class Backpack extends Blockly.DragTarget implements
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    if (this.workspace_.scrollbar &&
-      (this.workspace_.scrollbar as any).setVisible) {
+    if (
+      this.workspace_.scrollbar &&
+      (this.workspace_.scrollbar as any).setVisible
+    ) {
       (this.workspace_.scrollbar as any).setVisible(true);
     }
     /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -667,7 +723,10 @@ export class Backpack extends Blockly.DragTarget implements
     }
     this.open();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
-        null, this.workspace_.id, 'backpack');
+      null,
+      this.workspace_.id,
+      'backpack',
+    );
     Blockly.Events.fire(uiEvent);
   }
 
@@ -748,66 +807,67 @@ export class Backpack extends Blockly.DragTarget implements
  * Base64 encoded data uri for backpack  icon.
  */
 const backpackSvgDataUri =
-    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
-    '9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiBoZWlnaHQ9IjI0cHgiIH' +
-    'ZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIGZpbGw9IiM0NTVBNjQiPjxnPjxyZW' +
-    'N0IGZpbGw9Im5vbmUiIGhlaWdodD0iMjQiIHdpZHRoPSIyNCIvPjwvZz48Zz48Zy8+PGc+PH' +
-    'BhdGggZD0iTTEzLjk3LDUuMzRDMTMuOTgsNS4yMywxNCw1LjEyLDE0LDVjMC0xLjEtMC45LT' +
-    'ItMi0ycy0yLDAuOS0yLDJjMCwwLjEyLDAuMDIsMC4yMywwLjAzLDAuMzRDNy42OSw2LjE1LD' +
-    'YsOC4zOCw2LDExdjggYzAsMS4xLDAuOSwyLDIsMmg4YzEuMSwwLDItMC45LDItMnYtOEMxOC' +
-    'w4LjM4LDE2LjMxLDYuMTUsMTMuOTcsNS4zNHogTTExLDVjMC0wLjU1LDAuNDUtMSwxLTFzMS' +
-    'wwLjQ1LDEsMSBjMCwwLjAzLTAuMDEsMC4wNi0wLjAyLDAuMDlDMTIuNjYsNS4wMywxMi4zNC' +
-    'w1LDEyLDVzLTAuNjYsMC4wMy0wLjk4LDAuMDlDMTEuMDEsNS4wNiwxMSw1LjAzLDExLDV6IE' +
-    '0xNiwxM3YxdjAuNSBjMCwwLjI4LTAuMjIsMC41LTAuNSwwLjVTMTUsMTQuNzgsMTUsMTQuNV' +
-    'YxNHYtMUg4di0xaDdoMVYxM3oiLz48L2c+PC9nPjwvc3ZnPg==';
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
+  '9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiBoZWlnaHQ9IjI0cHgiIH' +
+  'ZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIGZpbGw9IiM0NTVBNjQiPjxnPjxyZW' +
+  'N0IGZpbGw9Im5vbmUiIGhlaWdodD0iMjQiIHdpZHRoPSIyNCIvPjwvZz48Zz48Zy8+PGc+PH' +
+  'BhdGggZD0iTTEzLjk3LDUuMzRDMTMuOTgsNS4yMywxNCw1LjEyLDE0LDVjMC0xLjEtMC45LT' +
+  'ItMi0ycy0yLDAuOS0yLDJjMCwwLjEyLDAuMDIsMC4yMywwLjAzLDAuMzRDNy42OSw2LjE1LD' +
+  'YsOC4zOCw2LDExdjggYzAsMS4xLDAuOSwyLDIsMmg4YzEuMSwwLDItMC45LDItMnYtOEMxOC' +
+  'w4LjM4LDE2LjMxLDYuMTUsMTMuOTcsNS4zNHogTTExLDVjMC0wLjU1LDAuNDUtMSwxLTFzMS' +
+  'wwLjQ1LDEsMSBjMCwwLjAzLTAuMDEsMC4wNi0wLjAyLDAuMDlDMTIuNjYsNS4wMywxMi4zNC' +
+  'w1LDEyLDVzLTAuNjYsMC4wMy0wLjk4LDAuMDlDMTEuMDEsNS4wNiwxMSw1LjAzLDExLDV6IE' +
+  '0xNiwxM3YxdjAuNSBjMCwwLjI4LTAuMjIsMC41LTAuNSwwLjVTMTUsMTQuNzgsMTUsMTQuNV' +
+  'YxNHYtMUg4di0xaDdoMVYxM3oiLz48L2c+PC9nPjwvc3ZnPg==';
 
 /**
  * Base64 encoded data uri for backpack  icon when filled.
  */
-const backpackFilledSvgDataUri = 'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
-    'lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYX' +
-    'RlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2Zw' +
-    'ogICB3aWR0aD0iMjQiCiAgIGhlaWdodD0iMjQiCiAgIHZpZXdCb3g9IjAgMCAyNCAyNCIKIC' +
-    'AgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnNSIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3' +
-    'JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj' +
-    '4KICA8ZGVmcwogICAgIGlkPSJkZWZzMiIgLz4KICA8ZwogICAgIGlkPSJsYXllcjEiPgogIC' +
-    'AgPGcKICAgICAgIHN0eWxlPSJmaWxsOiM0NTVhNjQiCiAgICAgICBpZD0iZzg0OCIKICAgIC' +
-    'AgIHRyYW5zZm9ybT0ibWF0cml4KDAuMjY0NTgzMzMsMCwwLDAuMjY0NTgzMzMsOC44MjQ5OT' +
-    'k3LDguODI0OTk5NykiPgogICAgICA8ZwogICAgICAgICBpZD0iZzgyNiI+CiAgICAgICAgPH' +
-    'JlY3QKICAgICAgICAgICBmaWxsPSJub25lIgogICAgICAgICAgIGhlaWdodD0iMjQiCiAgIC' +
-    'AgICAgICAgd2lkdGg9IjI0IgogICAgICAgICAgIGlkPSJyZWN0ODI0IgogICAgICAgICAgIH' +
-    'g9IjAiCiAgICAgICAgICAgeT0iMCIgLz4KICAgICAgPC9nPgogICAgICA8ZwogICAgICAgIC' +
-    'BpZD0iZzgzNCI+CiAgICAgICAgPGcKICAgICAgICAgICBpZD0iZzgyOCIgLz4KICAgICAgIC' +
-    'A8ZwogICAgICAgICAgIGlkPSJnMjIyMyI+CiAgICAgICAgICA8ZwogICAgICAgICAgICAgaW' +
-    'Q9ImcyMTAxNiI+CiAgICAgICAgICAgIDxnCiAgICAgICAgICAgICAgIHN0eWxlPSJmaWxsOi' +
-    'M0NTVhNjQiCiAgICAgICAgICAgICAgIGlkPSJnMTQ5MyIKICAgICAgICAgICAgICAgdHJhbn' +
-    'Nmb3JtPSJtYXRyaXgoMy43Nzk1Mjc2LDAsMCwzLjc3OTUyNzYsLTMzLjM1NDMzLC0zMy4zNT' +
-    'QzMykiPgogICAgICAgICAgICAgIDxnCiAgICAgICAgICAgICAgICAgaWQ9ImcxNDcxIj4KIC' +
-    'AgICAgICAgICAgICAgIDxwYXRoCiAgICAgICAgICAgICAgICAgICBpZD0icmVjdDE0NjkiCi' +
-    'AgICAgICAgICAgICAgICAgICBzdHlsZT0iZmlsbDpub25lIgogICAgICAgICAgICAgICAgIC' +
-    'AgZD0iTSAwLDAgSCAyNCBWIDI0IEggMCBaIiAvPgogICAgICAgICAgICAgIDwvZz4KICAgIC' +
-    'AgICAgICAgICA8ZwogICAgICAgICAgICAgICAgIGlkPSJnMTQ3OSI+CiAgICAgICAgICAgIC' +
-    'AgICA8ZwogICAgICAgICAgICAgICAgICAgaWQ9ImcxNDczIiAvPgogICAgICAgICAgICAgIC' +
-    'AgPGcKICAgICAgICAgICAgICAgICAgIGlkPSJnMTQ3NyI+CiAgICAgICAgICAgICAgICAgID' +
-    'xwYXRoCiAgICAgICAgICAgICAgICAgICAgIGlkPSJwYXRoMTQ3NSIKICAgICAgICAgICAgIC' +
-    'AgICAgICAgZD0ibSAxMiwzIGMgLTEuMSwwIC0yLDAuOSAtMiwyIDAsMC4xMiAwLjAxOTMsMC' +
-    '4yMjk4NDM4IDAuMDI5MywwLjMzOTg0MzggQyA3LjY4OTI5NjUsNi4xNDk4NDMzIDYsOC4zOC' +
-    'A2LDExIHYgOCBjIDAsMS4xIDAuOSwyIDIsMiBoIDggYyAxLjEsMCAyLC0wLjkgMiwtMiBWID' +
-    'ExIEMgMTgsOC4zOCAxNi4zMTA3MDMsNi4xNDk4NDMzIDEzLjk3MDcwMyw1LjMzOTg0MzggMT' +
-    'MuOTgwNzAzLDUuMjI5ODQzOCAxNCw1LjEyIDE0LDUgMTQsMy45IDEzLjEsMyAxMiwzIFogbS' +
-    'AwLDEgYyAwLjU1LDAgMSwwLjQ1IDEsMSAwLDAuMDMgLTAuMDA5NSwwLjA1OTg0NCAtMC4wMT' +
-    'k1MywwLjA4OTg0NCBDIDEyLjY2MDQ2OSw1LjAyOTg0MzggMTIuMzQsNSAxMiw1IDExLjY2LD' +
-    'UgMTEuMzM5NTMxLDUuMDI5ODQzOCAxMS4wMTk1MzEsNS4wODk4NDM4IDExLjAwOTUzMSw1Lj' +
-    'A1OTg0MzggMTEsNS4wMyAxMSw1IDExLDQuNDUgMTEuNDUsNCAxMiw0IFogbSAtMy40NzI2NT' +
-    'YyLDYuMzk4NDM4IGggMS4xNTYyNSB2IDIuNjQwNjI0IGggMC4zMDkzMzU0IGwgLTIuMzdlLT' +
-    'UsLTEuMTcxMTQ2IDEuMDgyNzEwNSwtMTBlLTcgMC4wMTEsMS4xNzExNDYgaCAwLjMzMzMwNC' +
-    'BsIC0wLjAzNTA0LC0yLjU4NzMxNSBoIDAuNTc4MTI1IDAuNTc4MTI1IGwgMC4wMTEwNSwyLj' +
-    'U4NzMxNSBoIDAuMzU2MDI0IFYgMTIuMDYwNTQ3IEggMTQuMDYyNSB2IDAuOTc4NTE1IGggMC' +
-    '4zMzAwNzggdiAtMi41NTI3MzQgaCAxLjE1NjI1IHYgMi41NTI3MzQgaCAwLjk2Njc5NyB2ID' +
-    'AuMzU3NDIyIEggOS42ODM1OTM4IDguNTI3MzQzOCA3LjYwMzUxNTYgdiAtMC4zNTc0MjIgaC' +
-    'AwLjkyMzgyODIgeiIKICAgICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgID' +
-    'wvZz4KICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgIDwvZz' +
-    '4KICAgICAgICA8L2c+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
+const backpackFilledSvgDataUri =
+  'data:image/svg+xml;base64,PD94bWwgdmVyc2' +
+  'lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYX' +
+  'RlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2Zw' +
+  'ogICB3aWR0aD0iMjQiCiAgIGhlaWdodD0iMjQiCiAgIHZpZXdCb3g9IjAgMCAyNCAyNCIKIC' +
+  'AgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnNSIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3' +
+  'JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj' +
+  '4KICA8ZGVmcwogICAgIGlkPSJkZWZzMiIgLz4KICA8ZwogICAgIGlkPSJsYXllcjEiPgogIC' +
+  'AgPGcKICAgICAgIHN0eWxlPSJmaWxsOiM0NTVhNjQiCiAgICAgICBpZD0iZzg0OCIKICAgIC' +
+  'AgIHRyYW5zZm9ybT0ibWF0cml4KDAuMjY0NTgzMzMsMCwwLDAuMjY0NTgzMzMsOC44MjQ5OT' +
+  'k3LDguODI0OTk5NykiPgogICAgICA8ZwogICAgICAgICBpZD0iZzgyNiI+CiAgICAgICAgPH' +
+  'JlY3QKICAgICAgICAgICBmaWxsPSJub25lIgogICAgICAgICAgIGhlaWdodD0iMjQiCiAgIC' +
+  'AgICAgICAgd2lkdGg9IjI0IgogICAgICAgICAgIGlkPSJyZWN0ODI0IgogICAgICAgICAgIH' +
+  'g9IjAiCiAgICAgICAgICAgeT0iMCIgLz4KICAgICAgPC9nPgogICAgICA8ZwogICAgICAgIC' +
+  'BpZD0iZzgzNCI+CiAgICAgICAgPGcKICAgICAgICAgICBpZD0iZzgyOCIgLz4KICAgICAgIC' +
+  'A8ZwogICAgICAgICAgIGlkPSJnMjIyMyI+CiAgICAgICAgICA8ZwogICAgICAgICAgICAgaW' +
+  'Q9ImcyMTAxNiI+CiAgICAgICAgICAgIDxnCiAgICAgICAgICAgICAgIHN0eWxlPSJmaWxsOi' +
+  'M0NTVhNjQiCiAgICAgICAgICAgICAgIGlkPSJnMTQ5MyIKICAgICAgICAgICAgICAgdHJhbn' +
+  'Nmb3JtPSJtYXRyaXgoMy43Nzk1Mjc2LDAsMCwzLjc3OTUyNzYsLTMzLjM1NDMzLC0zMy4zNT' +
+  'QzMykiPgogICAgICAgICAgICAgIDxnCiAgICAgICAgICAgICAgICAgaWQ9ImcxNDcxIj4KIC' +
+  'AgICAgICAgICAgICAgIDxwYXRoCiAgICAgICAgICAgICAgICAgICBpZD0icmVjdDE0NjkiCi' +
+  'AgICAgICAgICAgICAgICAgICBzdHlsZT0iZmlsbDpub25lIgogICAgICAgICAgICAgICAgIC' +
+  'AgZD0iTSAwLDAgSCAyNCBWIDI0IEggMCBaIiAvPgogICAgICAgICAgICAgIDwvZz4KICAgIC' +
+  'AgICAgICAgICA8ZwogICAgICAgICAgICAgICAgIGlkPSJnMTQ3OSI+CiAgICAgICAgICAgIC' +
+  'AgICA8ZwogICAgICAgICAgICAgICAgICAgaWQ9ImcxNDczIiAvPgogICAgICAgICAgICAgIC' +
+  'AgPGcKICAgICAgICAgICAgICAgICAgIGlkPSJnMTQ3NyI+CiAgICAgICAgICAgICAgICAgID' +
+  'xwYXRoCiAgICAgICAgICAgICAgICAgICAgIGlkPSJwYXRoMTQ3NSIKICAgICAgICAgICAgIC' +
+  'AgICAgICAgZD0ibSAxMiwzIGMgLTEuMSwwIC0yLDAuOSAtMiwyIDAsMC4xMiAwLjAxOTMsMC' +
+  '4yMjk4NDM4IDAuMDI5MywwLjMzOTg0MzggQyA3LjY4OTI5NjUsNi4xNDk4NDMzIDYsOC4zOC' +
+  'A2LDExIHYgOCBjIDAsMS4xIDAuOSwyIDIsMiBoIDggYyAxLjEsMCAyLC0wLjkgMiwtMiBWID' +
+  'ExIEMgMTgsOC4zOCAxNi4zMTA3MDMsNi4xNDk4NDMzIDEzLjk3MDcwMyw1LjMzOTg0MzggMT' +
+  'MuOTgwNzAzLDUuMjI5ODQzOCAxNCw1LjEyIDE0LDUgMTQsMy45IDEzLjEsMyAxMiwzIFogbS' +
+  'AwLDEgYyAwLjU1LDAgMSwwLjQ1IDEsMSAwLDAuMDMgLTAuMDA5NSwwLjA1OTg0NCAtMC4wMT' +
+  'k1MywwLjA4OTg0NCBDIDEyLjY2MDQ2OSw1LjAyOTg0MzggMTIuMzQsNSAxMiw1IDExLjY2LD' +
+  'UgMTEuMzM5NTMxLDUuMDI5ODQzOCAxMS4wMTk1MzEsNS4wODk4NDM4IDExLjAwOTUzMSw1Lj' +
+  'A1OTg0MzggMTEsNS4wMyAxMSw1IDExLDQuNDUgMTEuNDUsNCAxMiw0IFogbSAtMy40NzI2NT' +
+  'YyLDYuMzk4NDM4IGggMS4xNTYyNSB2IDIuNjQwNjI0IGggMC4zMDkzMzU0IGwgLTIuMzdlLT' +
+  'UsLTEuMTcxMTQ2IDEuMDgyNzEwNSwtMTBlLTcgMC4wMTEsMS4xNzExNDYgaCAwLjMzMzMwNC' +
+  'BsIC0wLjAzNTA0LC0yLjU4NzMxNSBoIDAuNTc4MTI1IDAuNTc4MTI1IGwgMC4wMTEwNSwyLj' +
+  'U4NzMxNSBoIDAuMzU2MDI0IFYgMTIuMDYwNTQ3IEggMTQuMDYyNSB2IDAuOTc4NTE1IGggMC' +
+  '4zMzAwNzggdiAtMi41NTI3MzQgaCAxLjE1NjI1IHYgMi41NTI3MzQgaCAwLjk2Njc5NyB2ID' +
+  'AuMzU3NDIyIEggOS42ODM1OTM4IDguNTI3MzQzOCA3LjYwMzUxNTYgdiAtMC4zNTc0MjIgaC' +
+  'AwLjkyMzgyODIgeiIKICAgICAgICAgICAgICAgICAgICAgLz4KICAgICAgICAgICAgICAgID' +
+  'wvZz4KICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgIDwvZz' +
+  '4KICAgICAgICA8L2c+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
 Blockly.Css.register(`
 .blocklyBackpack {
@@ -820,7 +880,6 @@ Blockly.Css.register(`
   opacity: 0.8;
 }
 `);
-
 
 /**
  * Custom serializer so that the backpack can save and later recall which

@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_fields_angle',
@@ -108,10 +107,21 @@ Blockly.defineBlocksWithJsonArray([
         'type': 'field_colour',
         'name': 'COLOUR',
         'colour': '#ff4040',
-        'colourOptions':
-            ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
+        'colourOptions': [
+          '#ff4040',
+          '#ff8080',
+          '#ffc0c0',
+          '#4040ff',
+          '#8080ff',
+          '#c0c0ff',
+        ],
         'colourTitles': [
-          'dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue',
+          'dark pink',
+          'pink',
+          'light pink',
+          'dark blue',
+          'blue',
+          'light blue',
         ],
         'columns': 3,
       },
@@ -163,7 +173,6 @@ Blockly.defineBlocksWithJsonArray([
     'colour': 230,
   },
 ]);
-
 
 /**
  * The Default fields category.
@@ -279,11 +288,12 @@ export const category = {
  * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
  */
 export function onInit(workspace) {
-  const randomizeLabelText = function(button) {
-    const blocks = button.getTargetWorkspace().getBlocksByType(
-        'test_fields_label_serializable');
+  const randomizeLabelText = function (button) {
+    const blocks = button
+      .getTargetWorkspace()
+      .getBlocksByType('test_fields_label_serializable');
     const possible = 'AB';
-    for (let i = 0, block; block = blocks[i]; i++) {
+    for (let i = 0, block; (block = blocks[i]); i++) {
       let text = '';
       for (let j = 0; j < 4; j++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -291,46 +301,62 @@ export function onInit(workspace) {
       block.setFieldValue(text, 'LABEL');
     }
   };
-  const setRandomStyle = function(button) {
-    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace()
-        .getAllBlocks(false);
-    const styles =
-        Object.keys(workspace.getRenderer().getConstants().blockStyles);
+  const setRandomStyle = function (button) {
+    const blocks = button
+      .getTargetWorkspace()
+      .getFlyout()
+      .getWorkspace()
+      .getAllBlocks(false);
+    const styles = Object.keys(
+      workspace.getRenderer().getConstants().blockStyles,
+    );
     styles.splice(styles.indexOf(blocks[0].getStyleName()), 1);
     const style = styles[Math.floor(Math.random() * styles.length)];
-    for (let i = 0, block; block = blocks[i]; i++) {
+    for (let i = 0, block; (block = blocks[i]); i++) {
       block.setStyle(style);
     }
   };
-  const toggleEnabled = function(button) {
-    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace()
-        .getAllBlocks(false);
-    for (let i = 0, block; block = blocks[i]; i++) {
+  const toggleEnabled = function (button) {
+    const blocks = button
+      .getTargetWorkspace()
+      .getFlyout()
+      .getWorkspace()
+      .getAllBlocks(false);
+    for (let i = 0, block; (block = blocks[i]); i++) {
       block.setEnabled(!block.isEnabled());
     }
   };
-  const toggleShadow = function(button) {
-    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace()
-        .getAllBlocks(false);
-    for (let i = 0, block; block = blocks[i]; i++) {
+  const toggleShadow = function (button) {
+    const blocks = button
+      .getTargetWorkspace()
+      .getFlyout()
+      .getWorkspace()
+      .getAllBlocks(false);
+    for (let i = 0, block; (block = blocks[i]); i++) {
       block.setShadow(!block.isShadow());
     }
   };
-  const toggleCollapsed = function(button) {
-    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace()
-        .getAllBlocks(false);
-    for (let i = 0, block; block = blocks[i]; i++) {
+  const toggleCollapsed = function (button) {
+    const blocks = button
+      .getTargetWorkspace()
+      .getFlyout()
+      .getWorkspace()
+      .getAllBlocks(false);
+    for (let i = 0, block; (block = blocks[i]); i++) {
       block.setCollapsed(!block.isCollapsed());
     }
   };
-  const changeImage = function(button) {
-    const blocks = button.getTargetWorkspace().getFlyout().getWorkspace()
-        .getBlocksByType('test_fields_image');
+  const changeImage = function (button) {
+    const blocks = button
+      .getTargetWorkspace()
+      .getFlyout()
+      .getWorkspace()
+      .getBlocksByType('test_fields_image');
     const possible = 'abcdefghijklm';
     const image = possible.charAt(Math.floor(Math.random() * possible.length));
     const src =
-        'https://blockly-demo.appspot.com/static/tests/media/' + image + '.png';
-    for (let i = 0, block; block = blocks[i]; i++) {
+      'https://blockly-demo.appspot.com/static/tests/media/' + image + '.png';
+    for (let i = 0, block; (block = blocks[i]); i++) {
       const imageField = block.getField('IMAGE');
       imageField.setValue(src);
     }

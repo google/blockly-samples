@@ -10,7 +10,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 /**
  * Class for an editable angle field.
  */
@@ -80,14 +79,13 @@ export class FieldAngle extends Blockly.FieldNumber {
   private boundEvents: Blockly.browserEvents.Data[] = [];
 
   /** Dynamic red line pointing at the value's angle. */
-  private line: SVGLineElement|null = null;
+  private line: SVGLineElement | null = null;
 
   /** Dynamic pink area extending from 0 to the value's angle. */
-  private gauge: SVGPathElement|null = null;
+  private gauge: SVGPathElement | null = null;
 
   /** The degree symbol for this field. */
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected symbolElement: SVGTSpanElement|null = null;
+  protected symbolElement: SVGTSpanElement | null = null;
 
   /**
    * @param value The initial value of the field.  Should cast to a number.
@@ -102,8 +100,11 @@ export class FieldAngle extends Blockly.FieldNumber {
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/angle#creation}
    * for a list of properties this parameter supports.
    */
-  constructor(value?: string|number|typeof Blockly.Field.SKIP_SETUP,
-      validator?: FieldAngleValidator, config?: FieldAngleConfig) {
+  constructor(
+    value?: string | number | typeof Blockly.Field.SKIP_SETUP,
+    validator?: FieldAngleValidator,
+    config?: FieldAngleConfig,
+  ) {
     super(Blockly.Field.SKIP_SETUP);
 
     if (value === Blockly.Field.SKIP_SETUP) return;
@@ -178,8 +179,10 @@ export class FieldAngle extends Blockly.FieldNumber {
     if (this.symbol) {
       // Add the degree symbol to the left of the number,
       // even in RTL (https://github.com/google/blockly/issues/2380).
-      this.symbolElement =
-          Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.TSPAN, {});
+      this.symbolElement = Blockly.utils.dom.createSvgElement(
+        Blockly.utils.Svg.TSPAN,
+        {},
+      );
       this.symbolElement.appendChild(document.createTextNode(this.symbol));
       this.getTextElement().appendChild(this.symbolElement);
     }
@@ -203,8 +206,10 @@ export class FieldAngle extends Blockly.FieldNumber {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override showEditor_(e?: Event) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    const noFocus = Blockly.utils.userAgent.MOBILE ||
-        Blockly.utils.userAgent.ANDROID || Blockly.utils.userAgent.IPAD;
+    const noFocus =
+      Blockly.utils.userAgent.MOBILE ||
+      Blockly.utils.userAgent.ANDROID ||
+      Blockly.utils.userAgent.IPAD;
     super.showEditor_(e, noFocus);
 
     const editor = this.dropdownCreate();
@@ -213,12 +218,15 @@ export class FieldAngle extends Blockly.FieldNumber {
     const sourceBlock = this.getSourceBlock();
     if (sourceBlock instanceof Blockly.BlockSvg) {
       Blockly.DropDownDiv.setColour(
-          sourceBlock.style.colourPrimary,
-          sourceBlock.style.colourTertiary);
+        sourceBlock.style.colourPrimary,
+        sourceBlock.style.colourTertiary,
+      );
     }
 
     Blockly.DropDownDiv.showPositionedByField(
-        this, this.dropdownDispose.bind(this));
+      this,
+      this.dropdownDispose.bind(this),
+    );
 
     this.updateGraph();
   }
@@ -241,28 +249,39 @@ export class FieldAngle extends Blockly.FieldNumber {
     });
     svg.style.touchAction = 'none';
     const circle = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.CIRCLE, {
-          'cx': FieldAngle.HALF,
-          'cy': FieldAngle.HALF,
-          'r': FieldAngle.RADIUS,
-          'class': 'blocklyAngleCircle',
-        }, svg);
-    this.gauge =
-        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.PATH, {
-          'class': 'blocklyAngleGauge',
-        }, svg);
+      Blockly.utils.Svg.CIRCLE,
+      {
+        'cx': FieldAngle.HALF,
+        'cy': FieldAngle.HALF,
+        'r': FieldAngle.RADIUS,
+        'class': 'blocklyAngleCircle',
+      },
+      svg,
+    );
+    this.gauge = Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.PATH,
+      {
+        'class': 'blocklyAngleGauge',
+      },
+      svg,
+    );
     this.line = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.LINE, {
-          'x1': FieldAngle.HALF,
-          'y1': FieldAngle.HALF,
-          'class': 'blocklyAngleLine',
-        }, svg);
+      Blockly.utils.Svg.LINE,
+      {
+        'x1': FieldAngle.HALF,
+        'y1': FieldAngle.HALF,
+        'class': 'blocklyAngleLine',
+      },
+      svg,
+    );
 
     // Draw markers around the edge.
     const minValueDegrees = Blockly.utils.math.toDegrees(
-        this.fieldAngleToRadians(this.min_));
+      this.fieldAngleToRadians(this.min_),
+    );
     const maxValueDegrees = Blockly.utils.math.toDegrees(
-        this.fieldAngleToRadians(this.max_));
+      this.fieldAngleToRadians(this.max_),
+    );
 
     /**
      * Draw a set of ticks on the gauge.
@@ -291,24 +310,33 @@ export class FieldAngle extends Blockly.FieldNumber {
       }
       for (let angle = min; angle <= max; angle += tickAngle) {
         Blockly.utils.dom.createSvgElement(
-            Blockly.utils.Svg.LINE, {
-              'x1': FieldAngle.HALF + FieldAngle.RADIUS,
-              'y1': FieldAngle.HALF,
-              'x2': FieldAngle.HALF + FieldAngle.RADIUS - length,
-              'y2': FieldAngle.HALF,
-              'class': 'blocklyAngleMarks',
-              'transform': 'rotate(' + -angle + ',' + FieldAngle.HALF + ',' +
-                  FieldAngle.HALF + ')',
-            }, svg);
+          Blockly.utils.Svg.LINE,
+          {
+            'x1': FieldAngle.HALF + FieldAngle.RADIUS,
+            'y1': FieldAngle.HALF,
+            'x2': FieldAngle.HALF + FieldAngle.RADIUS - length,
+            'y2': FieldAngle.HALF,
+            'class': 'blocklyAngleMarks',
+            'transform':
+              'rotate(' +
+              -angle +
+              ',' +
+              FieldAngle.HALF +
+              ',' +
+              FieldAngle.HALF +
+              ')',
+          },
+          svg,
+        );
       }
     };
 
     const displayRange = this.displayMax - this.displayMin;
-    const minorTickAngle = 360 / displayRange * this.minorTick;
+    const minorTickAngle = (360 / displayRange) * this.minorTick;
     if (minorTickAngle) {
       drawTicks(minorTickAngle, 5);
     }
-    const majorTickAngle = 360 / displayRange * this.majorTick;
+    const majorTickAngle = (360 / displayRange) * this.majorTick;
     if (majorTickAngle) {
       drawTicks(majorTickAngle, 10);
     }
@@ -317,16 +345,29 @@ export class FieldAngle extends Blockly.FieldNumber {
     // mousemove even if it's not in the middle of a drag.  In future we may
     // change this behaviour.
     this.boundEvents.push(
-        Blockly.browserEvents.conditionalBind(svg, 'click', this, this.hide));
+      Blockly.browserEvents.conditionalBind(svg, 'click', this, this.hide),
+    );
     // On touch devices, the picker's value is only updated with a drag.  Add
     // a click handler on the drag surface to update the value if the surface
     // is clicked.
     this.boundEvents.push(
-        Blockly.browserEvents.conditionalBind(
-            circle, 'pointerdown', this, this.onMouseMove_, true));
+      Blockly.browserEvents.conditionalBind(
+        circle,
+        'pointerdown',
+        this,
+        this.onMouseMove_,
+        true,
+      ),
+    );
     this.boundEvents.push(
-        Blockly.browserEvents.conditionalBind(
-            circle, 'pointermove', this, this.onMouseMove_, true));
+      Blockly.browserEvents.conditionalBind(
+        circle,
+        'pointermove',
+        this,
+        this.onMouseMove_,
+        true,
+      ),
+    );
     return svg;
   }
 
@@ -447,13 +488,9 @@ export class FieldAngle extends Blockly.FieldNumber {
         this.value_ !== oldValue
       ) {
         Blockly.Events.fire(
-            new (Blockly.Events.get(
-                Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
-                this.sourceBlock_,
-                this.name || null,
-                oldValue,
-                this.value_
-            )
+          new (Blockly.Events.get(
+            Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE,
+          ))(this.sourceBlock_, this.name || null, oldValue, this.value_),
         );
       }
     }
@@ -482,13 +519,13 @@ export class FieldAngle extends Blockly.FieldNumber {
       y2 -= Math.sin(angle) * FieldAngle.RADIUS;
       // Don't ask how the flag calculations work.  They just do.
       const clockwiseFlag = Number(this.clockwise);
-      let largeFlag =
-          Math.abs(Math.floor((angle - angle1) / Math.PI) % 2);
+      let largeFlag = Math.abs(Math.floor((angle - angle1) / Math.PI) % 2);
       if (clockwiseFlag) {
         largeFlag = 1 - largeFlag;
       }
-      path += ` l ${x1},${y1} A ${FieldAngle.RADIUS},${FieldAngle.RADIUS} 0 ` +
-          `${largeFlag} ${clockwiseFlag} ${x2},${y2} z`;
+      path +=
+        ` l ${x1},${y1} A ${FieldAngle.RADIUS},${FieldAngle.RADIUS} 0 ` +
+        `${largeFlag} ${clockwiseFlag} ${x2},${y2} z`;
     }
     this.gauge.setAttribute('d', path);
     this.line.setAttribute('x2', `${x2}`);
@@ -505,8 +542,10 @@ export class FieldAngle extends Blockly.FieldNumber {
     super.onHtmlInputKeyDown_(e);
     const block = this.getSourceBlock();
     if (!block) {
-      throw new Error('The field has not yet been attached to its input. ' +
-          'Call appendField to attach it.');
+      throw new Error(
+        'The field has not yet been attached to its input. ' +
+          'Call appendField to attach it.',
+      );
     }
 
     let multiplier = 0;
@@ -543,7 +582,7 @@ export class FieldAngle extends Blockly.FieldNumber {
    * @returns A valid angle, or null if invalid.
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected override doClassValidation_(newValue?: unknown): number|null {
+  protected override doClassValidation_(newValue?: unknown): number | null {
     // The obvious approach would be to call super.doClassValidation_ to handle
     // min/max limitations.  However angle pickers out of range need to clamp
     // to the closest min/max point, which may involve a wrap to the opposite
@@ -572,12 +611,12 @@ export class FieldAngle extends Blockly.FieldNumber {
     if (value < this.min_) {
       const undershoot = this.min_ - value;
       const overshoot = displayRange - undershoot - valueRange;
-      value = (undershoot < overshoot) ? this.min_ : this.max_;
+      value = undershoot < overshoot ? this.min_ : this.max_;
     }
     if (value > this.max_) {
       const overshoot = value - this.max_;
       const undershoot = displayRange - overshoot - valueRange;
-      value = (undershoot < overshoot) ? this.min_ : this.max_;
+      value = undershoot < overshoot ? this.min_ : this.max_;
     }
     return value;
   }
@@ -623,7 +662,6 @@ Blockly.fieldRegistry.unregister('field_angle');
 Blockly.fieldRegistry.register('field_angle', FieldAngle);
 
 FieldAngle.prototype.DEFAULT_VALUE = 0;
-
 
 /**
  * CSS for angle field.

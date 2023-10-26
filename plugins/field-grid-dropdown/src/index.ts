@@ -23,8 +23,8 @@ export interface FieldGridDropdownConfig extends Blockly.FieldDropdownConfig {
 /**
  * Construct a FieldGridDropdown from a JSON arg object.
  */
-export interface FieldGridDropdownFromJsonConfig extends
-  FieldGridDropdownConfig {
+export interface FieldGridDropdownFromJsonConfig
+  extends FieldGridDropdownConfig {
   options?: Blockly.MenuGenerator;
 }
 
@@ -61,9 +61,11 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    * @constructor
    * @throws {TypeError} If `menuGenerator` options are incorrectly structured.
    */
-  constructor(menuGenerator: Blockly.MenuGenerator,
-      validator?: FieldGridDropdownValidator,
-      config?: FieldGridDropdownConfig) {
+  constructor(
+    menuGenerator: Blockly.MenuGenerator,
+    validator?: FieldGridDropdownValidator,
+    config?: FieldGridDropdownConfig,
+  ) {
     super(menuGenerator, validator, config);
 
     if (config?.columns) {
@@ -90,9 +92,10 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   static fromJson(config: FieldGridDropdownFromJsonConfig) {
     if (!config.options) {
       throw new Error(
-          'options are required for the dropdown field. The ' +
+        'options are required for the dropdown field. The ' +
           'options property must be assigned an array of ' +
-          '[humanReadableValue, languageNeutralValue] tuples.');
+          '[humanReadableValue, languageNeutralValue] tuples.',
+      );
     }
     // `this` might be a subclass of FieldDropdown if that class doesn't
     // override the static fromJson method.
@@ -140,13 +143,14 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
     const menuElement = this.menu_?.getElement() ?? null;
     if (menuElement) {
-      Blockly.utils.dom.addClass(menuElement,
-          'fieldGridDropDownContainer');
+      Blockly.utils.dom.addClass(menuElement, 'fieldGridDropDownContainer');
     }
     this.updateColumnsStyling_();
 
     Blockly.DropDownDiv.showPositionedByField(
-        this, this.dropdownDispose_.bind(this));
+      this,
+      this.dropdownDispose_.bind(this),
+    );
   }
 
   /**
@@ -155,8 +159,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   private updateColumnsStyling_() {
     const menuElement = this.menu_ ? this.menu_.getElement() : null;
     if (menuElement) {
-      menuElement.style.gridTemplateColumns =
-        `repeat(${this.columns}, min-content)`;
+      menuElement.style.gridTemplateColumns = `repeat(${this.columns}, min-content)`;
     }
   }
 
@@ -177,8 +180,9 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     const sourceBlock = this.getSourceBlock();
     if (!(sourceBlock instanceof Blockly.BlockSvg)) return;
 
-    const colourSource = sourceBlock.isShadow() ? sourceBlock.getParent() :
-        sourceBlock;
+    const colourSource = sourceBlock.isShadow()
+      ? sourceBlock.getParent()
+      : sourceBlock;
     if (!colourSource) return;
 
     return {

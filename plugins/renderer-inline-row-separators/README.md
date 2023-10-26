@@ -15,11 +15,13 @@ It is strongly recommended that instead of using this plugin, you upgrade to a v
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/renderer-inline-row-separators
 ```
 
 ### npm
+
 ```
 npm install @blockly/renderer-inline-row-separators --save
 ```

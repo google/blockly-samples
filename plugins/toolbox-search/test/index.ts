@@ -18,12 +18,14 @@ import '../src/toolbox_search';
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   return Blockly.inject(blocklyDiv, options);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const toolbox = Object.assign({}, toolboxCategories);
   toolbox['contents'].push({
     'kind': 'search',
@@ -34,5 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
     toolbox,
   };
   createPlayground(
-      document.getElementById('root'), createWorkspace, defaultOptions);
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

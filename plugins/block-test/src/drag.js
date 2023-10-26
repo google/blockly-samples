@@ -10,7 +10,6 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-
 /**
  * The Drag category.
  */

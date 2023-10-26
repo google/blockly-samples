@@ -32,24 +32,22 @@ Blockly.defineBlocksWithJsonArray([
     'helpUrl': '%{BKY_TEXT_JOIN_HELPURL}',
     'tooltip': '%{BKY_TEXT_JOIN_TOOLTIP}',
     'mutator': 'text_join_mutator',
-    'extensions': [
-      'inline_text_join_extension',
-    ],
+    'extensions': ['inline_text_join_extension'],
   },
 ]);
 
 // An extension that enables inline input mode and overrides the updateShape_
 // method to insert dummy inputs between value inputs.
-const inlineTextJoinExtension = function(this: TextJoinBlock) {
+const inlineTextJoinExtension = function (this: TextJoinBlock) {
   this.inputsInline = true;
 
-  this.updateShape_ = function(this: TextJoinBlock) {
+  this.updateShape_ = function (this: TextJoinBlock) {
     if (this.itemCount_ && this.getInput('EMPTY')) {
       this.removeInput('EMPTY');
     } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
       this.appendDummyInput('EMPTY')
-          .appendField(this.newQuote_(true))
-          .appendField(this.newQuote_(false));
+        .appendField(this.newQuote_(true))
+        .appendField(this.newQuote_(false));
     }
 
     // Add new inputs.
@@ -80,4 +78,6 @@ const inlineTextJoinExtension = function(this: TextJoinBlock) {
 };
 
 Blockly.Extensions.register(
-    'inline_text_join_extension', inlineTextJoinExtension);
+  'inline_text_join_extension',
+  inlineTextJoinExtension,
+);
