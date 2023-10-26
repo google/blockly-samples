@@ -18,7 +18,16 @@ const compat = new FlatCompat();
 
 module.exports = [
   {
-    ignores: ['examples/', 'codelabs/', 'gh-pages/', '**/dist/', '**/build/'],
+    ignores: [
+      'examples/',
+      'codelabs/',
+      'gh-pages/',
+      '**/dist/',
+      '**/build/',
+      // specific examples that are sometimes copied into plugins
+      'plugins/dev-create/templates/sample-app',
+      'plugins/dev-create/templates/sample-app-ts',
+    ],
   },
   js.configs.recommended, // eslint-recommended
   ...compat.extends('eslint-config-google'),
