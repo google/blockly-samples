@@ -102,7 +102,6 @@ const database = [
 /**
  * Migrates the contents of a particular file, renaming references and
  * adding/updating imports.
- *
  * @param {string} contents The string contents of the file to migrate.
  * @returns {string} The migrated contents of the file.
  */
@@ -118,7 +117,6 @@ function migrateContents(contents) {
  * Migrates a particular import in a particular file. Renames references to
  * where the import used to exist on the namespace tree, and adds/updates
  * imports.
- *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
  * @returns {string} The migrated contents of the file.
@@ -133,7 +131,6 @@ function fixImport(contents, migrationData) {
 
 /**
  * Returns the identifier a given import is assigned to.
- *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
  * @returns The identifier associated with the import associated with the
@@ -152,9 +149,9 @@ function getIdentifier(contents, migrationData) {
 /**
  * Replaces references to where an import used to exist on the namespace tree
  * with references to the actual import (if any references are found).
- *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
+ * @param identifier
  * @returns {string} The migrated contents of the file.
  */
 function replaceReferences(contents, migrationData, identifier) {
@@ -170,7 +167,6 @@ function replaceReferences(contents, migrationData, identifier) {
 /**
  * Replaces the any existing import with the new import, or if no import is
  * found, inserts a new one after the 'blockly' import.
- *
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
  * @returns {string} The migrated contents of the file.
@@ -213,7 +209,6 @@ function addImport(contents, migrationData) {
 /**
  * Returns a regular expression that matches an import statement for the given
  * import identifier.
- *
  * @param {string} importIdent The identifier of the import to match.
  * @returns {RegExp} The regular expression.
  */
@@ -224,7 +219,6 @@ function createImportRegExp(importIdent) {
 /**
  * Returns a regular expression that matches a require statement for the given
  * identifier.
- *
  * @param {string} importIdent The identifer of the import to match.
  * @returns {RegExp} The regular expression.
  */

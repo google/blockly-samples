@@ -131,6 +131,8 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
   /**
    * Decode the JSON event.
    * @param json JSON representation.
+   * @param workspace
+   * @param event
    * @returns The deserialized event.
    */
   static fromJson(

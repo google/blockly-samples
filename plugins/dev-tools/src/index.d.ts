@@ -51,6 +51,10 @@ declare namespace DevTools {
 
   /**
    * Create the Blockly playground.
+   * @param container
+   * @param createWorkspace
+   * @param defaultOptions
+   * @param vsEditorPath
    * @returns A promise to the playground API.
    */
   function createPlayground(container: HTMLElement, createWorkspace?:
@@ -60,6 +64,8 @@ declare namespace DevTools {
 
   /**
    * Use dat.GUI to add controls to adjust configuration of a Blockly workspace.
+   * @param createWorkspace
+   * @param defaultOptions
    * @returns The dat.GUI instance.
    */
   function addGUIControls(createWorkspace:
@@ -69,6 +75,8 @@ declare namespace DevTools {
   /**
    * Generates a number of field testing blocks for a specific field and returns
    * the toolbox xml string.
+   * @param fieldName
+   * @param options
    * @returns The toolbox xml string.
    */
   export function generateFieldTestBlocks(fieldName: string, options?:

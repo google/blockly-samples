@@ -355,7 +355,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * overflow values. This calculation is done independently in both the
    * horizontal and vertical directions. These values can be configured in the
    * options for the plugin.
-   *
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
    *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.
@@ -410,7 +409,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * the given edge of the viewport. If the pointer is outside the viewport,
    * the value will be positive. If the pointer is inside the viewport, the
    * value will be negative.
-   *
    * @param {!Blockly.MetricsManager.ContainerRegion} viewMetrics View metrics
    *     for the workspace.
    * @param {!Blockly.utils.Coordinate} mouse Mouse coordinates.

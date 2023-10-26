@@ -19,7 +19,6 @@ Blockly.Msg['PROCEDURE_VARIABLE'] = 'variable:';
 delete Blockly.Blocks['procedures_defnoreturn'];
 delete Blockly.Blocks['procedures_defreturn'];
 
-/* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {
     "type": "procedures_defnoreturn",
@@ -94,7 +93,6 @@ Blockly.defineBlocksWithJsonArray([
     "mutator": "procedure_def_mutator",
   },
 ]);
-/* eslint-enable quotes */
 
 /**
  * Defines the what are essentially info-getters for the procedures_defnoreturn

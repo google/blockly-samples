@@ -766,7 +766,6 @@ export class Navigation {
    *
    * If the given connections are not compatible try finding compatible
    * connections on the source blocks of the given connections.
-   *
    * @param {?Blockly.RenderedConnection} movingConnection The connection that
    *     is being moved.
    * @param {?Blockly.RenderedConnection} destConnection The connection to be

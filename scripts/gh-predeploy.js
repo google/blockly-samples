@@ -221,7 +221,6 @@ function createPluginPage(pluginDir, isLocal) {
  * Create the README page (in HTML) from the plugin's README.md file.
  * This includes the same header, nav bar, and footer as the playground page
  * for a given package.
- *
  * @param {string} pluginDir The directory of the plugin that is currently
  *     being prepared.
  * @param {boolean} isLocal True if building for a local test. False if
@@ -290,7 +289,6 @@ function preparePlugin(pluginDir, isLocal) {
 
 /**
  * Find the folders that contain plugins with test pages.
- *
  * @returns {Array.string} A list of directories that should be processed
  *   for deployment to GitHub Pages.
  */
@@ -306,7 +304,6 @@ function getPluginFolders() {
 
 /**
  * Prepare plugins for deployment to gh-pages.
- *
  * @param {Function} done Completed callback.
  * @returns {Function} Gulp task.
  */
@@ -321,7 +318,6 @@ function prepareToDeployPlugins(done) {
 
 /**
  * Prepare plugins for local testing of the GitHub Pages site.
- *
  * @param {Function} done Completed callback.
  * @returns {Function} Gulp task.
  */
@@ -504,7 +500,6 @@ function prepareToDeployExamples(done) {
 
 /**
  * Prepare examples/demos for local testing of the GitHub Pages site.
- *
  * @param {Function} done Completed callback.
  * @returns {Function} Gulp task.
  */
@@ -521,7 +516,6 @@ function prepareLocalExamples(done) {
  * Create the index page for the blockly-samples GitHub Pages site.
  * This page has some nice wrappers and links to plugins and demos
  * sourced from _index.html.
- *
  * @param {boolean} isLocal True if building for a local test. False if
  *   building for gh-pages.
  */

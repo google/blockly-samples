@@ -37,12 +37,10 @@ export const category = {
     },
     {
       'kind': 'BLOCK',
-      /* eslint-disable max-len */
       'blockxml': `
 <block type="text">
   <field name="TEXT">Zalgo in text field:B̛̻̦̬̘̰͎̥̈̔͊͞ͅl̡͖̫̺̬̖̣̳̃̀́͑͑̕͟͠͝o̢̹͙̮̫͔͋̉̊̑̿̽̚c̸̹̹̜͙̹̠͋̒͑̊̇͝k̡͉̫͇̖̳͖̊͒́̆̄̎̂̔̕͜͞l̰̙̞̳̩̠͖̯̀̆̈́̿̈̓͗y̨̡̟͇̮͈̬̙̲̏̅̀͘͠</field>
 </block>`,
-      /* eslint-enable max-len */
     },
   ],
 };

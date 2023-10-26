@@ -16,7 +16,6 @@ import {createMinusField} from './field_minus';
 // https://github.com/google/blockly-samples/issues/768#issuecomment-885663394
 delete Blockly.Blocks['lists_create_with'];
 
-/* eslint-disable quotes */
 Blockly.defineBlocksWithJsonArray([
   {
     "type": "lists_create_with",
@@ -34,7 +33,6 @@ Blockly.defineBlocksWithJsonArray([
     "mutator": "new_list_create_with_mutator",
   },
 ]);
-/* eslint-enable quotes */
 
 const listCreateMutator = {
   /**

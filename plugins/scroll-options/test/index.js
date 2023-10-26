@@ -11,7 +11,6 @@
 import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
 
-/* eslint-disable-next-line max-len */
 import {ScrollBlockDragger, ScrollMetricsManager, ScrollOptions} from '../src/index';
 
 /**

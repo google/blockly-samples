@@ -86,7 +86,6 @@ export class FieldAngle extends Blockly.FieldNumber {
   private gauge: SVGPathElement|null = null;
 
   /** The degree symbol for this field. */
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   protected symbolElement: SVGTSpanElement|null = null;
 
   /**
