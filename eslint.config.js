@@ -96,6 +96,7 @@ module.exports = [
       'jsdoc/require-jsdoc': [
         'warn',
         {
+          'enableFixer': false,
           'require': {
             'FunctionDeclaration': true,
             'ClassDeclaration': true,
@@ -137,6 +138,17 @@ module.exports = [
       'jsdoc/require-param-type': 'off',
       'jsdoc/require-property-type': 'off',
       'jsdoc/require-returns-type': 'off',
+      // Don't auto-add missing jsdoc. Only required on exported items.
+      'jsdoc/require-jsdoc': [
+        'warn',
+        {
+          'enableFixer': false,
+          'publicOnly': true,
+        },
+      ],
+      // params and returns docs are optional.
+      'jsdoc/require-param-description': ['off'],
+      'jsdoc/require-returns': ['off'],
       // Ensure there is a blank line between the body and any @tags,
       // as required by the tsdoc spec.
       // TODO: Re-enable soon.
