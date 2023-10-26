@@ -10,7 +10,6 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-
 import * as Blockly from 'blockly/core';
 import {Modal} from '@blockly/plugin-modal';
 
@@ -31,8 +30,9 @@ export class TypedVariableModal extends Modal {
    *     variable modal.
    */
   constructor(workspace, btnCallbackName, types, optMessages) {
-    const title = (optMessages && optMessages['TYPED_VAR_MODAL_TITLE']) ||
-        'Create Typed Variable';
+    const title =
+      (optMessages && optMessages['TYPED_VAR_MODAL_TITLE']) ||
+      'Create Typed Variable';
     super(title, workspace);
 
     /**
@@ -85,7 +85,7 @@ export class TypedVariableModal extends Modal {
       'TYPED_VAR_MODAL_CONFIRM_BUTTON': 'Ok',
       'TYPED_VAR_MODAL_CANCEL_BUTTON': 'Cancel',
       'TYPED_VAR_MODAL_INVALID_NAME':
-          'Name is not valid. Please choose a different name.',
+        'Name is not valid. Please choose a different name.',
     };
 
     Object.assign(messages, optMessages);
@@ -112,7 +112,6 @@ export class TypedVariableModal extends Modal {
    *     TYPED_VAR_MODAL_CANCEL_BUTTON: string
    * }} TypedVarModalMessages
    */
-
 
   /**
    * Create a typed variable modal and display it on the given button name.
@@ -172,18 +171,22 @@ export class TypedVariableModal extends Modal {
     const text = this.getValidInput_();
     const type = this.getSelectedType_() || '';
     if (text) {
-      const existing =
-          Blockly.Variables.nameUsedWithAnyType(text, this.workspace_);
+      const existing = Blockly.Variables.nameUsedWithAnyType(
+        text,
+        this.workspace_,
+      );
       if (existing) {
         let msg = '';
         if (existing.type === type) {
           msg = Blockly.Msg['VARIABLE_ALREADY_EXISTS'].replace(
-              '%1', existing.name);
+            '%1',
+            existing.name,
+          );
         } else {
-          msg =
-              Blockly.Msg['VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE'];
-          msg = msg.replace('%1', existing.name).replace('%2',
-              this.getDisplayName_(existing.type));
+          msg = Blockly.Msg['VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE'];
+          msg = msg
+            .replace('%1', existing.name)
+            .replace('%2', this.getDisplayName_(existing.type));
         }
         Blockly.dialog.alert(msg);
       } else {
@@ -221,8 +224,10 @@ export class TypedVariableModal extends Modal {
     let newVar = this.variableNameInput_.value;
     if (newVar) {
       newVar = newVar.replace(/[\s\xa0]+/g, ' ').trim();
-      if (newVar === Blockly.Msg['RENAME_VARIABLE'] ||
-          newVar === Blockly.Msg['NEW_VARIABLE']) {
+      if (
+        newVar === Blockly.Msg['RENAME_VARIABLE'] ||
+        newVar === Blockly.Msg['NEW_VARIABLE']
+      ) {
         // Ok, not ALL names are legal...
         newVar = null;
       }
@@ -237,8 +242,9 @@ export class TypedVariableModal extends Modal {
    */
   renderContent_(contentContainer) {
     const varNameContainer = this.createVarNameContainer_();
-    this.variableNameInput_ = varNameContainer
-        .querySelector('.typedModalVariableNameInput');
+    this.variableNameInput_ = varNameContainer.querySelector(
+      '.typedModalVariableNameInput',
+    );
 
     const typedVarDiv = document.createElement('div');
     typedVarDiv.className = 'typedModalTypes';
@@ -286,7 +292,6 @@ export class TypedVariableModal extends Modal {
     this.addEvent_(cancelBtn, 'click', this, this.onCancel_);
     return cancelBtn;
   }
-
 
   /**
    * Check the first type in the list.

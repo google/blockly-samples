@@ -18,8 +18,10 @@ import Blockly from 'blockly/core';
 export function populateRandom(workspace, count) {
   const names = [];
   for (const blockName in Blockly.Blocks) {
-    if (Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockName) &&
-      Object.prototype.hasOwnProperty.call(Blockly.Blocks[blockName], 'init')) {
+    if (
+      Object.prototype.hasOwnProperty.call(Blockly.Blocks, blockName) &&
+      Object.prototype.hasOwnProperty.call(Blockly.Blocks[blockName], 'init')
+    ) {
       names.push(blockName);
     }
   }
@@ -28,9 +30,16 @@ export function populateRandom(workspace, count) {
     const name = names[Math.floor(Math.random() * names.length)];
     const block = workspace.newBlock(name);
     block.initSvg();
-    block.getSvgRoot().setAttribute('transform', 'translate(' +
-        Math.round(Math.random() * 450 + 40) + ', ' +
-        Math.round(Math.random() * 600 + 40) + ')');
+    block
+      .getSvgRoot()
+      .setAttribute(
+        'transform',
+        'translate(' +
+          Math.round(Math.random() * 450 + 40) +
+          ', ' +
+          Math.round(Math.random() * 600 + 40) +
+          ')',
+      );
     block.render();
   }
 }

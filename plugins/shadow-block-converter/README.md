@@ -5,16 +5,19 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin for automatically conv
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/shadow-block-converter
 ```
 
 ### npm
+
 ```
 npm install @blockly/shadow-block-converter --save
 ```
 
 ## Usage
+
 This plugin exports a function called `shadowBlockConversionChangeListener`. If
 you add it as a change listener to your blockly workspace then any shadow block
 the user edits will be converted to a real block. See below for an example using

@@ -7,11 +7,13 @@ This checker still expects nullable arrays of string for connection type checks,
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/plugin-strict-connection-checker
 ```
 
 ### npm
+
 ```
 npm install @blockly/plugin-strict-connection-checker --save
 ```
@@ -28,8 +30,8 @@ import {pluginInfo as StrictConnectionsPluginInfo} from '@blockly/plugin-strict-
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
-      ...StrictConnectionsPluginInfo,
-    },
+    ...StrictConnectionsPluginInfo,
+  },
 });
 ```
 
@@ -40,4 +42,5 @@ Note that this uses the [spread operator](https://developer.mozilla.org/en-US/do
 This plugin exports a class, `StrictConnectionChecker`, and registers it as a connection checker with Blockly. You should not need to instantiate it directly.
 
 ## License
+
 Apache 2.0

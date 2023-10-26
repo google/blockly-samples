@@ -21,13 +21,13 @@ npm start
 
 ### Available templates
 
-``--type field``: A field template.
+`--type field`: A field template.
 
-``--type block``: A block template.
+`--type block`: A block template.
 
-``--type theme``: A theme template.
+`--type theme`: A theme template.
 
-``--type plugin``: A generic plugin template. (Default)
+`--type plugin`: A generic plugin template. (Default)
 
 ### Options
 

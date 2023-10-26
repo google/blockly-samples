@@ -5,27 +5,32 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that suggests blocks f
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/suggested-blocks
 ```
 
 ### npm
+
 ```
 npm install @blockly/suggested-blocks --save
 ```
 
 ## Usage
+
 ```js
 import * as Blockly from 'blockly';
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
 const toolbox = {
-  "kind": "categoryToolbox",
-  "contents": [
+  'kind': 'categoryToolbox',
+  'contents': [
     {
-      "kind": "category",
-      "name": "My Category",
-      "contents": [ /* your category contents */ ]
+      'kind': 'category',
+      'name': 'My Category',
+      'contents': [
+        /* your category contents */
+      ],
     },
     {
       'kind': 'category',
@@ -39,9 +44,8 @@ const toolbox = {
       'custom': 'RECENTLY_USED',
       'categorystyle': 'recently_used_category',
     },
-  ]
+  ],
 };
-
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
@@ -51,6 +55,7 @@ const workspace = Blockly.inject('blocklyDiv', {
 // Initialize the plugin
 SuggestedBlocks.init(workspace);
 ```
+
 ## API
 
 - `init`: Initializes the suggested blocks categories in the toolbox. Takes several arguments:
@@ -68,4 +73,5 @@ SuggestedBlocks.init(workspace);
     serialized state do not affect the statistics.
 
 ## License
+
 Apache 2.0

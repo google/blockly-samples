@@ -12,16 +12,13 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
-
   {
     'type': 'test_connections_stack_next',
     'message0': '',
     'nextStatement': null,
     'colour': '#aaaaaa',
-    'tooltip': 'No Checks\n' +
-        'Can connect to any previous connection.',
+    'tooltip': 'No Checks\n' + 'Can connect to any previous connection.',
   },
   {
     'type': 'test_connections_stack_blue',
@@ -29,28 +26,24 @@ Blockly.defineBlocksWithJsonArray([
     'previousStatement': 'nonePrev',
     'nextStatement': 'greenRel',
     'colour': 230,
-    'tooltip': 'Prev: nonePrev\n' +
-        'Next: greenRel\n' +
-        'Next connection can accept yellow blocks but not red blocks.',
+    'tooltip':
+      'Prev: nonePrev\n' +
+      'Next: greenRel\n' +
+      'Next connection can accept yellow blocks but not red blocks.',
   },
   {
     'type': 'test_connections_stack_yellow',
     'message0': '',
-    'previousStatement': [
-      'greenRel',
-      'yellowRel',
-    ],
-    'nextStatement': [
-      'yellowRel',
-      'orangeRel',
-    ],
+    'previousStatement': ['greenRel', 'yellowRel'],
+    'nextStatement': ['yellowRel', 'orangeRel'],
     'colour': 60,
-    'tooltip': 'Prev: yellowRel, greenRel\n' +
-        'Next: yellowRel, orangeRel\n' +
-        'Prev can connect to yellow blocks and blue blocks, but not red' +
-        ' blocks.\n' +
-        'Next can connect to yellow blocks and red blocks, but not blue' +
-        ' blocks.',
+    'tooltip':
+      'Prev: yellowRel, greenRel\n' +
+      'Next: yellowRel, orangeRel\n' +
+      'Prev can connect to yellow blocks and blue blocks, but not red' +
+      ' blocks.\n' +
+      'Next can connect to yellow blocks and red blocks, but not blue' +
+      ' blocks.',
   },
   {
     'type': 'test_connections_stack_red',
@@ -58,55 +51,55 @@ Blockly.defineBlocksWithJsonArray([
     'previousStatement': 'orangeRel',
     'nextStatement': 'noneNext',
     'colour': 0,
-    'tooltip': 'Prev: orangeRel\n' +
-        'Next: noneNext\n' +
-        'Prev can connect to yellow blocks, but not blue blocks.',
+    'tooltip':
+      'Prev: orangeRel\n' +
+      'Next: noneNext\n' +
+      'Prev can connect to yellow blocks, but not blue blocks.',
   },
   {
     'type': 'test_connections_stack_prev',
     'message0': '',
     'previousStatement': null,
     'colour': '#aaaaaa',
-    'tooltip': 'No Checks\n' +
-        'Can connect to any input connection.',
+    'tooltip': 'No Checks\n' + 'Can connect to any input connection.',
   },
 ]);
-
 
 /**
  * Handles "insert" button in the connection stack test category. This will
  * insert a group of test blocks connected in a stack.
  * @param {!Blockly.FlyoutButton} button The flyout button.
  */
-const insertConnectionStacks = function(button) {
+const insertConnectionStacks = function (button) {
   const workspace = button.getTargetWorkspace();
   Blockly.Xml.domToWorkspace(
-      Blockly.utils.xml.textToDom(
-          '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
-          '  <block type="test_connections_stack_next">\n' +
-          '    <next>\n' +
-          '      <block type="test_connections_stack_blue">\n' +
-          '        <next>\n' +
-          '          <block type="test_connections_stack_yellow">\n' +
-          '            <next>\n' +
-          '              <block type="test_connections_stack_yellow">\n' +
-          '                <next>\n' +
-          '                  <block type="test_connections_stack_red">\n' +
-          '                    <next>\n' +
-          '                      <block type="test_connections_stack_prev"/>\n' +
-          '                    </next>\n' +
-          '                  </block>\n' +
-          '                </next>\n' +
-          '              </block>\n' +
-          '            </next>\n' +
-          '          </block>\n' +
-          '        </next>\n' +
-          '      </block>\n' +
-          '    </next>\n' +
-          '  </block>\n' +
-          '</xml>'
-      ),
-      workspace);
+    Blockly.utils.xml.textToDom(
+      '<xml xmlns="https://developers.google.com/blockly/xml">\n' +
+        '  <block type="test_connections_stack_next">\n' +
+        '    <next>\n' +
+        '      <block type="test_connections_stack_blue">\n' +
+        '        <next>\n' +
+        '          <block type="test_connections_stack_yellow">\n' +
+        '            <next>\n' +
+        '              <block type="test_connections_stack_yellow">\n' +
+        '                <next>\n' +
+        '                  <block type="test_connections_stack_red">\n' +
+        '                    <next>\n' +
+        '                      <block type="test_connections_stack_prev"/>\n' +
+        '                    </next>\n' +
+        '                  </block>\n' +
+        '                </next>\n' +
+        '              </block>\n' +
+        '            </next>\n' +
+        '          </block>\n' +
+        '        </next>\n' +
+        '      </block>\n' +
+        '    </next>\n' +
+        '  </block>\n' +
+        '</xml>',
+    ),
+    workspace,
+  );
 };
 
 /**
@@ -185,12 +178,13 @@ export const category = {
   ],
 };
 
-
 /**
  * Initialize this toolbox category.
  * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
  */
 export function onInit(workspace) {
   workspace.registerButtonCallback(
-      'insertConnectionStacks', insertConnectionStacks);
+    'insertConnectionStacks',
+    insertConnectionStacks,
+  );
 }

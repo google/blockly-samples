@@ -9,7 +9,6 @@ import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 import {ObservableParameterModel} from './observable_parameter_model';
 import {ObservableProcedureModel} from './observable_procedure_model';
 
-
 /**
  * Notifies listeners that a procedure data model has been created.
  */
@@ -42,8 +41,9 @@ export class ProcedureCreate extends ProcedureBase {
    */
   toJson(): ProcedureCreateJson {
     const json = super.toJson() as ProcedureCreateJson;
-    json['procedure'] =
-        Blockly.serialization.procedures.saveProcedure(this.procedure);
+    json['procedure'] = Blockly.serialization.procedures.saveProcedure(
+      this.procedure,
+    );
     return json;
   }
 
@@ -54,15 +54,19 @@ export class ProcedureCreate extends ProcedureBase {
    * @returns The new procedure create event.
    * @internal
    */
-  static fromJson(json: ProcedureCreateJson, workspace: Blockly.Workspace):
-      ProcedureCreate {
+  static fromJson(
+    json: ProcedureCreateJson,
+    workspace: Blockly.Workspace,
+  ): ProcedureCreate {
     return new ProcedureCreate(
+      workspace,
+      Blockly.serialization.procedures.loadProcedure(
+        ObservableProcedureModel,
+        ObservableParameterModel,
+        json['procedure'],
         workspace,
-        Blockly.serialization.procedures.loadProcedure(
-            ObservableProcedureModel,
-            ObservableParameterModel,
-            json['procedure'],
-            workspace));
+      ),
+    );
   }
 }
 
@@ -71,4 +75,7 @@ export interface ProcedureCreateJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, ProcedureCreate.TYPE, ProcedureCreate);
+  Blockly.registry.Type.EVENT,
+  ProcedureCreate.TYPE,
+  ProcedureCreate,
+);

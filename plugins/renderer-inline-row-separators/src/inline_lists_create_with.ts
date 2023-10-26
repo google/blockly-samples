@@ -24,41 +24,41 @@ const builtInListBlock = Blockly.Blocks['lists_create_with'];
 // init and updateShape_ methods to enabline inline input mode and insert dummy
 // inputs between value inputs.
 Blockly.Blocks['inline_lists_create_with'] = Object.assign(
-    {},
-    builtInListBlock,
-    {
-      init: function(this: ListBlock) {
-        builtInListBlock.init.apply(this);
-        this.inputsInline = true;
-      },
+  {},
+  builtInListBlock,
+  {
+    init: function (this: ListBlock) {
+      builtInListBlock.init.apply(this);
+      this.inputsInline = true;
+    },
 
-      /* eslint-disable @typescript-eslint/naming-convention */
-      updateShape_: function(this: ListBlock) {
-        /* eslint-enable @typescript-eslint/naming-convention */
-        if (this.itemCount_ && this.getInput('EMPTY')) {
-          this.removeInput('EMPTY');
-        } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
-          this.appendDummyInput('EMPTY').appendField(
-              Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
-        }
+    /* eslint-disable @typescript-eslint/naming-convention */
+    updateShape_: function (this: ListBlock) {
+      /* eslint-enable @typescript-eslint/naming-convention */
+      if (this.itemCount_ && this.getInput('EMPTY')) {
+        this.removeInput('EMPTY');
+      } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
+        this.appendDummyInput('EMPTY').appendField(
+          Blockly.Msg['LISTS_CREATE_EMPTY_TITLE'],
+        );
+      }
 
-        // Add new inputs.
-        for (let i = 0; i < this.itemCount_; i++) {
-          if (!this.getInput('ADD' + i)) {
-            const dummy = this.appendDummyInput('DUMMY' + i);
-            if (i === 0) {
-              dummy.appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
-            }
-            this.appendValueInput('ADD' + i).setAlign(
-                Blockly.Input.Align.LEFT);
+      // Add new inputs.
+      for (let i = 0; i < this.itemCount_; i++) {
+        if (!this.getInput('ADD' + i)) {
+          const dummy = this.appendDummyInput('DUMMY' + i);
+          if (i === 0) {
+            dummy.appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
           }
+          this.appendValueInput('ADD' + i).setAlign(Blockly.Input.Align.LEFT);
         }
+      }
 
-        // Remove deleted inputs.
-        for (let i = this.itemCount_; this.getInput('ADD' + i); i++) {
-          this.removeInput('DUMMY' + i);
-          this.removeInput('ADD' + i);
-        }
-      },
-    }
+      // Remove deleted inputs.
+      for (let i = this.itemCount_; this.getInput('ADD' + i); i++) {
+        this.removeInput('DUMMY' + i);
+        this.removeInput('ADD' + i);
+      }
+    },
+  },
 );

@@ -31,5 +31,5 @@ export class Plugin {
   /**
    * Initialize.
    */
-  init() { }
+  init() {}
 }

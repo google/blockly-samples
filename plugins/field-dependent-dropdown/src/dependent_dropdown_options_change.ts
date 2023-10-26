@@ -20,18 +20,21 @@ import type {FieldDependentDropdown} from './field_dependent_dropdown';
  * @returns Whether the arrays are deeply equivalent.
  */
 function arraysAreEquivalent<T>(a: T[], b: T[]): boolean {
-  return a.length === b.length && a.every((aElement, index) => {
-    const bElement = b[index];
-    if (Array.isArray(aElement) && Array.isArray(bElement)) {
-      return arraysAreEquivalent(aElement, bElement);
-    }
-    return aElement === bElement;
-  });
+  return (
+    a.length === b.length &&
+    a.every((aElement, index) => {
+      const bElement = b[index];
+      if (Array.isArray(aElement) && Array.isArray(bElement)) {
+        return arraysAreEquivalent(aElement, bElement);
+      }
+      return aElement === bElement;
+    })
+  );
 }
 
 /** The structure of a serialized DependentDropdownOptionsChange. */
 export interface DependentDropdownOptionsChangeJson
-    extends Blockly.Events.BlockBaseJson {
+  extends Blockly.Events.BlockBaseJson {
   name: string;
   newValue: string;
   oldValue: string;
@@ -80,20 +83,23 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    * @param newOptions New options for the dropdown.
    */
   constructor(
-      block?: Blockly.Block,
-      name?: string,
-      oldValue?: string,
-      newValue?: string,
-      oldOptions?: Blockly.MenuOption[],
-      newOptions?: Blockly.MenuOption[]) {
+    block?: Blockly.Block,
+    name?: string,
+    oldValue?: string,
+    newValue?: string,
+    oldOptions?: Blockly.MenuOption[],
+    newOptions?: Blockly.MenuOption[],
+  ) {
     super(block);
 
-    if (!block ||
-        !name ||
-        !oldValue ||
-        !newValue ||
-        !oldOptions ||
-        !newOptions) {
+    if (
+      !block ||
+      !name ||
+      !oldValue ||
+      !newValue ||
+      !oldOptions ||
+      !newOptions
+    ) {
       // Blank event to be populated by fromJson.
       return;
     }
@@ -111,14 +117,17 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    */
   toJson(): DependentDropdownOptionsChangeJson {
     const json = super.toJson() as DependentDropdownOptionsChangeJson;
-    if (!this.name ||
-        !this.oldValue ||
-        !this.newValue ||
-        !this.oldOptions ||
-        !this.newOptions) {
+    if (
+      !this.name ||
+      !this.oldValue ||
+      !this.newValue ||
+      !this.oldOptions ||
+      !this.newOptions
+    ) {
       throw new Error(
-          'The changed element is undefined. Either pass all needed ' +
-          'parameters to the constructor, or call fromJson.');
+        'The changed element is undefined. Either pass all needed ' +
+          'parameters to the constructor, or call fromJson.',
+      );
     }
     json['name'] = this.name;
     json['oldValue'] = this.oldValue;
@@ -136,14 +145,14 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    * @returns The deserialized event.
    */
   static fromJson(
-      json: DependentDropdownOptionsChangeJson,
-      workspace: Blockly.Workspace,
-      event?: any
+    json: DependentDropdownOptionsChangeJson,
+    workspace: Blockly.Workspace,
+    event?: any,
   ): DependentDropdownOptionsChange {
     const newEvent = super.fromJson(
-        json,
-        workspace,
-        event
+      json,
+      workspace,
+      event,
     ) as DependentDropdownOptionsChange;
     newEvent.name = json['name'];
     newEvent.oldValue = json['oldValue'];
@@ -159,9 +168,11 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    */
   isNull(): boolean {
     const valuesAreEqual = this.oldValue === this.newValue;
-    const optionsAreEquivalent = (this.oldOptions === this.newOptions) ||
-        (Array.isArray(this.oldOptions) && Array.isArray(this.newOptions) &&
-            arraysAreEquivalent(this.oldOptions, this.newOptions));
+    const optionsAreEquivalent =
+      this.oldOptions === this.newOptions ||
+      (Array.isArray(this.oldOptions) &&
+        Array.isArray(this.newOptions) &&
+        arraysAreEquivalent(this.oldOptions, this.newOptions));
     return valuesAreEqual && optionsAreEquivalent;
   }
 
@@ -170,25 +181,27 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
    * @param forward True if run forward, false if run backward (undo).
    */
   run(forward: boolean): void {
-    if (!this.blockId ||
-        !this.name ||
-        !this.oldValue ||
-        !this.newValue ||
-        !this.oldOptions ||
-        !this.newOptions) {
-      console.warn('Can\'t run uninitialized event.');
+    if (
+      !this.blockId ||
+      !this.name ||
+      !this.oldValue ||
+      !this.newValue ||
+      !this.oldOptions ||
+      !this.newOptions
+    ) {
+      console.warn("Can't run uninitialized event.");
       return;
     }
     const workspace = this.getEventWorkspace_();
     const block = workspace.getBlockById(this.blockId);
     if (!block) {
-      console.warn('Can\'t change non-existent block: ' + this.blockId);
+      console.warn("Can't change non-existent block: " + this.blockId);
       return;
     }
 
     const dropdown = block.getField(this.name) as FieldDependentDropdown;
     if (!dropdown) {
-      console.warn('Can\'t change non-existent dropdown field: ' + this.name);
+      console.warn("Can't change non-existent dropdown field: " + this.name);
       return;
     }
 
@@ -207,6 +220,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT,
-    DependentDropdownOptionsChange.EVENT_TYPE,
-    DependentDropdownOptionsChange);
+  Blockly.registry.Type.EVENT,
+  DependentDropdownOptionsChange.EVENT_TYPE,
+  DependentDropdownOptionsChange,
+);

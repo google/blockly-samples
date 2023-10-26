@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "plugins/**/**/**"
-  ],
+  "packages": ["plugins/**/**/**"],
   "version": "independent",
   "npmClient": "npm",
   "command": {

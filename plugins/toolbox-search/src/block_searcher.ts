@@ -59,11 +59,16 @@ export class BlockSearcher {
    * @returns A list of block types matching the query.
    */
   blockTypesMatching(query: string): string[] {
-    return [...this.generateTrigrams(query).map((trigram) => {
-      return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-    }).reduce((matches, current) => {
-      return this.getIntersection(matches, current);
-    }).values()];
+    return [
+      ...this.generateTrigrams(query)
+        .map((trigram) => {
+          return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+        })
+        .reduce((matches, current) => {
+          return this.getIntersection(matches, current);
+        })
+        .values(),
+    ];
   }
 
   /**

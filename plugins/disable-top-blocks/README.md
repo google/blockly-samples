@@ -8,11 +8,13 @@ must set up yourself).
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/disable-top-blocks
 ```
 
 ### npm
+
 ```
 npm install @blockly/disable-top-blocks --save
 ```
@@ -37,11 +39,11 @@ disableTopBlocksPlugin.init();
 
 ## API
 
-* `init` initializes the plugin and modifies the behavior of the 'disable'
-    context menu item.
-* `dispose` restores the original behavior of the context menu. This is never
-    required to be called, but can be if you want to programmatically disable
-    the effects of the plugin.
+- `init` initializes the plugin and modifies the behavior of the 'disable'
+  context menu item.
+- `dispose` restores the original behavior of the context menu. This is never
+  required to be called, but can be if you want to programmatically disable
+  the effects of the plugin.
 
 ## License
 

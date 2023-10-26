@@ -79,8 +79,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
       const inputNames = items.split(',');
       this.inputList = [];
       inputNames.forEach((name) => this.appendValueInput(name));
-      this.inputList[0]
-          .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
+      this.inputList[0].appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     }
   },
 
@@ -90,7 +89,9 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    */
   deserializeCounts(this: DynamicTextJoinBlock, xmlElement: Element): void {
     this.itemCount = Math.max(
-        parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
+      parseInt(xmlElement.getAttribute('items') ?? '0', 10),
+      this.minInputs,
+    );
     // minInputs are added automatically.
     for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);
@@ -101,7 +102,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * Returns the state of this block as a JSON serializable object.
    * @returns The state of this block, ie the item count.
    */
-  saveExtraState: function(this: DynamicTextJoinBlock): {itemCount: number} {
+  saveExtraState: function (this: DynamicTextJoinBlock): {itemCount: number} {
     // If we call finalizeConnections here without disabling events, we get into
     // an event loop.
     Blockly.Events.disable();
@@ -118,8 +119,10 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * Applies the given state to this block.
    * @param state The state to apply to this block, ie the item count.
    */
-  loadExtraState: function(
-      this: DynamicTextJoinBlock, state: ({[x: string]: any} | string)) {
+  loadExtraState: function (
+    this: DynamicTextJoinBlock,
+    state: {[x: string]: any} | string,
+  ) {
     if (typeof state === 'string') {
       this.domToMutation(Blockly.utils.xml.textToDom(state));
       return;
@@ -139,8 +142,9 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    *     should be added.
    */
   findInputIndexForConnection(
-      this: DynamicTextJoinBlock,
-      connection: Blockly.Connection): number | null {
+    this: DynamicTextJoinBlock,
+    connection: Blockly.Connection,
+  ): number | null {
     if (!connection.targetConnection) {
       // this connection is available
       return null;
@@ -160,10 +164,11 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     }
 
     const nextInput = this.inputList[connectionIndex + 1];
-    const nextConnection =
-        nextInput?.connection?.targetConnection;
-    if (nextConnection &&
-        !nextConnection.getSourceBlock().isInsertionMarker()) {
+    const nextConnection = nextInput?.connection?.targetConnection;
+    if (
+      nextConnection &&
+      !nextConnection.getSourceBlock().isInsertionMarker()
+    ) {
       return connectionIndex + 1;
     }
 
@@ -178,7 +183,9 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    *     connection.
    */
   onPendingConnection(
-      this: DynamicTextJoinBlock, connection: Blockly.Connection): void {
+    this: DynamicTextJoinBlock,
+    connection: Blockly.Connection,
+  ): void {
     const insertIndex = this.findInputIndexForConnection(connection);
     if (insertIndex == null) {
       return;
@@ -192,9 +199,9 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * drag ends if the dragged block had a pending connection with this block.
    */
   finalizeConnections(this: DynamicTextJoinBlock): void {
-    const targetConns =
-        this.removeUnnecessaryEmptyConns(
-            this.inputList.map((i) => i.connection?.targetConnection));
+    const targetConns = this.removeUnnecessaryEmptyConns(
+      this.inputList.map((i) => i.connection?.targetConnection),
+    );
     this.tearDownBlock();
     this.addItemInputs(targetConns);
     this.itemCount = targetConns.length;
@@ -216,8 +223,8 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    *     be attached to inputs.
    */
   removeUnnecessaryEmptyConns(
-      this: DynamicTextJoinBlock,
-      targetConns: Array<Blockly.Connection | undefined | null>
+    this: DynamicTextJoinBlock,
+    targetConns: Array<Blockly.Connection | undefined | null>,
   ): Array<Blockly.Connection | undefined | null> {
     const filteredConns = [...targetConns];
     for (let i = filteredConns.length - 1; i >= 0; i--) {
@@ -236,8 +243,8 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @param targetConns The connections defining the inputs to add.
    */
   addItemInputs(
-      this: DynamicTextJoinBlock,
-      targetConns: Array<Blockly.Connection | undefined | null>,
+    this: DynamicTextJoinBlock,
+    targetConns: Array<Blockly.Connection | undefined | null>,
   ): void {
     const input = this.addFirstInput();
     const firstConn = targetConns[0];
@@ -256,8 +263,9 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @returns The added input.
    */
   addFirstInput(this: DynamicTextJoinBlock): Blockly.Input {
-    return this.appendValueInput('ADD0')
-        .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
+    return this.appendValueInput('ADD0').appendField(
+      Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH'],
+    );
   },
 };
 

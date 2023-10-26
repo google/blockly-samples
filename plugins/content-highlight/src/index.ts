@@ -89,35 +89,52 @@ export class ContentHighlight {
 
     /** @type {SVGElement} */
     this.svgGroup = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.G, {'class': 'contentAreaHighlight'}, null);
+      Blockly.utils.Svg.G,
+      {'class': 'contentAreaHighlight'},
+      null,
+    );
 
     const rnd = String(Math.random()).substring(2);
-    const mask =
-        Blockly.utils.dom.createSvgElement(new Blockly.utils.Svg('mask'), {
-          'id': 'contentAreaHighlightMask' + rnd,
-        }, this.svgGroup);
-    Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.RECT, {
-      'x': 0,
-      'y': 0,
-      'width': '100%',
-      'height': '100%',
-      'fill': 'white',
-    }, mask);
-    this.rect = Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.RECT, {
-      'x': 0,
-      'y': 0,
-      'rx': Blockly.Bubble.BORDER_WIDTH,
-      'ry': Blockly.Bubble.BORDER_WIDTH,
-      'fill': 'black',
-    }, mask);
-    this.background =
-        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.RECT, {
-          'x': 0,
-          'y': 0,
-          'width': '100%',
-          'height': '100%',
-          'mask': `url(#contentAreaHighlightMask${rnd})`,
-        }, this.svgGroup);
+    const mask = Blockly.utils.dom.createSvgElement(
+      new Blockly.utils.Svg('mask'),
+      {
+        'id': 'contentAreaHighlightMask' + rnd,
+      },
+      this.svgGroup,
+    );
+    Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.RECT,
+      {
+        'x': 0,
+        'y': 0,
+        'width': '100%',
+        'height': '100%',
+        'fill': 'white',
+      },
+      mask,
+    );
+    this.rect = Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.RECT,
+      {
+        'x': 0,
+        'y': 0,
+        'rx': Blockly.Bubble.BORDER_WIDTH,
+        'ry': Blockly.Bubble.BORDER_WIDTH,
+        'fill': 'black',
+      },
+      mask,
+    );
+    this.background = Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.RECT,
+      {
+        'x': 0,
+        'y': 0,
+        'width': '100%',
+        'height': '100%',
+        'mask': `url(#contentAreaHighlightMask${rnd})`,
+      },
+      this.svgGroup,
+    );
 
     this.applyColor();
     const metricsManager = this.workspace.getMetricsManager();
@@ -196,13 +213,14 @@ export class ContentHighlight {
   private applyColor() {
     const theme = this.workspace.getTheme();
     const bgColor =
-        theme.getComponentStyle('workspaceBackgroundColour') || '#ffffff';
+      theme.getComponentStyle('workspaceBackgroundColour') || '#ffffff';
 
     const colorDarkened = Blockly.utils.colour.blend('#000', bgColor, 0.1);
     const colorLightened = Blockly.utils.colour.blend('#fff', bgColor, 0.1);
-    const color = (bgColor === '#ffffff' || bgColor === '#fff') ?
-                      colorDarkened :
-                      colorLightened;
+    const color =
+      bgColor === '#ffffff' || bgColor === '#fff'
+        ? colorDarkened
+        : colorLightened;
     this.background.setAttribute('fill', color);
   }
 
@@ -212,10 +230,12 @@ export class ContentHighlight {
    *     coordinates.
    */
   private resize(contentMetrics: Blockly.MetricsManager.ContainerRegion) {
-    const width =
-        contentMetrics.width ? contentMetrics.width + 2 * this.padding : 0;
-    const height =
-        contentMetrics.height ? contentMetrics.height + 2 * this.padding : 0;
+    const width = contentMetrics.width
+      ? contentMetrics.width + 2 * this.padding
+      : 0;
+    const height = contentMetrics.height
+      ? contentMetrics.height + 2 * this.padding
+      : 0;
     if (width !== this.width) {
       this.width = width;
       this.rect.setAttribute('width', `${width}`);
@@ -232,23 +252,33 @@ export class ContentHighlight {
    *     coordinates.
    * @param absoluteMetrics The absolute metrics for the workspace.
    */
-  private position(contentMetrics: Blockly.MetricsManager.ContainerRegion,
-      absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics) {
+  private position(
+    contentMetrics: Blockly.MetricsManager.ContainerRegion,
+    absoluteMetrics: Blockly.MetricsManager.AbsoluteMetrics,
+  ) {
     // Compute top/left manually to avoid unnecessary extra computation.
     const viewTop = -this.workspace.scrollY;
     const viewLeft = -this.workspace.scrollX;
     const scale = this.workspace.scale;
-    const top = absoluteMetrics.top + contentMetrics.top * scale - viewTop -
-                this.padding * scale;
-    const left = absoluteMetrics.left + contentMetrics.left * scale - viewLeft -
-                 this.padding * scale;
+    const top =
+      absoluteMetrics.top +
+      contentMetrics.top * scale -
+      viewTop -
+      this.padding * scale;
+    const left =
+      absoluteMetrics.left +
+      contentMetrics.left * scale -
+      viewLeft -
+      this.padding * scale;
 
     if (top !== this.top || left !== this.left || this.lastScale !== scale) {
       this.top = top;
       this.left = left;
       this.lastScale = scale;
-      this.rect.setAttribute('transform',
-          `translate(${left}, ${top}) scale(${scale})`);
+      this.rect.setAttribute(
+        'transform',
+        `translate(${left}, ${top}) scale(${scale})`,
+      );
     }
   }
 }

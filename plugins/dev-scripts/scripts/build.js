@@ -53,10 +53,8 @@ webpack(config, (err, stats) => {
   };
 
   const messages = {
-    errors: statsData.errors
-        .map(formatWebpackMessage),
-    warnings: statsData.warnings
-        .map(formatWebpackMessage),
+    errors: statsData.errors.map(formatWebpackMessage),
+    warnings: statsData.warnings.map(formatWebpackMessage),
   };
 
   if (!messages.errors.length && !messages.warnings.length) {

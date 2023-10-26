@@ -11,16 +11,19 @@ npm install @blockly/plugin-workspace-search --save
 ## Usage
 
 ### ES6 Imports
+
 ```js
 import * as Blockly from 'blockly';
-import { WorkspaceSearch } from '@blockly/plugin-workspace-search';
+import {WorkspaceSearch} from '@blockly/plugin-workspace-search';
 
 const workspace = Blockly.inject('blocklyDiv');
 const workspaceSearch = new WorkspaceSearch(workspace);
 
 workspaceSearch.init();
 ```
+
 ### Script Tag
+
 ```js
 <script src="./node_modules/@blockly/plugin-workspace-search/dist/index.js"></script>
 ```
@@ -43,6 +46,7 @@ To open workspace search use either command + f or control + f. To close the sea
 ## Styling
 
 The generated search bar looks like:
+
 ```html
 <div class="ws-search'>
   <div class="ws-search-container'>
@@ -58,6 +62,7 @@ The generated search bar looks like:
 ```
 
 Here are additional CSS classes to style your search bar:
+
 - `blockly-ws-search`: Applies to the outer-most div.
   - Default styling:
     ```css
@@ -79,4 +84,5 @@ Here are additional CSS classes to style your search bar:
 - `blockly-ws-search-highlight`: Adds highlight to the provided blocks. (Default: `fill: black;`)
 
 ## License
+
 Apache 2.0

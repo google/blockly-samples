@@ -16,12 +16,14 @@ import {readFileSync, statSync, writeFileSync} from 'fs';
 export const fixImports = createSubCommand(
   'fix-imports',
   '>=9',
-  'Add imports for modules that have been moved out of the Blockly namespace')
+  'Add imports for modules that have been moved out of the Blockly namespace',
+)
   .option(
-      '-i, --in-place [suffix]',
-      'fix imports in-place, optionally create backup files with the ' +
-      'given suffix. Otherwise output to stdout')
-  .action(function() {
+    '-i, --in-place [suffix]',
+    'fix imports in-place, optionally create backup files with the ' +
+      'given suffix. Otherwise output to stdout',
+  )
+  .action(function () {
     // TODO (#1211): In the future we should use the fromVersion and toVersion
     //   so that we can support doing this across multiple versions. But for
     //   now we just need it to work for v9.
@@ -63,41 +65,41 @@ const database = [
     import: 'blockly/dart',
     newIdentifier: 'dartGenerator',
     newImport: `import {dartGenerator} from 'blockly/dart';`,
-    newRequire: `const {dartGenerator} = require('blockly/dart');`
+    newRequire: `const {dartGenerator} = require('blockly/dart');`,
   },
   {
     import: 'blockly/javascript',
     oldIdentifier: 'Blockly.JavaScript',
     newIdentifier: 'javascriptGenerator',
     newImport: `import {javascriptGenerator} from 'blockly/javascript';`,
-    newRequire: `const {javascriptGenerator} = require('blockly/javascript');`
+    newRequire: `const {javascriptGenerator} = require('blockly/javascript');`,
   },
   {
     import: 'blockly/lua',
     newIdentifier: 'luaGenerator',
     newImport: `import {luaGenerator} from 'blockly/lua';`,
-    newRequire: `const {luaGenerator} = require('blockly/lua');`
+    newRequire: `const {luaGenerator} = require('blockly/lua');`,
   },
   {
     import: 'blockly/php',
     newIdentifier: 'phpGenerator',
     newImport: `import {phpGenerator} from 'blockly/php';`,
-    newRequire: `const {phpGenerator} = require('blockly/php');`
+    newRequire: `const {phpGenerator} = require('blockly/php');`,
   },
   {
     import: 'blockly/python',
     newIdentifier: 'pythonGenerator',
     newImport: `import {pythonGenerator} from 'blockly/python';`,
-    newRequire: `const {pythonGenerator} = require('blockly/python');`
+    newRequire: `const {pythonGenerator} = require('blockly/python');`,
   },
   {
     import: 'blockly/blocks',
     oldIdentifier: 'Blockly.libraryBlocks',
     newIdentifier: 'libraryBlocks',
-    newImport:  `import * as libraryBlocks from 'blockly/blocks';`,
-    newRequire: `const libraryBlocks = require('blockly/blocks');`
-  }
-]
+    newImport: `import * as libraryBlocks from 'blockly/blocks';`,
+    newRequire: `const libraryBlocks = require('blockly/blocks');`,
+  },
+];
 
 /**
  * Migrates the contents of a particular file, renaming references and
@@ -138,10 +140,12 @@ function fixImport(contents, migrationData) {
  */
 function getIdentifier(contents, migrationData) {
   const importMatch = contents.match(
-      new RegExp(`\\s(\\S*)\\s+from\\s+['"]${migrationData.import}['"]`));
+    new RegExp(`\\s(\\S*)\\s+from\\s+['"]${migrationData.import}['"]`),
+  );
   if (importMatch) return importMatch[1];
   const requireMatch = contents.match(
-      new RegExp(`(\\S*)\\s+=\\s+require\\(['"]${migrationData.import}['"]\\)`));
+    new RegExp(`(\\S*)\\s+=\\s+require\\(['"]${migrationData.import}['"]\\)`),
+  );
   if (requireMatch) return requireMatch[1];
   return migrationData.oldIdentifier;
 }
@@ -157,8 +161,7 @@ function getIdentifier(contents, migrationData) {
 function replaceReferences(contents, migrationData, identifier) {
   return contents.replace(dottedIdentifier, (match) => {
     if (match.startsWith(identifier)) {
-      return migrationData.newIdentifier +
-          match.slice(identifier.length);
+      return migrationData.newIdentifier + match.slice(identifier.length);
     }
     return match;
   });
@@ -176,30 +179,40 @@ function addImport(contents, migrationData) {
   const importMatch = contents.match(importRegExp);
   if (importMatch) {
     return contents.replace(
-        importRegExp, importMatch[1] + migrationData.newImport);
+      importRegExp,
+      importMatch[1] + migrationData.newImport,
+    );
   }
 
   const requireRegExp = createRequireRegExp(migrationData.import);
   const requireMatch = contents.match(requireRegExp);
   if (requireMatch) {
     return contents.replace(
-        requireRegExp, requireMatch[1] + migrationData.newRequire);
+      requireRegExp,
+      requireMatch[1] + migrationData.newRequire,
+    );
   }
 
   const blocklyImportMatch = contents.match(createImportRegExp('blockly'));
   if (blocklyImportMatch) {
     const match = blocklyImportMatch;
-    return contents.slice(0, match.index + match[0].length) +
-        '\n' + migrationData.newImport +
-        contents.slice(match.index + match[0].length);
+    return (
+      contents.slice(0, match.index + match[0].length) +
+      '\n' +
+      migrationData.newImport +
+      contents.slice(match.index + match[0].length)
+    );
   }
 
   const blocklyRequireMatch = contents.match(createRequireRegExp('blockly'));
   if (blocklyRequireMatch) {
     const match = blocklyRequireMatch;
-    return contents.slice(0, match.index + match[0].length) +
-        '\n' + migrationData.newRequire +
-        contents.slice(match.index + match[0].length);
+    return (
+      contents.slice(0, match.index + match[0].length) +
+      '\n' +
+      migrationData.newRequire +
+      contents.slice(match.index + match[0].length)
+    );
   }
 
   // Should never happen, but return something so we can keep going if it does.
@@ -213,7 +226,7 @@ function addImport(contents, migrationData) {
  * @returns {RegExp} The regular expression.
  */
 function createImportRegExp(importIdent) {
-  return new RegExp(`(\\s*)import\\s+.+\\s+from\\s+['"]${importIdent}['"];`)
+  return new RegExp(`(\\s*)import\\s+.+\\s+from\\s+['"]${importIdent}['"];`);
 }
 
 /**
@@ -224,7 +237,8 @@ function createImportRegExp(importIdent) {
  */
 function createRequireRegExp(importIdent) {
   return new RegExp(
-      `(\\s*)(const|let|var)\\s+.*\\s+=\\s+require\\(['"]${importIdent}['"]\\);`);
+    `(\\s*)(const|let|var)\\s+.*\\s+=\\s+require\\(['"]${importIdent}['"]\\);`,
+  );
 }
 
 /**
@@ -235,4 +249,4 @@ function createRequireRegExp(importIdent) {
  * that appears in each comment!
  */
 const dottedIdentifier =
-      /[A-Za-z$_][A-Za-z0-9$_]*(\.[A-Za-z$_][A-Za-z0-9$_]*)+/g;
+  /[A-Za-z$_][A-Za-z0-9$_]*(\.[A-Za-z$_][A-Za-z0-9$_]*)+/g;

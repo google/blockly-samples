@@ -23,8 +23,9 @@ export abstract class ProcedureBase extends Blockly.Events.Abstract {
    * @param procedure The procedure model associated with this event.
    */
   constructor(
-      workspace: Blockly.Workspace,
-      readonly procedure: Blockly.procedures.IProcedureModel) {
+    workspace: Blockly.Workspace,
+    readonly procedure: Blockly.procedures.IProcedureModel,
+  ) {
     super();
     this.workspaceId = workspace.id;
   }

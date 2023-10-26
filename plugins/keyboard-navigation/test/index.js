@@ -13,7 +13,6 @@ import * as Blockly from 'blockly';
 
 import {LineCursor, NavigationController} from '../src';
 
-
 let controller;
 
 /**
@@ -28,29 +27,34 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   controller = new NavigationController();
   controller.init();
   const defaultOptions = {
     toolbox: toolboxCategories,
   };
   createPlayground(
-      document.getElementById('root'), createWorkspace, defaultOptions);
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });
 
-document.getElementById('accessibilityModeCheck')
-    .addEventListener('click', (e) => {
-      if (e.target.checked) {
-        controller.enable(Blockly.getMainWorkspace());
-      } else {
-        controller.disable(Blockly.getMainWorkspace());
-      }
-    });
+document
+  .getElementById('accessibilityModeCheck')
+  .addEventListener('click', (e) => {
+    if (e.target.checked) {
+      controller.enable(Blockly.getMainWorkspace());
+    } else {
+      controller.disable(Blockly.getMainWorkspace());
+    }
+  });
 
 document.getElementById('cursorChanger').addEventListener('change', (e) => {
   const cursorType = e.target.value;
-  const accessibilityCheckbox =
-      document.getElementById('accessibilityModeCheck');
+  const accessibilityCheckbox = document.getElementById(
+    'accessibilityModeCheck',
+  );
   const markerManager = Blockly.getMainWorkspace().getMarkerManager();
   const oldCurNode = markerManager.getCursor().getCurNode();
 

@@ -17,7 +17,10 @@ const Blockly = require('blockly/node');
  * @returns {Blockly.WorkspaceSvg} The created workspace.
  */
 export function createNavigationWorkspace(
-    navigation, enableKeyboardNav, readOnly) {
+  navigation,
+  enableKeyboardNav,
+  readOnly,
+) {
   const workspace = Blockly.inject('blocklyDiv', {
     toolbox: `
       <xml xmlns="https://developers.google.com/blockly/xml"
@@ -62,7 +65,7 @@ export function createKeyDownEvent(keyCode, type, modifiers) {
   const event = {
     keyCode: keyCode,
     target: {type: type},
-    getModifierState: function(name) {
+    getModifierState: function (name) {
       if (name == 'Shift' && this.shiftKey) {
         return true;
       } else if (name == 'Control' && this.ctrlKey) {
@@ -74,7 +77,7 @@ export function createKeyDownEvent(keyCode, type, modifiers) {
       }
       return false;
     },
-    preventDefault: function() {},
+    preventDefault: function () {},
   };
   if (modifiers && modifiers.length) {
     event.altKey = modifiers.includes(Blockly.utils.KeyCodes.ALT);

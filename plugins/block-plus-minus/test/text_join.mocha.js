@@ -17,10 +17,14 @@ const {pythonGenerator} = require('blockly/python');
 require('../src/index');
 
 const assert = chai.assert;
-const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
-  runSerializationTestSuite, SerializationTestCase} = testHelpers;
+const {
+  CodeGenerationTestSuite,
+  runCodeGenerationTestSuites,
+  runSerializationTestSuite,
+  SerializationTestCase,
+} = testHelpers;
 
-suite('Text join block', function() {
+suite('Text join block', function () {
   /**
    * Asserts that the join block has the inputs and fields we expect.
    * @param {!Blockly.Block} block The text join block.
@@ -48,20 +52,20 @@ suite('Text join block', function() {
     assert.notEqual(block.toString(), '“ ”');
   }
 
-  setup(function() {
+  setup(function () {
     this.workspace = new Blockly.Workspace();
   });
 
-  teardown(function() {
+  teardown(function () {
     this.workspace.dispose();
   });
 
-  test('Creation', function() {
+  test('Creation', function () {
     this.block = this.workspace.newBlock('text_join');
     assertTextJoinBlockStructure(this.block, 2);
   });
 
-  suite('Code generation', function() {
+  suite('Code generation', function () {
     const trivialCreateBlock = (workspace) => {
       return workspace.newBlock('text_join');
     };
@@ -71,38 +75,67 @@ suite('Text join block', function() {
      * @type {Array<CodeGenerationTestSuite>}
      */
     const testSuites = [
-      {title: 'Dart', generator: dartGenerator,
+      {
+        title: 'Dart',
+        generator: dartGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: '[\'\',\'\'].join()',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'JavaScript', generator: javascriptGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: "['',''].join()",
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'JavaScript',
+        generator: javascriptGenerator,
         testCases: [
-
-          {title: 'Trivial', expectedCode: '\'\' + \'\'',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'Lua', generator: luaGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: "'' + ''",
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'Lua',
+        generator: luaGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: '\'\' .. \'\'',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'PHP', generator: phpGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: "'' .. ''",
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'PHP',
+        generator: phpGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: '\'\' . \'\'',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'Python', generator: pythonGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: "'' . ''",
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'Python',
+        generator: pythonGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: '\'\' + \'\'',
-            createBlock: trivialCreateBlock},
-        ]},
+          {
+            title: 'Trivial',
+            expectedCode: "'' + ''",
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
     ];
 
     runCodeGenerationTestSuites(testSuites);
   });
 
-  suite('Xml', function() {
+  suite('Xml', function () {
     /**
      * Test cases for serialization tests.
      * @type {Array<SerializationTestCase>}
@@ -112,64 +145,60 @@ suite('Text join block', function() {
         title: 'Empty XML',
         xml: '<block type="text_join"/>',
         expectedXml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="text_join" id="1">\n' +
-            '  <mutation items="2"></mutation>\n' +
-            '</block>',
-        assertBlockStructure:
-          (block) => {
-            assertTextJoinBlockStructure(block, 2);
-          },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="2"></mutation>\n' +
+          '</block>',
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 2);
+        },
       },
       {
         title: '0 items',
         xml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="text_join" id="1">\n' +
-            '  <mutation items="0"></mutation>\n' +
-            '</block>',
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 0);
-            },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="0"></mutation>\n' +
+          '</block>',
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 0);
+        },
       },
       {
         title: '3 items',
         xml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="text_join" id="1">\n' +
-            '  <mutation items="3"></mutation>\n' +
-            '</block>',
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 3);
-            },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '</block>',
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 3);
+        },
       },
       {
         title: '3 items with child attached',
         xml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="text_join" id="1">\n' +
-            '  <mutation items="3"></mutation>\n' +
-            '  <value name="ADD2">\n' +
-            '    <block type="logic_boolean" id="1">\n' +
-            '      <field name="BOOL">FALSE</field>\n' +
-            '    </block>\n' +
-            '  </value>\n' +
-            '</block>',
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 3);
-              const child = block.getInputTargetBlock('ADD2');
-              assert.isNotNull(child);
-              assert.equal(child.getFieldValue('BOOL'), 'FALSE');
-            },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="text_join" id="1">\n' +
+          '  <mutation items="3"></mutation>\n' +
+          '  <value name="ADD2">\n' +
+          '    <block type="logic_boolean" id="1">\n' +
+          '      <field name="BOOL">FALSE</field>\n' +
+          '    </block>\n' +
+          '  </value>\n' +
+          '</block>',
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 3);
+          const child = block.getInputTargetBlock('ADD2');
+          assert.isNotNull(child);
+          assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+        },
       },
     ];
     runSerializationTestSuite(testCases);
   });
 
-  suite('Json', function() {
+  suite('Json', function () {
     /**
      * Test cases for serialization tests.
      * @type {Array<SerializationTestCase>}
@@ -187,10 +216,9 @@ suite('Text join block', function() {
             'itemCount': 2,
           },
         },
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 2);
-            },
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 2);
+        },
       },
       {
         title: '0 items',
@@ -201,10 +229,9 @@ suite('Text join block', function() {
             'itemCount': 0,
           },
         },
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 0);
-            },
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 0);
+        },
       },
       {
         title: '3 items',
@@ -215,10 +242,9 @@ suite('Text join block', function() {
             'itemCount': 3,
           },
         },
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 3);
-            },
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 3);
+        },
       },
       {
         title: '3 items with child attached',
@@ -240,19 +266,17 @@ suite('Text join block', function() {
             },
           },
         },
-        assertBlockStructure:
-            (block) => {
-              assertTextJoinBlockStructure(block, 3);
-              const child = block.getInputTargetBlock('ADD2');
-              assert.isNotNull(child);
-              assert.equal(child.type, 'logic_boolean');
-              assert.equal(child.getFieldValue('BOOL'), 'FALSE');
-            },
+        assertBlockStructure: (block) => {
+          assertTextJoinBlockStructure(block, 3);
+          const child = block.getInputTargetBlock('ADD2');
+          assert.isNotNull(child);
+          assert.equal(child.type, 'logic_boolean');
+          assert.equal(child.getFieldValue('BOOL'), 'FALSE');
+        },
       },
     ];
     runSerializationTestSuite(testCases);
   });
 
-  runPlusMinusTestSuite('text_join', 2, 0, 'ADD',
-      assertTextJoinBlockStructure);
+  runPlusMinusTestSuite('text_join', 2, 0, 'ADD', assertTextJoinBlockStructure);
 });

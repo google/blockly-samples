@@ -8,35 +8,43 @@ The continuous toolbox is shown here with the 'Zelos' theme, and the style can b
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/continuous-toolbox
 ```
 
 ### npm
+
 ```
 npm install @blockly/continuous-toolbox --save
 ```
 
 ## Usage
+
 Include the toolbox, flyout, and metrics manager classes from the plugin in the options struct used when injecting Blockly. This style of flyout works best with a toolbox definition that does not use collapsible categories.
 
 Note that this plugin uses APIs introduced in the `3.20200924.3` release of Blockly, so you will need to use at least this version or higher.
 
 ```js
 import * as Blockly from 'blockly';
-import {ContinuousToolbox, ContinuousFlyout, ContinuousMetrics} from '@blockly/continuous-toolbox';
+import {
+  ContinuousToolbox,
+  ContinuousFlyout,
+  ContinuousMetrics,
+} from '@blockly/continuous-toolbox';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   plugins: {
-      'toolbox': ContinuousToolbox,
-      'flyoutsVerticalToolbox': ContinuousFlyout,
-      'metricsManager': ContinuousMetrics,
-    },
+    'toolbox': ContinuousToolbox,
+    'flyoutsVerticalToolbox': ContinuousFlyout,
+    'metricsManager': ContinuousMetrics,
+  },
   toolbox: toolboxCategories,
   // ... your other options here ...
 });
 ```
 
 ## License
+
 Apache 2.0

@@ -17,4 +17,5 @@ npx @blockly/migrate help 6
 ```
 
 ## License
+
 Apache 2.0

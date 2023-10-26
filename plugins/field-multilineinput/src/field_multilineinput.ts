@@ -10,7 +10,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 /**
  * Class for an editable text area input field.
  */
@@ -19,7 +18,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * The SVG group element that will contain a text element for each text row
    *     when initialized.
    */
-  textGroup: SVGGElement|null = null;
+  textGroup: SVGGElement | null = null;
 
   /**
    * Defines the maximum number of lines of field.
@@ -48,9 +47,10 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * for a list of properties this parameter supports.
    */
   constructor(
-      value?: string|typeof Blockly.Field.SKIP_SETUP,
-      validator?: FieldMultilineInputValidator,
-      config?: FieldMultilineInputConfig) {
+    value?: string | typeof Blockly.Field.SKIP_SETUP,
+    validator?: FieldMultilineInputValidator,
+    config?: FieldMultilineInputConfig,
+  ) {
     super(Blockly.Field.SKIP_SETUP);
 
     if (value === Blockly.Field.SKIP_SETUP) return;
@@ -87,8 +87,10 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     // needed so the plain-text representation of the XML produced by
     // `Blockly.Xml.domToText` will appear on a single line (this is a
     // limitation of the plain-text format).
-    fieldElement.textContent =
-        (this.getValue() as string).replace(/\n/g, '&#10;');
+    fieldElement.textContent = (this.getValue() as string).replace(
+      /\n/g,
+      '&#10;',
+    );
     return fieldElement;
   }
 
@@ -137,10 +139,12 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
   override initView() {
     this.createBorderRect_();
     this.textGroup = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.G, {
-          'class': 'blocklyEditableText',
-        },
-        this.fieldGroup_);
+      Blockly.utils.Svg.G,
+      {
+        'class': 'blocklyEditableText',
+      },
+      this.fieldGroup_,
+    );
   }
 
   /**
@@ -153,8 +157,10 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
   protected override getDisplayText_(): string {
     const block = this.getSourceBlock();
     if (!block) {
-      throw new Error('The field has not yet been attached to its input. ' +
-          'Call appendField to attach it.');
+      throw new Error(
+        'The field has not yet been attached to its input. ' +
+          'Call appendField to attach it.',
+      );
     }
     let textLines = this.getText();
     if (!textLines) {
@@ -163,8 +169,9 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     }
     const lines = textLines.split('\n');
     textLines = '';
-    const displayLinesNumber =
-        this.isOverflowedY_ ? this.maxLines_ : lines.length;
+    const displayLinesNumber = this.isOverflowedY_
+      ? this.maxLines_
+      : lines.length;
     for (let i = 0; i < displayLinesNumber; i++) {
       let text = lines[i];
       if (text.length > this.maxDisplayLength) {
@@ -211,13 +218,15 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
   protected override render_() {
     const block = this.getSourceBlock();
     if (!block) {
-      throw new Error('The field has not yet been attached to its input. ' +
-          'Call appendField to attach it.');
+      throw new Error(
+        'The field has not yet been attached to its input. ' +
+          'Call appendField to attach it.',
+      );
     }
     // Remove all text group children.
     let currentChild;
     const textGroup = this.textGroup as SVGElement;
-    while (currentChild = textGroup.firstChild) {
+    while ((currentChild = textGroup.firstChild)) {
       textGroup.removeChild(currentChild);
     }
 
@@ -228,16 +237,18 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     const lines = this.getDisplayText_().split('\n');
     let y = 0;
     for (let i = 0; i < lines.length; i++) {
-      const lineHeight = constants.FIELD_TEXT_HEIGHT +
-          constants.FIELD_BORDER_RECT_Y_PADDING;
+      const lineHeight =
+        constants.FIELD_TEXT_HEIGHT + constants.FIELD_BORDER_RECT_Y_PADDING;
       const span = Blockly.utils.dom.createSvgElement(
-          Blockly.utils.Svg.TEXT, {
-            'class': 'blocklyText blocklyMultilineText',
-            'x': constants.FIELD_BORDER_RECT_X_PADDING,
-            'y': y + constants.FIELD_BORDER_RECT_Y_PADDING,
-            'dy': constants.FIELD_TEXT_BASELINE,
-          },
-          textGroup);
+        Blockly.utils.Svg.TEXT,
+        {
+          'class': 'blocklyText blocklyMultilineText',
+          'x': constants.FIELD_BORDER_RECT_X_PADDING,
+          'y': y + constants.FIELD_BORDER_RECT_Y_PADDING,
+          'dy': constants.FIELD_TEXT_BASELINE,
+        },
+        textGroup,
+      );
       span.appendChild(document.createTextNode(lines[i]));
       y += lineHeight;
     }
@@ -245,11 +256,15 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     if (this.isBeingEdited_) {
       const htmlInput = this.htmlInput_ as HTMLElement;
       if (this.isOverflowedY_) {
-        Blockly.utils.dom.addClass(htmlInput,
-            'blocklyHtmlTextAreaInputOverflowedY');
+        Blockly.utils.dom.addClass(
+          htmlInput,
+          'blocklyHtmlTextAreaInputOverflowedY',
+        );
       } else {
-        Blockly.utils.dom.removeClass(htmlInput,
-            'blocklyHtmlTextAreaInputOverflowedY');
+        Blockly.utils.dom.removeClass(
+          htmlInput,
+          'blocklyHtmlTextAreaInputOverflowedY',
+        );
       }
     }
 
@@ -267,12 +282,18 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
       const htmlInput = this.htmlInput_ as HTMLElement;
       if (!this.isTextValid_) {
         Blockly.utils.dom.addClass(htmlInput, 'blocklyInvalidInput');
-        Blockly.utils.aria.setState(htmlInput, Blockly.utils.aria.State.INVALID,
-            true);
+        Blockly.utils.aria.setState(
+          htmlInput,
+          Blockly.utils.aria.State.INVALID,
+          true,
+        );
       } else {
         Blockly.utils.dom.removeClass(htmlInput, 'blocklyInvalidInput');
-        Blockly.utils.aria.setState(htmlInput, Blockly.utils.aria.State.INVALID,
-            false);
+        Blockly.utils.aria.setState(
+          htmlInput,
+          Blockly.utils.aria.State.INVALID,
+          false,
+        );
       }
     }
   }
@@ -292,12 +313,17 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     for (let i = 0; i < nodes.length; i++) {
       const tspan = nodes[i] as SVGTextElement;
       const textWidth = Blockly.utils.dom.getFastTextWidth(
-          tspan, fontSize, fontWeight, fontFamily);
+        tspan,
+        fontSize,
+        fontWeight,
+        fontFamily,
+      );
       if (textWidth > totalWidth) {
         totalWidth = textWidth;
       }
-      totalHeight += constants.FIELD_TEXT_HEIGHT +
-          (i > 0 ? constants.FIELD_BORDER_RECT_Y_PADDING : 0);
+      totalHeight +=
+        constants.FIELD_TEXT_HEIGHT +
+        (i > 0 ? constants.FIELD_BORDER_RECT_Y_PADDING : 0);
     }
     if (this.isBeingEdited_) {
       // The default width is based on the longest line in the display text,
@@ -307,17 +333,24 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
       // lines than this.maxLines_.
       const actualEditorLines = String(this.value_).split('\n');
       const dummyTextElement = Blockly.utils.dom.createSvgElement(
-          Blockly.utils.Svg.TEXT,
-          {'class': 'blocklyText blocklyMultilineText'});
+        Blockly.utils.Svg.TEXT,
+        {'class': 'blocklyText blocklyMultilineText'},
+      );
 
       for (let i = 0; i < actualEditorLines.length; i++) {
         if (actualEditorLines[i].length > this.maxDisplayLength) {
-          actualEditorLines[i] =
-              actualEditorLines[i].substring(0, this.maxDisplayLength);
+          actualEditorLines[i] = actualEditorLines[i].substring(
+            0,
+            this.maxDisplayLength,
+          );
         }
         dummyTextElement.textContent = actualEditorLines[i];
         const lineWidth = Blockly.utils.dom.getFastTextWidth(
-            dummyTextElement, fontSize, fontWeight, fontFamily);
+          dummyTextElement,
+          fontSize,
+          fontWeight,
+          fontFamily,
+        );
         if (lineWidth > totalWidth) {
           totalWidth = lineWidth;
         }
@@ -368,7 +401,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     // This can't happen, but TypeScript thinks it can and lint forbids `!.`.
     if (!constants) throw Error('Constants not found');
 
-    const htmlInput = (document.createElement('textarea'));
+    const htmlInput = document.createElement('textarea');
     htmlInput.className = 'blocklyHtmlInput blocklyHtmlTextAreaInput';
     htmlInput.setAttribute('spellcheck', String(this.spellcheck_));
     const fontSize = constants.FIELD_TEXT_FONTSIZE * scale + 'pt';
@@ -377,11 +410,11 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     const borderRadius = Blockly.FieldTextInput.BORDERRADIUS * scale + 'px';
     htmlInput.style.borderRadius = borderRadius;
     const paddingX = constants.FIELD_BORDER_RECT_X_PADDING * scale;
-    const paddingY = constants.FIELD_BORDER_RECT_Y_PADDING * scale / 2;
-    htmlInput.style.padding = paddingY + 'px ' + paddingX + 'px ' + paddingY +
-        'px ' + paddingX + 'px';
-    const lineHeight = constants.FIELD_TEXT_HEIGHT +
-        constants.FIELD_BORDER_RECT_Y_PADDING;
+    const paddingY = (constants.FIELD_BORDER_RECT_Y_PADDING * scale) / 2;
+    htmlInput.style.padding =
+      paddingY + 'px ' + paddingX + 'px ' + paddingY + 'px ' + paddingX + 'px';
+    const lineHeight =
+      constants.FIELD_TEXT_HEIGHT + constants.FIELD_BORDER_RECT_Y_PADDING;
     htmlInput.style.lineHeight = lineHeight * scale + 'px';
 
     div.appendChild(htmlInput);
@@ -408,8 +441,11 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    *     scrolling functionality is enabled.
    */
   setMaxLines(maxLines: number) {
-    if (typeof maxLines === 'number' && maxLines > 0 &&
-        maxLines !== this.maxLines_) {
+    if (
+      typeof maxLines === 'number' &&
+      maxLines > 0 &&
+      maxLines !== this.maxLines_
+    ) {
       this.maxLines_ = maxLines;
       this.forceRerender();
     }
@@ -445,8 +481,9 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
    * @returns The new field instance.
    * @nocollapse
    */
-  static override fromJson(options: FieldMultilineInputFromJsonConfig):
-      FieldMultilineInput {
+  static override fromJson(
+    options: FieldMultilineInputFromJsonConfig,
+  ): FieldMultilineInput {
     const text = Blockly.utils.parsing.replaceMessageReferences(options.text);
     // `this` might be a subclass of FieldMultilineInput if that class doesn't
     // override the static fromJson method.
@@ -461,7 +498,6 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
 Blockly.fieldRegistry.unregister('field_multilinetext');
 
 Blockly.fieldRegistry.register('field_multilinetext', FieldMultilineInput);
-
 
 /**
  * CSS for multiline field.
@@ -483,16 +519,16 @@ Blockly.Css.register(`
 /**
  * Config options for the multiline input field.
  */
-export interface FieldMultilineInputConfig extends
-    Blockly.FieldTextInputConfig {
+export interface FieldMultilineInputConfig
+  extends Blockly.FieldTextInputConfig {
   maxLines?: number;
 }
 
 /**
  * fromJson config options for the multiline input field.
  */
-export interface FieldMultilineInputFromJsonConfig extends
-    FieldMultilineInputConfig {
+export interface FieldMultilineInputFromJsonConfig
+  extends FieldMultilineInputConfig {
   text?: string;
 }
 

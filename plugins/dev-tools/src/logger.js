@@ -9,7 +9,6 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-
 /**
  * Enables console logging of workspace events.
  * @param {!Blockly.Workspace} workspace The Blockly workspace.

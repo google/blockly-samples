@@ -7,7 +7,6 @@
 import * as Blockly from 'blockly/core';
 import {DebugDrawer} from './debugDrawer';
 
-
 /**
  * The name that the debug renderer is registered under.
  * @type {string}
@@ -21,16 +20,26 @@ export const debugRendererName = 'debugRenderer';
  */
 export function registerDebugRendererFromName(name) {
   if (!Blockly.registry.hasItem(Blockly.registry.Type.RENDERER, name)) {
-    throw Error('No renderer with the name ' + name + ' is registered. ' +
-    'Please register your renderer using Blockly.registry.register.');
+    throw Error(
+      'No renderer with the name ' +
+        name +
+        ' is registered. ' +
+        'Please register your renderer using Blockly.registry.register.',
+    );
   }
   const RendererClass = Blockly.registry.getClass(
-      Blockly.registry.Type.RENDERER, name);
+    Blockly.registry.Type.RENDERER,
+    name,
+  );
 
   const DebugRenderer = createNewRenderer(RendererClass);
 
-  Blockly.registry.register(Blockly.registry.Type.RENDERER,
-      debugRendererName, DebugRenderer, true);
+  Blockly.registry.register(
+    Blockly.registry.Type.RENDERER,
+    debugRendererName,
+    DebugRenderer,
+    true,
+  );
 }
 
 /**
@@ -99,18 +108,19 @@ export function createNewRenderer(Renderer) {
       const workspaceListener = this.workspaceListeners[workspace.id];
 
       if (!workspaceListener) {
-        this.workspaceListeners[workspace.id] =
-        workspace.addChangeListener((event) => {
-          const blockIds = event.ids;
-          if (event.type === Blockly.Events.DELETE) {
-            for (let i = 0; i < blockIds.length; i++) {
-              const blockId = blockIds[i];
-              if (this.blockToDebugger[blockId]) {
-                delete this.blockToDebugger[blockId];
+        this.workspaceListeners[workspace.id] = workspace.addChangeListener(
+          (event) => {
+            const blockIds = event.ids;
+            if (event.type === Blockly.Events.DELETE) {
+              for (let i = 0; i < blockIds.length; i++) {
+                const blockId = blockIds[i];
+                if (this.blockToDebugger[blockId]) {
+                  delete this.blockToDebugger[blockId];
+                }
               }
             }
-          }
-        });
+          },
+        );
       }
     }
   }

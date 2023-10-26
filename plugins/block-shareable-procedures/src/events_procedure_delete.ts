@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2022 Google LLC
@@ -7,7 +6,6 @@
 
 import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
-
 
 /**
  * Notifies listeners that a procedure data model has been deleted.
@@ -50,13 +48,16 @@ export class ProcedureDelete extends ProcedureBase {
    * @returns The new procedure delete event.
    * @internal
    */
-  static fromJson(json: ProcedureDeleteJson, workspace: Blockly.Workspace):
-      ProcedureDelete {
+  static fromJson(
+    json: ProcedureDeleteJson,
+    workspace: Blockly.Workspace,
+  ): ProcedureDelete {
     const model = workspace.getProcedureMap().get(json['procedureId']);
     if (!model) {
       throw new Error(
-          'Cannot deserialize procedure delete event because the ' +
-          'target procedure does not exist');
+        'Cannot deserialize procedure delete event because the ' +
+          'target procedure does not exist',
+      );
     }
     return new ProcedureDelete(workspace, model);
   }
@@ -65,4 +66,7 @@ export class ProcedureDelete extends ProcedureBase {
 export type ProcedureDeleteJson = ProcedureBaseJson;
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, ProcedureDelete.TYPE, ProcedureDelete);
+  Blockly.registry.Type.EVENT,
+  ProcedureDelete.TYPE,
+  ProcedureDelete,
+);

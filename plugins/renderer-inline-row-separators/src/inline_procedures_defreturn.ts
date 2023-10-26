@@ -15,13 +15,13 @@ import * as Blockly from 'blockly/core';
 // init method to enabline inline input mode.
 const builtInProcedureBlock = Blockly.Blocks['procedures_defreturn'];
 Blockly.Blocks['inline_procedures_defreturn'] = Object.assign(
-    {},
-    builtInProcedureBlock,
-    {
-      init: function(this: Blockly.Block) {
-        builtInProcedureBlock.init.apply(this);
-        this.inputsInline = true;
-        this.getInput('RETURN')?.setAlign(Blockly.Input.Align.LEFT);
-      },
-    }
+  {},
+  builtInProcedureBlock,
+  {
+    init: function (this: Blockly.Block) {
+      builtInProcedureBlock.init.apply(this);
+      this.inputsInline = true;
+      this.getInput('RETURN')?.setAlign(Blockly.Input.Align.LEFT);
+    },
+  },
 );

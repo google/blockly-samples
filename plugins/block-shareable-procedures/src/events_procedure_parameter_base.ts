@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2022 Google LLC
@@ -7,7 +6,6 @@
 
 import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
-
 
 /**
  * The base event for an event associated with a procedure parameter.
@@ -25,9 +23,10 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
    * @param parameter The parameter model associated with this event.
    */
   constructor(
-      workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel,
-      readonly parameter: Blockly.procedures.IParameterModel) {
+    workspace: Blockly.Workspace,
+    procedure: Blockly.procedures.IProcedureModel,
+    readonly parameter: Blockly.procedures.IParameterModel,
+  ) {
     super(workspace, procedure);
     this.recordUndo = false;
   }
@@ -43,14 +42,15 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
    * @internal
    */
   static findMatchingParameter(
-      workspace: Blockly.Workspace,
-      procedureId: string,
-      paramId: string
+    workspace: Blockly.Workspace,
+    procedureId: string,
+    paramId: string,
   ): ProcedureParameterPair {
     const procedure = workspace.getProcedureMap().get(procedureId);
     if (!procedure) return {procedure: undefined, parameter: undefined};
-    const parameter = procedure.getParameters()
-        .find((p) => p.getId() === paramId);
+    const parameter = procedure
+      .getParameters()
+      .find((p) => p.getId() === paramId);
     if (!parameter) return {procedure, parameter: undefined};
     return {procedure, parameter};
   }

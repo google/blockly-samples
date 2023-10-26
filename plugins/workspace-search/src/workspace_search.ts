@@ -20,17 +20,17 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * HTML container for the search bar.
    */
-  private htmlDiv: HTMLElement|null = null;
+  private htmlDiv: HTMLElement | null = null;
 
   /**
    * The div that holds the search bar actions.
    */
-  protected actionDiv: HTMLElement|null = null;
+  protected actionDiv: HTMLElement | null = null;
 
   /**
    * The text input for the search bar.
    */
-  private inputElement: HTMLInputElement|null = null;
+  private inputElement: HTMLInputElement | null = null;
 
   /**
    * The placeholder text for the search bar input.
@@ -132,8 +132,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      * </div>
      */
     const injectionDiv = this.workspace.getInjectionDiv();
-    this.addEvent(injectionDiv, 'keydown', this,
-        (evt: KeyboardEvent) => this.onWorkspaceKeyDown(evt));
+    this.addEvent(injectionDiv, 'keydown', this, (evt: KeyboardEvent) =>
+      this.onWorkspaceKeyDown(evt),
+    );
 
     this.htmlDiv = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv, 'blockly-ws-search');
@@ -148,8 +149,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement = this.createTextInput();
-    this.addEvent(this.inputElement, 'keydown', this,
-        (evt: KeyboardEvent) => this.onKeyDown(evt));
+    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) =>
+      this.onKeyDown(evt),
+    );
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
@@ -191,10 +193,18 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param thisObject The value of 'this' in the function.
    * @param func Function to call when event is triggered.
    */
-  private addEvent(node: Element, name: string, thisObject: object,
-      func: (event: Event) => void) {
-    const event =
-        Blockly.browserEvents.conditionalBind(node, name, thisObject, func);
+  private addEvent(
+    node: Element,
+    name: string,
+    thisObject: object,
+    func: (event: Event) => void,
+  ) {
+    const event = Blockly.browserEvents.conditionalBind(
+      node,
+      name,
+      thisObject,
+      func,
+    );
     this.boundEvents.push(event);
   }
 
@@ -265,8 +275,10 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param onClickFn The function to call when the user clicks on
    *      or hits enter on the button.
    */
-  private addBtnListener(btn: HTMLButtonElement,
-      onClickFn: (e: Event) => void) {
+  private addBtnListener(
+    btn: HTMLButtonElement,
+    onClickFn: (e: Event) => void,
+  ) {
     this.addEvent(btn, 'click', this, onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
@@ -288,7 +300,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    *     case since we don't need other elements to avoid the workspace search
    *     field.
    */
-  getBoundingRectangle(): Blockly.utils.Rect|null {
+  getBoundingRectangle(): Blockly.utils.Rect | null {
     return null;
   }
 
@@ -300,8 +312,10 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param savedPositions List of rectangles that
    *     are already on the workspace.
    */
-  position(metrics: Blockly.MetricsManager.UiMetrics,
-      savedPositions: Blockly.utils.Rect[]) {
+  position(
+    metrics: Blockly.MetricsManager.UiMetrics,
+    savedPositions: Blockly.utils.Rect[],
+  ) {
     if (this.workspace.RTL) {
       this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
     } else {
@@ -396,7 +410,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       this.unhighlightCurrentSelection(currentBlock);
     }
     this.currentBlockIndex =
-        (index % this.blocks.length + this.blocks.length) % this.blocks.length;
+      ((index % this.blocks.length) + this.blocks.length) % this.blocks.length;
     currentBlock = this.blocks[this.currentBlockIndex];
 
     this.highlightCurrentSelection(currentBlock);
@@ -442,8 +456,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const oldCurrentBlock = this.blocks[this.currentBlockIndex];
     this.searchText = searchText.trim();
     this.clearBlocks();
-    this.blocks = this.getMatchingBlocks(this.workspace, this.searchText,
-        this.caseSensitive);
+    this.blocks = this.getMatchingBlocks(
+      this.workspace,
+      this.searchText,
+      this.caseSensitive,
+    );
     this.highlightSearchGroup(this.blocks);
     let currentIdx = 0;
     if (preserveCurrent) {
@@ -475,8 +492,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param caseSensitive Whether the search is caseSensitive.
    * @returns True if the block is a match, false otherwise.
    */
-  protected isBlockMatch(block: Blockly.BlockSvg, searchText: string,
-      caseSensitive: boolean): boolean {
+  protected isBlockMatch(
+    block: Blockly.BlockSvg,
+    searchText: string,
+    caseSensitive: boolean,
+  ): boolean {
     let blockText = '';
     if (block.isCollapsed()) {
       // Search the whole string for collapsed blocks.
@@ -484,10 +504,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     } else {
       const topBlockText = [];
       block.inputList.forEach((input) => {
-        input.fieldRow.forEach(
-            (field) => {
-              topBlockText.push(field.getText());
-            });
+        input.fieldRow.forEach((field) => {
+          topBlockText.push(field.getText());
+        });
       });
       blockText = topBlockText.join(' ').trim();
     }
@@ -505,9 +524,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @returns The blocks that match the search
    *    text.
    */
-  protected getMatchingBlocks(workspace: Blockly.WorkspaceSvg,
-      searchText: string,
-      caseSensitive: boolean): Blockly.BlockSvg[] {
+  protected getMatchingBlocks(
+    workspace: Blockly.WorkspaceSvg,
+    searchText: string,
+    caseSensitive: boolean,
+  ): Blockly.BlockSvg[] {
     if (!searchText) {
       return [];
     }
@@ -515,8 +536,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       searchText = searchText.toLowerCase();
     }
     const searchGroup = this.getSearchPool(workspace);
-    return searchGroup.filter(
-        (block) => this.isBlockMatch(block, searchText, caseSensitive));
+    return searchGroup.filter((block) =>
+      this.isBlockMatch(block, searchText, caseSensitive),
+    );
   }
 
   /**

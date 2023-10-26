@@ -27,8 +27,9 @@ All mimsy were the borogoves,
     label: 'Not spel chekt',
     args: {
       'spellcheck': false,
-      'text': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed' +
-          ' do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      'text':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed' +
+        ' do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     },
   },
 ]);
@@ -39,13 +40,15 @@ All mimsy were the borogoves,
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };

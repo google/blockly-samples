@@ -857,7 +857,6 @@ export default {
       'name': 'Variables',
       'custom': 'VARIABLE',
       'categorystyle': 'variable_category',
-
     },
     {
       'kind': 'category',

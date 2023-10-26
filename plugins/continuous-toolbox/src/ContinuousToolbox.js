@@ -30,8 +30,10 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     flyout.recordScrollPositions();
 
     this.workspace_.addChangeListener((e) => {
-      if (e.type === Blockly.Events.BLOCK_CREATE ||
-          e.type === Blockly.Events.BLOCK_DELETE) {
+      if (
+        e.type === Blockly.Events.BLOCK_CREATE ||
+        e.type === Blockly.Events.BLOCK_DELETE
+      ) {
         this.refreshSelection();
       }
     });
@@ -83,8 +85,9 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   /** @override */
   updateFlyout_(_oldItem, newItem) {
     if (newItem) {
-      const target = this.getFlyout()
-          .getCategoryScrollPosition(newItem.name_).y;
+      const target = this.getFlyout().getCategoryScrollPosition(
+        newItem.name_,
+      ).y;
       this.getFlyout().scrollTo(target);
     }
   }
@@ -92,7 +95,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   /** @override */
   shouldDeselectItem_(oldItem, newItem) {
     // Should not deselect if the same category is clicked again.
-    return (oldItem && oldItem !== newItem);
+    return oldItem && oldItem !== newItem;
   }
 
   /**
@@ -104,8 +107,11 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    */
   getCategoryByName(name) {
     const category = this.contents_.find(
-        (item) => item instanceof Blockly.ToolboxCategory &&
-            item.isSelectable() && name === item.getName());
+      (item) =>
+        item instanceof Blockly.ToolboxCategory &&
+        item.isSelectable() &&
+        name === item.getName(),
+    );
     if (category) {
       return /** @type {!Blockly.ToolboxCategory} */ (category);
     }
@@ -145,7 +151,6 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     return super.getClientRect();
   }
 }
-
 
 Blockly.Css.register(`
 .categoryBubble {

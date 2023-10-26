@@ -21,76 +21,76 @@ delete Blockly.Blocks['procedures_defreturn'];
 
 Blockly.defineBlocksWithJsonArray([
   {
-    "type": "procedures_defnoreturn",
-    "message0": "%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2",
-    "message1": "%{BKY_PROCEDURES_DEFNORETURN_DO} %1",
-    "args0": [
+    'type': 'procedures_defnoreturn',
+    'message0': '%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2',
+    'message1': '%{BKY_PROCEDURES_DEFNORETURN_DO} %1',
+    'args0': [
       {
-        "type": "field_input",
-        "name": "NAME",
-        "text": "",
+        'type': 'field_input',
+        'name': 'NAME',
+        'text': '',
       },
       {
-        "type": "input_dummy",
-        "name": "TOP",
+        'type': 'input_dummy',
+        'name': 'TOP',
       },
     ],
-    "args1": [
+    'args1': [
       {
-        "type": "input_statement",
-        "name": "STACK",
+        'type': 'input_statement',
+        'name': 'STACK',
       },
     ],
-    "style": "procedure_blocks",
-    "helpUrl": "%{BKY_PROCEDURES_DEFNORETURN_HELPURL}",
-    "tooltip": "%{BKY_PROCEDURES_DEFNORETURN_TOOLTIP}",
-    "extensions": [
-      "get_procedure_def_no_return",
-      "procedure_context_menu",
-      "procedure_rename",
-      "procedure_vars",
+    'style': 'procedure_blocks',
+    'helpUrl': '%{BKY_PROCEDURES_DEFNORETURN_HELPURL}',
+    'tooltip': '%{BKY_PROCEDURES_DEFNORETURN_TOOLTIP}',
+    'extensions': [
+      'get_procedure_def_no_return',
+      'procedure_context_menu',
+      'procedure_rename',
+      'procedure_vars',
     ],
-    "mutator": "procedure_def_mutator",
+    'mutator': 'procedure_def_mutator',
   },
   {
-    "type": "procedures_defreturn",
-    "message0": "%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2",
-    "message1": "%{BKY_PROCEDURES_DEFRETURN_DO} %1",
-    "message2": "%{BKY_PROCEDURES_DEFRETURN_RETURN} %1",
-    "args0": [
+    'type': 'procedures_defreturn',
+    'message0': '%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2',
+    'message1': '%{BKY_PROCEDURES_DEFRETURN_DO} %1',
+    'message2': '%{BKY_PROCEDURES_DEFRETURN_RETURN} %1',
+    'args0': [
       {
-        "type": "field_input",
-        "name": "NAME",
-        "text": "",
+        'type': 'field_input',
+        'name': 'NAME',
+        'text': '',
       },
       {
-        "type": "input_dummy",
-        "name": "TOP",
+        'type': 'input_dummy',
+        'name': 'TOP',
       },
     ],
-    "args1": [
+    'args1': [
       {
-        "type": "input_statement",
-        "name": "STACK",
+        'type': 'input_statement',
+        'name': 'STACK',
       },
     ],
-    "args2": [
+    'args2': [
       {
-        "type": "input_value",
-        "align": "right",
-        "name": "RETURN",
+        'type': 'input_value',
+        'align': 'right',
+        'name': 'RETURN',
       },
     ],
-    "style": "procedure_blocks",
-    "helpUrl": "%{BKY_PROCEDURES_DEFRETURN_HELPURL}",
-    "tooltip": "%{BKY_PROCEDURES_DEFRETURN_TOOLTIP}",
-    "extensions": [
-      "get_procedure_def_return",
-      "procedure_context_menu",
-      "procedure_rename",
-      "procedure_vars",
+    'style': 'procedure_blocks',
+    'helpUrl': '%{BKY_PROCEDURES_DEFRETURN_HELPURL}',
+    'tooltip': '%{BKY_PROCEDURES_DEFRETURN_TOOLTIP}',
+    'extensions': [
+      'get_procedure_def_return',
+      'procedure_context_menu',
+      'procedure_rename',
+      'procedure_vars',
     ],
-    "mutator": "procedure_def_mutator",
+    'mutator': 'procedure_def_mutator',
   },
 ]);
 
@@ -105,7 +105,7 @@ const getDefNoReturn = {
    * @returns {Array} An array of info.
    * @this {Blockly.Block}
    */
-  getProcedureDef: function() {
+  getProcedureDef: function () {
     const argNames = this.argData_.map((elem) => elem.model.name);
     return [this.getFieldValue('NAME'), argNames, false];
   },
@@ -130,7 +130,7 @@ const getDefReturn = {
    * @returns {Array} An array of info.
    * @this {Blockly.Block}
    */
-  getProcedureDef: function() {
+  getProcedureDef: function () {
     const argNames = this.argData_.map((elem) => elem.model.name);
     return [this.getFieldValue('NAME'), argNames, true];
   },
@@ -151,7 +151,7 @@ const procedureContextMenu = {
    * @this {Blockly.Block}
    * @param {!Array} options The current options for the context menu.
    */
-  customContextMenu: function(options) {
+  customContextMenu: function (options) {
     if (this.isInFlyout) {
       return;
     }
@@ -178,8 +178,10 @@ const procedureContextMenu = {
     // Add options to create getters for each parameter.
     const varModels = this.getVarModels();
     for (const model of varModels) {
-      const text = Blockly.Msg['VARIABLES_SET_CREATE_GET']
-          .replace('%1', model.name);
+      const text = Blockly.Msg['VARIABLES_SET_CREATE_GET'].replace(
+        '%1',
+        model.name,
+      );
 
       const xml = Blockly.utils.xml.createElement('block');
       xml.setAttribute('type', 'variables_get');
@@ -196,7 +198,9 @@ const procedureContextMenu = {
 };
 
 Blockly.Extensions.registerMixin(
-    'procedure_context_menu', procedureContextMenu);
+  'procedure_context_menu',
+  procedureContextMenu,
+);
 
 const procedureDefMutator = {
   /**
@@ -207,7 +211,7 @@ const procedureDefMutator = {
    * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function(isForCaller = false) {
+  mutationToDom: function (isForCaller = false) {
     const container = Blockly.utils.xml.createElement('mutation');
     if (isForCaller) {
       container.setAttribute('name', this.getFieldValue('NAME'));
@@ -238,7 +242,7 @@ const procedureDefMutator = {
    * @param {!Element} xmlElement XML storage element.
    * @this {Blockly.Block}
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function (xmlElement) {
     // We have to handle this so that the user doesn't add blocks to the stack,
     // in which case it would be impossible to return to the old mutators.
     this.hasStatements_ = xmlElement.getAttribute('statements') !== 'false';
@@ -252,8 +256,9 @@ const procedureDefMutator = {
     for (const childNode of xmlElement.childNodes) {
       if (childNode.nodeName.toLowerCase() == 'arg') {
         names.push(childNode.getAttribute('name'));
-        varIds.push(childNode.getAttribute('varid') ||
-            childNode.getAttribute('varId'));
+        varIds.push(
+          childNode.getAttribute('varid') || childNode.getAttribute('varId'),
+        );
         argIds.push(childNode.getAttribute('argid'));
       }
     }
@@ -266,7 +271,7 @@ const procedureDefMutator = {
    *     hasStatements: (boolean|undefined)}} The state of this block, eg the
    *     parameters and statements.
    */
-  saveExtraState: function() {
+  saveExtraState: function () {
     if (!this.argData_.length && this.hasStatements_) {
       return null;
     }
@@ -294,7 +299,7 @@ const procedureDefMutator = {
    * @param {*} state The state to apply to this block, eg the parameters and
    *     statements.
    */
-  loadExtraState: function(state) {
+  loadExtraState: function (state) {
     // We have to handle this so that the user doesn't add blocks to the stack,
     // in which case it would be impossible to return to the old mutators.
     this.hasStatements_ = state['hasStatements'] !== false;
@@ -326,7 +331,7 @@ const procedureDefMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  updateShape_: function(names, varIds, argIds) {
+  updateShape_: function (names, varIds, argIds) {
     if (names.length != varIds.length) {
       throw Error('names and varIds must have the same length.');
     }
@@ -351,7 +356,7 @@ const procedureDefMutator = {
    * Callback for the plus image. Adds an argument to the block and mutates
    * callers to match.
    */
-  plus: function() {
+  plus: function () {
     this.addArg_();
     Blockly.Procedures.mutateCallers(this);
   },
@@ -362,7 +367,7 @@ const procedureDefMutator = {
    * @param {string} argId The argId of the argument to remove.
    * @this {Blockly.Block}
    */
-  minus: function(argId) {
+  minus: function (argId) {
     if (!this.argData_.length) {
       return;
     }
@@ -380,19 +385,27 @@ const procedureDefMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  addArg_: function(name = null, varId = null, argId = null) {
+  addArg_: function (name = null, varId = null, argId = null) {
     if (!this.argData_.length) {
       const withField = new Blockly.FieldLabel(
-          Blockly.Msg['PROCEDURES_BEFORE_PARAMS']);
-      this.getInput('TOP')
-          .appendField(withField, 'WITH');
+        Blockly.Msg['PROCEDURES_BEFORE_PARAMS'],
+      );
+      this.getInput('TOP').appendField(withField, 'WITH');
     }
 
     const argNames = this.argData_.map((elem) => elem.model.name);
-    name = name || Blockly.Variables.generateUniqueNameFromOptions(
-        Blockly.Procedures.DEFAULT_ARG, argNames);
+    name =
+      name ||
+      Blockly.Variables.generateUniqueNameFromOptions(
+        Blockly.Procedures.DEFAULT_ARG,
+        argNames,
+      );
     const variable = Blockly.Variables.getOrCreateVariablePackage(
-        this.workspace, varId, name, '');
+      this.workspace,
+      varId,
+      name,
+      '',
+    );
     argId = argId || Blockly.utils.idGenerator.genUid();
 
     this.addVarInput_(name, argId);
@@ -413,9 +426,10 @@ const procedureDefMutator = {
    * @param {string} argId An ID used to track arguments on the block.
    * @private
    */
-  removeArg_: function(argId) {
+  removeArg_: function (argId) {
     if (this.removeInput(argId, true)) {
-      if (this.argData_.length == 1) { // Becoming argumentless.
+      if (this.argData_.length == 1) {
+        // Becoming argumentless.
         this.getInput('TOP').removeField('WITH');
       }
       this.argData_ = this.argData_.filter((element) => element.argId != argId);
@@ -430,17 +444,17 @@ const procedureDefMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  addVarInput_: function(name, argId) {
+  addVarInput_: function (name, argId) {
     const nameField = new Blockly.FieldTextInput(name, this.validator_);
     nameField.onFinishEditing_ = this.finishEditing_.bind(nameField);
     nameField.varIdsToDelete_ = [];
     nameField.preEditVarModel_ = null;
 
     this.appendDummyInput(argId)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(createMinusField(argId))
-        .appendField(Blockly.Msg['PROCEDURE_VARIABLE']) // Untranslated!
-        .appendField(nameField, argId); // The name of the field is the arg id.
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField(createMinusField(argId))
+      .appendField(Blockly.Msg['PROCEDURE_VARIABLE']) // Untranslated!
+      .appendField(nameField, argId); // The name of the field is the arg id.
   },
 
   /**
@@ -449,12 +463,13 @@ const procedureDefMutator = {
    * @returns {?string} The field's new value.
    * @this {Blockly.FieldTextInput}
    */
-  validator_: function(newName) {
+  validator_: function (newName) {
     const sourceBlock = this.getSourceBlock();
     const workspace = sourceBlock.workspace;
     const argData = sourceBlock.argData_;
     const argDatum = sourceBlock.argData_.find(
-        (element) => element.argId == this.name);
+      (element) => element.argId == this.name,
+    );
     const currId = argDatum.model.getId();
 
     // Replace all whitespace with normal spaces, then trim.
@@ -473,8 +488,10 @@ const procedureDefMutator = {
      */
     const hasDifName = (argDatum) => {
       // The field name (aka id) is always equal to the arg id.
-      return argDatum.argId == this.name ||
-          caselessName != argDatum.model.name.toLowerCase();
+      return (
+        argDatum.argId == this.name ||
+        caselessName != argDatum.model.name.toLowerCase()
+      );
     };
     /**
      * Returns true if the variable associated with this field is only used
@@ -484,9 +501,11 @@ const procedureDefMutator = {
      */
     const varOnlyUsedHere = () => {
       return workspace.getVariableUsesById(currId).every((block) => {
-        return block.id == sourceBlock.id ||
-            (block.getProcedureCall &&
-                block.getProcedureCall() == sourceBlock.getProcedureDef()[0]);
+        return (
+          block.id == sourceBlock.id ||
+          (block.getProcedureCall &&
+            block.getProcedureCall() == sourceBlock.getProcedureDef()[0])
+        );
       });
     };
 
@@ -529,10 +548,11 @@ const procedureDefMutator = {
    * @param {string} _finalName The final value of the field.
    * @this {Blockly.FieldTextInput}
    */
-  finishEditing_: function(_finalName) {
+  finishEditing_: function (_finalName) {
     const source = this.getSourceBlock();
     const argDatum = source.argData_.find(
-        (element) => element.argId == this.name);
+      (element) => element.argId == this.name,
+    );
 
     const currentVarId = argDatum.model.getId();
     this.varIdsToDelete_.forEach((id) => {
@@ -549,7 +569,7 @@ const procedureDefMutator = {
  * Initializes some private variables for procedure blocks.
  * @this {Blockly.Block}
  */
-const procedureDefHelper = function() {
+const procedureDefHelper = function () {
   /**
    * An array of objects containing data about the args belonging to the
    * procedure definition.
@@ -570,14 +590,17 @@ const procedureDefHelper = function() {
   this.getInput('TOP').insertFieldAt(0, createPlusField(), 'PLUS');
 };
 
-Blockly.Extensions.registerMutator('procedure_def_mutator',
-    procedureDefMutator, procedureDefHelper);
+Blockly.Extensions.registerMutator(
+  'procedure_def_mutator',
+  procedureDefMutator,
+  procedureDefHelper,
+);
 
 /**
  * Sets the validator for the procedure's name field.
  * @this {Blockly.Block}
  */
-const procedureRename = function() {
+const procedureRename = function () {
   this.getField('NAME').setValidator(Blockly.Procedures.rename);
 };
 
@@ -587,7 +610,7 @@ Blockly.Extensions.register('procedure_rename', procedureRename);
  * Defines functions for dealing with variables and renaming variables.
  * @this {Blockly.Block}
  */
-const procedureVars = function() {
+const procedureVars = function () {
   // This is a hack to get around the don't-override-builtins check.
   const mixin = {
     /**
@@ -595,7 +618,7 @@ const procedureVars = function() {
      * @returns {!Array.<string>} List of variable names.
      * @this {Blockly.Block}
      */
-    getVars: function() {
+    getVars: function () {
       return this.argData_.map((elem) => elem.model.name);
     },
 
@@ -604,7 +627,7 @@ const procedureVars = function() {
      * @returns {!Array.<!Blockly.VariableModel>} List of variable models.
      * @this {Blockly.Block}
      */
-    getVarModels: function() {
+    getVarModels: function () {
       return this.argData_.map((elem) => elem.model);
     },
 
@@ -616,9 +639,10 @@ const procedureVars = function() {
      * @param {string} newId The ID of the variable that was already using
      *     the name.
      */
-    renameVarById: function(oldId, newId) {
+    renameVarById: function (oldId, newId) {
       const argData = this.argData_.find(
-          (element) => element.model.getId() == oldId);
+        (element) => element.model.getId() == oldId,
+      );
       if (!argData) {
         return; // Not on this block.
       }
@@ -640,10 +664,11 @@ const procedureVars = function() {
      * @override
      * @this {Blockly.Block}
      */
-    updateVarName: function(variable) {
+    updateVarName: function (variable) {
       const id = variable.getId();
       const argData = this.argData_.find(
-          (element) => element.model.getId() == id);
+        (element) => element.model.getId() == id,
+      );
       if (!argData) {
         return; // Not on this block.
       }

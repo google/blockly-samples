@@ -43,7 +43,7 @@ export class LocalStorageState {
    */
   load() {
     this.state_ =
-        JSON.parse(localStorage.getItem(this.key_)) || this.defaultState_;
+      JSON.parse(localStorage.getItem(this.key_)) || this.defaultState_;
   }
 
   /**

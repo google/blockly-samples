@@ -36,8 +36,10 @@ export class FieldDate extends Blockly.FieldTextInput {
    * @param config A map of options used to configure the field.
    */
   constructor(
-      value?: string, validator?: FieldDateValidator,
-      config?: FieldDateConfig) {
+    value?: string,
+    validator?: FieldDateValidator,
+    config?: FieldDateConfig,
+  ) {
     super(value, validator, config);
   }
 
@@ -262,9 +264,10 @@ export function toLocalISOString(date: Date) {
   // '2000-02-21' at GMT+0, which is what `date.toISOString()` would return.
   // For a user whose timezone is GMT-6, this should return '2000-02-20'.
   // For a user whose timezone is GMT-5, that date should return '2000-02-21'.
-  return date.toLocaleDateString('en-US')
-      .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
-      .replace(/-(\d)(?!\d)/g, '-0$1');
+  return date
+    .toLocaleDateString('en-US')
+    .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
+    .replace(/-(\d)(?!\d)/g, '-0$1');
 }
 
 // NOTE: Set default here instead of in class so it's available at Field.

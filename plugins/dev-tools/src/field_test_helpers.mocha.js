@@ -65,8 +65,11 @@ export class FieldCreationTestCase {
  * @param {*} expectedValue The expected value.
  * @param {string=} expectedText The expected text.
  */
-export function assertFieldValue(field, expectedValue,
-    expectedText = undefined) {
+export function assertFieldValue(
+  field,
+  expectedValue,
+  expectedText = undefined,
+) {
   const actualValue = field.getValue();
   const actualText = field.getText();
   if (expectedText === undefined) {
@@ -93,7 +96,7 @@ function runCreationTests_(testCases, assertion, creation) {
    * @returns {Function} The test callback.
    */
   const createTestFn = (testCase) => {
-    return function() {
+    return function () {
       const field = creation.call(this, testCase);
       assertion(field, testCase);
     };
@@ -116,8 +119,8 @@ function runCreationTestsAssertThrows_(testCases, creation) {
    * @returns {!Function} The test callback.
    */
   const createTestFn = (testCase) => {
-    return function() {
-      assert.throws(function() {
+    return function () {
+      assert.throws(function () {
         creation.call(this, testCase);
       }, testCase.errMsgMatcher);
     };
@@ -141,21 +144,28 @@ function runCreationTestsAssertThrows_(testCases, creation) {
  * @param {function(!FieldCreationTestCase=)=} customCreateWithJs Custom
  *    creation function to use in tests.
  */
-export function runConstructorSuiteTests(TestedField, validValueTestCases,
-    invalidValueTestCases, validRunAssertField, assertFieldDefault,
-    customCreateWithJs) {
-  suite('Constructor', function() {
+export function runConstructorSuiteTests(
+  TestedField,
+  validValueTestCases,
+  invalidValueTestCases,
+  validRunAssertField,
+  assertFieldDefault,
+  customCreateWithJs,
+) {
+  suite('Constructor', function () {
     if (assertFieldDefault) {
-      test('Empty', function() {
-        const field = customCreateWithJs ? customCreateWithJs.call(this) :
-            new TestedField();
+      test('Empty', function () {
+        const field = customCreateWithJs
+          ? customCreateWithJs.call(this)
+          : new TestedField();
         assertFieldDefault(field);
       });
     } else {
-      test('Empty', function() {
-        assert.throws(function() {
-          customCreateWithJs ? customCreateWithJs.call(this) :
-              new TestedField();
+      test('Empty', function () {
+        assert.throws(function () {
+          customCreateWithJs
+            ? customCreateWithJs.call(this)
+            : new TestedField();
         });
       });
     }
@@ -165,13 +175,17 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
      * @param {!FieldCreationTestCase} testCase The test case information.
      * @returns {!Blockly.Field} The instantiated field.
      */
-    const createWithJs = function(testCase) {
-      return customCreateWithJs ? customCreateWithJs.call(this, testCase) :
-          new TestedField(...testCase.args);
+    const createWithJs = function (testCase) {
+      return customCreateWithJs
+        ? customCreateWithJs.call(this, testCase)
+        : new TestedField(...testCase.args);
     };
     if (assertFieldDefault) {
       runCreationTests_(
-          invalidValueTestCases, assertFieldDefault, createWithJs);
+        invalidValueTestCases,
+        assertFieldDefault,
+        createWithJs,
+      );
     } else {
       runCreationTestsAssertThrows_(invalidValueTestCases, createWithJs);
     }
@@ -195,21 +209,28 @@ export function runConstructorSuiteTests(TestedField, validValueTestCases,
  * @param {function(!FieldCreationTestCase=)=} customCreateWithJson Custom
  *    creation function to use in tests.
  */
-export function runFromJsonSuiteTests(TestedField, validValueTestCases,
-    invalidValueTestCases, validRunAssertField, assertFieldDefault,
-    customCreateWithJson) {
-  suite('fromJson', function() {
+export function runFromJsonSuiteTests(
+  TestedField,
+  validValueTestCases,
+  invalidValueTestCases,
+  validRunAssertField,
+  assertFieldDefault,
+  customCreateWithJson,
+) {
+  suite('fromJson', function () {
     if (assertFieldDefault) {
-      test('Empty', function() {
-        const field = customCreateWithJson ? customCreateWithJson.call(this) :
-            TestedField.fromJson({});
+      test('Empty', function () {
+        const field = customCreateWithJson
+          ? customCreateWithJson.call(this)
+          : TestedField.fromJson({});
         assertFieldDefault(field);
       });
     } else {
-      test('Empty', function() {
-        assert.throws(function() {
-          customCreateWithJson ? customCreateWithJson.call(this) :
-              TestedField.fromJson({});
+      test('Empty', function () {
+        assert.throws(function () {
+          customCreateWithJson
+            ? customCreateWithJson.call(this)
+            : TestedField.fromJson({});
         });
       });
     }
@@ -219,13 +240,17 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
      * @param {!FieldCreationTestCase} testCase The test case information.
      * @returns {!Blockly.Field} The instantiated field.
      */
-    const createWithJson = function(testCase) {
-      return customCreateWithJson ? customCreateWithJson.call(this, testCase) :
-          TestedField.fromJson(testCase.json);
+    const createWithJson = function (testCase) {
+      return customCreateWithJson
+        ? customCreateWithJson.call(this, testCase)
+        : TestedField.fromJson(testCase.json);
     };
     if (assertFieldDefault) {
       runCreationTests_(
-          invalidValueTestCases, assertFieldDefault, createWithJson);
+        invalidValueTestCases,
+        assertFieldDefault,
+        createWithJson,
+      );
     } else {
       runCreationTestsAssertThrows_(invalidValueTestCases, createWithJson);
     }
@@ -244,18 +269,25 @@ export function runFromJsonSuiteTests(TestedField, validValueTestCases,
  * @param {string=} invalidRunExpectedText Expected text for field after invalid
  *    call to setValue.
  */
-export function runSetValueTests(validValueTestCases, invalidValueTestCases,
-    invalidRunExpectedValue, invalidRunExpectedText) {
+export function runSetValueTests(
+  validValueTestCases,
+  invalidValueTestCases,
+  invalidRunExpectedValue,
+  invalidRunExpectedText,
+) {
   /**
    * Creates test callback for invalid setValue test.
    * @param {!FieldValueTestCase} testCase The test case information.
    * @returns {!Function} The test callback.
    */
   const createInvalidSetValueTestCallback = (testCase) => {
-    return function() {
+    return function () {
       this.field.setValue(testCase.value);
       assertFieldValue(
-          this.field, invalidRunExpectedValue, invalidRunExpectedText);
+        this.field,
+        invalidRunExpectedValue,
+        invalidRunExpectedText,
+      );
     };
   };
   /**
@@ -264,10 +296,13 @@ export function runSetValueTests(validValueTestCases, invalidValueTestCases,
    * @returns {!Function} The test callback.
    */
   const createValidSetValueTestCallback = (testCase) => {
-    return function() {
+    return function () {
       this.field.setValue(testCase.value);
       assertFieldValue(
-          this.field, testCase.expectedValue, testCase.expectedText);
+        this.field,
+        testCase.expectedValue,
+        testCase.expectedText,
+      );
     };
   };
   runTestCases(invalidValueTestCases, createInvalidSetValueTestCallback);

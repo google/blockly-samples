@@ -9,8 +9,12 @@ import {testHelpers} from '@blockly/dev-tools';
 import {FieldDate} from '../src/index';
 
 const {
-  assertFieldValue, FieldCreationTestCase, FieldValueTestCase,
-  runConstructorSuiteTests, runFromJsonSuiteTests, runSetValueTests,
+  assertFieldValue,
+  FieldCreationTestCase,
+  FieldValueTestCase,
+  runConstructorSuiteTests,
+  runFromJsonSuiteTests,
+  runSetValueTests,
 } = testHelpers;
 
 // Add polyfill for global variables needed.
@@ -20,7 +24,7 @@ if (!global.navigator) {
   };
 }
 
-suite('FieldDate', function() {
+suite('FieldDate', function () {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -37,13 +41,15 @@ suite('FieldDate', function() {
    * Configuration for field tests with valid values.
    * @type {Array<FieldCreationTestCase>}
    */
-  const validValueTestCases = [{
-    title: 'String',
-    value: '3030-03-30',
-    expectedValue: '3030-03-30',
-    expectedText: '3/30/3030',
-  }];
-  const addArgsAndJson = function(testCase) {
+  const validValueTestCases = [
+    {
+      title: 'String',
+      value: '3030-03-30',
+      expectedValue: '3030-03-30',
+      expectedText: '3/30/3030',
+    },
+  ];
+  const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
     testCase.json = {'date': testCase.value};
   };
@@ -51,12 +57,13 @@ suite('FieldDate', function() {
   validValueTestCases.forEach(addArgsAndJson);
   // Construct ISO string using current timezone.
   // Cannot use toISOString() because it returns in UTC.
-  const defaultFieldValue = new Date().toLocaleDateString('en-US')
-      .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
-      .replace(/-(\d)(?!\d)/g, '-0$1');
+  const defaultFieldValue = new Date()
+    .toLocaleDateString('en-US')
+    .replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2')
+    .replace(/-(\d)(?!\d)/g, '-0$1');
   // NOTE: The actual text depends on system settings of the one running it.
   const defaultFieldText = new Date().toLocaleDateString();
-  const assertFieldDefault = function(field) {
+  const assertFieldDefault = function (field) {
     assertFieldValue(field, defaultFieldValue, defaultFieldText);
   };
 
@@ -65,86 +72,94 @@ suite('FieldDate', function() {
    * @param {FieldDate} field The field to check.
    * @param {FieldValueTestCase} testCase The test case.
    */
-  const validTestCaseAssertField = function(field, testCase) {
+  const validTestCaseAssertField = function (field, testCase) {
     assertFieldValue(field, testCase.expectedValue, testCase.expectedText);
   };
 
   runConstructorSuiteTests(
-      FieldDate, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+    FieldDate,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertFieldDefault,
+  );
 
   runFromJsonSuiteTests(
-      FieldDate, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+    FieldDate,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertFieldDefault,
+  );
 
-  suite('setValue', function() {
-    suite('Empty -> New Value', function() {
-      setup(function() {
+  suite('setValue', function () {
+    suite('Empty -> New Value', function () {
+      setup(function () {
         this.field = new FieldDate();
       });
       runSetValueTests(
-          validValueTestCases,
-          invalidValueTestCases,
-          defaultFieldValue,
-          defaultFieldText,
+        validValueTestCases,
+        invalidValueTestCases,
+        defaultFieldValue,
+        defaultFieldText,
       );
     });
-    suite('Value -> New Value', function() {
+    suite('Value -> New Value', function () {
       const initialValue = '2020-02-20';
       const initialText = new Date(initialValue).toLocaleDateString();
-      setup(function() {
+      setup(function () {
         this.field = new FieldDate(initialValue);
       });
       runSetValueTests(
-          validValueTestCases,
-          invalidValueTestCases,
-          initialValue,
-          initialText,
+        validValueTestCases,
+        invalidValueTestCases,
+        initialValue,
+        initialText,
       );
     });
   });
 
-  suite('Validators', function() {
-    setup(function() {
+  suite('Validators', function () {
+    setup(function () {
       this.field = new FieldDate('2020-02-20');
     });
-    teardown(function() {
+    teardown(function () {
       this.field.setValidator(null);
     });
-    suite('when validator returns null', function() {
-      setup(function() {
+    suite('when validator returns null', function () {
+      setup(function () {
         this.field.setValidator(() => {
           return null;
         });
       });
-      test('should not set the new value', function() {
+      test('should not set the new value', function () {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '2020-02-20', '2/20/2020');
       });
     });
-    suite('when validator sets day to 20s', function() {
-      setup(function() {
-        this.field.setValidator(function(newValue) {
+    suite('when validator sets day to 20s', function () {
+      setup(function () {
+        this.field.setValidator(function (newValue) {
           return newValue.substr(0, 8) + '2' + newValue.substr(9, 1);
         });
       });
-      test('should set the value to a "20s" date', function() {
+      test('should set the value to a "20s" date', function () {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '3030-03-20', '3/20/3030');
       });
     });
-    suite('when validator returns undefined', function() {
-      setup(function() {
+    suite('when validator returns undefined', function () {
+      setup(function () {
         this.field.setValidator(() => {});
       });
-      test('should set the value without changing it', function() {
+      test('should set the value without changing it', function () {
         this.field.setValue('3030-03-30');
         assertFieldValue(this.field, '3030-03-30', '3/30/3030');
       });
     });
   });
 
-  suite('Time Zones', function() {
+  suite('Time Zones', function () {
     // https://nodejs.org/api/cli.html#tz
     const INITIAL_TZ = process.env.TZ;
     const TZ_STRINGS = {

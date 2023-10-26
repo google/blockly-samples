@@ -75,8 +75,8 @@ export class TestSuite {
  */
 export function runTestCases(testCases, createTestCallback) {
   testCases.forEach((testCase) => {
-    let testCall = (testCase.skip ? test.skip : test);
-    testCall = (testCase.only ? test.only : testCall);
+    let testCall = testCase.skip ? test.skip : test;
+    testCall = testCase.only ? test.only : testCall;
     testCall(testCase.title, createTestCallback(testCase));
   });
 }
@@ -92,9 +92,9 @@ export function runTestCases(testCases, createTestCallback) {
  */
 export function runTestSuites(testSuites, createTestCaseCallback) {
   testSuites.forEach((testSuite) => {
-    let suiteCall = (testSuite.skip ? suite.skip : suite);
-    suiteCall = (testSuite.only ? suite.only : suiteCall);
-    suiteCall(testSuite.title, function() {
+    let suiteCall = testSuite.skip ? suite.skip : suite;
+    suiteCall = testSuite.only ? suite.only : suiteCall;
+    suiteCall(testSuite.title, function () {
       if (testSuite.testSuites && testSuite.testSuites.length) {
         runTestSuites(testSuite.testSuites, createTestCaseCallback);
       }
@@ -115,7 +115,7 @@ export function captureWarnings(innerFunc) {
   const msgs = [];
   const nativeConsoleWarn = console.warn;
   try {
-    console.warn = function(msg) {
+    console.warn = function (msg) {
       msgs.push(msg);
     };
     innerFunc();

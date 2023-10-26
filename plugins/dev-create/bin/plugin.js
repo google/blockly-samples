@@ -22,22 +22,22 @@ const pluginTypes = ['plugin', 'field', 'block', 'theme'];
 
 const root = process.cwd();
 
-exports.createPlugin = function(pluginName, options) {
+exports.createPlugin = function (pluginName, options) {
   let gitRoot = '';
   let gitURL = '';
   try {
     gitRoot = execSync(`git rev-parse --show-toplevel`).toString().trim();
     gitURL = execSync(`git config --get remote.origin.url`)
-        .toString()
-        .trim()
-        .replace(/\.git$/, '');
+      .toString()
+      .trim()
+      .replace(/\.git$/, '');
   } catch (err) {
     // NOP
   }
 
   const isGit = !!gitURL;
-  const isFirstParty = options.firstParty ||
-      gitURL == 'https://github.com/google/blockly-samples';
+  const isFirstParty =
+    options.firstParty || gitURL == 'https://github.com/google/blockly-samples';
 
   /**
    * Gets the name of the plugin prefixed with the type.
@@ -46,7 +46,7 @@ exports.createPlugin = function(pluginName, options) {
    * @param {string} type Plugin type.
    * @returns {string} Plugin name prefixed with type.
    */
-  const getPrefixedName = function(name, type) {
+  const getPrefixedName = function (name, type) {
     // Don't add 'plugin' prefix for default type
     if (type == 'plugin') return name;
     // If the name is already prefixed, just return the name.
@@ -76,12 +76,14 @@ exports.createPlugin = function(pluginName, options) {
   checkAndCreateDir(pluginPath);
 
   console.log(
-      `Creating a new Blockly ${chalk.green(pluginType)} with name ` +
-      `${chalk.green(pluginName)} in ${chalk.green(pluginPath)}.\n`);
+    `Creating a new Blockly ${chalk.green(pluginType)} with name ` +
+      `${chalk.green(pluginName)} in ${chalk.green(pluginPath)}.\n`,
+  );
 
   const templatesDir = `../templates`;
-  const templateDir =
-      `${templatesDir}/${isTypescript ? 'typescript-' : ''}${pluginType}/`;
+  const templateDir = `${templatesDir}/${
+    isTypescript ? 'typescript-' : ''
+  }${pluginType}/`;
 
   // Only use the @blockly scope for first party plugins.
   const pluginScope = isFirstParty ? '@blockly/' : 'blockly-';
@@ -89,8 +91,9 @@ exports.createPlugin = function(pluginName, options) {
 
   const gitPluginPath = path.join(path.relative(gitRoot, root), pluginDir);
 
-  const latestBlocklyVersion =
-      execSync('npm show blockly version').toString().trim();
+  const latestBlocklyVersion = execSync('npm show blockly version')
+    .toString()
+    .trim();
 
   const packageJson = {
     name: pluginPackageName,
@@ -116,31 +119,34 @@ exports.createPlugin = function(pluginName, options) {
       pluginName,
     ].filter(Boolean),
     homepage: isGit ? `${gitURL}/tree/master/${gitPluginPath}#readme` : '',
-    bugs: isGit ? {
-      url: `${gitURL}/issues`,
-    } : {},
-    repository: isGit ? {
-      'type': 'git',
-      'url': `${gitURL}.git`,
-      'directory': gitPluginPath,
-    } : {},
+    bugs: isGit
+      ? {
+          url: `${gitURL}/issues`,
+        }
+      : {},
+    repository: isGit
+      ? {
+          'type': 'git',
+          'url': `${gitURL}.git`,
+          'directory': gitPluginPath,
+        }
+      : {},
     license: 'Apache-2.0',
     directories: {
       'dist': 'dist',
       'src': 'src',
     },
-    files: [
-      'dist',
-      'src',
-    ],
+    files: ['dist', 'src'],
     devDependencies: {},
     peerDependencies: {
       'blockly': `^${latestBlocklyVersion}`,
     },
-    publishConfig: isFirstParty ? {
-      'access': 'public',
-      'registry': 'https://wombat-dressing-room.appspot.com',
-    } : {},
+    publishConfig: isFirstParty
+      ? {
+          'access': 'public',
+          'registry': 'https://wombat-dressing-room.appspot.com',
+        }
+      : {},
     eslintConfig: {
       'extends': '@blockly/eslint-config',
     },
@@ -162,8 +168,10 @@ exports.createPlugin = function(pluginName, options) {
 
   // Write the README.md to the new package.
   let readme = fs.readFileSync(
-      path.resolve(__dirname, templateDir, 'README.md'), 'utf-8');
-  readme = readme.replace(/@blockly\/plugin/gmi, `${pluginPackageName}`);
+    path.resolve(__dirname, templateDir, 'README.md'),
+    'utf-8',
+  );
+  readme = readme.replace(/@blockly\/plugin/gim, `${pluginPackageName}`);
   fs.writeFileSync(path.join(pluginPath, 'README.md'), readme, 'utf-8');
 
   // Copy the rest of the template folder into the new package.
@@ -172,13 +180,16 @@ exports.createPlugin = function(pluginName, options) {
   // Copy third party plugin files to the new package if third-party.
   if (!isFirstParty) {
     fs.copySync(
-        path.resolve(__dirname, templatesDir, 'third_party'), pluginPath);
+      path.resolve(__dirname, templatesDir, 'third_party'),
+      pluginPath,
+    );
   }
 
   // Write the package.json to the new package.
   fs.writeFileSync(
-      path.join(pluginPath, 'package.json'),
-      JSON.stringify(packageJson, null, 2));
+    path.join(pluginPath, 'package.json'),
+    JSON.stringify(packageJson, null, 2),
+  );
 
   // Run npm install.
   if (!skipInstall) {
@@ -187,7 +198,8 @@ exports.createPlugin = function(pluginName, options) {
   }
 
   console.log(
-      `Success! Created ${pluginType} '${pluginName}' at ${pluginPath}`);
+    `Success! Created ${pluginType} '${pluginName}' at ${pluginPath}`,
+  );
   console.log(`\n  ${chalk.blue(`  npm start`)}`);
   console.log(`    Starts the development server.\n`);
   console.log(`  ${chalk.blue(`  npm run build`)}`);

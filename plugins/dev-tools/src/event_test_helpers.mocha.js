@@ -7,7 +7,6 @@
 const Blockly = require('blockly/core');
 const sinon = require('sinon');
 
-
 /**
  * Returns a matcher that asserts that the actual object has the same properties
  * and values (shallowly equated) as the expected object.
@@ -39,20 +38,23 @@ function shallowMatch(expected) {
  * @param {?string=} expectedBlockId Expected block id of event fired.
  */
 export function assertEventFiredShallow(
-    spy,
-    instanceType,
-    expectedProperties,
-    expectedWorkspaceId,
-    expectedBlockId) {
+  spy,
+  instanceType,
+  expectedProperties,
+  expectedWorkspaceId,
+  expectedBlockId,
+) {
   const properties = {
     ...expectedProperties,
     workspaceId: expectedWorkspaceId,
     blockId: expectedBlockId,
   };
   sinon.assert.match(
-      /** @type {sinon.SinonSpy} */ (spy).getCalls()[0].firstArg,
-      sinon.match.instanceOf(instanceType)
-          .and(sinon.match(shallowMatch(properties))));
+    /** @type {sinon.SinonSpy} */ (spy).getCalls()[0].firstArg,
+    sinon.match
+      .instanceOf(instanceType)
+      .and(sinon.match(shallowMatch(properties))),
+  );
   // TODO: Why does the above assert work but not this one???
   //   Also it does work when it's in the other pluging
   // sinon.assert.calledWith(
@@ -72,18 +74,20 @@ export function assertEventFiredShallow(
  * @param {?string=} expectedBlockId Expected block id of event fired.
  */
 export function assertEventNotFired(
-    spy,
-    instanceType,
-    expectedProperties,
-    expectedWorkspaceId,
-    expectedBlockId) {
+  spy,
+  instanceType,
+  expectedProperties,
+  expectedWorkspaceId,
+  expectedBlockId,
+) {
   if (expectedWorkspaceId !== undefined) {
     expectedProperties.workspaceId = expectedWorkspaceId;
   }
   if (expectedBlockId !== undefined) {
     expectedProperties.blockId = expectedBlockId;
   }
-  const expectedEvent =
-    sinon.match.instanceOf(instanceType).and(sinon.match(expectedProperties));
+  const expectedEvent = sinon.match
+    .instanceOf(instanceType)
+    .and(sinon.match(expectedProperties));
   sinon.assert.neverCalledWith(spy, expectedEvent);
 }

@@ -31,9 +31,14 @@ const config = webpackConfig({
   mode: 'test',
 });
 if (!config.entry) {
-  console.log(chalk.yellow(`Warning: No tests found`) + '\n' +
-  'There were no ' + chalk.yellow('test/*.mocha.js') + ' files found ' +
-  'in your package.\n');
+  console.log(
+    chalk.yellow(`Warning: No tests found`) +
+      '\n' +
+      'There were no ' +
+      chalk.yellow('test/*.mocha.js') +
+      ' files found ' +
+      'in your package.\n',
+  );
   process.exit(0);
 }
 
@@ -55,10 +60,12 @@ webpack(config, (err, stats) => {
     }
     return;
   }
-  console.log(stats.toString({
-    chunks: false, // Makes the build much quieter
-    colors: true, // Shows colors in the console
-  }));
+  console.log(
+    stats.toString({
+      chunks: false, // Makes the build much quieter
+      colors: true, // Shows colors in the console
+    }),
+  );
 
   // Run mocha.
   console.log(`Running tests for ${packageJson.name}`);
@@ -68,12 +75,14 @@ webpack(config, (err, stats) => {
 
   // Run mocha for each built mocha .js file.
   const testOutputDir = 'build';
-  fs.readdirSync(testOutputDir).filter((file) => {
-    // Only keep the .mocha.js files
-    return file.substr(-9) === '.mocha.js';
-  }).forEach((file) => {
-    mocha.addFile(path.join(testOutputDir, file));
-  });
+  fs.readdirSync(testOutputDir)
+    .filter((file) => {
+      // Only keep the .mocha.js files
+      return file.substr(-9) === '.mocha.js';
+    })
+    .forEach((file) => {
+      mocha.addFile(path.join(testOutputDir, file));
+    });
 
   // Run the tests.
   mocha.run((failures) => {

@@ -75,7 +75,9 @@ export class DebugDrawer {
       cursorY -= height;
     }
 
-    this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+    this.debugElements_.push(
+      Blockly.utils.dom.createSvgElement(
+        'rect',
         {
           'class': 'rowSpacerRect blockRenderDebug',
           'x': isRtl ? -(row.xPos + row.width) : row.xPos,
@@ -87,7 +89,9 @@ export class DebugDrawer {
           'fill-opacity': '0.5',
           'stroke-width': '1px',
         },
-        this.svgRoot_));
+        this.svgRoot_,
+      ),
+    );
   }
 
   /**
@@ -109,7 +113,9 @@ export class DebugDrawer {
       xPos = -(xPos + width);
     }
     const yPos = elem.centerline - elem.height / 2;
-    this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+    this.debugElements_.push(
+      Blockly.utils.dom.createSvgElement(
+        'rect',
         {
           'class': 'elemSpacerRect blockRenderDebug',
           'x': xPos,
@@ -121,7 +127,9 @@ export class DebugDrawer {
           'fill-opacity': '0.5',
           'stroke-width': '1px',
         },
-        this.svgRoot_));
+        this.svgRoot_,
+      ),
+    );
   }
 
   /**
@@ -137,7 +145,9 @@ export class DebugDrawer {
         xPos = -(xPos + elem.width);
       }
       const yPos = elem.centerline - elem.height / 2;
-      this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+      this.debugElements_.push(
+        Blockly.utils.dom.createSvgElement(
+          'rect',
           {
             'class': 'rowRenderingRect blockRenderDebug',
             'x': xPos,
@@ -148,12 +158,18 @@ export class DebugDrawer {
             'fill': 'none',
             'stroke-width': '1px',
           },
-          this.svgRoot_));
+          this.svgRoot_,
+        ),
+      );
 
-      if (Blockly.blockRendering.Types.isField(elem) &&
-          elem.field instanceof Blockly.FieldLabel) {
+      if (
+        Blockly.blockRendering.Types.isField(elem) &&
+        elem.field instanceof Blockly.FieldLabel
+      ) {
         const baseline = this.constants_.FIELD_TEXT_BASELINE;
-        this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+        this.debugElements_.push(
+          Blockly.utils.dom.createSvgElement(
+            'rect',
             {
               'class': 'rowRenderingRect blockRenderDebug',
               'x': xPos,
@@ -164,13 +180,16 @@ export class DebugDrawer {
               'fill': 'none',
               'stroke-width': '0.5px',
             },
-            this.svgRoot_));
+            this.svgRoot_,
+          ),
+        );
       }
     }
 
-
-    if (Blockly.blockRendering.Types.isInput(elem) &&
-        DebugDrawer.config.connections) {
+    if (
+      Blockly.blockRendering.Types.isInput(elem) &&
+      DebugDrawer.config.connections
+    ) {
       this.drawConnection(elem.connectionModel);
     }
   }
@@ -210,7 +229,9 @@ export class DebugDrawer {
     // TODO(blockly/7227): This method is still internal, so we're going to
     //   have continual problems. We should consider making it public.
     const offset = conn.getOffsetInBlock();
-    this.debugElements_.push(Blockly.utils.dom.createSvgElement('circle',
+    this.debugElements_.push(
+      Blockly.utils.dom.createSvgElement(
+        'circle',
         {
           'class': 'blockRenderDebug',
           'cx': offset.x,
@@ -219,7 +240,9 @@ export class DebugDrawer {
           'fill': fill,
           'stroke': colour,
         },
-        this.svgRoot_));
+        this.svgRoot_,
+      ),
+    );
   }
 
   /**
@@ -233,7 +256,9 @@ export class DebugDrawer {
     if (!DebugDrawer.config.rows) {
       return;
     }
-    this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+    this.debugElements_.push(
+      Blockly.utils.dom.createSvgElement(
+        'rect',
         {
           'class': 'elemRenderingRect blockRenderDebug',
           'x': isRtl ? -(row.xPos + row.width) : row.xPos,
@@ -244,14 +269,18 @@ export class DebugDrawer {
           'fill': 'none',
           'stroke-width': '1px',
         },
-        this.svgRoot_));
+        this.svgRoot_,
+      ),
+    );
 
     if (Blockly.blockRendering.Types.isTopOrBottomRow(row)) {
       return;
     }
 
     if (DebugDrawer.config.connectedBlockBounds) {
-      this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+      this.debugElements_.push(
+        Blockly.utils.dom.createSvgElement(
+          'rect',
           {
             'class': 'connectedBlockWidth blockRenderDebug',
             'x': isRtl ? -(row.xPos + row.widthWithConnectedBlocks) : row.xPos,
@@ -263,7 +292,9 @@ export class DebugDrawer {
             'stroke-width': '1px',
             'stroke-dasharray': '3,3',
           },
-          this.svgRoot_));
+          this.svgRoot_,
+        ),
+      );
     }
   }
 
@@ -283,8 +314,10 @@ export class DebugDrawer {
       }
       if (Blockly.blockRendering.Types.isSpacer(elem)) {
         this.drawSpacerElem(
-            /** @type {!Blockly.blockRendering.InRowSpacer} */ (elem),
-            row.height, isRtl);
+          /** @type {!Blockly.blockRendering.InRowSpacer} */ (elem),
+          row.height,
+          isRtl,
+        );
       } else {
         this.drawRenderedElem(elem, isRtl);
       }
@@ -305,7 +338,9 @@ export class DebugDrawer {
     // Bounding box without children.
     let xPos = info.RTL ? -info.width : 0;
     const yPos = 0;
-    this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+    this.debugElements_.push(
+      Blockly.utils.dom.createSvgElement(
+        'rect',
         {
           'class': 'blockBoundingBox blockRenderDebug',
           'x': xPos,
@@ -317,12 +352,16 @@ export class DebugDrawer {
           'stroke-width': '1px',
           'stroke-dasharray': '5,5',
         },
-        this.svgRoot_));
+        this.svgRoot_,
+      ),
+    );
 
     if (DebugDrawer.config.connectedBlockBounds) {
       // Bounding box with children.
       xPos = info.RTL ? -info.widthWithChildren : 0;
-      this.debugElements_.push(Blockly.utils.dom.createSvgElement('rect',
+      this.debugElements_.push(
+        Blockly.utils.dom.createSvgElement(
+          'rect',
           {
             'class': 'blockRenderDebug',
             'x': xPos,
@@ -334,7 +373,9 @@ export class DebugDrawer {
             'stroke-width': '1px',
             'stroke-dasharray': '3,3',
           },
-          this.svgRoot_));
+          this.svgRoot_,
+        ),
+      );
     }
   }
 
@@ -349,7 +390,7 @@ export class DebugDrawer {
     this.svgRoot_ = block.getSvgRoot();
 
     this.randomColour_ =
-        '#' + Math.floor(Math.random() * 16777215).toString(16);
+      '#' + Math.floor(Math.random() * 16777215).toString(16);
 
     let cursorY = 0;
     for (let i = 0, row; (row = info.rows[i]); i++) {
@@ -379,7 +420,6 @@ export class DebugDrawer {
     this.drawRender(block.pathObject.svgPath);
   }
 
-
   /**
    * Show a debug filter to highlight that a block has been rendered.
    * @param {!SVGElement} svgPath The block's svg path.
@@ -389,9 +429,11 @@ export class DebugDrawer {
     if (!DebugDrawer.config.render) {
       return;
     }
-    svgPath.setAttribute('filter',
-        'url(#' + this.constants_.debugFilterId + ')');
-    setTimeout(function() {
+    svgPath.setAttribute(
+      'filter',
+      'url(#' + this.constants_.debugFilterId + ')',
+    );
+    setTimeout(function () {
       svgPath.setAttribute('filter', '');
     }, 100);
   }

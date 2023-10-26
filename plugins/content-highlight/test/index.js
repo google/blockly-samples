@@ -27,7 +27,7 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
     grid: {
@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
       controls: true,
     },
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

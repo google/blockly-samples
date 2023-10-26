@@ -32,9 +32,10 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    *     a parent.
    */
   constructor(
-      categoryDef: Blockly.utils.toolbox.CategoryInfo,
-      parentToolbox: Blockly.IToolbox,
-      opt_parent?: Blockly.ICollapsibleToolboxItem) {
+    categoryDef: Blockly.utils.toolbox.CategoryInfo,
+    parentToolbox: Blockly.IToolbox,
+    opt_parent?: Blockly.ICollapsibleToolboxItem,
+  ) {
     super(categoryDef, parentToolbox, opt_parent);
     this.initBlockSearcher();
     this.registerShortcut();
@@ -49,8 +50,9 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.searchField = document.createElement('input');
     this.searchField.type = 'search';
     this.searchField.placeholder = 'Search';
-    this.workspace_.RTL ? this.searchField.style.marginRight = '8px' :
-        this.searchField.style.marginLeft = '8px';
+    this.workspace_.RTL
+      ? (this.searchField.style.marginRight = '8px')
+      : (this.searchField.style.marginLeft = '8px');
     this.searchField.addEventListener('keyup', (event) => {
       if (event.key === 'Escape') {
         this.parentToolbox_.clearSelection();
@@ -84,7 +86,9 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   private registerShortcut() {
     const shortcut = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.B, [Blockly.utils.KeyCodes.CTRL]);
+      Blockly.utils.KeyCodes.B,
+      [Blockly.utils.KeyCodes.CTRL],
+    );
     Blockly.ShortcutRegistry.registry.register({
       name: ToolboxSearchCategory.START_SEARCH_SHORTCUT,
       callback: () => {
@@ -104,7 +108,9 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    *     so far.
    */
   private getAvailableBlocks(
-      schema: Blockly.utils.toolbox.ToolboxItemInfo, allBlocks: Set<string>) {
+    schema: Blockly.utils.toolbox.ToolboxItemInfo,
+    allBlocks: Set<string>,
+  ) {
     if ('contents' in schema) {
       schema.contents.forEach((contents) => {
         this.getAvailableBlocks(contents, allBlocks);
@@ -121,8 +127,9 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   private initBlockSearcher() {
     const availableBlocks = new Set<string>();
-    this.workspace_.options.languageTree.contents.map(
-        (item) => this.getAvailableBlocks(item, availableBlocks));
+    this.workspace_.options.languageTree.contents.map((item) =>
+      this.getAvailableBlocks(item, availableBlocks),
+    );
     this.blockSearcher.indexBlocks([...availableBlocks]);
   }
 
@@ -158,20 +165,22 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private matchBlocks() {
     const query = this.searchField.value;
 
-    this.flyoutItems_ = query ?
-        this.blockSearcher.blockTypesMatching(query).map(
-            (blockType) => {
-              return {
-                kind: 'block',
-                type: blockType,
-              };
-            }) : [];
+    this.flyoutItems_ = query
+      ? this.blockSearcher.blockTypesMatching(query).map((blockType) => {
+          return {
+            kind: 'block',
+            type: blockType,
+          };
+        })
+      : [];
 
     if (!this.flyoutItems_.length) {
       this.flyoutItems_.push({
         kind: 'label',
-        text: query.length < 3 ? 'Type to search for blocks' :
-            'No matching blocks found',
+        text:
+          query.length < 3
+            ? 'Type to search for blocks'
+            : 'No matching blocks found',
       });
     }
     this.parentToolbox_.refreshSelection();
@@ -183,10 +192,13 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   override dispose() {
     super.dispose();
     Blockly.ShortcutRegistry.registry.unregister(
-        ToolboxSearchCategory.START_SEARCH_SHORTCUT);
+      ToolboxSearchCategory.START_SEARCH_SHORTCUT,
+    );
   }
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.TOOLBOX_ITEM,
-    ToolboxSearchCategory.SEARCH_CATEGORY_KIND, ToolboxSearchCategory);
+  Blockly.registry.Type.TOOLBOX_ITEM,
+  ToolboxSearchCategory.SEARCH_CATEGORY_KIND,
+  ToolboxSearchCategory,
+);

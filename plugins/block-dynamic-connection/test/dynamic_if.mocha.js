@@ -11,7 +11,7 @@ const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
 
-suite('If block', function() {
+suite('If block', function () {
   /**
    * Asserts that the if block has the expected inputs.
    * @param {!Blockly.Block} block The block to check.
@@ -51,22 +51,22 @@ suite('If block', function() {
     connection.connect(targetConnection);
   }
 
-  setup(function() {
+  setup(function () {
     this.workspace = new Blockly.Workspace();
     overrideOldBlockDefinitions();
   });
 
-  teardown(function() {
+  teardown(function () {
     this.workspace.dispose();
   });
 
-  test('Creation', function() {
+  test('Creation', function () {
     const block = this.workspace.newBlock('dynamic_if');
     assertBlockStructure(block, [/IF0/, /DO0/]);
   });
 
-  suite('adding inputs', function() {
-    test('attaching the first predicate does not create a case', function() {
+  suite('adding inputs', function () {
+    test('attaching the first predicate does not create a case', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('IF0').connection;
 
@@ -75,7 +75,7 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/]);
     });
 
-    test('attaching the second predicate creates a case', function() {
+    test('attaching the second predicate creates a case', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('IF0').connection;
       connectBooleanBlockToConnection(this.workspace, connection);
@@ -85,7 +85,7 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/, /IF.*/, /DO.*/]);
     });
 
-    test('attaching the first statement creates an else', function() {
+    test('attaching the first statement creates an else', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('DO0').connection;
 
@@ -94,7 +94,7 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/, /ELSE/]);
     });
 
-    test('attaching the second statement creates an else', function() {
+    test('attaching the second statement creates an else', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('DO0').connection;
       connectStatementBlockToConnection(this.workspace, connection);
@@ -104,7 +104,7 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/, /ELSE/]);
     });
 
-    test('attaching to the next connection creates an else', function() {
+    test('attaching to the next connection creates an else', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.nextConnection;
 
@@ -114,8 +114,8 @@ suite('If block', function() {
     });
   });
 
-  suite('finalizing inputs', function() {
-    test('the block does not go below one case', function() {
+  suite('finalizing inputs', function () {
+    test('the block does not go below one case', function () {
       const block = this.workspace.newBlock('dynamic_if');
 
       block.finalizeConnections();
@@ -123,7 +123,7 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/]);
     });
 
-    test('a case with no blocks is removed', function() {
+    test('a case with no blocks is removed', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('IF0').connection;
       connectBooleanBlockToConnection(this.workspace, connection);
@@ -134,48 +134,56 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/]);
     });
 
-    test('a case with a predicate and statements is kept', function() {
+    test('a case with a predicate and statements is kept', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('IF0').connection;
       connectBooleanBlockToConnection(this.workspace, connection);
       block.onPendingConnection(connection);
       connectBooleanBlockToConnection(
-          this.workspace, block.inputList[2].connection);
+        this.workspace,
+        block.inputList[2].connection,
+      );
       connectStatementBlockToConnection(
-          this.workspace, block.inputList[3].connection);
+        this.workspace,
+        block.inputList[3].connection,
+      );
 
       block.finalizeConnections();
 
       assertBlockStructure(block, [/IF0/, /DO0/, /IF1/, /DO1/]);
     });
 
-    test('a case with only a predicate is kept', function() {
+    test('a case with only a predicate is kept', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('IF0').connection;
       connectBooleanBlockToConnection(this.workspace, connection);
       block.onPendingConnection(connection);
       connectBooleanBlockToConnection(
-          this.workspace, block.inputList[2].connection);
+        this.workspace,
+        block.inputList[2].connection,
+      );
 
       block.finalizeConnections();
 
       assertBlockStructure(block, [/IF0/, /DO0/, /IF1/, /DO1/]);
     });
 
-    test('a case with only statements is kept', function() {
+    test('a case with only statements is kept', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('IF0').connection;
       connectBooleanBlockToConnection(this.workspace, connection);
       block.onPendingConnection(connection);
       connectStatementBlockToConnection(
-          this.workspace, block.inputList[3].connection);
+        this.workspace,
+        block.inputList[3].connection,
+      );
 
       block.finalizeConnections();
 
       assertBlockStructure(block, [/IF0/, /DO0/, /IF1/, /DO1/]);
     });
 
-    test('an else with no statements is removed', function() {
+    test('an else with no statements is removed', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('DO0').connection;
       block.onPendingConnection(connection);
@@ -185,12 +193,14 @@ suite('If block', function() {
       assertBlockStructure(block, [/IF0/, /DO0/]);
     });
 
-    test('an else with statements is kept', function() {
+    test('an else with statements is kept', function () {
       const block = this.workspace.newBlock('dynamic_if');
       const connection = block.getInput('DO0').connection;
       block.onPendingConnection(connection);
       connectStatementBlockToConnection(
-          this.workspace, block.getInput('ELSE').connection);
+        this.workspace,
+        block.getInput('ELSE').connection,
+      );
 
       block.finalizeConnections();
 
@@ -203,9 +213,9 @@ suite('If block', function() {
       title: 'empty XML',
       xml: '<block type="dynamic_if"/>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_if" id="1">' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_if" id="1">' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/IF0/, /DO0/]);
       },
@@ -213,43 +223,43 @@ suite('If block', function() {
     {
       title: 'one if one else - old serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_if" id="1">\n' +
-          '  <mutation inputs="0" else="true" next="1"></mutation>\n' +
-          '  <value name="IF0">\n' +
-          '    <block type="logic_boolean" id="2">\n' +
-          '      <field name="BOOL">TRUE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '  <statement name="ELSE">\n' +
-          '    <block type="text_print" id="3">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="4">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_if" id="1">\n' +
+        '  <mutation inputs="0" else="true" next="1"></mutation>\n' +
+        '  <value name="IF0">\n' +
+        '    <block type="logic_boolean" id="2">\n' +
+        '      <field name="BOOL">TRUE</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '  <statement name="ELSE">\n' +
+        '    <block type="text_print" id="3">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="4">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_if" id="1">\n' +
-          '  <mutation else="1"></mutation>\n' +
-          '  <value name="IF0">\n' +
-          '    <block type="logic_boolean" id="2">\n' +
-          '      <field name="BOOL">TRUE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '  <statement name="ELSE">\n' +
-          '    <block type="text_print" id="3">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="4">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_if" id="1">\n' +
+        '  <mutation else="1"></mutation>\n' +
+        '  <value name="IF0">\n' +
+        '    <block type="logic_boolean" id="2">\n' +
+        '      <field name="BOOL">TRUE</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '  <statement name="ELSE">\n' +
+        '    <block type="text_print" id="3">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="4">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(block, [/IF0/, /DO0/, /ELSE/]);
       },
@@ -257,92 +267,99 @@ suite('If block', function() {
     {
       title: 'multiple inputs with children - old serialization',
       xml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_if" id="1">\n' +
-          '  <mutation inputs="0,1,2" else="true" next="3"></mutation>\n' +
-          '  <value name="IF0">\n' +
-          '    <block type="logic_boolean" id="2">\n' +
-          '      <field name="BOOL">TRUE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '  <statement name="DO0">\n' +
-          '    <block type="text_print" id="3">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="4">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '  <value name="IF1">\n' +
-          '    <block type="logic_boolean" id="5">\n' +
-          '      <field name="BOOL">TRUE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '  <statement name="DO2">\n' +
-          '    <block type="text_print" id="6">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="7">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '  <statement name="ELSE">\n' +
-          '    <block type="text_print" id="8">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="9">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_if" id="1">\n' +
+        '  <mutation inputs="0,1,2" else="true" next="3"></mutation>\n' +
+        '  <value name="IF0">\n' +
+        '    <block type="logic_boolean" id="2">\n' +
+        '      <field name="BOOL">TRUE</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '  <statement name="DO0">\n' +
+        '    <block type="text_print" id="3">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="4">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '  <value name="IF1">\n' +
+        '    <block type="logic_boolean" id="5">\n' +
+        '      <field name="BOOL">TRUE</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '  <statement name="DO2">\n' +
+        '    <block type="text_print" id="6">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="7">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '  <statement name="ELSE">\n' +
+        '    <block type="text_print" id="8">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="9">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '</block>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml"' +
-          ' type="dynamic_if" id="1">\n' +
-          '  <mutation elseif="2" else="1"></mutation>\n' +
-          '  <value name="IF0">\n' +
-          '    <block type="logic_boolean" id="2">\n' +
-          '      <field name="BOOL">TRUE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '  <statement name="DO0">\n' +
-          '    <block type="text_print" id="3">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="4">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '  <value name="IF1">\n' +
-          '    <block type="logic_boolean" id="5">\n' +
-          '      <field name="BOOL">TRUE</field>\n' +
-          '    </block>\n' +
-          '  </value>\n' +
-          '  <statement name="DO2">\n' +
-          '    <block type="text_print" id="6">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="7">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '  <statement name="ELSE">\n' +
-          '    <block type="text_print" id="8">\n' +
-          '      <value name="TEXT">\n' +
-          '        <shadow type="text" id="9">\n' +
-          '          <field name="TEXT">abc</field>\n' +
-          '        </shadow>\n' +
-          '      </value>\n' +
-          '    </block>\n' +
-          '  </statement>\n' +
-          '</block>',
+        '<block xmlns="https://developers.google.com/blockly/xml"' +
+        ' type="dynamic_if" id="1">\n' +
+        '  <mutation elseif="2" else="1"></mutation>\n' +
+        '  <value name="IF0">\n' +
+        '    <block type="logic_boolean" id="2">\n' +
+        '      <field name="BOOL">TRUE</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '  <statement name="DO0">\n' +
+        '    <block type="text_print" id="3">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="4">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '  <value name="IF1">\n' +
+        '    <block type="logic_boolean" id="5">\n' +
+        '      <field name="BOOL">TRUE</field>\n' +
+        '    </block>\n' +
+        '  </value>\n' +
+        '  <statement name="DO2">\n' +
+        '    <block type="text_print" id="6">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="7">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '  <statement name="ELSE">\n' +
+        '    <block type="text_print" id="8">\n' +
+        '      <value name="TEXT">\n' +
+        '        <shadow type="text" id="9">\n' +
+        '          <field name="TEXT">abc</field>\n' +
+        '        </shadow>\n' +
+        '      </value>\n' +
+        '    </block>\n' +
+        '  </statement>\n' +
+        '</block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(
-            block, [/IF0/, /DO0/, /IF1/, /DO1/, /IF2/, /DO2/, /ELSE/]);
+        assertBlockStructure(block, [
+          /IF0/,
+          /DO0/,
+          /IF1/,
+          /DO1/,
+          /IF2/,
+          /DO2/,
+          /ELSE/,
+        ]);
       },
     },
     {
@@ -441,8 +458,7 @@ suite('If block', function() {
         '  </statement>\n' +
         '</block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(
-            block, [/IF0/, /DO0/, /IF1/, /DO1/, /IF2/, /DO2/]);
+        assertBlockStructure(block, [/IF0/, /DO0/, /IF1/, /DO1/, /IF2/, /DO2/]);
       },
     },
     {
@@ -456,8 +472,7 @@ suite('If block', function() {
         '<block xmlns="https://developers.google.com/blockly/xml"' +
         ' type="dynamic_if" id="1"></block>',
       assertBlockStructure: (block) => {
-        assertBlockStructure(
-            block, [/IF0/, /DO0/], 'dynamic_if');
+        assertBlockStructure(block, [/IF0/, /DO0/], 'dynamic_if');
       },
     },
     {
@@ -482,7 +497,10 @@ suite('If block', function() {
         '</block>',
       assertBlockStructure: (block) => {
         assertBlockStructure(
-            block, [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/], 'dynamic_if');
+          block,
+          [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/],
+          'dynamic_if',
+        );
       },
     },
     {
@@ -523,7 +541,10 @@ suite('If block', function() {
       },
       assertBlockStructure: (block) => {
         assertBlockStructure(
-            block, [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/], 'dynamic_if');
+          block,
+          [/IF0/, /DO0/, /IF1/, /DO1/, /ELSE/],
+          'dynamic_if',
+        );
       },
     },
     {
@@ -532,7 +553,7 @@ suite('If block', function() {
         'type': 'dynamic_if',
         'id': '1',
         'extraState':
-            '<mutation inputs="1,3,2" else="true" next="4"></mutation>',
+          '<mutation inputs="1,3,2" else="true" next="4"></mutation>',
         'inputs': {
           'IF1': {
             'block': {
@@ -614,9 +635,10 @@ suite('If block', function() {
       },
       assertBlockStructure: (block) => {
         assertBlockStructure(
-            block,
-            [/IF0/, /DO0/, /IF1/, /DO1/, /IF2/, /DO2/, /ELSE/],
-            'dynamic_if');
+          block,
+          [/IF0/, /DO0/, /IF1/, /DO1/, /IF2/, /DO2/, /ELSE/],
+          'dynamic_if',
+        );
       },
     },
   ];

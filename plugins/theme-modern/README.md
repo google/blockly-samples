@@ -10,11 +10,13 @@ Zelos renderer.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/theme-modern
 ```
 
 ### npm
+
 ```
 npm install @blockly/theme-modern --save
 ```
@@ -28,8 +30,8 @@ import Theme from '@blockly/theme-modern';
 Blockly.inject('blocklyDiv', {
   theme: Theme,
 });
-
 ```
 
 ## License
+
 Apache 2.0

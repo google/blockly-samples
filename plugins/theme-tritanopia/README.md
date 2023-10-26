@@ -8,11 +8,13 @@ tritanopia (the inability to perceive blue light).
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/theme-tritanopia
 ```
 
 ### npm
+
 ```
 npm install @blockly/theme-tritanopia --save
 ```
@@ -26,8 +28,8 @@ import Theme from '@blockly/theme-tritanopia';
 Blockly.inject('blocklyDiv', {
   theme: Theme,
 });
-
 ```
 
 ## License
+
 Apache 2.0

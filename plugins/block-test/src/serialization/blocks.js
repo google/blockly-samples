@@ -65,39 +65,48 @@ Blockly.defineBlocksWithJsonArray([
   },
 ]);
 
-Blockly.Blocks['test_extra_state_xml'] =
-    Object.assign({}, Blockly.Blocks['lists_create_with']);
+Blockly.Blocks['test_extra_state_xml'] = Object.assign(
+  {},
+  Blockly.Blocks['lists_create_with'],
+);
 delete Blockly.Blocks['test_extra_state_xml'].saveExtraState;
 delete Blockly.Blocks['test_extra_state_xml'].loadExtraState;
-Blockly.Blocks['test_extra_state_xml'].init = function() {
+Blockly.Blocks['test_extra_state_xml'].init = function () {
   this.setColour(30);
   this.itemCount_ = 3;
   this.updateShape_();
   this.setOutput(true, 'Array');
   this.setMutator(
-      new Blockly.icons.MutatorIcon(['lists_create_with_item'], this));
+    new Blockly.icons.MutatorIcon(['lists_create_with_item'], this),
+  );
 };
 
-Blockly.Blocks['test_extra_state_jso'] =
-    Object.assign({}, Blockly.Blocks['lists_create_with']);
+Blockly.Blocks['test_extra_state_jso'] = Object.assign(
+  {},
+  Blockly.Blocks['lists_create_with'],
+);
 delete Blockly.Blocks['test_extra_state_jso'].mutationToDom;
 delete Blockly.Blocks['test_extra_state_jso'].domToMutation;
-Blockly.Blocks['test_extra_state_jso'].init = function() {
+Blockly.Blocks['test_extra_state_jso'].init = function () {
   this.setColour(90);
   this.itemCount_ = 3;
   this.updateShape_();
   this.setOutput(true, 'Array');
   this.setMutator(
-      new Blockly.icons.MutatorIcon(['lists_create_with_item'], this));
+    new Blockly.icons.MutatorIcon(['lists_create_with_item'], this),
+  );
 };
 
-Blockly.Blocks['test_extra_state_both'] =
-    Object.assign({}, Blockly.Blocks['lists_create_with']);
-Blockly.Blocks['test_extra_state_both'].init = function() {
+Blockly.Blocks['test_extra_state_both'] = Object.assign(
+  {},
+  Blockly.Blocks['lists_create_with'],
+);
+Blockly.Blocks['test_extra_state_both'].init = function () {
   this.setColour(150);
   this.itemCount_ = 3;
   this.updateShape_();
   this.setOutput(true, 'Array');
   this.setMutator(
-      new Blockly.icons.MutatorIcon(['lists_create_with_item'], this));
+    new Blockly.icons.MutatorIcon(['lists_create_with_item'], this),
+  );
 };

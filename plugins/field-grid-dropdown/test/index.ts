@@ -21,8 +21,10 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ['long text ', 'long text'],
         ['B', 'B'],
         ['C', 'C'],
-        ['really really really loooooong text',
-          'really really really loooooong text'],
+        [
+          'really really really loooooong text',
+          'really really really loooooong text',
+        ],
         ['D', 'D'],
         ['E', 'E'],
       ],
@@ -67,8 +69,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
       'options': [
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/a.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/a.png',
             'width': 32,
             'height': 32,
             'alt': 'A',
@@ -77,8 +78,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/b.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/b.png',
             'width': 32,
             'height': 32,
             'alt': 'B',
@@ -87,8 +87,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/c.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/c.png',
             'width': 32,
             'height': 32,
             'alt': 'C',
@@ -97,8 +96,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/d.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/d.png',
             'width': 32,
             'height': 32,
             'alt': 'D',
@@ -107,8 +105,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/e.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/e.png',
             'width': 32,
             'height': 32,
             'alt': 'E',
@@ -117,8 +114,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/f.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/f.png',
             'width': 32,
             'height': 32,
             'alt': 'F',
@@ -127,8 +123,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/g.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/g.png',
             'width': 32,
             'height': 32,
             'alt': 'G',
@@ -137,8 +132,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/h.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/h.png',
             'width': 32,
             'height': 32,
             'alt': 'H',
@@ -147,8 +141,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/i.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/i.png',
             'width': 32,
             'height': 32,
             'alt': 'I',
@@ -157,8 +150,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/j.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/j.png',
             'width': 32,
             'height': 32,
             'alt': 'J',
@@ -167,8 +159,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/k.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/k.png',
             'width': 32,
             'height': 32,
             'alt': 'K',
@@ -177,8 +168,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/l.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/l.png',
             'width': 32,
             'height': 32,
             'alt': 'L',
@@ -187,8 +177,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
         ],
         [
           {
-            'src':
-                'https://blockly-demo.appspot.com/static/tests/media/m.png',
+            'src': 'https://blockly-demo.appspot.com/static/tests/media/m.png',
             'width': 32,
             'height': 32,
             'alt': 'M',
@@ -233,20 +222,21 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
   },
 ]);
 
-
 /**
  * Create a workspace.
  * @param blocklyDiv The blockly container div.
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.Workspace {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.Workspace {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };

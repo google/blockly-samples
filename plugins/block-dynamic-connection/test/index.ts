@@ -19,12 +19,13 @@ import * as BlockDynamicConnection from '../src/index';
  * @returns The created workspace.
  */
 function createWorkspace(
-    blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   return Blockly.inject(blocklyDiv, options);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   BlockDynamicConnection.overrideOldBlockDefinitions();
 
   const toolbox = {

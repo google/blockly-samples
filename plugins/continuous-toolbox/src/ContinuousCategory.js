@@ -51,13 +51,17 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
       this.rowDiv_.style.backgroundColor = '';
       Blockly.utils.dom.removeClass(this.rowDiv_, this.cssConfig_['selected']);
     }
-    Blockly.utils.aria.setState(/** @type {!Element} */ (this.htmlDiv_),
-        Blockly.utils.aria.State.SELECTED, isSelected);
+    Blockly.utils.aria.setState(
+      /** @type {!Element} */ (this.htmlDiv_),
+      Blockly.utils.aria.State.SELECTED,
+      isSelected,
+    );
   }
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.TOOLBOX_ITEM,
-    Blockly.ToolboxCategory.registrationName,
-    ContinuousCategory,
-    true);
+  Blockly.registry.Type.TOOLBOX_ITEM,
+  Blockly.ToolboxCategory.registrationName,
+  ContinuousCategory,
+  true,
+);

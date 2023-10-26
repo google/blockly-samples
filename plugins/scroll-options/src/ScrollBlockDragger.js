@@ -106,8 +106,10 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.scrollDelta_.y -= deltaY;
 
     // The total amount the block has moved since being picked up.
-    const totalDelta =
-        Blockly.utils.Coordinate.sum(this.scrollDelta_, this.dragDelta_);
+    const totalDelta = Blockly.utils.Coordinate.sum(
+      this.scrollDelta_,
+      this.dragDelta_,
+    );
 
     const delta = this.pixelsToWorkspaceUnits_(totalDelta);
     const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, delta);
@@ -119,10 +121,12 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // As we scroll, show the insertion markers.
     this.draggedConnectionManager_.update(
-        new Blockly.utils.Coordinate(
-            totalDelta.x / this.workspace_.scale,
-            totalDelta.y / this.workspace_.scale),
-        null);
+      new Blockly.utils.Coordinate(
+        totalDelta.x / this.workspace_.scale,
+        totalDelta.y / this.workspace_.scale,
+      ),
+      null,
+    );
   }
 
   /**
@@ -131,8 +135,10 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * @override
    */
   startDrag(currentDragDeltaXY, healStack) {
-    const totalDelta =
-        Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
+    const totalDelta = Blockly.utils.Coordinate.sum(
+      this.scrollDelta_,
+      currentDragDeltaXY,
+    );
     super.startDrag(totalDelta, healStack);
     this.dragDelta_ = currentDragDeltaXY;
   }
@@ -143,8 +149,10 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * @override
    */
   drag(e, currentDragDeltaXY) {
-    const totalDelta =
-        Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
+    const totalDelta = Blockly.utils.Coordinate.sum(
+      this.scrollDelta_,
+      currentDragDeltaXY,
+    );
     super.drag(e, totalDelta);
     this.dragDelta_ = currentDragDeltaXY;
 
@@ -169,11 +177,15 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    */
   getNewLocationAfterDrag_(currentDragDeltaXY) {
     const newValues = {};
-    const totalDelta =
-        Blockly.utils.Coordinate.sum(this.scrollDelta_, currentDragDeltaXY);
+    const totalDelta = Blockly.utils.Coordinate.sum(
+      this.scrollDelta_,
+      currentDragDeltaXY,
+    );
     newValues.delta = this.pixelsToWorkspaceUnits_(totalDelta);
-    newValues.newLocation =
-        Blockly.utils.Coordinate.sum(this.startXY_, newValues.delta);
+    newValues.newLocation = Blockly.utils.Coordinate.sum(
+      this.startXY_,
+      newValues.delta,
+    );
 
     return newValues;
   }
@@ -204,7 +216,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       right: new Blockly.utils.Coordinate(-1, 0),
     };
     const mouse = Blockly.utils.svgMath.screenToWsCoordinates(
-        this.workspace_, new Blockly.utils.Coordinate(e.clientX, e.clientY));
+      this.workspace_,
+      new Blockly.utils.Coordinate(e.clientX, e.clientY),
+    );
 
     /**
      * List of possible scrolls in each direction. This will be modified in
@@ -221,8 +235,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     };
 
     // Get ViewMetrics in workspace coordinates.
-    const viewMetrics =
-        this.workspace_.getMetricsManager().getViewMetrics(true);
+    const viewMetrics = this.workspace_
+      .getMetricsManager()
+      .getViewMetrics(true);
 
     // Get possible scroll velocities based on the location of both the block
     // and the mouse.
@@ -234,15 +249,19 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // If the workspace should not be scrolled any longer, cancel the
     // autoscroll.
-    if (Blockly.utils.Coordinate.equals(
-        overallScrollVector, new Blockly.utils.Coordinate(0, 0))) {
+    if (
+      Blockly.utils.Coordinate.equals(
+        overallScrollVector,
+        new Blockly.utils.Coordinate(0, 0),
+      )
+    ) {
       this.stopAutoScrolling();
       return;
     }
 
     // Update the autoscroll or start a new one.
     this.activeAutoScroll_ =
-        this.activeAutoScroll_ || new AutoScroll(this.workspace_);
+      this.activeAutoScroll_ || new AutoScroll(this.workspace_);
     this.activeAutoScroll_.updateProperties(overallScrollVector);
   }
 
@@ -265,18 +284,22 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
   getOverallScrollVector_(candidateScrolls) {
     let overallScrollVector = new Blockly.utils.Coordinate(0, 0);
     for (const direction of this.scrollDirections_) {
-      const fastestScroll =
-          candidateScrolls[direction].reduce((fastest, current) => {
-            if (!fastest) {
-              return current;
-            }
-            return Blockly.utils.Coordinate.magnitude(fastest) >
-                    Blockly.utils.Coordinate.magnitude(current) ?
-                fastest :
-                current;
-          }, new Blockly.utils.Coordinate(0, 0)); // Initial value
-      overallScrollVector =
-          Blockly.utils.Coordinate.sum(overallScrollVector, fastestScroll);
+      const fastestScroll = candidateScrolls[direction].reduce(
+        (fastest, current) => {
+          if (!fastest) {
+            return current;
+          }
+          return Blockly.utils.Coordinate.magnitude(fastest) >
+            Blockly.utils.Coordinate.magnitude(current)
+            ? fastest
+            : current;
+        },
+        new Blockly.utils.Coordinate(0, 0),
+      ); // Initial value
+      overallScrollVector = Blockly.utils.Coordinate.sum(
+        overallScrollVector,
+        fastestScroll,
+      );
     }
     return overallScrollVector;
   }
@@ -301,11 +324,12 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       const overflow = blockOverflows[direction];
       if (overflow > ScrollBlockDragger.options.slowBlockStartDistance) {
         const speed =
-            overflow > ScrollBlockDragger.options.fastBlockStartDistance ?
-            ScrollBlockDragger.options.fastBlockSpeed :
-            ScrollBlockDragger.options.slowBlockSpeed;
-        const scrollVector =
-            this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
+          overflow > ScrollBlockDragger.options.fastBlockStartDistance
+            ? ScrollBlockDragger.options.fastBlockSpeed
+            : ScrollBlockDragger.options.slowBlockSpeed;
+        const scrollVector = this.SCROLL_DIRECTION_VECTORS_[direction]
+          .clone()
+          .scale(speed);
         candidateScrolls[direction].push(scrollVector);
       }
     }
@@ -331,11 +355,12 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       const overflow = mouseOverflows[direction];
       if (overflow > ScrollBlockDragger.options.slowMouseStartDistance) {
         const speed =
-            overflow > ScrollBlockDragger.options.fastMouseStartDistance ?
-            ScrollBlockDragger.options.fastMouseSpeed :
-            ScrollBlockDragger.options.slowMouseSpeed;
-        const scrollVector =
-            this.SCROLL_DIRECTION_VECTORS_[direction].clone().scale(speed);
+          overflow > ScrollBlockDragger.options.fastMouseStartDistance
+            ? ScrollBlockDragger.options.fastMouseSpeed
+            : ScrollBlockDragger.options.slowMouseSpeed;
+        const scrollVector = this.SCROLL_DIRECTION_VECTORS_[direction]
+          .clone()
+          .scale(speed);
         candidateScrolls[direction].push(scrollVector);
       }
     }
@@ -368,26 +393,34 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     // Handle large blocks. If the block is nearly as tall as the viewport,
     // use a margin around the cursor rather than the height of the block.
     const blockHeight = blockBounds.bottom - blockBounds.top;
-    if (blockHeight > viewMetrics.height *
-            ScrollBlockDragger.options.oversizeBlockThreshold) {
+    if (
+      blockHeight >
+      viewMetrics.height * ScrollBlockDragger.options.oversizeBlockThreshold
+    ) {
       blockBounds.top = Math.max(
-          blockBounds.top,
-          mouse.y - ScrollBlockDragger.options.oversizeBlockMargin);
+        blockBounds.top,
+        mouse.y - ScrollBlockDragger.options.oversizeBlockMargin,
+      );
       blockBounds.bottom = Math.min(
-          blockBounds.bottom,
-          mouse.y + ScrollBlockDragger.options.oversizeBlockMargin);
+        blockBounds.bottom,
+        mouse.y + ScrollBlockDragger.options.oversizeBlockMargin,
+      );
     }
 
     // Same logic, but for block width.
     const blockWidth = blockBounds.right - blockBounds.left;
-    if (blockWidth > viewMetrics.width *
-            ScrollBlockDragger.options.oversizeBlockThreshold) {
+    if (
+      blockWidth >
+      viewMetrics.width * ScrollBlockDragger.options.oversizeBlockThreshold
+    ) {
       blockBounds.left = Math.max(
-          blockBounds.left,
-          mouse.x - ScrollBlockDragger.options.oversizeBlockMargin);
+        blockBounds.left,
+        mouse.x - ScrollBlockDragger.options.oversizeBlockMargin,
+      );
       blockBounds.right = Math.min(
-          blockBounds.right,
-          mouse.x + ScrollBlockDragger.options.oversizeBlockMargin);
+        blockBounds.right,
+        mouse.x + ScrollBlockDragger.options.oversizeBlockMargin,
+      );
     }
 
     // The coordinate system is negative in the top and left directions, and
@@ -475,16 +508,19 @@ ScrollBlockDragger.options = defaultOptions;
  *     the available options. Any properties not present will use the existing
  *     value.
  */
-ScrollBlockDragger.updateOptions = function(options) {
+ScrollBlockDragger.updateOptions = function (options) {
   ScrollBlockDragger.options = {...ScrollBlockDragger.options, ...options};
 };
 
 /**
  * Resets the options object to the default options.
  */
-ScrollBlockDragger.resetOptions = function() {
+ScrollBlockDragger.resetOptions = function () {
   ScrollBlockDragger.options = defaultOptions;
 };
 
-Blockly.registry.register(Blockly.registry.Type.BLOCK_DRAGGER,
-    'ScrollBlockDragger', ScrollBlockDragger);
+Blockly.registry.register(
+  Blockly.registry.Type.BLOCK_DRAGGER,
+  'ScrollBlockDragger',
+  ScrollBlockDragger,
+);

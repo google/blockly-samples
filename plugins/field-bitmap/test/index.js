@@ -49,10 +49,13 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox,
   };
   createPlayground(
-      document.getElementById('root'), createWorkspace, defaultOptions);
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

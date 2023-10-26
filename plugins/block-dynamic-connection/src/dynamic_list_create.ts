@@ -81,8 +81,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
       const inputNames = items.split(',');
       this.inputList = [];
       inputNames.forEach((name) => this.appendValueInput(name));
-      this.inputList[0]
-          .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
+      this.inputList[0].appendField(
+        Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH'],
+      );
     }
   },
 
@@ -92,7 +93,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    */
   deserializeCounts(this: DynamicListCreateBlock, xmlElement: Element): void {
     this.itemCount = Math.max(
-        parseInt(xmlElement.getAttribute('items') ?? '0', 10), this.minInputs);
+      parseInt(xmlElement.getAttribute('items') ?? '0', 10),
+      this.minInputs,
+    );
     // minInputs are added automatically.
     for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);
@@ -103,7 +106,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * Returns the state of this block as a JSON serializable object.
    * @returns The state of this block, ie the item count.
    */
-  saveExtraState: function(this: DynamicListCreateBlock): {itemCount: number} {
+  saveExtraState: function (this: DynamicListCreateBlock): {itemCount: number} {
     // If we call finalizeConnections here without disabling events, we get into
     // an event loop.
     Blockly.Events.disable();
@@ -120,8 +123,10 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * Applies the given state to this block.
    * @param state The state to apply to this block, ie the item count.
    */
-  loadExtraState: function(
-      this: DynamicListCreateBlock, state: ({[x: string]: any} | string)) {
+  loadExtraState: function (
+    this: DynamicListCreateBlock,
+    state: {[x: string]: any} | string,
+  ) {
     if (typeof state === 'string') {
       this.domToMutation(Blockly.utils.xml.textToDom(state));
       return;
@@ -141,8 +146,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    *     should be added.
    */
   findInputIndexForConnection(
-      this: DynamicListCreateBlock,
-      connection: Blockly.Connection): number | null {
+    this: DynamicListCreateBlock,
+    connection: Blockly.Connection,
+  ): number | null {
     if (!connection.targetConnection) {
       // this connection is available
       return null;
@@ -163,8 +169,10 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
     const nextInput = this.inputList[connectionIndex + 1];
     const nextConnection = nextInput?.connection?.targetConnection;
-    if (nextConnection &&
-        !nextConnection.getSourceBlock().isInsertionMarker()) {
+    if (
+      nextConnection &&
+      !nextConnection.getSourceBlock().isInsertionMarker()
+    ) {
       return connectionIndex + 1;
     }
 
@@ -179,7 +187,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    *     connection.
    */
   onPendingConnection(
-      this: DynamicListCreateBlock, connection: Blockly.Connection): void {
+    this: DynamicListCreateBlock,
+    connection: Blockly.Connection,
+  ): void {
     const insertIndex = this.findInputIndexForConnection(connection);
     if (insertIndex == null) {
       return;
@@ -193,9 +203,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * drag ends if the dragged block had a pending connection with this block.
    */
   finalizeConnections(this: DynamicListCreateBlock): void {
-    const targetConns =
-        this.removeUnnecessaryEmptyConns(
-            this.inputList.map((i) => i.connection?.targetConnection));
+    const targetConns = this.removeUnnecessaryEmptyConns(
+      this.inputList.map((i) => i.connection?.targetConnection),
+    );
     this.tearDownBlock();
     this.addItemInputs(targetConns);
     this.itemCount = targetConns.length;
@@ -217,7 +227,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    *     be attached to inputs.
    */
   removeUnnecessaryEmptyConns(
-      targetConns: Array<Blockly.Connection | undefined | null>
+    targetConns: Array<Blockly.Connection | undefined | null>,
   ): Array<Blockly.Connection | undefined | null> {
     const filteredConns = [...targetConns];
     for (let i = filteredConns.length - 1; i >= 0; i--) {
@@ -236,8 +246,8 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * @param targetConns The connections defining the inputs to add.
    */
   addItemInputs(
-      this: DynamicListCreateBlock,
-      targetConns: Array<Blockly.Connection | undefined | null>,
+    this: DynamicListCreateBlock,
+    targetConns: Array<Blockly.Connection | undefined | null>,
   ): void {
     const input = this.addFirstInput();
     const firstConn = targetConns[0];
@@ -256,8 +266,9 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * @returns The added input.
    */
   addFirstInput(this: DynamicListCreateBlock): Blockly.Input {
-    return this.appendValueInput('ADD0')
-        .appendField(Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH']);
+    return this.appendValueInput('ADD0').appendField(
+      Blockly.Msg['LISTS_CREATE_WITH_INPUT_WITH'],
+    );
   },
 };
 

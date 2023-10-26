@@ -46,15 +46,17 @@ export class ScrollOptions {
    * `edgeScrollOptions` is an optional configuration for the edge scrolling
    * behavior. See `ScrollBlockDrager.updateOptions` for more details.
    */
-  init({
-    enableWheelScroll = true,
-    enableEdgeScroll = true,
-    edgeScrollOptions = null,
-  } = {
-    enableWheelScroll: true,
-    enableEdgeScroll: true,
-    edgeScrollOptions: null,
-  }) {
+  init(
+    {
+      enableWheelScroll = true,
+      enableEdgeScroll = true,
+      edgeScrollOptions = null,
+    } = {
+      enableWheelScroll: true,
+      enableEdgeScroll: true,
+      edgeScrollOptions: null,
+    },
+  ) {
     if (enableWheelScroll) {
       this.enableWheelScroll();
     } else {
@@ -79,7 +81,11 @@ export class ScrollOptions {
 
     // TODO(blockly/#7157): We should maybe add an accessor for the svgGroup_?
     this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
-        this.workspace_.svgGroup_, 'wheel', this, this.onMouseWheel_);
+      this.workspace_.svgGroup_,
+      'wheel',
+      this,
+      this.onMouseWheel_,
+    );
   }
 
   /**
@@ -125,14 +131,18 @@ export class ScrollOptions {
    * @param {!Event} e Mouse wheel event.
    */
   onMouseWheel_(e) {
-    const canWheelMove = this.workspace_.options.moveOptions &&
-        this.workspace_.options.moveOptions.wheel;
+    const canWheelMove =
+      this.workspace_.options.moveOptions &&
+      this.workspace_.options.moveOptions.wheel;
     const currentGesture = this.workspace_.getGesture(e);
 
     // Do not try to scroll if we are not dragging a block, or the workspace
     // does not allow moving by wheel.
-    if (!canWheelMove || !currentGesture ||
-        !(currentGesture.getCurrentDragger() instanceof Blockly.BlockDragger)) {
+    if (
+      !canWheelMove ||
+      !currentGesture ||
+      !(currentGesture.getCurrentDragger() instanceof Blockly.BlockDragger)
+    ) {
       return;
     }
 

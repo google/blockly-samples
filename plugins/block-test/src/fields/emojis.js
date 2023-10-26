@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 /**
  * The Emoji category.
  */

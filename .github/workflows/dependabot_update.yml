@@ -6,10 +6,10 @@
 name: Clean up after dependabot
 
 # Triggered when a PR is (re)opened or synchronized
-on: 
+on:
   pull_request:
     paths:
-      - "plugins/**"
+      - 'plugins/**'
 
 permissions:
   pull-requests: write # This action modifies PRs
@@ -45,7 +45,7 @@ jobs:
       # Install packages
       - name: Npm install
         run: npm ci
-      
+
       # Run lerna bootstrap again, this time using `install` instead of `ci` so that
       # it will do the magic update we need to remove local dependencies.
       - name: Fix package locks

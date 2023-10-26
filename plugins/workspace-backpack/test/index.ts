@@ -16,8 +16,9 @@ import {Backpack} from '../src/index';
  * @returns The created workspace.
  */
 function createWorkspace(
-    blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   const backpack = new Backpack(workspace);
@@ -26,10 +27,13 @@ function createWorkspace(
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
   };
   createPlayground(
-      document.getElementById('root'), createWorkspace, defaultOptions);
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

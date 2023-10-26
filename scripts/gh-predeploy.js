@@ -42,11 +42,15 @@ function injectHeader(initialContents, title, isLocal) {
 
   // Replace the title with a more descriptive title.
   let modifiedContents = initialContents.replace(
-      /<title>.*<\/title>/, `<title>${title}</title>`);
+    /<title>.*<\/title>/,
+    `<title>${title}</title>`,
+  );
   // Add some CSS at the beginning of the header. Any CSS the page already
   // had will be higher priority.
   modifiedContents = modifiedContents.replace(
-      /<\s*head\s*>/, `<head>${headerAdditions}`);
+    /<\s*head\s*>/,
+    `<head>${headerAdditions}`,
+  );
   return modifiedContents;
 }
 
@@ -147,13 +151,13 @@ function injectPluginNavBar(inputString, packageJson, pluginDir, isLocal) {
   // <body> tag, preserving anything else in the tag (such as onload).
   // Also wrap all page content in a <main></main> tag.
   let modifiedContent = inputString.replace(
-      /<body([^>]*)>/,
-      `<body$1 class="root">
+    /<body([^>]*)>/,
+    `<body$1 class="root">
     ${navBar}
     <main id="main" class="has-tabs">
       <div class="drop-shadow"></div>
       ${tabs}
-      `
+      `,
   );
   modifiedContent = modifiedContent.replace(/(<\/body>)/, `</main>$1`);
   return modifiedContent;
@@ -208,7 +212,10 @@ function createPluginPage(pluginDir, isLocal) {
   const initialContents = fs.readFileSync(initialPath).toString();
 
   let contents = injectHeader(
-      initialContents, `${packageJson.name} Demo`, isLocal);
+    initialContents,
+    `${packageJson.name} Demo`,
+    isLocal,
+  );
   contents = injectPluginNavBar(contents, packageJson, pluginDir, isLocal);
   contents = injectFooter(contents);
 
@@ -228,8 +235,9 @@ function createPluginPage(pluginDir, isLocal) {
  */
 function createReadmePage(pluginDir, isLocal) {
   const packageJson = require(resolveApp(`plugins/${pluginDir}/package.json`));
-  const initialContents =
-      fs.readFileSync(`./plugins/${pluginDir}/README.md`).toString();
+  const initialContents = fs
+    .readFileSync(`./plugins/${pluginDir}/README.md`)
+    .toString();
 
   const converter = new showdown.Converter();
   converter.setFlavor('github');
@@ -256,9 +264,16 @@ function createReadmePage(pluginDir, isLocal) {
 
   // Add the same header, nav bar, and footer as we used for the playground.
   let modifiedContents = injectHeader(
-      initialPage, `${packageJson.name} Demo`, isLocal);
+    initialPage,
+    `${packageJson.name} Demo`,
+    isLocal,
+  );
   modifiedContents = injectPluginNavBar(
-      modifiedContents, packageJson, pluginDir, isLocal);
+    modifiedContents,
+    packageJson,
+    pluginDir,
+    isLocal,
+  );
   modifiedContents = injectFooter(modifiedContents);
 
   // Make sure the directory exists, then write to it.
@@ -279,12 +294,12 @@ function preparePlugin(pluginDir, isLocal) {
   console.log(`Preparing ${pluginDir} plugin for deployment.`);
   createPluginPage(pluginDir, isLocal);
   createReadmePage(pluginDir, isLocal);
-  return gulp.src(
-      [
-        './plugins/' + pluginDir + '/build/test_bundle.js',
-      ],
-      {base: './plugins/', allowEmpty: true})
-      .pipe(gulp.dest('./gh-pages/plugins/'));
+  return gulp
+    .src(['./plugins/' + pluginDir + '/build/test_bundle.js'], {
+      base: './plugins/',
+      allowEmpty: true,
+    })
+    .pipe(gulp.dest('./gh-pages/plugins/'));
 }
 
 /**
@@ -294,11 +309,13 @@ function preparePlugin(pluginDir, isLocal) {
  */
 function getPluginFolders() {
   const dir = 'plugins';
-  return fs.readdirSync(dir).filter(function(file) {
-    return fs.statSync(path.join(dir, file)).isDirectory() &&
+  return fs.readdirSync(dir).filter(function (file) {
+    return (
+      fs.statSync(path.join(dir, file)).isDirectory() &&
       fs.existsSync(path.join(dir, file, 'package.json')) &&
       // Only prepare plugins with test pages.
-      fs.existsSync(path.join(dir, file, '/test/index.html'));
+      fs.existsSync(path.join(dir, file, '/test/index.html'))
+    );
   });
 }
 
@@ -309,11 +326,13 @@ function getPluginFolders() {
  */
 function prepareToDeployPlugins(done) {
   const folders = getPluginFolders();
-  return gulp.parallel(folders.map(function(folder) {
-    return function preDeployPlugin() {
-      return preparePlugin(folder, false);
-    };
-  }))(done);
+  return gulp.parallel(
+    folders.map(function (folder) {
+      return function preDeployPlugin() {
+        return preparePlugin(folder, false);
+      };
+    }),
+  )(done);
 }
 
 /**
@@ -323,11 +342,13 @@ function prepareToDeployPlugins(done) {
  */
 function prepareLocalPlugins(done) {
   const folders = getPluginFolders();
-  return gulp.parallel(folders.map(function(folder) {
-    return function preDeployPlugin() {
-      return preparePlugin(folder, true);
-    };
-  }))(done);
+  return gulp.parallel(
+    folders.map(function (folder) {
+      return function preDeployPlugin() {
+        return preparePlugin(folder, true);
+      };
+    }),
+  )(done);
 }
 
 /**
@@ -343,8 +364,9 @@ function prepareLocalPlugins(done) {
  */
 function injectExampleNavBar(inputString, demoConfig, pageRoot, isLocal) {
   // Build up information from package.json.
-  const descriptionString = demoConfig.description ?
-      `<div class="subtitle">${demoConfig.description}</div>` : ``;
+  const descriptionString = demoConfig.description
+    ? `<div class="subtitle">${demoConfig.description}</div>`
+    : ``;
   const codeLink = `https://github.com/google/blockly-samples/blob/master/${pageRoot}`;
 
   const pages = demoConfig.pages;
@@ -374,13 +396,13 @@ function injectExampleNavBar(inputString, demoConfig, pageRoot, isLocal) {
   // <body> tag, preserving anything else in the tag (such as onload).
   // Also wrap all page content in a <main></main> tag.
   let modifiedContent = inputString.replace(
-      /<body([^>]*)>/,
-      `<body$1 class="root">
+    /<body([^>]*)>/,
+    `<body$1 class="root">
       ${navBar}
       <main id="main" class="has-tabs">
         <div class="drop-shadow"></div>
         ${tabString}
-        `
+        `,
   );
   modifiedContent = modifiedContent.replace(/<\/body>/, `</main>\n  </body>`);
   return modifiedContent;
@@ -401,8 +423,9 @@ function injectExampleNavBar(inputString, demoConfig, pageRoot, isLocal) {
  *     building for gh-pages.
  */
 function createExamplePage(pageRoot, pagePath, demoConfig, isLocal) {
-  const initialContents =
-      fs.readFileSync(path.join(pageRoot, pagePath)).toString();
+  const initialContents = fs
+    .readFileSync(path.join(pageRoot, pagePath))
+    .toString();
 
   let contents = injectHeader(initialContents, demoConfig.title, isLocal);
   contents = injectExampleNavBar(contents, demoConfig, pageRoot, isLocal);
@@ -426,8 +449,9 @@ function createExamplePage(pageRoot, pagePath, demoConfig, isLocal) {
  */
 function prepareExample(exampleDir, isLocal, done) {
   const baseDir = 'examples';
-  const packageJson =
-    require(resolveApp(path.join(baseDir, exampleDir, 'package.json')));
+  const packageJson = require(
+    resolveApp(path.join(baseDir, exampleDir, 'package.json')),
+  );
 
   // Cancel early if the package.json says this is not a demo.
   const {blocklyDemoConfig: demoConfig} = packageJson;
@@ -444,10 +468,12 @@ function prepareExample(exampleDir, isLocal, done) {
 
   // Special case: do a straight copy for the devsite demo, with no wrappers.
   if (packageJson.name == 'blockly-devsite-demo') {
-    return gulp.src(
+    return gulp
+      .src(
         fileList.map((f) => path.join(baseDir, exampleDir, f)),
-        {base: baseDir, allowEmpty: true})
-        .pipe(gulp.dest('./gh-pages/examples/'));
+        {base: baseDir, allowEmpty: true},
+      )
+      .pipe(gulp.dest('./gh-pages/examples/'));
   }
 
   // All other examples.
@@ -455,7 +481,7 @@ function prepareExample(exampleDir, isLocal, done) {
   const pages = fileList.filter((f) => pageRegex.test(f));
   // Add headers and footers to HTML pages.
   pages.forEach((page) =>
-    createExamplePage(`${baseDir}/${exampleDir}`, page, demoConfig, isLocal)
+    createExamplePage(`${baseDir}/${exampleDir}`, page, demoConfig, isLocal),
   );
 
   // Copy over all other files mentioned in the demoConfig to the
@@ -464,8 +490,9 @@ function prepareExample(exampleDir, isLocal, done) {
   let stream;
   if (assets.length) {
     stream = gulp.src(
-        assets.map((f) => path.join(baseDir, exampleDir, f)),
-        {base: baseDir, allowEmpty: true});
+      assets.map((f) => path.join(baseDir, exampleDir, f)),
+      {base: baseDir, allowEmpty: true},
+    );
   }
   return stream.pipe(gulp.dest('./gh-pages/examples/'));
 }
@@ -477,8 +504,10 @@ function prepareExample(exampleDir, isLocal, done) {
 function getExampleFolders() {
   const dir = 'examples';
   return fs.readdirSync(dir).filter((file) => {
-    return fs.statSync(path.join(dir, file)).isDirectory() &&
-      fs.existsSync(path.join(dir, file, 'package.json'));
+    return (
+      fs.statSync(path.join(dir, file)).isDirectory() &&
+      fs.existsSync(path.join(dir, file, 'package.json'))
+    );
   });
 }
 /**
@@ -491,11 +520,13 @@ function getExampleFolders() {
  */
 function prepareToDeployExamples(done) {
   const folders = getExampleFolders();
-  return gulp.parallel(folders.map(function(folder) {
-    return function preDeployExample(done) {
-      return prepareExample(folder, false, done);
-    };
-  }))(done);
+  return gulp.parallel(
+    folders.map(function (folder) {
+      return function preDeployExample(done) {
+        return prepareExample(folder, false, done);
+      };
+    }),
+  )(done);
 }
 
 /**
@@ -505,11 +536,13 @@ function prepareToDeployExamples(done) {
  */
 function prepareLocalExamples(done) {
   const folders = getExampleFolders();
-  return gulp.parallel(folders.map(function(folder) {
-    return function preDeployExample(done) {
-      return prepareExample(folder, true, done);
-    };
-  }))(done);
+  return gulp.parallel(
+    folders.map(function (folder) {
+      return function preDeployExample(done) {
+        return prepareExample(folder, true, done);
+      };
+    }),
+  )(done);
 }
 
 /**

@@ -29,7 +29,7 @@ const controlsIfMutator = {
    * @returns {Element} XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function() {
+  mutationToDom: function () {
     if (!this.elseIfCount_ && !this.hasElse_) {
       return null;
     }
@@ -47,12 +47,13 @@ const controlsIfMutator = {
    * @param {!Element} xmlElement XML storage element.
    * @this {Blockly.Block}
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function (xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
     this.hasElse_ = !!parseInt(xmlElement.getAttribute('else'), 10) || 0;
     if (this.hasElse_ && !this.getInput('ELSE')) {
-      this.appendStatementInput('ELSE')
-          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+      this.appendStatementInput('ELSE').appendField(
+        Blockly.Msg['CONTROLS_IF_MSG_ELSE'],
+      );
     }
     this.updateShape_(targetCount);
   },
@@ -63,7 +64,7 @@ const controlsIfMutator = {
    *     haseElse: (boolean|undefined)}} The state of this block, ie the else
    *     if count and else state.
    */
-  saveExtraState: function() {
+  saveExtraState: function () {
     if (!this.elseIfCount_ && !this.hasElse_) {
       return null;
     }
@@ -82,12 +83,13 @@ const controlsIfMutator = {
    * @param {*} state The state to apply to this block, ie the else if count and
    *     else state.
    */
-  loadExtraState: function(state) {
+  loadExtraState: function (state) {
     const targetCount = state['elseIfCount'] || 0;
     this.hasElse_ = state['hasElse'] || false;
     if (this.hasElse_ && !this.getInput('ELSE')) {
-      this.appendStatementInput('ELSE')
-          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+      this.appendStatementInput('ELSE').appendField(
+        Blockly.Msg['CONTROLS_IF_MSG_ELSE'],
+      );
     }
     this.updateShape_(targetCount);
   },
@@ -99,7 +101,7 @@ const controlsIfMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  updateShape_: function(targetCount) {
+  updateShape_: function (targetCount) {
     while (this.elseIfCount_ < targetCount) {
       this.addElseIf_();
     }
@@ -111,7 +113,7 @@ const controlsIfMutator = {
   /**
    * Callback for the plus field. Adds an else-if input to the block.
    */
-  plus: function() {
+  plus: function () {
     this.addElseIf_();
   },
 
@@ -122,7 +124,7 @@ const controlsIfMutator = {
    * @param {number} index The index of the else-if input to "remove".
    * @this {Blockly.Block}
    */
-  minus: function(index) {
+  minus: function (index) {
     if (this.elseIfCount_ == 0) {
       return;
     }
@@ -134,16 +136,19 @@ const controlsIfMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  addElseIf_: function() {
+  addElseIf_: function () {
     // Because else-if inputs are 1-indexed we increment first, decrement last.
     this.elseIfCount_++;
     this.appendValueInput('IF' + this.elseIfCount_)
-        .setCheck('Boolean')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'])
-        .appendField(
-            createMinusField(this.elseIfCount_), 'MINUS' + this.elseIfCount_);
-    this.appendStatementInput('DO' + this.elseIfCount_)
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+      .setCheck('Boolean')
+      .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'])
+      .appendField(
+        createMinusField(this.elseIfCount_),
+        'MINUS' + this.elseIfCount_,
+      );
+    this.appendStatementInput('DO' + this.elseIfCount_).appendField(
+      Blockly.Msg['CONTROLS_IF_MSG_THEN'],
+    );
 
     // Handle if-elseif-else block.
     if (this.getInput('ELSE')) {
@@ -160,14 +165,14 @@ const controlsIfMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  removeElseIf_: function(index = undefined) {
+  removeElseIf_: function (index = undefined) {
     // The strategy for removing a part at an index is to:
     //  - Kick any blocks connected to the relevant inputs.
     //  - Move all connect blocks from the other inputs up.
     //  - Remove the last input.
     // This makes sure all of our indices are correct.
 
-    if (index !== undefined && index!= this.elseIfCount_) {
+    if (index !== undefined && index != this.elseIfCount_) {
       // Each else-if is two inputs on the block:
       // the else-if input and the do input.
       const elseIfIndex = index * 2;
@@ -203,12 +208,15 @@ const controlsIfMutator = {
  * Adds the initial plus button to the if block.
  * @this {Blockly.Block}
  */
-const controlsIfHelper = function() {
+const controlsIfHelper = function () {
   this.getInput('IF0').insertFieldAt(0, createPlusField(), 'PLUS');
 };
 
 if (Blockly.Extensions.isRegistered('controls_if_mutator')) {
   Blockly.Extensions.unregister('controls_if_mutator');
 }
-Blockly.Extensions.registerMutator('controls_if_mutator',
-    controlsIfMutator, controlsIfHelper);
+Blockly.Extensions.registerMutator(
+  'controls_if_mutator',
+  controlsIfMutator,
+  controlsIfHelper,
+);

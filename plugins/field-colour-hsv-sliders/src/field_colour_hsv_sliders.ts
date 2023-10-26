@@ -65,10 +65,12 @@ class RgbColour {
    * @returns A hexadecimal representation of this colour.
    */
   toHex(): string {
-    return '#' +
-        RgbColour.componentToHex(this.r) +
-        RgbColour.componentToHex(this.g) +
-        RgbColour.componentToHex(this.b);
+    return (
+      '#' +
+      RgbColour.componentToHex(this.r) +
+      RgbColour.componentToHex(this.g) +
+      RgbColour.componentToHex(this.b)
+    );
   }
 
   /**
@@ -92,12 +94,12 @@ class RgbColour {
    */
   loadFromHsv(hsv: HsvColour): RgbColour {
     const hue: number = (hsv.h - Math.floor(hsv.h)) * 6;
-    this.r = hsv.v * (1 - hsv.s * Math.max(0, Math.min(1,
-        2 - Math.abs(hue - 3))));
-    this.g = hsv.v * (1 - hsv.s * Math.max(0, Math.min(1,
-        Math.abs(hue - 2) - 1)));
-    this.b = hsv.v * (1 - hsv.s * Math.max(0, Math.min(1,
-        Math.abs(hue - 4) - 1)));
+    this.r =
+      hsv.v * (1 - hsv.s * Math.max(0, Math.min(1, 2 - Math.abs(hue - 3))));
+    this.g =
+      hsv.v * (1 - hsv.s * Math.max(0, Math.min(1, Math.abs(hue - 2) - 1)));
+    this.b =
+      hsv.v * (1 - hsv.s * Math.max(0, Math.min(1, Math.abs(hue - 4) - 1)));
     return this;
   }
 }
@@ -145,16 +147,16 @@ class HsvColour {
       return this;
     }
 
-    const delta: number = (max - min);
+    const delta: number = max - min;
     this.s = delta / max;
 
     let hue: number;
     if (rgb.r === max) {
       hue = (rgb.g - rgb.b) / delta;
     } else if (rgb.g === max) {
-      hue = 2 + ((rgb.b - rgb.r) / delta);
+      hue = 2 + (rgb.b - rgb.r) / delta;
     } else {
-      hue = 4 + ((rgb.r - rgb.g) / delta);
+      hue = 4 + (rgb.r - rgb.g) / delta;
     }
     hue /= 6;
     this.h = hue - Math.floor(hue);
@@ -242,7 +244,9 @@ export class FieldColourHsvSliders extends FieldColour {
     Blockly.DropDownDiv.getContentDiv().appendChild(this.dropdownContainer);
 
     Blockly.DropDownDiv.showPositionedByField(
-        this, this.dropdownDisposeSliders.bind(this));
+      this,
+      this.dropdownDisposeSliders.bind(this),
+    );
 
     // Focus so we can start receiving keyboard events.
     this.hueSlider.focus({preventScroll: true});
@@ -256,7 +260,9 @@ export class FieldColourHsvSliders extends FieldColour {
    * @returns The readout, so that it can be updated.
    */
   private static createLabelInContainer(
-      name: string, container: HTMLElement): HTMLSpanElement {
+    name: string,
+    container: HTMLElement,
+  ): HTMLSpanElement {
     const label: HTMLDivElement = document.createElement('div');
     const labelText: HTMLSpanElement = document.createElement('span');
     const readout: HTMLSpanElement = document.createElement('span');
@@ -276,7 +282,10 @@ export class FieldColourHsvSliders extends FieldColour {
    * @returns The slider.
    */
   private static createSliderInContainer(
-      max: number, step: number, container: HTMLElement): HTMLInputElement {
+    max: number,
+    step: number,
+    container: HTMLElement,
+  ): HTMLInputElement {
     const slider: HTMLInputElement = document.createElement('input');
     slider.classList.add('fieldColourSlider');
     slider.type = 'range';
@@ -293,27 +302,57 @@ export class FieldColourHsvSliders extends FieldColour {
     container.classList.add('fieldColourSliderContainer');
 
     this.hueReadout = FieldColourHsvSliders.createLabelInContainer(
-        'Hue', container);
+      'Hue',
+      container,
+    );
     this.hueSlider = FieldColourHsvSliders.createSliderInContainer(
-        FieldColourHsvSliders.HUE_SLIDER_MAX, 2, container);
+      FieldColourHsvSliders.HUE_SLIDER_MAX,
+      2,
+      container,
+    );
     this.saturationReadout = FieldColourHsvSliders.createLabelInContainer(
-        'Saturation', container);
+      'Saturation',
+      container,
+    );
     this.saturationSlider = FieldColourHsvSliders.createSliderInContainer(
-        FieldColourHsvSliders.SATURATION_SLIDER_MAX, 1, container);
+      FieldColourHsvSliders.SATURATION_SLIDER_MAX,
+      1,
+      container,
+    );
     this.brightnessReadout = FieldColourHsvSliders.createLabelInContainer(
-        'Brightness', container);
+      'Brightness',
+      container,
+    );
     this.brightnessSlider = FieldColourHsvSliders.createSliderInContainer(
-        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX, 1, container);
+      FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX,
+      1,
+      container,
+    );
 
     this.hsvBoundEvents.push(
-        Blockly.browserEvents.conditionalBind(
-            this.hueSlider, 'input', this, this.onSliderChange));
+      Blockly.browserEvents.conditionalBind(
+        this.hueSlider,
+        'input',
+        this,
+        this.onSliderChange,
+      ),
+    );
     this.hsvBoundEvents.push(
-        Blockly.browserEvents.conditionalBind(
-            this.saturationSlider, 'input', this, this.onSliderChange));
+      Blockly.browserEvents.conditionalBind(
+        this.saturationSlider,
+        'input',
+        this,
+        this.onSliderChange,
+      ),
+    );
     this.hsvBoundEvents.push(
-        Blockly.browserEvents.conditionalBind(
-            this.brightnessSlider, 'input', this, this.onSliderChange));
+      Blockly.browserEvents.conditionalBind(
+        this.brightnessSlider,
+        'input',
+        this,
+        this.onSliderChange,
+      ),
+    );
 
     if (window.EyeDropper) {
       // If the browser supports the eyedropper API, create a button for it.
@@ -322,8 +361,13 @@ export class FieldColourHsvSliders extends FieldColour {
       container.appendChild(document.createElement('hr'));
       container.appendChild(button);
       this.hsvBoundEvents.push(
-          Blockly.browserEvents.conditionalBind(
-              button, 'click', this, this.onEyedropperEvent));
+        Blockly.browserEvents.conditionalBind(
+          button,
+          'click',
+          this,
+          this.onEyedropperEvent,
+        ),
+      );
     }
 
     this.dropdownContainer = container;
@@ -356,12 +400,16 @@ export class FieldColourHsvSliders extends FieldColour {
    * @returns A hexadecimal representation of the colour in the format "#rrggbb"
    */
   private static hsvToHex(
-      hue: number, saturation: number, brightness: number): string {
+    hue: number,
+    saturation: number,
+    brightness: number,
+  ): string {
     FieldColourHsvSliders.helperHsv.h = hue;
     FieldColourHsvSliders.helperHsv.s = saturation;
     FieldColourHsvSliders.helperHsv.v = brightness;
-    return FieldColourHsvSliders.helperRgb.loadFromHsv(
-        FieldColourHsvSliders.helperHsv).toHex();
+    return FieldColourHsvSliders.helperRgb
+      .loadFromHsv(FieldColourHsvSliders.helperHsv)
+      .toHex();
   }
 
   /**
@@ -372,14 +420,15 @@ export class FieldColourHsvSliders extends FieldColour {
     if (!this.hueSlider || !this.saturationSlider || !this.brightnessSlider) {
       throw new Error('The HSV sliders are missing.');
     }
-    const hue: number = parseFloat(this.hueSlider.value) /
-        FieldColourHsvSliders.HUE_SLIDER_MAX;
-    const saturation: number = parseFloat(this.saturationSlider.value) /
-        FieldColourHsvSliders.SATURATION_SLIDER_MAX;
-    const brightness: number = parseFloat(this.brightnessSlider.value) /
-        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
-    this.setValue(FieldColourHsvSliders.hsvToHex(
-        hue, saturation, brightness));
+    const hue: number =
+      parseFloat(this.hueSlider.value) / FieldColourHsvSliders.HUE_SLIDER_MAX;
+    const saturation: number =
+      parseFloat(this.saturationSlider.value) /
+      FieldColourHsvSliders.SATURATION_SLIDER_MAX;
+    const brightness: number =
+      parseFloat(this.brightnessSlider.value) /
+      FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
+    this.setValue(FieldColourHsvSliders.hsvToHex(hue, saturation, brightness));
     this.renderSliders();
   }
 
@@ -402,54 +451,70 @@ export class FieldColourHsvSliders extends FieldColour {
    * on the slider values.
    */
   private renderSliders(): void {
-    if (!this.hueSlider || !this.hueReadout ||
-        !this.saturationSlider || !this.saturationReadout ||
-        !this.brightnessSlider || !this.brightnessReadout) {
+    if (
+      !this.hueSlider ||
+      !this.hueReadout ||
+      !this.saturationSlider ||
+      !this.saturationReadout ||
+      !this.brightnessSlider ||
+      !this.brightnessReadout
+    ) {
       throw new Error('The HSV sliders are missing.');
     }
     this.hueReadout.textContent = this.hueSlider.value;
     this.saturationReadout.textContent = this.saturationSlider.value;
     this.brightnessReadout.textContent = this.brightnessSlider.value;
 
-    const h: number = parseFloat(this.hueSlider.value) /
-        FieldColourHsvSliders.HUE_SLIDER_MAX;
-    const s: number = parseFloat(this.saturationSlider.value) /
-        FieldColourHsvSliders.SATURATION_SLIDER_MAX;
-    const v: number = parseFloat(this.brightnessSlider.value) /
-        FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
+    const h: number =
+      parseFloat(this.hueSlider.value) / FieldColourHsvSliders.HUE_SLIDER_MAX;
+    const s: number =
+      parseFloat(this.saturationSlider.value) /
+      FieldColourHsvSliders.SATURATION_SLIDER_MAX;
+    const v: number =
+      parseFloat(this.brightnessSlider.value) /
+      FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
 
     // The hue slider needs intermediate gradient control points to include all
     // colours of the rainbow.
     let hueGradient = 'linear-gradient(to right, ';
-    hueGradient += FieldColourHsvSliders.hsvToHex(0/6, s, v) +
-        ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
-    hueGradient += FieldColourHsvSliders.hsvToHex(1/6, s, v) + ', ';
-    hueGradient += FieldColourHsvSliders.hsvToHex(2/6, s, v) + ', ';
-    hueGradient += FieldColourHsvSliders.hsvToHex(3/6, s, v) + ', ';
-    hueGradient += FieldColourHsvSliders.hsvToHex(4/6, s, v) + ', ';
-    hueGradient += FieldColourHsvSliders.hsvToHex(5/6, s, v) + ', ';
-    hueGradient += FieldColourHsvSliders.hsvToHex(6/6, s, v) +
-        ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
-    this.hueSlider.style.setProperty(
-        '--slider-track-background', hueGradient);
+    hueGradient +=
+      FieldColourHsvSliders.hsvToHex(0 / 6, s, v) +
+      ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
+    hueGradient += FieldColourHsvSliders.hsvToHex(1 / 6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex(2 / 6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex(3 / 6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex(4 / 6, s, v) + ', ';
+    hueGradient += FieldColourHsvSliders.hsvToHex(5 / 6, s, v) + ', ';
+    hueGradient +=
+      FieldColourHsvSliders.hsvToHex(6 / 6, s, v) +
+      ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
+    this.hueSlider.style.setProperty('--slider-track-background', hueGradient);
 
     // The saturation slider only needs gradient control points at each end.
     let saturationGradient = 'linear-gradient(to right, ';
-    saturationGradient += FieldColourHsvSliders.hsvToHex(h, 0, v) +
-        ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
-    saturationGradient += FieldColourHsvSliders.hsvToHex(h, 1, v) +
-        ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
+    saturationGradient +=
+      FieldColourHsvSliders.hsvToHex(h, 0, v) +
+      ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
+    saturationGradient +=
+      FieldColourHsvSliders.hsvToHex(h, 1, v) +
+      ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
     this.saturationSlider.style.setProperty(
-        '--slider-track-background', saturationGradient);
+      '--slider-track-background',
+      saturationGradient,
+    );
 
     // The brightness slider only needs gradient control points at each end.
     let brightnessGradient = 'linear-gradient(to right, ';
-    brightnessGradient += FieldColourHsvSliders.hsvToHex(h, s, 0) +
-        ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
-    brightnessGradient += FieldColourHsvSliders.hsvToHex(h, s, 1) +
-        ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
+    brightnessGradient +=
+      FieldColourHsvSliders.hsvToHex(h, s, 0) +
+      ` ${FieldColourHsvSliders.THUMB_RADIUS}px, `;
+    brightnessGradient +=
+      FieldColourHsvSliders.hsvToHex(h, s, 1) +
+      ` calc(100% - ${FieldColourHsvSliders.THUMB_RADIUS}px))`;
     this.brightnessSlider.style.setProperty(
-        '--slider-track-background', brightnessGradient);
+      '--slider-track-background',
+      brightnessGradient,
+    );
   }
 
   /** Updates slider values based on the current value of the field. */
@@ -459,21 +524,25 @@ export class FieldColourHsvSliders extends FieldColour {
     }
 
     const hsv: HsvColour = FieldColourHsvSliders.helperHsv.loadFromRgb(
-        FieldColourHsvSliders.helperRgb.loadFromHex(this.getValue() ?? ''));
+      FieldColourHsvSliders.helperRgb.loadFromHex(this.getValue() ?? ''),
+    );
 
-    this.hueSlider.value =
-        String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX);
-    this.saturationSlider.value =
-        String(hsv.s * FieldColourHsvSliders.SATURATION_SLIDER_MAX);
-    this.brightnessSlider.value =
-        String(hsv.v * FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX);
+    this.hueSlider.value = String(hsv.h * FieldColourHsvSliders.HUE_SLIDER_MAX);
+    this.saturationSlider.value = String(
+      hsv.s * FieldColourHsvSliders.SATURATION_SLIDER_MAX,
+    );
+    this.brightnessSlider.value = String(
+      hsv.v * FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX,
+    );
 
     this.renderSliders();
   }
 }
 
 Blockly.fieldRegistry.register(
-    'field_colour_hsv_sliders', FieldColourHsvSliders);
+  'field_colour_hsv_sliders',
+  FieldColourHsvSliders,
+);
 
 // CSS for colour slider fields.
 Blockly.Css.register(`

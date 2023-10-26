@@ -9,7 +9,11 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories} from '@blockly/dev-tools';
-import {blocks, unregisterProcedureBlocks, registerProcedureSerializer} from '../src/index';
+import {
+  blocks,
+  unregisterProcedureBlocks,
+  registerProcedureSerializer,
+} from '../src/index';
 import {ProcedureBase} from '../src/events_procedure_base';
 
 /* eslint no-unused-vars: "off" */
@@ -22,7 +26,7 @@ registerProcedureSerializer();
 let workspace1;
 let workspace2;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   injectTwoWorkspaces();
 });
 
@@ -43,12 +47,15 @@ function injectTwoWorkspaces() {
   workspace2.addChangeListener(createEventSharer(workspace1));
 
   workspace1.addChangeListener(
-      createSerializationListener(workspace1, 'save1'));
+    createSerializationListener(workspace1, 'save1'),
+  );
   workspace2.addChangeListener(
-      createSerializationListener(workspace2, 'save2'));
+    createSerializationListener(workspace2, 'save2'),
+  );
 
-  document.getElementById('load')
-      .addEventListener('click', () => reloadWorkspaces());
+  document
+    .getElementById('load')
+    .addEventListener('click', () => reloadWorkspaces());
 }
 
 /** Injects one workspace with undo and redo enabled. */
@@ -62,10 +69,12 @@ function injectOneWorkspace() {
   workspace1 = Blockly.inject('blockly1', options);
 
   workspace1.addChangeListener(
-      createSerializationListener(workspace1, 'save1'));
+    createSerializationListener(workspace1, 'save1'),
+  );
 
-  document.getElementById('load')
-      .addEventListener('click', () => loadWorkspace());
+  document
+    .getElementById('load')
+    .addEventListener('click', () => loadWorkspace());
 }
 
 /**
@@ -76,8 +85,10 @@ function injectOneWorkspace() {
  */
 function createEventSharer(otherWorkspace) {
   return (e) => {
-    if (!(e instanceof ProcedureBase) &&
-        !(e instanceof Blockly.Events.VarBase)) {
+    if (
+      !(e instanceof ProcedureBase) &&
+      !(e instanceof Blockly.Events.VarBase)
+    ) {
       return;
     }
     let event;
@@ -105,11 +116,11 @@ function createSerializationListener(workspace, textAreaId) {
   const textArea = document.getElementById(textAreaId);
   return (e) => {
     if (workspace.isDragging()) return;
-    textArea.value =
-        JSON.stringify(
-            Blockly.serialization.workspaces.save(workspace),
-            undefined,
-            2);
+    textArea.value = JSON.stringify(
+      Blockly.serialization.workspaces.save(workspace),
+      undefined,
+      2,
+    );
   };
 }
 

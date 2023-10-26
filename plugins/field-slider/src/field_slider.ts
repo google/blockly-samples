@@ -39,7 +39,7 @@ export class FieldSlider extends Blockly.FieldNumber {
   /**
    * The HTML range input element.
    */
-  private sliderInput: HTMLInputElement|null = null;
+  private sliderInput: HTMLInputElement | null = null;
 
   /**
    * Class for an number slider field.
@@ -56,9 +56,14 @@ export class FieldSlider extends Blockly.FieldNumber {
    * https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation}
    *    for a list of properties this parameter supports.
    */
-  constructor(value?: string | number, min?: string | number,
-      max?: string | number, precision?: string | number,
-      validator?: FieldSliderValidator, config?: FieldSliderConfig) {
+  constructor(
+    value?: string | number,
+    min?: string | number,
+    max?: string | number,
+    precision?: string | number,
+    validator?: FieldSliderValidator,
+    config?: FieldSliderConfig,
+  ) {
     super(value, min, max, precision, validator, config);
   }
 
@@ -74,7 +79,13 @@ export class FieldSlider extends Blockly.FieldNumber {
     // `this` might be a subclass of FieldSlider if that class doesn't override
     // the static fromJson method.
     return new this(
-        options.value, undefined, undefined, undefined, undefined, options);
+      options.value,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      options,
+    );
   }
 
   /* eslint-disable @typescript-eslint/naming-convention */
@@ -103,7 +114,9 @@ export class FieldSlider extends Blockly.FieldNumber {
     }
 
     Blockly.DropDownDiv.showPositionedByField(
-        this, this.dropdownDispose_.bind(this));
+      this,
+      this.dropdownDispose_.bind(this),
+    );
 
     // Focus on the slider field, unless quietInput is passed.
     if (!quietInput) {
@@ -139,8 +152,14 @@ export class FieldSlider extends Blockly.FieldNumber {
     wrapper.appendChild(sliderInput);
     this.sliderInput = sliderInput;
 
-    this.boundEvents.push(Blockly.browserEvents.conditionalBind(
-        sliderInput, 'input', this, this.onSliderChange_));
+    this.boundEvents.push(
+      Blockly.browserEvents.conditionalBind(
+        sliderInput,
+        'input',
+        this,
+        this.onSliderChange_,
+      ),
+    );
 
     return wrapper;
   }
@@ -168,13 +187,9 @@ export class FieldSlider extends Blockly.FieldNumber {
     this.setEditorValue_(this.sliderInput?.value, false);
     if (this.getSourceBlock()) {
       Blockly.Events.fire(
-          new (Blockly.Events.get(
-              Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE))(
-              this.sourceBlock_,
-              this.name || null,
-              oldValue,
-              this.value_
-          )
+        new (Blockly.Events.get(
+          Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE,
+        ))(this.sourceBlock_, this.name || null, oldValue, this.value_),
       );
     }
     this.resizeEditor_();

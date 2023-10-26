@@ -11,7 +11,7 @@ const babelParser = require('@babel/eslint-parser');
 const globals = require('globals');
 const tsParser = require('@typescript-eslint/parser');
 const typescript = require('@typescript-eslint/eslint-plugin');
-const eslintConfigPrettier = require("eslint-config-prettier");
+const eslintConfigPrettier = require('eslint-config-prettier');
 
 // Used to convert the Google eslint config into flat config format.
 const compat = new FlatCompat();
@@ -85,7 +85,7 @@ module.exports = [
       'jsdoc/require-description': [
         'warn',
         {
-        // Don't require descriptions if these tags are present.
+          // Don't require descriptions if these tags are present.
           'exemptedBy': ['inheritdoc', 'param', 'return', 'returns', 'type'],
         },
       ],
@@ -160,32 +160,35 @@ module.exports = [
       'no-undef': 'off',
 
       // Add TypeScript specific rules (and turn off ESLint equivalents)
-      '@typescript-eslint/array-type': ['error',
+      '@typescript-eslint/array-type': [
+        'error',
         {
           'default': 'array-simple',
         },
       ],
       '@typescript-eslint/ban-ts-comment': 'error',
-      '@typescript-eslint/ban-types': ['error',
+      '@typescript-eslint/ban-types': [
+        'error',
         {
           'types': {
             'Object': {
-              'message': 'Use {} or \'object\' instead.',
+              'message': "Use {} or 'object' instead.",
             },
             'String': {
-              'message': 'Use \'string\' instead.',
+              'message': "Use 'string' instead.",
             },
             'Number': {
-              'message': 'Use \'number\' instead.',
+              'message': "Use 'number' instead.",
             },
             'Boolean': {
-              'message': 'Use \'boolean\' instead.',
+              'message': "Use 'boolean' instead.",
             },
           },
         },
       ],
       'camelcase': 'off',
-      '@typescript-eslint/naming-convention': ['error',
+      '@typescript-eslint/naming-convention': [
+        'error',
         {
           'selector': 'default',
           'format': ['camelCase', 'PascalCase'],
@@ -224,8 +227,10 @@ module.exports = [
       '@typescript-eslint/prefer-namespace-keyword': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
       '@typescript-eslint/consistent-type-definitions': 'error',
-      '@typescript-eslint/explicit-member-accessibility': ['error',
-        {'accessibility': 'no-public'}],
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        {'accessibility': 'no-public'},
+      ],
       '@typescript-eslint/no-require-imports': 'error',
     },
   },

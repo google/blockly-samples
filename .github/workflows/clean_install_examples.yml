@@ -3,7 +3,7 @@
 
 name: Check examples install status
 
-on: 
+on:
   pull_request:
     paths:
       - 'examples/**'

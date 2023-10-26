@@ -5,8 +5,10 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {ProcedureParameterBase, ProcedureParameterBaseJson} from './events_procedure_parameter_base';
-
+import {
+  ProcedureParameterBase,
+  ProcedureParameterBaseJson,
+} from './events_procedure_parameter_base';
 
 /**
  * Notifies listeners that a parameter has been removed from a procedure.
@@ -26,10 +28,11 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
    * @param index The index the parameter was at before it was removed.
    */
   constructor(
-      workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel,
-      parameter: Blockly.procedures.IParameterModel,
-      readonly index: number) {
+    workspace: Blockly.Workspace,
+    procedure: Blockly.procedures.IProcedureModel,
+    parameter: Blockly.procedures.IParameterModel,
+    readonly index: number,
+  ) {
     super(workspace, procedure, parameter);
   }
 
@@ -44,8 +47,9 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
     const procedureModel = procedureMap.get(this.procedure.getId());
     if (!procedureModel) {
       throw new Error(
-          'Cannot add a parameter to a procedure that does not exist ' +
-          'in the procedure map');
+        'Cannot add a parameter to a procedure that does not exist ' +
+          'in the procedure map',
+      );
     }
     if (forward) {
       procedureModel.deleteParameter(this.index);
@@ -72,25 +76,33 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
    * @internal
    */
   static fromJson(
-      json: ProcedureParameterDeleteJson,
-      workspace: Blockly.Workspace
+    json: ProcedureParameterDeleteJson,
+    workspace: Blockly.Workspace,
   ): ProcedureParameterDelete {
     const {procedure, parameter} = ProcedureParameterBase.findMatchingParameter(
-        workspace, json['procedureId'], json['parameterId']);
+      workspace,
+      json['procedureId'],
+      json['parameterId'],
+    );
     if (!parameter) {
       throw new Error('Cannot delete a non existant parameter');
     }
     return new ProcedureParameterDelete(
-        workspace, procedure, parameter, json['index']);
+      workspace,
+      procedure,
+      parameter,
+      json['index'],
+    );
   }
 }
 
-export interface ProcedureParameterDeleteJson extends
-    ProcedureParameterBaseJson {
+export interface ProcedureParameterDeleteJson
+  extends ProcedureParameterBaseJson {
   index: number;
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT,
-    ProcedureParameterDelete.TYPE,
-    ProcedureParameterDelete);
+  Blockly.registry.Type.EVENT,
+  ProcedureParameterDelete.TYPE,
+  ProcedureParameterDelete,
+);

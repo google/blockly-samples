@@ -25,9 +25,10 @@ const availableScripts = [
 
 const script = args[0];
 if (availableScripts.includes(script)) {
-  const result = spawnSync('node',
-      [].concat(require.resolve('../scripts/' + script))
-          .concat(args.slice(1)), {stdio: 'inherit'}
+  const result = spawnSync(
+    'node',
+    [].concat(require.resolve('../scripts/' + script)).concat(args.slice(1)),
+    {stdio: 'inherit'},
   );
   if (result.signal) {
     if (result.signal === 'SIGKILL') {

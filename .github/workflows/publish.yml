@@ -3,13 +3,13 @@
 name: publish
 
 on:
-  workflow_dispatch:  # Manually trigger. Colon is required.
+  workflow_dispatch: # Manually trigger. Colon is required.
   schedule:
     - cron: '5 17 * * 4' # Thursdays at 17:05 UTC (09:05 PST / 10:05 PDT)
 
 permissions:
-  contents: write  # For checkout and tag.
-  packages: write  # For publish.
+  contents: write # For checkout and tag.
+  packages: write # For publish.
 
 jobs:
   publish:
@@ -21,44 +21,44 @@ jobs:
     environment: release
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      # fetch all tags and commits so that lerna can version appropriately
-      with:
-        fetch-depth: 0
-        ref: 'master'
+      - name: Checkout
+        uses: actions/checkout@v3
+        # fetch all tags and commits so that lerna can version appropriately
+        with:
+          fetch-depth: 0
+          ref: 'master'
 
-    # This uses a reverse-engineered email for the github actions bot. See
-    # https://github.com/actions/checkout/issues/13#issuecomment-724415212
-    - name: Git Identity
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email '<41898282+github-actions[bot]@users.noreply.github.com'
+      # This uses a reverse-engineered email for the github actions bot. See
+      # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+      - name: Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '<41898282+github-actions[bot]@users.noreply.github.com'
 
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    - name: Configure npm
-      run: npm config set //wombat-dressing-room.appspot.com/:_authToken=$NODE_AUTH_TOKEN
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
+      - name: Configure npm
+        run: npm config set //wombat-dressing-room.appspot.com/:_authToken=$NODE_AUTH_TOKEN
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
 
-    - name: NPM install
-      # Use CI so that we don't update dependencies in this step.
-      run: npm ci
+      - name: NPM install
+        # Use CI so that we don't update dependencies in this step.
+        run: npm ci
 
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: npm run build
 
-    - name: Test
-      run: npm run test
+      - name: Test
+        run: npm run test
 
-    - name: Publish
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npx lerna publish --no-private --conventional-commits --create-release github --yes
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx lerna publish --no-private --conventional-commits --create-release github --yes
 
   update-gh-pages:
     name: Update GitHub Pages

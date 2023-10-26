@@ -9,7 +9,6 @@
  * @author aschmiedt@google.com (Abby Schmiedt)
  */
 
-
 import * as Blockly from 'blockly/core';
 
 /**
@@ -106,17 +105,22 @@ export class Modal {
    * Shows the Blockly modal and focus on the first focusable element.
    */
   show() {
-    Blockly.WidgetDiv.show(this, this.workspace_.RTL,
-        () => this.widgetDispose_());
+    Blockly.WidgetDiv.show(this, this.workspace_.RTL, () =>
+      this.widgetDispose_(),
+    );
     this.widgetCreate_();
-    const focusableEls = this.htmlDiv_.querySelectorAll('a[href],' +
+    const focusableEls = this.htmlDiv_.querySelectorAll(
+      'a[href],' +
         'area[href], input:not([disabled]), select:not([disabled]),' +
-        'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+        'textarea:not([disabled]), button:not([disabled]), [tabindex="0"]',
+    );
     if (focusableEls.length > 0) {
       this.firstFocusableEl_ = focusableEls[0];
       this.lastFocusableEl_ = focusableEls[focusableEls.length - 1];
-      if (focusableEls[0].classList.contains('blocklyModalBtnClose') &&
-          focusableEls.length > 1) {
+      if (
+        focusableEls[0].classList.contains('blocklyModalBtnClose') &&
+        focusableEls.length > 1
+      ) {
         focusableEls[1].focus();
       } else {
         this.firstFocusableEl_.focus();
@@ -190,8 +194,10 @@ export class Modal {
   handleKeyDown_(e) {
     if (e.key === 'Tab') {
       // If there are no elements or there is one element don't wrap.
-      if (!this.firstFocusableEl_ ||
-          this.firstFocusableEl_ === this.lastFocusableEl_) {
+      if (
+        !this.firstFocusableEl_ ||
+        this.firstFocusableEl_ === this.lastFocusableEl_
+      ) {
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -216,8 +222,12 @@ export class Modal {
    * @protected
    */
   addEvent_(node, name, thisObject, func) {
-    const event =
-        Blockly.browserEvents.conditionalBind(node, name, thisObject, func);
+    const event = Blockly.browserEvents.conditionalBind(
+      node,
+      name,
+      thisObject,
+      func,
+    );
     this.boundEvents_.push(event);
   }
 
@@ -252,8 +262,12 @@ export class Modal {
     // End creating the container
 
     // Add Events
-    this.addEvent_(/** @type{!HTMLDivElement} */ modalContainer, 'keydown',
-        this, this.handleKeyDown_);
+    this.addEvent_(
+      /** @type{!HTMLDivElement} */ modalContainer,
+      'keydown',
+      this,
+      this.handleKeyDown_,
+    );
 
     if (this.shouldCloseOnOverlayClick) {
       this.addEvent_(this.htmlDiv_, 'click', this, this.hide);

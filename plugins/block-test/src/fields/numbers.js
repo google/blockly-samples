@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_numbers_float',
@@ -106,7 +105,6 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': 'A midi note.',
   },
 ]);
-
 
 /**
  * The Numbers field category.

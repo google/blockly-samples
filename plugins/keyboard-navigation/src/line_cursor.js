@@ -43,10 +43,12 @@ export class LineCursor extends Blockly.BasicCursor {
     let newNode = this.getNextNode_(curNode, this.validLineNode);
 
     // Skip the input or next value if there is a connected block.
-    if (newNode &&
-        (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-         newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-        newNode.getLocation().targetBlock()) {
+    if (
+      newNode &&
+      (newNode.getType() == Blockly.ASTNode.types.INPUT ||
+        newNode.getType() == Blockly.ASTNode.types.NEXT) &&
+      newNode.getLocation().targetBlock()
+    ) {
       newNode = this.getNextNode_(newNode, this.validLineNode);
     }
     if (newNode) {
@@ -88,10 +90,12 @@ export class LineCursor extends Blockly.BasicCursor {
     }
     let newNode = this.getPreviousNode_(curNode, this.validLineNode);
 
-    if (newNode &&
-        (newNode.getType() == Blockly.ASTNode.types.INPUT ||
-         newNode.getType() == Blockly.ASTNode.types.NEXT) &&
-        newNode.getLocation().targetBlock()) {
+    if (
+      newNode &&
+      (newNode.getType() == Blockly.ASTNode.types.INPUT ||
+        newNode.getType() == Blockly.ASTNode.types.NEXT) &&
+      newNode.getLocation().targetBlock()
+    ) {
       newNode = this.getPreviousNode_(newNode, this.validLineNode);
     }
 
@@ -141,7 +145,8 @@ export class LineCursor extends Blockly.BasicCursor {
       }
     } else if (
       type == Blockly.ASTNode.types.INPUT &&
-        location.type == Blockly.NEXT_STATEMENT) {
+      location.type == Blockly.NEXT_STATEMENT
+    ) {
       isValid = true;
     } else if (type == Blockly.ASTNode.types.NEXT) {
       isValid = true;
@@ -167,13 +172,13 @@ export class LineCursor extends Blockly.BasicCursor {
       isValid = true;
     } else if (
       type == Blockly.ASTNode.types.INPUT &&
-        location.type == Blockly.INPUT_VALUE) {
+      location.type == Blockly.INPUT_VALUE
+    ) {
       isValid = true;
     }
     return isValid;
   }
 }
-
 
 export const registrationName = 'LineCursor';
 export const registrationType = Blockly.registry.Type.CURSOR;

@@ -9,15 +9,26 @@ Blockly.defineBlocksWithJsonArray([
       {
         'type': 'field_dropdown',
         'name': 'PARENT_FIELD',
-        'options': [['A', 'a'], ['B', 'b']],
+        'options': [
+          ['A', 'a'],
+          ['B', 'b'],
+        ],
       },
       {
         'type': 'field_dependent_dropdown',
         'name': 'CHILD_FIELD',
         'parentName': 'PARENT_FIELD',
         'optionMapping': {
-          'a': [['A1', 'a1'], ['A2', 'a2'], ['Shared', 'shared']],
-          'b': [['B1', 'b1'], ['B2', 'b2'], ['Shared', 'shared']],
+          'a': [
+            ['A1', 'a1'],
+            ['A2', 'a2'],
+            ['Shared', 'shared'],
+          ],
+          'b': [
+            ['B1', 'b1'],
+            ['B2', 'b2'],
+            ['Shared', 'shared'],
+          ],
         },
       },
       {
@@ -25,10 +36,22 @@ Blockly.defineBlocksWithJsonArray([
         'name': 'GRANDCHILD_FIELD',
         'parentName': 'CHILD_FIELD',
         'optionMapping': {
-          'a1': [['A11', 'a11'], ['A12', 'a12']],
-          'a2': [['A21', 'a21'], ['A22', 'a22']],
-          'b1': [['B11', 'b11'], ['B12', 'b12']],
-          'b2': [['B21', 'b21'], ['B22', 'b22']],
+          'a1': [
+            ['A11', 'a11'],
+            ['A12', 'a12'],
+          ],
+          'a2': [
+            ['A21', 'a21'],
+            ['A22', 'a22'],
+          ],
+          'b1': [
+            ['B11', 'b11'],
+            ['B12', 'b12'],
+          ],
+          'b2': [
+            ['B21', 'b21'],
+            ['B22', 'b22'],
+          ],
           'shared': [['Only', 'only']],
         },
       },
@@ -48,7 +71,10 @@ Blockly.defineBlocksWithJsonArray([
         'name': 'CHILD_FIELD',
         'parentName': 'PARENT_FIELD',
         'optionMapping': {
-          'a': [['A1', 'a1'], ['A2', 'a2']],
+          'a': [
+            ['A1', 'a1'],
+            ['A2', 'a2'],
+          ],
         },
         'defaultOptions': [['Default Option', 'defaultOption']],
       },
@@ -58,32 +84,47 @@ Blockly.defineBlocksWithJsonArray([
 ]);
 
 Blockly.Blocks['dependent_dropdown_validation_test'] = {
-  init: function() {
+  init: function () {
     const parentFieldName = 'PARENT_FIELD';
     const childFieldName = 'CHILD_FIELD';
     const parentOptions: Blockly.MenuOption[] = [
-      ['Initial', 'initial'], ['Invalid', 'invalid'], ['Valid', 'valid'],
+      ['Initial', 'initial'],
+      ['Invalid', 'invalid'],
+      ['Valid', 'valid'],
     ];
     const dependentOptions: ChildOptionMapping = {
-      'initial': [['Initial1', 'initial1'], ['Initial2', 'initial2']],
-      'invalid': [['Invalid1', 'invalid1'], ['Invalid2', 'invalid2']],
-      'valid': [['Valid1', 'valid1'], ['Valid2', 'valid2']],
+      'initial': [
+        ['Initial1', 'initial1'],
+        ['Initial2', 'initial2'],
+      ],
+      'invalid': [
+        ['Invalid1', 'invalid1'],
+        ['Invalid2', 'invalid2'],
+      ],
+      'valid': [
+        ['Valid1', 'valid1'],
+        ['Valid2', 'valid2'],
+      ],
     };
-    const parentValidator: Blockly.FieldDropdownValidator = function(newValue) {
+    const parentValidator: Blockly.FieldDropdownValidator = function (
+      newValue,
+    ) {
       if (newValue == 'invalid') {
         return 'valid';
       }
       return undefined;
     };
     this.appendDummyInput()
-        .appendField('Parent')
-        .appendField(
-            new Blockly.FieldDropdown(parentOptions, parentValidator),
-            parentFieldName)
-        .appendField('Child')
-        .appendField(
-            new FieldDependentDropdown(parentFieldName, dependentOptions),
-            childFieldName);
+      .appendField('Parent')
+      .appendField(
+        new Blockly.FieldDropdown(parentOptions, parentValidator),
+        parentFieldName,
+      )
+      .appendField('Child')
+      .appendField(
+        new FieldDependentDropdown(parentFieldName, dependentOptions),
+        childFieldName,
+      );
     this.setColour(100);
   },
 };

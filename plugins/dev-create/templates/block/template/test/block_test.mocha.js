@@ -17,10 +17,14 @@ require('../src/index');
 
 const assert = chai.assert;
 
-const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
-  runSerializationTestSuite, SerializationTestCase} = testHelpers;
+const {
+  CodeGenerationTestSuite,
+  runCodeGenerationTestSuites,
+  runSerializationTestSuite,
+  SerializationTestCase,
+} = testHelpers;
 
-suite('BlockTemplate', function() {
+suite('BlockTemplate', function () {
   /**
    * Asserts that the block has the expected inputs and fields.
    * @param {!Blockly.Block} block The block to check.
@@ -30,21 +34,21 @@ suite('BlockTemplate', function() {
     assert.exists(block);
   }
 
-  setup(function() {
+  setup(function () {
     this.workspace = new Blockly.Workspace();
   });
 
-  teardown(function() {
+  teardown(function () {
     this.workspace.dispose();
   });
 
-  suite('Creation', function() {
+  suite('Creation', function () {
     // TODO Add basic test for creation of block using newBlock call.
     const block = this.workspace.newBlock('block_type');
     assertBlockStructure(block);
   });
 
-  suite('Code generation', function() {
+  suite('Code generation', function () {
     const trivialCreateBlock = (workspace) => {
       // TODO implement.
       // return workspace.newBlock('block_type');
@@ -58,36 +62,64 @@ suite('BlockTemplate', function() {
       // TODO Remove unsupported languages.
       // TODO Update expectedCode for all test cases.
       // TODO Add additional useful testCases.
-      {title: 'Dart', generator: dartGenerator,
+      {
+        title: 'Dart',
+        generator: dartGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'TODO',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'JavaScript', generator: javascriptGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'TODO',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'JavaScript',
+        generator: javascriptGenerator,
         testCases: [
-
-          {title: 'Trivial', expectedCode: 'TODO',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'Lua', generator: luaGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'TODO',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'Lua',
+        generator: luaGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'TODO',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'PHP', generator: phpGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'TODO',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'PHP',
+        generator: phpGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'TODO',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'Python', generator: pythonGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'TODO',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'Python',
+        generator: pythonGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'TODO',
-            createBlock: trivialCreateBlock},
-        ]},
+          {
+            title: 'Trivial',
+            expectedCode: 'TODO',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
     ];
     runCodeGenerationTestSuites(testSuites);
   });
-
 
   /**
    * Test cases for serialization tests.
@@ -95,15 +127,16 @@ suite('BlockTemplate', function() {
    */
   const testCases = [
     // TODO update xml and expectedXml.
-    {title: 'Empty XML', xml: '<block type="block_type"/>',
+    {
+      title: 'Empty XML',
+      xml: '<block type="block_type"/>',
       expectedXml:
-          '<block xmlns="https://developers.google.com/blockly/xml" ' +
-          'type="block_type" id="1"></block>',
-      assertBlockStructure:
-          (block) => {
-            // TODO implement.
-            // assertBlockStructure(block);
-          },
+        '<block xmlns="https://developers.google.com/blockly/xml" ' +
+        'type="block_type" id="1"></block>',
+      assertBlockStructure: (block) => {
+        // TODO implement.
+        // assertBlockStructure(block);
+      },
     },
     // TODO add additional test cases.
   ];

@@ -56,9 +56,11 @@ export const registrationName = 'StrictConnectionChecker';
 
 // Register the checker so that it can be used by name.
 Blockly.registry.register(
-    registrationType, registrationName, StrictConnectionChecker);
+  registrationType,
+  registrationName,
+  StrictConnectionChecker,
+);
 
 export const pluginInfo = {
   [registrationType]: registrationName,
 };
-
