@@ -101,13 +101,12 @@ function init() {
     rtl: LANGUAGE_RTL.includes(language),
     renderer: 'thrasos',
     zoom: {
-      controls: true,
       maxScale: 1.8,
       minScale: 0.6,
       scaleSpeed: 1.2,
       pinch: true,
     },
-    trashcan: true,
+    trashcan: false,
     theme: Blockly.Theme.defineTheme('modest', {
       fontStyle: {
         'family': 'Google Sans',

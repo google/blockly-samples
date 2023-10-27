@@ -1,38 +1,51 @@
 @import url("https://fonts.googleapis.com/css?family=Google+Sans:400,500");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+body {
+  margin: 0;
+}
+
 .app-container {
   --bg: white;
+  --blockly-margin: 28px 0 28px 28px;
+  --demo-height: 352px;
   --font-family: 'Google Sans';
+  --output-max-height: 100%;
+  --output-max-width: 340px;
+  --play-btn-right: 52px;
+  --play-btn-top: 40px;
+}
+
+@media screen and (max-width: 840px) {
+  .app-container {
+    --blockly-height: 100%;
+    --blockly-margin: 28px 28px 0;
+    --demo-height: 600px;
+    --output-max-height: 180px;
+    --output-max-width: 100%;
+    --play-btn-right: -32px;
+    --play-btn-top: 364px;
+    align-items: center;
+    flex-direction: column;
+    padding-inline: 40px;
+  }
 }
 
 .app-container {
   background-color: #f8f9fa;
   border-radius: 30px;
-  bottom: 0;
-  height: 352px;
-  left: 0;
-  margin: 10px;
+  display: flex;
+  height: var(--demo-height);
   overflow: visible;
-  position: absolute;
-  right: 0;
-  top: 0;
   width: 100%;
-}
-
-.main {
-  bottom: 8px;
-  position: absolute;
-  top: 8px;
 }
 
 #blocklyDiv {
   background: var(--bg);
-  left: 8px;
-  margin: 20px;
-  max-height: 300px;
+  height: var(--blockly-height);
+  margin: var(--blockly-margin);
   padding: 20px;
-  right: 420px;
+  width: 100%;
 }
 
 .blocklyToolboxDiv {
@@ -94,7 +107,8 @@ option {
   border-bottom: unset;
 }
 
-.blocklyMainBackground {
+.blocklyMainBackground,
+.blocklyPath {
   stroke: var(--bg);
 }
 
@@ -105,11 +119,13 @@ option {
 
 #outputDiv {
   background-color: var(--bg);
-  margin: 20px;
+  height: var(--blockly-height);
+  margin: 28px;
+  max-height: var(--output-max-height);
+  max-width: var(--output-max-width);
   overflow: scroll;
   padding: 20px;
-  right: 8px;
-  width: 340px;
+  width: 100%;
 }
 
 hr {
@@ -128,8 +144,8 @@ hr {
   font: 500 14px/36px var(--font-family);
   padding: 0 16px;
   position: absolute;
-  right: 52px;
-  top: 36px;
+  right: var(--play-btn-right);
+  top: var(--play-btn-top);
 }
 
 .play-button:hover {

@@ -16,7 +16,7 @@ let toolboxJson = {
     {
       // Logic Category
       'kind': 'CATEGORY',
-      'colour': 218,
+      'colour': 262,
       'contents': [
         {
           'kind': 'BLOCK',
@@ -48,7 +48,7 @@ let toolboxJson = {
     {
       // Loops Category
       'kind': 'CATEGORY',
-      'colour': 136,
+      'colour': 122,
       'contents': [
         {
           'kind': 'BLOCK',
@@ -104,7 +104,7 @@ let toolboxJson = {
     {
       // Math Category
       'kind': 'CATEGORY',
-      'colour': 218,
+      'colour': 206,
       'contents': [
         {
           'kind': 'BLOCK',
@@ -483,7 +483,7 @@ let toolboxJson = {
     {
       // Lists Category
       'kind': 'CATEGORY',
-      'colour': 136,
+      'colour': 172,
       'contents': [
         {
           'kind': 'BLOCK',
@@ -653,7 +653,7 @@ let toolboxJson = {
     {
       // Colour Category
       'kind': 'CATEGORY',
-      'colour': 6,
+      'colour': 354,
       'contents': [
         {
           'kind': 'BLOCK',
@@ -730,7 +730,7 @@ let toolboxJson = {
       // Function Category
       'kind': 'CATEGORY',
       'custom': 'PROCEDURE',
-      'colour': 46,
+      'colour': 16,
     },
   ],
 };
