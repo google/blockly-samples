@@ -47,7 +47,8 @@
     "gulp-header": "^2.0.9",
     "http-server": "^14.1.1",
     "js-green-licenses": "^1.1.0",
-    "lerna": "^6.5.1",
+    "lerna": "^7.4.1",
+    "@lerna/legacy-package-management": "^7.4.1",
     "prettier": "^3.0.3",
     "rimraf": "^3.0.2",
     "showdown": "^2.1.0"
