@@ -1249,6 +1249,26 @@ suite('Procedures', function () {
         );
       },
     );
+
+    test(
+      'if a procedure caller block was already disabled ' +
+        'its definition changes name, it is not reenabled',
+      function () {
+        const defBlock = createProcDefBlock(this.workspace);
+        const callBlock = createProcCallBlock(this.workspace);
+        globalThis.clock.runAll();
+        Blockly.Events.setGroup(true);
+        callBlock.setEnabled(false);
+        globalThis.clock.runAll();
+        defBlock.getProcedureModel().setName("other proc name");
+        globalThis.clock.runAll();
+
+        assert.isFalse(
+          callBlock.isEnabled(),
+          'Expected the caller block to continue to be disabled',
+        );
+      },
+    );
   });
 
   suite('creating procedure blocks', function () {

@@ -1203,6 +1203,14 @@ const procedureCallerOnChangeMixin = {
     if (this.disposed || this.workspace.isFlyout) return;
     if (event.type === Blockly.Events.BLOCK_MOVE) this.updateArgsMap_(true);
     if (
+      event.type === Blockly.Events.BLOCK_CHANGE &&
+      event.blockId === this.id &&
+      event.element === 'disabled' &&
+      event.group
+    ) {
+      this.previousEnabledState_ = !event.newValue;
+    }
+    if (
       event.type !== Blockly.Events.FINISHED_LOADING &&
       !this.eventIsCreatingThisBlockDuringPaste_(event)
     )
