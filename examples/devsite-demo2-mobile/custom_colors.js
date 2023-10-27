@@ -1,3 +1,0 @@
-
-
-Blockly.WorkspaceSvg.zoomToFit();

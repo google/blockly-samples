@@ -59,11 +59,11 @@ option {
 }
 
 #blockly-0 {
-  border-left: 15px solid #aecbfa !important;
+  border-left: 15px solid #D1C4E9 !important;
 }
 
 #blockly-1 {
-  border-left: 15px solid #a8dab5 !important;
+  border-left: 15px solid #A5D6A7 !important;
 }
 
 #blockly-2 {
@@ -71,36 +71,31 @@ option {
 }
 
 #blockly-3 {
-  border-left: 15px solid #fde293 !important;
+  border-left: 15px solid #FFCA28 !important;
 }
 
 #blockly-4 {
-  border-left: 15px solid #34a853 !important;
+  border-left: 15px solid #4DB6AC !important;
 }
 
 #blockly-5 {
-  border-left: 15px solid #ea4335 !important;
+  border-left: 15px solid #FFCDD2 !important;
 }
 
 #blockly-7 {
-  border-left: 15px solid #f6aea9 !important;
+  border-left: 15px solid #EF9A9A !important;
 }
 
 #blockly-8 {
-  border-left: 15px solid #fbbc04 !important;
+  border-left: 15px solid #D7CCC8 !important;
 }
 
 .blocklyTreeSeparator {
   border-bottom: unset;
 }
 
-.blocklyMainBackground,
-.blocklyPathLight {
+.blocklyMainBackground {
   stroke: var(--bg);
-}
-
-.blocklyPathDark {
-  fill: var(--bg);
 }
 
 .blocklyText {

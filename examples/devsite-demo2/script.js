@@ -99,6 +99,7 @@ function init() {
     media: './node_modules/blockly/media/',
     toolbox: toolboxJson,
     rtl: LANGUAGE_RTL.includes(language),
+    renderer: 'thrasos',
     zoom: {
       controls: true,
       maxScale: 1.8,
@@ -108,33 +109,56 @@ function init() {
     },
     trashcan: true,
     theme: Blockly.Theme.defineTheme('modest', {
+      fontStyle: {
+        'family': 'Google Sans',
+        'weight': 'bold',
+        'size': 16,
+      },
       blockStyles: {
         logic_blocks: {
-          colourPrimary: '#AECBFA',
+          colourPrimary: '#D1C4E9',
+          colourSecondary: '#EDE7F6',
+          colorTertiary: '#B39DDB',
         },
         loop_blocks: {
-          colourPrimary: '#A8DAB5',
+          colourPrimary: '#A5D6A7',
+          colourSecondary: '#E8F5E9',
+          colorTertiary: '#66BB6A',
         },
         math_blocks: {
-          colourPrimary: '#4285f4',
+          colourPrimary: '#2196F3',
+          colourSecondary: '#1E88E5',
+          colorTertiary: '#0D47A1',
         },
         text_blocks: {
-          colourPrimary: '#FDE293',
+          colourPrimary: '#FFCA28',
+          colourSecondary: '#FFF8E1',
+          colorTertiary: '#FF8F00',
         },
         list_blocks: {
-          colourPrimary: '#34a853',
+          colourPrimary: '#4DB6AC',
+          colourSecondary: '#B2DFDB',
+          colorTertiary: '#009688',
         },
         colour_blocks: {
-          colourPrimary: '#ea4335',
+          colourPrimary: '#FFCDD2',
+          colourSecondary: '#FFEBEE',
+          colorTertiary: '#EF9A9A',
         },
         variable_blocks: {
-          colourPrimary: '#F6AEA9',
+          colourPrimary: '#EF9A9A',
+          colourSecondary: '#FFEBEE',
+          colorTertiary: '#EF5350',
         },
         variable_dynamic_blocks: {
-          colourPrimary: '#F6AEA9',
+          colourPrimary: '#EF9A9A',
+          colourSecondary: '#FFEBEE',
+          colorTertiary: '#EF5350',
         },
         procedure_blocks: {
-          colourPrimary: '#fbbc04',
+          colourPrimary: '#D7CCC8',
+          colourSecondary: '#EFEBE9',
+          colorTertiary: '#BCAAA4',
         },
       },
     }),
