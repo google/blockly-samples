@@ -1,0 +1,42 @@
+
+<!doctype html>
+<html dir="ltr">
+  <head>
+    <title>Blockly Demo</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="google" value="notranslate">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/javascript_compressed.js"></script>
+    <script src="./node_modules/blockly/python_compressed.js"></script>
+    <script src="./node_modules/blockly/php_compressed.js"></script>
+    <script src="./node_modules/blockly/lua_compressed.js"></script>
+    <script src="./node_modules/blockly/dart_compressed.js"></script>
+    <script src="acorn_interpreter.js"></script>
+    <script src="msgs.js"></script>
+    <script src="toolbox.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body onload="init()">
+    <div class="app-container">
+      <div id="blocklyDiv" class="main"></div>
+      <div id="outputDiv" class="main">
+        <select id="generateDropdown" onchange="regenerate()">
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="php">PHP</option>
+          <option value="lua">Lua</option>
+          <option value="dart">Dart</option>
+        </select>
+        <select id="languageDropdown" onchange="languageChange()"></select>
+        <pre id="codeHolder" class="prettyprint" dir="ltr"></pre>
+      </div>
+      <div id="playButton" class="play-button" onclick="execute()">
+        <span class="material-icons" aria-hidden="true">play_circle_outlined</span>Run</div>
+    </div>
+  </body>
+</html>
