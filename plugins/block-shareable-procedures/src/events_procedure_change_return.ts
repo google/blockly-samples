@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2022 Google LLC
@@ -7,7 +6,6 @@
 
 import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
-
 
 /**
  * Notifies listeners that a procedure's return type/status has changed.
@@ -19,7 +17,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
   type = ProcedureChangeReturn.TYPE;
 
   /** The new type(s) the procedure's return has been set to. */
-  private newTypes: string[]|null;
+  private newTypes: string[] | null;
 
   /**
    * Constructs the procedure change event.
@@ -29,9 +27,10 @@ export class ProcedureChangeReturn extends ProcedureBase {
    *     changed.
    */
   constructor(
-      workpace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel,
-      readonly oldTypes: string[]|null) {
+    workpace: Blockly.Workspace,
+    procedure: Blockly.procedures.IProcedureModel,
+    readonly oldTypes: string[] | null,
+  ) {
     super(workpace, procedure);
 
     this.newTypes = procedure.getReturnTypes();
@@ -43,12 +42,14 @@ export class ProcedureChangeReturn extends ProcedureBase {
    *     backward (undo).
    */
   run(forward: boolean) {
-    const procedureModel =
-        this.getEventWorkspace_().getProcedureMap().get(this.procedure.getId());
+    const procedureModel = this.getEventWorkspace_()
+      .getProcedureMap()
+      .get(this.procedure.getId());
     if (!procedureModel) {
       throw new Error(
-          'Cannot change the type of a procedure that does not exist ' +
-          'in the procedure map');
+        'Cannot change the type of a procedure that does not exist ' +
+          'in the procedure map',
+      );
     }
     if (forward) {
       procedureModel.setReturnTypes(this.newTypes);
@@ -75,23 +76,26 @@ export class ProcedureChangeReturn extends ProcedureBase {
    * @internal
    */
   static fromJson(
-      json: ProcedureChangeReturnJson, workspace: Blockly.Workspace
+    json: ProcedureChangeReturnJson,
+    workspace: Blockly.Workspace,
   ): ProcedureChangeReturn {
     const model = workspace.getProcedureMap().get(json['procedureId']);
     if (!model) {
       throw new Error(
-          'Cannot deserialize procedure change return event because the ' +
-          'target procedure does not exist');
+        'Cannot deserialize procedure change return event because the ' +
+          'target procedure does not exist',
+      );
     }
     return new ProcedureChangeReturn(workspace, model, json['oldTypes']);
   }
 }
 
 export interface ProcedureChangeReturnJson extends ProcedureBaseJson {
-  oldTypes: string[]|null;
+  oldTypes: string[] | null;
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT,
-    ProcedureChangeReturn.TYPE,
-    ProcedureChangeReturn);
+  Blockly.registry.Type.EVENT,
+  ProcedureChangeReturn.TYPE,
+  ProcedureChangeReturn,
+);

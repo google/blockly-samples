@@ -6,7 +6,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 /**
  * A Blockly plugin that adds context menu items and keyboard shortcuts
  * to allow users to copy and paste a block between tabs.
@@ -22,14 +21,13 @@ export class CrossTabCopyPaste {
    * @param {Function=} typeErrorCallback
    * callback function to handle type errors
    */
-  init({
-    contextMenu = true,
-    shortcut = true,
-  } = {
-    contextMenu: true,
-    shortcut: true,
-  },
-  typeErrorCallback) {
+  init(
+    {contextMenu = true, shortcut = true} = {
+      contextMenu: true,
+      shortcut: true,
+    },
+    typeErrorCallback,
+  ) {
     if (contextMenu) {
       // Register the menus
       this.blockCopyToStorageContextMenu();
@@ -39,11 +37,14 @@ export class CrossTabCopyPaste {
     if (shortcut) {
       // Unregister the default KeyboardShortcuts
       Blockly.ShortcutRegistry.registry.unregister(
-          Blockly.ShortcutItems.names.COPY);
+        Blockly.ShortcutItems.names.COPY,
+      );
       Blockly.ShortcutRegistry.registry.unregister(
-          Blockly.ShortcutItems.names.CUT);
+        Blockly.ShortcutItems.names.CUT,
+      );
       Blockly.ShortcutRegistry.registry.unregister(
-          Blockly.ShortcutItems.names.PASTE);
+        Blockly.ShortcutItems.names.PASTE,
+      );
       // Register the KeyboardShortcuts
       this.blockCopyToStorageShortcut();
       this.blockCutToStorageShortcut();
@@ -57,25 +58,30 @@ export class CrossTabCopyPaste {
   blockCopyToStorageContextMenu() {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const copyToStorageOption = {
-      displayText: function() {
+      displayText: function () {
         if (Blockly.Msg['CROSS_TAB_COPY']) {
           return Blockly.Msg['CROSS_TAB_COPY'];
         }
         return 'Copy';
       },
-      preconditionFn: function(
-          /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      preconditionFn: function (
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+      ) {
         if (
           Blockly.getSelected().isDeletable() &&
-          Blockly.getSelected().isMovable()) {
+          Blockly.getSelected().isMovable()
+        ) {
           return 'enabled';
         }
         return 'disabled';
       },
-      callback: function(
-          /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      callback: function (
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+      ) {
         localStorage.setItem(
-            'blocklyStash', JSON.stringify(scope.block.toCopyData()));
+          'blocklyStash',
+          JSON.stringify(scope.block.toCopyData()),
+        );
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
       id: 'blockCopyToStorage',
@@ -92,23 +98,27 @@ export class CrossTabCopyPaste {
   blockPasteFromStorageContextMenu(typeErrorCallback) {
     /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
     const pasteFromStorageOption = {
-      displayText: function() {
+      displayText: function () {
         if (Blockly.Msg['CROSS_TAB_PASTE']) {
           return Blockly.Msg['CROSS_TAB_PASTE'];
         }
         return 'Paste';
       },
-      preconditionFn: function(
-          /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      preconditionFn: function (
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+      ) {
         const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
-        if (copyData &&
-          scope.workspace.isCapacityAvailable(copyData.typeCounts)) {
+        if (
+          copyData &&
+          scope.workspace.isCapacityAvailable(copyData.typeCounts)
+        ) {
           return 'enabled';
         }
         return 'disabled';
       },
-      callback: function(
-          /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope) {
+      callback: function (
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+      ) {
         const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
         try {
           Blockly.clipboard.paste(copyData, scope.workspace);
@@ -135,15 +145,17 @@ export class CrossTabCopyPaste {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const copyShortcut = {
       name: 'copy',
-      preconditionFn: function(workspace) {
-        return !workspace.options.readOnly &&
+      preconditionFn: function (workspace) {
+        return (
+          !workspace.options.readOnly &&
           !Blockly.Gesture.inProgress() &&
           Blockly.getSelected() &&
           Blockly.getSelected().isDeletable() &&
           Blockly.getSelected().isMovable() &&
-          !Blockly.getSelected().isInMutator;
+          !Blockly.getSelected().isInMutator
+        );
       },
-      callback: function(workspace, e) {
+      callback: function (workspace, e) {
         // Prevent the default copy behavior,
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
@@ -152,23 +164,30 @@ export class CrossTabCopyPaste {
         if (!block || !Blockly.isCopyable(block)) return false;
         workspace.hideChaff();
         localStorage.setItem(
-            'blocklyStash', JSON.stringify(block.toCopyData()));
+          'blocklyStash',
+          JSON.stringify(block.toCopyData()),
+        );
         return true;
       },
     };
     Blockly.ShortcutRegistry.registry.register(copyShortcut);
 
     const ctrlC = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.CTRL]);
+      Blockly.utils.KeyCodes.C,
+      [Blockly.utils.KeyCodes.CTRL],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlC, copyShortcut.name);
 
-    const altC =
-      Blockly.ShortcutRegistry.registry.createSerializedKey(
-          Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.ALT]);
+    const altC = Blockly.ShortcutRegistry.registry.createSerializedKey(
+      Blockly.utils.KeyCodes.C,
+      [Blockly.utils.KeyCodes.ALT],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(altC, copyShortcut.name);
 
     const metaC = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.C, [Blockly.utils.KeyCodes.META]);
+      Blockly.utils.KeyCodes.C,
+      [Blockly.utils.KeyCodes.META],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaC, copyShortcut.name);
   }
 
@@ -180,15 +199,17 @@ export class CrossTabCopyPaste {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const cutShortcut = {
       name: 'cut',
-      preconditionFn: function(workspace) {
-        return !workspace.options.readOnly &&
+      preconditionFn: function (workspace) {
+        return (
+          !workspace.options.readOnly &&
           !Blockly.Gesture.inProgress() &&
           Blockly.getSelected() &&
           Blockly.getSelected().isDeletable() &&
           Blockly.getSelected().isMovable() &&
-          !Blockly.getSelected().workspace.isFlyout;
+          !Blockly.getSelected().workspace.isFlyout
+        );
       },
-      callback: function(workspace, e) {
+      callback: function (workspace, e) {
         // Prevent the default copy behavior,
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
@@ -196,7 +217,9 @@ export class CrossTabCopyPaste {
         const block = /** @type {Blockly.BlockSvg} */ (Blockly.getSelected());
         if (!block || !Blockly.isCopyable(block)) return false;
         localStorage.setItem(
-            'blocklyStash', JSON.stringify(block.toCopyData()));
+          'blocklyStash',
+          JSON.stringify(block.toCopyData()),
+        );
         Blockly.Events.setGroup(true);
         block.dispose(true);
         Blockly.Events.setGroup(false);
@@ -206,15 +229,21 @@ export class CrossTabCopyPaste {
     Blockly.ShortcutRegistry.registry.register(cutShortcut);
 
     const ctrlX = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.CTRL]);
+      Blockly.utils.KeyCodes.X,
+      [Blockly.utils.KeyCodes.CTRL],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlX, cutShortcut.name);
 
     const altX = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.ALT]);
+      Blockly.utils.KeyCodes.X,
+      [Blockly.utils.KeyCodes.ALT],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(altX, cutShortcut.name);
 
     const metaX = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.X, [Blockly.utils.KeyCodes.META]);
+      Blockly.utils.KeyCodes.X,
+      [Blockly.utils.KeyCodes.META],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaX, cutShortcut.name);
   }
 
@@ -227,7 +256,7 @@ export class CrossTabCopyPaste {
     /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
     const pasteShortcut = {
       name: 'paste',
-      preconditionFn: function(workspace) {
+      preconditionFn: function (workspace) {
         if (workspace.options.readOnly || Blockly.Gesture.inProgress()) {
           return false;
         }
@@ -237,7 +266,7 @@ export class CrossTabCopyPaste {
         }
         return true;
       },
-      callback: function(workspace, e) {
+      callback: function (workspace, e) {
         // Prevent the default copy behavior,
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
@@ -258,16 +287,21 @@ export class CrossTabCopyPaste {
     Blockly.ShortcutRegistry.registry.register(pasteShortcut);
 
     const ctrlV = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.CTRL]);
+      Blockly.utils.KeyCodes.V,
+      [Blockly.utils.KeyCodes.CTRL],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlV, pasteShortcut.name);
 
-    const altV =
-      Blockly.ShortcutRegistry.registry.createSerializedKey(
-          Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.ALT]);
+    const altV = Blockly.ShortcutRegistry.registry.createSerializedKey(
+      Blockly.utils.KeyCodes.V,
+      [Blockly.utils.KeyCodes.ALT],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(altV, pasteShortcut.name);
 
     const metaV = Blockly.ShortcutRegistry.registry.createSerializedKey(
-        Blockly.utils.KeyCodes.V, [Blockly.utils.KeyCodes.META]);
+      Blockly.utils.KeyCodes.V,
+      [Blockly.utils.KeyCodes.META],
+    );
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaV, pasteShortcut.name);
   }
 }

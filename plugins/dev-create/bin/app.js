@@ -4,7 +4,7 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 const {checkAndCreateDir} = require('./common');
 
-exports.createApp = function(name, options) {
+exports.createApp = function (name, options) {
   const root = process.cwd();
   const dir = options.dir ?? name;
   const appPath = path.join(root, dir);
@@ -12,15 +12,21 @@ exports.createApp = function(name, options) {
   // Create the new directory for the app if needed.
   checkAndCreateDir(appPath);
   console.log(
-      `Creating a new Blockly application called ${name} in ${appPath}`);
+    `Creating a new Blockly application called ${name} in ${appPath}`,
+  );
 
   // Copy over files from sample-app directory.
-  const sampleDir = options.typescript ? '../templates/sample-app-ts' : '../templates/sample-app';
-  const excludes =
-      ['node_modules', 'dist', 'package-lock.json', 'package.json']
-          .map((file) => {
-            return path.resolve(__dirname, sampleDir, file);
-          });
+  const sampleDir = options.typescript
+    ? '../templates/sample-app-ts'
+    : '../templates/sample-app';
+  const excludes = [
+    'node_modules',
+    'dist',
+    'package-lock.json',
+    'package.json',
+  ].map((file) => {
+    return path.resolve(__dirname, sampleDir, file);
+  });
   fs.copySync(path.resolve(__dirname, sampleDir), appPath, {
     filter(src) {
       return !excludes.includes(src);
@@ -37,7 +43,9 @@ exports.createApp = function(name, options) {
 
   // Write the package.json to the new package.
   fs.writeFileSync(
-      path.join(appPath, 'package.json'), JSON.stringify(packageJson, null, 2));
+    path.join(appPath, 'package.json'),
+    JSON.stringify(packageJson, null, 2),
+  );
 
   // Run `npm install` to get things ready for user.
   if (!options.skipInstall) {

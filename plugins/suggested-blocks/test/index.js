@@ -37,7 +37,7 @@ const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
   'startHats': null,
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Insert two new categories
   toolboxCategories['contents'].push({
     'kind': 'category',
@@ -55,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
     toolbox: toolboxCategories,
     theme: customTheme,
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 Blockly.defineBlocksWithJsonArray([
   {
     'type': 'test_angles_protractor',
@@ -113,7 +112,6 @@ Blockly.defineBlocksWithJsonArray([
     'tooltip': 'test tooltip',
   },
 ]);
-
 
 /**
  * The Angle field category.

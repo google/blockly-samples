@@ -1,4 +1,3 @@
-
 // Declare external types to make eslint happy.
 /* global monaco */
 

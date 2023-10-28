@@ -9,7 +9,6 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-
 /**
  * Render the playground layout.
  * @param {HTMLElement} container The container to render the playground in.
@@ -56,7 +55,6 @@ export function renderPlayground(container) {
   minimizeButton.style.textAlign = 'center';
   minimizeButton.textContent = 'Collapse';
   container.appendChild(minimizeButton);
-
 
   const playgroundDiv = document.createElement('div');
   playgroundDiv.style.flex = '1 1 1';

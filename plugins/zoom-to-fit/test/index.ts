@@ -19,9 +19,10 @@ import {ZoomToFitControl} from '../src/index';
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions):
-    Blockly.WorkspaceSvg {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   const zoomToFit = new ZoomToFitControl(workspace);
@@ -30,17 +31,18 @@ function createWorkspace(blocklyDiv: HTMLElement,
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
     zoom: {
       controls: true,
     },
   };
-
+  
   const element = document.getElementById('root');
 
   if (element) {
     createPlayground(element, createWorkspace, defaultOptions);
   }
+  
 });

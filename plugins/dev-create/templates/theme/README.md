@@ -3,16 +3,19 @@
 <!--
   - TODO: Add theme description.
   -->
+
 A [Blockly](https://www.npmjs.com/package/blockly) theme that ...
 
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/plugin
 ```
 
 ### npm
+
 ```
 npm install @blockly/plugin --save
 ```
@@ -26,8 +29,8 @@ import Theme from '@blockly/plugin';
 Blockly.inject('blocklyDiv', {
   theme: Theme,
 });
-
 ```
 
 ## License
+
 Apache 2.0

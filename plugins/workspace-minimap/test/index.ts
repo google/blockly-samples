@@ -21,8 +21,10 @@ let workspace = null;
  * @param options The Blockly options.
  * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv: HTMLElement,
-    options: Blockly.BlocklyOptions): Blockly.WorkspaceSvg {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   // Creates the primary workspace and adds the minimap.
   if (minimap) {
     minimap.dispose();
@@ -34,7 +36,8 @@ function createWorkspace(blocklyDiv: HTMLElement,
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  createPlayground(document.getElementById('root'), createWorkspace as any,
-      {toolbox: toolboxCategories});
+document.addEventListener('DOMContentLoaded', function () {
+  createPlayground(document.getElementById('root'), createWorkspace as any, {
+    toolbox: toolboxCategories,
+  });
 });

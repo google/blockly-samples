@@ -17,11 +17,12 @@ import {triggerProceduresUpdate} from './update_procedures';
 
 /** Represents a procedure signature. */
 export class ObservableProcedureModel
-implements Blockly.procedures.IProcedureModel {
+  implements Blockly.procedures.IProcedureModel
+{
   private id: string;
   private name: string;
   private parameters: ObservableParameterModel[] = [];
-  private returnTypes: string[]|null = null;
+  private returnTypes: string[] | null = null;
   private enabled = true;
   private shouldFireEvents = false;
   private shouldTriggerUpdates = true;
@@ -33,9 +34,9 @@ implements Blockly.procedures.IProcedureModel {
    * @param id The (optional) unique language-neutral ID for the procedure.
    */
   constructor(
-      private readonly workspace: Blockly.Workspace,
-      name: string,
-      id?: string
+    private readonly workspace: Blockly.Workspace,
+    name: string,
+    id?: string,
   ) {
     this.id = id ?? Blockly.utils.idGenerator.genUid();
     this.name = name;
@@ -65,9 +66,13 @@ implements Blockly.procedures.IProcedureModel {
    * @returns This procedure model.
    */
   insertParameter(
-      parameterModel: ObservableParameterModel, index: number): this {
-    if (this.parameters[index] &&
-        this.parameters[index].getId() === parameterModel.getId()) {
+    parameterModel: ObservableParameterModel,
+    index: number,
+  ): this {
+    if (
+      this.parameters[index] &&
+      this.parameters[index].getId() === parameterModel.getId()
+    ) {
       return this;
     }
 
@@ -84,8 +89,13 @@ implements Blockly.procedures.IProcedureModel {
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
       Blockly.Events.fire(
-          new ProcedureParameterCreate(
-              this.workspace, this, parameterModel, index));
+        new ProcedureParameterCreate(
+          this.workspace,
+          this,
+          parameterModel,
+          index,
+        ),
+      );
     }
     return this;
   }
@@ -107,7 +117,8 @@ implements Blockly.procedures.IProcedureModel {
 
     if (this.shouldFireEvents) {
       Blockly.Events.fire(
-          new ProcedureParameterDelete(this.workspace, this, oldParam, index));
+        new ProcedureParameterDelete(this.workspace, this, oldParam, index),
+      );
     }
     return this;
   }
@@ -121,11 +132,12 @@ implements Blockly.procedures.IProcedureModel {
    *     (empty array) or no return value (null).
    * @returns This procedure model.
    */
-  setReturnTypes(types: string[]|null): this {
+  setReturnTypes(types: string[] | null): this {
     if (types && types.length) {
       throw new Error(
-          'The built-in ProcedureModel does not support typing. You need to ' +
-          'implement your own custom ProcedureModel.');
+        'The built-in ProcedureModel does not support typing. You need to ' +
+          'implement your own custom ProcedureModel.',
+      );
     }
     // Either they're both an empty array, or both null. Noop either way.
     if (!!types === !!this.returnTypes) return this;
@@ -134,7 +146,8 @@ implements Blockly.procedures.IProcedureModel {
     if (this.shouldTriggerUpdates) triggerProceduresUpdate(this.workspace);
     if (this.shouldFireEvents) {
       Blockly.Events.fire(
-          new ProcedureChangeReturn(this.workspace, this, oldReturnTypes));
+        new ProcedureChangeReturn(this.workspace, this, oldReturnTypes),
+      );
     }
     return this;
   }
@@ -208,7 +221,7 @@ implements Blockly.procedures.IProcedureModel {
    * Null represents a procedure that does not return a value.
    * @returns the return type of the procedure.
    */
-  getReturnTypes(): string[]|null {
+  getReturnTypes(): string[] | null {
     return this.returnTypes;
   }
 

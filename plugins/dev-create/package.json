@@ -14,7 +14,8 @@
   ],
   "files": [
     "*",
-    "templates/sample-app/*"
+    "templates/sample-app/*",
+    "templates/sample-app-ts/*"
   ],
   "scripts": {
     "prepack": "cp -r ../../examples/sample-app ./templates && cp -r ../../examples/sample-app-ts ./templates"
@@ -37,9 +38,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
-  },
-  "eslintConfig": {
-    "extends": "@blockly/eslint-config"
   },
   "engines": {
     "node": ">=14.0.0"

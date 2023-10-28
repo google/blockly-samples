@@ -40,7 +40,8 @@ const spaghettiXml = [
   '    </value>',
   '    <statement name="DO0"></statement>',
   '    <next></next>',
-  '  </block>'].join('\n');
+  '  </block>',
+].join('\n');
 
 /**
  * Populate the workspace with nested if-statement blocks, for testing.
@@ -50,11 +51,13 @@ const spaghettiXml = [
 export function spaghetti(workspace, depth) {
   let xml = spaghettiXml;
   for (let i = 0; i < depth; i++) {
-    xml = xml.replace(/(<(statement|next)( name="DO0")?>)<\//g,
-        '$1' + spaghettiXml + '</');
+    xml = xml.replace(
+      /(<(statement|next)( name="DO0")?>)<\//g,
+      '$1' + spaghettiXml + '</',
+    );
   }
-  xml = '<xml xmlns="https://developers.google.com/blockly/xml">' + xml +
-      '</xml>';
+  xml =
+    '<xml xmlns="https://developers.google.com/blockly/xml">' + xml + '</xml>';
   const dom = Blockly.utils.xml.textToDom(xml);
   console.time('Spaghetti domToWorkspace');
   Blockly.Xml.domToWorkspace(dom, workspace);

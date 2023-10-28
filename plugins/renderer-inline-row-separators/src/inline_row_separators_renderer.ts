@@ -11,10 +11,12 @@
 import * as Blockly from 'blockly/core';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-type RendererConstructor = new (...args: any[]) =>
-    Blockly.blockRendering.Renderer;
-type RenderInfoConstructor = new (...args: any[]) =>
-    Blockly.blockRendering.RenderInfo;
+type RendererConstructor = new (
+  ...args: any[]
+) => Blockly.blockRendering.Renderer;
+type RenderInfoConstructor = new (
+  ...args: any[]
+) => Blockly.blockRendering.RenderInfo;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
@@ -29,10 +31,9 @@ type RenderInfoConstructor = new (...args: any[]) =>
  * @returns The new renderer class. It's up to you to register it with Blockly.
  */
 export function addInlineRowSeparators<
-    RendererBase extends RendererConstructor,
-    RenderInfoBase extends RenderInfoConstructor>(
-    rendererBase: RendererBase,
-    renderInfoBase: RenderInfoBase): RendererBase {
+  RendererBase extends RendererConstructor,
+  RenderInfoBase extends RenderInfoConstructor,
+>(rendererBase: RendererBase, renderInfoBase: RenderInfoBase): RendererBase {
   /**
    * A subclass of the provided RenderInfo that renders all dummy inputs like
    * line breaks, forcing any following input to be rendered on a separate row,
@@ -48,7 +49,9 @@ export function addInlineRowSeparators<
      * @returns True if the next input should be rendered on a new row.
      */
     protected shouldStartNewRow_(
-        input: Blockly.Input, lastInput?: Blockly.Input): boolean {
+      input: Blockly.Input,
+      lastInput?: Blockly.Input,
+    ): boolean {
       /* eslint-enable @typescript-eslint/naming-convention */
       if (lastInput?.type === Blockly.inputTypes.DUMMY) {
         return true;
@@ -68,8 +71,7 @@ export function addInlineRowSeparators<
      * @param block The block to measure.
      * @returns The render info object.
      */
-    protected makeRenderInfo_(block: Blockly.BlockSvg):
-        InlineRenderInfo {
+    protected makeRenderInfo_(block: Blockly.BlockSvg): InlineRenderInfo {
       /* eslint-enable @typescript-eslint/naming-convention */
       return new InlineRenderInfo(this, block);
     }
@@ -77,7 +79,11 @@ export function addInlineRowSeparators<
 }
 
 export const InlineRenderer = addInlineRowSeparators(
-    Blockly.thrasos.Renderer, Blockly.thrasos.RenderInfo);
+  Blockly.thrasos.Renderer,
+  Blockly.thrasos.RenderInfo,
+);
 
 Blockly.blockRendering.register(
-    'thrasos-inline-row-separators', InlineRenderer);
+  'thrasos-inline-row-separators',
+  InlineRenderer,
+);

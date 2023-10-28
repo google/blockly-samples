@@ -37,18 +37,21 @@ export function shallowMatch(expected) {
  * @param {?string=} expectedBlockId Expected block id of event fired.
  */
 export function assertEventFiredShallow(
-    spy,
-    instanceType,
-    expectedProperties,
-    expectedWorkspaceId,
-    expectedBlockId) {
+  spy,
+  instanceType,
+  expectedProperties,
+  expectedWorkspaceId,
+  expectedBlockId,
+) {
   const properties = {
     ...expectedProperties,
     workspaceId: expectedWorkspaceId,
     blockId: expectedBlockId,
   };
   sinon.assert.calledWith(
-      spy,
-      sinon.match.instanceOf(instanceType)
-          .and(sinon.match(shallowMatch(properties))));
+    spy,
+    sinon.match
+      .instanceOf(instanceType)
+      .and(sinon.match(shallowMatch(properties))),
+  );
 }

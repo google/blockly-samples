@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 /**
  * @fileoverview A minimap is a miniature version of your blocks that
  * appears on top of your main workspace. This gives you an overview

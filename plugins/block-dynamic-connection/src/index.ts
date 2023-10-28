@@ -15,7 +15,7 @@ import './dynamic_if';
 import './dynamic_text_join';
 import './dynamic_list_create';
 
-export const overrideOldBlockDefinitions = function(): void {
+export const overrideOldBlockDefinitions = function (): void {
   Blockly.Blocks['lists_create_with'] = Blockly.Blocks['dynamic_list_create'];
   Blockly.Blocks['text_join'] = Blockly.Blocks['dynamic_text_join'];
   Blockly.Blocks['controls_if'] = Blockly.Blocks['dynamic_if'];

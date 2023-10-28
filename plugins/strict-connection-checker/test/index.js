@@ -23,13 +23,16 @@ function createWorkspace(blocklyDiv, options) {
   return Blockly.inject(blocklyDiv, options);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
       ...StrictTypesPluginInfo,
     },
   };
-  createPlayground(document.getElementById('root'), createWorkspace,
-      defaultOptions);
+  createPlayground(
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

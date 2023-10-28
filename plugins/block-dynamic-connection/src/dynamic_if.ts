@@ -66,7 +66,7 @@ const DYNAMIC_IF_MIXIN = {
    * Create XML to represent if/elseif/else inputs.
    * @returns XML storage element.
    */
-  mutationToDom(this: DynamicIfBlock): Element|null {
+  mutationToDom(this: DynamicIfBlock): Element | null {
     // If we call finalizeConnections here without disabling events, we get into
     // an event loop.
     Blockly.Events.disable();
@@ -114,17 +114,19 @@ const DYNAMIC_IF_MIXIN = {
       }
       const first = inputNumbers[0];
       this.appendValueInput('IF' + first)
-          .setCheck('Boolean')
-          .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
-      this.appendStatementInput('DO' + first)
-          .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+        .setCheck('Boolean')
+        .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
+      this.appendStatementInput('DO' + first).appendField(
+        Blockly.Msg['CONTROLS_IF_MSG_THEN'],
+      );
 
       for (let i = 1; i < inputNumbers.length; i++) {
         this.appendValueInput('IF' + inputNumbers[i])
-            .setCheck('Boolean')
-            .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
-        this.appendStatementInput('DO' + inputNumbers[i])
-            .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+          .setCheck('Boolean')
+          .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
+        this.appendStatementInput('DO' + inputNumbers[i]).appendField(
+          Blockly.Msg['CONTROLS_IF_MSG_THEN'],
+        );
       }
     }
     const hasElse = xmlElement.getAttribute('else');
@@ -138,8 +140,8 @@ const DYNAMIC_IF_MIXIN = {
    * @param xmlElement XML storage element.
    */
   deserializeCounts(this: DynamicIfBlock, xmlElement: Element): void {
-    this.elseifCount = parseInt(
-        xmlElement.getAttribute('elseif') ?? '0', 10) || 0;
+    this.elseifCount =
+      parseInt(xmlElement.getAttribute('elseif') ?? '0', 10) || 0;
     this.elseCount = parseInt(xmlElement.getAttribute('else') ?? '0', 10) || 0;
     for (let i = 1; i <= this.elseifCount; i++) {
       this.insertElseIf(this.inputList.length, i);
@@ -153,7 +155,7 @@ const DYNAMIC_IF_MIXIN = {
    * Returns the state of this block as a JSON serializable object.
    * @returns The state of this block, ie the else if count and else state.
    */
-  saveExtraState: function(this: DynamicIfBlock): IfExtraState | null {
+  saveExtraState: function (this: DynamicIfBlock): IfExtraState | null {
     // If we call finalizeConnections here without disabling events, we get into
     // an event loop.
     Blockly.Events.disable();
@@ -179,7 +181,10 @@ const DYNAMIC_IF_MIXIN = {
    * @param state The state to apply to this block, ie the else if count
    *     and else state.
    */
-  loadExtraState: function(this: DynamicIfBlock, state: IfExtraState | string) {
+  loadExtraState: function (
+    this: DynamicIfBlock,
+    state: IfExtraState | string,
+  ) {
     if (typeof state === 'string') {
       this.domToMutation(Blockly.utils.xml.textToDom(state));
       return;
@@ -202,7 +207,9 @@ const DYNAMIC_IF_MIXIN = {
    * @returns The index of the connection in the this.inputList.
    */
   findInputIndexForConnection(
-      this: DynamicIfBlock, connection: Blockly.Connection): number | null {
+    this: DynamicIfBlock,
+    connection: Blockly.Connection,
+  ): number | null {
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
       if (input.connection == connection) {
@@ -220,13 +227,16 @@ const DYNAMIC_IF_MIXIN = {
    * @returns The added inputs.
    */
   insertElseIf(
-      this: DynamicIfBlock, index: number, id: string | number
+    this: DynamicIfBlock,
+    index: number,
+    id: string | number,
   ): CaseInputPair {
     const ifInput = this.appendValueInput('IF' + id)
-        .setCheck('Boolean')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
-    const doInput = this.appendStatementInput('DO' + id)
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+      .setCheck('Boolean')
+      .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSEIF'], 'elseif');
+    const doInput = this.appendStatementInput('DO' + id).appendField(
+      Blockly.Msg['CONTROLS_IF_MSG_THEN'],
+    );
     this.moveInputBefore('IF' + id, this.inputList[index].name);
     this.moveInputBefore('DO' + id, this.inputList[index + 1].name);
     return {ifInput, doInput};
@@ -239,7 +249,9 @@ const DYNAMIC_IF_MIXIN = {
    *     connection.
    */
   onPendingConnection(
-      this: DynamicIfBlock, connection: Blockly.Connection): void {
+    this: DynamicIfBlock,
+    connection: Blockly.Connection,
+  ): void {
     if (connection.type === Blockly.NEXT_STATEMENT && !this.getInput('ELSE')) {
       this.addElseInput();
     }
@@ -254,9 +266,9 @@ const DYNAMIC_IF_MIXIN = {
         this.insertElseIf(inputIndex + 2, Blockly.utils.idGenerator.genUid());
       } else {
         const nextIfConnection =
-            nextIfInput &&
-            nextIfInput.connection &&
-            nextIfInput.connection.targetConnection;
+          nextIfInput &&
+          nextIfInput.connection &&
+          nextIfInput.connection.targetConnection;
         if (
           nextIfConnection &&
           !nextIfConnection.getSourceBlock().isInsertionMarker()
@@ -297,10 +309,8 @@ const DYNAMIC_IF_MIXIN = {
   collectTargetCaseConns(this: DynamicIfBlock): CaseConnectionPair[] {
     const targetConns = [];
     for (let i = 0; i < this.inputList.length - 1; i += 2) {
-      const ifTarget =
-          this.inputList[i].connection?.targetConnection;
-      const doTarget =
-          this.inputList[i + 1].connection?.targetConnection;
+      const ifTarget = this.inputList[i].connection?.targetConnection;
+      const doTarget = this.inputList[i + 1].connection?.targetConnection;
       if (!ifTarget && !doTarget) continue;
       targetConns.push({ifTarget, doTarget});
     }
@@ -341,8 +351,9 @@ const DYNAMIC_IF_MIXIN = {
    * @returns The appended input.
    */
   addElseInput(this: DynamicIfBlock): Blockly.Input {
-    return this.appendStatementInput('ELSE')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_ELSE']);
+    return this.appendStatementInput('ELSE').appendField(
+      Blockly.Msg['CONTROLS_IF_MSG_ELSE'],
+    );
   },
 
   /**
@@ -351,10 +362,11 @@ const DYNAMIC_IF_MIXIN = {
    */
   addFirstCase(this: DynamicIfBlock): void {
     this.appendValueInput('IF0')
-        .setCheck('Boolean')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
-    this.appendStatementInput('DO0')
-        .appendField(Blockly.Msg['CONTROLS_IF_MSG_THEN']);
+      .setCheck('Boolean')
+      .appendField(Blockly.Msg['CONTROLS_IF_MSG_IF'], 'if');
+    this.appendStatementInput('DO0').appendField(
+      Blockly.Msg['CONTROLS_IF_MSG_THEN'],
+    );
   },
 };
 

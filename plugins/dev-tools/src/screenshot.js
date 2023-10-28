@@ -25,9 +25,18 @@ function svgToPng_(data, width, height, callback) {
   const pixelDensity = 10;
   canvas.width = width * pixelDensity;
   canvas.height = height * pixelDensity;
-  img.onload = function() {
+  img.onload = function () {
     context.drawImage(
-        img, 0, 0, width, height, 0, 0, canvas.width, canvas.height);
+      img,
+      0,
+      0,
+      width,
+      height,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+    );
     try {
       const dataUri = canvas.toDataURL('image/png');
       callback(dataUri);
@@ -65,28 +74,35 @@ function workspaceToSvg_(workspace, callback, customCss) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svg.appendChild(clone);
-  svg.setAttribute('viewBox',
-      x + ' ' + y + ' ' + width + ' ' + height);
+  svg.setAttribute('viewBox', x + ' ' + y + ' ' + width + ' ' + height);
 
-  svg.setAttribute('class', 'blocklySvg ' +
-    (workspace.options.renderer || 'geras') + '-renderer ' +
-    (workspace.getTheme ? workspace.getTheme().name + '-theme' : ''));
+  svg.setAttribute(
+    'class',
+    'blocklySvg ' +
+      (workspace.options.renderer || 'geras') +
+      '-renderer ' +
+      (workspace.getTheme ? workspace.getTheme().name + '-theme' : ''),
+  );
   svg.setAttribute('width', width);
   svg.setAttribute('height', height);
   svg.setAttribute('style', 'background-color: transparent');
 
-  const css = [].slice.call(document.head.querySelectorAll('style'))
-      .filter(function(el) {
-        return /\.blocklySvg/.test(el.innerText) ||
-        (el.id.indexOf('blockly-') === 0);
-      }).map(function(el) {
-        return el.innerText;
-      }).join('\n');
+  const css = [].slice
+    .call(document.head.querySelectorAll('style'))
+    .filter(function (el) {
+      return (
+        /\.blocklySvg/.test(el.innerText) || el.id.indexOf('blockly-') === 0
+      );
+    })
+    .map(function (el) {
+      return el.innerText;
+    })
+    .join('\n');
   const style = document.createElement('style');
   style.innerHTML = css + '\n' + customCss;
   svg.insertBefore(style, svg.firstChild);
 
-  let svgAsXML = (new XMLSerializer).serializeToString(svg);
+  let svgAsXML = new XMLSerializer().serializeToString(svg);
   svgAsXML = svgAsXML.replace(/&nbsp/g, '&#160');
   const data = 'data:image/svg+xml,' + encodeURIComponent(svgAsXML);
 
@@ -98,7 +114,7 @@ function workspaceToSvg_(workspace, callback, customCss) {
  * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
  */
 export function downloadWorkspaceScreenshot(workspace) {
-  workspaceToSvg_(workspace, function(datauri) {
+  workspaceToSvg_(workspace, function (datauri) {
     const a = document.createElement('a');
     a.download = 'screenshot.png';
     a.target = '_self';

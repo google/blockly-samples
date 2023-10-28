@@ -11,7 +11,9 @@ npm install @blockly/dev-tools -D --save
 ## Usage
 
 ### Playground
+
 The playground is a tremendously useful tool for debugging your Blockly project. As a preview, here is [one of the plugin playgrounds](https://google.github.io/blockly-samples/plugins/theme-modern/test/). The playground features are:
+
 - All the default blocks
 - All the language generators (JavaScript, Python, PHP, Lua, and Dart)
 - Switch between different Blockly options (eg: rtl, renderer, readOnly, zoom and scroll)
@@ -36,6 +38,7 @@ createPlayground(document.getElementById('blocklyDiv'), (blocklyDiv, options) =>
 This package also exports pieces of the playground (addGUIControls, addCodeEditor) if you'd rather build your own playground.
 
 ### Toolboxes
+
 Blockly built-in Simple and Category toolboxes.
 
 ```js
@@ -43,7 +46,7 @@ import * as Blockly from 'blockly';
 import {toolboxSimple, toolboxCategories} from '@blockly/dev-tools';
 
 Blockly.inject('blocklyDiv', {
-  toolbox: toolboxCategories
+  toolbox: toolboxCategories,
 });
 ```
 
@@ -56,6 +59,7 @@ The test toolbox is re-exported in this package, but can be imported as a stand-
 #### `populateRandom`
 
 The `populateRandom` function adds random blocks to a workspace. Blocks are selected from the full set of defined blocks. Pass in a worskpace and how many blocks should be created.
+
 ```js
 import {populateRandom} from '@blockly/dev-tools';
 // Add 10 random blocks to the workspace.
@@ -65,6 +69,7 @@ populateRandom(workspace, 10);
 #### `spaghetti`
 
 The `spaghetti` function is a renderer stress test that populates the workspace with nested if-statements. Pass in a worskpace and how deep the nesting should be.
+
 ```js
 import {spaghetti} from '@blockly/dev-tools';
 spaghetti(workspace, 8);
@@ -92,6 +97,7 @@ This package is also used in mocha tests, and exports a suite of useful test hel
 You can find the full list of helpers [here](https://github.com/google/blockly-samples/blob/master/plugins/dev-tools/src/test_helpers.mocha.js).
 
 ### Debug Renderer
+
 The [debug renderer][dev-tools] is a renderer plugin that wraps your normal
 renderer, and visualizes the measurements the [render info][render-info]
 collects. This is extremely helpful for understanding what your renderer thinks
@@ -186,13 +192,14 @@ DebugRenderer.config = {
   blockBounds: true,
   connectedBlockBounds: true,
   render: true,
-}
+};
 ```
 
 [render-info]: https://developers.google.com/blocklyguides/create-custom-blocks/appearance/renderers/concepts/info
 [dev-tools]: https://www.npmjs.com/package/@blockly/dev-tools
 
 ### Logger
+
 A lightweight workspace console logger.
 
 ```js
@@ -205,4 +212,5 @@ logger.disableLogger(workspace);
 The logger is included by default in the playground.
 
 ## License
+
 Apache 2.0

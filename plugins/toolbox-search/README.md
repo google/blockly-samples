@@ -7,16 +7,19 @@ type. The Blockly docs have [more information about toolbox definitions and cate
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/toolbox-search
 ```
 
 ### npm
+
 ```
 npm install @blockly/toolbox-search --save
 ```
 
 ## Usage
+
 ```
 import * as Blockly from 'blockly';
 import '@blockly/toolbox-search';
@@ -39,4 +42,5 @@ const workspace = Blockly.inject('blocklyDiv', {
 ```
 
 ## License
+
 Apache 2.0

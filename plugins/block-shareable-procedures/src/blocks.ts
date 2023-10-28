@@ -11,7 +11,6 @@ import {ObservableParameterModel} from './observable_parameter_model';
 import {IProcedureBlock} from './i_procedure_block';
 import {ProcedureCreate} from './events_procedure_create';
 
-
 /* eslint-disable @typescript-eslint/naming-convention */
 
 /**
@@ -162,7 +161,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   },
 ]);
 
-const procedureDefGetDefMixin = function() {
+const procedureDefGetDefMixin = function () {
   const mixin = {
     model_: null,
 
@@ -189,9 +188,10 @@ const procedureDefGetDefMixin = function() {
      * @returns List of variable names.
      * @this {Blockly.Block}
      */
-    getVars: function() {
-      return this.getProcedureModel().getParameters().map(
-          (p) => p.getVariableModel().name);
+    getVars: function () {
+      return this.getProcedureModel()
+        .getParameters()
+        .map((p) => p.getVariableModel().name);
     },
 
     /**
@@ -199,23 +199,25 @@ const procedureDefGetDefMixin = function() {
      * @returns List of variable models.
      * @this {Blockly.Block}
      */
-    getVarModels: function() {
-      return this.getProcedureModel().getParameters().map(
-          (p) => p.getVariableModel());
+    getVarModels: function () {
+      return this.getProcedureModel()
+        .getParameters()
+        .map((p) => p.getVariableModel());
     },
 
     /**
      * Disposes of the data model for this procedure block when the block is
      * disposed.
      */
-    destroy: function() {
+    destroy: function () {
       this.workspace.getProcedureMap().delete(this.getProcedureModel().getId());
     },
   };
 
   mixin.model_ = new ObservableProcedureModel(
-      this.workspace,
-      Blockly.Procedures.findLegalName(this.getFieldValue('NAME'), this));
+    this.workspace,
+    Blockly.Procedures.findLegalName(this.getFieldValue('NAME'), this),
+  );
 
   // Events cannot be fired from instantiation when deserializing or dragging
   // from the flyout. So make this consistent and never fire from instantiation.
@@ -228,9 +230,11 @@ const procedureDefGetDefMixin = function() {
 // Using register instead of registerMixin to avoid triggering warnings about
 // overriding built-ins.
 Blockly.Extensions.register(
-    'procedure_def_get_def_mixin', procedureDefGetDefMixin);
+  'procedure_def_get_def_mixin',
+  procedureDefGetDefMixin,
+);
 
-const procedureDefVarMixin = function() {
+const procedureDefVarMixin = function () {
   const mixin = {
     /**
      * Notification that a variable is renaming.
@@ -242,11 +246,12 @@ const procedureDefVarMixin = function() {
      * @override
      * @this {Blockly.Block}
      */
-    renameVarById: function(oldId, newId) {
+    renameVarById: function (oldId, newId) {
       const oldVar = this.workspace.getVariableById(oldId);
       const model = this.getProcedureModel();
-      const index = model.getParameters().findIndex(
-          (p) => p.getVariableModel() === oldVar);
+      const index = model
+        .getParameters()
+        .findIndex((p) => p.getVariableModel() === oldVar);
       if (index === -1) return; // Not found.
       const newVar = this.workspace.getVariableById(newId);
       const oldParam = model.getParameter(index);
@@ -261,9 +266,10 @@ const procedureDefVarMixin = function() {
      * @override
      * @this {Blockly.Block}
      */
-    updateVarName: function(variable) {
-      const containsVar = this.getProcedureModel().getParameters().some(
-          (p) => p.getVariableModel() === variable);
+    updateVarName: function (variable) {
+      const containsVar = this.getProcedureModel()
+        .getParameters()
+        .some((p) => p.getVariableModel() === variable);
       if (containsVar) {
         this.doProcedureUpdate(); // Rerender.
       }
@@ -280,7 +286,7 @@ const procedureDefUpdateShapeMixin = {
   /**
    * Updates the block to reflect the state of the procedure model.
    */
-  doProcedureUpdate: function() {
+  doProcedureUpdate: function () {
     this.setFieldValue(this.getProcedureModel().getName(), 'NAME');
     this.setEnabled(this.getProcedureModel().getEnabled());
     this.updateParameters_();
@@ -291,12 +297,13 @@ const procedureDefUpdateShapeMixin = {
    * Updates the parameters field to reflect the parameters in the procedure
    * model.
    */
-  updateParameters_: function() {
-    const params =
-      this.getProcedureModel().getParameters().map((p) => p.getName());
-    const paramString = params.length ?
-      `${Blockly.Msg['PROCEDURES_BEFORE_PARAMS']} ${params.join(', ')}` :
-      '';
+  updateParameters_: function () {
+    const params = this.getProcedureModel()
+      .getParameters()
+      .map((p) => p.getName());
+    const paramString = params.length
+      ? `${Blockly.Msg['PROCEDURES_BEFORE_PARAMS']} ${params.join(', ')}`
+      : '';
 
     // The field is deterministic based on other events, no need to fire.
     Blockly.Events.disable();
@@ -311,7 +318,7 @@ const procedureDefUpdateShapeMixin = {
    * Updates the parameter blocks in the mutator (if it is open) to reflect
    * the state of the procedure model.
    */
-  updateMutator_: function() {
+  updateMutator_: function () {
     const mutator = this.getIcon(Blockly.icons.MutatorIcon.TYPE);
     if (!mutator?.bubbleIsVisible()) return;
 
@@ -330,13 +337,14 @@ const procedureDefUpdateShapeMixin = {
    * @param hasStatements True if a statement block is needed.
    * @this {Blockly.Block}
    */
-  setStatements_: function(hasStatements) {
+  setStatements_: function (hasStatements) {
     if (this.hasStatements_ === hasStatements) {
       return;
     }
     if (hasStatements) {
       this.appendStatementInput('STACK').appendField(
-          Blockly.Msg['PROCEDURES_DEFNORETURN_DO']);
+        Blockly.Msg['PROCEDURES_DEFNORETURN_DO'],
+      );
       if (this.getInput('RETURN')) {
         this.moveInputBefore('STACK', 'RETURN');
       }
@@ -358,15 +366,19 @@ const procedureDefUpdateShapeMixin = {
   },
 };
 Blockly.Extensions.registerMixin(
-    'procedure_def_update_shape_mixin', procedureDefUpdateShapeMixin);
+  'procedure_def_update_shape_mixin',
+  procedureDefUpdateShapeMixin,
+);
 
-const procedureDefValidatorHelper = function() {
+const procedureDefValidatorHelper = function () {
   const nameField = this.getField('NAME');
   nameField.setValue(Blockly.Procedures.findLegalName('', this));
   nameField.setValidator(Blockly.Procedures.rename);
 };
 Blockly.Extensions.register(
-    'procedure_def_validator_helper', procedureDefValidatorHelper);
+  'procedure_def_validator_helper',
+  procedureDefValidatorHelper,
+);
 
 const procedureDefMutator = {
   hasStatements_: true,
@@ -377,7 +389,7 @@ const procedureDefMutator = {
    * @returns XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function() {
+  mutationToDom: function () {
     const container = Blockly.utils.xml.createElement('mutation');
     const params = this.getProcedureModel().getParameters();
     for (let i = 0; i < params.length; i++) {
@@ -401,15 +413,20 @@ const procedureDefMutator = {
    * @param xmlElement XML storage element.
    * @this {Blockly.Block}
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function (xmlElement) {
     for (let i = 0; i < xmlElement.childNodes.length; i++) {
       const node = xmlElement.childNodes[i];
       if (node.nodeName.toLowerCase() !== 'arg') continue;
       const varId = node.getAttribute('varid');
       this.getProcedureModel().insertParameter(
-          new ObservableParameterModel(
-              this.workspace, node.getAttribute('name'), undefined, varId),
-          i);
+        new ObservableParameterModel(
+          this.workspace,
+          node.getAttribute('name'),
+          undefined,
+          varId,
+        ),
+        i,
+      );
     }
     this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
   },
@@ -421,7 +438,7 @@ const procedureDefMutator = {
    *     model). Used for copy-paste.
    * @returns The state of this block, eg the parameters and statements.
    */
-  saveExtraState: function(doFullSerialization) {
+  saveExtraState: function (doFullSerialization) {
     const state = Object.create(null);
     state['procedureId'] = this.getProcedureModel().getId();
 
@@ -451,7 +468,7 @@ const procedureDefMutator = {
    * @param state The state to apply to this block, eg the parameters and
    *     statements.
    */
-  loadExtraState: function(state) {
+  loadExtraState: function (state) {
     const map = this.workspace.getProcedureMap();
 
     const procedureId = state['procedureId'];
@@ -474,7 +491,9 @@ const procedureDefMutator = {
     for (let i = 0; i < newParams.length; i++) {
       const {name, id, paramId} = state['params'][i];
       this.getProcedureModel().insertParameter(
-          new ObservableParameterModel(this.workspace, name, paramId, id), i);
+        new ObservableParameterModel(this.workspace, name, paramId, id),
+        i,
+      );
     }
 
     this.doProcedureUpdate();
@@ -487,7 +506,7 @@ const procedureDefMutator = {
    * @returns Root block in mutator.
    * @this {Blockly.Block}
    */
-  decompose: function(workspace) {
+  decompose: function (workspace) {
     const containerBlockDef = {
       'type': 'procedures_mutatorcontainer',
       'inputs': {
@@ -509,9 +528,10 @@ const procedureDefMutator = {
     }
 
     const containerBlock = Blockly.serialization.blocks.append(
-        containerBlockDef as unknown as Blockly.serialization.blocks.State,
-        workspace,
-        {recordUndo: false});
+      containerBlockDef as unknown as Blockly.serialization.blocks.State,
+      workspace,
+      {recordUndo: false},
+    );
 
     if (this.type === 'procedures_defreturn') {
       containerBlock.setFieldValue(this.hasStatements_, 'STATEMENTS');
@@ -527,7 +547,7 @@ const procedureDefMutator = {
    * @param containerBlock Root block in mutator.
    * @this {Blockly.Block}
    */
-  compose: function(containerBlock) {
+  compose: function (containerBlock) {
     // Note that only one of these four things can actually occur for any given
     // composition, because the user can only drag blocks around so quickly.
     // So we can use that when making assumptions inside the definitions of
@@ -547,7 +567,7 @@ const procedureDefMutator = {
    * parameter blocks in the mutator.
    * @param containerBlock Root block in the mutator.
    */
-  deleteParamsFromModel_: function(containerBlock) {
+  deleteParamsFromModel_: function (containerBlock) {
     const ids = new Set(containerBlock.getDescendants().map((b) => b.id));
     const model = this.getProcedureModel();
     const count = model.getParameters().length;
@@ -563,20 +583,22 @@ const procedureDefMutator = {
    * blocks have been renamed.
    * @param containerBlock Root block in the mutator.
    */
-  renameParamsInModel_: function(containerBlock) {
+  renameParamsInModel_: function (containerBlock) {
     const model = this.getProcedureModel();
 
     let i = 0;
     let paramBlock = containerBlock.getInputTargetBlock('STACK');
     while (paramBlock && !paramBlock.isInsertionMarker()) {
       const param = model.getParameter(i);
-      if (param &&
-          param.getId() === paramBlock.id &&
-          param.getName() !== paramBlock.getFieldValue('NAME')) {
+      if (
+        param &&
+        param.getId() === paramBlock.id &&
+        param.getName() !== paramBlock.getFieldValue('NAME')
+      ) {
         param.setName(paramBlock.getFieldValue('NAME'));
       }
-      paramBlock = paramBlock.nextConnection &&
-          paramBlock.nextConnection.targetBlock();
+      paramBlock =
+        paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
       i++;
     }
   },
@@ -586,20 +608,24 @@ const procedureDefMutator = {
    * blocks.
    * @param containerBlock Root block in the mutator.
    */
-  addParamsToModel_: function(containerBlock) {
+  addParamsToModel_: function (containerBlock) {
     const model = this.getProcedureModel();
 
     let i = 0;
     let paramBlock = containerBlock.getInputTargetBlock('STACK');
     while (paramBlock && !paramBlock.isInsertionMarker()) {
-      if (!model.getParameter(i) ||
-          model.getParameter(i).getId() !== paramBlock.id) {
+      if (
+        !model.getParameter(i) ||
+        model.getParameter(i).getId() !== paramBlock.id
+      ) {
         model.insertParameter(
-            new ObservableParameterModel(
-                this.workspace,
-                paramBlock.getFieldValue('NAME'),
-                paramBlock.id),
-            i);
+          new ObservableParameterModel(
+            this.workspace,
+            paramBlock.getFieldValue('NAME'),
+            paramBlock.id,
+          ),
+          i,
+        );
       }
       paramBlock =
         paramBlock.nextConnection && paramBlock.nextConnection.targetBlock();
@@ -608,8 +634,11 @@ const procedureDefMutator = {
   },
 };
 Blockly.Extensions.registerMutator(
-    'procedure_def_mutator', procedureDefMutator, undefined,
-    ['procedures_mutatorarg']);
+  'procedure_def_mutator',
+  procedureDefMutator,
+  undefined,
+  ['procedures_mutatorarg'],
+);
 
 const procedureDefContextMenuMixin = {
   /**
@@ -617,9 +646,12 @@ const procedureDefContextMenuMixin = {
    * @param options List of menu options to add to.
    * @this {Blockly.Block}
    */
-  customContextMenu: function(
-      options: Array<Blockly.ContextMenuRegistry.ContextMenuOption|
-          Blockly.ContextMenuRegistry.LegacyContextMenuOption>) {
+  customContextMenu: function (
+    options: Array<
+      | Blockly.ContextMenuRegistry.ContextMenuOption
+      | Blockly.ContextMenuRegistry.LegacyContextMenuOption
+    >,
+  ) {
     if (this.isInFlyout) {
       return;
     }
@@ -639,11 +671,14 @@ const procedureDefContextMenuMixin = {
     // Add option to create caller.
     options.push({
       enabled: true,
-      text:
-          Blockly.Msg['PROCEDURES_CREATE_DO']
-              .replace('%1', this.getFieldValue('NAME')),
-      callback:
-          Blockly.ContextMenu.callbackFactory(this, xmlBlock) as () => void,
+      text: Blockly.Msg['PROCEDURES_CREATE_DO'].replace(
+        '%1',
+        this.getFieldValue('NAME'),
+      ),
+      callback: Blockly.ContextMenu.callbackFactory(
+        this,
+        xmlBlock,
+      ) as () => void,
     });
 
     // Add options to create getters for each parameter.
@@ -657,84 +692,107 @@ const procedureDefContextMenuMixin = {
       argXmlBlock.appendChild(argXmlField);
       options.push({
         enabled: true,
-        text:
-            Blockly.Msg['VARIABLES_SET_CREATE_GET'].replace('%1', argVar.name),
-        callback:
-            Blockly.ContextMenu.callbackFactory(this, argXmlBlock) as
-                () => void,
+        text: Blockly.Msg['VARIABLES_SET_CREATE_GET'].replace(
+          '%1',
+          argVar.name,
+        ),
+        callback: Blockly.ContextMenu.callbackFactory(
+          this,
+          argXmlBlock,
+        ) as () => void,
       });
     }
   },
 };
 Blockly.Extensions.registerMixin(
-    'procedure_def_context_menu_mixin', procedureDefContextMenuMixin);
+  'procedure_def_context_menu_mixin',
+  procedureDefContextMenuMixin,
+);
 
 const procedureDefOnChangeMixin = {
-  onchange: function(e) {
+  onchange: function (e) {
     if (e.type === Blockly.Events.BLOCK_CREATE && e.blockId === this.id) {
       Blockly.Events.fire(
-          new ProcedureCreate(this.workspace, this.getProcedureModel()));
+        new ProcedureCreate(this.workspace, this.getProcedureModel()),
+      );
     }
-    if (e.type === Blockly.Events.BLOCK_CHANGE && e.blockId === this.id &&
-      e.element === 'disabled') {
+    if (
+      e.type === Blockly.Events.BLOCK_CHANGE &&
+      e.blockId === this.id &&
+      e.element === 'disabled'
+    ) {
       this.getProcedureModel().setEnabled(!e.newValue);
     }
   },
 };
 Blockly.Extensions.registerMixin(
-    'procedure_def_onchange_mixin', procedureDefOnChangeMixin);
+  'procedure_def_onchange_mixin',
+  procedureDefOnChangeMixin,
+);
 
-const procedureDefNoReturnSetCommentHelper = function() {
-  if ((this.workspace.options.comments ||
-    (this.workspace.options.parentWorkspace &&
-      this.workspace.options.parentWorkspace.options.comments)) &&
-    Blockly.Msg['PROCEDURES_DEFNORETURN_COMMENT']) {
+const procedureDefNoReturnSetCommentHelper = function () {
+  if (
+    (this.workspace.options.comments ||
+      (this.workspace.options.parentWorkspace &&
+        this.workspace.options.parentWorkspace.options.comments)) &&
+    Blockly.Msg['PROCEDURES_DEFNORETURN_COMMENT']
+  ) {
     this.setCommentText(Blockly.Msg['PROCEDURES_DEFNORETURN_COMMENT']);
   }
 };
 Blockly.Extensions.register(
-    'procedure_defnoreturn_set_comment_helper',
-    procedureDefNoReturnSetCommentHelper);
+  'procedure_defnoreturn_set_comment_helper',
+  procedureDefNoReturnSetCommentHelper,
+);
 
-const procedureDefReturnSetCommentHelper = function() {
-  if ((this.workspace.options.comments ||
-    (this.workspace.options.parentWorkspace &&
-      this.workspace.options.parentWorkspace.options.comments)) &&
-    Blockly.Msg['PROCEDURES_DEFRETURN_COMMENT']) {
+const procedureDefReturnSetCommentHelper = function () {
+  if (
+    (this.workspace.options.comments ||
+      (this.workspace.options.parentWorkspace &&
+        this.workspace.options.parentWorkspace.options.comments)) &&
+    Blockly.Msg['PROCEDURES_DEFRETURN_COMMENT']
+  ) {
     this.setCommentText(Blockly.Msg['PROCEDURES_DEFRETURN_COMMENT']);
   }
 };
 Blockly.Extensions.register(
-    'procedure_defreturn_set_comment_helper',
-    procedureDefReturnSetCommentHelper);
+  'procedure_defreturn_set_comment_helper',
+  procedureDefReturnSetCommentHelper,
+);
 
 const procedureDefNoReturnGetCallerBlockMixin = {
   callType_: 'procedures_callnoreturn',
 };
 Blockly.Extensions.registerMixin(
-    'procedure_defnoreturn_get_caller_block_mixin',
-    procedureDefNoReturnGetCallerBlockMixin);
+  'procedure_defnoreturn_get_caller_block_mixin',
+  procedureDefNoReturnGetCallerBlockMixin,
+);
 
 const procedureDefReturnGetCallerBlockMixin = {
   callType_: 'procedures_callreturn',
 };
 Blockly.Extensions.registerMixin(
-    'procedure_defreturn_get_caller_block_mixin',
-    procedureDefReturnGetCallerBlockMixin);
+  'procedure_defreturn_get_caller_block_mixin',
+  procedureDefReturnGetCallerBlockMixin,
+);
 
-const procedureDefSetNoReturnHelper = function() {
+const procedureDefSetNoReturnHelper = function () {
   this.getProcedureModel().setReturnTypes(null);
 };
 Blockly.Extensions.register(
-    'procedure_def_set_no_return_helper', procedureDefSetNoReturnHelper);
+  'procedure_def_set_no_return_helper',
+  procedureDefSetNoReturnHelper,
+);
 
-const procedureDefSetReturnHelper = function() {
+const procedureDefSetReturnHelper = function () {
   this.getProcedureModel().setReturnTypes([]);
 };
 Blockly.Extensions.register(
-    'procedure_def_set_return_helper', procedureDefSetReturnHelper);
+  'procedure_def_set_return_helper',
+  procedureDefSetReturnHelper,
+);
 
-const procedureCallerGetDefMixin = function() {
+const procedureCallerGetDefMixin = function () {
   const mixin = {
     model_: null,
 
@@ -759,16 +817,19 @@ const procedureCallerGetDefMixin = function() {
      */
     findProcedureModel_(name, params = []) {
       const workspace = this.getTargetWorkspace_();
-      const model = workspace.getProcedureMap().getProcedures().find(
-          (proc) => proc.getName() === name);
+      const model = workspace
+        .getProcedureMap()
+        .getProcedures()
+        .find((proc) => proc.getName() === name);
       if (!model) return null;
 
       const returnTypes = model.getReturnTypes();
       const hasMatchingReturn = this.hasReturn_ ? returnTypes : !returnTypes;
       if (!hasMatchingReturn) return null;
 
-      const hasMatchingParams =
-        model.getParameters().every((p, i) => p.getName() === params[i]);
+      const hasMatchingParams = model
+        .getParameters()
+        .every((p, i) => p.getName() === params[i]);
       if (!hasMatchingParams) return null;
 
       return model;
@@ -781,8 +842,9 @@ const procedureCallerGetDefMixin = function() {
      *     with this block.
      */
     getTargetWorkspace_() {
-      return this.workspace.isFlyout ? this.workspace.targetWorkspace :
-        this.workspace;
+      return this.workspace.isFlyout
+        ? this.workspace.targetWorkspace
+        : this.workspace;
     },
 
     /**
@@ -799,9 +861,10 @@ const procedureCallerGetDefMixin = function() {
      * @returns List of variable names.
      * @this {Blockly.Block}
      */
-    getVars: function() {
-      return this.getProcedureModel().getParameters().map(
-          (p) => p.getVariableModel().name);
+    getVars: function () {
+      return this.getProcedureModel()
+        .getParameters()
+        .map((p) => p.getVariableModel().name);
     },
 
     /**
@@ -809,9 +872,10 @@ const procedureCallerGetDefMixin = function() {
      * @returns List of variable models.
      * @this {Blockly.Block}
      */
-    getVarModels: function() {
-      return this.getProcedureModel().getParameters().map(
-          (p) => p.getVariableModel());
+    getVarModels: function () {
+      return this.getProcedureModel()
+        .getParameters()
+        .map((p) => p.getVariableModel());
     },
   };
 
@@ -820,9 +884,11 @@ const procedureCallerGetDefMixin = function() {
 // Using register instead of registerMixin to avoid triggering warnings about
 // overriding built-ins.
 Blockly.Extensions.register(
-    'procedure_caller_get_def_mixin', procedureCallerGetDefMixin);
+  'procedure_caller_get_def_mixin',
+  procedureCallerGetDefMixin,
+);
 
-const procedureCallerVarMixin = function() {
+const procedureCallerVarMixin = function () {
   const mixin = {
     /**
      * Notification that a variable is renaming but keeping the same ID.  If the
@@ -832,9 +898,10 @@ const procedureCallerVarMixin = function() {
      * @override
      * @this {Blockly.Block}
      */
-    updateVarName: function(variable) {
-      const containsVar = this.getProcedureModel().getParameters().some(
-          (p) => p.getVariableModel() === variable);
+    updateVarName: function (variable) {
+      const containsVar = this.getProcedureModel()
+        .getParameters()
+        .some((p) => p.getVariableModel() === variable);
       if (containsVar) {
         this.doProcedureUpdate(); // Rerender.
       }
@@ -846,7 +913,9 @@ const procedureCallerVarMixin = function() {
 // Using register instead of registerMixin to avoid triggering warnings about
 // overriding built-ins.
 Blockly.Extensions.register(
-    'procedure_caller_var_mixin', procedureCallerVarMixin);
+  'procedure_caller_var_mixin',
+  procedureCallerVarMixin,
+);
 
 const procedureCallerMutator = {
   previousEnabledState_: true,
@@ -859,7 +928,7 @@ const procedureCallerMutator = {
    * @returns XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function() {
+  mutationToDom: function () {
     const container = Blockly.utils.xml.createElement('mutation');
     const model = this.getProcedureModel();
     if (!model) return container;
@@ -879,7 +948,7 @@ const procedureCallerMutator = {
    * @param xmlElement XML storage element.
    * @this {Blockly.Block}
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function (xmlElement) {
     const name = xmlElement.getAttribute('name');
     const params = [];
     for (const n of xmlElement.childNodes) {
@@ -895,10 +964,21 @@ const procedureCallerMutator = {
    * @returns The state of
    *     this block, ie the params and procedure name.
    */
-  saveExtraState: function() {
+  saveExtraState: function () {
     const state = Object.create(null);
     const model = this.getProcedureModel();
-    if (!model) return state;
+    if (!model) {
+      // We reached here because we've deserialized a caller into a workspace
+      // where its model did not already exist (no procedures array in the json,
+      // and deserialized before any definition block), and are reserializing
+      // it before the event delay has elapsed and change listeners have run.
+      // (If they had run, we would have found or created a model).
+      // Just reserialize any deserialized state. Nothing should have happened
+      // in-between to change it.
+      state['name'] = this.getFieldValue('NAME');
+      state['params'] = this.paramsFromSerializedState_;
+      return state;
+    }
     state['name'] = model.getName();
     if (model.getParameters().length) {
       state['params'] = model.getParameters().map((p) => p.getName());
@@ -911,7 +991,7 @@ const procedureCallerMutator = {
    * @param state The state to apply to this block, ie the params and
    *     procedure name.
    */
-  loadExtraState: function(state) {
+  loadExtraState: function (state) {
     this.deserialize_(state['name'], state['params'] || []);
   },
 
@@ -920,7 +1000,7 @@ const procedureCallerMutator = {
    * @param name The name to apply to the block.
    * @param params The parameters to apply to the block.
    */
-  deserialize_: function(name, params) {
+  deserialize_: function (name, params) {
     this.setFieldValue(name, 'NAME');
     if (!this.model_) this.model_ = this.findProcedureModel_(name, params);
     if (this.getProcedureModel()) {
@@ -933,7 +1013,9 @@ const procedureCallerMutator = {
   },
 };
 Blockly.Extensions.registerMutator(
-    'procedure_caller_mutator', procedureCallerMutator);
+  'procedure_caller_mutator',
+  procedureCallerMutator,
+);
 
 const procedureCallerUpdateShapeMixin = {
   /**
@@ -947,7 +1029,7 @@ const procedureCallerUpdateShapeMixin = {
   /**
    * Updates the shape of this block to reflect the state of the data model.
    */
-  doProcedureUpdate: function() {
+  doProcedureUpdate: function () {
     if (!this.getProcedureModel()) return;
     const id = this.getProcedureModel().getId();
     if (!this.getTargetWorkspace_().getProcedureMap().has(id)) {
@@ -962,12 +1044,12 @@ const procedureCallerUpdateShapeMixin = {
   /**
    * Updates the name field of this block to match the state of the data model.
    */
-  updateName_: function() {
+  updateName_: function () {
     const name = this.getProcedureModel().getName();
     this.setFieldValue(name, 'NAME');
-    const baseMsg = this.outputConnection ?
-      Blockly.Msg['PROCEDURES_CALLRETURN_TOOLTIP'] :
-      Blockly.Msg['PROCEDURES_CALLNORETURN_TOOLTIP'];
+    const baseMsg = this.outputConnection
+      ? Blockly.Msg['PROCEDURES_CALLRETURN_TOOLTIP']
+      : Blockly.Msg['PROCEDURES_CALLNORETURN_TOOLTIP'];
     this.setTooltip(baseMsg.replace('%1', name));
   },
 
@@ -975,7 +1057,7 @@ const procedureCallerUpdateShapeMixin = {
    * Updates the enabled state of this block to match the state of the data
    *     model.
    */
-  updateEnabled_: function() {
+  updateEnabled_: function () {
     if (!this.getProcedureModel().getEnabled()) {
       this.previousEnabledState_ = this.isEnabled();
       this.setEnabled(false);
@@ -988,7 +1070,7 @@ const procedureCallerUpdateShapeMixin = {
    * Updates the parameter fields/inputs of this block to match the state of the
    * data model.
    */
-  updateParameters_: function() {
+  updateParameters_: function () {
     this.syncArgsMap_();
     this.deleteAllArgInputs_();
     this.addParametersLabel__();
@@ -1003,7 +1085,7 @@ const procedureCallerUpdateShapeMixin = {
    * not remove entries from the array, since blocks can be disconnected
    * temporarily during mutation (which triggers this method).
    */
-  syncArgsMap_: function() {
+  syncArgsMap_: function () {
     // We look at the prevParams array because the current state of the block
     // matches the old params, not the new params state.
     for (const [i, p] of this.prevParams_.entries()) {
@@ -1016,7 +1098,7 @@ const procedureCallerUpdateShapeMixin = {
    * Saves a map of parameter IDs to target blocks attached to the inputs
    * of this caller block.
    */
-  updateArgsMap_: function() {
+  updateArgsMap_: function () {
     for (const [i, p] of this.getProcedureModel().getParameters().entries()) {
       const target = this.getInputTargetBlock(`ARG${i}`);
       if (target) {
@@ -1030,7 +1112,7 @@ const procedureCallerUpdateShapeMixin = {
   /**
    * Deletes all the parameter inputs on this block.
    */
-  deleteAllArgInputs_: function() {
+  deleteAllArgInputs_: function () {
     let i = 0;
     while (this.getInput(`ARG${i}`)) {
       this.removeInput(`ARG${i}`);
@@ -1041,12 +1123,14 @@ const procedureCallerUpdateShapeMixin = {
   /**
    * Adds or removes the parameter label to match the state of the data model.
    */
-  addParametersLabel__: function() {
+  addParametersLabel__: function () {
     const topRow = this.getInput('TOPROW');
     if (this.getProcedureModel().getParameters().length) {
       if (!this.getField('WITH')) {
         topRow.appendField(
-            Blockly.Msg['PROCEDURES_CALL_BEFORE_PARAMS'], 'WITH');
+          Blockly.Msg['PROCEDURES_CALL_BEFORE_PARAMS'],
+          'WITH',
+        );
         topRow.init();
       }
     } else if (this.getField('WITH')) {
@@ -1059,14 +1143,16 @@ const procedureCallerUpdateShapeMixin = {
    * @param params The params to add to the block, or null to
    *     use the params defined in the procedure model.
    */
-  createArgInputs_: function(params = null) {
+  createArgInputs_: function (params = null) {
     if (!params) {
-      params = this.getProcedureModel().getParameters().map((p) => p.getName());
+      params = this.getProcedureModel()
+        .getParameters()
+        .map((p) => p.getName());
     }
     for (const [i, p] of params.entries()) {
       this.appendValueInput(`ARG${i}`)
-          .appendField(new Blockly.FieldLabel(p), `ARGNAME${i}`)
-          .setAlign(Blockly.Input.Align.RIGHT);
+        .appendField(new Blockly.FieldLabel(p), `ARGNAME${i}`)
+        .setAlign(Blockly.Input.Align.RIGHT);
     }
   },
 
@@ -1074,12 +1160,13 @@ const procedureCallerUpdateShapeMixin = {
    * Reattaches blocks to this blocks' inputs based on the data saved in the
    * argsMap_.
    */
-  reattachBlocks_: function() {
+  reattachBlocks_: function () {
     const params = this.getProcedureModel().getParameters();
     for (const [i, p] of params.entries()) {
       if (!this.argsMap_.has(p.getId())) continue;
       this.getInput(`ARG${i}`).connection.connect(
-          this.argsMap_.get(p.getId()).outputConnection);
+        this.argsMap_.get(p.getId()).outputConnection,
+      );
     }
   },
 
@@ -1090,18 +1177,20 @@ const procedureCallerUpdateShapeMixin = {
    * @param newName Renamed procedure.
    * @this {Blockly.Block}
    */
-  renameProcedure: function(oldName, newName) {
+  renameProcedure: function (oldName, newName) {
     if (Blockly.Names.equals(oldName, this.getFieldValue('NAME'))) {
       this.setFieldValue(newName, 'NAME');
-      const baseMsg = this.outputConnection ?
-        Blockly.Msg['PROCEDURES_CALLRETURN_TOOLTIP'] :
-        Blockly.Msg['PROCEDURES_CALLNORETURN_TOOLTIP'];
+      const baseMsg = this.outputConnection
+        ? Blockly.Msg['PROCEDURES_CALLRETURN_TOOLTIP']
+        : Blockly.Msg['PROCEDURES_CALLNORETURN_TOOLTIP'];
       this.setTooltip(baseMsg.replace('%1', newName));
     }
   },
 };
 Blockly.Extensions.registerMixin(
-    'procedure_caller_update_shape_mixin', procedureCallerUpdateShapeMixin);
+  'procedure_caller_update_shape_mixin',
+  procedureCallerUpdateShapeMixin,
+);
 
 const procedureCallerOnChangeMixin = {
   /**
@@ -1110,13 +1199,15 @@ const procedureCallerOnChangeMixin = {
    * @param event Change event.
    * @this {Blockly.Block}
    */
-  onchange: function(event) {
+  onchange: function (event) {
     if (this.disposed || this.workspace.isFlyout) return;
-    // Blockly.Events not generated by user. Skip handling.
-    if (!event.recordUndo) return;
     if (event.type === Blockly.Events.BLOCK_MOVE) this.updateArgsMap_(true);
-    if (event.type !== Blockly.Events.BLOCK_CREATE) return;
-    if (event.blockId !== this.id && event.ids.indexOf(this.id) === -1) return;
+    if (
+      event.type !== Blockly.Events.FINISHED_LOADING &&
+      !this.eventIsCreatingThisBlockDuringPaste_(event)
+    )
+      return;
+
     // We already found our model, which means we don't need to create a block.
     if (this.getProcedureModel()) return;
 
@@ -1130,15 +1221,32 @@ const procedureCallerOnChangeMixin = {
       // We have no def nor procedure model.
       Blockly.Events.setGroup(event.group);
       this.model_ = this.createDef_(
-          this.getFieldValue('NAME'), this.paramsFromSerializedState_);
+        this.getFieldValue('NAME'),
+        this.paramsFromSerializedState_,
+      );
       Blockly.Events.setGroup(false);
     }
     if (!this.getProcedureModel()) {
       // We have a def, but no reference to its model.
       this.model_ = this.findProcedureModel_(
-          this.getFieldValue('NAME'), this.paramsFromSerializedState_);
+        this.getFieldValue('NAME'),
+        this.paramsFromSerializedState_,
+      );
     }
     this.initBlockWithProcedureModel_();
+  },
+
+  /**
+   * @param event The event to check.
+   * @returns True if the given event is a paste event for this block.
+   */
+  eventIsCreatingThisBlockDuringPaste_(event) {
+    return (
+      event.type === Blockly.Events.BLOCK_CREATE &&
+      (event.blockId === this.id || event.ids.indexOf(this.id) !== -1) &&
+      // Record undo makes sure this is during paste.
+      event.recordUndo
+    );
   },
 
   /**
@@ -1148,9 +1256,12 @@ const procedureCallerOnChangeMixin = {
    * @returns Whether the def block matches or not.
    */
   defMatches_(defBlock) {
-    return defBlock && defBlock.type === this.defType_ &&
+    return (
+      defBlock &&
+      defBlock.type === this.defType_ &&
       JSON.stringify(defBlock.getVars()) ===
-      JSON.stringify(this.paramsFromSerializedState_);
+        JSON.stringify(this.paramsFromSerializedState_)
+    );
   },
 
   /**
@@ -1175,13 +1286,18 @@ const procedureCallerOnChangeMixin = {
       },
       'fields': {'NAME': newName},
     };
-    const block = Blockly.serialization.blocks
-        .append(blockDef, this.getTargetWorkspace_(), {recordUndo: true});
+    const block = Blockly.serialization.blocks.append(
+      blockDef,
+      this.getTargetWorkspace_(),
+      {recordUndo: true},
+    );
     return (block as unknown as IProcedureBlock).getProcedureModel();
   },
 };
 Blockly.Extensions.registerMixin(
-    'procedure_caller_onchange_mixin', procedureCallerOnChangeMixin);
+  'procedure_caller_onchange_mixin',
+  procedureCallerOnChangeMixin,
+);
 
 const procedureCallerContextMenuMixin = {
   /**
@@ -1189,7 +1305,7 @@ const procedureCallerContextMenuMixin = {
    * @param options List of menu options to add to.
    * @this {Blockly.Block}
    */
-  customContextMenu: function(options) {
+  customContextMenu: function (options) {
     if (!this.workspace.isMovable()) {
       // If we center on the block and the workspace isn't movable we could
       // lose blocks at the edges of the workspace.
@@ -1198,7 +1314,7 @@ const procedureCallerContextMenuMixin = {
 
     const name = this.getFieldValue('NAME');
     const workspace = this.workspace;
-    const callback = function() {
+    const callback = function () {
       const def = Blockly.Procedures.getDefinition(name, workspace);
       if (def && def instanceof Blockly.BlockSvg) {
         workspace.centerOnBlock(def.id);
@@ -1213,20 +1329,24 @@ const procedureCallerContextMenuMixin = {
   },
 };
 Blockly.Extensions.registerMixin(
-    'procedure_caller_context_menu_mixin', procedureCallerContextMenuMixin);
+  'procedure_caller_context_menu_mixin',
+  procedureCallerContextMenuMixin,
+);
 
 const procedureCallerNoReturnGetDefBlockMixin = {
   hasReturn_: false,
   defType_: 'procedures_defnoreturn',
 };
 Blockly.Extensions.registerMixin(
-    'procedure_callernoreturn_get_def_block_mixin',
-    procedureCallerNoReturnGetDefBlockMixin);
+  'procedure_callernoreturn_get_def_block_mixin',
+  procedureCallerNoReturnGetDefBlockMixin,
+);
 
 const procedureCallerReturnGetDefBlockMixin = {
   hasReturn_: true,
   defType_: 'procedures_defreturn',
 };
 Blockly.Extensions.registerMixin(
-    'procedure_callerreturn_get_def_block_mixin',
-    procedureCallerReturnGetDefBlockMixin);
+  'procedure_callerreturn_get_def_block_mixin',
+  procedureCallerReturnGetDefBlockMixin,
+);

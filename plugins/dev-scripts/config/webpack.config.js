@@ -18,8 +18,6 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const packageJson = require(resolveApp('package.json'));
 
-const ESLintPlugin = require('eslint-webpack-plugin');
-
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -30,29 +28,32 @@ module.exports = (env) => {
   let entry;
   let outputFile;
   let target = 'web';
-  if (isProduction) { // Production.
-    ['js', 'ts'].filter((ext) =>
-      fs.existsSync(resolveApp(`./src/index.${ext}`))
-    ).forEach((ext) => {
-      entry = `./src/index.${ext}`;
-    });
+  if (isProduction) {
+    // Production.
+    ['js', 'ts']
+      .filter((ext) => fs.existsSync(resolveApp(`./src/index.${ext}`)))
+      .forEach((ext) => {
+        entry = `./src/index.${ext}`;
+      });
     outputFile = 'index.js';
-  } else if (isDevelopment) { // Development.
-    ['js', 'ts'].filter((ext) =>
-      fs.existsSync(resolveApp(`./test/index.${ext}`))
-    ).forEach((ext) => {
-      entry = `./test/index.${ext}`;
-    });
+  } else if (isDevelopment) {
+    // Development.
+    ['js', 'ts']
+      .filter((ext) => fs.existsSync(resolveApp(`./test/index.${ext}`)))
+      .forEach((ext) => {
+        entry = `./test/index.${ext}`;
+      });
     outputFile = 'test_bundle.js';
-  } else if (isTest) { // Test.
+  } else if (isTest) {
+    // Test.
     // Create an entry point for each .mocha.js file.
     fs.readdirSync('./test/')
-        .filter((file) => file.substr(-9) === '.mocha.js')
-        .forEach((file) => {
-          const entryName = file.replace(/\.mocha\.js/i, '');
-          if (!entry) entry = {};
-          entry[entryName] = `./test/${file}`;
-        });
+      .filter((file) => file.substr(-9) === '.mocha.js')
+      .forEach((file) => {
+        const entryName = file.replace(/\.mocha\.js/i, '');
+        if (!entry) entry = {};
+        entry[entryName] = `./test/${file}`;
+      });
     outputFile = '[name].mocha.js';
     target = 'node';
   }
@@ -84,8 +85,9 @@ module.exports = (env) => {
       alias: {
         'blockly': resolveApp(`node_modules/blockly${blocklyAliasSuffix}`),
       },
-      extensions: ['.ts', '.js']
-          .filter((ext) => isTypescript || !ext.includes('ts')),
+      extensions: ['.ts', '.js'].filter(
+        (ext) => isTypescript || !ext.includes('ts'),
+      ),
       fallback: {
         'util': false,
       },
@@ -114,60 +116,50 @@ module.exports = (env) => {
       }),
       // canvas should only be required by jsdom if the 'canvas' package is
       // installed in package.json. Ignoring canvas require errors.
-      isTest && new webpack.IgnorePlugin({
-        resourceRegExp: /canvas$/,
-      }),
-      // Run the linter.
-      !env.skipLint && new ESLintPlugin({
-        cache: true,
-        cacheLocation: path.join('node_modules/.cache/eslint/'),
-        formatter: 'stylish',
-        emitWarning: isDevelopment,
-        eslintPath: require.resolve('eslint'),
-        resolvePluginsRelativeTo: __dirname,
-        useEslintrc: false,
-        baseConfig: {
-          extends: [require.resolve('@blockly/eslint-config')],
-        },
-      }),
+      isTest &&
+        new webpack.IgnorePlugin({
+          resourceRegExp: /canvas$/,
+        }),
     ].filter(Boolean),
-    externals: isProduction ? {
-      'blockly/core': {
-        root: 'Blockly',
-        commonjs: 'blockly/core',
-        commonjs2: 'blockly/core',
-        amd: 'blockly/core',
-      },
-      'blockly/javascript': {
-        root: 'Blockly.JavaScript',
-        commonjs: 'blockly/javascript',
-        commonjs2: 'blockly/javascript',
-        amd: 'blockly/javascript',
-      },
-      'blockly/python': {
-        root: 'Blockly.Python',
-        commonjs: 'blockly/python',
-        commonjs2: 'blockly/python',
-        amd: 'blockly/python',
-      },
-      'blockly/dart': {
-        root: 'Blockly.Dart',
-        commonjs: 'blockly/dart',
-        commonjs2: 'blockly/dart',
-        amd: 'blockly/dart',
-      },
-      'blockly/php': {
-        root: 'Blockly.PHP',
-        commonjs: 'blockly/php',
-        commonjs2: 'blockly/php',
-        amd: 'blockly/php',
-      },
-      'blockly/lua': {
-        root: 'Blockly.Lua',
-        commonjs: 'blockly/lua',
-        commonjs2: 'blockly/lua',
-        amd: 'blockly/lua',
-      },
-    } : {},
+    externals: isProduction
+      ? {
+          'blockly/core': {
+            root: 'Blockly',
+            commonjs: 'blockly/core',
+            commonjs2: 'blockly/core',
+            amd: 'blockly/core',
+          },
+          'blockly/javascript': {
+            root: 'Blockly.JavaScript',
+            commonjs: 'blockly/javascript',
+            commonjs2: 'blockly/javascript',
+            amd: 'blockly/javascript',
+          },
+          'blockly/python': {
+            root: 'Blockly.Python',
+            commonjs: 'blockly/python',
+            commonjs2: 'blockly/python',
+            amd: 'blockly/python',
+          },
+          'blockly/dart': {
+            root: 'Blockly.Dart',
+            commonjs: 'blockly/dart',
+            commonjs2: 'blockly/dart',
+            amd: 'blockly/dart',
+          },
+          'blockly/php': {
+            root: 'Blockly.PHP',
+            commonjs: 'blockly/php',
+            commonjs2: 'blockly/php',
+            amd: 'blockly/php',
+          },
+          'blockly/lua': {
+            root: 'Blockly.Lua',
+            commonjs: 'blockly/lua',
+            commonjs2: 'blockly/lua',
+            amd: 'blockly/lua',
+          },
+        }
+      : {},
   };
 };

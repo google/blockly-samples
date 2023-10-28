@@ -18,10 +18,14 @@ require('../src/index');
 
 const assert = chai.assert;
 
-const {CodeGenerationTestSuite, runCodeGenerationTestSuites,
-  runSerializationTestSuite, SerializationTestCase} = testHelpers;
+const {
+  CodeGenerationTestSuite,
+  runCodeGenerationTestSuites,
+  runSerializationTestSuite,
+  SerializationTestCase,
+} = testHelpers;
 
-suite('If block', function() {
+suite('If block', function () {
   /**
    * Asserts that the if block has the expected inputs and fields.
    * @param {!Blockly.Block} block The if block to check.
@@ -47,20 +51,20 @@ suite('If block', function() {
     }
   }
 
-  setup(function() {
+  setup(function () {
     this.workspace = new Blockly.Workspace();
   });
 
-  teardown(function() {
+  teardown(function () {
     this.workspace.dispose();
   });
 
-  test('Creation', function() {
+  test('Creation', function () {
     this.block = this.workspace.newBlock('controls_if');
     assertIfBlockStructure(this.block, 1);
   });
 
-  suite('Code generation', function() {
+  suite('Code generation', function () {
     const trivialCreateBlock = (workspace) => {
       return workspace.newBlock('controls_if');
     };
@@ -70,36 +74,66 @@ suite('If block', function() {
      * @type {Array<CodeGenerationTestSuite>}
      */
     const testSuites = [
-      {title: 'Dart', generator: dartGenerator,
+      {
+        title: 'Dart',
+        generator: dartGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'JavaScript', generator: javascriptGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'if (false) {\n}\n',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'JavaScript',
+        generator: javascriptGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'Lua', generator: luaGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'if (false) {\n}\n',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'Lua',
+        generator: luaGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if false then\nend\n',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'PHP', generator: phpGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'if false then\nend\n',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'PHP',
+        generator: phpGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if (false) {\n}\n',
-            createBlock: trivialCreateBlock},
-        ]},
-      {title: 'Python', generator: pythonGenerator,
+          {
+            title: 'Trivial',
+            expectedCode: 'if (false) {\n}\n',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
+      {
+        title: 'Python',
+        generator: pythonGenerator,
         testCases: [
-          {title: 'Trivial', expectedCode: 'if False:\n  pass\n',
-            createBlock: trivialCreateBlock},
-        ]},
+          {
+            title: 'Trivial',
+            expectedCode: 'if False:\n  pass\n',
+            createBlock: trivialCreateBlock,
+          },
+        ],
+      },
     ];
     runCodeGenerationTestSuites(testSuites);
   });
 
-  suite('XML', function() {
+  suite('XML', function () {
     /**
      * Test cases for serialization tests.
      * @type {Array<SerializationTestCase>}
@@ -109,42 +143,39 @@ suite('If block', function() {
         title: 'Empty Xml',
         xml: '<block type="controls_if"/>',
         expectedXml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="controls_if" id="1"></block>',
-        assertBlockStructure:
-            (block) => {
-              assertIfBlockStructure(block, 1);
-            },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1"></block>',
+        assertBlockStructure: (block) => {
+          assertIfBlockStructure(block, 1);
+        },
       },
       {
         title: '2 elseif no else',
         xml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="controls_if" id="1">\n' +
-            '  <mutation elseif="2"></mutation>\n' +
-            '</block>',
-        assertBlockStructure:
-            (block) => {
-              assertIfBlockStructure(block, 3);
-            },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1">\n' +
+          '  <mutation elseif="2"></mutation>\n' +
+          '</block>',
+        assertBlockStructure: (block) => {
+          assertIfBlockStructure(block, 3);
+        },
       },
       {
         title: '3 elseif with else',
         xml:
-            '<block xmlns="https://developers.google.com/blockly/xml" ' +
-            'type="controls_if" id="1">\n' +
-            '  <mutation elseif="3" else="1"></mutation>\n' +
-            '</block>',
-        assertBlockStructure:
-            (block) => {
-              assertIfBlockStructure(block, 4, true);
-            },
+          '<block xmlns="https://developers.google.com/blockly/xml" ' +
+          'type="controls_if" id="1">\n' +
+          '  <mutation elseif="3" else="1"></mutation>\n' +
+          '</block>',
+        assertBlockStructure: (block) => {
+          assertIfBlockStructure(block, 4, true);
+        },
       },
     ];
     runSerializationTestSuite(testCases);
   });
 
-  suite('JSON', function() {
+  suite('JSON', function () {
     /**
      * Test cases for serialization tests.
      * @type {Array<SerializationTestCase>}
@@ -159,10 +190,9 @@ suite('If block', function() {
           'type': 'controls_if',
           'id': '1',
         },
-        assertBlockStructure:
-            (block) => {
-              assertIfBlockStructure(block, 1);
-            },
+        assertBlockStructure: (block) => {
+          assertIfBlockStructure(block, 1);
+        },
       },
       {
         title: '2 elseif no else',
@@ -173,10 +203,9 @@ suite('If block', function() {
           },
           'id': '1',
         },
-        assertBlockStructure:
-            (block) => {
-              assertIfBlockStructure(block, 3);
-            },
+        assertBlockStructure: (block) => {
+          assertIfBlockStructure(block, 3);
+        },
       },
       {
         title: '3 elseif with else',
@@ -188,15 +217,13 @@ suite('If block', function() {
           },
           'id': '1',
         },
-        assertBlockStructure:
-            (block) => {
-              assertIfBlockStructure(block, 4, true);
-            },
+        assertBlockStructure: (block) => {
+          assertIfBlockStructure(block, 4, true);
+        },
       },
     ];
     runSerializationTestSuite(testCases);
   });
 
-  runPlusMinusTestSuite('controls_if', 1, 1, 'IF',
-      assertIfBlockStructure);
+  runPlusMinusTestSuite('controls_if', 1, 1, 'IF', assertIfBlockStructure);
 });

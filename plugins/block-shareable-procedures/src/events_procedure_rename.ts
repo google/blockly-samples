@@ -7,7 +7,6 @@
 import * as Blockly from 'blockly/core';
 import {ProcedureBase, ProcedureBaseJson} from './events_procedure_base';
 
-
 /** Notifies listeners that a procedure model has been renamed. */
 export class ProcedureRename extends ProcedureBase {
   static readonly TYPE = 'procedure_rename';
@@ -27,10 +26,11 @@ export class ProcedureRename extends ProcedureBase {
    *     name is.
    */
   constructor(
-      workspace: Blockly.Workspace,
-      procedure: Blockly.procedures.IProcedureModel,
-      readonly oldName: string,
-      newName?: string) {
+    workspace: Blockly.Workspace,
+    procedure: Blockly.procedures.IProcedureModel,
+    readonly oldName: string,
+    newName?: string,
+  ) {
     super(workspace, procedure);
 
     this.newName = newName ?? procedure.getName();
@@ -42,12 +42,14 @@ export class ProcedureRename extends ProcedureBase {
    *     backward (undo).
    */
   run(forward: boolean) {
-    const procedureModel =
-        this.getEventWorkspace_().getProcedureMap().get(this.procedure.getId());
+    const procedureModel = this.getEventWorkspace_()
+      .getProcedureMap()
+      .get(this.procedure.getId());
     if (!procedureModel) {
       throw new Error(
-          'Cannot change the type of a procedure that does not exist ' +
-          'in the procedure map');
+        'Cannot change the type of a procedure that does not exist ' +
+          'in the procedure map',
+      );
     }
     if (forward) {
       if (procedureModel.getName() !== this.oldName) return;
@@ -76,16 +78,23 @@ export class ProcedureRename extends ProcedureBase {
    * @returns The new procedure rename event.
    * @internal
    */
-  static fromJson(json: ProcedureRenameJson, workspace: Blockly.Workspace):
-      ProcedureRename {
+  static fromJson(
+    json: ProcedureRenameJson,
+    workspace: Blockly.Workspace,
+  ): ProcedureRename {
     const model = workspace.getProcedureMap().get(json['procedureId']);
     if (!model) {
       throw new Error(
-          'Cannot deserialize procedure rename event because the ' +
-          'target procedure does not exist');
+        'Cannot deserialize procedure rename event because the ' +
+          'target procedure does not exist',
+      );
     }
     return new ProcedureRename(
-        workspace, model, json['oldName'], json['newName']);
+      workspace,
+      model,
+      json['oldName'],
+      json['newName'],
+    );
   }
 }
 
@@ -95,4 +104,7 @@ export interface ProcedureRenameJson extends ProcedureBaseJson {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.EVENT, ProcedureRename.TYPE, ProcedureRename);
+  Blockly.registry.Type.EVENT,
+  ProcedureRename.TYPE,
+  ProcedureRename,
+);

@@ -12,7 +12,6 @@
 
 import * as Blockly from 'blockly/core';
 
-
 /**
  * Generates a number of field testing blocks for a specific field and returns
  * the toolbox xml string.
@@ -40,72 +39,69 @@ export function generateFieldTestBlocks(fieldName, options) {
 
     // Define a single field block.
     const singleFieldBlock = `${++id}test_${fieldName}_single`;
-    blocks.push(
+    blocks.push({
+      'type': singleFieldBlock,
+      'message0': '%1',
+      'args0': [
         {
-          'type': singleFieldBlock,
-          'message0': '%1',
-          'args0': [
-            {
-              'type': fieldName,
-              'name': 'FIELDNAME',
-              ...m.args,
-              'alt': {
-                'type': 'field_label',
-                'text': `No ${fieldName}`,
-              },
-            },
-          ],
-          'output': null,
-          'style': 'math_blocks',
-        });
+          'type': fieldName,
+          'name': 'FIELDNAME',
+          ...m.args,
+          'alt': {
+            'type': 'field_label',
+            'text': `No ${fieldName}`,
+          },
+        },
+      ],
+      'output': null,
+      'style': 'math_blocks',
+    });
     toolboxXml += `<block type="${singleFieldBlock}"></block>`;
     toolboxXml += `<sep gap="10"></sep>`;
 
     // Define a block and add the 'single field block' as a shadow.
     const parentBlock = `${++id}test_${fieldName}_parent`;
-    blocks.push(
+    blocks.push({
+      'type': `${parentBlock}`,
+      'message0': 'parent %1',
+      'args0': [
         {
-          'type': `${parentBlock}`,
-          'message0': 'parent %1',
-          'args0': [
-            {
-              'type': 'input_value',
-              'name': 'INPUT',
-            },
-          ],
-          'previousStatement': null,
-          'nextStatement': null,
-          'style': 'loop_blocks',
-        });
+          'type': 'input_value',
+          'name': 'INPUT',
+        },
+      ],
+      'previousStatement': null,
+      'nextStatement': null,
+      'style': 'loop_blocks',
+    });
 
     toolboxXml += `
   <block type="${id}test_${fieldName}_parent">
       <value name="INPUT">
-        <shadow type="${id-1}test_${fieldName}_single"></shadow>
+        <shadow type="${id - 1}test_${fieldName}_single"></shadow>
       </value>
   </block>`;
     toolboxXml += `<sep gap="10"></sep>`;
 
     // Define a block with the field on it.
     const blockWithField = `${++id}test_${fieldName}_block`;
-    blocks.push(
+    blocks.push({
+      'type': blockWithField,
+      'message0': 'block %1',
+      'args0': [
         {
-          'type': blockWithField,
-          'message0': 'block %1',
-          'args0': [
-            {
-              'type': fieldName,
-              'name': 'FIELDNAME',
-              ...m.args,
-              'alt': {
-                'type': 'field_label',
-                'text': `No ${fieldName}`,
-              },
-            },
-          ],
-          'output': null,
-          'style': 'math_blocks',
-        });
+          'type': fieldName,
+          'name': 'FIELDNAME',
+          ...m.args,
+          'alt': {
+            'type': 'field_label',
+            'text': `No ${fieldName}`,
+          },
+        },
+      ],
+      'output': null,
+      'style': 'math_blocks',
+    });
     toolboxXml += `<block type="${blockWithField}"></block>`;
     toolboxXml += `<sep gap="10"></sep>`;
 

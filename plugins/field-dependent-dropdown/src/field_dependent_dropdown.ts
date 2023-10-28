@@ -18,8 +18,10 @@ export interface ChildOptionMapping {
 }
 
 // This type isn't exported from Blockly so we have to derive it from the API.
-type FieldConfig =
-    Exclude<ConstructorParameters<typeof Blockly.Field>[2], undefined>;
+type FieldConfig = Exclude<
+  ConstructorParameters<typeof Blockly.Field>[2],
+  undefined
+>;
 
 /** fromJson config for a dependent dropdown field. */
 export interface FieldDependentDropdownFromJsonConfig extends FieldConfig {
@@ -104,11 +106,12 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
    *    field, such as a tooltip.
    */
   constructor(
-      parentName: string,
-      optionMapping: ChildOptionMapping,
-      defaultOptions?: Blockly.MenuOption[],
-      validator?: Blockly.FieldValidator,
-      config?: FieldConfig) {
+    parentName: string,
+    optionMapping: ChildOptionMapping,
+    defaultOptions?: Blockly.MenuOption[],
+    validator?: Blockly.FieldValidator,
+    config?: FieldConfig,
+  ) {
     // A menu generator needs to be passed to the super constructor, but it
     // needs to be able to reference data that hasn't been populated yet. We're
     // not allowed to refer to "this" in this constructor before calling
@@ -162,13 +165,15 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
    * @returns The new field instance.
    */
   static fromJson(
-      options: FieldDependentDropdownFromJsonConfig): FieldDependentDropdown {
+    options: FieldDependentDropdownFromJsonConfig,
+  ): FieldDependentDropdown {
     return new FieldDependentDropdown(
-        options['parentName'],
-        options['optionMapping'],
-        options['defaultOptions'],
-        undefined,
-        options);
+      options['parentName'],
+      options['optionMapping'],
+      options['defaultOptions'],
+      undefined,
+      options,
+    );
   }
 
   /**
@@ -179,12 +184,16 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
   setSourceBlock(block: Blockly.Block) {
     super.setSourceBlock(block);
 
-    const parentField: Blockly.Field<string> | null =
-        block.getField(this.parentName);
+    const parentField: Blockly.Field<string> | null = block.getField(
+      this.parentName,
+    );
 
     if (!parentField) {
-      throw new Error('Could not find a parent field with the name ' +
-          this.parentName + ' for the dependent dropdown.');
+      throw new Error(
+        'Could not find a parent field with the name ' +
+          this.parentName +
+          ' for the dependent dropdown.',
+      );
     }
 
     this.dependencyData.parentField = parentField;
@@ -233,8 +242,9 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
     const block = this.getSourceBlock();
     if (!block) {
       throw new Error(
-          'Could not validate a field that is not attached to a block: ' +
-          this.name);
+        'Could not validate a field that is not attached to a block: ' +
+          this.name,
+      );
     }
 
     const oldChildValue = this.getValue();
@@ -245,7 +255,8 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
         newChildOptions = this.defaultOptions;
       } else {
         console.warn(
-            'Could not find child options for the parent value: ' + newValue);
+          'Could not find child options for the parent value: ' + newValue,
+        );
         return;
       }
     }
@@ -253,11 +264,10 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
     // If the child field's value is still available in the new options, keep
     // it, otherwise change the field's value to the first available option.
     const newOptionsIncludeOldValue =
-        (newChildOptions.find((option) => option[1] == oldChildValue) !=
-        undefined);
-    const newChildValue = newOptionsIncludeOldValue ?
-        oldChildValue :
-        newChildOptions[0][1];
+      newChildOptions.find((option) => option[1] == oldChildValue) != undefined;
+    const newChildValue = newOptionsIncludeOldValue
+      ? oldChildValue
+      : newChildOptions[0][1];
 
     // Record the options so that the option generator can access them.
     this.dependencyData.derivedOptions = newChildOptions;
@@ -286,16 +296,21 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
       }
 
       // Record that the child field's options and value have changed.
-      Blockly.Events.fire(new DependentDropdownOptionsChange(
+      Blockly.Events.fire(
+        new DependentDropdownOptionsChange(
           block,
           this.name,
           oldChildValue ?? undefined,
           newChildValue ?? undefined,
           oldChildOptions,
-          newChildOptions));
+          newChildOptions,
+        ),
+      );
     }
   }
 }
 
 Blockly.fieldRegistry.register(
-    'field_dependent_dropdown', FieldDependentDropdown);
+  'field_dependent_dropdown',
+  FieldDependentDropdown,
+);

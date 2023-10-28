@@ -8,18 +8,22 @@ There is a focus region within the minimap that highlights the users's current v
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/workspace-minimap
 ```
 
 ### npm
+
 ```
 npm install @blockly/workspace-minimap --save
 ```
 
 ## Usage
+
 ### Positioned Minimap
-A positioned minimap is an embedded component that lies on top of the primary workspace. When using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration. 
+
+A positioned minimap is an embedded component that lies on top of the primary workspace. When using a PositionedMinimap, the size of the minimap is determined by the window size, and the position by the primary workspace layout configuration.
 
 ```js
 import * as Blockly from 'blockly';
@@ -36,6 +40,7 @@ minimap.init();
 ```
 
 ### Unpositioned Minimap
+
 A raw minimap is an object whose size and position is configured using css.
 
 ```js
@@ -64,10 +69,12 @@ minimap.init();
 ```
 
 ### Configuration
+
 The minimap takes a workspace as input and it inherits its RTL and theme properties (so that they don't need to be configured manually).
 Additional styling of the minimap is possible with CSS. Use the `blockly-minimap` class for the minimap (box-shadow, etc.) and `blockly-focus-region` for the focus region (fill color, etc.).
 
 ## API
+
 - `init`: Initializes the minimap.
 - `dispose`: Disposes of the minimap.
 
@@ -76,9 +83,11 @@ Additional styling of the minimap is possible with CSS. Use the `blockly-minimap
 - `disableFocusRegion`: Turns off the focus region in the minimap.
 
 The following methods are also accessible with PositionedMinimap instances.
+
 - `position`: Positions the minimap UI element.
 - `getBoundingRectangle`: Returns the bounding rectangle of the UI element in
-pixel units relative to the Blockly injection div.
+  pixel units relative to the Blockly injection div.
 
 ## License
+
 Apache 2.0

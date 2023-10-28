@@ -11,8 +11,11 @@
 import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
 
-/* eslint-disable-next-line max-len */
-import {ScrollBlockDragger, ScrollMetricsManager, ScrollOptions} from '../src/index';
+import {
+  ScrollBlockDragger,
+  ScrollMetricsManager,
+  ScrollOptions,
+} from '../src/index';
 
 /**
  * Create a workspace.
@@ -31,7 +34,7 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
@@ -44,5 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     },
   };
   createPlayground(
-      document.getElementById('root'), createWorkspace, defaultOptions);
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

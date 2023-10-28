@@ -12,7 +12,6 @@ import {addSubCommand, parseAndRunMigrations} from './command.js';
 import {rename} from './rename.js';
 import {fixImports} from './fix-imports.js';
 
-
 addSubCommand(rename);
 addSubCommand(fixImports);
 

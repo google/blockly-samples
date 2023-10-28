@@ -32,7 +32,7 @@ const {
   runFromJsonSuiteTests,
 } = testHelpers;
 
-suite('FieldBitmap', function() {
+suite('FieldBitmap', function () {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -46,15 +46,27 @@ suite('FieldBitmap', function() {
     {title: 'Not a 2D array', value: [0, 1, 0, 1]},
     {
       title: 'Not a rectangle',
-      value: [[1, 1, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1]],
+      value: [
+        [1, 1, 1],
+        [1, 1, 1, 1, 1, 1],
+        [1, 1, 1],
+      ],
     },
     {
       title: 'Contains non-binary number',
-      value: [[1, 99, 1], [1, 1, 1], [1, 1, 1]],
+      value: [
+        [1, 99, 1],
+        [1, 1, 1],
+        [1, 1, 1],
+      ],
     },
     {
       title: 'Contains bad value',
-      value: [[1, 'b', 1], [1, 1, 1], [1, 1, 1]],
+      value: [
+        [1, 'b', 1],
+        [1, 1, 1],
+        [1, 1, 1],
+      ],
     },
   ]);
 
@@ -63,15 +75,39 @@ suite('FieldBitmap', function() {
    * @type {Array<FieldCreationTestCase>}
    */
   const validValueTestCases = processTestCases([
-    {title: '3x3 solid', value: [[1, 1, 1], [1, 1, 1], [1, 1, 1]]},
+    {
+      title: '3x3 solid',
+      value: [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1],
+      ],
+    },
     {
       title: '4x4 solid',
-      value: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+      value: [
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+      ],
     },
-    {title: '3x3 checkerboard', value: [[1, 0, 1], [0, 1, 0], [1, 0, 1]]},
+    {
+      title: '3x3 checkerboard',
+      value: [
+        [1, 0, 1],
+        [0, 1, 0],
+        [1, 0, 1],
+      ],
+    },
     {
       title: '4x4 empty',
-      value: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+      value: [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+      ],
     },
   ]);
 
@@ -80,14 +116,17 @@ suite('FieldBitmap', function() {
    * @type {*}
    */
   const defaultFieldValue = [
-    [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
   ];
   /**
    * Asserts that the field property values are set to default.
    * @param {FieldBitmap} field The field to check.
    */
-  const assertFieldDefault = function(field) {
+  const assertFieldDefault = function (field) {
     assert.deepEqual(field.getValue(), defaultFieldValue);
   };
   /**
@@ -95,7 +134,7 @@ suite('FieldBitmap', function() {
    * @param {FieldBitmap} field The field to check.
    * @param {FieldValueTestCase} testCase The test case.
    */
-  const validTestCaseAssertField = function(field, testCase) {
+  const validTestCaseAssertField = function (field, testCase) {
     const expectedValue = testCase.value;
     assert.deepEqual(field.getValue(), expectedValue);
     assert.equal(field.getImageHeight(), expectedValue.length);
@@ -109,13 +148,16 @@ suite('FieldBitmap', function() {
    * @param {*} invalidValueTestCases test cases for invalid field values
    */
   function runSetValueTests(validValueTestCases, invalidValueTestCases) {
-    const createFieldForTestCase = (testCase) => FieldBitmap.fromJson(`{
-        width: ${Array.isArray(testCase.value) ?
-      testCase.value.length :
-      DEFAULT_WIDTH},
-        height:${testCase.value && Array.isArray(testCase.value[0]) ?
-      testCase.value[0].length :
-      DEFAULT_HEIGHT},
+    const createFieldForTestCase = (testCase) =>
+      FieldBitmap.fromJson(`{
+        width: ${
+          Array.isArray(testCase.value) ? testCase.value.length : DEFAULT_WIDTH
+        },
+        height:${
+          testCase.value && Array.isArray(testCase.value[0])
+            ? testCase.value[0].length
+            : DEFAULT_HEIGHT
+        },
       }`);
 
     /**
@@ -124,7 +166,7 @@ suite('FieldBitmap', function() {
      * @returns {!Function} The test callback.
      */
     const createInvalidSetValueTestCallback = (testCase) => {
-      return function() {
+      return function () {
         const field = createFieldForTestCase(testCase);
         field.setValue(testCase.value);
         assertFieldDefault(field);
@@ -136,7 +178,7 @@ suite('FieldBitmap', function() {
      * @returns {!Function} The test callback.
      */
     const createValidSetValueTestCallback = (testCase) => {
-      return function() {
+      return function () {
         const field = createFieldForTestCase(testCase);
         field.setValue(testCase.value);
         validTestCaseAssertField(field, testCase);
@@ -144,20 +186,30 @@ suite('FieldBitmap', function() {
     };
 
     testHelpers.runTestCases(
-        invalidValueTestCases, createInvalidSetValueTestCallback);
+      invalidValueTestCases,
+      createInvalidSetValueTestCallback,
+    );
     testHelpers.runTestCases(
-        validValueTestCases, createValidSetValueTestCallback);
+      validValueTestCases,
+      createValidSetValueTestCallback,
+    );
   }
 
-
   runConstructorSuiteTests(
-      FieldBitmap, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+    FieldBitmap,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertFieldDefault,
+  );
 
   runFromJsonSuiteTests(
-      FieldBitmap, validValueTestCases, invalidValueTestCases,
-      validTestCaseAssertField, assertFieldDefault);
+    FieldBitmap,
+    validValueTestCases,
+    invalidValueTestCases,
+    validTestCaseAssertField,
+    assertFieldDefault,
+  );
 
-  runSetValueTests(
-      validValueTestCases, invalidValueTestCases);
+  runSetValueTests(validValueTestCases, invalidValueTestCases);
 });

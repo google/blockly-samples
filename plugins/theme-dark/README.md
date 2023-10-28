@@ -7,11 +7,13 @@ A [Blockly](https://www.npmjs.com/package/blockly) dark theme.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/theme-dark
 ```
 
 ### npm
+
 ```
 npm install @blockly/theme-dark --save
 ```
@@ -25,8 +27,8 @@ import DarkTheme from '@blockly/theme-dark';
 Blockly.inject('blocklyDiv', {
   theme: DarkTheme,
 });
-
 ```
 
 ## License
+
 Apache 2.0

@@ -6,9 +6,11 @@ import {BlockSearcher} from '../src/block_searcher';
 suite('Toolbox search', () => {
   test('registers itself as a toolbox item', () => {
     assert(
-        Blockly.registry.hasItem(
-            Blockly.registry.Type.TOOLBOX_ITEM,
-            ToolboxSearchCategory.SEARCH_CATEGORY_KIND));
+      Blockly.registry.hasItem(
+        Blockly.registry.Type.TOOLBOX_ITEM,
+        ToolboxSearchCategory.SEARCH_CATEGORY_KIND,
+      ),
+    );
   });
 });
 

@@ -28,13 +28,14 @@ const toolbox = generateFieldTestBlocks('field_colour_hsv_sliders', [
  * @returns The created workspace.
  */
 function createWorkspace(
-    blocklyDiv: HTMLElement, options: Blockly.BlocklyOptions):
-    Blockly.WorkspaceSvg {
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };

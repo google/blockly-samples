@@ -37,13 +37,10 @@ const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
 
 console.log(`Running start for ${packageJson.name}`);
 
-const args = process.argv.slice(2);
-const skipLint = args.includes('--skip-lint');
 // Create the webpack configuration for the development environment.
 // Build the test directory.
 const config = webpackConfig({
   mode: 'development',
-  skipLint: skipLint,
 });
 if (!config.entry) {
   console.log(`${chalk.red(`Configuration error.`)}
@@ -63,8 +60,7 @@ try {
 const devSocket = {
   warnings: (warnings) =>
     devServer.sockWrite(devServer.sockets, 'warnings', warnings),
-  errors: (errors) =>
-    devServer.sockWrite(devServer.sockets, 'errors', errors),
+  errors: (errors) => devServer.sockWrite(devServer.sockets, 'errors', errors),
 };
 
 compiler.hooks.invalid.tap('invalid', () => {
@@ -89,12 +85,18 @@ if (isTypescript) {
 
       const messageColor = severity == 'warning' ? chalk.yellow : chalk.red;
 
-      const source = file && fs.existsSync(file) &&
-        fs.readFileSync(file, 'utf-8');
-      const frame = source ? codeFrame(source,
-          {start: {line: line, column: character}},
-          {highlightCode: true, linesAbove: 2, linesBelow: 2})
-          .split('\n').map((str) => '  ' + str).join(os.EOL) : '';
+      const source =
+        file && fs.existsSync(file) && fs.readFileSync(file, 'utf-8');
+      const frame = source
+        ? codeFrame(
+            source,
+            {start: {line: line, column: character}},
+            {highlightCode: true, linesAbove: 2, linesBelow: 2},
+          )
+            .split('\n')
+            .map((str) => '  ' + str)
+            .join(os.EOL)
+        : '';
 
       return [
         os.EOL,
@@ -108,11 +110,11 @@ if (isTypescript) {
 
     tsMessagesResolver({
       errors: issues
-          .filter((msg) => msg.severity === 'error')
-          .map(formatTypecheckerMessage),
+        .filter((msg) => msg.severity === 'error')
+        .map(formatTypecheckerMessage),
       warnings: issues
-          .filter((msg) => msg.severity === 'warning')
-          .map(formatTypecheckerMessage),
+        .filter((msg) => msg.severity === 'warning')
+        .map(formatTypecheckerMessage),
     });
 
     return issues;
@@ -132,16 +134,17 @@ compiler.hooks.done.tap('done', async (stats) => {
   };
 
   const messages = {
-    errors: statsData.errors
-        .map(formatWebpackMessage),
-    warnings: statsData.warnings
-        .map(formatWebpackMessage),
+    errors: statsData.errors.map(formatWebpackMessage),
+    warnings: statsData.warnings.map(formatWebpackMessage),
   };
 
   if (isTypescript && statsData.errors.length === 0) {
     const delayedMsg = setTimeout(() => {
-      console.log(chalk.yellow(
-          'Files successfully emitted, waiting for typecheck results...'));
+      console.log(
+        chalk.yellow(
+          'Files successfully emitted, waiting for typecheck results...',
+        ),
+      );
     }, 100);
 
     const tsMessages = await tsMessagesPromise;

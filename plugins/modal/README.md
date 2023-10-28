@@ -5,11 +5,13 @@ A [Blockly](https://www.npmjs.com/package/blockly) plugin that renders a modal.
 ## Installation
 
 ### Yarn
+
 ```
 yarn add @blockly/plugin-modal
 ```
 
 ### npm
+
 ```
 npm install @blockly/plugin-modal --save
 ```
@@ -31,7 +33,9 @@ modal.init();
 ```
 
 ## API
+
 ### Methods
+
 - `init`: Create a modal.
 - `dispose`: Dispose of the modal.
 - `show`: Show the modal and focus on the first interactable element.
@@ -39,9 +43,11 @@ modal.init();
 - `render`: Create all the dom elements for the modal.
 
 ### Properties
+
 - `shouldCloseOnOverlayClick`: (default true) If set to true will close the
-overlay when a user clicks outside of the modal.
+  overlay when a user clicks outside of the modal.
 - `shouldCloseOnEsc`: (default true) If set to true will close the modal when the user hits escape.
 
 ## License
+
 Apache 2.0

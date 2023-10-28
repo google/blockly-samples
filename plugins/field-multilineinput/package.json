@@ -6,13 +6,14 @@
     "audit:fix": "blockly-scripts auditFix",
     "build": "blockly-scripts build",
     "clean": "blockly-scripts clean",
-    "lint": "blockly-scripts lint",
+    "lint": "eslint .",
     "predeploy": "blockly-scripts predeploy",
     "prepublishOnly": "npm run clean && npm run build",
     "start": "blockly-scripts start",
     "test": "blockly-scripts test"
   },
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "unpkg": "./dist/index.js",
   "author": "Blockly Team",
   "keywords": [
@@ -41,7 +42,6 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^2.0.1",
     "@blockly/dev-tools": "^7.1.0",
-    "@typescript-eslint/parser": "^5.59.5",
     "blockly": "^10.0.0",
     "chai": "^4.2.0",
     "sinon": "^9.0.1",
@@ -53,9 +53,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://wombat-dressing-room.appspot.com"
-  },
-  "eslintConfig": {
-    "extends": "@blockly/eslint-config"
   },
   "engines": {
     "node": ">=8.0.0"

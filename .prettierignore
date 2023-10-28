@@ -1,0 +1,18 @@
+# All examples, codelabs, etc.
+examples/*
+node_modules/*
+codelabs/*
+gh-pages/*
+
+# All build artifacts, etc.
+**/dist/*
+**/build/*
+**/node_modules/*
+**/CHANGELOG.md
+CHANGELOG.md
+PULL_REQUEST_TEMPLATE.md
+
+# Specific examples that are sometimes copied into plugins
+plugins/dev-create/templates/sample-app/*
+plugins/dev-create/templates/sample-app-ts/*
+

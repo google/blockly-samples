@@ -18,7 +18,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   /**
    * The SVG group containing the zoom-to-fit control.
    */
-  private svgGroup: SVGElement|null = null;
+  private svgGroup: SVGElement | null = null;
 
   /**
    * Left coordinate of the zoom-to-fit control.
@@ -55,7 +55,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    */
   private initialized = false;
 
-  private onZoomToFitWrapper: Blockly.browserEvents.Data|null = null;
+  private onZoomToFitWrapper: Blockly.browserEvents.Data | null = null;
 
   /**
    * Constructor for zoom-to-fit control.
@@ -96,21 +96,32 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * Creates DOM for ui element.
    */
   private createDom() {
-    this.svgGroup =
-        Blockly.utils.dom.createSvgElement(Blockly.utils.Svg.IMAGE, {
-          'height': `${this.height}px`,
-          'width': `${this.width}px`,
-          'class': 'zoomToFit',
-        });
-    this.svgGroup.setAttributeNS(Blockly.utils.dom.XLINK_NS, 'xlink:href',
-        zoomToFitSvgDataUri);
+    this.svgGroup = Blockly.utils.dom.createSvgElement(
+      Blockly.utils.Svg.IMAGE,
+      {
+        'height': `${this.height}px`,
+        'width': `${this.width}px`,
+        'class': 'zoomToFit',
+      },
+    );
+    this.svgGroup.setAttributeNS(
+      Blockly.utils.dom.XLINK_NS,
+      'xlink:href',
+      zoomToFitSvgDataUri,
+    );
 
-    Blockly.utils.dom.insertAfter(this.svgGroup,
-        this.workspace.getBubbleCanvas());
+    Blockly.utils.dom.insertAfter(
+      this.svgGroup,
+      this.workspace.getBubbleCanvas(),
+    );
 
     // Attach listener.
     this.onZoomToFitWrapper = Blockly.browserEvents.conditionalBind(
-        this.svgGroup, 'mousedown', null, this.onClick.bind(this));
+      this.svgGroup,
+      'mousedown',
+      null,
+      this.onClick.bind(this),
+    );
   }
 
   /**
@@ -119,7 +130,10 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   private onClick() {
     this.workspace.zoomToFit();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
-        null, this.workspace.id, 'zoom_reset_control');
+      null,
+      this.workspace.id,
+      'zoom_reset_control',
+    );
     Blockly.Events.fire(uiEvent);
   }
 
@@ -129,8 +143,12 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * @returns The component’s bounding box.
    */
   getBoundingRectangle(): Blockly.utils.Rect {
-    return new Blockly.utils.Rect(this.top, this.top + this.height, this.left,
-        this.left + this.width);
+    return new Blockly.utils.Rect(
+      this.top,
+      this.top + this.height,
+      this.left,
+      this.left + this.width,
+    );
   }
 
   /**
@@ -141,23 +159,30 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * @param savedPositions List of rectangles that
    *     are already on the workspace.
    */
-  position(metrics: Blockly.MetricsManager.UiMetrics,
-      savedPositions: Blockly.utils.Rect[]) {
+  position(
+    metrics: Blockly.MetricsManager.UiMetrics,
+    savedPositions: Blockly.utils.Rect[],
+  ) {
     if (!this.initialized) {
       return;
     }
     const hasVerticalScrollbars =
-        this.workspace.scrollbar &&
-        this.workspace.scrollbar.canScrollHorizontally();
+      this.workspace.scrollbar &&
+      this.workspace.scrollbar.canScrollHorizontally();
     const hasHorizontalScrollbars =
-        this.workspace.scrollbar &&
-        this.workspace.scrollbar.canScrollVertically();
+      this.workspace.scrollbar &&
+      this.workspace.scrollbar.canScrollVertically();
 
-    if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
-        (this.workspace.horizontalLayout && !this.workspace.RTL)) {
+    if (
+      metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_LEFT ||
+      (this.workspace.horizontalLayout && !this.workspace.RTL)
+    ) {
       // Right corner placement.
-      this.left = metrics.absoluteMetrics.left + metrics.viewMetrics.width -
-                  this.width - this.marginHorizontal;
+      this.left =
+        metrics.absoluteMetrics.left +
+        metrics.viewMetrics.width -
+        this.width -
+        this.marginHorizontal;
       if (hasVerticalScrollbars && !this.workspace.RTL) {
         this.left -= Blockly.Scrollbar.scrollbarThickness;
       }
@@ -170,11 +195,14 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     }
 
     const startAtBottom =
-        metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
+      metrics.toolboxMetrics.position !== Blockly.TOOLBOX_AT_BOTTOM;
     if (startAtBottom) {
       // Bottom corner placement
-      this.top = metrics.absoluteMetrics.top + metrics.viewMetrics.height -
-                 this.height - this.marginVertical;
+      this.top =
+        metrics.absoluteMetrics.top +
+        metrics.viewMetrics.height -
+        this.height -
+        this.marginVertical;
       if (hasHorizontalScrollbars) {
         // The horizontal scrollbars are always positioned on the bottom.
         this.top -= Blockly.Scrollbar.scrollbarThickness;
@@ -188,9 +216,11 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     let boundingRect = this.getBoundingRectangle();
     for (let i = 0, otherEl; (otherEl = savedPositions[i]); i++) {
       if (boundingRect.intersects(otherEl)) {
-        if (startAtBottom) { // Bump up.
+        if (startAtBottom) {
+          // Bump up.
           this.top = otherEl.top - this.height - this.marginVertical;
-        } else { // Bump down.
+        } else {
+          // Bump down.
           this.top = otherEl.bottom + this.marginVertical;
         }
         // Recheck other savedPositions
@@ -198,8 +228,10 @@ export class ZoomToFitControl implements Blockly.IPositionable {
         i = -1;
       }
     }
+
     this.svgGroup?.setAttribute('transform',
         `translate(${this.left}, ${this.top})`);
+
   }
 }
 
@@ -207,13 +239,13 @@ export class ZoomToFitControl implements Blockly.IPositionable {
  * Base64 encoded data uri for zoom to fit icon.
  */
 const zoomToFitSvgDataUri =
-    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
-    '9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCIgZm' +
-    'lsbD0iIzU0NkU3QSI+PHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+PH' +
-    'BhdGggZD0iTTUgNi40Mkw4LjA5IDkuNSA5LjUgOC4wOSA2LjQxIDVIOVYzSDN2Nmgyem0xMC' +
-    '0zLjQxdjJoMi41N0wxNC41IDguMDlsMS40MSAxLjQxTDE5IDYuNDFWOWgyVjMuMDF6bTQgMT' +
-    'QuNTdsLTMuMDktMy4wOC0xLjQxIDEuNDFMMTcuNTkgMTlIMTV2Mmg2di02aC0yek04LjA5ID' +
-    'E0LjVMNSAxNy41OVYxNUgzdjZoNnYtMkg2LjQybDMuMDgtMy4wOXoiLz48L3N2Zz4=';
+  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC' +
+  '9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCIgZm' +
+  'lsbD0iIzU0NkU3QSI+PHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+PH' +
+  'BhdGggZD0iTTUgNi40Mkw4LjA5IDkuNSA5LjUgOC4wOSA2LjQxIDVIOVYzSDN2Nmgyem0xMC' +
+  '0zLjQxdjJoMi41N0wxNC41IDguMDlsMS40MSAxLjQxTDE5IDYuNDFWOWgyVjMuMDF6bTQgMT' +
+  'QuNTdsLTMuMDktMy4wOC0xLjQxIDEuNDFMMTcuNTkgMTlIMTV2Mmg2di02aC0yek04LjA5ID' +
+  'E0LjVMNSAxNy41OVYxNUgzdjZoNnYtMkg2LjQybDMuMDgtMy4wOXoiLz48L3N2Zz4=';
 
 Blockly.Css.register(`
 .zoomToFit {

@@ -8,7 +8,6 @@ const {assert} = require('chai');
 const {assertFieldValue} = require('@blockly/dev-tools').testHelpers;
 const {FieldSlider} = require('../src/index');
 
-
 /**
  * Assert the slider field options.
  * @param {FieldSlider} sliderField The slider field.
@@ -17,8 +16,13 @@ const {FieldSlider} = require('../src/index');
  * @param {number} expectedPrecision The expected precision value.
  * @param {number} expectedValue The expected value.
  */
-function assertSliderField(sliderField, expectedMin, expectedMax,
-    expectedPrecision, expectedValue) {
+function assertSliderField(
+  sliderField,
+  expectedMin,
+  expectedMax,
+  expectedPrecision,
+  expectedValue,
+) {
   assertFieldValue(sliderField, expectedValue);
   assert.equal(sliderField.getMin(), expectedMin, 'Min');
   assert.equal(sliderField.getMax(), expectedMax, 'Max');

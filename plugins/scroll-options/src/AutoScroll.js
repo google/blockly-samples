@@ -89,8 +89,9 @@ export class AutoScroll {
         this.scrollTick_(delta);
       }
 
-      this.animationFrameId_ =
-          requestAnimationFrame((time) => this.nextAnimationStep_(time));
+      this.animationFrameId_ = requestAnimationFrame((time) =>
+        this.nextAnimationStep_(time),
+      );
     }
   }
 
@@ -117,9 +118,9 @@ export class AutoScroll {
     // As we scroll, we shouldn't expand past the content area that existed
     // before the block was picked up. Therefore, we use cached ContentMetrics
     // so that the content area does not change as we scroll.
-    const metricsManager =
-    /** @type {ScrollMetricsManager} */ (
-        this.workspace_.getMetricsManager());
+    const metricsManager = /** @type {ScrollMetricsManager} */ (
+      this.workspace_.getMetricsManager()
+    );
     metricsManager.useCachedContentMetrics = true;
     const newX = this.workspace_.scrollX + scrollDx;
     const newY = this.workspace_.scrollY + scrollDy;
@@ -136,8 +137,9 @@ export class AutoScroll {
     // The dragger will update its values so that things like connection
     // markers will stay consistent.
     if (deltaX || deltaY) {
-      this.workspace_.currentGesture_.getCurrentDragger()
-          .moveBlockWhileDragging(deltaX, deltaY);
+      this.workspace_.currentGesture_
+        .getCurrentDragger()
+        .moveBlockWhileDragging(deltaX, deltaY);
     }
   }
 

@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2023 Google LLC
@@ -6,7 +5,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -22,9 +20,12 @@ export interface IProcedureBlock {
  * @param block The block to check for procedure-y-ness.
  * @returns Whether this block is a procedure block or not.
  */
-export function isProcedureBlock(block: Blockly.Block |
-  IProcedureBlock): block is IProcedureBlock {
-  return (block as IProcedureBlock).getProcedureModel !== undefined &&
+export function isProcedureBlock(
+  block: Blockly.Block | IProcedureBlock,
+): block is IProcedureBlock {
+  return (
+    (block as IProcedureBlock).getProcedureModel !== undefined &&
     (block as IProcedureBlock).doProcedureUpdate !== undefined &&
-    (block as IProcedureBlock).isProcedureDef !== undefined;
+    (block as IProcedureBlock).isProcedureDef !== undefined
+  );
 }

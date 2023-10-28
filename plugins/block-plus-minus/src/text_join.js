@@ -24,7 +24,7 @@ const textJoinMutator = {
    * @returns {!Element} XML storage element.
    * @this {Blockly.Block}
    */
-  mutationToDom: function() {
+  mutationToDom: function () {
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('items', this.itemCount_);
     return container;
@@ -35,7 +35,7 @@ const textJoinMutator = {
    * @param {!Element} xmlElement XML storage element.
    * @this {Blockly.Block}
    */
-  domToMutation: function(xmlElement) {
+  domToMutation: function (xmlElement) {
     const targetCount = parseInt(xmlElement.getAttribute('items'), 10);
     this.updateShape_(targetCount);
   },
@@ -44,7 +44,7 @@ const textJoinMutator = {
    * Returns the state of this block as a JSON serializable object.
    * @returns {{itemCount: number}} The state of this block, ie the item count.
    */
-  saveExtraState: function() {
+  saveExtraState: function () {
     return {
       'itemCount': this.itemCount_,
     };
@@ -54,7 +54,7 @@ const textJoinMutator = {
    * Applies the given state to this block.
    * @param {*} state The state to apply to this block, ie the item count.
    */
-  loadExtraState: function(state) {
+  loadExtraState: function (state) {
     this.updateShape_(state['itemCount']);
   },
 
@@ -64,7 +64,7 @@ const textJoinMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  updateShape_: function(targetCount) {
+  updateShape_: function (targetCount) {
     while (this.itemCount_ < targetCount) {
       this.addPart_();
     }
@@ -79,7 +79,7 @@ const textJoinMutator = {
    * state of the minus.
    * @this {Blockly.Block}
    */
-  plus: function() {
+  plus: function () {
     this.addPart_();
     this.updateMinus_();
   },
@@ -89,7 +89,7 @@ const textJoinMutator = {
    * updates the state of the minus.
    * @this {Blockly.Block}
    */
-  minus: function() {
+  minus: function () {
     if (this.itemCount_ == 0) {
       return;
     }
@@ -103,14 +103,14 @@ const textJoinMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  addPart_: function() {
+  addPart_: function () {
     if (this.itemCount_ == 0) {
       if (this.getInput('EMPTY')) {
         this.removeInput('EMPTY');
       }
       this.topInput_ = this.appendValueInput('ADD' + this.itemCount_)
-          .appendField(createPlusField(), 'PLUS')
-          .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
+        .appendField(createPlusField(), 'PLUS')
+        .appendField(Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH']);
     } else {
       this.appendValueInput('ADD' + this.itemCount_);
     }
@@ -124,14 +124,14 @@ const textJoinMutator = {
    * @this {Blockly.Block}
    * @private
    */
-  removePart_: function() {
+  removePart_: function () {
     this.itemCount_--;
     this.removeInput('ADD' + this.itemCount_);
     if (this.itemCount_ == 0) {
       this.topInput_ = this.appendDummyInput('EMPTY')
-          .appendField(createPlusField(), 'PLUS')
-          .appendField(this.newQuote_(true))
-          .appendField(this.newQuote_(false));
+        .appendField(createPlusField(), 'PLUS')
+        .appendField(this.newQuote_(true))
+        .appendField(this.newQuote_(false));
     }
   },
 
@@ -139,7 +139,7 @@ const textJoinMutator = {
    * Makes it so the minus is visible iff there is an input available to remove.
    * @private
    */
-  updateMinus_: function() {
+  updateMinus_: function () {
     const minusField = this.getField('MINUS');
     if (!minusField && this.itemCount_ > 0) {
       this.topInput_.insertFieldAt(1, createMinusField(), 'MINUS');
@@ -154,7 +154,7 @@ const textJoinMutator = {
  * mutator is provided the block has two inputs.
  * @this {Blockly.Block}
  */
-const textJoinHelper = function() {
+const textJoinHelper = function () {
   Blockly.Extensions.apply('text_quotes', this, false);
   this.updateShape_(2);
 };
@@ -162,5 +162,8 @@ const textJoinHelper = function() {
 if (Blockly.Extensions.isRegistered('text_join_mutator')) {
   Blockly.Extensions.unregister('text_join_mutator');
 }
-Blockly.Extensions.registerMutator('text_join_mutator',
-    textJoinMutator, textJoinHelper);
+Blockly.Extensions.registerMutator(
+  'text_join_mutator',
+  textJoinMutator,
+  textJoinHelper,
+);

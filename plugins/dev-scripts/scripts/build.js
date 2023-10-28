@@ -30,11 +30,8 @@ const packageJson = require(resolveApp('package.json'));
 console.log(`Running production build for ${packageJson.name}`);
 
 // Create the webpack configuration for based on the build environment.
-const args = process.argv.slice(2);
-const skipLint = args.includes('--skip-lint');
 const config = webpackConfig({
   mode: 'production',
-  skipLint: skipLint,
 });
 if (!config.entry) {
   console.log(`${chalk.red(`Configuration error.`)}
@@ -56,10 +53,8 @@ webpack(config, (err, stats) => {
   };
 
   const messages = {
-    errors: statsData.errors
-        .map(formatWebpackMessage),
-    warnings: statsData.warnings
-        .map(formatWebpackMessage),
+    errors: statsData.errors.map(formatWebpackMessage),
+    warnings: statsData.warnings.map(formatWebpackMessage),
   };
 
   if (!messages.errors.length && !messages.warnings.length) {
