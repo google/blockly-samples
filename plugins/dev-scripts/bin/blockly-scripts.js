@@ -18,7 +18,6 @@ const availableScripts = [
   'start',
   'clean',
   'predeploy',
-  'lint',
   'test',
   'auditFix',
 ];
