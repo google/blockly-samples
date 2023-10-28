@@ -1,0 +1,56 @@
+# This workflow runs only when broken-link-check fails. This creates
+# an issue using an issue template.
+
+name: Markdown Link Check log parser
+on:
+  workflow_run:
+    workflows: [
+      "Check For Broken Embedded Links"
+    ]
+    types:
+      - completed
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  main:
+    name: Markdown Link Check log parser
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run markdown link check log parser
+        id: mlc-log-parser
+        uses: edumserrano/markdown-link-check-log-parser@v1
+        with:
+          run-id: '${{ github.event.workflow_run.id }}'
+          job-name: Check for broken links
+          step-name: checking_links
+          only-errors: 'true'
+          output: 'step-json'
+          json-filepath: './mlc-json-result.json'
+      - name: Dump output from previous step
+        id: data_dump
+        run: >
+          $result = '${{ steps.mlc-log-parser.outputs.mlc-result }}' |
+          ConvertFrom-Json
+
+          Write-Output "Total files checked: $($result.TotalFilesChecked)"
+
+          Write-Output "Total links checked: $($result.TotalLinksChecked)"
+
+          Write-Output "Has errors: $($result.HasErrors)"
+
+          $resultAsJsonIndented = ConvertTo-Json -Depth 4 $result
+
+          Write-Output $resultAsJsonIndented
+          
+      - name: Checkout master
+        uses: actions/checkout@master
+      - run: >
+          Write-Output '${{ steps.mlc-log-parser.outputs.mlc-result }}'
+      - name: Create issue if there are broken links
+        uses: JasonEtco/create-an-issue@v2.9.1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BODY: ${{ steps.mlc-log-parser.outputs.mlc-result }}

@@ -1,0 +1,26 @@
+# This workflow checks if the embedded links are broken in .md files.
+# It runs every Thursday at 8AM PST (3PM UTC) and goes through .md files of 
+# all  directories and subdirectories. For any broken link found, it creates
+# an issue.
+
+name: Check For Broken Embedded Links
+
+on: 
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 15 * * 4"
+
+jobs:
+  check-for-broken-links:
+    name: Check for broken links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - id: checking_links
+        name: checking_links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'no'
+          use-verbose-mode: 'yes'
