@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.0...@blockly/dev-tools@7.1.1) (2023-10-30)
+
+
+### Bug Fixes
+
+* Advanced playground should use JSON instead of XML on reload ([#1966](https://github.com/google/blockly-samples/issues/1966)) ([cc8b6b1](https://github.com/google/blockly-samples/commit/cc8b6b10ed6107eb270df994fdd1026e2c409a54))
+
+
+
 ## [7.1.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.0.3...@blockly/dev-tools@7.1.0) (2023-09-14)
 
 

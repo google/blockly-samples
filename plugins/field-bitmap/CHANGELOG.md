@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.5...@blockly/field-bitmap@4.0.6) (2023-10-30)
+
+
+### Bug Fixes
+
+* progress for Have field-bitmap fire intermediate change events ([#2012](https://github.com/google/blockly-samples/issues/2012)) ([7050875](https://github.com/google/blockly-samples/commit/7050875971ebb038702232c5bb642a0393592ab7))
+
+
+
 ## [4.0.5](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.4...@blockly/field-bitmap@4.0.5) (2023-09-14)
 
 **Note:** Version bump only for package @blockly/field-bitmap

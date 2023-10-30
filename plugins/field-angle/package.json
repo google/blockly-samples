@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-angle",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "A Blockly angle field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,8 +40,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^2.0.1",
-    "@blockly/dev-tools": "^7.1.0",
+    "@blockly/dev-scripts": "^2.0.2",
+    "@blockly/dev-tools": "^7.1.1",
     "blockly": "^10.0.0",
     "chai": "^4.2.0",
     "sinon": "^9.0.1",
