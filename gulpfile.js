@@ -168,7 +168,7 @@ function publishFromPackage(done) {
 
   // Run lerna publish. Will not update versions.
   console.log(`Publishing plugins from package.json versions.`);
-  execSync(`lerna publish --no-private --from-package`, {
+  execSync(`lerna publish from-package --no-private`, {
     cwd: releaseDir,
     stdio: 'inherit',
   });
