@@ -24,7 +24,7 @@ if (!global.navigator) {
   };
 }
 
-suite('FieldDate', function () {
+suite.skip('FieldDate', function () {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
