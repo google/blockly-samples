@@ -1,7 +1,22 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
+ * A toolbox category that provides a search field and displays matching blocks
+ * in its flyout.
+ */
 import * as Blockly from 'blockly/core';
-import { BlockSearcher } from './block_searcher';
+import {BlockSearcher} from './block_searcher';
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
+/**
+ * A toolbox category that provides a search field and displays matching blocks
+ * in its flyout.
+ */
 
 export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private static readonly START_SEARCH_SHORTCUT = 'startSearch';
