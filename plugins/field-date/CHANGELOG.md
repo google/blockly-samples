@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-date@8.0.5...@blockly/field-date@8.0.6) (2023-10-30)
+
+
+### Bug Fixes
+
+* **packaging:** Don't advertise non-existent ESM entrypoints ([#2022](https://github.com/google/blockly-samples/issues/2022)) ([d019198](https://github.com/google/blockly-samples/commit/d0191984399b784e2928b8fb4c58257bfa857655)), closes [#1877](https://github.com/google/blockly-samples/issues/1877)
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [8.0.5](https://github.com/google/blockly-samples/compare/@blockly/field-date@8.0.4...@blockly/field-date@8.0.5) (2023-09-21)
 
 **Note:** Version bump only for package @blockly/field-date

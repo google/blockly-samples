@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.0.0...@blockly/block-test@5.0.1) (2023-10-30)
+
+**Note:** Version bump only for package @blockly/block-test
+
+
+
+
+
 ## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/block-test@4.0.2...@blockly/block-test@5.0.0) (2023-07-24)
 
 

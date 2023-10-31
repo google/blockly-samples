@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@2.0.1...@blockly/dev-scripts@2.0.2) (2023-10-30)
+
+
+### Bug Fixes
+
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+
+
+
 ## [2.0.1](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@2.0.0...@blockly/dev-scripts@2.0.1) (2023-07-20)
 
 **Note:** Version bump only for package @blockly/dev-scripts

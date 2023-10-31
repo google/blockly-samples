@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.0](https://github.com/google/blockly-samples/compare/@blockly/field-slider@6.0.5...@blockly/field-slider@6.1.0) (2023-10-30)
+
+
+### Features
+
+* add publish types for field slider ([#1962](https://github.com/google/blockly-samples/issues/1962)) ([a615010](https://github.com/google/blockly-samples/commit/a615010631c6c206905d76c4db3d1efddae698a3))
+* have field-slider fire intermediate change events ([#1954](https://github.com/google/blockly-samples/issues/1954)) ([dfd4966](https://github.com/google/blockly-samples/commit/dfd4966b877105cf35d77826f9ba0229f4299a48))
+
+
+### Bug Fixes
+
+* **packaging:** Don't advertise non-existent ESM entrypoints ([#2022](https://github.com/google/blockly-samples/issues/2022)) ([d019198](https://github.com/google/blockly-samples/commit/d0191984399b784e2928b8fb4c58257bfa857655)), closes [#1877](https://github.com/google/blockly-samples/issues/1877)
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [6.0.5](https://github.com/google/blockly-samples/compare/@blockly/field-slider@6.0.4...@blockly/field-slider@6.0.5) (2023-09-21)
 
 **Note:** Version bump only for package @blockly/field-slider

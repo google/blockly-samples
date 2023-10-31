@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/google/blockly-samples/compare/@blockly/create-package@2.0.1...@blockly/create-package@2.0.2) (2023-10-30)
+
+
+### Bug Fixes
+
+* include ts files in sample app create ([#2038](https://github.com/google/blockly-samples/issues/2038)) ([d3ea99a](https://github.com/google/blockly-samples/commit/d3ea99ad9da09c84018ba785ca7ed6ae38ce042f))
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [2.0.1](https://github.com/google/blockly-samples/compare/@blockly/create-package@2.0.0...@blockly/create-package@2.0.1) (2023-09-21)
 
 **Note:** Version bump only for package @blockly/create-package
