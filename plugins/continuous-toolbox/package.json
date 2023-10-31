@@ -2,15 +2,6 @@
   "name": "@blockly/continuous-toolbox",
   "version": "5.0.5",
   "description": "A Blockly plugin that adds a continous-scrolling style toolbox and flyout",
-  "scripts": {
-    "build": "blockly-scripts build",
-    "clean": "blockly-scripts clean",
-    "lint": "eslint .",
-    "prepublishOnly": "npm run clean && npm run build",
-    "start": "blockly-scripts start",
-    "audit:fix": "blockly-scripts auditFix",
-    "predeploy": "npm run build && blockly-scripts predeploy"
-  },
   "main": "./dist/index.js",
   "module": "./src/index.js",
   "unpkg": "./dist/index.js",
@@ -39,8 +30,6 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^2.0.1",
-    "@blockly/dev-tools": "^7.1.0",
     "blockly": "^10.0.0"
   },
   "peerDependencies": {
