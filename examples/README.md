@@ -41,12 +41,13 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 - [``blockly-svelte-sample``](blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
 - [``blockly-vue3-sample``](blockly-vue3/): Blockly in a Vue3 project, defines a Vue Blockly Component.
 - [``blockly-parcel``](blockly-parcel/): Using Blockly with Parcel.
+- [``sample-app``](sample-app/):This app illustrates how to use Blockly together with common programming tools.
 
 
 ### Real-time Collaboration
 
 - [``blockly-rtc``](blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
-- [``sample-app``](sample-app/):This app illustrates how to use Blockly together with common programming tools.
+
 
 ## Prerequisites
 
