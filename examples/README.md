@@ -46,7 +46,6 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 ### Real-time Collaboration
 
 - [``blockly-rtc``](blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
-- [``sample-app``](sample-app/):This app illustrates how to use Blockly together with common programming tools.
 
 ## Prerequisites
 
