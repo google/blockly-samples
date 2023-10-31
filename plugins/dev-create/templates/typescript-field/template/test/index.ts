@@ -14,8 +14,8 @@ import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_template', [
   {
-    'args': {
-      'value': 0, // TODO: change default value
+    args: {
+      value: 0, // TODO: change default value
     },
   },
 ]);

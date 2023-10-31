@@ -100,7 +100,7 @@ suite('FieldColour', function () {
   ];
   const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
-    testCase.json = {'colour': testCase.value};
+    testCase.json = {colour: testCase.value};
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);
@@ -163,15 +163,15 @@ suite('FieldColour', function () {
      */
     function createBlockMock() {
       return {
-        'id': 'test',
-        'rendered': false,
-        'workspace': {
-          'rendered': false,
+        id: 'test',
+        rendered: false,
+        workspace: {
+          rendered: false,
         },
-        'renameVarById': Blockly.Block.prototype.renameVarById,
-        'updateVarName': Blockly.Block.prototype.updateVarName,
-        'isShadow': () => false,
-        'isDeadOrDying': () => false,
+        renameVarById: Blockly.Block.prototype.renameVarById,
+        updateVarName: Blockly.Block.prototype.updateVarName,
+        isShadow: () => false,
+        isDeadOrDying: () => false,
       };
     }
 
@@ -326,8 +326,8 @@ suite('FieldColour', function () {
       });
       test('JSON Definition', function () {
         const field = FieldColour.fromJson({
-          'colour': '#ffffff',
-          'columns': 3,
+          colour: '#ffffff',
+          columns: 3,
         });
         assertColumns(field, 3);
       });
@@ -344,15 +344,15 @@ suite('FieldColour', function () {
       this.workspace = new Blockly.Workspace();
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'row_block',
-          'message0': '%1',
-          'args0': [
+          type: 'row_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'INPUT',
+              type: 'input_value',
+              name: 'INPUT',
             },
           ],
-          'output': null,
+          output: null,
         },
       ]);
 
@@ -361,7 +361,7 @@ suite('FieldColour', function () {
         const field = new FieldColour(value);
         block.getInput('INPUT').appendField(field, 'COLOUR');
         const jso = Blockly.serialization.blocks.save(block);
-        assert.deepEqual(jso['fields'], {'COLOUR': value});
+        assert.deepEqual(jso['fields'], {COLOUR: value});
       };
     });
 

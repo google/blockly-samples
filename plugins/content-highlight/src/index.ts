@@ -90,7 +90,7 @@ export class ContentHighlight {
     /** @type {SVGElement} */
     this.svgGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
-      {'class': 'contentAreaHighlight'},
+      {class: 'contentAreaHighlight'},
       null,
     );
 
@@ -98,40 +98,40 @@ export class ContentHighlight {
     const mask = Blockly.utils.dom.createSvgElement(
       new Blockly.utils.Svg('mask'),
       {
-        'id': 'contentAreaHighlightMask' + rnd,
+        id: 'contentAreaHighlightMask' + rnd,
       },
       this.svgGroup,
     );
     Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'fill': 'white',
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        fill: 'white',
       },
       mask,
     );
     this.rect = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'rx': Blockly.Bubble.BORDER_WIDTH,
-        'ry': Blockly.Bubble.BORDER_WIDTH,
-        'fill': 'black',
+        x: 0,
+        y: 0,
+        rx: Blockly.Bubble.BORDER_WIDTH,
+        ry: Blockly.Bubble.BORDER_WIDTH,
+        fill: 'black',
       },
       mask,
     );
     this.background = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'mask': `url(#contentAreaHighlightMask${rnd})`,
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        mask: `url(#contentAreaHighlightMask${rnd})`,
       },
       this.svgGroup,
     );

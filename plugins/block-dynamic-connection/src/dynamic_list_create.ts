@@ -115,7 +115,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
     Blockly.Events.enable();
 
     return {
-      'itemCount': this.itemCount,
+      itemCount: this.itemCount,
     };
   },
 

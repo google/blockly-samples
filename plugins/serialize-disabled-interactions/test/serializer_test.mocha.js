@@ -27,12 +27,12 @@ suite('DisabledInteractionSerializer', function () {
     test('None', function () {
       Blockly.serialization.workspaces.load(
         {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'controls_if',
-                'id': 'test_id',
+                type: 'controls_if',
+                id: 'test_id',
               },
             ],
           },
@@ -48,17 +48,17 @@ suite('DisabledInteractionSerializer', function () {
     test('Not deletable', function () {
       Blockly.serialization.workspaces.load(
         {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'controls_if',
-                'id': 'test_id',
+                type: 'controls_if',
+                id: 'test_id',
               },
             ],
           },
-          'disabledInteractions': {
-            'notDeletable': ['test_id'],
+          disabledInteractions: {
+            notDeletable: ['test_id'],
           },
         },
         this.workspace,
@@ -72,17 +72,17 @@ suite('DisabledInteractionSerializer', function () {
     test('Not movable', function () {
       Blockly.serialization.workspaces.load(
         {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'controls_if',
-                'id': 'test_id',
+                type: 'controls_if',
+                id: 'test_id',
               },
             ],
           },
-          'disabledInteractions': {
-            'notMovable': ['test_id'],
+          disabledInteractions: {
+            notMovable: ['test_id'],
           },
         },
         this.workspace,
@@ -96,17 +96,17 @@ suite('DisabledInteractionSerializer', function () {
     test('Not editable', function () {
       Blockly.serialization.workspaces.load(
         {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'controls_if',
-                'id': 'test_id',
+                type: 'controls_if',
+                id: 'test_id',
               },
             ],
           },
-          'disabledInteractions': {
-            'notEditable': ['test_id'],
+          disabledInteractions: {
+            notEditable: ['test_id'],
           },
         },
         this.workspace,
@@ -120,19 +120,19 @@ suite('DisabledInteractionSerializer', function () {
     test('All', function () {
       Blockly.serialization.workspaces.load(
         {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'controls_if',
-                'id': 'test_id',
+                type: 'controls_if',
+                id: 'test_id',
               },
             ],
           },
-          'disabledInteractions': {
-            'notDeletable': ['test_id'],
-            'notMovable': ['test_id'],
-            'notEditable': ['test_id'],
+          disabledInteractions: {
+            notDeletable: ['test_id'],
+            notMovable: ['test_id'],
+            notEditable: ['test_id'],
           },
         },
         this.workspace,

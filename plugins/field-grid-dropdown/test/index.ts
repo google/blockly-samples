@@ -14,9 +14,9 @@ import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
   {
-    'label': 'Different text length',
-    'args': {
-      'options': [
+    label: 'Different text length',
+    args: {
+      options: [
         ['A', 'A'],
         ['long text ', 'long text'],
         ['B', 'B'],
@@ -31,9 +31,9 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
     },
   },
   {
-    'label': 'Long text list',
-    'args': {
-      'options': [
+    label: 'Long text list',
+    args: {
+      options: [
         ['A', 'A'],
         ['B', 'B'],
         ['C', 'C'],
@@ -64,123 +64,123 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
     },
   },
   {
-    'label': 'Images',
-    'args': {
-      'options': [
+    label: 'Images',
+    args: {
+      options: [
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/a.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'A',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/a.png',
+            width: 32,
+            height: 32,
+            alt: 'A',
           },
           'A',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/b.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'B',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/b.png',
+            width: 32,
+            height: 32,
+            alt: 'B',
           },
           'B',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/c.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'C',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/c.png',
+            width: 32,
+            height: 32,
+            alt: 'C',
           },
           'C',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/d.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'D',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/d.png',
+            width: 32,
+            height: 32,
+            alt: 'D',
           },
           'D',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/e.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'E',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/e.png',
+            width: 32,
+            height: 32,
+            alt: 'E',
           },
           'E',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/f.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'F',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/f.png',
+            width: 32,
+            height: 32,
+            alt: 'F',
           },
           'F',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/g.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'G',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/g.png',
+            width: 32,
+            height: 32,
+            alt: 'G',
           },
           'G',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/h.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'H',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/h.png',
+            width: 32,
+            height: 32,
+            alt: 'H',
           },
           'H',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/i.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'I',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/i.png',
+            width: 32,
+            height: 32,
+            alt: 'I',
           },
           'I',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/j.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'J',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/j.png',
+            width: 32,
+            height: 32,
+            alt: 'J',
           },
           'J',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/k.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'K',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/k.png',
+            width: 32,
+            height: 32,
+            alt: 'K',
           },
           'K',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/l.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'L',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/l.png',
+            width: 32,
+            height: 32,
+            alt: 'L',
           },
           'L',
         ],
         [
           {
-            'src': 'https://blockly-demo.appspot.com/static/tests/media/m.png',
-            'width': 32,
-            'height': 32,
-            'alt': 'M',
+            src: 'https://blockly-demo.appspot.com/static/tests/media/m.png',
+            width: 32,
+            height: 32,
+            alt: 'M',
           },
           'M',
         ],
@@ -188,10 +188,10 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
     },
   },
   {
-    'label': '4 columns',
-    'args': {
-      'columns': '4',
-      'options': [
+    label: '4 columns',
+    args: {
+      columns: '4',
+      options: [
         ['A', 'A'],
         ['B', 'B'],
         ['C', 'C'],
@@ -204,11 +204,11 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
     },
   },
   {
-    'label': 'custom colours',
-    'args': {
-      'primaryColour': '#783105',
-      'borderColour': '#d6a587',
-      'options': [
+    label: 'custom colours',
+    args: {
+      primaryColour: '#783105',
+      borderColour: '#d6a587',
+      options: [
         ['A', 'A'],
         ['B', 'B'],
         ['C', 'C'],

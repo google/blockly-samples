@@ -121,8 +121,8 @@ export class BlockSuggestor {
 
     if (blockList.length == 0) {
       blockList.push({
-        'kind': 'LABEL',
-        'text': 'No blocks have been used yet!',
+        kind: 'LABEL',
+        text: 'No blocks have been used yet!',
       });
     }
     return blockList;

@@ -52,13 +52,13 @@ import * as Blockly from 'blockly';
 import '@blockly/field-bitmap';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_bitmap',
-    'message0': 'bitmap: %1',
-    'args0': [
+    type: 'test_field_bitmap',
+    message0: 'bitmap: %1',
+    args0: [
       {
-        'type': 'field_bitmap',
-        'name': 'FIELDNAME',
-        'value': [
+        type: 'field_bitmap',
+        name: 'FIELDNAME',
+        value: [
           [0, 0, 0, 0, 0, 0, 0],
           [0, 1, 1, 0, 1, 1, 0],
           [0, 0, 0, 0, 0, 0, 0],
@@ -80,14 +80,14 @@ import * as Blockly from 'blockly';
 import '@blockly/field-bitmap';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_bitmap',
-    'message0': 'bitmap: %1',
-    'args0': [
+    type: 'test_field_bitmap',
+    message0: 'bitmap: %1',
+    args0: [
       {
-        'type': 'field_bitmap',
-        'name': 'FIELDNAME',
-        'width': 8,
-        'height': 8,
+        type: 'field_bitmap',
+        name: 'FIELDNAME',
+        width: 8,
+        height: 8,
       },
     ],
   },

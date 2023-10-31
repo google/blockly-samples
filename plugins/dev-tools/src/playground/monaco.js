@@ -31,7 +31,7 @@ export function addCodeEditor(container, options, vsEditorPath) {
     const onLoad = () => {
       const amdRequire = /** @type {?} */ (window.require);
       amdRequire.config({
-        paths: {'vs': vsEditorPath},
+        paths: {vs: vsEditorPath},
       });
 
       // Load the monaco editor.

@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
     toolbox: toolboxCategories,
     plugins: {
       // These are both required, even if you turn off edge scrolling.
-      'blockDragger': ScrollBlockDragger,
-      'metricsManager': ScrollMetricsManager,
+      blockDragger: ScrollBlockDragger,
+      metricsManager: ScrollMetricsManager,
     },
     move: {
       wheel: true,

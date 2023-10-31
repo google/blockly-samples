@@ -109,7 +109,7 @@ class JsoField extends Blockly.FieldLabel {
    */
   saveState() {
     return {
-      'value': this.getValue(),
+      value: this.getValue(),
     };
   }
 
@@ -175,7 +175,7 @@ class BothField extends Blockly.FieldLabel {
    */
   saveState() {
     return {
-      'value': this.getValue(),
+      value: this.getValue(),
     };
   }
 

@@ -38,11 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
       controls: true,
     },
   };
-  
-  const element = document.getElementById('root');
-
-  if (element) {
-    createPlayground(element, createWorkspace, defaultOptions);
-  }
-  
+  createPlayground(
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

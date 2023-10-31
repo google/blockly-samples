@@ -28,9 +28,9 @@ function createWorkspace(
 document.addEventListener('DOMContentLoaded', function () {
   const toolbox = Object.assign({}, toolboxCategories);
   toolbox['contents'].push({
-    'kind': 'search',
-    'name': 'Search',
-    'contents': [],
+    kind: 'search',
+    name: 'Search',
+    contents: [],
   });
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,

@@ -142,40 +142,40 @@ suite('WorkspaceSearch', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'test_block',
-          'message0': 'test block',
+          type: 'test_block',
+          message0: 'test block',
         },
         {
-          'type': 'test_statement_block',
-          'message0': '%test %1',
-          'args0': [
+          type: 'test_statement_block',
+          message0: '%test %1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'INPUT0',
-              'check': 'String',
+              type: 'input_value',
+              name: 'INPUT0',
+              check: 'String',
             },
           ],
-          'message1': '%block %1',
-          'args1': [
+          message1: '%block %1',
+          args1: [
             {
-              'type': 'input_statement',
-              'name': 'INPUT1',
+              type: 'input_statement',
+              name: 'INPUT1',
             },
           ],
-          'previousStatement': null,
-          'nextStatement': null,
+          previousStatement: null,
+          nextStatement: null,
         },
         {
-          'type': 'test_text',
-          'message0': '%1',
-          'args0': [
+          type: 'test_text',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_input',
-              'name': 'NAME',
-              'text': 'test string',
+              type: 'field_input',
+              name: 'NAME',
+              text: 'test string',
             },
           ],
-          'output': null,
+          output: null,
         },
       ]);
       this.testBlock = this.workspace.newBlock('test_block');
@@ -323,28 +323,28 @@ suite('WorkspaceSearch', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'test_block',
-          'message0': 'test block',
+          type: 'test_block',
+          message0: 'test block',
         },
         {
-          'type': 'test_statement_block',
-          'message0': '%test %1',
-          'args0': [
+          type: 'test_statement_block',
+          message0: '%test %1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'INPUT0',
-              'check': 'String',
+              type: 'input_value',
+              name: 'INPUT0',
+              check: 'String',
             },
           ],
-          'message1': '%block %1',
-          'args1': [
+          message1: '%block %1',
+          args1: [
             {
-              'type': 'input_statement',
-              'name': 'INPUT1',
+              type: 'input_statement',
+              name: 'INPUT1',
             },
           ],
-          'previousStatement': null,
-          'nextStatement': null,
+          previousStatement: null,
+          nextStatement: null,
         },
       ]);
       this.testBlock = this.workspace.newBlock('test_block');
@@ -383,28 +383,28 @@ suite('WorkspaceSearch', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'test_block',
-          'message0': 'test block',
+          type: 'test_block',
+          message0: 'test block',
         },
         {
-          'type': 'test_statement_block',
-          'message0': '%test %1',
-          'args0': [
+          type: 'test_statement_block',
+          message0: '%test %1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'INPUT0',
-              'check': 'String',
+              type: 'input_value',
+              name: 'INPUT0',
+              check: 'String',
             },
           ],
-          'message1': '%block %1',
-          'args1': [
+          message1: '%block %1',
+          args1: [
             {
-              'type': 'input_statement',
-              'name': 'INPUT1',
+              type: 'input_statement',
+              name: 'INPUT1',
             },
           ],
-          'previousStatement': null,
-          'nextStatement': null,
+          previousStatement: null,
+          nextStatement: null,
         },
       ]);
       this.testBlock = this.workspace.newBlock('test_block');

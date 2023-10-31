@@ -18,19 +18,19 @@ delete Blockly.Blocks['lists_create_with'];
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'lists_create_with',
-    'message0': '%{BKY_LISTS_CREATE_EMPTY_TITLE} %1',
-    'args0': [
+    type: 'lists_create_with',
+    message0: '%{BKY_LISTS_CREATE_EMPTY_TITLE} %1',
+    args0: [
       {
-        'type': 'input_dummy',
-        'name': 'EMPTY',
+        type: 'input_dummy',
+        name: 'EMPTY',
       },
     ],
-    'output': 'Array',
-    'style': 'list_blocks',
-    'helpUrl': '%{BKY_LISTS_CREATE_WITH_HELPURL}',
-    'tooltip': '%{BKY_LISTS_CREATE_WITH_TOOLTIP}',
-    'mutator': 'new_list_create_with_mutator',
+    output: 'Array',
+    style: 'list_blocks',
+    helpUrl: '%{BKY_LISTS_CREATE_WITH_HELPURL}',
+    tooltip: '%{BKY_LISTS_CREATE_WITH_TOOLTIP}',
+    mutator: 'new_list_create_with_mutator',
   },
 ]);
 
@@ -67,7 +67,7 @@ const listCreateMutator = {
    */
   saveExtraState: function () {
     return {
-      'itemCount': this.itemCount_,
+      itemCount: this.itemCount_,
     };
   },
 

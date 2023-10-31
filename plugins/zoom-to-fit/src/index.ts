@@ -99,9 +99,9 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     this.svgGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.IMAGE,
       {
-        'height': `${this.height}px`,
-        'width': `${this.width}px`,
-        'class': 'zoomToFit',
+        height: `${this.height}px`,
+        width: `${this.width}px`,
+        class: 'zoomToFit',
       },
     );
     this.svgGroup.setAttributeNS(
@@ -229,9 +229,10 @@ export class ZoomToFitControl implements Blockly.IPositionable {
       }
     }
 
-    this.svgGroup?.setAttribute('transform',
-        `translate(${this.left}, ${this.top})`);
-
+    this.svgGroup.setAttribute(
+      'transform',
+      `translate(${this.left}, ${this.top})`,
+    );
   }
 }
 

@@ -161,14 +161,14 @@ export class Backpack
   protected initFlyout() {
     // Create flyout options.
     const flyoutWorkspaceOptions = new Blockly.Options({
-      'scrollbars': true,
-      'parentWorkspace': this.workspace_,
-      'rtl': this.workspace_.RTL,
-      'oneBasedIndex': this.workspace_.options.oneBasedIndex,
-      'renderer': this.workspace_.options.renderer,
-      'rendererOverrides': this.workspace_.options.rendererOverrides,
-      'move': {
-        'scrollbars': true,
+      scrollbars: true,
+      parentWorkspace: this.workspace_,
+      rtl: this.workspace_.RTL,
+      oneBasedIndex: this.workspace_.options.oneBasedIndex,
+      renderer: this.workspace_.options.renderer,
+      rendererOverrides: this.workspace_.options.rendererOverrides,
+      move: {
+        scrollbars: true,
       },
     });
     // Create vertical or horizontal flyout.
@@ -213,14 +213,14 @@ export class Backpack
     const rnd = Blockly.utils.idGenerator.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.CLIPPATH,
-      {'id': 'blocklyBackpackClipPath' + rnd},
+      {id: 'blocklyBackpackClipPath' + rnd},
       this.svgGroup_,
     );
     Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'width': this.WIDTH_,
-        'height': this.HEIGHT_,
+        width: this.WIDTH_,
+        height: this.HEIGHT_,
       },
       clip,
     );

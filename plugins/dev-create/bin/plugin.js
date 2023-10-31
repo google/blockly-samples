@@ -126,29 +126,29 @@ exports.createPlugin = function (pluginName, options) {
       : {},
     repository: isGit
       ? {
-          'type': 'git',
-          'url': `${gitURL}.git`,
-          'directory': gitPluginPath,
+          type: 'git',
+          url: `${gitURL}.git`,
+          directory: gitPluginPath,
         }
       : {},
     license: 'Apache-2.0',
     directories: {
-      'dist': 'dist',
-      'src': 'src',
+      dist: 'dist',
+      src: 'src',
     },
     files: ['dist', 'src'],
     devDependencies: {},
     peerDependencies: {
-      'blockly': `^${latestBlocklyVersion}`,
+      blockly: `^${latestBlocklyVersion}`,
     },
     publishConfig: isFirstParty
       ? {
-          'access': 'public',
-          'registry': 'https://wombat-dressing-room.appspot.com',
+          access: 'public',
+          registry: 'https://wombat-dressing-room.appspot.com',
         }
       : {},
     eslintConfig: {
-      'extends': '@blockly/eslint-config',
+      extends: '@blockly/eslint-config',
     },
   };
 

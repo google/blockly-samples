@@ -16,8 +16,8 @@ const toolbox = generateFieldTestBlocks('field_multilinetext', [
   {
     label: 'Spellchecked',
     args: {
-      'spellcheck': true,
-      'text': `’Twas brillig, and the slithy toves
+      spellcheck: true,
+      text: `’Twas brillig, and the slithy toves
   Did gyre and gimble in the wabe:
 All mimsy were the borogoves,
   And the mome raths outgrabe.`,
@@ -26,8 +26,8 @@ All mimsy were the borogoves,
   {
     label: 'Not spel chekt',
     args: {
-      'spellcheck': false,
-      'text':
+      spellcheck: false,
+      text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed' +
         ' do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     },

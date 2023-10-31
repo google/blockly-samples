@@ -218,13 +218,13 @@ suite('List create block', function () {
       {
         title: 'No mutation',
         json: {
-          'type': 'lists_create_with',
+          type: 'lists_create_with',
         },
         expectedJson: {
-          'type': 'lists_create_with',
-          'id': '1',
-          'extraState': {
-            'itemCount': 3,
+          type: 'lists_create_with',
+          id: '1',
+          extraState: {
+            itemCount: 3,
           },
         },
         assertBlockStructure: (block) => {
@@ -234,10 +234,10 @@ suite('List create block', function () {
       {
         title: '3 items',
         json: {
-          'type': 'lists_create_with',
-          'id': '1',
-          'extraState': {
-            'itemCount': 3,
+          type: 'lists_create_with',
+          id: '1',
+          extraState: {
+            itemCount: 3,
           },
         },
         assertBlockStructure: (block) => {
@@ -247,10 +247,10 @@ suite('List create block', function () {
       {
         title: '5 items',
         json: {
-          'type': 'lists_create_with',
-          'id': '1',
-          'extraState': {
-            'itemCount': 5,
+          type: 'lists_create_with',
+          id: '1',
+          extraState: {
+            itemCount: 5,
           },
         },
         assertBlockStructure: (block) => {
@@ -260,10 +260,10 @@ suite('List create block', function () {
       {
         title: '0 items',
         json: {
-          'type': 'lists_create_with',
-          'id': '1',
-          'extraState': {
-            'itemCount': 0,
+          type: 'lists_create_with',
+          id: '1',
+          extraState: {
+            itemCount: 0,
           },
         },
         assertBlockStructure: (block) => {
@@ -273,18 +273,18 @@ suite('List create block', function () {
       {
         title: '4 items with child attached',
         json: {
-          'type': 'lists_create_with',
-          'id': '1',
-          'extraState': {
-            'itemCount': 4,
+          type: 'lists_create_with',
+          id: '1',
+          extraState: {
+            itemCount: 4,
           },
-          'inputs': {
-            'ADD3': {
-              'block': {
-                'type': 'logic_boolean',
-                'id': '1',
-                'fields': {
-                  'BOOL': 'FALSE',
+          inputs: {
+            ADD3: {
+              block: {
+                type: 'logic_boolean',
+                id: '1',
+                fields: {
+                  BOOL: 'FALSE',
                 },
               },
             },

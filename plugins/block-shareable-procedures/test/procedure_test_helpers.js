@@ -176,12 +176,12 @@ export function createProcDefBlock(
 ) {
   return Blockly.serialization.blocks.append(
     {
-      'type': hasReturn ? 'procedures_defreturn' : 'procedures_defnoreturn',
-      'fields': {
-        'NAME': name,
+      type: hasReturn ? 'procedures_defreturn' : 'procedures_defnoreturn',
+      fields: {
+        NAME: name,
       },
-      'extraState': {
-        'params': args.map((a) => ({'name': a})),
+      extraState: {
+        params: args.map((a) => ({name: a})),
       },
     },
     workspace,
@@ -204,9 +204,9 @@ export function createProcCallBlock(
 ) {
   return Blockly.serialization.blocks.append(
     {
-      'type': hasReturn ? 'procedures_callreturn' : 'procedures_callnoreturn',
-      'extraState': {
-        'name': name,
+      type: hasReturn ? 'procedures_callreturn' : 'procedures_callnoreturn',
+      extraState: {
+        name: name,
       },
     },
     workspace,

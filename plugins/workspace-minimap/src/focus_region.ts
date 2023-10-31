@@ -53,14 +53,14 @@ export class FocusRegion {
     // Make the svg group element.
     this.svgGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
-      {'class': 'blockly-focus-region'},
+      {class: 'blockly-focus-region'},
       null,
     );
 
     // Make the mask under the svg group.
     const mask = Blockly.utils.dom.createSvgElement(
       new Blockly.utils.Svg('mask'),
-      {'id': 'focusRegionMask' + this.id},
+      {id: 'focusRegionMask' + this.id},
       this.svgGroup,
     );
 
@@ -68,11 +68,11 @@ export class FocusRegion {
     this.background = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'mask': 'url(#focusRegionMask' + this.id + ')',
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        mask: 'url(#focusRegionMask' + this.id + ')',
       },
       this.svgGroup,
     );
@@ -81,11 +81,11 @@ export class FocusRegion {
     Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'fill': 'white',
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        fill: 'white',
       },
       mask,
     );
@@ -94,11 +94,11 @@ export class FocusRegion {
     this.rect = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'rx': borderRadius,
-        'ry': borderRadius,
-        'fill': 'black',
+        x: 0,
+        y: 0,
+        rx: borderRadius,
+        ry: borderRadius,
+        fill: 'black',
       },
       mask,
     );

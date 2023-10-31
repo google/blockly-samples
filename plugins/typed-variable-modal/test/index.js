@@ -60,10 +60,10 @@ function createWorkspace(blocklyDiv, options) {
 
 document.addEventListener('DOMContentLoaded', function () {
   toolboxCategories['contents'].push({
-    'kind': 'category',
-    'name': 'Typed Variables',
-    'custom': 'CREATE_TYPED_VARIABLE',
-    'categorystyle': 'variable_category',
+    kind: 'category',
+    name: 'Typed Variables',
+    custom: 'CREATE_TYPED_VARIABLE',
+    categorystyle: 'variable_category',
   });
 
   const defaultOptions = {

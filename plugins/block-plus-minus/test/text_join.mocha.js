@@ -207,13 +207,13 @@ suite('Text join block', function () {
       {
         title: 'No mutation',
         json: {
-          'type': 'text_join',
+          type: 'text_join',
         },
         expectedJson: {
-          'type': 'text_join',
-          'id': '1',
-          'extraState': {
-            'itemCount': 2,
+          type: 'text_join',
+          id: '1',
+          extraState: {
+            itemCount: 2,
           },
         },
         assertBlockStructure: (block) => {
@@ -223,10 +223,10 @@ suite('Text join block', function () {
       {
         title: '0 items',
         json: {
-          'type': 'text_join',
-          'id': '1',
-          'extraState': {
-            'itemCount': 0,
+          type: 'text_join',
+          id: '1',
+          extraState: {
+            itemCount: 0,
           },
         },
         assertBlockStructure: (block) => {
@@ -236,10 +236,10 @@ suite('Text join block', function () {
       {
         title: '3 items',
         json: {
-          'type': 'text_join',
-          'id': '1',
-          'extraState': {
-            'itemCount': 3,
+          type: 'text_join',
+          id: '1',
+          extraState: {
+            itemCount: 3,
           },
         },
         assertBlockStructure: (block) => {
@@ -249,18 +249,18 @@ suite('Text join block', function () {
       {
         title: '3 items with child attached',
         json: {
-          'type': 'text_join',
-          'id': '1',
-          'extraState': {
-            'itemCount': 3,
+          type: 'text_join',
+          id: '1',
+          extraState: {
+            itemCount: 3,
           },
-          'inputs': {
-            'ADD2': {
-              'block': {
-                'type': 'logic_boolean',
-                'id': '1',
-                'fields': {
-                  'BOOL': 'FALSE',
+          inputs: {
+            ADD2: {
+              block: {
+                type: 'logic_boolean',
+                id: '1',
+                fields: {
+                  BOOL: 'FALSE',
                 },
               },
             },

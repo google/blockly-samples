@@ -19,36 +19,36 @@ import {ProcedureCreate} from './events_procedure_create';
  */
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   {
-    'type': 'procedures_defnoreturn',
-    'message0': '%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2 %3',
-    'message1': '%{BKY_PROCEDURES_DEFNORETURN_DO} %1',
-    'args0': [
+    type: 'procedures_defnoreturn',
+    message0: '%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2 %3',
+    message1: '%{BKY_PROCEDURES_DEFNORETURN_DO} %1',
+    args0: [
       {
-        'type': 'field_input',
-        'name': 'NAME',
-        'text': '',
-        'spellcheck': false,
+        type: 'field_input',
+        name: 'NAME',
+        text: '',
+        spellcheck: false,
       },
       {
-        'type': 'field_label',
-        'name': 'PARAMS',
-        'text': '',
+        type: 'field_label',
+        name: 'PARAMS',
+        text: '',
       },
       {
-        'type': 'input_dummy',
-        'name': 'TOP',
-      },
-    ],
-    'args1': [
-      {
-        'type': 'input_statement',
-        'name': 'STACK',
+        type: 'input_dummy',
+        name: 'TOP',
       },
     ],
-    'style': 'procedure_blocks',
-    'helpUrl': '%{BKY_PROCEDURES_DEFNORETURN_HELPURL}',
-    'tooltip': '%{BKY_PROCEDURES_DEFNORETURN_TOOLTIP}',
-    'extensions': [
+    args1: [
+      {
+        type: 'input_statement',
+        name: 'STACK',
+      },
+    ],
+    style: 'procedure_blocks',
+    helpUrl: '%{BKY_PROCEDURES_DEFNORETURN_HELPURL}',
+    tooltip: '%{BKY_PROCEDURES_DEFNORETURN_TOOLTIP}',
+    extensions: [
       'procedure_def_get_def_mixin',
       'procedure_def_var_mixin',
       'procedure_def_update_shape_mixin',
@@ -59,23 +59,23 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       'procedure_defnoreturn_set_comment_helper',
       'procedure_def_set_no_return_helper',
     ],
-    'mutator': 'procedure_def_mutator',
+    mutator: 'procedure_def_mutator',
   },
   {
-    'type': 'procedures_callnoreturn',
-    'message0': '%1 %2',
-    'args0': [
-      {'type': 'field_label', 'name': 'NAME', 'text': '%{BKY_UNNAMED_KEY}'},
+    type: 'procedures_callnoreturn',
+    message0: '%1 %2',
+    args0: [
+      {type: 'field_label', name: 'NAME', text: '%{BKY_UNNAMED_KEY}'},
       {
-        'type': 'input_dummy',
-        'name': 'TOPROW',
+        type: 'input_dummy',
+        name: 'TOPROW',
       },
     ],
-    'nextStatement': null,
-    'previousStatement': null,
-    'style': 'procedure_blocks',
-    'helpUrl': '%{BKY_PROCEDURES_CALLNORETURN_HELPURL}',
-    'extensions': [
+    nextStatement: null,
+    previousStatement: null,
+    style: 'procedure_blocks',
+    helpUrl: '%{BKY_PROCEDURES_CALLNORETURN_HELPURL}',
+    extensions: [
       'procedure_caller_get_def_mixin',
       'procedure_caller_var_mixin',
       'procedure_caller_update_shape_mixin',
@@ -83,47 +83,47 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       'procedure_caller_onchange_mixin',
       'procedure_callernoreturn_get_def_block_mixin',
     ],
-    'mutator': 'procedure_caller_mutator',
+    mutator: 'procedure_caller_mutator',
   },
   {
-    'type': 'procedures_defreturn',
-    'message0': '%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2 %3',
-    'message1': '%{BKY_PROCEDURES_DEFRETURN_DO} %1',
-    'message2': '%{BKY_PROCEDURES_DEFRETURN_RETURN} %1',
-    'args0': [
+    type: 'procedures_defreturn',
+    message0: '%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2 %3',
+    message1: '%{BKY_PROCEDURES_DEFRETURN_DO} %1',
+    message2: '%{BKY_PROCEDURES_DEFRETURN_RETURN} %1',
+    args0: [
       {
-        'type': 'field_input',
-        'name': 'NAME',
-        'text': '',
-        'spellcheck': false,
+        type: 'field_input',
+        name: 'NAME',
+        text: '',
+        spellcheck: false,
       },
       {
-        'type': 'field_label',
-        'name': 'PARAMS',
-        'text': '',
+        type: 'field_label',
+        name: 'PARAMS',
+        text: '',
       },
       {
-        'type': 'input_dummy',
-        'name': 'TOP',
-      },
-    ],
-    'args1': [
-      {
-        'type': 'input_statement',
-        'name': 'STACK',
+        type: 'input_dummy',
+        name: 'TOP',
       },
     ],
-    'args2': [
+    args1: [
       {
-        'type': 'input_value',
-        'align': 'right',
-        'name': 'RETURN',
+        type: 'input_statement',
+        name: 'STACK',
       },
     ],
-    'style': 'procedure_blocks',
-    'helpUrl': '%{BKY_PROCEDURES_DEFRETURN_HELPURL}',
-    'tooltip': '%{BKY_PROCEDURES_DEFRETURN_TOOLTIP}',
-    'extensions': [
+    args2: [
+      {
+        type: 'input_value',
+        align: 'right',
+        name: 'RETURN',
+      },
+    ],
+    style: 'procedure_blocks',
+    helpUrl: '%{BKY_PROCEDURES_DEFRETURN_HELPURL}',
+    tooltip: '%{BKY_PROCEDURES_DEFRETURN_TOOLTIP}',
+    extensions: [
       'procedure_def_get_def_mixin',
       'procedure_def_var_mixin',
       'procedure_def_update_shape_mixin',
@@ -134,22 +134,22 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       'procedure_defreturn_set_comment_helper',
       'procedure_def_set_return_helper',
     ],
-    'mutator': 'procedure_def_mutator',
+    mutator: 'procedure_def_mutator',
   },
   {
-    'type': 'procedures_callreturn',
-    'message0': '%1 %2',
-    'args0': [
-      {'type': 'field_label', 'name': 'NAME', 'text': '%{BKY_UNNAMED_KEY}'},
+    type: 'procedures_callreturn',
+    message0: '%1 %2',
+    args0: [
+      {type: 'field_label', name: 'NAME', text: '%{BKY_UNNAMED_KEY}'},
       {
-        'type': 'input_dummy',
-        'name': 'TOPROW',
+        type: 'input_dummy',
+        name: 'TOPROW',
       },
     ],
-    'output': null,
-    'style': 'procedure_blocks',
-    'helpUrl': '%{BKY_PROCEDURES_CALLRETURN_HELPURL}',
-    'extensions': [
+    output: null,
+    style: 'procedure_blocks',
+    helpUrl: '%{BKY_PROCEDURES_CALLRETURN_HELPURL}',
+    extensions: [
       'procedure_caller_get_def_mixin',
       'procedure_caller_var_mixin',
       'procedure_caller_update_shape_mixin',
@@ -157,7 +157,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       'procedure_caller_onchange_mixin',
       'procedure_callerreturn_get_def_block_mixin',
     ],
-    'mutator': 'procedure_caller_mutator',
+    mutator: 'procedure_caller_mutator',
   },
 ]);
 
@@ -448,11 +448,11 @@ const procedureDefMutator = {
       if (params.length) {
         state['params'] = params.map((p) => {
           return {
-            'name': p.getName(),
-            'id': p.getVariableModel().getId(),
+            name: p.getName(),
+            id: p.getVariableModel().getId(),
             // Ideally this would be id, and the other would be varId,
             // but backwards compatibility :/
-            'paramId': p.getId(),
+            paramId: p.getId(),
           };
         });
       }
@@ -508,21 +508,21 @@ const procedureDefMutator = {
    */
   decompose: function (workspace) {
     const containerBlockDef = {
-      'type': 'procedures_mutatorcontainer',
-      'inputs': {
-        'STACK': {},
+      type: 'procedures_mutatorcontainer',
+      inputs: {
+        STACK: {},
       },
     };
 
     let connDef = containerBlockDef['inputs']['STACK'];
     for (const param of this.getProcedureModel().getParameters()) {
       connDef['block'] = {
-        'type': 'procedures_mutatorarg',
-        'id': param.getId(),
-        'fields': {
-          'NAME': param.getName(),
+        type: 'procedures_mutatorarg',
+        id: param.getId(),
+        fields: {
+          NAME: param.getName(),
         },
-        'next': {},
+        next: {},
       };
       connDef = connDef['block']['next'];
     }
@@ -1278,13 +1278,13 @@ const procedureCallerOnChangeMixin = {
     this.renameProcedure(name, newName);
 
     const blockDef = {
-      'type': this.defType_,
-      'x': xy.x + Blockly.config.snapRadius * (this.RTL ? -1 : 1),
-      'y': xy.y + Blockly.config.snapRadius * 2,
-      'extraState': {
-        'params': params.map((p) => ({'name': p})),
+      type: this.defType_,
+      x: xy.x + Blockly.config.snapRadius * (this.RTL ? -1 : 1),
+      y: xy.y + Blockly.config.snapRadius * 2,
+      extraState: {
+        params: params.map((p) => ({name: p})),
       },
-      'fields': {'NAME': newName},
+      fields: {NAME: newName},
     };
     const block = Blockly.serialization.blocks.append(
       blockDef,

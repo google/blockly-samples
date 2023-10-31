@@ -17,29 +17,29 @@ const toolbox = generateFieldTestBlocks('field_slider', [
   {
     label: 'Basic',
     args: {
-      'value': 50,
+      value: 50,
     },
   },
   {
     label: 'Min',
     args: {
-      'value': 20,
-      'min': 10,
+      value: 20,
+      min: 10,
     },
   },
   {
     label: 'Max',
     args: {
-      'value': 70,
-      'max': 80,
+      value: 70,
+      max: 80,
     },
   },
   {
     label: 'Min and Max',
     args: {
-      'value': 60,
-      'min': 10,
-      'max': 80,
+      value: 60,
+      min: 10,
+      max: 80,
     },
   },
 ]);

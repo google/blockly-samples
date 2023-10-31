@@ -251,26 +251,26 @@ export class FieldAngle extends Blockly.FieldNumber {
     const circle = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.CIRCLE,
       {
-        'cx': FieldAngle.HALF,
-        'cy': FieldAngle.HALF,
-        'r': FieldAngle.RADIUS,
-        'class': 'blocklyAngleCircle',
+        cx: FieldAngle.HALF,
+        cy: FieldAngle.HALF,
+        r: FieldAngle.RADIUS,
+        class: 'blocklyAngleCircle',
       },
       svg,
     );
     this.gauge = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.PATH,
       {
-        'class': 'blocklyAngleGauge',
+        class: 'blocklyAngleGauge',
       },
       svg,
     );
     this.line = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.LINE,
       {
-        'x1': FieldAngle.HALF,
-        'y1': FieldAngle.HALF,
-        'class': 'blocklyAngleLine',
+        x1: FieldAngle.HALF,
+        y1: FieldAngle.HALF,
+        class: 'blocklyAngleLine',
       },
       svg,
     );
@@ -312,12 +312,12 @@ export class FieldAngle extends Blockly.FieldNumber {
         Blockly.utils.dom.createSvgElement(
           Blockly.utils.Svg.LINE,
           {
-            'x1': FieldAngle.HALF + FieldAngle.RADIUS,
-            'y1': FieldAngle.HALF,
-            'x2': FieldAngle.HALF + FieldAngle.RADIUS - length,
-            'y2': FieldAngle.HALF,
-            'class': 'blocklyAngleMarks',
-            'transform':
+            x1: FieldAngle.HALF + FieldAngle.RADIUS,
+            y1: FieldAngle.HALF,
+            x2: FieldAngle.HALF + FieldAngle.RADIUS - length,
+            y2: FieldAngle.HALF,
+            class: 'blocklyAngleMarks',
+            transform:
               'rotate(' +
               -angle +
               ',' +
