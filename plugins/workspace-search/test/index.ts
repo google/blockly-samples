@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     toolbox: toolboxCategories,
   };
   createPlayground(
-    document.getElementById('root'),
+    document.getElementById('root')!,
     createWorkspace,
     defaultOptions,
   );
