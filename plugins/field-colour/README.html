@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-colour Demo</div>
       <div class="subtitle">A Blockly colour field.</div>
     </div>
-    3.0.6
+    3.0.7
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour" class="button" target="_blank">View on npm</a>
@@ -73,28 +73,29 @@ Defaults to 7.</li>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldColour} from '@blockly/field-colour';
-Blockly.Blocks["test_field_colour"] = {
+Blockly.Blocks['test_field_colour'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("colour: ")
-      .appendField(new FieldColour("#ffcccc"), "FIELDNAME");
-  }
+      .appendField('colour: ')
+      .appendField(new FieldColour('#ffcccc'), 'FIELDNAME');
+  },
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-colour';
 Blockly.defineBlocksWithJsonArray([
-    {
-        "type": "test_field_colour",
-        "message0": "colour: %1",
-        "args0": [
-            {
-                "type": "field_colour",
-                "name": "FIELDNAME",
-                "colour": "#ffcccc"
-            }
-        ]
-    }]);</code></pre>
+  {
+    'type': 'test_field_colour',
+    'message0': 'colour: %1',
+    'args0': [
+      {
+        'type': 'field_colour',
+        'name': 'FIELDNAME',
+        'colour': '#ffcccc',
+      },
+    ],
+  },
+]);</code></pre>
 <h3 id="api-reference">API Reference</h3>
 <ul>
 <li><code>setColours</code>: Sets the colour options, and optionally the titles for the

@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-grid-dropdown Demo</div>
       <div class="subtitle">A Blockly dropdown field with grid layout.</div>
     </div>
-    4.0.5
+    4.0.6
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-grid-dropdown" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-grid-dropdown" class="button" target="_blank">View on npm</a>
@@ -60,8 +60,7 @@
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-grid-dropdown --save</code></pre>
 <h2 id="usage">Usage</h2>
-<p>This field accepts the same parameters as the [Blockly.FieldDropdown](
-<a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation">https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation</a>)
+<p>This field accepts the same parameters as the <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creation">Blockly.FieldDropdown</a>
 in Blockly core. The config object bag passed into this field accepts additional optional parameters:</p>
 <ul>
 <li><code>"columns"</code> to specify the number of columns in the dropdown field (must be an integer greater than 0).
@@ -74,33 +73,50 @@ not provided, the border colour will match the tertiary colour of the parent blo
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldGridDropdown} from '@blockly/field-grid-dropdown';
-Blockly.Blocks["test_field_grid_dropdown"] = {
+Blockly.Blocks['test_field_grid_dropdown'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("grid dropdown: ")
-      .appendField(new FieldGridDropdown([
-          ["A", "A"],["B", "B"], ["C", "C"],["D", "D"], ["E", "E"], ["F", "F"],
-          ["G", "G"], ["H", "H"]]), "FIELDNAME");
-  }
+      .appendField('grid dropdown: ')
+      .appendField(
+        new FieldGridDropdown([
+          ['A', 'A'],
+          ['B', 'B'],
+          ['C', 'C'],
+          ['D', 'D'],
+          ['E', 'E'],
+          ['F', 'F'],
+          ['G', 'G'],
+          ['H', 'H'],
+        ]),
+        'FIELDNAME',
+      );
+  },
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-grid-dropdown';
 Blockly.defineBlocksWithJsonArray([
-    {
-        "type": "test_field_grid_dropdown",
-        "message0": "template: %1",
-        "args0": [
-            {
-                "type": "field_grid_dropdown",
-                "name": "FIELDNAME",
-                "options": [
-                        ["A", "A"],["B", "B"], ["C", "C"],["D", "D"],
-                        ["E", "E"], ["F", "F"], ["G", "G"], ["H", "H"]
-                ]
-            }
-        ]
-    }]);</code></pre>
+  {
+    'type': 'test_field_grid_dropdown',
+    'message0': 'template: %1',
+    'args0': [
+      {
+        'type': 'field_grid_dropdown',
+        'name': 'FIELDNAME',
+        'options': [
+          ['A', 'A'],
+          ['B', 'B'],
+          ['C', 'C'],
+          ['D', 'D'],
+          ['E', 'E'],
+          ['F', 'F'],
+          ['G', 'G'],
+          ['H', 'H'],
+        ],
+      },
+    ],
+  },
+]);</code></pre>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-dependent-dropdown Demo</div>
       <div class="subtitle">A Blockly dropdown field that automatically updates its available options depending on the value of another field.</div>
     </div>
-    3.0.5
+    3.0.6
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-dependent-dropdown" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-dependent-dropdown" class="button" target="_blank">View on npm</a>
@@ -59,9 +59,9 @@
 <pre><code>npm install @blockly/field-dependent-dropdown --save</code></pre>
 <h2 id="usage">Usage</h2>
 <p>This plugin adds a field type <code>FieldDependentDropdown</code> that is an extension of <code>Blockly.FieldDropdown</code> and is registered as <code>'field_dependent_dropdown'</code> for the JSON API. You can associate it with a parent field that is attached to the same block, along with a mapping from the parent field's possible values to the desired menu options for this child field. Whenever the parent field's value changes, this field will automatically change its own available options to the options that correspond to the new parent value. You can also provide a set of default options that will be used if the parent field's value doesn't match any of the keys in your option mapping.</p>
-<p>These changes are recorded properly in the undo history, and the fields can be <a href="https://developers.google.com/blockly/guides/configure/web/serialization">serialized and later deserialized</a> while preserving their options, values, and validity. You can also create chains of dependent dropdowns that depend on other dependent dropdowns. </p>
+<p>These changes are recorded properly in the undo history, and the fields can be <a href="https://developers.google.com/blockly/guides/configure/web/serialization">serialized and later deserialized</a> while preserving their options, values, and validity. You can also create chains of dependent dropdowns that depend on other dependent dropdowns.</p>
 <p>Note that the parent field must be attached to the block before the child field, and the child field will attach a validator function to the parent field to intercept changes to its value. If you want to add your own <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/validators">custom field validator</a> to the parent field, you need to use <a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks#json_format_versus_javascript_api">the JavaScript API to define your block</a> and <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/dropdown#creating_a_dropdown_validator">pass your validator to the parent field's constructor</a>. If you try to set the parent's validator later, you'll overwrite the one added by this plugin.</p>
-<p>To create a dependent dropdown, you'll need to add this field type to a block definition, and add that block to your toolbox. See below for an example of defining a block that uses this field. </p>
+<p>To create a dependent dropdown, you'll need to add this field type to a block definition, and add that block to your toolbox. See below for an example of defining a block that uses this field.</p>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-dependent-dropdown'; // Import with side effects.
@@ -94,28 +94,38 @@ Blockly.defineBlocksWithJsonArray([
 import {FieldDependentDropdown} from '@blockly/field-dependent-dropdown';
 
 Blockly.Blocks['dependent_dropdown_example'] = {
-  init: function() {
+  init: function () {
     const parentFieldName = 'ANIMAL_CATEGORY';
     const childFieldName = 'ANIMAL';
-    const parentOptions = 
-        [['Mammal', 'mammal'], ['Bird', 'bird'], ['Cryptid', 'cryptid']];
+    const parentOptions = [
+      ['Mammal', 'mammal'],
+      ['Bird', 'bird'],
+      ['Cryptid', 'cryptid'],
+    ];
     const optionMapping = {
-      'mammal': [['Dog', 'dog'], ['Cat', 'cat'], ['Hamster', 'hamster']],
-      'bird': [['Parakeet', 'parakeet'], ['Canary', 'canary']],
+      'mammal': [
+        ['Dog', 'dog'],
+        ['Cat', 'cat'],
+        ['Hamster', 'hamster'],
+      ],
+      'bird': [
+        ['Parakeet', 'parakeet'],
+        ['Canary', 'canary'],
+      ],
     };
     const defaultOptions = [['None available', 'noneAvailable']];
     this.appendDummyInput()
-        .appendField('Category')
-        .appendField(
-            new Blockly.FieldDropdown(parentOptions),
-            parentFieldName)
-        .appendField('Animal')
-        .appendField(
-            new FieldDependentDropdown(
-                parentFieldName,
-                optionMapping,
-                defaultOptions),
-            childFieldName);
+      .appendField('Category')
+      .appendField(new Blockly.FieldDropdown(parentOptions), parentFieldName)
+      .appendField('Animal')
+      .appendField(
+        new FieldDependentDropdown(
+          parentFieldName,
+          optionMapping,
+          defaultOptions,
+        ),
+        childFieldName,
+      );
   },
 };</code></pre>
 <h2 id="license">License</h2>

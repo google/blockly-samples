@@ -1,0 +1,102 @@
+
+<!doctype html>
+<html dir="ltr">
+  <head>
+  <!-- INJECTED HEADER -->
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
+  <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
+  <!-- END INJECTED HEADER -->
+    <title>DevSite Demo</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="google" value="notranslate">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/javascript_compressed.js"></script>
+    <script src="./node_modules/blockly/python_compressed.js"></script>
+    <script src="./node_modules/blockly/php_compressed.js"></script>
+    <script src="./node_modules/blockly/lua_compressed.js"></script>
+    <script src="./node_modules/blockly/dart_compressed.js"></script>
+    <script src="acorn_interpreter.js"></script>
+    <script src="msgs.js"></script>
+    <script src="toolbox.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body onload="init()" class="root">
+      
+  <!-- NAV BAR -->
+  <nav id="toolbar">
+    <a href="/blockly-samples" id="arrow-back">
+      <i class="material-icons">close</i>
+      <img src="https://blocklycodelabs.dev/images/logo_knockout.png" class="logo-devs"
+        alt="Blockly sample" />
+    </a>
+
+    <div class="title-grow">
+      <div class="title">DevSite Demo</div>
+      <div class="subtitle">Blockly demo for developers.google.com/blockly.</div>
+    </div>
+    
+    <a href="https://github.com/google/blockly-samples/blob/master/examples/devsite-demo2" class="button" target="_blank">View code</a>
+  </nav>
+  <!-- END NAV BAR -->
+      <main id="main" class="has-tabs">
+        <div class="drop-shadow"></div>
+        
+        
+    <div class="app-container">
+      <div id="blocklyDiv" class="main"></div>
+      <div id="outputDiv" class="main">
+        <select id="generateDropdown" onchange="regenerate()">
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="php">PHP</option>
+          <option value="lua">Lua</option>
+          <option value="dart">Dart</option>
+        </select>
+        <select id="languageDropdown" onchange="languageChange()"></select>
+        <pre id="codeHolder" class="prettyprint" dir="ltr"></pre>
+      </div>
+      <div id="playButton" class="play-button" onclick="execute()">
+        <span class="material-icons" aria-hidden="true">play_circle_outlined</span>Run</div>
+    </div>
+  </main>
+  
+  <!-- FOOTER  -->
+  <footer id="footer">
+    <div class="footer-wrapper site-width">
+      <div class="link-list">
+        <label>Developer Resources</label>
+        <ul>
+          <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
+          <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
+          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+              Tools</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Github</label>
+        <ul>
+          <li><a target="_blank" href="https://github.com/google/blockly/">Blockly Sources</a></li>
+          <li><a target="_blank" href="https://github.com/google/blockly-samples/">Blockly Samples</a></li>
+        </ul>
+      </div>
+      <div class="link-list">
+        <label>Support</label>
+        <ul>
+          <li><a target="_blank" href="https://groups.google.com/forum/#!forum/blockly/">Support</a></li>
+        </ul>
+        <div>Published with <a href="https://pages.github.com">GitHub Pages</a></div>
+      </div>
+    </div>
+  </footer>
+  <!-- END FOOTER -->
+</body>
+</html>

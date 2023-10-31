@@ -24,7 +24,7 @@
       <div class="title">@blockly/dev-tools Demo</div>
       <div class="subtitle">A library of common utilities for Blockly extension development.</div>
     </div>
-    7.1.0
+    7.1.1
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/dev-tools" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/dev-tools" class="button" target="_blank">View on npm</a>
@@ -83,7 +83,7 @@ createPlayground(document.getElementById('blocklyDiv'), (blocklyDiv, options) =&
 import {toolboxSimple, toolboxCategories} from '@blockly/dev-tools';
 
 Blockly.inject('blocklyDiv', {
-  toolbox: toolboxCategories
+  toolbox: toolboxCategories,
 });</code></pre>
 <h4 id="test-toolbox">Test Toolbox</h4>
 <p>The test toolbox is re-exported in this package, but can be imported as a stand-alone through <a href="https://www.npmjs.com/package/@blockly/block-test">@blockly/block-test</a>. See the README for details.</p>
@@ -195,7 +195,7 @@ the config from the browser console.</p>
   blockBounds: true,
   connectedBlockBounds: true,
   render: true,
-}</code></pre>
+};</code></pre>
 <h3 id="logger">Logger</h3>
 <p>A lightweight workspace console logger.</p>
 <pre><code class="js language-js">import {logger} from '@blockly/dev-tools';

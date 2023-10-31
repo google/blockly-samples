@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-multilineinput Demo</div>
       <div class="subtitle">A Blockly multilineinput field.</div>
     </div>
-    3.0.6
+    3.0.7
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-multilineinput" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-multilineinput" class="button" target="_blank">View on npm</a>
@@ -71,14 +71,15 @@ functionality is enabled. Defaults to <code>Infinity</code>.</li>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldMultilineInput} from '@blockly/field-multilineinput';
 
-Blockly.Blocks["test_field_multilineinput"] = {
+Blockly.Blocks['test_field_multilineinput'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("multilineinput: ")
+      .appendField('multilineinput: ')
       .appendField(
-          new FieldMultilineInput("some text \n with newlines"),
-          "FIELDNAME");
-  }
+        new FieldMultilineInput('some text \n with newlines'),
+        'FIELDNAME',
+      );
+  },
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';

@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-slider Demo</div>
       <div class="subtitle">A Blockly slider field.</div>
     </div>
-    6.0.5
+    6.1.0
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-slider" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-slider" class="button" target="_blank">View on npm</a>
@@ -62,28 +62,29 @@
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldSlider} from '@blockly/field-slider';
-Blockly.Blocks["test_field_slider"] = {
+Blockly.Blocks['test_field_slider'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("slider: ")
-      .appendField(new FieldSlider(50), "FIELDNAME");
-  }
+      .appendField('slider: ')
+      .appendField(new FieldSlider(50), 'FIELDNAME');
+  },
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-slider';
 Blockly.defineBlocksWithJsonArray([
-    {
-        "type": "test_field_slider",
-        "message0": "slider: %1",
-        "args0": [
-            {
-                "type": "field_slider",
-                "name": "FIELDNAME",
-                "value": 50
-            }
-        ]
-    }]);</code></pre>
+  {
+    'type': 'test_field_slider',
+    'message0': 'slider: %1',
+    'args0': [
+      {
+        'type': 'field_slider',
+        'name': 'FIELDNAME',
+        'value': 50,
+      },
+    ],
+  },
+]);</code></pre>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

@@ -24,7 +24,7 @@
       <div class="title">@blockly/suggested-blocks Demo</div>
       <div class="subtitle">A plugin that adds toolbox panes with suggested blocks based on the user's past usage of blocks.</div>
     </div>
-    4.0.4
+    4.1.0
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/suggested-blocks" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/suggested-blocks" class="button" target="_blank">View on npm</a>
@@ -59,24 +59,36 @@
 <pre><code>npm install @blockly/suggested-blocks --save</code></pre>
 <h2 id="usage">Usage</h2>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import {toolboxCategories} from '@blockly/dev-tools';
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
-function getNewCategories() {
-  const mostUsedCategory = '&lt;category name="Frequently Used" custom="MOST_USED"&gt;&lt;/category&gt;';
-  const recentlyUsedCategory = '&lt;category name="Recently Used" custom="RECENTLY_USED"&gt;&lt;/category&gt;';
-
-  // This type of insertion works in a pinch, but you would more so want to add
-  // the new categories wherever the rest of the categories are defined in the
-  // project (e.g. HTML, or a dedicated file for all the categories)
-  const indexToInsert = toolboxCategories.indexOf('&lt;/xml&gt;');
-  // Insert the new categories into the existing toolbox XML string
-  return toolboxCategories.slice(0, indexToInsert) + mostUsedCategory + recentlyUsedCategory + toolboxCategories.slice(indexToInsert);
-}
+const toolbox = {
+  'kind': 'categoryToolbox',
+  'contents': [
+    {
+      'kind': 'category',
+      'name': 'My Category',
+      'contents': [
+        /* your category contents */
+      ],
+    },
+    {
+      'kind': 'category',
+      'name': 'Frequently Used',
+      'custom': 'MOST_USED',
+      'categorystyle': 'frequently_used_category',
+    },
+    {
+      'kind': 'category',
+      'name': 'Recently Used',
+      'custom': 'RECENTLY_USED',
+      'categorystyle': 'recently_used_category',
+    },
+  ],
+};
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: getNewCategories(),
+  toolbox: toolbox,
 });
 
 // Initialize the plugin

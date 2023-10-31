@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-angle Demo</div>
       <div class="subtitle">A Blockly angle field.</div>
     </div>
-    3.0.6
+    3.0.7
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-angle" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-angle" class="button" target="_blank">View on npm</a>
@@ -99,28 +99,29 @@ Defaults to 45.</li>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldAngle} from '@blockly/field-angle';
-Blockly.Blocks["test_field_angle"] = {
+Blockly.Blocks['test_field_angle'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("angle: ")
-      .appendField(new FieldAngle(90), "FIELDNAME");
-  }
+      .appendField('angle: ')
+      .appendField(new FieldAngle(90), 'FIELDNAME');
+  },
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-angle';
 Blockly.defineBlocksWithJsonArray([
-    {
-        "type": "test_field_angle",
-        "message0": "angle: %1",
-        "args0": [
-            {
-                "type": "field_angle",
-                "name": "FIELDNAME",
-                "value": 50
-            }
-        ]
-    }]);</code></pre>
+  {
+    'type': 'test_field_angle',
+    'message0': 'angle: %1',
+    'args0': [
+      {
+        'type': 'field_angle',
+        'name': 'FIELDNAME',
+        'value': 50,
+      },
+    ],
+  },
+]);</code></pre>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

@@ -24,7 +24,7 @@
       <div class="title">@blockly/plugin-strict-connection-checker Demo</div>
       <div class="subtitle">A connection checker that prevents blocks that don't provide type information from being connected to blocks that do.</div>
     </div>
-    4.0.5
+    4.0.6
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/strict-connection-checker" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/plugin-strict-connection-checker" class="button" target="_blank">View on npm</a>
@@ -67,8 +67,8 @@ import {pluginInfo as StrictConnectionsPluginInfo} from '@blockly/plugin-strict-
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
-      ...StrictConnectionsPluginInfo,
-    },
+    ...StrictConnectionsPluginInfo,
+  },
 });</code></pre>
 <p>Note that this uses the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">spread operator</a> (<code>...</code>) to copy the contents of <code>pluginInfo</code> into the <code>plugins</code> section of the struct.</p>
 <h2 id="api">API</h2>

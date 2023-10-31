@@ -24,7 +24,7 @@
       <div class="title">@blockly/continuous-toolbox Demo</div>
       <div class="subtitle">A Blockly plugin that adds a continous-scrolling style toolbox and flyout</div>
     </div>
-    5.0.5
+    5.0.6
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/continuous-toolbox" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/continuous-toolbox" class="button" target="_blank">View on npm</a>
@@ -63,15 +63,19 @@ The continuous toolbox is shown here with the 'Zelos' theme, and the style can b
 <p>Include the toolbox, flyout, and metrics manager classes from the plugin in the options struct used when injecting Blockly. This style of flyout works best with a toolbox definition that does not use collapsible categories.</p>
 <p>Note that this plugin uses APIs introduced in the <code>3.20200924.3</code> release of Blockly, so you will need to use at least this version or higher.</p>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import {ContinuousToolbox, ContinuousFlyout, ContinuousMetrics} from '@blockly/continuous-toolbox';
+import {
+  ContinuousToolbox,
+  ContinuousFlyout,
+  ContinuousMetrics,
+} from '@blockly/continuous-toolbox';
 
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   plugins: {
-      'toolbox': ContinuousToolbox,
-      'flyoutsVerticalToolbox': ContinuousFlyout,
-      'metricsManager': ContinuousMetrics,
-    },
+    'toolbox': ContinuousToolbox,
+    'flyoutsVerticalToolbox': ContinuousFlyout,
+    'metricsManager': ContinuousMetrics,
+  },
   toolbox: toolboxCategories,
   // ... your other options here ...
 });</code></pre>

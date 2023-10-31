@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-date Demo</div>
       <div class="subtitle">A Blockly date picker field that uses the Google Closure date picker.</div>
     </div>
-    8.0.5
+    8.0.6
     
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-date" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-date" class="button" target="_blank">View on npm</a>
@@ -62,29 +62,30 @@
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {FieldDate} from '@blockly/field-date';
 
-Blockly.Blocks["test_fields_date"] = {
+Blockly.Blocks['test_fields_date'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField("date: ")
-      .appendField(new FieldDate("2020-02-20"), "FIELDNAME");
-  }
+      .appendField('date: ')
+      .appendField(new FieldDate('2020-02-20'), 'FIELDNAME');
+  },
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import '@blockly/field-date';
 
 Blockly.defineBlocksWithJsonArray([
-    {
-        "type": "test_fields_date",
-        "message0": "date: %1",
-        "args0": [
-            {
-                "type": "field_date",
-                "name": "FIELDNAME",
-                "date": "2020-02-20"
-            }
-        ]
-    }]);</code></pre>
+  {
+    'type': 'test_fields_date',
+    'message0': 'date: %1',
+    'args0': [
+      {
+        'type': 'field_date',
+        'name': 'FIELDNAME',
+        'date': '2020-02-20',
+      },
+    ],
+  },
+]);</code></pre>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>
