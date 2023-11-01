@@ -132,9 +132,24 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      * </div>
      */
     const injectionDiv = this.workspace.getInjectionDiv();
-    this.addEvent(injectionDiv, 'keydown', this, (evt: Event) => {
-      const keyboardEvent = evt as KeyboardEvent; 
-      this.onWorkspaceKeyDown(keyboardEvent); 
+    // this.addEvent(injectionDiv, 'keydown', this, (evt: Event) => {
+    //   const keyboardEvent = evt as KeyboardEvent; 
+    //   this.onWorkspaceKeyDown(keyboardEvent); 
+    // });
+    function addEvent<T extends Event>(
+      element: HTMLElement,
+      eventType: string,
+      thisObject: object,
+      eventHandler: (event: T) => void
+    ) {
+      element.addEventListener(eventType, (event: Event) => {
+        eventHandler(event as T);
+      });
+    }
+    
+    addEvent(injectionDiv as HTMLElement, 'keydown', this, (event: Event) => {
+        const keyboardEvent = event as KeyboardEvent; 
+        this.onWorkspaceKeyDown(keyboardEvent); 
     });
 
     this.htmlDiv = document.createElement('div');
@@ -159,7 +174,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
-      this.inputElement!.select();
+      this.inputElement?.select();
     });
 
     inputWrapper.appendChild(this.inputElement);
