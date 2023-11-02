@@ -7,6 +7,7 @@
 import {assert} from 'chai';
 import {testHelpers} from '@blockly/dev-tools';
 import {FieldDate} from '../src/index';
+import {getLocaleDateString} from '../src/utils';
 
 const {
   assertFieldValue,
@@ -24,7 +25,7 @@ if (!global.navigator) {
   };
 }
 
-suite.skip('FieldDate', function () {
+suite('FieldDate', function () {
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -106,7 +107,7 @@ suite.skip('FieldDate', function () {
     });
     suite('Value -> New Value', function () {
       const initialValue = '2020-02-20';
-      const initialText = new Date(initialValue).toLocaleDateString();
+      const initialText = getLocaleDateString(initialValue);
       setup(function () {
         this.field = new FieldDate(initialValue);
       });
