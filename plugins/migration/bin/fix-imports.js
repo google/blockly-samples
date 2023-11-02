@@ -59,7 +59,7 @@ export const fixImports = createSubCommand(
 let MigrationData;
 
 // TODO (#1211): Make this database format more robust.
-/** @type {MigrationData[]} */
+/** @type {Array.<MigrationData>} */
 const database = [
   {
     import: 'blockly/dart',
@@ -135,7 +135,7 @@ function fixImport(contents, migrationData) {
  * Returns the identifier a given import is assigned to.
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
- * @returns The identifier associated with the import associated with the
+ * @returns {string} The identifier associated with the import associated with the
  *     migration data.
  */
 function getIdentifier(contents, migrationData) {
@@ -155,7 +155,7 @@ function getIdentifier(contents, migrationData) {
  * with references to the actual import (if any references are found).
  * @param {string} contents The string contents of the file to migrate.
  * @param {MigrationData} migrationData Data defining what to migrate and how.
- * @param identifier
+ * @param {string} identifier The string to be replaced in the file contents.
  * @returns {string} The migrated contents of the file.
  */
 function replaceReferences(contents, migrationData, identifier) {

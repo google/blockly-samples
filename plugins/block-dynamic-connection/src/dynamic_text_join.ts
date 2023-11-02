@@ -127,7 +127,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    */
   loadExtraState: function (
     this: DynamicTextJoinBlock,
-    state: {[x: string]: any} | string,
+    state: {[x: string]: number} | string,
   ) {
     if (typeof state === 'string') {
       this.domToMutation(Blockly.utils.xml.textToDom(state));

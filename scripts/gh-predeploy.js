@@ -456,8 +456,7 @@ function prepareExample(exampleDir, isLocal, done) {
   // Cancel early if the package.json says this is not a demo.
   const {blocklyDemoConfig: demoConfig} = packageJson;
   if (!demoConfig) {
-    done();
-    return;
+    return done();
   }
   console.log(`Preparing ${exampleDir} example for deployment.`);
 
