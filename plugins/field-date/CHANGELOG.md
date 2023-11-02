@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.7](https://github.com/google/blockly-samples/compare/@blockly/field-date@8.0.6...@blockly/field-date@8.0.7) (2023-11-02)
+
+
+### Bug Fixes
+
+* publish types for field-date ([#2049](https://github.com/google/blockly-samples/issues/2049)) ([2086712](https://github.com/google/blockly-samples/commit/20867125156005b346056080057ba95219f73b29))
+
+
+
 ## [8.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-date@8.0.5...@blockly/field-date@8.0.6) (2023-10-30)
 
 
