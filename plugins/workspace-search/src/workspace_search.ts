@@ -136,22 +136,6 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       const keyboardEvent = evt as KeyboardEvent; 
       this.onWorkspaceKeyDown(keyboardEvent); 
     });
-    // function addEvent<T extends Event>(
-    //   element: HTMLElement,
-    //   eventType: string,
-    //   thisObject: object,
-    //   eventHandler: (event: T) => void
-    // ) {
-    //   element.addEventListener(eventType, (event: Event) => {
-    //     eventHandler(event as T);
-    //   });
-    // }
-    
-    // addEvent(injectionDiv as HTMLElement, 'keydown', this, (event: Event) => {
-    //     const keyboardEvent = event as KeyboardEvent; 
-    //     this.onWorkspaceKeyDown(keyboardEvent); 
-    // });
-
     this.htmlDiv = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv, 'blockly-ws-search');
 
@@ -212,11 +196,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param thisObject The value of 'this' in the function.
    * @param func Function to call when event is triggered.
    */
-  private addEvent(
+  private addEvent <T extends Event>(
     node: Element,
     name: string,
     thisObject: object,
-    func: (event: Event) => void,
+    func: (event: T) => void,
   ) {
     const event = Blockly.browserEvents.conditionalBind(
       node,
