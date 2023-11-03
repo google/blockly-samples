@@ -216,11 +216,15 @@ export class FieldColour extends Blockly.Field<string> {
     if (!block) throw new Blockly.UnattachedFieldError();
 
     const constants = this.getConstants();
-    return this.blockIsSimpleReporter() && !!constants?.FIELD_COLOUR_FULL_BLOCK;
+    return (
+      this.blockIsSimpleReporter() &&
+      Boolean(constants?.FIELD_COLOUR_FULL_BLOCK)
+    );
   }
 
   /**
-   * @returns True if this block is a value block with a single editable field.
+   * @returns True if the source block is a value block with a single editable
+   *     field.
    * @internal
    */
   blockIsSimpleReporter(): boolean {
