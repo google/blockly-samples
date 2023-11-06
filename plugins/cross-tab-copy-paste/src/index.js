@@ -51,6 +51,30 @@ export class CrossTabCopyPaste {
       this.blockPasteFromStorageShortcut(typeErrorCallback);
     }
   }
+  
+  dispose() {
+    // Unregister the menus from this plugin (if registered yet)
+    if (Blockly.ContextMenuRegistry.registry.getItem("blockCopyToStorage")) {
+      Blockly.ContextMenuRegistry.registry.unregister('blockCopyToStorage');
+    }
+    if (Blockly.ContextMenuRegistry.registry.getItem("blockPasteFromStorage")) {
+      Blockly.ContextMenuRegistry.registry.unregister('blockPasteFromStorage');
+    }
+
+    // Replace the current copy/paste/cut KeyboardShortcuts (i.e. the originals or from this plugin) by the originals
+    Blockly.ShortcutRegistry.registry.unregister(
+      Blockly.ShortcutItems.names.COPY,
+    );
+    Blockly.ShortcutItems.registerCopy()
+    Blockly.ShortcutRegistry.registry.unregister(
+      Blockly.ShortcutItems.names.CUT,
+    );
+    Blockly.ShortcutItems.registerCut()
+    Blockly.ShortcutRegistry.registry.unregister(
+      Blockly.ShortcutItems.names.PASTE,
+    );
+    Blockly.ShortcutItems.registerPaste()
+  }
 
   /**
    * Adds a copy command to the block context menu.

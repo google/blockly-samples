@@ -18,4 +18,10 @@ export class CrossTabCopyPaste {
     contextMenu: boolean;
     shortcut: boolean;
   }): void;
+
+  /**
+   * Cleanup the cross tab copy paste plugin. 
+   * Both the context menu items and keyboard shortcuts are restored.
+   */
+  dispose(): void;
 }
