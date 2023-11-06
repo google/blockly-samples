@@ -46,6 +46,9 @@ Blockly.ContextMenuRegistry.registry.getItem('blockCopyToStorage').weight = 2;
 Blockly.ContextMenuRegistry.registry.getItem(
   'blockPasteFromStorage',
 ).weight = 3;
+
+// optional: You can cleanup all resources used by this plugin
+plugin.dispose();
 ```
 
 ## Options
