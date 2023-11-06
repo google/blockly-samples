@@ -47,3 +47,20 @@ jobs:
 
       - name: Lint
         run: npm run lint
+  
+  format:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Npm Install
+        run: npm install
+
+      - name: Check Format
+        run: npm run format:check
