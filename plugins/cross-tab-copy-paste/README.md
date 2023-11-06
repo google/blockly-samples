@@ -44,7 +44,7 @@ Blockly.ContextMenuRegistry.registry.unregister('blockDuplicate');
 // optional: You can change the position of the menu added to the context menu.
 Blockly.ContextMenuRegistry.registry.getItem('blockCopyToStorage').weight = 2;
 Blockly.ContextMenuRegistry.registry.getItem(
-  'blockPasteFromStorage',
+  'blockPasteFromStorage'
 ).weight = 3;
 
 // optional: You can cleanup all resources used by this plugin

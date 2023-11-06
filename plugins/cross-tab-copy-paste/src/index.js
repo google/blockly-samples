@@ -26,7 +26,7 @@ export class CrossTabCopyPaste {
       contextMenu: true,
       shortcut: true,
     },
-    typeErrorCallback,
+    typeErrorCallback
   ) {
     if (contextMenu) {
       // Register the menus
@@ -37,13 +37,13 @@ export class CrossTabCopyPaste {
     if (shortcut) {
       // Unregister the default KeyboardShortcuts
       Blockly.ShortcutRegistry.registry.unregister(
-        Blockly.ShortcutItems.names.COPY,
+        Blockly.ShortcutItems.names.COPY
       );
       Blockly.ShortcutRegistry.registry.unregister(
-        Blockly.ShortcutItems.names.CUT,
+        Blockly.ShortcutItems.names.CUT
       );
       Blockly.ShortcutRegistry.registry.unregister(
-        Blockly.ShortcutItems.names.PASTE,
+        Blockly.ShortcutItems.names.PASTE
       );
       // Register the KeyboardShortcuts
       this.blockCopyToStorageShortcut();
@@ -51,29 +51,29 @@ export class CrossTabCopyPaste {
       this.blockPasteFromStorageShortcut(typeErrorCallback);
     }
   }
-  
+
   dispose() {
     // Unregister the menus from this plugin (if registered yet)
-    if (Blockly.ContextMenuRegistry.registry.getItem("blockCopyToStorage")) {
+    if (Blockly.ContextMenuRegistry.registry.getItem('blockCopyToStorage')) {
       Blockly.ContextMenuRegistry.registry.unregister('blockCopyToStorage');
     }
-    if (Blockly.ContextMenuRegistry.registry.getItem("blockPasteFromStorage")) {
+    if (Blockly.ContextMenuRegistry.registry.getItem('blockPasteFromStorage')) {
       Blockly.ContextMenuRegistry.registry.unregister('blockPasteFromStorage');
     }
 
     // Replace the current copy/paste/cut KeyboardShortcuts (i.e. the originals or from this plugin) by the originals
     Blockly.ShortcutRegistry.registry.unregister(
-      Blockly.ShortcutItems.names.COPY,
+      Blockly.ShortcutItems.names.COPY
     );
-    Blockly.ShortcutItems.registerCopy()
+    Blockly.ShortcutItems.registerCopy();
     Blockly.ShortcutRegistry.registry.unregister(
-      Blockly.ShortcutItems.names.CUT,
+      Blockly.ShortcutItems.names.CUT
     );
-    Blockly.ShortcutItems.registerCut()
+    Blockly.ShortcutItems.registerCut();
     Blockly.ShortcutRegistry.registry.unregister(
-      Blockly.ShortcutItems.names.PASTE,
+      Blockly.ShortcutItems.names.PASTE
     );
-    Blockly.ShortcutItems.registerPaste()
+    Blockly.ShortcutItems.registerPaste();
   }
 
   /**
@@ -89,7 +89,7 @@ export class CrossTabCopyPaste {
         return 'Copy';
       },
       preconditionFn: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope
       ) {
         if (
           Blockly.getSelected().isDeletable() &&
@@ -100,11 +100,11 @@ export class CrossTabCopyPaste {
         return 'disabled';
       },
       callback: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope
       ) {
         localStorage.setItem(
           'blocklyStash',
-          JSON.stringify(scope.block.toCopyData()),
+          JSON.stringify(scope.block.toCopyData())
         );
       },
       scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
@@ -129,7 +129,7 @@ export class CrossTabCopyPaste {
         return 'Paste';
       },
       preconditionFn: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope
       ) {
         const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
         if (
@@ -141,7 +141,7 @@ export class CrossTabCopyPaste {
         return 'disabled';
       },
       callback: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
+        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope
       ) {
         const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
         try {
@@ -189,7 +189,7 @@ export class CrossTabCopyPaste {
         workspace.hideChaff();
         localStorage.setItem(
           'blocklyStash',
-          JSON.stringify(block.toCopyData()),
+          JSON.stringify(block.toCopyData())
         );
         return true;
       },
@@ -198,19 +198,19 @@ export class CrossTabCopyPaste {
 
     const ctrlC = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.C,
-      [Blockly.utils.KeyCodes.CTRL],
+      [Blockly.utils.KeyCodes.CTRL]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlC, copyShortcut.name);
 
     const altC = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.C,
-      [Blockly.utils.KeyCodes.ALT],
+      [Blockly.utils.KeyCodes.ALT]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(altC, copyShortcut.name);
 
     const metaC = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.C,
-      [Blockly.utils.KeyCodes.META],
+      [Blockly.utils.KeyCodes.META]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaC, copyShortcut.name);
   }
@@ -242,7 +242,7 @@ export class CrossTabCopyPaste {
         if (!block || !Blockly.isCopyable(block)) return false;
         localStorage.setItem(
           'blocklyStash',
-          JSON.stringify(block.toCopyData()),
+          JSON.stringify(block.toCopyData())
         );
         Blockly.Events.setGroup(true);
         block.dispose(true);
@@ -254,19 +254,19 @@ export class CrossTabCopyPaste {
 
     const ctrlX = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.X,
-      [Blockly.utils.KeyCodes.CTRL],
+      [Blockly.utils.KeyCodes.CTRL]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlX, cutShortcut.name);
 
     const altX = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.X,
-      [Blockly.utils.KeyCodes.ALT],
+      [Blockly.utils.KeyCodes.ALT]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(altX, cutShortcut.name);
 
     const metaX = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.X,
-      [Blockly.utils.KeyCodes.META],
+      [Blockly.utils.KeyCodes.META]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaX, cutShortcut.name);
   }
@@ -312,19 +312,19 @@ export class CrossTabCopyPaste {
 
     const ctrlV = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.V,
-      [Blockly.utils.KeyCodes.CTRL],
+      [Blockly.utils.KeyCodes.CTRL]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(ctrlV, pasteShortcut.name);
 
     const altV = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.V,
-      [Blockly.utils.KeyCodes.ALT],
+      [Blockly.utils.KeyCodes.ALT]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(altV, pasteShortcut.name);
 
     const metaV = Blockly.ShortcutRegistry.registry.createSerializedKey(
       Blockly.utils.KeyCodes.V,
-      [Blockly.utils.KeyCodes.META],
+      [Blockly.utils.KeyCodes.META]
     );
     Blockly.ShortcutRegistry.registry.addKeyMapping(metaV, pasteShortcut.name);
   }

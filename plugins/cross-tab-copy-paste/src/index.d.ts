@@ -20,7 +20,7 @@ export class CrossTabCopyPaste {
   }): void;
 
   /**
-   * Cleanup the cross tab copy paste plugin. 
+   * Cleanup the cross tab copy paste plugin.
    * Both the context menu items and keyboard shortcuts are restored.
    */
   dispose(): void;

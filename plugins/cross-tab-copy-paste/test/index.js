@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
   createPlayground(
     document.getElementById('root'),
     createWorkspace,
-    defaultOptions,
+    defaultOptions
   );
   const copyPastePlugin = new CrossTabCopyPaste();
   copyPastePlugin.init();
