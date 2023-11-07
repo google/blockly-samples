@@ -47,7 +47,7 @@ jobs:
 
       - name: Lint
         run: npm run lint
-  
+
   format:
     timeout-minutes: 5
     runs-on: ubuntu-latest
