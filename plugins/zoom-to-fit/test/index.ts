@@ -15,6 +15,7 @@ import {ZoomToFitControl} from '../src/index';
 
 /**
  * Create a workspace.
+ *
  * @param blocklyDiv The blockly container div.
  * @param options The Blockly options.
  * @returns The created workspace.
@@ -38,9 +39,10 @@ document.addEventListener('DOMContentLoaded', function () {
       controls: true,
     },
   };
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+
+  const element = document.getElementById('root');
+
+  if (element) {
+    createPlayground(element, createWorkspace, defaultOptions);
+  }
 });

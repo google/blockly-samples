@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.7](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@4.0.6...@blockly/shadow-block-converter@4.0.7) (2023-11-02)
+
+**Note:** Version bump only for package @blockly/shadow-block-converter
+
+
+
+
+
+## [4.0.6](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@4.0.5...@blockly/shadow-block-converter@4.0.6) (2023-10-30)
+
+
+### Bug Fixes
+
+* **packaging:** Don't advertise non-existent ESM entrypoints ([#2022](https://github.com/google/blockly-samples/issues/2022)) ([d019198](https://github.com/google/blockly-samples/commit/d0191984399b784e2928b8fb4c58257bfa857655)), closes [#1877](https://github.com/google/blockly-samples/issues/1877)
+* Publish types for shadow-block-converter ([#1965](https://github.com/google/blockly-samples/issues/1965)) ([3345fa8](https://github.com/google/blockly-samples/commit/3345fa869989cd9507f6980920f810915e0d5ea9))
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [4.0.5](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@4.0.4...@blockly/shadow-block-converter@4.0.5) (2023-09-21)
 
 **Note:** Version bump only for package @blockly/shadow-block-converter

@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.2...@blockly/block-shareable-procedures@4.0.3) (2023-11-02)
+
+**Note:** Version bump only for package @blockly/block-shareable-procedures
+
+
+
+
+
+## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.1...@blockly/block-shareable-procedures@4.0.2) (2023-10-30)
+
+
+### Features
+
+* Publish types for block-shareable-procedures ([#1952](https://github.com/google/blockly-samples/issues/1952)) ([2b60231](https://github.com/google/blockly-samples/commit/2b602317ff1a4d28cb6e1e2ad3476d4672e61a84))
+
+
+### Bug Fixes
+
+* loading procedure callers before defs without models ([#2037](https://github.com/google/blockly-samples/issues/2037)) ([517ba1b](https://github.com/google/blockly-samples/commit/517ba1b713e20f31725c760fb1a8ab8656e242d0))
+* **packaging:** Don't advertise non-existent ESM entrypoints ([#2022](https://github.com/google/blockly-samples/issues/2022)) ([d019198](https://github.com/google/blockly-samples/commit/d0191984399b784e2928b8fb4c58257bfa857655)), closes [#1877](https://github.com/google/blockly-samples/issues/1877)
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [4.0.1](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.0...@blockly/block-shareable-procedures@4.0.1) (2023-10-05)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures

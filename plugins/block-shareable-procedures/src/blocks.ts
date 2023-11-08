@@ -15,6 +15,7 @@ import {ProcedureCreate} from './events_procedure_create';
 
 /**
  * A dictionary of the block definitions provided by this module.
+ *
  * @type {!Object<string, Object>}
  */
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
@@ -167,6 +168,7 @@ const procedureDefGetDefMixin = function () {
 
     /**
      * Returns the data model for this procedure block.
+     *
      * @returns The data model for this procedure
      *     block.
      */
@@ -177,6 +179,7 @@ const procedureDefGetDefMixin = function () {
     /**
      * True if this is a procedure definition block, false otherwise (i.e.
      * it is a caller).
+     *
      * @returns True because this is a procedure definition block.
      */
     isProcedureDef() {
@@ -185,6 +188,7 @@ const procedureDefGetDefMixin = function () {
 
     /**
      * Return all variables referenced by this block.
+     *
      * @returns List of variable names.
      * @this {Blockly.Block}
      */
@@ -196,6 +200,7 @@ const procedureDefGetDefMixin = function () {
 
     /**
      * Return all variables referenced by this block.
+     *
      * @returns List of variable models.
      * @this {Blockly.Block}
      */
@@ -239,6 +244,7 @@ const procedureDefVarMixin = function () {
     /**
      * Notification that a variable is renaming.
      * If the ID matches one of this block's variables, rename it.
+     *
      * @param oldId ID of variable to rename.
      * @param newId ID of new variable.  May be the same as oldId, but
      *     with an updated name.  Guaranteed to be the same type as the old
@@ -261,6 +267,7 @@ const procedureDefVarMixin = function () {
     /**
      * Notification that a variable is renaming but keeping the same ID.  If the
      * variable is in use on this block, rerender to show the new name.
+     *
      * @param variable The variable being renamed.
      * @package
      * @override
@@ -334,6 +341,7 @@ const procedureDefUpdateShapeMixin = {
 
   /**
    * Add or remove the statement block from this function definition.
+   *
    * @param hasStatements True if a statement block is needed.
    * @this {Blockly.Block}
    */
@@ -386,6 +394,7 @@ const procedureDefMutator = {
   /**
    * Create XML to represent the argument inputs.
    * Backwards compatible serialization implementation.
+   *
    * @returns XML storage element.
    * @this {Blockly.Block}
    */
@@ -410,6 +419,7 @@ const procedureDefMutator = {
   /**
    * Parse XML to restore the argument inputs.
    * Backwards compatible serialization implementation.
+   *
    * @param xmlElement XML storage element.
    * @this {Blockly.Block}
    */
@@ -433,6 +443,7 @@ const procedureDefMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
+   *
    * @param doFullSerialization Tells the block if it should serialize
    *     its entire state (including data stored in the backing procedure
    *     model). Used for copy-paste.
@@ -465,6 +476,7 @@ const procedureDefMutator = {
 
   /**
    * Applies the given state to this block.
+   *
    * @param state The state to apply to this block, eg the parameters and
    *     statements.
    */
@@ -502,6 +514,7 @@ const procedureDefMutator = {
 
   /**
    * Populate the mutator's dialog with this block's components.
+   *
    * @param workspace Blockly.Mutator's workspace.
    * @returns Root block in mutator.
    * @this {Blockly.Block}
@@ -544,6 +557,7 @@ const procedureDefMutator = {
 
   /**
    * Reconfigure this block based on the mutator dialog's components.
+   *
    * @param containerBlock Root block in mutator.
    * @this {Blockly.Block}
    */
@@ -565,6 +579,7 @@ const procedureDefMutator = {
   /**
    * Deletes any parameters from the procedure model that do not have associated
    * parameter blocks in the mutator.
+   *
    * @param containerBlock Root block in the mutator.
    */
   deleteParamsFromModel_: function (containerBlock) {
@@ -581,6 +596,7 @@ const procedureDefMutator = {
   /**
    * Renames any parameters in the procedure model whose associated parameter
    * blocks have been renamed.
+   *
    * @param containerBlock Root block in the mutator.
    */
   renameParamsInModel_: function (containerBlock) {
@@ -606,6 +622,7 @@ const procedureDefMutator = {
   /**
    * Adds new parameters to the procedure model for any new procedure parameter
    * blocks.
+   *
    * @param containerBlock Root block in the mutator.
    */
   addParamsToModel_: function (containerBlock) {
@@ -643,6 +660,7 @@ Blockly.Extensions.registerMutator(
 const procedureDefContextMenuMixin = {
   /**
    * Add custom menu options to this block's context menu.
+   *
    * @param options List of menu options to add to.
    * @this {Blockly.Block}
    */
@@ -802,6 +820,7 @@ const procedureCallerGetDefMixin = function () {
 
     /**
      * Returns the procedure model associated with this block.
+     *
      * @returns The procedure model associated with this block.
      */
     getProcedureModel() {
@@ -810,6 +829,7 @@ const procedureCallerGetDefMixin = function () {
 
     /**
      * Returns the procedure model tha was found.
+     *
      * @param name The name of the procedure model to find.
      * @param params The param names of the procedure model
      *     to find.
@@ -838,6 +858,7 @@ const procedureCallerGetDefMixin = function () {
     /**
      * Returns the main workspace (i.e. not the flyout workspace) associated
      * with this block.
+     *
      * @returns The main workspace (i.e. not the flyout workspace) associated
      *     with this block.
      */
@@ -850,6 +871,7 @@ const procedureCallerGetDefMixin = function () {
     /**
      * True if this is a procedure definition block, false otherwise (i.e.
      * it is a caller).
+     *
      * @returns False because this is not a procedure definition block.
      */
     isProcedureDef() {
@@ -858,6 +880,7 @@ const procedureCallerGetDefMixin = function () {
 
     /**
      * Return all variables referenced by this block.
+     *
      * @returns List of variable names.
      * @this {Blockly.Block}
      */
@@ -869,6 +892,7 @@ const procedureCallerGetDefMixin = function () {
 
     /**
      * Return all variables referenced by this block.
+     *
      * @returns List of variable models.
      * @this {Blockly.Block}
      */
@@ -893,6 +917,7 @@ const procedureCallerVarMixin = function () {
     /**
      * Notification that a variable is renaming but keeping the same ID.  If the
      * variable is in use on this block, rerender to show the new name.
+     *
      * @param variable The variable being renamed.
      * @package
      * @override
@@ -925,6 +950,7 @@ const procedureCallerMutator = {
   /**
    * Create XML to represent the (non-editable) name and arguments.
    * Backwards compatible serialization implementation.
+   *
    * @returns XML storage element.
    * @this {Blockly.Block}
    */
@@ -945,6 +971,7 @@ const procedureCallerMutator = {
   /**
    * Parse XML to restore the (non-editable) name and parameters.
    * Backwards compatible serialization implementation.
+   *
    * @param xmlElement XML storage element.
    * @this {Blockly.Block}
    */
@@ -961,6 +988,7 @@ const procedureCallerMutator = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
+   *
    * @returns The state of
    *     this block, ie the params and procedure name.
    */
@@ -988,6 +1016,7 @@ const procedureCallerMutator = {
 
   /**
    * Applies the given state to this block.
+   *
    * @param state The state to apply to this block, ie the params and
    *     procedure name.
    */
@@ -997,6 +1026,7 @@ const procedureCallerMutator = {
 
   /**
    * Applies the given name and params from the serialized state to the block.
+   *
    * @param name The name to apply to the block.
    * @param params The parameters to apply to the block.
    */
@@ -1140,6 +1170,7 @@ const procedureCallerUpdateShapeMixin = {
 
   /**
    * Creates all of the parameter inputs to match the state of the data model.
+   *
    * @param params The params to add to the block, or null to
    *     use the params defined in the procedure model.
    */
@@ -1173,6 +1204,7 @@ const procedureCallerUpdateShapeMixin = {
   /**
    * Notification that a procedure is renaming.
    * If the name matches this block's procedure, rename it.
+   *
    * @param oldName Previous name of procedure.
    * @param newName Renamed procedure.
    * @this {Blockly.Block}
@@ -1196,6 +1228,7 @@ const procedureCallerOnChangeMixin = {
   /**
    * Procedure calls cannot exist without the corresponding procedure
    * definition.  Enforce this link whenever an event is fired.
+   *
    * @param event Change event.
    * @this {Blockly.Block}
    */
@@ -1252,6 +1285,7 @@ const procedureCallerOnChangeMixin = {
   /**
    * Returns true if the given def block matches the definition of this caller
    * block.
+   *
    * @param defBlock The definition block to check against.
    * @returns Whether the def block matches or not.
    */
@@ -1267,6 +1301,7 @@ const procedureCallerOnChangeMixin = {
   /**
    * Creates a procedure definition block with the given name and params,
    * and returns the procedure model associated with it.
+   *
    * @param name The name of the procedure to create.
    * @param params The names of the parameters to create.
    * @returns The procedure model associated with the new
@@ -1302,6 +1337,7 @@ Blockly.Extensions.registerMixin(
 const procedureCallerContextMenuMixin = {
   /**
    * Add menu option to find the definition block for this call.
+   *
    * @param options List of menu options to add to.
    * @this {Blockly.Block}
    */

@@ -7,6 +7,7 @@
 import {assert} from 'chai';
 import {testHelpers} from '@blockly/dev-tools';
 import {FieldDate} from '../src/index';
+import {getLocaleDateString} from '../src/utils';
 
 const {
   assertFieldValue,
@@ -106,7 +107,7 @@ suite('FieldDate', function () {
     });
     suite('Value -> New Value', function () {
       const initialValue = '2020-02-20';
-      const initialText = new Date(initialValue).toLocaleDateString();
+      const initialText = getLocaleDateString(initialValue);
       setup(function () {
         this.field = new FieldDate(initialValue);
       });

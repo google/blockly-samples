@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@2.0.2...@blockly/dev-scripts@3.0.0) (2023-11-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove the lint script from blockly-scripts (#2044)
+
+### Bug Fixes
+
+* remove the lint script from blockly-scripts ([#2044](https://github.com/google/blockly-samples/issues/2044)) ([a6df905](https://github.com/google/blockly-samples/commit/a6df90571182af8ed98bdf04ee317da41ea5de1c))
+
+
+
+## [2.0.2](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@2.0.1...@blockly/dev-scripts@2.0.2) (2023-10-30)
+
+
+### Bug Fixes
+
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+
+
+
 ## [2.0.1](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@2.0.0...@blockly/dev-scripts@2.0.1) (2023-07-20)
 
 **Note:** Version bump only for package @blockly/dev-scripts

@@ -85,6 +85,7 @@ export class Backpack
 
   /**
    * Constructor for a backpack.
+   *
    * @param workspace_ The target workspace that
    *     the backpack will be added to.
    * @param backpackOptions The backpack options to use.
@@ -265,6 +266,7 @@ export class Backpack
 
   /**
    * Helper method for adding an event.
+   *
    * @param node Node upon which to listen.
    * @param name Event name to listen to (e.g. 'mousedown').
    * @param thisObject The value of 'this' in the function.
@@ -282,6 +284,7 @@ export class Backpack
 
   /**
    * Returns the backpack flyout.
+   *
    * @returns The backpack flyout.
    */
   getFlyout(): Blockly.IFlyout | null {
@@ -291,6 +294,7 @@ export class Backpack
   /**
    * Returns the bounding rectangle of the drag target area in pixel units
    * relative to viewport.
+   *
    * @returns The component's bounding box. Null if drag
    *   target area should be ignored.
    */
@@ -310,6 +314,7 @@ export class Backpack
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
+   *
    * @returns The component’s bounding box.
    */
   getBoundingRectangle(): Blockly.utils.Rect {
@@ -325,6 +330,7 @@ export class Backpack
    * Positions the backpack.
    * It is positioned in the opposite corner to the corner the
    * categories/toolbox starts at.
+   *
    * @param metrics The workspace metrics.
    * @param savedPositions List of rectangles that
    *     are already on the workspace.
@@ -409,6 +415,7 @@ export class Backpack
 
   /**
    * Returns the count of items in the backpack.
+   *
    * @returns The count of items.
    */
   getCount(): number {
@@ -417,6 +424,7 @@ export class Backpack
 
   /**
    * Returns backpack contents.
+   *
    * @returns The backpack contents.
    */
   getContents(): string[] {
@@ -427,6 +435,7 @@ export class Backpack
   /**
    * Handles when a block or bubble is dropped on this component.
    * Should not handle delete here.
+   *
    * @param dragElement The block or bubble currently
    *   being dragged.
    */
@@ -439,6 +448,7 @@ export class Backpack
   /**
    * Converts the provided block into a JSON string and
    * cleans the JSON of any unnecessary attributes
+   *
    * @param block The block to convert.
    * @returns The JSON object as a string.
    */
@@ -471,6 +481,7 @@ export class Backpack
 
   /**
    * Converts serialized XML to its equivalent serialized JSON string
+   *
    * @param blockXml The XML serialized block.
    * @returns The JSON object as a string.
    */
@@ -493,6 +504,7 @@ export class Backpack
 
   /**
    * Returns whether the backpack contains a duplicate of the provided Block.
+   *
    * @param block The block to check.
    * @returns Whether the backpack contains a duplicate of the
    *     provided block.
@@ -503,6 +515,7 @@ export class Backpack
 
   /**
    * Adds the specified block to backpack.
+   *
    * @param block The block to be added to the backpack.
    */
   addBlock(block: Blockly.Block) {
@@ -511,6 +524,7 @@ export class Backpack
 
   /**
    * Adds the provided blocks to backpack.
+   *
    * @param blocks The blocks to be added to the
    *     backpack.
    */
@@ -520,6 +534,7 @@ export class Backpack
 
   /**
    * Removes the specified block from the backpack.
+   *
    * @param block The block to be removed from the backpack.
    */
   removeBlock(block: Blockly.Block) {
@@ -528,6 +543,7 @@ export class Backpack
 
   /**
    * Adds item to backpack.
+   *
    * @param item Text representing the JSON of a block to add,
    *     cleaned of all unnecessary attributes.
    */
@@ -537,6 +553,7 @@ export class Backpack
 
   /**
    * Adds multiple items to the backpack.
+   *
    * @param items The backpack contents to add.
    */
   addItems(items: string[]) {
@@ -549,6 +566,7 @@ export class Backpack
 
   /**
    * Removes item from the backpack.
+   *
    * @param item Text representing the JSON of a block to remove,
    * cleaned of all unnecessary attributes.
    */
@@ -562,6 +580,7 @@ export class Backpack
 
   /**
    * Sets backpack contents.
+   *
    * @param contents The new backpack contents.
    */
   setContents(contents: string[]) {
@@ -619,6 +638,7 @@ export class Backpack
   /**
    * Returns a filtered list without duplicates within itself and without any
    * shared elements with this.contents_.
+   *
    * @param array The array of items to filter.
    * @returns The filtered list.
    */
@@ -630,6 +650,7 @@ export class Backpack
 
   /**
    * Returns whether the backpack is open-able.
+   *
    * @returns Whether the backpack is open-able.
    */
   protected isOpenable(): boolean {
@@ -640,6 +661,7 @@ export class Backpack
 
   /**
    * Returns whether the backpack is open.
+   *
    * @returns Whether the backpack is open.
    */
   isOpen(): boolean {
@@ -702,6 +724,7 @@ export class Backpack
 
   /**
    * Hides the component. Called in Blockly.hideChaff.
+   *
    * @param onlyClosePopups Whether only popups should be closed.
    *     Flyouts should not be closed if this is true.
    */
@@ -715,6 +738,7 @@ export class Backpack
 
   /**
    * Handle click event.
+   *
    * @param e Mouse event.
    */
   protected onClick(e: MouseEvent) {
@@ -732,6 +756,7 @@ export class Backpack
 
   /**
    * Handles when a cursor with a block or bubble enters this drag target.
+   *
    * @param dragElement The block or bubble currently
    *   being dragged.
    */
@@ -743,6 +768,7 @@ export class Backpack
 
   /**
    * Handles when a cursor with a block or bubble exits this drag target.
+   *
    * @param dragElement The block or bubble currently
    *   being dragged.
    */
@@ -768,6 +794,7 @@ export class Backpack
 
   /**
    * Adds or removes styling to darken the backpack to show it is interactable.
+   *
    * @param addClass True to add styling, false to remove.
    */
   protected updateHoverStying(addClass: boolean) {
@@ -783,6 +810,7 @@ export class Backpack
    * Returns whether the provided block or bubble should not be moved after
    * being dropped on this component. If true, the element will return to where
    * it was when the drag started.
+   *
    * @param dragElement The block or bubble currently
    *   being dragged.
    * @returns Whether the block or bubble provided should be returned
@@ -794,6 +822,7 @@ export class Backpack
 
   /**
    * Prevents a workspace scroll and click event if the backpack is openable.
+   *
    * @param e A mouse down event.
    */
   protected blockMouseDownWhenOpenable(e: MouseEvent) {
@@ -894,6 +923,7 @@ class BackpackSerializer {
 
   /**
    * Saves a target workspace's state to serialized JSON.
+   *
    * @param workspace the workspace to save
    * @returns the serialized JSON if present
    */
@@ -905,6 +935,7 @@ class BackpackSerializer {
 
   /**
    * Loads a serialized state into the target workspace.
+   *
    * @param state the serialized state JSON
    * @param workspace the workspace to load into
    */
@@ -917,6 +948,7 @@ class BackpackSerializer {
 
   /**
    * Resets the state of a workspace.
+   *
    * @param workspace the workspace to reset
    */
   clear(workspace: Blockly.WorkspaceSvg) {

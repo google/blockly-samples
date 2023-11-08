@@ -18,6 +18,7 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
 
   /**
    * Constructs the procedure parameter base event.
+   *
    * @param workspace The workspace the parameter model exists in.
    * @param procedure The procedure model the parameter model belongs to.
    * @param parameter The parameter model associated with this event.
@@ -34,6 +35,7 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
   /**
    * Finds the parameter with the given ID in the procedure model with the given
    * ID, if both things exist.
+   *
    * @param workspace The workspace to search for the parameter.
    * @param procedureId The ID of the procedure model to search for
    *     the parameter.
@@ -57,6 +59,7 @@ export abstract class ProcedureParameterBase extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureParameterBaseJson {

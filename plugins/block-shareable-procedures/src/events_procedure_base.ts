@@ -19,6 +19,7 @@ export abstract class ProcedureBase extends Blockly.Events.Abstract {
 
   /**
    * Constructs the base procedure event.
+   *
    * @param workspace The workspace the procedure model exists in.
    * @param procedure The procedure model associated with this event.
    */
@@ -32,6 +33,7 @@ export abstract class ProcedureBase extends Blockly.Events.Abstract {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureBaseJson {

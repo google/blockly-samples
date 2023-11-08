@@ -6,6 +6,7 @@ export class CrossTabCopyPaste {
   /**
    * Initializes the cross tab copy paste plugin. If no options are selected
    * then both context menu items and keyboard shortcuts are added.
+   *
    * @param {{contextMenu: boolean, shortcut: boolean}} options
    * `contextMenu` Register copy and paste in the context menu.
    * `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)

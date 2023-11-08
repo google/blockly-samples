@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.8](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.7...@blockly/field-angle@3.0.8) (2023-11-02)
+
+**Note:** Version bump only for package @blockly/field-angle
+
+
+
+
+
+## [3.0.7](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.6...@blockly/field-angle@3.0.7) (2023-10-30)
+
+
+### Bug Fixes
+
+* **packaging:** Don't advertise non-existent ESM entrypoints ([#2022](https://github.com/google/blockly-samples/issues/2022)) ([d019198](https://github.com/google/blockly-samples/commit/d0191984399b784e2928b8fb4c58257bfa857655)), closes [#1877](https://github.com/google/blockly-samples/issues/1877)
+* publish type for field angle ([#1956](https://github.com/google/blockly-samples/issues/1956)) ([f0e8dbf](https://github.com/google/blockly-samples/commit/f0e8dbfacfe1a7207380c83a347603a3dd845d58))
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [3.0.6](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.5...@blockly/field-angle@3.0.6) (2023-09-21)
 
 

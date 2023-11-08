@@ -39,6 +39,7 @@ export class Minimap {
 
   /**
    * Constructor for a minimap.
+   *
    * @param workspace The workspace to mirror.
    */
   constructor(workspace: Blockly.WorkspaceSvg) {
@@ -136,6 +137,7 @@ export class Minimap {
   /**
    * Creates the mirroring between workspaces. Passes on all desired events
    * to the minimap from the primary workspace.
+   *
    * @param event The primary workspace event.
    */
   private mirror(event: Blockly.Events.Abstract): void {
@@ -163,6 +165,7 @@ export class Minimap {
   /**
    * Converts the coorindates from a mouse event on the minimap
    * into scroll coordinates for the primary viewport.
+   *
    * @param primaryMetrics The metrics from the primary workspace.
    * @param minimapMetrics The metrics from the minimap workspace.
    * @param offsetX The x offset of the mouse event.
@@ -197,6 +200,7 @@ export class Minimap {
 
   /**
    * Scrolls the primary workspace viewport based on a minimap event.
+   *
    * @param event The minimap browser event.
    */
   private primaryScroll(event: PointerEvent): void {
@@ -211,6 +215,7 @@ export class Minimap {
 
   /**
    * Updates the primary workspace viewport based on a click in the minimap.
+   *
    * @param event The minimap browser event.
    */
   private onClickDown(event: PointerEvent): void {
@@ -235,6 +240,7 @@ export class Minimap {
 
   /**
    * Updates the primary workspace viewport based on a drag in the minimap.
+   *
    * @param event The minimap browser event.
    */
   private onMouseMove(event: PointerEvent): void {
@@ -257,6 +263,7 @@ export class Minimap {
 
   /**
    * Returns whether the focus region is enabled.
+   *
    * @returns True if the focus region is enabled.
    */
   isFocusEnabled(): boolean {

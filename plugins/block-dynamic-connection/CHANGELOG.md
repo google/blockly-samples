@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.5.1...@blockly/block-dynamic-connection@0.5.2) (2023-11-02)
+
+**Note:** Version bump only for package @blockly/block-dynamic-connection
+
+
+
+
+
+## [0.5.1](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.5.0...@blockly/block-dynamic-connection@0.5.1) (2023-10-30)
+
+
+### Bug Fixes
+
+* export types for block-dynamic-connection ([#1948](https://github.com/google/blockly-samples/issues/1948)) ([ffa3797](https://github.com/google/blockly-samples/commit/ffa3797112fa0d560835dd56de2d790933cdbc48))
+* **packaging:** Don't advertise non-existent ESM entrypoints ([#2022](https://github.com/google/blockly-samples/issues/2022)) ([d019198](https://github.com/google/blockly-samples/commit/d0191984399b784e2928b8fb4c58257bfa857655)), closes [#1877](https://github.com/google/blockly-samples/issues/1877)
+* update tsconfigs to publish types accurately ([df4b084](https://github.com/google/blockly-samples/commit/df4b0844af712f5025a2ec842458b828f3147676))
+* use includes rather than excludes ([40efc25](https://github.com/google/blockly-samples/commit/40efc255329e3ca476ccc247b95a2d05dd77b45e))
+
+
+
 ## [0.5.0](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.4.3...@blockly/block-dynamic-connection@0.5.0) (2023-09-28)
 
 
