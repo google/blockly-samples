@@ -15,6 +15,7 @@ import type {FieldDependentDropdown} from './field_dependent_dropdown';
 /**
  * A deep equality comparison between the two provided arrays recursively
  * comparing any child elements that are also arrays.
+ *
  * @param a The first array to compare.
  * @param b The second array to compare.
  * @returns Whether the arrays are deeply equivalent.
@@ -75,6 +76,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Construct a new DependentDropdownOptionsChange.
+   *
    * @param block The changed block. Undefined for a blank event.
    * @param name Name of the field affected.
    * @param oldValue Previous value of field.
@@ -113,6 +115,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): DependentDropdownOptionsChangeJson {
@@ -139,6 +142,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Decode the JSON event.
+   *
    * @param json JSON representation.
    * @param workspace
    * @param event
@@ -164,6 +168,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Does this event leave all state as it was before?
+   *
    * @returns False if something changed.
    */
   isNull(): boolean {
@@ -178,6 +183,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
 
   /**
    * Run a change event.
+   *
    * @param forward True if run forward, false if run backward (undo).
    */
   run(forward: boolean): void {

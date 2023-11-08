@@ -21,6 +21,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
 
   /**
    * Constructs the procedure change event.
+   *
    * @param workpace The workspace this change event is associated with.
    * @param procedure The model this change event is associated with.
    * @param oldTypes The type(s) the procedure's return was set to before it
@@ -38,6 +39,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
 
   /**
    * Replays the event in the workspace.
+   *
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).
    */
@@ -60,6 +62,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureChangeReturnJson {
@@ -70,6 +73,7 @@ export class ProcedureChangeReturn extends ProcedureBase {
 
   /**
    * Deserializes the JSON event.
+   *
    * @param json The JSON representation of a procedure change event.
    * @param workspace The workspace to deserialize the event into.
    * @returns The new procedure change return event.

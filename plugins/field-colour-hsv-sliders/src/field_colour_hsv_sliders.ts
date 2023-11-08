@@ -38,6 +38,7 @@ class RgbColour {
 
   /**
    * The RgbColour constructor.
+   *
    * @param r The initial amount of red. Defaults to 0.
    * @param g The initial amount of green. Defaults to 0.
    * @param b The initial amount of blue. Defaults to 0.
@@ -51,6 +52,7 @@ class RgbColour {
   /**
    * Given a number from 0 to 1, returns a two-digit hexadecimal string from
    * '00' to 'ff'.
+   *
    * @param x The amount of light in a component from 0 to 1.
    * @returns A hexadecimal representation from '00' to 'ff'.
    */
@@ -62,6 +64,7 @@ class RgbColour {
 
   /**
    * Returns a hexadecimal string in the format #rrggbb representing the colour.
+   *
    * @returns A hexadecimal representation of this colour.
    */
   toHex(): string {
@@ -76,6 +79,7 @@ class RgbColour {
   /**
    * Updates the properties of this instance to represent the same colour as the
    * provided string in the hexadecimal format #rrggbb.
+   *
    * @param hex A hexadecimal string in the format '#rrggbb'.
    * @returns This instance after updating it.
    */
@@ -89,6 +93,7 @@ class RgbColour {
   /**
    * Updates the properties of this instance to represent the same colour as the
    * provided HsvColour but in the sRGB colour space.
+   *
    * @param hsv An HSV representation of a colour to copy.
    * @returns This instance after updating it.
    */
@@ -121,6 +126,7 @@ class HsvColour {
 
   /**
    * The HsvColour constructor.
+   *
    * @param h The initial hue of the colour. Defaults to 0.
    * @param s The initial amount of saturation. Defaults to 0.
    * @param v The initial amount of brightness. Defaults to 0.
@@ -134,6 +140,7 @@ class HsvColour {
   /**
    * Updates the properties of this instance to represent the same colour as the
    * provided RgbColour but in the HSV colour space.
+   *
    * @param rgb An RGB representation of a colour to copy.
    * @returns This instance after updating it.
    */
@@ -165,6 +172,7 @@ class HsvColour {
 
   /**
    * Updates the properties of this instance to copy the provided HsvColour.
+   *
    * @param other An HSV representation of a colour to copy.
    * @returns This instance after updating it.
    */
@@ -233,6 +241,7 @@ export class FieldColourHsvSliders extends FieldColour {
   /* eslint-disable @typescript-eslint/naming-convention */
   /**
    * Create and show the colour field's editor.
+   *
    * @override
    */
   protected showEditor_(): void {
@@ -255,6 +264,7 @@ export class FieldColourHsvSliders extends FieldColour {
   /**
    * Creates a row with a slider label and a readout to display the slider
    * value, appends it to the provided container, and returns the readout.
+   *
    * @param name The display name of the slider.
    * @param container Where the row will be inserted.
    * @returns The readout, so that it can be updated.
@@ -276,6 +286,7 @@ export class FieldColourHsvSliders extends FieldColour {
 
   /**
    * Creates a slider, appends it to the provided container, and returns it.
+   *
    * @param max The maximum value of the slider.
    * @param step The minimum step size of the slider.
    * @param container Where the row slider be inserted.
@@ -394,6 +405,7 @@ export class FieldColourHsvSliders extends FieldColour {
    * A helper function that converts a colour, specified by the provided hue,
    * saturation, and brightness parameters, into a hexadecimal string in the
    * format "#rrggbb".
+   *
    * @param hue The hue of the colour.
    * @param saturation The saturation of the colour.
    * @param brightness The brightness of the colour.
@@ -414,6 +426,7 @@ export class FieldColourHsvSliders extends FieldColour {
 
   /**
    * Updates the value of this field based on the editor sliders.
+   *
    * @param event Unused.
    */
   private onSliderChange(event?: Event): void {
@@ -434,6 +447,7 @@ export class FieldColourHsvSliders extends FieldColour {
 
   /**
    * Updates the value of this field and editor sliders using an eyedropper.
+   *
    * @param event Unused.
    */
   private onEyedropperEvent(event?: Event): void {

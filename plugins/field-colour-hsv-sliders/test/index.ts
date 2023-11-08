@@ -23,6 +23,7 @@ const toolbox = generateFieldTestBlocks('field_colour_hsv_sliders', [
 
 /**
  * Create a workspace.
+ *
  * @param blocklyDiv The blockly container div.
  * @param options The Blockly options.
  * @returns The created workspace.

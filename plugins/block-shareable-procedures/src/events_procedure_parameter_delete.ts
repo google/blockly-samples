@@ -21,6 +21,7 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
 
   /**
    * Constructs the procedure parameter delete event.
+   *
    * @param workspace The workspace this event is associated with.
    * @param procedure The procedure model this event is associated with.
    * @param parameter The parameter model that was just removed from the
@@ -38,6 +39,7 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
 
   /**
    * Replays the event in the workspace.
+   *
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).
    */
@@ -60,6 +62,7 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureParameterDeleteJson {
@@ -70,6 +73,7 @@ export class ProcedureParameterDelete extends ProcedureParameterBase {
 
   /**
    * Deserializes the JSON event.
+   *
    * @param json The JSON representation of a procedure parameter delete event.
    * @param workspace The workspace to deserialize the event into.
    * @returns The new procedure parameter delete event.

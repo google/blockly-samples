@@ -29,6 +29,7 @@ export interface BackpackOptions {
 /**
  * Returns a new options object with all properties set, using default values
  * if not specified in the optional options that were passed in.
+ *
  * @param options The options to use.
  * @returns The created options object.
  */

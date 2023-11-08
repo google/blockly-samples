@@ -92,6 +92,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
 
   /**
    * Constructs a new FieldDependentDropdown.
+   *
    * @param parentName The name of the parent field whose value determines this
    *    field's available options.
    * @param optionMapping A mapping from the possible values of the parent field
@@ -161,6 +162,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
 
   /**
    * Constructs a FieldDependentDropdown from a JSON arg object.
+   *
    * @param options A JSON object providing "parentName" and "optionMapping".
    * @returns The new field instance.
    */
@@ -232,6 +234,7 @@ export class FieldDependentDropdown extends Blockly.FieldDropdown {
   /**
    * Updates the options of this child dropdown field based on the new value of
    * the parent field.
+   *
    * @param newValue The newly assigned value.
    */
   private updateOptionsBasedOnNewValue(newValue: string | undefined): void {

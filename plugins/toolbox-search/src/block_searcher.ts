@@ -20,6 +20,7 @@ export class BlockSearcher {
    * scenes, it creates a workspace, loads the specified block types on it,
    * indexes their types and human-readable text, and cleans up after
    * itself.
+   *
    * @param blockTypes A list of block types to index.
    */
   indexBlocks(blockTypes: string[]) {
@@ -38,6 +39,7 @@ export class BlockSearcher {
 
   /**
    * Check if the field is a dropdown, and index every text in the option
+   *
    * @param field We need to check the type of field
    * @param blockType The block type to associate the trigrams with.
    */
@@ -55,6 +57,7 @@ export class BlockSearcher {
 
   /**
    * Filters the available blocks based on the current query string.
+   *
    * @param query The text to use to match blocks against.
    * @returns A list of block types matching the query.
    */
@@ -74,6 +77,7 @@ export class BlockSearcher {
   /**
    * Generates trigrams for the given text and associates them with the given
    * block type.
+   *
    * @param text The text to generate trigrams of.
    * @param blockType The block type to associate the trigrams with.
    */
@@ -87,6 +91,7 @@ export class BlockSearcher {
 
   /**
    * Generates a list of trigrams for a given string.
+   *
    * @param input The string to generate trigrams of.
    * @returns A list of trigrams of the given string.
    */
@@ -105,6 +110,7 @@ export class BlockSearcher {
 
   /**
    * Returns the intersection of two sets.
+   *
    * @param a The first set.
    * @param b The second set.
    * @returns The intersection of the two sets.

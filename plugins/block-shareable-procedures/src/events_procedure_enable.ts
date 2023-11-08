@@ -22,6 +22,7 @@ export class ProcedureEnable extends ProcedureBase {
 
   /**
    * Constructs the procedure enable event.
+   *
    * @param workspace The workspace this event is associated with.
    * @param procedure The model this event is associated with.
    * @param newState The (optional) new enabled state of the procedure model.
@@ -46,6 +47,7 @@ export class ProcedureEnable extends ProcedureBase {
 
   /**
    * Replays the event in the workspace.
+   *
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).
    */
@@ -68,6 +70,7 @@ export class ProcedureEnable extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureEnableJson {
@@ -78,6 +81,7 @@ export class ProcedureEnable extends ProcedureBase {
 
   /**
    * Deserializes the JSON event.
+   *
    * @param json The JSON representation of a procedure enable event.
    * @param workspace The workspace to deserialize the event into.
    * @returns The new procedure enable event.

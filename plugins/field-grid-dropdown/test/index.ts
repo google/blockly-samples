@@ -224,6 +224,7 @@ const toolbox = generateFieldTestBlocks('field_grid_dropdown', [
 
 /**
  * Create a workspace.
+ *
  * @param blocklyDiv The blockly container div.
  * @param options The Blockly options.
  * @returns The created workspace.

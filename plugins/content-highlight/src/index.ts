@@ -75,12 +75,14 @@ export class ContentHighlight {
 
   /**
    * Constructor for the content highlight plugin.
+   *
    * @param workspace The workspace that the plugin will be added to.
    */
   constructor(protected workspace: Blockly.WorkspaceSvg) {}
 
   /**
    * Initializes the plugin.
+   *
    * @param padding The padding to use for the content area highlight
    *    rectangle, in workspace units.
    */
@@ -173,6 +175,7 @@ export class ContentHighlight {
 
   /**
    * Handles events triggered on the workspace.
+   *
    * @param event The event.
    */
   private onChange(event: Blockly.Events.Abstract) {
@@ -200,6 +203,7 @@ export class ContentHighlight {
   /**
    * Changes opacity of the highlight based on what kind of block drag event
    * is passed.
+   *
    * @param event The BlockDrag event.
    */
   private handleBlockDrag(event: Blockly.Events.BlockDrag) {
@@ -226,6 +230,7 @@ export class ContentHighlight {
 
   /**
    * Resizes the content highlight.
+   *
    * @param contentMetrics The content metrics for the workspace in workspace
    *     coordinates.
    */
@@ -248,6 +253,7 @@ export class ContentHighlight {
 
   /**
    * Positions the highlight on the workspace based on the workspace metrics.
+   *
    * @param contentMetrics The content metrics for the workspace in workspace
    *     coordinates.
    * @param absoluteMetrics The absolute metrics for the workspace.

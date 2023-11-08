@@ -19,6 +19,7 @@ export class Plugin {
   protected workspace: Blockly.WorkspaceSvg;
   /**
    * Constructor for ...
+   *
    * @param workspace The workspace that the plugin will
    *     be added to.
    */

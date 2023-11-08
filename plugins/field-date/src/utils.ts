@@ -1,5 +1,6 @@
 /**
  * Get the string formatted locally to the user.
+ *
  * @param dateString A string in the format 'yyyy-mm-dd'
  * @returns the locale date string for the date.
  */

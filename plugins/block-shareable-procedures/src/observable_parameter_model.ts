@@ -19,6 +19,7 @@ export class ObservableParameterModel
 
   /**
    * Constructor for the procedure parameter.
+   *
    * @param workspace The workspace this parameter model exists in.
    * @param name The name of this parameter.
    * @param id The optional unique language-neutral ID of the parameter.
@@ -39,6 +40,7 @@ export class ObservableParameterModel
 
   /**
    * Sets the name of this parameter to the given name.
+   *
    * @param name The string to set the name to.
    * @param id The optional ID the backing variable should have.
    * @returns This parameter model.
@@ -67,6 +69,7 @@ export class ObservableParameterModel
    * Unimplemented. The built-in ParameterModel does not support typing.
    * If you want your procedure blocks to have typed parameters, you need to
    * implement your own ParameterModel.
+   *
    * @param types The types to set this parameter to.
    * @throws Throws for the ObservableParameterModel specifically because this
    *     method is unimplemented.
@@ -95,6 +98,7 @@ export class ObservableParameterModel
   /**
    * Returns the unique language-neutral ID for the parameter. This represents
    * the identity of the variable model which does not change over time.
+   *
    * @returns The unique language-neutral ID for the parameter.
    */
   getId(): string {
@@ -110,6 +114,7 @@ export class ObservableParameterModel
 
   /**
    * Tells the parameter model it should fire events.
+   *
    * @internal
    */
   startPublishing() {
@@ -118,6 +123,7 @@ export class ObservableParameterModel
 
   /**
    * Tells the parameter model it should not fire events.
+   *
    * @internal
    */
   stopPublishing() {
@@ -126,6 +132,7 @@ export class ObservableParameterModel
 
   /**
    * Sets the procedure model this parameter is a part of.
+   *
    * @param model The procedure model this parameter is a part of.
    * @returns This parameter model.
    */

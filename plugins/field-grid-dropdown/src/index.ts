@@ -104,6 +104,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
   /**
    * Sets the number of columns on the grid. Updates the styling to reflect.
+   *
    * @param columns The number of columns. Is rounded to
    *    an integer value and must be greater than 0. Invalid
    *    values are ignored.

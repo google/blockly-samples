@@ -36,6 +36,7 @@ export class FocusRegion {
 
   /**
    * Constructor for the focus region.
+   *
    * @param primaryWorkspace The primary workspaceSvg.
    * @param minimapWorkspace The minimap workspaceSvg.
    */
@@ -141,6 +142,7 @@ export class FocusRegion {
 
   /**
    * Handles events triggered on the primary workspace.
+   *
    * @param event The event.
    */
   private onChange(event: Blockly.Events.Abstract): void {
@@ -192,6 +194,7 @@ export class FocusRegion {
 
   /**
    * Returns whether focus region is initialized or not.
+   *
    * @returns True if focus region is initialized else false.
    */
   isEnabled(): boolean {

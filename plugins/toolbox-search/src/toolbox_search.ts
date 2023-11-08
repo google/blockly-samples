@@ -25,6 +25,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
   /**
    * Initializes a ToolboxSearchCategory.
+   *
    * @param categoryDef The information needed to create a category in the
    *     toolbox.
    * @param parentToolbox The parent toolbox for the category.
@@ -43,6 +44,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
   /**
    * Initializes the search field toolbox category.
+   *
    * @returns The <div> that will be displayed in the toolbox.
    */
   protected override createDom_(): HTMLDivElement {
@@ -67,6 +69,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
   /**
    * Returns the numerical position of this category in its parent toolbox.
+   *
    * @returns The zero-based index of this category in its parent toolbox, or -1
    *    if it cannot be determined, e.g. if this is a nested category.
    */
@@ -103,6 +106,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
   /**
    * Returns a list of block types that are present in the toolbox definition.
+   *
    * @param schema A toolbox item definition.
    * @param allBlocks The set of all available blocks that have been encountered
    *     so far.
@@ -135,6 +139,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
   /**
    * Handles a click on this toolbox category.
+   *
    * @param e The click event.
    */
   override onClick(e: Event) {
@@ -146,6 +151,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
   /**
    * Handles changes in the selection state of this category.
+   *
    * @param isSelected Whether or not the category is now selected.
    */
   override setSelected(isSelected: boolean) {
