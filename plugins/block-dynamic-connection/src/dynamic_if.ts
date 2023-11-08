@@ -39,6 +39,7 @@ interface IfExtraState {
 const DYNAMIC_IF_MIXIN = {
   /**
    * Minimum number of inputs for this block.
+   *
    * @deprecated This is unused.
    */
   minInputs: 1,
@@ -64,6 +65,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Create XML to represent if/elseif/else inputs.
+   *
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicIfBlock): Element | null {
@@ -88,6 +90,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Parse XML to restore the inputs.
+   *
    * @param xmlElement XML storage element.
    */
   domToMutation(this: DynamicIfBlock, xmlElement: Element): void {
@@ -100,6 +103,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Parses XML based on the 'inputs' attribute (non-standard).
+   *
    * @param xmlElement XML storage element.
    */
   deserializeInputs(this: DynamicIfBlock, xmlElement: Element): void {
@@ -137,6 +141,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Parses XML based on the 'elseif' and 'else' attributes (standard).
+   *
    * @param xmlElement XML storage element.
    */
   deserializeCounts(this: DynamicIfBlock, xmlElement: Element): void {
@@ -153,6 +158,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
+   *
    * @returns The state of this block, ie the else if count and else state.
    */
   saveExtraState: function (this: DynamicIfBlock): IfExtraState | null {
@@ -178,6 +184,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Applies the given state to this block.
+   *
    * @param state The state to apply to this block, ie the else if count
    *     and else state.
    */
@@ -203,6 +210,7 @@ const DYNAMIC_IF_MIXIN = {
   /**
    * Finds the index of a connection. Used to determine where in the block to
    * insert new inputs.
+   *
    * @param connection A connection on this block.
    * @returns The index of the connection in the this.inputList.
    */
@@ -221,6 +229,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Inserts a boolean value input and statement input at the specified index.
+   *
    * @param index Index of the input before which to add new inputs.
    * @param id An ID to append to the case statement input names to make them
    *     unique.
@@ -245,6 +254,7 @@ const DYNAMIC_IF_MIXIN = {
   /**
    * Called by a monkey-patched version of InsertionMarkerManager when
    * a block is dragged over one of the connections on this block.
+   *
    * @param connection The connection on this block that has a pending
    *     connection.
    */
@@ -304,6 +314,7 @@ const DYNAMIC_IF_MIXIN = {
    * if nor the due input in a case has an attached block, that input is
    * skipped. If only one of them has an attached block, the other value in
    * the pair is undefined.
+   *
    * @returns  A list of target connections attached to case inputs.
    */
   collectTargetCaseConns(this: DynamicIfBlock): CaseConnectionPair[] {
@@ -330,6 +341,7 @@ const DYNAMIC_IF_MIXIN = {
    *
    * This is essentially rebuilding all of the cases with strictly ascending
    * case numbers.
+   *
    * @param targetConns The list of target connections to attach to this block.
    */
   addCaseInputs(this: DynamicIfBlock, targetConns: CaseConnectionPair[]): void {
@@ -348,6 +360,7 @@ const DYNAMIC_IF_MIXIN = {
 
   /**
    * Adds an else input to this block.
+   *
    * @returns The appended input.
    */
   addElseInput(this: DynamicIfBlock): Blockly.Input {

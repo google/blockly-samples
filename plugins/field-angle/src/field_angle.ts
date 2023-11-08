@@ -285,6 +285,7 @@ export class FieldAngle extends Blockly.FieldNumber {
 
     /**
      * Draw a set of ticks on the gauge.
+     *
      * @param tickAngle Angle between each tick.
      * @param length Length of the tick (minor=5, major=10).
      */
@@ -415,6 +416,7 @@ export class FieldAngle extends Blockly.FieldNumber {
 
   /**
    * Convert an on-screen angle into a value for this field.
+   *
    * @param angle Radians where 0: East, π/2: North, π or -π: West, -π/2: South.
    * @returns Angle value for this field, scaled and offset as specified.
    */
@@ -440,6 +442,7 @@ export class FieldAngle extends Blockly.FieldNumber {
 
   /**
    * Convert a value for this field into an on-screen angle.
+   *
    * @param angle Angle value for this field, scaled and offset as specified.
    * @returns Radians where 0: East, π/2: North, π or -π: West, -π/2: South.
    */
@@ -641,6 +644,7 @@ export class FieldAngle extends Blockly.FieldNumber {
 
   /**
    * Construct a FieldAngle from a JSON arg object.
+   *
    * @param options A JSON object with options
    *     (value, mode, clockwise, offset, min, max, precision).
    * @returns The new field instance.

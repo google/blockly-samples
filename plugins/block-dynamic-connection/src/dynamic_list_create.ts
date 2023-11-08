@@ -44,6 +44,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Create XML to represent number of text inputs.
+   *
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicListCreateBlock): Element {
@@ -61,6 +62,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Parse XML to restore the text inputs.
+   *
    * @param xmlElement XML storage element.
    */
   domToMutation(this: DynamicListCreateBlock, xmlElement: Element): void {
@@ -73,6 +75,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Parses XML based on the 'inputs' attribute (non-standard).
+   *
    * @param xmlElement XML storage element.
    */
   deserializeInputs(this: DynamicListCreateBlock, xmlElement: Element): void {
@@ -89,6 +92,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Parses XML based on the 'items' attribute (standard).
+   *
    * @param xmlElement XML storage element.
    */
   deserializeCounts(this: DynamicListCreateBlock, xmlElement: Element): void {
@@ -104,6 +108,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Returns the state of this block as a JSON serializable object.
+   *
    * @returns The state of this block, ie the item count.
    */
   saveExtraState: function (this: DynamicListCreateBlock): {itemCount: number} {
@@ -121,6 +126,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Applies the given state to this block.
+   *
    * @param state The state to apply to this block, ie the item count.
    */
   loadExtraState: function (
@@ -141,6 +147,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Check whether a new input should be added and determine where it should go.
+   *
    * @param connection The connection that has a pending connection.
    * @returns The index before which to insert a new input, or null if no input
    *     should be added.
@@ -183,6 +190,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
   /**
    * Called by a monkey-patched version of InsertionMarkerManager when
    * a block is dragged over one of the connections on this block.
+   *
    * @param connection The connection on this block that has a pending
    *     connection.
    */
@@ -222,6 +230,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * Filters the given target connections so that empty connections are removed,
    * unless we need those to reach the minimum input count. Empty connections
    * are removed starting at the end of the array.
+   *
    * @param targetConns The list of connections associated with inputs.
    * @returns A filtered list of connections (or null/undefined) which should
    *     be attached to inputs.
@@ -243,6 +252,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    * every entry in the array (if it does not already exist). If the entry is
    * a connection and not null/undefined the connection will be connected to
    * the input.
+   *
    * @param targetConns The connections defining the inputs to add.
    */
   addItemInputs(
@@ -263,6 +273,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
 
   /**
    * Adds the top input with the label to this block.
+   *
    * @returns The added input.
    */
   addFirstInput(this: DynamicListCreateBlock): Blockly.Input {

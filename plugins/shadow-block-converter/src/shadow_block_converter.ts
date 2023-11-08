@@ -38,6 +38,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * The constructor for a new BlockShadowChange event.
+   *
    * @param block The changed block. Undefined for a blank event.
    * @param oldValue Previous value of shadow state.
    * @param newValue New value of shadow state.
@@ -56,6 +57,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    * @override
    */
@@ -68,6 +70,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Decode the JSON event.
+   *
    * @param json JSON representation.
    * @override
    */
@@ -88,6 +91,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Does this event record any change of state?
+   *
    * @returns False if something changed.
    * @override
    */
@@ -97,6 +101,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
 
   /**
    * Run a change event.
+   *
    * @param forward True if run forward, false if run backward (undo).
    * @override
    */

@@ -30,6 +30,7 @@ export class PositionedMinimap
 
   /**
    * Constructor for a positionable minimap.
+   *
    * @param workspace The workspace to mirror.
    */
   constructor(workspace: Blockly.WorkspaceSvg) {
@@ -58,6 +59,7 @@ export class PositionedMinimap
   /**
    * Returns the bounding rectangle of the UI element in pixel units
    * relative to the Blockly injection div.
+   *
    * @returns The component’s bounding box.
    */
   getBoundingRectangle(): Blockly.utils.Rect {
@@ -71,6 +73,7 @@ export class PositionedMinimap
 
   /**
    * Positions the minimap.
+   *
    * @param metrics The workspace metrics.
    * @param savedPositions List of rectangles already on the workspace.
    */
@@ -85,6 +88,7 @@ export class PositionedMinimap
 
   /**
    * Sizes the minimap.
+   *
    * @internal
    */
   setSize(): void {
@@ -95,6 +99,7 @@ export class PositionedMinimap
 
   /**
    * Calculates the position of the minimap over the primary workspace.
+   *
    * @param metrics The workspace metrics.
    * @param savedPositions List of rectangles already on the workspace.
    * @internal

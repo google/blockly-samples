@@ -59,6 +59,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 
   /**
    * Constructor for zoom-to-fit control.
+   *
    * @param workspace The workspace that the zoom-to-fit
    *     control will be added to.
    */
@@ -140,6 +141,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
+   *
    * @returns The component’s bounding box.
    */
   getBoundingRectangle(): Blockly.utils.Rect {
@@ -155,6 +157,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
    * Positions the zoom-to-fit control.
    * It is positioned in the opposite corner to the corner the
    * categories/toolbox starts at.
+   *
    * @param metrics The workspace metrics.
    * @param savedPositions List of rectangles that
    *     are already on the workspace.

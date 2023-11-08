@@ -27,6 +27,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
 
   /**
    * Class for a backpack open event.
+   *
    * @param isOpen Whether the backpack flyout is opening (false
    *    if closing). Undefined for a blank event.
    * @param workspaceId The workspace identifier for this event.
@@ -41,6 +42,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): BackpackOpenEventJson {
@@ -51,6 +53,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
 
   /**
    * Decode the JSON event.
+   *
    * @param json JSON representation.
    * @param workspace A workspace to create the event on.
    * @param event an instance of BackpackOpen to deserialize into.

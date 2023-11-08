@@ -18,6 +18,7 @@ import {BackpackContextMenuOptions} from './options';
 
 /**
  * Registers a context menu option to empty the backpack when right-clicked.
+ *
  * @param workspace The workspace to register the context menu option on.
  */
 function registerEmptyBackpack(workspace: Blockly.WorkspaceSvg) {
@@ -84,6 +85,7 @@ function registerRemoveFromBackpack() {
 
 /**
  * Registers context menu options for adding a block to the backpack.
+ *
  * @param disablePreconditionContainsCheck Whether to disable the
  *   precondition check for whether the backpack contains the block.
  */
@@ -219,6 +221,7 @@ function registerPasteAllBackpack() {
 
 /**
  * Register all context menu options.
+ *
  * @param contextMenuOptions The backpack context menu options.
  * @param workspace The workspace to register the context menu options.
  */
