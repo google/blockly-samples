@@ -209,6 +209,7 @@ export class FieldColour extends Blockly.Field<string> {
 
   /**
    * Defines whether this field should take up the full block or not.
+   *
    * @returns True if this field should take up the full block. False otherwise.
    */
   protected isFullBlockField(): boolean {
@@ -312,15 +313,16 @@ export class FieldColour extends Blockly.Field<string> {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   protected updateSize_(margin?: number) {
     const constants = this.getConstants();
+    if (!constants) return;
     let totalWidth;
     let totalHeight;
     if (this.isFullBlockField()) {
       const xOffset = margin ?? 0;
       totalWidth = xOffset * 2;
-      totalHeight = constants!.FIELD_TEXT_HEIGHT;
+      totalHeight = constants.FIELD_TEXT_HEIGHT;
     } else {
-      totalWidth = constants!.FIELD_COLOUR_DEFAULT_WIDTH;
-      totalHeight = constants!.FIELD_COLOUR_DEFAULT_HEIGHT;
+      totalWidth = constants.FIELD_COLOUR_DEFAULT_WIDTH;
+      totalHeight = constants.FIELD_COLOUR_DEFAULT_HEIGHT;
     }
 
     this.size_.height = totalHeight;
