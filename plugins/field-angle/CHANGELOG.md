@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.8...@blockly/field-angle@3.0.9) (2023-11-09)
+
+**Note:** Version bump only for package @blockly/field-angle
+
+
+
+
+
 ## [3.0.8](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.7...@blockly/field-angle@3.0.8) (2023-11-02)
 
 **Note:** Version bump only for package @blockly/field-angle
