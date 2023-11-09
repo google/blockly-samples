@@ -75,6 +75,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Class for workspace search.
+   *
    * @param workspace The workspace the search bar sits in.
    */
   constructor(private workspace: Blockly.WorkspaceSvg) {}
@@ -191,6 +192,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Helper method for adding an event.
+   *
    * @param node Node upon which to listen.
    * @param name Event name to listen to (e.g. 'mousedown').
    * @param thisObject The value of 'this' in the function.
@@ -214,6 +216,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * Add a button to the action div. This must be called after the init function
    * has been called.
+   *
    * @param btn The button to add the event listener to.
    * @param onClickFn The function to call when the user clicks on
    *     or hits enter on the button.
@@ -225,6 +228,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Creates the text input for the search bar.
+   *
    * @returns A text input for the search bar.
    */
   protected createTextInput(): HTMLInputElement {
@@ -236,6 +240,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Creates the button used to get the next block in the list.
+   *
    * @returns The next button.
    */
   protected createNextBtn(): HTMLButtonElement {
@@ -244,6 +249,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Creates the button used to get the previous block in the list.
+   *
    * @returns The previous button.
    */
   protected createPreviousBtn(): HTMLButtonElement {
@@ -252,6 +258,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Creates the button used for closing the search bar.
+   *
    * @returns A button for closing the search bar.
    */
   protected createCloseBtn(): HTMLButtonElement {
@@ -260,6 +267,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Creates a button for the workspace search bar.
+   *
    * @param className The class name for the button.
    * @param text The text to display to the screen reader.
    * @returns The created button.
@@ -274,6 +282,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Add event listener for clicking and keydown on the given button.
+   *
    * @param btn The button to add the event listener to.
    * @param onClickFn The function to call when the user clicks on
    *      or hits enter on the button.
@@ -300,6 +309,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
+   *
    * @returns The component’s bounding box. Null in this
    *     case since we don't need other elements to avoid the workspace search
    *     field.
@@ -312,6 +322,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * Positions the workspace search field.
    * It is positioned in the opposite corner to the corner the
    * categories/toolbox starts at.
+   *
    * @param metrics The workspace metrics.
    * @param savedPositions List of rectangles that
    *     are already on the workspace.
@@ -346,6 +357,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Handles a key down for the search bar.
+   *
    * @param e The key down event.
    */
   private onKeyDown(e: KeyboardEvent) {
@@ -365,6 +377,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Opens the search bar when Control F or Command F are used on the workspace.
+   *
    * @param e The key down event.
    */
   private onWorkspaceKeyDown(e: KeyboardEvent) {
@@ -392,6 +405,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Sets the placeholder text for the search bar text input.
+   *
    * @param placeholderText The placeholder text.
    */
   setSearchPlaceholder(placeholderText: string) {
@@ -403,6 +417,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Changes the currently "selected" block and adds extra highlight.
+   *
    * @param index Index of block to set as current. Number is wrapped.
    */
   protected setCurrentBlock(index: number) {
@@ -443,6 +458,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Shows or hides the workspace search bar.
+   *
    * @param show Whether to set the search bar as visible.
    */
   private setVisible(show: boolean) {
@@ -452,6 +468,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * Searches the workspace for the current search term and highlights matching
    * blocks.
+   *
    * @param searchText The search text.
    * @param preserveCurrent Whether to preserve the current block
    *    if it is included in the new matching blocks.
@@ -476,6 +493,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Returns pool of blocks to search from.
+   *
    * @param workspace The workspace to get blocks from.
    * @returns The search pool of blocks to use.
    */
@@ -490,6 +508,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Returns whether the given block matches the search text.
+   *
    * @param block The block to check.
    * @param searchText The search text. Note if the search is case
    *    insensitive, this will be passed already converted to lowercase letters.
@@ -522,6 +541,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Returns blocks that match the given search text.
+   *
    * @param workspace The workspace to search.
    * @param searchText The search text.
    * @param caseSensitive Whether the search should be case sensitive.
@@ -561,6 +581,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   /**
    * Adds "current selection" highlight to the provided block.
    * Highlights the provided block as the "current selection".
+   *
    * @param currentBlock The block to highlight.
    */
   protected highlightCurrentSelection(currentBlock: Blockly.BlockSvg) {
@@ -570,6 +591,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Removes "current selection" highlight from provided block.
+   *
    * @param currentBlock The block to unhighlight.
    */
   protected unhighlightCurrentSelection(currentBlock: Blockly.BlockSvg) {
@@ -579,6 +601,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Adds highlight to the provided blocks.
+   *
    * @param blocks The blocks to highlight.
    */
   protected highlightSearchGroup(blocks: Blockly.BlockSvg[]) {
@@ -590,6 +613,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
   /**
    * Removes highlight from the provided blocks.
+   *
    * @param blocks The blocks to unhighlight.
    */
   protected unhighlightSearchGroup(blocks: Blockly.BlockSvg[]) {

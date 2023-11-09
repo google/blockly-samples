@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@3.0.0...@blockly/dev-scripts@3.1.0) (2023-11-09)
+
+
+### Features
+
+* switch to new umd library output in webpack config ([#1973](https://github.com/google/blockly-samples/issues/1973)) ([7748c04](https://github.com/google/blockly-samples/commit/7748c0466b98099709064fba8530629814eb3333))
+
+
+
 ## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@2.0.2...@blockly/dev-scripts@3.0.0) (2023-11-02)
 
 

@@ -43,6 +43,7 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Class for an number slider field.
+   *
    * @param value The initial value of the field. Should
    *    cast to a number. Defaults to 0.
    * @param min Minimum value.
@@ -69,6 +70,7 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Constructs a FieldSlider from a JSON arg object.
+   *
    * @param options A JSON object with options
    *     (value, min, max, precision).
    * @returns The new field instance.
@@ -91,7 +93,8 @@ export class FieldSlider extends Blockly.FieldNumber {
   /* eslint-disable @typescript-eslint/naming-convention */
   /**
    * Show the inline free-text editor on top of the text along with the slider
-   *    editor.
+   * editor.
+   *
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
    * @param quietInput Quiet input (prevent focusing on the editor).
@@ -136,6 +139,7 @@ export class FieldSlider extends Blockly.FieldNumber {
 
   /**
    * Creates the slider editor and add event listeners.
+   *
    * @returns The newly created slider.
    */
   private dropdownCreate_(): HTMLElement {

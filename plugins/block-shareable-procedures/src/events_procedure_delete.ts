@@ -18,6 +18,7 @@ export class ProcedureDelete extends ProcedureBase {
 
   /**
    * Replays the event in the workspace.
+   *
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).
    */
@@ -35,6 +36,7 @@ export class ProcedureDelete extends ProcedureBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureDeleteJson {
@@ -43,6 +45,7 @@ export class ProcedureDelete extends ProcedureBase {
 
   /**
    * Deserializes the JSON event.
+   *
    * @param json The JSON representation of a procedure delete event.
    * @param workspace The workspace to deserialize the event into.
    * @returns The new procedure delete event.

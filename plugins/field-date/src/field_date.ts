@@ -28,6 +28,7 @@ export class FieldDate extends Blockly.FieldTextInput {
   /**
    * Class for a date input field. Derived from the Closure library date
    * picker.
+   *
    * @param value The initial value of the field. Should be in
    *    'YYYY-MM-DD' format. Defaults to the current date.
    * @param validator A function that is called to validate
@@ -46,6 +47,7 @@ export class FieldDate extends Blockly.FieldTextInput {
 
   /**
    * Constructs a FieldDate from a JSON arg object.
+   *
    * @param options A JSON object with options (date).
    * @returns The new field instance.
    * @package
@@ -63,6 +65,7 @@ export class FieldDate extends Blockly.FieldTextInput {
    * Ensures that the input value is a valid date. Additionally, if the date
    * string provided includes a time, the time will be removed and the date for
    * relative to the user's timezone will be used.
+   *
    * @param newValue The input value. Ex: '2023-04-28'
    * @returns A valid date string, or null if invalid.
    * @override
@@ -106,6 +109,7 @@ export class FieldDate extends Blockly.FieldTextInput {
   /**
    * Shows the inline free-text editor on top of the text along with the date
    * editor.
+   *
    * @param e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
    * @override
@@ -171,6 +175,7 @@ export class FieldDate extends Blockly.FieldTextInput {
 /**
  * NOTE: There are a few minor ways to tweak the datepicker CSS, though they're
  * not consistent across browsers.
+ *
  * @see{@link https://developer.mozilla.org/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls#date_pickers}
  *
  * Below are a few ways this can be tweaked on *some* browsers:
@@ -221,6 +226,7 @@ export type FieldDateValidator = Blockly.FieldTextInputValidator;
 
 /**
  * Validate a string value to see if it matches the format.
+ *
  * @param value The value to validate the format for.
  * @returns true if the value is in 'yyyy-mm-dd' format.
  * @example
@@ -236,6 +242,7 @@ export function isISOFormat(value: string): boolean {
 
 /**
  * Convert the date to ISO format for the current timezone.
+ *
  * @param date The date to convert to an ISO string.
  * @returns The string in 'yyyy-mm-dd' format, though for the current timezone.
  * Ex: new Date('2000-02-20')

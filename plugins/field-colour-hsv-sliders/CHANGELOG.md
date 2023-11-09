@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.7](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@4.1.6...@blockly/field-colour-hsv-sliders@4.1.7) (2023-11-09)
+
+
+### Bug Fixes
+
+* add types for filed-colour-hsv-sliders ([#2063](https://github.com/google/blockly-samples/issues/2063)) ([e630704](https://github.com/google/blockly-samples/commit/e6307043f812624e00207084815554c5cebe4dc9))
+
+
+
 ## [4.1.6](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@4.1.5...@blockly/field-colour-hsv-sliders@4.1.6) (2023-11-02)
 
 **Note:** Version bump only for package @blockly/field-colour-hsv-sliders

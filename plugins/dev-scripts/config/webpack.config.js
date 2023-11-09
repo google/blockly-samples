@@ -77,7 +77,9 @@ module.exports = (env) => {
       path: isProduction ? resolveApp('dist') : resolveApp('build'),
       publicPath: isProduction ? '/dist/' : '/build/',
       filename: outputFile,
-      libraryTarget: 'umd',
+      library: {
+        type: 'umd',
+      },
       globalObject: 'this',
       clean: true,
     },

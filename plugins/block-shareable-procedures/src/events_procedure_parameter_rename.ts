@@ -28,6 +28,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
 
   /**
    * Constructs the procedure parameter rename event.
+   *
    * @param workspace The workpace this event is associated with.
    * @param procedure The procedure model this event is associated with.
    * @param parameter The parameter model this event is associated with.
@@ -55,6 +56,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
 
   /**
    * Replays the event in the workspace.
+   *
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).
    */
@@ -78,6 +80,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureParameterRenameJson {
@@ -90,6 +93,7 @@ export class ProcedureParameterRename extends ProcedureParameterBase {
 
   /**
    * Deserializes the JSON event.
+   *
    * @param json The JSON representation of a procedure parameter rename event.
    * @param workspace The workspace to deserialize the event into.
    * @returns The new procedure parameter rename event.

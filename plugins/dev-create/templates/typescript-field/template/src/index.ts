@@ -18,6 +18,7 @@ import * as Blockly from 'blockly/core';
 export class FieldTemplate extends Blockly.Field {
   /**
    * Constructs a FieldTemplate from a JSON arg object.
+   *
    * @param options A JSON object with options.
    * @returns The new field instance.
    * @package

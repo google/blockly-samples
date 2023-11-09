@@ -24,6 +24,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
 
   /**
    * Constructs the procedure parameter create event.js.
+   *
    * @param workspace The workspace this event is associated with.
    * @param procedure The procedure model this event is associated with.
    * @param parameter The parameter model that was just added to the procedure.
@@ -40,6 +41,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
 
   /**
    * Replays the event in the workspace.
+   *
    * @param forward if true, play the event forward (redo), otherwise play it
    *     backward (undo).
    */
@@ -62,6 +64,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
 
   /**
    * Encode the event as JSON.
+   *
    * @returns JSON representation.
    */
   toJson(): ProcedureParameterCreateJson {
@@ -75,6 +78,7 @@ export class ProcedureParameterCreate extends ProcedureParameterBase {
 
   /**
    * Deserializes the JSON event.
+   *
    * @param json The JSON representation of a procedure parameter create event.
    * @param workspace The workspace to deserialize the event into.
    * @returns The new procedure parameter create event.

@@ -29,6 +29,7 @@ export class ObservableProcedureModel
 
   /**
    * Constructor for the procedure model.
+   *
    * @param workspace The workspace the procedure model is associated with.
    * @param name The name of the new procedure.
    * @param id The (optional) unique language-neutral ID for the procedure.
@@ -44,6 +45,7 @@ export class ObservableProcedureModel
 
   /**
    * Sets the human-readable name of the procedure.
+   *
    * @param name The human-readable name of the procedure.
    * @returns This procedure model.
    */
@@ -61,6 +63,7 @@ export class ObservableProcedureModel
   /**
    * Inserts a parameter into the list of parameters.
    * To move a parameter, first delete it, and then re-insert.
+   *
    * @param parameterModel The parameter model to insert.
    * @param index The index to insert it at.
    * @returns This procedure model.
@@ -102,6 +105,7 @@ export class ObservableProcedureModel
 
   /**
    * Removes the parameter at the given index from the parameter list.
+   *
    * @param index The index of the parameter to remove.
    * @returns This procedure model.
    */
@@ -128,6 +132,7 @@ export class ObservableProcedureModel
    * value (null).
    * This procedure model does not support procedures that have actual
    * return types (i.e. non-empty arrays, e.g. ['number']).
+   *
    * @param types Used to set whether this procedure has a return value
    *     (empty array) or no return value (null).
    * @returns This procedure model.
@@ -155,6 +160,7 @@ export class ObservableProcedureModel
   /**
    * Sets whether this procedure is enabled/disabled. If a procedure is disabled
    * all procedure caller blocks should be disabled as well.
+   *
    * @param enabled Whether this procedure is enabled/disabled.
    * @returns This procedure model.
    */
@@ -171,6 +177,7 @@ export class ObservableProcedureModel
   /**
    * Disables triggering updates to procedure blocks until the endBulkUpdate
    * is called.
+   *
    * @internal
    */
   startBulkUpdate() {
@@ -180,6 +187,7 @@ export class ObservableProcedureModel
   /**
    * Triggers an update to procedure blocks. Should be used with
    * startBulkUpdate.
+   *
    * @internal
    */
   endBulkUpdate() {
@@ -219,6 +227,7 @@ export class ObservableProcedureModel
   /**
    * Returns the return type of the procedure.
    * Null represents a procedure that does not return a value.
+   *
    * @returns the return type of the procedure.
    */
   getReturnTypes(): string[] | null {
@@ -228,6 +237,7 @@ export class ObservableProcedureModel
   /**
    * Returns whether the procedure is enabled/disabled. If a procedure is
    * disabled, all procedure caller blocks should be disabled as well.
+   *
    * @returns Returns whether the procedure is enabled/disabled.
    */
   getEnabled(): boolean {
@@ -236,6 +246,7 @@ export class ObservableProcedureModel
 
   /**
    * Tells the procedure model it should fire events.
+   *
    * @internal
    */
   startPublishing() {
@@ -248,6 +259,7 @@ export class ObservableProcedureModel
 
   /**
    * Tells the procedure model it should not fire events.
+   *
    * @internal
    */
   stopPublishing() {
