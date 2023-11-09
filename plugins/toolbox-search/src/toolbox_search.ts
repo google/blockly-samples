@@ -63,7 +63,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
 
       this.matchBlocks();
     });
-    this.rowContents_.replaceChildren(this.searchField);
+    this.rowContents_?.replaceChildren(this.searchField);
     return dom;
   }
 
@@ -74,7 +74,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    *    if it cannot be determined, e.g. if this is a nested category.
    */
   private getPosition() {
-    const categories = this.workspace_.options.languageTree.contents;
+    const categories = this.workspace_.options.languageTree?.contents || [];
     for (let i = 0; i < categories.length; i++) {
       if (categories[i].kind === ToolboxSearchCategory.SEARCH_CATEGORY_KIND) {
         return i;
@@ -131,7 +131,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   private initBlockSearcher() {
     const availableBlocks = new Set<string>();
-    this.workspace_.options.languageTree.contents.map((item) =>
+    this.workspace_.options.languageTree?.contents?.map((item) =>
       this.getAvailableBlocks(item, availableBlocks),
     );
     this.blockSearcher.indexBlocks([...availableBlocks]);
@@ -157,11 +157,14 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   override setSelected(isSelected: boolean) {
     super.setSelected(isSelected);
     if (isSelected) {
-      this.searchField.focus();
+      this.searchField?.focus();
       this.matchBlocks();
     } else {
-      this.searchField.value = '';
-      this.searchField.blur();
+      const searchField = this.searchField
+      if(searchField){
+        searchField.value = '';
+      }
+      this.searchField?.blur();
     }
   }
 
@@ -169,7 +172,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    * Filters the available blocks based on the current query string.
    */
   private matchBlocks() {
-    const query = this.searchField.value;
+    const query = this.searchField?.value || '';
 
     this.flyoutItems_ = query
       ? this.blockSearcher.blockTypesMatching(query).map((blockType) => {
