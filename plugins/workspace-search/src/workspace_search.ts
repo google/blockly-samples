@@ -223,7 +223,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   addActionBtn(btn: HTMLButtonElement, onClickFn: () => void) {
     this.addBtnListener(btn, onClickFn);
-    this.actionDiv!.appendChild(btn);
+    this.actionDiv?.appendChild(btn);
   }
 
   /**
@@ -332,15 +332,31 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     savedPositions: Blockly.utils.Rect[],
   ) {
     if (this.workspace.RTL) {
-      this.htmlDiv!.style.left = metrics.absoluteMetrics.left + 'px';
+      if(!this.htmlDiv)
+      {
+        return;
+      }
+      this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
     } else {
       if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_RIGHT) {
-        this.htmlDiv!.style.right = metrics.toolboxMetrics.width + 'px';
+        if(!this.htmlDiv)
+        {
+          return;
+        }
+        this.htmlDiv.style.right = metrics.toolboxMetrics.width + 'px';
       } else {
-        this.htmlDiv!.style.right = '0';
+        if(!this.htmlDiv)
+        {
+          return;
+        }
+        this.htmlDiv.style.right = '0';
       }
     }
-    this.htmlDiv!.style.top = metrics.absoluteMetrics.top + 'px';
+    if(!this.htmlDiv)
+    {
+      return;
+    }
+    this.htmlDiv.style.top = metrics.absoluteMetrics.top + 'px';
   }
 
   /**
@@ -441,7 +457,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   open() {
     this.setVisible(true);
-    this.inputElement!.focus();
+    this.inputElement?.focus();
     if (this.searchText) {
       this.searchAndHighlight(this.searchText);
     }
@@ -462,7 +478,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param show Whether to set the search bar as visible.
    */
   private setVisible(show: boolean) {
-    this.htmlDiv!.style.display = show ? 'flex' : 'none';
+    if(!this.htmlDiv)
+    {
+      return;
+    }
+    this.htmlDiv.style.display = show ? 'flex' : 'none';
   }
 
   /**
