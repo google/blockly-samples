@@ -199,7 +199,7 @@ function init() {
       trashcan: true,
     });
   // Inject secondary workspace.
-  var secondaryWorkspace = Blockly.inject('secondaryDiv',
+  const secondaryWorkspace = Blockly.inject('secondaryDiv',
     {
       media: './node_modules/blockly/media/',
       toolbox: toolbox,

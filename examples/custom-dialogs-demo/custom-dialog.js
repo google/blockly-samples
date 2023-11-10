@@ -8,7 +8,6 @@
  * An example implementation of how one might replace Blockly's browser
  * dialogs. This is just an example, and applications are not encouraged to use
  * it verbatim.
- *
  * @namespace
  */
 CustomDialog = {};
@@ -71,8 +70,8 @@ CustomDialog.hide = function() {
  *  - onCancel: Callback to handle the cancel button and backdrop clicks.
  */
 CustomDialog.show = function(title, message, options) {
-  var backdropDiv = CustomDialog.backdropDiv_;
-  var dialogDiv = CustomDialog.dialogDiv_;
+  let backdropDiv = CustomDialog.backdropDiv_;
+  let dialogDiv = CustomDialog.dialogDiv_;
   if (!dialogDiv) {
     // Generate HTML
     backdropDiv = document.createElement('div');
@@ -116,18 +115,18 @@ CustomDialog.show = function(title, message, options) {
   dialogDiv.getElementsByClassName('customDialogMessage')[0]
       .appendChild(document.createTextNode(message));
 
-  var onOkay = function(event) {
+  const onOkay = function(event) {
     CustomDialog.hide();
     options.onOkay && options.onOkay();
     event && event.stopPropagation();
   };
-  var onCancel = function(event) {
+  const onCancel = function(event) {
     CustomDialog.hide();
     options.onCancel && options.onCancel();
     event && event.stopPropagation();
   };
 
-  var dialogInput = document.getElementById('customDialogInput');
+  const dialogInput = document.getElementById('customDialogInput');
   CustomDialog.inputField = dialogInput;
   if (dialogInput) {
     dialogInput.focus();
@@ -144,7 +143,7 @@ CustomDialog.show = function(title, message, options) {
       }
     };
   } else {
-    var okay = document.getElementById('customDialogOkay');
+    const okay = document.getElementById('customDialogOkay');
     okay && okay.focus();
   }
 

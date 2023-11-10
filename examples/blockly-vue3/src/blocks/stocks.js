@@ -34,11 +34,11 @@ Blockly.Blocks["stock_buy_simple"] = {
 };
 
 javascriptGenerator.forBlock["stock_buy_simple"] = function (block, generator) {
-  var number_id = block.getFieldValue("ID");
-  var number_amount = block.getFieldValue("Amount");
-  var number_price = block.getFieldValue("Price");
-  var value_number = generator.valueToCode(block, "Number", Order.ATOMIC);
-  var code = `buy(${number_id},${number_amount},${number_price},${value_number});\n`;
+  const numberId = block.getFieldValue("ID");
+  const numberAmount = block.getFieldValue("Amount");
+  const numberPrice = block.getFieldValue("Price");
+  const valueNumber = generator.valueToCode(block, "Number", Order.ATOMIC);
+  const code = `buy(${numberId},${numberAmount},${numberPrice},${valueNumber});\n`;
   return code;
 };
 
@@ -58,9 +58,9 @@ Blockly.Blocks["stock_buy_prog"] = {
 };
 
 javascriptGenerator.forBlock["stock_buy_prog"] = function (block, generator) {
-  var value_number = generator.valueToCode(block, "Number", Order.ATOMIC);
-  var value_name = generator.valueToCode(block, "NAME", Order.ATOMIC);
-  var code = `buy(${value_number},${value_name},${value_name});\n`;
+  const valueNumber = generator.valueToCode(block, "Number", Order.ATOMIC);
+  const valueName = generator.valueToCode(block, "NAME", Order.ATOMIC);
+  const code = `buy(${valueNumber},${valueName},${valueName});\n`;
   return code;
 };
 
@@ -85,11 +85,11 @@ javascriptGenerator.forBlock["stock_fetch_price"] = function (
   block,
   generator
 ) {
-  var value_fetch = generator.valueToCode(block, "Fetch", Order.ATOMIC);
-  var variable_variable = generator.nameDB_.getName(
+  const valueFetch = generator.valueToCode(block, "Fetch", Order.ATOMIC);
+  const variableVariable = generator.nameDB_.getName(
     block.getFieldValue("variable"),
     Blockly.names.NameType.VARIABLE
   );
-  var code = `fetch_price(${value_fetch},${variable_variable});\n`;
+  const code = `fetch_price(${valueFetch},${variableVariable});\n`;
   return code;
 };

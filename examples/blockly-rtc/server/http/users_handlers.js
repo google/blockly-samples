@@ -25,11 +25,11 @@
 const database = require('../Database');
 
  /**
- * Handler for a users PUT request. Update a user's position in the users table.
- * @param {!Object} req The HTTP request object.
- * @param {!Object} res The HTTP response object.
- * @private
- */
+  * Handler for a users PUT request. Update a user's position in the users table.
+  * @param {!Object} req The HTTP request object.
+  * @param {!Object} res The HTTP response object.
+  * @private
+  */
 async function updatePositionHandler(req, res) {
   try {
     const data = [];

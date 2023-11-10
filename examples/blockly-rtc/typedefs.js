@@ -30,7 +30,7 @@
  * @property {string} serverId The id assigned to an entry by the server.
  */
 
- /**
+/**
  * A local representation of an entry in the database.
  * @typedef {Object} LocalEntry
  * @property {<!Array.<!Blockly.Event>>} events An array of Blockly Events.
@@ -39,14 +39,14 @@
  * client.
  */
 
- /**
+/**
  * An update to the position of a user.
  * @typedef {Object} PositionUpdate
  * @property {string} workspaceId The workspaceId of the user.
  * @property {Position} position The position of the user.
  */
 
- /**
+/**
  * A snapshot of the workspace.
  * @typedef {Object} Snapshot
  * @property {!Element} xml An XML DOM element that represents the current state
@@ -55,7 +55,7 @@
  * to the workspace.
  */
 
- /**
+/**
  * An action to be performed on the workspace.
  * @typedef {Object} WorkspaceAction
  * @property {!Blockly.Event} event A Blockly Event.
