@@ -131,7 +131,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   private initBlockSearcher() {
     const availableBlocks = new Set<string>();
-    this.workspace_.options.languageTree?.contents?.map((item) =>
+    this.workspace_.options.languageTree?.contents?.forEach((item) =>
       this.getAvailableBlocks(item, availableBlocks),
     );
     this.blockSearcher.indexBlocks([...availableBlocks]);
@@ -156,15 +156,13 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   override setSelected(isSelected: boolean) {
     super.setSelected(isSelected);
+    if (!this.searchField) return;
     if (isSelected) {
-      this.searchField?.focus();
+      this.searchField.focus();
       this.matchBlocks();
     } else {
-      const searchField = this.searchField
-      if(searchField){
-        searchField.value = '';
-      }
-      this.searchField?.blur();
+      this.searchField.value = '';
+      this.searchField.blur();
     }
   }
 
