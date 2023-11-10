@@ -63,12 +63,17 @@ class FieldTurtle extends Blockly.Field {
   // means they are static, and not translatable. If you want to do something
   // similar, but make it translatable you should set up your options like a
   // dropdown field, with language-neutral keys and human-readable values.
-  static PATTERNS =
-      ['Dots', 'Stripes', 'Hexagons'];
-  static HATS =
-      ['Stovepipe', 'Crown', 'Propeller', 'Mask', 'Fedora'];
-  static NAMES =
-      ['Yertle', 'Franklin', 'Crush', 'Leonardo', 'Bowser', 'Squirtle', 'Oogway'];
+  static PATTERNS = ['Dots', 'Stripes', 'Hexagons'];
+  static HATS = ['Stovepipe', 'Crown', 'Propeller', 'Mask', 'Fedora'];
+  static NAMES = [
+    'Yertle',
+    'Franklin',
+    'Crush',
+    'Leonardo',
+    'Bowser',
+    'Squirtle',
+    'Oogway',
+  ];
 
   // This allows the field to be constructed using a JSON block definition.
   static fromJson(options) {
@@ -211,31 +216,41 @@ class FieldTurtle extends Blockly.Field {
         this.stovepipe_.style.display = '';
         this.turtleGroup_.setAttribute('transform', 'translate(0,12)');
         this.textElement_.setAttribute(
-          'transform', 'translate(' + this.TEXT_OFFSET_X + ',20)');
+          'transform',
+          'translate(' + this.TEXT_OFFSET_X + ',20)',
+        );
         break;
       case 'Crown':
         this.crown_.style.display = '';
         this.turtleGroup_.setAttribute('transform', 'translate(0,9)');
         this.textElement_.setAttribute(
-          'transform', 'translate(' + this.TEXT_OFFSET_X + ',16)');
+          'transform',
+          'translate(' + this.TEXT_OFFSET_X + ',16)',
+        );
         break;
       case 'Mask':
         this.mask_.style.display = '';
         this.turtleGroup_.setAttribute('transform', 'translate(0,6)');
-        this.textElement_.setAttribute('transform',
-          'translate(' + this.TEXT_OFFSET_X + ',12)');
+        this.textElement_.setAttribute(
+          'transform',
+          'translate(' + this.TEXT_OFFSET_X + ',12)',
+        );
         break;
       case 'Propeller':
         this.propeller_.style.display = '';
         this.turtleGroup_.setAttribute('transform', 'translate(0,6)');
-        this.textElement_.setAttribute('transform',
-          'translate(' + this.TEXT_OFFSET_X + ',12)');
+        this.textElement_.setAttribute(
+          'transform',
+          'translate(' + this.TEXT_OFFSET_X + ',12)',
+        );
         break;
       case 'Fedora':
         this.fedora_.style.display = '';
         this.turtleGroup_.setAttribute('transform', 'translate(0,6)');
-        this.textElement_.setAttribute('transform',
-          'translate(' + this.TEXT_OFFSET_X + ',12)');
+        this.textElement_.setAttribute(
+          'transform',
+          'translate(' + this.TEXT_OFFSET_X + ',12)',
+        );
         break;
     }
 
@@ -275,12 +290,18 @@ class FieldTurtle extends Blockly.Field {
     this.editor_.hatText.textElement.nodeValue = value.hat;
     this.editor_.turtleNameText.textElement.nodeValue = value.turtleName;
 
-    this.editor_.patternText.warningIcon.style.display =
-      this.cachedValidatedValue_.pattern ? 'none' : '';
-    this.editor_.hatText.warningIcon.style.display =
-      this.cachedValidatedValue_.hat ? 'none' : '';
-    this.editor_.turtleNameText.warningIcon.style.display =
-      this.cachedValidatedValue_.turtleName ? 'none' : '';
+    this.editor_.patternText.warningIcon.style.display = this
+      .cachedValidatedValue_.pattern
+      ? 'none'
+      : '';
+    this.editor_.hatText.warningIcon.style.display = this.cachedValidatedValue_
+      .hat
+      ? 'none'
+      : '';
+    this.editor_.turtleNameText.warningIcon.style.display = this
+      .cachedValidatedValue_.turtleName
+      ? 'none'
+      : '';
   }
 
   // Used to update the size of the field. This function's logic could be simply
@@ -310,13 +331,17 @@ class FieldTurtle extends Blockly.Field {
 
     // These allow us to have the editor match the block's colour.
     const fillColour = this.sourceBlock_.getColour();
-    Blockly.DropDownDiv.setColour(fillColour,
-      this.sourceBlock_.style.colourTertiary);
+    Blockly.DropDownDiv.setColour(
+      fillColour,
+      this.sourceBlock_.style.colourTertiary,
+    );
 
     // Always pass the dropdown div a dispose function so that you can clean
     // up event listeners when the editor closes.
     Blockly.DropDownDiv.showPositionedByField(
-      this, this.dropdownDispose_.bind(this));
+      this,
+      this.dropdownDispose_.bind(this),
+    );
   }
 
   // Creates the UI of the editor, and adds event listeners to it.
@@ -388,44 +413,88 @@ class FieldTurtle extends Blockly.Field {
     let leftArrow = createLeftArrow(row);
     widget.patternText = createTextNode(row, this.displayValue_.pattern);
     let rightArrow = createRightArrow(row);
-    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
-      createArrowListener('pattern', FieldTurtle.PATTERNS, -1)));
-    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
-      createArrowListener('pattern', FieldTurtle.PATTERNS, 1)));
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(
+        leftArrow,
+        'mouseup',
+        this,
+        createArrowListener('pattern', FieldTurtle.PATTERNS, -1),
+      ),
+    );
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(
+        rightArrow,
+        'mouseup',
+        this,
+        createArrowListener('pattern', FieldTurtle.PATTERNS, 1),
+      ),
+    );
 
     row = createRow(table);
     leftArrow = createLeftArrow(row);
     widget.hatText = createTextNode(row, this.displayValue_.hat);
     rightArrow = createRightArrow(row);
-    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
-      createArrowListener('hat', FieldTurtle.HATS, -1)));
-    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
-      createArrowListener('hat', FieldTurtle.HATS, 1)));
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(
+        leftArrow,
+        'mouseup',
+        this,
+        createArrowListener('hat', FieldTurtle.HATS, -1),
+      ),
+    );
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(
+        rightArrow,
+        'mouseup',
+        this,
+        createArrowListener('hat', FieldTurtle.HATS, 1),
+      ),
+    );
 
     row = createRow(table);
     leftArrow = createLeftArrow(row);
     widget.turtleNameText = createTextNode(row, this.displayValue_.turtleName);
     rightArrow = createRightArrow(row);
-    this.boundEvents_.push(Blockly.browserEvents.bind(leftArrow, 'mouseup', this,
-      createArrowListener('turtleName', FieldTurtle.NAMES, -1)));
-    this.boundEvents_.push(Blockly.browserEvents.bind(rightArrow, 'mouseup', this,
-      createArrowListener('turtleName', FieldTurtle.NAMES, 1)));
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(
+        leftArrow,
+        'mouseup',
+        this,
+        createArrowListener('turtleName', FieldTurtle.NAMES, -1),
+      ),
+    );
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(
+        rightArrow,
+        'mouseup',
+        this,
+        createArrowListener('turtleName', FieldTurtle.NAMES, 1),
+      ),
+    );
 
     const randomizeButton = document.createElement('button');
     randomizeButton.className = 'randomize';
     randomizeButton.setAttribute('type', 'button');
     randomizeButton.textContent = 'randomize turtle';
-    this.boundEvents_.push(Blockly.browserEvents.bind(randomizeButton, 'mouseup', this,
-      function () {
+    this.boundEvents_.push(
+      Blockly.browserEvents.bind(randomizeButton, 'mouseup', this, function () {
         const value = {};
-        value.pattern = FieldTurtle.PATTERNS[Math.floor(Math.random() * FieldTurtle.PATTERNS.length)];
+        value.pattern =
+          FieldTurtle.PATTERNS[
+            Math.floor(Math.random() * FieldTurtle.PATTERNS.length)
+          ];
 
-        value.hat = FieldTurtle.HATS[Math.floor(Math.random() * FieldTurtle.HATS.length)];
+        value.hat =
+          FieldTurtle.HATS[Math.floor(Math.random() * FieldTurtle.HATS.length)];
 
-        value.turtleName = FieldTurtle.NAMES[Math.floor(Math.random() * FieldTurtle.NAMES.length)];
+        value.turtleName =
+          FieldTurtle.NAMES[
+            Math.floor(Math.random() * FieldTurtle.NAMES.length)
+          ];
 
         this.setValue(value);
-      }));
+      }),
+    );
     widget.appendChild(randomizeButton);
 
     return widget;
@@ -447,11 +516,13 @@ class FieldTurtle extends Blockly.Field {
     }
     // The getColourX functions are the best way to access the colours of a block.
     const isShadow = this.sourceBlock_.isShadow();
-    const fillColour = isShadow ?
-      this.sourceBlock_.style.colourSecondary : this.sourceBlock_.getColour();
+    const fillColour = isShadow
+      ? this.sourceBlock_.style.colourSecondary
+      : this.sourceBlock_.getColour();
     // This is technically a package function, meaning it could change.
-    const borderColour = isShadow ? fillColour :
-      this.sourceBlock_.style.colourTertiary;
+    const borderColour = isShadow
+      ? fillColour
+      : this.sourceBlock_.style.colourTertiary;
 
     if (this.turtleGroup_) {
       let child = this.turtleGroup_.firstChild;
@@ -508,115 +579,181 @@ class FieldTurtle extends Blockly.Field {
   // Called by initView to create all of the SVGs. This is just used to keep
   // the code more organized.
   createView_() {
-    this.movableGroup_ = Blockly.utils.dom.createSvgElement('g',
+    this.movableGroup_ = Blockly.utils.dom.createSvgElement(
+      'g',
       {
-        'transform': 'translate(0,5)'
-      }, this.fieldGroup_);
-    const scaleGroup = Blockly.utils.dom.createSvgElement('g',
+        'transform': 'translate(0,5)',
+      },
+      this.fieldGroup_,
+    );
+    const scaleGroup = Blockly.utils.dom.createSvgElement(
+      'g',
       {
-        'transform': 'scale(1.5)'
-      }, this.movableGroup_);
-    this.turtleGroup_ = Blockly.utils.dom.createSvgElement('g',
+        'transform': 'scale(1.5)',
+      },
+      this.movableGroup_,
+    );
+    this.turtleGroup_ = Blockly.utils.dom.createSvgElement(
+      'g',
       {
         // Makes the smaller turtle graphic align with the hats.
-        'class': 'turtleBody'
-      }, scaleGroup);
-    const tail = Blockly.utils.dom.createSvgElement('path',
+        'class': 'turtleBody',
+      },
+      scaleGroup,
+    );
+    const tail = Blockly.utils.dom.createSvgElement(
+      'path',
       {
         'class': 'turtleBody',
         'd': 'M7,27.5H0.188c3.959-2,6.547-2.708,8.776-5.237',
-        'transform': 'translate(0.312 -12.994)'
-      }, this.turtleGroup_);
-    const legLeft = Blockly.utils.dom.createSvgElement('rect',
+        'transform': 'translate(0.312 -12.994)',
+      },
+      this.turtleGroup_,
+    );
+    const legLeft = Blockly.utils.dom.createSvgElement(
+      'rect',
       {
         'class': 'turtleBody',
         'x': 8.812,
         'y': 12.506,
         'width': 4,
-        'height': 10
-      }, this.turtleGroup_);
-    const legRight = Blockly.utils.dom.createSvgElement('rect',
+        'height': 10,
+      },
+      this.turtleGroup_,
+    );
+    const legRight = Blockly.utils.dom.createSvgElement(
+      'rect',
       {
         'class': 'turtleBody',
         'x': 28.812,
         'y': 12.506,
         'width': 4,
-        'height': 10
-      }, this.turtleGroup_);
-    const head = Blockly.utils.dom.createSvgElement('path',
+        'height': 10,
+      },
+      this.turtleGroup_,
+    );
+    const head = Blockly.utils.dom.createSvgElement(
+      'path',
       {
         'class': 'turtleBody',
         'd': 'M47.991,17.884c0,1.92-2.144,3.477-4.788,3.477a6.262,6.262,0,0,1-2.212-.392c-0.2-.077-1.995,2.343-4.866,3.112a17.019,17.019,0,0,1-6.01.588c-4.413-.053-2.5-3.412-2.745-3.819-0.147-.242,2.232.144,6.126-0.376a7.392,7.392,0,0,0,4.919-2.588c0-1.92,2.144-3.477,4.788-3.477S47.991,15.964,47.991,17.884Z',
-        'transform': 'translate(0.312 -12.994)'
-      }, this.turtleGroup_);
-    const smile = Blockly.utils.dom.createSvgElement('path',
+        'transform': 'translate(0.312 -12.994)',
+      },
+      this.turtleGroup_,
+    );
+    const smile = Blockly.utils.dom.createSvgElement(
+      'path',
       {
         'class': 'turtleBody',
         'd': 'M42.223,18.668a3.614,3.614,0,0,0,2.728,2.38',
-        'transform': 'translate(0.312 -12.994)'
-      }, this.turtleGroup_);
-    const sclera = Blockly.utils.dom.createSvgElement('ellipse',
+        'transform': 'translate(0.312 -12.994)',
+      },
+      this.turtleGroup_,
+    );
+    const sclera = Blockly.utils.dom.createSvgElement(
+      'ellipse',
       {
         'cx': 43.435,
         'cy': 2.61,
         'rx': 2.247,
         'ry': 2.61,
-        'fill': '#fff'
-      }, this.turtleGroup_);
-    const pupil = Blockly.utils.dom.createSvgElement('ellipse',
+        'fill': '#fff',
+      },
+      this.turtleGroup_,
+    );
+    const pupil = Blockly.utils.dom.createSvgElement(
+      'ellipse',
       {
         'cx': 44.166,
         'cy': 3.403,
         'rx': 1.318,
-        'ry': 1.62
-      }, this.turtleGroup_);
-    const shell = Blockly.utils.dom.createSvgElement('path',
+        'ry': 1.62,
+      },
+      this.turtleGroup_,
+    );
+    const shell = Blockly.utils.dom.createSvgElement(
+      'path',
       {
         'class': 'turtleBody',
         'd': 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
-        'transform': 'translate(0.312 -12.994)'
-      }, this.turtleGroup_);
-    this.shellPattern_ = Blockly.utils.dom.createSvgElement('path',
+        'transform': 'translate(0.312 -12.994)',
+      },
+      this.turtleGroup_,
+    );
+    this.shellPattern_ = Blockly.utils.dom.createSvgElement(
+      'path',
       {
         'd': 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
-        'transform': 'translate(0.312 -12.994)'
-      }, this.turtleGroup_);
+        'transform': 'translate(0.312 -12.994)',
+      },
+      this.turtleGroup_,
+    );
 
-    this.stovepipe_ = Blockly.utils.dom.createSvgElement('image',
+    this.stovepipe_ = Blockly.utils.dom.createSvgElement(
+      'image',
       {
         'width': '50',
-        'height': '18'
-      }, scaleGroup);
-    this.stovepipe_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-      'media/stovepipe.svg');
-    this.crown_ = Blockly.utils.dom.createSvgElement('image',
+        'height': '18',
+      },
+      scaleGroup,
+    );
+    this.stovepipe_.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      'media/stovepipe.svg',
+    );
+    this.crown_ = Blockly.utils.dom.createSvgElement(
+      'image',
       {
         'width': '50',
-        'height': '15'
-      }, scaleGroup);
-    this.crown_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-      'media/crown.svg');
-    this.mask_ = Blockly.utils.dom.createSvgElement('image',
+        'height': '15',
+      },
+      scaleGroup,
+    );
+    this.crown_.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      'media/crown.svg',
+    );
+    this.mask_ = Blockly.utils.dom.createSvgElement(
+      'image',
       {
         'width': '50',
-        'height': '24'
-      }, scaleGroup);
-    this.mask_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-      'media/mask.svg');
-    this.propeller_ = Blockly.utils.dom.createSvgElement('image',
+        'height': '24',
+      },
+      scaleGroup,
+    );
+    this.mask_.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      'media/mask.svg',
+    );
+    this.propeller_ = Blockly.utils.dom.createSvgElement(
+      'image',
       {
         'width': '50',
-        'height': '11'
-      }, scaleGroup);
-    this.propeller_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-      'media/propeller.svg');
-    this.fedora_ = Blockly.utils.dom.createSvgElement('image',
+        'height': '11',
+      },
+      scaleGroup,
+    );
+    this.propeller_.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      'media/propeller.svg',
+    );
+    this.fedora_ = Blockly.utils.dom.createSvgElement(
+      'image',
       {
         'width': '50',
-        'height': '12'
-      }, scaleGroup);
-    this.fedora_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-      'media/fedora.svg');
+        'height': '12',
+      },
+      scaleGroup,
+    );
+    this.fedora_.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      'media/fedora.svg',
+    );
 
     // Even if we're not going to display it right away, we want to create all
     // of our DOM elements inside this function.
@@ -627,83 +764,123 @@ class FieldTurtle extends Blockly.Field {
 
     this.movableGroup_.appendChild(this.textElement_);
     this.textElement_.setAttribute(
-      'transform', 'translate(' + this.TEXT_OFFSET_X + ',20)');
+      'transform',
+      'translate(' + this.TEXT_OFFSET_X + ',20)',
+    );
 
-    this.defs_ = Blockly.utils.dom.createSvgElement('defs', {}, this.fieldGroup_);
-    this.polkadotPattern_ = Blockly.utils.dom.createSvgElement('pattern',
+    this.defs_ = Blockly.utils.dom.createSvgElement(
+      'defs',
+      {},
+      this.fieldGroup_,
+    );
+    this.polkadotPattern_ = Blockly.utils.dom.createSvgElement(
+      'pattern',
       {
         'id': 'polkadots',
         'patternUnits': 'userSpaceOnUse',
         'width': 10,
-        'height': 10
-      }, this.defs_);
+        'height': 10,
+      },
+      this.defs_,
+    );
     this.polkadotGroup_ = Blockly.utils.dom.createSvgElement(
-      'g', {}, this.polkadotPattern_);
-    Blockly.utils.dom.createSvgElement('circle',
+      'g',
+      {},
+      this.polkadotPattern_,
+    );
+    Blockly.utils.dom.createSvgElement(
+      'circle',
       {
         'cx': 2.5,
         'cy': 2.5,
         'r': 2.5,
         'fill': '#000',
-        'fill-opacity': 0.3
-      }, this.polkadotGroup_);
-    Blockly.utils.dom.createSvgElement('circle',
+        'fill-opacity': 0.3,
+      },
+      this.polkadotGroup_,
+    );
+    Blockly.utils.dom.createSvgElement(
+      'circle',
       {
         'cx': 7.5,
         'cy': 7.5,
         'r': 2.5,
         'fill': '#000',
-        'fill-opacity': 0.3
-      }, this.polkadotGroup_);
+        'fill-opacity': 0.3,
+      },
+      this.polkadotGroup_,
+    );
 
-    this.hexagonPattern_ = Blockly.utils.dom.createSvgElement('pattern',
+    this.hexagonPattern_ = Blockly.utils.dom.createSvgElement(
+      'pattern',
       {
         'id': 'hexagons',
         'patternUnits': 'userSpaceOnUse',
         'width': 10,
         'height': 8.68,
-        'patternTransform': 'translate(2) rotate(45)'
-      }, this.defs_);
-    Blockly.utils.dom.createSvgElement('polygon',
+        'patternTransform': 'translate(2) rotate(45)',
+      },
+      this.defs_,
+    );
+    Blockly.utils.dom.createSvgElement(
+      'polygon',
       {
         'id': 'hex',
         'points': '4.96,4.4 7.46,5.84 7.46,8.74 4.96,10.18 2.46,8.74 2.46,5.84',
         'stroke': '#000',
         'stroke-opacity': 0.3,
-        'fill-opacity': 0
-      }, this.hexagonPattern_);
-    let use = Blockly.utils.dom.createSvgElement('use',
+        'fill-opacity': 0,
+      },
+      this.hexagonPattern_,
+    );
+    let use = Blockly.utils.dom.createSvgElement(
+      'use',
       {
         'x': 5,
-      }, this.hexagonPattern_);
+      },
+      this.hexagonPattern_,
+    );
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#hex');
-    use = Blockly.utils.dom.createSvgElement('use',
+    use = Blockly.utils.dom.createSvgElement(
+      'use',
       {
         'x': -5,
-      }, this.hexagonPattern_);
+      },
+      this.hexagonPattern_,
+    );
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#hex');
-    use = Blockly.utils.dom.createSvgElement('use',
+    use = Blockly.utils.dom.createSvgElement(
+      'use',
       {
         'x': 2.5,
-        'y': -4.34
-      }, this.hexagonPattern_);
+        'y': -4.34,
+      },
+      this.hexagonPattern_,
+    );
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#hex');
-    use = Blockly.utils.dom.createSvgElement('use',
+    use = Blockly.utils.dom.createSvgElement(
+      'use',
       {
         'x': -2.5,
-        'y': -4.34
-      }, this.hexagonPattern_);
+        'y': -4.34,
+      },
+      this.hexagonPattern_,
+    );
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#hex');
 
-    this.stripesPattern_ = Blockly.utils.dom.createSvgElement('pattern',
+    this.stripesPattern_ = Blockly.utils.dom.createSvgElement(
+      'pattern',
       {
         'id': 'stripes',
         'patternUnits': 'userSpaceOnUse',
         'width': 5,
         'height': 10,
-        'patternTransform': 'rotate(45)'
-      }, this.defs_);
-    Blockly.utils.dom.createSvgElement('line',
+        'patternTransform': 'rotate(45)',
+      },
+      this.defs_,
+    );
+    Blockly.utils.dom.createSvgElement(
+      'line',
       {
         'x1': 0,
         'y1': 0,
@@ -711,8 +888,10 @@ class FieldTurtle extends Blockly.Field {
         'y2': 10,
         'stroke-width': 4,
         'stroke': '#000',
-        'stroke-opacity': 0.3
-      }, this.stripesPattern_);
+        'stroke-opacity': 0.3,
+      },
+      this.stripesPattern_,
+    );
   }
 }
 

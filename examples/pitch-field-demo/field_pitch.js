@@ -66,22 +66,31 @@ class FieldPitch extends Blockly.FieldTextInput {
     const editor = this.dropdownCreate_();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
 
-    Blockly.DropDownDiv.setColour(this.sourceBlock_.style.colourPrimary,
-        this.sourceBlock_.style.colourTertiary);
+    Blockly.DropDownDiv.setColour(
+      this.sourceBlock_.style.colourPrimary,
+      this.sourceBlock_.style.colourTertiary,
+    );
 
     Blockly.DropDownDiv.showPositionedByField(
-        this, this.dropdownDispose_.bind(this));
+      this,
+      this.dropdownDispose_.bind(this),
+    );
 
     // The pitch picker is different from other fields in that it updates on
     // mousemove even if it's not in the middle of a drag.  In future we may
     // change this behaviour.  For now, using `bind` instead of
     // `conditionalBind` allows it to work without a mousedown/touchstart.
     this.boundEvents_.push(
-        Blockly.browserEvents.bind(this.imageElement_, 'click', this,
-            this.hide_));
+      Blockly.browserEvents.bind(this.imageElement_, 'click', this, this.hide_),
+    );
     this.boundEvents_.push(
-        Blockly.browserEvents.bind(this.imageElement_, 'mousemove', this,
-            this.onMouseMove));
+      Blockly.browserEvents.bind(
+        this.imageElement_,
+        'mousemove',
+        this,
+        this.onMouseMove,
+      ),
+    );
 
     this.updateGraph_();
   }
@@ -127,7 +136,7 @@ class FieldPitch extends Blockly.FieldTextInput {
     const bBox = this.imageElement_.getBoundingClientRect();
     const dy = e.clientY - bBox.top;
     const note = Blockly.utils.math.clamp(Math.round(13.5 - dy / 7.5), 0, 12);
-    this.imageElement_.style.backgroundPosition = (-note * 37) + 'px 0';
+    this.imageElement_.style.backgroundPosition = -note * 37 + 'px 0';
     this.setEditorValue_(note);
   }
 
@@ -202,7 +211,7 @@ class FieldPitch extends Blockly.FieldTextInput {
       return;
     }
     const i = this.getValue();
-    this.imageElement_.style.backgroundPosition = (-i * 37) + 'px 0';
+    this.imageElement_.style.backgroundPosition = -i * 37 + 'px 0';
   }
 
   /**

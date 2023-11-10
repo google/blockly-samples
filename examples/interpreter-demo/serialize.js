@@ -10,7 +10,6 @@
  */
 'use strict';
 
-
 // Constructors for objects within Acorn.
 var NODE_CONSTRUCTOR;
 var NODE_LOC_CONSTRUCTOR;
@@ -32,7 +31,6 @@ if (typeof Map === 'function') {
   objectMap = new Map();
 }
 
-
 /**
  * Inspect an interpreter and record the constructors used to create new nodes.
  * @param {!Interpreter} interpreter JS-Interpreter instance.
@@ -42,14 +40,15 @@ function recordAcornConstructors_(interpreter) {
   // Constructors for objects within Acorn.
   if (!interpreter.ast) {
     // The 'ast' property has been renamed by the compiler.
-    throw Error('Cannot serialize/deserialize compressed JS-Interpreter. ' +
-        'Use acorn.js and interpreter.js instead of acorn_interpreter.js')
+    throw Error(
+      'Cannot serialize/deserialize compressed JS-Interpreter. ' +
+        'Use acorn.js and interpreter.js instead of acorn_interpreter.js',
+    );
   }
   NODE_CONSTRUCTOR = interpreter.ast.constructor;
-  NODE_LOC_CONSTRUCTOR = interpreter.ast.loc &&
-      interpreter.ast.loc.constructor;
-  LINE_LOC_CONSTRUCTOR = interpreter.ast.loc &&
-      interpreter.ast.loc.end.constructor;
+  NODE_LOC_CONSTRUCTOR = interpreter.ast.loc && interpreter.ast.loc.constructor;
+  LINE_LOC_CONSTRUCTOR =
+    interpreter.ast.loc && interpreter.ast.loc.end.constructor;
 }
 
 /**
@@ -105,7 +104,7 @@ function deserialize(json, interpreter) {
  * @returns {!Object} Stub of real object.
  * @private
  */
- function createObjectStub_(jsonObj, functionMap) {
+function createObjectStub_(jsonObj, functionMap) {
   switch (jsonObj['type']) {
     case 'Map':
       return Object.create(null);
@@ -208,7 +207,7 @@ function populateObject_(jsonObj, obj) {
       var name = names[j];
       var descriptor = {
         configurable: nonConfigurable.indexOf(name) === -1,
-        enumerable: nonEnumerable.indexOf(name) === -1
+        enumerable: nonEnumerable.indexOf(name) === -1,
       };
       var hasGetter = getter.indexOf(name) !== -1;
       var hasSetter = setter.indexOf(name) !== -1;
@@ -245,7 +244,7 @@ function populateObject_(jsonObj, obj) {
  * @returns {*} Real value.
  * @private
  */
- function decodeValue_(value) {
+function decodeValue_(value) {
   if (value && typeof value === 'object') {
     var data;
     if ((data = value['#'])) {
@@ -276,10 +275,14 @@ function populateObject_(jsonObj, obj) {
 function serialize(interpreter) {
   // Shallow-copy all properties of interest onto a root object.
   var properties = [
-    'OBJECT', 'OBJECT_PROTO',
-    'FUNCTION', 'FUNCTION_PROTO',
-    'ARRAY', 'ARRAY_PROTO',
-    'REGEXP', 'REGEXP_PROTO',
+    'OBJECT',
+    'OBJECT_PROTO',
+    'FUNCTION',
+    'FUNCTION_PROTO',
+    'ARRAY',
+    'ARRAY_PROTO',
+    'REGEXP',
+    'REGEXP_PROTO',
     'BOOLEAN',
     'DATE',
     'NUMBER',
@@ -321,7 +324,7 @@ function serialize(interpreter) {
       case Object.prototype:
         if (obj === Interpreter.SCOPE_REFERENCE) {
           jsonObj['type'] = 'ScopeReference';
-          continue;  // No need to index properties.
+          continue; // No need to index properties.
         }
         jsonObj['type'] = 'Object';
         break;
@@ -331,23 +334,23 @@ function serialize(interpreter) {
         if (obj.id === undefined) {
           throw Error('Native function has no ID: ' + obj);
         }
-        continue;  // No need to index properties.
+        continue; // No need to index properties.
       case Array.prototype:
         // Currently we assume that Arrays are not sparse.
         jsonObj['type'] = 'Array';
         if (obj.length) {
           jsonObj['data'] = obj.map(encodeValue_);
         }
-        continue;  // No need to index properties.
+        continue; // No need to index properties.
       case Date.prototype:
         jsonObj['type'] = 'Date';
         jsonObj['data'] = obj.toJSON();
-        continue;  // No need to index properties.
+        continue; // No need to index properties.
       case RegExp.prototype:
         jsonObj['type'] = 'RegExp';
         jsonObj['source'] = obj.source;
         jsonObj['flags'] = obj.flags;
-        continue;  // No need to index properties.
+        continue; // No need to index properties.
       case Interpreter.Object.prototype:
         jsonObj['type'] = 'PseudoObject';
         break;
@@ -462,7 +465,7 @@ function encodeLoc_(loc) {
  * @param {*} value Real value.
  * @returns {*} Serialized value.
  */
- function encodeValue_(value) {
+function encodeValue_(value) {
   if (value && (typeof value === 'object' || typeof value === 'function')) {
     var ref = objectMap ? objectMap.get(value) : objectList.indexOf(value);
     if (ref === undefined || ref === -1) {
@@ -499,14 +502,15 @@ function objectHunt_(node) {
     }
     objectMap && objectMap.set(node, objectList.length);
     objectList.push(node);
-    if (typeof node === 'object') {  // Recurse.
+    if (typeof node === 'object') {
+      // Recurse.
       var isAcornNode =
-          Object.getPrototypeOf(node) === NODE_CONSTRUCTOR.prototype;
+        Object.getPrototypeOf(node) === NODE_CONSTRUCTOR.prototype;
       var names = Object.getOwnPropertyNames(node);
       for (var i = 0; i < names.length; i++) {
         var name = names[i];
         if (isAcornNode && name === 'loc') {
-          continue;  // Skip over node locations, they are specially handled.
+          continue; // Skip over node locations, they are specially handled.
         }
         try {
           var nextNode = node[name];

@@ -47,7 +47,7 @@ function start() {
     toolbox: toolbox,
   });
 
-  workspace.addChangeListener(event => {
+  workspace.addChangeListener((event) => {
     const code = javascript.javascriptGenerator.workspaceToCode(workspace);
     document.getElementById('generatedCodeContainer').value = code;
   });

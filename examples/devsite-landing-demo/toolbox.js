@@ -9,7 +9,6 @@
  */
 'use strict';
 
-
 // eslint-disable-next-line no-unused-vars, prefer-const
 let toolboxJson = {
   'contents': [

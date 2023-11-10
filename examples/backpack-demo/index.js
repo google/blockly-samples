@@ -17,25 +17,25 @@ const toolbox = {
       'contents': [
         {
           'kind': 'block',
-          'type': 'controls_if'
+          'type': 'controls_if',
         },
         {
           'kind': 'block',
-          'type': 'logic_compare'
+          'type': 'logic_compare',
         },
         {
           'kind': 'block',
-          'type': 'logic_operation'
+          'type': 'logic_operation',
         },
         {
           'kind': 'block',
-          'type': 'logic_negate'
+          'type': 'logic_negate',
         },
         {
           'kind': 'block',
-          'type': 'logic_boolean'
-        }
-      ]
+          'type': 'logic_boolean',
+        },
+      ],
     },
     {
       'kind': 'category',
@@ -50,17 +50,17 @@ const toolbox = {
               'shadow': {
                 'type': 'math_number',
                 'fields': {
-                  'NUM': 10
-                }
+                  'NUM': 10,
+                },
               },
-            }
+            },
           },
         },
         {
           'kind': 'block',
-          'type': 'controls_flow_statements'
-        }
-      ]
+          'type': 'controls_flow_statements',
+        },
+      ],
     },
     {
       'kind': 'category',
@@ -71,8 +71,8 @@ const toolbox = {
           'kind': 'block',
           'type': 'math_number',
           'fields': {
-            'NUM': 123
-          }
+            'NUM': 123,
+          },
         },
         {
           'kind': 'block',
@@ -82,19 +82,19 @@ const toolbox = {
               'shadow': {
                 'type': 'math_number',
                 'fields': {
-                  'NUM': 1
-                }
-              }
+                  'NUM': 1,
+                },
+              },
             },
             'B': {
               'shadow': {
                 'type': 'math_number',
                 'fields': {
-                  'NUM': 1
-                }
-              }
-            }
-          }
+                  'NUM': 1,
+                },
+              },
+            },
+          },
         },
         {
           'kind': 'block',
@@ -104,10 +104,10 @@ const toolbox = {
               'shadow': {
                 'type': 'math_number',
                 'fields': {
-                  'NUM': 9
-                }
-              }
-            }
+                  'NUM': 9,
+                },
+              },
+            },
           },
         },
         {
@@ -118,13 +118,13 @@ const toolbox = {
               'shadow': {
                 'type': 'math_number',
                 'fields': {
-                  'NUM': 0
-                }
-              }
-            }
+                  'NUM': 0,
+                },
+              },
+            },
           },
-        }
-      ]
+        },
+      ],
     },
     {
       'kind': 'category',
@@ -133,16 +133,16 @@ const toolbox = {
       'contents': [
         {
           'kind': 'block',
-          'type': 'text'
+          'type': 'text',
         },
         {
           'kind': 'block',
-          'type': 'text_multiline'
+          'type': 'text_multiline',
         },
         {
           'kind': 'label',
           'text': 'Input/Output:',
-          'web-class': 'ioLabel'
+          'web-class': 'ioLabel',
         },
         {
           'kind': 'block',
@@ -152,10 +152,10 @@ const toolbox = {
               'shadow': {
                 'type': 'text',
                 'fields': {
-                  'TEXT': 'abc'
-                }
-              }
-            }
+                  'TEXT': 'abc',
+                },
+              },
+            },
           },
         },
         {
@@ -166,45 +166,42 @@ const toolbox = {
               'shadow': {
                 'type': 'text',
                 'fields': {
-                  'TEXT': 'abc'
-                }
-              }
-            }
-          }
-        }
-      ]
+                  'TEXT': 'abc',
+                },
+              },
+            },
+          },
+        },
+      ],
     },
     {
       'kind': 'category',
       'name': 'Variables',
       'categorystyle': 'variable_category',
-      'custom': 'VARIABLE'
+      'custom': 'VARIABLE',
     },
     {
       'kind': 'category',
       'name': 'Functions',
       'categorystyle': 'procedure_category',
-      'custom': 'PROCEDURE'
-    }
-  ]
+      'custom': 'PROCEDURE',
+    },
+  ],
 };
-
 
 function init() {
   // Inject primary workspace.
-  const primaryWorkspace = Blockly.inject('primaryDiv',
-    {
-      media: './node_modules/blockly/media/',
-      toolbox: toolbox,
-      trashcan: true,
-    });
+  const primaryWorkspace = Blockly.inject('primaryDiv', {
+    media: './node_modules/blockly/media/',
+    toolbox: toolbox,
+    trashcan: true,
+  });
   // Inject secondary workspace.
-  const secondaryWorkspace = Blockly.inject('secondaryDiv',
-    {
-      media: './node_modules/blockly/media/',
-      toolbox: toolbox,
-      trashcan: true,
-    });
+  const secondaryWorkspace = Blockly.inject('secondaryDiv', {
+    media: './node_modules/blockly/media/',
+    toolbox: toolbox,
+    trashcan: true,
+  });
 
   // Add backpacks
   const primaryBackpack = new NotificationBackpack(primaryWorkspace);
@@ -227,7 +224,8 @@ function init() {
       targetBackpack = secondaryBackpack;
       contents = primaryBackpack.getContents();
       console.log('second workspace backpack updated');
-    } else { // secondaryWorkspace.id === event.workspaceId
+    } else {
+      // secondaryWorkspace.id === event.workspaceId
       targetBackpack = primaryBackpack;
       contents = secondaryBackpack.getContents();
       console.log('first workspace backpack updated');

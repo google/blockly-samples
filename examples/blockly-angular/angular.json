@@ -28,9 +28,7 @@
                 "output": "./media/"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -95,9 +93,7 @@
                 "output": "./media/"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         },
@@ -109,9 +105,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -127,7 +121,8 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "blockly-angular-sample",
   "cli": {
     "analytics": false

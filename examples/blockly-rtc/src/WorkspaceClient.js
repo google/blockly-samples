@@ -30,7 +30,13 @@ import EventEmitter from 'events';
  * client corresponds to.
  */
 export default class WorkspaceClient {
-  constructor(workspaceId, getSnapshotHandler, getEventsHandler, addEventsHandler, broadcastEventsHandler) {
+  constructor(
+    workspaceId,
+    getSnapshotHandler,
+    getEventsHandler,
+    addEventsHandler,
+    broadcastEventsHandler,
+  ) {
     this.workspaceId = workspaceId;
     this.lastSync = 0;
     this.inProgress = [];
@@ -45,8 +51,7 @@ export default class WorkspaceClient {
     this.addEventsHandler = addEventsHandler;
     this.broadcastEventsHandler = broadcastEventsHandler;
     this.listener = new EventEmitter();
-  };
-
+  }
 
   /**
    * Initiate the workspace by loading the current workspace and activating the
@@ -69,8 +74,8 @@ export default class WorkspaceClient {
       this.broadcastEventsHandler(this.addServerEvents_.bind(this));
     } else {
       this.pollServer_();
-    };
-  };
+    }
+  }
 
   /**
    * Add an event to activeChanges.
@@ -79,7 +84,7 @@ export default class WorkspaceClient {
    */
   addEvent(event) {
     this.activeChanges.push(event);
-  };
+  }
 
   /**
    * Add the events in activeChanges to notSent. Initiates process for sending
@@ -90,7 +95,7 @@ export default class WorkspaceClient {
     this.notSent = this.notSent.concat(this.activeChanges);
     this.activeChanges = [];
     this.updateServer_();
-  };
+  }
 
   /**
    * Send local changes to the server. Continuously runs until all local changes
@@ -100,13 +105,13 @@ export default class WorkspaceClient {
   async updateServer_() {
     if (this.writeInProgress || this.notSent.length == 0) {
       return;
-    };
+    }
     this.writeInProgress = true;
     while (this.notSent.length > 0) {
       await this.writeToDatabase_();
-    };
+    }
     this.writeInProgress = false;
-  };
+  }
 
   /**
    * Trigger an API call to write events to the database.
@@ -121,9 +126,8 @@ export default class WorkspaceClient {
     } catch {
       this.endWrite_(false);
       throw Error('Failed to write to database.');
-    };
-  };
-
+    }
+  }
 
   /**
    * Change status of WorkspaceClient in preparation for the network call.
@@ -140,7 +144,7 @@ export default class WorkspaceClient {
     });
     this.counter += 1;
     this.notSent = [];
-  };
+  }
 
   /**
    * Change status of WorkspaceClient once network call completes.
@@ -155,9 +159,9 @@ export default class WorkspaceClient {
       this.notSent = this.inProgress[0].events.concat(this.notSent);
       this.inProgress = [];
       this.counter -= 1;
-    };
+    }
     this.writeInProgress = false;
-  };
+  }
 
   /**
    * Periodically query the database for new server events and add them to
@@ -167,8 +171,10 @@ export default class WorkspaceClient {
   async pollServer_() {
     const entries = await this.queryDatabase_();
     await this.addServerEvents_(entries);
-    setTimeout(() => {this.pollServer_()}, 5000);
-  };
+    setTimeout(() => {
+      this.pollServer_();
+    }, 5000);
+  }
 
   /**
    * Trigger an API call to query events from the database.
@@ -180,8 +186,8 @@ export default class WorkspaceClient {
       return await this.getEventsHandler(this.lastSync);
     } catch {
       return [];
-    };
-  };
+    }
+  }
 
   /**
    * Add newServerEvents to the end of this.serverEvents and initiate process of
@@ -196,14 +202,14 @@ export default class WorkspaceClient {
   async addServerEvents_(newServerEvents) {
     if (newServerEvents.length == 0) {
       return;
-    };
+    }
     if (newServerEvents[0].serverId != this.lastSync + 1) {
       newServerEvents = await this.queryDatabase_();
-    };
+    }
     this.lastSync = newServerEvents[newServerEvents.length - 1].serverId;
     this.serverEvents.push.apply(this.serverEvents, newServerEvents);
     this.updateWorkspace_();
-  };
+  }
 
   /**
    * Send server events to the local workspace. Continuously runs until all
@@ -213,7 +219,7 @@ export default class WorkspaceClient {
   async updateWorkspace_() {
     if (this.updateInProgress || this.serverEvents == 0) {
       return;
-    };
+    }
     this.updateInProgress = true;
     while (this.serverEvents.length > 0) {
       const newServerEvents = this.serverEvents;
@@ -221,8 +227,8 @@ export default class WorkspaceClient {
       const eventQueue = await this.processQueryResults_(newServerEvents);
       this.updateInProgress = false;
       this.listener.emit('runEvents', eventQueue);
-    };
-  };
+    }
+  }
 
   /**
    * Compare the order of events in the entries retrieved from the database to
@@ -238,7 +244,7 @@ export default class WorkspaceClient {
 
     if (entries.length == 0) {
       return eventQueue;
-    };
+    }
 
     this.lastSync = entries[entries.length - 1].serverId;
 
@@ -246,55 +252,76 @@ export default class WorkspaceClient {
     if (this.notSent.length == 0 && this.inProgress.length == 0) {
       entries.forEach((entry) => {
         eventQueue.push.apply(
-            eventQueue, this.createWorkspaceActions_(entry.events, true));
+          eventQueue,
+          this.createWorkspaceActions_(entry.events, true),
+        );
       });
       return eventQueue;
-    };
+    }
 
     // Common root, remove common events from server events.
-    if (this.inProgress.length > 0
-        && entries[0].workspaceId == this.workspaceId
-        && entries[0].entryNumber == this.inProgress[0].entryNumber) {
+    if (
+      this.inProgress.length > 0 &&
+      entries[0].workspaceId == this.workspaceId &&
+      entries[0].entryNumber == this.inProgress[0].entryNumber
+    ) {
       entries.shift();
       this.inProgress = [];
-    };
+    }
 
     if (entries.length > 0) {
       // Undo local events.
       eventQueue.push.apply(
-          eventQueue,
-          this.createWorkspaceActions_(this.notSent.slice().reverse(), false));
+        eventQueue,
+        this.createWorkspaceActions_(this.notSent.slice().reverse(), false),
+      );
       if (this.inProgress.length > 0) {
-        this.inProgress.slice().reverse().forEach((entry) => {
-          eventQueue.push.apply(eventQueue, this.createWorkspaceActions_(
-              entry.events.slice().reverse(), false));
-        });
-      };
+        this.inProgress
+          .slice()
+          .reverse()
+          .forEach((entry) => {
+            eventQueue.push.apply(
+              eventQueue,
+              this.createWorkspaceActions_(
+                entry.events.slice().reverse(),
+                false,
+              ),
+            );
+          });
+      }
       // Apply server events.
       entries.forEach((entry) => {
-        if (this.inProgress.length > 0
-            && entry.workspaceId == this.inProgress[0].workspaceId
-            && entry.entryNumber == this.inProgress[0].entryNumber) {
+        if (
+          this.inProgress.length > 0 &&
+          entry.workspaceId == this.inProgress[0].workspaceId &&
+          entry.entryNumber == this.inProgress[0].entryNumber
+        ) {
           eventQueue.push.apply(
-              eventQueue,
-              this.createWorkspaceActions_(this.inProgress[0].events, true));
+            eventQueue,
+            this.createWorkspaceActions_(this.inProgress[0].events, true),
+          );
           this.inProgress.shift();
         } else {
           eventQueue.push.apply(
-              eventQueue, this.createWorkspaceActions_(entry.events, true));
-        };
+            eventQueue,
+            this.createWorkspaceActions_(entry.events, true),
+          );
+        }
       });
       // Reapply remaining local changes.
       if (this.inProgress.length > 0) {
         eventQueue.push.apply(
-            eventQueue,
-            this.createWorkspaceActions_(this.inProgress[0].events, true));
-      };
+          eventQueue,
+          this.createWorkspaceActions_(this.inProgress[0].events, true),
+        );
+      }
       eventQueue.push.apply(
-          eventQueue, this.createWorkspaceActions_(this.notSent, true));
-    };
+        eventQueue,
+        this.createWorkspaceActions_(this.notSent, true),
+      );
+    }
     return eventQueue;
-  };
+  }
 
   /**
    * Create WorkspaceActions from a list of events.
@@ -309,9 +336,9 @@ export default class WorkspaceClient {
     events.forEach((event) => {
       eventQueue.push({
         event: event,
-        forward: forward
+        forward: forward,
       });
     });
     return eventQueue;
-  };
-};
+  }
+}

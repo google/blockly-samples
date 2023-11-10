@@ -88,35 +88,43 @@ const toolbox = {
             fields: {
               VAR: {
                 name: 'text',
-              }
+              },
             },
           },
         },
       },
-    }
-  ]
-}
+    },
+  ],
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const workspace = Blockly.inject('blocklyDiv',
-      {
-        toolbox: toolbox,
-        media: 'media/',
-      });
+  const workspace = Blockly.inject('blocklyDiv', {
+    toolbox: toolbox,
+    media: 'media/',
+  });
   const workspaceClient = new WorkspaceClient(
-      workspace.id, getSnapshot, getEvents, writeEvents);
+    workspace.id,
+    getSnapshot,
+    getEvents,
+    writeEvents,
+  );
   workspaceClient.listener.on('runEvents', (eventQueue) => {
     runEvents_(eventQueue);
   });
   await workspaceClient.start();
 
-  const userDataManager = new UserDataManager(workspace.id, sendPositionUpdate,
-      getPositionUpdates);
+  const userDataManager = new UserDataManager(
+    workspace.id,
+    sendPositionUpdate,
+    getPositionUpdates,
+  );
   await userDataManager.start();
 
   workspace.addChangeListener((event) => {
-    if (event.type === Blockly.Events.SELECTED ||
-        (event.type === Blockly.Events.CHANGE && event.element === 'field')) {
+    if (
+      event.type === Blockly.Events.SELECTED ||
+      (event.type === Blockly.Events.CHANGE && event.element === 'field')
+    ) {
       userDataManager.handleEvent(event);
     }
     if (event.isUiEvent) {
@@ -141,5 +149,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       workspaceAction.event.run(workspaceAction.forward);
       Blockly.Events.enable();
     });
-  };
+  }
 });

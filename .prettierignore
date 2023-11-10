@@ -1,21 +1,9 @@
 # Examples, codelabs, etc.
-examples/backpack-demo
-examples/blockly-angular
-examples/blockly-react
-examples/blockly-rtc
-examples/blockly-vue3
-examples/context-menu-codelab
-examples/custom-dialogs-demo
-examples/custom-toolbox-codelab
-examples/devsite-demo
-examples/devsite-landing-demo
-examples/getting-started-codelab
-examples/interpreter-demo
-examples/pitch-field-demo
-examples/sample-app-ts
-examples/theme-extension-codelab
-examples/turtle-field-demo
-examples/validation-and-warnings-codelab
+**/acorn_interpreter.js
+examples/interpreter-demo/acorn.js
+examples/interpreter-demo/diff_match_patch.js
+
+examples/interpreter-demo/interpreter.js
 examples/lerna.json
 examples/README.md
 node_modules/*
@@ -26,6 +14,7 @@ gh-pages/*
 **/dist/*
 **/build/*
 examples/blockly-svelte/public/bundle.js
+examples/blockly-angular/.angular
 **/node_modules/*
 **/CHANGELOG.md
 CHANGELOG.md

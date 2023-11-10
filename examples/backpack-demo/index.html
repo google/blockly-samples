@@ -1,38 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Backpack</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <script src="./node_modules/@blockly/workspace-backpack/dist/index.js"></script>
-  <script src="./notification_backpack.js"></script>
-  <script src="./index.js"></script>
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-  </style>
-</head>
-<body onload="init()">
-  <p>This is a demo of two Blockly instances with a custom Backpack "sharing" Backpack contents.</p>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blockly Demo: Backpack</title>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="./node_modules/@blockly/workspace-backpack/dist/index.js"></script>
+    <script src="./notification_backpack.js"></script>
+    <script src="./index.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>
+  </head>
+  <body onload="init()">
+    <p>
+      This is a demo of two Blockly instances with a custom Backpack "sharing"
+      Backpack contents.
+    </p>
 
-  <table width="100%">
-    <tr>
-      <td>
-        <div id="primaryDiv" style="height: 480px; width: 600px;"></div>
-      </td>
-      <td>
-        <div id="secondaryDiv" style="height: 480px; width: 600px;"></div>
-      </td>
-    </tr>
-  </table>
-   
-</body>
+    <table width="100%">
+      <tr>
+        <td>
+          <div id="primaryDiv" style="height: 480px; width: 600px"></div>
+        </td>
+        <td>
+          <div id="secondaryDiv" style="height: 480px; width: 600px"></div>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>
