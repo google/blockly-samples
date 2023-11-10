@@ -4,8 +4,6 @@ examples/interpreter-demo/acorn.js
 examples/interpreter-demo/diff_match_patch.js
 
 examples/interpreter-demo/interpreter.js
-examples/lerna.json
-examples/README.md
 node_modules/*
 codelabs/*
 gh-pages/*
