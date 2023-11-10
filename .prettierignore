@@ -2,7 +2,6 @@
 **/acorn_interpreter.js
 examples/interpreter-demo/acorn.js
 examples/interpreter-demo/diff_match_patch.js
-
 examples/interpreter-demo/interpreter.js
 node_modules/*
 codelabs/*
