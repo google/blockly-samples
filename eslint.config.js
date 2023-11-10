@@ -36,10 +36,9 @@ module.exports = [
       'examples/theme-extension-codelab',
       'examples/turtle-field-demo',
       'examples/validation-and-warnings-codelab',
-      'codelabs/',
-      'gh-pages/',
       '**/dist/',
       '**/build/',
+      'examples/blockly-svelte/public/bundle.js',
       // specific examples that are sometimes copied into plugins
       'plugins/dev-create/templates/sample-app',
       'plugins/dev-create/templates/sample-app-ts',

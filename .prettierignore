@@ -25,6 +25,7 @@ gh-pages/*
 # All build artifacts, etc.
 **/dist/*
 **/build/*
+examples/blockly-svelte/public/bundle.js
 **/node_modules/*
 **/CHANGELOG.md
 CHANGELOG.md
