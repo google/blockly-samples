@@ -1,117 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Resizable Blockly (Part 2)</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-      overflow: hidden;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    table {
-      height: 100%;
-      width: 100%;
-    }
-    #blocklyArea {
-      height: 99%;
-    }
-  </style>
-</head>
-<body>
-  <table>
-    <tr>
-      <td>
-        <p>
-          Once an <a href="index.html">area is defined</a>, Blockly can be
-          injected and positioned over the area.
-          A resize handler keeps it in position as the page changes.
-        </p>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blockly Demo: Resizable Blockly (Part 2)</title>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+        overflow: hidden;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      table {
+        height: 100%;
+        width: 100%;
+      }
+      #blocklyArea {
+        height: 99%;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          <p>
+            Once an <a href="index.html">area is defined</a>, Blockly can be
+            injected and positioned over the area. A resize handler keeps it in
+            position as the page changes.
+          </p>
 
-        <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/resizable">injecting resizable Blockly</a>&hellip;</p>
-      </td>
-    </tr>
-    <tr>
-      <td id="blocklyArea">
-      </td>
-    </tr>
-  </table>
+          <p>
+            &rarr; More info on
+            <a
+              href="https://developers.google.com/blockly/guides/configure/web/resizable"
+              >injecting resizable Blockly</a
+            >&hellip;
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td id="blocklyArea"></td>
+      </tr>
+    </table>
 
-  <div id="blocklyDiv" style="position: absolute"></div>
+    <div id="blocklyDiv" style="position: absolute"></div>
 
-  <script>
-    var toolbox = {
-        "kind":"flyoutToolbox",
-        "contents": [
+    <script>
+      var toolbox = {
+        'kind': 'flyoutToolbox',
+        'contents': [
           {
-            "kind": "block",
-            "type": "controls_if"
+            'kind': 'block',
+            'type': 'controls_if',
           },
           {
-            "kind": "block",
-            "type": "logic_compare"
+            'kind': 'block',
+            'type': 'logic_compare',
           },
           {
-            "kind": "block",
-            "type": "controls_repeat_ext"
+            'kind': 'block',
+            'type': 'controls_repeat_ext',
           },
           {
-            "kind": "block",
-            "type": "math_number",
-            "fields": {"NUM": 123}
+            'kind': 'block',
+            'type': 'math_number',
+            'fields': {'NUM': 123},
           },
           {
-            "kind": "block",
-            "type": "math_arithmetic"
+            'kind': 'block',
+            'type': 'math_arithmetic',
           },
           {
-            "kind": "block",
-            "type": "text"
+            'kind': 'block',
+            'type': 'text',
           },
           {
-            "kind": "block",
-            "type": "text_print"
+            'kind': 'block',
+            'type': 'text_print',
           },
-        ]
+        ],
       };
 
-    var blocklyArea = document.getElementById('blocklyArea');
-    var blocklyDiv = document.getElementById('blocklyDiv');
-    var demoWorkspace = Blockly.inject(blocklyDiv,
-        {media: './node_modules/blockly/media/',
-         toolbox: toolbox});
-    var onresize = function(e) {
-      // Compute the absolute coordinates and dimensions of blocklyArea.
-      var element = blocklyArea;
-      var x = 0;
-      var y = 0;
-      do {
-        x += element.offsetLeft;
-        y += element.offsetTop;
-        element = element.offsetParent;
-      } while (element);
-      // Position blocklyDiv over blocklyArea.
-      blocklyDiv.style.left = x + 'px';
-      blocklyDiv.style.top = y + 'px';
-      blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
-      blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
-      Blockly.svgResize(demoWorkspace);
+      var blocklyArea = document.getElementById('blocklyArea');
+      var blocklyDiv = document.getElementById('blocklyDiv');
+      var demoWorkspace = Blockly.inject(blocklyDiv, {
+        media: './node_modules/blockly/media/',
+        toolbox: toolbox,
+      });
+      var onresize = function (e) {
+        // Compute the absolute coordinates and dimensions of blocklyArea.
+        var element = blocklyArea;
+        var x = 0;
+        var y = 0;
+        do {
+          x += element.offsetLeft;
+          y += element.offsetTop;
+          element = element.offsetParent;
+        } while (element);
+        // Position blocklyDiv over blocklyArea.
+        blocklyDiv.style.left = x + 'px';
+        blocklyDiv.style.top = y + 'px';
+        blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+        blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+        Blockly.svgResize(demoWorkspace);
 
-      console.log('resize');
-    };
-    window.addEventListener('resize', onresize, false);
-    onresize();
-  </script>
-</body>
+        console.log('resize');
+      };
+      window.addEventListener('resize', onresize, false);
+      onresize();
+    </script>
+  </body>
 </html>

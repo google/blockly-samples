@@ -1,5 +1,24 @@
-# All examples, codelabs, etc.
-examples/*
+# Examples, codelabs, etc.
+examples/backpack-demo
+examples/blockly-angular
+examples/blockly-react
+examples/blockly-rtc
+examples/blockly-vue3
+examples/context-menu-codelab
+examples/custom-dialogs-demo
+examples/custom-renderer-codelab
+examples/custom-toolbox-codelab
+examples/devsite-demo
+examples/devsite-landing-demo
+examples/getting-started-codelab
+examples/interpreter-demo
+examples/pitch-field-demo
+examples/sample-app-ts
+examples/theme-extension-codelab
+examples/turtle-field-demo
+examples/validation-and-warnings-codelab
+examples/lerna.json
+examples/README.md
 node_modules/*
 codelabs/*
 gh-pages/*

@@ -14,13 +14,19 @@ class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
     // Create the svg element for the marker when it is on a block and set the
     // parent to markerSvg_.
     this.blockPath_ = Blockly.utils.dom.createSvgElement(
-        'path', {}, this.markerSvg_);
+      'path',
+      {},
+      this.markerSvg_,
+    );
 
     // If this is a cursor make the cursor blink.
     if (this.isCursor()) {
       const blinkProperties = this.getBlinkProperties_();
-      Blockly.utils.dom.createSvgElement('animate', blinkProperties,
-          this.blockPath_);
+      Blockly.utils.dom.createSvgElement(
+        'animate',
+        blinkProperties,
+        this.blockPath_,
+      );
     }
   }
 
