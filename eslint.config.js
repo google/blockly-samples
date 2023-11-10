@@ -26,7 +26,6 @@ module.exports = [
       'examples/blockly-vue3',
       'examples/context-menu-codelab',
       'examples/custom-dialogs-demo',
-      'examples/custom-renderer-codelab',
       'examples/custom-toolbox-codelab',
       'examples/devsite-demo',
       'examples/devsite-landing-demo',

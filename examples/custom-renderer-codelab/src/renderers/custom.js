@@ -94,12 +94,11 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
      * @returns SVGPath line for use with previous and next connections.
      */
     function makeMainPath(dir) {
-      return Blockly.utils.svgPaths.line(
-          [
-            Blockly.utils.svgPaths.point(0, height),
-            Blockly.utils.svgPaths.point(dir * width, 0),
-            Blockly.utils.svgPaths.point(0, -height),
-          ]);
+      return Blockly.utils.svgPaths.line([
+        Blockly.utils.svgPaths.point(0, height),
+        Blockly.utils.svgPaths.point(dir * width, 0),
+        Blockly.utils.svgPaths.point(0, -height),
+      ]);
     }
     const pathLeft = makeMainPath(1);
     const pathRight = makeMainPath(-1);
@@ -126,12 +125,11 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
      * @returns SVGPath line for use with input and output connections.
      */
     function makeMainPath(dir) {
-      return Blockly.utils.svgPaths.line(
-          [
-            Blockly.utils.svgPaths.point(-width, 0),
-            Blockly.utils.svgPaths.point(0, dir * height),
-            Blockly.utils.svgPaths.point(width, 0),
-          ]);
+      return Blockly.utils.svgPaths.line([
+        Blockly.utils.svgPaths.point(-width, 0),
+        Blockly.utils.svgPaths.point(0, dir * height),
+        Blockly.utils.svgPaths.point(width, 0),
+      ]);
     }
     const pathUp = makeMainPath(-1);
     const pathDown = makeMainPath(1);
