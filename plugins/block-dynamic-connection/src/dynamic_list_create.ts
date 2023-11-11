@@ -131,14 +131,14 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    */
   loadExtraState: function (
     this: DynamicListCreateBlock,
-    state: {[x: string]: number} | string,
+    state: { itemCount?: number; [x: string]: unknown} | string,
   ) {
     if (typeof state === 'string') {
       this.domToMutation(Blockly.utils.xml.textToDom(state));
       return;
     }
 
-    this.itemCount = state['itemCount'];
+    this.itemCount = state['itemCount'] ?? 0;
     // minInputs are added automatically.
     for (let i = this.minInputs; i < this.itemCount; i++) {
       this.appendValueInput('ADD' + i);

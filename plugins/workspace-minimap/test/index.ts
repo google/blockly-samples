@@ -40,10 +40,7 @@ function createWorkspace(
 document.addEventListener('DOMContentLoaded', function () {
   createPlayground(
     document.getElementById('root'),
-    createWorkspace as (
-      blocklyDiv: HTMLElement,
-      options: Blockly.BlocklyOptions,
-    ) => Blockly.WorkspaceSvg,
+    createWorkspace,
     {
       toolbox: toolboxCategories,
     },

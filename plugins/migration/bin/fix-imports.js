@@ -59,7 +59,7 @@ export const fixImports = createSubCommand(
 let MigrationData;
 
 // TODO (#1211): Make this database format more robust.
-/** @type {Array.<MigrationData>} */
+/** @type {Array<MigrationData>} */
 const database = [
   {
     import: 'blockly/dart',
