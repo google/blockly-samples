@@ -19,6 +19,8 @@ const compat = new FlatCompat();
 module.exports = [
   {
     ignores: [
+      'codelabs/',
+      'gh-pages/',
       'examples/backpack-demo',
       'examples/blockly-angular',
       'examples/blockly-react',
