@@ -131,7 +131,7 @@ const DYNAMIC_LIST_CREATE_MIXIN = {
    */
   loadExtraState: function (
     this: DynamicListCreateBlock,
-    state: { itemCount?: number; [x: string]: unknown} | string,
+    state: {itemCount?: number; [x: string]: unknown} | string,
   ) {
     if (typeof state === 'string') {
       this.domToMutation(Blockly.utils.xml.textToDom(state));
