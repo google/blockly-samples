@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Minimap, PositionedMinimap} from '../src/index';
+import {PositionedMinimap} from '../src/index';
 
 let minimap = null;
 let workspace = null;
@@ -38,7 +38,7 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  createPlayground(document.getElementById('root'), createWorkspace as any, {
+  createPlayground(document.getElementById('root'), createWorkspace, {
     toolbox: toolboxCategories,
   });
 });

@@ -218,6 +218,11 @@ export class FieldBitmap extends Blockly.Field {
     return editable;
   }
 
+  /**
+   * Gets the rectangle built out of dimentions matching SVG's <g> element.
+   * @returns {Blockly.utils.Rect} The newly created rectangle of same size
+   *     as the SVG element.
+   */
   getScaledBBox() {
     const boundingBox = this.fieldGroup_.getBoundingClientRect();
     return new Blockly.utils.Rect(

@@ -77,6 +77,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
   static fromJson(
     json: BlockChangeJson,
     workspace: Blockly.Workspace,
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     event?: any,
   ): BlockShadowChange {
     const newEvent = super.fromJson(
