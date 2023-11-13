@@ -10,7 +10,7 @@
 'use strict';
 
 
-var toolboxJson = {
+const toolboxJson = {
   "contents": [
     {
       // Logic Category

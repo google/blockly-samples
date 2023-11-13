@@ -8,7 +8,7 @@
  * @fileoverview Shared toolbox for JS-Interpreter demos.
  */
 
-var toolboxJson = {
+const toolboxJson = {
   "contents": [
     {
       "kind": "CATEGORY",
