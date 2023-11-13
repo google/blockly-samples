@@ -12,8 +12,7 @@ body {
   --demo-height: 352px;
   --font-family: 'Google Sans';
   --output-max-height: 100%;
-  --output-max-width: 340px;
-  --output-min-width: 392px;
+  --output-max-width: 392px;
   --play-btn-right: 52px;
   --play-btn-top: 40px;
   --select-next-line: none;
@@ -128,7 +127,6 @@ option {
   margin: 28px;
   max-height: var(--output-max-height);
   max-width: var(--output-max-width);
-  min-width: var(--output-min-width);
   overflow: scroll;
   padding: 20px;
   width: 100%;
