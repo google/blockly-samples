@@ -27,7 +27,7 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const toolbox = Object.assign({}, toolboxCategories);
+  const toolbox = Object.assign({}, toolboxCategories) as unknown as Blockly.utils.toolbox.ToolboxInfo;
   toolbox['contents'].push({
     'kind': 'search',
     'name': 'Search',
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     toolbox,
   };
   createPlayground(
-    document.getElementById('root'),
+    document.getElementById('root')!,
     createWorkspace,
     defaultOptions,
   );
