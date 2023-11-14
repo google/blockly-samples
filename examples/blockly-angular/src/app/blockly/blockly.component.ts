@@ -114,7 +114,7 @@ export class BlocklyComponent implements OnInit {
         drag: true,
         wheel: true,
       },
-      toolbox: toolbox,
+      toolbox,
     } as BlocklyOptions);
   }
 }

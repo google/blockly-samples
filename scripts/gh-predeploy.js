@@ -445,7 +445,7 @@ function createExamplePage(pageRoot, pagePath, demoConfig, isLocal) {
  * @param {boolean} isLocal True if building for a local test. False if
  *     building for gh-pages.
  * @param {Function} done Completed callback.
- * @returns {Function} Gulp task.
+ * @returns {Function | undefined} Gulp task.
  */
 function prepareExample(exampleDir, isLocal, done) {
   const baseDir = 'examples';

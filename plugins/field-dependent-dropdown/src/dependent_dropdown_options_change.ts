@@ -151,6 +151,7 @@ export class DependentDropdownOptionsChange extends Blockly.Events.BlockBase {
   static fromJson(
     json: DependentDropdownOptionsChangeJson,
     workspace: Blockly.Workspace,
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     event?: any,
   ): DependentDropdownOptionsChange {
     const newEvent = super.fromJson(
