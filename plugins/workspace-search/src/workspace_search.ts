@@ -151,9 +151,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement = this.createTextInput();
 
-    this.addEvent(this.inputElement, 'keydown', this, (evt: Event) => {
-      const keyboardEvent = evt as KeyboardEvent; // Type assertion
-      this.onKeyDown(keyboardEvent);
+    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) => {
+      this.onKeyDown(evt);
     });    
 
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
