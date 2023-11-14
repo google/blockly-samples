@@ -37,7 +37,7 @@ function registerFirstContextMenuOptions() {
   Blockly.ContextMenuRegistry.registry.register(workspaceItem);
 
   // Duplicate the workspace item (using the spread operator).
-  let blockItem = {...workspaceItem}
+  const blockItem = {...workspaceItem}
   // Use block scope and update the id to a nonconflicting value.
   blockItem.scopeType = Blockly.ContextMenuRegistry.ScopeType.BLOCK;
   blockItem.id = 'hello_world_block';

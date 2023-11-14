@@ -47,11 +47,11 @@ export async function getPositionUpdates(workspaceId) {
 
 /**
  * Update the position of a user in the database.
-  * @param {!PositionUpdate} positionUpdate The PositionUpdate with the new
-  * position for a given user.
-  * @returns {!Promise} Promise object representing the success of the update.
-  * @public
-  */
+ * @param {!PositionUpdate} positionUpdate The PositionUpdate with the new
+ * position for a given user.
+ * @returns {!Promise} Promise object representing the success of the update.
+ * @public
+ */
 export async function sendPositionUpdate(positionUpdate) {
   const response = await fetch('/api/users/position/update', {
     method: 'PUT',

@@ -41,11 +41,11 @@ function init() {
   };
   languages.sort(comp_);
   // Populate the language selection dropdown.
-  var languageMenu = document.getElementById('languageDropdown');
+  const languageMenu = document.getElementById('languageDropdown');
   for (let i = 0; i < languages.length; i++) {
-    var tuple = languages[i];
-    var lang = tuple[tuple.length - 1];
-    var option = new Option(tuple[0], lang);
+    const tuple = languages[i];
+    const lang = tuple[tuple.length - 1];
+    const option = new Option(tuple[0], lang);
     if (lang === language) {
       option.selected = true;
     }
