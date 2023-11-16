@@ -71,7 +71,7 @@ export class ContentHighlight {
   private svgGroup?: SVGGElement;
   private rect?: SVGRectElement;
   private background?: SVGRectElement;
-  private onChangeWrapper?: () => void;
+  private onChangeWrapper?: (event: Blockly.Events.Abstract) => void;
 
   /**
    * Constructor for the content highlight plugin.
@@ -189,7 +189,9 @@ export class ContentHighlight {
         this.resize(this.cachedContentMetrics);
       }
       const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-      this.position(this.cachedContentMetrics, absoluteMetrics);
+      if (this.cachedContentMetrics) {
+        this.position(this.cachedContentMetrics, absoluteMetrics);
+      }
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
       this.handleBlockDrag(event as Blockly.Events.BlockDrag);
     } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
@@ -208,7 +210,7 @@ export class ContentHighlight {
    */
   private handleBlockDrag(event: Blockly.Events.BlockDrag) {
     const opacity = event.isStart ? '0' : '1';
-    this.svgGroup.setAttribute('opacity', opacity);
+    this.svgGroup?.setAttribute('opacity', opacity);
   }
 
   /**
@@ -225,7 +227,8 @@ export class ContentHighlight {
       bgColor === '#ffffff' || bgColor === '#fff'
         ? colorDarkened
         : colorLightened;
-    this.background.setAttribute('fill', color);
+    if (!color) return;
+    this.background?.setAttribute('fill', color);
   }
 
   /**
@@ -243,11 +246,11 @@ export class ContentHighlight {
       : 0;
     if (width !== this.width) {
       this.width = width;
-      this.rect.setAttribute('width', `${width}`);
+      this.rect?.setAttribute('width', `${width}`);
     }
     if (height !== this.height) {
       this.height = height;
-      this.rect.setAttribute('height', `${height}`);
+      this.rect?.setAttribute('height', `${height}`);
     }
   }
 
@@ -281,7 +284,7 @@ export class ContentHighlight {
       this.top = top;
       this.left = left;
       this.lastScale = scale;
-      this.rect.setAttribute(
+      this.rect?.setAttribute(
         'transform',
         `translate(${left}, ${top}) scale(${scale})`,
       );
