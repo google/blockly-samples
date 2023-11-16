@@ -27,10 +27,10 @@ const borderRadius = 6;
  * A class that highlights the user's viewport on the minimap.
  */
 export class FocusRegion {
-  private onChangeWrapper: (e: Blockly.Events.Abstract) => void;
-  private svgGroup: SVGElement;
-  private rect: SVGElement;
-  private background: SVGElement;
+  private onChangeWrapper: ((e: Blockly.Events.Abstract) => void) | null;
+  private svgGroup: SVGElement | null;
+  private rect: SVGElement | null;
+  private background: SVGElement | null;
   private id: string;
   private initialized = false;
 
@@ -45,6 +45,10 @@ export class FocusRegion {
     private minimapWorkspace: Blockly.WorkspaceSvg,
   ) {
     this.id = String(Math.random()).substring(2);
+    this.onChangeWrapper = (e: Blockly.Events.Abstract) => {}; 
+    this.svgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    this.rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    this.background = document.createElementNS('http://www.w3.org/2000/svg', 'rect'); 
   }
 
   /**
@@ -187,9 +191,9 @@ export class FocusRegion {
     top += (minimapSvg.height - minimapContent.height) / 2;
 
     // Set the svg attributes.
-    this.rect.setAttribute('transform', `translate(${left},${top})`);
-    this.rect.setAttribute('width', width.toString());
-    this.rect.setAttribute('height', height.toString());
+    this.rect?.setAttribute('transform', `translate(${left},${top})`);
+    this.rect?.setAttribute('width', width.toString());
+    this.rect?.setAttribute('height', height.toString());
   }
 
   /**
