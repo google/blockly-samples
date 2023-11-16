@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.2.2...@blockly/toolbox-search@1.2.3) (2023-11-16)
+
+
+### Bug Fixes
+
+* enables strict mode for toolbox-search ([#2067](https://github.com/google/blockly-samples/issues/2067)) ([e91a0eb](https://github.com/google/blockly-samples/commit/e91a0eba27d9fac05ce0d3663f210099a79f6ea1))
+
+
+
 ## [1.2.2](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.2.1...@blockly/toolbox-search@1.2.2) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/toolbox-search

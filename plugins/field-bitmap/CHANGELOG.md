@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.8...@blockly/field-bitmap@4.0.9) (2023-11-16)
+
+
+### Bug Fixes
+
+* resolved 15 ESLint warnings ([#2065](https://github.com/google/blockly-samples/issues/2065)) ([2436337](https://github.com/google/blockly-samples/commit/243633746542bb1518fe2893c0421a5a6f79fd32))
+
+
+
 ## [4.0.8](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.7...@blockly/field-bitmap@4.0.8) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/field-bitmap
