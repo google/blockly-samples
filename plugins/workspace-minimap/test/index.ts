@@ -13,7 +13,6 @@ import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import {PositionedMinimap} from '../src/index';
 
 let minimap: PositionedMinimap | null = null;
-let workspace = null;
 
 /**
  * Create a workspace.
