@@ -133,8 +133,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      * </div>
      */
     const injectionDiv = this.workspace.getInjectionDiv();
-    this.addEvent(injectionDiv, 'keydown', this, (evt: KeyboardEvent) =>
-      this.onWorkspaceKeyDown(evt),
+    this.addEvent(injectionDiv, 'keydown', this, (evt: Event) =>
+      this.onWorkspaceKeyDown(evt as KeyboardEvent),
     );
 
     this.htmlDiv = document.createElement('div');
@@ -150,13 +150,15 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement = this.createTextInput();
-    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) =>
-      this.onKeyDown(evt),
+    this.addEvent(this.inputElement, 'keydown', this, (evt: Event) =>
+      this.onKeyDown(evt as KeyboardEvent),
     );
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
-      this.inputElement.select();
+      if (this.inputElement !== null) {
+        this.inputElement.select();
+      }
     });
 
     inputWrapper.appendChild(this.inputElement);
@@ -220,7 +222,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   addActionBtn(btn: HTMLButtonElement, onClickFn: () => void) {
     this.addBtnListener(btn, onClickFn);
-    this.actionDiv.appendChild(btn);
+    if (this.actionDiv !== null) {
+      this.actionDiv.appendChild(btn);
+    }
   }
 
   /**
@@ -291,11 +295,12 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     this.addEvent(btn, 'click', this, onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
-    this.addEvent(btn, 'keydown', this, (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
+    this.addEvent(btn, 'keydown', this, (e: Event) => {
+      const event = e as KeyboardEvent;
+      if (event.key === 'Enter') {
         onClickFn(e);
         e.preventDefault();
-      } else if (e.key === 'Escape') {
+      } else if (event.key === 'Escape') {
         this.close();
       }
       e.stopPropagation();
@@ -328,15 +333,23 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     savedPositions: Blockly.utils.Rect[],
   ) {
     if (this.workspace.RTL) {
-      this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
+      if (this.htmlDiv !== null) {
+        this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
+      }
     } else {
       if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_RIGHT) {
-        this.htmlDiv.style.right = metrics.toolboxMetrics.width + 'px';
+        if (this.htmlDiv !== null) {
+          this.htmlDiv.style.right = metrics.toolboxMetrics.width + 'px';
+        }
       } else {
-        this.htmlDiv.style.right = '0';
+        if (this.htmlDiv !== null) {
+          this.htmlDiv.style.right = '0';
+        }
       }
     }
-    this.htmlDiv.style.top = metrics.absoluteMetrics.top + 'px';
+    if (this.htmlDiv !== null) {
+      this.htmlDiv.style.top = metrics.absoluteMetrics.top + 'px';
+    }
   }
 
   /**
@@ -344,7 +357,10 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   private onInput() {
     if (this.searchOnInput) {
-      const inputValue = this.inputElement.value.trim();
+      let inputValue = '';
+      if (this.inputElement !== null) {
+        inputValue = this.inputElement.value.trim();
+      }
       if (inputValue !== this.searchText) {
         this.searchAndHighlight(inputValue, this.preserveSelected);
       }
@@ -363,9 +379,12 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       if (this.searchOnInput) {
         this.next();
       } else {
-        const inputValue = this.inputElement.value.trim();
-        if (inputValue !== this.searchText) {
-          this.searchAndHighlight(inputValue, this.preserveSelected);
+        let inputValue = '';
+        if (this.inputElement !== null) {
+          inputValue = this.inputElement.value.trim();
+          if (inputValue !== this.searchText) {
+            this.searchAndHighlight(inputValue, this.preserveSelected);
+          }
         }
       }
     }
@@ -437,7 +456,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   open() {
     this.setVisible(true);
-    this.inputElement.focus();
+    if (this.inputElement !== null) {
+      this.inputElement.focus();
+    }
     if (this.searchText) {
       this.searchAndHighlight(this.searchText);
     }
@@ -458,7 +479,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param show Whether to set the search bar as visible.
    */
   private setVisible(show: boolean) {
-    this.htmlDiv.style.display = show ? 'flex' : 'none';
+    if (this.htmlDiv !== null) {
+      this.htmlDiv.style.display = show ? 'flex' : 'none';
+    }
   }
 
   /**
@@ -521,7 +544,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       // Search the whole string for collapsed blocks.
       blockText = block.toString();
     } else {
-      const topBlockText = [];
+      const topBlockText = Array<string>();
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
           topBlockText.push(field.getText());
