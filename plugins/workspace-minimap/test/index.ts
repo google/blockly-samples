@@ -12,7 +12,7 @@ import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
 import {PositionedMinimap} from '../src/index';
 
-let minimap = null;
+let minimap: PositionedMinimap | null = null;
 let workspace = null;
 
 /**
@@ -30,15 +30,22 @@ function createWorkspace(
   if (minimap) {
     minimap.dispose();
   }
-  workspace = Blockly.inject(blocklyDiv, options);
+  const workspace = Blockly.inject(blocklyDiv, options);
   minimap = new PositionedMinimap(workspace);
   minimap.init();
 
   return workspace;
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
-  createPlayground(document.getElementById('root'), createWorkspace, {
+  const rootElement = document.getElementById('root');
+  if (rootElement === null) {
+    console.error("No element with id 'root' found");
+    return;
+  }
+  createPlayground(rootElement, createWorkspace, {
     toolbox: toolboxCategories,
   });
 });
+
