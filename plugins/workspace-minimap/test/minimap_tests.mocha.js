@@ -9,6 +9,11 @@ const assert = chai.assert;
 const Blockly = require('blockly');
 const {Minimap} = require('../src/minimap');
 const {PositionedMinimap} = require('../src/positioned_minimap');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+
+const { document } = (new JSDOM('')).window;
+global.document = document;
 
 suite(
   'Converting click coordinates from minimap to primary workspace',

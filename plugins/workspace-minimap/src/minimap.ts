@@ -35,7 +35,7 @@ export class Minimap {
   protected onMouseMoveWrapper: Blockly.browserEvents.Data | null = null;
   protected onMouseDownWrapper: Blockly.browserEvents.Data | null = null;
   protected onMouseUpWrapper: Blockly.browserEvents.Data | null = null;
-  protected minimapWrapper: HTMLDivElement;
+  protected minimapWrapper: HTMLDivElement | null = null;
 
   /**
    * Constructor for a minimap.
@@ -46,7 +46,7 @@ export class Minimap {
     this.primaryWorkspace = workspace;
     this.minimapWorkspace = new Blockly.WorkspaceSvg(new Blockly.Options({}));
     this.focusRegion = new FocusRegion(this.primaryWorkspace, this.minimapWorkspace);
-    this.minimapWrapper = document.createElement('div');
+    this.minimapWrapper = null;
   }
 
   /**
