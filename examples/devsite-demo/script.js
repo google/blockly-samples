@@ -80,13 +80,13 @@ function init() {
   let toolboxString = JSON.stringify(toolboxJson);
   toolboxString = toolboxString.replace(/%\{BKY_VARIABLES_DEFAULT_NAME\}/g,
       Blockly.Msg.VARIABLES_DEFAULT_NAME);
-  toolboxJson = JSON.parse(toolboxString);
+  const toolbox = JSON.parse(toolboxString);
 
   // Inject Blockly.
   const workspace = Blockly.inject('blocklyDiv',
       {
         media: "./node_modules/blockly/media/",
-        toolbox: toolboxJson,
+        toolbox,
         rtl: LANGUAGE_RTL.includes(language),
       });
   Blockly.serialization.workspaces.load(loadOnce || startBlocks, workspace);
