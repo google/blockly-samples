@@ -133,9 +133,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      * </div>
      */
     const injectionDiv = this.workspace.getInjectionDiv();
-    this.addEvent(injectionDiv, 'keydown', this, (evt: Event) =>
-      this.onWorkspaceKeyDown(evt as KeyboardEvent),
-    );
+    this.addEvent(injectionDiv, 'keydown', this, (evt: Event) => {
+      if (evt instanceof KeyboardEvent) {
+        this.onWorkspaceKeyDown(evt);
+      }
+    });
 
     this.htmlDiv = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv, 'blockly-ws-search');
@@ -150,9 +152,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement = this.createTextInput();
-    this.addEvent(this.inputElement, 'keydown', this, (evt: Event) =>
-      this.onKeyDown(evt as KeyboardEvent),
-    );
+    this.addEvent(this.inputElement, 'keydown', this, (evt: Event) => {
+      if (evt instanceof KeyboardEvent) {
+        this.onKeyDown(evt);
+      }
+    });
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
@@ -296,14 +300,16 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
     this.addEvent(btn, 'keydown', this, (e: Event) => {
-      const event = e as KeyboardEvent;
-      if (event.key === 'Enter') {
-        onClickFn(e);
-        e.preventDefault();
-      } else if (event.key === 'Escape') {
-        this.close();
+      if (e instanceof KeyboardEvent) {
+        const event = e;
+        if (event.key === 'Enter') {
+          onClickFn(e);
+          e.preventDefault();
+        } else if (event.key === 'Escape') {
+          this.close();
+        }
+        e.stopPropagation();
       }
-      e.stopPropagation();
     });
   }
 
