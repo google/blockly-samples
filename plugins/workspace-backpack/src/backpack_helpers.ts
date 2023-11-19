@@ -28,7 +28,7 @@ function registerEmptyBackpack(workspace: Blockly.WorkspaceSvg) {
       .getComponentManager()
       .getComponent('backpack') as Backpack;
     const backpackClientRect = backpack && backpack.getClientRect();
-    if (e instanceof PointerEvent && backpackClientRect !== null) {
+    if (e instanceof PointerEvent && backpackClientRect) {
       if (!backpack || !backpackClientRect.contains(e.clientX, e.clientY)) {
         prevConfigureContextMenu &&
           prevConfigureContextMenu.call(null, menuOptions, e);
