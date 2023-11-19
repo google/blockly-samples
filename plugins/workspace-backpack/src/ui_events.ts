@@ -46,7 +46,7 @@ export class BackpackOpen extends Blockly.Events.UiBase {
    * @returns JSON representation.
    */
   toJson(): BackpackOpenEventJson {
-    const json = super.toJson();
+    const json = super.toJson() as BackpackOpenEventJson;
     json['isOpen'] = this.isOpen;
     return json;
   }

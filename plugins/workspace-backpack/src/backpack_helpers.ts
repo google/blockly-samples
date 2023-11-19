@@ -23,14 +23,17 @@ import {BackpackContextMenuOptions} from './options';
  */
 function registerEmptyBackpack(workspace: Blockly.WorkspaceSvg) {
   const prevConfigureContextMenu = workspace.configureContextMenu;
-  workspace.configureContextMenu = (menuOptions, e: PointerEvent) => {
+  workspace.configureContextMenu = (menuOptions, e: Event) => {
     const backpack = workspace
       .getComponentManager()
       .getComponent('backpack') as Backpack;
-    if (!backpack || !backpack.getClientRect().contains(e.clientX, e.clientY)) {
-      prevConfigureContextMenu &&
-        prevConfigureContextMenu.call(null, menuOptions, e);
-      return;
+    const backpackClientRect = backpack && backpack.getClientRect();
+    if (e instanceof PointerEvent && backpackClientRect !== null) {
+      if (!backpack || !backpackClientRect.contains(e.clientX, e.clientY)) {
+        prevConfigureContextMenu &&
+          prevConfigureContextMenu.call(null, menuOptions, e);
+        return;
+      }
     }
     menuOptions.length = 0;
     const backpackOptions = {
@@ -58,18 +61,26 @@ function registerRemoveFromBackpack() {
   const removeFromBackpack = {
     displayText: Blockly.Msg['REMOVE_FROM_BACKPACK'],
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
-      const ws = scope.block.workspace;
-      if (ws.isFlyout && ws.targetWorkspace) {
-        const backpack = ws.targetWorkspace
-          .getComponentManager()
-          .getComponent('backpack') as Backpack;
-        if (backpack && backpack.getFlyout().getWorkspace().id === ws.id) {
-          return 'enabled';
+      if (scope.block) {
+        const ws = scope.block.workspace;
+        if (ws.isFlyout && ws.targetWorkspace) {
+          const backpack = ws.targetWorkspace
+            .getComponentManager()
+            .getComponent('backpack') as Backpack;
+          const backpackFlyout = backpack && backpack.getFlyout();
+          if (
+            backpack &&
+            backpackFlyout &&
+            backpackFlyout.getWorkspace().id === ws.id
+          ) {
+            return 'enabled';
+          }
         }
       }
       return 'hidden';
     },
     callback: function (scope: Blockly.ContextMenuRegistry.Scope) {
+      if (!scope.block || !scope.block.workspace.targetWorkspace) return;
       const backpack = scope.block.workspace.targetWorkspace
         .getComponentManager()
         .getComponent('backpack') as Backpack;
@@ -96,7 +107,7 @@ function registerCopyToBackpack(disablePreconditionContainsCheck: boolean) {
   const copyToBackpack = {
     displayText: function (scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.block) {
-        return;
+        return '';
       }
       const backpack = scope.block.workspace
         .getComponentManager()
@@ -105,21 +116,24 @@ function registerCopyToBackpack(disablePreconditionContainsCheck: boolean) {
       return `${Blockly.Msg['COPY_TO_BACKPACK']} (${backpackCount})`;
     },
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
-      const ws = scope.block.workspace;
-      if (!ws.isFlyout) {
-        const backpack = ws
-          .getComponentManager()
-          .getComponent('backpack') as Backpack;
-        if (backpack) {
-          if (disablePreconditionContainsCheck) {
-            return 'enabled';
+      if (scope.block) {
+        const ws = scope.block.workspace;
+        if (!ws.isFlyout) {
+          const backpack = ws
+            .getComponentManager()
+            .getComponent('backpack') as Backpack;
+          if (backpack) {
+            if (disablePreconditionContainsCheck) {
+              return 'enabled';
+            }
+            return backpack.containsBlock(scope.block) ? 'disabled' : 'enabled';
           }
-          return backpack.containsBlock(scope.block) ? 'disabled' : 'enabled';
         }
       }
       return 'hidden';
     },
     callback: function (scope: Blockly.ContextMenuRegistry.Scope) {
+      if (!scope.block) return;
       const backpack = scope.block.workspace
         .getComponentManager()
         .getComponent('backpack') as Backpack;
@@ -145,7 +159,7 @@ function registerCopyAllBackpack() {
     displayText: Blockly.Msg['COPY_ALL_TO_BACKPACK'],
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
       const ws = scope.workspace;
-      if (!ws.isFlyout) {
+      if (ws && !ws.isFlyout) {
         const backpack = ws.getComponentManager().getComponent('backpack');
         if (backpack) {
           return 'enabled';
@@ -155,6 +169,7 @@ function registerCopyAllBackpack() {
     },
     callback: function (scope: Blockly.ContextMenuRegistry.Scope) {
       const ws = scope.workspace;
+      if (!ws) return;
       const backpack = ws
         .getComponentManager()
         .getComponent('backpack') as Backpack;
@@ -179,7 +194,7 @@ function registerPasteAllBackpack() {
   const pasteAllFromBackpack = {
     displayText: function (scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.workspace) {
-        return;
+        return '';
       }
       const backpack = scope.workspace
         .getComponentManager()
@@ -189,7 +204,7 @@ function registerPasteAllBackpack() {
     },
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
       const ws = scope.workspace;
-      if (!ws.isFlyout) {
+      if (ws && !ws.isFlyout) {
         const backpack = ws.getComponentManager().getComponent('backpack');
         if (backpack) {
           return 'enabled';
@@ -199,6 +214,7 @@ function registerPasteAllBackpack() {
     },
     callback: function (scope: Blockly.ContextMenuRegistry.Scope) {
       const ws = scope.workspace;
+      if (!ws) return;
       const backpack = ws
         .getComponentManager()
         .getComponent('backpack') as Backpack;
@@ -236,7 +252,9 @@ export function registerContextMenus(
     registerRemoveFromBackpack();
   }
   if (contextMenuOptions.copyToBackpack) {
-    registerCopyToBackpack(contextMenuOptions.disablePreconditionChecks);
+    registerCopyToBackpack(
+      contextMenuOptions.disablePreconditionChecks ?? false,
+    );
   }
   if (contextMenuOptions.copyAllToBackpack) {
     registerCopyAllBackpack();
