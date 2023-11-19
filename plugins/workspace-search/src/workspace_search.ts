@@ -133,9 +133,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      * </div>
      */
     const injectionDiv = this.workspace.getInjectionDiv();
-    this.addEvent(injectionDiv, 'keydown', this, (evt: KeyboardEvent) => {
-      this.onWorkspaceKeyDown(evt);
-    });
+    this.addEvent(injectionDiv, 'keydown', this, (evt: KeyboardEvent) =>
+      this.onWorkspaceKeyDown(evt),
+    );
 
     this.htmlDiv = document.createElement('div');
     Blockly.utils.dom.addClass(this.htmlDiv, 'blockly-ws-search');
@@ -150,9 +150,9 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement = this.createTextInput();
-    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) => {
-      this.onKeyDown(evt);
-    });
+    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) =>
+      this.onKeyDown(evt),
+    );
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
@@ -296,11 +296,10 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
     this.addEvent(btn, 'keydown', this, (e: KeyboardEvent) => {
-      const event = e;
-      if (event.key === 'Enter') {
+      if (e.key === 'Enter') {
         onClickFn(e);
         e.preventDefault();
-      } else if (event.key === 'Escape') {
+      } else if (e.key === 'Escape') {
         this.close();
       }
       e.stopPropagation();
