@@ -133,10 +133,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
      * </div>
      */
     const injectionDiv = this.workspace.getInjectionDiv();
-    this.addEvent(injectionDiv, 'keydown', this, (evt: Event) => {
-      if (evt instanceof KeyboardEvent) {
-        this.onWorkspaceKeyDown(evt);
-      }
+    this.addEvent(injectionDiv, 'keydown', this, (evt: KeyboardEvent) => {
+      this.onWorkspaceKeyDown(evt);
     });
 
     this.htmlDiv = document.createElement('div');
@@ -152,15 +150,13 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const inputWrapper = document.createElement('div');
     Blockly.utils.dom.addClass(inputWrapper, 'blockly-ws-search-input');
     this.inputElement = this.createTextInput();
-    this.addEvent(this.inputElement, 'keydown', this, (evt: Event) => {
-      if (evt instanceof KeyboardEvent) {
-        this.onKeyDown(evt);
-      }
+    this.addEvent(this.inputElement, 'keydown', this, (evt: KeyboardEvent) => {
+      this.onKeyDown(evt);
     });
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
-      if (this.inputElement !== null) {
+      if (this.inputElement) {
         this.inputElement.select();
       }
     });
@@ -201,11 +197,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param thisObject The value of 'this' in the function.
    * @param func Function to call when event is triggered.
    */
-  private addEvent(
+  private addEvent<T extends Event>(
     node: Element,
     name: string,
     thisObject: object,
-    func: (event: Event) => void,
+    func: (event: T) => void,
   ) {
     const event = Blockly.browserEvents.conditionalBind(
       node,
@@ -226,7 +222,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   addActionBtn(btn: HTMLButtonElement, onClickFn: () => void) {
     this.addBtnListener(btn, onClickFn);
-    if (this.actionDiv !== null) {
+    if (this.actionDiv) {
       this.actionDiv.appendChild(btn);
     }
   }
@@ -299,17 +295,15 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     this.addEvent(btn, 'click', this, onClickFn);
     // TODO: Review Blockly's key handling to see if there is a way to avoid
     //  needing to call stopPropogation().
-    this.addEvent(btn, 'keydown', this, (e: Event) => {
-      if (e instanceof KeyboardEvent) {
-        const event = e;
-        if (event.key === 'Enter') {
-          onClickFn(e);
-          e.preventDefault();
-        } else if (event.key === 'Escape') {
-          this.close();
-        }
-        e.stopPropagation();
+    this.addEvent(btn, 'keydown', this, (e: KeyboardEvent) => {
+      const event = e;
+      if (event.key === 'Enter') {
+        onClickFn(e);
+        e.preventDefault();
+      } else if (event.key === 'Escape') {
+        this.close();
       }
+      e.stopPropagation();
     });
   }
 
@@ -338,24 +332,17 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     metrics: Blockly.MetricsManager.UiMetrics,
     savedPositions: Blockly.utils.Rect[],
   ) {
+    if (!this.htmlDiv) return;
     if (this.workspace.RTL) {
-      if (this.htmlDiv !== null) {
-        this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
-      }
+      this.htmlDiv.style.left = metrics.absoluteMetrics.left + 'px';
     } else {
       if (metrics.toolboxMetrics.position === Blockly.TOOLBOX_AT_RIGHT) {
-        if (this.htmlDiv !== null) {
-          this.htmlDiv.style.right = metrics.toolboxMetrics.width + 'px';
-        }
+        this.htmlDiv.style.right = metrics.toolboxMetrics.width + 'px';
       } else {
-        if (this.htmlDiv !== null) {
-          this.htmlDiv.style.right = '0';
-        }
+        this.htmlDiv.style.right = '0';
       }
     }
-    if (this.htmlDiv !== null) {
-      this.htmlDiv.style.top = metrics.absoluteMetrics.top + 'px';
-    }
+    this.htmlDiv.style.top = metrics.absoluteMetrics.top + 'px';
   }
 
   /**
@@ -364,7 +351,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   private onInput() {
     if (this.searchOnInput) {
       let inputValue = '';
-      if (this.inputElement !== null) {
+      if (this.inputElement) {
         inputValue = this.inputElement.value.trim();
       }
       if (inputValue !== this.searchText) {
@@ -385,12 +372,10 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       if (this.searchOnInput) {
         this.next();
       } else {
-        let inputValue = '';
-        if (this.inputElement !== null) {
-          inputValue = this.inputElement.value.trim();
-          if (inputValue !== this.searchText) {
-            this.searchAndHighlight(inputValue, this.preserveSelected);
-          }
+        if (!this.inputElement) return;
+        const inputValue = this.inputElement.value.trim();
+        if (inputValue !== this.searchText) {
+          this.searchAndHighlight(inputValue, this.preserveSelected);
         }
       }
     }
@@ -462,7 +447,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   open() {
     this.setVisible(true);
-    if (this.inputElement !== null) {
+    if (this.inputElement) {
       this.inputElement.focus();
     }
     if (this.searchText) {
@@ -485,7 +470,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param show Whether to set the search bar as visible.
    */
   private setVisible(show: boolean) {
-    if (this.htmlDiv !== null) {
+    if (this.htmlDiv) {
       this.htmlDiv.style.display = show ? 'flex' : 'none';
     }
   }
@@ -550,7 +535,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       // Search the whole string for collapsed blocks.
       blockText = block.toString();
     } else {
-      const topBlockText = Array<string>();
+      const topBlockText: string[] = [];
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
           topBlockText.push(field.getText());
