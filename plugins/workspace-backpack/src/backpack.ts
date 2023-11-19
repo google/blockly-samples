@@ -476,7 +476,7 @@ export class Backpack
     const traverseJson = function (json: StateWithIndex, keys: string[]) {
       for (const key in json) {
         if (key) {
-          if (keys.includes(key)) {
+          if (keys.indexOf(key) !== -1) {
             delete json[key];
           }
           if (json[key] && typeof json[key] === 'object') {
