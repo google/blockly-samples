@@ -204,7 +204,7 @@ export class Backpack
       if (VerticalFlyout) {
         this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
       } else {
-        throw new Error("VerticalFlyout does not found");
+        throw new Error('VerticalFlyout does not exist');
       }
     }
     // Add flyout to DOM.
