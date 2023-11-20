@@ -156,9 +156,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     this.addEvent(this.inputElement, 'input', this, () => this.onInput());
     this.addEvent(this.inputElement, 'click', this, () => {
       this.searchAndHighlight(this.searchText, this.preserveSelected);
-      if (this.inputElement) {
-        this.inputElement.select();
-      }
+      this.inputElement?.select();
     });
 
     inputWrapper.appendChild(this.inputElement);
@@ -222,9 +220,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   addActionBtn(btn: HTMLButtonElement, onClickFn: () => void) {
     this.addBtnListener(btn, onClickFn);
-    if (this.actionDiv) {
-      this.actionDiv.appendChild(btn);
-    }
+    this.actionDiv?.appendChild(btn);
   }
 
   /**
@@ -348,11 +344,8 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * Handles input value change in search bar.
    */
   private onInput() {
-    if (this.searchOnInput) {
-      let inputValue = '';
-      if (this.inputElement) {
-        inputValue = this.inputElement.value.trim();
-      }
+    if (this.searchOnInput && this.inputElement) {
+      const inputValue = this.inputElement.value.trim();
       if (inputValue !== this.searchText) {
         this.searchAndHighlight(inputValue, this.preserveSelected);
       }
@@ -446,9 +439,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   open() {
     this.setVisible(true);
-    if (this.inputElement) {
-      this.inputElement.focus();
-    }
+    this.inputElement?.focus();
     if (this.searchText) {
       this.searchAndHighlight(this.searchText);
     }
