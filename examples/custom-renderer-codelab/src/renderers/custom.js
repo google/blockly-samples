@@ -90,7 +90,6 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
     /**
      * Since previous and next connections share the same shape you can define
      * a function to generate the path for both.
-     *
      * @param dir Multiplier for the horizontal direction of the path (-1 or 1)
      * @returns SVGPath line for use with previous and next connections.
      */
@@ -123,7 +122,6 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
     /**
      * Since input and output connections share the same shape you can define
      * a function to generate the path for both.
-     *
      * @param dir Multiplier for the vertical direction of the path (-1 or 1)
      * @returns SVGPath line for use with input and output connections.
      */

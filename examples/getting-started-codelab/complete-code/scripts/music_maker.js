@@ -10,7 +10,7 @@
     this.queue_.push(soundUrl);
   },
   play: function() {
-    let next = this.queue_.shift();
+    const next = this.queue_.shift();
     if (next) {
       this.player_.src = next;
       this.player_.play();

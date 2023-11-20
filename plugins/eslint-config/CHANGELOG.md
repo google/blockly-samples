@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@3.0.1...@blockly/eslint-config@3.0.2) (2023-11-09)
+
+
+### Bug Fixes
+
+* zelos full block colour field rendering incorrectly ([#1932](https://github.com/google/blockly-samples/issues/1932)) ([49fe34f](https://github.com/google/blockly-samples/commit/49fe34fa887af1c6295fbcd294839d20fb86b0c8))
+
+
+
 ## [3.0.1](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@3.0.0...@blockly/eslint-config@3.0.1) (2023-10-30)
 
 **Note:** Version bump only for package @blockly/eslint-config

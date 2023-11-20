@@ -33,7 +33,7 @@ import '../fields/DateField';
 
 import '@blockly/field-date';
 
-let reactDateField = {
+const reactDateField = {
         "type": "test_react_date_field",
         "message0": "date field: %1",
         "args0": [
@@ -54,7 +54,7 @@ Blockly.Blocks['test_react_date_field'] = {
   }
 }
 
-var testReactField = {
+const testReactField = {
   "type": "test_react_field",
   "message0": "custom field %1",
   "args0": [

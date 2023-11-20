@@ -146,6 +146,7 @@ export class Minimap {
     }
     if (
       event.type === Blockly.Events.BLOCK_CREATE &&
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       (event as any).xml.tagName === 'shadow'
     ) {
       return; // Filter out shadow blocks.

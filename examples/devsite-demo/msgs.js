@@ -12,7 +12,7 @@
 /**
  * Lookup for names of languages.  Keys should be in ISO 639 format.
  */
-var LANGUAGE_NAME = {
+const LANGUAGE_NAME = {
 //  'ace': 'بهسا اچيه',  // RTL
 //  'af': 'Afrikaans',
   'am': 'አማርኛ',
@@ -110,13 +110,13 @@ var LANGUAGE_NAME = {
 /**
  * List of RTL languages.
  */
-var LANGUAGE_RTL = [/*'ace',*/ 'ar', 'fa', 'he', /*'mzn', 'ps',*/ 'ur'];
+const LANGUAGE_RTL = [/* 'ace',*/ 'ar', 'fa', 'he', /* 'mzn', 'ps',*/ 'ur'];
 
 
 /**
  * Category names in every language.
  */
-var msgs = {
+const msgs = {
   "ab": {
     "Logic": "Алогика",
     "Loops": "Ациклқәа",

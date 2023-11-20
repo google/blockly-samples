@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-colour@3.0.8...@blockly/field-colour@3.0.9) (2023-11-09)
+
+
+### Bug Fixes
+
+* zelos full block colour field rendering incorrectly ([#1932](https://github.com/google/blockly-samples/issues/1932)) ([49fe34f](https://github.com/google/blockly-samples/commit/49fe34fa887af1c6295fbcd294839d20fb86b0c8))
+
+
+
 ## [3.0.8](https://github.com/google/blockly-samples/compare/@blockly/field-colour@3.0.7...@blockly/field-colour@3.0.8) (2023-11-02)
 
 **Note:** Version bump only for package @blockly/field-colour

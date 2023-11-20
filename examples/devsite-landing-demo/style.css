@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 body {
+  background: white !important;
   margin: 0;
 }
 
@@ -11,9 +12,10 @@ body {
   --demo-height: 352px;
   --font-family: 'Google Sans';
   --output-max-height: 100%;
-  --output-max-width: 340px;
+  --output-max-width: 392px;
   --play-btn-right: 52px;
   --play-btn-top: 40px;
+  --select-next-line: none;
 }
 
 @media screen and (max-width: 840px) {
@@ -23,11 +25,13 @@ body {
     --demo-height: 600px;
     --output-max-height: 180px;
     --output-max-width: 100%;
-    --play-btn-right: -32px;
-    --play-btn-top: 364px;
+    --output-min-width: unset;
+    --play-btn-right: 64px;
+    --play-btn-top: 404px;
     align-items: center;
     flex-direction: column;
     padding-inline: 40px;
+    --select-next-line: block;
   }
 }
 
@@ -132,6 +136,10 @@ hr {
   border: 0;
   clear: both;
   height: 1px;
+}
+
+.next-line {
+  display: var(--select-next-line);
 }
 
 .play-button {

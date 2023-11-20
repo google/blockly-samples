@@ -235,7 +235,7 @@ export class NavigationController {
   fieldShortcutHandler(workspace, shortcut) {
     const cursor = workspace.getCursor();
     if (!cursor || !cursor.getCurNode()) {
-      return;
+      return false;
     }
     const curNode = cursor.getCurNode();
     if (curNode.getType() === Blockly.ASTNode.types.FIELD) {
