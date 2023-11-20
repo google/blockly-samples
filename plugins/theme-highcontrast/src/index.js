@@ -95,4 +95,5 @@ export default Blockly.Theme.defineTheme('highcontrast', {
     'size': 16,
   },
   'startHats': null,
+  
 });

@@ -1,0 +1,107 @@
+/**
+ * @license
+ * Copyright 2023 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+// TODO: Edit theme overview.
+/**
+ * @fileoverview Theme overview.
+ */
+
+import Blockly from 'blockly/core';
+
+const defaultBlockStyles = {
+  'colour_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+    
+  },
+  'list_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },
+  'logic_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },
+  'loop_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },
+  'math_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+    'color': '#73ed58',
+  },
+  'procedure_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },'text_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },
+  'variable_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },
+  'variable_dynamic_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+  },
+  'hat_blocks': {
+    'colourPrimary': '#0c0d0d',
+    'colourSecondary': '#0c0d0d',
+    'colourTertiary': '#edf2f2',
+    'hat': 'cap',
+  },
+};
+
+const categoryStyles = {
+  'colour_category': {'colour': '#0c0d0d'},
+  'list_category': {'colour': '#0c0d0d'},
+  'logic_category': {'colour': '#0c0d0d'},
+  'loop_category': {'colour': '#0c0d0d'},
+  'math_category': {'colour': '#0c0d0d'},
+  'procedure_category': {'colour': '#0c0d0d'},
+  'text_category': {'colour': '#0c0d0d'},
+  'variable_category': {'colour': '#0c0d0d'},
+  'variable_dynamic_category': {'colour': '#0c0d0d'},
+};
+
+// TODO: Hacker Mode
+export default Blockly.Theme.defineTheme('hacker-mode', {
+ // 'base': Blockly.Themes.Classic,
+  'blockStyles': defaultBlockStyles,
+  'categoryStyles':categoryStyles,
+  'componentStyles': {'workspaceBackgroundColour': '#1e1e1e',
+  'toolboxBackgroundColour': 'blackBackground',
+  'toolboxForegroundColour': '#73ed58',
+  'flyoutBackgroundColour': '#252526',
+  'flyoutForegroundColour': '#73ed58',
+  'flyoutOpacity': 1,
+  'scrollbarColour': '#797979',
+  'insertionMarkerColour': '#fff',
+  'insertionMarkerOpacity': 0.3,
+  'scrollbarOpacity': 0.4,
+  'cursorColour': '#d0d0d0',
+  'blackBackground': '#333',},
+  'fontStyle': { 
+  'family': 'monospace', // need a monospace text familiy
+  'weight': null, // Use default font-weight.
+  'size': null,
+  },// use defalut size
+  'startHats': null,
+  
+  
+
+});
