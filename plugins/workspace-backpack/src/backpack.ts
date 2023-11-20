@@ -188,6 +188,8 @@ export class Backpack
       );
       if (HorizontalFlyout) {
         this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
+      } else {
+        throw new Error('HorizontalFlyout does not exist');
       }
     } else {
       flyoutWorkspaceOptions.toolboxPosition =
@@ -201,12 +203,13 @@ export class Backpack
       );
       if (VerticalFlyout) {
         this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
+      } else {
+        throw new Error("VerticalFlyout does not found");
       }
     }
     // Add flyout to DOM.
     const parentNode = this.workspace_.getParentSvg().parentNode;
-    if (!parentNode || !this.flyout_) return;
-    parentNode.appendChild(this.flyout_.createDom(Blockly.utils.Svg.SVG));
+    parentNode?.appendChild(this.flyout_?.createDom(Blockly.utils.Svg.SVG));
     this.flyout_.init(this.workspace_);
   }
 
@@ -689,7 +692,7 @@ export class Backpack
       return;
     }
     const jsons = this.contents_.map((text) => JSON.parse(text));
-    if (this.flyout_) this.flyout_.show(jsons);
+    this.flyout_?.show(jsons);
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -711,7 +714,7 @@ export class Backpack
       return;
     }
     const json = this.contents_.map((text) => JSON.parse(text));
-    if (this.flyout_) this.flyout_.show(json);
+    this.flyout_?.show(json);
   }
 
   /**
@@ -721,7 +724,7 @@ export class Backpack
     if (!this.isOpen()) {
       return;
     }
-    if (this.flyout_) this.flyout_.hide();
+    this.flyout_?.hide();
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
     /* eslint-disable @typescript-eslint/no-explicit-any */

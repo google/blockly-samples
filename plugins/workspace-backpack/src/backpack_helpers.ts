@@ -61,20 +61,19 @@ function registerRemoveFromBackpack() {
   const removeFromBackpack = {
     displayText: Blockly.Msg['REMOVE_FROM_BACKPACK'],
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
-      if (scope.block) {
-        const ws = scope.block.workspace;
-        if (ws.isFlyout && ws.targetWorkspace) {
-          const backpack = ws.targetWorkspace
-            .getComponentManager()
-            .getComponent('backpack') as Backpack;
-          const backpackFlyout = backpack && backpack.getFlyout();
-          if (
-            backpack &&
-            backpackFlyout &&
-            backpackFlyout.getWorkspace().id === ws.id
-          ) {
-            return 'enabled';
-          }
+      if (!scope.block) return 'hidden';
+      const ws = scope.block.workspace;
+      if (ws.isFlyout && ws.targetWorkspace) {
+        const backpack = ws.targetWorkspace
+          .getComponentManager()
+          .getComponent('backpack') as Backpack;
+        const backpackFlyout = backpack && backpack.getFlyout();
+        if (
+          backpack &&
+          backpackFlyout &&
+          backpackFlyout.getWorkspace().id === ws.id
+        ) {
+          return 'enabled';
         }
       }
       return 'hidden';
@@ -116,18 +115,17 @@ function registerCopyToBackpack(disablePreconditionContainsCheck: boolean) {
       return `${Blockly.Msg['COPY_TO_BACKPACK']} (${backpackCount})`;
     },
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
-      if (scope.block) {
-        const ws = scope.block.workspace;
-        if (!ws.isFlyout) {
-          const backpack = ws
-            .getComponentManager()
-            .getComponent('backpack') as Backpack;
-          if (backpack) {
-            if (disablePreconditionContainsCheck) {
-              return 'enabled';
-            }
-            return backpack.containsBlock(scope.block) ? 'disabled' : 'enabled';
+      if (!scope.block) return 'hidden';
+      const ws = scope.block.workspace;
+      if (!ws.isFlyout) {
+        const backpack = ws
+          .getComponentManager()
+          .getComponent('backpack') as Backpack;
+        if (backpack) {
+          if (disablePreconditionContainsCheck) {
+            return 'enabled';
           }
+          return backpack.containsBlock(scope.block) ? 'disabled' : 'enabled';
         }
       }
       return 'hidden';
