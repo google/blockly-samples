@@ -27,10 +27,10 @@ const borderRadius = 6;
  * A class that highlights the user's viewport on the minimap.
  */
 export class FocusRegion {
-  private onChangeWrapper: ((e: Blockly.Events.Abstract) => void) | null;
-  private svgGroup: SVGElement | null;
-  private rect: SVGElement | null;
-  private background: SVGElement | null;
+  private onChangeWrapper: (e: Blockly.Events.Abstract) => void;
+  private svgGroup: SVGElement | null = null;
+  private rect: SVGElement | null = null;
+  private background: SVGElement | null = null;
   private id: string;
   private initialized = false;
 
@@ -45,10 +45,7 @@ export class FocusRegion {
     private minimapWorkspace: Blockly.WorkspaceSvg,
   ) {
     this.id = String(Math.random()).substring(2);
-    this.onChangeWrapper = (e: Blockly.Events.Abstract) => {}; 
-    this.svgGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    this.rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    this.background = document.createElementNS('http://www.w3.org/2000/svg', 'rect'); 
+    this.onChangeWrapper = this.onChange.bind(this); 
   }
 
   /**
@@ -133,7 +130,7 @@ export class FocusRegion {
   dispose() {
     if (this.onChangeWrapper) {
       this.primaryWorkspace.removeChangeListener(this.onChangeWrapper);
-      this.onChangeWrapper = null;
+      this.onChangeWrapper = () => null;
     }
     if (this.svgGroup) {
       Blockly.utils.dom.removeNode(this.svgGroup);
@@ -191,9 +188,13 @@ export class FocusRegion {
     top += (minimapSvg.height - minimapContent.height) / 2;
 
     // Set the svg attributes.
-    this.rect?.setAttribute('transform', `translate(${left},${top})`);
-    this.rect?.setAttribute('width', width.toString());
-    this.rect?.setAttribute('height', height.toString());
+    if (!this.rect) {
+      throw new Error('The focus region must be initialized (`init`) before calling `update`');
+    } else {
+      this.rect.setAttribute('transform', `translate(${left},${top})`);
+      this.rect.setAttribute('width', width.toString());
+      this.rect.setAttribute('height', height.toString());
+    }
   }
 
   /**

@@ -46,7 +46,6 @@ export class Minimap {
     this.primaryWorkspace = workspace;
     this.minimapWorkspace = new Blockly.WorkspaceSvg(new Blockly.Options({}));
     this.focusRegion = new FocusRegion(this.primaryWorkspace, this.minimapWorkspace);
-    this.minimapWrapper = null;
   }
 
   /**
@@ -63,60 +62,60 @@ export class Minimap {
       this.primaryWorkspace.getInjectionDiv().parentNode;
     primaryInjectParentDiv?.appendChild(this.minimapWrapper);
 
-    // Inject the minimap workspace.
-    this.minimapWorkspace = Blockly.inject(this.minimapWrapper.id, {
-      // Inherit the layout of the primary workspace.
-      rtl: this.primaryWorkspace.RTL,
-      // Include the scrollbars so that internal scrolling is enabled and
-      // remove direct interaction with the minimap workspace.
-      move: {
-        scrollbars: true,
-        drag: false,
-        wheel: false,
-      },
-      // Remove the scale bounds of the minimap so that it can
-      // correctly zoomToFit.
-      zoom: {
-        maxScale: Infinity,
-        minScale: 0,
-      },
-      readOnly: true,
-      theme: this.primaryWorkspace.getTheme(),
-      renderer: this.primaryWorkspace.options.renderer,
-    });
-
-    this.minimapWorkspace.scrollbar?.setContainerVisible(false);
-    this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
-    window.addEventListener('resize', () => {
-      this.minimapWorkspace.zoomToFit();
-    });
-
-    // The mouseup binds to the parent container div instead of the minimap
-    // because if a drag begins on the minimap and ends outside of it the
-    // mousemove should still unbind.
-    this.onMouseDownWrapper = Blockly.browserEvents.bind(
-      this.minimapWorkspace.svgGroup_,
-      'mousedown',
-      this,
-      this.onClickDown,
-    );
-    if(primaryInjectParentDiv === null) {
-      throw new Error("primaryInjectParentDiv is null");
+    if (!primaryInjectParentDiv) {
+      throw new Error('The workspace must be injected into the page before the minimap can be initalized');
     } else {
+      // Inject the minimap workspace.
+      this.minimapWorkspace = Blockly.inject(this.minimapWrapper.id, {
+        // Inherit the layout of the primary workspace.
+        rtl: this.primaryWorkspace.RTL,
+        // Include the scrollbars so that internal scrolling is enabled and
+        // remove direct interaction with the minimap workspace.
+        move: {
+          scrollbars: true,
+          drag: false,
+          wheel: false,
+        },
+        // Remove the scale bounds of the minimap so that it can
+        // correctly zoomToFit.
+        zoom: {
+          maxScale: Infinity,
+          minScale: 0,
+        },
+        readOnly: true,
+        theme: this.primaryWorkspace.getTheme(),
+        renderer: this.primaryWorkspace.options.renderer,
+      });
+
+      this.minimapWorkspace.scrollbar?.setContainerVisible(false);
+      this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
+      window.addEventListener('resize', () => {
+        this.minimapWorkspace.zoomToFit();
+      });
+
+      // The mouseup binds to the parent container div instead of the minimap
+      // because if a drag begins on the minimap and ends outside of it the
+      // mousemove should still unbind.
+      this.onMouseDownWrapper = Blockly.browserEvents.bind(
+        this.minimapWorkspace.svgGroup_,
+        'mousedown',
+        this,
+        this.onClickDown,
+      );
       this.onMouseUpWrapper = Blockly.browserEvents.bind(
         primaryInjectParentDiv,
         'mouseup',
         this,
         this.onClickUp,
       );
-    }
 
-    // Initializes the focus region.
-    this.focusRegion = new FocusRegion(
-      this.primaryWorkspace,
-      this.minimapWorkspace,
-    );
-    this.enableFocusRegion();
+      // Initializes the focus region.
+      this.focusRegion = new FocusRegion(
+        this.primaryWorkspace,
+        this.minimapWorkspace,
+      );
+      this.enableFocusRegion();
+    }
   }
 
   /**

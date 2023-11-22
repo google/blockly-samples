@@ -181,7 +181,7 @@ export class PositionedMinimap
     const injectDiv = this.minimapWorkspace.getInjectionDiv();
     if(injectDiv.parentElement === null) {
       return;
-    } else {
+    }
       const style = injectDiv.parentElement.style;
       style.zIndex = '2';
       style.position = 'absolute';
@@ -190,7 +190,6 @@ export class PositionedMinimap
       style.top = `${this.top}px`;
       style.left = `${this.left}px`;
       Blockly.svgResize(this.minimapWorkspace);
-    }
   }
 }
 
