@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.0](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.2.5...@blockly/workspace-backpack@5.3.0) (2023-11-23)
+
+
+### Features
+
+* enabled TS strict mode in workspace-backpack, resolved TS errors ([#2080](https://github.com/google/blockly-samples/issues/2080)) ([a9ac5cb](https://github.com/google/blockly-samples/commit/a9ac5cb292620932128299d91a148f1be1f5a8b7))
+
+
+
 ## [5.2.5](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.2.4...@blockly/workspace-backpack@5.2.5) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/workspace-backpack
