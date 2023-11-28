@@ -20,6 +20,7 @@ export class BlockSearcher {
    * scenes, it creates a workspace, loads the specified block types on it,
    * indexes their types and human-readable text, and cleans up after
    * itself.
+   *
    * @param blockTypes A list of block types to index.
    */
   indexBlocks(blockTypes: string[]) {
@@ -29,42 +30,54 @@ export class BlockSearcher {
       this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
+          this.indexDropdownOption(field, blockType);
           this.indexBlockText(field.getText(), blockType);
-          // Index the text of dropdown options.
-          // check if this is a dropdown
-          if (field instanceof Blockly.FieldDropdown) {
-            // get the options
-            const options = field.getOptions();
-            // iterate through the options
-            options.forEach((option) => {
-              // index the text of the option
-              // only add the option[0] if it is text
-              if (typeof option[0] === 'string') {
-                this.indexBlockText(option[0], blockType);
-              }
-            });
-          }
         });
       });
     });
   }
 
   /**
+   * Check if the field is a dropdown, and index every text in the option
+   *
+   * @param field We need to check the type of field
+   * @param blockType The block type to associate the trigrams with.
+   */
+  private indexDropdownOption(field: Blockly.Field, blockType: string) {
+    if (field instanceof Blockly.FieldDropdown) {
+      field.getOptions(true).forEach((option) => {
+        if (typeof option[0] === 'string') {
+          this.indexBlockText(option[0], blockType);
+        } else if ('alt' in option[0]) {
+          this.indexBlockText(option[0].alt, blockType);
+        }
+      });
+    }
+  }
+
+  /**
    * Filters the available blocks based on the current query string.
+   *
    * @param query The text to use to match blocks against.
    * @returns A list of block types matching the query.
    */
   blockTypesMatching(query: string): string[] {
-    return [...this.generateTrigrams(query).map((trigram) => {
-      return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-    }).reduce((matches, current) => {
-      return this.getIntersection(matches, current);
-    }).values()];
+    return [
+      ...this.generateTrigrams(query)
+        .map((trigram) => {
+          return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+        })
+        .reduce((matches, current) => {
+          return this.getIntersection(matches, current);
+        })
+        .values(),
+    ];
   }
 
   /**
    * Generates trigrams for the given text and associates them with the given
    * block type.
+   *
    * @param text The text to generate trigrams of.
    * @param blockType The block type to associate the trigrams with.
    */
@@ -78,6 +91,7 @@ export class BlockSearcher {
 
   /**
    * Generates a list of trigrams for a given string.
+   *
    * @param input The string to generate trigrams of.
    * @returns A list of trigrams of the given string.
    */
@@ -96,6 +110,7 @@ export class BlockSearcher {
 
   /**
    * Returns the intersection of two sets.
+   *
    * @param a The first set.
    * @param b The second set.
    * @returns The intersection of the two sets.
