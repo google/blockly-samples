@@ -161,45 +161,41 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.flyoutItems_ = query ?
         this.blockSearcher.blockTypesMatching(query).map(
             (blockType) => {
-              // check the block if it has dropdowns
-              // get the block
-              const block = this.workspace_.newBlock(blockType);
-              // get the inputs
+
+              // create a new workspace not to disturb the current workspace
+              // as creation of a block may trigger other changes as adding variables
+              const options = {};
+              const workspace = new Blockly.WorkspaceSvg(
+                  new Blockly.Options(options));
+              const block = workspace.newBlock(blockType);
               const inputs = block.inputList;
-              // iterate through the inputs
-              for (let input of inputs) {
-                // get the fields
+
+              for (const input of inputs) {
                 const fields = input.fieldRow;
-                // iterate through the fields
-                for (let field of fields) {
-                  // check if the field is a dropdown
+                for (const field of fields) {
                   if (field instanceof Blockly.FieldDropdown) {
-                    // get the options
                     const options = field.getOptions();
-                    // iterate through the options
-                    for (let option of options) {
+                    for (const option of options) {
                       // check if the query is in the option
                       // make sure the option is text
-                      if (typeof option[0] === 'string' && 
-                           option[0].toLowerCase().includes(query.toLowerCase())) {
-                        
-                        let fields = {}
+                      if (typeof option[0] === 'string' &&
+                           option[0].toLowerCase().includes(
+                            query.toLowerCase())) {
+                        const fields = {}
                         fields[field.name] = option[1]
                         return {
                           kind: 'block',
                           type: blockType,
                           fields: fields
                         };
-                      }
+                      };
                     };
-                  }
-                }
-              }
-
+                  };
+                };
+              };
               return {
                 kind: 'block',
                 type: blockType,
-                
               };
             }) : [];
 
