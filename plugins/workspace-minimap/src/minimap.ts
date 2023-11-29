@@ -30,12 +30,12 @@ const blockEvents = new Set([
  */
 export class Minimap {
   protected primaryWorkspace: Blockly.WorkspaceSvg;
-  protected minimapWorkspace: Blockly.WorkspaceSvg;
-  protected focusRegion: FocusRegion;
-  protected onMouseMoveWrapper: Blockly.browserEvents.Data;
-  protected onMouseDownWrapper: Blockly.browserEvents.Data;
-  protected onMouseUpWrapper: Blockly.browserEvents.Data;
-  protected minimapWrapper: HTMLDivElement;
+  protected minimapWorkspace: Blockly.WorkspaceSvg | null = null;
+  protected focusRegion: FocusRegion | null = null;
+  protected onMouseMoveWrapper: Blockly.browserEvents.Data | null = null;
+  protected onMouseDownWrapper: Blockly.browserEvents.Data | null = null;
+  protected onMouseUpWrapper: Blockly.browserEvents.Data | null = null;
+  protected minimapWrapper: HTMLDivElement | null = null;
 
   /**
    * Constructor for a minimap.
@@ -50,15 +50,22 @@ export class Minimap {
    * Initialize.
    */
   init(): void {
+    const primaryInjectParentDiv =
+      this.primaryWorkspace.getInjectionDiv().parentNode;
+
+    if (!primaryInjectParentDiv) {
+      throw new Error(
+        'The workspace must be injected into the page before the minimap can be initalized',
+      );
+    }
+
     // Create a wrapper div for the minimap injection.
     this.minimapWrapper = document.createElement('div');
     this.minimapWrapper.id = 'minimapWrapper' + this.primaryWorkspace.id;
     this.minimapWrapper.className = 'blockly-minimap';
 
     // Make the wrapper a sibling to the primary injection div.
-    const primaryInjectParentDiv =
-      this.primaryWorkspace.getInjectionDiv().parentNode;
-    primaryInjectParentDiv.appendChild(this.minimapWrapper);
+    primaryInjectParentDiv?.appendChild(this.minimapWrapper);
 
     // Inject the minimap workspace.
     this.minimapWorkspace = Blockly.inject(this.minimapWrapper.id, {
@@ -74,18 +81,20 @@ export class Minimap {
       // Remove the scale bounds of the minimap so that it can
       // correctly zoomToFit.
       zoom: {
-        maxScale: null,
-        minScale: null,
+        maxScale: Infinity,
+        minScale: 0,
       },
       readOnly: true,
       theme: this.primaryWorkspace.getTheme(),
       renderer: this.primaryWorkspace.options.renderer,
     });
 
-    this.minimapWorkspace.scrollbar.setContainerVisible(false);
+    this.minimapWorkspace.scrollbar?.setContainerVisible(false);
     this.primaryWorkspace.addChangeListener((e) => void this.mirror(e));
     window.addEventListener('resize', () => {
-      this.minimapWorkspace.zoomToFit();
+      if (this.minimapWorkspace) {
+        this.minimapWorkspace.zoomToFit();
+      }
     });
 
     // The mouseup binds to the parent container div instead of the minimap
@@ -121,7 +130,9 @@ export class Minimap {
     if (this.isFocusEnabled()) {
       this.disableFocusRegion();
     }
-    this.minimapWorkspace.dispose();
+    if (this.minimapWorkspace) {
+      this.minimapWorkspace.dispose();
+    }
     Blockly.utils.dom.removeNode(this.minimapWrapper);
     if (this.onMouseMoveWrapper) {
       Blockly.browserEvents.unbind(this.onMouseMoveWrapper);
@@ -153,13 +164,17 @@ export class Minimap {
     }
     // Run the event in the minimap.
     const json = event.toJson();
-    const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
-    duplicate.run(true);
+    if (this.minimapWorkspace) {
+      const duplicate = Blockly.Events.fromJson(json, this.minimapWorkspace);
+      duplicate.run(true);
+    }
 
     // Resize and center the minimap.
     // We need to wait for the event to finish rendering to do the zoom.
     Blockly.renderManagement.finishQueuedRenders().then(() => {
-      this.minimapWorkspace.zoomToFit();
+      if (this.minimapWorkspace) {
+        this.minimapWorkspace.zoomToFit();
+      }
     });
   }
 
@@ -205,13 +220,19 @@ export class Minimap {
    * @param event The minimap browser event.
    */
   private primaryScroll(event: PointerEvent): void {
-    const [x, y] = Minimap.minimapToPrimaryCoords(
-      this.primaryWorkspace.getMetrics(),
-      this.minimapWorkspace.getMetrics(),
-      event.offsetX,
-      event.offsetY,
-    );
-    this.primaryWorkspace.scroll(x, y);
+    const primaryMetrics = this.primaryWorkspace.getMetrics();
+    if (this.minimapWorkspace) {
+      const minimapMetrics = this.minimapWorkspace.getMetrics();
+      if (primaryMetrics && minimapMetrics) {
+        const [x, y] = Minimap.minimapToPrimaryCoords(
+          primaryMetrics,
+          minimapMetrics,
+          event.offsetX,
+          event.offsetY,
+        );
+        this.primaryWorkspace.scroll(x, y);
+      }
+    }
   }
 
   /**
@@ -220,13 +241,15 @@ export class Minimap {
    * @param event The minimap browser event.
    */
   private onClickDown(event: PointerEvent): void {
-    this.onMouseMoveWrapper = Blockly.browserEvents.bind(
-      this.minimapWorkspace.svgGroup_,
-      'mousemove',
-      this,
-      this.onMouseMove,
-    );
-    this.primaryScroll(event);
+    if (this.minimapWorkspace) {
+      this.onMouseMoveWrapper = Blockly.browserEvents.bind(
+        this.minimapWorkspace.svgGroup_,
+        'mousemove',
+        this,
+        this.onMouseMove,
+      );
+      this.primaryScroll(event);
+    }
   }
 
   /**
@@ -252,14 +275,18 @@ export class Minimap {
    * Enables the focus region; A highlight of the viewport in the minimap.
    */
   enableFocusRegion(): void {
-    this.focusRegion.init();
+    if (this.focusRegion) {
+      this.focusRegion.init();
+    }
   }
 
   /**
    * Disables the focus region.
    */
   disableFocusRegion(): void {
-    this.focusRegion.dispose();
+    if (this.focusRegion) {
+      this.focusRegion.dispose();
+    }
   }
 
   /**
@@ -268,6 +295,9 @@ export class Minimap {
    * @returns True if the focus region is enabled.
    */
   isFocusEnabled(): boolean {
-    return this.focusRegion.isEnabled();
+    if (this.focusRegion) {
+      return this.focusRegion.isEnabled();
+    }
+    return false;
   }
 }
