@@ -36,7 +36,6 @@ function createWorkspace(
   return workspace;
 }
 
-
 document.addEventListener('DOMContentLoaded', function () {
   const rootElement = document.getElementById('root');
   if (rootElement === null) {
@@ -47,4 +46,3 @@ document.addEventListener('DOMContentLoaded', function () {
     toolbox: toolboxCategories,
   });
 });
-

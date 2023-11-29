@@ -54,9 +54,11 @@ export class Minimap {
       this.primaryWorkspace.getInjectionDiv().parentNode;
 
     if (!primaryInjectParentDiv) {
-      throw new Error('The workspace must be injected into the page before the minimap can be initalized');
+      throw new Error(
+        'The workspace must be injected into the page before the minimap can be initalized',
+      );
     }
-    
+
     // Create a wrapper div for the minimap injection.
     this.minimapWrapper = document.createElement('div');
     this.minimapWrapper.id = 'minimapWrapper' + this.primaryWorkspace.id;
@@ -233,7 +235,6 @@ export class Minimap {
     }
   }
 
-
   /**
    * Updates the primary workspace viewport based on a click in the minimap.
    *
@@ -294,7 +295,7 @@ export class Minimap {
    * @returns True if the focus region is enabled.
    */
   isFocusEnabled(): boolean {
-    if(this.focusRegion) {
+    if (this.focusRegion) {
       return this.focusRegion.isEnabled();
     }
     return false;

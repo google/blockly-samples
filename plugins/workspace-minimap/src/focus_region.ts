@@ -45,7 +45,7 @@ export class FocusRegion {
     private minimapWorkspace: Blockly.WorkspaceSvg,
   ) {
     this.id = String(Math.random()).substring(2);
-    this.onChangeWrapper = this.onChange.bind(this); 
+    this.onChangeWrapper = this.onChange.bind(this);
   }
 
   /**
@@ -189,7 +189,9 @@ export class FocusRegion {
 
     // Set the svg attributes.
     if (!this.rect) {
-      throw new Error('The focus region must be initialized (`init`) before calling `update`');
+      throw new Error(
+        'The focus region must be initialized (`init`) before calling `update`',
+      );
     } else {
       this.rect.setAttribute('transform', `translate(${left},${top})`);
       this.rect.setAttribute('width', width.toString());
