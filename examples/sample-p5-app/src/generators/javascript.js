@@ -16,6 +16,7 @@ forBlock['text_print'] = function(block, generator) {
       Order.NONE) || '\'\'';
   return `sketch.text(${msg}, 20, 20);\n`;
 };
+
 forBlock['p5_setup'] = function(block, generator) {
   const statements = generator.statementToCode(block, 'STATEMENTS');
   const code = `sketch.setup = function() {
@@ -39,7 +40,6 @@ forBlock['p5_canvas'] = function(block) {
 forBlock['p5_background_color'] = function(block, generator) {
   const color = generator.valueToCode(block, 'COLOR',
       Order.ATOMIC) || `'#fff'`;
-  // TODO: Assemble JavaScript into code variable.
   const code = `sketch.background(${color});\n`;
   return code;
 };
@@ -47,7 +47,6 @@ forBlock['p5_background_color'] = function(block, generator) {
 forBlock['p5_stroke'] = function(block, generator) {
   const color = generator.valueToCode(block, 'COLOR',
       Order.ATOMIC) || `'#fff'`;
-  // TODO: Assemble JavaScript into code variable.
   const code = `sketch.stroke(${color});\n`;
   return code;
 };
@@ -55,7 +54,6 @@ forBlock['p5_stroke'] = function(block, generator) {
 forBlock['p5_fill'] = function(block, generator) {
   const color = generator.valueToCode(block, 'COLOR',
       Order.ATOMIC) || `'#fff'`;
-  // TODO: Assemble JavaScript into code variable.
   const code = `sketch.fill(${color});\n`;
   return code;
 };

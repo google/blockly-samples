@@ -17,6 +17,7 @@ import './index.css';
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
 Object.assign(javascriptGenerator.forBlock, forBlock);
+javascriptGenerator.addReservedWords('sketch');
 
 // Set up UI elements
 const codeDiv = document.getElementById('generatedCode').firstChild;
