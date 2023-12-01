@@ -13,7 +13,7 @@ to include and extend the [Blockly](http://github.com/google/blockly) library.
 - [``fixed-demo``](fixed-demo/): A demo injecting Blockly into a page as a fixed element.
 - [``generator-demo``](generator-demo/): A demo of generating code from blocks and running it in a sandboxed JavaScript interpreter
 - [``graph-demo``](graph-demo/): A demo of giving instant feedback as blocks are changed.
-- [``headless-demo``](headless-demo/): A demo of generating Python code from XML with no graphics.
+- [``headless-demo``](headless-demo/): A demo of generating Python code from JSON with no graphics.
 - [``interpreter-demo``](interpreter-demo/): A demo of executing code step-by-step with a sandboxed JavaScript interpreter.
 - [``max-blocks-demo``](max-blocks-demo/): A demo limiting the total number of blocks allowed for academic exercises.
 - [``mirror-demo``](mirror-demo/): A demo using two Blockly instances connected as leader-follower.
