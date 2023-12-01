@@ -595,11 +595,7 @@ function createIndexPage(isLocal) {
 </html>
 `;
 
-  let contents = injectHeader(
-    indexBase,
-    'Blockly Plugins &amp; Demos',
-    isLocal
-  );
+  let contents = injectHeader(indexBase, 'Blockly Plugins & Demos', isLocal);
   contents = injectFooter(contents);
   const outputPath = path.join('gh-pages', 'index.html');
   fs.writeFileSync(outputPath, contents, 'utf-8');
