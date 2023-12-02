@@ -10,10 +10,9 @@
 
 import * as Blockly from 'blockly';
 import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {Minimap, PositionedMinimap} from '../src/index';
+import {PositionedMinimap} from '../src/index';
 
-let minimap = null;
-let workspace = null;
+let minimap: PositionedMinimap | null = null;
 
 /**
  * Create a workspace.
@@ -30,7 +29,7 @@ function createWorkspace(
   if (minimap) {
     minimap.dispose();
   }
-  workspace = Blockly.inject(blocklyDiv, options);
+  const workspace = Blockly.inject(blocklyDiv, options);
   minimap = new PositionedMinimap(workspace);
   minimap.init();
 
@@ -38,7 +37,12 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  createPlayground(document.getElementById('root'), createWorkspace as any, {
+  const rootElement = document.getElementById('root');
+  if (rootElement === null) {
+    console.error("No element with id 'root' found");
+    return;
+  }
+  createPlayground(rootElement, createWorkspace, {
     toolbox: toolboxCategories,
   });
 });

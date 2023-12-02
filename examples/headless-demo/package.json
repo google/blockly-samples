@@ -4,7 +4,7 @@
   "private": true,
   "blocklyDemoConfig": {
     "title": "Headless",
-    "description": "Generate code from XML without graphics.",
+    "description": "Generate code from JSON without graphics.",
     "files": [
       "index.html",
       "./node_modules/blockly/*_compressed.js",

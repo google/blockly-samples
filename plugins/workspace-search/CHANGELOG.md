@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@8.0.9...@blockly/plugin-workspace-search@8.1.0) (2023-11-23)
+
+
+### Features
+
+* Enable strict mode for workspace search [#2032](https://github.com/google/blockly-samples/issues/2032) ([#2079](https://github.com/google/blockly-samples/issues/2079)) ([2f42766](https://github.com/google/blockly-samples/commit/2f42766400eda5fe22bf5f0d1f9252f45fadda2e))
+
+
+
 ## [8.0.9](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@8.0.8...@blockly/plugin-workspace-search@8.0.9) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/plugin-workspace-search

@@ -125,7 +125,7 @@ function injectPluginNavBar(inputString, packageJson, pluginDir, isLocal) {
       <div class="subtitle">${packageJson.description}</div>
     </div>
     ${packageJson.version}
-    
+
     <a href="${codeLink}" class="button" target="_blank">View code</a>
     <a href="${npmLink}" class="button" target="_blank">View on npm</a>
   </nav>
@@ -387,7 +387,7 @@ function injectExampleNavBar(inputString, demoConfig, pageRoot, isLocal) {
       <div class="title">${demoConfig.title}</div>
       ${descriptionString}
     </div>
-    
+
     <a href="${codeLink}" class="button" target="_blank">View code</a>
   </nav>
   <!-- END NAV BAR -->`;
@@ -445,7 +445,7 @@ function createExamplePage(pageRoot, pagePath, demoConfig, isLocal) {
  * @param {boolean} isLocal True if building for a local test. False if
  *     building for gh-pages.
  * @param {Function} done Completed callback.
- * @returns {Function} Gulp task.
+ * @returns {Function | undefined} Gulp task.
  */
 function prepareExample(exampleDir, isLocal, done) {
   const baseDir = 'examples';
@@ -578,7 +578,7 @@ function createIndexPage(isLocal) {
     <div class="drop-shadow"></div>
     <header id="banner">
       <div class="site-width">
-        <h1 class="banner-title">Blockly Plugins & Demos</h1>
+        <h1 class="banner-title">Blockly Plugins &amp; Demos</h1>
         <p>
           Explore reusable Blockly plugins or view demos of how to use different Blockly features in your app or service.
         </p>
@@ -595,7 +595,8 @@ function createIndexPage(isLocal) {
 </html>
 `;
 
-  let contents = injectHeader(indexBase, 'Blockly Plugins & Demos', isLocal);
+  const title = 'Blockly Plugins &amp; Demos';
+  let contents = injectHeader(indexBase, title, isLocal);
   contents = injectFooter(contents);
   const outputPath = path.join('gh-pages', 'index.html');
   fs.writeFileSync(outputPath, contents, 'utf-8');

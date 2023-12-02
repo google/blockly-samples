@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.8](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.7...@blockly/workspace-minimap@0.1.8) (2023-11-30)
+
+**Note:** Version bump only for package @blockly/workspace-minimap
+
+
+
+
+
+## [0.1.7](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.6...@blockly/workspace-minimap@0.1.7) (2023-11-16)
+
+
+### Bug Fixes
+
+* resolved 15 ESLint warnings ([#2065](https://github.com/google/blockly-samples/issues/2065)) ([2436337](https://github.com/google/blockly-samples/commit/243633746542bb1518fe2893c0421a5a6f79fd32))
+
+
+
 ## [0.1.6](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.5...@blockly/workspace-minimap@0.1.6) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/workspace-minimap

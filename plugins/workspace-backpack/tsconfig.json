@@ -8,7 +8,7 @@
     "module": "es2015",
     "moduleResolution": "bundler",
     "target": "es6",
-    "strict": false,
+    "strict": true,
     // Point at the local Blockly. See #1934. Remove if we add hoisting.
     "paths": {
       "blockly/*": ["node_modules/blockly/*"]

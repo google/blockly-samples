@@ -371,7 +371,7 @@ export function createPlayground(
 
           updateEditor();
           workspace.addChangeListener((e) => {
-            if (e.type !== 'ui') {
+            if (e.type !== 'ui' && e.type !== 'viewport_change') {
               updateEditor();
             }
           });
