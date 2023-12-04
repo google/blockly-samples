@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 // Base config that applies to either development or production mode.
 const config = {
@@ -29,6 +30,10 @@ const config = {
     // created above added in a script tag.
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+    }),
+    // Insert the AI_TOKEN from your local environment.
+    new webpack.DefinePlugin({
+      AI_TOKEN: JSON.stringify(process.env.AI_TOKEN),
     }),
   ],
 };
