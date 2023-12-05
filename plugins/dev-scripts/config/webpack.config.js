@@ -75,7 +75,7 @@ module.exports = (env) => {
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     output: {
       path: isProduction ? resolveApp('dist') : resolveApp('build'),
-      publicPath: isProduction ? '/dist/' : '/build/',
+      publicPath: isProduction ? 'auto' : '/build/',
       filename: outputFile,
       library: {
         type: 'umd',

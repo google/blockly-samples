@@ -34,7 +34,7 @@ Blockly.defineBlocksWithJsonArray([
     'args0': [
       {
         'type': 'field_image',
-        'src': 'media/30px.png',
+        'src': new URL('../../media/30px.png', import.meta.url).toString(),
         'width': 50,
         'height': 50,
         'alt': '*',
@@ -48,7 +48,7 @@ Blockly.defineBlocksWithJsonArray([
     'args0': [
       {
         'type': 'field_image',
-        'src': 'media/200px.png',
+        'src': new URL('../../media/200px.png', import.meta.url).toString(),
         'width': 50,
         'height': 50,
         'alt': '*',
@@ -62,7 +62,7 @@ Blockly.defineBlocksWithJsonArray([
     'args0': [
       {
         'type': 'field_image',
-        'src': 'media/arrow.png',
+        'src': new URL('../../media/arrow.png', import.meta.url).toString(),
         'width': 50,
         'height': 50,
         'alt': '*',
