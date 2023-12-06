@@ -41,10 +41,10 @@ suite('Shortcut Tests', function() {
 
   teardown(function() {
     window.cancelAnimationFrame = undefined;
-    this.jsdomCleanup();
     this.controller.dispose();
-    delete Blockly.Blocks['basic_block'];
     this.workspace.dispose();
+    this.jsdomCleanup();
+    delete Blockly.Blocks['basic_block'];
   });
 
   suite('Deleting blocks', function() {
