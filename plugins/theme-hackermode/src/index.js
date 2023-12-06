@@ -1,3 +1,4 @@
+private:true 
 /**
  * @license
  * Copyright 2023 Google LLC
@@ -6,10 +7,11 @@
 
 // TODO: Edit theme overview.
 /**
- * @fileoverview Theme overview.
+ * @fileoverview Hacker Mode theme.
+ * Black background and blocks with lime green text to simulate a hacker screen. 
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
   'colour_blocks': {
@@ -91,7 +93,7 @@ const categoryStyles = {
 };
 
 // TODO: Edit theme name.
-export default Blockly.Theme.defineTheme('THEME_NAME', {
+export default Blockly.Theme.defineTheme('hackermode', {
   'base': Blockly.Themes.Classic,
   'blockStyles': defaultBlockStyles,
   'categoryStyles': categoryStyles,
