@@ -37,7 +37,7 @@ const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
   startHats: null,
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
   // Insert two new categories
   toolboxCategories['contents'].push({
     kind: 'category',
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   toolboxCategories['contents'].push({
     kind: 'category',
-    name: 'Recentlty Used',
+    name: 'Recently Used',
     custom: 'RECENTLY_USED',
     categorystyle: 'recently_used_category',
   });
@@ -55,9 +55,17 @@ document.addEventListener('DOMContentLoaded', function () {
     toolbox: toolboxCategories,
     theme: customTheme,
   };
-  createPlayground(
+  const playground = await createPlayground(
     document.getElementById('root'),
     createWorkspace,
     defaultOptions,
+  );
+  // Fire a FINISHED_LOADING event again after the playground loads.
+  // This may be fired if there is saved JSON in the advanced playground.
+  // But we need it to fire even if there's no saved JSON and therefore deserialization was never called.
+  Blockly.Events.fire(
+    new (Blockly.Events.get(Blockly.Events.FINISHED_LOADING))(
+      playground.getWorkspace(),
+    ),
   );
 });
