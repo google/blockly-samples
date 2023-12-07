@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@6.0.8...@blockly/block-plus-minus@7.0.0) (2023-12-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump min blockly version
+
+### Bug Fixes
+
+* bump min blockly version ([1dbf1b8](https://github.com/google/blockly-samples/commit/1dbf1b88ecaa85ddd447d7b120e3aac4c3a48f93))
+* text join block warning when using block-plus-minus plugin ([#2025](https://github.com/google/blockly-samples/issues/2025)) ([7b076df](https://github.com/google/blockly-samples/commit/7b076dfa0c9195a0687962679a6eb431875b37fa)), closes [#2022](https://github.com/google/blockly-samples/issues/2022) [#1877](https://github.com/google/blockly-samples/issues/1877) [#2022](https://github.com/google/blockly-samples/issues/2022)
+
+
+
 ## [6.0.8](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@6.0.7...@blockly/block-plus-minus@6.0.8) (2023-12-07)
 
 **Note:** Version bump only for package @blockly/block-plus-minus
