@@ -5,7 +5,7 @@ module.exports = {
   singleQuote: true,
   // Some properties must be quoted to preserve closure compiler behavior.
   // Don't ever change whether properties are quoted.
-  quoteProps: 'preserve',
+  quoteProps: 'consistent',
   // Don't add spaces around braces for object literals.
   bracketSpacing: false,
   // Put HTML tag closing brackets on same line as last attribute.

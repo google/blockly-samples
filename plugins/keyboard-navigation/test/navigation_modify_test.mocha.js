@@ -42,36 +42,36 @@ suite('Insert/Modify', function () {
   function defineTestBlocks() {
     Blockly.defineBlocksWithJsonArray([
       {
-        'type': 'stack_block',
-        'message0': '',
-        'previousStatement': null,
-        'nextStatement': null,
+        type: 'stack_block',
+        message0: '',
+        previousStatement: null,
+        nextStatement: null,
       },
       {
-        'type': 'row_block',
-        'message0': '%1',
-        'args0': [
+        type: 'row_block',
+        message0: '%1',
+        args0: [
           {
-            'type': 'input_value',
-            'name': 'INPUT',
+            type: 'input_value',
+            name: 'INPUT',
           },
         ],
-        'output': null,
+        output: null,
       },
       {
-        'type': 'statement_block',
-        'message0': '%1',
-        'args0': [
+        type: 'statement_block',
+        message0: '%1',
+        args0: [
           {
-            'type': 'input_statement',
-            'name': 'NAME',
+            type: 'input_statement',
+            name: 'NAME',
           },
         ],
-        'previousStatement': null,
-        'nextStatement': null,
-        'colour': 230,
-        'tooltip': '',
-        'helpUrl': '',
+        previousStatement: null,
+        nextStatement: null,
+        colour: 230,
+        tooltip: '',
+        helpUrl: '',
       },
     ]);
   }

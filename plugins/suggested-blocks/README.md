@@ -23,26 +23,26 @@ import * as Blockly from 'blockly';
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
 const toolbox = {
-  'kind': 'categoryToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'category',
-      'name': 'My Category',
-      'contents': [
+      kind: 'category',
+      name: 'My Category',
+      contents: [
         /* your category contents */
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Frequently Used',
-      'custom': 'MOST_USED',
-      'categorystyle': 'frequently_used_category',
+      kind: 'category',
+      name: 'Frequently Used',
+      custom: 'MOST_USED',
+      categorystyle: 'frequently_used_category',
     },
     {
-      'kind': 'category',
-      'name': 'Recently Used',
-      'custom': 'RECENTLY_USED',
-      'categorystyle': 'recently_used_category',
+      kind: 'category',
+      name: 'Recently Used',
+      custom: 'RECENTLY_USED',
+      categorystyle: 'recently_used_category',
     },
   ],
 };

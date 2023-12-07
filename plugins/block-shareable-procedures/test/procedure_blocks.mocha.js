@@ -51,15 +51,15 @@ suite('Procedures', function () {
 
     Blockly.defineBlocksWithJsonArray([
       {
-        'type': 'row_block',
-        'message0': '%1',
-        'args0': [
+        type: 'row_block',
+        message0: '%1',
+        args0: [
           {
-            'type': 'input_value',
-            'name': 'INPUT',
+            type: 'input_value',
+            name: 'INPUT',
           },
         ],
-        'output': null,
+        output: null,
       },
     ]);
 
@@ -68,7 +68,7 @@ suite('Procedures', function () {
       .callsFake(() => {
         return {
           measureText: function () {
-            return {'width': 0};
+            return {width: 0};
           },
         };
       });
@@ -1478,9 +1478,9 @@ suite('Procedures', function () {
           .add(new ObservableProcedureModel(this.workspace, 'do something'));
         Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_callnoreturn',
-            'extraState': {
-              'name': 'do something',
+            type: 'procedures_callnoreturn',
+            extraState: {
+              name: 'do something',
             },
           },
           this.workspace,
@@ -1497,9 +1497,9 @@ suite('Procedures', function () {
       test('callers without defs create new defs', function () {
         const callBlock = Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_callreturn',
-            'extraState': {
-              'name': 'do something',
+            type: 'procedures_callreturn',
+            extraState: {
+              name: 'do something',
             },
           },
           this.workspace,
@@ -1517,7 +1517,7 @@ suite('Procedures', function () {
         // recordUndo must be true to trigger change listener.
         const callBlock = Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_callreturn',
+            type: 'procedures_callreturn',
           },
           this.workspace,
           {recordUndo: true},
@@ -1533,15 +1533,15 @@ suite('Procedures', function () {
       test('callers with missing args create new defs', function () {
         const defBlock = Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_defreturn',
-            'fields': {
-              'NAME': 'do something',
+            type: 'procedures_defreturn',
+            fields: {
+              NAME: 'do something',
             },
-            'extraState': {
-              'params': [
+            extraState: {
+              params: [
                 {
-                  'name': 'x',
-                  'id': 'arg',
+                  name: 'x',
+                  id: 'arg',
                 },
               ],
             },
@@ -1550,9 +1550,9 @@ suite('Procedures', function () {
         );
         const callBlock = Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_callreturn',
-            'extraState': {
-              'name': 'do something',
+            type: 'procedures_callreturn',
+            extraState: {
+              name: 'do something',
             },
           },
           this.workspace,
@@ -1566,15 +1566,15 @@ suite('Procedures', function () {
       test('callers with mismatched args create new defs', function () {
         const defBlock = Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_defreturn',
-            'fields': {
-              'NAME': 'do something',
+            type: 'procedures_defreturn',
+            fields: {
+              NAME: 'do something',
             },
-            'extraState': {
-              'params': [
+            extraState: {
+              params: [
                 {
-                  'name': 'x',
-                  'id': 'arg',
+                  name: 'x',
+                  id: 'arg',
                 },
               ],
             },
@@ -1583,10 +1583,10 @@ suite('Procedures', function () {
         );
         const callBlock = Blockly.serialization.blocks.append(
           {
-            'type': 'procedures_callreturn',
-            'extraState': {
-              'name': 'do something',
-              'params': ['y'],
+            type: 'procedures_callreturn',
+            extraState: {
+              name: 'do something',
+              params: ['y'],
             },
           },
           this.workspace,
@@ -1605,25 +1605,25 @@ suite('Procedures', function () {
       test('callers whose defs are deserialized later do not create defs', function () {
         Blockly.serialization.workspaces.load(
           {
-            'blocks': {
-              'languageVersion': 0,
-              'blocks': [
+            blocks: {
+              languageVersion: 0,
+              blocks: [
                 {
-                  'type': 'procedures_callreturn',
-                  'extraState': {
-                    'params': ['x'],
+                  type: 'procedures_callreturn',
+                  extraState: {
+                    params: ['x'],
                   },
                 },
                 {
-                  'type': 'procedures_defreturn',
-                  'fields': {
-                    'NAME': 'do something',
+                  type: 'procedures_defreturn',
+                  fields: {
+                    NAME: 'do something',
                   },
-                  'extraState': {
-                    'params': [
+                  extraState: {
+                    params: [
                       {
-                        'name': 'x',
-                        'id': 'arg',
+                        name: 'x',
+                        id: 'arg',
                       },
                     ],
                   },
@@ -1656,9 +1656,9 @@ suite('Procedures', function () {
     test('the context menu includes an option for creating the caller', function () {
       const def = Blockly.serialization.blocks.append(
         {
-          'type': 'procedures_defnoreturn',
-          'fields': {
-            'NAME': 'test name',
+          type: 'procedures_defnoreturn',
+          fields: {
+            NAME: 'test name',
           },
         },
         this.workspace,
@@ -1676,21 +1676,21 @@ suite('Procedures', function () {
     test('the context menu includes an option for each parameter', function () {
       const def = Blockly.serialization.blocks.append(
         {
-          'type': 'procedures_defnoreturn',
-          'fields': {
-            'NAME': 'test name',
+          type: 'procedures_defnoreturn',
+          fields: {
+            NAME: 'test name',
           },
-          'extraState': {
-            'params': [
+          extraState: {
+            params: [
               {
-                'name': 'testParam1',
-                'id': 'varId1',
-                'paramId': 'paramId1',
+                name: 'testParam1',
+                id: 'varId1',
+                paramId: 'paramId1',
               },
               {
-                'name': 'testParam2',
-                'id': 'varId2',
-                'paramId': 'paramId2',
+                name: 'testParam2',
+                id: 'varId2',
+                paramId: 'paramId2',
               },
             ],
           },
@@ -1718,13 +1718,13 @@ suite('Procedures', function () {
     suite('return types', function () {
       test('procedure defs without returns have null return types', function () {
         const json = {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'procedures_defnoreturn',
-                'fields': {
-                  'NAME': 'test name',
+                type: 'procedures_defnoreturn',
+                fields: {
+                  NAME: 'test name',
                 },
               },
             ],
@@ -1743,13 +1743,13 @@ suite('Procedures', function () {
 
       test('procedure defs with returns have array return types', function () {
         const json = {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'procedures_defreturn',
-                'fields': {
-                  'NAME': 'test name',
+                type: 'procedures_defreturn',
+                fields: {
+                  NAME: 'test name',
                 },
               },
             ],
@@ -1770,13 +1770,13 @@ suite('Procedures', function () {
     suite('json', function () {
       test('procedure names get deserialized', function () {
         const json = {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'procedures_defnoreturn',
-                'fields': {
-                  'NAME': 'test name',
+                type: 'procedures_defnoreturn',
+                fields: {
+                  NAME: 'test name',
                 },
               },
             ],
@@ -1797,23 +1797,23 @@ suite('Procedures', function () {
 
       test('procedure parameter names get deserialized', function () {
         const json = {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'procedures_defnoreturn',
-                'fields': {
-                  'NAME': 'test name',
+                type: 'procedures_defnoreturn',
+                fields: {
+                  NAME: 'test name',
                 },
-                'extraState': {
-                  'params': [
+                extraState: {
+                  params: [
                     {
-                      'id': 'test id 1',
-                      'name': 'test name 1',
+                      id: 'test id 1',
+                      name: 'test name 1',
                     },
                     {
-                      'id': 'test id 2',
-                      'name': 'test name 2',
+                      id: 'test id 2',
+                      name: 'test name 2',
                     },
                   ],
                 },
@@ -1842,29 +1842,29 @@ suite('Procedures', function () {
 
       test('procedure variables get matching IDs', function () {
         const json = {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'procedures_defnoreturn',
-                'extraState': {
-                  'params': [
+                type: 'procedures_defnoreturn',
+                extraState: {
+                  params: [
                     {
-                      'name': 'test param name',
-                      'id': 'test param id',
+                      name: 'test param name',
+                      id: 'test param id',
                     },
                   ],
                 },
-                'fields': {
-                  'NAME': 'test proc name',
+                fields: {
+                  NAME: 'test proc name',
                 },
               },
             ],
           },
-          'variables': [
+          variables: [
             {
-              'name': 'test param name',
-              'id': 'test param id',
+              name: 'test param name',
+              id: 'test param id',
             },
           ],
         };
@@ -1962,44 +1962,44 @@ suite('Procedures', function () {
     test('definitions with parameters are properly rendered', function () {
       Blockly.serialization.workspaces.load(
         {
-          'blocks': {
-            'languageVersion': 0,
-            'blocks': [
+          blocks: {
+            languageVersion: 0,
+            blocks: [
               {
-                'type': 'procedures_defnoreturn',
-                'extraState': {
-                  'procedureId': 'procId',
-                  'params': [
+                type: 'procedures_defnoreturn',
+                extraState: {
+                  procedureId: 'procId',
+                  params: [
                     {
-                      'name': 'x',
-                      'id': 'varId',
-                      'paramId': 'paramId',
+                      name: 'x',
+                      id: 'varId',
+                      paramId: 'paramId',
                     },
                   ],
                 },
-                'fields': {
-                  'NAME': 'do something',
+                fields: {
+                  NAME: 'do something',
                 },
               },
             ],
           },
-          'procedures': [
+          procedures: [
             {
-              'id': 'procId',
-              'name': 'do something',
-              'returnTypes': null,
-              'parameters': [
+              id: 'procId',
+              name: 'do something',
+              returnTypes: null,
+              parameters: [
                 {
-                  'id': 'paramId',
-                  'name': 'x',
+                  id: 'paramId',
+                  name: 'x',
                 },
               ],
             },
           ],
-          'variables': [
+          variables: [
             {
-              'name': 'x',
-              'id': 'varId',
+              name: 'x',
+              id: 'varId',
             },
           ],
         },
@@ -2019,35 +2019,35 @@ suite('Procedures', function () {
       function () {
         Blockly.serialization.workspaces.load(
           {
-            'blocks': {
-              'languageVersion': 0,
-              'blocks': [
+            blocks: {
+              languageVersion: 0,
+              blocks: [
                 {
-                  'type': 'procedures_defnoreturn',
-                  'extraState': {
-                    'procedureId': 'procId',
+                  type: 'procedures_defnoreturn',
+                  extraState: {
+                    procedureId: 'procId',
                   },
-                  'fields': {
-                    'NAME': 'do something',
+                  fields: {
+                    NAME: 'do something',
                   },
                 },
                 {
-                  'type': 'procedures_defnoreturn',
-                  'y': 10,
-                  'extraState': {
-                    'procedureId': 'procId',
+                  type: 'procedures_defnoreturn',
+                  y: 10,
+                  extraState: {
+                    procedureId: 'procId',
                   },
-                  'fields': {
-                    'NAME': 'do something',
+                  fields: {
+                    NAME: 'do something',
                   },
                 },
               ],
             },
-            'procedures': [
+            procedures: [
               {
-                'id': 'procId',
-                'name': 'do something',
-                'returnTypes': null,
+                id: 'procId',
+                name: 'do something',
+                returnTypes: null,
               },
             ],
           },
@@ -2297,17 +2297,17 @@ suite('Procedures', function () {
     {
       title: 'JSON - Minimal definition',
       json: {
-        'type': 'procedures_defnoreturn',
+        type: 'procedures_defnoreturn',
       },
       expectedJson: {
-        'type': 'procedures_defnoreturn',
-        'id': '1',
-        'fields': {
-          'NAME': 'unnamed',
+        type: 'procedures_defnoreturn',
+        id: '1',
+        fields: {
+          NAME: 'unnamed',
         },
-        'extraState': {
-          'procedureId': '1',
-          'fullSerialization': true,
+        extraState: {
+          procedureId: '1',
+          fullSerialization: true,
         },
       },
       assertBlockStructure: (block) => {
@@ -2317,20 +2317,20 @@ suite('Procedures', function () {
     {
       title: 'JSON - Common definition',
       json: {
-        'type': 'procedures_defnoreturn',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defnoreturn',
+        fields: {
+          NAME: 'do something',
         },
       },
       expectedJson: {
-        'type': 'procedures_defnoreturn',
-        'id': '1',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defnoreturn',
+        id: '1',
+        fields: {
+          NAME: 'do something',
         },
-        'extraState': {
-          'procedureId': '1',
-          'fullSerialization': true,
+        extraState: {
+          procedureId: '1',
+          fullSerialization: true,
         },
       },
       assertBlockStructure: (block) => {
@@ -2340,42 +2340,42 @@ suite('Procedures', function () {
     {
       title: 'JSON - With vars definition',
       json: {
-        'type': 'procedures_defnoreturn',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defnoreturn',
+        fields: {
+          NAME: 'do something',
         },
-        'extraState': {
-          'params': [
+        extraState: {
+          params: [
             {
-              'name': 'x',
-              'id': 'arg1',
+              name: 'x',
+              id: 'arg1',
             },
             {
-              'name': 'y',
-              'id': 'arg2',
+              name: 'y',
+              id: 'arg2',
             },
           ],
         },
       },
       expectedJson: {
-        'type': 'procedures_defnoreturn',
-        'id': '1',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defnoreturn',
+        id: '1',
+        fields: {
+          NAME: 'do something',
         },
-        'extraState': {
-          'procedureId': '1',
-          'fullSerialization': true,
-          'params': [
+        extraState: {
+          procedureId: '1',
+          fullSerialization: true,
+          params: [
             {
-              'name': 'x',
-              'id': 'arg1',
-              'paramId': '1',
+              name: 'x',
+              id: 'arg1',
+              paramId: '1',
             },
             {
-              'name': 'y',
-              'id': 'arg2',
-              'paramId': '1',
+              name: 'y',
+              id: 'arg2',
+              paramId: '1',
             },
           ],
         },
@@ -2387,33 +2387,33 @@ suite('Procedures', function () {
     {
       title: 'JSON - With pre-created vars definition',
       json: {
-        'type': 'procedures_defnoreturn',
-        'extraState': {
-          'params': [
+        type: 'procedures_defnoreturn',
+        extraState: {
+          params: [
             {
-              'name': 'preCreatedVar',
-              'id': 'preCreatedVarId',
+              name: 'preCreatedVar',
+              id: 'preCreatedVarId',
             },
           ],
         },
-        'fields': {
-          'NAME': 'do something',
+        fields: {
+          NAME: 'do something',
         },
       },
       expectedJson: {
-        'type': 'procedures_defnoreturn',
-        'id': '1',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defnoreturn',
+        id: '1',
+        fields: {
+          NAME: 'do something',
         },
-        'extraState': {
-          'procedureId': '1',
-          'fullSerialization': true,
-          'params': [
+        extraState: {
+          procedureId: '1',
+          fullSerialization: true,
+          params: [
             {
-              'name': 'preCreatedVar',
-              'id': 'preCreatedVarId',
-              'paramId': '1',
+              name: 'preCreatedVar',
+              id: 'preCreatedVarId',
+              paramId: '1',
             },
           ],
         },
@@ -2430,24 +2430,24 @@ suite('Procedures', function () {
     {
       title: 'JSON - No statements definition',
       json: {
-        'type': 'procedures_defreturn',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defreturn',
+        fields: {
+          NAME: 'do something',
         },
-        'extraState': {
-          'hasStatements': false,
+        extraState: {
+          hasStatements: false,
         },
       },
       expectedJson: {
-        'type': 'procedures_defreturn',
-        'id': '1',
-        'fields': {
-          'NAME': 'do something',
+        type: 'procedures_defreturn',
+        id: '1',
+        fields: {
+          NAME: 'do something',
         },
-        'extraState': {
-          'procedureId': '1',
-          'fullSerialization': true,
-          'hasStatements': false,
+        extraState: {
+          procedureId: '1',
+          fullSerialization: true,
+          hasStatements: false,
         },
       },
       assertBlockStructure: (block) => {
@@ -2457,13 +2457,13 @@ suite('Procedures', function () {
     {
       title: 'JSON - Minimal caller',
       json: {
-        'type': 'procedures_callnoreturn',
+        type: 'procedures_callnoreturn',
       },
       expectedJson: {
-        'type': 'procedures_callnoreturn',
-        'id': '1',
-        'extraState': {
-          'name': 'unnamed',
+        type: 'procedures_callnoreturn',
+        id: '1',
+        extraState: {
+          name: 'unnamed',
         },
       },
       assertBlockStructure: (block) => {
@@ -2473,16 +2473,16 @@ suite('Procedures', function () {
     {
       title: 'JSON - Common caller',
       json: {
-        'type': 'procedures_callnoreturn',
-        'extraState': {
-          'name': 'do something',
+        type: 'procedures_callnoreturn',
+        extraState: {
+          name: 'do something',
         },
       },
       expectedJson: {
-        'type': 'procedures_callnoreturn',
-        'id': '1',
-        'extraState': {
-          'name': 'do something',
+        type: 'procedures_callnoreturn',
+        id: '1',
+        extraState: {
+          name: 'do something',
         },
       },
       assertBlockStructure: (block) => {
@@ -2492,18 +2492,18 @@ suite('Procedures', function () {
     {
       title: 'JSON - With pre-created vars caller',
       json: {
-        'type': 'procedures_callnoreturn',
-        'extraState': {
-          'name': 'do something',
-          'params': ['preCreatedVar'],
+        type: 'procedures_callnoreturn',
+        extraState: {
+          name: 'do something',
+          params: ['preCreatedVar'],
         },
       },
       expectedJson: {
-        'type': 'procedures_callnoreturn',
-        'id': '1',
-        'extraState': {
-          'name': 'do something',
-          'params': ['preCreatedVar'],
+        type: 'procedures_callnoreturn',
+        id: '1',
+        extraState: {
+          name: 'do something',
+          params: ['preCreatedVar'],
         },
       },
       assertBlockStructure: (block) => {

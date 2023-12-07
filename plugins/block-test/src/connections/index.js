@@ -21,10 +21,10 @@ import {
  * The Connections category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Connections',
-  'expanded': 'true',
-  'contents': [rowCategory, stackCategory, statementCategory],
+  kind: 'CATEGORY',
+  name: 'Connections',
+  expanded: 'true',
+  contents: [rowCategory, stackCategory, statementCategory],
 };
 
 /**

@@ -30,10 +30,10 @@ suite('Shortcut Tests', function () {
     };
     Blockly.defineBlocksWithJsonArray([
       {
-        'type': 'basic_block',
-        'message0': '',
-        'previousStatement': null,
-        'nextStatement': null,
+        type: 'basic_block',
+        message0: '',
+        previousStatement: null,
+        nextStatement: null,
       },
     ]);
     this.controller = new NavigationController();
