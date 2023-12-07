@@ -5,7 +5,6 @@ private:true
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// TODO: Edit theme overview.
 /**
  * @fileoverview Hacker Mode theme.
  * Black background and blocks with lime green text to simulate a hacker screen. 
@@ -92,7 +91,6 @@ const categoryStyles = {
   },
 };
 
-// TODO: Edit theme name.
 export default Blockly.Theme.defineTheme('hackermode', {
   'base': Blockly.Themes.Classic,
   'blockStyles': defaultBlockStyles,
