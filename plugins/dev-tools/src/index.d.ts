@@ -109,12 +109,12 @@ declare namespace DevTools {
   /**
    * A toolbox xml with built-in blocks split into categories.
    */
-  const toolboxCategories: string;
+  const toolboxCategories: Blockly.utils.toolbox.ToolboxInfo;
 
   /**
    * A simple toolbox xml with built-in blocks and no categories.
    */
-  const toolboxSimple: string;
+  const toolboxSimple: Blockly.utils.toolbox.ToolboxInfo;
 }
 
 export = DevTools;
