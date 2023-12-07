@@ -36,9 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
-  createPlayground(
-    document.getElementById('root')!,
-    createWorkspace,
-    defaultOptions,
-  );
+
+  const root = document.getElementById('root');
+  if (!root) {
+    throw new Error('Root element is missing');
+  }
+
+  createPlayground(root, createWorkspace, defaultOptions);
 });
