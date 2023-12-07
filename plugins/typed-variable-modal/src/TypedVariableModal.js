@@ -79,12 +79,12 @@ export class TypedVariableModal extends Modal {
     this.types_ = types;
 
     const messages = {
-      'TYPED_VAR_MODAL_TITLE': 'Create Typed Variable',
-      'TYPED_VAR_MODAL_VARIABLE_NAME_LABEL': 'Variable Name: ',
-      'TYPED_VAR_MODAL_TYPES_LABEL': 'Variable Types',
-      'TYPED_VAR_MODAL_CONFIRM_BUTTON': 'Ok',
-      'TYPED_VAR_MODAL_CANCEL_BUTTON': 'Cancel',
-      'TYPED_VAR_MODAL_INVALID_NAME':
+      TYPED_VAR_MODAL_TITLE: 'Create Typed Variable',
+      TYPED_VAR_MODAL_VARIABLE_NAME_LABEL: 'Variable Name: ',
+      TYPED_VAR_MODAL_TYPES_LABEL: 'Variable Types',
+      TYPED_VAR_MODAL_CONFIRM_BUTTON: 'Ok',
+      TYPED_VAR_MODAL_CANCEL_BUTTON: 'Cancel',
+      TYPED_VAR_MODAL_INVALID_NAME:
         'Name is not valid. Please choose a different name.',
     };
 

@@ -85,13 +85,13 @@ module.exports = (env) => {
     },
     resolve: {
       alias: {
-        'blockly': resolveApp(`node_modules/blockly${blocklyAliasSuffix}`),
+        blockly: resolveApp(`node_modules/blockly${blocklyAliasSuffix}`),
       },
       extensions: ['.ts', '.js'].filter(
         (ext) => isTypescript || !ext.includes('ts'),
       ),
       fallback: {
-        'util': false,
+        util: false,
       },
     },
     module: {

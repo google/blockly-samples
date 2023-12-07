@@ -25,10 +25,10 @@ import {
  * The fields category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Fields',
-  'expanded': 'true',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Fields',
+  expanded: 'true',
+  contents: [
     fieldDefaults,
     fieldNumbers,
     fieldAngles,

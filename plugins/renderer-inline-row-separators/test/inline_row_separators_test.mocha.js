@@ -28,14 +28,14 @@ suite('inlineRowSeparates', function () {
     this.renderer = this.workspace.getRenderer();
     Blockly.defineBlocksWithJsonArray([
       {
-        'type': 'test_block',
-        'message0': 'input A %1 %2 input B %3',
-        'args0': [
-          {'type': 'input_value', 'name': 'A'},
-          {'type': 'input_dummy'},
-          {'type': 'input_value', 'name': 'B'},
+        type: 'test_block',
+        message0: 'input A %1 %2 input B %3',
+        args0: [
+          {type: 'input_value', name: 'A'},
+          {type: 'input_dummy'},
+          {type: 'input_value', name: 'B'},
         ],
-        'inputsInline': true,
+        inputsInline: true,
       },
     ]);
   });

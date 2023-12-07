@@ -77,13 +77,13 @@ import * as Blockly from 'blockly';
 import '@blockly/field-angle';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_angle',
-    'message0': 'angle: %1',
-    'args0': [
+    type: 'test_field_angle',
+    message0: 'angle: %1',
+    args0: [
       {
-        'type': 'field_angle',
-        'name': 'FIELDNAME',
-        'value': 50,
+        type: 'field_angle',
+        name: 'FIELDNAME',
+        value: 50,
       },
     ],
   },

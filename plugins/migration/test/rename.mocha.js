@@ -21,13 +21,13 @@ suite('Rename', function () {
           oldName: 'Blockly.moduleA',
           newName: 'Blockly.newModuleA',
           exports: {
-            'exportA': {
+            exportA: {
               newExport: 'newExportA',
             },
-            'exportB': {
+            exportB: {
               newExport: 'newExportB',
             },
-            'exportC': {
+            exportC: {
               newExport: 'someOtherName',
               newPath: 'Blockly.moduleA.exportC',
             },
@@ -130,7 +130,7 @@ class SubClass extends Blockly.moduleC.ClassC {
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -152,7 +152,7 @@ class SubClass extends Blockly.moduleC.ClassC {
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newName: 'someOtherName',
                 newPath: 'otherModule.newExportName',
               },
@@ -175,7 +175,7 @@ class SubClass extends Blockly.moduleC.ClassC {
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -197,7 +197,7 @@ class SubClass extends Blockly.moduleC.ClassC {
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newName: 'someOtherName',
                 newPath: 'otherModule.newExportName',
               },
@@ -220,7 +220,7 @@ class SubClass extends Blockly.moduleC.ClassC {
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'new.export.name',
               },
             },
@@ -242,7 +242,7 @@ class SubClass extends Blockly.moduleC.ClassC {
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'new.export.name',
               },
             },
@@ -342,7 +342,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 getMethod: 'getExport',
               },
             },
@@ -364,7 +364,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 getMethod: 'getExport',
                 setMethod: 'setExport',
               },
@@ -389,7 +389,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 setMethod: 'setExport',
               },
             },
@@ -415,7 +415,7 @@ const bar = module.newNameForExistingExport;`;
             oldName: 'oldModule',
             newName: 'newModule',
             exports: {
-              'oldExport': {
+              oldExport: {
                 newExport: 'newExport',
               },
             },
@@ -442,7 +442,7 @@ const bar = module.newNameForExistingExport;`;
               newName: 'newModule',
               newPath: 'oldModule',
               exports: {
-                'oldExport': {
+                oldExport: {
                   newExport: 'newExport',
                 },
               },
@@ -465,7 +465,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'oldModule',
             exports: {
-              'exportName': {
+              exportName: {
                 newModule: 'newModule',
               },
             },
@@ -490,7 +490,7 @@ const bar = module.newNameForExistingExport;`;
             {
               oldName: 'moduleA',
               exports: {
-                'exportName': {
+                exportName: {
                   newModule: 'moduleB',
                 },
               },
@@ -520,7 +520,7 @@ const bar = module.newNameForExistingExport;`;
             {
               oldName: 'moduleA',
               exports: {
-                'exportName': {
+                exportName: {
                   newModule: 'moduleC',
                 },
               },
@@ -550,7 +550,7 @@ const bar = module.newNameForExistingExport;`;
             {
               oldName: 'moduleA',
               exports: {
-                'exportA1': {
+                exportA1: {
                   newExport: 'exportA2',
                 },
               },
@@ -560,7 +560,7 @@ const bar = module.newNameForExistingExport;`;
             {
               oldName: 'moduleA',
               exports: {
-                'exportA2': {
+                exportA2: {
                   newExport: 'exportA3',
                 },
               },
@@ -586,7 +586,7 @@ const bar = module.newNameForExistingExport;`;
             {
               oldName: 'moduleA',
               exports: {
-                'exportA1': {
+                exportA1: {
                   newExport: 'exportA2',
                 },
               },
@@ -596,7 +596,7 @@ const bar = module.newNameForExistingExport;`;
             {
               oldName: 'moduleA',
               exports: {
-                'exportA2': {
+                exportA2: {
                   newPath: 'moduleA.exportA1',
                 },
               },
@@ -850,7 +850,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -872,7 +872,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -894,7 +894,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -916,7 +916,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -938,7 +938,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'oldExportName': {
+              oldExportName: {
                 newExport: 'newExportName',
               },
             },
@@ -960,7 +960,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'exportA': {
+              exportA: {
                 newExport: 'newExportA',
               },
             },
@@ -970,7 +970,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'exportB': {
+              exportB: {
                 newExport: 'newExportB',
               },
             },
@@ -990,7 +990,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'exportA': {
+              exportA: {
                 newExport: 'newExportA',
               },
             },
@@ -1000,7 +1000,7 @@ const bar = module.newNameForExistingExport;`;
           {
             oldName: 'module',
             exports: {
-              'exportB': {
+              exportB: {
                 newExport: 'newExportB',
               },
             },
@@ -1016,7 +1016,7 @@ const bar = module.newNameForExistingExport;`;
 
     test('the develop version is outside all ranges', function () {
       const database = {
-        'develop': [
+        develop: [
           {
             oldName: 'base.oldModule',
             newName: 'base.newModule',
@@ -1034,7 +1034,7 @@ const bar = module.newNameForExistingExport;`;
 
     test('the develop version works if directly targeted', function () {
       const database = {
-        'develop': [
+        develop: [
           {
             oldName: 'base.oldModule',
             newName: 'base.newModule',

@@ -25,14 +25,14 @@ declare interface TextJoinBlock extends Blockly.Block {
 // insert dummy inputs between value inputs.
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'inline_text_join',
-    'message0': '',
-    'output': 'String',
-    'style': 'text_blocks',
-    'helpUrl': '%{BKY_TEXT_JOIN_HELPURL}',
-    'tooltip': '%{BKY_TEXT_JOIN_TOOLTIP}',
-    'mutator': 'text_join_mutator',
-    'extensions': ['inline_text_join_extension'],
+    type: 'inline_text_join',
+    message0: '',
+    output: 'String',
+    style: 'text_blocks',
+    helpUrl: '%{BKY_TEXT_JOIN_HELPURL}',
+    tooltip: '%{BKY_TEXT_JOIN_TOOLTIP}',
+    mutator: 'text_join_mutator',
+    extensions: ['inline_text_join_extension'],
   },
 ]);
 

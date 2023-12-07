@@ -15,76 +15,76 @@ import {overrideOldBlockDefinitions} from '../src/index';
 overrideOldBlockDefinitions();
 
 const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
-  'kind': 'categoryToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'category',
-      'name': 'Inline',
-      'contents': [
+      kind: 'category',
+      name: 'Inline',
+      contents: [
         {
-          'kind': 'block',
-          'type': 'inline_text_join',
+          kind: 'block',
+          type: 'inline_text_join',
         },
         {
-          'kind': 'block',
-          'type': 'inline_lists_create_with',
+          kind: 'block',
+          type: 'inline_lists_create_with',
         },
         {
-          'kind': 'block',
-          'type': 'inline_procedures_defreturn',
-          'extraState': {
-            'hasStatements': false,
+          kind: 'block',
+          type: 'inline_procedures_defreturn',
+          extraState: {
+            hasStatements: false,
           },
         },
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Text',
-      'categorystyle': 'text_category',
-      'contents': [
+      kind: 'category',
+      name: 'Text',
+      categorystyle: 'text_category',
+      contents: [
         {
-          'kind': 'block',
-          'type': 'text',
+          kind: 'block',
+          type: 'text',
         },
         {
-          'kind': 'block',
-          'type': 'text_join',
+          kind: 'block',
+          type: 'text_join',
         },
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Lists',
-      'categorystyle': 'list_category',
-      'contents': [
+      kind: 'category',
+      name: 'Lists',
+      categorystyle: 'list_category',
+      contents: [
         {
-          'kind': 'block',
-          'type': 'lists_create_with',
-          'extraState': {
-            'itemCount': 0,
+          kind: 'block',
+          type: 'lists_create_with',
+          extraState: {
+            itemCount: 0,
           },
         },
         {
-          'kind': 'block',
-          'type': 'lists_create_with',
+          kind: 'block',
+          type: 'lists_create_with',
         },
       ],
     },
     {
-      'kind': 'sep',
+      kind: 'sep',
     },
     {
-      'kind': 'category',
-      'name': 'Variables',
-      'categorystyle': 'variable_category',
-      'custom': 'VARIABLE',
+      kind: 'category',
+      name: 'Variables',
+      categorystyle: 'variable_category',
+      custom: 'VARIABLE',
     },
     {
-      'kind': 'category',
-      'name': 'Functions',
-      'categorystyle': 'procedure_category',
-      'custom': 'PROCEDURE',
+      kind: 'category',
+      name: 'Functions',
+      categorystyle: 'procedure_category',
+      custom: 'PROCEDURE',
     },
   ],
 };

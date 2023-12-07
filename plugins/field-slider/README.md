@@ -41,13 +41,13 @@ import * as Blockly from 'blockly';
 import '@blockly/field-slider';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_slider',
-    'message0': 'slider: %1',
-    'args0': [
+    type: 'test_field_slider',
+    message0: 'slider: %1',
+    args0: [
       {
-        'type': 'field_slider',
-        'name': 'FIELDNAME',
-        'value': 50,
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        value: 50,
       },
     ],
   },

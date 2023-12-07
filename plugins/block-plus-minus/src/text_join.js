@@ -46,7 +46,7 @@ const textJoinMutator = {
    */
   saveExtraState: function () {
     return {
-      'itemCount': this.itemCount_,
+      itemCount: this.itemCount_,
     };
   },
 

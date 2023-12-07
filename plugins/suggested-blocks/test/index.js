@@ -25,31 +25,31 @@ function createWorkspace(blocklyDiv, options) {
 }
 
 const customTheme = Blockly.Theme.defineTheme('classic_with_suggestions', {
-  'name': 'classic_with_suggestions',
-  'base': Blockly.Themes.Classic,
-  'blockStyles': {},
-  'categoryStyles': {
-    'frequently_used_category': {'colour': '60'},
-    'recently_used_category': {'colour': '60'},
+  name: 'classic_with_suggestions',
+  base: Blockly.Themes.Classic,
+  blockStyles: {},
+  categoryStyles: {
+    frequently_used_category: {colour: '60'},
+    recently_used_category: {colour: '60'},
   },
-  'componentStyles': {},
-  'fontStyle': {},
-  'startHats': null,
+  componentStyles: {},
+  fontStyle: {},
+  startHats: null,
 });
 
 document.addEventListener('DOMContentLoaded', function () {
   // Insert two new categories
   toolboxCategories['contents'].push({
-    'kind': 'category',
-    'name': 'Frequently Used',
-    'custom': 'MOST_USED',
-    'categorystyle': 'frequently_used_category',
+    kind: 'category',
+    name: 'Frequently Used',
+    custom: 'MOST_USED',
+    categorystyle: 'frequently_used_category',
   });
   toolboxCategories['contents'].push({
-    'kind': 'category',
-    'name': 'Recentlty Used',
-    'custom': 'RECENTLY_USED',
-    'categorystyle': 'recently_used_category',
+    kind: 'category',
+    name: 'Recentlty Used',
+    custom: 'RECENTLY_USED',
+    categorystyle: 'recently_used_category',
   });
   const defaultOptions = {
     toolbox: toolboxCategories,

@@ -506,35 +506,35 @@ suite('If block', function () {
     {
       title: 'one if one else with children - json',
       json: {
-        'type': 'dynamic_if',
-        'id': '1',
-        'extraState': {
-          'elseIfCount': 1,
-          'hasElse': true,
+        type: 'dynamic_if',
+        id: '1',
+        extraState: {
+          elseIfCount: 1,
+          hasElse: true,
         },
-        'inputs': {
-          'IF0': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '2',
-              'fields': {
-                'BOOL': 'TRUE',
+        inputs: {
+          IF0: {
+            block: {
+              type: 'logic_boolean',
+              id: '2',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'IF1': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '3',
-              'fields': {
-                'BOOL': 'TRUE',
+          IF1: {
+            block: {
+              type: 'logic_boolean',
+              id: '3',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'ELSE': {
-            'block': {
-              'type': 'text_print',
-              'id': '4',
+          ELSE: {
+            block: {
+              type: 'text_print',
+              id: '4',
             },
           },
         },
@@ -550,85 +550,84 @@ suite('If block', function () {
     {
       title: 'one if one else with children - json with stringified old XML',
       json: {
-        'type': 'dynamic_if',
-        'id': '1',
-        'extraState':
-          '<mutation inputs="1,3,2" else="true" next="4"></mutation>',
-        'inputs': {
-          'IF1': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '2',
-              'fields': {
-                'BOOL': 'TRUE',
+        type: 'dynamic_if',
+        id: '1',
+        extraState: '<mutation inputs="1,3,2" else="true" next="4"></mutation>',
+        inputs: {
+          IF1: {
+            block: {
+              type: 'logic_boolean',
+              id: '2',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'IF3': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '3',
-              'fields': {
-                'BOOL': 'TRUE',
+          IF3: {
+            block: {
+              type: 'logic_boolean',
+              id: '3',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'IF2': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '4',
-              'fields': {
-                'BOOL': 'TRUE',
+          IF2: {
+            block: {
+              type: 'logic_boolean',
+              id: '4',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'ELSE': {
-            'block': {
-              'type': 'text_print',
-              'id': '5',
+          ELSE: {
+            block: {
+              type: 'text_print',
+              id: '5',
             },
           },
         },
       },
       expectedJson: {
-        'type': 'dynamic_if',
-        'id': '1',
-        'extraState': {
-          'elseIfCount': 2,
-          'hasElse': true,
+        type: 'dynamic_if',
+        id: '1',
+        extraState: {
+          elseIfCount: 2,
+          hasElse: true,
         },
-        'inputs': {
-          'IF0': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '2',
-              'fields': {
-                'BOOL': 'TRUE',
+        inputs: {
+          IF0: {
+            block: {
+              type: 'logic_boolean',
+              id: '2',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'IF1': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '3',
-              'fields': {
-                'BOOL': 'TRUE',
+          IF1: {
+            block: {
+              type: 'logic_boolean',
+              id: '3',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'IF2': {
-            'block': {
-              'type': 'logic_boolean',
-              'id': '4',
-              'fields': {
-                'BOOL': 'TRUE',
+          IF2: {
+            block: {
+              type: 'logic_boolean',
+              id: '4',
+              fields: {
+                BOOL: 'TRUE',
               },
             },
           },
-          'ELSE': {
-            'block': {
-              'type': 'text_print',
-              'id': '5',
+          ELSE: {
+            block: {
+              type: 'text_print',
+              id: '5',
             },
           },
         },

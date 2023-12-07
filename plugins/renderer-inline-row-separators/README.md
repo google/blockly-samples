@@ -49,14 +49,14 @@ Initially, not much will be different. However, if you define any block types th
 ```js
 Blockly.common.defineBlocksWithJsonArray([
   {
-    'type': 'inline_test',
-    'message0': 'input A %1 %2 input B %3',
-    'args0': [
-      {'type': 'input_value', 'name': 'A'},
-      {'type': 'input_dummy'},
-      {'type': 'input_value', 'name': 'B'},
+    type: 'inline_test',
+    message0: 'input A %1 %2 input B %3',
+    args0: [
+      {type: 'input_value', name: 'A'},
+      {type: 'input_dummy'},
+      {type: 'input_value', name: 'B'},
     ],
-    'inputsInline': true,
+    inputsInline: true,
   },
 ]);
 ```

@@ -41,8 +41,8 @@ module.exports = [
         ...globals.commonjs,
         ...globals.node,
         ...globals.es5,
-        'Blockly': true,
-        'goog': true,
+        Blockly: true,
+        goog: true,
       },
       parser: babelParser,
       parserOptions: {
@@ -63,7 +63,7 @@ module.exports = [
     settings: {
       jsdoc: {
         tagNamePreference: {
-          'returns': 'returns',
+          returns: 'returns',
         },
         mode: 'closure',
       },
@@ -72,7 +72,7 @@ module.exports = [
     rules: {
       // http://eslint.org/docs/rules/
       'camelcase': 'warn',
-      'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
+      'new-cap': ['error', {capIsNewExceptionPattern: '^.*Error'}],
       // Allow TODO comments.
       'no-warning-comments': 'off',
       'no-invalid-this': 'off',
@@ -88,14 +88,14 @@ module.exports = [
       'jsdoc/require-returns': [
         'error',
         {
-          'forceRequireReturn': false,
+          forceRequireReturn: false,
         },
       ],
       'jsdoc/require-description': [
         'warn',
         {
           // Don't require descriptions if these tags are present.
-          'exemptedBy': ['inheritdoc', 'param', 'return', 'returns', 'type'],
+          exemptedBy: ['inheritdoc', 'param', 'return', 'returns', 'type'],
         },
       ],
       'jsdoc/check-tag-names': 'off',
@@ -105,11 +105,11 @@ module.exports = [
       'jsdoc/require-jsdoc': [
         'warn',
         {
-          'enableFixer': false,
-          'require': {
-            'FunctionDeclaration': true,
-            'ClassDeclaration': true,
-            'MethodDefinition': true,
+          enableFixer: false,
+          require: {
+            FunctionDeclaration: true,
+            ClassDeclaration: true,
+            MethodDefinition: true,
           },
         },
       ],
@@ -151,8 +151,8 @@ module.exports = [
       'jsdoc/require-jsdoc': [
         'warn',
         {
-          'enableFixer': false,
-          'publicOnly': true,
+          enableFixer: false,
+          publicOnly: true,
         },
       ],
       // params and returns docs are optional.
@@ -160,7 +160,7 @@ module.exports = [
       'jsdoc/require-returns': ['off'],
       // Ensure there is a blank line between the body and any @tags,
       // as required by the tsdoc spec.
-      'jsdoc/tag-lines': ['error', 'any', {'startLines': 1}],
+      'jsdoc/tag-lines': ['error', 'any', {startLines: 1}],
 
       // Already handled by tsc.
       'no-dupe-class-members': 'off',
@@ -170,25 +170,25 @@ module.exports = [
       '@typescript-eslint/array-type': [
         'error',
         {
-          'default': 'array-simple',
+          default: 'array-simple',
         },
       ],
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/ban-types': [
         'error',
         {
-          'types': {
-            'Object': {
-              'message': "Use {} or 'object' instead.",
+          types: {
+            Object: {
+              message: "Use {} or 'object' instead.",
             },
-            'String': {
-              'message': "Use 'string' instead.",
+            String: {
+              message: "Use 'string' instead.",
             },
-            'Number': {
-              'message': "Use 'number' instead.",
+            Number: {
+              message: "Use 'number' instead.",
             },
-            'Boolean': {
-              'message': "Use 'boolean' instead.",
+            Boolean: {
+              message: "Use 'boolean' instead.",
             },
           },
         },
@@ -197,20 +197,20 @@ module.exports = [
       '@typescript-eslint/naming-convention': [
         'error',
         {
-          'selector': 'default',
-          'format': ['camelCase', 'PascalCase'],
+          selector: 'default',
+          format: ['camelCase', 'PascalCase'],
         },
         {
-          'selector': 'class',
-          'format': ['PascalCase'],
+          selector: 'class',
+          format: ['PascalCase'],
         },
         {
           // Disallow starting interaces with 'I'
-          'selector': 'interface',
-          'format': ['PascalCase'],
-          'custom': {
-            'regex': '^I[A-Z]',
-            'match': false,
+          selector: 'interface',
+          format: ['PascalCase'],
+          custom: {
+            regex: '^I[A-Z]',
+            match: false,
           },
         },
       ],
@@ -236,7 +236,7 @@ module.exports = [
       '@typescript-eslint/consistent-type-definitions': 'error',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
-        {'accessibility': 'no-public'},
+        {accessibility: 'no-public'},
       ],
       '@typescript-eslint/no-require-imports': 'error',
     },

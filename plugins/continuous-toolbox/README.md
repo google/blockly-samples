@@ -36,9 +36,9 @@ import {
 // Inject Blockly.
 const workspace = Blockly.inject('blocklyDiv', {
   plugins: {
-    'toolbox': ContinuousToolbox,
-    'flyoutsVerticalToolbox': ContinuousFlyout,
-    'metricsManager': ContinuousMetrics,
+    toolbox: ContinuousToolbox,
+    flyoutsVerticalToolbox: ContinuousFlyout,
+    metricsManager: ContinuousMetrics,
   },
   toolbox: toolboxCategories,
   // ... your other options here ...
