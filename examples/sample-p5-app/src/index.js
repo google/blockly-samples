@@ -11,6 +11,7 @@ import {save, load} from './serialization';
 import {toolbox} from './toolbox';
 import {blocks} from './blocks/p5';
 import {forBlock} from './generators/javascript';
+import {Multiselect, MultiselectBlockDragger} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
 import p5 from 'p5';
 import './index.css';
 
@@ -23,7 +24,35 @@ javascriptGenerator.addReservedWords('sketch');
 const codeDiv = document.getElementById('generatedCode').firstChild;
 const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
-const ws = Blockly.inject(blocklyDiv, {toolbox});
+
+const options = {
+  toolbox: toolbox,
+  plugins: {
+    'blockDragger': MultiselectBlockDragger, // Required to work
+  },
+  // Bump neighbours after dragging to avoid overlapping.
+  bumpNeighbours: false,
+  // Use custom icon for the multi select controls.
+  multiselectIcon: {
+    hideIcon: false,
+    weight: 3,
+    enabledIcon: 'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/select.svg',
+    disabledIcon: 'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/unselect.svg',
+  },
+
+  multiselectCopyPaste: {
+    // Enable the copy/paste accross tabs feature (true by default).
+    crossTab: true,
+    // Show the copy/paste menu entries (true by default).
+    menu: true,
+  },
+}
+
+const ws = Blockly.inject(blocklyDiv, options);
+
+// Initialize multiselect plugin.
+const multiselectPlugin = new Multiselect(ws);
+multiselectPlugin.init(options);
 
 // This function resets the code and output divs, shows the
 // generated code from the workspace, and evals the code.
