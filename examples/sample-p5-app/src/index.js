@@ -14,6 +14,7 @@ import {forBlock} from './generators/javascript';
 import {Multiselect, MultiselectBlockDragger} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
 import p5 from 'p5';
 import './index.css';
+import './block_svg_patch';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
@@ -26,6 +27,7 @@ const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
 
 const options = {
+  collapse: true,
   toolbox: toolbox,
   plugins: {
     'blockDragger': MultiselectBlockDragger, // Required to work
@@ -98,22 +100,3 @@ ws.addChangeListener((e) => {
   }
   runCode();
 });
-
-const url = `https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=${AI_TOKEN}`
-
-async function testLLMCall() {
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      "prompt": { "text": "Tell me an animal fact"} 
-    }),
-  };
-   
-  const response = await fetch(url, options);
-  const data = await response.json();
-  console.log(data);
-}
-// testLLMCall();
