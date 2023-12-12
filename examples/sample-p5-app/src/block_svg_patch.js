@@ -27,7 +27,7 @@ Blockly.BlockSvg.prototype.toString = function() {
       console.log(reason);
     });
   }
-  
+
   return this.llmSummary ?? originalToString.call(this);
 };
 
