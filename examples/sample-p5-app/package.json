@@ -26,6 +26,7 @@
   "dependencies": {
     "@mit-app-inventor/blockly-plugin-workspace-multiselect": "^0.1.10",
     "blockly": "^10.0.0",
-    "p5": "^1.5.0"
+    "p5": "^1.5.0",
+    "ts-loader": "^9.5.1"
   }
 }
