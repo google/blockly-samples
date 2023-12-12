@@ -33,9 +33,7 @@ export class ObservableParameterModel
     varId?: string,
   ) {
     this.id = id ?? Blockly.utils.idGenerator.genUid();
-    this.variable =
-      this.workspace.getVariable(name) ??
-      workspace.createVariable(name, '', varId);
+   
   }
 
   /**
@@ -65,6 +63,22 @@ export class ObservableParameterModel
     return this;
   }
 
+/**
+   * Creates a backing variable in a way that is subclassable. 
+   *
+   * @param name The string to set set the variable to. 
+   * @param varId The optional ID the backing variable should have.
+   * @returns This parameter model.
+   */
+
+protected createBackingVariable(name: string,varId?: string):this{
+
+  this.variable =
+  this.workspace.getVariable(name) ??
+  this.workspace.createVariable(name, '', varId);
+  return this;
+}
+
   /**
    * Unimplemented. The built-in ParameterModel does not support typing.
    * If you want your procedure blocks to have typed parameters, you need to
@@ -79,6 +93,7 @@ export class ObservableParameterModel
       'The built-in ParameterModel does not support typing. You need to ' +
         'implement your own custom ParameterModel.',
     );
+
   }
 
   /**
