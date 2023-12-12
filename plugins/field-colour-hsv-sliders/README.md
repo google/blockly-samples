@@ -35,17 +35,17 @@ import {javascriptGenerator, Order} from 'blockly/javascript';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'colour_hsv_sliders',
-    'message0': 'hsv %1',
-    'args0': [
+    type: 'colour_hsv_sliders',
+    message0: 'hsv %1',
+    args0: [
       {
-        'type': 'field_colour_hsv_sliders',
-        'name': 'COLOUR',
-        'colour': '#ff0000',
+        type: 'field_colour_hsv_sliders',
+        name: 'COLOUR',
+        colour: '#ff0000',
       },
     ],
-    'output': 'Colour',
-    'style': 'colour_blocks',
+    output: 'Colour',
+    style: 'colour_blocks',
   },
 ]);
 

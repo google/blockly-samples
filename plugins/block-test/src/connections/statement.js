@@ -14,19 +14,19 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_connections_statement_blue',
-    'message0': '%1',
-    'args0': [
+    type: 'test_connections_statement_blue',
+    message0: '%1',
+    args0: [
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': 'greenRel',
+        type: 'input_statement',
+        name: 'NAME',
+        check: 'greenRel',
       },
     ],
-    'previousStatement': 'nonePrev',
-    'nextStatement': 'greenRel',
-    'colour': 230,
-    'tooltip':
+    previousStatement: 'nonePrev',
+    nextStatement: 'greenRel',
+    colour: 230,
+    tooltip:
       'Prev: nonePrev\n' +
       'Next: greenRel\n' +
       'Statement: greenRel\n' +
@@ -34,19 +34,19 @@ Blockly.defineBlocksWithJsonArray([
       'Statement connection can accept yellow blocks but not red blocks.',
   },
   {
-    'type': 'test_connections_statement_yellow',
-    'message0': '%1',
-    'args0': [
+    type: 'test_connections_statement_yellow',
+    message0: '%1',
+    args0: [
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': ['yellowRel', 'orangeRel'],
+        type: 'input_statement',
+        name: 'NAME',
+        check: ['yellowRel', 'orangeRel'],
       },
     ],
-    'previousStatement': ['greenRel', 'yellowRel'],
-    'nextStatement': ['yellowRel', 'orangeRel'],
-    'colour': 60,
-    'tooltip':
+    previousStatement: ['greenRel', 'yellowRel'],
+    nextStatement: ['yellowRel', 'orangeRel'],
+    colour: 60,
+    tooltip:
       'Prev: yellowRel, greenRel\n' +
       'Next: yellowRel, orangeRel\n' +
       'Statement: orangeRel\n' +
@@ -58,19 +58,19 @@ Blockly.defineBlocksWithJsonArray([
       ' blue blocks.\n',
   },
   {
-    'type': 'test_connections_statement_red',
-    'message0': '%1',
-    'args0': [
+    type: 'test_connections_statement_red',
+    message0: '%1',
+    args0: [
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': 'noneNext',
+        type: 'input_statement',
+        name: 'NAME',
+        check: 'noneNext',
       },
     ],
-    'previousStatement': 'orangeRel',
-    'nextStatement': 'noneNext',
-    'colour': 0,
-    'tooltip':
+    previousStatement: 'orangeRel',
+    nextStatement: 'noneNext',
+    colour: 0,
+    tooltip:
       'Prev: orangeRel\n' +
       'Next: noneNext\n' +
       'Statement: noneNext\n' +
@@ -78,18 +78,18 @@ Blockly.defineBlocksWithJsonArray([
       'Statement connection accepts none.',
   },
   {
-    'type': 'test_connections_statement_nonext',
-    'message0': '%1',
-    'args0': [
+    type: 'test_connections_statement_nonext',
+    message0: '%1',
+    args0: [
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': ['yellowRel', 'orangeRel'],
+        type: 'input_statement',
+        name: 'NAME',
+        check: ['yellowRel', 'orangeRel'],
       },
     ],
-    'previousStatement': ['greenRel', 'yellowRel'],
-    'colour': 60,
-    'tooltip':
+    previousStatement: ['greenRel', 'yellowRel'],
+    colour: 60,
+    tooltip:
       'Prev: yellowRel, greenRel\n' +
       'Next: yellowRel, orangeRel\n' +
       'Statement: orangeRel\n' +
@@ -99,23 +99,23 @@ Blockly.defineBlocksWithJsonArray([
       ' blue blocks.\n',
   },
   {
-    'type': 'test_connections_multistatement_1valid',
-    'message0': 'none %1 both %2',
-    'args0': [
+    type: 'test_connections_multistatement_1valid',
+    message0: 'none %1 both %2',
+    args0: [
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': 'noneNext',
+        type: 'input_statement',
+        name: 'NAME',
+        check: 'noneNext',
       },
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': ['yellowRel', 'orangeRel'],
+        type: 'input_statement',
+        name: 'NAME',
+        check: ['yellowRel', 'orangeRel'],
       },
     ],
-    'previousStatement': ['greenRel', 'yellowRel'],
-    'colour': 60,
-    'tooltip':
+    previousStatement: ['greenRel', 'yellowRel'],
+    colour: 60,
+    tooltip:
       'Prev: yellowRel, greenRel\n' +
       'Next: yellowRel, orangeRel\n' +
       'Statement: orangeRel\n' +
@@ -126,23 +126,23 @@ Blockly.defineBlocksWithJsonArray([
       ' but not blue blocks.\n',
   },
   {
-    'type': 'test_connections_multistatement_2valid',
-    'message0': 'both %1 both %2',
-    'args0': [
+    type: 'test_connections_multistatement_2valid',
+    message0: 'both %1 both %2',
+    args0: [
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': ['yellowRel', 'orangeRel'],
+        type: 'input_statement',
+        name: 'NAME',
+        check: ['yellowRel', 'orangeRel'],
       },
       {
-        'type': 'input_statement',
-        'name': 'NAME',
-        'check': ['yellowRel', 'orangeRel'],
+        type: 'input_statement',
+        name: 'NAME',
+        check: ['yellowRel', 'orangeRel'],
       },
     ],
-    'previousStatement': ['greenRel', 'yellowRel'],
-    'colour': 60,
-    'tooltip':
+    previousStatement: ['greenRel', 'yellowRel'],
+    colour: 60,
+    tooltip:
       'Prev: yellowRel, greenRel\n' +
       'Next: yellowRel, orangeRel\n' +
       'Statement: orangeRel\n' +
@@ -188,69 +188,69 @@ const insertConnectionStatements = function (button) {
  * The Statement connections category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Statement',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Statement',
+  contents: [
     {
-      'kind': 'LABEL',
-      'text': 'blocks have',
+      kind: 'LABEL',
+      text: 'blocks have',
     },
     {
-      'kind': 'SEP',
-      'gap': '-1',
+      kind: 'SEP',
+      gap: '-1',
     },
     {
-      'kind': 'LABEL',
-      'text': 'tooltips',
+      kind: 'LABEL',
+      text: 'tooltips',
     },
     {
-      'kind': 'BUTTON',
-      'text': 'insert',
-      'callbackkey': 'insertConnectionStatements',
+      kind: 'BUTTON',
+      text: 'insert',
+      callbackkey: 'insertConnectionStatements',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_statement_blue',
+      kind: 'BLOCK',
+      type: 'test_connections_statement_blue',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_statement_yellow',
+      kind: 'BLOCK',
+      type: 'test_connections_statement_yellow',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_statement_red',
+      kind: 'BLOCK',
+      type: 'test_connections_statement_red',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_statement_nonext',
+      kind: 'BLOCK',
+      type: 'test_connections_statement_nonext',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_multistatement_1valid',
+      kind: 'BLOCK',
+      type: 'test_connections_multistatement_1valid',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_multistatement_2valid',
+      kind: 'BLOCK',
+      type: 'test_connections_multistatement_2valid',
     },
   ],
 };

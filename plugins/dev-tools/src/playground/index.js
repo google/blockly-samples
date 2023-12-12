@@ -260,42 +260,42 @@ export function createPlayground(
 
       // Register default tabs.
       const tabs = {
-        'JSON': registerGenerator('JSON', 'json', (ws) => {
+        JSON: registerGenerator('JSON', 'json', (ws) => {
           return JSON.stringify(
             Blockly.serialization.workspaces.save(ws),
             null,
             2,
           );
         }),
-        'XML': registerGenerator('XML', 'xml', (ws) => {
+        XML: registerGenerator('XML', 'xml', (ws) => {
           return Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(ws));
         }),
-        'JavaScript': registerGenerator(
+        JavaScript: registerGenerator(
           'JavaScript',
           'javascript',
           (ws) =>
             (javascriptGenerator || Blockly.JavaScript).workspaceToCode(ws),
           true,
         ),
-        'Python': registerGenerator(
+        Python: registerGenerator(
           'Python',
           'python',
           (ws) => (pythonGenerator || Blockly.Python).workspaceToCode(ws),
           true,
         ),
-        'Dart': registerGenerator(
+        Dart: registerGenerator(
           'Dart',
           'dart',
           (ws) => (dartGenerator || Blockly.Dart).workspaceToCode(ws),
           true,
         ),
-        'Lua': registerGenerator(
+        Lua: registerGenerator(
           'Lua',
           'lua',
           (ws) => (luaGenerator || Blockly.Lua).workspaceToCode(ws),
           true,
         ),
-        'PHP': registerGenerator(
+        PHP: registerGenerator(
           'PHP',
           'php',
           (ws) => (phpGenerator || Blockly.PHP).workspaceToCode(ws),

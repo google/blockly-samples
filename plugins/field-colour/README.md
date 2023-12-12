@@ -51,13 +51,13 @@ import * as Blockly from 'blockly';
 import '@blockly/field-colour';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_colour',
-    'message0': 'colour: %1',
-    'args0': [
+    type: 'test_field_colour',
+    message0: 'colour: %1',
+    args0: [
       {
-        'type': 'field_colour',
-        'name': 'FIELDNAME',
-        'colour': '#ffcccc',
+        type: 'field_colour',
+        name: 'FIELDNAME',
+        colour: '#ffcccc',
       },
     ],
   },

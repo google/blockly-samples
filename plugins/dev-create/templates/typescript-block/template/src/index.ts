@@ -14,8 +14,8 @@ import Blockly from 'blockly/core';
 // TODO: Update block definition.
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'block_template',
-    'message0': 'block template',
-    'style': 'math_blocks',
+    type: 'block_template',
+    message0: 'block template',
+    style: 'math_blocks',
   },
 ]);

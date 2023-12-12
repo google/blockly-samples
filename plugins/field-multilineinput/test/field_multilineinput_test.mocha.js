@@ -46,7 +46,7 @@ suite('FieldMultilineInput', function () {
   ];
   const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
-    testCase.json = {'text': testCase.value};
+    testCase.json = {text: testCase.value};
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);
@@ -118,15 +118,15 @@ suite('FieldMultilineInput', function () {
       this.workspace = new Blockly.Workspace();
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'row_block',
-          'message0': '%1',
-          'args0': [
+          type: 'row_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'INPUT',
+              type: 'input_value',
+              name: 'INPUT',
             },
           ],
-          'output': null,
+          output: null,
         },
       ]);
 
@@ -135,7 +135,7 @@ suite('FieldMultilineInput', function () {
         const field = new FieldMultilineInput(value);
         block.getInput('INPUT').appendField(field, 'MULTILINE');
         const jso = Blockly.serialization.blocks.save(block);
-        assert.deepEqual(jso['fields'], {'MULTILINE': value});
+        assert.deepEqual(jso['fields'], {MULTILINE: value});
       };
     });
 

@@ -58,8 +58,8 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
   const toolboxes =
     /** @type {Object<string,Blockly.utils.toolbox.ToolboxDefinition>} */ (
       config.toolboxes || {
-        'categories': toolboxCategories,
-        'simple': toolboxSimple,
+        categories: toolboxCategories,
+        simple: toolboxSimple,
       }
     );
   const defaultToolboxName = initDefaultToolbox(defaultOptions, toolboxes);
@@ -182,7 +182,7 @@ export function addGUIControls(genWorkspace, defaultOptions, config = {}) {
 
   gui.add(
     {
-      'Reset': reset,
+      Reset: reset,
     },
     'Reset',
   );
@@ -645,11 +645,11 @@ function getThemes(defaultOptions) {
   } else {
     // Fall back to a pre-set list of themes.
     themes = {
-      'classic': Blockly.Themes.Classic,
-      'dark': darkTheme,
-      'deuteranopia': deuteranopiaTheme,
-      'tritanopia': themeTritanopia,
-      'highcontrast': highContrastTheme,
+      classic: Blockly.Themes.Classic,
+      dark: darkTheme,
+      deuteranopia: deuteranopiaTheme,
+      tritanopia: themeTritanopia,
+      highcontrast: highContrastTheme,
     };
     if (defaultOptions.theme) {
       themes[/** @type {!Blockly.Theme} */ (defaultOptions.theme).name] =

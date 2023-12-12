@@ -55,10 +55,10 @@ suite('FieldSlider', function () {
   const addArgsAndJson = function (testCase) {
     testCase.args = Array(4).fill(testCase.value);
     testCase.json = {
-      'value': testCase.value,
-      'min': testCase.value,
-      'max': testCase.value,
-      'precision': testCase.value,
+      value: testCase.value,
+      min: testCase.value,
+      max: testCase.value,
+      precision: testCase.value,
     };
   };
   invalidValueTestCases.forEach(addArgsAndJson);

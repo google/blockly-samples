@@ -12,56 +12,56 @@ import './fields';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_serialization_no_overrides',
-    'message0': 'no overrides: %1',
-    'args0': [
+    type: 'test_field_serialization_no_overrides',
+    message0: 'no overrides: %1',
+    args0: [
       {
-        'type': 'field_no_overrides',
-        'name': 'LABEL',
-        'text': 'test',
+        type: 'field_no_overrides',
+        name: 'LABEL',
+        text: 'test',
       },
     ],
-    'colour': 0,
-    'output': null,
+    colour: 0,
+    output: null,
   },
   {
-    'type': 'test_field_serialization_xml',
-    'message0': 'xml: %1',
-    'args0': [
+    type: 'test_field_serialization_xml',
+    message0: 'xml: %1',
+    args0: [
       {
-        'type': 'field_xml',
-        'name': 'LABEL',
-        'text': 'test',
+        type: 'field_xml',
+        name: 'LABEL',
+        text: 'test',
       },
     ],
-    'colour': 30,
-    'output': null,
+    colour: 30,
+    output: null,
   },
   {
-    'type': 'test_field_serialization_jso',
-    'message0': 'jso: %1',
-    'args0': [
+    type: 'test_field_serialization_jso',
+    message0: 'jso: %1',
+    args0: [
       {
-        'type': 'field_jso',
-        'name': 'LABEL',
-        'text': 'test',
+        type: 'field_jso',
+        name: 'LABEL',
+        text: 'test',
       },
     ],
-    'colour': 90,
-    'output': null,
+    colour: 90,
+    output: null,
   },
   {
-    'type': 'test_field_serialization_both',
-    'message0': 'both: %1',
-    'args0': [
+    type: 'test_field_serialization_both',
+    message0: 'both: %1',
+    args0: [
       {
-        'type': 'field_both',
-        'name': 'LABEL',
-        'text': 'test',
+        type: 'field_both',
+        name: 'LABEL',
+        text: 'test',
       },
     ],
-    'colour': 150,
-    'output': null,
+    colour: 150,
+    output: null,
   },
 ]);
 

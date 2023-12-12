@@ -21,76 +21,76 @@ delete Blockly.Blocks['procedures_defreturn'];
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'procedures_defnoreturn',
-    'message0': '%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2',
-    'message1': '%{BKY_PROCEDURES_DEFNORETURN_DO} %1',
-    'args0': [
+    type: 'procedures_defnoreturn',
+    message0: '%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2',
+    message1: '%{BKY_PROCEDURES_DEFNORETURN_DO} %1',
+    args0: [
       {
-        'type': 'field_input',
-        'name': 'NAME',
-        'text': '',
+        type: 'field_input',
+        name: 'NAME',
+        text: '',
       },
       {
-        'type': 'input_dummy',
-        'name': 'TOP',
-      },
-    ],
-    'args1': [
-      {
-        'type': 'input_statement',
-        'name': 'STACK',
+        type: 'input_dummy',
+        name: 'TOP',
       },
     ],
-    'style': 'procedure_blocks',
-    'helpUrl': '%{BKY_PROCEDURES_DEFNORETURN_HELPURL}',
-    'tooltip': '%{BKY_PROCEDURES_DEFNORETURN_TOOLTIP}',
-    'extensions': [
+    args1: [
+      {
+        type: 'input_statement',
+        name: 'STACK',
+      },
+    ],
+    style: 'procedure_blocks',
+    helpUrl: '%{BKY_PROCEDURES_DEFNORETURN_HELPURL}',
+    tooltip: '%{BKY_PROCEDURES_DEFNORETURN_TOOLTIP}',
+    extensions: [
       'get_procedure_def_no_return',
       'procedure_context_menu',
       'procedure_rename',
       'procedure_vars',
     ],
-    'mutator': 'procedure_def_mutator',
+    mutator: 'procedure_def_mutator',
   },
   {
-    'type': 'procedures_defreturn',
-    'message0': '%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2',
-    'message1': '%{BKY_PROCEDURES_DEFRETURN_DO} %1',
-    'message2': '%{BKY_PROCEDURES_DEFRETURN_RETURN} %1',
-    'args0': [
+    type: 'procedures_defreturn',
+    message0: '%{BKY_PROCEDURES_DEFRETURN_TITLE} %1 %2',
+    message1: '%{BKY_PROCEDURES_DEFRETURN_DO} %1',
+    message2: '%{BKY_PROCEDURES_DEFRETURN_RETURN} %1',
+    args0: [
       {
-        'type': 'field_input',
-        'name': 'NAME',
-        'text': '',
+        type: 'field_input',
+        name: 'NAME',
+        text: '',
       },
       {
-        'type': 'input_dummy',
-        'name': 'TOP',
-      },
-    ],
-    'args1': [
-      {
-        'type': 'input_statement',
-        'name': 'STACK',
+        type: 'input_dummy',
+        name: 'TOP',
       },
     ],
-    'args2': [
+    args1: [
       {
-        'type': 'input_value',
-        'align': 'right',
-        'name': 'RETURN',
+        type: 'input_statement',
+        name: 'STACK',
       },
     ],
-    'style': 'procedure_blocks',
-    'helpUrl': '%{BKY_PROCEDURES_DEFRETURN_HELPURL}',
-    'tooltip': '%{BKY_PROCEDURES_DEFRETURN_TOOLTIP}',
-    'extensions': [
+    args2: [
+      {
+        type: 'input_value',
+        align: 'right',
+        name: 'RETURN',
+      },
+    ],
+    style: 'procedure_blocks',
+    helpUrl: '%{BKY_PROCEDURES_DEFRETURN_HELPURL}',
+    tooltip: '%{BKY_PROCEDURES_DEFRETURN_TOOLTIP}',
+    extensions: [
       'get_procedure_def_return',
       'procedure_context_menu',
       'procedure_rename',
       'procedure_vars',
     ],
-    'mutator': 'procedure_def_mutator',
+    mutator: 'procedure_def_mutator',
   },
 ]);
 
@@ -282,9 +282,9 @@ const procedureDefMutator = {
       this.argData_.forEach((arg) => {
         const model = arg.model;
         state['params'].push({
-          'name': model.name,
-          'id': model.getId(),
-          'argId': arg.argId,
+          name: model.name,
+          id: model.getId(),
+          argId: arg.argId,
         });
       });
     }

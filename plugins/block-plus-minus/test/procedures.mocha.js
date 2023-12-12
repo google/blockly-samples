@@ -351,13 +351,13 @@ suite('Procedure blocks', function () {
           {
             title: 'Minimal definition',
             json: {
-              'type': testSuite.defType,
+              type: testSuite.defType,
             },
             expectedJson: {
-              'type': testSuite.defType,
-              'id': '1',
-              'fields': {
-                'NAME': '',
+              type: testSuite.defType,
+              id: '1',
+              fields: {
+                NAME: '',
               },
             },
             assertBlockStructure: (block) => {
@@ -367,16 +367,16 @@ suite('Procedure blocks', function () {
           {
             title: 'Common definition',
             json: {
-              'type': testSuite.defType,
-              'fields': {
-                'NAME': 'do something',
+              type: testSuite.defType,
+              fields: {
+                NAME: 'do something',
               },
             },
             expectedJson: {
-              'type': testSuite.defType,
-              'id': '1',
-              'fields': {
-                'NAME': 'do something',
+              type: testSuite.defType,
+              id: '1',
+              fields: {
+                NAME: 'do something',
               },
             },
             assertBlockStructure: (block) => {
@@ -386,44 +386,44 @@ suite('Procedure blocks', function () {
           {
             title: 'With vars definition',
             json: {
-              'type': testSuite.defType,
-              'fields': {
-                'NAME': 'do something',
+              type: testSuite.defType,
+              fields: {
+                NAME: 'do something',
               },
-              'extraState': {
-                'params': [
+              extraState: {
+                params: [
                   {
-                    'name': 'x',
-                    'id': 'id1',
-                    'argId': 'arg1',
+                    name: 'x',
+                    id: 'id1',
+                    argId: 'arg1',
                   },
                   {
-                    'name': 'y',
-                    'id': 'id2',
-                    'argId': 'arg2',
+                    name: 'y',
+                    id: 'id2',
+                    argId: 'arg2',
                   },
                 ],
               },
             },
             expectedJson: {
-              'type': testSuite.defType,
-              'id': '1',
-              'fields': {
-                'NAME': 'do something',
-                'arg1': 'x',
-                'arg2': 'y',
+              type: testSuite.defType,
+              id: '1',
+              fields: {
+                NAME: 'do something',
+                arg1: 'x',
+                arg2: 'y',
               },
-              'extraState': {
-                'params': [
+              extraState: {
+                params: [
                   {
-                    'name': 'x',
-                    'id': 'id1',
-                    'argId': 'arg1',
+                    name: 'x',
+                    id: 'id1',
+                    argId: 'arg1',
                   },
                   {
-                    'name': 'y',
-                    'id': 'id2',
-                    'argId': 'arg2',
+                    name: 'y',
+                    id: 'id2',
+                    argId: 'arg2',
                   },
                 ],
               },
@@ -435,22 +435,22 @@ suite('Procedure blocks', function () {
           {
             title: 'No statements definition',
             json: {
-              'type': testSuite.defType,
-              'fields': {
-                'NAME': 'do something',
+              type: testSuite.defType,
+              fields: {
+                NAME: 'do something',
               },
-              'extraState': {
-                'hasStatements': false,
+              extraState: {
+                hasStatements: false,
               },
             },
             expectedJson: {
-              'type': testSuite.defType,
-              'id': '1',
-              'fields': {
-                'NAME': 'do something',
+              type: testSuite.defType,
+              id: '1',
+              fields: {
+                NAME: 'do something',
               },
-              'extraState': {
-                'hasStatements': false,
+              extraState: {
+                hasStatements: false,
               },
             },
             assertBlockStructure: (block) => {
@@ -460,13 +460,13 @@ suite('Procedure blocks', function () {
           {
             title: 'Minimal caller',
             json: {
-              'type': testSuite.callType,
+              type: testSuite.callType,
             },
             expectedJson: {
-              'type': testSuite.callType,
-              'id': '1',
-              'extraState': {
-                'name': '',
+              type: testSuite.callType,
+              id: '1',
+              extraState: {
+                name: '',
               },
             },
             assertBlockStructure: (block) => {
@@ -476,16 +476,16 @@ suite('Procedure blocks', function () {
           {
             title: 'Common caller',
             json: {
-              'type': testSuite.callType,
-              'extraState': {
-                'name': 'do something',
+              type: testSuite.callType,
+              extraState: {
+                name: 'do something',
               },
             },
             expectedJson: {
-              'type': testSuite.callType,
-              'id': '1',
-              'extraState': {
-                'name': 'do something',
+              type: testSuite.callType,
+              id: '1',
+              extraState: {
+                name: 'do something',
               },
             },
             assertBlockStructure: (block) => {
@@ -495,18 +495,18 @@ suite('Procedure blocks', function () {
           {
             title: 'With vars caller',
             json: {
-              'type': testSuite.callType,
-              'extraState': {
-                'name': 'do something',
-                'params': ['x', 'y'],
+              type: testSuite.callType,
+              extraState: {
+                name: 'do something',
+                params: ['x', 'y'],
               },
             },
             expectedJson: {
-              'type': testSuite.callType,
-              'id': '1',
-              'extraState': {
-                'name': 'do something',
-                'params': ['x', 'y'],
+              type: testSuite.callType,
+              id: '1',
+              extraState: {
+                name: 'do something',
+                params: ['x', 'y'],
               },
             },
             assertBlockStructure: (block) => {

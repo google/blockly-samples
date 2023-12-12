@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
     plugins: {
-      'toolbox': ContinuousToolbox,
-      'flyoutsVerticalToolbox': ContinuousFlyout,
-      'metricsManager': ContinuousMetrics,
+      toolbox: ContinuousToolbox,
+      flyoutsVerticalToolbox: ContinuousFlyout,
+      metricsManager: ContinuousMetrics,
     },
   };
   createPlayground(

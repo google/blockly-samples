@@ -184,11 +184,11 @@ suite('If block', function () {
       {
         title: 'No mutation',
         json: {
-          'type': 'controls_if',
+          type: 'controls_if',
         },
         expectedJson: {
-          'type': 'controls_if',
-          'id': '1',
+          type: 'controls_if',
+          id: '1',
         },
         assertBlockStructure: (block) => {
           assertIfBlockStructure(block, 1);
@@ -197,11 +197,11 @@ suite('If block', function () {
       {
         title: '2 elseif no else',
         json: {
-          'type': 'controls_if',
-          'extraState': {
-            'elseIfCount': 2,
+          type: 'controls_if',
+          extraState: {
+            elseIfCount: 2,
           },
-          'id': '1',
+          id: '1',
         },
         assertBlockStructure: (block) => {
           assertIfBlockStructure(block, 3);
@@ -210,12 +210,12 @@ suite('If block', function () {
       {
         title: '3 elseif with else',
         json: {
-          'type': 'controls_if',
-          'extraState': {
-            'elseIfCount': 3,
-            'hasElse': true,
+          type: 'controls_if',
+          extraState: {
+            elseIfCount: 3,
+            hasElse: true,
           },
-          'id': '1',
+          id: '1',
         },
         assertBlockStructure: (block) => {
           assertIfBlockStructure(block, 4, true);

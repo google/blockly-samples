@@ -34,14 +34,14 @@ module.exports = {
   ],
 
   globals: {
-    'Blockly': true,
-    'goog': true,
+    Blockly: true,
+    goog: true,
   },
 
   settings: {
     jsdoc: {
       tagNamePreference: {
-        'returns': 'returns',
+        returns: 'returns',
       },
       mode: 'closure',
     },
@@ -50,15 +50,15 @@ module.exports = {
   rules: {
     // http://eslint.org/docs/rules/
     'camelcase': 'warn',
-    'new-cap': ['error', {'capIsNewExceptionPattern': '^.*Error'}],
+    'new-cap': ['error', {capIsNewExceptionPattern: '^.*Error'}],
     // Allow TODO comments.
     'no-warning-comments': 'off',
     // Allow long import lines.
     'max-len': [
       'error',
       {
-        'ignorePattern': '^(import|export)',
-        'ignoreUrls': true,
+        ignorePattern: '^(import|export)',
+        ignoreUrls: true,
       },
     ],
     'no-invalid-this': 'off',
@@ -74,14 +74,14 @@ module.exports = {
     'jsdoc/require-returns': [
       'error',
       {
-        'forceRequireReturn': false,
+        forceRequireReturn: false,
       },
     ],
     'jsdoc/require-description': [
       'warn',
       {
         // Don't require descriptions if these tags are present.
-        'exemptedBy': ['inheritdoc', 'param', 'return', 'returns', 'type'],
+        exemptedBy: ['inheritdoc', 'param', 'return', 'returns', 'type'],
       },
     ],
     'jsdoc/check-tag-names': 'off',
@@ -91,10 +91,10 @@ module.exports = {
     'jsdoc/require-jsdoc': [
       'warn',
       {
-        'require': {
-          'FunctionDeclaration': true,
-          'ClassDeclaration': true,
-          'MethodDefinition': true,
+        require: {
+          FunctionDeclaration: true,
+          ClassDeclaration: true,
+          MethodDefinition: true,
         },
       },
     ],
@@ -140,25 +140,25 @@ module.exports = {
         '@typescript-eslint/array-type': [
           'error',
           {
-            'default': 'array-simple',
+            default: 'array-simple',
           },
         ],
         '@typescript-eslint/ban-ts-comment': 'error',
         '@typescript-eslint/ban-types': [
           'error',
           {
-            'types': {
-              'Object': {
-                'message': "Use {} or 'object' instead.",
+            types: {
+              Object: {
+                message: "Use {} or 'object' instead.",
               },
-              'String': {
-                'message': "Use 'string' instead.",
+              String: {
+                message: "Use 'string' instead.",
               },
-              'Number': {
-                'message': "Use 'number' instead.",
+              Number: {
+                message: "Use 'number' instead.",
               },
-              'Boolean': {
-                'message': "Use 'boolean' instead.",
+              Boolean: {
+                message: "Use 'boolean' instead.",
               },
             },
           },
@@ -167,20 +167,20 @@ module.exports = {
         '@typescript-eslint/naming-convention': [
           'error',
           {
-            'selector': 'default',
-            'format': ['camelCase', 'PascalCase'],
+            selector: 'default',
+            format: ['camelCase', 'PascalCase'],
           },
           {
-            'selector': 'class',
-            'format': ['PascalCase'],
+            selector: 'class',
+            format: ['PascalCase'],
           },
           {
             // Disallow starting interaces with 'I'
-            'selector': 'interface',
-            'format': ['PascalCase'],
-            'custom': {
-              'regex': '^I[A-Z]',
-              'match': false,
+            selector: 'interface',
+            format: ['PascalCase'],
+            custom: {
+              regex: '^I[A-Z]',
+              match: false,
             },
           },
         ],
@@ -188,13 +188,13 @@ module.exports = {
         '@typescript-eslint/member-delimiter-style': [
           'error',
           {
-            'multiline': {
-              'delimiter': 'semi',
-              'requireLast': true,
+            multiline: {
+              delimiter: 'semi',
+              requireLast: true,
             },
-            'singleline': {
-              'delimiter': 'semi',
-              'requireLast': false,
+            singleline: {
+              delimiter: 'semi',
+              requireLast: false,
             },
           },
         ],
@@ -221,7 +221,7 @@ module.exports = {
         '@typescript-eslint/consistent-type-definitions': 'error',
         '@typescript-eslint/explicit-member-accessibility': [
           'error',
-          {'accessibility': 'no-public'},
+          {accessibility: 'no-public'},
         ],
         '@typescript-eslint/no-require-imports': 'error',
         '@typescript-eslint/semi': ['error', 'always'],

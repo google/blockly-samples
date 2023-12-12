@@ -29,11 +29,11 @@ function createWorkspace(blocklyDiv, options) {
 document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: {
-      'kind': 'flyoutToolbox',
-      'contents': allBlocks.map((b) => {
+      kind: 'flyoutToolbox',
+      contents: allBlocks.map((b) => {
         return {
-          'kind': 'block',
-          'type': b,
+          kind: 'block',
+          type: b,
         };
       }),
     },

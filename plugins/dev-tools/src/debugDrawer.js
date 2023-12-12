@@ -233,12 +233,12 @@ export class DebugDrawer {
       Blockly.utils.dom.createSvgElement(
         'circle',
         {
-          'class': 'blockRenderDebug',
-          'cx': offset.x,
-          'cy': offset.y,
-          'r': size,
-          'fill': fill,
-          'stroke': colour,
+          class: 'blockRenderDebug',
+          cx: offset.x,
+          cy: offset.y,
+          r: size,
+          fill: fill,
+          stroke: colour,
         },
         this.svgRoot_,
       ),

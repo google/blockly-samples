@@ -14,30 +14,30 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_connections_stack_next',
-    'message0': '',
-    'nextStatement': null,
-    'colour': '#aaaaaa',
-    'tooltip': 'No Checks\n' + 'Can connect to any previous connection.',
+    type: 'test_connections_stack_next',
+    message0: '',
+    nextStatement: null,
+    colour: '#aaaaaa',
+    tooltip: 'No Checks\n' + 'Can connect to any previous connection.',
   },
   {
-    'type': 'test_connections_stack_blue',
-    'message0': '',
-    'previousStatement': 'nonePrev',
-    'nextStatement': 'greenRel',
-    'colour': 230,
-    'tooltip':
+    type: 'test_connections_stack_blue',
+    message0: '',
+    previousStatement: 'nonePrev',
+    nextStatement: 'greenRel',
+    colour: 230,
+    tooltip:
       'Prev: nonePrev\n' +
       'Next: greenRel\n' +
       'Next connection can accept yellow blocks but not red blocks.',
   },
   {
-    'type': 'test_connections_stack_yellow',
-    'message0': '',
-    'previousStatement': ['greenRel', 'yellowRel'],
-    'nextStatement': ['yellowRel', 'orangeRel'],
-    'colour': 60,
-    'tooltip':
+    type: 'test_connections_stack_yellow',
+    message0: '',
+    previousStatement: ['greenRel', 'yellowRel'],
+    nextStatement: ['yellowRel', 'orangeRel'],
+    colour: 60,
+    tooltip:
       'Prev: yellowRel, greenRel\n' +
       'Next: yellowRel, orangeRel\n' +
       'Prev can connect to yellow blocks and blue blocks, but not red' +
@@ -46,22 +46,22 @@ Blockly.defineBlocksWithJsonArray([
       ' blocks.',
   },
   {
-    'type': 'test_connections_stack_red',
-    'message0': '',
-    'previousStatement': 'orangeRel',
-    'nextStatement': 'noneNext',
-    'colour': 0,
-    'tooltip':
+    type: 'test_connections_stack_red',
+    message0: '',
+    previousStatement: 'orangeRel',
+    nextStatement: 'noneNext',
+    colour: 0,
+    tooltip:
       'Prev: orangeRel\n' +
       'Next: noneNext\n' +
       'Prev can connect to yellow blocks, but not blue blocks.',
   },
   {
-    'type': 'test_connections_stack_prev',
-    'message0': '',
-    'previousStatement': null,
-    'colour': '#aaaaaa',
-    'tooltip': 'No Checks\n' + 'Can connect to any input connection.',
+    type: 'test_connections_stack_prev',
+    message0: '',
+    previousStatement: null,
+    colour: '#aaaaaa',
+    tooltip: 'No Checks\n' + 'Can connect to any input connection.',
   },
 ]);
 
@@ -106,69 +106,69 @@ const insertConnectionStacks = function (button) {
  * The Stack connections category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Stack',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Stack',
+  contents: [
     {
-      'kind': 'LABEL',
-      'text': 'blocks have',
+      kind: 'LABEL',
+      text: 'blocks have',
     },
     {
-      'kind': 'SEP',
-      'gap': '-1',
+      kind: 'SEP',
+      gap: '-1',
     },
     {
-      'kind': 'LABEL',
-      'text': 'tooltips',
+      kind: 'LABEL',
+      text: 'tooltips',
     },
     {
-      'kind': 'BUTTON',
-      'text': 'insert',
-      'callbackkey': 'insertConnectionStacks',
+      kind: 'BUTTON',
+      text: 'insert',
+      callbackkey: 'insertConnectionStacks',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_stack_next',
+      kind: 'BLOCK',
+      type: 'test_connections_stack_next',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_stack_blue',
+      kind: 'BLOCK',
+      type: 'test_connections_stack_blue',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_stack_yellow',
+      kind: 'BLOCK',
+      type: 'test_connections_stack_yellow',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_stack_red',
+      kind: 'BLOCK',
+      type: 'test_connections_stack_red',
     },
     {
-      'kind': 'SEP',
-      'gap': '7',
+      kind: 'SEP',
+      gap: '7',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_connections_stack_prev',
+      kind: 'BLOCK',
+      type: 'test_connections_stack_prev',
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="test_connections_stack_yellow">
   <next>
     <block type="test_connections_stack_yellow" movable="false"></block>

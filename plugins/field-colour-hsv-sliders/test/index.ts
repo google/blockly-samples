@@ -14,9 +14,9 @@ import '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_colour_hsv_sliders', [
   {
-    'label': 'HSV Colour Test Blocks',
-    'args': {
-      'colour': '#ff0000',
+    label: 'HSV Colour Test Blocks',
+    args: {
+      colour: '#ff0000',
     },
   },
 ]);

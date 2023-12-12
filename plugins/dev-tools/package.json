@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "7.1.3",
+  "version": "7.1.4",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",

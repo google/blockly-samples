@@ -141,7 +141,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     this.textGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
       {
-        'class': 'blocklyEditableText',
+        class: 'blocklyEditableText',
       },
       this.fieldGroup_,
     );
@@ -242,10 +242,10 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
       const span = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.TEXT,
         {
-          'class': 'blocklyText blocklyMultilineText',
-          'x': constants.FIELD_BORDER_RECT_X_PADDING,
-          'y': y + constants.FIELD_BORDER_RECT_Y_PADDING,
-          'dy': constants.FIELD_TEXT_BASELINE,
+          class: 'blocklyText blocklyMultilineText',
+          x: constants.FIELD_BORDER_RECT_X_PADDING,
+          y: y + constants.FIELD_BORDER_RECT_Y_PADDING,
+          dy: constants.FIELD_TEXT_BASELINE,
         },
         textGroup,
       );
@@ -334,7 +334,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
       const actualEditorLines = String(this.value_).split('\n');
       const dummyTextElement = Blockly.utils.dom.createSvgElement(
         Blockly.utils.Svg.TEXT,
-        {'class': 'blocklyText blocklyMultilineText'},
+        {class: 'blocklyText blocklyMultilineText'},
       );
 
       for (let i = 0; i < actualEditorLines.length; i++) {

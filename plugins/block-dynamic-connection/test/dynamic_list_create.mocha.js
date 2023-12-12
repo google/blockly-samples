@@ -372,18 +372,18 @@ suite('List create block', function () {
     {
       title: 'two inputs one child - json',
       json: {
-        'type': 'dynamic_list_create',
-        'id': '1',
-        'extraState': {
-          'itemCount': 2,
+        type: 'dynamic_list_create',
+        id: '1',
+        extraState: {
+          itemCount: 2,
         },
-        'inputs': {
-          'ADD1': {
-            'block': {
-              'type': 'text',
-              'id': 2,
-              'fields': {
-                'TEXT': 'abc',
+        inputs: {
+          ADD1: {
+            block: {
+              type: 'text',
+              id: 2,
+              fields: {
+                TEXT: 'abc',
               },
             },
           },
@@ -396,45 +396,45 @@ suite('List create block', function () {
     {
       title: 'multiple inputs with children - json',
       json: {
-        'type': 'dynamic_list_create',
-        'id': '1',
-        'extraState': {
-          'itemCount': 4,
+        type: 'dynamic_list_create',
+        id: '1',
+        extraState: {
+          itemCount: 4,
         },
-        'inputs': {
-          'ADD0': {
-            'block': {
-              'type': 'text',
-              'id': '2',
-              'fields': {
-                'TEXT': 'a',
+        inputs: {
+          ADD0: {
+            block: {
+              type: 'text',
+              id: '2',
+              fields: {
+                TEXT: 'a',
               },
             },
           },
-          'ADD1': {
-            'block': {
-              'type': 'text',
-              'id': '3',
-              'fields': {
-                'TEXT': 'b',
+          ADD1: {
+            block: {
+              type: 'text',
+              id: '3',
+              fields: {
+                TEXT: 'b',
               },
             },
           },
-          'ADD2': {
-            'block': {
-              'type': 'text',
-              'id': '4',
-              'fields': {
-                'TEXT': 'c',
+          ADD2: {
+            block: {
+              type: 'text',
+              id: '4',
+              fields: {
+                TEXT: 'c',
               },
             },
           },
-          'ADD3': {
-            'block': {
-              'type': 'text',
-              'id': '5',
-              'fields': {
-                'TEXT': 'd',
+          ADD3: {
+            block: {
+              type: 'text',
+              id: '5',
+              fields: {
+                TEXT: 'd',
               },
             },
           },
@@ -447,89 +447,89 @@ suite('List create block', function () {
     {
       title: 'multiple inputs with children - json with stringified old XML',
       json: {
-        'type': 'dynamic_list_create',
-        'id': '1',
-        'extraState':
+        type: 'dynamic_list_create',
+        id: '1',
+        extraState:
           '<mutation inputs="ADD1,ADD5,ADD2,ADD4" next="6"></mutation>',
-        'inputs': {
-          'ADD1': {
-            'block': {
-              'type': 'text',
-              'id': '2',
-              'fields': {
-                'TEXT': 'a',
+        inputs: {
+          ADD1: {
+            block: {
+              type: 'text',
+              id: '2',
+              fields: {
+                TEXT: 'a',
               },
             },
           },
-          'ADD5': {
-            'block': {
-              'type': 'text',
-              'id': '3',
-              'fields': {
-                'TEXT': 'b',
+          ADD5: {
+            block: {
+              type: 'text',
+              id: '3',
+              fields: {
+                TEXT: 'b',
               },
             },
           },
-          'ADD2': {
-            'block': {
-              'type': 'text',
-              'id': '4',
-              'fields': {
-                'TEXT': 'c',
+          ADD2: {
+            block: {
+              type: 'text',
+              id: '4',
+              fields: {
+                TEXT: 'c',
               },
             },
           },
-          'ADD4': {
-            'block': {
-              'type': 'text',
-              'id': '5',
-              'fields': {
-                'TEXT': 'd',
+          ADD4: {
+            block: {
+              type: 'text',
+              id: '5',
+              fields: {
+                TEXT: 'd',
               },
             },
           },
         },
       },
       expectedJson: {
-        'type': 'dynamic_list_create',
-        'id': '1',
-        'extraState': {
-          'itemCount': 4,
+        type: 'dynamic_list_create',
+        id: '1',
+        extraState: {
+          itemCount: 4,
         },
-        'inputs': {
-          'ADD0': {
-            'block': {
-              'type': 'text',
-              'id': '2',
-              'fields': {
-                'TEXT': 'a',
+        inputs: {
+          ADD0: {
+            block: {
+              type: 'text',
+              id: '2',
+              fields: {
+                TEXT: 'a',
               },
             },
           },
-          'ADD1': {
-            'block': {
-              'type': 'text',
-              'id': '3',
-              'fields': {
-                'TEXT': 'b',
+          ADD1: {
+            block: {
+              type: 'text',
+              id: '3',
+              fields: {
+                TEXT: 'b',
               },
             },
           },
-          'ADD2': {
-            'block': {
-              'type': 'text',
-              'id': '4',
-              'fields': {
-                'TEXT': 'c',
+          ADD2: {
+            block: {
+              type: 'text',
+              id: '4',
+              fields: {
+                TEXT: 'c',
               },
             },
           },
-          'ADD3': {
-            'block': {
-              'type': 'text',
-              'id': '5',
-              'fields': {
-                'TEXT': 'd',
+          ADD3: {
+            block: {
+              type: 'text',
+              id: '5',
+              fields: {
+                TEXT: 'd',
               },
             },
           },
