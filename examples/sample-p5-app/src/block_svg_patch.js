@@ -16,16 +16,18 @@ const originalToString = Blockly.BlockSvg.prototype.toString;
  *     or else the normal collapsed block string.
  */
 Blockly.BlockSvg.prototype.toString = function() {
-  if (!this.llmSummary && !this.tryingToGetLlmSummary) {
-    this.tryingToGetLlmSummary = true;
-    getSummary(this).then(summary => {
-      this.tryingToGetLlmSummary = false;
-      this.llmSummary = summary;
-      this.renderEfficiently();
-    }).catch(reason => {
-      this.tryingToGetLlmSummary = false;
-      console.log(reason);
-    });
+  if (globalThis.doFanciness) {
+    if (!this.llmSummary && !this.tryingToGetLlmSummary) {
+      this.tryingToGetLlmSummary = true;
+      getSummary(this).then(summary => {
+        this.tryingToGetLlmSummary = false;
+        this.llmSummary = summary;
+        this.renderEfficiently();
+      }).catch(reason => {
+        this.tryingToGetLlmSummary = false;
+        console.log(reason);
+      });
+    }
   }
 
   return this.llmSummary ?? originalToString.call(this);
@@ -54,14 +56,14 @@ Blockly.BlockSvg.prototype.updateCollapsed_ = function() {
     icon.updateCollapsed();
   }
 
-  if (!collapsed) {
-    this.updateDisabled();
-    let i = 0;
-    while(this.getInput(collapsedInputName + i)) {
-      this.removeInput(collapsedInputName + i);
-    }
-    return;
+  this.updateDisabled();
+  let i = 0;
+  while(this.getInput(collapsedInputName + i)) {
+    this.removeInput(collapsedInputName + i);
+    i++;
   }
+
+  if (!collapsed) return;
 
   const text = this.toString();
   const strings = Blockly.utils.string.wrap(text, 50).split('\n');

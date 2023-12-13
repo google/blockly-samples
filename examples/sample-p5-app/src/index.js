@@ -165,7 +165,7 @@ const fancyCollapseOption = {
     return shouldExpand(scope) ? 'Expand ✨Fancily✨' :  "Summarize ✨Fancily✨";
   },
   preconditionFn: () => {return 'enabled'},
-  weight: 100,
+  weight: 4,
   id: 'FancyCollapse'
 }
 Blockly.ContextMenuRegistry.registry.register(fancyCollapseOption);
@@ -174,6 +174,9 @@ function shouldExpand(scope) {
   const ws = scope.block.workspace;
   const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
   for (const stack of stacks) {
+    if (!stack.first.previousConnection && stack.first.isCollapsed()) {
+      return true;
+    }
     for (const block of stack.blockList) {
       if (block.type === 'collapse') {
         return true;
@@ -184,7 +187,12 @@ function shouldExpand(scope) {
 }
 
 function fancyCollapse(stacks) {
+  globalThis.doFanciness = true;
   for (const stack of stacks) {
+    if (!stack.first.previousConnection) {
+      stack.first.setCollapsed(true);
+      continue;
+    }
     const prevParentConn = stack.first.previousConnection?.targetConnection;
     const prevDanglerConn = stack.last.nextConnection?.targetConnection;
     stack.first.previousConnection?.disconnect();
@@ -197,10 +205,15 @@ function fancyCollapse(stacks) {
     prevDanglerConn?.connect(newBlock.nextConnection);
     newBlock.setCollapsed(true);
   }
+  globalThis.doFanciness = false;
 }
 
 function fancyExpand(stacks) {
   for (const stack of stacks) {
+    if (!stack.first.previousConnection && stack.first.isCollapsed()) {
+      stack.first.setCollapsed(false);
+      continue;
+    }
     for (const block of stack.blockList) {
       const prevParentConn = block.previousConnection?.targetConnection;
       const prevDanglerConn = block.nextConnection?.targetConnection;
