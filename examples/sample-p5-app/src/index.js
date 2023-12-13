@@ -148,31 +148,75 @@ const getStringification = {
 }
 Blockly.ContextMenuRegistry.registry.register(getStringification);
 
-const fancyCollapse = {
+const fancyCollapseOption = {
   callback: function(scope) {
     const ws = scope.block.workspace;
     const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
-    for (const stack of stacks) {
-      const prevParentConn = stack.first.previousConnection?.targetConnection;
-      const prevDanglerConn = stack.last.nextConnection?.targetConnection;
-      stack.first.previousConnection?.disconnect();
-      stack.last.nextConnection?.disconnect();
-      const newBlock =
-        Blockly.serialization.blocks.append({'type': 'collapse'}, ws);
-      newBlock.getInput('COLLAPSE').connection.connect(
-          stack.first.previousConnection);
-      prevParentConn?.connect(newBlock.previousConnection);
-      prevDanglerConn?.connect(newBlock.nextConnection);
-      newBlock.setCollapsed(true);
+    if (shouldExpand(scope)) {
+      fancyExpand(stacks);
+    } else {
+      fancyCollapse(stacks);
     }
   },
   scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-  displayText: "Summarize ✨Fancily✨",
+  displayText: (scope) => {
+    return shouldExpand(scope) ? 'Expand ✨Fancily✨' :  "Summarize ✨Fancily✨";
+  },
   preconditionFn: () => {return 'enabled'},
   weight: 100,
   id: 'FancyCollapse'
 }
-Blockly.ContextMenuRegistry.registry.register(fancyCollapse);
+Blockly.ContextMenuRegistry.registry.register(fancyCollapseOption);
+
+function shouldExpand(scope) {
+  const ws = scope.block.workspace;
+  const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
+  for (const stack of stacks) {
+    for (const block of stack.blockList) {
+      if (block.type === 'collapse') {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function fancyCollapse(stacks) {
+  for (const stack of stacks) {
+    const prevParentConn = stack.first.previousConnection?.targetConnection;
+    const prevDanglerConn = stack.last.nextConnection?.targetConnection;
+    stack.first.previousConnection?.disconnect();
+    stack.last.nextConnection?.disconnect();
+    const newBlock =
+      Blockly.serialization.blocks.append({'type': 'collapse'}, ws);
+    newBlock.getInput('COLLAPSE').connection.connect(
+        stack.first.previousConnection);
+    prevParentConn?.connect(newBlock.previousConnection);
+    prevDanglerConn?.connect(newBlock.nextConnection);
+    newBlock.setCollapsed(true);
+  }
+}
+
+function fancyExpand(stacks) {
+  Blockly.Events.disable();
+  for (const stack of stacks) {
+    for (const block of stack.blockList) {
+      const prevParentConn = block.previousConnection?.targetConnection;
+      const prevDanglerConn = block.nextConnection?.targetConnection;
+      const childConn = block.getInput('COLLAPSE').connection.targetConnection;
+      block.getInput('COLLAPSE').connection.disconnect();
+      block.dispose();
+      childConn?.connect(prevParentConn);
+      let lastBlock = childConn.getSourceBlock();
+      while (lastBlock.nextConnection?.targetConnection) {
+        lastBlock = lastBlock.nextConnection.targetConnection.getSourceBlock();
+      }
+      prevDanglerConn.disconnect();
+      lastBlock?.nextConnection?.connect(prevDanglerConn);
+    }
+  }
+  Blockly.Events.enable();
+}
 
 // Load the initial state from storage and run the code.
 load(ws);
