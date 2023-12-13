@@ -20,7 +20,6 @@ Blockly.BlockSvg.prototype.toString = function() {
     this.tryingToGetLlmSummary = true;
     getSummary(this).then(summary => {
       this.tryingToGetLlmSummary = false;
-      // this.llmSummary = summary;
       this.llmSummary = summary;
       this.renderEfficiently();
     }).catch(reason => {
@@ -70,6 +69,8 @@ Blockly.BlockSvg.prototype.updateCollapsed_ = function() {
     this.appendDummyInput(collapsedInputName + i)
         .appendField(strings[i], collapsedFieldName + i);
   }
+
+  // Source code for handling appending the text.
   // const field = this.getField(collapsedFieldName);
   // if (field) {
   //   field.setValue(text);
