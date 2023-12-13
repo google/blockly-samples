@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import * as Blockly from 'blockly/core';
 
 /**
@@ -20,7 +19,12 @@ import * as Blockly from 'blockly/core';
  * @returns {string} Text describing blocks.
  */
 export function blocksToString(
-    block, stack = false, emptyToken = '<unspecified>', opt_maxLength, indent = '  ') {
+  block,
+  stack = false,
+  emptyToken = '<unspecified>',
+  opt_maxLength,
+  indent = '  ',
+) {
   const NEWLINE = Symbol();
   const INDENT = Symbol();
   const OUTDENT = Symbol();
@@ -43,7 +47,7 @@ export function blocksToString(
      */
     function shouldAddParentheses(connection) {
       let checks =
-          connection.getCheck() ?? connection.targetConnection?.getCheck();
+        connection.getCheck() ?? connection.targetConnection?.getCheck();
       return checks?.includes('Boolean') || checks?.includes('Number');
     }
 
@@ -51,7 +55,7 @@ export function blocksToString(
       if (input.name == Blockly.constants.COLLAPSED_INPUT_NAME) {
         continue;
       }
-      tokens.push(...input.fieldRow.map(field => field.getText()));
+      tokens.push(...input.fieldRow.map((field) => field.getText()));
 
       if (input.connection) {
         const child = input.connection.targetBlock();
@@ -85,8 +89,11 @@ export function blocksToString(
   // parentheses around single field blocks.
   // E.g. ['repeat', '(', '10', ')', 'times', 'do', '?']
   for (let i = 2; i < tokens.length; i++) {
-    if (tokens[i - 2] === '(' && tokens[i] === ')' &&
-        typeof tokens[i - 1] === 'string') {
+    if (
+      tokens[i - 2] === '(' &&
+      tokens[i] === ')' &&
+      typeof tokens[i - 1] === 'string'
+    ) {
       tokens[i - 2] = tokens[i - 1];
       tokens.splice(i - 1, 2);
     }
@@ -98,7 +105,7 @@ export function blocksToString(
   let prev = undefined;
   for (const token of tokens) {
     if (token === NEWLINE) {
-        text += '\n' + indent.repeat(depth);
+      text += '\n' + indent.repeat(depth);
     } else if (token === INDENT) {
       depth++;
       text += indent;

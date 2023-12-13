@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
 import * as Blockly from 'blockly';
 import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
@@ -12,8 +11,12 @@ import {toolbox} from './toolbox';
 import {blocks} from './blocks/p5';
 import {blocksToString} from './blocks_to_string.js';
 import {forBlock} from './generators/javascript';
-import {Multiselect, MultiselectBlockDragger, blockSelectionWeakMap} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
-import { combineBlocks } from './contiguous.ts';
+import {
+  Multiselect,
+  MultiselectBlockDragger,
+  blockSelectionWeakMap,
+} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
+import {combineBlocks} from './contiguous.ts';
 import p5 from 'p5';
 import './index.css';
 import './block_svg_patch';
@@ -40,8 +43,10 @@ const options = {
   multiselectIcon: {
     hideIcon: false,
     weight: 3,
-    enabledIcon: 'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/select.svg',
-    disabledIcon: 'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/unselect.svg',
+    enabledIcon:
+      'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/select.svg',
+    disabledIcon:
+      'https://github.com/mit-cml/workspace-multiselect/raw/main/test/media/unselect.svg',
   },
 
   multiselectCopyPaste: {
@@ -50,7 +55,7 @@ const options = {
     // Show the copy/paste menu entries (true by default).
     menu: true,
   },
-}
+};
 
 const ws = Blockly.inject(blocklyDiv, options);
 
@@ -78,37 +83,46 @@ const runCode = () => {
 // Disable blocks that aren't inside the setup or draw loops.
 ws.addChangeListener(Blockly.Events.disableOrphans);
 
-const getContiguousOption =
-{
-    callback: function(scope) {
-      console.log(combineBlocks(scope.block.workspace, blockSelectionWeakMap.get(scope.block.workspace)));
-    },
-    scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-    displayText: "Get lists of contiguous blocks",
-    preconditionFn: () => {return 'enabled'},
-    weight: 100,
-    id: 'getContiguous'
-}
+const getContiguousOption = {
+  callback: function (scope) {
+    console.log(
+      combineBlocks(
+        scope.block.workspace,
+        blockSelectionWeakMap.get(scope.block.workspace),
+      ),
+    );
+  },
+  scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+  displayText: 'Get lists of contiguous blocks',
+  preconditionFn: () => {
+    return 'enabled';
+  },
+  weight: 100,
+  id: 'getContiguous',
+};
 Blockly.ContextMenuRegistry.registry.register(getContiguousOption);
 
 const getJSONState = {
-  callback: function(scope) {
+  callback: function (scope) {
     const ws = scope.block.workspace;
     const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
-    let json = Blockly.serialization.blocks.save(
-        stack.blockList[0], {addNextBlocks: false});
+    let json = Blockly.serialization.blocks.save(stack.blockList[0], {
+      addNextBlocks: false,
+    });
     let currentBlock = json;
     for (let i = 1; i < stack.blockList.length; i++) {
       currentBlock['next'] = {};
       currentBlock['next']['block'] = Blockly.serialization.blocks.save(
-          stack.blockList[0], {addNextBlocks: false});
+        stack.blockList[0],
+        {addNextBlocks: false},
+      );
       currentBlock = currentBlock['next'];
     }
     // Output to the console.
     console.log(JSON.stringify(json));
   },
   scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-  displayText: "Generate JSON State",
+  displayText: 'Generate JSON State',
   preconditionFn: (scope) => {
     const ws = scope.block.workspace;
     const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
@@ -118,12 +132,12 @@ const getJSONState = {
     return 'disabled';
   },
   weight: 100,
-  id: 'JSONState'
-}
+  id: 'JSONState',
+};
 Blockly.ContextMenuRegistry.registry.register(getJSONState);
 
 const getStringification = {
-  callback: function(scope) {
+  callback: function (scope) {
     const ws = scope.block.workspace;
     const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
     let str = '';
@@ -134,7 +148,7 @@ const getStringification = {
     console.log(str);
   },
   scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-  displayText: "Generate Code Text",
+  displayText: 'Generate Code Text',
   preconditionFn: (scope) => {
     const ws = scope.block.workspace;
     const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
@@ -144,12 +158,12 @@ const getStringification = {
     return 'disabled';
   },
   weight: 100,
-  id: 'Stringification'
-}
+  id: 'Stringification',
+};
 Blockly.ContextMenuRegistry.registry.register(getStringification);
 
 const fancyCollapseOption = {
-  callback: function(scope) {
+  callback: function (scope) {
     const ws = scope.block.workspace;
     const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
     if (shouldExpand(scope)) {
@@ -160,12 +174,14 @@ const fancyCollapseOption = {
   },
   scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
   displayText: (scope) => {
-    return shouldExpand(scope) ? 'Expand ✨Fancily✨' :  "Summarize ✨Fancily✨";
+    return shouldExpand(scope) ? 'Expand ✨Fancily✨' : 'Summarize ✨Fancily✨';
   },
-  preconditionFn: () => {return 'enabled'},
+  preconditionFn: () => {
+    return 'enabled';
+  },
   weight: 100,
-  id: 'FancyCollapse'
-}
+  id: 'FancyCollapse',
+};
 Blockly.ContextMenuRegistry.registry.register(fancyCollapseOption);
 
 function shouldExpand(scope) {
@@ -187,10 +203,13 @@ function fancyCollapse(stacks) {
     const prevDanglerConn = stack.last.nextConnection?.targetConnection;
     stack.first.previousConnection?.disconnect();
     stack.last.nextConnection?.disconnect();
-    const newBlock =
-      Blockly.serialization.blocks.append({'type': 'collapse'}, ws);
-    newBlock.getInput('COLLAPSE').connection.connect(
-        stack.first.previousConnection);
+    const newBlock = Blockly.serialization.blocks.append(
+      {'type': 'collapse'},
+      ws,
+    );
+    newBlock
+      .getInput('COLLAPSE')
+      .connection.connect(stack.first.previousConnection);
     prevParentConn?.connect(newBlock.previousConnection);
     prevDanglerConn?.connect(newBlock.nextConnection);
     newBlock.setCollapsed(true);
@@ -230,19 +249,20 @@ ws.addChangeListener((e) => {
   save(ws);
 });
 
-
 // Whenever the workspace changes meaningfully, run the code again.
 ws.addChangeListener((e) => {
   // Don't run the code when the workspace finishes loading; we're
   // already running it once when the application starts.
   // Don't run the code during drags; we might have invalid state.
-  if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING ||
-    ws.isDragging()) {
+  if (
+    e.isUiEvent ||
+    e.type == Blockly.Events.FINISHED_LOADING ||
+    ws.isDragging()
+  ) {
     return;
   }
   runCode();
 });
-
 
 // Add some things to the global namespace for hacking convenience.
 Object.assign(globalThis, {Blockly, blocksToString});

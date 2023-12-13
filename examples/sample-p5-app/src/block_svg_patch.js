@@ -15,27 +15,28 @@ const originalToString = Blockly.BlockSvg.prototype.toString;
  * @returns The LLM-generated summary of the block if it exists,
  *     or else the normal collapsed block string.
  */
-Blockly.BlockSvg.prototype.toString = function() {
+Blockly.BlockSvg.prototype.toString = function () {
   if (!this.llmSummary && !this.tryingToGetLlmSummary) {
     this.tryingToGetLlmSummary = true;
-    getSummary(this).then(summary => {
-      this.tryingToGetLlmSummary = false;
-      this.llmSummary = summary;
-      this.renderEfficiently();
-    }).catch(reason => {
-      this.tryingToGetLlmSummary = false;
-      console.log(reason);
-    });
+    getSummary(this)
+      .then((summary) => {
+        this.tryingToGetLlmSummary = false;
+        this.llmSummary = summary;
+        this.renderEfficiently();
+      })
+      .catch((reason) => {
+        this.tryingToGetLlmSummary = false;
+        console.log(reason);
+      });
   }
 
   return this.llmSummary ?? originalToString.call(this);
 };
 
 const originalCollapse = Blockly.BlockSvg.prototype.setCollapsed;
-Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
+Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
   // If we're expanding the block, clear its llmSummary because
   // it might change while it is uncollapsed.
   if (!collapsed) this.llmSummary = null;
   originalCollapse.call(this, collapsed);
 };
-

@@ -14,7 +14,7 @@ const collapse = {
   'nextStatement': null,
   'previousStatement': null,
   'colour': '#ccc',
-}
+};
 
 // p5 Basic Setup Blocks
 
@@ -33,7 +33,7 @@ const p5SetupJson = {
 };
 
 const p5Setup = {
-  init: function() {
+  init: function () {
     this.jsonInit(p5SetupJson);
     // The setup block can't be removed.
     this.setDeletable(false);
@@ -55,7 +55,7 @@ const p5DrawJson = {
 };
 
 const p5Draw = {
-  init: function() {
+  init: function () {
     this.jsonInit(p5DrawJson);
     // The draw block can't be removed.
     this.setDeletable(false);
@@ -89,7 +89,7 @@ const p5CanvasJson = {
 };
 
 const p5Canvas = {
-  init: function() {
+  init: function () {
     this.jsonInit(p5CanvasJson);
     // The canvas block can't be moved or disconnected from its parent.
     this.setMovable(false);
@@ -113,7 +113,6 @@ const background = {
   'helpUrl': '',
 };
 
-
 const stroke = {
   'type': 'p5_stroke',
   'message0': 'set stroke colour to %1',
@@ -130,7 +129,6 @@ const stroke = {
   'helpUrl': '',
 };
 
-
 const fill = {
   'type': 'p5_fill',
   'message0': 'set fill colour to %1',
@@ -146,7 +144,6 @@ const fill = {
   'tooltip': 'Set the fill colour',
   'helpUrl': '',
 };
-
 
 const point = {
   'type': 'p5_point',
@@ -172,7 +169,6 @@ const point = {
   'tooltip': 'Draw a point on the canvas.',
   'helpUrl': 'https://p5js.org/reference/#/p5/point',
 };
-
 
 const line = {
   'type': 'p5_line',
@@ -208,7 +204,6 @@ const line = {
   'tooltip': 'Draw a line on the canvas.',
   'helpUrl': 'https://p5js.org/reference/#/p5/line',
 };
-
 
 const triangle = {
   'type': 'p5_triangle',
@@ -255,7 +250,6 @@ const triangle = {
   'helpUrl': 'https://p5js.org/reference/#/p5/triangle',
 };
 
-
 const rect = {
   'type': 'p5_rect',
   'message0': 'draw rectangle %1 x %2 y %3 width %4 height %5',
@@ -290,7 +284,6 @@ const rect = {
   'tooltip': 'Draw a rectangle on the canvas.',
   'helpUrl': 'https://p5js.org/reference/#/p5/rect',
 };
-
 
 const ellipse = {
   'type': 'p5_ellipse',
@@ -372,7 +365,6 @@ const arc = {
   'helpUrl': 'https://p5js.org/reference/#/p5/arc',
 };
 
-
 const print = {
   'type': 'p5_print',
   'message0': 'print text %1 x %2 y %3',
@@ -402,9 +394,23 @@ const print = {
 
 // Create the block definitions for all the JSON-only blocks.
 // This does not register their definitions with Blockly.
-const jsonBlocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-    [collapse, background, stroke, fill, point, line, triangle, rect, ellipse, arc, print]);
+const jsonBlocks = Blockly.common.createBlockDefinitionsFromJsonArray([
+  collapse,
+  background,
+  stroke,
+  fill,
+  point,
+  line,
+  triangle,
+  rect,
+  ellipse,
+  arc,
+  print,
+]);
 
 export const blocks = {
-  'p5_setup': p5Setup, 'p5_draw': p5Draw, 'p5_canvas': p5Canvas, ...jsonBlocks,
+  'p5_setup': p5Setup,
+  'p5_draw': p5Draw,
+  'p5_canvas': p5Canvas,
+  ...jsonBlocks,
 };

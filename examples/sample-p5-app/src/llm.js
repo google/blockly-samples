@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const url = `https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=${AI_TOKEN}`
+const url = `https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key=${AI_TOKEN}`;
 
 export async function testLLMCall() {
   const options = {
@@ -13,7 +13,7 @@ export async function testLLMCall() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      "prompt": { "text": "Tell me an animal fact"}
+      'prompt': {'text': 'Tell me an animal fact'},
     }),
   };
 
@@ -27,10 +27,12 @@ export async function getSummary(block) {
   const options = {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-        "prompt": { "text": `Tell me an animal fact and start your response with "${block.type}"`}
+      'prompt': {
+        'text': `Tell me an animal fact and start your response with "${block.type}"`,
+      },
     }),
   };
 
