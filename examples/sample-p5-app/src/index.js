@@ -11,7 +11,8 @@ import {save, load} from './serialization';
 import {toolbox} from './toolbox';
 import {blocks} from './blocks/p5';
 import {forBlock} from './generators/javascript';
-import {Multiselect, MultiselectBlockDragger} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
+import {Multiselect, MultiselectBlockDragger, blockSelectionWeakMap} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
+import { combineBlocks } from './contiguous.ts';
 import p5 from 'p5';
 import './index.css';
 import './block_svg_patch';
@@ -75,6 +76,19 @@ const runCode = () => {
 
 // Disable blocks that aren't inside the setup or draw loops.
 ws.addChangeListener(Blockly.Events.disableOrphans);
+
+const getContiguousOption = 
+{
+    callback: function(scope) {
+      console.log(combineBlocks(scope.block.workspace, blockSelectionWeakMap.get(scope.block.workspace)));
+    },
+    scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    displayText: "Get lists of contiguous blocks",
+    preconditionFn: () => {return 'enabled'},
+    weight: 100,
+    id: 'getContiguous'
+}
+Blockly.ContextMenuRegistry.registry.register(getContiguousOption);
 
 // Load the initial state from storage and run the code.
 load(ws);
