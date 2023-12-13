@@ -13,7 +13,7 @@ const collapse = {
   ],
   'nextStatement': null,
   'previousStatement': null,
-  'colour': '#ccc',
+  'colour': '#444',
 }
 
 // p5 Basic Setup Blocks
