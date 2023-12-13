@@ -96,12 +96,12 @@ const getJSONState = {
     const ws = scope.block.workspace;
     const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
     let json = Blockly.serialization.blocks.save(
-        stack.blockList[0], {addNextBlocks: false});
+        stack.blockList[0], {doFullSerialization: true, addNextBlocks: false});
     let currentBlock = json;
     for (let i = 1; i < stack.blockList.length; i++) {
       currentBlock['next'] = {};
       currentBlock['next']['block'] = Blockly.serialization.blocks.save(
-          stack.blockList[0], {addNextBlocks: false});
+          stack.blockList[0], {doFullSerialization: true, addNextBlocks: false});
       currentBlock = currentBlock['next'];
     }
     // Output to the console.
