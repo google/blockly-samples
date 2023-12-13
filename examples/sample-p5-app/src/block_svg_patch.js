@@ -20,6 +20,7 @@ Blockly.BlockSvg.prototype.toString = function() {
     this.tryingToGetLlmSummary = true;
     getSummary(this).then(summary => {
       this.tryingToGetLlmSummary = false;
+      // this.llmSummary = summary;
       this.llmSummary = summary;
       this.renderEfficiently();
     }).catch(reason => {
@@ -38,3 +39,44 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
   if (!collapsed) this.llmSummary = null;
   originalCollapse.call(this, collapsed);
 };
+
+Blockly.BlockSvg.prototype.updateCollapsed_ = function() {
+  const collapsed = this.isCollapsed();
+  const collapsedInputName = Blockly.constants.COLLAPSED_INPUT_NAME;
+  const collapsedFieldName = Blockly.constants.COLLAPSED_FIELD_NAME;
+
+  for (let i = 0, input; (input = this.inputList[i]); i++) {
+    if (input.name !== collapsedInputName) {
+      input.setVisible(!collapsed);
+    }
+  }
+
+  for (const icon of this.getIcons()) {
+    icon.updateCollapsed();
+  }
+
+  if (!collapsed) {
+    this.updateDisabled();
+    let i = 0;
+    while(this.getInput(collapsedInputName + i)) {
+      this.removeInput(collapsedInputName + i);
+    }
+    return;
+  }
+
+  const text = this.toString();
+  const strings = Blockly.utils.string.wrap(text, 50).split('\n');
+  for (let i = 0; i < strings.length; i++) {
+    this.appendDummyInput(collapsedInputName + i)
+        .appendField(strings[i], collapsedFieldName + i);
+  }
+  // const field = this.getField(collapsedFieldName);
+  // if (field) {
+  //   field.setValue(text);
+  //   return;
+  // }
+  // const input =
+  //   this.getInput(collapsedInputName) ||
+  //   this.appendDummyInput(collapsedInputName);
+  // input.appendField(new FieldLabel(text), collapsedFieldName);
+}
