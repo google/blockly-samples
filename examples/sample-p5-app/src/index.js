@@ -90,6 +90,71 @@ const getContiguousOption =
 }
 Blockly.ContextMenuRegistry.registry.register(getContiguousOption);
 
+const getJSONState = {
+  callback: function(scope) {
+    const ws = scope.block.workspace;
+    const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
+    const json = [];
+    for (const block of stack.blockList) {
+      json.push(Blockly.serialization.blocks.save(block));
+    }
+    // Output to the console.
+    console.log(JSON.stringify(json));
+  },
+  scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+  displayText: "Generate JSON State",
+  preconditionFn: (scope) => {
+    const ws = scope.block.workspace;
+    const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
+    if (stacks.length === 1) {
+      return 'enabled';
+    }
+    return 'disabled';
+  },
+  weight: 100,
+  id: 'JSONState'
+}
+Blockly.ContextMenuRegistry.registry.register(getJSONState);
+
+const getStringification = {
+  callback: function(scope) {
+    const ws = scope.block.workspace;
+    const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
+    let str = '';
+    for (const block of stack.blockList) {
+      // TODO: Replace with new toString function!!!
+      str += block.toString();
+    }
+    // Output to the console.
+    console.log(str);
+  },
+  scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+  displayText: "Generate Code Text",
+  preconditionFn: (scope) => {
+    const ws = scope.block.workspace;
+    const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
+    if (stacks.length === 1) {
+      return 'enabled';
+    }
+    return 'disabled';
+  },
+  weight: 100,
+  id: 'Stringification'
+}
+Blockly.ContextMenuRegistry.registry.register(getStringification);
+
+/* const fancyCollapse = {
+  callback: function(scope) {
+    const ws = scope.block.workspace;
+    combineBlocks(ws, block.blockSelectionWeakMap.get(ws));
+  },
+  scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+  displayText: "Get lists of contiguous blocks",
+  preconditionFn: () => {return 'enabled'},
+  weight: 100,
+  id: 'getContiguous'
+} */
+
 // Load the initial state from storage and run the code.
 load(ws);
 runCode();
