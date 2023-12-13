@@ -38,4 +38,3 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
   if (!collapsed) this.llmSummary = null;
   originalCollapse.call(this, collapsed);
 };
-
