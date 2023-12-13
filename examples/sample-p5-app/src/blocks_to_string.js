@@ -8,19 +8,19 @@
 import * as Blockly from 'blockly/core';
 
 /**
- * Create a human-readable text representation of a stack of blocks and their
- * children.
+ * Create a human-readable text representation of a block or stack of
+ * blocks (and all their children).
  *
  * @param {!Block} block Top block of stack.
- * @param {string} indent Whitespace or other text to indent statements from
- *     statement inputs by.
- * @param {string} emptyToken The placeholder string used to denote an empty
- *     input.
+ * @paam {boolean} stack Do whole stack?  Defaults to false.
+ * @param {string} emptyToken The placeholder string used to denote an
+ *     empty input.
+ * @param {string} indent Whitespace or other text to indent
+ *     statements from statement inputs by.  Defaults to ' '.
  * @returns {string} Text describing blocks.
  */
 export function blocksToString(
-    block, opt_maxLength, indent = '  ', emptyToken = '<unspecified>') {
-
+    block, stack = false, emptyToken = '<unspecified>', opt_maxLength, indent = '  ') {
   const NEWLINE = Symbol();
   const INDENT = Symbol();
   const OUTDENT = Symbol();
@@ -30,8 +30,11 @@ export function blocksToString(
   /**
    * Converts stack starting at given block to tokens.  Pushes tokens onto
    * tokens array.
+   *
+   * @param {Block} block The block to tokenize
+   * @param {boolean} stack Also tokenize the next block?
    */
-  function blocksToTokens(block, stringifyNext = true) {
+  function blocksToTokens(block, stack) {
     /**
      * Whether or not to add parentheses around an input.
      *
@@ -59,7 +62,7 @@ export function blocksToString(
         if (child) {
           const shouldAddParens = shouldAddParentheses(input.connection);
           if (shouldAddParens) tokens.push('(');
-          blocksToTokens(child);
+          blocksToTokens(child, true);
           if (shouldAddParens) tokens.push(')');
         } else {
           tokens.push(emptyToken);
@@ -70,13 +73,13 @@ export function blocksToString(
       }
     }
     const nextBlock = block.getNextBlock();
-    if (nextBlock && stringifyNext) {
+    if (nextBlock && stack) {
       tokens.push(NEWLINE);
-      blocksToTokens(nextBlock);
+      blocksToTokens(nextBlock, true);
     }
   }
 
-  blocksToTokens(block, false);
+  blocksToTokens(block, stack);
 
   // Run through our tokens array and simplify expression to remove
   // parentheses around single field blocks.
