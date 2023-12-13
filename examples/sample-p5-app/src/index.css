@@ -27,6 +27,7 @@ pre, code {
     flex: 0 0 400px;
     overflow: auto;
     margin: 1rem;
+    overflow: hidden;
 }
 
 #generatedCode {
@@ -36,4 +37,9 @@ pre, code {
 
 #output {
     height: 50%;
+    border: 1px solid grey;
+}
+
+#project-select {
+  margin-bottom: 2px;
 }

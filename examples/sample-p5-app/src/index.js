@@ -17,6 +17,7 @@ import { combineBlocks } from './contiguous.ts';
 import p5 from 'p5';
 import './index.css';
 import './block_svg_patch';
+import {loadProject} from './load_projects';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks(blocks);
@@ -27,6 +28,7 @@ javascriptGenerator.addReservedWords('sketch');
 const codeDiv = document.getElementById('generatedCode').firstChild;
 const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
+document.getElementById('project-select').addEventListener('change', loadProject);
 
 const options = {
   collapse: true,
@@ -89,7 +91,7 @@ const getContiguousOption =
     weight: 100,
     id: 'getContiguous'
 }
-Blockly.ContextMenuRegistry.registry.register(getContiguousOption);
+// Blockly.ContextMenuRegistry.registry.register(getContiguousOption);
 
 const getJSONState = {
   callback: function(scope) {
