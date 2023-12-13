@@ -78,7 +78,7 @@ const runCode = () => {
 // Disable blocks that aren't inside the setup or draw loops.
 ws.addChangeListener(Blockly.Events.disableOrphans);
 
-const getContiguousOption = 
+const getContiguousOption =
 {
     callback: function(scope) {
       console.log(combineBlocks(scope.block.workspace, blockSelectionWeakMap.get(scope.block.workspace)));
@@ -123,8 +123,7 @@ const getStringification = {
     const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
     let str = '';
     for (const block of stack.blockList) {
-      // TODO: Replace with new toString function!!!
-      str += block.toString();
+      str += blocksToString(block);
     }
     // Output to the console.
     console.log(str);
