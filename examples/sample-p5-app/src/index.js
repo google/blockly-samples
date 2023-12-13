@@ -10,6 +10,7 @@ import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
 import {blocks} from './blocks/p5';
+import {blocksToString} from './blocks_to_string.js';
 import {forBlock} from './generators/javascript';
 import {Multiselect, MultiselectBlockDragger, blockSelectionWeakMap} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
 import { combineBlocks } from './contiguous.ts';
@@ -193,3 +194,7 @@ ws.addChangeListener((e) => {
   }
   runCode();
 });
+
+
+// Add some things to the global namespace for hacking convenience.
+Object.assign(globalThis, {Blockly, blocksToString});
