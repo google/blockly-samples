@@ -10,6 +10,7 @@ import {javascriptGenerator} from 'blockly/javascript';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
 import {blocks} from './blocks/p5';
+import {blocksToString} from './blocks_to_string.js';
 import {forBlock} from './generators/javascript';
 import {Multiselect, MultiselectBlockDragger, blockSelectionWeakMap} from '@mit-app-inventor/blockly-plugin-workspace-multiselect';
 import { combineBlocks } from './contiguous.ts';
@@ -77,7 +78,7 @@ const runCode = () => {
 // Disable blocks that aren't inside the setup or draw loops.
 ws.addChangeListener(Blockly.Events.disableOrphans);
 
-const getContiguousOption = 
+const getContiguousOption =
 {
     callback: function(scope) {
       console.log(combineBlocks(scope.block.workspace, blockSelectionWeakMap.get(scope.block.workspace)));
@@ -122,8 +123,7 @@ const getStringification = {
     const stack = combineBlocks(ws, blockSelectionWeakMap.get(ws))[0];
     let str = '';
     for (const block of stack.blockList) {
-      // TODO: Replace with new toString function!!!
-      str += block.toString();
+      str += blocksToString(block);
     }
     // Output to the console.
     console.log(str);
@@ -193,3 +193,7 @@ ws.addChangeListener((e) => {
   }
   runCode();
 });
+
+
+// Add some things to the global namespace for hacking convenience.
+Object.assign(globalThis, {Blockly, blocksToString});

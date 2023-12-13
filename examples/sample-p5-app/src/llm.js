@@ -13,10 +13,10 @@ export async function testLLMCall() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      "prompt": { "text": "Tell me an animal fact"} 
+      "prompt": { "text": "Tell me an animal fact"}
     }),
   };
-   
+
   const response = await fetch(url, options);
   const data = await response.json();
   console.log(data);
@@ -30,10 +30,10 @@ export async function getSummary(block) {
         'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-        "prompt": { "text": `Tell me an animal fact and start your response with "${block.type}"`} 
+        "prompt": { "text": `Tell me an animal fact and start your response with "${block.type}"`}
     }),
   };
-      
+
   const response = await fetch(url, options);
   const data = await response.json();
   console.log(data);
