@@ -198,24 +198,25 @@ function fancyCollapse(stacks) {
 }
 
 function fancyExpand(stacks) {
-  Blockly.Events.disable();
   for (const stack of stacks) {
     for (const block of stack.blockList) {
       const prevParentConn = block.previousConnection?.targetConnection;
       const prevDanglerConn = block.nextConnection?.targetConnection;
       const childConn = block.getInput('COLLAPSE').connection.targetConnection;
+
+      block.previousConnection?.disconnect();
       block.getInput('COLLAPSE').connection.disconnect();
+      block.nextConnection?.disconnect();
       block.dispose();
+
       childConn?.connect(prevParentConn);
       let lastBlock = childConn.getSourceBlock();
       while (lastBlock.nextConnection?.targetConnection) {
         lastBlock = lastBlock.nextConnection.targetConnection.getSourceBlock();
       }
-      prevDanglerConn.disconnect();
       lastBlock?.nextConnection?.connect(prevDanglerConn);
     }
   }
-  Blockly.Events.enable();
 }
 
 // Load the initial state from storage and run the code.
