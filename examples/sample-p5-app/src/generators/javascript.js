@@ -11,6 +11,10 @@ import {Order} from 'blockly/javascript';
 // This file has no side effects!
 export const forBlock = Object.create(null);
 
+forBlock['collapse'] = function(block, generator) {
+  return generator.statementToCode(block, 'COLLAPSE');
+}
+
 forBlock['p5_print'] = function(block, generator) {
   const msg = generator.valueToCode(block, 'TEXT',
       Order.NONE) || '\'\'';

@@ -1,5 +1,21 @@
 import * as Blockly from 'blockly/core';
 
+// Dummy collapse block
+
+const collapse = {
+  'type': 'collapse',
+  'message0': '%1',
+  'args0': [
+    {
+      'type': 'input_statement',
+      'name': 'COLLAPSE',
+    },
+  ],
+  'nextStatement': null,
+  'previousStatement': null,
+  'colour': '#ccc',
+}
+
 // p5 Basic Setup Blocks
 
 const p5SetupJson = {
@@ -387,7 +403,7 @@ const print = {
 // Create the block definitions for all the JSON-only blocks.
 // This does not register their definitions with Blockly.
 const jsonBlocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-    [background, stroke, fill, point, line, triangle, rect, ellipse, arc, print]);
+    [collapse, background, stroke, fill, point, line, triangle, rect, ellipse, arc, print]);
 
 export const blocks = {
   'p5_setup': p5Setup, 'p5_draw': p5Draw, 'p5_canvas': p5Canvas, ...jsonBlocks,

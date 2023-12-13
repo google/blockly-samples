@@ -143,17 +143,31 @@ const getStringification = {
 }
 Blockly.ContextMenuRegistry.registry.register(getStringification);
 
-/* const fancyCollapse = {
+const fancyCollapse = {
   callback: function(scope) {
     const ws = scope.block.workspace;
-    combineBlocks(ws, block.blockSelectionWeakMap.get(ws));
+    const stacks = combineBlocks(ws, blockSelectionWeakMap.get(ws));
+    for (const stack of stacks) {
+      const prevParentConn = stack.first.previousConnection?.targetConnection;
+      const prevDanglerConn = stack.last.nextConnection?.targetConnection;
+      stack.first.previousConnection?.disconnect();
+      stack.last.nextConnection?.disconnect();
+      const newBlock =
+        Blockly.serialization.blocks.append({'type': 'collapse'}, ws);
+      newBlock.getInput('COLLAPSE').connection.connect(
+          stack.first.previousConnection);
+      prevParentConn?.connect(newBlock.previousConnection);
+      prevDanglerConn?.connect(newBlock.nextConnection);
+      newBlock.setCollapsed(true);
+    }
   },
   scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-  displayText: "Get lists of contiguous blocks",
+  displayText: "Summarize ✨Fancily✨",
   preconditionFn: () => {return 'enabled'},
   weight: 100,
-  id: 'getContiguous'
-} */
+  id: 'FancyCollapse'
+}
+Blockly.ContextMenuRegistry.registry.register(fancyCollapse);
 
 // Load the initial state from storage and run the code.
 load(ws);
