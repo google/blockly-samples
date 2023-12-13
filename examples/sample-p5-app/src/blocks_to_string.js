@@ -31,7 +31,7 @@ export function blocksToString(
    * Converts stack starting at given block to tokens.  Pushes tokens onto
    * tokens array.
    */
-  function blocksToTokens(block) {
+  function blocksToTokens(block, stringifyNext = true) {
     /**
      * Whether or not to add parentheses around an input.
      *
@@ -70,13 +70,13 @@ export function blocksToString(
       }
     }
     const nextBlock = block.getNextBlock();
-    if (nextBlock) {
+    if (nextBlock && stringifyNext) {
       tokens.push(NEWLINE);
       blocksToTokens(nextBlock);
     }
   }
 
-  blocksToTokens(block);
+  blocksToTokens(block, false);
 
   // Run through our tokens array and simplify expression to remove
   // parentheses around single field blocks.
