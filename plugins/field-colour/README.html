@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-colour Demo</div>
       <div class="subtitle">A Blockly colour field.</div>
     </div>
-    3.0.10
+    3.0.11
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour" class="button" target="_blank">View on npm</a>
@@ -85,13 +85,13 @@ Blockly.Blocks['test_field_colour'] = {
 import '@blockly/field-colour';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_colour',
-    'message0': 'colour: %1',
-    'args0': [
+    type: 'test_field_colour',
+    message0: 'colour: %1',
+    args0: [
       {
-        'type': 'field_colour',
-        'name': 'FIELDNAME',
-        'colour': '#ffcccc',
+        type: 'field_colour',
+        name: 'FIELDNAME',
+        colour: '#ffcccc',
       },
     ],
   },

@@ -24,7 +24,7 @@
       <div class="title">@blockly/suggested-blocks Demo</div>
       <div class="subtitle">A plugin that adds toolbox panes with suggested blocks based on the user's past usage of blocks.</div>
     </div>
-    4.1.3
+    4.1.4
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/suggested-blocks" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/suggested-blocks" class="button" target="_blank">View on npm</a>
@@ -62,26 +62,26 @@
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
 const toolbox = {
-  'kind': 'categoryToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'category',
-      'name': 'My Category',
-      'contents': [
+      kind: 'category',
+      name: 'My Category',
+      contents: [
         /* your category contents */
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Frequently Used',
-      'custom': 'MOST_USED',
-      'categorystyle': 'frequently_used_category',
+      kind: 'category',
+      name: 'Frequently Used',
+      custom: 'MOST_USED',
+      categorystyle: 'frequently_used_category',
     },
     {
-      'kind': 'category',
-      'name': 'Recently Used',
-      'custom': 'RECENTLY_USED',
-      'categorystyle': 'recently_used_category',
+      kind: 'category',
+      name: 'Recently Used',
+      custom: 'RECENTLY_USED',
+      categorystyle: 'recently_used_category',
     },
   ],
 };

@@ -77,14 +77,14 @@ function start() {
 <p>Initially, not much will be different. However, if you define any block types that insert a dummy input between two inline value inputs, the inline value input connectors will be rendered on separate lines:</p>
 <pre><code class="js language-js">Blockly.common.defineBlocksWithJsonArray([
   {
-    'type': 'inline_test',
-    'message0': 'input A %1 %2 input B %3',
-    'args0': [
-      {'type': 'input_value', 'name': 'A'},
-      {'type': 'input_dummy'},
-      {'type': 'input_value', 'name': 'B'},
+    type: 'inline_test',
+    message0: 'input A %1 %2 input B %3',
+    args0: [
+      {type: 'input_value', name: 'A'},
+      {type: 'input_dummy'},
+      {type: 'input_value', name: 'B'},
     ],
-    'inputsInline': true,
+    inputsInline: true,
   },
 ]);</code></pre>
 <p><img src="readme-media/inline_row_example_screenshot.png" alt="A Blockly block demonstrating inline value input connectors on separate rows." /></p>
