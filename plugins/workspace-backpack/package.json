@@ -1,6 +1,6 @@
 {
   "name": "@blockly/workspace-backpack",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "description": "A Blockly plugin that adds Backpack support.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,8 +40,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^3.1.0",
-    "@blockly/dev-tools": "^7.1.4",
+    "@blockly/dev-scripts": "^3.1.1",
+    "@blockly/dev-tools": "^7.1.5",
     "blockly": "^10.0.0",
     "typescript": "^5.2.2"
   },

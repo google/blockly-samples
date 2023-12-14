@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@3.0.2...@blockly/eslint-config@3.0.3) (2023-12-14)
+
+**Note:** Version bump only for package @blockly/eslint-config
+
+
+
+
+
 ## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/eslint-config@3.0.1...@blockly/eslint-config@3.0.2) (2023-11-09)
 
 
