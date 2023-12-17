@@ -33,7 +33,7 @@ export class ObservableParameterModel
     varId?: string,
   ) {
     this.id = id ?? Blockly.utils.idGenerator.genUid();
-   
+    this.createBackingVariable(name, varId);
   }
 
   /**
