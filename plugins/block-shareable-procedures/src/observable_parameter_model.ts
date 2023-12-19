@@ -33,7 +33,7 @@ export class ObservableParameterModel
     varId?: string,
   ) {
     this.id = id ?? Blockly.utils.idGenerator.genUid();
-    this.createBackingVariable(name, varId);
+    this.variable = this.createBackingVariable(name, varId);
   }
 
   /**
@@ -71,11 +71,11 @@ export class ObservableParameterModel
    * @returns This parameter model.
    */
 
-  protected createBackingVariable(name: string, varId?: string): this {
+  protected createBackingVariable(name: string, varId?: string): Blockly.VariableModel{
     this.variable =
       this.workspace.getVariable(name) ??
       this.workspace.createVariable(name, '', varId);
-    return this;
+    return this.variable;
   }
 
   /**
