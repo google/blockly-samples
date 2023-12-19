@@ -20,7 +20,10 @@ const {testHelpers} = require('@blockly/dev-tools');
 const {ObservableParameterModel} = require('../src/observable_parameter_model');
 const {ObservableProcedureModel} = require('../src/observable_procedure_model');
 const {blocks} = require('../src/blocks');
-const {unregisterProcedureBlocks, registerProcedureSerializer} = require('../src/index');
+const {
+  unregisterProcedureBlocks,
+  registerProcedureSerializer,
+} = require('../src/index');
 const {ProcedureDelete} = require('../src/events_procedure_delete');
 const {ProcedureCreate} = require('../src/events_procedure_create');
 
