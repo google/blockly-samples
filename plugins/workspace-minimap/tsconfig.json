@@ -14,7 +14,7 @@
       "blockly/*": ["node_modules/blockly/*"]
     },
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": true
   },
   // NOTE: `test/**/*` is automatically included in `blockly-scripts start`.
   // Only src matters for production builds.
