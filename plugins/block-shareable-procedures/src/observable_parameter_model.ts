@@ -71,7 +71,10 @@ export class ObservableParameterModel
    * @returns This parameter model.
    */
 
-  protected createBackingVariable(name: string, varId?: string): Blockly.VariableModel{
+  protected createBackingVariable(
+    name: string,
+    varId?: string,
+  ): Blockly.VariableModel {
     this.variable =
       this.workspace.getVariable(name) ??
       this.workspace.createVariable(name, '', varId);
