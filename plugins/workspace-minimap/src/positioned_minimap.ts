@@ -179,10 +179,13 @@ export class PositionedMinimap
    */
   private setAttributes(): void {
     const injectDiv = this.minimapWorkspace?.getInjectionDiv();
+    if (!injectDiv) {
+      return;
+    }
     if (injectDiv?.parentElement === null) {
       return;
     }
-    const style = injectDiv!.parentElement.style;
+    const style = injectDiv.parentElement.style;
     style.zIndex = '2';
     style.position = 'absolute';
     style.width = `${this.width}px`;
