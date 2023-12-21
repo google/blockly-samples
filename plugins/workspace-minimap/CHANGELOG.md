@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.11](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.10...@blockly/workspace-minimap@0.1.11) (2023-12-21)
+
+
+### Bug Fixes
+
+* Publish types for workspace-minimap ([#2122](https://github.com/google/blockly-samples/issues/2122)) ([295ee2a](https://github.com/google/blockly-samples/commit/295ee2a5a97bccdd3eeb842f3c3ba4bcadc55c5b))
+
+
+
 ## [0.1.10](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.9...@blockly/workspace-minimap@0.1.10) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/workspace-minimap

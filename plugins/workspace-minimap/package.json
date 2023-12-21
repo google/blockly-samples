@@ -1,6 +1,6 @@
 {
   "name": "@blockly/workspace-minimap",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "A Blockly plugin.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
