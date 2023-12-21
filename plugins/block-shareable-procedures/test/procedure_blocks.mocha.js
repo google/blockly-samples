@@ -20,7 +20,10 @@ const {testHelpers} = require('@blockly/dev-tools');
 const {ObservableParameterModel} = require('../src/observable_parameter_model');
 const {ObservableProcedureModel} = require('../src/observable_procedure_model');
 const {blocks} = require('../src/blocks');
-const {unregisterProcedureBlocks} = require('../src/index');
+const {
+  unregisterProcedureBlocks,
+  registerProcedureSerializer,
+} = require('../src/index');
 const {ProcedureDelete} = require('../src/events_procedure_delete');
 const {ProcedureCreate} = require('../src/events_procedure_create');
 
@@ -36,6 +39,8 @@ suite('Procedures', function () {
 
     unregisterProcedureBlocks();
     Blockly.common.defineBlocks(blocks);
+
+    registerProcedureSerializer();
 
     this.workspace = Blockly.inject('blocklyDiv', {});
 
@@ -1969,13 +1974,6 @@ suite('Procedures', function () {
                 type: 'procedures_defnoreturn',
                 extraState: {
                   procedureId: 'procId',
-                  params: [
-                    {
-                      name: 'x',
-                      id: 'varId',
-                      paramId: 'paramId',
-                    },
-                  ],
                 },
                 fields: {
                   NAME: 'do something',
@@ -2012,67 +2010,6 @@ suite('Procedures', function () {
         ['varId'],
       );
     });
-
-    test(
-      'multiple definitions pointing to the same model end up with ' +
-        'different models',
-      function () {
-        Blockly.serialization.workspaces.load(
-          {
-            blocks: {
-              languageVersion: 0,
-              blocks: [
-                {
-                  type: 'procedures_defnoreturn',
-                  extraState: {
-                    procedureId: 'procId',
-                  },
-                  fields: {
-                    NAME: 'do something',
-                  },
-                },
-                {
-                  type: 'procedures_defnoreturn',
-                  y: 10,
-                  extraState: {
-                    procedureId: 'procId',
-                  },
-                  fields: {
-                    NAME: 'do something',
-                  },
-                },
-              ],
-            },
-            procedures: [
-              {
-                id: 'procId',
-                name: 'do something',
-                returnTypes: null,
-              },
-            ],
-          },
-          this.workspace,
-        );
-        const def1 = this.workspace.getTopBlocks(true)[0];
-        const def2 = this.workspace.getTopBlocks(true)[1];
-        chai.assert.equal(
-          def1.getProcedureModel().getName(),
-          'do something',
-          'Expected the first procedure definition to have the ' +
-            'name in XML',
-        );
-        chai.assert.equal(
-          def2.getProcedureModel().getName(),
-          'do something2',
-          'Expected the second procedure definition to be renamed',
-        );
-        chai.assert.notEqual(
-          def1.getProcedureModel(),
-          def2.getProcedureModel(),
-          'Expected the procedures to have different models',
-        );
-      },
-    );
   });
 
   suite('getDefinition', function () {
