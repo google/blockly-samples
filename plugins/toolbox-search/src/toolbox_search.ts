@@ -9,6 +9,7 @@
  * in its flyout.
  */
 import * as Blockly from 'blockly/core';
+import { block } from '../node_modules/blockly/core/tooltip';
 import {BlockSearcher} from './block_searcher';
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -166,33 +167,38 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     }
   }
 
+
+
   /**
    * Filters the available blocks based on the current query string.
    */
   private matchBlocks() {
     const query = this.searchField?.value || '';
+    this.flyoutItems_ = query ?
+        this.blockSearcher.blockTypesMatching(query).map(
+            (blockState) => {
+                if (blockState.fields) {
+                    return {
+                        kind: 'block',
+                        type: blockState.type,
+                        fields: blockState.fields
+                    };
+                }
+                return {
+                    kind: 'block',
+                    type: blockState.type,
+                };
+            }) : [];
 
-    this.flyoutItems_ = query
-      ? this.blockSearcher.blockTypesMatching(query).map((blockType) => {
-          return {
-            kind: 'block',
-            type: blockType,
-          };
-        })
-      : [];
-
-    if (!this.flyoutItems_.length) {
-      this.flyoutItems_.push({
-        kind: 'label',
-        text:
-          query.length < 3
-            ? 'Type to search for blocks'
-            : 'No matching blocks found',
-      });
-    }
-    this.parentToolbox_.refreshSelection();
+      if (!this.flyoutItems_.length) {
+          this.flyoutItems_.push({
+              kind: 'label',
+              text: query.length < 3 ? 'Type to search for blocks' :
+                  'No matching blocks found',
+          });
+      }
+      this.parentToolbox_.refreshSelection();
   }
-
   /**
    * Disposes of this category.
    */

@@ -11,7 +11,7 @@ import * as Blockly from 'blockly/core';
  */
 export class BlockSearcher {
   private blockCreationWorkspace = new Blockly.Workspace();
-  private trigramsToBlocks = new Map<string, Set<string>>();
+  private trigramsToBlocks = new Map<string, Set<Blockly.serialization.blocks.State>>();
 
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
@@ -27,13 +27,16 @@ export class BlockSearcher {
     const blockCreationWorkspace = new Blockly.Workspace();
     blockTypes.forEach((blockType) => {
       const block = blockCreationWorkspace.newBlock(blockType);
-      this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
-      block.inputList.forEach((input) => {
-        input.fieldRow.forEach((field) => {
-          this.indexDropdownOption(field, blockType);
-          this.indexBlockText(field.getText(), blockType);
-        });
-      });
+      const blockState = Blockly.serialization.blocks.save(block)
+        if (blockState != null) {
+            this.indexBlockText(blockType.replaceAll('_', ' '), blockState);
+            block.inputList.forEach((input) => {
+                input.fieldRow.forEach((field) => {
+                    this.indexDropdownOption(field,  blockState);
+                    this.indexBlockText(field.getText(), blockState);
+                });
+            });
+        }
     });
   }
 
@@ -41,17 +44,22 @@ export class BlockSearcher {
    * Check if the field is a dropdown, and index every text in the option
    *
    * @param field We need to check the type of field
-   * @param blockType The block type to associate the trigrams with.
+   * @param blockState The block state to associate the trigrams with.
    */
-  private indexDropdownOption(field: Blockly.Field, blockType: string) {
+    private indexDropdownOption(field: Blockly.Field, blockState: Blockly.serialization.blocks.State) {
     if (field instanceof Blockly.FieldDropdown) {
-      field.getOptions(true).forEach((option) => {
-        if (typeof option[0] === 'string') {
-          this.indexBlockText(option[0], blockType);
-        } else if ('alt' in option[0]) {
-          this.indexBlockText(option[0].alt, blockType);
-        }
-      });
+        field.getOptions(true).forEach((option) => {
+          let state = { ...blockState }
+          if (typeof option[0] === 'string') {
+              state.fields = {}
+              if (field.name) {
+                  state.fields[field.name] = option[1]
+              }
+              this.indexBlockText(option[0], state);
+          } else if ('alt' in option[0]) {           
+              this.indexBlockText(option[0].alt, state);
+             }
+        });
     }
   }
 
@@ -59,33 +67,39 @@ export class BlockSearcher {
    * Filters the available blocks based on the current query string.
    *
    * @param query The text to use to match blocks against.
-   * @returns A list of block types matching the query.
-   */
-  blockTypesMatching(query: string): string[] {
+   * @returns A list of block states matching the query.
+    */
+    blockTypesMatching(query: string): Blockly.serialization.blocks.State[] {    
     return [
       ...this.generateTrigrams(query)
         .map((trigram) => {
-          return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+            return this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.serialization.blocks.State> ();
         })
-        .reduce((matches, current) => {
-          return this.getIntersection(matches, current);
-        })
+            .reduce((matches, current) => {
+                return this.getIntersection(matches, current);
+        })       
         .values(),
-    ];
-  }
+        ]
+    }
+
+
+    private addBlockTrigram(trigram: string, state: Blockly.serialization.blocks.State) {
+        let blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.serialization.blocks.State>();
+        blockSet.add(state);
+        this.trigramsToBlocks.set(trigram, blockSet);
+    }
 
   /**
    * Generates trigrams for the given text and associates them with the given
-   * block type.
+   * block state.
    *
    * @param text The text to generate trigrams of.
-   * @param blockType The block type to associate the trigrams with.
+   * @param blockState The block state to associate the trigrams with.
    */
-  private indexBlockText(text: string, blockType: string) {
-    this.generateTrigrams(text).forEach((trigram) => {
-      const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-      blockSet.add(blockType);
-      this.trigramsToBlocks.set(trigram, blockSet);
+    private indexBlockText(text: string, blockState: Blockly.serialization.blocks.State) {
+        this.generateTrigrams(text).forEach((trigram) => {
+            this.addBlockTrigram(trigram, blockState);
+
     });
   }
 
@@ -115,7 +129,7 @@ export class BlockSearcher {
    * @param b The second set.
    * @returns The intersection of the two sets.
    */
-  private getIntersection(a: Set<string>, b: Set<string>): Set<string> {
+    private getIntersection(a: Set<Blockly.serialization.blocks.State>, b: Set<Blockly.serialization.blocks.State>): Set<Blockly.serialization.blocks.State> {
     return new Set([...a].filter((value) => b.has(value)));
   }
 }
