@@ -68,9 +68,8 @@ export class ObservableParameterModel
    *
    * @param name The string to set set the variable to.
    * @param varId The optional ID the backing variable should have.
-   * @returns This parameter model.
+   * @returns The created variable model.
    */
-
   protected createBackingVariable(
     name: string,
     varId?: string,
