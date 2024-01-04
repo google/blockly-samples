@@ -20,7 +20,7 @@ jsonDefinitionGenerator.forBlock['field_image'] = function (
     width: block.getFieldValue('WIDTH'),
     height: block.getFieldValue('HEIGHT'),
     alt: block.getFieldValue('ALT'),
-    flipRtl: block.getFieldValue('ALT_RTL'),
+    flipRtl: block.getFieldValue('FLIP_RTL'),
   };
   return JSON.stringify(code);
 };
