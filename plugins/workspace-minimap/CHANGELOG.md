@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.12](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.11...@blockly/workspace-minimap@0.1.12) (2024-01-04)
+
+
+### Bug Fixes
+
+* Fixes forbidden non-null assertion ([#2128](https://github.com/google/blockly-samples/issues/2128)) ([265c7e1](https://github.com/google/blockly-samples/commit/265c7e181af3d912801f874f138b410530725d71))
+
+
+
 ## [0.1.11](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.10...@blockly/workspace-minimap@0.1.11) (2023-12-21)
 
 
