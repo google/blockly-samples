@@ -1,8 +1,13 @@
 # All examples, codelabs, etc.
-examples/*
-node_modules/*
-codelabs/*
-gh-pages/*
+# ** excludes the contents without excluding the directory itself
+examples/**
+node_modules/**
+codelabs/**
+gh-pages/**
+
+# Whitelist of specific examples that can be formatted
+!examples/developer-tools
+!examples/developer-tools/**
 
 # All build artifacts, etc.
 **/dist/*
