@@ -6,7 +6,11 @@
 
 import * as Blockly from 'blockly';
 import {javascriptGenerator} from 'blockly/javascript';
-import {JsonDefinitionGenerator, jsonDefinitionGenerator, Order} from './json_definition_generator';
+import {
+  JsonDefinitionGenerator,
+  jsonDefinitionGenerator,
+  Order,
+} from './json_definition_generator';
 
 /**
  * Builds the 'message0' part of the JSON block definition.
@@ -18,7 +22,7 @@ import {JsonDefinitionGenerator, jsonDefinitionGenerator, Order} from './json_de
  *      for each field and input in the block
  *    - the new args list, with field lables removed
  */
-const buildMessageString = function(argsList: Array<Record<string, unknown>>) {
+const buildMessageString = function (argsList: Array<Record<string, unknown>>) {
   let i = 0;
   let messageString = '';
   const newArgs = [];
@@ -40,15 +44,19 @@ const buildMessageString = function(argsList: Array<Record<string, unknown>>) {
   };
 };
 
-jsonDefinitionGenerator.forBlock['factory_base'] = function(
-    block: Blockly.Block,
-    generator: JsonDefinitionGenerator
+jsonDefinitionGenerator.forBlock['factory_base'] = function (
+  block: Blockly.Block,
+  generator: JsonDefinitionGenerator,
 ): string {
   // TODO: Get a JSON-legal name for the block
   const blockName = block.getFieldValue('NAME');
   // Tooltip and Helpurl string blocks can't be removed, so we don't care what happens if the block doesn't exist
-  const tooltip = JSON.parse(generator.valueToCode(block, 'TOOLTIP', Order.ATOMIC));
-  const helpUrl = JSON.parse(generator.valueToCode(block, 'HELPURL', Order.ATOMIC));
+  const tooltip = JSON.parse(
+    generator.valueToCode(block, 'TOOLTIP', Order.ATOMIC),
+  );
+  const helpUrl = JSON.parse(
+    generator.valueToCode(block, 'HELPURL', Order.ATOMIC),
+  );
 
   const code: any = {
     type: blockName,
@@ -88,7 +96,6 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function(
   setConnectionTypes('OUTPUTTYPE', 'output');
   setConnectionTypes('TOPTYPE', 'previousStatement');
   setConnectionTypes('BOTTOMTYPE', 'nextStatement');
-
 
   const colour = generator.valueToCode(block, 'COLOUR', Order.ATOMIC);
   if (colour !== '') {

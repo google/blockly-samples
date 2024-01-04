@@ -11,7 +11,7 @@ import * as Blockly from 'blockly';
  * Highly inefficient (On^2), but n is small.
  * @param referenceBlock Block to check.
  */
-const fieldNameCheck = function(referenceBlock: Blockly.Block) {
+const fieldNameCheck = function (referenceBlock: Blockly.Block) {
   if (!referenceBlock.workspace) {
     // Block has been deleted.
     return;
@@ -21,13 +21,17 @@ const fieldNameCheck = function(referenceBlock: Blockly.Block) {
   const blocks = referenceBlock.workspace.getAllBlocks(false);
   for (const block of blocks) {
     const otherName = block.getFieldValue('FIELDNAME');
-    if (block.isEnabled() && !block.getInheritedDisabled() &&
-        otherName && otherName.toLowerCase() === name) {
+    if (
+      block.isEnabled() &&
+      !block.getInheritedDisabled() &&
+      otherName &&
+      otherName.toLowerCase() === name
+    ) {
       count++;
     }
   }
-  const msg = (count > 1) ?
-      'There are ' + count + ' field blocks\n with this name.' : null;
+  const msg =
+    count > 1 ? 'There are ' + count + ' field blocks\n with this name.' : null;
   referenceBlock.setWarningText(msg);
 };
 
@@ -35,11 +39,11 @@ const fieldNameCheck = function(referenceBlock: Blockly.Block) {
  * Label (non-serializable) field.
  */
 export const fieldLabel = {
-  init: function() {
+  init: function () {
     this.setColour(160);
     this.appendDummyInput('FIRST')
-        .appendField('label')
-        .appendField(new Blockly.FieldTextInput(''), 'TEXT');
+      .appendField('label')
+      .appendField(new Blockly.FieldTextInput(''), 'TEXT');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Static text that serves as a label.');
@@ -49,20 +53,22 @@ export const fieldLabel = {
 
 export const fieldLabelSerializable = {
   // Text value that is saved to XML.
-  init: function() {
+  init: function () {
     this.setColour(160);
     this.appendDummyInput('FIRST')
-        .appendField('label')
-        .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+      .appendField('label')
+      .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
-    this.setTooltip('Static text that serves as a label, and is saved with' +
-      ' block data. Use only if you want to modify this label at runtime.');
+    this.setTooltip(
+      'Static text that serves as a label, and is saved with' +
+        ' block data. Use only if you want to modify this label at runtime.',
+    );
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=88');
   },
-  onchange: function() {
+  onchange: function () {
     fieldNameCheck(this);
   },
 };
@@ -71,19 +77,19 @@ export const fieldLabelSerializable = {
  * Text input field.
  */
 export const fieldInput = {
-  init: function() {
+  init: function () {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('text input')
-        .appendField(new Blockly.FieldTextInput('default'), 'TEXT')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+      .appendField('text input')
+      .appendField(new Blockly.FieldTextInput('default'), 'TEXT')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('An input field for the user to enter text.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=319');
   },
-  onchange: function() {
+  onchange: function () {
     fieldNameCheck(this);
   },
 };
@@ -92,101 +98,104 @@ export const fieldInput = {
  * Number input field.
  */
 export const fieldNumber = {
-  init: function() {
+  init: function () {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('numeric input')
-        .appendField(new Blockly.FieldNumber(0), 'VALUE')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+      .appendField('numeric input')
+      .appendField(new Blockly.FieldNumber(0), 'VALUE')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.appendDummyInput()
-        .appendField('min')
-        .appendField(new Blockly.FieldNumber(-Infinity), 'MIN')
-        .appendField('max')
-        .appendField(new Blockly.FieldNumber(Infinity), 'MAX')
-        .appendField('precision')
-        .appendField(new Blockly.FieldNumber(0, 0), 'PRECISION');
+      .appendField('min')
+      .appendField(new Blockly.FieldNumber(-Infinity), 'MIN')
+      .appendField('max')
+      .appendField(new Blockly.FieldNumber(Infinity), 'MAX')
+      .appendField('precision')
+      .appendField(new Blockly.FieldNumber(0, 0), 'PRECISION');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('An input field for the user to enter a number.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=319');
   },
-  onchange: function() {
+  onchange: function () {
     fieldNameCheck(this);
   },
 };
 
 export const fieldCheckbox = {
   // Checkbox.
-  init: function() {
+  init: function () {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('checkbox')
-        .appendField(new Blockly.FieldCheckbox('TRUE'), 'CHECKED')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+      .appendField('checkbox')
+      .appendField(new Blockly.FieldCheckbox('TRUE'), 'CHECKED')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Checkbox field.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=485');
   },
-  onchange: function() {
+  onchange: function () {
     fieldNameCheck(this);
   },
 };
 
 export const fieldVariable = {
   // Dropdown for variables.
-  init: function() {
+  init: function () {
     this.setColour(160);
     this.appendDummyInput()
-        .appendField('variable')
-        .appendField(new Blockly.FieldTextInput('item'), 'TEXT')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+      .appendField('variable')
+      .appendField(new Blockly.FieldTextInput('item'), 'TEXT')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip('Dropdown menu for variable names.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=510');
   },
-  onchange: function() {
+  onchange: function () {
     fieldNameCheck(this);
   },
 };
 
 export const fieldImage = {
   // Image.
-  init: function() {
+  init: function () {
     this.setColour(160);
     const src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
     this.appendDummyInput()
-        .appendField('image')
-        .appendField(new Blockly.FieldTextInput(src), 'SRC');
+      .appendField('image')
+      .appendField(new Blockly.FieldTextInput(src), 'SRC');
     this.appendDummyInput()
-        .appendField('width')
-        .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
-        .appendField('height')
-        .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
-        .appendField('alt text')
-        .appendField(new Blockly.FieldTextInput('*'), 'ALT')
-        .appendField('flip RTL')
-        .appendField(new Blockly.FieldCheckbox('FALSE'), 'FLIP_RTL');
+      .appendField('width')
+      .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
+      .appendField('height')
+      .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
+      .appendField('alt text')
+      .appendField(new Blockly.FieldTextInput('*'), 'ALT')
+      .appendField('flip RTL')
+      .appendField(new Blockly.FieldCheckbox('FALSE'), 'FLIP_RTL');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
-    this.setTooltip('Static image (JPEG, PNG, GIF, SVG, BMP).\n' +
-                    'Retains aspect ratio regardless of height and width.\n' +
-                    'Alt text is for when collapsed.');
+    this.setTooltip(
+      'Static image (JPEG, PNG, GIF, SVG, BMP).\n' +
+        'Retains aspect ratio regardless of height and width.\n' +
+        'Alt text is for when collapsed.',
+    );
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=567');
   },
 };
 
-
-export type DropdownOptionData = string | {
-  src: string;
-  width: number;
-  height: number;
-  alt: string;
-};
+export type DropdownOptionData =
+  | string
+  | {
+      src: string;
+      width: number;
+      height: number;
+      alt: string;
+    };
 /**
  * Type for a block that creates a dropdown field.
  */
@@ -202,47 +211,53 @@ export type FieldDropdownBlock = Blockly.BlockSvg & {
  * Dropdown menu field.
  */
 export const fieldDropdown = {
-  init: function(this: FieldDropdownBlock) {
+  init: function (this: FieldDropdownBlock) {
     this.appendDummyInput()
-        .appendField('dropdown')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+      .appendField('dropdown')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.optionList = ['text', 'text', 'text'];
     this.updateShape();
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
-    this.setMutator(new Blockly.icons.MutatorIcon(
-        ['field_dropdown_option_text', 'field_dropdown_option_image'], this));
+    this.setMutator(
+      new Blockly.icons.MutatorIcon(
+        ['field_dropdown_option_text', 'field_dropdown_option_image'],
+        this,
+      ),
+    );
     this.setColour(160);
     this.setTooltip('Dropdown menu with a list of options.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=386');
   },
-  saveExtraState: function(): {options: string[]} {
+  saveExtraState: function (): {options: string[]} {
     return {
       options: this.optionList,
     };
   },
-  loadExtraState: function(state: {options: string[]}) {
+  loadExtraState: function (state: {options: string[]}) {
     this.optionList = state.options;
     this.updateShape();
   },
-  decompose: function(workspace: Blockly.WorkspaceSvg) {
+  decompose: function (workspace: Blockly.WorkspaceSvg) {
     // Populate the mutator's dialog with this block's components.
     const containerBlock = workspace.newBlock('field_dropdown_container');
     containerBlock.initSvg();
     let connection = containerBlock.getInput('STACK').connection;
     for (let i = 0; i < this.optionList.length; i++) {
       const optionBlock = workspace.newBlock(
-          'field_dropdown_option_' + this.optionList[i]);
+        'field_dropdown_option_' + this.optionList[i],
+      );
       optionBlock.initSvg();
       connection.connect(optionBlock.previousConnection);
       connection = optionBlock.nextConnection;
     }
     return containerBlock;
   },
-  compose: function(this: FieldDropdownBlock, containerBlock: Blockly.Block) {
+  compose: function (this: FieldDropdownBlock, containerBlock: Blockly.Block) {
     // Reconfigure this block based on the mutator dialog's components.
-    let optionBlock =
-        containerBlock.getInputTargetBlock('STACK') as FieldDropdownBlock;
+    let optionBlock = containerBlock.getInputTargetBlock(
+      'STACK',
+    ) as FieldDropdownBlock;
     // Count number of inputs and save the existing data.
     this.optionList.length = 0;
     const data = [];
@@ -253,8 +268,9 @@ export const fieldDropdown = {
         this.optionList.push('image');
       }
       data.push([optionBlock.userData, optionBlock.cpuData]);
-      optionBlock = optionBlock.nextConnection &&
-          optionBlock.nextConnection.targetBlock() as FieldDropdownBlock;
+      optionBlock =
+        optionBlock.nextConnection &&
+        (optionBlock.nextConnection.targetBlock() as FieldDropdownBlock);
     }
     this.updateShape();
     // Restore any data.
@@ -273,20 +289,22 @@ export const fieldDropdown = {
       }
     }
   },
-  saveConnections: function(containerBlock: Blockly.Block) {
+  saveConnections: function (containerBlock: Blockly.Block) {
     // Store all data for each option.
-    let optionBlock =
-        containerBlock.getInputTargetBlock('STACK') as FieldDropdownBlock;
+    let optionBlock = containerBlock.getInputTargetBlock(
+      'STACK',
+    ) as FieldDropdownBlock;
     let i = 0;
     while (optionBlock) {
       optionBlock.userData = this.getUserData(i);
       optionBlock.cpuData = this.getFieldValue('CPU' + i);
       i++;
-      optionBlock = optionBlock.nextConnection &&
-          optionBlock.nextConnection.targetBlock() as FieldDropdownBlock;
+      optionBlock =
+        optionBlock.nextConnection &&
+        (optionBlock.nextConnection.targetBlock() as FieldDropdownBlock);
     }
   },
-  updateShape: function() {
+  updateShape: function () {
     // Delete everything.
     let i = 0;
     while (this.getInput('OPTION' + i)) {
@@ -300,29 +318,29 @@ export const fieldDropdown = {
       const type = this.optionList[i];
       if (type === 'text') {
         this.appendDummyInput('OPTION' + i)
-            .appendField('•')
-            .appendField(new Blockly.FieldTextInput('option'), 'USER' + i)
-            .appendField(',')
-            .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
+          .appendField('•')
+          .appendField(new Blockly.FieldTextInput('option'), 'USER' + i)
+          .appendField(',')
+          .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
       } else if (type === 'image') {
         this.appendDummyInput('OPTION' + i)
-            .appendField('•')
-            .appendField('image')
-            .appendField(new Blockly.FieldTextInput(src), 'SRC' + i);
+          .appendField('•')
+          .appendField('image')
+          .appendField(new Blockly.FieldTextInput(src), 'SRC' + i);
         this.appendDummyInput('OPTION_IMAGE' + i)
-            .appendField(' ')
-            .appendField('width')
-            .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH' + i)
-            .appendField('height')
-            .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT' + i)
-            .appendField('alt text')
-            .appendField(new Blockly.FieldTextInput('*'), 'ALT' + i)
-            .appendField(',')
-            .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
+          .appendField(' ')
+          .appendField('width')
+          .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH' + i)
+          .appendField('height')
+          .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT' + i)
+          .appendField('alt text')
+          .appendField(new Blockly.FieldTextInput('*'), 'ALT' + i)
+          .appendField(',')
+          .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
       }
     }
   },
-  onchange: function() {
+  onchange: function () {
     if (this.workspace && this.optionList.length < 1) {
       this.setWarningText('Drop down menu must\nhave at least one option.');
     } else {
@@ -336,7 +354,7 @@ export const fieldDropdown = {
    * @param n Number of the input to get the data for.
    * @returns User data for a single dropdown option.
    */
-  getUserData: function(n: number) {
+  getUserData: function (n: number) {
     if (this.optionList[n] === 'text') {
       return this.getFieldValue('USER' + n);
     }
@@ -354,13 +372,14 @@ export const fieldDropdown = {
 
 export const fieldDropdownContainer = {
   // Container.
-  init: function() {
+  init: function () {
     this.setColour(160);
-    this.appendDummyInput()
-        .appendField('add options');
+    this.appendDummyInput().appendField('add options');
     this.appendStatementInput('STACK');
-    this.setTooltip('Add, remove, or reorder options\n' +
-                    'to reconfigure this dropdown menu.');
+    this.setTooltip(
+      'Add, remove, or reorder options\n' +
+        'to reconfigure this dropdown menu.',
+    );
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=386');
     this.contextMenu = false;
   },
@@ -368,10 +387,9 @@ export const fieldDropdownContainer = {
 
 export const fieldDropdownOptionText = {
   // Add text option.
-  init: function() {
+  init: function () {
     this.setColour(160);
-    this.appendDummyInput()
-        .appendField('text option');
+    this.appendDummyInput().appendField('text option');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Add a new text option to the dropdown menu.');
@@ -382,10 +400,9 @@ export const fieldDropdownOptionText = {
 
 export const fieldDropdownOptionImage = {
   // Add image option.
-  init: function() {
+  init: function () {
     this.setColour(160);
-    this.appendDummyInput()
-        .appendField('image option');
+    this.appendDummyInput().appendField('image option');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('Add a new image option to the dropdown menu.');

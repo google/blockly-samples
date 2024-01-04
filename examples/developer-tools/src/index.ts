@@ -29,15 +29,17 @@ mainWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 // Load either saved state or new state
 load(mainWorkspace);
 
-
 let blockName = '';
 // Whenever the workspace changes meaningfully, update the preview.
 mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
   // Don't run the code when the workspace finishes loading; we're
   // already running it once when the application starts.
   // Don't run the code during drags; we might have invalid state.
-  if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING ||
-      mainWorkspace.isDragging()) {
+  if (
+    e.isUiEvent ||
+    e.type == Blockly.Events.FINISHED_LOADING ||
+    mainWorkspace.isDragging()
+  ) {
     return;
   }
 
@@ -48,11 +50,14 @@ mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
   if (blockName) {
     delete Blockly.Blocks[blockName];
   }
-  const blockDefinitionString = jsonDefinitionGenerator.workspaceToCode(mainWorkspace);
+  const blockDefinitionString =
+    jsonDefinitionGenerator.workspaceToCode(mainWorkspace);
   definitionDiv.textContent = blockDefinitionString;
   const blockDefinition = JSON.parse(blockDefinitionString);
   blockName = blockDefinition.type;
-  Blockly.common.defineBlocks(Blockly.common.createBlockDefinitionsFromJsonArray([blockDefinition]));
+  Blockly.common.defineBlocks(
+    Blockly.common.createBlockDefinitionsFromJsonArray([blockDefinition]),
+  );
   const block = previewWorkspace.newBlock(blockName);
   block.initSvg();
   block.render();

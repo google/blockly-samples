@@ -5,11 +5,14 @@
  */
 
 import * as Blockly from 'blockly';
-import {JsonDefinitionGenerator, jsonDefinitionGenerator} from '../json_definition_generator';
+import {
+  JsonDefinitionGenerator,
+  jsonDefinitionGenerator,
+} from '../json_definition_generator';
 
-jsonDefinitionGenerator.forBlock['field_label_serializable'] = function(
-    block: Blockly.Block,
-    generator: JsonDefinitionGenerator
+jsonDefinitionGenerator.forBlock['field_label_serializable'] = function (
+  block: Blockly.Block,
+  generator: JsonDefinitionGenerator,
 ): string {
   const code = {
     type: 'field_label_serializable',

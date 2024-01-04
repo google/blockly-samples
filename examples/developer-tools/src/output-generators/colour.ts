@@ -4,7 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {JsonDefinitionGenerator, Order, jsonDefinitionGenerator} from './json_definition_generator';
+import {
+  JsonDefinitionGenerator,
+  Order,
+  jsonDefinitionGenerator,
+} from './json_definition_generator';
 import * as Blockly from 'blockly';
 
 /**
@@ -16,9 +20,9 @@ import * as Blockly from 'blockly';
  *    The JSON returned here should be part of the `args0` of the JSON
  *    in the final block definition.
  */
-jsonDefinitionGenerator.forBlock['colour_hue'] = function(
-    block: Blockly.Block,
-    generator: JsonDefinitionGenerator
+jsonDefinitionGenerator.forBlock['colour_hue'] = function (
+  block: Blockly.Block,
+  generator: JsonDefinitionGenerator,
 ): [string, number] {
   return [this.getFieldValue('HUE').toString(), Order.ATOMIC];
 };

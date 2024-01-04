@@ -5,7 +5,11 @@
  */
 
 import * as Blockly from 'blockly';
-import {JsonDefinitionGenerator, Order, jsonDefinitionGenerator} from './json_definition_generator';
+import {
+  JsonDefinitionGenerator,
+  Order,
+  jsonDefinitionGenerator,
+} from './json_definition_generator';
 
 /**
  * JSON definition for a single "type" block.
@@ -14,9 +18,9 @@ import {JsonDefinitionGenerator, Order, jsonDefinitionGenerator} from './json_de
  * @returns A type string corresponding to the option chosen.
  *    If custom option is chosen and not specified, returns null.
  */
-jsonDefinitionGenerator.forBlock['type'] = function(
-    block: Blockly.Block,
-    generator: JsonDefinitionGenerator
+jsonDefinitionGenerator.forBlock['type'] = function (
+  block: Blockly.Block,
+  generator: JsonDefinitionGenerator,
 ): [string, number] {
   const selected = block.getFieldValue('TYPEDROPDOWN');
   let output = '';
@@ -46,9 +50,9 @@ jsonDefinitionGenerator.forBlock['type'] = function(
  *     - a single type string if that is the only type present in the list
  *     - an array of all types in the list, deduplicated
  */
-jsonDefinitionGenerator.forBlock['type_group'] = function(
-    block: Blockly.Block,
-    generator: JsonDefinitionGenerator
+jsonDefinitionGenerator.forBlock['type_group'] = function (
+  block: Blockly.Block,
+  generator: JsonDefinitionGenerator,
 ): [string, number] {
   const types = new Set<string>();
   for (const input of block.inputList) {

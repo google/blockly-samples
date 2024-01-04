@@ -37,17 +37,14 @@ export class JsonDefinitionGenerator extends Blockly.CodeGenerator {
    */
   init(workspace: Blockly.Workspace) {
     // super.init(workspace);
-
     // if (!this.nameDB_) {
     //   this.nameDB_ = new Names(this.RESERVED_WORDS_);
     // } else {
     //   this.nameDB_.reset();
     // }
-
     // this.nameDB_.setVariableMap(workspace.getVariableMap());
     // this.nameDB_.populateVariables(workspace);
     // this.nameDB_.populateProcedures(workspace);
-
     // const defvars = [];
     // // Add developer variables (not created or named by the user).
     // const devVarList = Variables.allDeveloperVariables(workspace);
@@ -55,14 +52,12 @@ export class JsonDefinitionGenerator extends Blockly.CodeGenerator {
     //   defvars.push(
     //       this.nameDB_.getName(devVarList[i], NameType.DEVELOPER_VARIABLE));
     // }
-
     // // Add user variables, but only ones that are being used.
     // const variables = Variables.allUsedVarModels(workspace);
     // for (let i = 0; i < variables.length; i++) {
     //   defvars.push(
     //       this.nameDB_.getName(variables[i].getId(), NameType.VARIABLE));
     // }
-
     // // Declare all of the variables.
     // if (defvars.length) {
     //   this.definitions_['variables'] = 'var ' + defvars.join(', ') + ';';
@@ -105,10 +100,11 @@ export class JsonDefinitionGenerator extends Blockly.CodeGenerator {
   quote_(string: string) {
     // Can't use goog.string.quote since Google's style guide recommends
     // JS string literals use single quotes.
-    string = string.replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\\n')
-        // .replace(/'/g, '\\\'')
-        .replace(/"/g, '\\"');
+    string = string
+      .replace(/\\/g, '\\\\')
+      .replace(/\n/g, '\\\n')
+      // .replace(/'/g, '\\\'')
+      .replace(/"/g, '\\"');
     return '"' + string + '"';
   }
 
@@ -136,7 +132,7 @@ export class JsonDefinitionGenerator extends Blockly.CodeGenerator {
    */
   scrub_(block: Blockly.Block, code: string, thisOnly = false) {
     const nextBlock =
-        block.nextConnection && block.nextConnection.targetBlock();
+      block.nextConnection && block.nextConnection.targetBlock();
     let nextCode = thisOnly ? '' : this.blockToCode(nextBlock);
     if (nextCode) {
       nextCode = ',\n  ' + nextCode;

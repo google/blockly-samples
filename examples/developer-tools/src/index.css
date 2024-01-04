@@ -35,7 +35,7 @@ body {
 }
 
 #definition {
-  overflow:scroll;
+  overflow: scroll;
 }
 
 @media screen and (max-width: 800px) {
