@@ -5,7 +5,7 @@
  */
 
 import {factoryBase} from './factory_base';
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 import {input} from './input';
 import {type, typeGroup, typeGroupContainer, typeGroupItem} from './type';
 import {

@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
+import * as En from 'blockly/msg/en';
+import 'blockly/blocks';
 import {registerAllBlocks} from './blocks';
 import {toolbox} from './toolbox';
 import './index.css';
@@ -14,6 +16,9 @@ import {load, save} from './serialization';
 // Put Blockly in the global scope for easy debugging.
 (window as any).Blockly = Blockly;
 
+// Even though En should be loaded by default,
+// if you don't load it specifically, you'll get spurious message warnings.
+Blockly.setLocale(En);
 registerAllBlocks();
 
 const mainWorkspaceDiv = document.getElementById('mainWorkspace');

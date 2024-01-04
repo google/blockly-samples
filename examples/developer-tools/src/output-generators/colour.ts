@@ -9,7 +9,7 @@ import {
   Order,
   jsonDefinitionGenerator,
 } from './json_definition_generator';
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 
 /**
  * JSON definition for the "input" block.
