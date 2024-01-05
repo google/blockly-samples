@@ -63,6 +63,8 @@ mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
   Blockly.common.defineBlocks(
     Blockly.common.createBlockDefinitionsFromJsonArray([blockDefinition]),
   );
+
+  // TODO: After Blockly v11, won't need to call `initSvg` and `render` directly.
   const block = previewWorkspace.newBlock(blockName);
   block.initSvg();
   block.render();
