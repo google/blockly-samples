@@ -8,11 +8,13 @@ import * as Blockly from 'blockly/core';
 
 /**
  * Check to see if more than one input has this name.
+ * If so, applies a warning to the block.
+ * 
  * Highly inefficient (On^2), but n is small.
  * @param referenceBlock Block to check.
  */
 const inputNameCheck = function (referenceBlock: Blockly.Block) {
-  if (!referenceBlock.workspace) {
+  if (referenceBlock.isDeadOrDying()) {
     // Block has been deleted.
     return;
   }
