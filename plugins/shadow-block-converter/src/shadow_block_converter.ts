@@ -145,8 +145,8 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
 
     const connections = block.getConnections_(true);
     if (
-      this.connectionIndexInParent === undefined ||
-      this.connectionIndexInParent == -1 ||
+      typeof this.connectionIndexInParent !== 'number' ||
+      this.connectionIndexInParent < 0 ||
       this.connectionIndexInParent >= connections.length
     ) {
       throw new Error('No matching connection was found.');
