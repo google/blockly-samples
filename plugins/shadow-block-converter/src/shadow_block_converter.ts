@@ -192,10 +192,7 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
     shadowBlock.previousConnection.isConnected()
   ) {
     parentConnection = shadowBlock.previousConnection.targetConnection;
-  } else if (
-    shadowBlock.outputConnection &&
-    shadowBlock.outputConnection.isConnected()
-  ) {
+  } else if (shadowBlock.outputConnection?.isConnected()) {
     parentConnection = shadowBlock.outputConnection.targetConnection;
     connectionIsThroughOutputConnection = true;
   }
