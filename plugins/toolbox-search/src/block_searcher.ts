@@ -10,8 +10,8 @@ import * as Blockly from 'blockly/core';
  * A class that provides methods for indexing and searching blocks.
  */
 export class BlockSearcher {
-  private blockCreationWorkspace = new Blockly.Workspace();
-  private trigramsToBlocks = new Map<string, Set<Blockly.serialization.blocks.State>>();
+    private blockCreationWorkspace = new Blockly.Workspace();
+    private trigramsToBlocks = new Map<string, Set<string>>();
 
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
@@ -56,6 +56,7 @@ export class BlockSearcher {
                   state.fields[field.name] = option[1]
               }
               this.indexBlockText(option[0], state);
+              this.indexBlockText(option[1], state);
           } else if ('alt' in option[0]) {           
               this.indexBlockText(option[0].alt, state);
              }
@@ -72,20 +73,20 @@ export class BlockSearcher {
     blockTypesMatching(query: string): Blockly.serialization.blocks.State[] {    
     return [
       ...this.generateTrigrams(query)
-        .map((trigram) => {
-            return this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.serialization.blocks.State> ();
+            .map((trigram) => {
+                return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
         })
             .reduce((matches, current) => {
                 return this.getIntersection(matches, current);
         })       
-        .values(),
-        ]
+            .values(),
+    ].map(item => JSON.parse(item))
     }
 
 
     private addBlockTrigram(trigram: string, state: Blockly.serialization.blocks.State) {
-        let blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.serialization.blocks.State>();
-        blockSet.add(state);
+        let blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+        blockSet.add(JSON.stringify(state));
         this.trigramsToBlocks.set(trigram, blockSet);
     }
 
@@ -129,7 +130,7 @@ export class BlockSearcher {
    * @param b The second set.
    * @returns The intersection of the two sets.
    */
-    private getIntersection(a: Set<Blockly.serialization.blocks.State>, b: Set<Blockly.serialization.blocks.State>): Set<Blockly.serialization.blocks.State> {
-    return new Set([...a].filter((value) => b.has(value)));
+    private getIntersection(a: Set<string>, b: Set<string>): Set<string> {
+        return new Set([...a].filter((value) => b.has(value)));
   }
 }
