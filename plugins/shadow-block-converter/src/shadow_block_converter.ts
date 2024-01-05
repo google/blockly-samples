@@ -14,14 +14,14 @@ import {Abstract} from 'blockly/core/events/events_abstract';
 
 export interface BlockShadowStateChangeJson
   extends Blockly.Events.BlockBaseJson {
-  connectionIndex: number;
+  connectionIndexInParent: number;
   shadowState: Blockly.serialization.blocks.State;
 }
 
 /**
- * A Blockly event class to revert a parent block connection's shadow shadow
- * state to the provided state after attaching a different block that would
- * otherwise affect the connection's shadow state.
+ * A Blockly event class to revert a block connection's shadow state to the
+ * provided state, to be used after attaching a child block that would
+ * ordinarily overwrite the connection's shadow state.
  */
 export class BlockShadowStateChange extends Blockly.Events.BlockBase {
   /**
@@ -34,7 +34,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
   /**
    * The index of the connection in the parent block's list of connections.
    */
-  connectionIndex?: number;
+  connectionIndexInParent?: number;
 
   /**
    * The intended shadow state of the connection.
@@ -45,12 +45,12 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    * The constructor for a new BlockShadowStateChange event.
    *
    * @param block The parent of the connection to modify.
-   * @param connectionIndex The index of the connection to modify.
+   * @param connectionIndexInParent The index of the connection to modify.
    * @param shadowState The intended shadow state of the connection.
    */
   constructor(
     block?: Block,
-    connectionIndex?: number,
+    connectionIndexInParent?: number,
     shadowState?: Blockly.serialization.blocks.State,
   ) {
     super(block);
@@ -60,7 +60,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
     if (!block) {
       return; // Blank event to be populated by fromJson.
     }
-    this.connectionIndex = connectionIndex;
+    this.connectionIndexInParent = connectionIndexInParent;
     this.shadowState = shadowState;
   }
 
@@ -72,7 +72,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    */
   toJson(): BlockShadowStateChangeJson {
     const json = super.toJson() as BlockShadowStateChangeJson;
-    if (!this.connectionIndex) {
+    if (!this.connectionIndexInParent) {
       throw new Error(
         'The connection index is undefined. Either pass an index ' +
           'to the constructor, or call fromJson',
@@ -84,7 +84,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
           'to the constructor, or call fromJson',
       );
     }
-    json['connectionIndex'] = this.connectionIndex;
+    json['connectionIndexInParent'] = this.connectionIndexInParent;
     json['shadowState'] = this.shadowState;
     return json;
   }
@@ -106,7 +106,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
       workspace,
       event,
     ) as BlockShadowStateChange;
-    newEvent.connectionIndex = json['connectionIndex'];
+    newEvent.connectionIndexInParent = json['connectionIndexInParent'];
     newEvent.shadowState = json['shadowState'];
     return event;
   }
@@ -143,19 +143,23 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
       );
     }
 
-    const connections: Blockly.Connection[] = block.getConnections_(true);
+    const connections = block.getConnections_(true);
     if (
-      this.connectionIndex === undefined ||
-      this.connectionIndex == -1 ||
-      this.connectionIndex >= connections.length
+      this.connectionIndexInParent === undefined ||
+      this.connectionIndexInParent == -1 ||
+      this.connectionIndexInParent >= connections.length
     ) {
       throw new Error('No matching connection was found.');
     }
-    const connection: Blockly.Connection = connections[this.connectionIndex];
+    const connection = connections[this.connectionIndexInParent];
 
     if (forward) {
       connection.setShadowState(this.shadowState || null);
     }
+
+    // Nothing to be done when run backward, because removing a child block
+    // doesn't overwrite the connection's shadowState and thus doesn't need to
+    // be reverted.
   }
 }
 
@@ -179,7 +183,7 @@ Blockly.registry.register(
  * @returns The newly created regular block with a different id, if one could be
  *     created.
  */
-function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block | null {
+function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
   // Determine how the shadow block is connected to the parent.
   let parentConnection: Blockly.Connection | null = null;
   let connectionIsThroughOutputConnection = false;
@@ -202,24 +206,24 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block | null {
   }
 
   // Get the parent block, and determine the connection's index in the parent.
-  let parentBlock: Blockly.Block = parentConnection.getSourceBlock();
-  const connectionIndex: number = parentBlock
+  let parentBlock = parentConnection.getSourceBlock();
+  const connectionIndexInParent = parentBlock
     .getConnections_(true)
     .indexOf(parentConnection);
 
   // Recover the state of the shadow block before it was edited. The connection
   // should still have the original state until a new block is attached to it.
-  const originalShadowState: Blockly.serialization.blocks.State | null =
-    parentConnection.getShadowState(/* returnCurrent = */ false);
+  const originalShadowState = parentConnection.getShadowState(
+    /* returnCurrent = */ false,
+  );
 
   // Serialize the current state of the shadow block (after it was edited).
-  const editedBlockState: Blockly.serialization.blocks.State | null =
-    Blockly.serialization.blocks.save(shadowBlock, {
-      addCoordinates: false,
-      addInputBlocks: true,
-      addNextBlocks: true,
-      doFullSerialization: false,
-    });
+  const editedBlockState = Blockly.serialization.blocks.save(shadowBlock, {
+    addCoordinates: false,
+    addInputBlocks: true,
+    addNextBlocks: true,
+    doFullSerialization: false,
+  });
   if (originalShadowState === null || editedBlockState === null) {
     // The serialized block states are necessary to convert the block. Without
     // them, just return the block as-is.
@@ -228,24 +232,27 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block | null {
 
   // If the parent block is a shadow, it must be converted first.
   if (parentBlock.isShadow()) {
-    const newParentBlock: Blockly.Block | null =
-      reifyEditedShadowBlock(parentBlock);
+    const newParentBlock = reifyEditedShadowBlock(parentBlock);
     if (newParentBlock === null) {
-      // No parent block was created, so we can't recreate the current block
-      // either.
-      return null;
+      throw new Error(
+        "No parent block was created, so we can't recreate the " +
+          'current block either.',
+      );
     }
     parentBlock = newParentBlock;
 
     // The reference to the connection is obsolete. Find it from the new parent.
-    const parentConnections: Blockly.Connection[] =
-      parentBlock.getConnections_(true);
-    if (connectionIndex == -1 || connectionIndex >= parentConnections.length) {
-      // Couldn't find the corresponding connection on the new version of the
-      // parent block.
-      return null;
+    const parentConnections = parentBlock.getConnections_(true);
+    if (
+      connectionIndexInParent == -1 ||
+      connectionIndexInParent >= parentConnections.length
+    ) {
+      throw new Error(
+        "Couldn't find the corresponding connection on the new " +
+          'version of the parent block.',
+      );
     }
-    parentConnection = parentConnections[connectionIndex];
+    parentConnection = parentConnections[connectionIndexInParent];
   }
 
   // Let Blockly generate a new id for the new regular block. Ideally, we would
@@ -269,10 +276,9 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block | null {
   );
 
   // Attach the regular block to the connection in place of the shadow block.
-  const childConnection: Blockly.Connection | null =
-    connectionIsThroughOutputConnection
-      ? regularBlock.outputConnection
-      : regularBlock.previousConnection;
+  const childConnection = connectionIsThroughOutputConnection
+    ? regularBlock.outputConnection
+    : regularBlock.previousConnection;
   if (childConnection) {
     parentConnection.connect(childConnection);
   }
@@ -283,7 +289,7 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block | null {
   Blockly.Events.fire(
     new BlockShadowStateChange(
       parentBlock,
-      connectionIndex,
+      connectionIndexInParent,
       originalShadowState,
     ),
   );
