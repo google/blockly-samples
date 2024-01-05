@@ -68,13 +68,11 @@ export const factoryBase = {
   },
   connectOutputShadow: function (outputType: string) {
     // Helper method to create & connect shadow block.
-    const type = this.workspace.newBlock('type');
-    type.setShadow(true);
-    type.outputConnection.connect(this.getInput(outputType).connection);
-    type.initSvg();
-    if (this.rendered) {
-      type.render();
-    }
+    const connection = this.getInput(outputType).connection;
+    const shadowState = {
+      type: 'type',
+    };
+    connection.setShadowState(shadowState);
   },
   updateShape: function (option: string) {
     const outputExists = this.getInput('OUTPUTTYPE');
