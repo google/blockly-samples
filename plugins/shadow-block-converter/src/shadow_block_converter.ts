@@ -187,10 +187,7 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
   // Determine how the shadow block is connected to the parent.
   let parentConnection: Blockly.Connection | null = null;
   let connectionIsThroughOutputConnection = false;
-  if (
-    shadowBlock.previousConnection &&
-    shadowBlock.previousConnection.isConnected()
-  ) {
+  if (shadowBlock.previousConnection?.isConnected()) {
     parentConnection = shadowBlock.previousConnection.targetConnection;
   } else if (shadowBlock.outputConnection?.isConnected()) {
     parentConnection = shadowBlock.outputConnection.targetConnection;
