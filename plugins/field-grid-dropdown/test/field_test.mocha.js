@@ -108,7 +108,7 @@ suite('FieldGridDropdown', function () {
     },
   ];
   const addJson = function (testCase) {
-    testCase.json = {'options': testCase.args[0]};
+    testCase.json = {options: testCase.args[0]};
   };
   invalidValueCreationTestCases.forEach(addJson);
   validValueCreationTestCases.forEach(addJson);

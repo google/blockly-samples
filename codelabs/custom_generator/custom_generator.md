@@ -212,11 +212,11 @@ Next, hook up the new generator with the sample app. First, remove the old code 
 
 ```js
 // Remove these lines!
-import {generator} from './generators/javascript';
+import {forBlock} from './generators/javascript';
 import {javascriptGenerator} from 'blockly/javascript';
 
 // Also remove this line! (further down)
-Object.assign(javascriptGenerator, generator);
+Object.assign(javascriptGenerator.forBlock, forBlock);
 ```
 
 Now import the new generator:
@@ -305,12 +305,12 @@ Operator precedence rules determine how the correct order of operations is maint
 
 Since JSON does not allow values that are expressions, the code does not need to consider operator precedence for the generator being built in this codelab. The same value can be used everywhere a precedence value is required. Since parentheses never need to be added to the JSON, call this value `ATOMIC`.
 
-Declare a new enum called `Order` and add the `ATOMIC` value:
+In `src/generators/json.js`, declare a new enum called `Order` and add the `ATOMIC` value:
 
 ```js
 const Order = {
   ATOMIC: 0,
-}
+};
 ```
 
 ## Value block generators
@@ -326,6 +326,7 @@ The simplest block in this example is the `logic_null` block.
 ![The null block simply returns "null".](./null_block.png)
 
 No matter what, it generates the code `'null'`. Notice that this is a string, because all generated code is a string.
+Add the following code to `src/generators/json.js`:
 
 
 ```js
@@ -518,7 +519,7 @@ Next, use `prefixLines` to add indentation at the beginning of each line:
 
 ```js
 const indentedValueString =
-    generator.prefixLines(valueString, jsonGenerator.INDENT);
+    generator.prefixLines(valueString, generator.INDENT);
 ```
 
 `INDENT` is a property on the generator. It defaults to two spaces, but language generators may override it to increase indent or change to tabs.

@@ -73,12 +73,12 @@ Blockly.Blocks['dependent_dropdown_example'] = {
       ['Cryptid', 'cryptid'],
     ];
     const optionMapping = {
-      'mammal': [
+      mammal: [
         ['Dog', 'dog'],
         ['Cat', 'cat'],
         ['Hamster', 'hamster'],
       ],
-      'bird': [
+      bird: [
         ['Parakeet', 'parakeet'],
         ['Canary', 'canary'],
       ],

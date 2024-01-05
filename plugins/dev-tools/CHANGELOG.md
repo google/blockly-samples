@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.5](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.4...@blockly/dev-tools@7.1.5) (2023-12-14)
+
+
+### Bug Fixes
+
+* Fix TS errors in plugins/toolbox-search ([#2074](https://github.com/google/blockly-samples/issues/2074)) ([0d18a82](https://github.com/google/blockly-samples/commit/0d18a82137c7a88087a332ece1bb0deff386a390))
+
+
+
+## [7.1.4](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.3...@blockly/dev-tools@7.1.4) (2023-12-07)
+
+
+### Bug Fixes
+
+* Prevent advanced playground OOMing when scrolling aggressively ([#2089](https://github.com/google/blockly-samples/issues/2089)) ([a662278](https://github.com/google/blockly-samples/commit/a662278cb9c511e001ee3cd2977a891976ea06a9))
+
+
+
 ## [7.1.3](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.2...@blockly/dev-tools@7.1.3) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/dev-tools

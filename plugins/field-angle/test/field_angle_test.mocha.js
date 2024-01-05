@@ -46,7 +46,7 @@ suite('FieldAngle', function () {
   ];
   const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
-    testCase.json = {'value': testCase.value};
+    testCase.json = {value: testCase.value};
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);
@@ -95,15 +95,15 @@ suite('FieldAngle', function () {
      */
     function createBlockMock() {
       return {
-        'id': 'test',
-        'rendered': false,
-        'workspace': {
-          'rendered': false,
+        id: 'test',
+        rendered: false,
+        workspace: {
+          rendered: false,
         },
-        'renameVarById': Blockly.Block.prototype.renameVarById,
-        'updateVarName': Blockly.Block.prototype.updateVarName,
-        'isShadow': () => false,
-        'isDeadOrDying': () => false,
+        renameVarById: Blockly.Block.prototype.renameVarById,
+        updateVarName: Blockly.Block.prototype.updateVarName,
+        isShadow: () => false,
+        isDeadOrDying: () => false,
       };
     }
 
@@ -292,15 +292,15 @@ suite('FieldAngle', function () {
       this.workspace = new Blockly.Workspace();
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'row_block',
-          'message0': '%1',
-          'args0': [
+          type: 'row_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'INPUT',
+              type: 'input_value',
+              name: 'INPUT',
             },
           ],
-          'output': null,
+          output: null,
         },
       ]);
 
@@ -309,7 +309,7 @@ suite('FieldAngle', function () {
         const field = new FieldAngle(value);
         block.getInput('INPUT').appendField(field, 'ANGLE');
         const jso = Blockly.serialization.blocks.save(block);
-        assert.deepEqual(jso['fields'], {'ANGLE': value});
+        assert.deepEqual(jso['fields'], {ANGLE: value});
       };
     });
 

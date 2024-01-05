@@ -46,7 +46,7 @@ const textJoinMutator = {
    */
   saveExtraState: function () {
     return {
-      'itemCount': this.itemCount_,
+      itemCount: this.itemCount_,
     };
   },
 
@@ -155,7 +155,7 @@ const textJoinMutator = {
  * @this {Blockly.Block}
  */
 const textJoinHelper = function () {
-  Blockly.Extensions.apply('text_quotes', this, false);
+  Blockly.Extensions.apply('quote_image_mixin', this, false);
   this.updateShape_(2);
 };
 

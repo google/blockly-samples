@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.7](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.6...@blockly/block-shareable-procedures@4.0.7) (2023-12-21)
+
+
+### Bug Fixes
+
+* procedure parameter serialization ([#2125](https://github.com/google/blockly-samples/issues/2125)) ([0996ed7](https://github.com/google/blockly-samples/commit/0996ed79fe75663ed2916bc0b20cc35540887324))
+
+
+
+## [4.0.6](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.5...@blockly/block-shareable-procedures@4.0.6) (2023-12-14)
+
+**Note:** Version bump only for package @blockly/block-shareable-procedures
+
+
+
+
+
+## [4.0.5](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.4...@blockly/block-shareable-procedures@4.0.5) (2023-12-07)
+
+**Note:** Version bump only for package @blockly/block-shareable-procedures
+
+
+
+
+
 ## [4.0.4](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.3...@blockly/block-shareable-procedures@4.0.4) (2023-11-09)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures

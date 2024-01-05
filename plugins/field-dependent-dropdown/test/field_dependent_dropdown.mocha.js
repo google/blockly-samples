@@ -194,14 +194,14 @@ suite('fieldDependentDropdown', function () {
 
   test('deserialized values affect available options', function () {
     const serializedWorkspace = {
-      'blocks': {
-        'blocks': [
+      blocks: {
+        blocks: [
           {
-            'type': 'dependent_dropdown_test',
-            'fields': {
-              'PARENT_FIELD': 'b',
-              'CHILD_FIELD': 'b2',
-              'GRANDCHILD_FIELD': 'b21',
+            type: 'dependent_dropdown_test',
+            fields: {
+              PARENT_FIELD: 'b',
+              CHILD_FIELD: 'b2',
+              GRANDCHILD_FIELD: 'b21',
             },
           },
         ],
@@ -227,14 +227,14 @@ suite('fieldDependentDropdown', function () {
 
   test('deserializing preserves values not in default options', function () {
     const serializedWorkspace = {
-      'blocks': {
-        'blocks': [
+      blocks: {
+        blocks: [
           {
-            'type': 'dependent_dropdown_test',
-            'fields': {
-              'PARENT_FIELD': 'b',
-              'CHILD_FIELD': 'b2',
-              'GRANDCHILD_FIELD': 'b21',
+            type: 'dependent_dropdown_test',
+            fields: {
+              PARENT_FIELD: 'b',
+              CHILD_FIELD: 'b2',
+              GRANDCHILD_FIELD: 'b21',
             },
           },
         ],
@@ -255,14 +255,14 @@ suite('fieldDependentDropdown', function () {
 
   test('deserializing invalid value replaces with valid value', function () {
     const serializedWorkspace = {
-      'blocks': {
-        'blocks': [
+      blocks: {
+        blocks: [
           {
-            'type': 'dependent_dropdown_test',
-            'fields': {
-              'PARENT_FIELD': 'b',
-              'CHILD_FIELD': 'a2',
-              'GRANDCHILD_FIELD': 'b21',
+            type: 'dependent_dropdown_test',
+            fields: {
+              PARENT_FIELD: 'b',
+              CHILD_FIELD: 'a2',
+              GRANDCHILD_FIELD: 'b21',
             },
           },
         ],

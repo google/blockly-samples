@@ -27,18 +27,20 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const toolbox = Object.assign({}, toolboxCategories);
+  const toolbox = {...toolboxCategories};
   toolbox['contents'].push({
-    'kind': 'search',
-    'name': 'Search',
-    'contents': [],
+    kind: 'search',
+    name: 'Search',
+    contents: [],
   });
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+
+  const root = document.getElementById('root');
+  if (!root) {
+    throw new Error('Root element is missing');
+  }
+
+  createPlayground(root, createWorkspace, defaultOptions);
 });

@@ -46,13 +46,13 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
         },
@@ -179,13 +179,13 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
         },
@@ -384,17 +384,17 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
-          'previousStatement': null,
-          'nextStatement': null,
+          previousStatement: null,
+          nextStatement: null,
         },
       ]);
       this.workspace = createNavigationWorkspace(this.navigation, true);
@@ -560,13 +560,13 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
         },
@@ -680,24 +680,24 @@ suite('Navigation', function () {
       setup(function () {
         Blockly.defineBlocksWithJsonArray([
           {
-            'type': 'field_block',
-            'message0': '%1 %2',
-            'args0': [
+            type: 'field_block',
+            message0: '%1 %2',
+            args0: [
               {
-                'type': 'field_colour',
-                'name': 'COLOURFIELD',
-                'colour': '#ff4040',
+                type: 'field_colour',
+                name: 'COLOURFIELD',
+                colour: '#ff4040',
               },
               {
-                'type': 'input_value',
-                'name': 'NAME',
+                type: 'input_value',
+                name: 'NAME',
               },
             ],
-            'previousStatement': null,
-            'nextStatement': null,
-            'colour': 230,
-            'tooltip': '',
-            'helpUrl': '',
+            previousStatement: null,
+            nextStatement: null,
+            colour: 230,
+            tooltip: '',
+            helpUrl: '',
           },
         ]);
         this.workspace = createNavigationWorkspace(this.navigation, true, true);
@@ -764,17 +764,17 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
-          'previousStatement': null,
-          'nextStatement': null,
+          previousStatement: null,
+          nextStatement: null,
         },
       ]);
 
@@ -855,28 +855,28 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '',
-          'previousStatement': null,
-          'nextStatement': null,
+          type: 'basic_block',
+          message0: '',
+          previousStatement: null,
+          nextStatement: null,
         },
         {
-          'type': 'inline_block',
-          'message0': '%1 %2',
-          'args0': [
+          type: 'inline_block',
+          message0: '%1 %2',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'NAME',
+              type: 'input_value',
+              name: 'NAME',
             },
             {
-              'type': 'input_value',
-              'name': 'NAME',
+              type: 'input_value',
+              name: 'NAME',
             },
           ],
-          'inputsInline': true,
-          'output': null,
-          'tooltip': '',
-          'helpUrl': '',
+          inputsInline: true,
+          output: null,
+          tooltip: '',
+          helpUrl: '',
         },
       ]);
 
@@ -1014,10 +1014,10 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '',
-          'previousStatement': null,
-          'nextStatement': null,
+          type: 'basic_block',
+          message0: '',
+          previousStatement: null,
+          nextStatement: null,
         },
       ]);
       this.workspace = createNavigationWorkspace(this.navigation, true);
@@ -1081,8 +1081,8 @@ suite('Navigation', function () {
       );
       const astNode = Blockly.ASTNode.createBlockNode(this.basicBlockB);
       const mockDeleteBlockEvent = {
-        'blockId': this.basicBlockA,
-        'ids': [this.basicBlockA.id, this.basicBlockB.id],
+        blockId: this.basicBlockA,
+        ids: [this.basicBlockA.id, this.basicBlockB.id],
       };
       // Set the cursor to be on the child block
       this.workspace.getCursor().setCurNode(astNode);
@@ -1103,8 +1103,8 @@ suite('Navigation', function () {
       );
       const astNode = Blockly.ASTNode.createStackNode(this.basicBlockA);
       const mockDeleteBlockEvent = {
-        'blockId': this.basicBlockA.id,
-        'ids': [this.basicBlockA.id, this.basicBlockB.id],
+        blockId: this.basicBlockA.id,
+        ids: [this.basicBlockA.id, this.basicBlockB.id],
       };
       // Set the cursor to be on the stack
       this.workspace.getCursor().setCurNode(astNode);
@@ -1124,17 +1124,17 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
-          'previousStatement': null,
-          'nextStatement': null,
+          previousStatement: null,
+          nextStatement: null,
         },
       ]);
       this.workspace = createNavigationWorkspace(this.navigation, true);
@@ -1247,13 +1247,13 @@ suite('Navigation', function () {
     setup(function () {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'basic_block',
-          'message0': '%1',
-          'args0': [
+          type: 'basic_block',
+          message0: '%1',
+          args0: [
             {
-              'type': 'field_colour',
-              'name': 'COLOURFIELD',
-              'colour': '#ff4040',
+              type: 'field_colour',
+              name: 'COLOURFIELD',
+              colour: '#ff4040',
             },
           ],
         },

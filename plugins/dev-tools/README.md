@@ -84,8 +84,8 @@ import {generateFieldTestBlocks} from '@blockly/dev-tools';
 
 const toolbox = generateFieldTestBlocks('field_template', [
   {
-    'args': {
-      'value': 0, // default value
+    args: {
+      value: 0, // default value
     },
   },
 ]);

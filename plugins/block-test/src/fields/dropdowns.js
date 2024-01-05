@@ -14,13 +14,13 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_dropdowns_long',
-    'message0': 'long: %1',
-    'args0': [
+    type: 'test_dropdowns_long',
+    message0: 'long: %1',
+    args0: [
       {
-        'type': 'field_dropdown',
-        'name': 'FIELDNAME',
-        'options': [
+        type: 'field_dropdown',
+        name: 'FIELDNAME',
+        options: [
           ['first item', 'ITEM1'],
           ['second item', 'ITEM2'],
           ['third item', 'ITEM3'],
@@ -58,141 +58,128 @@ Blockly.defineBlocksWithJsonArray([
     ],
   },
   {
-    'type': 'test_dropdowns_images',
-    'message0': '%1',
-    'args0': [
+    type: 'test_dropdowns_images',
+    message0: '%1',
+    args0: [
       {
-        'NOTE': 'The following paths are relative to playground.html',
-        'type': 'field_dropdown',
-        'name': 'FIELDNAME',
-        'options': [
+        NOTE: 'The following paths are relative to playground.html',
+        type: 'field_dropdown',
+        name: 'FIELDNAME',
+        options: [
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/a.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'A',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/a.png',
+              width: 32,
+              height: 32,
+              alt: 'A',
             },
             'A',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/b.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'B',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/b.png',
+              width: 32,
+              height: 32,
+              alt: 'B',
             },
             'B',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/c.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'C',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/c.png',
+              width: 32,
+              height: 32,
+              alt: 'C',
             },
             'C',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/d.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'D',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/d.png',
+              width: 32,
+              height: 32,
+              alt: 'D',
             },
             'D',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/e.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'E',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/e.png',
+              width: 32,
+              height: 32,
+              alt: 'E',
             },
             'E',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/f.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'F',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/f.png',
+              width: 32,
+              height: 32,
+              alt: 'F',
             },
             'F',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/g.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'G',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/g.png',
+              width: 32,
+              height: 32,
+              alt: 'G',
             },
             'G',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/h.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'H',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/h.png',
+              width: 32,
+              height: 32,
+              alt: 'H',
             },
             'H',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/i.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'I',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/i.png',
+              width: 32,
+              height: 32,
+              alt: 'I',
             },
             'I',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/j.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'J',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/j.png',
+              width: 32,
+              height: 32,
+              alt: 'J',
             },
             'J',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/k.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'K',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/k.png',
+              width: 32,
+              height: 32,
+              alt: 'K',
             },
             'K',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/l.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'L',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/l.png',
+              width: 32,
+              height: 32,
+              alt: 'L',
             },
             'L',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/m.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'M',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/m.png',
+              width: 32,
+              height: 32,
+              alt: 'M',
             },
             'M',
           ],
@@ -201,142 +188,129 @@ Blockly.defineBlocksWithJsonArray([
     ],
   },
   {
-    'type': 'test_dropdowns_images_and_text',
-    'message0': '%1',
-    'args0': [
+    type: 'test_dropdowns_images_and_text',
+    message0: '%1',
+    args0: [
       {
-        'type': 'field_dropdown',
-        'name': 'FIELDNAME',
-        'options': [
+        type: 'field_dropdown',
+        name: 'FIELDNAME',
+        options: [
           ['images and text', 'IMAGES AND TEXT'],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/a.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'A',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/a.png',
+              width: 32,
+              height: 32,
+              alt: 'A',
             },
             'A',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/b.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'B',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/b.png',
+              width: 32,
+              height: 32,
+              alt: 'B',
             },
             'B',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/c.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'C',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/c.png',
+              width: 32,
+              height: 32,
+              alt: 'C',
             },
             'C',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/d.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'D',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/d.png',
+              width: 32,
+              height: 32,
+              alt: 'D',
             },
             'D',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/e.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'E',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/e.png',
+              width: 32,
+              height: 32,
+              alt: 'E',
             },
             'E',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/f.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'F',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/f.png',
+              width: 32,
+              height: 32,
+              alt: 'F',
             },
             'F',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/g.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'G',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/g.png',
+              width: 32,
+              height: 32,
+              alt: 'G',
             },
             'G',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/h.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'H',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/h.png',
+              width: 32,
+              height: 32,
+              alt: 'H',
             },
             'H',
           ],
           ['xyz', 'LMNOP'],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/i.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'I',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/i.png',
+              width: 32,
+              height: 32,
+              alt: 'I',
             },
             'I',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/j.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'J',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/j.png',
+              width: 32,
+              height: 32,
+              alt: 'J',
             },
             'J',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/k.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'K',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/k.png',
+              width: 32,
+              height: 32,
+              alt: 'K',
             },
             'K',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/l.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'L',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/l.png',
+              width: 32,
+              height: 32,
+              alt: 'L',
             },
             'L',
           ],
           [
             {
-              'src':
-                'https://blockly-demo.appspot.com/static/tests/media/m.png',
-              'width': 32,
-              'height': 32,
-              'alt': 'M',
+              src: 'https://blockly-demo.appspot.com/static/tests/media/m.png',
+              width: 32,
+              height: 32,
+              alt: 'M',
             },
             'M',
           ],
@@ -345,18 +319,18 @@ Blockly.defineBlocksWithJsonArray([
     ],
   },
   {
-    'type': 'test_dropdowns_in_mutator',
-    'message0': 'dropdown mutator',
-    'mutator': 'test_dropdown_mutator',
+    type: 'test_dropdowns_in_mutator',
+    message0: 'dropdown mutator',
+    mutator: 'test_dropdown_mutator',
   },
   {
-    'type': 'test_dropdowns_in_mutator_block',
-    'message0': 'dropdown %1',
-    'args0': [
+    type: 'test_dropdowns_in_mutator_block',
+    message0: 'dropdown %1',
+    args0: [
       {
-        'type': 'field_dropdown',
-        'name': 'DROPDOWN',
-        'options': [
+        type: 'field_dropdown',
+        name: 'DROPDOWN',
+        options: [
           ['option', 'ONE'],
           ['option', 'TWO'],
         ],
@@ -553,50 +527,50 @@ Blockly.Blocks['test_dropdowns_dynamic'] = {
  * The Dropdown field category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Drop-downs',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Drop-downs',
+  contents: [
     {
-      'kind': 'LABEL',
-      'text': 'Dynamic',
+      kind: 'LABEL',
+      text: 'Dynamic',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_dropdowns_dynamic',
+      kind: 'BLOCK',
+      type: 'test_dropdowns_dynamic',
     },
     {
-      'kind': 'BUTTON',
-      'text': 'Add option',
-      'callbackkey': 'addDynamicOption',
+      kind: 'BUTTON',
+      text: 'Add option',
+      callbackkey: 'addDynamicOption',
     },
     {
-      'kind': 'BUTTON',
-      'text': 'Remove option',
-      'callbackkey': 'removeDynamicOption',
+      kind: 'BUTTON',
+      text: 'Remove option',
+      callbackkey: 'removeDynamicOption',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_dropdowns_dynamic_random',
+      kind: 'BLOCK',
+      type: 'test_dropdowns_dynamic_random',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_dropdowns_dynamic_connect_dependant',
+      kind: 'BLOCK',
+      type: 'test_dropdowns_dynamic_connect_dependant',
     },
     {
-      'kind': 'LABEL',
-      'text': 'Other',
+      kind: 'LABEL',
+      text: 'Other',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_dropdowns_long',
+      kind: 'BLOCK',
+      type: 'test_dropdowns_long',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_dropdowns_images',
+      kind: 'BLOCK',
+      type: 'test_dropdowns_images',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_dropdowns_images_and_text',
+      kind: 'BLOCK',
+      type: 'test_dropdowns_images_and_text',
     },
   ],
 };

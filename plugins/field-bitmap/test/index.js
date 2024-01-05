@@ -15,9 +15,9 @@ import * as Blockly from 'blockly';
 
 const toolbox = generateFieldTestBlocks('field_bitmap', [
   {
-    'label': 'With Default',
-    'args': {
-      'value': [
+    label: 'With Default',
+    args: {
+      value: [
         [0, 0, 0, 0, 0, 0, 0],
         [0, 1, 1, 0, 1, 1, 0],
         [0, 0, 0, 0, 0, 0, 0],
@@ -29,11 +29,11 @@ const toolbox = generateFieldTestBlocks('field_bitmap', [
     },
   },
   {
-    'label': 'Empty',
-    'args': {
-      'width': 3,
-      'height': 3,
-      'value': undefined,
+    label: 'Empty',
+    args: {
+      width: 3,
+      height: 3,
+      value: undefined,
     },
   },
 ]);

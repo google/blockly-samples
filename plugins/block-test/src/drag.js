@@ -14,16 +14,16 @@
  * The Drag category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Drag',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Drag',
+  contents: [
     {
-      'kind': 'LABEL',
-      'text': 'Drag each to the workspace',
+      kind: 'LABEL',
+      text: 'Drag each to the workspace',
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="text_print">
   <value name="TEXT">
     <block type="text">
@@ -33,8 +33,8 @@ export const category = {
 </block>`,
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="text_print">
   <value name="TEXT">
     <shadow type="text">
@@ -44,8 +44,8 @@ export const category = {
 </block>`,
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="text_print">
   <value name="TEXT">
     <shadow type="text">
@@ -64,12 +64,12 @@ export const category = {
 </block>`,
     },
     {
-      'kind': 'LABEL',
-      'text': 'Multiple Variable Refs',
+      kind: 'LABEL',
+      text: 'Multiple Variable Refs',
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="text_print">
   <value name="TEXT">
     <block type="variables_get">
@@ -88,12 +88,12 @@ export const category = {
 </block>`,
     },
     {
-      'kind': 'LABEL',
-      'text': 'Procedure Definitions',
+      kind: 'LABEL',
+      text: 'Procedure Definitions',
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="procedures_defnoreturn">
   <field name="NAME">without arguments</field>
   <statement name="STACK">
@@ -108,8 +108,8 @@ export const category = {
 </block>`,
     },
     {
-      'kind': 'BLOCK',
-      'blockxml': `
+      kind: 'BLOCK',
+      blockxml: `
 <block type="procedures_defnoreturn">
   <mutation><arg name="fnArgument"></arg></mutation>
   <field name="NAME">with one argument</field>

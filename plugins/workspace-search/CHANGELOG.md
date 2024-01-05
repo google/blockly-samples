@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.2](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@8.1.1...@blockly/plugin-workspace-search@8.1.2) (2023-12-14)
+
+**Note:** Version bump only for package @blockly/plugin-workspace-search
+
+
+
+
+
+## [8.1.1](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@8.1.0...@blockly/plugin-workspace-search@8.1.1) (2023-12-07)
+
+**Note:** Version bump only for package @blockly/plugin-workspace-search
+
+
+
+
+
 ## [8.1.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@8.0.9...@blockly/plugin-workspace-search@8.1.0) (2023-11-23)
 
 

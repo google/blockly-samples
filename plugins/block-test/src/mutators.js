@@ -14,16 +14,16 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_mutator_colorChange',
-    'message0': 'colour %1',
-    'args0': [
+    type: 'test_mutator_colorChange',
+    message0: 'colour %1',
+    args0: [
       {
-        'type': 'field_colour',
-        'name': 'COLOUR',
-        'colour': '#ff0000',
+        type: 'field_colour',
+        name: 'COLOUR',
+        colour: '#ff0000',
       },
     ],
-    'style': 'colour_blocks',
+    style: 'colour_blocks',
   },
 ]);
 
@@ -58,7 +58,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @this {Blockly.Block}
    */
   saveExtraState: function () {
-    return {'colour': this.getColour()};
+    return {colour: this.getColour()};
   },
   /**
    * Applies the state to this block.
@@ -76,7 +76,7 @@ const COLOR_CHANGE_MUTATOR = {
    */
   decompose: function (workspace) {
     const containerBlock = Blockly.serialization.blocks.append(
-      {'type': 'test_mutator_colorChange'},
+      {type: 'test_mutator_colorChange'},
       workspace,
     );
     containerBlock.getField('COLOUR').setValue(this.getColour());
@@ -131,10 +131,10 @@ Blockly.Extensions.registerMutator(
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_mutators_noflyout',
-    'message0': 'noflyout mutator',
-    'mutator': 'test_noflyout_mutator',
-    'colour': '#000000',
+    type: 'test_mutators_noflyout',
+    message0: 'noflyout mutator',
+    mutator: 'test_noflyout_mutator',
+    colour: '#000000',
   },
 ]);
 
@@ -148,10 +148,10 @@ Blockly.Extensions.registerMutator(
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_mutators_changeableFlyout',
-    'message0': 'changeable flyout mutator',
-    'mutator': 'test_changeableFlyout_mutator',
-    'colour': '#000000',
+    type: 'test_mutators_changeableFlyout',
+    message0: 'changeable flyout mutator',
+    mutator: 'test_changeableFlyout_mutator',
+    colour: '#000000',
   },
 ]);
 
@@ -167,60 +167,60 @@ Blockly.Extensions.registerMutator(
  * The Mutators category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Mutators',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Mutators',
+  contents: [
     {
-      'kind': 'LABEL',
-      'text': 'logic_compare',
+      kind: 'LABEL',
+      text: 'logic_compare',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'logic_compare',
-      'inputs': {
-        'A': {
-          'shadow': {
-            'type': 'math_number',
-            'fields': {'NUM': 10},
+      kind: 'BLOCK',
+      type: 'logic_compare',
+      inputs: {
+        A: {
+          shadow: {
+            type: 'math_number',
+            fields: {NUM: 10},
           },
         },
-        'B': {
-          'shadow': {
-            'type': 'math_number',
-            'fields': {'NUM': 10},
-          },
-        },
-      },
-    },
-    {
-      'kind': 'BLOCK',
-      'type': 'logic_compare',
-      'inputs': {
-        'A': {
-          'block': {
-            'type': 'math_number',
-            'fields': {'NUM': 10},
-          },
-        },
-        'B': {
-          'block': {
-            'type': 'math_number',
-            'fields': {'NUM': 10},
+        B: {
+          shadow: {
+            type: 'math_number',
+            fields: {NUM: 10},
           },
         },
       },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_mutators_noflyout',
+      kind: 'BLOCK',
+      type: 'logic_compare',
+      inputs: {
+        A: {
+          block: {
+            type: 'math_number',
+            fields: {NUM: 10},
+          },
+        },
+        B: {
+          block: {
+            type: 'math_number',
+            fields: {NUM: 10},
+          },
+        },
+      },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_mutators_many',
+      kind: 'BLOCK',
+      type: 'test_mutators_noflyout',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_mutators_changeableFlyout',
+      kind: 'BLOCK',
+      type: 'test_mutators_many',
+    },
+    {
+      kind: 'BLOCK',
+      type: 'test_mutators_changeableFlyout',
     },
   ],
 };
