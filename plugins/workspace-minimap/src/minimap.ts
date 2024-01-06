@@ -97,15 +97,24 @@ export class Minimap {
       }
     });
 
+    // The mousedown handler needs to take precedent over other mouse handlers
+    // in the workspace, such as the handler that opens comments, which means it
+    // needs to be attached in the capture phase. Blockly's built-in event
+    // binding does not let us use the capture phase so we reimplement it here.
+    const mouseDownFunc = (event: Event) =>
+      this.onClickDown(event as PointerEvent);
+    this.minimapWorkspace.svgGroup_.addEventListener(
+      'pointerdown',
+      mouseDownFunc,
+      /* usecapture */ true,
+    );
+    this.onMouseDownWrapper = [
+      [this.minimapWorkspace.svgGroup_, 'pointerdown', mouseDownFunc],
+    ];
+
     // The mouseup binds to the parent container div instead of the minimap
     // because if a drag begins on the minimap and ends outside of it the
     // mousemove should still unbind.
-    this.onMouseDownWrapper = Blockly.browserEvents.bind(
-      this.minimapWorkspace.svgGroup_,
-      'mousedown',
-      this,
-      this.onClickDown,
-    );
     this.onMouseUpWrapper = Blockly.browserEvents.bind(
       primaryInjectParentDiv,
       'mouseup',
@@ -242,6 +251,10 @@ export class Minimap {
    */
   private onClickDown(event: PointerEvent): void {
     if (this.minimapWorkspace) {
+      // Stop any other click event handlers in the workspace from handling
+      // this event.
+      event.stopImmediatePropagation();
+
       this.onMouseMoveWrapper = Blockly.browserEvents.bind(
         this.minimapWorkspace.svgGroup_,
         'mousemove',
