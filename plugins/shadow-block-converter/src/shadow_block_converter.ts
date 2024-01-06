@@ -14,7 +14,7 @@ import {Abstract} from 'blockly/core/events/events_abstract';
 
 export interface BlockShadowStateChangeJson
   extends Blockly.Events.BlockBaseJson {
-  connectionIndexInParent: number;
+  inputIndexInParent: number | null;
   shadowState: Blockly.serialization.blocks.State;
 }
 
@@ -32,9 +32,10 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
   /* eslint-enable @typescript-eslint/naming-convention */
 
   /**
-   * The index of the connection in the parent block's list of connections.
+   * The index of the connection in the parent block's list of connections. If
+   * null, then the nextConnection will be used instead.
    */
-  connectionIndexInParent?: number;
+  inputIndexInParent?: number | null;
 
   /**
    * The intended shadow state of the connection.
@@ -45,12 +46,14 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    * The constructor for a new BlockShadowStateChange event.
    *
    * @param block The parent of the connection to modify.
-   * @param connectionIndexInParent The index of the connection to modify.
+   * @param inputIndexInParent The index of the input associated with the
+   *     connection to modify, if it is associated with one. Otherwise the
+   *     nextConnection will be used.
    * @param shadowState The intended shadow state of the connection.
    */
   constructor(
     block?: Block,
-    connectionIndexInParent?: number,
+    inputIndexInParent?: number | null,
     shadowState?: Blockly.serialization.blocks.State,
   ) {
     super(block);
@@ -60,7 +63,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
     if (!block) {
       return; // Blank event to be populated by fromJson.
     }
-    this.connectionIndexInParent = connectionIndexInParent;
+    this.inputIndexInParent = inputIndexInParent;
     this.shadowState = shadowState;
   }
 
@@ -72,7 +75,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    */
   toJson(): BlockShadowStateChangeJson {
     const json = super.toJson() as BlockShadowStateChangeJson;
-    if (!this.connectionIndexInParent) {
+    if (typeof this.inputIndexInParent === 'undefined') {
       throw new Error(
         'The connection index is undefined. Either pass an index ' +
           'to the constructor, or call fromJson',
@@ -84,7 +87,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
           'to the constructor, or call fromJson',
       );
     }
-    json['connectionIndexInParent'] = this.connectionIndexInParent;
+    json['inputIndexInParent'] = this.inputIndexInParent;
     json['shadowState'] = this.shadowState;
     return json;
   }
@@ -106,7 +109,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
       workspace,
       event,
     ) as BlockShadowStateChange;
-    newEvent.connectionIndexInParent = json['connectionIndexInParent'];
+    newEvent.inputIndexInParent = json['inputIndexInParent'];
     newEvent.shadowState = json['shadowState'];
     return event;
   }
@@ -144,14 +147,22 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
     }
 
     const connections = block.getConnections_(true);
-    if (
-      typeof this.connectionIndexInParent !== 'number' ||
-      this.connectionIndexInParent < 0 ||
-      this.connectionIndexInParent >= connections.length
+
+    let connection: Blockly.Connection | null;
+    if (this.inputIndexInParent === null) {
+      connection = block.nextConnection;
+    } else if (
+      typeof this.inputIndexInParent !== 'number' ||
+      this.inputIndexInParent < 0 ||
+      this.inputIndexInParent >= connections.length
     ) {
+      throw new Error('inputIndexInParent was invalid.');
+    } else {
+      connection = block.inputList[this.inputIndexInParent].connection;
+    }
+    if (connection === null) {
       throw new Error('No matching connection was found.');
     }
-    const connection = connections[this.connectionIndexInParent];
 
     if (forward) {
       connection.setShadowState(this.shadowState || null);
@@ -199,11 +210,13 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
     return shadowBlock;
   }
 
-  // Get the parent block, and determine the connection's index in the parent.
+  // Get the parent block, and the index of the connection's input if it is
+  // associated with one.
   let parentBlock = parentConnection.getSourceBlock();
-  const connectionIndexInParent = parentBlock
-    .getConnections_(true)
-    .indexOf(parentConnection);
+  const inputInParent = parentConnection.getParentInput();
+  const inputIndexInParent: number | null = inputInParent
+    ? parentBlock.inputList.indexOf(inputInParent)
+    : null;
 
   // Recover the state of the shadow block before it was edited. The connection
   // should still have the original state until a new block is attached to it.
@@ -236,17 +249,22 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
     parentBlock = newParentBlock;
 
     // The reference to the connection is obsolete. Find it from the new parent.
-    const parentConnections = parentBlock.getConnections_(true);
-    if (
-      connectionIndexInParent == -1 ||
-      connectionIndexInParent >= parentConnections.length
+    if (inputIndexInParent === null) {
+      parentConnection = parentBlock.nextConnection;
+    } else if (
+      inputIndexInParent == -1 ||
+      inputIndexInParent >= parentBlock.inputList.length
     ) {
+      throw new Error('inputIndexInParent is invalid.');
+    } else {
+      parentConnection = parentBlock.inputList[inputIndexInParent].connection;
+    }
+    if (parentConnection === null) {
       throw new Error(
         "Couldn't find the corresponding connection on the new " +
           'version of the parent block.',
       );
     }
-    parentConnection = parentConnections[connectionIndexInParent];
   }
 
   // Let Blockly generate a new id for the new regular block. Ideally, we would
@@ -283,7 +301,7 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
   Blockly.Events.fire(
     new BlockShadowStateChange(
       parentBlock,
-      connectionIndexInParent,
+      inputIndexInParent,
       originalShadowState,
     ),
   );
