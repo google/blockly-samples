@@ -184,6 +184,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
                         fields: blockState.fields
                     };
                 }
+                else
                 return {
                     kind: 'block',
                     type: blockState.type,

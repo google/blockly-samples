@@ -50,7 +50,7 @@ export class BlockSearcher {
     if (field instanceof Blockly.FieldDropdown) {
         field.getOptions(true).forEach((option) => {
           let state = { ...blockState }
-          if (typeof option[0] === 'string') {
+            if (typeof option[0] === 'string') {
               state.fields = {}
               if (field.name) {
                   state.fields[field.name] = option[1]
@@ -71,7 +71,7 @@ export class BlockSearcher {
    * @returns A list of block states matching the query.
     */
     blockTypesMatching(query: string): Blockly.serialization.blocks.State[] {    
-    return [
+    let result = [
       ...this.generateTrigrams(query)
             .map((trigram) => {
                 return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
@@ -80,13 +80,15 @@ export class BlockSearcher {
                 return this.getIntersection(matches, current);
         })       
             .values(),
-    ].map(item => JSON.parse(item))
+        ]
+        let resultState = result.map(item => JSON.parse(item));
+        return resultState;
     }
 
 
-    private addBlockTrigram(trigram: string, state: Blockly.serialization.blocks.State) {
+    private addBlockTrigram(trigram: string, blockState: string) {
         let blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-        blockSet.add(JSON.stringify(state));
+        blockSet.add(blockState);
         this.trigramsToBlocks.set(trigram, blockSet);
     }
 
@@ -98,8 +100,12 @@ export class BlockSearcher {
    * @param blockState The block state to associate the trigrams with.
    */
     private indexBlockText(text: string, blockState: Blockly.serialization.blocks.State) {
+        blockState.id = undefined
+        blockState.extraState = undefined
+        blockState.data = undefined
+        let stateString = JSON.stringify(blockState)
         this.generateTrigrams(text).forEach((trigram) => {
-            this.addBlockTrigram(trigram, blockState);
+            this.addBlockTrigram(trigram, stateString);
 
     });
   }
