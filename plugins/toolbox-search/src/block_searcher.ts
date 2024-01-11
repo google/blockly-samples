@@ -51,7 +51,9 @@ export class BlockSearcher {
         field.getOptions(true).forEach((option) => {
           let state = { ...blockState }
             if (typeof option[0] === 'string') {
-              state.fields = {}
+                if (state.fields == undefined) {
+                    state.fields = {}
+                }
               if (field.name) {
                   state.fields[field.name] = option[1]
               }
