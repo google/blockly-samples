@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.5](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@4.1.4...@blockly/suggested-blocks@4.1.5) (2024-01-11)
+
+
+### Bug Fixes
+
+* fire finished loading event in suggested blocks test page ([#2098](https://github.com/google/blockly-samples/issues/2098)) ([5dd2ced](https://github.com/google/blockly-samples/commit/5dd2cededc4a1fe701347b4f711fc184b1e36791))
+
+
+
 ## [4.1.4](https://github.com/google/blockly-samples/compare/@blockly/suggested-blocks@4.1.3...@blockly/suggested-blocks@4.1.4) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/suggested-blocks
