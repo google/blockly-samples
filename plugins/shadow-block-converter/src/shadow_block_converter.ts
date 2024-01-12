@@ -35,12 +35,12 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    * The index of the connection in the parent block's list of connections. If
    * null, then the nextConnection will be used instead.
    */
-  inputIndexInParent?: number | null;
+  inputIndexInParent: number | null;
 
   /**
    * The intended shadow state of the connection.
    */
-  shadowState?: Blockly.serialization.blocks.State;
+  shadowState: Blockly.serialization.blocks.State;
 
   /**
    * The constructor for a new BlockShadowStateChange event.
@@ -52,17 +52,13 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    * @param shadowState The intended shadow state of the connection.
    */
   constructor(
-    block?: Block,
-    inputIndexInParent?: number | null,
-    shadowState?: Blockly.serialization.blocks.State,
+    block: Block,
+    inputIndexInParent: number | null,
+    shadowState: Blockly.serialization.blocks.State,
   ) {
     super(block);
 
     this.type = BlockShadowStateChange.EVENT_TYPE;
-
-    if (!block) {
-      return; // Blank event to be populated by fromJson.
-    }
     this.inputIndexInParent = inputIndexInParent;
     this.shadowState = shadowState;
   }
@@ -75,18 +71,6 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    */
   toJson(): BlockShadowStateChangeJson {
     const json = super.toJson() as BlockShadowStateChangeJson;
-    if (typeof this.inputIndexInParent === 'undefined') {
-      throw new Error(
-        'The connection index is undefined. Either pass an index ' +
-          'to the constructor, or call fromJson',
-      );
-    }
-    if (!this.shadowState) {
-      throw new Error(
-        'The shadow state is undefined. Either pass a shadow state ' +
-          'to the constructor, or call fromJson',
-      );
-    }
     json['inputIndexInParent'] = this.inputIndexInParent;
     json['shadowState'] = this.shadowState;
     return json;
@@ -252,7 +236,7 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
     if (inputIndexInParent === null) {
       parentConnection = parentBlock.nextConnection;
     } else if (
-      inputIndexInParent == -1 ||
+      inputIndexInParent < 0 ||
       inputIndexInParent >= parentBlock.inputList.length
     ) {
       throw new Error('inputIndexInParent is invalid.');
