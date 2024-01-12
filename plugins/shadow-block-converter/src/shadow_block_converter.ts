@@ -11,48 +11,56 @@
 import * as Blockly from 'blockly/core';
 import {Block} from 'blockly/core/block';
 import {Abstract} from 'blockly/core/events/events_abstract';
-import {BlockChangeJson} from 'blockly/core/events/events_block_change';
+
+export interface BlockShadowStateChangeJson
+  extends Blockly.Events.BlockBaseJson {
+  inputIndexInParent: number | null;
+  shadowState: Blockly.serialization.blocks.State;
+}
 
 /**
- * A new blockly event class specifically for recording changes to the shadow
- * state of a block. This implementation is similar to and could be merged with
- * the implementation of Blockly.Events.BlockChange in Blockly core code.
+ * A Blockly event class to revert a block connection's shadow state to the
+ * provided state, to be used after attaching a child block that would
+ * ordinarily overwrite the connection's shadow state.
  */
-export class BlockShadowChange extends Blockly.Events.BlockBase {
+export class BlockShadowStateChange extends Blockly.Events.BlockBase {
   /**
    * The name of the event type for broadcast and listening purposes.
    */
   /* eslint-disable @typescript-eslint/naming-convention */
-  static readonly EVENT_TYPE = 'block_shadow_change';
+  static readonly EVENT_TYPE = 'block_shadow_state_change';
   /* eslint-enable @typescript-eslint/naming-convention */
 
   /**
-   * The previous value of the field.
+   * The index of the connection in the parent block's list of connections. If
+   * null, then the nextConnection will be used instead.
    */
-  oldValue: unknown;
+  inputIndexInParent: number | null;
 
   /**
-   * The new value of the field.
+   * The intended shadow state of the connection.
    */
-  newValue: unknown;
+  shadowState: Blockly.serialization.blocks.State;
 
   /**
-   * The constructor for a new BlockShadowChange event.
+   * The constructor for a new BlockShadowStateChange event.
    *
-   * @param block The changed block. Undefined for a blank event.
-   * @param oldValue Previous value of shadow state.
-   * @param newValue New value of shadow state.
+   * @param block The parent of the connection to modify.
+   * @param inputIndexInParent The index of the input associated with the
+   *     connection to modify, if it is associated with one. Otherwise the
+   *     nextConnection will be used.
+   * @param shadowState The intended shadow state of the connection.
    */
-  constructor(block?: Block, oldValue?: boolean, newValue?: boolean) {
+  constructor(
+    block: Block,
+    inputIndexInParent: number | null,
+    shadowState: Blockly.serialization.blocks.State,
+  ) {
     super(block);
 
-    this.type = BlockShadowChange.EVENT_TYPE;
-
-    if (!block) {
-      return; // Blank event to be populated by fromJson.
-    }
-    this.oldValue = typeof oldValue === 'undefined' ? '' : oldValue;
-    this.newValue = typeof newValue === 'undefined' ? '' : newValue;
+    this.type = BlockShadowStateChange.EVENT_TYPE;
+    this.inputIndexInParent = inputIndexInParent;
+    this.shadowState = shadowState;
   }
 
   /**
@@ -61,10 +69,10 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    * @returns JSON representation.
    * @override
    */
-  toJson(): BlockChangeJson {
-    const json = super.toJson() as BlockChangeJson;
-    json['oldValue'] = this.oldValue;
-    json['newValue'] = this.newValue;
+  toJson(): BlockShadowStateChangeJson {
+    const json = super.toJson() as BlockShadowStateChangeJson;
+    json['inputIndexInParent'] = this.inputIndexInParent;
+    json['shadowState'] = this.shadowState;
     return json;
   }
 
@@ -75,18 +83,18 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    * @override
    */
   static fromJson(
-    json: BlockChangeJson,
+    json: BlockShadowStateChangeJson,
     workspace: Blockly.Workspace,
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     event?: any,
-  ): BlockShadowChange {
+  ): BlockShadowStateChange {
     const newEvent = super.fromJson(
       json,
       workspace,
       event,
-    ) as BlockShadowChange;
-    newEvent.oldValue = json['oldValue'];
-    newEvent.newValue = json['newValue'];
+    ) as BlockShadowStateChange;
+    newEvent.inputIndexInParent = json['inputIndexInParent'];
+    newEvent.shadowState = json['shadowState'];
     return event;
   }
 
@@ -97,7 +105,7 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
    * @override
    */
   isNull(): boolean {
-    return this.oldValue === this.newValue;
+    return false;
   }
 
   /**
@@ -122,16 +130,168 @@ export class BlockShadowChange extends Blockly.Events.BlockBase {
       );
     }
 
-    const value = forward ? this.newValue : this.oldValue;
-    block.setShadow(!!value);
+    const connections = block.getConnections_(true);
+
+    let connection: Blockly.Connection | null;
+    if (this.inputIndexInParent === null) {
+      connection = block.nextConnection;
+    } else if (
+      typeof this.inputIndexInParent !== 'number' ||
+      this.inputIndexInParent < 0 ||
+      this.inputIndexInParent >= connections.length
+    ) {
+      throw new Error('inputIndexInParent was invalid.');
+    } else {
+      connection = block.inputList[this.inputIndexInParent].connection;
+    }
+    if (connection === null) {
+      throw new Error('No matching connection was found.');
+    }
+
+    if (forward) {
+      connection.setShadowState(this.shadowState || null);
+    }
+
+    // Nothing to be done when run backward, because removing a child block
+    // doesn't overwrite the connection's shadowState and thus doesn't need to
+    // be reverted.
   }
 }
 
 Blockly.registry.register(
   Blockly.registry.Type.EVENT,
-  BlockShadowChange.EVENT_TYPE,
-  BlockShadowChange,
+  BlockShadowStateChange.EVENT_TYPE,
+  BlockShadowStateChange,
 );
+
+/**
+ * Convert the provided shadow block into a regular block, along with any parent
+ * shadow blocks.
+ *
+ * The provided block will be deleted, and a new regular block will be created
+ * in its place that has new id but is otherwise identical to the shadow block.
+ * The parent connection's shadow state will be forcibly preserved, despite the
+ * fact that attaching a regular block to the connection ordinarily overwrites
+ * the connection's shadow state.
+ *
+ * @param shadowBlock
+ * @returns The newly created regular block with a different id, if one could be
+ *     created.
+ */
+function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
+  // Determine how the shadow block is connected to the parent.
+  let parentConnection: Blockly.Connection | null = null;
+  let connectionIsThroughOutputConnection = false;
+  if (shadowBlock.previousConnection?.isConnected()) {
+    parentConnection = shadowBlock.previousConnection.targetConnection;
+  } else if (shadowBlock.outputConnection?.isConnected()) {
+    parentConnection = shadowBlock.outputConnection.targetConnection;
+    connectionIsThroughOutputConnection = true;
+  }
+  if (parentConnection === null) {
+    // We can't change the shadow status of a block with no parent, so just
+    // return the block as-is.
+    return shadowBlock;
+  }
+
+  // Get the parent block, and the index of the connection's input if it is
+  // associated with one.
+  let parentBlock = parentConnection.getSourceBlock();
+  const inputInParent = parentConnection.getParentInput();
+  const inputIndexInParent: number | null = inputInParent
+    ? parentBlock.inputList.indexOf(inputInParent)
+    : null;
+
+  // Recover the state of the shadow block before it was edited. The connection
+  // should still have the original state until a new block is attached to it.
+  const originalShadowState = parentConnection.getShadowState(
+    /* returnCurrent = */ false,
+  );
+
+  // Serialize the current state of the shadow block (after it was edited).
+  const editedBlockState = Blockly.serialization.blocks.save(shadowBlock, {
+    addCoordinates: false,
+    addInputBlocks: true,
+    addNextBlocks: true,
+    doFullSerialization: false,
+  });
+  if (originalShadowState === null || editedBlockState === null) {
+    // The serialized block states are necessary to convert the block. Without
+    // them, just return the block as-is.
+    return shadowBlock;
+  }
+
+  // If the parent block is a shadow, it must be converted first.
+  if (parentBlock.isShadow()) {
+    const newParentBlock = reifyEditedShadowBlock(parentBlock);
+    if (newParentBlock === null) {
+      throw new Error(
+        "No parent block was created, so we can't recreate the " +
+          'current block either.',
+      );
+    }
+    parentBlock = newParentBlock;
+
+    // The reference to the connection is obsolete. Find it from the new parent.
+    if (inputIndexInParent === null) {
+      parentConnection = parentBlock.nextConnection;
+    } else if (
+      inputIndexInParent < 0 ||
+      inputIndexInParent >= parentBlock.inputList.length
+    ) {
+      throw new Error('inputIndexInParent is invalid.');
+    } else {
+      parentConnection = parentBlock.inputList[inputIndexInParent].connection;
+    }
+    if (parentConnection === null) {
+      throw new Error(
+        "Couldn't find the corresponding connection on the new " +
+          'version of the parent block.',
+      );
+    }
+  }
+
+  // Let Blockly generate a new id for the new regular block. Ideally, we would
+  // let the shadow block and the regular block have the same id, and in
+  // principle that ought to be possible since they don't need to coexist at the
+  // same time. However, we'll need to call setShadowState on the connection
+  // after attaching the regular block to revert any changes made by attaching
+  // the block, and the setShadowState implementation temporarily instantiates
+  // the provided shadow state, which can't have the same id as a block in the
+  // workspace. The new shadow state id won't be compatible with any existing
+  // undo history on the shadow block, such as the block change event that
+  // triggered this whole shadow conversion!
+  editedBlockState.id = undefined;
+
+  // Create a regular version of the shadow block by deserializing its state
+  // independently from the connection.
+  const regularBlock = Blockly.serialization.blocks.append(
+    editedBlockState,
+    parentBlock.workspace,
+    {recordUndo: true},
+  );
+
+  // Attach the regular block to the connection in place of the shadow block.
+  const childConnection = connectionIsThroughOutputConnection
+    ? regularBlock.outputConnection
+    : regularBlock.previousConnection;
+  if (childConnection) {
+    parentConnection.connect(childConnection);
+  }
+
+  // The process of connecting a block overwrites the connection's shadow state,
+  // so revert it.
+  parentConnection.setShadowState(originalShadowState);
+  Blockly.Events.fire(
+    new BlockShadowStateChange(
+      parentBlock,
+      inputIndexInParent,
+      originalShadowState,
+    ),
+  );
+
+  return regularBlock;
+}
 
 /**
  * Add this function to your workspace as a change listener to automatically
@@ -191,40 +351,7 @@ export function shadowBlockConversionChangeListener(event: Abstract) {
     Blockly.Events.setGroup(true);
   }
 
-  // If the changed shadow block is a child of another shadow block, then both
-  // blocks should be converted to real blocks. To find all the shadow block
-  // ancestors that need to be converted to real blocks, seed the list of blocks
-  // starting with the changed block, and append all shadow block ancestors.
-  const shadowBlocks = [block];
-  for (let i = 0; i < shadowBlocks.length; i++) {
-    const shadowBlock = shadowBlocks[i];
-
-    // If connected blocks need to be converted too, add them to the list.
-    const outputBlock: Block | null | undefined =
-      shadowBlock.outputConnection?.targetBlock();
-    const previousBlock: Block | null | undefined =
-      shadowBlock.previousConnection?.targetBlock();
-    if (outputBlock?.isShadow()) {
-      shadowBlocks.push(outputBlock);
-    }
-    if (previousBlock?.isShadow()) {
-      shadowBlocks.push(previousBlock);
-    }
-  }
-
-  // The list of shadow blocks starts with the deepest child and ends with the
-  // highest parent, but the parent of a real block should never be a shadow
-  // block, so the parents need to be converted to real blocks first. Start
-  // at the end of the list and iterate backward to convert the blocks.
-  for (let i = shadowBlocks.length - 1; i >= 0; i--) {
-    const shadowBlock = shadowBlocks[i];
-    // Convert the shadow block to a real block and fire an event recording the
-    // change so that it can be undone. Ideally the
-    // Blockly.Block.prototype.setShadow method should fire this event directly,
-    // but for this plugin it needs to be explicitly fired here.
-    shadowBlock.setShadow(false);
-    Blockly.Events.fire(new BlockShadowChange(shadowBlock, true, false));
-  }
+  reifyEditedShadowBlock(block);
 
   // Revert to the current event group, if any.
   Blockly.Events.setGroup(currentGroup);
