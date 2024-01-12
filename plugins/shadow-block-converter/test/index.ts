@@ -17,16 +17,6 @@ const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
   contents: [
     {
       kind: 'block',
-      type: 'text_reverse',
-      inputs: {
-        TEXT: {
-          shadow: {type: 'text', fields: {TEXT: 'abc'}},
-          block: undefined,
-        },
-      },
-    },
-    {
-      kind: 'block',
       type: 'colour_blend',
       inputs: {
         COLOUR1: {
