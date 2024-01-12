@@ -18,6 +18,7 @@ to include and extend the [Blockly](http://github.com/google/blockly) library.
 - [``max-blocks-demo``](max-blocks-demo/): A demo limiting the total number of blocks allowed for academic exercises.
 - [``mirror-demo``](mirror-demo/): A demo using two Blockly instances connected as leader-follower.
 - [``pitch-field-demo``](pitch-field-demo/): A demo of creating custom block fields.
+- [``python-interpreter-demo``](python-interpreter-demo/): A demo of executing code step-by-step with a sandboxed Python interpreter.
 - [``resizable-demo``](resizable-demo/): A demo of injecting Blockly into a page as a resizable element.
 - [``rtl-demo``](rtl-demo/): A demo of what Blockly looks like in right-to-left mode (for Arabic and Hebrew).
 - [``single-direction-scroll-demo``](single-direction-scroll-demo/): A demo of configuring single-direction scrollbars.
