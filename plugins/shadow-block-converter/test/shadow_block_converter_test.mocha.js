@@ -7,32 +7,14 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const Blockly = require('blockly');
-const {shadowBlockConversionChangeListener} = require('../src/index');
+const {
+  BlockShadowChange,
+  shadowBlockConversionChangeListener,
+} = require('../src/index');
 
 const assert = chai.assert;
 
 suite('shadowBlockConversionChangeListener', function () {
-  /**
-   * Create a parent block with an unconnected value connection.
-   * @param {Blockly.Workspace} workspace The workspace to use.
-   * @returns {Blockly.Connection} The connection.
-   */
-  function makeEmptyConnection(workspace) {
-    return workspace.newBlock('text_reverse').inputList[0].connection;
-  }
-
-  /**
-   * Create a parent block with an unconnected connection.
-   * @param {Blockly.Connection} connection The connection to use.
-   * @param {Blockly.serialization.blocks.State} shadowState The state for the
-   *     shadow block.
-   * @returns {Blockly.Block} The newly created shadow block.
-   */
-  function attachShadowBlock(connection, shadowState) {
-    connection.setShadowState(shadowState);
-    return connection.targetBlock();
-  }
-
   setup(function () {
     this.workspace = new Blockly.Workspace();
     this.workspace.addChangeListener(shadowBlockConversionChangeListener);
@@ -46,165 +28,133 @@ suite('shadowBlockConversionChangeListener', function () {
     this.clock.restore();
   });
 
+  test('directly running shadow event changes shadow', function () {
+    const block = this.workspace.newBlock('text');
+    const event = new BlockShadowChange(block, false, true);
+    event.run(true);
+    assert.isTrue(block.isShadow());
+    event.run(false);
+    assert.isFalse(block.isShadow());
+  });
+
   test('responds to field change', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowBlock = attachShadowBlock(connection, {type: 'text'});
-    shadowBlock.getField('TEXT').setValue('new value');
+    const block = this.workspace.newBlock('text');
+    block.setShadow(true);
+    block.getField('TEXT').setValue('new value');
     this.clock.runAll();
-    assert.isFalse(connection.targetBlock().isShadow());
+    assert.isFalse(block.isShadow());
   });
 
   test('responds to block change event', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowBlock = attachShadowBlock(connection, {type: 'text'});
+    const block = this.workspace.newBlock('text');
+    block.setShadow(true);
     const event = new Blockly.Events.BlockChange(
-      shadowBlock,
+      block,
       'field',
       'TEXT',
       'old value',
       'new value',
     );
     this.workspace.fireChangeListener(event);
-    assert.isFalse(connection.targetBlock().isShadow());
+    assert.isFalse(block.isShadow());
   });
 
   test('ignores block move event', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowBlock = attachShadowBlock(connection, {type: 'text'});
-    const event = new Blockly.Events.BlockMove(shadowBlock);
+    const block = this.workspace.newBlock('text');
+    block.setShadow(true);
+    const event = new Blockly.Events.BlockMove(block);
     this.workspace.fireChangeListener(event);
-    assert.isTrue(connection.targetBlock().isShadow());
+    assert.isTrue(block.isShadow());
   });
 
   test('undo shadow change', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowBlock = attachShadowBlock(connection, {
-      type: 'text',
-      fields: {TEXT: 'old value'},
-    });
-    shadowBlock.getField('TEXT').setValue('new value');
+    const block = this.workspace.newBlock('text');
+    block.setShadow(true);
+    block.getField('TEXT').setValue('new value');
     // Wait for the block change event to get handled by the shadow listener.
     this.clock.runAll();
-    assert.isFalse(connection.targetBlock().isShadow());
-    assert.equal(
-      connection.targetBlock().getField('TEXT').getValue(),
-      'new value',
-    );
+    assert.isFalse(block.isShadow());
     // Wait for the shadow change event to get fired and recorded in history.
     this.clock.runAll();
     this.workspace.undo(false);
-    assert.isTrue(connection.targetBlock().isShadow());
-    assert.equal(
-      connection.targetBlock().getField('TEXT').getValue(),
-      'old value',
-    );
+    assert.isTrue(block.isShadow());
   });
 
   test('redo shadow change', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowBlock = attachShadowBlock(connection, {
-      type: 'text',
-      fields: {TEXT: 'old value'},
-    });
-    shadowBlock.getField('TEXT').setValue('new value');
+    const block = this.workspace.newBlock('text');
+    block.setShadow(true);
+    block.getField('TEXT').setValue('new value');
     // Wait for the block change event to get handled by the shadow listener.
     this.clock.runAll();
     // Wait for the shadow change event to get fired and recorded in history.
     this.clock.runAll();
     this.workspace.undo(false);
-    assert.isTrue(connection.targetBlock().isShadow());
-    assert.equal(
-      connection.targetBlock().getField('TEXT').getValue(),
-      'old value',
-    );
+    assert.isTrue(block.isShadow());
     this.workspace.undo(true);
-    assert.isFalse(connection.targetBlock().isShadow());
-    assert.equal(
-      connection.targetBlock().getField('TEXT').getValue(),
-      'new value',
-    );
-  });
-
-  test('preserves original shadow state after edit', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowState = {type: 'text', id: '123', fields: {TEXT: 'abc'}};
-    const shadowBlock = attachShadowBlock(connection, shadowState);
-    shadowBlock.getField('TEXT').setValue('new value');
-    this.clock.runAll();
-    assert.deepEqual(
-      connection.getShadowState(/* returnCurrent= */ false),
-      shadowState,
-    );
-  });
-
-  test('preserves original shadow state after undo and redo', function () {
-    const connection = makeEmptyConnection(this.workspace);
-    const shadowState = {type: 'text', id: '123', fields: {TEXT: 'abc'}};
-    const shadowBlock = attachShadowBlock(connection, shadowState);
-    shadowBlock.getField('TEXT').setValue('new value');
-    // Wait for the block change event to get handled by the shadow listener.
-    this.clock.runAll();
-    // Wait for the shadow change event to get fired and recorded in history.
-    this.clock.runAll();
-    this.workspace.undo(false);
-    assert.deepEqual(
-      connection.getShadowState(/* returnCurrent= */ false),
-      shadowState,
-    );
-    this.workspace.undo(true);
-    assert.deepEqual(
-      connection.getShadowState(/* returnCurrent= */ false),
-      shadowState,
-    );
+    assert.isFalse(block.isShadow());
   });
 
   test('shadow change follows output connection', function () {
-    const rootConnection = makeEmptyConnection(this.workspace);
-    const parentShadowBlock = attachShadowBlock(rootConnection, {
-      type: 'text_reverse',
-    });
-    const childShadowBlock = attachShadowBlock(
-      parentShadowBlock.inputList[0].connection,
-      {type: 'text'},
+    const statementBlock = this.workspace.newBlock('text_print');
+    const expressionBlock = this.workspace.newBlock('text');
+    statementBlock.inputList[0].connection.connect(
+      expressionBlock.outputConnection,
     );
-    assert.isTrue(rootConnection.targetBlock().isShadow());
-    assert.isTrue(
-      rootConnection
-        .targetBlock()
-        .inputList[0].connection.targetBlock()
-        .isShadow(),
-    );
-    childShadowBlock.getField('TEXT').setValue('new value');
+    expressionBlock.setShadow(true);
+    statementBlock.setShadow(true);
+    expressionBlock.getField('TEXT').setValue('new value');
     this.clock.runAll();
-    assert.isFalse(rootConnection.targetBlock().isShadow());
-    assert.isFalse(
-      rootConnection
-        .targetBlock()
-        .inputList[0].connection.targetBlock()
-        .isShadow(),
-    );
+    assert.isFalse(expressionBlock.isShadow());
+    assert.isFalse(statementBlock.isShadow());
   });
 
   test('shadow change follows previous connection', function () {
-    const rootConnection = this.workspace.newBlock(
-      'controls_whileUntil',
-    ).nextConnection;
-    const parentShadowBlock = attachShadowBlock(rootConnection, {
-      type: 'controls_whileUntil',
-    });
-    const childShadowBlock = attachShadowBlock(
-      parentShadowBlock.nextConnection,
-      {type: 'controls_whileUntil'},
-    );
-    assert.isTrue(rootConnection.targetBlock().isShadow());
-    assert.isTrue(
-      rootConnection.targetBlock().nextConnection.targetBlock().isShadow(),
-    );
-    childShadowBlock.getField('MODE').setValue('UNTIL');
+    const block1 = this.workspace.newBlock('controls_whileUntil');
+    const block2 = this.workspace.newBlock('controls_whileUntil');
+    block1.nextConnection.connect(block2.previousConnection);
+    block2.setShadow(true);
+    block1.setShadow(true);
+    block2.getField('MODE').setValue('UNTIL');
     this.clock.runAll();
-    assert.isFalse(rootConnection.targetBlock().isShadow());
-    assert.isFalse(
-      rootConnection.targetBlock().nextConnection.targetBlock().isShadow(),
-    );
+    assert.isFalse(block2.isShadow());
+    assert.isFalse(block1.isShadow());
+  });
+
+  test('parent blocks are reified before child blocks', function () {
+    const block1 = this.workspace.newBlock('text_print');
+    const block2 = this.workspace.newBlock('text_print');
+    const block3 = this.workspace.newBlock('text_print');
+    const block4 = this.workspace.newBlock('text');
+    block1.nextConnection.connect(block2.previousConnection);
+    block2.nextConnection.connect(block3.previousConnection);
+    block3.inputList[0].connection.connect(block4.outputConnection);
+    block4.setShadow(true);
+    block3.setShadow(true);
+    block2.setShadow(true);
+    block1.setShadow(true);
+
+    const reifiedBlocks = [];
+    this.workspace.addChangeListener((event) => {
+      if (
+        event.type === BlockShadowChange.EVENT_TYPE &&
+        event.newValue == false
+      ) {
+        reifiedBlocks.push(event.blockId);
+      }
+    });
+
+    block4.getField('TEXT').setValue('new value');
+    this.clock.runAll();
+    assert.isFalse(block4.isShadow());
+    assert.isFalse(block3.isShadow());
+    assert.isFalse(block2.isShadow());
+    assert.isFalse(block1.isShadow());
+
+    assert.deepEqual(reifiedBlocks, [
+      block1.id,
+      block2.id,
+      block3.id,
+      block4.id,
+    ]);
   });
 });
