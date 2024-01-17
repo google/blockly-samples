@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+}
+
+#block-factory-container {
+  display: flex;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+#main-workspace {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+  margin: 8px;
+  min-width: 500px;
+}
+
+#output-pane {
+  display: flex;
+  flex-basis: 0;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+
+#output-pane > * {
+  flex-basis: 20%;
+  margin: 8px;
+  min-height: 100px;
+}
+
+#block-preview {
+  min-height: 200px;
+}
+
+#block-definition {
+  overflow: scroll;
+}
+
+@media screen and (max-width: 800px) {
+  #block-factory-container {
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+
+  #main-workspace {
+    flex-grow: 2;
+    min-height: 400px;
+  }
+
+  #outputDiv {
+    height: fit-content;
+  }
+}

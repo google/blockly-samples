@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.13](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.12...@blockly/workspace-minimap@0.1.13) (2024-01-11)
+
+
+### Bug Fixes
+
+* Prevent workspace click handlers in minimap. ([#2133](https://github.com/google/blockly-samples/issues/2133)) ([eca0228](https://github.com/google/blockly-samples/commit/eca02287bf72c7cd780928c2fa2ba42cb784fabb))
+
+
+
 ## [0.1.12](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.1.11...@blockly/workspace-minimap@0.1.12) (2024-01-04)
 
 

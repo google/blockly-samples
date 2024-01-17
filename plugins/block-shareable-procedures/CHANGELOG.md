@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.0](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.7...@blockly/block-shareable-procedures@4.1.0) (2024-01-11)
+
+
+### Features
+
+* create createBackingVariable method ([#2106](https://github.com/google/blockly-samples/issues/2106)) ([1d0df1e](https://github.com/google/blockly-samples/commit/1d0df1e56d457e67c9660e2a93e6a4f06a316395))
+
+
+
 ## [4.0.7](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.0.6...@blockly/block-shareable-procedures@4.0.7) (2023-12-21)
 
 

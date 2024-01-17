@@ -1,0 +1,43 @@
+{
+    "name": "developer-tools",
+    "version": "1.0.0",
+    "description": "Blockly Developer Tools",
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+        "start": "webpack serve --open --mode=development",
+        "build": "webpack --mode=production --node-env=production",
+        "build:dev": "webpack --mode=development",
+        "build:prod": "webpack --mode=production --node-env=production",
+        "watch": "webpack --watch",
+        "serve": "webpack serve"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/google/blockly-samples.git"
+    },
+    "keywords": [
+        "blockly"
+    ],
+    "author": "Blockly Team",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/google/blockly-samples/issues"
+    },
+    "homepage": "https://github.com/google/blockly-samples#readme",
+    "devDependencies": {
+        "@webpack-cli/generators": "^3.0.7",
+        "css-loader": "^6.8.1",
+        "html-webpack-plugin": "^5.5.3",
+        "mini-css-extract-plugin": "^2.7.6",
+        "style-loader": "^3.3.3",
+        "ts-loader": "^9.4.4",
+        "typescript": "^5.1.6",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1"
+    },
+    "dependencies": {
+        "blockly": "^10.3.0"
+    }
+}
