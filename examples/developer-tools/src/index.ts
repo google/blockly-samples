@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -16,9 +16,9 @@ import './index.css';
 // if you don't load it specifically, you'll get spurious message warnings.
 Blockly.setLocale(En);
 
-const mainWorkspaceDiv = document.getElementById('mainWorkspace');
-const previewDiv = document.getElementById('preview');
-const definitionDiv = document.getElementById('definition').firstChild;
+const mainWorkspaceDiv = document.getElementById('main-workspace');
+const previewDiv = document.getElementById('block-preview');
+const definitionDiv = document.getElementById('block-definition').firstChild;
 
 const previewWorkspace = Blockly.inject(previewDiv, {});
 const mainWorkspace = Blockly.inject(mainWorkspaceDiv, {});
