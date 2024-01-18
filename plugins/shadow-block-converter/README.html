@@ -24,7 +24,7 @@
       <div class="title">@blockly/shadow-block-converter Demo</div>
       <div class="subtitle">A workspace change listener that converts shadow blocks to real blocks when the user edits them.</div>
     </div>
-    4.0.11
+    5.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/shadow-block-converter" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/shadow-block-converter" class="button" target="_blank">View on npm</a>
@@ -51,7 +51,7 @@
     <article class="article-container site-width">
       <div class="article">
       <h1 id="blocklyshadow-block-converter-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/shadow-block-converter <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
-<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin for automatically converting shadow blocks to real blocks when the user edits them.</p>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> plugin for automatically converting shadow blocks to regular blocks when the user edits them.</p>
 <h2 id="installation">Installation</h2>
 <h3 id="yarn">Yarn</h3>
 <pre><code>yarn add @blockly/shadow-block-converter</code></pre>
@@ -59,9 +59,21 @@
 <pre><code>npm install @blockly/shadow-block-converter --save</code></pre>
 <h2 id="usage">Usage</h2>
 <p>This plugin exports a function called <code>shadowBlockConversionChangeListener</code>. If
-you add it as a change listener to your blockly workspace then any shadow block
-the user edits will be converted to a real block. See below for an example using
-it with a workspace.</p>
+you add it as a change listener to your Blockly workspace then any shadow block
+the user edits will be converted to a regular block. This allows the user to
+move or delete the block, in which case the original shadow block will
+automatically return. With this plugin, shadow blocks behave like a persistent
+default value associated with the parent block (unlike standard Blockly
+behavior, where shadow blocks retain any edits made to them even after a regular
+block is dragged on top of them).</p>
+<p>The regular block will be a new block instance, separate from the shadow block
+that was replaced, and will have a different id. It will otherwise have the same
+properties and shape as the original shadow block.</p>
+<p>If the shadow block was attached to any ancestor blocks that were also shadows,
+they will be recreated as regular blocks. If the shadow block was attached to
+any descendent blocks, they will be recreated with different ids but will still
+be shadow blocks.</p>
+<p>See below for an example using it with a workspace.</p>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {shadowBlockConversionChangeListener} from '@blockly/shadow-block-converter';
