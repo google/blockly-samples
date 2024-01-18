@@ -13,11 +13,8 @@ import * as Blockly from 'blockly/core';
  * Highly inefficient (On^2), but n is small.
  * @param referenceBlock Block to check.
  */
-const inputNameCheck = function (referenceBlock: Blockly.Block) {
-  if (referenceBlock.isDeadOrDying()) {
-    // Block has been deleted.
-    return;
-  }
+const checkNameConflicts = function (referenceBlock: Blockly.Block) {
+  if (referenceBlock.isDeadOrDying()) return;
   const name = referenceBlock.getFieldValue('INPUTNAME').toLowerCase();
   let count = 0;
   const blocks = referenceBlock.workspace.getAllBlocks(false);
@@ -34,28 +31,26 @@ const inputNameCheck = function (referenceBlock: Blockly.Block) {
   }
   const msg =
     count > 1 ? 'There are ' + count + ' input blocks\n with this name.' : null;
-  referenceBlock.setWarningText(msg);
+  referenceBlock.setWarningText(msg, 'duplicatename');
 };
 
 // Inputs that should take a "type" input for connection checks
 const inputsWithTypeInputs = new Set(['input_value', 'input_statement']);
 
-const inputTypeValidator = function (
+const updateTypeInputs = function (
   this: Blockly.Block,
   value: string,
-): string {
+): undefined {
   if (inputsWithTypeInputs.has(value)) {
     if (!this.getInput('TYPE')) {
       this.appendValueInput('TYPE')
-        .setCheck(null)
+        .setCheck(['TypeArray', 'Type'])
         .setAlign(Blockly.inputs.Align.RIGHT)
         .appendField('type');
     }
   } else {
     this.removeInput('TYPE', true);
   }
-
-  return value;
 };
 
 const tooltip: Record<string, string> = {
@@ -78,14 +73,14 @@ export const input = {
             ['dummy', 'input_dummy'],
             ['end-row', 'input_end_row'],
           ],
-          inputTypeValidator.bind(this),
+          updateTypeInputs.bind(this),
         ),
         'INPUT_TYPE',
       )
       .appendField('input')
       .appendField(new Blockly.FieldTextInput('NAME'), 'INPUTNAME');
     this.appendStatementInput('FIELDS')
-      .setCheck(null)
+      .setCheck('Field')
       .appendField('fields')
       .appendField(
         new Blockly.FieldDropdown([
@@ -95,8 +90,8 @@ export const input = {
         ]),
         'ALIGNMENT',
       );
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, 'Input');
+    this.setNextStatement(true, 'Input');
     this.setStyle('input');
     this.setTooltip((): string => {
       const value = this.getFieldValue('INPUT_TYPE');
@@ -105,6 +100,6 @@ export const input = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=71');
   },
   onchange: function () {
-    inputNameCheck(this);
+    checkNameConflicts(this);
   },
 };

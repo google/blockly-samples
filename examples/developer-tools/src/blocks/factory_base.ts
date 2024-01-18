@@ -6,8 +6,8 @@
 
 import * as Blockly from 'blockly/core';
 
+/** Base of new block. */
 export const factoryBase = {
-  // Base of new block.
   init: function () {
     this.setStyle('base');
     this.appendDummyInput()
@@ -28,11 +28,10 @@ export const factoryBase = {
         ['↑ top connection', 'TOP'],
         ['↓ bottom connection', 'BOTTOM'],
       ],
-      function (option: string): string {
+      function (option: string): undefined {
         this.getSourceBlock().updateShape(option);
         // Connect a shadow block to this new input.
         this.getSourceBlock().spawnOutputShadow(option);
-        return option;
       },
     );
     this.appendDummyInput().appendField(connectionsDropdown, 'CONNECTIONS');

@@ -6,16 +6,20 @@
 
 import * as Blockly from 'blockly/core';
 
+/** The default source to use as prepopulated text in image fields. */
+const defaultImageSrc = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
+/** The tooltip text to show explaining alt text for images. */
+const imageAltTooltip = 'Alt text used for screenreaders and when image is unavailable';
+/** The tooltip text to show explaining the 'flip RTL' option for images. */
+const imageFlipTooltip = 'Whether the image should be reversed when a workspace is rendered RTL';
+
 /**
  * Check to see if more than one field has this name.
  * Highly inefficient (On^2), but n is small.
  * @param referenceBlock Block to check.
  */
-const fieldNameCheck = function (referenceBlock: Blockly.Block) {
-  if (!referenceBlock.workspace) {
-    // Block has been deleted.
-    return;
-  }
+const checkNameConflicts = function (referenceBlock: Blockly.Block) {
+  if (referenceBlock.isDeadOrDying()) return;
   const name = referenceBlock.getFieldValue('FIELDNAME').toLowerCase();
   let count = 0;
   const blocks = referenceBlock.workspace.getAllBlocks(false);
@@ -31,8 +35,8 @@ const fieldNameCheck = function (referenceBlock: Blockly.Block) {
     }
   }
   const msg =
-    count > 1 ? 'There are ' + count + ' field blocks\n with this name.' : null;
-  referenceBlock.setWarningText(msg);
+    count > 1 ? `There are ${count} field blocks\nwith this name.` : null;
+  referenceBlock.setWarningText(msg, 'duplicatename');
 };
 
 /**
@@ -51,8 +55,10 @@ export const fieldLabel = {
   },
 };
 
+/**
+ * Serializable label field.
+ */
 export const fieldLabelSerializable = {
-  // Text value that is saved to XML.
   init: function () {
     this.setStyle('field');
     this.appendDummyInput('FIRST')
@@ -69,7 +75,7 @@ export const fieldLabelSerializable = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=88');
   },
   onchange: function () {
-    fieldNameCheck(this);
+    checkNameConflicts(this);
   },
 };
 
@@ -90,7 +96,7 @@ export const fieldInput = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=319');
   },
   onchange: function () {
-    fieldNameCheck(this);
+    checkNameConflicts(this);
   },
 };
 
@@ -118,12 +124,14 @@ export const fieldNumber = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=319');
   },
   onchange: function () {
-    fieldNameCheck(this);
+    checkNameConflicts(this);
   },
 };
 
+/** 
+ * Checkbox field.
+ */
 export const fieldCheckbox = {
-  // Checkbox.
   init: function () {
     this.setStyle('field');
     this.appendDummyInput()
@@ -133,16 +141,18 @@ export const fieldCheckbox = {
       .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
-    this.setTooltip('Checkbox field.');
+    this.setTooltip('A field with a checkbox.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=485');
   },
   onchange: function () {
-    fieldNameCheck(this);
+    checkNameConflicts(this);
   },
 };
 
+/**
+ * Variable field with a dropdown for selecting a variable by name.
+ */
 export const fieldVariable = {
-  // Dropdown for variables.
   init: function () {
     this.setStyle('field');
     this.appendDummyInput()
@@ -156,27 +166,29 @@ export const fieldVariable = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=510');
   },
   onchange: function () {
-    fieldNameCheck(this);
+    checkNameConflicts(this);
   },
 };
 
+/**
+ * Image field.
+ */
 export const fieldImage = {
-  // Image.
   init: function () {
     this.setStyle('field');
-    const src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
+    const src = defaultImageSrc;
     this.appendDummyInput()
       .appendField('image')
       .appendField(new Blockly.FieldTextInput(src), 'SRC');
     this.appendDummyInput()
       .appendField('width')
-      .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
+      .appendField(new Blockly.FieldNumber('15', 0, null, 1), 'WIDTH')
       .appendField('height')
-      .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
+      .appendField(new Blockly.FieldNumber('15', 0, null, 1), 'HEIGHT')
       .appendField('alt text')
-      .appendField(new Blockly.FieldTextInput('*'), 'ALT')
+      .appendField(new Blockly.FieldTextInput('*', undefined, {tooltip: imageAltTooltip}), 'ALT')
       .appendField('flip RTL')
-      .appendField(new Blockly.FieldCheckbox('FALSE'), 'FLIP_RTL');
+      .appendField(new Blockly.FieldCheckbox('FALSE', undefined, {tooltip: imageFlipTooltip}), 'FLIP_RTL');
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip(
@@ -243,9 +255,9 @@ export const fieldDropdown = {
     const containerBlock = workspace.newBlock('field_dropdown_container');
     containerBlock.initSvg();
     let connection = containerBlock.getInput('STACK').connection;
-    for (let i = 0; i < this.optionList.length; i++) {
+    for (const option of this.optionList) {
       const optionBlock = workspace.newBlock(
-        'field_dropdown_option_' + this.optionList[i],
+        'field_dropdown_option_' + option,
       );
       optionBlock.initSvg();
       connection.connect(optionBlock.previousConnection);
@@ -313,7 +325,6 @@ export const fieldDropdown = {
       i++;
     }
     // Rebuild block.
-    const src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
     for (let i = 0; i <= this.optionList.length; i++) {
       const type = this.optionList[i];
       if (type === 'text') {
@@ -326,7 +337,7 @@ export const fieldDropdown = {
         this.appendDummyInput('OPTION' + i)
           .appendField('•')
           .appendField('image')
-          .appendField(new Blockly.FieldTextInput(src), 'SRC' + i);
+          .appendField(new Blockly.FieldTextInput(defaultImageSrc), 'SRC' + i);
         this.appendDummyInput('OPTION_IMAGE' + i)
           .appendField(' ')
           .appendField('width')
@@ -334,18 +345,20 @@ export const fieldDropdown = {
           .appendField('height')
           .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT' + i)
           .appendField('alt text')
-          .appendField(new Blockly.FieldTextInput('*'), 'ALT' + i)
+          .appendField(new Blockly.FieldTextInput('*', undefined, {tooltip: imageAltTooltip}), 'ALT' + i)
           .appendField(',')
           .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
       }
     }
   },
   onchange: function () {
-    if (this.workspace && this.optionList.length < 1) {
-      this.setWarningText('Drop down menu must\nhave at least one option.');
-    } else {
-      fieldNameCheck(this);
+    let msg = null;
+    if (!this.isDeadOrDying() && this.optionList.length < 1) {
+      msg = 'Drop down menu must\nhave at least one option.';
     }
+    this.setWarningText(msg, 'dropdownoption');
+
+    checkNameConflicts(this);
   },
   /**
    * Gets the data for a single dropdown option. For a text option,
@@ -370,8 +383,8 @@ export const fieldDropdown = {
   },
 };
 
+/** Container for the dropdown field mutator. */
 export const fieldDropdownContainer = {
-  // Container.
   init: function () {
     this.setStyle('field');
     this.appendDummyInput().appendField('add options');
@@ -385,8 +398,8 @@ export const fieldDropdownContainer = {
   },
 };
 
+/** Text option for the dropdown field mutator. */
 export const fieldDropdownOptionText = {
-  // Add text option.
   init: function () {
     this.setStyle('field');
     this.appendDummyInput().appendField('text option');
@@ -398,8 +411,8 @@ export const fieldDropdownOptionText = {
   },
 };
 
+/** Image option for the dropdown field mutator. */
 export const fieldDropdownOptionImage = {
-  // Add image option.
   init: function () {
     this.setStyle('field');
     this.appendDummyInput().appendField('image option');

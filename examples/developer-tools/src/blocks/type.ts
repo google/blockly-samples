@@ -12,8 +12,8 @@ interface TypeState {
 
 type TypeItemBlock = Blockly.Block & {valueConnection: Blockly.Connection};
 
+/** Block representing a group of types. */
 export const typeGroup = {
-  // Group of types.
   init: function () {
     this.typeCount = 2;
     this.updateShape();
@@ -109,30 +109,26 @@ export const typeGroup = {
   },
 };
 
+/** Container block for the type group mutator. */
 export const typeGroupContainer = {
-  // Container.
   init: function () {
-    this.jsonInit({
-      message0: 'add types %1 %2',
-      args0: [{type: 'input_dummy'}, {type: 'input_statement', name: 'STACK'}],
-      colour: 230,
-      tooltip: 'Add, or remove allowed type.',
-      helpUrl: 'https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677',
-    });
+    this.appendDummyInput().appendField('add types');
+    this.appendStatementInput('STACK');
+    this.setStyle('type');
+    this.setTooltip('Add or remove allowed type.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
 };
 
+/** Individual input block for the type group mutator. */
 export const typeGroupItem = {
-  // Add type.
   init: function () {
-    this.jsonInit({
-      message0: 'type',
-      previousStatement: null,
-      nextStatement: null,
-      colour: 230,
-      tooltip: 'Add a new allowed type.',
-      helpUrl: 'https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677',
-    });
+    this.appendDummyInput().appendField('type');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setStyle('type');
+    this.setTooltip('Add a new allowed type.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
 };
 
@@ -145,6 +141,22 @@ const tooltip: Record<string, string> = {
   CUSTOM: 'Custom type to allow.',
 };
 
+/** Validator for type block dropdown. */
+const adjustCustomTypeInput = function(value: string): undefined {
+  const customTypeFieldName = 'CUSTOMTYPE';
+  if (value === 'CUSTOM') {
+    if (!this.getField(customTypeFieldName)) {
+      this.getInput('TYPE').appendField(
+        new Blockly.FieldTextInput(this.customType ?? ''),
+        customTypeFieldName,
+      );
+    }
+  } else {
+    this.getInput('TYPE').removeField(customTypeFieldName, true);
+  }
+};
+
+/** Block representing a single type. */
 export const type = {
   init: function (this: Blockly.Block & {customType?: string}) {
     this.appendDummyInput('TYPE').appendField(
@@ -157,20 +169,7 @@ export const type = {
           ['Array', 'Array'],
           ['other...', 'CUSTOM'],
         ],
-        (value: string): string => {
-          const customType = 'CUSTOMTYPE';
-          if (value === 'CUSTOM') {
-            if (!this.getField(customType)) {
-              this.getInput('TYPE').appendField(
-                new Blockly.FieldTextInput(this.customType ?? ''),
-                customType,
-              );
-            }
-          } else {
-            this.getInput('TYPE').removeField(customType, true);
-          }
-          return value;
-        },
+        adjustCustomTypeInput.bind(this)
       ),
       'TYPEDROPDOWN',
     );
@@ -189,13 +188,11 @@ export const type = {
   },
   loadExtraState: function (state: any) {
     this.customType = state?.customType;
-    if (this.getFieldValue('TYPEDROPDOWN') === 'CUSTOM') {
-      if (!this.getField('CUSTOMTYPE')) {
-        this.getInput('TYPE').appendField(
-          new Blockly.FieldTextInput(this.customType ?? ''),
-          'CUSTOMTYPE',
-        );
-      }
+    if (!this.getField('CUSTOMTYPE')) {
+      this.getInput('TYPE').appendField(
+        new Blockly.FieldTextInput(this.customType ?? ''),
+        'CUSTOMTYPE',
+      );
     }
   },
 };
