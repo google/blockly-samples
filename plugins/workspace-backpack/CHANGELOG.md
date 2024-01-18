@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.3](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.3.2...@blockly/workspace-backpack@5.3.3) (2024-01-18)
+
+
+### Bug Fixes
+
+* add type export statement to workspace-backpack ([#2148](https://github.com/google/blockly-samples/issues/2148)) ([a399ec0](https://github.com/google/blockly-samples/commit/a399ec03dc8f8c9676c412b9fb43a77c143ab968))
+
+
+
 ## [5.3.2](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@5.3.1...@blockly/workspace-backpack@5.3.2) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/workspace-backpack
