@@ -6,6 +6,9 @@
 
 import * as Blockly from 'blockly/core';
 import * as En from 'blockly/msg/en';
+import {registerAllBlocks} from './blocks';
+import {toolbox} from './toolbox';
+import {theme} from './theme';
 import 'blockly/blocks';
 import './index.css';
 
@@ -16,9 +19,11 @@ import './index.css';
 // if you don't load it specifically, you'll get spurious message warnings.
 Blockly.setLocale(En);
 
+registerAllBlocks();
+
 const mainWorkspaceDiv = document.getElementById('main-workspace');
 const previewDiv = document.getElementById('block-preview');
 const definitionDiv = document.getElementById('block-definition').firstChild;
 
 const previewWorkspace = Blockly.inject(previewDiv, {});
-const mainWorkspace = Blockly.inject(mainWorkspaceDiv, {});
+const mainWorkspace = Blockly.inject(mainWorkspaceDiv, {theme, toolbox});
