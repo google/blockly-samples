@@ -34,22 +34,22 @@ const checkNameConflicts = function (referenceBlock: Blockly.Block) {
   referenceBlock.setWarningText(msg, 'duplicatename');
 };
 
-// Inputs that should take a "type" input for connection checks
-const inputsWithTypeInputs = new Set(['input_value', 'input_statement']);
+// Inputs that should take a "connection check" input
+const inputsWithConnectionCheckInputs = new Set(['input_value', 'input_statement']);
 
 const updateTypeInputs = function (
   this: Blockly.Block,
   value: string,
 ): undefined {
-  if (inputsWithTypeInputs.has(value)) {
-    if (!this.getInput('TYPE')) {
-      this.appendValueInput('TYPE')
-        .setCheck(['TypeArray', 'Type'])
+  if (inputsWithConnectionCheckInputs.has(value)) {
+    if (!this.getInput('CHECK')) {
+      this.appendValueInput('CHECK')
+        .setCheck(['ConnectionCheckArray', 'ConnectionCheck'])
         .setAlign(Blockly.inputs.Align.RIGHT)
-        .appendField('type');
+        .appendField('connection check');
     }
   } else {
-    this.removeInput('TYPE', true);
+    this.removeInput('CHECK', true);
   }
 };
 

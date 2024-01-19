@@ -10,7 +10,7 @@ const blockStyles = {
   input: {
     'colourPrimary': '210',
   },
-  type: {
+  connectionCheck: {
     'colourPrimary': '230',
   },
   field: {
@@ -26,7 +26,7 @@ const blockStyles = {
 
 const categoryStyles = {
   input: {'colour': '210'},
-  type: {'colour': '230'},
+  connectionCheck: {'colour': '230'},
   field: {'colour': '160'},
   colour: {'colour': '20'},
 };

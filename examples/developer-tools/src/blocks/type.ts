@@ -6,160 +6,160 @@
 
 import * as Blockly from 'blockly/core';
 
-interface TypeState {
-  typeCount: number;
+interface ConnectionCheckState {
+  checkCount: number;
 }
 
-type TypeItemBlock = Blockly.Block & {valueConnection: Blockly.Connection};
+type ConnectionCheckBlock = Blockly.Block & {valueConnection: Blockly.Connection};
 
 /** Block representing a group of types. */
-export const typeGroup = {
+export const connectionCheckGroup = {
   init: function () {
-    this.typeCount = 2;
+    this.checkCount = 2;
     this.updateShape();
-    this.setOutput(true, 'TypeArray');
-    this.setMutator(new Blockly.icons.MutatorIcon(['type_group_item'], this));
-    this.setStyle('type');
-    this.setTooltip('Allows more than one type to be accepted.');
+    this.setOutput(true, 'ConnectionCheckArray');
+    this.setMutator(new Blockly.icons.MutatorIcon(['connection_check_group_item'], this));
+    this.setStyle('connectionCheck');
+    this.setTooltip('Allows more than one connection check string to be accepted.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
-  saveExtraState: function (): TypeState {
+  saveExtraState: function (): ConnectionCheckState {
     return {
-      typeCount: this.typeCount,
+      checkCount: this.checkCount,
     };
   },
-  loadExtraState: function (extraState: TypeState) {
-    this.typeCount = extraState.typeCount;
+  loadExtraState: function (extraState: ConnectionCheckState) {
+    this.checkCount = extraState.checkCount;
     this.updateShape();
   },
   decompose: function (workspace: Blockly.WorkspaceSvg) {
     // Populate the mutator's dialog with this block's components.
-    const containerBlock = workspace.newBlock('type_group_container');
+    const containerBlock = workspace.newBlock('connection_check_group_container');
     containerBlock.initSvg();
     let connection = containerBlock.getInput('STACK').connection;
-    for (let i = 0; i < this.typeCount; i++) {
-      const typeBlock = workspace.newBlock('type_group_item');
-      typeBlock.initSvg();
-      connection.connect(typeBlock.previousConnection);
-      connection = typeBlock.nextConnection;
+    for (let i = 0; i < this.checkCount; i++) {
+      const itemBlock = workspace.newBlock('connection_check_group_item');
+      itemBlock.initSvg();
+      connection.connect(itemBlock.previousConnection);
+      connection = itemBlock.nextConnection;
     }
     return containerBlock;
   },
   compose: function (containerBlock: Blockly.BlockSvg) {
     // Reconfigure this block based on the mutator dialog's components.
-    let typeBlock = containerBlock.getInputTargetBlock(
+    let itemBlock = containerBlock.getInputTargetBlock(
       'STACK',
-    ) as TypeItemBlock;
+    ) as ConnectionCheckBlock;
     // Count number of inputs.
     const connections = [];
-    while (typeBlock) {
-      connections.push(typeBlock.valueConnection);
-      typeBlock =
-        typeBlock.nextConnection &&
-        (typeBlock.nextConnection.targetBlock() as TypeItemBlock);
+    while (itemBlock) {
+      connections.push(itemBlock.valueConnection);
+      itemBlock =
+        itemBlock.nextConnection &&
+        (itemBlock.nextConnection.targetBlock() as ConnectionCheckBlock);
     }
     // Disconnect any children that don't belong.
-    for (let i = 0; i < this.typeCount; i++) {
-      const connection = this.getInput('TYPE' + i).connection.targetConnection;
+    for (let i = 0; i < this.checkCount; i++) {
+      const connection = this.getInput('CHECK' + i).connection.targetConnection;
       if (connection && connections.indexOf(connection) === -1) {
         connection.disconnect();
       }
     }
-    this.typeCount = connections.length;
+    this.checkCount = connections.length;
     this.updateShape();
     // Reconnect any child blocks.
-    for (let i = 0; i < this.typeCount; i++) {
-      connections[i]?.reconnect(this, 'TYPE' + i);
+    for (let i = 0; i < this.checkCount; i++) {
+      connections[i]?.reconnect(this, 'CHECK' + i);
     }
   },
   saveConnections: function (containerBlock: Blockly.BlockSvg) {
     // Store a pointer to any connected child blocks.
-    let typeBlock = containerBlock.getInputTargetBlock(
+    let checkBlock = containerBlock.getInputTargetBlock(
       'STACK',
-    ) as TypeItemBlock;
+    ) as ConnectionCheckBlock;
     let i = 0;
-    while (typeBlock) {
-      const input = this.getInput('TYPE' + i);
-      typeBlock.valueConnection = input && input.connection.targetConnection;
+    while (checkBlock) {
+      const input = this.getInput('CHECK' + i);
+      checkBlock.valueConnection = input && input.connection.targetConnection;
       i++;
-      typeBlock =
-        typeBlock.nextConnection &&
-        (typeBlock.nextConnection.targetBlock() as TypeItemBlock);
+      checkBlock =
+        checkBlock.nextConnection &&
+        (checkBlock.nextConnection.targetBlock() as ConnectionCheckBlock);
     }
   },
   updateShape: function () {
     // Modify this block to have the correct number of inputs.
     // Add new inputs.
     let i = 0;
-    for (i = 0; i < this.typeCount; i++) {
-      if (!this.getInput('TYPE' + i)) {
-        const input = this.appendValueInput('TYPE' + i);
+    for (i = 0; i < this.checkCount; i++) {
+      if (!this.getInput('CHECK' + i)) {
+        const input = this.appendValueInput('CHECK' + i);
         // Disallow chaining arrays of types together.
-        input.setCheck('Type');
+        input.setCheck('ConnectionCheck');
         if (i === 0) {
           input.appendField('any of');
         }
       }
     }
     // Remove deleted inputs.
-    while (this.getInput('TYPE' + i)) {
-      this.removeInput('TYPE' + i);
+    while (this.getInput('CHECK' + i)) {
+      this.removeInput('CHECK' + i);
       i++;
     }
   },
 };
 
 /** Container block for the type group mutator. */
-export const typeGroupContainer = {
+export const connectionCheckContainer = {
   init: function () {
-    this.appendDummyInput().appendField('add types');
+    this.appendDummyInput().appendField('add connection checks');
     this.appendStatementInput('STACK');
-    this.setStyle('type');
-    this.setTooltip('Add or remove allowed type.');
+    this.setStyle('connectionCheck');
+    this.setTooltip('Add or remove allowed connection check string.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
 };
 
 /** Individual input block for the type group mutator. */
-export const typeGroupItem = {
+export const connectionCheckItem = {
   init: function () {
-    this.appendDummyInput().appendField('type');
+    this.appendDummyInput().appendField('check');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setStyle('type');
-    this.setTooltip('Add a new allowed type.');
+    this.setStyle('connectionCheck');
+    this.setTooltip('Add a new allowed connection check string.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
 };
 
 const tooltip: Record<string, string> = {
-  null: 'Any type is allowed.',
+  null: 'Any connection is allowed.',
   Boolean: 'Booleans (true/false) are allowed.',
   Number: 'Numbers (int/float) are allowed.',
   String: 'Strings (text) are allowed.',
   Array: 'Arrays (lists) are allowed.',
-  CUSTOM: 'Custom type to allow.',
+  CUSTOM: 'Custom connection check string to allow.',
 };
 
 /** Validator for type block dropdown. */
-const adjustCustomTypeInput = function(value: string): undefined {
-  const customTypeFieldName = 'CUSTOMTYPE';
+const adjustCustomCheckInput = function(value: string): undefined {
+  const customCheckFieldName = 'CUSTOMCHECK';
   if (value === 'CUSTOM') {
-    if (!this.getField(customTypeFieldName)) {
-      this.getInput('TYPE').appendField(
-        new Blockly.FieldTextInput(this.customType ?? ''),
-        customTypeFieldName,
+    if (!this.getField(customCheckFieldName)) {
+      this.getInput('CHECK').appendField(
+        new Blockly.FieldTextInput(this.customCheck ?? ''),
+        customCheckFieldName,
       );
     }
   } else {
-    this.getInput('TYPE').removeField(customTypeFieldName, true);
+    this.getInput('CHECK').removeField(customCheckFieldName, true);
   }
 };
 
 /** Block representing a single type. */
-export const type = {
-  init: function (this: Blockly.Block & {customType?: string}) {
-    this.appendDummyInput('TYPE').appendField(
+export const connectionCheck = {
+  init: function (this: Blockly.Block & {customCheck?: string}) {
+    this.appendDummyInput('CHECK').appendField(
       new Blockly.FieldDropdown(
         [
           ['any', 'null'],
@@ -169,29 +169,29 @@ export const type = {
           ['Array', 'Array'],
           ['other...', 'CUSTOM'],
         ],
-        adjustCustomTypeInput.bind(this)
+        adjustCustomCheckInput.bind(this)
       ),
-      'TYPEDROPDOWN',
+      'CHECKDROPDOWN',
     );
-    this.setOutput(true, 'Type');
+    this.setOutput(true, 'ConnectionCheck');
     this.setTooltip((): string => {
-      const selectedType = this.getFieldValue('TYPEDROPDOWN');
+      const selectedType = this.getFieldValue('CHECKDROPDOWN');
       return tooltip[selectedType];
     });
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602');
-    this.setStyle('type');
+    this.setStyle('connectionCheck');
   },
   saveExtraState: function () {
-    if (this.getField('CUSTOMTYPE')) {
-      return {customType: this.getFieldValue('CUSTOMTYPE')};
+    if (this.getField('CUSTOMCHECK')) {
+      return {customCheck: this.getFieldValue('CUSTOMCHECK')};
     }
   },
   loadExtraState: function (state: any) {
-    this.customType = state?.customType;
-    if (!this.getField('CUSTOMTYPE')) {
-      this.getInput('TYPE').appendField(
-        new Blockly.FieldTextInput(this.customType ?? ''),
-        'CUSTOMTYPE',
+    this.customCheck = state?.customCheck;
+    if (!this.getField('CUSTOMCHECK')) {
+      this.getInput('CHECK').appendField(
+        new Blockly.FieldTextInput(this.customCheck ?? ''),
+        'CUSTOMCHECK',
       );
     }
   },

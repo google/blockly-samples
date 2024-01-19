@@ -83,53 +83,54 @@ export const toolbox = {
     },
     {
       kind: 'category',
-      name: 'Type',
-      categorystyle: 'type',
+      name: 'Connection Checks',
+      categorystyle: 'connectionCheck',
       contents: [
         {
           kind: 'block',
-          type: 'type_group',
+          type: 'connection_check_group',
         },
         {
           kind: 'block',
-          type: 'type',
+          type: 'connection_check',
           fields: {
-            TYPEDROPDOWN: 'null',
+            CHECKDROPDOWN: 'null',
           },
         },
         {
           kind: 'block',
-          type: 'type',
+          type: 'connection_check',
           fields: {
-            TYPEDROPDOWN: 'Boolean',
+            CHECKDROPDOWN: 'Boolean',
           },
         },
         {
           kind: 'block',
-          type: 'type',
+          type: 'connection_check',
           fields: {
-            TYPEDROPDOWN: 'Number',
+            CHECKDROPDOWN: 'Number',
           },
         },
         {
           kind: 'block',
-          type: 'type',
+          type: 'connection_check',
           fields: {
-            TYPEDROPDOWN: 'String',
+            CHECKDROPDOWN: 'String',
           },
         },
         {
           kind: 'block',
-          type: 'type',
+          type: 'connection_check',
           fields: {
-            TYPEDROPDOWN: 'Array',
+            CHECKDROPDOWN: 'Array',
           },
         },
         {
           kind: 'block',
-          type: 'type',
+          type: 'connection_check',
           fields: {
-            TYPEDROPDOWN: 'CUSTOM',
+            CHECKDROPDOWN: 'CUSTOM',
+            CUSTOMCHECK: 'custom check'
           },
         },
       ],

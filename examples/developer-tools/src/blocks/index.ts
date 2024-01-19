@@ -7,7 +7,7 @@
 import {factoryBase} from './factory_base';
 import * as Blockly from 'blockly/core';
 import {input} from './input';
-import {type, typeGroup, typeGroupContainer, typeGroupItem} from './type';
+import {connectionCheck, connectionCheckGroup, connectionCheckContainer, connectionCheckItem} from './type';
 import {
   fieldCheckbox,
   fieldDropdown,
@@ -38,10 +38,10 @@ export const registerAllBlocks = function () {
     field_checkbox: fieldCheckbox,
     field_variable: fieldVariable,
     field_image: fieldImage,
-    type_group: typeGroup,
-    type_group_container: typeGroupContainer,
-    type_group_item: typeGroupItem,
-    type: type,
+    connection_check_group: connectionCheckGroup,
+    connection_check_group_container: connectionCheckContainer,
+    connection_check_group_item: connectionCheckItem,
+    connection_check: connectionCheck,
     colour_hue: colourHue,
   });
 };

@@ -51,17 +51,17 @@ export const factoryBase = {
     // to attach shadow blocks to.
     switch (option) {
       case 'LEFT':
-        this.connectOutputShadow('OUTPUTTYPE');
+        this.connectOutputShadow('OUTPUTCHECK');
         break;
       case 'TOP':
-        this.connectOutputShadow('TOPTYPE');
+        this.connectOutputShadow('TOPCHECK');
         break;
       case 'BOTTOM':
-        this.connectOutputShadow('BOTTOMTYPE');
+        this.connectOutputShadow('BOTTOMCHECK');
         break;
       case 'BOTH':
-        this.connectOutputShadow('TOPTYPE');
-        this.connectOutputShadow('BOTTOMTYPE');
+        this.connectOutputShadow('TOPCHECK');
+        this.connectOutputShadow('BOTTOMCHECK');
         break;
     }
   },
@@ -69,39 +69,39 @@ export const factoryBase = {
     // Helper method to create & connect shadow block.
     const connection = this.getInput(outputType).connection;
     const shadowState = {
-      type: 'type',
+      type: 'connection_check',
     };
     connection.setShadowState(shadowState);
   },
   updateShape: function (option: string) {
-    const outputExists = this.getInput('OUTPUTTYPE');
-    const topExists = this.getInput('TOPTYPE');
-    const bottomExists = this.getInput('BOTTOMTYPE');
+    const outputExists = this.getInput('OUTPUTCHECK');
+    const topExists = this.getInput('TOPCHECK');
+    const bottomExists = this.getInput('BOTTOMCHECK');
     if (option === 'LEFT') {
       if (!outputExists) {
-        this.addTypeInput('OUTPUTTYPE', 'output type');
+        this.addConnectionCheckInput('OUTPUTCHECK', 'output connection check');
       }
     } else if (outputExists) {
-      this.removeInput('OUTPUTTYPE');
+      this.removeInput('OUTPUTCHECK');
     }
     if (option === 'TOP' || option === 'BOTH') {
       if (!topExists) {
-        this.addTypeInput('TOPTYPE', 'top type');
+        this.addConnectionCheckInput('TOPCHECK', 'top connection check');
       }
     } else if (topExists) {
-      this.removeInput('TOPTYPE');
+      this.removeInput('TOPCHECK');
     }
     if (option === 'BOTTOM' || option === 'BOTH') {
       if (!bottomExists) {
-        this.addTypeInput('BOTTOMTYPE', 'bottom type');
+        this.addConnectionCheckInput('BOTTOMCHECK', 'bottom connection check');
       }
     } else if (bottomExists) {
-      this.removeInput('BOTTOMTYPE');
+      this.removeInput('BOTTOMCHECK');
     }
   },
-  addTypeInput: function (name: string, label: string) {
+  addConnectionCheckInput: function (name: string, label: string) {
     this.appendValueInput(name)
-      .setCheck(['Type', 'TypeArray'])
+      .setCheck(['ConnectionCheck', 'ConnectionCheckArray'])
       .appendField(label);
     this.moveInputBefore(name, 'COLOUR');
   },
