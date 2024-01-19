@@ -201,7 +201,7 @@ export const fieldImage = {
 };
 
 export type DropdownOptionData =
-  | string
+  string
   | {
       src: string;
       width: number;
@@ -212,7 +212,9 @@ export type DropdownOptionData =
  * Type for a block that creates a dropdown field.
  */
 export type FieldDropdownBlock = Blockly.BlockSvg & {
+  /** user-visible dropdown option */
   userData: DropdownOptionData;
+  /** machine-readable dropdown value */
   cpuData: string;
   optionList: string[];
   updateShape: () => void;

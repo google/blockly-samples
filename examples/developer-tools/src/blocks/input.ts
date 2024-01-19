@@ -57,9 +57,12 @@ const tooltip: Record<string, string> = {
   input_value: 'A value socket for horizontal connections.',
   input_statement: 'A statement socket for enclosed vertical stacks.',
   input_dummy:
-    'For adding fields without any block connections. Alignment options (left, right, centre) only affect multi-row blocks.',
+    'For adding fields without any block connections. Alignment options '
+      + '(left, right, centre) only affect multi-row blocks.',
   input_end_row:
-    'For adding fields without any block connections that will be rendered on a separate row from any following inputs. Alignment options (left, right, centre) only affect multi-row blocks.',
+    'For adding fields without any block connections that will be rendered '
+      + 'on a separate row from any following inputs. Alignment options (left, '
+      + 'right, centre) only affect multi-row blocks.',
 };
 
 export const input = {
