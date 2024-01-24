@@ -5,3 +5,5 @@
  */
 
 export * from './field_colour';
+
+export * from './blocks';

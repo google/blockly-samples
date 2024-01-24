@@ -5,3 +5,4 @@
  */
 
 export * from './field_multilineinput';
+export * from './blocks';
