@@ -658,12 +658,20 @@ export class FieldAngle extends Blockly.FieldNumber {
   }
 }
 
-// Unregister legacy field_angle that was in core.  Delete this once
-// core Blockly no longer defines field_angle.
-// If field_angle is not defined in core, this generates a console warning.
-Blockly.fieldRegistry.unregister('field_angle');
+/**
+ * Register the field and any dependencies.
+ */
+export function registerAngleField() {
+  // Unregister legacy field_angle that was in core.  Delete this once
+  // core Blockly no longer defines field_angle.
+  // If field_angle is not defined in core, this generates a console warning.
+  Blockly.fieldRegistry.unregister('field_angle');
 
-Blockly.fieldRegistry.register('field_angle', FieldAngle);
+  Blockly.fieldRegistry.register('field_angle', FieldAngle);
+}
+
+// Immediately register the field.
+registerAngleField();
 
 FieldAngle.prototype.DEFAULT_VALUE = 0;
 
