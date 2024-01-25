@@ -1185,7 +1185,7 @@ const procedureCallerUpdateShapeMixin = {
     for (const [i, p] of params.entries()) {
       this.appendValueInput(`ARG${i}`)
         .appendField(new Blockly.FieldLabel(p), `ARGNAME${i}`)
-        .setAlign(Blockly.Input.Align.RIGHT);
+        .setAlign(Blockly.inputs.Align.RIGHT);
     }
   },
 
