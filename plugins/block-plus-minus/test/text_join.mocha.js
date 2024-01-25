@@ -35,7 +35,7 @@ suite('Text join block', function () {
     if (!inputCount) {
       assert.equal(block.inputList.length, 1);
       const input = block.inputList[0];
-      assert.equal(input.type, Blockly.DUMMY_INPUT);
+      assert.equal(input.type, Blockly.inputs.inputTypes.DUMMY);
       assert.equal(input.name, 'EMPTY');
       assert.isNull(block.getField('MINUS'));
       // Easy way to test we're displaying quotes instead of normal text.

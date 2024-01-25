@@ -122,7 +122,7 @@ function assertDefBlockArgsStructure_(
   for (let i = 0; i < args.length; i++) {
     const expectedName = args[i];
     const defInput = defBlock.inputList[i + 1];
-    assert.equal(defInput.type, Blockly.DUMMY_INPUT);
+    assert.equal(defInput.type, Blockly.inputs.inputTypes.DUMMY);
     assert.equal(defInput.name, argIds[i]);
     assert.equal(
       defInput.fieldRow[2].getValue(),
@@ -136,7 +136,7 @@ function assertDefBlockArgsStructure_(
   const lastInput = defBlock.inputList[defBlock.inputList.length - 1];
   assert.notEqual(
     lastInput.type,
-    Blockly.DUMMY_INPUT,
+    Blockly.inputs.inputTypes.DUMMY,
     'last input is not a dummy',
   );
 }
