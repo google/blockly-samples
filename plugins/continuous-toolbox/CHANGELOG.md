@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.10...@blockly/continuous-toolbox@5.0.11) (2024-01-25)
+
+
+### Bug Fixes
+
+* Use the referencesVariables() method to identify variable-related fields instead of checking their type. ([#2161](https://github.com/google/blockly-samples/issues/2161)) ([09b650a](https://github.com/google/blockly-samples/commit/09b650aa269ebbf170a3297214fc197b647b2e33))
+
+
+
 ## [5.0.10](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.9...@blockly/continuous-toolbox@5.0.10) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/continuous-toolbox
