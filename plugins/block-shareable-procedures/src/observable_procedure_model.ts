@@ -16,7 +16,9 @@ import {ProcedureRename} from './events_procedure_rename';
 import {triggerProceduresUpdate} from './update_procedures';
 
 /** Represents a procedure signature. */
-export class ObservableProcedureModel implements Blockly.procedures.IProcedureModel {
+export class ObservableProcedureModel
+  implements Blockly.procedures.IProcedureModel
+{
   private id: string;
   private name: string;
   private parameters: ObservableParameterModel[] = [];
@@ -280,6 +282,18 @@ export class ObservableProcedureModel implements Blockly.procedures.IProcedureMo
       id: this.getId(),
       name: this.getName(),
       returnTypes: this.getReturnTypes(),
-    }
+    };
+  }
+
+  /** Returns a new procedure model with the given state. */
+  static loadState(
+    state: Blockly.serialization.procedures.State,
+    workspace: Blockly.Workspace,
+  ): ObservableProcedureModel {
+    return new ObservableProcedureModel(
+      workspace,
+      state.name,
+      state.id,
+    ).setReturnTypes(state.returnTypes);
   }
 }

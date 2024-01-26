@@ -169,4 +169,18 @@ export class ObservableParameterModel
     state.types = this.getTypes();
     return state;
   }
+
+  /** Returns a new parameter model with the given state. */
+  static loadState(
+    state: Blockly.serialization.procedures.ParameterState,
+    workspace: Blockly.Workspace,
+  ): ObservableParameterModel {
+    const model = new ObservableParameterModel(
+      workspace,
+      state.name,
+      state.id,
+    );
+    if (state.types) model.setTypes(state.types);
+    return model;
+  }
 }
