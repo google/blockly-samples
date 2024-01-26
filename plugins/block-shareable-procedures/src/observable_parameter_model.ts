@@ -155,4 +155,18 @@ export class ObservableParameterModel
     this.procedureModel = model;
     return this;
   }
+
+  /** Serializes the state of this parameter to JSON.
+   * 
+   * @returns JSON serializable state of the parameter.
+   */
+  saveState(): Blockly.serialization.procedures.ParameterState {
+    const state: Blockly.serialization.procedures.ParameterState = {
+      id: this.getId(),
+      name: this.getName(),
+    };
+    if (!this.getTypes().length) return state;
+    state.types = this.getTypes();
+    return state;
+  }
 }

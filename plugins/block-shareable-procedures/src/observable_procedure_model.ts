@@ -16,9 +16,7 @@ import {ProcedureRename} from './events_procedure_rename';
 import {triggerProceduresUpdate} from './update_procedures';
 
 /** Represents a procedure signature. */
-export class ObservableProcedureModel
-  implements Blockly.procedures.IProcedureModel
-{
+export class ObservableProcedureModel implements Blockly.procedures.IProcedureModel {
   private id: string;
   private name: string;
   private parameters: ObservableParameterModel[] = [];
@@ -268,6 +266,20 @@ export class ObservableProcedureModel
     this.shouldFireEvents = false;
     for (const param of this.parameters) {
       if (Blockly.isObservable(param)) param.stopPublishing();
+    }
+  }
+
+  /**
+   * Serializes the state of the procedure to JSON.
+   *
+   * @returns JSON serializable state of the procedure.
+   */
+  saveState(): Blockly.serialization.procedures.State {
+    // Parameter state is serialized by core.
+    return {
+      id: this.getId(),
+      name: this.getName(),
+      returnTypes: this.getReturnTypes(),
     }
   }
 }
