@@ -157,7 +157,7 @@ export class ObservableParameterModel
   }
 
   /** Serializes the state of this parameter to JSON.
-   * 
+   *
    * @returns JSON serializable state of the parameter.
    */
   saveState(): Blockly.serialization.procedures.ParameterState {
@@ -175,11 +175,7 @@ export class ObservableParameterModel
     state: Blockly.serialization.procedures.ParameterState,
     workspace: Blockly.Workspace,
   ): ObservableParameterModel {
-    const model = new ObservableParameterModel(
-      workspace,
-      state.name,
-      state.id,
-    );
+    const model = new ObservableParameterModel(workspace, state.name, state.id);
     if (state.types) model.setTypes(state.types);
     return model;
   }
