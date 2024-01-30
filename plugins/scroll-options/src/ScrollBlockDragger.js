@@ -118,15 +118,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     this.draggingBlock_.moveDuringDrag(newLoc);
 
     this.dragIcons_(totalDelta);
-
-    // As we scroll, show the insertion markers.
-    this.draggedConnectionManager_.update(
-      new Blockly.utils.Coordinate(
-        totalDelta.x / this.workspace_.scale,
-        totalDelta.y / this.workspace_.scale,
-      ),
-      null,
-    );
   }
 
   /**
