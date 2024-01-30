@@ -220,6 +220,13 @@ const DYNAMIC_IF_MIXIN = {
     this: DynamicIfBlock,
     connection: Blockly.Connection,
   ): number | null {
+    if (
+      !connection.targetConnection ||
+      connection.targetBlock()?.isInsertionMarker()
+    ) {
+      // This connection is available.
+      return null;
+    }
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
       if (input.connection == connection) {
@@ -272,7 +279,7 @@ const DYNAMIC_IF_MIXIN = {
       return;
     }
     const input = this.inputList[inputIndex];
-    if (connection.targetConnection && input.name.includes('IF')) {
+    if (input.name.includes('IF')) {
       const nextIfInput = this.inputList[inputIndex + 2];
       if (!nextIfInput || nextIfInput.name == 'ELSE') {
         this.insertElseIf(inputIndex + 2, Blockly.utils.idGenerator.genUid());
