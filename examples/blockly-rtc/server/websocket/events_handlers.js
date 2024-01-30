@@ -35,7 +35,7 @@ const database = require('../Database');
 async function getEventsHandler(serverId, callback) {
   const entries = await database.query(serverId);
   callback(entries);
-};
+}
 
 /**
  * Handler for an addEvents message. Add an entry to the database.
@@ -47,7 +47,7 @@ async function getEventsHandler(serverId, callback) {
 async function addEventsHandler(entry, callback) {
   const serverId = await database.addToServer(entry);
   callback(serverId);
-};
+}
 
 /**
  * Handler for a getSnapshot message. Get the latest snapshot of the workspace.
@@ -58,7 +58,7 @@ async function addEventsHandler(entry, callback) {
 async function getSnapshotHandler(callback) {
   const snapshot = await database.getSnapshot();
   callback(snapshot);
-};
+}
 
 module.exports.getEventsHandler = getEventsHandler;
 module.exports.addEventsHandler = addEventsHandler;

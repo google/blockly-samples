@@ -27,7 +27,7 @@ export default class Position {
     this.type = type;
     this.blockId = blockId;
     this.fieldName = fieldName;
-  };
+  }
 
   /**
    * Create a Position from an event. Currently supports creating Positions for
@@ -39,15 +39,19 @@ export default class Position {
   static fromEvent(event) {
     if (event.type === Blockly.Events.SELECTED) {
       return this.fromSelectedUiEvent_(
-          /** @type {!Blockly.Events.Selected} */ (event));
-    } else if (event.type === Blockly.Events.CHANGE &&
-        event.element === 'field') {
+        /** @type {!Blockly.Events.Selected} */ (event),
+      );
+    } else if (
+      event.type === Blockly.Events.CHANGE &&
+      event.element === 'field'
+    ) {
       return this.fromFieldChangeEvent_(
-          /** @type {!Blockly.Events.Change} */ (event));
+        /** @type {!Blockly.Events.Change} */ (event),
+      );
     } else {
       throw Error('Cannot create position from this event.');
     }
-  };
+  }
 
   /**
    * Create a Position from a Blockly UI event.
@@ -62,7 +66,7 @@ export default class Position {
     const blockId = event.newElementId;
     const fieldName = null;
     return new Position(type, blockId, fieldName);
-  };
+  }
 
   /**
    * Create a Position from a Blockly Change event.
@@ -75,7 +79,7 @@ export default class Position {
     const blockId = event.blockId;
     const fieldName = event.name;
     return new Position(type, blockId, fieldName);
-  };
+  }
 
   /**
    * Decode the JSON into a Position.
@@ -85,7 +89,7 @@ export default class Position {
    */
   static fromJson(json) {
     return new Position(json.type, json.blockId, json.fieldName);
-  };
+  }
 
   /**
    * Check if the combination of Position properties describe a viable position.
@@ -99,8 +103,8 @@ export default class Position {
       return true;
     } else {
       return false;
-    };
-  };
+    }
+  }
 
   /**
    * Create a Marker at the Position.
@@ -113,7 +117,7 @@ export default class Position {
     const node = this.createNode(workspace);
     marker.setCurNode(node);
     return marker;
-  };
+  }
 
   /**
    * Create an ASTNode pointing to the Position.
@@ -125,13 +129,13 @@ export default class Position {
   createNode(workspace) {
     if (!this.hasValidPosition()) {
       return null;
-    };
+    }
     if (this.type == 'BLOCK') {
       return this.createBlockNode_(workspace);
     } else if (this.type == 'FIELD') {
       return this.createFieldNode_(workspace);
-    };
-  };
+    }
+  }
 
   /**
    * Create an ASTNode pointing to a block.
@@ -142,7 +146,7 @@ export default class Position {
   createBlockNode_(workspace) {
     const block = workspace.getBlockById(this.blockId);
     return Blockly.ASTNode.createBlockNode(block);
-  };
+  }
 
   /**
    * Create an ASTNode pointing to a field.
@@ -154,5 +158,5 @@ export default class Position {
     const block = workspace.getBlockById(this.blockId);
     const field = block.getField(this.fieldName);
     return Blockly.ASTNode.createFieldNode(field);
-  };
-};
+  }
+}

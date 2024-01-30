@@ -15,10 +15,11 @@ npm install
 ### Running
 
 start [Rollup](https://rollupjs.org) by:
+
 ```bash
 npm run start
 ```
 
 ### Browse
 
-Navigate to  [http://localhost:3000/](http://localhost:3000/)
+Navigate to [http://localhost:3000/](http://localhost:3000/)

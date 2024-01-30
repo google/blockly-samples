@@ -31,8 +31,9 @@ import Position from '../Position';
  * @public
  */
 export async function getPositionUpdates(workspaceId) {
-  const response = workspaceId ? await fetch('/api/users/position/query?workspaceId=' + workspaceId) :
-      await fetch('/api/users/position/query?');
+  const response = workspaceId
+    ? await fetch('/api/users/position/query?workspaceId=' + workspaceId)
+    : await fetch('/api/users/position/query?');
   const responseJson = await response.json();
   if (response.status === 200) {
     const positionUpdates = responseJson.positionUpdates;
@@ -42,8 +43,8 @@ export async function getPositionUpdates(workspaceId) {
     return positionUpdates;
   } else {
     throw 'Failed to get PositionUpdates.';
-  };
-};
+  }
+}
 
 /**
  * Update the position of a user in the database.
@@ -55,11 +56,11 @@ export async function getPositionUpdates(workspaceId) {
 export async function sendPositionUpdate(positionUpdate) {
   const response = await fetch('/api/users/position/update', {
     method: 'PUT',
-    body: JSON.stringify({ positionUpdate })
+    body: JSON.stringify({positionUpdate}),
   });
   if (response.status === 200) {
     return;
   } else {
     throw 'Failed to update position.';
-  };
-};
+  }
+}

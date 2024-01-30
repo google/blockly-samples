@@ -10,15 +10,15 @@
  * @author dcoodien@gmail.com (Dylan Coodien)
  */
 
-import { onMounted, ref, shallowRef } from "vue";
-import Blockly from "blockly";
+import {onMounted, ref, shallowRef} from 'vue';
+import Blockly from 'blockly';
 
-const props = defineProps(["options"]);
+const props = defineProps(['options']);
 const blocklyToolbox = ref();
 const blocklyDiv = ref();
 const workspace = shallowRef();
 
-defineExpose({ workspace });
+defineExpose({workspace});
 
 onMounted(() => {
   const options = props.options || {};

@@ -13,10 +13,10 @@
  */
 'use strict';
 
-let language = 'en' // Default to English.
+let language = 'en'; // Default to English.
 
 // Run this setup code once while still rendering the head.
-;(function() {
+(function () {
   const m = location.search.match(/[?&]hl=([^&]+)($|&)/);
   if (m) {
     if (LANGUAGE_NAME[m[1]]) {
@@ -25,7 +25,7 @@ let language = 'en' // Default to English.
   }
   // Load Blockly's language strings.
   document.write(
-      '<script src="./node_modules/blockly/msg/' + language + '.js"></script>\n'
+    '<script src="./node_modules/blockly/msg/' + language + '.js"></script>\n',
   );
 })();
 
@@ -89,15 +89,15 @@ function init() {
   // https://github.com/google/blockly/issues/5238
   let toolboxString = JSON.stringify(toolboxJson);
   toolboxString = toolboxString.replace(
-      /%\{BKY_VARIABLES_DEFAULT_NAME\}/g,
-      Blockly.Msg.VARIABLES_DEFAULT_NAME
+    /%\{BKY_VARIABLES_DEFAULT_NAME\}/g,
+    Blockly.Msg.VARIABLES_DEFAULT_NAME,
   );
-  toolboxJson = JSON.parse(toolboxString);
+  const toolbox = JSON.parse(toolboxString);
 
   // Inject Blockly.
   const workspace = Blockly.inject('blocklyDiv', {
     media: './node_modules/blockly/media/',
-    toolbox: toolboxJson,
+    toolbox,
     rtl: LANGUAGE_RTL.includes(language),
     renderer: 'thrasos',
     zoom: {
@@ -109,9 +109,9 @@ function init() {
     trashcan: false,
     theme: Blockly.Theme.defineTheme('modest', {
       fontStyle: {
-        'family': 'Google Sans',
-        'weight': 'bold',
-        'size': 16,
+        family: 'Google Sans',
+        weight: 'bold',
+        size: 16,
       },
       blockStyles: {
         logic_blocks: {
@@ -187,7 +187,7 @@ function getMsg(name) {
 function languageChange() {
   // Store the blocks in sessionStorage for the duration of the reload.
   const text = JSON.stringify(
-      Blockly.serialization.workspaces.save(Blockly.getMainWorkspace())
+    Blockly.serialization.workspaces.save(Blockly.getMainWorkspace()),
   );
   try {
     window.sessionStorage.setItem('loadOnceBlocks', text);
@@ -227,31 +227,31 @@ function regenerate(_e) {
  * Generate JavaScript from the blocks, then execute it using JS-Interpreter.
  */
 function execute() {
-  const initFunc = function(interpreter, globalObject) {
+  const initFunc = function (interpreter, globalObject) {
     const alertWrapper = function alert(text) {
       return window.alert(arguments.length ? text : '');
     };
     interpreter.setProperty(
-        globalObject,
-        'alert',
-        interpreter.createNativeFunction(alertWrapper)
+      globalObject,
+      'alert',
+      interpreter.createNativeFunction(alertWrapper),
     );
 
     const promptWrapper = function prompt(text, defaultValue) {
       return window.prompt(
         arguments.length > 0 ? text : '',
-        arguments.length > 1 ? defaultValue : ''
+        arguments.length > 1 ? defaultValue : '',
       );
     };
     interpreter.setProperty(
-        globalObject,
-        'prompt',
-        interpreter.createNativeFunction(promptWrapper)
+      globalObject,
+      'prompt',
+      interpreter.createNativeFunction(promptWrapper),
     );
   };
 
   const code = javascript.javascriptGenerator.workspaceToCode(
-      Blockly.getMainWorkspace()
+    Blockly.getMainWorkspace(),
   );
   const myInterpreter = new Interpreter(code, initFunc);
   let stepsAllowed = 10000;

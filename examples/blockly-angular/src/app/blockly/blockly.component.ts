@@ -21,19 +21,18 @@
  * @author samelh@google.com (Sam El-Husseini)
  */
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import * as Blockly from 'blockly';
-import { BlocklyOptions } from 'blockly';
+import {BlocklyOptions} from 'blockly';
 
 @Component({
   selector: 'app-blockly',
   templateUrl: './blockly.component.html',
-  styleUrls: ['./blockly.component.css']
+  styleUrls: ['./blockly.component.css'],
 })
 export class BlocklyComponent implements OnInit {
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     const blocklyDiv = document.getElementById('blocklyDiv');
@@ -97,13 +96,13 @@ export class BlocklyComponent implements OnInit {
                 fields: {
                   VAR: {
                     name: 'text',
-                  }
+                  },
                 },
               },
             },
           },
-        }
-      ]
+        },
+      ],
     };
 
     Blockly.inject(blocklyDiv, {
@@ -113,9 +112,9 @@ export class BlocklyComponent implements OnInit {
       move: {
         scrollbars: true,
         drag: true,
-        wheel: true
+        wheel: true,
       },
-      toolbox
+      toolbox,
     } as BlocklyOptions);
   }
 }

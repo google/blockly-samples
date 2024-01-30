@@ -11,14 +11,14 @@ import {Order} from 'blockly/javascript';
 // This file has no side effects!
 export const forBlock = Object.create(null);
 
-forBlock['add_text'] = function(block, generator) {
-  const text = generator.valueToCode(block, 'TEXT', Order.NONE) || '\'\'';
+forBlock['add_text'] = function (block, generator) {
+  const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
   const color =
-    generator.valueToCode(block, 'COLOR', Order.ATOMIC) || '\'#ffffff\'';
+    generator.valueToCode(block, 'COLOR', Order.ATOMIC) || "'#ffffff'";
 
   const addText = generator.provideFunction_(
-      'addText',
-      `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text, color) {
+    'addText',
+    `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text, color) {
 
   // Add text to the output area.
   const outputDiv = document.getElementById('output');
@@ -26,7 +26,7 @@ forBlock['add_text'] = function(block, generator) {
   textEl.innerText = text;
   textEl.style.color = color;
   outputDiv.appendChild(textEl);
-}`
+}`,
   );
   // Generate the function call for this block.
   const code = `${addText}(${text}, ${color});\n`;
