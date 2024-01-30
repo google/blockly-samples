@@ -17,12 +17,6 @@ const generators: Record<string, Blockly.Generator> {
     'javascript': typeof JavaScript.javascriptGenerator
 }
 
-// Helper function to define a single block from a JSON definition.
-function defineBlockFromJson(blockJsonDef : any) {
-    Blockly.common.defineBlocks(
-        Blockly.common.createBlockDefinitionsFromJsonArray([blockJsonDef]));
-}
-
 // Block for random colour.
 const randomColourDef =
 {
@@ -103,24 +97,24 @@ const colourBlendDef =
  * Install the `colour_rgb` block and all of its dependencies.
  */
 export function installColourRgbBlock(generators = {}) {
-    defineBlockFromJson(colourRgbDef);
     registerColourField();
+    Blockly.common.defineBlocksWithJsonArray([colourRgbDef]);
 }
 
 /**
  * Install the `colour_random` block and all of its dependencies.
  */
 export function installColourRandomBlock(generators = {}) {
-    defineBlockFromJson(randomColourDef);
     registerColourField();
+    Blockly.common.defineBlocksWithJsonArray([randomColourDef]);
 }
 
 /**
  * Install the `colour_blend` block and all of its dependencies.
  */
 export function installColourBlendBlock(generators = {}) {
-    defineBlockFromJson(colourBlendDef);
     registerColourField();
+    Blockly.common.defineBlocksWithJsonArray([colourBlendDef]);
 }
 
 /**

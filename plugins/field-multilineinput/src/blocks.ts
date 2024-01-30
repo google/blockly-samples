@@ -40,19 +40,13 @@ const multilineTextDef = {
     'extensions': ['parent_tooltip_when_inline'],
 };
 
-// Helper function to define a single block from a JSON definition.
-function defineBlockFromJson(blockJsonDef: any) {
-    Blockly.common.defineBlocks(
-        Blockly.common.createBlockDefinitionsFromJsonArray([blockJsonDef]));
-}
-
 /**
  * Install all of the blocks defined in this file and all of their
  * dependencies.
  */
 export function installAllBlocks() {
-    defineBlockFromJson(multilineTextDef);
     registerMultilineInputField();
+    Blockly.common.defineBlocksWithJsonArray([multilineTextDef]);
 }
 
 // Calling this installs blocks, which means it has side effects.

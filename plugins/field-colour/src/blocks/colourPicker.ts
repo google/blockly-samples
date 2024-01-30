@@ -13,12 +13,6 @@ import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
 
 
-// Helper function to define a single block from a JSON definition.
-function defineBlockFromJson(blockJsonDef: any) {
-    Blockly.common.defineBlocks(
-        Blockly.common.createBlockDefinitionsFromJsonArray([blockJsonDef]));
-}
-
 const blockName = 'colour_picker';
 
 // Block for colour picker.
@@ -119,8 +113,8 @@ export function colourPickerGenPython(
  * Install the `colour_picker` block and all of its dependencies.
  */
 export function installColourPickerBlock(generators: any = {}) {
-    defineBlockFromJson(colourPickerDef);
     registerColourField();
+    Blockly.common.defineBlocksWithJsonArray([colourPickerDef]);
     if (generators.javascript) {
         generators.javascript.forBlock[blockName] = colourPickerGenJs;
     }
