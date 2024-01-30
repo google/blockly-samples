@@ -6,26 +6,22 @@
 
 import * as Blockly from 'blockly';
 import { registerColourField } from './field_colour';
+import { installColourPickerBlock } from './blocks/colourPicker';
 
+// Re-export all parts of the definition.
+export * from './blocks/colourPicker';
 
-// Block for colour picker.
-const colourPickerDef =
-{
-    'type': 'colour_picker',
-    'message0': '%1',
-    'args0': [
-        {
-            'type': 'field_colour',
-            'name': 'COLOUR',
-            'colour': '#ff0000',
-        },
-    ],
-    'output': 'Colour',
-    'helpUrl': '%{BKY_COLOUR_PICKER_HELPURL}',
-    'style': 'colour_blocks',
-    'tooltip': '%{BKY_COLOUR_PICKER_TOOLTIP}',
-    'extensions': ['parent_tooltip_when_inline'],
-};
+// TODO: Write correct types for the `generators` parameter for each block's 
+// `install` function.
+const generators: Record<string, Blockly.Generator> {
+    'javascript': typeof JavaScript.javascriptGenerator
+}
+
+// Helper function to define a single block from a JSON definition.
+function defineBlockFromJson(blockJsonDef : any) {
+    Blockly.common.defineBlocks(
+        Blockly.common.createBlockDefinitionsFromJsonArray([blockJsonDef]));
+}
 
 // Block for random colour.
 const randomColourDef =
@@ -103,24 +99,10 @@ const colourBlendDef =
     'tooltip': '%{BKY_COLOUR_BLEND_TOOLTIP}',
 };
 
-// Helper function to define a single block from a JSON definition.
-function defineBlockFromJson(blockJsonDef : any) {
-    Blockly.common.defineBlocks(
-        Blockly.common.createBlockDefinitionsFromJsonArray([blockJsonDef]));
-}
-
-/**
- * Install the `colour_picker` block and all of its dependencies.
- */
-export function installColourPickerBlock() {
-    defineBlockFromJson(colourPickerDef);
-    registerColourField();
-}
-
 /**
  * Install the `colour_rgb` block and all of its dependencies.
  */
-export function installColourRgbBlock() {
+export function installColourRgbBlock(generators = {}) {
     defineBlockFromJson(colourRgbDef);
     registerColourField();
 }
@@ -128,7 +110,7 @@ export function installColourRgbBlock() {
 /**
  * Install the `colour_random` block and all of its dependencies.
  */
-export function installColourRandomBlock() {
+export function installColourRandomBlock(generators = {}) {
     defineBlockFromJson(randomColourDef);
     registerColourField();
 }
@@ -136,7 +118,7 @@ export function installColourRandomBlock() {
 /**
  * Install the `colour_blend` block and all of its dependencies.
  */
-export function installColourBlendBlock() {
+export function installColourBlendBlock(generators = {}) {
     defineBlockFromJson(colourBlendDef);
     registerColourField();
 }
@@ -145,11 +127,11 @@ export function installColourBlendBlock() {
  * Install all of the blocks defined in this file and all of their
  * dependencies.
  */
-export function installAllBlocks() {
-    installColourPickerBlock();
-    installColourRgbBlock();
-    installColourRandomBlock();
-    installColourBlendBlock();
+export function installAllBlocks(generators = {}) {
+    installColourPickerBlock(generators);
+    installColourRgbBlock(generators);
+    installColourRandomBlock(generators);
+    installColourBlendBlock(generators);
 }
 
 // Calling this installs blocks, which means it has side effects.
