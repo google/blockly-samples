@@ -92,12 +92,12 @@ function init() {
     /%\{BKY_VARIABLES_DEFAULT_NAME\}/g,
     Blockly.Msg.VARIABLES_DEFAULT_NAME,
   );
-  toolboxJson = JSON.parse(toolboxString);
+  const toolbox = JSON.parse(toolboxString);
 
   // Inject Blockly.
   const workspace = Blockly.inject('blocklyDiv', {
     media: './node_modules/blockly/media/',
-    toolbox: toolboxJson,
+    toolbox,
     rtl: LANGUAGE_RTL.includes(language),
     renderer: 'thrasos',
     zoom: {
@@ -109,9 +109,9 @@ function init() {
     trashcan: false,
     theme: Blockly.Theme.defineTheme('modest', {
       fontStyle: {
-        'family': 'Google Sans',
-        'weight': 'bold',
-        'size': 16,
+        family: 'Google Sans',
+        weight: 'bold',
+        size: 16,
       },
       blockStyles: {
         logic_blocks: {

@@ -56,143 +56,96 @@
 
     <script>
       const toolboxJson = {
-        'contents': [
+        contents: [
           {
-            'kind': 'CATEGORY',
-            'name': 'Logic',
-            'colour': '%{BKY_LOGIC_HUE}',
-            'contents': [
+            kind: 'CATEGORY',
+            name: 'Logic',
+            colour: '%{BKY_LOGIC_HUE}',
+            contents: [
               {
-                'kind': 'BLOCK',
-                'type': 'controls_if',
+                kind: 'BLOCK',
+                type: 'controls_if',
               },
               {
-                'kind': 'BLOCK',
-                'type': 'logic_compare',
+                kind: 'BLOCK',
+                type: 'logic_compare',
               },
               {
-                'kind': 'BLOCK',
-                'type': 'logic_operation',
+                kind: 'BLOCK',
+                type: 'logic_operation',
               },
               {
-                'kind': 'BLOCK',
-                'type': 'logic_negate',
+                kind: 'BLOCK',
+                type: 'logic_negate',
               },
               {
-                'kind': 'BLOCK',
-                'type': 'logic_boolean',
+                kind: 'BLOCK',
+                type: 'logic_boolean',
               },
             ],
           },
           {
-            'kind': 'CATEGORY',
-            'name': 'Loops',
-            'colour': '%{BKY_LOOPS_HUE}',
-            'contents': [
+            kind: 'CATEGORY',
+            name: 'Loops',
+            colour: '%{BKY_LOOPS_HUE}',
+            contents: [
               {
-                'kind': 'BLOCK',
-                'type': 'controls_repeat_ext',
-                'inputs': {
-                  'TIMES': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {'NUM': 10},
+                kind: 'BLOCK',
+                type: 'controls_repeat_ext',
+                inputs: {
+                  TIMES: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {NUM: 10},
                     },
                   },
                 },
               },
               {
-                'kind': 'BLOCK',
-                'type': 'controls_whileUntil',
+                kind: 'BLOCK',
+                type: 'controls_whileUntil',
               },
               {
-                'kind': 'BLOCK',
-                'type': 'wait_seconds',
+                kind: 'BLOCK',
+                type: 'wait_seconds',
               },
             ],
           },
           {
-            'kind': 'CATEGORY',
-            'name': 'Math',
-            'colour': '%{BKY_MATH_HUE}',
-            'contents': [
+            kind: 'CATEGORY',
+            name: 'Math',
+            colour: '%{BKY_MATH_HUE}',
+            contents: [
               {
-                'kind': 'BLOCK',
-                'type': 'math_number',
+                kind: 'BLOCK',
+                type: 'math_number',
               },
               {
-                'kind': 'BLOCK',
-                'type': 'math_arithmetic',
-                'inputs': {
-                  'A': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {'NUM': 1},
+                kind: 'BLOCK',
+                type: 'math_arithmetic',
+                inputs: {
+                  A: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {NUM: 1},
                     },
                   },
-                  'B': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {'NUM': 1},
-                    },
-                  },
-                },
-              },
-              {
-                'kind': 'BLOCK',
-                'type': 'math_single',
-                'inputs': {
-                  'NUM': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {'NUM': 9},
-                    },
-                  },
-                },
-              },
-            ],
-          },
-          {
-            'kind': 'CATEGORY',
-            'name': 'Text',
-            'colour': '%{BKY_TEXTS_HUE}',
-            'contents': [
-              {
-                'kind': 'BLOCK',
-                'type': 'text',
-              },
-              {
-                'kind': 'BLOCK',
-                'type': 'text_length',
-                'inputs': {
-                  'VALUE': {
-                    'shadow': {
-                      'type': 'text',
-                      'fields': {'TEXT': 'abc'},
+                  B: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {NUM: 1},
                     },
                   },
                 },
               },
               {
-                'kind': 'BLOCK',
-                'type': 'text_print',
-                'inputs': {
-                  'TEXT': {
-                    'shadow': {
-                      'type': 'text',
-                      'fields': {'TEXT': 'abc'},
-                    },
-                  },
-                },
-              },
-              {
-                'kind': 'BLOCK',
-                'type': 'text_prompt_ext',
-                'inputs': {
-                  'TEXT': {
-                    'shadow': {
-                      'type': 'text',
-                      'fields': {'TEXT': 'abc'},
+                kind: 'BLOCK',
+                type: 'math_single',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {NUM: 9},
                     },
                   },
                 },
@@ -200,98 +153,145 @@
             ],
           },
           {
-            'kind': 'SEP',
+            kind: 'CATEGORY',
+            name: 'Text',
+            colour: '%{BKY_TEXTS_HUE}',
+            contents: [
+              {
+                kind: 'BLOCK',
+                type: 'text',
+              },
+              {
+                kind: 'BLOCK',
+                type: 'text_length',
+                inputs: {
+                  VALUE: {
+                    shadow: {
+                      type: 'text',
+                      fields: {TEXT: 'abc'},
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'BLOCK',
+                type: 'text_print',
+                inputs: {
+                  TEXT: {
+                    shadow: {
+                      type: 'text',
+                      fields: {TEXT: 'abc'},
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'BLOCK',
+                type: 'text_prompt_ext',
+                inputs: {
+                  TEXT: {
+                    shadow: {
+                      type: 'text',
+                      fields: {TEXT: 'abc'},
+                    },
+                  },
+                },
+              },
+            ],
           },
           {
-            'kind': 'CATEGORY',
-            'name': 'Variables',
-            'custom': 'VARIABLE',
-            'colour': '%{BKY_VARIABLES_HUE}',
+            kind: 'SEP',
           },
           {
-            'kind': 'CATEGORY',
-            'name': 'Functions',
-            'custom': 'PROCEDURE',
-            'colour': '%{BKY_PROCEDURES_HUE}',
+            kind: 'CATEGORY',
+            name: 'Variables',
+            custom: 'VARIABLE',
+            colour: '%{BKY_VARIABLES_HUE}',
+          },
+          {
+            kind: 'CATEGORY',
+            name: 'Functions',
+            custom: 'PROCEDURE',
+            colour: '%{BKY_PROCEDURES_HUE}',
           },
         ],
       };
 
       const startBlocks = {
-        'blocks': {
-          'blocks': [
+        blocks: {
+          blocks: [
             {
-              'type': 'variables_set',
-              'x': 20,
-              'y': 20,
-              'inline': true,
-              'fields': {
-                'VAR': {'id': 'n'},
+              type: 'variables_set',
+              x: 20,
+              y: 20,
+              inline: true,
+              fields: {
+                VAR: {id: 'n'},
               },
-              'inputs': {
-                'VALUE': {
-                  'block': {
-                    'type': 'math_number',
-                    'fields': {'NUM': 1},
+              inputs: {
+                VALUE: {
+                  block: {
+                    type: 'math_number',
+                    fields: {NUM: 1},
                   },
                 },
               },
-              'next': {
-                'block': {
-                  'type': 'controls_repeat_ext',
-                  'inline': true,
-                  'inputs': {
-                    'TIMES': {
-                      'block': {
-                        'type': 'math_number',
-                        'fields': {'NUM': 4},
+              next: {
+                block: {
+                  type: 'controls_repeat_ext',
+                  inline: true,
+                  inputs: {
+                    TIMES: {
+                      block: {
+                        type: 'math_number',
+                        fields: {NUM: 4},
                       },
                     },
-                    'DO': {
-                      'block': {
-                        'type': 'wait_seconds',
-                        'fields': {'SECONDS': 1},
-                        'next': {
-                          'block': {
-                            'type': 'variables_set',
-                            'inline': true,
-                            'fields': {
-                              'VAR': {'id': 'n'},
+                    DO: {
+                      block: {
+                        type: 'wait_seconds',
+                        fields: {SECONDS: 1},
+                        next: {
+                          block: {
+                            type: 'variables_set',
+                            inline: true,
+                            fields: {
+                              VAR: {id: 'n'},
                             },
-                            'inputs': {
-                              'VALUE': {
-                                'block': {
-                                  'type': 'math_arithmetic',
-                                  'fields': {'OP': 'MULTIPLY'},
-                                  'inputs': {
-                                    'A': {
-                                      'block': {
-                                        'type': 'variables_get',
-                                        'fields': {
-                                          'VAR': {'id': 'n'},
+                            inputs: {
+                              VALUE: {
+                                block: {
+                                  type: 'math_arithmetic',
+                                  fields: {OP: 'MULTIPLY'},
+                                  inputs: {
+                                    A: {
+                                      block: {
+                                        type: 'variables_get',
+                                        fields: {
+                                          VAR: {id: 'n'},
                                         },
                                       },
                                     },
-                                    'B': {
-                                      'block': {
-                                        'type': 'math_number',
-                                        'fields': {'NUM': 2},
+                                    B: {
+                                      block: {
+                                        type: 'math_number',
+                                        fields: {NUM: 2},
                                       },
                                     },
                                   },
                                 },
                               },
                             },
-                            'next': {
-                              'block': {
-                                'type': 'text_print',
-                                'inline': false,
-                                'inputs': {
-                                  'TEXT': {
-                                    'block': {
-                                      'type': 'variables_get',
-                                      'fields': {
-                                        'VAR': {'id': 'n'},
+                            next: {
+                              block: {
+                                type: 'text_print',
+                                inline: false,
+                                inputs: {
+                                  TEXT: {
+                                    block: {
+                                      type: 'variables_get',
+                                      fields: {
+                                        VAR: {id: 'n'},
                                       },
                                     },
                                   },
@@ -308,10 +308,10 @@
             },
           ],
         },
-        'variables': [
+        variables: [
           {
-            'name': 'n',
-            'id': 'n',
+            name: 'n',
+            id: 'n',
           },
         ],
       };

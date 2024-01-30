@@ -38,8 +38,8 @@ suite('UserDataManager', () => {
     );
     Blockly.defineBlocksWithJsonArray([
       {
-        'type': 'test_block',
-        'message0': 'test block',
+        type: 'test_block',
+        message0: 'test block',
       },
     ]);
     this.FAKE_WORKSPACE_ID = 'mockWorkspaceId';
@@ -121,7 +121,7 @@ suite('UserDataManager', () => {
   suite('updateMarkerPositions', () => {
     setup(() => {
       this.BlocklyMarkerManager.markers_ = {
-        'mockId': new Blockly.Marker(),
+        mockId: new Blockly.Marker(),
       };
     });
 

@@ -474,17 +474,17 @@ function encodeValue_(value) {
     return {'#': ref};
   }
   if (value === undefined) {
-    return {'Value': 'undefined'};
+    return {Value: 'undefined'};
   }
   if (typeof value === 'number') {
     if (value === Infinity) {
-      return {'Value': 'Infinity'};
+      return {Value: 'Infinity'};
     } else if (value === -Infinity) {
-      return {'Value': '-Infinity'};
+      return {Value: '-Infinity'};
     } else if (isNaN(value)) {
-      return {'Value': 'NaN'};
+      return {Value: 'NaN'};
     } else if (1 / value === -Infinity) {
-      return {'Value': '-0'};
+      return {Value: '-0'};
     }
   }
   return value;

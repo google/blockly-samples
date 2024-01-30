@@ -101,197 +101,197 @@
 
       // Define the toolbox
       const toolbox = {
-        'kind': 'categoryToolbox',
-        'contents': [
+        kind: 'categoryToolbox',
+        contents: [
           {
-            'kind': 'category',
-            'name': 'Math',
-            'colour': '%{BKY_MATH_HUE}',
-            'contents': [
+            kind: 'category',
+            name: 'Math',
+            colour: '%{BKY_MATH_HUE}',
+            contents: [
               {
-                'kind': 'block',
-                'type': 'math_number',
-                'fields': {
-                  'NUM': 123,
+                kind: 'block',
+                type: 'math_number',
+                fields: {
+                  NUM: 123,
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_arithmetic',
-                'inputs': {
-                  'A': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 1,
+                kind: 'block',
+                type: 'math_arithmetic',
+                inputs: {
+                  A: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
                       },
                     },
                   },
-                  'B': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 1,
-                      },
-                    },
-                  },
-                },
-              },
-              {
-                'kind': 'block',
-                'type': 'math_single',
-                'inputs': {
-                  'NUM': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 9,
+                  B: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_trig',
-                'inputs': {
-                  'NUM': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 45,
+                kind: 'block',
+                type: 'math_single',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 9,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_constant',
-              },
-              {
-                'kind': 'block',
-                'type': 'math_number_property',
-                'inputs': {
-                  'NUMBER_TO_CHECK': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 0,
+                kind: 'block',
+                type: 'math_trig',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 45,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_round',
-                'inputs': {
-                  'NUM': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 3.1,
+                kind: 'block',
+                type: 'math_constant',
+              },
+              {
+                kind: 'block',
+                type: 'math_number_property',
+                inputs: {
+                  NUMBER_TO_CHECK: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 0,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_modulo',
-                'inputs': {
-                  'DIVIDEND': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 64,
-                      },
-                    },
-                  },
-                  'DIVISOR': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 10,
+                kind: 'block',
+                type: 'math_round',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 3.1,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_constrain',
-                'inputs': {
-                  'VALUE': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 50,
+                kind: 'block',
+                type: 'math_modulo',
+                inputs: {
+                  DIVIDEND: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 64,
                       },
                     },
                   },
-                  'LOW': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 1,
-                      },
-                    },
-                  },
-                  'HIGH': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 100,
+                  DIVISOR: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 10,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_random_int',
-                'inputs': {
-                  'FROM': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 1,
+                kind: 'block',
+                type: 'math_constrain',
+                inputs: {
+                  VALUE: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 50,
                       },
                     },
                   },
-                  'TO': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 100,
+                  LOW: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                  HIGH: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 100,
                       },
                     },
                   },
                 },
               },
               {
-                'kind': 'block',
-                'type': 'math_random_float',
-              },
-              {
-                'kind': 'block',
-                'type': 'math_atan2',
-                'inputs': {
-                  'X': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 1,
+                kind: 'block',
+                type: 'math_random_int',
+                inputs: {
+                  FROM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
                       },
                     },
                   },
-                  'Y': {
-                    'shadow': {
-                      'type': 'math_number',
-                      'fields': {
-                        'NUM': 1,
+                  TO: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 100,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_random_float',
+              },
+              {
+                kind: 'block',
+                type: 'math_atan2',
+                inputs: {
+                  X: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
                       },
                     },
                   },
@@ -300,41 +300,41 @@
             ],
           },
           {
-            'kind': 'category',
-            'name': 'Variables',
-            'colour': '%{BKY_VARIABLES_HUE}',
-            'contents': [
+            kind: 'category',
+            name: 'Variables',
+            colour: '%{BKY_VARIABLES_HUE}',
+            contents: [
               {
-                'kind': 'block',
-                'type': 'graph_get_x',
+                kind: 'block',
+                type: 'graph_get_x',
               },
             ],
           },
           {
-            'kind': 'category',
-            'name': 'Logic',
-            'colour': '%{BKY_LOGIC_HUE}',
-            'contents': [
+            kind: 'category',
+            name: 'Logic',
+            colour: '%{BKY_LOGIC_HUE}',
+            contents: [
               {
-                'kind': 'block',
-                'type': 'logic_compare',
+                kind: 'block',
+                type: 'logic_compare',
               },
               {
-                'kind': 'block',
-                'type': 'logic_operation',
+                kind: 'block',
+                type: 'logic_operation',
               },
 
               {
-                'kind': 'block',
-                'type': 'logic_negate',
+                kind: 'block',
+                type: 'logic_negate',
               },
               {
-                'kind': 'block',
-                'type': 'logic_boolean',
+                kind: 'block',
+                type: 'logic_boolean',
               },
               {
-                'kind': 'block',
-                'type': 'logic_ternary',
+                kind: 'block',
+                type: 'logic_ternary',
               },
             ],
           },
@@ -342,42 +342,42 @@
       };
 
       const startBlocks = {
-        'blocks': {
-          'blocks': [
+        blocks: {
+          blocks: [
             {
-              'kind': 'block',
-              'type': 'graph_set_y',
-              'x': 100,
-              'y': 100,
-              'inputs': {
-                'VALUE': {
-                  'block': {
-                    'type': 'math_arithmetic',
-                    'fields': {
-                      'OP': 'POWER',
+              kind: 'block',
+              type: 'graph_set_y',
+              x: 100,
+              y: 100,
+              inputs: {
+                VALUE: {
+                  block: {
+                    type: 'math_arithmetic',
+                    fields: {
+                      OP: 'POWER',
                     },
-                    'inputs': {
-                      'A': {
-                        'block': {
-                          'type': 'graph_get_x',
-                          'shadow': {
-                            'type': 'math_number',
-                            'fields': {
-                              'NUM': 1,
+                    inputs: {
+                      A: {
+                        block: {
+                          type: 'graph_get_x',
+                          shadow: {
+                            type: 'math_number',
+                            fields: {
+                              NUM: 1,
                             },
                           },
                         },
                       },
-                      'B': {
-                        'block': {
-                          'type': 'math_number',
-                          'fields': {
-                            'NUM': 2,
+                      B: {
+                        block: {
+                          type: 'math_number',
+                          fields: {
+                            NUM: 2,
                           },
-                          'shadow': {
-                            'type': 'math_number',
-                            'fields': {
-                              'NUM': 1,
+                          shadow: {
+                            type: 'math_number',
+                            fields: {
+                              NUM: 1,
                             },
                           },
                         },
@@ -394,12 +394,12 @@
       // Define the custom blocks and their JS generators.
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'graph_get_x',
-          'message0': 'x',
-          'output': 'Number',
-          'colour': Blockly.Msg['VARIABLES_HUE'],
-          'tooltip': Blockly.Msg['VARIABLES_GET_TOOLTIP'],
-          'helpUrl': Blockly.Msg['VARIABLES_GET_HELPURL'],
+          type: 'graph_get_x',
+          message0: 'x',
+          output: 'Number',
+          colour: Blockly.Msg['VARIABLES_HUE'],
+          tooltip: Blockly.Msg['VARIABLES_GET_TOOLTIP'],
+          helpUrl: Blockly.Msg['VARIABLES_GET_HELPURL'],
         },
       ]);
 
@@ -412,18 +412,18 @@
 
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'graph_set_y',
-          'message0': 'y = %1',
-          'args0': [
+          type: 'graph_set_y',
+          message0: 'y = %1',
+          args0: [
             {
-              'type': 'input_value',
-              'name': 'VALUE',
-              'check': 'Number',
+              type: 'input_value',
+              name: 'VALUE',
+              check: 'Number',
             },
           ],
-          'colour': Blockly.Msg['VARIABLES_HUE'],
-          'tooltip': Blockly.Msg['VARIABLES_SET_TOOLTIP'],
-          'helpUrl': Blockly.Msg['VARIABLES_SET_HELPURL'],
+          colour: Blockly.Msg['VARIABLES_HUE'],
+          tooltip: Blockly.Msg['VARIABLES_SET_TOOLTIP'],
+          helpUrl: Blockly.Msg['VARIABLES_SET_HELPURL'],
         },
       ]);
 

@@ -31,8 +31,8 @@ suite('Position', () => {
     setup(() => {
       Blockly.defineBlocksWithJsonArray([
         {
-          'type': 'test_block',
-          'message0': 'test block',
+          type: 'test_block',
+          message0: 'test block',
         },
       ]);
       this.FAKE_WORKSPACE_ID = 'mockWorkspaceId';

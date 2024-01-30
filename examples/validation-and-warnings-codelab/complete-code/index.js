@@ -1,27 +1,27 @@
 // Use Blockly's custom block JSON API to define a new block type.
 Blockly.common.defineBlocksWithJsonArray([
   {
-    'type': 'list_range',
-    'message0': 'create list of numbers from %1 up to %2',
-    'args0': [
+    type: 'list_range',
+    message0: 'create list of numbers from %1 up to %2',
+    args0: [
       {
-        'type': 'field_number',
-        'name': 'FIRST',
-        'value': 0,
-        'min': 0,
-        'precision': 2,
+        type: 'field_number',
+        name: 'FIRST',
+        value: 0,
+        min: 0,
+        precision: 2,
       },
       {
-        'type': 'field_number',
-        'name': 'LAST',
-        'value': 5,
-        'min': 0,
-        'precision': 1,
+        type: 'field_number',
+        name: 'LAST',
+        value: 5,
+        min: 0,
+        precision: 1,
       },
     ],
-    'output': 'Array',
-    'style': 'list_blocks',
-    'extensions': ['list_range_validation'],
+    output: 'Array',
+    style: 'list_blocks',
+    extensions: ['list_range_validation'],
   },
 ]);
 
@@ -70,40 +70,40 @@ javascript.javascriptGenerator.forBlock['list_range'] = function (block) {
 
 // Define which blocks are available in the toolbox.
 const toolbox = {
-  'kind': 'categoryToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'category',
-      'name': 'Blocks',
-      'categorystyle': 'list_category',
-      'contents': [
+      kind: 'category',
+      name: 'Blocks',
+      categorystyle: 'list_category',
+      contents: [
         {
-          'kind': 'block',
-          'type': 'list_range',
+          kind: 'block',
+          type: 'list_range',
         },
         {
-          'kind': 'block',
-          'type': 'controls_forEach',
+          kind: 'block',
+          type: 'controls_forEach',
         },
         {
-          'kind': 'block',
-          'type': 'math_on_list',
+          kind: 'block',
+          type: 'math_on_list',
         },
         {
-          'kind': 'block',
-          'type': 'text_print',
+          kind: 'block',
+          type: 'text_print',
         },
         {
-          'kind': 'block',
-          'type': 'controls_flow_statements',
+          kind: 'block',
+          type: 'controls_flow_statements',
         },
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Variables',
-      'categorystyle': 'variable_category',
-      'custom': 'VARIABLE',
+      kind: 'category',
+      name: 'Variables',
+      categorystyle: 'variable_category',
+      custom: 'VARIABLE',
     },
   ],
 };

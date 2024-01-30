@@ -1,35 +1,35 @@
 // Define which blocks are available in the toolbox.
 const toolbox = {
-  'kind': 'categoryToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'category',
-      'name': 'Blocks',
-      'categorystyle': 'list_category',
-      'contents': [
+      kind: 'category',
+      name: 'Blocks',
+      categorystyle: 'list_category',
+      contents: [
         {
-          'kind': 'block',
-          'type': 'controls_forEach',
+          kind: 'block',
+          type: 'controls_forEach',
         },
         {
-          'kind': 'block',
-          'type': 'math_on_list',
+          kind: 'block',
+          type: 'math_on_list',
         },
         {
-          'kind': 'block',
-          'type': 'text_print',
+          kind: 'block',
+          type: 'text_print',
         },
         {
-          'kind': 'block',
-          'type': 'controls_flow_statements',
+          kind: 'block',
+          type: 'controls_flow_statements',
         },
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Variables',
-      'categorystyle': 'variable_category',
-      'custom': 'VARIABLE',
+      kind: 'category',
+      name: 'Variables',
+      categorystyle: 'variable_category',
+      custom: 'VARIABLE',
     },
   ],
 };

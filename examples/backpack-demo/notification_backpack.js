@@ -90,7 +90,7 @@ class NotificationBackpack extends Backpack {
   createNotificationSvg_() {
     this.countSvg_ = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
-      {'opacity': 0},
+      {opacity: 0},
       this.svgGroup_,
     );
     const circleRadius = this.WIDTH_ / 4;

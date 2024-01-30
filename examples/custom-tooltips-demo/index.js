@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   const defaultOptions = {
     toolbox: {
-      'kind': 'flyoutToolbox',
-      'contents': [
-        {'kind': 'block', 'type': 'custom_tooltip_1'},
-        {'kind': 'block', 'type': 'custom_tooltip_2'},
+      kind: 'flyoutToolbox',
+      contents: [
+        {kind: 'block', type: 'custom_tooltip_1'},
+        {kind: 'block', type: 'custom_tooltip_2'},
       ],
     },
   };

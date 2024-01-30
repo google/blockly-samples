@@ -582,14 +582,14 @@ class FieldTurtle extends Blockly.Field {
     this.movableGroup_ = Blockly.utils.dom.createSvgElement(
       'g',
       {
-        'transform': 'translate(0,5)',
+        transform: 'translate(0,5)',
       },
       this.fieldGroup_,
     );
     const scaleGroup = Blockly.utils.dom.createSvgElement(
       'g',
       {
-        'transform': 'scale(1.5)',
+        transform: 'scale(1.5)',
       },
       this.movableGroup_,
     );
@@ -597,94 +597,94 @@ class FieldTurtle extends Blockly.Field {
       'g',
       {
         // Makes the smaller turtle graphic align with the hats.
-        'class': 'turtleBody',
+        class: 'turtleBody',
       },
       scaleGroup,
     );
     const tail = Blockly.utils.dom.createSvgElement(
       'path',
       {
-        'class': 'turtleBody',
-        'd': 'M7,27.5H0.188c3.959-2,6.547-2.708,8.776-5.237',
-        'transform': 'translate(0.312 -12.994)',
+        class: 'turtleBody',
+        d: 'M7,27.5H0.188c3.959-2,6.547-2.708,8.776-5.237',
+        transform: 'translate(0.312 -12.994)',
       },
       this.turtleGroup_,
     );
     const legLeft = Blockly.utils.dom.createSvgElement(
       'rect',
       {
-        'class': 'turtleBody',
-        'x': 8.812,
-        'y': 12.506,
-        'width': 4,
-        'height': 10,
+        class: 'turtleBody',
+        x: 8.812,
+        y: 12.506,
+        width: 4,
+        height: 10,
       },
       this.turtleGroup_,
     );
     const legRight = Blockly.utils.dom.createSvgElement(
       'rect',
       {
-        'class': 'turtleBody',
-        'x': 28.812,
-        'y': 12.506,
-        'width': 4,
-        'height': 10,
+        class: 'turtleBody',
+        x: 28.812,
+        y: 12.506,
+        width: 4,
+        height: 10,
       },
       this.turtleGroup_,
     );
     const head = Blockly.utils.dom.createSvgElement(
       'path',
       {
-        'class': 'turtleBody',
-        'd': 'M47.991,17.884c0,1.92-2.144,3.477-4.788,3.477a6.262,6.262,0,0,1-2.212-.392c-0.2-.077-1.995,2.343-4.866,3.112a17.019,17.019,0,0,1-6.01.588c-4.413-.053-2.5-3.412-2.745-3.819-0.147-.242,2.232.144,6.126-0.376a7.392,7.392,0,0,0,4.919-2.588c0-1.92,2.144-3.477,4.788-3.477S47.991,15.964,47.991,17.884Z',
-        'transform': 'translate(0.312 -12.994)',
+        class: 'turtleBody',
+        d: 'M47.991,17.884c0,1.92-2.144,3.477-4.788,3.477a6.262,6.262,0,0,1-2.212-.392c-0.2-.077-1.995,2.343-4.866,3.112a17.019,17.019,0,0,1-6.01.588c-4.413-.053-2.5-3.412-2.745-3.819-0.147-.242,2.232.144,6.126-0.376a7.392,7.392,0,0,0,4.919-2.588c0-1.92,2.144-3.477,4.788-3.477S47.991,15.964,47.991,17.884Z',
+        transform: 'translate(0.312 -12.994)',
       },
       this.turtleGroup_,
     );
     const smile = Blockly.utils.dom.createSvgElement(
       'path',
       {
-        'class': 'turtleBody',
-        'd': 'M42.223,18.668a3.614,3.614,0,0,0,2.728,2.38',
-        'transform': 'translate(0.312 -12.994)',
+        class: 'turtleBody',
+        d: 'M42.223,18.668a3.614,3.614,0,0,0,2.728,2.38',
+        transform: 'translate(0.312 -12.994)',
       },
       this.turtleGroup_,
     );
     const sclera = Blockly.utils.dom.createSvgElement(
       'ellipse',
       {
-        'cx': 43.435,
-        'cy': 2.61,
-        'rx': 2.247,
-        'ry': 2.61,
-        'fill': '#fff',
+        cx: 43.435,
+        cy: 2.61,
+        rx: 2.247,
+        ry: 2.61,
+        fill: '#fff',
       },
       this.turtleGroup_,
     );
     const pupil = Blockly.utils.dom.createSvgElement(
       'ellipse',
       {
-        'cx': 44.166,
-        'cy': 3.403,
-        'rx': 1.318,
-        'ry': 1.62,
+        cx: 44.166,
+        cy: 3.403,
+        rx: 1.318,
+        ry: 1.62,
       },
       this.turtleGroup_,
     );
     const shell = Blockly.utils.dom.createSvgElement(
       'path',
       {
-        'class': 'turtleBody',
-        'd': 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
-        'transform': 'translate(0.312 -12.994)',
+        class: 'turtleBody',
+        d: 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
+        transform: 'translate(0.312 -12.994)',
       },
       this.turtleGroup_,
     );
     this.shellPattern_ = Blockly.utils.dom.createSvgElement(
       'path',
       {
-        'd': 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
-        'transform': 'translate(0.312 -12.994)',
+        d: 'M33.4,27.5H7.193c0-6,5.866-13.021,13.1-13.021S33.4,21.5,33.4,27.5Z',
+        transform: 'translate(0.312 -12.994)',
       },
       this.turtleGroup_,
     );
@@ -692,8 +692,8 @@ class FieldTurtle extends Blockly.Field {
     this.stovepipe_ = Blockly.utils.dom.createSvgElement(
       'image',
       {
-        'width': '50',
-        'height': '18',
+        width: '50',
+        height: '18',
       },
       scaleGroup,
     );
@@ -705,8 +705,8 @@ class FieldTurtle extends Blockly.Field {
     this.crown_ = Blockly.utils.dom.createSvgElement(
       'image',
       {
-        'width': '50',
-        'height': '15',
+        width: '50',
+        height: '15',
       },
       scaleGroup,
     );
@@ -718,8 +718,8 @@ class FieldTurtle extends Blockly.Field {
     this.mask_ = Blockly.utils.dom.createSvgElement(
       'image',
       {
-        'width': '50',
-        'height': '24',
+        width: '50',
+        height: '24',
       },
       scaleGroup,
     );
@@ -731,8 +731,8 @@ class FieldTurtle extends Blockly.Field {
     this.propeller_ = Blockly.utils.dom.createSvgElement(
       'image',
       {
-        'width': '50',
-        'height': '11',
+        width: '50',
+        height: '11',
       },
       scaleGroup,
     );
@@ -744,8 +744,8 @@ class FieldTurtle extends Blockly.Field {
     this.fedora_ = Blockly.utils.dom.createSvgElement(
       'image',
       {
-        'width': '50',
-        'height': '12',
+        width: '50',
+        height: '12',
       },
       scaleGroup,
     );
@@ -776,10 +776,10 @@ class FieldTurtle extends Blockly.Field {
     this.polkadotPattern_ = Blockly.utils.dom.createSvgElement(
       'pattern',
       {
-        'id': 'polkadots',
-        'patternUnits': 'userSpaceOnUse',
-        'width': 10,
-        'height': 10,
+        id: 'polkadots',
+        patternUnits: 'userSpaceOnUse',
+        width: 10,
+        height: 10,
       },
       this.defs_,
     );
@@ -814,11 +814,11 @@ class FieldTurtle extends Blockly.Field {
     this.hexagonPattern_ = Blockly.utils.dom.createSvgElement(
       'pattern',
       {
-        'id': 'hexagons',
-        'patternUnits': 'userSpaceOnUse',
-        'width': 10,
-        'height': 8.68,
-        'patternTransform': 'translate(2) rotate(45)',
+        id: 'hexagons',
+        patternUnits: 'userSpaceOnUse',
+        width: 10,
+        height: 8.68,
+        patternTransform: 'translate(2) rotate(45)',
       },
       this.defs_,
     );
@@ -836,7 +836,7 @@ class FieldTurtle extends Blockly.Field {
     let use = Blockly.utils.dom.createSvgElement(
       'use',
       {
-        'x': 5,
+        x: 5,
       },
       this.hexagonPattern_,
     );
@@ -844,7 +844,7 @@ class FieldTurtle extends Blockly.Field {
     use = Blockly.utils.dom.createSvgElement(
       'use',
       {
-        'x': -5,
+        x: -5,
       },
       this.hexagonPattern_,
     );
@@ -852,8 +852,8 @@ class FieldTurtle extends Blockly.Field {
     use = Blockly.utils.dom.createSvgElement(
       'use',
       {
-        'x': 2.5,
-        'y': -4.34,
+        x: 2.5,
+        y: -4.34,
       },
       this.hexagonPattern_,
     );
@@ -861,8 +861,8 @@ class FieldTurtle extends Blockly.Field {
     use = Blockly.utils.dom.createSvgElement(
       'use',
       {
-        'x': -2.5,
-        'y': -4.34,
+        x: -2.5,
+        y: -4.34,
       },
       this.hexagonPattern_,
     );
@@ -871,11 +871,11 @@ class FieldTurtle extends Blockly.Field {
     this.stripesPattern_ = Blockly.utils.dom.createSvgElement(
       'pattern',
       {
-        'id': 'stripes',
-        'patternUnits': 'userSpaceOnUse',
-        'width': 5,
-        'height': 10,
-        'patternTransform': 'rotate(45)',
+        id: 'stripes',
+        patternUnits: 'userSpaceOnUse',
+        width: 5,
+        height: 10,
+        patternTransform: 'rotate(45)',
       },
       this.defs_,
     );

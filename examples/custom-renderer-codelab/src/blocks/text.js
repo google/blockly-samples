@@ -11,25 +11,25 @@ import * as Blockly from 'blockly/core';
 // This is just an example and you should replace this with your
 // own custom blocks.
 const addText = {
-  'type': 'add_text',
-  'message0': 'Add text %1 with color %2',
-  'args0': [
+  type: 'add_text',
+  message0: 'Add text %1 with color %2',
+  args0: [
     {
-      'type': 'input_value',
-      'name': 'TEXT',
-      'check': 'String',
+      type: 'input_value',
+      name: 'TEXT',
+      check: 'String',
     },
     {
-      'type': 'input_value',
-      'name': 'COLOR',
-      'check': 'Colour',
+      type: 'input_value',
+      name: 'COLOR',
+      check: 'Colour',
     },
   ],
-  'previousStatement': null,
-  'nextStatement': null,
-  'colour': 160,
-  'tooltip': '',
-  'helpUrl': '',
+  previousStatement: null,
+  nextStatement: null,
+  colour: 160,
+  tooltip: '',
+  helpUrl: '',
 };
 
 // Create the block definitions for the JSON-only blocks.

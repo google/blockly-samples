@@ -91,7 +91,7 @@ function init() {
     toolbox,
     rtl: LANGUAGE_RTL.includes(language),
   });
-  
+
   Blockly.serialization.workspaces.load(loadOnce || startBlocks, workspace);
   workspace.addChangeListener(regenerate);
 }
@@ -194,86 +194,86 @@ function execute() {
  * Initial blocks when loading page.
  */
 const startBlocks = {
-  'blocks': {
-    'languageVersion': 0,
-    'blocks': [
+  blocks: {
+    languageVersion: 0,
+    blocks: [
       {
-        'type': 'variables_set',
-        'x': 10,
-        'y': 10,
-        'fields': {
-          'VAR': {'id': 'Count'},
+        type: 'variables_set',
+        x: 10,
+        y: 10,
+        fields: {
+          VAR: {id: 'Count'},
         },
-        'inputs': {
-          'VALUE': {
-            'block': {
-              'type': 'math_number',
-              'fields': {'NUM': 1},
+        inputs: {
+          VALUE: {
+            block: {
+              type: 'math_number',
+              fields: {NUM: 1},
             },
           },
         },
-        'next': {
-          'block': {
-            'type': 'controls_whileUntil',
-            'fields': {'MODE': 'WHILE'},
-            'inputs': {
-              'BOOL': {
-                'block': {
-                  'type': 'logic_compare',
-                  'fields': {'OP': 'LTE'},
-                  'inputs': {
-                    'A': {
-                      'block': {
-                        'type': 'variables_get',
-                        'fields': {
-                          'VAR': {'id': 'Count'},
+        next: {
+          block: {
+            type: 'controls_whileUntil',
+            fields: {MODE: 'WHILE'},
+            inputs: {
+              BOOL: {
+                block: {
+                  type: 'logic_compare',
+                  fields: {OP: 'LTE'},
+                  inputs: {
+                    A: {
+                      block: {
+                        type: 'variables_get',
+                        fields: {
+                          VAR: {id: 'Count'},
                         },
                       },
                     },
-                    'B': {
-                      'block': {
-                        'type': 'math_number',
-                        'fields': {'NUM': 3},
+                    B: {
+                      block: {
+                        type: 'math_number',
+                        fields: {NUM: 3},
                       },
                     },
                   },
                 },
               },
-              'DO': {
-                'block': {
-                  'type': 'text_print',
-                  'inputs': {
-                    'TEXT': {
-                      'block': {
-                        'type': 'text',
-                        'fields': {'TEXT': 'Hello World!'},
+              DO: {
+                block: {
+                  type: 'text_print',
+                  inputs: {
+                    TEXT: {
+                      block: {
+                        type: 'text',
+                        fields: {TEXT: 'Hello World!'},
                       },
                     },
                   },
-                  'next': {
-                    'block': {
-                      'type': 'variables_set',
-                      'fields': {
-                        'VAR': {'id': 'Count'},
+                  next: {
+                    block: {
+                      type: 'variables_set',
+                      fields: {
+                        VAR: {id: 'Count'},
                       },
-                      'inputs': {
-                        'VALUE': {
-                          'block': {
-                            'type': 'math_arithmetic',
-                            'fields': {'OP': 'ADD'},
-                            'inputs': {
-                              'A': {
-                                'block': {
-                                  'type': 'variables_get',
-                                  'fields': {
-                                    'VAR': {'id': 'Count'},
+                      inputs: {
+                        VALUE: {
+                          block: {
+                            type: 'math_arithmetic',
+                            fields: {OP: 'ADD'},
+                            inputs: {
+                              A: {
+                                block: {
+                                  type: 'variables_get',
+                                  fields: {
+                                    VAR: {id: 'Count'},
                                   },
                                 },
                               },
-                              'B': {
-                                'block': {
-                                  'type': 'math_number',
-                                  'fields': {'NUM': 1},
+                              B: {
+                                block: {
+                                  type: 'math_number',
+                                  fields: {NUM: 1},
                                 },
                               },
                             },
@@ -290,10 +290,10 @@ const startBlocks = {
       },
     ],
   },
-  'variables': [
+  variables: [
     {
-      'name': 'Count',
-      'id': 'Count',
+      name: 'Count',
+      id: 'Count',
     },
   ],
 };

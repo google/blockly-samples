@@ -24,7 +24,6 @@ to include and extend the [Blockly](http://github.com/google/blockly) library.
 - [`toolbox-demo`](toolbox-demo/): A demo of a complex category structure for the toolbox.
 - [`turtle-field-demo`](turtle-field-demo/): A demo of creating custom block fields.
 
-
 ### Codelabs
 
 The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.

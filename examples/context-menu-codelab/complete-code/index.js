@@ -56,9 +56,9 @@ function registerHelpOption() {
     callback: function (scope) {
       Blockly.serialization.blocks.append(
         {
-          'type': 'text',
-          'fields': {
-            'TEXT': 'Now there is a block',
+          type: 'text',
+          fields: {
+            TEXT: 'Now there is a block',
           },
         },
         scope.workspace,
