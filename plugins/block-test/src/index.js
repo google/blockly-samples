@@ -31,7 +31,7 @@ import {
  * The Test blocks toolbox.
  */
 export const toolboxTestBlocks = {
-  'contents': [
+  contents: [
     alignCategory,
     basicCategory,
     connectionsCategory,

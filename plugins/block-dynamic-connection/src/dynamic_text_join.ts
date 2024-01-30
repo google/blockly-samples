@@ -116,7 +116,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     Blockly.Events.enable();
 
     return {
-      'itemCount': this.itemCount,
+      itemCount: this.itemCount,
     };
   },
 

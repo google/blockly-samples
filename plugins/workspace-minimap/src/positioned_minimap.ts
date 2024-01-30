@@ -178,7 +178,13 @@ export class PositionedMinimap
    * Sets the CSS attribute for the minimap.
    */
   private setAttributes(): void {
-    const injectDiv = this.minimapWorkspace.getInjectionDiv();
+    const injectDiv = this.minimapWorkspace?.getInjectionDiv();
+    if (!injectDiv) {
+      return;
+    }
+    if (injectDiv?.parentElement === null) {
+      return;
+    }
     const style = injectDiv.parentElement.style;
     style.zIndex = '2';
     style.position = 'absolute';
@@ -186,7 +192,9 @@ export class PositionedMinimap
     style.height = `${this.height}px`;
     style.top = `${this.top}px`;
     style.left = `${this.left}px`;
-    Blockly.svgResize(this.minimapWorkspace);
+    if (this.minimapWorkspace) {
+      Blockly.svgResize(this.minimapWorkspace);
+    }
   }
 }
 

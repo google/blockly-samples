@@ -106,8 +106,8 @@ suite('TypedVariableModal', function () {
     test('Messages added', function () {
       this.typedVarModal.init();
       const messages = {
-        'TYPED_VAR_MODAL_CONFIRM_BUTTON': 'confirm_test',
-        'TYPED_VAR_MODAL_VARIABLE_NAME_LABEL': 'variable_label',
+        TYPED_VAR_MODAL_CONFIRM_BUTTON: 'confirm_test',
+        TYPED_VAR_MODAL_VARIABLE_NAME_LABEL: 'variable_label',
       };
       this.typedVarModal.setLocale(messages);
 
@@ -142,8 +142,8 @@ suite('TypedVariableModal', function () {
     });
     test('Variable with different type already exists', function () {
       Blockly.Variables.nameUsedWithAnyType = sinon.fake.returns({
-        'type': 'Penguin',
-        'name': 'varName',
+        type: 'Penguin',
+        name: 'varName',
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();
@@ -156,8 +156,8 @@ suite('TypedVariableModal', function () {
     });
     test('Variable with same type already exits', function () {
       Blockly.Variables.nameUsedWithAnyType = sinon.fake.returns({
-        'type': 'Giraffe',
-        'name': 'varName',
+        type: 'Giraffe',
+        name: 'varName',
       });
       this.typedVarModal.getValidInput_ = sinon.fake.returns('varName');
       this.typedVarModal.onConfirm_();

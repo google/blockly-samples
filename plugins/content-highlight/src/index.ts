@@ -71,7 +71,7 @@ export class ContentHighlight {
   private svgGroup?: SVGGElement;
   private rect?: SVGRectElement;
   private background?: SVGRectElement;
-  private onChangeWrapper?: () => void;
+  private onChangeWrapper?: (event: Blockly.Events.Abstract) => void;
 
   /**
    * Constructor for the content highlight plugin.
@@ -92,7 +92,7 @@ export class ContentHighlight {
     /** @type {SVGElement} */
     this.svgGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
-      {'class': 'contentAreaHighlight'},
+      {class: 'contentAreaHighlight'},
       null,
     );
 
@@ -100,40 +100,40 @@ export class ContentHighlight {
     const mask = Blockly.utils.dom.createSvgElement(
       new Blockly.utils.Svg('mask'),
       {
-        'id': 'contentAreaHighlightMask' + rnd,
+        id: 'contentAreaHighlightMask' + rnd,
       },
       this.svgGroup,
     );
     Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'fill': 'white',
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        fill: 'white',
       },
       mask,
     );
     this.rect = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'rx': Blockly.Bubble.BORDER_WIDTH,
-        'ry': Blockly.Bubble.BORDER_WIDTH,
-        'fill': 'black',
+        x: 0,
+        y: 0,
+        rx: Blockly.Bubble.BORDER_WIDTH,
+        ry: Blockly.Bubble.BORDER_WIDTH,
+        fill: 'black',
       },
       mask,
     );
     this.background = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'mask': `url(#contentAreaHighlightMask${rnd})`,
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        mask: `url(#contentAreaHighlightMask${rnd})`,
       },
       this.svgGroup,
     );
@@ -189,7 +189,9 @@ export class ContentHighlight {
         this.resize(this.cachedContentMetrics);
       }
       const absoluteMetrics = metricsManager.getAbsoluteMetrics();
-      this.position(this.cachedContentMetrics, absoluteMetrics);
+      if (this.cachedContentMetrics) {
+        this.position(this.cachedContentMetrics, absoluteMetrics);
+      }
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
       this.handleBlockDrag(event as Blockly.Events.BlockDrag);
     } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
@@ -208,7 +210,7 @@ export class ContentHighlight {
    */
   private handleBlockDrag(event: Blockly.Events.BlockDrag) {
     const opacity = event.isStart ? '0' : '1';
-    this.svgGroup.setAttribute('opacity', opacity);
+    this.svgGroup?.setAttribute('opacity', opacity);
   }
 
   /**
@@ -225,7 +227,8 @@ export class ContentHighlight {
       bgColor === '#ffffff' || bgColor === '#fff'
         ? colorDarkened
         : colorLightened;
-    this.background.setAttribute('fill', color);
+    if (!color) return;
+    this.background?.setAttribute('fill', color);
   }
 
   /**
@@ -243,11 +246,11 @@ export class ContentHighlight {
       : 0;
     if (width !== this.width) {
       this.width = width;
-      this.rect.setAttribute('width', `${width}`);
+      this.rect?.setAttribute('width', `${width}`);
     }
     if (height !== this.height) {
       this.height = height;
-      this.rect.setAttribute('height', `${height}`);
+      this.rect?.setAttribute('height', `${height}`);
     }
   }
 
@@ -281,7 +284,7 @@ export class ContentHighlight {
       this.top = top;
       this.left = left;
       this.lastScale = scale;
-      this.rect.setAttribute(
+      this.rect?.setAttribute(
         'transform',
         `translate(${left}, ${top}) scale(${scale})`,
       );

@@ -65,13 +65,13 @@ import * as Blockly from 'blockly';
 import '@blockly/field-grid-dropdown';
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_field_grid_dropdown',
-    'message0': 'template: %1',
-    'args0': [
+    type: 'test_field_grid_dropdown',
+    message0: 'template: %1',
+    args0: [
       {
-        'type': 'field_grid_dropdown',
-        'name': 'FIELDNAME',
-        'options': [
+        type: 'field_grid_dropdown',
+        name: 'FIELDNAME',
+        options: [
           ['A', 'A'],
           ['B', 'B'],
           ['C', 'C'],

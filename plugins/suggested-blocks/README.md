@@ -19,30 +19,30 @@ npm install @blockly/suggested-blocks --save
 ## Usage
 
 ```js
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 import * as SuggestedBlocks from '@blockly/suggested-blocks';
 
 const toolbox = {
-  'kind': 'categoryToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'category',
-      'name': 'My Category',
-      'contents': [
+      kind: 'category',
+      name: 'My Category',
+      contents: [
         /* your category contents */
       ],
     },
     {
-      'kind': 'category',
-      'name': 'Frequently Used',
-      'custom': 'MOST_USED',
-      'categorystyle': 'frequently_used_category',
+      kind: 'category',
+      name: 'Frequently Used',
+      custom: 'MOST_USED',
+      categorystyle: 'frequently_used_category',
     },
     {
-      'kind': 'category',
-      'name': 'Recently Used',
-      'custom': 'RECENTLY_USED',
-      'categorystyle': 'recently_used_category',
+      kind: 'category',
+      name: 'Recently Used',
+      custom: 'RECENTLY_USED',
+      categorystyle: 'recently_used_category',
     },
   ],
 };
@@ -70,7 +70,10 @@ SuggestedBlocks.init(workspace);
     firing while you load the initial state of the workspace, you'll need to set
     this to `false`, or the plugin will never place blocks in either category.
     By default, this value is `true`, so that events fired while loading initial
-    serialized state do not affect the statistics.
+    serialized state do not affect the statistics. If you leave this value as `true`,
+    you need to ensure the `FinishedLoading` event is always fired; if you don't call
+    `Blockly.serialization.workspaces.load` when there is no saved state to load, you'll
+    need to fire it yourself for this plugin to work correctly.
 
 ## License
 

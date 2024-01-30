@@ -28,9 +28,9 @@ const borderRadius = 6;
  */
 export class FocusRegion {
   private onChangeWrapper: (e: Blockly.Events.Abstract) => void;
-  private svgGroup: SVGElement;
-  private rect: SVGElement;
-  private background: SVGElement;
+  private svgGroup: SVGElement | null = null;
+  private rect: SVGElement | null = null;
+  private background: SVGElement | null = null;
   private id: string;
   private initialized = false;
 
@@ -45,6 +45,7 @@ export class FocusRegion {
     private minimapWorkspace: Blockly.WorkspaceSvg,
   ) {
     this.id = String(Math.random()).substring(2);
+    this.onChangeWrapper = this.onChange.bind(this);
   }
 
   /**
@@ -54,14 +55,14 @@ export class FocusRegion {
     // Make the svg group element.
     this.svgGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
-      {'class': 'blockly-focus-region'},
+      {class: 'blockly-focus-region'},
       null,
     );
 
     // Make the mask under the svg group.
     const mask = Blockly.utils.dom.createSvgElement(
       new Blockly.utils.Svg('mask'),
-      {'id': 'focusRegionMask' + this.id},
+      {id: 'focusRegionMask' + this.id},
       this.svgGroup,
     );
 
@@ -69,11 +70,11 @@ export class FocusRegion {
     this.background = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'mask': 'url(#focusRegionMask' + this.id + ')',
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        mask: 'url(#focusRegionMask' + this.id + ')',
       },
       this.svgGroup,
     );
@@ -82,11 +83,11 @@ export class FocusRegion {
     Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'width': '100%',
-        'height': '100%',
-        'fill': 'white',
+        x: 0,
+        y: 0,
+        width: '100%',
+        height: '100%',
+        fill: 'white',
       },
       mask,
     );
@@ -95,11 +96,11 @@ export class FocusRegion {
     this.rect = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'x': 0,
-        'y': 0,
-        'rx': borderRadius,
-        'ry': borderRadius,
-        'fill': 'black',
+        x: 0,
+        y: 0,
+        rx: borderRadius,
+        ry: borderRadius,
+        fill: 'black',
       },
       mask,
     );
@@ -129,7 +130,7 @@ export class FocusRegion {
   dispose() {
     if (this.onChangeWrapper) {
       this.primaryWorkspace.removeChangeListener(this.onChangeWrapper);
-      this.onChangeWrapper = null;
+      this.onChangeWrapper = () => null;
     }
     if (this.svgGroup) {
       Blockly.utils.dom.removeNode(this.svgGroup);
@@ -187,9 +188,15 @@ export class FocusRegion {
     top += (minimapSvg.height - minimapContent.height) / 2;
 
     // Set the svg attributes.
-    this.rect.setAttribute('transform', `translate(${left},${top})`);
-    this.rect.setAttribute('width', width.toString());
-    this.rect.setAttribute('height', height.toString());
+    if (!this.rect) {
+      throw new Error(
+        'The focus region must be initialized (`init`) before calling `update`',
+      );
+    } else {
+      this.rect.setAttribute('transform', `translate(${left},${top})`);
+      this.rect.setAttribute('width', width.toString());
+      this.rect.setAttribute('height', height.toString());
+    }
   }
 
   /**

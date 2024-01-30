@@ -13,119 +13,119 @@ import './blocks';
  * The Serialization category.
  */
 export const category = {
-  'kind': 'CATEGORY',
-  'name': 'Serialization',
-  'contents': [
+  kind: 'CATEGORY',
+  name: 'Serialization',
+  contents: [
     {
-      'kind': 'BUTTON',
-      'text': 'add blocks to workspace',
-      'callbackkey': 'addAllBlocksToWorkspace',
+      kind: 'BUTTON',
+      text: 'add blocks to workspace',
+      callbackkey: 'addAllBlocksToWorkspace',
     },
     {
-      'kind': 'SEP',
-      'gap': '8',
+      kind: 'SEP',
+      gap: '8',
     },
     {
-      'kind': 'BUTTON',
-      'text': 'randomize text',
-      'callbackkey': 'randomizeText',
+      kind: 'BUTTON',
+      text: 'randomize text',
+      callbackkey: 'randomizeText',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_field_serialization_no_overrides',
+      kind: 'BLOCK',
+      type: 'test_field_serialization_no_overrides',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_field_serialization_xml',
+      kind: 'BLOCK',
+      type: 'test_field_serialization_xml',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_field_serialization_jso',
+      kind: 'BLOCK',
+      type: 'test_field_serialization_jso',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_field_serialization_both',
+      kind: 'BLOCK',
+      type: 'test_field_serialization_both',
     },
     {
-      'kind': 'SEP',
-      'gap': 30,
+      kind: 'SEP',
+      gap: 30,
     },
     {
-      'kind': 'BLOCK',
-      'blockxml':
+      kind: 'BLOCK',
+      blockxml:
         '<block type="test_extra_state_xml">' +
         '<mutation items="2"></mutation>' +
         '</block>',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_extra_state_jso',
-      'extraState': {
-        'itemCount': 2,
+      kind: 'BLOCK',
+      type: 'test_extra_state_jso',
+      extraState: {
+        itemCount: 2,
       },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'test_extra_state_both',
-      'extraState': {
-        'itemCount': 2,
+      kind: 'BLOCK',
+      type: 'test_extra_state_both',
+      extraState: {
+        itemCount: 2,
       },
     },
     {
-      'kind': 'SEP',
-      'gap': 30,
+      kind: 'SEP',
+      gap: 30,
     },
     {
-      'kind': 'BLOCK',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {
-            'type': 'test_field_serialization_no_overrides',
+      kind: 'BLOCK',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {
+            type: 'test_field_serialization_no_overrides',
           },
         },
       },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {
-            'type': 'test_field_serialization_xml',
+      kind: 'BLOCK',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {
+            type: 'test_field_serialization_xml',
           },
         },
       },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {
-            'type': 'test_field_serialization_jso',
+      kind: 'BLOCK',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {
+            type: 'test_field_serialization_jso',
           },
         },
       },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {
-            'type': 'test_field_serialization_both',
+      kind: 'BLOCK',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {
+            type: 'test_field_serialization_both',
           },
         },
       },
     },
     {
-      'kind': 'SEP',
-      'gap': 30,
+      kind: 'SEP',
+      gap: 30,
     },
     {
-      'kind': 'BLOCK',
-      'blockxml':
+      kind: 'BLOCK',
+      blockxml:
         '<block type="text_print">' +
         '<value name="TEXT">' +
         '<shadow type="test_extra_state_xml">' +
@@ -135,28 +135,28 @@ export const category = {
         '</block>',
     },
     {
-      'kind': 'BLOCK',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {
-            'type': 'test_extra_state_jso',
-            'extraState': {
-              'itemCount': 2,
+      kind: 'BLOCK',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {
+            type: 'test_extra_state_jso',
+            extraState: {
+              itemCount: 2,
             },
           },
         },
       },
     },
     {
-      'kind': 'BLOCK',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {
-            'type': 'test_extra_state_both',
-            'extraState': {
-              'itemCount': 2,
+      kind: 'BLOCK',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {
+            type: 'test_extra_state_both',
+            extraState: {
+              itemCount: 2,
             },
           },
         },

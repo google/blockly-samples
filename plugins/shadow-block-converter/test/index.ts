@@ -13,100 +13,110 @@ import {createPlayground} from '@blockly/dev-tools';
 import {shadowBlockConversionChangeListener} from '../src/index';
 
 const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
-  'kind': 'flyoutToolbox',
-  'contents': [
+  kind: 'flyoutToolbox',
+  contents: [
     {
-      'kind': 'block',
-      'type': 'colour_blend',
-      'inputs': {
-        'COLOUR1': {
-          'shadow': {'type': 'colour_picker', 'fields': {'COLOUR': '#ff0000'}},
-          'block': undefined,
-        },
-        'COLOUR2': {
-          'shadow': {'type': 'colour_picker', 'fields': {'COLOUR': '#3333ff'}},
-          'block': undefined,
-        },
-        'RATIO': {
-          'shadow': {'type': 'math_number', 'fields': {'NUM': 0.5}},
-          'block': undefined,
+      kind: 'block',
+      type: 'text_reverse',
+      inputs: {
+        TEXT: {
+          shadow: {type: 'text', fields: {TEXT: 'abc'}},
+          block: undefined,
         },
       },
     },
     {
-      'kind': 'block',
-      'type': 'colour_picker',
-    },
-    {
-      'kind': 'block',
-      'type': 'text_print',
-      'inputs': {
-        'TEXT': {
-          'shadow': {'type': 'text', 'fields': {'TEXT': 'Example Text 1'}},
-          'block': undefined,
+      kind: 'block',
+      type: 'colour_blend',
+      inputs: {
+        COLOUR1: {
+          shadow: {type: 'colour_picker', fields: {COLOUR: '#ff0000'}},
+          block: undefined,
+        },
+        COLOUR2: {
+          shadow: {type: 'colour_picker', fields: {COLOUR: '#3333ff'}},
+          block: undefined,
+        },
+        RATIO: {
+          shadow: {type: 'math_number', fields: {NUM: 0.5}},
+          block: undefined,
         },
       },
-      'next': {
-        'shadow': {
-          'type': 'text_print',
-          'inputs': {
-            'TEXT': {
-              'shadow': {'type': 'text', 'fields': {'TEXT': 'Example Text 2'}},
-              'block': undefined,
+    },
+    {
+      kind: 'block',
+      type: 'colour_picker',
+    },
+    {
+      kind: 'block',
+      type: 'text_print',
+      inputs: {
+        TEXT: {
+          shadow: {type: 'text', fields: {TEXT: 'Example Text 1'}},
+          block: undefined,
+        },
+      },
+      next: {
+        shadow: {
+          type: 'text_print',
+          inputs: {
+            TEXT: {
+              shadow: {type: 'text', fields: {TEXT: 'Example Text 2'}},
+              block: undefined,
             },
           },
         },
-        'block': undefined,
+        block: undefined,
       },
     },
     {
-      'kind': 'block',
-      'type': 'text',
+      kind: 'block',
+      type: 'text',
     },
     {
-      'kind': 'block',
-      'type': 'controls_if',
-      'inputs': {
-        'IF0': {'shadow': {'type': 'logic_boolean'}, 'block': undefined},
-        'DO0': {
-          'shadow': {
-            'type': 'controls_ifelse',
-            'inputs': {
-              'IF0': {'shadow': {'type': 'logic_boolean'}, 'block': undefined},
-              'DO0': {'shadow': {'type': 'controls_if'}, 'block': undefined},
-              'ELSE': {
-                'shadow': {
-                  'type': 'controls_if',
-                  'inputs': {
-                    'IF0': {
-                      'shadow': {'type': 'logic_boolean'},
-                      'block': undefined,
+      kind: 'block',
+      type: 'controls_if',
+      inputs: {
+        IF0: {shadow: {type: 'logic_boolean'}, block: undefined},
+        DO0: {
+          shadow: {
+            type: 'controls_ifelse',
+            inputs: {
+              IF0: {shadow: {type: 'logic_boolean'}, block: undefined},
+              DO0: {shadow: {type: 'controls_if'}, block: undefined},
+              ELSE: {
+                shadow: {
+                  type: 'controls_if',
+                  inputs: {
+                    IF0: {
+                      shadow: {type: 'logic_boolean'},
+                      block: undefined,
                     },
                   },
                 },
-                'block': undefined,
+                block: undefined,
               },
             },
-            'next': {
-              'shadow': {
-                'type': 'controls_if',
-                'inputs': {
-                  'IF0': {
-                    'shadow': {'type': 'logic_boolean'},
-                    'block': undefined,
+            next: {
+              shadow: {
+                type: 'controls_if',
+                inputs: {
+                  IF0: {
+                    shadow: {type: 'logic_boolean'},
+                    block: undefined,
                   },
                 },
               },
-              'block': undefined,
+              block: undefined,
             },
           },
-          'block': undefined,
+          block: undefined,
         },
       },
     },
     {
-      'kind': 'block',
-      'type': 'logic_boolean',
+      kind: 'block',
+      type: 'logic_boolean',
     },
   ],
 };

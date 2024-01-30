@@ -3,28 +3,28 @@ import {ChildOptionMapping, FieldDependentDropdown} from '../src/index';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'dependent_dropdown_test',
-    'message0': 'Parent %1 Child %2 Grandchild %3',
-    'args0': [
+    type: 'dependent_dropdown_test',
+    message0: 'Parent %1 Child %2 Grandchild %3',
+    args0: [
       {
-        'type': 'field_dropdown',
-        'name': 'PARENT_FIELD',
-        'options': [
+        type: 'field_dropdown',
+        name: 'PARENT_FIELD',
+        options: [
           ['A', 'a'],
           ['B', 'b'],
         ],
       },
       {
-        'type': 'field_dependent_dropdown',
-        'name': 'CHILD_FIELD',
-        'parentName': 'PARENT_FIELD',
-        'optionMapping': {
-          'a': [
+        type: 'field_dependent_dropdown',
+        name: 'CHILD_FIELD',
+        parentName: 'PARENT_FIELD',
+        optionMapping: {
+          a: [
             ['A1', 'a1'],
             ['A2', 'a2'],
             ['Shared', 'shared'],
           ],
-          'b': [
+          b: [
             ['B1', 'b1'],
             ['B2', 'b2'],
             ['Shared', 'shared'],
@@ -32,54 +32,54 @@ Blockly.defineBlocksWithJsonArray([
         },
       },
       {
-        'type': 'field_dependent_dropdown',
-        'name': 'GRANDCHILD_FIELD',
-        'parentName': 'CHILD_FIELD',
-        'optionMapping': {
-          'a1': [
+        type: 'field_dependent_dropdown',
+        name: 'GRANDCHILD_FIELD',
+        parentName: 'CHILD_FIELD',
+        optionMapping: {
+          a1: [
             ['A11', 'a11'],
             ['A12', 'a12'],
           ],
-          'a2': [
+          a2: [
             ['A21', 'a21'],
             ['A22', 'a22'],
           ],
-          'b1': [
+          b1: [
             ['B11', 'b11'],
             ['B12', 'b12'],
           ],
-          'b2': [
+          b2: [
             ['B21', 'b21'],
             ['B22', 'b22'],
           ],
-          'shared': [['Only', 'only']],
+          shared: [['Only', 'only']],
         },
       },
     ],
-    'colour': 100,
+    colour: 100,
   },
   {
-    'type': 'dependent_dropdown_default_options_test',
-    'message0': 'Parent %1 Child %2',
-    'args0': [
+    type: 'dependent_dropdown_default_options_test',
+    message0: 'Parent %1 Child %2',
+    args0: [
       {
-        'type': 'field_input',
-        'name': 'PARENT_FIELD',
+        type: 'field_input',
+        name: 'PARENT_FIELD',
       },
       {
-        'type': 'field_dependent_dropdown',
-        'name': 'CHILD_FIELD',
-        'parentName': 'PARENT_FIELD',
-        'optionMapping': {
-          'a': [
+        type: 'field_dependent_dropdown',
+        name: 'CHILD_FIELD',
+        parentName: 'PARENT_FIELD',
+        optionMapping: {
+          a: [
             ['A1', 'a1'],
             ['A2', 'a2'],
           ],
         },
-        'defaultOptions': [['Default Option', 'defaultOption']],
+        defaultOptions: [['Default Option', 'defaultOption']],
       },
     ],
-    'colour': 100,
+    colour: 100,
   },
 ]);
 
@@ -93,15 +93,15 @@ Blockly.Blocks['dependent_dropdown_validation_test'] = {
       ['Valid', 'valid'],
     ];
     const dependentOptions: ChildOptionMapping = {
-      'initial': [
+      initial: [
         ['Initial1', 'initial1'],
         ['Initial2', 'initial2'],
       ],
-      'invalid': [
+      invalid: [
         ['Invalid1', 'invalid1'],
         ['Invalid2', 'invalid2'],
       ],
-      'valid': [
+      valid: [
         ['Valid1', 'valid1'],
         ['Valid2', 'valid2'],
       ],

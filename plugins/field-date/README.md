@@ -41,13 +41,13 @@ import '@blockly/field-date';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    'type': 'test_fields_date',
-    'message0': 'date: %1',
-    'args0': [
+    type: 'test_fields_date',
+    message0: 'date: %1',
+    args0: [
       {
-        'type': 'field_date',
-        'name': 'FIELDNAME',
-        'date': '2020-02-20',
+        type: 'field_date',
+        name: 'FIELDNAME',
+        date: '2020-02-20',
       },
     ],
   },

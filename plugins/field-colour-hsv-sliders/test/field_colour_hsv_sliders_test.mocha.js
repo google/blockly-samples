@@ -76,7 +76,7 @@ suite('FieldColourHsvSliders', function () {
   ];
   const addArgsAndJson = function (testCase) {
     testCase.args = [testCase.value];
-    testCase.json = {'colour': testCase.value};
+    testCase.json = {colour: testCase.value};
   };
   invalidValueTestCases.forEach(addArgsAndJson);
   validValueTestCases.forEach(addArgsAndJson);

@@ -9,11 +9,7 @@
  */
 'use strict';
 
-/**
- * Utility functions for handling block suggestions.
- * @namespace Blockly.SuggestedBlocks
- */
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 
 /** Map from workspaces to BlockSuggestor objects. */
 const suggestorLookup = new WeakMap();
@@ -121,8 +117,8 @@ export class BlockSuggestor {
 
     if (blockList.length == 0) {
       blockList.push({
-        'kind': 'LABEL',
-        'text': 'No blocks have been used yet!',
+        kind: 'LABEL',
+        text: 'No blocks have been used yet!',
       });
     }
     return blockList;

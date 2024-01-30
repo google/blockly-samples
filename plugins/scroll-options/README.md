@@ -49,8 +49,8 @@ const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
     // These are both required.
-    'blockDragger': ScrollBlockDragger,
-    'metricsManager': ScrollMetricsManager,
+    blockDragger: ScrollBlockDragger,
+    metricsManager: ScrollMetricsManager,
   },
   move: {
     wheel: true, // Required for wheel scroll to work.

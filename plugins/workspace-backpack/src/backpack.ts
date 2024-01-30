@@ -136,7 +136,9 @@ export class Backpack
     this.initFlyout();
     this.createDom();
     this.attachListeners();
-    registerContextMenus(this.options.contextMenu, this.workspace_);
+    if (this.options.contextMenu) {
+      registerContextMenus(this.options.contextMenu, this.workspace_);
+    }
     this.initialized_ = true;
     this.workspace_.resize();
   }
@@ -162,14 +164,14 @@ export class Backpack
   protected initFlyout() {
     // Create flyout options.
     const flyoutWorkspaceOptions = new Blockly.Options({
-      'scrollbars': true,
-      'parentWorkspace': this.workspace_,
-      'rtl': this.workspace_.RTL,
-      'oneBasedIndex': this.workspace_.options.oneBasedIndex,
-      'renderer': this.workspace_.options.renderer,
-      'rendererOverrides': this.workspace_.options.rendererOverrides,
-      'move': {
-        'scrollbars': true,
+      scrollbars: true,
+      parentWorkspace: this.workspace_,
+      rtl: this.workspace_.RTL,
+      oneBasedIndex: this.workspace_.options.oneBasedIndex,
+      renderer: this.workspace_.options.renderer,
+      rendererOverrides: this.workspace_.options.rendererOverrides || undefined,
+      move: {
+        scrollbars: true,
       },
     });
     // Create vertical or horizontal flyout.
@@ -183,7 +185,11 @@ export class Backpack
         this.workspace_.options,
         true,
       );
-      this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
+      if (HorizontalFlyout) {
+        this.flyout_ = new HorizontalFlyout(flyoutWorkspaceOptions);
+      } else {
+        throw new Error('HorizontalFlyout does not exist');
+      }
     } else {
       flyoutWorkspaceOptions.toolboxPosition =
         this.workspace_.toolboxPosition === Blockly.utils.toolbox.Position.RIGHT
@@ -194,11 +200,15 @@ export class Backpack
         this.workspace_.options,
         true,
       );
-      this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
+      if (VerticalFlyout) {
+        this.flyout_ = new VerticalFlyout(flyoutWorkspaceOptions);
+      } else {
+        throw new Error('VerticalFlyout does not exist');
+      }
     }
     // Add flyout to DOM.
     const parentNode = this.workspace_.getParentSvg().parentNode;
-    parentNode.appendChild(this.flyout_.createDom(Blockly.utils.Svg.SVG));
+    parentNode?.appendChild(this.flyout_?.createDom(Blockly.utils.Svg.SVG));
     this.flyout_.init(this.workspace_);
   }
 
@@ -214,14 +224,14 @@ export class Backpack
     const rnd = Blockly.utils.idGenerator.genUid();
     const clip = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.CLIPPATH,
-      {'id': 'blocklyBackpackClipPath' + rnd},
+      {id: 'blocklyBackpackClipPath' + rnd},
       this.svgGroup_,
     );
     Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.RECT,
       {
-        'width': this.WIDTH_,
-        'height': this.HEIGHT_,
+        width: this.WIDTH_,
+        height: this.HEIGHT_,
       },
       clip,
     );
@@ -253,6 +263,7 @@ export class Backpack
    * Attaches event listeners.
    */
   protected attachListeners() {
+    if (!this.svgGroup_) return;
     this.addEvent(
       this.svgGroup_,
       'mousedown',
@@ -407,10 +418,12 @@ export class Backpack
       }
     }
 
-    this.svgGroup_.setAttribute(
-      'transform',
-      `translate(${this.left_},${this.top_})`,
-    );
+    if (this.svgGroup_) {
+      this.svgGroup_.setAttribute(
+        'transform',
+        `translate(${this.left_},${this.top_})`,
+      );
+    }
   }
 
   /**
@@ -462,20 +475,22 @@ export class Backpack
     const keys = ['id', 'height', 'width', 'pinned', 'enabled'];
 
     // Traverse the JSON recursively.
-    const traverseJson = function (json, keys) {
+    const traverseJson = function (json: StateWithIndex, keys: string[]) {
       for (const key in json) {
         if (key) {
-          if (keys.includes(key)) {
+          if (keys.indexOf(key) !== -1) {
             delete json[key];
           }
           if (json[key] && typeof json[key] === 'object') {
-            traverseJson(json[key], keys);
+            traverseJson(json[key] as StateWithIndex, keys);
           }
         }
       }
     };
 
-    traverseJson(json, keys);
+    if (json) {
+      traverseJson(json as StateWithIndex, keys);
+    }
     return JSON.stringify(json);
   }
 
@@ -619,7 +634,7 @@ export class Backpack
     this.maybeRefreshFlyoutContents();
     Blockly.Events.fire(new BackpackChange(this.workspace_.id));
 
-    if (!this.options.useFilledBackpackImage) return;
+    if (!this.options.useFilledBackpackImage || !this.svgImg_) return;
     if (this.contents_.length > 0) {
       this.svgImg_.setAttributeNS(
         Blockly.utils.dom.XLINK_NS,
@@ -665,7 +680,7 @@ export class Backpack
    * @returns Whether the backpack is open.
    */
   isOpen(): boolean {
-    return this.flyout_.isVisible();
+    return this.flyout_ ? this.flyout_.isVisible() : false;
   }
 
   /**
@@ -676,7 +691,7 @@ export class Backpack
       return;
     }
     const jsons = this.contents_.map((text) => JSON.parse(text));
-    this.flyout_.show(jsons);
+    this.flyout_?.show(jsons);
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -698,7 +713,7 @@ export class Backpack
       return;
     }
     const json = this.contents_.map((text) => JSON.parse(text));
-    this.flyout_.show(json);
+    this.flyout_?.show(json);
   }
 
   /**
@@ -708,7 +723,7 @@ export class Backpack
     if (!this.isOpen()) {
       return;
     }
-    this.flyout_.hide();
+    this.flyout_?.hide();
     // TODO: We can remove the setVisible check when updating from ^10.0.0 to
     //    ^11.
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -741,8 +756,8 @@ export class Backpack
    *
    * @param e Mouse event.
    */
-  protected onClick(e: MouseEvent) {
-    if (Blockly.browserEvents.isRightButton(e)) {
+  protected onClick(e: Event) {
+    if (e instanceof MouseEvent && Blockly.browserEvents.isRightButton(e)) {
       return;
     }
     this.open();
@@ -799,10 +814,12 @@ export class Backpack
    */
   protected updateHoverStying(addClass: boolean) {
     const backpackDarken = 'blocklyBackpackDarken';
-    if (addClass) {
-      Blockly.utils.dom.addClass(this.svgImg_, backpackDarken);
-    } else {
-      Blockly.utils.dom.removeClass(this.svgImg_, backpackDarken);
+    if (this.svgImg_) {
+      if (addClass) {
+        Blockly.utils.dom.addClass(this.svgImg_, backpackDarken);
+      } else {
+        Blockly.utils.dom.removeClass(this.svgImg_, backpackDarken);
+      }
     }
   }
 
@@ -825,8 +842,12 @@ export class Backpack
    *
    * @param e A mouse down event.
    */
-  protected blockMouseDownWhenOpenable(e: MouseEvent) {
-    if (!Blockly.browserEvents.isRightButton(e) && this.isOpenable()) {
+  protected blockMouseDownWhenOpenable(e: Event) {
+    if (
+      e instanceof MouseEvent &&
+      !Blockly.browserEvents.isRightButton(e) &&
+      this.isOpenable()
+    ) {
       e.stopPropagation(); // Don't start a workspace scroll.
     }
   }
@@ -956,4 +977,8 @@ class BackpackSerializer {
     const backpack = componentManager.getComponent('backpack') as Backpack;
     backpack?.empty();
   }
+}
+
+interface StateWithIndex extends Blockly.serialization.blocks.State {
+  [key: string]: unknown;
 }
