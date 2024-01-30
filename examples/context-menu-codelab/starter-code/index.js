@@ -4,8 +4,7 @@ let workspace = null;
 
 function start() {
   // Create main workspace.
-  workspace = Blockly.inject('blocklyDiv',
-    {
-      toolbox: toolboxSimple,
-    });
+  workspace = Blockly.inject('blocklyDiv', {
+    toolbox: toolboxSimple,
+  });
 }

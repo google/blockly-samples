@@ -2,7 +2,7 @@ main {
   width: 400px;
   position: relative;
   margin: 0 auto;
-  overflow:hidden;
+  overflow: hidden;
   height: 600px;
 }
 
@@ -26,9 +26,9 @@ h1 {
   display: none;
 }
 
-[mode="maker"] .mode-maker,
-[mode="edit"] .mode-edit,
-[mode="blockly"] .mode-blockly {
+[mode='maker'] .mode-maker,
+[mode='edit'] .mode-edit,
+[mode='blockly'] .mode-blockly {
   display: block;
 }
 
@@ -42,7 +42,7 @@ h1 {
   background-color: #eee;
 }
 
-[mode="blockly"] .blockly-editor {
+[mode='blockly'] .blockly-editor {
   left: 0;
 }
 

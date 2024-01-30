@@ -60,14 +60,16 @@ ws.addChangeListener((e) => {
   save(ws);
 });
 
-
 // Whenever the workspace changes meaningfully, run the code again.
 ws.addChangeListener((e) => {
   // Don't run the code when the workspace finishes loading; we're
   // already running it once when the application starts.
   // Don't run the code during drags; we might have invalid state.
-  if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING ||
-    ws.isDragging()) {
+  if (
+    e.isUiEvent ||
+    e.type == Blockly.Events.FINISHED_LOADING ||
+    ws.isDragging()
+  ) {
     return;
   }
   runCode();
@@ -75,15 +77,17 @@ ws.addChangeListener((e) => {
 
 // Create a serialized key from the primary key and any modifiers.
 const ctrlW = Blockly.ShortcutRegistry.registry.createSerializedKey(
-    Blockly.utils.KeyCodes.W, [Blockly.ShortcutRegistry.modifierKeys.Control]);
+  Blockly.utils.KeyCodes.W,
+  [Blockly.ShortcutRegistry.modifierKeys.Control],
+);
 
 const moveToStack = {
   name: 'moveToStack',
   keyCodes: [ctrlW], // The custom key mapping.
-  preconditionFn: function(workspace) {
+  preconditionFn: function (workspace) {
     return workspace.keyboardAccessibilityMode;
   },
-  callback: function(workspace) {
+  callback: function (workspace) {
     const cursor = workspace.getCursor();
     // Gets the current node.
     const currentNode = cursor.getCurNode();
@@ -91,7 +95,7 @@ const moveToStack = {
     const currentBlock = currentNode.getSourceBlock();
     // If we are on a workspace node there will be no source block.
     if (currentBlock) {
-    // Gets the top block in the stack.
+      // Gets the top block in the stack.
       const rootBlock = currentBlock.getRootBlock();
       // Gets the top node on a block. This is either the previous connection,
       // output connection, or the block itself.
@@ -106,21 +110,33 @@ const moveToStack = {
 Blockly.ShortcutRegistry.registry.register(moveToStack);
 
 Blockly.ShortcutRegistry.registry.removeAllKeyMappings(
-    Constants.SHORTCUT_NAMES.OUT);
+  Constants.SHORTCUT_NAMES.OUT,
+);
 Blockly.ShortcutRegistry.registry.addKeyMapping(
-    Blockly.utils.KeyCodes.LEFT, Constants.SHORTCUT_NAMES.OUT);
+  Blockly.utils.KeyCodes.LEFT,
+  Constants.SHORTCUT_NAMES.OUT,
+);
 
 Blockly.ShortcutRegistry.registry.removeAllKeyMappings(
-    Constants.SHORTCUT_NAMES.IN);
+  Constants.SHORTCUT_NAMES.IN,
+);
 Blockly.ShortcutRegistry.registry.addKeyMapping(
-    Blockly.utils.KeyCodes.RIGHT, Constants.SHORTCUT_NAMES.IN);
+  Blockly.utils.KeyCodes.RIGHT,
+  Constants.SHORTCUT_NAMES.IN,
+);
 
 Blockly.ShortcutRegistry.registry.removeAllKeyMappings(
-    Constants.SHORTCUT_NAMES.PREVIOUS);
+  Constants.SHORTCUT_NAMES.PREVIOUS,
+);
 Blockly.ShortcutRegistry.registry.addKeyMapping(
-    Blockly.utils.KeyCodes.UP, Constants.SHORTCUT_NAMES.PREVIOUS);
+  Blockly.utils.KeyCodes.UP,
+  Constants.SHORTCUT_NAMES.PREVIOUS,
+);
 
 Blockly.ShortcutRegistry.registry.removeAllKeyMappings(
-    Constants.SHORTCUT_NAMES.NEXT);
+  Constants.SHORTCUT_NAMES.NEXT,
+);
 Blockly.ShortcutRegistry.registry.addKeyMapping(
-    Blockly.utils.KeyCodes.DOWN, Constants.SHORTCUT_NAMES.NEXT);
+  Blockly.utils.KeyCodes.DOWN,
+  Constants.SHORTCUT_NAMES.NEXT,
+);

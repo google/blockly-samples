@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@4.0.11...@blockly/shadow-block-converter@5.0.0) (2024-01-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use setShadowState instead of setShadow in shadow-block-converter
+
+### Bug Fixes
+
+* Use setShadowState instead of setShadow in shadow-block-converter ([7cd4c5c](https://github.com/google/blockly-samples/commit/7cd4c5c53a40c8157cb689e35974004fa5f0ac73))
+* Use setShadowState instead of setShadow in shadow-block-converter ([#2090](https://github.com/google/blockly-samples/issues/2090)) ([0ee8651](https://github.com/google/blockly-samples/commit/0ee86515b8509d14109e453b608d587abed428cd))
+
+
+
 ## [4.0.11](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@4.0.10...@blockly/shadow-block-converter@4.0.11) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/shadow-block-converter

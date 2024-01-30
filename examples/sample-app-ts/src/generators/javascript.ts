@@ -14,7 +14,7 @@ export const forBlock = Object.create(null);
 
 forBlock['add_text'] = function (
   block: Blockly.Block,
-  generator: Blockly.CodeGenerator
+  generator: Blockly.CodeGenerator,
 ) {
   const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
   const color =
@@ -30,7 +30,7 @@ forBlock['add_text'] = function (
   textEl.innerText = text;
   textEl.style.color = color;
   outputDiv.appendChild(textEl);
-}`
+}`,
   );
   // Generate the function call for this block.
   const code = `${addText}(${text}, ${color});\n`;

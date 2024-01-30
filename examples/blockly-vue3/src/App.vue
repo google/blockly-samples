@@ -10,20 +10,20 @@
  * @author dcoodien@google.com (Dylan Coodien)
  */
 
-import { ref } from "vue";
-import BlocklyComponent from "./components/BlocklyComponent.vue";
-import "./blocks/stocks";
+import {ref} from 'vue';
+import BlocklyComponent from './components/BlocklyComponent.vue';
+import './blocks/stocks';
 
-import { javascriptGenerator } from "blockly/javascript";
+import {javascriptGenerator} from 'blockly/javascript';
 
 const foo = ref();
 const code = ref();
 const options = {
-  media: "media/",
+  media: 'media/',
   grid: {
     spacing: 25,
     length: 3,
-    colour: "#ccc",
+    colour: '#ccc',
     snap: true,
   },
   toolbox: `<xml>
@@ -66,7 +66,8 @@ const options = {
         </xml>`,
 };
 
-const showCode = () => (code.value = javascriptGenerator.workspaceToCode(foo.value.workspace));
+const showCode = () =>
+  (code.value = javascriptGenerator.workspaceToCode(foo.value.workspace));
 </script>
 
 <template>
@@ -97,17 +98,20 @@ const showCode = () => (code.value = javascriptGenerator.workspaceToCode(foo.val
       </block>
     </BlocklyComponent>
 
-    <BlocklyComponent id="blockly2" :options="options" ref="foo"></BlocklyComponent>
-    <p id="code">
+    <BlocklyComponent
+      id="blockly2"
+      :options="options"
+      ref="foo"></BlocklyComponent>
+    <div id="code">
       <button v-on:click="showCode()">Show JavaScript</button>
       <pre v-html="code"></pre>
-    </p>
+    </div>
   </div>
 </template>
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

@@ -245,7 +245,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     for (const input of block.inputList) {
       for (const field of input.fieldRow) {
         // No variables.
-        if (field instanceof Blockly.FieldVariable) {
+        if (field.referencesVariables()) {
           return false;
         }
         if (field instanceof Blockly.FieldDropdown) {
