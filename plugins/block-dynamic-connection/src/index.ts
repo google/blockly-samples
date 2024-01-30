@@ -10,7 +10,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-import './insertion_marker_manager_monkey_patch';
 import './dynamic_if';
 import './dynamic_text_join';
 import './dynamic_list_create';
