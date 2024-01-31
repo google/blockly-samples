@@ -11,7 +11,7 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
-import { Generators } from './generatorsType';
+import { Generators } from './generatorUtils';
 
 
 const blockName = 'colour_random';
