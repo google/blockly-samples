@@ -50,6 +50,7 @@ export class BlockSearcher {
     if (field instanceof Blockly.FieldDropdown) {
         field.getOptions(true).forEach((option) => {
           let state = { ...blockState }
+          state.fields = { ...blockState.fields}
             if (typeof option[0] === 'string') {
                 if (state.fields == undefined) {
                     state.fields = {}
@@ -124,7 +125,7 @@ export class BlockSearcher {
     if (normalizedInput.length <= 3) return [normalizedInput];
 
     const trigrams: string[] = [];
-    for (let start = 0; start < normalizedInput.length - 3; start++) {
+    for (let start = 0; start <= normalizedInput.length - 3; start++) {
       trigrams.push(normalizedInput.substring(start, start + 3));
     }
 
