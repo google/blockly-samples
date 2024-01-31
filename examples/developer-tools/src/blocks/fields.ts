@@ -7,15 +7,19 @@
 import * as Blockly from 'blockly/core';
 
 /** The default source to use as prepopulated text in image fields. */
-const defaultImageSrc = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
+const defaultImageSrc =
+  'https://www.gstatic.com/codesite/ph/images/star_on.gif';
 /** The tooltip text to show explaining alt text for images. */
-const imageAltTooltip = 'Alt text used for screenreaders and when image is unavailable';
+const imageAltTooltip =
+  'Alt text used for screenreaders and when image is unavailable';
 /** The tooltip text to show explaining the 'flip RTL' option for images. */
-const imageFlipTooltip = 'Whether the image should be reversed when a workspace is rendered RTL';
+const imageFlipTooltip =
+  'Whether the image should be reversed when a workspace is rendered RTL';
 
 /**
  * Check to see if more than one field has this name.
  * Highly inefficient (On^2), but n is small.
+ *
  * @param referenceBlock Block to check.
  */
 const checkNameConflicts = function (referenceBlock: Blockly.Block) {
@@ -128,7 +132,7 @@ export const fieldNumber = {
   },
 };
 
-/** 
+/**
  * Checkbox field.
  */
 export const fieldCheckbox = {
@@ -186,9 +190,17 @@ export const fieldImage = {
       .appendField('height')
       .appendField(new Blockly.FieldNumber('15', 0, null, 1), 'HEIGHT')
       .appendField('alt text')
-      .appendField(new Blockly.FieldTextInput('*', undefined, {tooltip: imageAltTooltip}), 'ALT')
+      .appendField(
+        new Blockly.FieldTextInput('*', undefined, {tooltip: imageAltTooltip}),
+        'ALT',
+      )
       .appendField('flip RTL')
-      .appendField(new Blockly.FieldCheckbox('FALSE', undefined, {tooltip: imageFlipTooltip}), 'FLIP_RTL');
+      .appendField(
+        new Blockly.FieldCheckbox('FALSE', undefined, {
+          tooltip: imageFlipTooltip,
+        }),
+        'FLIP_RTL',
+      );
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setTooltip(
@@ -201,7 +213,7 @@ export const fieldImage = {
 };
 
 export type DropdownOptionData =
-  string
+  | string
   | {
       src: string;
       width: number;
@@ -258,9 +270,7 @@ export const fieldDropdown = {
     containerBlock.initSvg();
     let connection = containerBlock.getInput('STACK').connection;
     for (const option of this.optionList) {
-      const optionBlock = workspace.newBlock(
-        'field_dropdown_option_' + option,
-      );
+      const optionBlock = workspace.newBlock('field_dropdown_option_' + option);
       optionBlock.initSvg();
       connection.connect(optionBlock.previousConnection);
       connection = optionBlock.nextConnection;
@@ -347,7 +357,12 @@ export const fieldDropdown = {
           .appendField('height')
           .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT' + i)
           .appendField('alt text')
-          .appendField(new Blockly.FieldTextInput('*', undefined, {tooltip: imageAltTooltip}), 'ALT' + i)
+          .appendField(
+            new Blockly.FieldTextInput('*', undefined, {
+              tooltip: imageAltTooltip,
+            }),
+            'ALT' + i,
+          )
           .appendField(',')
           .appendField(new Blockly.FieldTextInput('OPTIONNAME'), 'CPU' + i);
       }
@@ -366,6 +381,7 @@ export const fieldDropdown = {
    * Gets the data for a single dropdown option. For a text option,
    * this is the string shown to users in the menu. For an image option,
    * this includes all the image data needed to render the image.
+   *
    * @param n Number of the input to get the data for.
    * @returns User data for a single dropdown option.
    */
