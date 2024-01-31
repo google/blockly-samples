@@ -16,6 +16,7 @@ const imageFlipTooltip = 'Whether the image should be reversed when a workspace 
 /**
  * Check to see if more than one field has this name.
  * Highly inefficient (On^2), but n is small.
+ *
  * @param referenceBlock Block to check.
  */
 const checkNameConflicts = function (referenceBlock: Blockly.Block) {
@@ -366,6 +367,7 @@ export const fieldDropdown = {
    * Gets the data for a single dropdown option. For a text option,
    * this is the string shown to users in the menu. For an image option,
    * this includes all the image data needed to render the image.
+   *
    * @param n Number of the input to get the data for.
    * @returns User data for a single dropdown option.
    */

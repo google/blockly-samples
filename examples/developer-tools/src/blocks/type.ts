@@ -141,7 +141,11 @@ const tooltip: Record<string, string> = {
   CUSTOM: 'Custom connection check string to allow.',
 };
 
-/** Validator for type block dropdown. */
+/**
+ * Validator for type block dropdown.
+ *
+ * @param value
+ */
 const adjustCustomCheckInput = function(value: string): undefined {
   const customCheckFieldName = 'CUSTOMCHECK';
   if (value === 'CUSTOM') {
