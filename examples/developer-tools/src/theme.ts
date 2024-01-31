@@ -8,27 +8,27 @@ import * as Blockly from 'blockly/core';
 
 const blockStyles = {
   input: {
-    'colourPrimary': '210',
+    colourPrimary: '210',
   },
   connectionCheck: {
-    'colourPrimary': '230',
+    colourPrimary: '230',
   },
   field: {
-    'colourPrimary': '160',
+    colourPrimary: '160',
   },
   colour: {
-    'colourPrimary': '20',
+    colourPrimary: '20',
   },
   base: {
-    'colourPrimary': '120',
+    colourPrimary: '120',
   },
 };
 
 const categoryStyles = {
-  input: {'colour': '210'},
-  connectionCheck: {'colour': '230'},
-  field: {'colour': '160'},
-  colour: {'colour': '20'},
+  input: {colour: '210'},
+  connectionCheck: {colour: '230'},
+  field: {colour: '160'},
+  colour: {colour: '20'},
 };
 
 export const theme = Blockly.Theme.defineTheme('blockFactoryTheme', {

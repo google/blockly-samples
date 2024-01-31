@@ -130,7 +130,7 @@ export const toolbox = {
           type: 'connection_check',
           fields: {
             CHECKDROPDOWN: 'CUSTOM',
-            CUSTOMCHECK: 'custom check'
+            CUSTOMCHECK: 'custom check',
           },
         },
       ],

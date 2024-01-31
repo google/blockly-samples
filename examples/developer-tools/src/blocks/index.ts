@@ -7,7 +7,12 @@
 import {factoryBase} from './factory_base';
 import * as Blockly from 'blockly/core';
 import {input} from './input';
-import {connectionCheck, connectionCheckGroup, connectionCheckContainer, connectionCheckItem} from './type';
+import {
+  connectionCheck,
+  connectionCheckGroup,
+  connectionCheckContainer,
+  connectionCheckItem,
+} from './type';
 import {
   fieldCheckbox,
   fieldDropdown,
