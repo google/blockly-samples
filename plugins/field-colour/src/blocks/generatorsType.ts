@@ -1,15 +1,19 @@
-import * as JavaScript from 'blockly/javascript';
-import * as Dart from 'blockly/dart';
-import * as Lua from 'blockly/lua';
-import * as PHP from 'blockly/php';
-import * as Python from 'blockly/python';
+/**
+ * @license
+ * Copyright 2024 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-// TODO: Write correct types for the `generators` parameter for each block's 
-// `install` function.
+import type { JavascriptGenerator } from 'blockly/javascript';
+import type { DartGenerator } from 'blockly/dart';
+import type { LuaGenerator } from 'blockly/lua';
+import type { PhpGenerator } from 'blockly/php';
+import type { PythonGenerator } from 'blockly/python';
+
 export type Generators = {
-    javascript?: typeof JavaScript.javascriptGenerator;
-    dart?: typeof Dart.dartGenerator;
-    lua?: typeof Lua.luaGenerator;
-    php?: typeof PHP.phpGenerator;
-    python?: typeof Python.pythonGenerator;
+    javascript?: JavascriptGenerator;
+    dart?: DartGenerator;
+    lua?: LuaGenerator;
+    php?: PhpGenerator;
+    python?: PythonGenerator;
 };

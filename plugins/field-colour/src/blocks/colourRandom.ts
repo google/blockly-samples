@@ -37,7 +37,7 @@ const colourRandomDef =
  */
 export function jsGenerator(
     block: Blockly.Block,
-    generator: typeof JavaScript.javascriptGenerator,
+    generator: JavaScript.JavascriptGenerator,
 ): [string, JavaScript.Order] {
     // Generate a random colour.
     const functionName = generator.provideFunction_(
@@ -61,12 +61,12 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  */
 export function dartGenerator(
     block: Blockly.Block,
-    generator: typeof Dart.dartGenerator,
+    generator: Dart.DartGenerator,
 ): [string, Dart.Order] {
     // Generate a random colour.
     // TODO(#7600): find better approach than casting to any to override
     // CodeGenerator declaring .definitions protected.
-    (generator as AnyDuringMigration).definitions_['import_dart_math'] =
+    (generator as any).definitions_['import_dart_math'] =
         "import 'dart:math' as Math;";
     const functionName = generator.provideFunction_(
         'colour_random',
@@ -93,7 +93,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  */
 export function luaGenerator(
     block: Blockly.Block,
-    generator: typeof Lua.luaGenerator,
+    generator: Lua.LuaGenerator,
 ): [string, Lua.Order] {
     // Generate a random colour.
     const code = 'string.format("#%06x", math.random(0, 2^24 - 1))';
@@ -108,7 +108,7 @@ export function luaGenerator(
  */
 export function phpGenerator(
     block: Blockly.Block,
-    generator: typeof PHP.phpGenerator,
+    generator: PHP.PhpGenerator,
 ): [string, PHP.Order] {
     // Generate a random colour.
     const functionName = generator.provideFunction_(
@@ -131,12 +131,12 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  */
 export function pythonGenerator(
     block: Blockly.Block,
-    generator: typeof Python.pythonGenerator,
+    generator: Python.PythonGenerator,
 ): [string, Python.Order] {
     // Generate a random colour.
     // TODO(#7600): find better approach than casting to any to override
     // CodeGenerator declaring .definitions protected.
-    (generator as AnyDuringMigration).definitions_['import_random'] =
+    (generator as any).definitions_['import_random'] =
         'import random';
     const code = "'#%06x' % random.randint(0, 2**24 - 1)";
     return [code, Python.Order.FUNCTION_CALL];

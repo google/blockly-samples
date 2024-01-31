@@ -43,7 +43,7 @@ const colourPickerDef =
  */
 export function jsGenerator(
     block: Blockly.Block,
-    generator: typeof JavaScript.javascriptGenerator,
+    generator: JavaScript.JavascriptGenerator,
 ): [string, JavaScript.Order] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
@@ -58,7 +58,7 @@ export function jsGenerator(
  */
 export function dartGenerator(
     block: Blockly.Block,
-    generator: typeof Dart.dartGenerator,
+    generator: Dart.DartGenerator,
 ): [string, Dart.Order] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
@@ -73,7 +73,7 @@ export function dartGenerator(
  */
 export function luaGenerator(
     block: Blockly.Block,
-    generator: typeof Lua.luaGenerator,
+    generator: Lua.LuaGenerator,
 ): [string, Lua.Order] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
@@ -88,7 +88,7 @@ export function luaGenerator(
  */
 export function phpGenerator(
     block: Blockly.Block,
-    generator: typeof PHP.phpGenerator,
+    generator: PHP.PhpGenerator,
 ): [string, PHP.Order] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
@@ -103,7 +103,7 @@ export function phpGenerator(
  */
 export function pythonGenerator(
     block: Blockly.Block,
-    generator: typeof Python.pythonGenerator,
+    generator: Python.PythonGenerator,
 ): [string, Python.Order] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
