@@ -16,28 +16,28 @@ export const toolbox = {
           kind: 'block',
           type: 'input',
           fields: {
-            INPUT_TYPE: 'input_value',
+            INPUTTYPE: 'input_value',
           },
         },
         {
           kind: 'block',
           type: 'input',
           fields: {
-            INPUT_TYPE: 'input_statement',
+            INPUTTYPE: 'input_statement',
           },
         },
         {
           kind: 'block',
           type: 'input',
           fields: {
-            INPUT_TYPE: 'input_dummy',
+            INPUTTYPE: 'input_dummy',
           },
         },
         {
           kind: 'block',
           type: 'input',
           fields: {
-            INPUT_TYPE: 'input_end_row',
+            INPUTTYPE: 'input_end_row',
           },
         },
       ],
@@ -130,7 +130,7 @@ export const toolbox = {
           type: 'connection_check',
           fields: {
             CHECKDROPDOWN: 'CUSTOM',
-            CUSTOMCHECK: 'custom check'
+            CUSTOMCHECK: 'custom check',
           },
         },
       ],

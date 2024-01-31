@@ -6,11 +6,13 @@
 
 import * as Blockly from 'blockly/core';
 
-interface ConnectionCheckState {
+interface ConnectionCheckGroupState {
   checkCount: number;
 }
 
-type ConnectionCheckBlock = Blockly.Block & {valueConnection: Blockly.Connection};
+type ConnectionCheckBlock = Blockly.Block & {
+  valueConnection: Blockly.Connection;
+};
 
 /** Block representing a group of types. */
 export const connectionCheckGroup = {
@@ -18,23 +20,29 @@ export const connectionCheckGroup = {
     this.checkCount = 2;
     this.updateShape();
     this.setOutput(true, 'ConnectionCheckArray');
-    this.setMutator(new Blockly.icons.MutatorIcon(['connection_check_group_item'], this));
+    this.setMutator(
+      new Blockly.icons.MutatorIcon(['connection_check_group_item'], this),
+    );
     this.setStyle('connectionCheck');
-    this.setTooltip('Allows more than one connection check string to be accepted.');
+    this.setTooltip(
+      'Allows more than one connection check string to be accepted.',
+    );
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
-  saveExtraState: function (): ConnectionCheckState {
+  saveExtraState: function (): ConnectionCheckGroupState {
     return {
       checkCount: this.checkCount,
     };
   },
-  loadExtraState: function (extraState: ConnectionCheckState) {
+  loadExtraState: function (extraState: ConnectionCheckGroupState) {
     this.checkCount = extraState.checkCount;
     this.updateShape();
   },
   decompose: function (workspace: Blockly.WorkspaceSvg) {
     // Populate the mutator's dialog with this block's components.
-    const containerBlock = workspace.newBlock('connection_check_group_container');
+    const containerBlock = workspace.newBlock(
+      'connection_check_group_container',
+    );
     containerBlock.initSvg();
     let connection = containerBlock.getInput('STACK').connection;
     for (let i = 0; i < this.checkCount; i++) {
@@ -141,8 +149,12 @@ const tooltip: Record<string, string> = {
   CUSTOM: 'Custom connection check string to allow.',
 };
 
-/** Validator for type block dropdown. */
-const adjustCustomCheckInput = function(value: string): undefined {
+/**
+ * Validator for type block dropdown.
+ *
+ * @param value
+ */
+const adjustCustomCheckInput = function (value: string): undefined {
   const customCheckFieldName = 'CUSTOMCHECK';
   if (value === 'CUSTOM') {
     if (!this.getField(customCheckFieldName)) {
@@ -155,6 +167,10 @@ const adjustCustomCheckInput = function(value: string): undefined {
     this.getInput('CHECK').removeField(customCheckFieldName, true);
   }
 };
+
+interface ConnectionCheckState {
+  customCheck?: string;
+}
 
 /** Block representing a single type. */
 export const connectionCheck = {
@@ -169,7 +185,7 @@ export const connectionCheck = {
           ['Array', 'Array'],
           ['other...', 'CUSTOM'],
         ],
-        adjustCustomCheckInput.bind(this)
+        adjustCustomCheckInput.bind(this),
       ),
       'CHECKDROPDOWN',
     );
@@ -181,12 +197,12 @@ export const connectionCheck = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602');
     this.setStyle('connectionCheck');
   },
-  saveExtraState: function () {
+  saveExtraState: function (): ConnectionCheckState {
     if (this.getField('CUSTOMCHECK')) {
       return {customCheck: this.getFieldValue('CUSTOMCHECK')};
     }
   },
-  loadExtraState: function (state: any) {
+  loadExtraState: function (state: ConnectionCheckState) {
     this.customCheck = state?.customCheck;
     if (!this.getField('CUSTOMCHECK')) {
       this.getInput('CHECK').appendField(
