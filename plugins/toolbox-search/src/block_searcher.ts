@@ -49,7 +49,7 @@ export class BlockSearcher {
     private indexDropdownOption(field: Blockly.Field, blockState: Blockly.serialization.blocks.State) {
     if (field instanceof Blockly.FieldDropdown) {
         field.getOptions(true).forEach((option) => {
-          let state = { ...blockState }
+          const state = { ...blockState }
           state.fields = { ...blockState.fields}
             if (typeof option[0] === 'string') {
                 if (state.fields == undefined) {
@@ -74,7 +74,7 @@ export class BlockSearcher {
    * @returns A list of block states matching the query.
     */
     blockTypesMatching(query: string): Blockly.serialization.blocks.State[] {    
-    let result = [
+    const result = [
       ...this.generateTrigrams(query)
             .map((trigram) => {
                 return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
@@ -84,13 +84,12 @@ export class BlockSearcher {
         })       
             .values(),
         ]
-        let resultState = result.map(item => JSON.parse(item));
-        return resultState;
+        return result.map(item => JSON.parse(item));
     }
 
 
     private addBlockTrigram(trigram: string, blockState: string) {
-        let blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+        const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
         blockSet.add(blockState);
         this.trigramsToBlocks.set(trigram, blockSet);
     }
@@ -106,7 +105,7 @@ export class BlockSearcher {
         blockState.id = undefined
         blockState.extraState = undefined
         blockState.data = undefined
-        let stateString = JSON.stringify(blockState)
+        const stateString = JSON.stringify(blockState)
         this.generateTrigrams(text).forEach((trigram) => {
             this.addBlockTrigram(trigram, stateString);
 

@@ -17,16 +17,16 @@ suite('Toolbox search', () => {
 
 function allPossibleCombinations(input, length, curstr) {
   if(curstr.length == length) return [ curstr ];
-  var ret = [];
-  for(var i = 0; i < input.length; i++) {
-      ret.push.apply(ret, allPossibleCombinations(input, length, curstr + input[i]));
+  const ret = [];
+  for(let i = 0; i < input.length; i++) {
+      ret.push(...allPossibleCombinations(input, length, curstr + input[i]));
   }
   return ret;
 }
 
 function allThreeLetterCombinations()
 {
-  var input = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'z', 'x', 'y', 'z', 'w'  ];
+  const input = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'v', 'z', 'x', 'y', 'z', 'w'  ];
   return allPossibleCombinations(input, 3, '')
 }
 
@@ -128,7 +128,7 @@ suite('BlockSearcher', () => {
 
     searcher.indexBlocks(searchableBlocks);
     
-    var combinations = allThreeLetterCombinations();
+    const combinations = allThreeLetterCombinations();
     combinations.forEach(element => {
       const matches = searcher.blockTypesMatching(element).map(item => JSON.stringify(item));
       const matchesSet = new Set(matches);
@@ -142,10 +142,10 @@ suite('BlockSearcher', () => {
     const searcher = new BlockSearcher();
     
     searcher.indexBlocks(searchableBlocks);
-    var checkInString = 0;
-    var stringInfo = {};
+
+    const stringInfo = {};
     searchableBlocks.forEach(element => {
-      var itemString = element;
+      let itemString = element;
       const blockCreationWorkspace = new Blockly.Workspace();
       const block =  blockCreationWorkspace.newBlock(element);   
       block.inputList.forEach((input) => {
@@ -168,13 +168,13 @@ suite('BlockSearcher', () => {
       stringInfo[element] = itemString;        
     });
 
-    var combinations = allThreeLetterCombinations();
+    const combinations = allThreeLetterCombinations();
     combinations.forEach(element => {
       const matches = searcher.blockTypesMatching(element);
-      var checkInString = 0;
-      for(var key in stringInfo) {
+     
+      for(const key in stringInfo) {
         if(stringInfo[key].includes(element)){
-          var found = false;
+          let found = false;
           matches.forEach(match => {
             if(match.type == key) {
               found = true;
@@ -190,20 +190,17 @@ suite('BlockSearcher', () => {
 
   test('Check for false positives', () => {
     const searcher = new BlockSearcher();
-
     searcher.indexBlocks(searchableBlocks);
 
-    var checkInString = 0;
-
-    var combinations = allThreeLetterCombinations();
+    const combinations = allThreeLetterCombinations();
     combinations.forEach(element => {
       const matches = searcher.blockTypesMatching(element);
-      var checkInString = 0;
+      let checkInString = 0;
       matches.forEach(item =>{
         const blockCreationWorkspace = new Blockly.Workspace();
         const block =  blockCreationWorkspace.newBlock(item.type);
         const itemString = JSON.stringify(item);
-        var blockInputList = ""
+        let blockInputList = ""
         block.inputList.forEach((input) => {
           input.fieldRow.forEach((field) => {
               blockInputList += " " + field.getText();  
