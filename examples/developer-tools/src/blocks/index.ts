@@ -23,6 +23,9 @@ import {
 } from './fields';
 import {colourHue} from './colour';
 
+/* eslint-disable @typescript-eslint/naming-convention
+ -- Blockly convention is to use snake_case for block names
+*/
 export const registerAllBlocks = function () {
   Blockly.common.defineBlocks({
     factory_base: factoryBase,
@@ -45,3 +48,4 @@ export const registerAllBlocks = function () {
     colour_hue: colourHue,
   });
 };
+/* eslint-enable @typescript-eslint/naming-convention */

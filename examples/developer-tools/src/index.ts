@@ -13,6 +13,7 @@ import 'blockly/blocks';
 import './index.css';
 
 // Put Blockly in the global scope for easy debugging.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).Blockly = Blockly;
 
 // Even though En should be loaded by default,

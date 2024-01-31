@@ -6,7 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 
-interface ConnectionCheckState {
+interface ConnectionCheckGroupState {
   checkCount: number;
 }
 
@@ -23,12 +23,12 @@ export const connectionCheckGroup = {
     this.setTooltip('Allows more than one connection check string to be accepted.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
-  saveExtraState: function (): ConnectionCheckState {
+  saveExtraState: function (): ConnectionCheckGroupState {
     return {
       checkCount: this.checkCount,
     };
   },
-  loadExtraState: function (extraState: ConnectionCheckState) {
+  loadExtraState: function (extraState: ConnectionCheckGroupState) {
     this.checkCount = extraState.checkCount;
     this.updateShape();
   },
@@ -160,6 +160,10 @@ const adjustCustomCheckInput = function(value: string): undefined {
   }
 };
 
+interface ConnectionCheckState {
+  customCheck?: string
+};
+
 /** Block representing a single type. */
 export const connectionCheck = {
   init: function (this: Blockly.Block & {customCheck?: string}) {
@@ -185,12 +189,12 @@ export const connectionCheck = {
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602');
     this.setStyle('connectionCheck');
   },
-  saveExtraState: function () {
+  saveExtraState: function (): ConnectionCheckState {
     if (this.getField('CUSTOMCHECK')) {
       return {customCheck: this.getFieldValue('CUSTOMCHECK')};
     }
   },
-  loadExtraState: function (state: any) {
+  loadExtraState: function (state: ConnectionCheckState) {
     this.customCheck = state?.customCheck;
     if (!this.getField('CUSTOMCHECK')) {
       this.getInput('CHECK').appendField(
