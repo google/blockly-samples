@@ -201,6 +201,7 @@ export const connectionCheck = {
     if (this.getField('CUSTOMCHECK')) {
       return {customCheck: this.getFieldValue('CUSTOMCHECK')};
     }
+    return {};
   },
   loadExtraState: function (state: ConnectionCheckState) {
     this.customCheck = state?.customCheck;
