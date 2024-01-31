@@ -11,7 +11,7 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
-import { Generators } from './generatorUtils';
+import { Generators, installGenerators } from './generatorUtils';
 
 
 const blockName = 'colour_random';
@@ -148,19 +148,10 @@ export function pythonGenerator(
 export function installBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([colourRandomDef]);
-    if (generators.javascript) {
-        generators.javascript.forBlock[blockName] = jsGenerator;
-    }
-    if (generators.dart) {
-        generators.dart.forBlock[blockName] = dartGenerator;
-    }
-    if (generators.lua) {
-        generators.lua.forBlock[blockName] = luaGenerator;
-    }
-    if (generators.php) {
-        generators.php.forBlock[blockName] = phpGenerator;
-    }
-    if (generators.python) {
-        generators.python.forBlock[blockName] = pythonGenerator;
-    }
+    installGenerators(generators, blockName,
+        jsGenerator,
+        dartGenerator,
+        luaGenerator,
+        phpGenerator,
+        pythonGenerator);
 }

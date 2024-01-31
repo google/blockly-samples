@@ -60,9 +60,33 @@ export function jsGenerator(
     block: Blockly.Block,
     generator: JavaScript.JavascriptGenerator,
 ): [string, JavaScript.Order] {
-    // Colour picker.
-    const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, JavaScript.Order.ATOMIC];
+    // Blend two colours together.
+    const c1 = generator.valueToCode(block, 'COLOUR1', JavaScript.Order.NONE) || "'#000000'";
+    const c2 = generator.valueToCode(block, 'COLOUR2', JavaScript.Order.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', JavaScript.Order.NONE) || 0.5;
+    const functionName = generator.provideFunction_(
+        'colourBlend',
+        `
+  function ${generator.FUNCTION_NAME_PLACEHOLDER_}(c1, c2, ratio) {
+    ratio = Math.max(Math.min(Number(ratio), 1), 0);
+    var r1 = parseInt(c1.substring(1, 3), 16);
+    var g1 = parseInt(c1.substring(3, 5), 16);
+    var b1 = parseInt(c1.substring(5, 7), 16);
+    var r2 = parseInt(c2.substring(1, 3), 16);
+    var g2 = parseInt(c2.substring(3, 5), 16);
+    var b2 = parseInt(c2.substring(5, 7), 16);
+    var r = Math.round(r1 * (1 - ratio) + r2 * ratio);
+    var g = Math.round(g1 * (1 - ratio) + g2 * ratio);
+    var b = Math.round(b1 * (1 - ratio) + b2 * ratio);
+    r = ('0' + (r || 0).toString(16)).slice(-2);
+    g = ('0' + (g || 0).toString(16)).slice(-2);
+    b = ('0' + (b || 0).toString(16)).slice(-2);
+    return '#' + r + g + b;
+  }
+  `,
+    );
+    const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
+    return [code, JavaScript.Order.FUNCTION_CALL];
 }
 
 /**
@@ -76,17 +100,17 @@ export function dartGenerator(
     generator: Dart.DartGenerator,
 ): [string, Dart.Order] {
     // Blend two colours together.
-  const c1 = generator.valueToCode(block, 'COLOUR1', Dart.Order.NONE) || "'#000000'";
-  const c2 = generator.valueToCode(block, 'COLOUR2', Dart.Order.NONE) || "'#000000'";
-  const ratio = generator.valueToCode(block, 'RATIO', Dart.Order.NONE) || 0.5;
+    const c1 = generator.valueToCode(block, 'COLOUR1', Dart.Order.NONE) || "'#000000'";
+    const c2 = generator.valueToCode(block, 'COLOUR2', Dart.Order.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', Dart.Order.NONE) || 0.5;
 
-  // TODO(#7600): find better approach than casting to any to override
-  // CodeGenerator declaring .definitions protected.
-  (generator as any).definitions_['import_dart_math'] =
-    "import 'dart:math' as Math;";
-  const functionName = generator.provideFunction_(
-    'colour_blend',
-    `
+    // TODO(#7600): find better approach than casting to any to override
+    // CodeGenerator declaring .definitions protected.
+    (generator as any).definitions_['import_dart_math'] =
+        "import 'dart:math' as Math;";
+    const functionName = generator.provideFunction_(
+        'colour_blend',
+        `
 String ${generator.FUNCTION_NAME_PLACEHOLDER_}(String c1, String c2, num ratio) {
   ratio = Math.max(Math.min(ratio, 1), 0);
   int r1 = int.parse('0x\${c1.substring(1, 3)}');
@@ -110,9 +134,9 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}(String c1, String c2, num ratio) 
   return '#$rs$gs$bs';
 }
 `,
-  );
-  const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
-  return [code, Dart.Order.UNARY_POSTFIX];
+    );
+    const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
+    return [code, Dart.Order.UNARY_POSTFIX];
 }
 
 /**
@@ -125,9 +149,33 @@ export function luaGenerator(
     block: Blockly.Block,
     generator: Lua.LuaGenerator,
 ): [string, Lua.Order] {
-    // Colour picker.
-    const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, Lua.Order.ATOMIC];
+    // Blend two colours together.
+    const functionName = generator.provideFunction_(
+        'colour_blend',
+        `
+  function ${generator.FUNCTION_NAME_PLACEHOLDER_}(colour1, colour2, ratio)
+    local r1 = tonumber(string.sub(colour1, 2, 3), 16)
+    local r2 = tonumber(string.sub(colour2, 2, 3), 16)
+    local g1 = tonumber(string.sub(colour1, 4, 5), 16)
+    local g2 = tonumber(string.sub(colour2, 4, 5), 16)
+    local b1 = tonumber(string.sub(colour1, 6, 7), 16)
+    local b2 = tonumber(string.sub(colour2, 6, 7), 16)
+    local ratio = math.min(1, math.max(0, ratio))
+    local r = math.floor(r1 * (1 - ratio) + r2 * ratio + .5)
+    local g = math.floor(g1 * (1 - ratio) + g2 * ratio + .5)
+    local b = math.floor(b1 * (1 - ratio) + b2 * ratio + .5)
+    return string.format("#%02x%02x%02x", r, g, b)
+  end
+  `,
+    );
+    const colour1 =
+        generator.valueToCode(block, 'COLOUR1', Lua.Order.NONE) || "'#000000'";
+    const colour2 =
+        generator.valueToCode(block, 'COLOUR2', Lua.Order.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', Lua.Order.NONE) || 0;
+    const code =
+        functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+    return [code, Lua.Order.HIGH];
 }
 
 /**
@@ -140,9 +188,34 @@ export function phpGenerator(
     block: Blockly.Block,
     generator: PHP.PhpGenerator,
 ): [string, PHP.Order] {
-    // Colour picker.
-    const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, PHP.Order.ATOMIC];
+    // Blend two colours together.
+    const c1 = generator.valueToCode(block, 'COLOUR1', PHP.Order.NONE) || "'#000000'";
+    const c2 = generator.valueToCode(block, 'COLOUR2', PHP.Order.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', PHP.Order.NONE) || 0.5;
+    const functionName = generator.provideFunction_(
+        'colour_blend',
+        `
+  function ${generator.FUNCTION_NAME_PLACEHOLDER_}($c1, $c2, $ratio) {
+    $ratio = max(min($ratio, 1), 0);
+    $r1 = hexdec(substr($c1, 1, 2));
+    $g1 = hexdec(substr($c1, 3, 2));
+    $b1 = hexdec(substr($c1, 5, 2));
+    $r2 = hexdec(substr($c2, 1, 2));
+    $g2 = hexdec(substr($c2, 3, 2));
+    $b2 = hexdec(substr($c2, 5, 2));
+    $r = round($r1 * (1 - $ratio) + $r2 * $ratio);
+    $g = round($g1 * (1 - $ratio) + $g2 * $ratio);
+    $b = round($b1 * (1 - $ratio) + $b2 * $ratio);
+    $hex = '#';
+    $hex .= str_pad(dechex($r), 2, '0', STR_PAD_LEFT);
+    $hex .= str_pad(dechex($g), 2, '0', STR_PAD_LEFT);
+    $hex .= str_pad(dechex($b), 2, '0', STR_PAD_LEFT);
+    return $hex;
+  }
+  `,
+    );
+    const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
+    return [code, PHP.Order.FUNCTION_CALL];
 }
 
 /**
@@ -155,9 +228,29 @@ export function pythonGenerator(
     block: Blockly.Block,
     generator: Python.PythonGenerator,
 ): [string, Python.Order] {
-    // Colour picker.
-    const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, Python.Order.ATOMIC];
+    // Blend two colours together.
+    const functionName = generator.provideFunction_(
+        'colour_blend',
+        `
+  def ${generator.FUNCTION_NAME_PLACEHOLDER_}(colour1, colour2, ratio):
+    r1, r2 = int(colour1[1:3], 16), int(colour2[1:3], 16)
+    g1, g2 = int(colour1[3:5], 16), int(colour2[3:5], 16)
+    b1, b2 = int(colour1[5:7], 16), int(colour2[5:7], 16)
+    ratio = min(1, max(0, ratio))
+    r = round(r1 * (1 - ratio) + r2 * ratio)
+    g = round(g1 * (1 - ratio) + g2 * ratio)
+    b = round(b1 * (1 - ratio) + b2 * ratio)
+    return '#%02x%02x%02x' % (r, g, b)
+  `,
+    );
+    const colour1 =
+        generator.valueToCode(block, 'COLOUR1', Python.Order.NONE) || "'#000000'";
+    const colour2 =
+        generator.valueToCode(block, 'COLOUR2', Python.Order.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', Python.Order.NONE) || 0;
+    const code =
+        functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+    return [code, Python.Order.FUNCTION_CALL];
 }
 
 /**
@@ -166,6 +259,13 @@ export function pythonGenerator(
 export function installBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([jsonDef]);
-    installGenerators(generators, blockName, 
-        jsGenerator, dartGenerator, luaGenerator, phpGenerator, pythonGenerator);
+    installGenerators(generators, blockName,
+        jsGenerator,
+        dartGenerator,
+        luaGenerator,
+        phpGenerator,
+        pythonGenerator);
+    // TODO: Should the reserved words be passed in at the same time as the generator
+    // for the installGenerators function?
+    generators.dart?.addReservedWords('Math');
 }

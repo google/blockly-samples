@@ -4,9 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly';
-
-import { registerColourField } from './field_colour';
 import * as colourPicker from './blocks/colourPicker';
 import * as colourRandom from './blocks/colourRandom';
 import * as colourRgb from './blocks/colourRgb';

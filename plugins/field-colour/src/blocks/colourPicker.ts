@@ -116,6 +116,10 @@ export function pythonGenerator(
 export function installBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([jsonDef]);
-    installGenerators(generators, blockName, 
-        jsGenerator, dartGenerator, luaGenerator, phpGenerator, pythonGenerator);
+    installGenerators(generators, blockName,
+        jsGenerator,
+        dartGenerator,
+        luaGenerator,
+        phpGenerator,
+        pythonGenerator);
 }
