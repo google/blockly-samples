@@ -7,26 +7,17 @@
 import * as Blockly from 'blockly';
 import { registerColourField } from './field_colour';
 import { installColourPickerBlock } from './blocks/colourPicker';
+import { installColourRandomBlock } from './blocks/colourRandom';
 
 // Re-export all parts of the definition.
 export * from './blocks/colourPicker';
+export * from './blocks/colourRandom';
 
 // TODO: Write correct types for the `generators` parameter for each block's 
 // `install` function.
 const generators: Record<string, Blockly.Generator> {
     'javascript': typeof JavaScript.javascriptGenerator
 }
-
-// Block for random colour.
-const randomColourDef =
-{
-    'type': 'colour_random',
-    'message0': '%{BKY_COLOUR_RANDOM_TITLE}',
-    'output': 'Colour',
-    'helpUrl': '%{BKY_COLOUR_RANDOM_HELPURL}',
-    'style': 'colour_blocks',
-    'tooltip': '%{BKY_COLOUR_RANDOM_TOOLTIP}',
-};
 
 // Block for composing a colour from RGB components.
 const colourRgbDef =
@@ -99,14 +90,6 @@ const colourBlendDef =
 export function installColourRgbBlock(generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([colourRgbDef]);
-}
-
-/**
- * Install the `colour_random` block and all of its dependencies.
- */
-export function installColourRandomBlock(generators = {}) {
-    registerColourField();
-    Blockly.common.defineBlocksWithJsonArray([randomColourDef]);
 }
 
 /**
