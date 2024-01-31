@@ -11,6 +11,7 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
+import { Generators } from './generatorsType';
 
 
 const blockName = 'colour_picker';
@@ -40,7 +41,7 @@ const colourPickerDef =
  * @param generator 
  * @returns 
  */
-export function colourPickerGenJs(
+export function jsGenerator(
     block: Blockly.Block,
     generator: typeof JavaScript.javascriptGenerator,
 ): [string, JavaScript.Order] {
@@ -55,7 +56,7 @@ export function colourPickerGenJs(
  * @param generator 
  * @returns 
  */
-export function colourPickerGenDart(
+export function dartGenerator(
     block: Blockly.Block,
     generator: typeof Dart.dartGenerator,
 ): [string, Dart.Order] {
@@ -70,7 +71,7 @@ export function colourPickerGenDart(
  * @param generator 
  * @returns 
  */
-export function colourPickerGenLua(
+export function luaGenerator(
     block: Blockly.Block,
     generator: typeof Lua.luaGenerator,
 ): [string, Lua.Order] {
@@ -85,7 +86,7 @@ export function colourPickerGenLua(
  * @param generator 
  * @returns 
  */
-export function colourPickerGenPhp(
+export function phpGenerator(
     block: Blockly.Block,
     generator: typeof PHP.phpGenerator,
 ): [string, PHP.Order] {
@@ -100,7 +101,7 @@ export function colourPickerGenPhp(
  * @param generator 
  * @returns 
  */
-export function colourPickerGenPython(
+export function pythonGenerator(
     block: Blockly.Block,
     generator: typeof Python.pythonGenerator,
 ): [string, Python.Order] {
@@ -112,22 +113,22 @@ export function colourPickerGenPython(
 /**
  * Install the `colour_picker` block and all of its dependencies.
  */
-export function installColourPickerBlock(generators: any = {}) {
+export function installBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([colourPickerDef]);
     if (generators.javascript) {
-        generators.javascript.forBlock[blockName] = colourPickerGenJs;
+        generators.javascript.forBlock[blockName] = jsGenerator;
     }
     if (generators.dart) {
-        generators.dart.forBlock[blockName] = colourPickerGenDart;
+        generators.dart.forBlock[blockName] = dartGenerator;
     }
     if (generators.lua) {
-        generators.lua.forBlock[blockName] = colourPickerGenLua;
+        generators.lua.forBlock[blockName] = luaGenerator;
     }
     if (generators.php) {
-        generators.php.forBlock[blockName] = colourPickerGenPhp;
+        generators.php.forBlock[blockName] = phpGenerator;
     }
     if (generators.python) {
-        generators.python.forBlock[blockName] = colourPickerGenPython;
+        generators.python.forBlock[blockName] = pythonGenerator;
     }
 }

@@ -5,19 +5,15 @@
  */
 
 import * as Blockly from 'blockly';
+
 import { registerColourField } from './field_colour';
-import { installColourPickerBlock } from './blocks/colourPicker';
-import { installColourRandomBlock } from './blocks/colourRandom';
+import * as colourPicker from './blocks/colourPicker';
+import * as colourRandom from './blocks/colourRandom';
+import { Generators } from './blocks/generatorsType';
 
 // Re-export all parts of the definition.
-export * from './blocks/colourPicker';
-export * from './blocks/colourRandom';
-
-// TODO: Write correct types for the `generators` parameter for each block's 
-// `install` function.
-const generators: Record<string, Blockly.Generator> {
-    'javascript': typeof JavaScript.javascriptGenerator
-}
+export * as colourPicker from './blocks/colourPicker';
+export * as colourRandom from './blocks/colourRandom';
 
 // Block for composing a colour from RGB components.
 const colourRgbDef =
@@ -87,7 +83,7 @@ const colourBlendDef =
 /**
  * Install the `colour_rgb` block and all of its dependencies.
  */
-export function installColourRgbBlock(generators = {}) {
+export function installColourRgbBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([colourRgbDef]);
 }
@@ -95,7 +91,7 @@ export function installColourRgbBlock(generators = {}) {
 /**
  * Install the `colour_blend` block and all of its dependencies.
  */
-export function installColourBlendBlock(generators = {}) {
+export function installColourBlendBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([colourBlendDef]);
 }
@@ -104,10 +100,10 @@ export function installColourBlendBlock(generators = {}) {
  * Install all of the blocks defined in this file and all of their
  * dependencies.
  */
-export function installAllBlocks(generators = {}) {
-    installColourPickerBlock(generators);
+export function installAllBlocks(generators: Generators = {}) {
+    colourPicker.installBlock(generators);
     installColourRgbBlock(generators);
-    installColourRandomBlock(generators);
+    colourRandom.installBlock(generators);
     installColourBlendBlock(generators);
 }
 

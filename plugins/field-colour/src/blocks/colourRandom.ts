@@ -11,6 +11,7 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
+import { Generators } from './generatorsType';
 
 
 const blockName = 'colour_random';
@@ -34,7 +35,7 @@ const colourRandomDef =
  * @param generator 
  * @returns 
  */
-export function colourRandomGenJs(
+export function jsGenerator(
     block: Blockly.Block,
     generator: typeof JavaScript.javascriptGenerator,
 ): [string, JavaScript.Order] {
@@ -58,7 +59,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  * @param generator 
  * @returns 
  */
-export function colourRandomGenDart(
+export function dartGenerator(
     block: Blockly.Block,
     generator: typeof Dart.dartGenerator,
 ): [string, Dart.Order] {
@@ -90,7 +91,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  * @param generator 
  * @returns 
  */
-export function colourRandomGenLua(
+export function luaGenerator(
     block: Blockly.Block,
     generator: typeof Lua.luaGenerator,
 ): [string, Lua.Order] {
@@ -105,7 +106,7 @@ export function colourRandomGenLua(
  * @param generator 
  * @returns 
  */
-export function colourRandomGenPhp(
+export function phpGenerator(
     block: Blockly.Block,
     generator: typeof PHP.phpGenerator,
 ): [string, PHP.Order] {
@@ -128,7 +129,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  * @param generator 
  * @returns 
  */
-export function colourRandomGenPython(
+export function pythonGenerator(
     block: Blockly.Block,
     generator: typeof Python.pythonGenerator,
 ): [string, Python.Order] {
@@ -144,22 +145,22 @@ export function colourRandomGenPython(
 /**
  * Install the `colour_picker` block and all of its dependencies.
  */
-export function installColourRandomBlock(generators: any = {}) {
+export function installBlock(generators: Generators = {}) {
     registerColourField();
     Blockly.common.defineBlocksWithJsonArray([colourRandomDef]);
     if (generators.javascript) {
-        generators.javascript.forBlock[blockName] = colourRandomGenJs;
+        generators.javascript.forBlock[blockName] = jsGenerator;
     }
     if (generators.dart) {
-        generators.dart.forBlock[blockName] = colourRandomGenDart;
+        generators.dart.forBlock[blockName] = dartGenerator;
     }
     if (generators.lua) {
-        generators.lua.forBlock[blockName] = colourRandomGenLua;
+        generators.lua.forBlock[blockName] = luaGenerator;
     }
     if (generators.php) {
-        generators.php.forBlock[blockName] = colourRandomGenPhp;
+        generators.php.forBlock[blockName] = phpGenerator;
     }
     if (generators.python) {
-        generators.python.forBlock[blockName] = colourRandomGenPython;
+        generators.python.forBlock[blockName] = pythonGenerator;
     }
 }
