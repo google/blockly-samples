@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
   <!-- INJECTED HEADER -->
@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Pitch Field</title>
     <script src="./node_modules/blockly/blockly_compressed.js"></script>
     <script src="blocks.js"></script>
@@ -32,7 +32,7 @@
         border: none;
       }
     </style>
-    <link rel="stylesheet" type="text/css" href="pitch.css">
+    <link rel="stylesheet" type="text/css" href="pitch.css" />
   </head>
   <body onload="start()" class="root">
       
@@ -56,28 +56,35 @@
         <div class="drop-shadow"></div>
         
         
-
-    <p>This is a demo of creating custom block fields. In this case the field
-      is used to select a note pitch.
+    <p>
+      This is a demo of creating custom block fields. In this case the field is
+      used to select a note pitch.
     </p>
 
-    <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/customizing-fields/creating">creating a custom field</a>&hellip;</p>
+    <p>
+      &rarr; More info on
+      <a
+        href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/customizing-fields/creating"
+        >creating a custom field</a
+      >&hellip;
+    </p>
 
     <p>
-      <input type="button" value="Export to XML" onclick="toXml()">
-      <input type="button" value="Import from XML" onclick="fromXml()">
+      <input type="button" value="Export to XML" onclick="toXml()" />
+      <input type="button" value="Import from XML" onclick="fromXml()" />
     </p>
 
     <table>
       <tr>
         <td>
-          <textarea id="importExport"
-                    style="width: 200px; height: 480px;"
-                    onchange="textAreaChange();"
-                    onkeyup="textAreaChange()"></textarea>
+          <textarea
+            id="importExport"
+            style="width: 200px; height: 480px"
+            onchange="textAreaChange();"
+            onkeyup="textAreaChange()"></textarea>
         </td>
         <td>
-          <div id="blocklyDiv" style="width: 600px; height: 480px;"></div>
+          <div id="blocklyDiv" style="width: 600px; height: 480px"></div>
         </td>
       </tr>
     </table>
@@ -115,7 +122,7 @@
         grid: {
           spacing: 25,
           length: 3,
-          colour: '#ccc'
+          colour: '#ccc',
         },
         move: {
           scrollbars: true,
@@ -127,14 +134,16 @@
           startScale: 1.0,
           maxScale: 4,
           minScale: 0.25,
-          scaleSpeed: 1.1
-        }
+          scaleSpeed: 1.1,
+        },
         /*toolbox: document.getElementById('toolbox')*/
-      }
-
+      };
     </script>
 
-    <xml xmlns="https://developers.google.com/blockly/xml" id="workspace-blocks" style="display: none">
+    <xml
+      xmlns="https://developers.google.com/blockly/xml"
+      id="workspace-blocks"
+      style="display: none">
       <block type="test_pitch_field"></block>
     </xml>
   </main>

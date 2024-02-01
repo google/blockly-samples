@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
   <!-- INJECTED HEADER -->
   <meta name="viewport" content="width=device-width,maximum-scale=2">
   <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
@@ -9,31 +9,31 @@
   <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
-  <meta charset="utf-8">
-  <title>Headless</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/python_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    td {
-      vertical-align: top;
-    }
-    textarea {
-      width: 100%;
-      height: 20em;
-    }
-  </style>
-</head>
-<body class="root">
+    <meta charset="utf-8" />
+    <title>Headless</title>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/python_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      td {
+        vertical-align: top;
+      }
+      textarea {
+        width: 100%;
+        height: 20em;
+      }
+    </style>
+  </head>
+  <body class="root">
       
   <!-- NAV BAR -->
   <nav id="toolbar">
@@ -55,13 +55,15 @@
         <div class="drop-shadow"></div>
         
         
-  <p>This is a simple demo of generating Python code from JSON with no graphics.
-  This might be useful for server-side code generation.</p>
+    <p>
+      This is a simple demo of generating Python code from JSON with no
+      graphics. This might be useful for server-side code generation.
+    </p>
 
-  <table style="width: 100%">
-    <tr>
-      <td style="width:50%">
-        <textarea id="json_input">
+    <table style="width: 100%">
+      <tr>
+        <td style="width: 50%">
+          <textarea id="json_input">
           {
             "blocks": {
               "languageVersion": 0,
@@ -156,40 +158,39 @@
               ]
             }
           }
-        </textarea>
-      </td>
-      <td>
-      </td>
-      <td style="width:50%">
-        <textarea id="code_output" readonly></textarea>
-      </td>
-    </tr>
-  </table>
+        </textarea
+          >
+        </td>
+        <td></td>
+        <td style="width: 50%">
+          <textarea id="code_output" readonly></textarea>
+        </td>
+      </tr>
+    </table>
 
-  <div style="text-align: center">
-    <button onclick="generate()">Generate Python &#10548;</button>
-  </div>
+    <div style="text-align: center">
+      <button onclick="generate()">Generate Python &#10548;</button>
+    </div>
 
-  <script>
-    function generate() {
-      // Parse the JSON into a tree.
-      var jsonText = document.getElementById('json_input').value;
-      var code;
-      try {
-        var json = JSON.parse(jsonText)
-      } catch (e) {
-        alert(e);
-        return;
+    <script>
+      function generate() {
+        // Parse the JSON into a tree.
+        var jsonText = document.getElementById('json_input').value;
+        var code;
+        try {
+          var json = JSON.parse(jsonText);
+        } catch (e) {
+          alert(e);
+          return;
+        }
+        var demoWorkspace = new Blockly.Workspace();
+        Blockly.serialization.workspaces.load(json, demoWorkspace);
+        var code = python.pythonGenerator.workspaceToCode(demoWorkspace);
+        // Create a headless workspace.
+        document.getElementById('code_output').value = code;
       }
-      var demoWorkspace = new Blockly.Workspace();
-      Blockly.serialization.workspaces.load(json, demoWorkspace);
-      var code = python.pythonGenerator.workspaceToCode(demoWorkspace);
-      // Create a headless workspace.
-      document.getElementById('code_output').value = code;
-    }
-  </script>
-
-</main>
+    </script>
+  </main>
   
   <!-- FOOTER  -->
   <footer id="footer">

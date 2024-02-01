@@ -1,7 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
+  <head>
   <!-- INJECTED HEADER -->
   <meta name="viewport" content="width=device-width,maximum-scale=2">
   <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
@@ -10,35 +9,35 @@
   <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
-  <meta charset="utf-8">
-  <title>Single-direction Scrolling</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
+    <meta charset="utf-8" />
+    <title>Single-direction Scrolling</title>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
 
-    .description {
-      flex: 0 1 auto;
-    }
+      .description {
+        flex: 0 1 auto;
+      }
 
-    .demo {
-      display: flex;
-      flex-flow: column;
-      height: 100%;
-    }
+      .demo {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+      }
 
-    #blocklyDiv {
-      flex: 1 1 auto;
-    }
-  </style>
-</head>
+      #blocklyDiv {
+        flex: 1 1 auto;
+      }
+    </style>
+  </head>
 
-<body class="root">
+  <body class="root">
       
   <!-- NAV BAR -->
   <nav id="toolbar">
@@ -60,71 +59,70 @@
         <div class="drop-shadow"></div>
         
         
-  <div class="demo">
-    <p class="description">This is a simple demo of configuring single-direction scrollbars.</p>
+    <div class="demo">
+      <p class="description">
+        This is a simple demo of configuring single-direction scrollbars.
+      </p>
 
-    <div id="blocklyDiv"></div>
-  </div>
+      <div id="blocklyDiv"></div>
+    </div>
 
-  <script>
-    var toolbox = {
-      "kind": "flyoutToolbox",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "controls_if"
-        },
-        {
-          "kind": "block",
-          "type": "logic_compare"
-        },
-        {
-          "kind": "block",
-          "type": "controls_repeat_ext"
-        },
-        {
-          "kind": "block",
-          "type": "math_number",
-          "fields": {
-            "NUM": 123
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_arithmetic"
-        },
-        {
-          "kind": "block",
-          "type": "text"
-        },
-        {
-          "kind": "block",
-          "type": "text_print"
-        }
-      ]
-    };
+    <script>
+      var toolbox = {
+        kind: 'flyoutToolbox',
+        contents: [
+          {
+            kind: 'block',
+            type: 'controls_if',
+          },
+          {
+            kind: 'block',
+            type: 'logic_compare',
+          },
+          {
+            kind: 'block',
+            type: 'controls_repeat_ext',
+          },
+          {
+            kind: 'block',
+            type: 'math_number',
+            fields: {
+              NUM: 123,
+            },
+          },
+          {
+            kind: 'block',
+            type: 'math_arithmetic',
+          },
+          {
+            kind: 'block',
+            type: 'text',
+          },
+          {
+            kind: 'block',
+            type: 'text_print',
+          },
+        ],
+      };
 
-    var demoWorkspace = Blockly.inject('blocklyDiv',
-      {
+      var demoWorkspace = Blockly.inject('blocklyDiv', {
         media: './node_modules/blockly/media/',
         toolbox: toolbox,
-        grid:
-        {
+        grid: {
           spacing: 25,
           length: 3,
           colour: '#ccc',
-          snap: true
+          snap: true,
         },
         move: {
           scrollbars: {
             vertical: true,
-            horizontal: false
-          }
-        }
+            horizontal: false,
+          },
+        },
       });
-  </script>
-
-</main>
+    </script>
+  </main>
   
   <!-- FOOTER  -->
   <footer id="footer">
@@ -156,5 +154,4 @@
   </footer>
   <!-- END FOOTER -->
 </body>
-
 </html>

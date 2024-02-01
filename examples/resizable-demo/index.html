@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
   <!-- INJECTED HEADER -->
   <meta name="viewport" content="width=device-width,maximum-scale=2">
   <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
@@ -9,34 +9,35 @@
   <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
-  <meta charset="utf-8">
-  <title>Resizable Blockly</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-      overflow: hidden;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    table {
-      height: 100%;
-      width: 100%;
-    }
-    #blocklyArea {
-      height: 99%;
-      background: #fc9;
-      text-align: center;
-    }
-  </style>
-</head>
-<body class="root">
+    <meta charset="utf-8" />
+    <title>Resizable Blockly</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+        overflow: hidden;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      table {
+        height: 100%;
+        width: 100%;
+      }
+      #blocklyArea {
+        height: 99%;
+        background: #fc9;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="root">
       
   <!-- NAV BAR -->
   <nav id="toolbar">
@@ -58,23 +59,29 @@
         <div class="drop-shadow"></div>
         
         
-  <table>
-    <tr>
-      <td>
-        <p>The first step in creating a resizable Blockly workspace is to use
-        CSS or tables to create an area for it.
-        Next, <a href="overlay.html">inject Blockly</a> over that area.</p>
+    <table>
+      <tr>
+        <td>
+          <p>
+            The first step in creating a resizable Blockly workspace is to use
+            CSS or tables to create an area for it. Next,
+            <a href="overlay.html">inject Blockly</a> over that area.
+          </p>
 
-        <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/resizable">injecting resizable Blockly</a>&hellip;</p>
-      </td>
-    </tr>
-    <tr>
-      <td id="blocklyArea">
-        Blockly will be positioned here.
-      </td>
-    </tr>
-  </table>
-</main>
+          <p>
+            &rarr; More info on
+            <a
+              href="https://developers.google.com/blockly/guides/configure/web/resizable"
+              >injecting resizable Blockly</a
+            >&hellip;
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td id="blocklyArea">Blockly will be positioned here.</td>
+      </tr>
+    </table>
+  </main>
   
   <!-- FOOTER  -->
   <footer id="footer">

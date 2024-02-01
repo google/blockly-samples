@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
   <!-- INJECTED HEADER -->
   <meta name="viewport" content="width=device-width,maximum-scale=2">
   <link rel="icon" type="image/x-icon" href="/blockly-samples/favicon.ico" />
@@ -9,26 +9,26 @@
   <link rel="stylesheet" href="https://blocklycodelabs.dev/styles/main.css" />
   <link rel="stylesheet" href="/blockly-samples/css/custom.css"/>
   <!-- END INJECTED HEADER -->
-  <meta charset="utf-8">
-  <title>Blockly Backpack</title>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
-  <script src="./node_modules/@blockly/workspace-backpack/dist/index.js"></script>
-  <script src="./notification_backpack.js"></script>
-  <script src="./index.js"></script>
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-  </style>
-</head>
-<body onload="init()" class="root">
+    <meta charset="utf-8" />
+    <title>Blockly Backpack</title>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
+    <script src="./node_modules/@blockly/workspace-backpack/dist/index.js"></script>
+    <script src="./notification_backpack.js"></script>
+    <script src="./index.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>
+  </head>
+  <body onload="init()" class="root">
       
   <!-- NAV BAR -->
   <nav id="toolbar">
@@ -50,20 +50,22 @@
         <div class="drop-shadow"></div>
         
         
-  <p>This is a demo of two Blockly instances with a custom Backpack "sharing" Backpack contents.</p>
+    <p>
+      This is a demo of two Blockly instances with a custom Backpack "sharing"
+      Backpack contents.
+    </p>
 
-  <table width="100%">
-    <tr>
-      <td>
-        <div id="primaryDiv" style="height: 480px; width: 600px;"></div>
-      </td>
-      <td>
-        <div id="secondaryDiv" style="height: 480px; width: 600px;"></div>
-      </td>
-    </tr>
-  </table>
-   
-</main>
+    <table width="100%">
+      <tr>
+        <td>
+          <div id="primaryDiv" style="height: 480px; width: 600px"></div>
+        </td>
+        <td>
+          <div id="secondaryDiv" style="height: 480px; width: 600px"></div>
+        </td>
+      </tr>
+    </table>
+  </main>
   
   <!-- FOOTER  -->
   <footer id="footer">
