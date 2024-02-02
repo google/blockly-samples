@@ -287,7 +287,7 @@ export class ObservableProcedureModel
 
   /**
    * Returns a new procedure model with the given state.
-   * 
+   *
    * @param state The state of the procedure to load.
    * @param workspace The workspace to load the procedure into.
    * @returns The loaded procedure model.
