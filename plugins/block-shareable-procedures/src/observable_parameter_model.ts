@@ -155,4 +155,35 @@ export class ObservableParameterModel
     this.procedureModel = model;
     return this;
   }
+
+  /**
+   * Serializes the state of this parameter to JSON.
+   *
+   * @returns JSON serializable state of the parameter.
+   */
+  saveState(): Blockly.serialization.procedures.ParameterState {
+    const state: Blockly.serialization.procedures.ParameterState = {
+      id: this.getId(),
+      name: this.getName(),
+    };
+    if (!this.getTypes().length) return state;
+    state.types = this.getTypes();
+    return state;
+  }
+
+  /**
+   * Returns a new parameter model with the given state.
+   *
+   * @param state The state of the parameter to load.
+   * @param workspace The workspace to load the parameter into.
+   * @returns The loaded parameter model.
+   */
+  static loadState(
+    state: Blockly.serialization.procedures.ParameterState,
+    workspace: Blockly.Workspace,
+  ): ObservableParameterModel {
+    const model = new ObservableParameterModel(workspace, state.name, state.id);
+    if (state.types) model.setTypes(state.types);
+    return model;
+  }
 }
