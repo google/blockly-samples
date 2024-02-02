@@ -156,7 +156,8 @@ export class ObservableParameterModel
     return this;
   }
 
-  /** Serializes the state of this parameter to JSON.
+  /**
+   * Serializes the state of this parameter to JSON.
    *
    * @returns JSON serializable state of the parameter.
    */
@@ -170,7 +171,13 @@ export class ObservableParameterModel
     return state;
   }
 
-  /** Returns a new parameter model with the given state. */
+  /**
+   * Returns a new parameter model with the given state.
+   *
+   * @param state The state of the parameter to load.
+   * @param workspace The workspace to load the parameter into.
+   * @returns The loaded parameter model.
+   */
   static loadState(
     state: Blockly.serialization.procedures.ParameterState,
     workspace: Blockly.Workspace,
