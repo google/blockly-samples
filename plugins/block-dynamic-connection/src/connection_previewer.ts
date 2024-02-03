@@ -25,7 +25,7 @@ function blockIsDynamic(block: Blockly.BlockSvg): block is DynamicBlock {
 /**
  * Returns a connection previewer constructor that decorates the passed
  * constructor to add connection previewing.
- * 
+ *
  * @param BasePreviewerConstructor The constructor for the base connection
  *     previewer class being decorated.
  * @return A decofrated connection previewer constructor.
@@ -80,7 +80,7 @@ export function decoratePreviewerWithDynamicConnections(
     /**
      * If the block is a dynamic block, calls onPendingConnection and
      * stores the block to be finalized later.
-     * 
+     *
      * @param conn The block to rtrigger onPendingConnection on.
      */
     private previewDynamism(conn: Blockly.RenderedConnection) {
