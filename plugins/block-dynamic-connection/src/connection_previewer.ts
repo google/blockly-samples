@@ -17,14 +17,22 @@ interface DynamicBlock extends Blockly.BlockSvg {
 
 function blockIsDynamic(block: Blockly.BlockSvg): block is DynamicBlock {
   return (
-    (block as any)['onPendingConnection'] !== undefined &&
-    (block as any)['finalizeConnections'] !== undefined
+    (block as DynamicBlock)['onPendingConnection'] !== undefined &&
+    (block as DynamicBlock)['finalizeConnections'] !== undefined
   );
 }
 
-export function DynamicConnectionPreviewer(
+/**
+ * Returns a connection previewer constructor that decorates the passed
+ * constructor to add connection previewing.
+ * 
+ * @param BasePreviewerConstructor The constructor for the base connection
+ *     previewer class being decorated.
+ * @return A decofrated connection previewer constructor.
+ */
+export function decoratePreviewerWithDynamicConnections(
   // TODO: Make this optional before merging.
-  basePreviewerConstructor: ConnectionPreviewerConstructor,
+  BasePreviewerConstructor: ConnectionPreviewerConstructor,
 ): ConnectionPreviewerConstructor {
   return class implements Blockly.IConnectionPreviewer {
     private basePreviewer: Blockly.IConnectionPreviewer;
@@ -32,7 +40,7 @@ export function DynamicConnectionPreviewer(
     private pendingBlocks: Set<DynamicBlock> = new Set();
 
     constructor(draggedBlock: Blockly.BlockSvg) {
-      this.basePreviewer = new basePreviewerConstructor(draggedBlock);
+      this.basePreviewer = new BasePreviewerConstructor(draggedBlock);
     }
 
     previewReplacement(
@@ -72,6 +80,8 @@ export function DynamicConnectionPreviewer(
     /**
      * If the block is a dynamic block, calls onPendingConnection and
      * stores the block to be finalized later.
+     * 
+     * @param conn The block to rtrigger onPendingConnection on.
      */
     private previewDynamism(conn: Blockly.RenderedConnection) {
       const block = conn.getSourceBlock();
