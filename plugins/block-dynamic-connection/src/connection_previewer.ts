@@ -15,7 +15,7 @@ interface DynamicBlock extends Blockly.BlockSvg {
   finalizeConnections(): void;
 }
 
-function blockIsDynamic(block: Blockly.BlockSvg): block is DynamicBlock {
+export function blockIsDynamic(block: Blockly.BlockSvg): block is DynamicBlock {
   return (
     (block as DynamicBlock)['onPendingConnection'] !== undefined &&
     (block as DynamicBlock)['finalizeConnections'] !== undefined
