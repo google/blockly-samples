@@ -85,6 +85,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
+    plugins: {
+      connectionPreviewer: BlockDynamicConnection.decoratePreviewer(
+        Blockly.InsertionMarkerPreviewer,
+      ),
+    },
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {
