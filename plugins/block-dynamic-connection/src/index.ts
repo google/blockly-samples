@@ -13,9 +13,9 @@ import * as Blockly from 'blockly/core';
 import './dynamic_if';
 import './dynamic_text_join';
 import './dynamic_list_create';
-import {decoratePreviewerWithDynamicConnections} from './connection_previewer';
+import {decoratePreviewer} from './connection_previewer';
 
-export {decoratePreviewerWithDynamicConnections};
+export {decoratePreviewer};
 
 export const overrideOldBlockDefinitions = function (): void {
   Blockly.Blocks['lists_create_with'] = Blockly.Blocks['dynamic_list_create'];
