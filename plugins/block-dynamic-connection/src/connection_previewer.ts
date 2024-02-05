@@ -11,7 +11,7 @@ interface ConnectionPreviewerConstructor {
 }
 
 interface DynamicBlock extends Blockly.BlockSvg {
-  onPendingConnection(connection: Blockly.Connection): void;
+  onPendingConnection(connection: Blockly.RenderedConnection): void;
   finalizeConnections(): void;
 }
 
