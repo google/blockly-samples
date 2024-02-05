@@ -1,10 +1,13 @@
 import * as Blockly from 'blockly/core';
 
+/** A custom cursor that skips previous and next connections. */
 export class CustomCursor extends Blockly.Cursor {
+  /** @override */
   constructor() {
     super();
   }
 
+  /** @override */
   next() {
     const curNode = this.getCurNode();
     if (!curNode) {
@@ -26,6 +29,7 @@ export class CustomCursor extends Blockly.Cursor {
     return newNode;
   }
 
+  /** @override */
   in() {
     const curNode = this.getCurNode();
     if (!curNode) {
@@ -43,6 +47,7 @@ export class CustomCursor extends Blockly.Cursor {
     return newNode;
   }
 
+  /** @override */
   prev() {
     const curNode = this.getCurNode();
     if (!curNode) {
@@ -64,6 +69,7 @@ export class CustomCursor extends Blockly.Cursor {
     return newNode;
   }
 
+  /** @override */
   out() {
     const curNode = this.getCurNode();
     if (!curNode) {

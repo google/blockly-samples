@@ -1,6 +1,8 @@
 import * as Blockly from 'blockly/core';
 
+/** A custom Marker that causes an entire block to flash when marked. */
 class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
+  /** @override */
   constructor(workspace, constants, marker) {
     super(workspace, constants, marker);
   }
@@ -30,6 +32,7 @@ class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
     }
   }
 
+  /** @override */
   showWithBlock_(curNode) {
     // Get the block from the AST Node
     const block = curNode.getLocation();
@@ -78,11 +81,14 @@ class CustomMarkerSvg extends Blockly.blockRendering.MarkerSvg {
   }
 }
 
+/** A renderer that uses our custom marker. */
 class CustomRenderer extends Blockly.geras.Renderer {
+  /** @override */
   constructor(name) {
     super(name);
   }
 
+  /** @override */
   makeMarkerDrawer(workspace, marker) {
     return new CustomMarkerSvg(workspace, this.getConstants(), marker);
   }
