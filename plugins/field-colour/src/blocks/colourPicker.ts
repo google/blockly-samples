@@ -11,15 +11,15 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
-import { Generators, installGenerators } from './generatorUtils';
+import { Generators } from './generatorUtils';
 
 
-const blockName = 'colour_picker';
+export const BLOCK_NAME = 'colour_picker';
 
 // Block for colour picker.
 const jsonDef =
 {
-    'type': blockName,
+    'type': BLOCK_NAME,
     'message0': '%1',
     'args0': [
         {
@@ -34,6 +34,9 @@ const jsonDef =
     'tooltip': '%{BKY_COLOUR_PICKER_TOOLTIP}',
     'extensions': ['parent_tooltip_when_inline'],
 };
+
+export const blockDef = 
+    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef])[0];
 
 /**
  * Javascript generator definition.
@@ -113,13 +116,12 @@ export function pythonGenerator(
 /**
  * Install the `colour_picker` block and all of its dependencies.
  */
-export function installBlock(generators: Generators = {}) {
+export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocksWithJsonArray([jsonDef]);
-    installGenerators(generators, blockName,
-        jsGenerator,
-        dartGenerator,
-        luaGenerator,
-        phpGenerator,
-        pythonGenerator);
+    Blockly.common.defineBlocks([blockDef]);
+    if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
+    if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
+    if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;
+    if (gens.php) gens.php.forBlock[BLOCK_NAME] = phpGenerator;
+    if (gens.python) gens.python.forBlock[BLOCK_NAME] = pythonGenerator;
 }

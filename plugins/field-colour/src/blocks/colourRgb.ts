@@ -11,15 +11,15 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
-import { Generators, installGenerators } from './generatorUtils';
+import { Generators } from './generatorUtils';
 
 
-const blockName = 'colour_rgb';
+export const BLOCK_NAME = 'colour_rgb';
 
 // Block for composing a colour from RGB components.
-const colourRgbDef =
+const jsonDef =
 {
-    'type': blockName,
+    'type': BLOCK_NAME,
     'message0':
         '%{BKY_COLOUR_RGB_TITLE} %{BKY_COLOUR_RGB_RED} %1 %{BKY_COLOUR_RGB_GREEN} %2 %{BKY_COLOUR_RGB_BLUE} %3',
     'args0': [
@@ -48,6 +48,8 @@ const colourRgbDef =
     'tooltip': '%{BKY_COLOUR_RGB_TOOLTIP}',
 };
 
+export const blockDef =
+    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef])[0];
 
 /**
  * Javascript generator definition.
@@ -216,14 +218,15 @@ export function pythonGenerator(
 /**
  * Install the `colour_rgb` block and all of its dependencies.
  */
-export function installBlock(generators: Generators = {}) {
+export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocksWithJsonArray([colourRgbDef]);
-    installGenerators(generators, blockName,
-        jsGenerator,
-        dartGenerator,
-        luaGenerator,
-        phpGenerator,
-        pythonGenerator);
-    generators.dart?.addReservedWords('Math');
+    Blockly.common.defineBlocks([blockDef]);
+    if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
+    if (gens.dart){
+        gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
+        gens.dart.addReservedWords('Math');
+    }
+    if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;
+    if (gens.php) gens.php.forBlock[BLOCK_NAME] = phpGenerator;
+    if (gens.python) gens.python.forBlock[BLOCK_NAME] = pythonGenerator;
 }

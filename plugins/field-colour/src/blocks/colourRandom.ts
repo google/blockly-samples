@@ -11,23 +11,24 @@ import * as Lua from 'blockly/lua';
 import * as PHP from 'blockly/php';
 import * as Python from 'blockly/python';
 import { registerColourField } from '../field_colour';
-import { Generators, installGenerators } from './generatorUtils';
+import { Generators} from './generatorUtils';
 
 
-const blockName = 'colour_random';
+export const BLOCK_NAME = 'colour_random';
 
-// TODO: Should I turn this into a BlockDefinition and export that, or 
-// be fine with exporting the JSON definition?
 // Block for random colour.
-const colourRandomDef =
+const jsonDef =
 {
-    'type': blockName,
+    'type': BLOCK_NAME,
     'message0': '%{BKY_COLOUR_RANDOM_TITLE}',
     'output': 'Colour',
     'helpUrl': '%{BKY_COLOUR_RANDOM_HELPURL}',
     'style': 'colour_blocks',
     'tooltip': '%{BKY_COLOUR_RANDOM_TOOLTIP}',
 };
+
+export const blockDef = 
+    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef])[0];
 
 /**
  * Javascript generator definition.
@@ -145,13 +146,12 @@ export function pythonGenerator(
 /**
  * Install the `colour_picker` block and all of its dependencies.
  */
-export function installBlock(generators: Generators = {}) {
+export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocksWithJsonArray([colourRandomDef]);
-    installGenerators(generators, blockName,
-        jsGenerator,
-        dartGenerator,
-        luaGenerator,
-        phpGenerator,
-        pythonGenerator);
+    Blockly.common.defineBlocks([blockDef]);
+    if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
+    if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
+    if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;
+    if (gens.php) gens.php.forBlock[BLOCK_NAME] = phpGenerator;
+    if (gens.python) gens.python.forBlock[BLOCK_NAME] = pythonGenerator;
 }
