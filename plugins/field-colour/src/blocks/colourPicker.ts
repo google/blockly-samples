@@ -10,7 +10,7 @@ import { DartGenerator, Order as DartOrder } from 'blockly/dart';
 import { LuaGenerator, Order as LuaOrder } from 'blockly/lua';
 import { PhpGenerator, Order as PhpOrder } from 'blockly/php';
 import { PythonGenerator, Order as PythonOrder } from 'blockly/python';
-import { registerColourField } from '../field_colour';
+import { registerFieldColour } from '../field_colour';
 import { Generators } from './generatorUtils';
 
 
@@ -120,7 +120,7 @@ export const blockDef = definitionMap[BLOCK_NAME];
  * Install the `colour_picker` block and all of its dependencies.
  */
 export function installBlock(gens: Generators = {}) {
-    registerColourField();
+    registerFieldColour();
     BlocklyCommon.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;

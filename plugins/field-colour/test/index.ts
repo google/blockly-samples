@@ -106,13 +106,13 @@ function createWorkspace(
 
 document.addEventListener('DOMContentLoaded', function () {
   uninstallBlocks();
-  FieldColour.installAllBlocks({
-    javascript: javascriptGenerator,
-    dart: dartGenerator,
-    lua: luaGenerator,
-    python: pythonGenerator,
-    php: phpGenerator
-  });
+  FieldColour.colourBlend.installBlock({
+      javascript: javascriptGenerator,
+      dart: dartGenerator,
+      lua: luaGenerator,
+      python: pythonGenerator,
+      php: phpGenerator
+    });
 
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox: jsonToolbox,
