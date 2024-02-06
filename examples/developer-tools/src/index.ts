@@ -6,6 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 import * as En from 'blockly/msg/en';
+import {jsonDefinitionGenerator} from './output-generators/json_definition_generator';
 import {registerAllBlocks} from './blocks';
 import {save, load} from './serialization';
 import {toolbox} from './toolbox';
@@ -37,6 +38,7 @@ mainWorkspace.addChangeListener(Blockly.Events.disableOrphans);
 load(mainWorkspace);
 
 // Whenever the workspace changes meaningfully, update the preview.
+let blockName = '';
 mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
   // Don't run the code when the workspace finishes loading; we're
   // already running it once when the application starts.
@@ -51,4 +53,22 @@ mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
 
   save(mainWorkspace);
   previewWorkspace.clear();
+
+  // If we previously had a block registered, delete it.
+  if (blockName) {
+    delete Blockly.Blocks[blockName];
+  }
+  const blockDefinitionString =
+    jsonDefinitionGenerator.workspaceToCode(mainWorkspace);
+  definitionDiv.textContent = blockDefinitionString;
+  const blockDefinition = JSON.parse(blockDefinitionString);
+  blockName = blockDefinition.type;
+  Blockly.common.defineBlocks(
+    Blockly.common.createBlockDefinitionsFromJsonArray([blockDefinition]),
+  );
+
+  // TODO: After Blockly v11, won't need to call `initSvg` and `render` directly.
+  const block = previewWorkspace.newBlock(blockName);
+  block.initSvg();
+  block.render();
 });
