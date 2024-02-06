@@ -35,9 +35,6 @@ const jsonDef =
     'extensions': ['parent_tooltip_when_inline'],
 };
 
-export const blockDef = 
-    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef])[0];
-
 /**
  * Javascript generator definition.
  * @param block
@@ -113,12 +110,18 @@ export function pythonGenerator(
     return [code, Python.Order.ATOMIC];
 }
 
+
+const definitionMap = 
+    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef]);
+
+export const blockDef = definitionMap[BLOCK_NAME];
+
 /**
  * Install the `colour_picker` block and all of its dependencies.
  */
 export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocks([blockDef]);
+    Blockly.common.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
     if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;

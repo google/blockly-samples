@@ -741,9 +741,6 @@ export function registerColourField() {
   Blockly.fieldRegistry.register('field_colour', FieldColour);
 };
 
-// Immediately register the field.
-registerColourField();
-
 /**
  * CSS for colour picker.
  */

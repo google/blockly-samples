@@ -9,8 +9,14 @@
  */
 
 import * as Blockly from 'blockly';
+import { javascriptGenerator } from 'blockly/javascript';
+import { dartGenerator } from 'blockly/dart';
+import { phpGenerator } from 'blockly/php';
+import { pythonGenerator } from 'blockly/python';
+import { luaGenerator } from 'blockly/lua';
+
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
-import '../src/index';
+import * as FieldColour from '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_colour', [
   {
@@ -42,6 +48,47 @@ const toolbox = generateFieldTestBlocks('field_colour', [
   },
 ]);
 
+const jsonToolbox = {
+  contents: [
+    {
+      kind: 'block',
+      type: 'colour_blend'
+    },
+    {
+      kind: 'block',
+      type: 'colour_picker'
+    },
+    {
+      kind: 'block',
+      type: 'colour_random'
+    },
+    {
+      kind: 'block',
+      type: 'colour_rgb'
+    }
+  ],
+};
+
+/**
+ * Uninstall the base colour blocks and their associated generators.
+ * TODO: remove this when those blocks are removed from the core library.
+ */
+function uninstallBlocks() {
+  delete Blockly.Blocks['colour_blend'];
+  delete Blockly.Blocks['colour_rgb'];
+  delete Blockly.Blocks['colour_random'];
+  delete Blockly.Blocks['colour_picker'];
+  
+  const blockNames = ['colour_blend', 'colour_rgb', 'colour_random', 'colour_picker'];
+  for (const name in blockNames) {
+    delete javascriptGenerator.forBlock[name];
+    delete dartGenerator.forBlock[name];
+    delete luaGenerator.forBlock[name];
+    delete pythonGenerator.forBlock[name];
+    delete phpGenerator.forBlock[name];
+  }
+}
+
 /**
  * Create a workspace.
  *
@@ -58,8 +105,17 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  uninstallBlocks();
+  FieldColour.installAllBlocks({
+    javascript: javascriptGenerator,
+    dart: dartGenerator,
+    lua: luaGenerator,
+    python: pythonGenerator,
+    php: phpGenerator
+  });
+
   const defaultOptions: Blockly.BlocklyOptions = {
-    toolbox,
+    toolbox: jsonToolbox,
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {

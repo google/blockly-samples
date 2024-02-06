@@ -48,9 +48,6 @@ const jsonDef =
     'tooltip': '%{BKY_COLOUR_RGB_TOOLTIP}',
 };
 
-export const blockDef =
-    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef])[0];
-
 /**
  * Javascript generator definition.
  * @param block
@@ -215,12 +212,18 @@ export function pythonGenerator(
     const code = functionName + '(' + r + ', ' + g + ', ' + b + ')';
     return [code, Python.Order.FUNCTION_CALL];
 }
+
+const definitionMap = 
+    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef]);
+
+export const blockDef = definitionMap[BLOCK_NAME];
+
 /**
  * Install the `colour_rgb` block and all of its dependencies.
  */
 export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocks([blockDef]);
+    Blockly.common.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart){
         gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
