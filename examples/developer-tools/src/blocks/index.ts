@@ -12,7 +12,7 @@ import {
   connectionCheckGroup,
   connectionCheckContainer,
   connectionCheckItem,
-} from './type';
+} from './connection_check';
 import {
   fieldCheckbox,
   fieldDropdown,
@@ -27,6 +27,20 @@ import {
   fieldVariable,
 } from './fields';
 import {colourHue} from './colour';
+
+// import for side effects for now
+import '../output-generators/factory_base';
+import '../output-generators/input';
+import '../output-generators/connection_check';
+import '../output-generators/fields/text_input';
+import '../output-generators/fields/dropdown';
+import '../output-generators/fields/number';
+import '../output-generators/fields/label';
+import '../output-generators/fields/label_serializable';
+import '../output-generators/fields/checkbox';
+import '../output-generators/fields/image';
+import '../output-generators/fields/variable';
+import '../output-generators/colour';
 
 /* eslint-disable @typescript-eslint/naming-convention
  -- Blockly convention is to use snake_case for block names
