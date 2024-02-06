@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly';
-import * as JavaScript from 'blockly/javascript';
-import * as Dart from 'blockly/dart';
-import * as Lua from 'blockly/lua';
-import * as PHP from 'blockly/php';
-import * as Python from 'blockly/python';
+import { Block, common as BlocklyCommon} from 'blockly';
+import { JavascriptGenerator, Order as JavascriptOrder } from 'blockly/javascript';
+import { DartGenerator, Order as DartOrder } from 'blockly/dart';
+import { LuaGenerator, Order as LuaOrder } from 'blockly/lua';
+import { PhpGenerator, Order as PhpOrder } from 'blockly/php';
+import { PythonGenerator, Order as PythonOrder } from 'blockly/python';
 import { registerColourField } from '../field_colour';
 import { Generators} from './generatorUtils';
 
@@ -34,9 +34,9 @@ const jsonDef =
  * @returns 
  */
 export function jsGenerator(
-    block: Blockly.Block,
-    generator: JavaScript.JavascriptGenerator,
-): [string, JavaScript.Order] {
+    block: Block,
+    generator: JavascriptGenerator,
+): [string, JavascriptOrder] {
     // Generate a random colour.
     const functionName = generator.provideFunction_(
         'colourRandom',
@@ -48,7 +48,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
 `,
     );
     const code = functionName + '()';
-    return [code, JavaScript.Order.FUNCTION_CALL];
+    return [code, JavascriptOrder.FUNCTION_CALL];
 }
 
 /**
@@ -58,9 +58,9 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  * @returns 
  */
 export function dartGenerator(
-    block: Blockly.Block,
-    generator: Dart.DartGenerator,
-): [string, Dart.Order] {
+    block: Block,
+    generator: DartGenerator,
+): [string, DartOrder] {
     // Generate a random colour.
     // TODO(#7600): find better approach than casting to any to override
     // CodeGenerator declaring .definitions protected.
@@ -79,7 +79,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
 `,
     );
     const code = functionName + '()';
-    return [code, Dart.Order.UNARY_POSTFIX];
+    return [code, DartOrder.UNARY_POSTFIX];
 }
 
 
@@ -90,12 +90,12 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  * @returns 
  */
 export function luaGenerator(
-    block: Blockly.Block,
-    generator: Lua.LuaGenerator,
-): [string, Lua.Order] {
+    block: Block,
+    generator: LuaGenerator,
+): [string, LuaOrder] {
     // Generate a random colour.
     const code = 'string.format("#%06x", math.random(0, 2^24 - 1))';
-    return [code, Lua.Order.HIGH];
+    return [code, LuaOrder.HIGH];
 }
 
 /**
@@ -105,9 +105,9 @@ export function luaGenerator(
  * @returns 
  */
 export function phpGenerator(
-    block: Blockly.Block,
-    generator: PHP.PhpGenerator,
-): [string, PHP.Order] {
+    block: Block,
+    generator: PhpGenerator,
+): [string, PhpOrder] {
     // Generate a random colour.
     const functionName = generator.provideFunction_(
         'colour_random',
@@ -118,7 +118,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
 `,
     );
     const code = functionName + '()';
-    return [code, PHP.Order.FUNCTION_CALL];
+    return [code, PhpOrder.FUNCTION_CALL];
 }
 
 /**
@@ -128,20 +128,20 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}() {
  * @returns 
  */
 export function pythonGenerator(
-    block: Blockly.Block,
-    generator: Python.PythonGenerator,
-): [string, Python.Order] {
+    block: Block,
+    generator: PythonGenerator,
+): [string, PythonOrder] {
     // Generate a random colour.
     // TODO(#7600): find better approach than casting to any to override
     // CodeGenerator declaring .definitions protected.
     (generator as any).definitions_['import_random'] =
         'import random';
     const code = "'#%06x' % random.randint(0, 2**24 - 1)";
-    return [code, Python.Order.FUNCTION_CALL];
+    return [code, PythonOrder.FUNCTION_CALL];
 }
 
 const definitionMap = 
-    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef]);
+    BlocklyCommon.createBlockDefinitionsFromJsonArray([jsonDef]);
 
 export const blockDef = definitionMap[BLOCK_NAME];
 
@@ -150,7 +150,7 @@ export const blockDef = definitionMap[BLOCK_NAME];
  */
 export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocks(definitionMap);
+    BlocklyCommon.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
     if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;

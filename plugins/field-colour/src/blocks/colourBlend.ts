@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly';
-import * as JavaScript from 'blockly/javascript';
-import * as Dart from 'blockly/dart';
-import * as Lua from 'blockly/lua';
-import * as PHP from 'blockly/php';
-import * as Python from 'blockly/python';
+import { Block, common as BlocklyCommon} from 'blockly';
+import { JavascriptGenerator, Order as JavascriptOrder } from 'blockly/javascript';
+import { DartGenerator, Order as DartOrder } from 'blockly/dart';
+import { LuaGenerator, Order as LuaOrder } from 'blockly/lua';
+import { PhpGenerator, Order as PhpOrder } from 'blockly/php';
+import { PythonGenerator, Order as PythonOrder } from 'blockly/python';
 import { registerColourField } from '../field_colour';
 import { Generators } from './generatorUtils';
 
@@ -56,13 +56,13 @@ const jsonDef =
  * @returns 
  */
 export function jsGenerator(
-    block: Blockly.Block,
-    generator: JavaScript.JavascriptGenerator,
-): [string, JavaScript.Order] {
+    block: Block,
+    generator: JavascriptGenerator,
+): [string, JavascriptOrder] {
     // Blend two colours together.
-    const c1 = generator.valueToCode(block, 'COLOUR1', JavaScript.Order.NONE) || "'#000000'";
-    const c2 = generator.valueToCode(block, 'COLOUR2', JavaScript.Order.NONE) || "'#000000'";
-    const ratio = generator.valueToCode(block, 'RATIO', JavaScript.Order.NONE) || 0.5;
+    const c1 = generator.valueToCode(block, 'COLOUR1', JavascriptOrder.NONE) || "'#000000'";
+    const c2 = generator.valueToCode(block, 'COLOUR2', JavascriptOrder.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', JavascriptOrder.NONE) || 0.5;
     const functionName = generator.provideFunction_(
         'colourBlend',
         `
@@ -85,7 +85,7 @@ export function jsGenerator(
   `,
     );
     const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
-    return [code, JavaScript.Order.FUNCTION_CALL];
+    return [code, JavascriptOrder.FUNCTION_CALL];
 }
 
 /**
@@ -95,13 +95,13 @@ export function jsGenerator(
  * @returns 
  */
 export function dartGenerator(
-    block: Blockly.Block,
-    generator: Dart.DartGenerator,
-): [string, Dart.Order] {
+    block: Block,
+    generator: DartGenerator,
+): [string, DartOrder] {
     // Blend two colours together.
-    const c1 = generator.valueToCode(block, 'COLOUR1', Dart.Order.NONE) || "'#000000'";
-    const c2 = generator.valueToCode(block, 'COLOUR2', Dart.Order.NONE) || "'#000000'";
-    const ratio = generator.valueToCode(block, 'RATIO', Dart.Order.NONE) || 0.5;
+    const c1 = generator.valueToCode(block, 'COLOUR1', DartOrder.NONE) || "'#000000'";
+    const c2 = generator.valueToCode(block, 'COLOUR2', DartOrder.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', DartOrder.NONE) || 0.5;
 
     // TODO(#7600): find better approach than casting to any to override
     // CodeGenerator declaring .definitions protected.
@@ -135,7 +135,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}(String c1, String c2, num ratio) 
 `,
     );
     const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
-    return [code, Dart.Order.UNARY_POSTFIX];
+    return [code, DartOrder.UNARY_POSTFIX];
 }
 
 /**
@@ -145,9 +145,9 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}(String c1, String c2, num ratio) 
  * @returns 
  */
 export function luaGenerator(
-    block: Blockly.Block,
-    generator: Lua.LuaGenerator,
-): [string, Lua.Order] {
+    block: Block,
+    generator: LuaGenerator,
+): [string, LuaOrder] {
     // Blend two colours together.
     const functionName = generator.provideFunction_(
         'colour_blend',
@@ -168,13 +168,13 @@ export function luaGenerator(
   `,
     );
     const colour1 =
-        generator.valueToCode(block, 'COLOUR1', Lua.Order.NONE) || "'#000000'";
+        generator.valueToCode(block, 'COLOUR1', LuaOrder.NONE) || "'#000000'";
     const colour2 =
-        generator.valueToCode(block, 'COLOUR2', Lua.Order.NONE) || "'#000000'";
-    const ratio = generator.valueToCode(block, 'RATIO', Lua.Order.NONE) || 0;
+        generator.valueToCode(block, 'COLOUR2', LuaOrder.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', LuaOrder.NONE) || 0;
     const code =
         functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
-    return [code, Lua.Order.HIGH];
+    return [code, LuaOrder.HIGH];
 }
 
 /**
@@ -184,13 +184,13 @@ export function luaGenerator(
  * @returns 
  */
 export function phpGenerator(
-    block: Blockly.Block,
-    generator: PHP.PhpGenerator,
-): [string, PHP.Order] {
+    block: Block,
+    generator: PhpGenerator,
+): [string, PhpOrder] {
     // Blend two colours together.
-    const c1 = generator.valueToCode(block, 'COLOUR1', PHP.Order.NONE) || "'#000000'";
-    const c2 = generator.valueToCode(block, 'COLOUR2', PHP.Order.NONE) || "'#000000'";
-    const ratio = generator.valueToCode(block, 'RATIO', PHP.Order.NONE) || 0.5;
+    const c1 = generator.valueToCode(block, 'COLOUR1', PhpOrder.NONE) || "'#000000'";
+    const c2 = generator.valueToCode(block, 'COLOUR2', PhpOrder.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', PhpOrder.NONE) || 0.5;
     const functionName = generator.provideFunction_(
         'colour_blend',
         `
@@ -214,7 +214,7 @@ export function phpGenerator(
   `,
     );
     const code = functionName + '(' + c1 + ', ' + c2 + ', ' + ratio + ')';
-    return [code, PHP.Order.FUNCTION_CALL];
+    return [code, PhpOrder.FUNCTION_CALL];
 }
 
 /**
@@ -224,9 +224,9 @@ export function phpGenerator(
  * @returns 
  */
 export function pythonGenerator(
-    block: Blockly.Block,
-    generator: Python.PythonGenerator,
-): [string, Python.Order] {
+    block: Block,
+    generator: PythonGenerator,
+): [string, PythonOrder] {
     // Blend two colours together.
     const functionName = generator.provideFunction_(
         'colour_blend',
@@ -243,17 +243,17 @@ export function pythonGenerator(
   `,
     );
     const colour1 =
-        generator.valueToCode(block, 'COLOUR1', Python.Order.NONE) || "'#000000'";
+        generator.valueToCode(block, 'COLOUR1', PythonOrder.NONE) || "'#000000'";
     const colour2 =
-        generator.valueToCode(block, 'COLOUR2', Python.Order.NONE) || "'#000000'";
-    const ratio = generator.valueToCode(block, 'RATIO', Python.Order.NONE) || 0;
+        generator.valueToCode(block, 'COLOUR2', PythonOrder.NONE) || "'#000000'";
+    const ratio = generator.valueToCode(block, 'RATIO', PythonOrder.NONE) || 0;
     const code =
         functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
-    return [code, Python.Order.FUNCTION_CALL];
+    return [code, PythonOrder.FUNCTION_CALL];
 }
 
 const definitionMap = 
-    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef]);
+    BlocklyCommon.createBlockDefinitionsFromJsonArray([jsonDef]);
 
 export const blockDef = definitionMap[BLOCK_NAME]
 
@@ -262,7 +262,7 @@ export const blockDef = definitionMap[BLOCK_NAME]
  */
 export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocks(definitionMap);
+    BlocklyCommon.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart){
         gens.dart.forBlock[BLOCK_NAME] = dartGenerator;

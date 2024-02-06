@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly';
-import * as JavaScript from 'blockly/javascript';
-import * as Dart from 'blockly/dart';
-import * as Lua from 'blockly/lua';
-import * as PHP from 'blockly/php';
-import * as Python from 'blockly/python';
+import { Block, common as BlocklyCommon} from 'blockly';
+import { JavascriptGenerator, Order as JavascriptOrder } from 'blockly/javascript';
+import { DartGenerator, Order as DartOrder } from 'blockly/dart';
+import { LuaGenerator, Order as LuaOrder } from 'blockly/lua';
+import { PhpGenerator, Order as PhpOrder } from 'blockly/php';
+import { PythonGenerator, Order as PythonOrder } from 'blockly/python';
 import { registerColourField } from '../field_colour';
 import { Generators } from './generatorUtils';
 
@@ -42,12 +42,12 @@ const jsonDef =
  * @returns 
  */
 export function jsGenerator(
-    block: Blockly.Block,
-    generator: JavaScript.JavascriptGenerator,
-): [string, JavaScript.Order] {
+    block: Block,
+    generator: JavascriptGenerator,
+): [string, JavascriptOrder] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, JavaScript.Order.ATOMIC];
+    return [code, JavascriptOrder.ATOMIC];
 }
 
 /**
@@ -57,12 +57,12 @@ export function jsGenerator(
  * @returns 
  */
 export function dartGenerator(
-    block: Blockly.Block,
-    generator: Dart.DartGenerator,
-): [string, Dart.Order] {
+    block: Block,
+    generator: DartGenerator,
+): [string, DartOrder] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, Dart.Order.ATOMIC];
+    return [code, DartOrder.ATOMIC];
 }
 
 /**
@@ -72,12 +72,12 @@ export function dartGenerator(
  * @returns 
  */
 export function luaGenerator(
-    block: Blockly.Block,
-    generator: Lua.LuaGenerator,
-): [string, Lua.Order] {
+    block: Block,
+    generator: LuaGenerator,
+): [string, LuaOrder] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, Lua.Order.ATOMIC];
+    return [code, LuaOrder.ATOMIC];
 }
 
 /**
@@ -87,12 +87,12 @@ export function luaGenerator(
  * @returns 
  */
 export function phpGenerator(
-    block: Blockly.Block,
-    generator: PHP.PhpGenerator,
-): [string, PHP.Order] {
+    block: Block,
+    generator: PhpGenerator,
+): [string, PhpOrder] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, PHP.Order.ATOMIC];
+    return [code, PhpOrder.ATOMIC];
 }
 
 /**
@@ -102,17 +102,17 @@ export function phpGenerator(
  * @returns 
  */
 export function pythonGenerator(
-    block: Blockly.Block,
-    generator: Python.PythonGenerator,
-): [string, Python.Order] {
+    block: Block,
+    generator: PythonGenerator,
+): [string, PythonOrder] {
     // Colour picker.
     const code = generator.quote_(block.getFieldValue('COLOUR'));
-    return [code, Python.Order.ATOMIC];
+    return [code, PythonOrder.ATOMIC];
 }
 
 
 const definitionMap = 
-    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef]);
+BlocklyCommon.createBlockDefinitionsFromJsonArray([jsonDef]);
 
 export const blockDef = definitionMap[BLOCK_NAME];
 
@@ -121,7 +121,7 @@ export const blockDef = definitionMap[BLOCK_NAME];
  */
 export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocks(definitionMap);
+    BlocklyCommon.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
     if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;

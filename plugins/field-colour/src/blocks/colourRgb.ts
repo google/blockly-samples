@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly';
-import * as JavaScript from 'blockly/javascript';
-import * as Dart from 'blockly/dart';
-import * as Lua from 'blockly/lua';
-import * as PHP from 'blockly/php';
-import * as Python from 'blockly/python';
+import { Block, common as BlocklyCommon} from 'blockly';
+import { JavascriptGenerator, Order as JavascriptOrder } from 'blockly/javascript';
+import { DartGenerator, Order as DartOrder } from 'blockly/dart';
+import { LuaGenerator, Order as LuaOrder } from 'blockly/lua';
+import { PhpGenerator, Order as PhpOrder } from 'blockly/php';
+import { PythonGenerator, Order as PythonOrder } from 'blockly/python';
 import { registerColourField } from '../field_colour';
 import { Generators } from './generatorUtils';
 
@@ -55,13 +55,13 @@ const jsonDef =
  * @returns 
  */
 export function jsGenerator(
-    block: Blockly.Block,
-    generator: JavaScript.JavascriptGenerator,
-): [string, JavaScript.Order] {
+    block: Block,
+    generator: JavascriptGenerator,
+): [string, JavascriptOrder] {
     // Compose a colour from RGB components expressed as percentages.
-    const red = generator.valueToCode(block, 'RED', JavaScript.Order.NONE) || 0;
-    const green = generator.valueToCode(block, 'GREEN', JavaScript.Order.NONE) || 0;
-    const blue = generator.valueToCode(block, 'BLUE', JavaScript.Order.NONE) || 0;
+    const red = generator.valueToCode(block, 'RED', JavascriptOrder.NONE) || 0;
+    const green = generator.valueToCode(block, 'GREEN', JavascriptOrder.NONE) || 0;
+    const blue = generator.valueToCode(block, 'BLUE', JavascriptOrder.NONE) || 0;
     const functionName = generator.provideFunction_(
         'colourRgb',
         `
@@ -77,7 +77,7 @@ export function jsGenerator(
   `,
     );
     const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
-    return [code, JavaScript.Order.FUNCTION_CALL];
+    return [code, JavascriptOrder.FUNCTION_CALL];
 }
 
 /**
@@ -87,13 +87,13 @@ export function jsGenerator(
  * @returns 
  */
 export function dartGenerator(
-    block: Blockly.Block,
-    generator: Dart.DartGenerator,
-): [string, Dart.Order] {
+    block: Block,
+    generator: DartGenerator,
+): [string, DartOrder] {
     // Compose a colour from RGB components expressed as percentages.
-    const red = generator.valueToCode(block, 'RED', Dart.Order.NONE) || 0;
-    const green = generator.valueToCode(block, 'GREEN', Dart.Order.NONE) || 0;
-    const blue = generator.valueToCode(block, 'BLUE', Dart.Order.NONE) || 0;
+    const red = generator.valueToCode(block, 'RED', DartOrder.NONE) || 0;
+    const green = generator.valueToCode(block, 'GREEN', DartOrder.NONE) || 0;
+    const blue = generator.valueToCode(block, 'BLUE', DartOrder.NONE) || 0;
 
     // TODO(#7600): find better approach than casting to any to override
     // CodeGenerator declaring .definitions protected.
@@ -120,7 +120,7 @@ export function dartGenerator(
   `,
     );
     const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
-    return [code, Dart.Order.UNARY_POSTFIX];
+    return [code, DartOrder.UNARY_POSTFIX];
 }
 
 /**
@@ -130,9 +130,9 @@ export function dartGenerator(
  * @returns 
  */
 export function luaGenerator(
-    block: Blockly.Block,
-    generator: Lua.LuaGenerator,
-): [string, Lua.Order] {
+    block: Block,
+    generator: LuaGenerator,
+): [string, LuaOrder] {
     // Compose a colour from RGB components expressed as percentages.
     const functionName = generator.provideFunction_(
         'colour_rgb',
@@ -145,11 +145,11 @@ export function luaGenerator(
   end
   `,
     );
-    const r = generator.valueToCode(block, 'RED', Lua.Order.NONE) || 0;
-    const g = generator.valueToCode(block, 'GREEN', Lua.Order.NONE) || 0;
-    const b = generator.valueToCode(block, 'BLUE', Lua.Order.NONE) || 0;
+    const r = generator.valueToCode(block, 'RED', LuaOrder.NONE) || 0;
+    const g = generator.valueToCode(block, 'GREEN', LuaOrder.NONE) || 0;
+    const b = generator.valueToCode(block, 'BLUE', LuaOrder.NONE) || 0;
     const code = functionName + '(' + r + ', ' + g + ', ' + b + ')';
-    return [code, Lua.Order.HIGH];
+    return [code, LuaOrder.HIGH];
 }
 
 /**
@@ -159,13 +159,13 @@ export function luaGenerator(
  * @returns 
  */
 export function phpGenerator(
-    block: Blockly.Block,
-    generator: PHP.PhpGenerator,
-): [string, PHP.Order] {
+    block: Block,
+    generator: PhpGenerator,
+): [string, PhpOrder] {
     // Compose a colour from RGB components expressed as percentages.
-    const red = generator.valueToCode(block, 'RED', PHP.Order.NONE) || 0;
-    const green = generator.valueToCode(block, 'GREEN', PHP.Order.NONE) || 0;
-    const blue = generator.valueToCode(block, 'BLUE', PHP.Order.NONE) || 0;
+    const red = generator.valueToCode(block, 'RED', PhpOrder.NONE) || 0;
+    const green = generator.valueToCode(block, 'GREEN', PhpOrder.NONE) || 0;
+    const blue = generator.valueToCode(block, 'BLUE', PhpOrder.NONE) || 0;
     const functionName = generator.provideFunction_(
         'colour_rgb',
         `
@@ -182,7 +182,7 @@ export function phpGenerator(
   `,
     );
     const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
-    return [code, PHP.Order.FUNCTION_CALL];
+    return [code, PhpOrder.FUNCTION_CALL];
 }
 
 /**
@@ -192,9 +192,9 @@ export function phpGenerator(
  * @returns 
  */
 export function pythonGenerator(
-    block: Blockly.Block,
-    generator: Python.PythonGenerator,
-): [string, Python.Order] {
+    block: Block,
+    generator: PythonGenerator,
+): [string, PythonOrder] {
     // Compose a colour from RGB components expressed as percentages.
     const functionName = generator.provideFunction_(
         'colour_rgb',
@@ -206,15 +206,15 @@ export function pythonGenerator(
     return '#%02x%02x%02x' % (r, g, b)
   `,
     );
-    const r = generator.valueToCode(block, 'RED', Python.Order.NONE) || 0;
-    const g = generator.valueToCode(block, 'GREEN', Python.Order.NONE) || 0;
-    const b = generator.valueToCode(block, 'BLUE', Python.Order.NONE) || 0;
+    const r = generator.valueToCode(block, 'RED', PythonOrder.NONE) || 0;
+    const g = generator.valueToCode(block, 'GREEN', PythonOrder.NONE) || 0;
+    const b = generator.valueToCode(block, 'BLUE', PythonOrder.NONE) || 0;
     const code = functionName + '(' + r + ', ' + g + ', ' + b + ')';
-    return [code, Python.Order.FUNCTION_CALL];
+    return [code, PythonOrder.FUNCTION_CALL];
 }
 
 const definitionMap = 
-    Blockly.common.createBlockDefinitionsFromJsonArray([jsonDef]);
+    BlocklyCommon.createBlockDefinitionsFromJsonArray([jsonDef]);
 
 export const blockDef = definitionMap[BLOCK_NAME];
 
@@ -223,7 +223,7 @@ export const blockDef = definitionMap[BLOCK_NAME];
  */
 export function installBlock(gens: Generators = {}) {
     registerColourField();
-    Blockly.common.defineBlocks(definitionMap);
+    BlocklyCommon.defineBlocks(definitionMap);
     if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
     if (gens.dart){
         gens.dart.forBlock[BLOCK_NAME] = dartGenerator;

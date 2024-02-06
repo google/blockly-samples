@@ -71,7 +71,7 @@ const jsonToolbox = {
 
 /**
  * Uninstall the base colour blocks and their associated generators.
- * TODO: remove this when those blocks are removed from the core library.
+ * TODO(#2194): remove this when those blocks are removed from the core library.
  */
 function uninstallBlocks() {
   delete Blockly.Blocks['colour_blend'];
