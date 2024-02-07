@@ -50,9 +50,10 @@ const jsonDef =
 
 /**
  * Javascript generator definition.
- * @param block
- * @param generator 
- * @returns 
+ * 
+ * @param block The Block instance to generate code for.
+ * @param generator The JavascriptGenerator calling the function.
+ * @returns A tuple containing the code string and precedence.
  */
 export function jsGenerator(
     block: Block,
@@ -82,9 +83,10 @@ export function jsGenerator(
 
 /**
  * Dart generator definition.
- * @param block 
- * @param generator 
- * @returns 
+ * 
+ * @param block The Block instance to generate code for.
+ * @param generator The DartGenerator calling the function.
+ * @returns A tuple containing the code string and precedence.
  */
 export function dartGenerator(
     block: Block,
@@ -125,9 +127,10 @@ export function dartGenerator(
 
 /**
  * Lua generator definition.
- * @param block 
- * @param generator 
- * @returns 
+ * 
+ * @param block The Block instance to generate code for.
+ * @param generator The LuaGenerator calling the function.
+ * @returns A tuple containing the code string and precedence.
  */
 export function luaGenerator(
     block: Block,
@@ -154,9 +157,10 @@ export function luaGenerator(
 
 /**
  * PHP generator definition.
- * @param block 
- * @param generator 
- * @returns 
+ * 
+ * @param block The Block instance to generate code for.
+ * @param generator The PhpGenerator calling the function.
+ * @returns A tuple containing the code string and precedence.
  */
 export function phpGenerator(
     block: Block,
@@ -187,9 +191,10 @@ export function phpGenerator(
 
 /**
  * Python generator definition.
- * @param block 
- * @param generator 
- * @returns 
+ * 
+ * @param block The Block instance to generate code for.
+ * @param generator The PythonGenerator calling the function.
+ * @returns A tuple containing the code string and precedence.
  */
 export function pythonGenerator(
     block: Block,
@@ -216,7 +221,7 @@ export function pythonGenerator(
 const definitionMap = 
     BlocklyCommon.createBlockDefinitionsFromJsonArray([jsonDef]);
 
-export const blockDef = definitionMap[BLOCK_NAME];
+export const blockDefinition = definitionMap[BLOCK_NAME];
 
 /**
  * Install the `colour_rgb` block and all of its dependencies.
