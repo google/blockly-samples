@@ -14,6 +14,8 @@ import { registerFieldColour } from '../field_colour';
 import { Generators } from './generatorUtils';
 
 
+/** The name this block is registered under. */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const BLOCK_NAME = 'colour_rgb';
 
 // Block for composing a colour from RGB components.
@@ -49,7 +51,7 @@ const jsonDef =
 };
 
 /**
- * Javascript generator definition.
+ * Javascript block generator function.
  * 
  * @param block The Block instance to generate code for.
  * @param generator The JavascriptGenerator calling the function.
@@ -82,7 +84,7 @@ export function jsGenerator(
 }
 
 /**
- * Dart generator definition.
+ * Dart block generator function.
  * 
  * @param block The Block instance to generate code for.
  * @param generator The DartGenerator calling the function.
@@ -126,7 +128,7 @@ export function dartGenerator(
 }
 
 /**
- * Lua generator definition.
+ * Lua block generator function.
  * 
  * @param block The Block instance to generate code for.
  * @param generator The LuaGenerator calling the function.
@@ -156,7 +158,7 @@ export function luaGenerator(
 }
 
 /**
- * PHP generator definition.
+ * PHP block generator function.
  * 
  * @param block The Block instance to generate code for.
  * @param generator The PhpGenerator calling the function.
@@ -190,7 +192,7 @@ export function phpGenerator(
 }
 
 /**
- * Python generator definition.
+ * Python block generator function.
  * 
  * @param block The Block instance to generate code for.
  * @param generator The PythonGenerator calling the function.
@@ -221,10 +223,14 @@ export function pythonGenerator(
 const definitionMap = 
     BlocklyCommon.createBlockDefinitionsFromJsonArray([jsonDef]);
 
+/** The colour_rgb BlockDefinition. */
 export const blockDefinition = definitionMap[BLOCK_NAME];
 
 /**
  * Install the `colour_rgb` block and all of its dependencies.
+ * 
+ * @param gens The CodeGenerators to install per-block
+ *     generators on.
  */
 export function installBlock(gens: Generators = {}) {
     registerFieldColour();

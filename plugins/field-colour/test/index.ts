@@ -16,7 +16,7 @@ import { pythonGenerator } from 'blockly/python';
 import { luaGenerator } from 'blockly/lua';
 
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
-import * as FieldColour from '../src/index';
+import { installAllBlocks as installColourBlocks} from '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_colour', [
   {
@@ -80,13 +80,13 @@ function uninstallBlocks() {
   delete Blockly.Blocks['colour_picker'];
   
   const blockNames = ['colour_blend', 'colour_rgb', 'colour_random', 'colour_picker'];
-  for (const name in blockNames) {
+  blockNames.forEach((name) => {
     delete javascriptGenerator.forBlock[name];
     delete dartGenerator.forBlock[name];
     delete luaGenerator.forBlock[name];
     delete pythonGenerator.forBlock[name];
     delete phpGenerator.forBlock[name];
-  }
+  });
 }
 
 /**
@@ -106,7 +106,7 @@ function createWorkspace(
 
 document.addEventListener('DOMContentLoaded', function () {
   uninstallBlocks();
-  FieldColour.colourBlend.installBlock({
+  installColourBlocks({
       javascript: javascriptGenerator,
       dart: dartGenerator,
       lua: luaGenerator,

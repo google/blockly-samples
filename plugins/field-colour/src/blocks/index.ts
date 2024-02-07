@@ -19,6 +19,9 @@ export * as colourBlend from './colourBlend';
 /**
  * Install all of the blocks defined in this file and all of their
  * dependencies.
+ * 
+ * @param generators The CodeGenerators to install per-block
+ *     generators on.
  */
 export function installAllBlocks(generators: Generators = {}) {
     colourPicker.installBlock(generators);
