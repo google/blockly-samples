@@ -9,18 +9,18 @@
  */
 
 import * as Blockly from 'blockly';
-import { javascriptGenerator } from 'blockly/javascript';
-import { dartGenerator } from 'blockly/dart';
-import { phpGenerator } from 'blockly/php';
-import { pythonGenerator } from 'blockly/python';
-import { luaGenerator } from 'blockly/lua';
+import {javascriptGenerator} from 'blockly/javascript';
+import {dartGenerator} from 'blockly/dart';
+import {phpGenerator} from 'blockly/php';
+import {pythonGenerator} from 'blockly/python';
+import {luaGenerator} from 'blockly/lua';
 
-import { createPlayground } from '@blockly/dev-tools';
-import { installAllBlocks as installColourBlocks} from '../src/index';
+import {createPlayground} from '@blockly/dev-tools';
+import {installAllBlocks as installColourBlocks} from '../src/index';
 
 /**
  * An array of blocks that are defined only for the purposes of
- * manually and visually testing the colour field. 
+ * manually and visually testing the colour field.
  */
 const testBlockDefinitions = [
   {
@@ -135,7 +135,7 @@ const testBlockDefinitions = [
     previousStatement: null,
     nextStatement: null,
     style: 'loop_blocks',
-  }
+  },
 ];
 
 Blockly.defineBlocksWithJsonArray(testBlockDefinitions);
@@ -149,33 +149,33 @@ Blockly.defineBlocksWithJsonArray(testBlockDefinitions);
  */
 const jsonToolbox = {
   contents: [
-    {          
+    {
       kind: 'label',
       text: 'Exported blocks',
     },
     {
       kind: 'block',
-      type: 'colour_blend'
+      type: 'colour_blend',
     },
     {
       kind: 'block',
-      type: 'colour_picker'
+      type: 'colour_picker',
     },
     {
       kind: 'block',
-      type: 'colour_random'
+      type: 'colour_random',
     },
     {
       kind: 'block',
-      type: 'colour_rgb'
+      type: 'colour_rgb',
     },
-    {          
+    {
       kind: 'label',
       text: 'Test blocks: default field values',
     },
     {
       kind: 'block',
-      type: 'test_standard_field_values'
+      type: 'test_standard_field_values',
     },
     {
       kind: 'block',
@@ -184,13 +184,13 @@ const jsonToolbox = {
         INPUT: {
           shadow: {
             type: 'test_standard_field_values',
-          }
-        }
-      }
+          },
+        },
+      },
     },
     {
       kind: 'block',
-      type: 'test_standard_field_values_and_label'
+      type: 'test_standard_field_values_and_label',
     },
     {
       kind: 'block',
@@ -199,17 +199,17 @@ const jsonToolbox = {
         INPUT: {
           shadow: {
             type: 'test_standard_field_values_and_label',
-          }
-        }
-      }
+          },
+        },
+      },
     },
-    {          
+    {
       kind: 'label',
       text: 'Test blocks: custom field values',
     },
     {
       kind: 'block',
-      type: 'test_custom_field_values'
+      type: 'test_custom_field_values',
     },
     {
       kind: 'block',
@@ -218,13 +218,13 @@ const jsonToolbox = {
         INPUT: {
           shadow: {
             type: 'test_custom_field_values',
-          }
-        }
-      }
+          },
+        },
+      },
     },
     {
       kind: 'block',
-      type: 'test_custom_field_values_and_label'
+      type: 'test_custom_field_values_and_label',
     },
     {
       kind: 'block',
@@ -233,11 +233,11 @@ const jsonToolbox = {
         INPUT: {
           shadow: {
             type: 'test_custom_field_values_and_label',
-          }
-        }
-      }
+          },
+        },
+      },
     },
-  ]
+  ],
 };
 
 /**
@@ -249,8 +249,13 @@ function uninstallBlocks() {
   delete Blockly.Blocks['colour_rgb'];
   delete Blockly.Blocks['colour_random'];
   delete Blockly.Blocks['colour_picker'];
-  
-  const blockNames = ['colour_blend', 'colour_rgb', 'colour_random', 'colour_picker'];
+
+  const blockNames = [
+    'colour_blend',
+    'colour_rgb',
+    'colour_random',
+    'colour_picker',
+  ];
   blockNames.forEach((name) => {
     delete javascriptGenerator.forBlock[name];
     delete dartGenerator.forBlock[name];
@@ -278,12 +283,12 @@ function createWorkspace(
 document.addEventListener('DOMContentLoaded', function () {
   uninstallBlocks();
   installColourBlocks({
-      javascript: javascriptGenerator,
-      dart: dartGenerator,
-      lua: luaGenerator,
-      python: pythonGenerator,
-      php: phpGenerator
-    });
+    javascript: javascriptGenerator,
+    dart: dartGenerator,
+    lua: luaGenerator,
+    python: pythonGenerator,
+    php: phpGenerator,
+  });
 
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox: jsonToolbox,

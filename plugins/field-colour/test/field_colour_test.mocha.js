@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const { testHelpers } = require('@blockly/dev-tools');
-const { FieldColour, registerFieldColour } = require('../src/index');
-const { assert } = require('chai');
+const {testHelpers} = require('@blockly/dev-tools');
+const {FieldColour, registerFieldColour} = require('../src/index');
+const {assert} = require('chai');
 
 const {
   assertFieldValue,

@@ -8,7 +8,7 @@ import * as colourPicker from './colourPicker';
 import * as colourRandom from './colourRandom';
 import * as colourRgb from './colourRgb';
 import * as colourBlend from './colourBlend';
-import { Generators } from './generatorUtils';
+import {Generators} from './generatorUtils';
 
 // Re-export all parts of the definition.
 export * as colourPicker from './colourPicker';
@@ -19,13 +19,13 @@ export * as colourBlend from './colourBlend';
 /**
  * Install all of the blocks defined in this file and all of their
  * dependencies.
- * 
+ *
  * @param generators The CodeGenerators to install per-block
  *     generators on.
  */
 export function installAllBlocks(generators: Generators = {}) {
-    colourPicker.installBlock(generators);
-    colourRgb.installBlock(generators);
-    colourRandom.installBlock(generators);
-    colourBlend.installBlock(generators);
+  colourPicker.installBlock(generators);
+  colourRgb.installBlock(generators);
+  colourRandom.installBlock(generators);
+  colourBlend.installBlock(generators);
 }

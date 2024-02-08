@@ -733,13 +733,13 @@ FieldColour.prototype.DEFAULT_VALUE = '#ffffff';
  * Register the field and any dependencies.
  */
 export function registerFieldColour() {
-  // Unregister legacy field_colour that was in core.  
+  // Unregister legacy field_colour that was in core.
   // TODO(#2194): Delete this once core Blockly no longer defines field_colour.
   // If field_colour is not defined in core, this generates a console warning.
   Blockly.fieldRegistry.unregister('field_colour');
 
   Blockly.fieldRegistry.register('field_colour', FieldColour);
-};
+}
 
 /**
  * CSS for colour picker.
