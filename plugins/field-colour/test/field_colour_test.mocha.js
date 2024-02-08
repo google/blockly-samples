@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const {testHelpers} = require('@blockly/dev-tools');
-const {FieldColour} = require('../src/index');
-const {assert} = require('chai');
+const { testHelpers } = require('@blockly/dev-tools');
+const { FieldColour, registerFieldColour } = require('../src/index');
+const { assert } = require('chai');
 
 const {
   assertFieldValue,
@@ -18,6 +18,9 @@ const {
 } = testHelpers;
 
 suite('FieldColour', function () {
+  setup(function () {
+    registerFieldColour();
+  });
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
