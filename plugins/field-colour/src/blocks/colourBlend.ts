@@ -92,7 +92,8 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}(c1, c2, ratio) {
 }
 `,
   );
-  const code = functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+  const code =
+    functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
   return [code, JavascriptOrder.FUNCTION_CALL];
 }
 

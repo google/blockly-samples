@@ -32,7 +32,9 @@ The colour field accepts up to 4 parameters:
 - "columns" to specify the number of columns the colour dropdown should have.
   Defaults to 7.
 
-If you want to use only the field, you must register it with Blockly. You can do this by calling `registerFieldColour` before instantiating your blocks. If another field is registered under the same name, this field will overwrite it.
+If you want to use only the field, you must register it with Blockly. You can
+do this by calling `registerFieldColour` before instantiating your blocks. If
+another field is registered under the same name, this field will overwrite it.
 
 #### JavaScript
 
@@ -74,14 +76,20 @@ Blockly.defineBlocksWithJsonArray([
 
 ### Blocks
 
-This package also provides four blocks related to the colour field. Each block has generators in JavaScript, Python, PHP, Lua, and Dart.
+This package also provides four blocks related to the colour field. Each block
+has generators in JavaScript, Python, PHP, Lua, and Dart.
 
 - "colour_blend" takes in two colours and a ratio and outputs a single colour.
 - "colour_picker" is a simple block with just the colour field and an output.
 - "colour_random" generates a random colour.
 - "colour_rgb" generates a colour based on red, green, and blue values.
 
-You can install all four blocks by calling `installAllBlocks`. This will install the blocks and all of their dependencies, including the colour field. When calling `installAllBlocks`—or any of the individual `installSomeBlock` functions—you can supply one or more `CodeGenerator` instances (e.g. `javascriptGenerator`), and the install function will also install the correct generator function for each block for the corresponding language(s).
+You can install all four blocks by calling `installAllBlocks`. This will
+install the blocks and all of their dependencies, including the colour field.
+When calling `installAllBlocks`—or any of the individual `installSomeBlock`
+functions—you can supply one or more `CodeGenerator` instances (e.g.
+`javascriptGenerator`), and the install function will also install the correct
+generator function for each block for the corresponding language(s).
 
 ```js
 import {javascriptGenerator} from 'blockly/javascript';
@@ -101,7 +109,8 @@ installColourBlocks({
 });
 ```
 
-If you only want to install a single block, you can call that block's `installBlock` function. The `generators` parameter is the same.
+If you only want to install a single block, you can call that block's
+`installBlock` function. The `generators` parameter is the same.
 
 ```js
 import {javascriptGenerator} from 'blockly/javascript';

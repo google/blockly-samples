@@ -213,7 +213,8 @@ module.exports = [
             match: false,
           },
         },
-        { selector: 'variable',
+        {
+          selector: 'variable',
           modifiers: ['const'],
           format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
         },
