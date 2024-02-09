@@ -213,6 +213,10 @@ module.exports = [
             match: false,
           },
         },
+        { selector: 'variable',
+          modifiers: ['const'],
+          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        },
       ],
       '@typescript-eslint/consistent-type-assertions': 'error',
 

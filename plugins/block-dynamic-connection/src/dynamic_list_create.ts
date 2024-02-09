@@ -19,9 +19,7 @@ interface DynamicListCreateMixin extends DynamicListCreateMixinType {}
 /* eslint-enable @typescript-eslint/no-empty-interface */
 type DynamicListCreateMixinType = typeof DYNAMIC_LIST_CREATE_MIXIN;
 
-/* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_LIST_CREATE_MIXIN = {
-  /* eslint-enable @typescript-eslint/naming-convention */
   /** Minimum number of inputs for this block. */
   minInputs: 2,
 

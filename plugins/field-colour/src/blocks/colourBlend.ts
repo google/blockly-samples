@@ -17,7 +17,6 @@ import {registerFieldColour} from '../field_colour';
 import {Generators} from './generatorUtils';
 
 /** The name this block is registered under. */
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const BLOCK_NAME = 'colour_blend';
 
 // Block for blending two colours together.
