@@ -1,6 +1,7 @@
 # @blockly/field-colour [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
-A [Blockly](https://www.npmjs.com/package/blockly) field and blocks for choosing and combining colours.
+A [Blockly](https://www.npmjs.com/package/blockly) field and blocks for
+choosing and combining colours.
 
 ## Installation
 
