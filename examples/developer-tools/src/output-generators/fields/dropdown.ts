@@ -9,6 +9,24 @@ import {
   jsonDefinitionGenerator,
 } from '../json_definition_generator';
 import {DropdownOptionData, FieldDropdownBlock} from '../../blocks/fields';
+import {
+  JavascriptDefinitionGenerator,
+  javascriptDefinitionGenerator,
+} from '../javascript_definition_generator';
+
+/**
+ * Gets the array of human-readable and machine-readable dropdown options.
+ *
+ * @param block Dropdown field block to read.
+ * @returns An array of dropdown option arrays.
+ */
+function getOptionsList(block: FieldDropdownBlock) {
+  const options: Array<[DropdownOptionData, string]> = [];
+  for (let i = 0; i < block.optionList.length; i++) {
+    options.push([block.getUserData(i), block.getFieldValue('CPU' + i)]);
+  }
+  return options;
+}
 
 jsonDefinitionGenerator.forBlock['field_dropdown'] = function (
   block: FieldDropdownBlock,
@@ -18,10 +36,7 @@ jsonDefinitionGenerator.forBlock['field_dropdown'] = function (
     type: 'field_dropdown',
     name: block.getFieldValue('FIELDNAME'),
   };
-  const options: Array<[DropdownOptionData, string]> = [];
-  for (let i = 0; i < block.optionList.length; i++) {
-    options.push([block.getUserData(i), block.getFieldValue('CPU' + i)]);
-  }
+  const options: Array<[DropdownOptionData, string]> = getOptionsList(block);
 
   if (options.length === 0) {
     // If there are no options in the dropdown, the field isn't valid.
@@ -31,4 +46,27 @@ jsonDefinitionGenerator.forBlock['field_dropdown'] = function (
 
   code.options = options;
   return JSON.stringify(code);
+};
+
+javascriptDefinitionGenerator.forBlock['field_dropdown'] = function (
+  block: FieldDropdownBlock,
+  generator: JavascriptDefinitionGenerator,
+): string {
+  const name = generator.quote_(block.getFieldValue('FIELDNAME'));
+  const options = getOptionsList(block);
+  if (options.length === 0) {
+    // If there are no options in the dropdown, the field isn't valid.
+    // Remove it from the list of fields by returning an empty string.
+    return '';
+  }
+
+  let optionsCode = '';
+  for (const option of options) {
+    optionsCode += `[${generator.quote_(option[0])}, ${generator.quote_(
+      option[1],
+    )}], `;
+  }
+
+  const code = `.appendField(new Blockly.FieldDropdown([${optionsCode}]), ${name})`;
+  return code;
 };

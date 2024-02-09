@@ -6,13 +6,18 @@
 
 import {
   JsonDefinitionGenerator,
-  Order,
+  Order as JsonOrder,
   jsonDefinitionGenerator,
 } from './json_definition_generator';
+import {
+  JavascriptDefinitionGenerator,
+  javascriptDefinitionGenerator,
+} from './javascript_definition_generator';
+import {Order as JsOrder} from 'blockly/javascript';
 import * as Blockly from 'blockly/core';
 
 /**
- * JSON definition for the "input" block.
+ * JSON definition for the "colour_hue" block.
  *
  * @param block
  * @param generator
@@ -25,5 +30,19 @@ jsonDefinitionGenerator.forBlock['colour_hue'] = function (
   block: Blockly.Block,
   generator: JsonDefinitionGenerator,
 ): [string, number] {
-  return [this.getFieldValue('HUE').toString(), Order.ATOMIC];
+  return [this.getFieldValue('HUE').toString(), JsonOrder.ATOMIC];
+};
+
+/**
+ * JavaScript definition for the "colour_hue" block.
+ *
+ * @param block
+ * @param generator
+ * @returns The value of the colour field, as a string.
+ */
+javascriptDefinitionGenerator.forBlock['colour_hue'] = function (
+  block: Blockly.Block,
+  generator: JavascriptDefinitionGenerator,
+): [string, number] {
+  return [this.getFieldValue('HUE').toString(), JsOrder.ATOMIC];
 };

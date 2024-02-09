@@ -9,6 +9,10 @@ import {
   JsonDefinitionGenerator,
   jsonDefinitionGenerator,
 } from '../json_definition_generator';
+import {
+  JavascriptDefinitionGenerator,
+  javascriptDefinitionGenerator,
+} from '../javascript_definition_generator';
 
 jsonDefinitionGenerator.forBlock['field_number'] = function (
   block: Blockly.Block,
@@ -26,4 +30,31 @@ jsonDefinitionGenerator.forBlock['field_number'] = function (
   if (max !== Infinity) code.max = max;
   if (precision !== 0) code.precision = precision;
   return JSON.stringify(code);
+};
+
+javascriptDefinitionGenerator.forBlock['field_number'] = function (
+  block: Blockly.Block,
+  generator: JavascriptDefinitionGenerator,
+): string {
+  const name = generator.quote_(block.getFieldValue('FIELDNAME'));
+  const value = block.getFieldValue('VALUE');
+  const min = block.getFieldValue('MIN');
+  const max = block.getFieldValue('MAX');
+  const precision = block.getFieldValue('PRECISION');
+  const args = [value, min, max, precision];
+
+  // Remove trailing useless arguments if needed
+  if (precision === 0) {
+    args.pop();
+    if (max === Infinity) {
+      args.pop();
+      if (min === -Infinity) {
+        args.pop();
+      }
+    }
+  }
+  const argsString = args.join(', ');
+
+  const code = `.appendField(new Blockly.FieldNumber(${argsString}), ${name})`;
+  return code;
 };
