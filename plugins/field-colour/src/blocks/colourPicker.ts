@@ -21,7 +21,7 @@ import {Generators} from './generatorUtils';
 export const BLOCK_NAME = 'colour_picker';
 
 // Block for colour picker.
-const jsonDef = {
+const jsonDefinition = {
   type: BLOCK_NAME,
   message0: '%1',
   args0: [
@@ -45,7 +45,7 @@ const jsonDef = {
  * @param generator The JavascriptGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function jsGenerator(
+export function toJavascript(
   block: Block,
   generator: JavascriptGenerator,
 ): [string, JavascriptOrder] {
@@ -61,7 +61,7 @@ export function jsGenerator(
  * @param generator The DartGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function dartGenerator(
+export function toDart(
   block: Block,
   generator: DartGenerator,
 ): [string, DartOrder] {
@@ -77,7 +77,7 @@ export function dartGenerator(
  * @param generator The LuaGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function luaGenerator(
+export function toLua(
   block: Block,
   generator: LuaGenerator,
 ): [string, LuaOrder] {
@@ -93,7 +93,7 @@ export function luaGenerator(
  * @param generator The PhpGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function phpGenerator(
+export function toPhp(
   block: Block,
   generator: PhpGenerator,
 ): [string, PhpOrder] {
@@ -109,7 +109,7 @@ export function phpGenerator(
  * @param generator The PythonGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function pythonGenerator(
+export function toPython(
   block: Block,
   generator: PythonGenerator,
 ): [string, PythonOrder] {
@@ -118,12 +118,12 @@ export function pythonGenerator(
   return [code, PythonOrder.ATOMIC];
 }
 
-const definitionMap = BlocklyCommon.createBlockDefinitionsFromJsonArray([
-  jsonDef,
+const definitionsDict = BlocklyCommon.createBlockDefinitionsFromJsonArray([
+  jsonDefinition,
 ]);
 
 /** The colour_picker BlockDefinition. */
-export const blockDefinition = definitionMap[BLOCK_NAME];
+export const blockDefinition = definitionsDict[BLOCK_NAME];
 
 /**
  * Install the `colour_picker` block and all of its dependencies.
@@ -133,10 +133,10 @@ export const blockDefinition = definitionMap[BLOCK_NAME];
  */
 export function installBlock(gens: Generators = {}) {
   registerFieldColour();
-  BlocklyCommon.defineBlocks(definitionMap);
-  if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
-  if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
-  if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;
-  if (gens.php) gens.php.forBlock[BLOCK_NAME] = phpGenerator;
-  if (gens.python) gens.python.forBlock[BLOCK_NAME] = pythonGenerator;
+  BlocklyCommon.defineBlocks(definitionsDict);
+  if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = toJavascript;
+  if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = toDart;
+  if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = toLua;
+  if (gens.php) gens.php.forBlock[BLOCK_NAME] = toPhp;
+  if (gens.python) gens.python.forBlock[BLOCK_NAME] = toPython;
 }

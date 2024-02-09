@@ -21,7 +21,7 @@ import {Generators} from './generatorUtils';
 export const BLOCK_NAME = 'colour_rgb';
 
 // Block for composing a colour from RGB components.
-const jsonDef = {
+const jsonDefinition = {
   type: BLOCK_NAME,
   message0:
     '%{BKY_COLOUR_RGB_TITLE} %{BKY_COLOUR_RGB_RED} %1 %{BKY_COLOUR_RGB_GREEN} %2 %{BKY_COLOUR_RGB_BLUE} %3',
@@ -58,7 +58,7 @@ const jsonDef = {
  * @param generator The JavascriptGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function jsGenerator(
+export function toJavascript(
   block: Block,
   generator: JavascriptGenerator,
 ): [string, JavascriptOrder] {
@@ -92,7 +92,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}(r, g, b) {
  * @param generator The DartGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function dartGenerator(
+export function toDart(
   block: Block,
   generator: DartGenerator,
 ): [string, DartOrder] {
@@ -103,6 +103,7 @@ export function dartGenerator(
 
   // TODO(#7600): find better approach than casting to any to override
   // CodeGenerator declaring .definitions protected.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (generator as any).definitions_['import_dart_math'] =
     "import 'dart:math' as Math;";
   const functionName = generator.provideFunction_(
@@ -136,7 +137,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}(num r, num g, num b) {
  * @param generator The LuaGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function luaGenerator(
+export function toLua(
   block: Block,
   generator: LuaGenerator,
 ): [string, LuaOrder] {
@@ -166,7 +167,7 @@ end
  * @param generator The PhpGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function phpGenerator(
+export function toPhp(
   block: Block,
   generator: PhpGenerator,
 ): [string, PhpOrder] {
@@ -200,7 +201,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}($r, $g, $b) {
  * @param generator The PythonGenerator calling the function.
  * @returns A tuple containing the code string and precedence.
  */
-export function pythonGenerator(
+export function toPython(
   block: Block,
   generator: PythonGenerator,
 ): [string, PythonOrder] {
@@ -222,12 +223,12 @@ def ${generator.FUNCTION_NAME_PLACEHOLDER_}(r, g, b):
   return [code, PythonOrder.FUNCTION_CALL];
 }
 
-const definitionMap = BlocklyCommon.createBlockDefinitionsFromJsonArray([
-  jsonDef,
+const definitionsDict = BlocklyCommon.createBlockDefinitionsFromJsonArray([
+  jsonDefinition,
 ]);
 
 /** The colour_rgb BlockDefinition. */
-export const blockDefinition = definitionMap[BLOCK_NAME];
+export const blockDefinition = definitionsDict[BLOCK_NAME];
 
 /**
  * Install the `colour_rgb` block and all of its dependencies.
@@ -237,13 +238,13 @@ export const blockDefinition = definitionMap[BLOCK_NAME];
  */
 export function installBlock(gens: Generators = {}) {
   registerFieldColour();
-  BlocklyCommon.defineBlocks(definitionMap);
-  if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = jsGenerator;
+  BlocklyCommon.defineBlocks(definitionsDict);
+  if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = toJavascript;
   if (gens.dart) {
-    gens.dart.forBlock[BLOCK_NAME] = dartGenerator;
+    gens.dart.forBlock[BLOCK_NAME] = toDart;
     gens.dart.addReservedWords('Math');
   }
-  if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = luaGenerator;
-  if (gens.php) gens.php.forBlock[BLOCK_NAME] = phpGenerator;
-  if (gens.python) gens.python.forBlock[BLOCK_NAME] = pythonGenerator;
+  if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = toLua;
+  if (gens.php) gens.php.forBlock[BLOCK_NAME] = toPhp;
+  if (gens.python) gens.python.forBlock[BLOCK_NAME] = toPython;
 }
