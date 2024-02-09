@@ -5,10 +5,7 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {
-  javascriptGenerator,
-  Order as JsOrder,
-} from 'blockly/javascript';
+import {javascriptGenerator, Order as JsOrder} from 'blockly/javascript';
 import {
   JsonDefinitionGenerator,
   jsonDefinitionGenerator,
