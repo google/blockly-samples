@@ -14,7 +14,7 @@ import {LuaGenerator, Order as LuaOrder} from 'blockly/lua';
 import {PhpGenerator, Order as PhpOrder} from 'blockly/php';
 import {PythonGenerator, Order as PythonOrder} from 'blockly/python';
 import {registerFieldColour} from '../field_colour';
-import {Generators} from './generatorUtils';
+import {Generators} from './generatorsType';
 
 /** The name this block is registered under. */
 export const BLOCK_NAME = 'colour_rgb';
@@ -152,10 +152,10 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}(r, g, b)
 end
 `,
   );
-  const r = generator.valueToCode(block, 'RED', LuaOrder.NONE) || 0;
-  const g = generator.valueToCode(block, 'GREEN', LuaOrder.NONE) || 0;
-  const b = generator.valueToCode(block, 'BLUE', LuaOrder.NONE) || 0;
-  const code = functionName + '(' + r + ', ' + g + ', ' + b + ')';
+  const red = generator.valueToCode(block, 'RED', LuaOrder.NONE) || 0;
+  const green = generator.valueToCode(block, 'GREEN', LuaOrder.NONE) || 0;
+  const blue = generator.valueToCode(block, 'BLUE', LuaOrder.NONE) || 0;
+  const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
   return [code, LuaOrder.HIGH];
 }
 
