@@ -67,7 +67,7 @@ Each menu option in the registry has several properties:
 
 - `callback`: A function called when the menu option is clicked.
 - `scopeType`: An enum indicating when this option should be shown.
-- `displayText`: The text to show in the menu. Either a string or a function that returns a string.
+- `displayText`: The text to show in the menu. Either a string, or HTML, or a function that returns either of the former.
 - `preconditionFn`: Function that returns one of `'enabled'`, `'disabled'`, or `'hidden'` to determine whether and how the menu option should be rendered.
 - `weight`: A number that determines the sort order of the option. Options with higher weights appear later in the context menu.
 - `id`: A unique string id for the option.
@@ -282,7 +282,7 @@ callback: function(scope) {
 
 ## Display text
 
-So far the `displayText` has always been a simple string, but it can also be a function that returns a string. This can be useful when you want a context-dependent message.
+So far the `displayText` has always been a simple string, but it can also be HTML, or a function that returns either of the former. Using a function can be useful when you want a context-dependent message.
 
 When defined as a function `displayText` accepts a `scope` argument, just like `callback` and `preconditionFn`.
 
