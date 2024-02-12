@@ -29,15 +29,12 @@ function getSelectedCheck(
   block: Blockly.Block,
 ): string | null {
   switch (selected) {
-    case 'null': {
+    case 'null':
       return null;
-    }
-    case 'CUSTOM': {
+    case 'CUSTOM':
       return block.getFieldValue('CUSTOMCHECK') || null;
-    }
-    default: {
+    default:
       return selected;
-    }
   }
 }
 
