@@ -19,9 +19,7 @@ interface DynamicTextJoinMixin extends DynamicTextJoinMixinType {}
 /* eslint-enable @typescript-eslint/no-empty-interface */
 type DynamicTextJoinMixinType = typeof DYNAMIC_TEXT_JOIN_MIXIN;
 
-/* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_TEXT_JOIN_MIXIN = {
-  /* eslint-enable @typescript-eslint/naming-convention */
   /** Minimum number of inputs for this block. */
   minInputs: 2,
 
