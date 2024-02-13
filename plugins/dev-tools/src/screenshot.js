@@ -68,12 +68,12 @@ function workspaceToSvg_(workspace, callback, customCss) {
   const height = bBox.height || bBox.bottom - y;
 
   const blockCanvas = workspace.getCanvas();
-  const clone = blockCanvas.cloneNode(true);
-  clone.removeAttribute('transform');
+  const blockCanvasClone = blockCanvas.cloneNode(true);
+  blockCanvasClone.removeAttribute('transform');
+
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  svg.appendChild(clone);
   svg.setAttribute('viewBox', x + ' ' + y + ' ' + width + ' ' + height);
 
   svg.setAttribute(
@@ -100,7 +100,12 @@ function workspaceToSvg_(workspace, callback, customCss) {
     .join('\n');
   const style = document.createElement('style');
   style.innerHTML = css + '\n' + customCss;
-  svg.insertBefore(style, svg.firstChild);
+
+  svg.appendChild(style);
+  for (const defs of workspace.getSvgGroup().getElementsByTagName('defs')) {
+    svg.appendChild(defs.cloneNode(true));
+  }
+  svg.appendChild(blockCanvasClone);
 
   let svgAsXML = new XMLSerializer().serializeToString(svg);
   svgAsXML = svgAsXML.replace(/&nbsp/g, '&#160');
