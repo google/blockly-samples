@@ -8,8 +8,9 @@
  * @fileoverview Plugin test.
  */
 
-import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
+import {createPlayground} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
+import {toolbox} from './toolbox';
 
 import {LineCursor, NavigationController} from '../src';
 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
   controller = new NavigationController();
   controller.init();
   const defaultOptions = {
-    toolbox: toolboxCategories,
+    toolbox: toolbox,
   };
   createPlayground(
     document.getElementById('root'),

@@ -509,7 +509,22 @@ export class NavigationController {
             this.navigation.handleEnterForWS(workspace);
             return true;
           case Constants.STATE.FLYOUT:
-            this.navigation.insertFromFlyout(workspace);
+            const flyoutCursor = this.navigation.getFlyoutCursor(workspace);
+            if (!flyoutCursor) {
+              return false;
+            }
+            const curNode = flyoutCursor.getCurNode();
+            const nodeType = curNode.getType();
+
+            switch (nodeType) {
+              case Blockly.ASTNode.types.STACK:
+                this.navigation.insertFromFlyout(workspace);
+                break;
+              case Blockly.ASTNode.types.BUTTON:
+                this.navigation.triggerButtonCallback(workspace);
+                break;
+            }
+
             return true;
           default:
             return false;
