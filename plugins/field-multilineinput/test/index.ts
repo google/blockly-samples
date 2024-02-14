@@ -11,6 +11,7 @@
 import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
 import '../src/index';
+import {registerFieldMultilineInput} from '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_multilinetext', [
   {
@@ -45,6 +46,7 @@ function createWorkspace(
   blocklyDiv: HTMLElement,
   options: Blockly.BlocklyOptions,
 ): Blockly.WorkspaceSvg {
+  registerFieldMultilineInput();
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
