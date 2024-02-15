@@ -15,7 +15,7 @@ import {phpGenerator} from 'blockly/php';
 import {pythonGenerator} from 'blockly/python';
 import {luaGenerator} from 'blockly/lua';
 import {createPlayground} from '@blockly/dev-tools';
-import {installAllBlocks} from '../src/index';
+import {textMultiline} from '../src/index';
 
 /**
  * An array of blocks that are defined only for the purposes of
@@ -203,6 +203,7 @@ function uninstallBlock() {
   delete pythonGenerator.forBlock['text_multiline'];
   delete phpGenerator.forBlock['text_multiline'];
 }
+
 /**
  * Create a workspace.
  *
@@ -215,7 +216,7 @@ function createWorkspace(
   options: Blockly.BlocklyOptions,
 ): Blockly.WorkspaceSvg {
   uninstallBlock();
-  installAllBlocks({
+  textMultiline.installBlock({
     javascript: javascriptGenerator,
     dart: dartGenerator,
     lua: luaGenerator,
