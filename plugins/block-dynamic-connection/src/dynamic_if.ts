@@ -162,12 +162,14 @@ const DYNAMIC_IF_MIXIN = {
    * @returns The state of this block, ie the else if count and else state.
    */
   saveExtraState: function (this: DynamicIfBlock): IfExtraState | null {
-    // If we call finalizeConnections here without disabling events, we get into
-    // an event loop.
-    Blockly.Events.disable();
-    this.finalizeConnections();
-    if (this instanceof Blockly.BlockSvg) this.initSvg();
-    Blockly.Events.enable();
+    if (!this.isCorrectlyFormatted()) {
+      // If we call finalizeConnections here without disabling events, we get into
+      // an event loop.
+      Blockly.Events.disable();
+      this.finalizeConnections();
+      if (this instanceof Blockly.BlockSvg) this.initSvg();
+      Blockly.Events.enable();
+    }
 
     if (!this.elseifCount && !this.elseCount) {
       return null;
@@ -218,6 +220,13 @@ const DYNAMIC_IF_MIXIN = {
     this: DynamicIfBlock,
     connection: Blockly.Connection,
   ): number | null {
+    if (
+      !connection.targetConnection ||
+      connection.targetBlock()?.isInsertionMarker()
+    ) {
+      // This connection is available.
+      return null;
+    }
     for (let i = 0; i < this.inputList.length; i++) {
       const input = this.inputList[i];
       if (input.connection == connection) {
@@ -270,7 +279,7 @@ const DYNAMIC_IF_MIXIN = {
       return;
     }
     const input = this.inputList[inputIndex];
-    if (connection.targetConnection && input.name.includes('IF')) {
+    if (input.name.includes('IF')) {
       const nextIfInput = this.inputList[inputIndex + 2];
       if (!nextIfInput || nextIfInput.name == 'ELSE') {
         this.insertElseIf(inputIndex + 2, Blockly.utils.idGenerator.genUid());
@@ -380,6 +389,18 @@ const DYNAMIC_IF_MIXIN = {
     this.appendStatementInput('DO0').appendField(
       Blockly.Msg['CONTROLS_IF_MSG_THEN'],
     );
+  },
+
+  /**
+   * Returns true if all of the inputs on this block are in order.
+   * False otherwise.
+   */
+  isCorrectlyFormatted(this: DynamicIfBlock): boolean {
+    for (let i = 0; i < this.inputList.length - 1; i += 2) {
+      if (this.inputList[i].name !== `IF${i}`) return false;
+      if (this.inputList[i + 1].name !== `DO${i}`) return false;
+    }
+    return true;
   },
 };
 
