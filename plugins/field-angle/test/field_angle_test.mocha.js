@@ -5,7 +5,7 @@
  */
 
 const {testHelpers} = require('@blockly/dev-tools');
-const {FieldAngle} = require('../src/index');
+const {FieldAngle, registerFieldAngle} = require('../src/index');
 const {assert} = require('chai');
 
 const {
@@ -18,6 +18,10 @@ const {
 } = testHelpers;
 
 suite('FieldAngle', function () {
+  setup(function () {
+    registerFieldAngle();
+  });
+
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
