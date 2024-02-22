@@ -9,6 +9,10 @@ import {
   JsonDefinitionGenerator,
   jsonDefinitionGenerator,
 } from '../json_definition_generator';
+import {
+  JavascriptDefinitionGenerator,
+  javascriptDefinitionGenerator,
+} from '../javascript_definition_generator';
 
 jsonDefinitionGenerator.forBlock['field_checkbox'] = function (
   block: Blockly.Block,
@@ -20,4 +24,13 @@ jsonDefinitionGenerator.forBlock['field_checkbox'] = function (
     checked: block.getFieldValue('CHECKED'),
   };
   return JSON.stringify(code);
+};
+
+javascriptDefinitionGenerator.forBlock['field_checkbox'] = function (
+  block: Blockly.Block,
+  generator: JavascriptDefinitionGenerator,
+): string {
+  const name = generator.quote_(block.getFieldValue('FIELDNAME'));
+  const checked = generator.quote_(block.getFieldValue('CHECKED'));
+  return `.appendField(new Blockly.FieldCheckbox(${checked}), ${name})`;
 };

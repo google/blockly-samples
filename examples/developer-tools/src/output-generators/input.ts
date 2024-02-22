@@ -6,9 +6,14 @@
 
 import {
   JsonDefinitionGenerator,
-  Order,
+  Order as JsonOrder,
   jsonDefinitionGenerator,
 } from './json_definition_generator';
+import {
+  javascriptDefinitionGenerator,
+  JavascriptDefinitionGenerator,
+} from './javascript_definition_generator';
+import {Order as JsOrder} from 'blockly/javascript';
 import * as Blockly from 'blockly/core';
 
 /**
@@ -41,7 +46,7 @@ jsonDefinitionGenerator.forBlock['input'] = function (
   const connectionCheckValue = generator.valueToCode(
     block,
     'CHECK',
-    Order.ATOMIC,
+    JsonOrder.ATOMIC,
   );
   if (connectionCheckValue && connectionCheckValue !== 'null') {
     // If the connectionCheckValue is null, it doesn't get included in the input def.
@@ -54,4 +59,59 @@ jsonDefinitionGenerator.forBlock['input'] = function (
   const fields = generator.statementToCode(block, 'FIELDS');
 
   return fields + (fields ? ',\n' : '') + JSON.stringify(code);
+};
+
+/* eslint-disable @typescript-eslint/naming-convention
+ -- These value names match the JSON block definition input names.
+*/
+const inputDropdownToJsName: Record<string, string> = {
+  input_value: 'Value',
+  input_statement: 'Statement',
+  input_dummy: 'Dummy',
+  input_end_row: 'EndRow',
+};
+/* eslint-enable @typescript-eslint/naming-convention */
+
+const alignDropdownToJsName: Record<string, string> = {
+  LEFT: 'Blockly.inputs.Align.LEFT',
+  CENTRE: 'Blockly.inputs.Align.CENTRE',
+  RIGHT: 'Blockly.inputs.Align.RIGHT',
+};
+
+/**
+ * JavaScript definition for the "input" block.
+ *
+ * @param block
+ * @param generator
+ * @returns The JavaScript code that will add this input to the block definition.
+ */
+javascriptDefinitionGenerator.forBlock['input'] = function (
+  block: Blockly.Block,
+  generator: JavascriptDefinitionGenerator,
+): string {
+  const name = block.getFieldValue('INPUTNAME');
+  const inputType = inputDropdownToJsName[block.getFieldValue('INPUTTYPE')];
+  const alignValue = block.getFieldValue('ALIGNMENT');
+  const alignCode =
+    alignValue === 'LEFT'
+      ? ''
+      : `\n.setAlign(${alignDropdownToJsName[alignValue]})`;
+
+  const connectionCheckValue = generator.valueToCode(
+    block,
+    'CHECK',
+    JsOrder.FUNCTION_CALL,
+  );
+  const checkCode =
+    !connectionCheckValue || connectionCheckValue === 'null'
+      ? ''
+      : `\n.setCheck(${connectionCheckValue})`;
+
+  const fields = generator.statementToCode(block, 'FIELDS');
+
+  const code = `this.append${inputType}Input('${name}')${alignCode}${checkCode}${
+    fields ? '\n' : ''
+  }${fields};`;
+
+  return code;
 };

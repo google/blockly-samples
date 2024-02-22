@@ -5,12 +5,16 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {javascriptGenerator} from 'blockly/javascript';
+import {javascriptGenerator, Order as JsOrder} from 'blockly/javascript';
 import {
   JsonDefinitionGenerator,
   jsonDefinitionGenerator,
-  Order,
+  Order as JsonOrder,
 } from './json_definition_generator';
+import {
+  JavascriptDefinitionGenerator,
+  javascriptDefinitionGenerator,
+} from './javascript_definition_generator';
 
 /**
  * Builds the 'message0' part of the JSON block definition.
@@ -53,10 +57,10 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function (
   const blockName = block.getFieldValue('NAME');
   // Tooltip and Helpurl string blocks can't be removed, so we don't care what happens if the block doesn't exist
   const tooltip = JSON.parse(
-    generator.valueToCode(block, 'TOOLTIP', Order.ATOMIC),
+    generator.valueToCode(block, 'TOOLTIP', JsonOrder.ATOMIC),
   );
   const helpUrl = JSON.parse(
-    generator.valueToCode(block, 'HELPURL', Order.ATOMIC),
+    generator.valueToCode(block, 'HELPURL', JsonOrder.ATOMIC),
   );
 
   const code: {[key: string]: unknown} = {
@@ -89,8 +93,8 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function (
    */
   const setConnectionChecks = (inputName: string, connectionName: string) => {
     if (this.getInput(inputName)) {
-      // If there is no set type, we still need to add 'null` to the check
-      const output = generator.valueToCode(block, inputName, Order.ATOMIC);
+      // If there is no set type, we still need to add 'null' to the check
+      const output = generator.valueToCode(block, inputName, JsonOrder.ATOMIC);
       code[connectionName] = output ? JSON.parse(output) : null;
     }
   };
@@ -99,7 +103,7 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function (
   setConnectionChecks('TOPCHECK', 'previousStatement');
   setConnectionChecks('BOTTOMCHECK', 'nextStatement');
 
-  const colour = generator.valueToCode(block, 'COLOUR', Order.ATOMIC);
+  const colour = generator.valueToCode(block, 'COLOUR', JsonOrder.ATOMIC);
   if (colour !== '') {
     code.colour = JSON.parse(colour);
   }
@@ -123,3 +127,75 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function (
 };
 
 jsonDefinitionGenerator.forBlock['text'] = javascriptGenerator.forBlock['text'];
+
+javascriptDefinitionGenerator.forBlock['factory_base'] = function (
+  block: Blockly.Block,
+  generator: JavascriptDefinitionGenerator,
+) {
+  // TODO: Get a JavaScript-legal name for the block
+  const blockName = block.getFieldValue('NAME');
+  const inputsValue = generator.statementToCode(block, 'INPUTS');
+  const inputs = inputsValue
+    ? generator.prefixLines(inputsValue, generator.INDENT) + '\n'
+    : '';
+
+  const alignInputsValue = block.getFieldValue('INLINE');
+  let alignInputs = '';
+  if (alignInputsValue === 'EXT') {
+    alignInputs = 'this.setInputsInline(false)';
+  } else if (alignInputsValue === 'INT') {
+    alignInputs = 'this.setInputsInline(true)';
+  }
+
+  const createConnectionChecks = function (
+    inputName: string,
+    connectionName: string,
+  ): string {
+    if (block.getInput(inputName)) {
+      const check = generator.valueToCode(
+        block,
+        inputName,
+        JsOrder.FUNCTION_CALL,
+      );
+      return `this.set${connectionName}(true, ${check});`;
+    }
+    return '';
+  };
+  const connectionsList = [];
+  connectionsList.push(createConnectionChecks('OUTPUTCHECK', 'Output'));
+  connectionsList.push(createConnectionChecks('TOPCHECK', 'PreviousStatement'));
+  connectionsList.push(createConnectionChecks('BOTTOMCHECK', 'NextStatement'));
+  const connections = connectionsList
+    .filter((value) => value !== '')
+    .join('\n');
+
+  const tooltip = `this.setTooltip(${
+    generator.valueToCode(block, 'TOOLTIP', JsOrder.ATOMIC) || "''"
+  });`;
+  const helpUrl = `this.setHelpUrl(${
+    generator.valueToCode(block, 'HELPURL', JsOrder.ATOMIC) || "''"
+  });`;
+
+  const colourValue = generator.valueToCode(block, 'COLOUR', JsOrder.ATOMIC);
+  const colour = colourValue !== '' ? `this.setColour(${colourValue});` : '';
+
+  // Filter out empty code string pieces, join them all with newlines, and indent them twice.
+  // Inputs code is already indented once automatically by the generator
+  // since it's in a statement input, so it's not included here.
+  const codeStringPieces = generator.prefixLines(
+    [alignInputs, connections, tooltip, helpUrl, colour]
+      .filter((value) => value !== '')
+      .join('\n'),
+    generator.INDENT + generator.INDENT,
+  );
+  const code = `const ${blockName} = {
+  init: function() {
+${inputs}${codeStringPieces}
+  }
+};
+Blockly.common.defineBlocks({${blockName}: ${blockName}});`;
+  return code;
+};
+
+javascriptDefinitionGenerator.forBlock['text'] =
+  javascriptGenerator.forBlock['text'];
