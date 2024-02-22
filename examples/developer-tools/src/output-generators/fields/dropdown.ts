@@ -60,13 +60,41 @@ javascriptDefinitionGenerator.forBlock['field_dropdown'] = function (
     return '';
   }
 
-  let optionsCode = '';
+  const formatImgOption = function (option: DropdownOptionData) {
+    if (typeof option === 'string') return;
+    const optionString = generator.prefixLines(
+      `src: ${generator.quote_(option.src)},
+height: ${generator.quote_(option.height.toString())},
+width: ${generator.quote_(option.width.toString())},
+alt: ${generator.quote_(option.alt)},`,
+      generator.INDENT,
+    );
+    return `{
+${optionString}
+}`;
+  };
+
+  let optionsCode = [];
   for (const option of options) {
-    optionsCode += `[${generator.quote_(option[0])}, ${generator.quote_(
-      option[1],
-    )}], `;
+    if (typeof option[0] === 'string') {
+      // text option
+      optionsCode.push(
+        `[${generator.quote_(option[0])}, ${generator.quote_(option[1])}]`,
+      );
+    } else {
+      // image option
+      optionsCode.push(
+        `[${formatImgOption(option[0])}, ${generator.quote_(option[1])}]`,
+      );
+    }
   }
 
-  const code = `.appendField(new Blockly.FieldDropdown([${optionsCode}]), ${name})`;
+  const optionsString = generator.prefixLines(
+    optionsCode.join(',\n'),
+    generator.INDENT + generator.INDENT,
+  );
+  const code = `.appendField(new Blockly.FieldDropdown([
+${optionsString}
+${generator.INDENT}]), ${name})`;
   return code;
 };
