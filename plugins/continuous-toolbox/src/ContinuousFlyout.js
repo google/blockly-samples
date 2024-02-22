@@ -89,7 +89,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       if (button.isLabel()) {
         const position = button.getPosition();
         const adjustedPosition = new Blockly.utils.Coordinate(
-          position.x, position.y - this.labelGaps[index]);
+          position.x,
+          position.y - this.labelGaps[index],
+        );
         this.scrollPositions.push({
           name: button.getButtonText(),
           position: adjustedPosition,
@@ -290,12 +292,12 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   setRecyclingEnabled(isEnabled) {
     this.recyclingEnabled_ = isEnabled;
   }
-  
+
   /**
    * Lay out the blocks in the flyout.
    * @param {Array<Blockly.Flyout.FlyoutItem>} contents The blocks and buttons to lay out.
    * @param {Array<number>} gaps The visible gaps between blocks.
-   */  
+   */
   layout_(contents, gaps) {
     super.layout_(contents, gaps);
     this.labelGaps = [];
