@@ -106,7 +106,7 @@ export const input = {
     this.setNextStatement(true, 'Input');
     this.setStyle('input');
     this.setTooltip((): string => {
-      const value = this.getFieldValue('INPUT_TYPE');
+      const value = this.getFieldValue('INPUTTYPE');
       return tooltip[value];
     });
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=71');
