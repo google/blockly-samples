@@ -291,6 +291,11 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     this.recyclingEnabled_ = isEnabled;
   }
   
+  /**
+   * Lay out the blocks in the flyout.
+   * @param {Array<Blockly.Flyout.FlyoutItem>} contents The blocks and buttons to lay out.
+   * @param {Array<number>} gaps The visible gaps between blocks.
+   */  
   layout_(contents, gaps) {
     super.layout_(contents, gaps);
     this.labelGaps = [];
