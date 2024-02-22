@@ -74,7 +74,7 @@ ${optionString}
 }`;
   };
 
-  let optionsCode = [];
+  const optionsCode = [];
   for (const option of options) {
     if (typeof option[0] === 'string') {
       // text option
