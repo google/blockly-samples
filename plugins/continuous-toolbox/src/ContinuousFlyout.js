@@ -85,11 +85,14 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
         button.isLabel() &&
         this.getParentToolbox_().getCategoryByName(button.getButtonText()),
     );
-    for (const button of categoryLabels) {
+    for (const [index, button] of categoryLabels.entries()) {
       if (button.isLabel()) {
+        const position = button.getPosition();
+        const adjustedPosition = new Blockly.utils.Coordinate(
+          position.x, position.y - this.labelGaps[index]);
         this.scrollPositions.push({
           name: button.getButtonText(),
-          position: button.getPosition(),
+          position: adjustedPosition,
         });
       }
     }
@@ -120,7 +123,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   selectCategoryByScrollPosition_(position) {
     // If we are currently auto-scrolling, due to selecting a category by
     // clicking on it, do not update the category selection.
-    if (this.scrollTarget) {
+    if (this.scrollTarget !== null) {
       return;
     }
     const scaledPosition = Math.round(position / this.workspace_.scale);
@@ -137,7 +140,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /**
    * Scrolls flyout to given position.
-   * @param {number} position The x coordinate to scroll to.
+   * @param {number} position The Y coordinate to scroll to.
    */
   scrollTo(position) {
     // Set the scroll target to either the scaled position or the lowest
@@ -157,7 +160,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @private
    */
   stepScrollAnimation_() {
-    if (!this.scrollTarget) {
+    if (this.scrollTarget === null) {
       return;
     }
 
@@ -219,6 +222,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     super.show(flyoutDef);
     this.recordScrollPositions();
     this.workspace_.resizeContents();
+    this.selectCategoryByScrollPosition_(0);
   }
 
   /**
@@ -285,5 +289,15 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   setRecyclingEnabled(isEnabled) {
     this.recyclingEnabled_ = isEnabled;
+  }
+  
+  layout_(contents, gaps) {
+    super.layout_(contents, gaps);
+    this.labelGaps = [];
+    for (const [index, item] of contents.entries()) {
+      if (item.type === 'button' && item.button.isLabel()) {
+        this.labelGaps.push(gaps[index - 1] ?? this.MARGIN);
+      }
+    }
   }
 }
