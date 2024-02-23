@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const fs = require('fs');
-const {Blockly} = require('blockly');
+import fs from 'fs';
+import * as Blockly from 'blockly';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import {dartGenerator} from 'blockly/dart';
 import {phpGenerator} from 'blockly/php';
 import {pythonGenerator} from 'blockly/python';
 import {luaGenerator} from 'blockly/lua';
-const {installAllBlocks} = require('../src/index');
-const {assert} = require('chai');
+import {installAllBlocks} from '../src/index';
+import {assert} from 'chai';
 
 const blockJson = {
     "blocks": {
@@ -188,15 +188,7 @@ const blockJson = {
   };
 
   function uninstallBlocks() {
-    if (Blockly.Blocks['colour_blend']) {
-        console.log('before');
-        console.log(Blockly.Blocks['colour_blend']);
-    }
     delete Blockly.Blocks['colour_blend'];
-    if (Blockly.Blocks['colour_blend']) {
-        console.log('after');
-        console.log(Blockly.Blocks['colour_blend']);
-    }
     delete Blockly.Blocks['colour_rgb'];
     delete Blockly.Blocks['colour_random'];
     delete Blockly.Blocks['colour_picker'];
@@ -230,9 +222,7 @@ function checkResult(suffix, generated) {
 
 suite.only('Colour Block Generators', function () {
     suiteSetup(function() {
-        // TODO: Delete old generators.
         uninstallBlocks();
-        console.log('uninstalled');
         installAllBlocks({
             javascript: javascriptGenerator,
             dart: dartGenerator,
@@ -240,8 +230,6 @@ suite.only('Colour Block Generators', function () {
             python: pythonGenerator,
             php: phpGenerator,
           });
-          console.log('after reinstallation');
-          console.log(Blockly.Blocks['colour_blend']);
     });
     setup(function() {
         this.workspace = new Blockly.Workspace();

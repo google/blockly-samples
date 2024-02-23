@@ -131,11 +131,8 @@ export const blockDefinition = definitionsDict[BLOCK_NAME];
  *     generators on.
  */
 export function installBlock(gens: Generators = {}) {
-  console.log('installing colour picker block');
   registerFieldColour();
-  console.log(Blocks['colour_picker']);
   BlocklyCommon.defineBlocks(definitionsDict);
-  console.log(Blocks['colour_picker']);
   if (gens.javascript) gens.javascript.forBlock[BLOCK_NAME] = toJavascript;
   if (gens.dart) gens.dart.forBlock[BLOCK_NAME] = toDart;
   if (gens.lua) gens.lua.forBlock[BLOCK_NAME] = toLua;
