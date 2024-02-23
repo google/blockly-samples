@@ -16,8 +16,6 @@ const webpack = require('webpack');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
-const packageJson = require(resolveApp('package.json'));
-
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -58,16 +56,6 @@ module.exports = (env) => {
     target = 'node';
   }
 
-  // Add 'dist' to the end of the blockly module alias if we have acquired
-  // blockly from git instead of npm.
-  let blocklyAliasSuffix = '';
-  const blocklyDependency =
-    (packageJson.dependencies && packageJson.dependencies['blockly']) ||
-    (packageJson.devDependencies && packageJson.devDependencies['blockly']);
-  if (blocklyDependency && blocklyDependency.indexOf('git://') === 0) {
-    blocklyAliasSuffix = '/dist';
-  }
-
   return {
     target,
     mode: isProduction ? 'production' : 'development',
@@ -85,7 +73,7 @@ module.exports = (env) => {
     },
     resolve: {
       alias: {
-        blockly: resolveApp(`node_modules/blockly${blocklyAliasSuffix}`),
+        'blockly': resolveApp('node_modules/blockly'),
       },
       extensions: ['.ts', '.js'].filter(
         (ext) => isTypescript || !ext.includes('ts'),
