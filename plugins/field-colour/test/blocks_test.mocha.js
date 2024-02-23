@@ -187,6 +187,11 @@ const blockJson = {
   },
 };
 
+/**
+ * Uninstall old blocks and generators, since they come pre-installed
+ * with Blockly.
+ * TODO(2194): Delete this function and calls to it.
+ */
 function uninstallBlocks() {
   delete Blockly.Blocks['colour_blend'];
   delete Blockly.Blocks['colour_rgb'];
@@ -211,6 +216,9 @@ function uninstallBlocks() {
 /**
  * Assert that the generated code matches the golden code for the specified
  * language.
+ * @param {string} suffix The suffix of the golden file.
+ * @param {string} generated The generated code to compare against the
+ *     golden file.
  */
 function checkResult(suffix, generated) {
   const fileName = `test/golden/golden.${suffix}`;
