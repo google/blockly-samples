@@ -27,13 +27,16 @@ export class BlockSearcher {
     const blockCreationWorkspace = new Blockly.Workspace();
     blockTypes.forEach((blockType) => {
       const block = blockCreationWorkspace.newBlock(blockType);
-      this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
-      block.inputList.forEach((input) => {
-        input.fieldRow.forEach((field) => {
-          this.indexDropdownOption(field, blockType);
-          this.indexBlockText(field.getText(), blockType);
+      const blockState = Blockly.serialization.blocks.save(block);
+      if (blockState != null) {
+        this.indexBlockText(blockType.replaceAll('_', ' '), blockState);
+        block.inputList.forEach((input) => {
+          input.fieldRow.forEach((field) => {
+            this.indexDropdownOption(field, blockState);
+            this.indexBlockText(field.getText(), blockState);
+          });
         });
-      });
+      }
     });
   }
 
@@ -41,15 +44,27 @@ export class BlockSearcher {
    * Check if the field is a dropdown, and index every text in the option
    *
    * @param field We need to check the type of field
-   * @param blockType The block type to associate the trigrams with.
+   * @param blockState The block state to associate the trigrams with.
    */
-  private indexDropdownOption(field: Blockly.Field, blockType: string) {
+  private indexDropdownOption(
+    field: Blockly.Field,
+    blockState: Blockly.serialization.blocks.State,
+  ) {
     if (field instanceof Blockly.FieldDropdown) {
       field.getOptions(true).forEach((option) => {
+        const state = {...blockState};
+        state.fields = {...blockState.fields};
         if (typeof option[0] === 'string') {
-          this.indexBlockText(option[0], blockType);
+          if (state.fields == undefined) {
+            state.fields = {};
+          }
+          if (field.name) {
+            state.fields[field.name] = option[1];
+          }
+          this.indexBlockText(option[0], state);
+          this.indexBlockText(option[1], state);
         } else if ('alt' in option[0]) {
-          this.indexBlockText(option[0].alt, blockType);
+          this.indexBlockText(option[0].alt, state);
         }
       });
     }
@@ -59,10 +74,10 @@ export class BlockSearcher {
    * Filters the available blocks based on the current query string.
    *
    * @param query The text to use to match blocks against.
-   * @returns A list of block types matching the query.
+   * @returns A list of block states matching the query.
    */
-  blockTypesMatching(query: string): string[] {
-    return [
+  blockTypesMatching(query: string): Blockly.serialization.blocks.State[] {
+    const result = [
       ...this.generateTrigrams(query)
         .map((trigram) => {
           return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
@@ -72,20 +87,33 @@ export class BlockSearcher {
         })
         .values(),
     ];
+    const resultState = result.map((item) => JSON.parse(item));
+    return resultState;
+  }
+
+  private addBlockTrigram(trigram: string, blockState: string) {
+    const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+    blockSet.add(blockState);
+    this.trigramsToBlocks.set(trigram, blockSet);
   }
 
   /**
    * Generates trigrams for the given text and associates them with the given
-   * block type.
+   * block state.
    *
    * @param text The text to generate trigrams of.
-   * @param blockType The block type to associate the trigrams with.
+   * @param blockState The block state to associate the trigrams with.
    */
-  private indexBlockText(text: string, blockType: string) {
+  private indexBlockText(
+    text: string,
+    blockState: Blockly.serialization.blocks.State,
+  ) {
+    blockState.id = undefined;
+    blockState.extraState = undefined;
+    blockState.data = undefined;
+    const stateString = JSON.stringify(blockState);
     this.generateTrigrams(text).forEach((trigram) => {
-      const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-      blockSet.add(blockType);
-      this.trigramsToBlocks.set(trigram, blockSet);
+      this.addBlockTrigram(trigram, stateString);
     });
   }
 
@@ -101,7 +129,7 @@ export class BlockSearcher {
     if (normalizedInput.length <= 3) return [normalizedInput];
 
     const trigrams: string[] = [];
-    for (let start = 0; start < normalizedInput.length - 3; start++) {
+    for (let start = 0; start <= normalizedInput.length - 3; start++) {
       trigrams.push(normalizedInput.substring(start, start + 3));
     }
 
