@@ -74,9 +74,6 @@ module.exports = (env) => {
       clean: true,
     },
     resolve: {
-      alias: {
-        'blockly': resolveApp('node_modules/blockly'),
-      },
       extensions: ['.ts', '.js'].filter(
         (ext) => isTypescript || !ext.includes('ts'),
       ),
