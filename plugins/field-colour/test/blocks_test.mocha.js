@@ -228,7 +228,7 @@ function checkResult(suffix, generated) {
   assert.equal(generated, normalized);
 }
 
-suite.only('Colour Block Generators', function () {
+suite('Colour Block Generators', function () {
   suiteSetup(function () {
     uninstallBlocks();
     installAllBlocks({
