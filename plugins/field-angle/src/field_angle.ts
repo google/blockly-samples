@@ -658,9 +658,7 @@ export class FieldAngle extends Blockly.FieldNumber {
   }
 }
 
-/**
- * Register the field and any dependencies.
- */
+/** Register the field and any dependencies. */
 export function registerFieldAngle() {
   // Unregister legacy field_angle that was in core.
   // TODO(#2194): Delete this once core Blockly no longer defines field_angle.
