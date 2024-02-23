@@ -21,3 +21,5 @@ PULL_REQUEST_TEMPLATE.md
 plugins/dev-create/templates/sample-app/*
 plugins/dev-create/templates/sample-app-ts/*
 
+# Golden test files
+plugins/**/golden/*
