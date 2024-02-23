@@ -491,13 +491,19 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
   }
 }
 
-// Unregister legacy field_multilinetext that was in core.  Delete this once
-// core Blockly no longer defines field_multilinetext.
-// If field_multilinetext is not defined in core,
-// this generates a console warning.
-Blockly.fieldRegistry.unregister('field_multilinetext');
+/**
+ * Register the field and any dependencies.
+ */
+export function registerFieldMultilineInput() {
+  // Unregister legacy field_multilinetext that was in core.
+  // TODO(2194): Delete this once core Blockly no longer defines
+  // field_multilinetext.
+  // If field_multilinetext is not defined in core,
+  // this generates a console warning.
+  Blockly.fieldRegistry.unregister('field_multilinetext');
 
-Blockly.fieldRegistry.register('field_multilinetext', FieldMultilineInput);
+  Blockly.fieldRegistry.register('field_multilinetext', FieldMultilineInput);
+}
 
 /**
  * CSS for multiline field.
