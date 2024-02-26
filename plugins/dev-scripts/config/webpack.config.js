@@ -16,6 +16,8 @@ const webpack = require('webpack');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
+const packageJson = require(resolveApp('package.json'));
+
 module.exports = (env) => {
   const mode = env.mode;
   const isDevelopment = mode === 'development';
@@ -100,7 +102,12 @@ module.exports = (env) => {
     // It can't find source maps for some Closure modules and that is expected
     ignoreWarnings: [/Failed to parse source map/],
     plugins: [
-      // Add package name.
+      // Use DefinePlugin (https://webpack.js.org/plugins/define-plugin/)
+      // to pass the name of the package being built to the dev-tools
+      // playground (via plugins/dev-tools/src/playground/id.js).  The
+      // "process.env."  prefix is arbitrary: the stringified value
+      // gets substituted directly into the source code of that file
+      // at build time.
       new webpack.DefinePlugin({
         'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
       }),
