@@ -406,9 +406,9 @@ export class FieldBitmap extends Blockly.Field {
    */
   getEmptyArray_() {
     const newVal = [];
-    for (let r = 0; r < this.imgWidth_; r++) {
+    for (let r = 0; r < this.imgHeight_; r++) {
       newVal.push([]);
-      for (let c = 0; c < this.imgHeight_; c++) {
+      for (let c = 0; c < this.imgWidth_; c++) {
         newVal[r].push(0);
       }
     }
