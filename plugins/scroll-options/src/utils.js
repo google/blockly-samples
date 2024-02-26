@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Blockly from 'blockly/core';
+
 /**
  * Gets the current location of the workspace considering
  * when there's no drag surface.
