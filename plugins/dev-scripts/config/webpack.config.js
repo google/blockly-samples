@@ -117,6 +117,12 @@ module.exports = (env) => {
     ].filter(Boolean),
     externals: isProduction
       ? {
+          'blockly': {
+            root: 'Blockly',
+            commonjs: 'blockly',
+            commonjs2: 'blockly',
+            amd: 'blockly',
+          },
           'blockly/core': {
             root: 'Blockly',
             commonjs: 'blockly/core',
