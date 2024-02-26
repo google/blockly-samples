@@ -15,6 +15,7 @@ const webpack = require('webpack');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+const exists = (relativePath) => fs.existsSync(resolveApp(relativePath));
 
 const packageJson = require(resolveApp('package.json'));
 
@@ -23,26 +24,20 @@ module.exports = (env) => {
   const isDevelopment = mode === 'development';
   const isProduction = mode === 'production';
   const isTest = mode === 'test';
-  const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
+  const isTypescript = exists('tsconfig.json');
 
   let entry;
   let outputFile;
   let target = 'web';
   if (isProduction) {
     // Production.
-    ['js', 'ts']
-      .filter((ext) => fs.existsSync(resolveApp(`./src/index.${ext}`)))
-      .forEach((ext) => {
-        entry = `./src/index.${ext}`;
-      });
+    if (exists('./src/index.js')) entry = './src/index.js';
+    if (exists('./src/index.ts')) entry = './src/index.ts';
     outputFile = 'index.js';
   } else if (isDevelopment) {
     // Development.
-    ['js', 'ts']
-      .filter((ext) => fs.existsSync(resolveApp(`./test/index.${ext}`)))
-      .forEach((ext) => {
-        entry = `./test/index.${ext}`;
-      });
+    if (exists('./test/index.js')) entry = './test/index.js';
+    if (exists('./test/index.ts')) entry = './test/index.ts';
     outputFile = 'test_bundle.js';
   } else if (isTest) {
     // Test.
