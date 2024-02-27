@@ -10,7 +10,52 @@
       <div id="main-workspace"></div>
       <div id="output-pane">
         <div id="block-preview"></div>
-        <div id="output-config">config</div>
+        <div id="output-config">
+          <div>
+            Block definition format:
+            <input
+              type="radio"
+              id="definition-json"
+              name="block-definition-language"
+              value="json"
+              checked />
+            <label for="definition-json">JSON</label>
+            <input
+              type="radio"
+              id="definition-js"
+              name="block-definition-language"
+              value="js" />
+            <label for="definition-js">JavaScript</label>
+          </div>
+          <div>
+            Blockly import format:
+            <input
+              type="radio"
+              id="import-esm"
+              name="import-format"
+              value="import"
+              checked />
+            <label for="import-esm">Import (esm/cjs)</label>
+            <input
+              type="radio"
+              id="import-script"
+              name="import-format"
+              value="script" />
+            <label for="import-script">Script tags</label>
+          </div>
+          <div>
+            <label for="code-generator-language"
+              >Code generator language:</label
+            >
+            <select name="code-generator-language" id="code-generator-language">
+              <option value="Javascript">JavaScript</option>
+              <option value="Python">Python</option>
+              <option value="Dart">Dart</option>
+              <option value="Php">PHP</option>
+              <option value="Lua">Lua</option>
+            </select>
+          </div>
+        </div>
         <div id="code-headers">code headers</div>
         <pre id="block-definition">
                     JSON Definition
