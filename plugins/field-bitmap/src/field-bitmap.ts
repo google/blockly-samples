@@ -21,7 +21,16 @@ const EMPTY_PIXEL_COLOR = '#fff';
  * Field for inputting a small bitmap image.
  * Includes a grid of clickable pixels that's exported as a bitmap.
  */
-export class FieldBitmap extends Blockly.Field {
+export class FieldBitmap extends Blockly.Field<number[][]> {
+  private initialValue_: number[][] | null;
+  private imgHeight_: number;
+  private imgWidth_: number;
+  private boundEvents_: Blockly.browserEvents.Data[];
+  private editorPixels_: HTMLElement[][] | null;
+  private blockDisplayPixels_: SVGElement[][] | null;
+  private mouseIsDown_ = false;
+  private valToPaintWith_?: number;
+
   /**
    * Constructor for the bitmap field.
    * @param {!Array<!Array<number>>=} value 2D rectangular array of 1s and 0s.
@@ -29,7 +38,11 @@ export class FieldBitmap extends Blockly.Field {
    * @param {!Object=} config Config A map of options used to
    * configure the field.
    */
-  constructor(value = undefined, validator = undefined, config = undefined) {
+  constructor(
+    value: number[][] | typeof Blockly.Field.SKIP_SETUP,
+    validator?: Blockly.FieldValidator<number[][]>,
+    config?: FieldBitmapFromJsonConfig,
+  ) {
     super(value, validator, config);
 
     this.SERIALIZABLE = true;
@@ -37,12 +50,13 @@ export class FieldBitmap extends Blockly.Field {
     this.initialValue_ = null;
 
     // Configure value, height, and width
-    if (this.getValue() !== null) {
-      this.imgHeight_ = this.getValue().length;
-      this.imgWidth_ = this.getValue()[0].length || 0;
+    const currentValue = this.getValue();
+    if (currentValue !== null) {
+      this.imgHeight_ = currentValue.length;
+      this.imgWidth_ = currentValue[0].length || 0;
     } else {
-      this.imgHeight_ = (config && config['height']) || DEFAULT_HEIGHT;
-      this.imgWidth_ = (config && config['width']) || DEFAULT_WIDTH;
+      this.imgHeight_ = config?.height ?? DEFAULT_HEIGHT;
+      this.imgWidth_ = config?.width ?? DEFAULT_WIDTH;
     }
 
     // Set a default empty value
@@ -75,10 +89,14 @@ export class FieldBitmap extends Blockly.Field {
    * @package
    * @nocollapse
    */
-  static fromJson(options) {
+  static fromJson(options: FieldBitmapFromJsonConfig) {
     // `this` might be a subclass of FieldBitmap if that class doesn't override
     // the static fromJson method.
-    return new this(options && options['value'], undefined, options);
+    return new this(
+      options.value ?? Blockly.Field.SKIP_SETUP,
+      undefined,
+      options,
+    );
   }
 
   /**
@@ -102,7 +120,7 @@ export class FieldBitmap extends Blockly.Field {
    * @param {*} newValue The new value to be tested.
    * @returns {Object} The new value if it's valid, or null.
    */
-  doClassValidation_(newValue = undefined) {
+  doClassValidation_(newValue: any = undefined) {
     if (!newValue) {
       return null;
     }
@@ -143,7 +161,7 @@ export class FieldBitmap extends Blockly.Field {
    * Called when a new value has been validated and is about to be set.
    * @param {*} newValue The value that's about to be set.
    */
-  doValueUpdate_(newValue) {
+  doValueUpdate_(newValue: number[][]) {
     super.doValueUpdate_(newValue);
     if (newValue) {
       const newHeight = newValue.length;
@@ -162,10 +180,9 @@ export class FieldBitmap extends Blockly.Field {
    * Show the bitmap editor dialog.
    * @param {!Event=} e Optional mouse event that triggered the field to
    *     open, or undefined if triggered programmatically.
-   * @param {boolean=} _quietInput Quiet input.
    * @protected
    */
-  showEditor_(e = undefined, _quietInput = undefined) {
+  showEditor_(e?: Event) {
     const editor = this.dropdownCreate_();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
     Blockly.DropDownDiv.showPositionedByField(
@@ -188,7 +205,7 @@ export class FieldBitmap extends Blockly.Field {
 
     if (this.blockDisplayPixels_) {
       this.forAllCells_((r, c) => {
-        const pixel = this.getValue()[r][c];
+        const pixel = this.getPixel(r, c);
 
         if (this.blockDisplayPixels_) {
           this.blockDisplayPixels_[r][c].style.fill = pixel
@@ -213,8 +230,10 @@ export class FieldBitmap extends Blockly.Field {
     // Blockly.Field's implementation sets these classes as appropriate, but
     // since this field has no text they just mess up the rendering of the
     // grid lines.
-    Blockly.utils.dom.removeClass(this.fieldGroup_, 'blocklyNonEditableText');
-    Blockly.utils.dom.removeClass(this.fieldGroup_, 'blocklyEditableText');
+    if (this.fieldGroup_) {
+      Blockly.utils.dom.removeClass(this.fieldGroup_, 'blocklyNonEditableText');
+      Blockly.utils.dom.removeClass(this.fieldGroup_, 'blocklyEditableText');
+    }
     return editable;
   }
 
@@ -224,7 +243,10 @@ export class FieldBitmap extends Blockly.Field {
    *     as the SVG element.
    */
   getScaledBBox() {
-    const boundingBox = this.fieldGroup_.getBoundingClientRect();
+    const boundingBox = this.getSvgRoot()?.getBoundingClientRect();
+    if (!boundingBox) {
+      throw new Error('Tried to retrieve a bounding box without a rect');
+    }
     return new Blockly.utils.Rect(
       boundingBox.top,
       boundingBox.bottom,
@@ -251,7 +273,7 @@ export class FieldBitmap extends Blockly.Field {
 
     this.bindEvent_(dropdownEditor, 'mouseup', this.onMouseUp_);
     this.bindEvent_(dropdownEditor, 'mouseleave', this.onMouseUp_);
-    this.bindEvent_(dropdownEditor, 'dragstart', (e) => {
+    this.bindEvent_(dropdownEditor, 'dragstart', (e: Event) => {
       e.preventDefault();
     });
 
@@ -266,7 +288,7 @@ export class FieldBitmap extends Blockly.Field {
         rowDiv.appendChild(button);
 
         // Load the current pixel color
-        const isOn = this.getValue()[r][c];
+        const isOn = this.getPixel(r, c);
         button.style.background = isOn ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
 
         // Handle clicking a pixel
@@ -289,7 +311,7 @@ export class FieldBitmap extends Blockly.Field {
 
     if (this.blockDisplayPixels_) {
       this.forAllCells_((r, c) => {
-        const pixel = this.getValue()[r][c];
+        const pixel = this.getPixel(r, c);
 
         // if (this.blockDisplayPixels_) {
         //   this.blockDisplayPixels_[r][c].style.fill =
@@ -363,7 +385,11 @@ export class FieldBitmap extends Blockly.Field {
    * @param {Function} onClick Callback that will be
    * attached to the control button.
    */
-  addControlButton_(parent, buttonText, onClick) {
+  addControlButton_(
+    parent: HTMLElement,
+    buttonText: string,
+    onClick: () => void,
+  ) {
     const button = this.createElementWithClassname_('button', 'controlButton');
     button.innerHTML = buttonText;
     parent.appendChild(button);
@@ -404,8 +430,8 @@ export class FieldBitmap extends Blockly.Field {
    * Constructs an array of zeros with the specified width and height.
    * @returns {!Array<!Array<number>>}The new value.
    */
-  getEmptyArray_() {
-    const newVal = [];
+  getEmptyArray_(): number[][] {
+    const newVal: number[][] = [];
     for (let r = 0; r < this.imgHeight_; r++) {
       newVal.push([]);
       for (let c = 0; c < this.imgWidth_; c++) {
@@ -421,9 +447,9 @@ export class FieldBitmap extends Blockly.Field {
    * @param {number} r Row number of grid.
    * @param {number} c Column number of grid.
    */
-  onMouseDownInPixel_(r, c) {
+  onMouseDownInPixel_(r: number, c: number) {
     // Toggle that pixel to the opposite of its value
-    const newPixelValue = 1 - this.getValue()[r][c];
+    const newPixelValue = 1 - this.getPixel(r, c);
     this.setPixel_(r, c, newPixelValue);
     this.mouseIsDown_ = true;
     this.valToPaintWith_ = newPixelValue;
@@ -435,11 +461,14 @@ export class FieldBitmap extends Blockly.Field {
    * @param {number} r Row number of grid.
    * @param {number} c Column number of grid.
    */
-  onMouseEnterPixel_(r, c) {
+  onMouseEnterPixel_(r: number, c: number) {
     if (!this.mouseIsDown_) {
       return;
     }
-    if (this.getValue()[r][c] !== this.valToPaintWith_) {
+    if (
+      this.valToPaintWith_ !== undefined &&
+      this.getPixel(r, c) !== this.valToPaintWith_
+    ) {
       this.setPixel_(r, c, this.valToPaintWith_);
     }
   }
@@ -504,7 +533,7 @@ export class FieldBitmap extends Blockly.Field {
    * @param {number} newValue Value of the pixel.
    * @private
    */
-  setPixel_(r, c, newValue) {
+  setPixel_(r: number, c: number, newValue: number) {
     const newGrid = JSON.parse(JSON.stringify(this.getValue()));
     newGrid[r][c] = newValue;
 
@@ -519,12 +548,23 @@ export class FieldBitmap extends Blockly.Field {
     this.setValue(newGrid, false);
   }
 
+  private getPixel(row: number, column: number): number {
+    const value = this.getValue();
+    if (!value) {
+      throw new Error(
+        'Attempted to retrieve a pixel value when no value is set',
+      );
+    }
+
+    return value[row][column];
+  }
+
   /**
    * Calls a given function for all cells in the image, with the cell
    * coordinates as the arguments.
    * @param {*} func A function to be applied.
    */
-  forAllCells_(func) {
+  forAllCells_(func: (row: number, col: number) => void) {
     for (let r = 0; r < this.imgHeight_; r++) {
       for (let c = 0; c < this.imgWidth_; c++) {
         func(r, c);
@@ -538,7 +578,7 @@ export class FieldBitmap extends Blockly.Field {
    * @param {string} className ClassName of html element.
    * @returns {!HTMLElement} The created element.
    */
-  createElementWithClassname_(elementType, className) {
+  createElementWithClassname_(elementType: string, className: string) {
     const newElt = document.createElement(elementType);
     newElt.className = className;
     return newElt;
@@ -550,11 +590,21 @@ export class FieldBitmap extends Blockly.Field {
    * @param {string} eventName Name of the event to bind.
    * @param {Function} callback Function to be called on specified event.
    */
-  bindEvent_(element, eventName, callback) {
+  bindEvent_(
+    element: HTMLElement,
+    eventName: string,
+    callback: (e: Event) => void,
+  ) {
     this.boundEvents_.push(
       Blockly.browserEvents.conditionalBind(element, eventName, this, callback),
     );
   }
+}
+
+export interface FieldBitmapFromJsonConfig extends Blockly.FieldConfig {
+  value?: number[][];
+  width?: number;
+  height?: number;
 }
 
 Blockly.fieldRegistry.register('field_bitmap', FieldBitmap);
