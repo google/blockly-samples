@@ -93,7 +93,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
 
   /**
    * Returns the height of the image in pixels.
-   * 
+   *
    * @returns The height in pixels.
    */
   getImageHeight() {
@@ -120,7 +120,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
       return null;
     }
 
-    // Check that the width matches the existing width of the image if it 
+    // Check that the width matches the existing width of the image if it
     // already has a value.
     const newWidth = newValue[0].length;
     for (const row of newValue) {
@@ -159,7 +159,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   /**
    * Show the bitmap editor dialog.
    *
-   * @param e Optional mouse event that triggered the field to open, or 
+   * @param e Optional mouse event that triggered the field to open, or
    *    undefined if triggered programmatically.
    */
   protected override showEditor_(e?: Event) {
@@ -206,7 +206,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    */
   override updateEditable() {
     const editable = super.updateEditable();
-    // Blockly.Field's implementation sets these classes as appropriate, but 
+    // Blockly.Field's implementation sets these classes as appropriate, but
     // since this field has no text they just mess up the rendering of the grid
     // lines.
     const svgRoot = this.getSvgRoot();
