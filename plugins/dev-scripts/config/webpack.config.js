@@ -29,6 +29,18 @@ module.exports = (env) => {
   let entry;
   let outputFile;
   let target = 'web';
+  let plugins = [
+    // Use DefinePlugin (https://webpack.js.org/plugins/define-plugin/)
+    // to pass the name of the package being built to the dev-tools
+    // playground (via plugins/dev-tools/src/playground/id.js).  The
+    // "process.env."  prefix is arbitrary: the stringified value
+    // gets substituted directly into the source code of that file
+    // at build time.
+    new webpack.DefinePlugin({
+      'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+    }),
+  ];
+
   if (isProduction) {
     // Production.
     if (exists('./src/index.js')) entry = './src/index.js';
@@ -51,6 +63,18 @@ module.exports = (env) => {
       });
     outputFile = '[name].mocha.js';
     target = 'node';
+    // Certain optional plugins wanted by dependencies of blockly
+    // (jsdom want canvas, jsdom depends on ws which wants
+    // bufferutils and utf-8-validate) are loaded via:
+    //
+    // try {/*...*/ = require('package')} catch (e) {/*...*/}
+    //
+    // Webpack tries to satisfy the require even though it's in a
+    // try/catch, and issues a warning if it can't be found.
+    // IgnorePlugin suppresses this.
+    plugins.push(new webpack.IgnorePlugin({
+      resourceRegExp: /^(canvas|bufferutil|utf-8-validate)$/}),
+    );
   }
 
   return {
@@ -93,23 +117,7 @@ module.exports = (env) => {
     // Ignore spurious warnings from source-map-loader
     // It can't find source maps for some Closure modules and that is expected
     ignoreWarnings: [/Failed to parse source map/],
-    plugins: [
-      // Use DefinePlugin (https://webpack.js.org/plugins/define-plugin/)
-      // to pass the name of the package being built to the dev-tools
-      // playground (via plugins/dev-tools/src/playground/id.js).  The
-      // "process.env."  prefix is arbitrary: the stringified value
-      // gets substituted directly into the source code of that file
-      // at build time.
-      new webpack.DefinePlugin({
-        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
-      }),
-      // canvas should only be required by jsdom if the 'canvas' package is
-      // installed in package.json. Ignoring canvas require errors.
-      isTest &&
-        new webpack.IgnorePlugin({
-          resourceRegExp: /canvas$/,
-        }),
-    ].filter(Boolean),
+    plugins,
     externals: isProduction
       ? {
           'blockly': {
