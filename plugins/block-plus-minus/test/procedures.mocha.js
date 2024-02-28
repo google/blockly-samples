@@ -6,7 +6,7 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const {testHelpers} = require('@blockly/dev-tools');
 const procedureTestHelpers = require('./procedures_test_helpers.mocha');
 const {dartGenerator} = require('blockly/dart');

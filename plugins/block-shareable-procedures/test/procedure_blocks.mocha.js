@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
