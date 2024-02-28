@@ -7,7 +7,7 @@
 const sinon = require('sinon');
 const chai = require('chai');
 
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 
 const {NavigationController} = require('../src/index');
 const {

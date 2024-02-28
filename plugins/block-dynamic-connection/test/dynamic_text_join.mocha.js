@@ -1,3 +1,4 @@
+
 /**
  * @license
  * Copyright 2021 Google LLC
@@ -6,7 +7,7 @@
 
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
