@@ -93,9 +93,10 @@ module.exports = (env) => {
       clean: true,
     },
     resolve: {
-      extensions: ['.ts', '.js'].filter(
-        (ext) => isTypescript || !ext.includes('ts'),
-      ),
+      extensions: ['.ts', '.js', '.json', '.wasm'],
+      // Some deps may require node.js core modules.  Tell node.js what
+      // polyfills to use for them when building for non-node.js targets
+      // (Or to ignore them if the fallback is false.)
       fallback: {
         util: false,
       },
