@@ -29,7 +29,7 @@ module.exports = (env) => {
   let entry;
   let outputFile;
   let target = 'web';
-  let plugins = [
+  const plugins = [
     // Use DefinePlugin (https://webpack.js.org/plugins/define-plugin/)
     // to pass the name of the package being built to the dev-tools
     // playground (via plugins/dev-tools/src/playground/id.js).  The
@@ -72,8 +72,10 @@ module.exports = (env) => {
     // Webpack tries to satisfy the require even though it's in a
     // try/catch, and issues a warning if it can't be found.
     // IgnorePlugin suppresses this.
-    plugins.push(new webpack.IgnorePlugin({
-      resourceRegExp: /^(canvas|bufferutil|utf-8-validate)$/}),
+    plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^(canvas|bufferutil|utf-8-validate)$/,
+      }),
     );
   }
 
