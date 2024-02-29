@@ -4,11 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/**
- * @fileoverview Bitmap input field.
- * @author gregoryc@outlook.com (Greg Cannon)
- */
-
 import Blockly from 'blockly/core';
 
 export const DEFAULT_HEIGHT = 5;
@@ -163,7 +158,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    *    undefined if triggered programmatically.
    */
   protected override showEditor_(e?: Event) {
-    const editor = this.dropdownCreate_();
+    const editor = this.dropdownCreate();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
     Blockly.DropDownDiv.showPositionedByField(
       this,
@@ -240,7 +235,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    *
    * @returns The newly created dropdown menu.
    */
-  private dropdownCreate_() {
+  private dropdownCreate() {
     const dropdownEditor = this.createElementWithClassname(
       'div',
       'dropdownEditor',
