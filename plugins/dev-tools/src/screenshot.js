@@ -71,7 +71,6 @@ function workspaceToSvg_(workspace, callback, customCss) {
   const blockCanvasClone = blockCanvas.cloneNode(true);
   blockCanvasClone.removeAttribute('transform');
 
-
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svg.setAttribute('viewBox', x + ' ' + y + ' ' + width + ' ' + height);
