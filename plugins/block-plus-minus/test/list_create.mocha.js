@@ -206,7 +206,7 @@ suite('List create block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   suite('Json', function () {
@@ -299,7 +299,7 @@ suite('List create block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   runPlusMinusTestSuite(
