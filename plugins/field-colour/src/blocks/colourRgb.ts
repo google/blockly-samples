@@ -80,7 +80,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}(r, g, b) {
 }
 `,
   );
-  const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
+  const code = `${functionName}(${red}, ${green}, ${blue})`;
   return [code, JavascriptOrder.FUNCTION_CALL];
 }
 
@@ -125,7 +125,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}(num r, num g, num b) {
 }
 `,
   );
-  const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
+  const code = `${functionName}(${red}, ${green}, ${blue})`;
   return [code, DartOrder.UNARY_POSTFIX];
 }
 
@@ -155,7 +155,7 @@ end
   const red = generator.valueToCode(block, 'RED', LuaOrder.NONE) || 0;
   const green = generator.valueToCode(block, 'GREEN', LuaOrder.NONE) || 0;
   const blue = generator.valueToCode(block, 'BLUE', LuaOrder.NONE) || 0;
-  const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
+  const code = `${functionName}(${red}, ${green}, ${blue})`;
   return [code, LuaOrder.HIGH];
 }
 
@@ -189,7 +189,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}($r, $g, $b) {
 }
 `,
   );
-  const code = functionName + '(' + red + ', ' + green + ', ' + blue + ')';
+  const code = `${functionName}(${red}, ${green}, ${blue})`;
   return [code, PhpOrder.FUNCTION_CALL];
 }
 

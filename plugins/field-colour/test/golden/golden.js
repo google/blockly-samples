@@ -1,5 +1,5 @@
 function colourRandom() {
-  var num = Math.floor(Math.random() * Math.pow(2, 24));
+  var num = Math.floor(Math.random() * 0x1000000);
   return '#' + ('00000' + num.toString(16)).substr(-6);
 }
 
