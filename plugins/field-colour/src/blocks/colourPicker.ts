@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Block, common as BlocklyCommon} from 'blockly';
+import {Block, common as BlocklyCommon} from 'blockly/core';
 import {
   JavascriptGenerator,
   Order as JavascriptOrder,
