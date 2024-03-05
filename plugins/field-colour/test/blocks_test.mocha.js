@@ -1,11 +1,11 @@
 /**
  * @license
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import fs from 'fs';
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import {dartGenerator} from 'blockly/dart';
@@ -21,7 +21,6 @@ const blockJson = {
     blocks: [
       {
         type: 'colour_picker',
-        id: '+g[iA}db.}w:CQV#k-p@',
         x: 13,
         y: 13,
         fields: {
@@ -30,20 +29,17 @@ const blockJson = {
       },
       {
         type: 'colour_random',
-        id: 'b^8w0?$T=nknkxAJ-k/,',
         x: 13,
         y: 113,
       },
       {
         type: 'colour_rgb',
-        id: '5So^sE~[0ZBX{rh6_xpS',
         x: 13,
         y: 263,
         inputs: {
           RED: {
             shadow: {
               type: 'math_number',
-              id: '/$GQXp~[}?aF~Y/;IwXE',
               fields: {
                 NUM: 0,
               },
@@ -52,7 +48,6 @@ const blockJson = {
           GREEN: {
             shadow: {
               type: 'math_number',
-              id: 'Zu8R8Q?Kv#eS;[z}wiwv',
               fields: {
                 NUM: 1,
               },
@@ -61,7 +56,6 @@ const blockJson = {
           BLUE: {
             shadow: {
               type: 'math_number',
-              id: '4#}%st2@J5.1PUKmrPun',
               fields: {
                 NUM: 20,
               },
@@ -71,14 +65,12 @@ const blockJson = {
       },
       {
         type: 'colour_blend',
-        id: 'rRW^zDApg:3fRbX+(gY8',
         x: 13,
         y: 363,
         inputs: {
           COLOUR1: {
             shadow: {
               type: 'colour_picker',
-              id: 'BaG$fQn,_f5pw(l6p$Xc',
               fields: {
                 COLOUR: '#ff0000',
               },
@@ -87,7 +79,6 @@ const blockJson = {
           COLOUR2: {
             shadow: {
               type: 'colour_picker',
-              id: '~pU~8+2B,l6Z?hAGDZB$',
               fields: {
                 COLOUR: '#3333ff',
               },
@@ -96,7 +87,6 @@ const blockJson = {
           RATIO: {
             shadow: {
               type: 'math_number',
-              id: ';5A^q?k8F:$u%n((AY`^',
               fields: {
                 NUM: 0.5,
               },
@@ -106,7 +96,6 @@ const blockJson = {
       },
       {
         type: 'colour_picker',
-        id: ';CgIP)-U]0;%NC#ir7c}',
         x: 13,
         y: 63,
         fields: {
@@ -115,14 +104,12 @@ const blockJson = {
       },
       {
         type: 'colour_rgb',
-        id: 'VwLow%0*OyQY!dTRDPau',
         x: 13,
         y: 163,
         inputs: {
           RED: {
             shadow: {
               type: 'math_number',
-              id: 'kRmNRDkkfK%vji-|s/Z!',
               fields: {
                 NUM: 100,
               },
@@ -131,7 +118,6 @@ const blockJson = {
           GREEN: {
             shadow: {
               type: 'math_number',
-              id: '$~6Sa+y$EC=gSI=JDZ_5',
               fields: {
                 NUM: 50,
               },
@@ -140,7 +126,6 @@ const blockJson = {
           BLUE: {
             shadow: {
               type: 'math_number',
-              id: '=KN[19-TRP#;BU9;u((8',
               fields: {
                 NUM: 0,
               },
@@ -150,14 +135,12 @@ const blockJson = {
       },
       {
         type: 'colour_blend',
-        id: 'Q}mY1lOEXCle2MtW%Oc/',
         x: 13,
         y: 463,
         inputs: {
           COLOUR1: {
             shadow: {
               type: 'colour_picker',
-              id: 'fm~AH|r,z03k|+SNT%95',
               fields: {
                 COLOUR: '#000000',
               },
@@ -166,7 +149,6 @@ const blockJson = {
           COLOUR2: {
             shadow: {
               type: 'colour_picker',
-              id: 'emM{3eME*okoN3lFMsWu',
               fields: {
                 COLOUR: '#ffffff',
               },
@@ -175,7 +157,6 @@ const blockJson = {
           RATIO: {
             shadow: {
               type: 'math_number',
-              id: 'V={|jm2-O9i}9NPE5s)Z',
               fields: {
                 NUM: 0.3,
               },
@@ -190,7 +171,7 @@ const blockJson = {
 /**
  * Uninstall old blocks and generators, since they come pre-installed
  * with Blockly.
- * TODO(2194): Delete this function and calls to it.
+ * TODO(#2194): Delete this function and calls to it.
  */
 function uninstallBlocks() {
   delete Blockly.Blocks['colour_blend'];
