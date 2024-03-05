@@ -6,6 +6,7 @@
 
 import fs from 'fs';
 import * as Blockly from 'blockly/core';
+import 'blockly/blocks';
 
 import {javascriptGenerator} from 'blockly/javascript';
 import {dartGenerator} from 'blockly/dart';
