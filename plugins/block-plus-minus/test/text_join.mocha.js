@@ -195,7 +195,7 @@ suite('Text join block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   suite('Json', function () {
@@ -275,7 +275,7 @@ suite('Text join block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   runPlusMinusTestSuite('text_join', 2, 0, 'ADD', assertTextJoinBlockStructure);

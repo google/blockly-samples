@@ -172,7 +172,7 @@ suite('If block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   suite('JSON', function () {
@@ -222,7 +222,7 @@ suite('If block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   runPlusMinusTestSuite('controls_if', 1, 1, 'IF', assertIfBlockStructure);

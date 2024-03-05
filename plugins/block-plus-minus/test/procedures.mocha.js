@@ -339,7 +339,7 @@ suite('Procedure blocks', function () {
             },
           },
         ];
-        runSerializationTestSuite(testCases);
+        runSerializationTestSuite(testCases, Blockly);
       });
 
       suite('Json', function () {
@@ -514,7 +514,7 @@ suite('Procedure blocks', function () {
             },
           },
         ];
-        runSerializationTestSuite(testCases);
+        runSerializationTestSuite(testCases, Blockly);
       });
 
       suite('Adding and removing inputs', function () {

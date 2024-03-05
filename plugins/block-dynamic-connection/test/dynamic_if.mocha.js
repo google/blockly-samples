@@ -6,7 +6,7 @@
 
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
-const Blockly = require('blockly');
+const Blockly = require('blockly/node');
 const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
@@ -641,5 +641,5 @@ suite('If block', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(testCases);
+  testHelpers.runSerializationTestSuite(testCases, Blockly);
 });

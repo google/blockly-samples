@@ -140,7 +140,7 @@ suite('BlockTemplate', function () {
     },
     // TODO add additional test cases.
   ];
-  runSerializationTestSuite(testCases);
+  runSerializationTestSuite(testCases, Blockly);
 
   // TODO add any other relevant tests
 });

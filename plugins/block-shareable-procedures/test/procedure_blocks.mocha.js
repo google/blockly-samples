@@ -2228,7 +2228,7 @@ suite('Procedures', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(xmlTestCases, globalThis.clock);
+  testHelpers.runSerializationTestSuite(xmlTestCases, Blockly);
 
   const jsonTestCases = [
     {
@@ -2448,5 +2448,5 @@ suite('Procedures', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(jsonTestCases, globalThis.clock);
+  testHelpers.runSerializationTestSuite(jsonTestCases, Blockly);
 });
