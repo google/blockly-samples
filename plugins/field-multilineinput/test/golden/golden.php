@@ -1,4 +1,2 @@
-print('’Twas brillig, and the slithy toves' . "\n" .
-'  Did gyre and gimble in the wabe:' . "\n" .
-'All mimsy were the borogoves,' . "\n" .
-'  And the mome raths outgrabe.');
+print('Picard said, "Beam me up!".' . "\n" .
+'O\'Brien made it so.');

@@ -29,7 +29,7 @@ const blockJson = {
             block: {
               type: 'text_multiline',
               fields: {
-                TEXT: '’Twas brillig, and the slithy toves\n  Did gyre and gimble in the wabe:\nAll mimsy were the borogoves,\n  And the mome raths outgrabe.',
+                TEXT: 'Picard said, "Beam me up!".\nO\'Brien made it so.',
               },
             },
           },
