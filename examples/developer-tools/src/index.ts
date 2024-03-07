@@ -9,7 +9,7 @@ import * as En from 'blockly/msg/en';
 import {jsonDefinitionGenerator} from './output-generators/json_definition_generator';
 import {javascriptDefinitionGenerator} from './output-generators/javascript_definition_generator';
 import {registerAllBlocks} from './blocks';
-import {save, load} from './serialization';
+import {saveOnChange, load} from './serialization';
 import {toolbox} from './toolbox';
 import {theme} from './theme';
 import 'blockly/blocks';
@@ -65,6 +65,6 @@ mainWorkspace.addChangeListener((e: Blockly.Events.Abstract) => {
     return;
   }
 
-  save(mainWorkspace);
+  saveOnChange(mainWorkspace, e);
   controller.updateOutput();
 });
