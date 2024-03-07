@@ -5,6 +5,7 @@
  */
 
 import * as Blockly from 'blockly/core';
+import * as storage from '../storage';
 
 /** Base of new block. */
 export const factoryBase = {
@@ -12,7 +13,12 @@ export const factoryBase = {
     this.setStyle('base');
     this.appendDummyInput()
       .appendField('name')
-      .appendField(new Blockly.FieldTextInput('block_type'), 'NAME');
+      .appendField(
+        new Blockly.FieldTextInput('block_type', (name) =>
+          this.validateName(name),
+        ),
+        'NAME',
+      );
     this.appendStatementInput('INPUTS').setCheck('Input').appendField('inputs');
     const inputsDropdown = new Blockly.FieldDropdown([
       ['automatic inputs', 'AUTO'],
@@ -104,5 +110,20 @@ export const factoryBase = {
       .setCheck(['ConnectionCheck', 'ConnectionCheckArray'])
       .appendField(label);
     this.moveInputBefore(name, 'COLOUR');
+  },
+  validateName: function (name: string): string | null {
+    // If the name is prohibited then it's never valid
+    if (storage.getProhibitedBlockNames().has(name)) return null;
+
+    // If the name is the currently-being-edited block it's always valid
+    // This most often occurs when loading a block from storage and we're
+    // currently deserializing a block for the first time.
+    if (storage.getLastEditedBlockName() === name) return name;
+
+    // Otherwise, it's invalid if the name is already in storage but it's not
+    // the one we're currently editing
+    if (storage.getAllSavedBlockNames().has(name)) return null;
+
+    return name;
   },
 };
