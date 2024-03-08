@@ -119,7 +119,7 @@ export class ZoomToFitControl implements Blockly.IPositionable {
     // Attach listener.
     this.onZoomToFitWrapper = Blockly.browserEvents.conditionalBind(
       this.svgGroup,
-      'mousedown',
+      'pointerdown',
       null,
       this.onClick.bind(this),
     );
@@ -127,8 +127,10 @@ export class ZoomToFitControl implements Blockly.IPositionable {
 
   /**
    * Handle click event.
+   *
+   * @param e A pointer down event.
    */
-  private onClick() {
+  private onClick(e: PointerEvent) {
     this.workspace.zoomToFit();
     const uiEvent = new (Blockly.Events.get(Blockly.Events.CLICK))(
       null,
@@ -136,6 +138,8 @@ export class ZoomToFitControl implements Blockly.IPositionable {
       'zoom_reset_control',
     );
     Blockly.Events.fire(uiEvent);
+    e.stopPropagation(); // avoid to also fire workspace click event
+    e.preventDefault();
   }
 
   /**
