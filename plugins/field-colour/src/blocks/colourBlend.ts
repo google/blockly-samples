@@ -92,8 +92,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}(c1, c2, ratio) {
 }
 `,
   );
-  const code =
-    functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+  const code = `${functionName}(${colour1}, ${colour2}, ${ratio})`;
   return [code, JavascriptOrder.FUNCTION_CALL];
 }
 
@@ -147,8 +146,7 @@ String ${generator.FUNCTION_NAME_PLACEHOLDER_}(String c1, String c2, num ratio) 
 }
 `,
   );
-  const code =
-    functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+  const code = `${functionName}(${colour1}, ${colour2}, ${ratio})`;
   return [code, DartOrder.UNARY_POSTFIX];
 }
 
@@ -187,8 +185,7 @@ end
   const colour2 =
     generator.valueToCode(block, 'COLOUR2', LuaOrder.NONE) || "'#000000'";
   const ratio = generator.valueToCode(block, 'RATIO', LuaOrder.NONE) || 0;
-  const code =
-    functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+  const code = `${functionName}(${colour1}, ${colour2}, ${ratio})`;
   return [code, LuaOrder.HIGH];
 }
 
@@ -231,8 +228,7 @@ function ${generator.FUNCTION_NAME_PLACEHOLDER_}($c1, $c2, $ratio) {
 }
 `,
   );
-  const code =
-    functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+  const code = `${functionName}(${colour1}, ${colour2}, ${ratio})`;
   return [code, PhpOrder.FUNCTION_CALL];
 }
 
@@ -267,8 +263,7 @@ def ${generator.FUNCTION_NAME_PLACEHOLDER_}(colour1, colour2, ratio):
   const colour2 =
     generator.valueToCode(block, 'COLOUR2', PythonOrder.NONE) || "'#000000'";
   const ratio = generator.valueToCode(block, 'RATIO', PythonOrder.NONE) || 0;
-  const code =
-    functionName + '(' + colour1 + ', ' + colour2 + ', ' + ratio + ')';
+  const code = `${functionName}(${colour1}, ${colour2}, ${ratio})`;
   return [code, PythonOrder.FUNCTION_CALL];
 }
 
