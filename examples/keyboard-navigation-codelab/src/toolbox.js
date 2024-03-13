@@ -330,10 +330,6 @@ export const toolbox = {
         },
         {
           kind: 'block',
-          type: 'text_multiline',
-        },
-        {
-          kind: 'block',
           type: 'text_join',
         },
         {
