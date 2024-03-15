@@ -50,7 +50,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @this {Blockly.Block}
    */
   domToMutation: function (xmlElement) {
-    this.setFieldValue('LABEL', xmlElement.getAttribute('arbitrary'));
+    this.setFieldValue(xmlElement.getAttribute('arbitrary'), 'LABEL');
   },
   /**
    * Returns the state of this block as a json serializable object.
