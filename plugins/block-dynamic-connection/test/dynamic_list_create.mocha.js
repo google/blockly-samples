@@ -540,5 +540,5 @@ suite('List create block', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(testCases);
+  testHelpers.runSerializationTestSuite(testCases, Blockly);
 });

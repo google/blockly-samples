@@ -13,7 +13,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
 
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const {NavigationController, Constants} = require('../src/index');
 const {
   createNavigationWorkspace,

@@ -6,7 +6,7 @@
 
 const {assert} = require('chai');
 const sinon = require('sinon');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const SuggestedBlocks = require('../src/index');
 
 const STANDARD_TEST_CASE = {

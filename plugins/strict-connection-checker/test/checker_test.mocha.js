@@ -11,7 +11,7 @@
  */
 
 const chai = require('chai');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 
 const StrictConnectionChecker =
   require('../src/index.js').StrictConnectionChecker;

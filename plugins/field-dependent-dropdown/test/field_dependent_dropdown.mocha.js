@@ -6,7 +6,7 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 require('./field_dependent_dropdown_test_block');
 
 const assert = chai.assert;

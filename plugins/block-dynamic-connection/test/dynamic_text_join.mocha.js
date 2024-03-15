@@ -542,5 +542,5 @@ suite('Text join block', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(testCases);
+  testHelpers.runSerializationTestSuite(testCases, Blockly);
 });
