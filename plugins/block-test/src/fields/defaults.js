@@ -86,50 +86,6 @@ Blockly.defineBlocksWithJsonArray([
     helpUrl: '',
   },
   {
-    type: 'test_fields_colour',
-    message0: 'colour %1',
-    args0: [
-      {
-        type: 'field_colour',
-        name: 'COLOUR',
-        colour: '#ff0000',
-      },
-    ],
-    style: 'math_blocks',
-    tooltip: '',
-    helpUrl: '',
-  },
-  {
-    type: 'test_fields_colour_options',
-    message0: 'colour options %1',
-    args0: [
-      {
-        type: 'field_colour',
-        name: 'COLOUR',
-        colour: '#ff4040',
-        colourOptions: [
-          '#ff4040',
-          '#ff8080',
-          '#ffc0c0',
-          '#4040ff',
-          '#8080ff',
-          '#c0c0ff',
-        ],
-        colourTitles: [
-          'dark pink',
-          'pink',
-          'light pink',
-          'dark blue',
-          'blue',
-          'light blue',
-        ],
-        columns: 3,
-      },
-    ],
-    style: 'math_blocks',
-    tooltip: 'test tooltip',
-  },
-  {
     type: 'test_fields_variable',
     message0: 'variable %1',
     args0: [
@@ -229,14 +185,6 @@ export const category = {
     {
       kind: 'BLOCK',
       type: 'test_fields_checkbox',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_fields_colour',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_fields_colour_options',
     },
     {
       kind: 'BLOCK',
