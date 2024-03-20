@@ -368,13 +368,6 @@ export default {
           },
         },
         {
-          type: 'text_multiline',
-          kind: 'block',
-          fields: {
-            TEXT: '',
-          },
-        },
-        {
           type: 'text_join',
           kind: 'block',
         },

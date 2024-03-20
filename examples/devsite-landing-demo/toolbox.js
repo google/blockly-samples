@@ -280,10 +280,6 @@ let toolboxJson = {
         },
         {
           kind: 'BLOCK',
-          type: 'text_multiline',
-        },
-        {
-          kind: 'BLOCK',
           type: 'text_join',
           extraState: {itemCount: 2},
         },
