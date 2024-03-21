@@ -8,7 +8,6 @@
  * @fileoverview Backpack with a notification.
  */
 
-
 class NotificationBackpack extends Backpack {
   /**
    * Constructor for a backpack.
@@ -90,34 +89,39 @@ class NotificationBackpack extends Backpack {
    */
   createNotificationSvg_() {
     this.countSvg_ = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.G, {'opacity': 0}, this.svgGroup_);
+      Blockly.utils.Svg.G,
+      {opacity: 0},
+      this.svgGroup_,
+    );
     const circleRadius = this.WIDTH_ / 4;
     Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.CIRCLE,
-        {
-          'cx': this.WIDTH_ * 4 / 5,
-          'cy': this.HEIGHT_ / 4,
-          'fill': this.countSvgColour_,
-          'r': circleRadius,
-          'stroke': '#888',
-          'stroke-width': 1,
-        },
-        this.countSvg_);
+      Blockly.utils.Svg.CIRCLE,
+      {
+        'cx': (this.WIDTH_ * 4) / 5,
+        'cy': this.HEIGHT_ / 4,
+        'fill': this.countSvgColour_,
+        'r': circleRadius,
+        'stroke': '#888',
+        'stroke-width': 1,
+      },
+      this.countSvg_,
+    );
     this.countSvgText_ = Blockly.utils.dom.createSvgElement(
-        Blockly.utils.Svg.TEXT,
-        {
-          'dominant-baseline': 'central',
-          'fill': this.countSvgTextColour_,
-          'font-family': 'sans-serif',
-          'font-size': '0.75em',
-          'font-weight': '600',
-          'height': circleRadius * 2,
-          'text-anchor': 'middle',
-          'width': circleRadius * 2,
-          'x': this.WIDTH_ * 4 / 5,
-          'y': this.HEIGHT_ / 4,
-        },
-        this.countSvg_);
+      Blockly.utils.Svg.TEXT,
+      {
+        'dominant-baseline': 'central',
+        'fill': this.countSvgTextColour_,
+        'font-family': 'sans-serif',
+        'font-size': '0.75em',
+        'font-weight': '600',
+        'height': circleRadius * 2,
+        'text-anchor': 'middle',
+        'width': circleRadius * 2,
+        'x': (this.WIDTH_ * 4) / 5,
+        'y': this.HEIGHT_ / 4,
+      },
+      this.countSvg_,
+    );
   }
 
   /**
@@ -130,8 +134,10 @@ class NotificationBackpack extends Backpack {
         this.countSvgText_.textContent = '!';
         this.countSvg_.setAttribute('opacity', '1');
       } else {
-        this.countSvgText_.textContent = this.notificationCount_ > 99 ?
-            '99+' : this.notificationCount_.toString();
+        this.countSvgText_.textContent =
+          this.notificationCount_ > 99
+            ? '99+'
+            : this.notificationCount_.toString();
       }
       this.countSvg_.setAttribute('opacity', '1');
     } else {
@@ -202,7 +208,7 @@ class NotificationBackpack extends Backpack {
         return true;
       }
       return false;
-    },);
+    });
     // Count added items.
     const added = contents.filter((item) => {
       const isAdded = this.contents_.indexOf(item) === -1;
@@ -220,6 +226,6 @@ class NotificationBackpack extends Backpack {
     this.cachedRemovedContent_.push(...removed);
     this.cachedAddedContent_.push(...added);
     this.notificationCount_ =
-        this.cachedRemovedContent_.length + this.cachedAddedContent_.length;
+      this.cachedRemovedContent_.length + this.cachedAddedContent_.length;
   }
 }

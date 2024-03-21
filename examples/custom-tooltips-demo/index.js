@@ -8,7 +8,6 @@
  * @fileoverview Test page for example plugin showing custom tooltip rendering.
  */
 
-
 /**
  * Create and register the custom tooltip rendering function.
  * This could be extracted into a plugin if desired.
@@ -18,7 +17,7 @@ function initTooltips() {
   // a tooltip is shown in Blockly. The first argument is the div to render
   // the content into. The second argument is the element to show the tooltip
   // for.
-  const customTooltip = function(div, element) {
+  const customTooltip = function (div, element) {
     if (element instanceof Blockly.BlockSvg) {
       // You can access the block being moused over.
       // Here we get the color of the block to set the background color.
@@ -58,9 +57,9 @@ function createWorkspace(blocklyDiv, options) {
   return workspace;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   Blockly.Blocks['custom_tooltip_1'] = {
-    init: function() {
+    init: function () {
       this.appendDummyInput().appendField('This is a test block.');
       this.setColour(150);
       this.setTooltip('This is a regular tooltip.');
@@ -68,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
   };
   Blockly.Blocks['custom_tooltip_2'] = {
-    init: function() {
+    init: function () {
       this.appendDummyInput().appendField('Mouse over me.');
       this.setColour(150);
       this.setTooltip('Tip: This tooltip has an image.');
@@ -79,10 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   const defaultOptions = {
     toolbox: {
-      'kind': 'flyoutToolbox',
-      'contents': [
-        {'kind': 'block', 'type': 'custom_tooltip_1'},
-        {'kind': 'block', 'type': 'custom_tooltip_2'},
+      kind: 'flyoutToolbox',
+      contents: [
+        {kind: 'block', type: 'custom_tooltip_1'},
+        {kind: 'block', type: 'custom_tooltip_2'},
       ],
     },
   };
@@ -90,5 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // createPlayground is from @blockly/dev-tools.
   // eslint-disable-next-line no-undef
   createPlayground(
-      document.getElementById('root'), createWorkspace, defaultOptions);
+    document.getElementById('root'),
+    createWorkspace,
+    defaultOptions,
+  );
 });

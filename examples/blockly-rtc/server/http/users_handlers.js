@@ -24,16 +24,16 @@
 
 const database = require('../Database');
 
- /**
-  * Handler for a users PUT request. Update a user's position in the users table.
-  * @param {!Object} req The HTTP request object.
-  * @param {!Object} res The HTTP response object.
-  * @private
-  */
+/**
+ * Handler for a users PUT request. Update a user's position in the users table.
+ * @param {!Object} req The HTTP request object.
+ * @param {!Object} res The HTTP response object.
+ * @private
+ */
 async function updatePositionHandler(req, res) {
   try {
     const data = [];
-    req.on('data', chunk => {
+    req.on('data', (chunk) => {
       data.push(chunk);
     });
     req.on('end', async () => {
@@ -45,8 +45,8 @@ async function updatePositionHandler(req, res) {
   } catch {
     res.statusCode = 401;
     res.end();
-  };
-};
+  }
+}
 
 /**
  * Handler for a getPositionUpdates message. Query the database for a
@@ -60,13 +60,13 @@ async function getPositionUpdatesHandler(res, workspaceId) {
     const positionUpdates = await database.getPositionUpdates(workspaceId);
     res.setHeader('Content-Type', 'application/json');
     res.statusCode = 200;
-    res.write(JSON.stringify({ positionUpdates }));
+    res.write(JSON.stringify({positionUpdates}));
     res.end();
   } catch {
     res.statusCode = 401;
     res.end();
-  };
-};
+  }
+}
 
 module.exports.updatePositionHandler = updatePositionHandler;
 module.exports.getPositionUpdatesHandler = getPositionUpdatesHandler;

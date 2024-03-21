@@ -40,7 +40,7 @@ export async function getSnapshot() {
       resolve(snapshot);
     });
   });
-};
+}
 
 /**
  * Query the database for entries since the given server id.
@@ -60,7 +60,7 @@ export async function getEvents(serverId) {
       resolve(entries);
     });
   });
-};
+}
 
 /**
  * Add an entry to the database.
@@ -72,14 +72,14 @@ export async function writeEvents(entry) {
   const entryJson = {
     workspaceId: entry.workspaceId,
     entryNumber: entry.entryNumber,
-    events: entry.events.map((event) => event.toJson())
+    events: entry.events.map((event) => event.toJson()),
   };
   return new Promise((resolve, reject) => {
     socket.emit('addEvents', entryJson, () => {
       resolve();
     });
   });
-};
+}
 
 /**
  * Listen for events broadcast by the server.
@@ -89,7 +89,7 @@ export async function writeEvents(entry) {
  * @public
  */
 export function getBroadcast(callback) {
-  socket.on('broadcastEvents', (entries)=> {
+  socket.on('broadcastEvents', (entries) => {
     entries.forEach((entry) => {
       entry.events = entry.events.map((entry) => {
         return Blockly.Events.fromJson(entry, Blockly.getMainWorkspace());
@@ -97,4 +97,4 @@ export function getBroadcast(callback) {
     });
     callback(entries);
   });
-};
+}

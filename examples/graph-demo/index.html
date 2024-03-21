@@ -1,542 +1,572 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Blockly Demo: Graph</title>
-  <script src="https://www.google.com/jsapi"></script>
-  <script src="./node_modules/blockly/blockly_compressed.js"></script>
-  <script src="./node_modules/blockly/blocks_compressed.js"></script>
-  <script src="./node_modules/blockly/javascript_compressed.js"></script>
-  <script src="./node_modules/blockly/msg/en.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blockly Demo: Graph</title>
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="./node_modules/blockly/blockly_compressed.js"></script>
+    <script src="./node_modules/blockly/blocks_compressed.js"></script>
+    <script src="./node_modules/blockly/javascript_compressed.js"></script>
+    <script src="./node_modules/blockly/msg/en.js"></script>
 
-  <style>
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
-    #funcText {
-      margin-top: 1em;
-      margin-left: 1.5em;
-      font-family: sans-serif;
-    }
-    #funcText>img {
-      height: 3px;
-      width: 15px;
-      vertical-align: middle;
-      margin-right: 0.5em;
-    }
-    #y1 {
-      background-color: #36c;
-    }
-  </style>
-</head>
-<body>
-  <p>This is a demo of giving instant feedback as blocks are changed.</p>
-
-  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators#generating_code">Realtime generation</a>&hellip;</p>
-
-  <table>
-    <tr>
-      <td>
-        <div id="visualization" style="width: 400px"></div>
-      </td>
-      <td>
-        <div id="blocklyDiv" style="height: 400px"></div>
-      </td>
-    </tr>
-  </table>
-
-  <div id="funcText">
-    <img id="y1" src="../../media/1x1.gif">
-    ...
-  </div>
-
-  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
-    <block type="graph_set_y" deletable="false" x="100" y="100">
-      <value name="VALUE">
-        <block type="math_arithmetic">
-          <field name="OP">POWER</field>
-          <value name="A">
-            <block type="graph_get_x"></block>
-            <shadow type="math_number">
-              <field name="NUM">1</field>
-            </shadow>
-          </value>
-          <value name="B">
-            <block type="math_number">
-              <field name="NUM">2</field>
-            </block>
-            <shadow type="math_number">
-              <field name="NUM">1</field>
-            </shadow>
-          </value>
-        </block>
-      </value>
-    </block>
-  </xml>
-
-  <script>
-// Load the Google Chart Tools Visualization API and the chart package.
-if (typeof google == 'object') {
-  google.load('visualization', '1', {packages: ['corechart']});
-} else {
-  alert('Unable to load Google\'s chart API.\n' +
-        'Are you connected to the Internet?');
-}
-
-// Define the toolbox
-const toolbox = {
-  "kind": "categoryToolbox",
-  "contents": [
-    {
-      "kind": "category",
-      "name": "Math",
-      "colour": "%{BKY_MATH_HUE}",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "math_number",
-          "fields": {
-            "NUM": 123
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_arithmetic",
-          "inputs": {
-            "A": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 1
-                }
-              }
-            },
-            "B": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 1
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_single",
-          "inputs": {
-            "NUM": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 9
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_trig",
-          "inputs": {
-            "NUM": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 45
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_constant"
-        },
-        {
-          "kind": "block",
-          "type": "math_number_property",
-          "inputs": {
-            "NUMBER_TO_CHECK": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 0
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_round",
-          "inputs": {
-            "NUM": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 3.1
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_modulo",
-          "inputs": {
-            "DIVIDEND": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 64
-                }
-              }
-            },
-            "DIVISOR": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 10
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_constrain",
-          "inputs": {
-            "VALUE": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 50
-                }
-              }
-            },
-            "LOW": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 1
-                }
-              }
-            },
-            "HIGH": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 100
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_random_int",
-          "inputs": {
-            "FROM": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 1
-                }
-              }
-            },
-            "TO": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 100
-                }
-              }
-            }
-          }
-        },
-        {
-          "kind": "block",
-          "type": "math_random_float"
-        },
-        {
-          "kind": "block",
-          "type": "math_atan2",
-          "inputs": {
-            "X": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 1
-                }
-              }
-            },
-            "Y": {
-              "shadow": {
-                "type": "math_number",
-                "fields": {
-                  "NUM": 1
-                }
-              }
-            }
-          }
-        },
-      ]
-    },
-    {
-      "kind": "category",
-      "name": "Variables",
-      "colour": "%{BKY_VARIABLES_HUE}",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "graph_get_x",
-        }
-      ]
-    },
-    {
-      "kind": "category",
-      "name": "Logic",
-      "colour": "%{BKY_LOGIC_HUE}",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "logic_compare"
-        },
-        {
-          "kind": "block",
-          "type": "logic_operation"
-        },
-
-        {
-          "kind": "block",
-          "type": "logic_negate"
-        },
-        {
-          "kind": "block",
-          "type": "logic_boolean"
-        },
-        {
-          "kind": "block",
-          "type": "logic_ternary"
-        }
-      ]
-    }
-  ]
-};
-
-const startBlocks = {
-  "blocks": {
-    "blocks": [{
-      "kind": "block",
-      "type": "graph_set_y",
-      "x": 100,
-      "y": 100,
-      "inputs": {
-        "VALUE": {
-          "block": {
-            "type": "math_arithmetic",
-            "fields": {
-              "OP": "POWER"
-            },
-            "inputs": {
-              "A": {
-                "block":{
-                  "type": "graph_get_x",
-                  "shadow": {
-                    "type": "math_number",
-                    "fields": {
-                      "NUM": 1
-                    }
-                  }
-                }
-              },
-              "B": {
-                "block": {
-                  "type": "math_number",
-                  "fields": {
-                    "NUM": 2
-                  },
-                  "shadow": {
-                    "type": "math_number",
-                    "fields": {
-                      "NUM": 1
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
       }
-    }]
-  }
-};
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+      #funcText {
+        margin-top: 1em;
+        margin-left: 1.5em;
+        font-family: sans-serif;
+      }
+      #funcText > img {
+        height: 3px;
+        width: 15px;
+        vertical-align: middle;
+        margin-right: 0.5em;
+      }
+      #y1 {
+        background-color: #36c;
+      }
+    </style>
+  </head>
+  <body>
+    <p>This is a demo of giving instant feedback as blocks are changed.</p>
 
-// Define the custom blocks and their JS generators.
-Blockly.defineBlocksWithJsonArray([{
-  "type": "graph_get_x",
-  "message0": "x",
-  "output": "Number",
-  "colour": Blockly.Msg['VARIABLES_HUE'],
-  "tooltip": Blockly.Msg['VARIABLES_GET_TOOLTIP'],
-  "helpUrl": Blockly.Msg['VARIABLES_GET_HELPURL']
-}]);
+    <p>
+      &rarr; More info on
+      <a
+        href="https://developers.google.com/blockly/guides/configure/web/code-generators#generating_code"
+        >Realtime generation</a
+      >&hellip;
+    </p>
 
-javascript.javascriptGenerator.forBlock['graph_get_x'] = function(block) {
-  // x variable getter.
-  return ['x', javascript.Order.ATOMIC];
-};
+    <table>
+      <tr>
+        <td>
+          <div id="visualization" style="width: 400px"></div>
+        </td>
+        <td>
+          <div id="blocklyDiv" style="height: 400px"></div>
+        </td>
+      </tr>
+    </table>
 
-Blockly.defineBlocksWithJsonArray([{
-  "type": "graph_set_y",
-  "message0": "y = %1",
-  "args0": [
-    {
-      "type": "input_value",
-      "name": "VALUE",
-      "check": "Number"
-    }
-  ],
-  "colour": Blockly.Msg['VARIABLES_HUE'],
-  "tooltip": Blockly.Msg['VARIABLES_SET_TOOLTIP'],
-  "helpUrl": Blockly.Msg['VARIABLES_SET_HELPURL']
-}]);
+    <div id="funcText">
+      <img id="y1" src="../../media/1x1.gif" />
+      ...
+    </div>
 
-javascript.javascriptGenerator.forBlock['graph_set_y'] = function(block, generator) {
-  // block.setDeletable cannot be set from json
-  block.setDeletable(false);
+    <xml
+      xmlns="https://developers.google.com/blockly/xml"
+      id="startBlocks"
+      style="display: none">
+      <block type="graph_set_y" deletable="false" x="100" y="100">
+        <value name="VALUE">
+          <block type="math_arithmetic">
+            <field name="OP">POWER</field>
+            <value name="A">
+              <block type="graph_get_x"></block>
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+            <value name="B">
+              <block type="math_number">
+                <field name="NUM">2</field>
+              </block>
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+    </xml>
 
-  // y variable setter.
-  var argument0 = generator.valueToCode(block, 'VALUE',
-      javascript.Order.ASSIGNMENT) || '';
-  return 'y = ' + argument0 + ';';
-};
+    <script>
+      // Load the Google Chart Tools Visualization API and the chart package.
+      if (typeof google == 'object') {
+        google.load('visualization', '1', {packages: ['corechart']});
+      } else {
+        alert(
+          "Unable to load Google's chart API.\n" +
+            'Are you connected to the Internet?',
+        );
+      }
 
-/**
- * Create a namespace for the application.
- */
-var Graph = {};
+      // Define the toolbox
+      const toolbox = {
+        kind: 'categoryToolbox',
+        contents: [
+          {
+            kind: 'category',
+            name: 'Math',
+            colour: '%{BKY_MATH_HUE}',
+            contents: [
+              {
+                kind: 'block',
+                type: 'math_number',
+                fields: {
+                  NUM: 123,
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_arithmetic',
+                inputs: {
+                  A: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                  B: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_single',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 9,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_trig',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 45,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_constant',
+              },
+              {
+                kind: 'block',
+                type: 'math_number_property',
+                inputs: {
+                  NUMBER_TO_CHECK: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 0,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_round',
+                inputs: {
+                  NUM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 3.1,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_modulo',
+                inputs: {
+                  DIVIDEND: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 64,
+                      },
+                    },
+                  },
+                  DIVISOR: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 10,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_constrain',
+                inputs: {
+                  VALUE: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 50,
+                      },
+                    },
+                  },
+                  LOW: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                  HIGH: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 100,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_random_int',
+                inputs: {
+                  FROM: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                  TO: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 100,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                kind: 'block',
+                type: 'math_random_float',
+              },
+              {
+                kind: 'block',
+                type: 'math_atan2',
+                inputs: {
+                  X: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                  Y: {
+                    shadow: {
+                      type: 'math_number',
+                      fields: {
+                        NUM: 1,
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          {
+            kind: 'category',
+            name: 'Variables',
+            colour: '%{BKY_VARIABLES_HUE}',
+            contents: [
+              {
+                kind: 'block',
+                type: 'graph_get_x',
+              },
+            ],
+          },
+          {
+            kind: 'category',
+            name: 'Logic',
+            colour: '%{BKY_LOGIC_HUE}',
+            contents: [
+              {
+                kind: 'block',
+                type: 'logic_compare',
+              },
+              {
+                kind: 'block',
+                type: 'logic_operation',
+              },
 
-/**
- * Main Blockly workspace.
- * @type {Blockly.WorkspaceSvg}
- */
-Graph.workspace = null;
+              {
+                kind: 'block',
+                type: 'logic_negate',
+              },
+              {
+                kind: 'block',
+                type: 'logic_boolean',
+              },
+              {
+                kind: 'block',
+                type: 'logic_ternary',
+              },
+            ],
+          },
+        ],
+      };
 
-/**
- * Cached copy of the function string.
- * @type {?string}
- * @private
- */
-Graph.oldFormula_ = null;
+      const startBlocks = {
+        blocks: {
+          blocks: [
+            {
+              kind: 'block',
+              type: 'graph_set_y',
+              x: 100,
+              y: 100,
+              inputs: {
+                VALUE: {
+                  block: {
+                    type: 'math_arithmetic',
+                    fields: {
+                      OP: 'POWER',
+                    },
+                    inputs: {
+                      A: {
+                        block: {
+                          type: 'graph_get_x',
+                          shadow: {
+                            type: 'math_number',
+                            fields: {
+                              NUM: 1,
+                            },
+                          },
+                        },
+                      },
+                      B: {
+                        block: {
+                          type: 'math_number',
+                          fields: {
+                            NUM: 2,
+                          },
+                          shadow: {
+                            type: 'math_number',
+                            fields: {
+                              NUM: 1,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        },
+      };
 
-/**
- * Drawing options for the Chart API.
- * @type {!Object}
- * @private
- */
-Graph.options_ = {
-  //curveType: 'function',
-  width: 400, height: 400,
-  chartArea: {left: '10%', width: '85%', height: '85%'}
-};
+      // Define the custom blocks and their JS generators.
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: 'graph_get_x',
+          message0: 'x',
+          output: 'Number',
+          colour: Blockly.Msg['VARIABLES_HUE'],
+          tooltip: Blockly.Msg['VARIABLES_GET_TOOLTIP'],
+          helpUrl: Blockly.Msg['VARIABLES_GET_HELPURL'],
+        },
+      ]);
 
-/**
- * Visualize the graph of y = f(x) using Google Chart Tools.
- * For more documentation on Google Chart Tools, see this linechart example:
- * https://developers.google.com/chart/interactive/docs/gallery/linechart
- */
-Graph.drawVisualization = function() {
-  var formula = javascript.javascriptGenerator.workspaceToCode(Graph.workspace);
-  if (formula === Graph.oldFormula_) {
-    // No change in the formula, don't recompute.
-    return;
-  }
-  Graph.oldFormula_ = formula;
+      javascript.javascriptGenerator.forBlock['graph_get_x'] = function (
+        block,
+      ) {
+        // x variable getter.
+        return ['x', javascript.Order.ATOMIC];
+      };
 
-  // Create and populate the data table.
-  var data = google.visualization.arrayToDataTable(Graph.plot(formula));
-  // Create and draw the visualization, passing in the data and options.
-  new google.visualization.LineChart(document.getElementById('visualization')).
-      draw(data, Graph.options_);
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: 'graph_set_y',
+          message0: 'y = %1',
+          args0: [
+            {
+              type: 'input_value',
+              name: 'VALUE',
+              check: 'Number',
+            },
+          ],
+          colour: Blockly.Msg['VARIABLES_HUE'],
+          tooltip: Blockly.Msg['VARIABLES_SET_TOOLTIP'],
+          helpUrl: Blockly.Msg['VARIABLES_SET_HELPURL'],
+        },
+      ]);
 
-  // Create the "y = ..." label.  Find the relevant part of the code.
-  formula = formula.substring(formula.indexOf('y = '));
-  formula = formula.substring(0, formula.indexOf(';'));
-  var funcText = document.getElementById('funcText');
-  funcText.replaceChild(document.createTextNode(formula), funcText.lastChild);
-};
+      javascript.javascriptGenerator.forBlock['graph_set_y'] = function (
+        block,
+        generator,
+      ) {
+        // block.setDeletable cannot be set from json
+        block.setDeletable(false);
 
-/**
- * Plot points on the function y = f(x).
- * @param {string} code JavaScript code.
- * @returns {!Array.<!Array>} 2D Array of points on the graph.
- */
-Graph.plot = function(code) {
-  // Initialize a table with two column headings.
-  var table = [];
-  var y;
-  // TODO: Improve range and scale of graph.
-  for (var x = -10; x <= 10; x = Math.round((x + 0.1) * 10) / 10) {
-    try {
-      eval(code);
-    } catch (e) {
-      y = NaN;
-    }
-    if (!isNaN(y)) {
-      // Prevent y from being displayed inconsistently, some in decimals, some
-      // in scientific notation, often when y has accumulated rounding errors.
-      y = Math.round(y * Math.pow(10, 14)) / Math.pow(10, 14);
-      table.push([x, y]);
-    }
-  }
-  // Add column heading to table.
-  if (table.length) {
-    table.unshift(['x', 'y']);
-  } else {
-    // If the table is empty, add a [0, 0] row to prevent graph error.
-    table.unshift(['x', 'y'], [0, 0]);
-  }
-  return table;
-};
+        // y variable setter.
+        var argument0 =
+          generator.valueToCode(block, 'VALUE', javascript.Order.ASSIGNMENT) ||
+          '';
+        return 'y = ' + argument0 + ';';
+      };
 
-/**
- * Force Blockly to resize into the available width.
- */
-Graph.resize = function() {
-  var width = Math.max(window.innerWidth - 440, 250);
-  document.getElementById('blocklyDiv').style.width = width + 'px';
-  Blockly.svgResize(Graph.workspace);
-};
+      /**
+       * Create a namespace for the application.
+       */
+      var Graph = {};
 
-/**
- * Initialize Blockly and the graph.  Called on page load.
- */
-Graph.init = function() {
-  Graph.workspace = Blockly.inject('blocklyDiv',
-      {collapse: false,
-       disable: false,
-       media: './node_modules/blockly/media/',
-       toolbox: toolbox});
+      /**
+       * Main Blockly workspace.
+       * @type {Blockly.WorkspaceSvg}
+       */
+      Graph.workspace = null;
 
-  Blockly.serialization.workspaces.load(startBlocks, Graph.workspace);
-  Graph.workspace.clearUndo();
+      /**
+       * Cached copy of the function string.
+       * @type {?string}
+       * @private
+       */
+      Graph.oldFormula_ = null;
 
-  // When Blockly changes, update the graph.
-  Graph.workspace.addChangeListener(Graph.drawVisualization);
-  Graph.workspace.addChangeListener(Blockly.Events.disableOrphans);
-  Graph.resize();
-};
+      /**
+       * Drawing options for the Chart API.
+       * @type {!Object}
+       * @private
+       */
+      Graph.options_ = {
+        //curveType: 'function',
+        width: 400,
+        height: 400,
+        chartArea: {left: '10%', width: '85%', height: '85%'},
+      };
 
-window.addEventListener('load', Graph.init);
-window.addEventListener('resize', Graph.resize);
-  </script>
+      /**
+       * Visualize the graph of y = f(x) using Google Chart Tools.
+       * For more documentation on Google Chart Tools, see this linechart example:
+       * https://developers.google.com/chart/interactive/docs/gallery/linechart
+       */
+      Graph.drawVisualization = function () {
+        var formula = javascript.javascriptGenerator.workspaceToCode(
+          Graph.workspace,
+        );
+        if (formula === Graph.oldFormula_) {
+          // No change in the formula, don't recompute.
+          return;
+        }
+        Graph.oldFormula_ = formula;
 
-</body>
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable(Graph.plot(formula));
+        // Create and draw the visualization, passing in the data and options.
+        new google.visualization.LineChart(
+          document.getElementById('visualization'),
+        ).draw(data, Graph.options_);
+
+        // Create the "y = ..." label.  Find the relevant part of the code.
+        formula = formula.substring(formula.indexOf('y = '));
+        formula = formula.substring(0, formula.indexOf(';'));
+        var funcText = document.getElementById('funcText');
+        funcText.replaceChild(
+          document.createTextNode(formula),
+          funcText.lastChild,
+        );
+      };
+
+      /**
+       * Plot points on the function y = f(x).
+       * @param {string} code JavaScript code.
+       * @returns {!Array.<!Array>} 2D Array of points on the graph.
+       */
+      Graph.plot = function (code) {
+        // Initialize a table with two column headings.
+        var table = [];
+        var y;
+        // TODO: Improve range and scale of graph.
+        for (var x = -10; x <= 10; x = Math.round((x + 0.1) * 10) / 10) {
+          try {
+            eval(code);
+          } catch (e) {
+            y = NaN;
+          }
+          if (!isNaN(y)) {
+            // Prevent y from being displayed inconsistently, some in decimals, some
+            // in scientific notation, often when y has accumulated rounding errors.
+            y = Math.round(y * Math.pow(10, 14)) / Math.pow(10, 14);
+            table.push([x, y]);
+          }
+        }
+        // Add column heading to table.
+        if (table.length) {
+          table.unshift(['x', 'y']);
+        } else {
+          // If the table is empty, add a [0, 0] row to prevent graph error.
+          table.unshift(['x', 'y'], [0, 0]);
+        }
+        return table;
+      };
+
+      /**
+       * Force Blockly to resize into the available width.
+       */
+      Graph.resize = function () {
+        var width = Math.max(window.innerWidth - 440, 250);
+        document.getElementById('blocklyDiv').style.width = width + 'px';
+        Blockly.svgResize(Graph.workspace);
+      };
+
+      /**
+       * Initialize Blockly and the graph.  Called on page load.
+       */
+      Graph.init = function () {
+        Graph.workspace = Blockly.inject('blocklyDiv', {
+          collapse: false,
+          disable: false,
+          media: './node_modules/blockly/media/',
+          toolbox: toolbox,
+        });
+
+        Blockly.serialization.workspaces.load(startBlocks, Graph.workspace);
+        Graph.workspace.clearUndo();
+
+        // When Blockly changes, update the graph.
+        Graph.workspace.addChangeListener(Graph.drawVisualization);
+        Graph.workspace.addChangeListener(Blockly.Events.disableOrphans);
+        Graph.resize();
+      };
+
+      window.addEventListener('load', Graph.init);
+      window.addEventListener('resize', Graph.resize);
+    </script>
+  </body>
 </html>

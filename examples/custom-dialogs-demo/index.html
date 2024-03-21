@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -25,39 +25,39 @@
       or deleting multiple blocks on the workspace.
     </p>
 
-    <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+    <div id="blocklyDiv" style="height: 480px; width: 600px"></div>
 
     <script>
       // Define the toolbox
       const toolbox = {
-        kind: "categoryToolbox",
+        kind: 'categoryToolbox',
         contents: [
           {
-            kind: "category",
-            name: "Inputs",
-            colour: "%{BKY_MATH_HUE}",
+            kind: 'category',
+            name: 'Inputs',
+            colour: '%{BKY_MATH_HUE}',
             contents: [
               {
-                kind: "block",
-                type: "math_number",
+                kind: 'block',
+                type: 'math_number',
                 gap: 32,
                 fields: {
                   NUM: 123,
                 },
               },
               {
-                kind: "block",
-                type: "text",
+                kind: 'block',
+                type: 'text',
               },
               {
-                kind: "block",
-                type: "text_prompt_ext",
+                kind: 'block',
+                type: 'text_prompt_ext',
                 VALUE: {
-                  name: "text",
+                  name: 'text',
                   shadow: {
-                    type: "text",
+                    type: 'text',
                     fields: {
-                      TEXT: "abc",
+                      TEXT: 'abc',
                     },
                   },
                 },
@@ -65,22 +65,22 @@
             ],
           },
           {
-            kind: "category",
-            name: "Variables",
-            colour: "%{BKY_VARIABLES_HUE}",
-            custom: "VARIABLE",
+            kind: 'category',
+            name: 'Variables',
+            colour: '%{BKY_VARIABLES_HUE}',
+            custom: 'VARIABLE',
           },
           {
-            kind: "category",
-            name: "Functions",
-            colour: "%{BKY_PROCEDURES_HUE}",
-            custom: "PROCEDURE",
+            kind: 'category',
+            name: 'Functions',
+            colour: '%{BKY_PROCEDURES_HUE}',
+            custom: 'PROCEDURE',
           },
         ],
       };
 
-      var demoWorkspace = Blockly.inject("blocklyDiv", {
-        media: "./node_modules/blockly/media/",
+      var demoWorkspace = Blockly.inject('blocklyDiv', {
+        media: './node_modules/blockly/media/',
         toolbox: toolbox,
       });
     </script>

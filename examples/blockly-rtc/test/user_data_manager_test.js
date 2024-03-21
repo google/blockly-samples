@@ -31,17 +31,25 @@ const Position = require('../src/Position').default;
 suite('UserDataManager', () => {
   setup(() => {
     this.userDataManager = new UserDataManager(
-        'mockWorkspaceId', handlers.sendPositionUpdate,
-        handlers.getPositionUpdates, handlers.getBroadcastPositionUpdates);
-    Blockly.defineBlocksWithJsonArray([{
-      'type': 'test_block',
-      'message0': 'test block'
-    }]);
+      'mockWorkspaceId',
+      handlers.sendPositionUpdate,
+      handlers.getPositionUpdates,
+      handlers.getBroadcastPositionUpdates,
+    );
+    Blockly.defineBlocksWithJsonArray([
+      {
+        type: 'test_block',
+        message0: 'test block',
+      },
+    ]);
     this.FAKE_WORKSPACE_ID = 'mockWorkspaceId';
     this.FAKE_BLOCK_ID = 'blockId';
-    sinon.stub(Blockly.utils, "genUid")
-        .onFirstCall().returns(this.FAKE_WORKSPACE_ID)
-        .onSecondCall().returns(this.FAKE_BLOCK_ID);
+    sinon
+      .stub(Blockly.utils, 'genUid')
+      .onFirstCall()
+      .returns(this.FAKE_WORKSPACE_ID)
+      .onSecondCall()
+      .returns(this.FAKE_BLOCK_ID);
     this.workspace = new Blockly.WorkspaceSvg({});
     this.block = new Blockly.Block(this.workspace, 'test_block');
     this.position = new Position('BLOCK', 'blockId', null);
@@ -51,8 +59,9 @@ suite('UserDataManager', () => {
     this.BlocklyMarkerManager.registerMarker.callsFake((markerId, marker) => {
       this.BlocklyMarkerManager.markers_[markerId] = marker;
     });
-    sinon.stub(this.workspace, 'getMarkerManager')
-        .returns(this.BlocklyMarkerManager);
+    sinon
+      .stub(this.workspace, 'getMarkerManager')
+      .returns(this.BlocklyMarkerManager);
   });
 
   teardown(() => {
@@ -67,7 +76,7 @@ suite('UserDataManager', () => {
       const positionUpdate1 = {workspaceId: 'mockId1', position: this.position};
       try {
         this.userDataManager.createMarker_(positionUpdate1);
-      } catch {};
+      } catch {}
       assert(this.userDataManager.createMarker_.threw());
     });
 
@@ -88,7 +97,7 @@ suite('UserDataManager', () => {
       sinon.spy(this.userDataManager, 'disposeMarker_');
       try {
         this.userDataManager.disposeMarker_();
-      } catch {};
+      } catch {}
       assert(this.userDataManager.disposeMarker_.threw());
     });
 
@@ -103,14 +112,16 @@ suite('UserDataManager', () => {
       const marker = new Blockly.Marker();
       this.BlocklyMarkerManager.markers_['mockId'] = marker;
       this.userDataManager.disposeMarker_('mockId');
-      assert(this.BlocklyMarkerManager.unregisterMarker.calledOnceWith('mockId'));
+      assert(
+        this.BlocklyMarkerManager.unregisterMarker.calledOnceWith('mockId'),
+      );
     });
   });
 
   suite('updateMarkerPositions', () => {
     setup(() => {
       this.BlocklyMarkerManager.markers_ = {
-        'mockId': new Blockly.Marker()
+        mockId: new Blockly.Marker(),
       };
     });
 

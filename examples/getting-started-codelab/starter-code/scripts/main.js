@@ -3,8 +3,7 @@
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
- (function() {
-
+(function () {
   let currentButton;
 
   function handlePlay(event) {
@@ -22,7 +21,7 @@
 
   function enableEditMode() {
     document.body.setAttribute('mode', 'edit');
-    document.querySelectorAll('.button').forEach(btn => {
+    document.querySelectorAll('.button').forEach((btn) => {
       btn.removeEventListener('click', handlePlay);
       btn.addEventListener('click', enableBlocklyMode);
     });
@@ -30,7 +29,7 @@
 
   function enableMakerMode() {
     document.body.setAttribute('mode', 'maker');
-    document.querySelectorAll('.button').forEach(btn => {
+    document.querySelectorAll('.button').forEach((btn) => {
       btn.addEventListener('click', handlePlay);
       btn.removeEventListener('click', enableBlocklyMode);
     });
@@ -46,5 +45,4 @@
   document.querySelector('#save').addEventListener('click', handleSave);
 
   enableMakerMode();
-
 })();

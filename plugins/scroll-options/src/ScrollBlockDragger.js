@@ -116,15 +116,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // Make the block stay under the cursor.
     this.draggingBlock_.moveDuringDrag(newLoc);
-
-    // As we scroll, show the insertion markers.
-    this.draggedConnectionManager_.update(
-      new Blockly.utils.Coordinate(
-        totalDelta.x / this.workspace_.scale,
-        totalDelta.y / this.workspace_.scale,
-      ),
-      null,
-    );
   }
 
   /**

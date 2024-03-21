@@ -57,6 +57,7 @@ class ToolboxLabel extends Blockly.ToolboxItem {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.TOOLBOX_ITEM,
-    'toolboxlabel',
-    ToolboxLabel);
+  Blockly.registry.Type.TOOLBOX_ITEM,
+  'toolboxlabel',
+  ToolboxLabel,
+);
