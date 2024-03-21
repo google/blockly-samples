@@ -27,18 +27,22 @@ const sinon = require('sinon');
 const Position = require('../src/Position').default;
 
 suite('Position', () => {
-
   suite('fromEvent()', () => {
     setup(() => {
-      Blockly.defineBlocksWithJsonArray([{
-        'type': 'test_block',
-        'message0': 'test block'
-      }]);
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: 'test_block',
+          message0: 'test block',
+        },
+      ]);
       this.FAKE_WORKSPACE_ID = 'mockWorkspaceId';
-      this.FAKE_BLOCK_ID = 'mockBlockId'
-      sinon.stub(Blockly.utils, 'genUid')
-          .onFirstCall().returns(this.FAKE_WORKSPACE_ID)
-          .onSecondCall().returns(this.FAKE_BLOCK_ID);
+      this.FAKE_BLOCK_ID = 'mockBlockId';
+      sinon
+        .stub(Blockly.utils, 'genUid')
+        .onFirstCall()
+        .returns(this.FAKE_WORKSPACE_ID)
+        .onSecondCall()
+        .returns(this.FAKE_BLOCK_ID);
       this.workspace = new Blockly.Workspace();
       this.block = new Blockly.Block(this.workspace, 'test_block');
       this.field = new Blockly.Field('hello');
@@ -54,7 +58,11 @@ suite('Position', () => {
 
     test('From SELECT UI event on a block.', async () => {
       const event = new Blockly.Events.Ui(
-          this.block, 'selected', 'old', this.FAKE_BLOCK_ID);
+        this.block,
+        'selected',
+        'old',
+        this.FAKE_BLOCK_ID,
+      );
       const position = Position.fromEvent(event);
       const expectedPosition = new Position('BLOCK', this.FAKE_BLOCK_ID, null);
       assert.deepEqual(position, expectedPosition);
@@ -62,20 +70,33 @@ suite('Position', () => {
 
     test('From CHANGE event on a field.', async () => {
       const event = new Blockly.Events.Change(
-          this.block, 'field', 'message0', 'hello', 'goodbye');
+        this.block,
+        'field',
+        'message0',
+        'hello',
+        'goodbye',
+      );
       const position = Position.fromEvent(event);
       const expectedPosition = new Position(
-          'FIELD', this.FAKE_BLOCK_ID, 'message0');
+        'FIELD',
+        this.FAKE_BLOCK_ID,
+        'message0',
+      );
       assert.deepEqual(position, expectedPosition);
     });
 
     test('From other not supported event, throw error.', async () => {
       sinon.spy(Position, 'fromEvent');
       const event = new Blockly.Events.Change(
-          this.block, 'comment', 'message0', 'hello', 'goodbye');
+        this.block,
+        'comment',
+        'message0',
+        'hello',
+        'goodbye',
+      );
       try {
         Position.fromEvent(event);
-      } catch {};
+      } catch {}
       assert(Position.fromEvent.threw);
     });
   });
@@ -85,11 +106,10 @@ suite('Position', () => {
       const json = {
         type: 'type',
         blockId: 'blockId',
-        fieldName: 'fieldName'
+        fieldName: 'fieldName',
       };
       const position = Position.fromJson(json);
-      const expectedPosition = new Position(
-          'type', 'blockId', 'fieldName');
+      const expectedPosition = new Position('type', 'blockId', 'fieldName');
       assert.deepEqual(position, expectedPosition);
     });
   });

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.11...@blockly/field-angle@3.0.12) (2024-02-08)
+
+
+### Bug Fixes
+
+* Display rounded number in field angle. ([#2191](https://github.com/google/blockly-samples/issues/2191)) ([68d60b7](https://github.com/google/blockly-samples/commit/68d60b7868f0a89c09afd16d64e7f2f16a719d7f))
+
+
+
 ## [3.0.11](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.10...@blockly/field-angle@3.0.11) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/field-angle

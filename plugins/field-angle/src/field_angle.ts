@@ -484,7 +484,7 @@ export class FieldAngle extends Blockly.FieldNumber {
       // normal block change events, and instead report them as special
       // intermediate changes that do not get recorded in undo history.
       const oldValue = this.value_;
-      this.setEditorValue_(angle, false);
+      this.setEditorValue_(validAngle, false);
       if (
         this.sourceBlock_ &&
         Blockly.Events.isEnabled() &&

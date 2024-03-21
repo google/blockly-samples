@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.12...@blockly/continuous-toolbox@5.0.13) (2024-02-29)
+
+
+### Bug Fixes
+
+* Include padding above category labels when jumping to a category. ([#2218](https://github.com/google/blockly-samples/issues/2218)) ([bd3cba1](https://github.com/google/blockly-samples/commit/bd3cba121c33e6a5dc3b1d11d432f5af5f169074))
+
+
+
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.11...@blockly/continuous-toolbox@5.0.12) (2024-02-08)
+
+**Note:** Version bump only for package @blockly/continuous-toolbox
+
+
+
+
+
 ## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.10...@blockly/continuous-toolbox@5.0.11) (2024-01-25)
 
 

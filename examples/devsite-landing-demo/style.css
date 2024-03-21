@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Google+Sans:400,500");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url('https://fonts.googleapis.com/css?family=Google+Sans:400,500');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 body {
   background: white !important;
@@ -76,11 +76,11 @@ option {
 }
 
 #blockly-0 {
-  border-left: 15px solid #D1C4E9 !important;
+  border-left: 15px solid #d1c4e9 !important;
 }
 
 #blockly-1 {
-  border-left: 15px solid #A5D6A7 !important;
+  border-left: 15px solid #a5d6a7 !important;
 }
 
 #blockly-2 {
@@ -88,23 +88,23 @@ option {
 }
 
 #blockly-3 {
-  border-left: 15px solid #FFCA28 !important;
+  border-left: 15px solid #ffca28 !important;
 }
 
 #blockly-4 {
-  border-left: 15px solid #4DB6AC !important;
+  border-left: 15px solid #4db6ac !important;
 }
 
 #blockly-5 {
-  border-left: 15px solid #FFCDD2 !important;
+  border-left: 15px solid #ffcdd2 !important;
 }
 
 #blockly-7 {
-  border-left: 15px solid #EF9A9A !important;
+  border-left: 15px solid #ef9a9a !important;
 }
 
 #blockly-8 {
-  border-left: 15px solid #D7CCC8 !important;
+  border-left: 15px solid #d7ccc8 !important;
 }
 
 .blocklyTreeSeparator {

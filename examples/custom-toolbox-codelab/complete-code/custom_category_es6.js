@@ -23,7 +23,7 @@ class CustomCategory extends Blockly.ToolboxCategory {
    * This is called on category creation and whenever the theme changes.
    * @override
    */
-  addColourBorder_(colour){
+  addColourBorder_(colour) {
     this.rowDiv_.style.backgroundColor = colour;
   }
 
@@ -33,7 +33,7 @@ class CustomCategory extends Blockly.ToolboxCategory {
    *     false otherwise.
    * @override
    */
-  setSelected(isSelected){
+  setSelected(isSelected) {
     // We do not store the label span on the category, so use getElementsByClassName.
     const labelDom = this.rowDiv_.getElementsByClassName('blocklyTreeLabel')[0];
     if (isSelected) {
@@ -50,8 +50,11 @@ class CustomCategory extends Blockly.ToolboxCategory {
       this.iconDom_.style.color = 'white';
     }
     // This is used for accessibility purposes.
-    Blockly.utils.aria.setState(/** @type {!Element} */ (this.htmlDiv_),
-        Blockly.utils.aria.State.SELECTED, isSelected);
+    Blockly.utils.aria.setState(
+      /** @type {!Element} */ (this.htmlDiv_),
+      Blockly.utils.aria.State.SELECTED,
+      isSelected,
+    );
   }
 
   /**
@@ -70,6 +73,8 @@ class CustomCategory extends Blockly.ToolboxCategory {
 }
 
 Blockly.registry.register(
-    Blockly.registry.Type.TOOLBOX_ITEM,
-    Blockly.ToolboxCategory.registrationName,
-    CustomCategory, true);
+  Blockly.registry.Type.TOOLBOX_ITEM,
+  Blockly.ToolboxCategory.registrationName,
+  CustomCategory,
+  true,
+);

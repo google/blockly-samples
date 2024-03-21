@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.12...@blockly/zoom-to-fit@5.0.13) (2024-03-14)
+
+
+### Bug Fixes
+
+* Align zoom-to-fit event handling with zoom_controls ([#2236](https://github.com/google/blockly-samples/issues/2236)) ([0aa47d4](https://github.com/google/blockly-samples/commit/0aa47d4adc95803602ba625e63a4636d46ddb562))
+
+
+
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.11...@blockly/zoom-to-fit@5.0.12) (2024-02-08)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
 ## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.10...@blockly/zoom-to-fit@5.0.11) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/zoom-to-fit
