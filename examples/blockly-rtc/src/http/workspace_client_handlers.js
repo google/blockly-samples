@@ -37,8 +37,8 @@ export async function getSnapshot() {
     return snapshot;
   } else {
     throw 'Failed to get workspace snapshot.';
-  };
-};
+  }
+}
 
 /**
  * Query the database for entries since the given server id.
@@ -60,8 +60,8 @@ export async function getEvents(serverId) {
     return entries;
   } else {
     throw 'Failed to query database.';
-  };
-};
+  }
+}
 
 /**
  * Add an entry to database.
@@ -74,15 +74,15 @@ export async function writeEvents(entry) {
   const entryJson = {
     workspaceId: entry.workspaceId,
     entryNumber: entry.entryNumber,
-    events: entry.events.map((event) => event.toJson())
+    events: entry.events.map((event) => event.toJson()),
   };
   const response = await fetch('/api/events/add', {
     method: 'POST',
-    body: JSON.stringify({entry: entryJson})
+    body: JSON.stringify({entry: entryJson}),
   });
   if (response.status === 200) {
     return;
   } else {
     throw 'Failed to write to database.';
-  };
-};
+  }
+}

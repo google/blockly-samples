@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
-import { BlocklyComponent } from './blockly.component';
+import {BlocklyComponent} from './blockly.component';
 
 describe('BlocklyComponent', () => {
   let component: BlocklyComponent;
@@ -8,9 +8,8 @@ describe('BlocklyComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlocklyComponent ]
-    })
-    .compileComponents();
+      declarations: [BlocklyComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

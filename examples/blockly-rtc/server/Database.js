@@ -31,9 +31,9 @@ class Database {
     this.db = db;
     this.snapshot = {
       serverId: 0,
-      xml: '<xml xmlns="https://developers.google.com/blockly/xml"/>'
+      xml: '<xml xmlns="https://developers.google.com/blockly/xml"/>',
     };
-  };
+  }
 
   /**
    * Query the database for entries since the given server id.
@@ -43,21 +43,23 @@ class Database {
    * @public
    */
   query(serverId) {
-    return new Promise ((resolve, reject) => {
-      this.db.all(`SELECT * from eventsdb WHERE serverId > ${serverId};`,
-          (err, entries) => {
-        if (err) {
-          console.error(err.message);
-          reject('Failed to query the database.');
-        } else {
-          entries.forEach((entry) => {
-            entry.events = JSON.parse(entry.events);
-          });
-          resolve(entries);
-        };
-      });
+    return new Promise((resolve, reject) => {
+      this.db.all(
+        `SELECT * from eventsdb WHERE serverId > ${serverId};`,
+        (err, entries) => {
+          if (err) {
+            console.error(err.message);
+            reject('Failed to query the database.');
+          } else {
+            entries.forEach((entry) => {
+              entry.events = JSON.parse(entry.events);
+            });
+            resolve(entries);
+          }
+        },
+      );
     });
-  };
+  }
 
   /**
    * Add entry to the database if the entry is a valid next addition.
@@ -74,18 +76,21 @@ class Database {
       if (entry.entryNumber > lastEntryNumber) {
         try {
           const serverId = await this.runInsertQuery_(entry);
-          await this.updateLastEntryNumber_(entry.workspaceId, entry.entryNumber);
+          await this.updateLastEntryNumber_(
+            entry.workspaceId,
+            entry.entryNumber,
+          );
           resolve(serverId);
         } catch {
           reject('Failed to write to the database');
-        };
+        }
       } else if (entry.entryNumber == lastEntryNumber) {
         resolve(null);
       } else {
         reject('Entry is not valid.');
-      };
+      }
     });
-  };
+  }
 
   /**
    * Run query to add an entry to the database.
@@ -97,25 +102,30 @@ class Database {
   runInsertQuery_(entry) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
-        this.db.run(`INSERT INTO eventsdb
+        this.db.run(
+          `INSERT INTO eventsdb
             (events, workspaceId, entryNumber) VALUES(?,?,?)`,
-            [JSON.stringify(entry.events), entry.workspaceId, entry.entryNumber],
-            (err) => {
-          if (err) {
-            console.error(err.message);
-            reject('Failed to write to the database.');
-          };
-        });
-        this.db.each(`SELECT last_insert_rowid() as serverId;`, (err, lastServerId) => {
-          if (err) {
-            console.error(err.message);
-            reject('Failed to retrieve serverId.');
-          };
-          resolve(lastServerId.serverId);
-        });
+          [JSON.stringify(entry.events), entry.workspaceId, entry.entryNumber],
+          (err) => {
+            if (err) {
+              console.error(err.message);
+              reject('Failed to write to the database.');
+            }
+          },
+        );
+        this.db.each(
+          `SELECT last_insert_rowid() as serverId;`,
+          (err, lastServerId) => {
+            if (err) {
+              console.error(err.message);
+              reject('Failed to retrieve serverId.');
+            }
+            resolve(lastServerId.serverId);
+          },
+        );
       });
     });
-  };
+  }
 
   /**
    * Update lastEntryNumber in the users table for a given user.
@@ -127,18 +137,20 @@ class Database {
    */
   updateLastEntryNumber_(workspaceId, entryNumber) {
     return new Promise((resolve, reject) => {
-      this.db.run(`UPDATE users SET lastEntryNumber = ?
+      this.db.run(
+        `UPDATE users SET lastEntryNumber = ?
           WHERE workspaceId = ?;`,
-          [entryNumber, workspaceId],
-          async (err) => {
-        if (err) {
-          console.error(err.message);
-          reject('Failed update users table.');
-        };
-        resolve();
-      });
+        [entryNumber, workspaceId],
+        async (err) => {
+          if (err) {
+            console.error(err.message);
+            reject('Failed update users table.');
+          }
+          resolve();
+        },
+      );
     });
-  };
+  }
 
   /**
    * Get the lastEntryNumber for a given user.
@@ -150,36 +162,40 @@ class Database {
   getLastEntryNumber_(workspaceId) {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
-
         // Ensure user is in the database, otherwise add it.
         this.db.all(
-            `SELECT * from users
+          `SELECT * from users
             WHERE (EXISTS (SELECT 1 from users WHERE workspaceId == ?));`,
-            [workspaceId],
-            (err, entries) => {
-          if (err) {
-            console.error(err.message);
-            reject('Failed to get last entry number.');
-          } else if (entries.length == 0) {
-            this.db.run(`INSERT INTO users(workspaceId, lastEntryNumber)
-                VALUES(?, -1)`, [workspaceId]);
-          };
-        });
+          [workspaceId],
+          (err, entries) => {
+            if (err) {
+              console.error(err.message);
+              reject('Failed to get last entry number.');
+            } else if (entries.length == 0) {
+              this.db.run(
+                `INSERT INTO users(workspaceId, lastEntryNumber)
+                VALUES(?, -1)`,
+                [workspaceId],
+              );
+            }
+          },
+        );
 
         this.db.each(
-            `SELECT lastEntryNumber from users WHERE workspaceId = ?;`,
-            [workspaceId],
-            (err, result) => {
-          if (err) {
-            console.error(err.message);
-            reject('Failed to get last entry number.');
-          } else {
-            resolve(result.lastEntryNumber);
-          };
-        });
+          `SELECT lastEntryNumber from users WHERE workspaceId = ?;`,
+          [workspaceId],
+          (err, result) => {
+            if (err) {
+              console.error(err.message);
+              reject('Failed to get last entry number.');
+            } else {
+              resolve(result.lastEntryNumber);
+            }
+          },
+        );
       });
     });
-  };
+  }
 
   /**
    * Query the position for the given user. If no user is specified will
@@ -190,12 +206,12 @@ class Database {
    */
   getPositionUpdates(workspaceId) {
     return new Promise((resolve, reject) => {
-      const sql = workspaceId ?
-          `SELECT workspaceId, position from users
+      const sql = workspaceId
+        ? `SELECT workspaceId, position from users
           WHERE
           (EXISTS (SELECT 1 from users WHERE workspaceId == ${workspaceId}))
-          AND workspaceId = ${workspaceId};` :
-          `SELECT workspaceId, position from users;`;
+          AND workspaceId = ${workspaceId};`
+        : `SELECT workspaceId, position from users;`;
       this.db.all(sql, (err, positionUpdates) => {
         if (err) {
           console.error(err.message);
@@ -205,10 +221,10 @@ class Database {
             positionUpdate.position = JSON.parse(positionUpdate.position);
           });
           resolve(positionUpdates);
-        };
+        }
       });
     });
-  };
+  }
 
   /**
    * Update the position in the users table for a given user.
@@ -220,24 +236,25 @@ class Database {
   updatePosition(positionUpdate) {
     return new Promise((resolve, reject) => {
       this.db.run(
-          `INSERT INTO users(workspaceId, lastEntryNumber, position)
+        `INSERT INTO users(workspaceId, lastEntryNumber, position)
           VALUES(?, -1, ?)
           ON CONFLICT(workspaceId)
           DO UPDATE SET position = ?`,
-          [
-            positionUpdate.workspaceId,
-            JSON.stringify(positionUpdate.position),
-            JSON.stringify(positionUpdate.position)
-          ],
-          (err) => {
-        if (err) {
-          console.error(err.message);
-          reject();
-        };
-        resolve();
-      });
+        [
+          positionUpdate.workspaceId,
+          JSON.stringify(positionUpdate.position),
+          JSON.stringify(positionUpdate.position),
+        ],
+        (err) => {
+          if (err) {
+            console.error(err.message);
+            reject();
+          }
+          resolve();
+        },
+      );
     });
-  };
+  }
 
   /**
    * Delete a user from the users table.
@@ -249,16 +266,17 @@ class Database {
   deleteUser(workspaceId) {
     return new Promise((resolve, reject) => {
       this.db.run(
-          `DELETE FROM users WHERE workspaceId = '${workspaceId}';`,
-          (err) => {
-        if (err) {
-          console.error(err.message);
-          reject();
-        };
-        resolve();
-      });
+        `DELETE FROM users WHERE workspaceId = '${workspaceId}';`,
+        (err) => {
+          if (err) {
+            console.error(err.message);
+            reject();
+          }
+          resolve();
+        },
+      );
     });
-  };
+  }
 
   /**
    * Retrieve the latest snapshot of the workspace.
@@ -268,7 +286,7 @@ class Database {
   async getSnapshot() {
     await this.updateSnapshot_();
     return this.snapshot;
-  };
+  }
 
   /**
    * Update the snapshot of the workspace.
@@ -282,13 +300,13 @@ class Database {
       if (newEntries.length == 0) {
         resolve();
         return;
-      };
+      }
       // Load last stored snapshot of the workspace.
       const workspace = new Blocky.Workspace();
       if (this.snapshot.xml) {
         const xml = Blocky.Xml.textToDom(this.snapshot.xml);
         Blocky.Xml.domToWorkspace(xml, workspace);
-      };
+      }
       // Play events since the last time the snapshot was generated.
       newEntries.forEach((entry) => {
         entry.events.forEach((event) => {
@@ -300,10 +318,10 @@ class Database {
       const newSnapshotXml = Blocky.Xml.workspaceToDom(workspace, false);
       const newSnapshotText = Blocky.Xml.domToText(newSnapshotXml);
       this.snapshot.xml = newSnapshotText;
-      this.snapshot.serverId = newEntries[newEntries.length -1].serverId;
+      this.snapshot.serverId = newEntries[newEntries.length - 1].serverId;
       resolve();
     });
-  };
-};
+  }
+}
 
 module.exports = new Database();

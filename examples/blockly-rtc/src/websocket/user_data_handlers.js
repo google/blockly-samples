@@ -1,4 +1,3 @@
-
 /**
  * @license
  *
@@ -44,7 +43,7 @@ export async function getPositionUpdates(workspaceId) {
       resolve(positionUpdates);
     });
   });
-};
+}
 
 /**
  * Update the position of a user in the database.
@@ -59,7 +58,7 @@ export async function sendPositionUpdate(positionUpdate) {
       resolve();
     });
   });
-};
+}
 
 /**
  * Listen for PositionUpdates broadcast by the server.
@@ -68,13 +67,13 @@ export async function sendPositionUpdate(positionUpdate) {
  * @public
  */
 export async function getBroadcastPositionUpdates(callback) {
-  socket.on('broadcastPosition', async (positionUpdates)=> {
+  socket.on('broadcastPosition', async (positionUpdates) => {
     positionUpdates.forEach((positionUpdate) => {
       positionUpdate.position = Position.fromJson(positionUpdate.position);
     });
     await callback(positionUpdates);
   });
-};
+}
 
 /**
  * Enable tracking of the user by sending the workspaceId to the server.
@@ -83,11 +82,11 @@ export async function getBroadcastPositionUpdates(callback) {
  */
 export async function connectUser(workspaceId) {
   return new Promise((resolve, reject) => {
-    socket.emit('connectUser', workspaceId, ()=> {
+    socket.emit('connectUser', workspaceId, () => {
       resolve();
     });
   });
-};
+}
 
 /**
  * Listen for user disconnects broadcast by the server.
@@ -96,7 +95,7 @@ export async function connectUser(workspaceId) {
  * @public
  */
 export function getUserDisconnects(callback) {
-  socket.on('disconnectUser', async (workspaceId)=> {
+  socket.on('disconnectUser', async (workspaceId) => {
     await callback(workspaceId);
   });
-};
+}

@@ -29,12 +29,12 @@ const UsersHandlers = require('./websocket/users_handlers');
 
 const WS_PORT = 3001;
 
-const server = http.createServer(function(request, response) {
+const server = http.createServer(function (request, response) {
   response.writeHead(404);
   response.end();
 });
 
-server.listen(WS_PORT, function() {
+server.listen(WS_PORT, function () {
   console.log('server start at port 3001');
 });
 
@@ -83,4 +83,4 @@ async function onConnect_(user) {
   user.on('getSnapshot', async (callback) => {
     await EventsHandlers.getSnapshotHandler(callback);
   });
-};
+}

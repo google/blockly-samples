@@ -214,6 +214,13 @@ export class FieldColourHsvSliders extends FieldColour {
   /** Helper colour structures to support conversion to the RGB colour space. */
   private static readonly helperRgb: RgbColour = new RgbColour();
 
+  /**
+   * The intial value of the field when the user opened an editor to change its
+   * value. When the editor is disposed, an event will be fired that uses this
+   * as the event's oldValue.
+   */
+  protected valueWhenEditorWasOpened: string | null = null;
+
   /** Array holding info needed to unbind events. Used for disposing. */
   private hsvBoundEvents: Blockly.browserEvents.Data[] = [];
 
@@ -256,6 +263,8 @@ export class FieldColourHsvSliders extends FieldColour {
       this,
       this.dropdownDisposeSliders.bind(this),
     );
+
+    this.valueWhenEditorWasOpened = this.value_;
 
     // Focus so we can start receiving keyboard events.
     this.hueSlider.focus({preventScroll: true});
@@ -399,6 +408,28 @@ export class FieldColourHsvSliders extends FieldColour {
     this.brightnessReadout = null;
     this.brightnessSlider = null;
     this.dropdownContainer = null;
+
+    if (
+      this.sourceBlock_ &&
+      Blockly.Events.isEnabled() &&
+      this.valueWhenEditorWasOpened !== null &&
+      this.valueWhenEditorWasOpened !== this.value_
+    ) {
+      // When closing a field input widget, fire an event indicating that the
+      // user has completed a sequence of changes. The value may have changed
+      // multiple times while the editor was open, but this will fire an event
+      // containing the value when the editor was opened as well as the new one.
+      Blockly.Events.fire(
+        new (Blockly.Events.get(Blockly.Events.BLOCK_CHANGE))(
+          this.sourceBlock_,
+          'field',
+          this.name || null,
+          this.valueWhenEditorWasOpened,
+          this.value_,
+        ),
+      );
+      this.valueWhenEditorWasOpened = null;
+    }
   }
 
   /**
@@ -441,7 +472,9 @@ export class FieldColourHsvSliders extends FieldColour {
     const brightness: number =
       parseFloat(this.brightnessSlider.value) /
       FieldColourHsvSliders.BRIGHTNESS_SLIDER_MAX;
-    this.setValue(FieldColourHsvSliders.hsvToHex(hue, saturation, brightness));
+    this.setIntermediateValue(
+      FieldColourHsvSliders.hsvToHex(hue, saturation, brightness),
+    );
     this.renderSliders();
   }
 
@@ -454,9 +487,32 @@ export class FieldColourHsvSliders extends FieldColour {
     if (window.EyeDropper) {
       const eyeDropper: EyeDropper = new window.EyeDropper();
       eyeDropper.open().then((result) => {
-        this.setValue(result.sRGBHex);
+        this.setIntermediateValue(result.sRGBHex);
         this.updateSliderValues();
       });
+    }
+  }
+
+  private setIntermediateValue(value: string): void {
+    // Intermediate value changes from user input are not confirmed until the
+    // user closes the editor, and may be numerous. Inhibit reporting these as
+    // normal block change events, and instead report them as special
+    // intermediate changes that do not get recorded in undo history.
+    const oldValue = this.value_;
+    // Change the field's value without firing the normal change event.
+    this.setValue(value, false);
+    if (
+      this.sourceBlock_ &&
+      Blockly.Events.isEnabled() &&
+      this.value_ !== oldValue
+    ) {
+      // Fire a special event indicating that the value changed but the change
+      // isn't complete yet and normal field change listeners can wait.
+      Blockly.Events.fire(
+        new (Blockly.Events.get(
+          Blockly.Events.BLOCK_FIELD_INTERMEDIATE_CHANGE,
+        ))(this.sourceBlock_, this.name || null, oldValue, this.value_),
+      );
     }
   }
 
