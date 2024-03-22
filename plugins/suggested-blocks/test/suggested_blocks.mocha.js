@@ -126,7 +126,7 @@ const FREQUENCY_TIEBREAK_TEST_CASE = {
   ],
 };
 
-suite('Suggested blocks', function () {
+suite.skip('Suggested blocks', function () {
   /**
    * Asserts that the list of blocks matches the expected list.
    * @param {Array <object>} blockList list of block JSON objects

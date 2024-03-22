@@ -5,7 +5,7 @@
  */
 
 const chai = require('chai');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly/core');
 const {testHelpers} = require('@blockly/dev-tools');
 const {dartGenerator} = require('blockly/dart');
 const {javascriptGenerator} = require('blockly/javascript');
