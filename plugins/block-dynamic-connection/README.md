@@ -15,7 +15,7 @@ npm install @blockly/block-dynamic-connection --save
 import * as Blockly from 'blockly';
 import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';
 
-const ws = Blockly.inject({
+const myWorkspace = Blockly.inject({
     // options...
     plugins: {
       connectionPreviewer:
@@ -26,6 +26,9 @@ const ws = Blockly.inject({
         ),
     },
   };
+
+// Add the change listener so connections will be finalized on deletion.
+workspace.addChangeListener(BlockDynamicConnection.finalizeConnections);
 ```
 
 ## API
