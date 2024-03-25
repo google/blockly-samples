@@ -19,7 +19,7 @@ const ws = Blockly.inject({
     // options...
     plugins: {
       connectionPreviewer:
-        BlockDynamicConnection.decoratePreviewerWithDynamicConnections(
+        BlockDynamicConnection.decoratePreviewer(
           // Replace with a custom connection previewer, or remove to decorate
           // the default one.
           Blockly.InsertionMarkerPreviewer,
