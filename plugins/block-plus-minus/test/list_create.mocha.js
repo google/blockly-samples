@@ -103,7 +103,7 @@ suite('List create block', function () {
         testCases: [
           {
             title: 'Trivial',
-            expectedCode: '{None, None, None}',
+            expectedCode: '{nil, nil, nil}',
             createBlock: trivialCreateBlock,
           },
         ],

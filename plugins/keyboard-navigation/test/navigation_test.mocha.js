@@ -32,12 +32,23 @@ suite('Navigation', function () {
     this.controller = new NavigationController();
     this.controller.init();
     this.navigation = this.controller.navigation;
+
+    this.getContextStub = sinon
+      .stub(window.HTMLCanvasElement.prototype, 'getContext')
+      .callsFake(() => {
+        return {
+          measureText: function () {
+            return {width: 0};
+          },
+        };
+      });
   });
 
   teardown(function () {
     this.controller.dispose();
     window.cancelAnimationFrame = undefined;
     this.jsdomCleanup();
+    sinon.restore();
   });
 
   // Test that toolbox key handlers call through to the right functions and
@@ -50,9 +61,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
         },
@@ -126,8 +137,8 @@ suite('Navigation', function () {
       const flyoutCursor = navigation.getFlyoutCursor(this.workspace);
       // See test_helper.js for hardcoded field values.
       chai.assert.equal(
-        flyoutCursor.getCurNode().getLocation().getFieldValue('COLOURFIELD'),
-        '#ff0000',
+        flyoutCursor.getCurNode().getLocation().getFieldValue('TEXTFIELD'),
+        'first',
       );
     });
 
@@ -183,9 +194,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
         },
@@ -225,8 +236,8 @@ suite('Navigation', function () {
           .getFlyoutCursor(this.workspace)
           .getCurNode()
           .getLocation()
-          .getFieldValue('COLOURFIELD'),
-        '#ff0000',
+          .getFieldValue('TEXTFIELD'),
+        'first',
       );
     });
     test('Previous', function () {
@@ -242,7 +253,7 @@ suite('Navigation', function () {
         .getCurNode()
         .getLocation();
       // See test_helper.js for hardcoded field values.
-      chai.assert.equal(flyoutBlock.getFieldValue('COLOURFIELD'), '#00ff00');
+      chai.assert.equal(flyoutBlock.getFieldValue('TEXTFIELD'), 'second');
 
       const mockEvent = createKeyDownEvent(
         Blockly.utils.KeyCodes.W,
@@ -265,7 +276,7 @@ suite('Navigation', function () {
         .getCurNode()
         .getLocation();
       // See test_helper.js for hardcoded field values.
-      chai.assert.equal(flyoutBlock.getFieldValue('COLOURFIELD'), '#ff0000');
+      chai.assert.equal(flyoutBlock.getFieldValue('TEXTFIELD'), 'first');
     });
 
     test('Next', function () {
@@ -290,7 +301,7 @@ suite('Navigation', function () {
         .getCurNode()
         .getLocation();
       // See test_helper.js for hardcoded field values.
-      chai.assert.equal(flyoutBlock.getFieldValue('COLOURFIELD'), '#00ff00');
+      chai.assert.equal(flyoutBlock.getFieldValue('TEXTFIELD'), 'second');
     });
 
     test('Out', function () {
@@ -388,9 +399,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
           previousStatement: null,
@@ -564,9 +575,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
         },
@@ -684,9 +695,9 @@ suite('Navigation', function () {
             message0: '%1 %2',
             args0: [
               {
-                type: 'field_colour',
-                name: 'COLOURFIELD',
-                colour: '#ff4040',
+                type: 'field_input',
+                name: 'TEXTFIELD',
+                text: 'test',
               },
               {
                 type: 'input_value',
@@ -768,9 +779,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
           previousStatement: null,
@@ -1128,9 +1139,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
           previousStatement: null,
@@ -1251,9 +1262,9 @@ suite('Navigation', function () {
           message0: '%1',
           args0: [
             {
-              type: 'field_colour',
-              name: 'COLOURFIELD',
-              colour: '#ff4040',
+              type: 'field_input',
+              name: 'TEXTFIELD',
+              text: 'test',
             },
           ],
         },
