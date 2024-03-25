@@ -46,12 +46,14 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicTextJoinBlock): Element {
-    // If we call finalizeConnections here without disabling events, we get into
-    // an event loop.
-    Blockly.Events.disable();
-    this.finalizeConnections();
-    if (this instanceof Blockly.BlockSvg) this.initSvg();
-    Blockly.Events.enable();
+    if (!this.isDeadOrDying()) {
+      // If we call finalizeConnections here without disabling events, we get into
+      // an event loop.
+      Blockly.Events.disable();
+      this.finalizeConnections();
+      if (this instanceof Blockly.BlockSvg) this.initSvg();
+      Blockly.Events.enable();
+    }
 
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('items', `${this.itemCount}`);
@@ -108,7 +110,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @returns The state of this block, ie the item count.
    */
   saveExtraState: function (this: DynamicTextJoinBlock): {itemCount: number} {
-    if (!this.isCorrectlyFormatted()) {
+    if (!this.isDeadOrDying() && !this.isCorrectlyFormatted()) {
       // If we call finalizeConnections here without disabling events, we get into
       // an event loop.
       Blockly.Events.disable();
