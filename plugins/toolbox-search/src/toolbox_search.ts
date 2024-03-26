@@ -9,6 +9,7 @@
  * in its flyout.
  */
 import * as Blockly from 'blockly/core';
+import {block} from '../node_modules/blockly/core/tooltip';
 import {BlockSearcher} from './block_searcher';
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -171,13 +172,19 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   private matchBlocks() {
     const query = this.searchField?.value || '';
-
     this.flyoutItems_ = query
-      ? this.blockSearcher.blockTypesMatching(query).map((blockType) => {
-          return {
-            kind: 'block',
-            type: blockType,
-          };
+      ? this.blockSearcher.blockTypesMatching(query).map((blockState) => {
+          if (blockState.fields) {
+            return {
+              kind: 'block',
+              type: blockState.type,
+              fields: blockState.fields,
+            };
+          } else
+            return {
+              kind: 'block',
+              type: blockState.type,
+            };
         })
       : [];
 

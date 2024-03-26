@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.7](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.2.6...@blockly/toolbox-search@1.2.7) (2024-02-23)
+### Bug Fixes
+ * Improved search for drop down
+ * Improved unit tests
+ * Last trigram from a word was never indexed
+
 ## [1.2.6](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@1.2.5...@blockly/toolbox-search@1.2.6) (2024-02-08)
 
 **Note:** Version bump only for package @blockly/toolbox-search
