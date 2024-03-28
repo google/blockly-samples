@@ -15,6 +15,11 @@ import {
   JavascriptDefinitionGenerator,
   javascriptDefinitionGenerator,
 } from './javascript_definition_generator';
+import {
+  CodeHeaderGenerator,
+  importHeaderGenerator,
+  scriptHeaderGenerator,
+} from './code_header_generator';
 
 /**
  * Builds the 'message0' part of the JSON block definition.
@@ -199,3 +204,23 @@ Blockly.common.defineBlocks({${blockName}: ${blockName}});`;
 
 javascriptDefinitionGenerator.forBlock['text'] =
   javascriptGenerator.forBlock['text'];
+
+importHeaderGenerator.forBlock['factory_base'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  generator.addHeaderLine(`import * as Blockly from 'blockly/core';`);
+  generator.statementToCode(block, 'INPUTS');
+  return '';
+};
+
+scriptHeaderGenerator.forBlock['factory_base'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  generator.addHeaderLine(
+    `<script src="https://unpkg.com/blockly/blockly_compressed.js"></script>`,
+  );
+  generator.statementToCode(block, 'INPUTS');
+  return '';
+};

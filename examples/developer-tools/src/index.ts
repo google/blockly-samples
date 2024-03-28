@@ -16,6 +16,10 @@ import 'blockly/blocks';
 import './index.css';
 import {ViewModel} from './view_model';
 import {Controller} from './controller';
+import {
+  importHeaderGenerator,
+  scriptHeaderGenerator,
+} from './output-generators/code_header_generator';
 
 // Put Blockly in the global scope for easy debugging.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +42,8 @@ const controller = new Controller(
   model,
   javascriptDefinitionGenerator,
   jsonDefinitionGenerator,
+  importHeaderGenerator,
+  scriptHeaderGenerator,
 );
 
 // Disable orphan blocks on the main workspace

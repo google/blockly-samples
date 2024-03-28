@@ -8,6 +8,7 @@ import * as Blockly from 'blockly';
 import {ViewModel} from './view_model';
 import {JavascriptDefinitionGenerator} from './output-generators/javascript_definition_generator';
 import {JsonDefinitionGenerator} from './output-generators/json_definition_generator';
+import {CodeHeaderGenerator} from './output-generators/code_header_generator';
 
 export class Controller {
   constructor(
@@ -16,6 +17,8 @@ export class Controller {
     private viewModel: ViewModel,
     private jsGenerator: JavascriptDefinitionGenerator,
     private jsonGenerator: JsonDefinitionGenerator,
+    private importHeaderGenerator: CodeHeaderGenerator,
+    private scriptHeaderGenerator: CodeHeaderGenerator,
   ) {
     // Add event listeners to update when output config elements are changed
     this.viewModel.outputConfigDiv.addEventListener('change', () => {
@@ -39,6 +42,20 @@ export class Controller {
     this.viewModel.definitionDiv.textContent = blockDefinitionString;
   }
 
+  showImportHeaders() {
+    const headers = this.importHeaderGenerator.workspaceToCode(
+      this.mainWorkspace,
+    );
+    this.viewModel.codeHeadersDiv.textContent = headers;
+  }
+
+  showScriptHeaders() {
+    const headers = this.scriptHeaderGenerator.workspaceToCode(
+      this.mainWorkspace,
+    );
+    this.viewModel.codeHeadersDiv.textContent = headers;
+  }
+
   /**
    * Updates all of the output for the block factory,
    * including the preview, definition, generators, etc.
@@ -48,6 +65,12 @@ export class Controller {
       this.showJsonDefinition();
     } else {
       this.showJavaScriptDefinition();
+    }
+
+    if (this.viewModel.getCodeHeaderStyle() === 'import') {
+      this.showImportHeaders();
+    } else {
+      this.showScriptHeaders();
     }
 
     this.updateBlockPreview();
