@@ -13,6 +13,11 @@ import {
   JavascriptDefinitionGenerator,
   javascriptDefinitionGenerator,
 } from '../javascript_definition_generator';
+import {
+  CodeHeaderGenerator,
+  importHeaderGenerator,
+  scriptHeaderGenerator,
+} from '../code_header_generator';
 
 /**
  * Gets the array of human-readable and machine-readable dropdown options.
@@ -97,4 +102,18 @@ ${optionString}
 ${optionsString}
 ${generator.INDENT}]), ${name})`;
   return code;
+};
+
+importHeaderGenerator.forBlock['field_dropdown'] = function (
+  block: FieldDropdownBlock,
+  generator: CodeHeaderGenerator,
+): string {
+  return '';
+};
+
+scriptHeaderGenerator.forBlock['field_dropdown'] = function (
+  block: FieldDropdownBlock,
+  generator: CodeHeaderGenerator,
+): string {
+  return '';
 };

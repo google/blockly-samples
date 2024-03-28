@@ -15,6 +15,11 @@ import {
 } from './javascript_definition_generator';
 import {Order as JsOrder} from 'blockly/javascript';
 import * as Blockly from 'blockly/core';
+import {
+  CodeHeaderGenerator,
+  importHeaderGenerator,
+  scriptHeaderGenerator,
+} from './code_header_generator';
 
 /**
  * JSON definition for the "input" block.
@@ -114,4 +119,22 @@ javascriptDefinitionGenerator.forBlock['input'] = function (
   }${fields};`;
 
   return code;
+};
+
+importHeaderGenerator.forBlock['input'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  // Allow all the fields to add their headers, if they want to
+  generator.statementToCode(block, 'FIELDS');
+  return '';
+};
+
+scriptHeaderGenerator.forBlock['input'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  // Allow all the fields to add their headers, if they want to
+  generator.statementToCode(block, 'FIELDS');
+  return '';
 };
