@@ -10,7 +10,7 @@ import {createNewBlock, load} from './serialization';
 import {ViewModel} from './view_model';
 import {JavascriptDefinitionGenerator} from './output-generators/javascript_definition_generator';
 import {JsonDefinitionGenerator} from './output-generators/json_definition_generator';
-import { Menu } from '@material/web/menu/menu';
+import {Menu} from '@material/web/menu/menu';
 
 export class Controller {
   constructor(
@@ -126,7 +126,7 @@ export class Controller {
 
   /**
    * Handles selecting a block from the load menu, whether selected via keyboard or mouse.
-   * 
+   *
    * @param e Custom event fired when the menu is closed.
    */
   private handleLoadSelect(e: Event) {
