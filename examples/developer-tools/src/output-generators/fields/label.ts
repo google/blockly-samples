@@ -13,6 +13,11 @@ import {
   JavascriptDefinitionGenerator,
   javascriptDefinitionGenerator,
 } from '../javascript_definition_generator';
+import {
+  CodeHeaderGenerator,
+  importHeaderGenerator,
+  scriptHeaderGenerator,
+} from '../code_header_generator';
 
 jsonDefinitionGenerator.forBlock['field_label'] = function (
   block: Blockly.Block,
@@ -32,4 +37,18 @@ javascriptDefinitionGenerator.forBlock['field_label'] = function (
   const text = generator.quote_(block.getFieldValue('TEXT'));
   const code = `.appendField(${text})`;
   return code;
+};
+
+importHeaderGenerator.forBlock['field_label'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  return '';
+};
+
+scriptHeaderGenerator.forBlock['field_label'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  return '';
 };

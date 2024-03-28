@@ -13,6 +13,11 @@ import {
   JavascriptDefinitionGenerator,
   javascriptDefinitionGenerator,
 } from '../javascript_definition_generator';
+import {
+  CodeHeaderGenerator,
+  importHeaderGenerator,
+  scriptHeaderGenerator,
+} from '../code_header_generator';
 
 jsonDefinitionGenerator.forBlock['field_checkbox'] = function (
   block: Blockly.Block,
@@ -33,4 +38,18 @@ javascriptDefinitionGenerator.forBlock['field_checkbox'] = function (
   const name = generator.quote_(block.getFieldValue('FIELDNAME'));
   const checked = generator.quote_(block.getFieldValue('CHECKED'));
   return `.appendField(new Blockly.FieldCheckbox(${checked}), ${name})`;
+};
+
+importHeaderGenerator.forBlock['field_checkbox'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  return '';
+};
+
+scriptHeaderGenerator.forBlock['field_checkbox'] = function (
+  block: Blockly.Block,
+  generator: CodeHeaderGenerator,
+): string {
+  return '';
 };

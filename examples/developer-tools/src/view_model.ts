@@ -9,7 +9,7 @@ export class ViewModel {
   previewDiv = document.getElementById('block-preview');
   definitionDiv = document.getElementById('block-definition').firstChild;
   outputConfigDiv = document.getElementById('output-config');
-  codeHeadersDiv = document.getElementById('code-headers');
+  codeHeadersDiv = document.getElementById('code-headers').firstChild;
   generatorStubDiv = document.getElementById('generator-stub');
 
   /**
@@ -36,5 +36,12 @@ export class ViewModel {
       'code-generator-language',
     ) as HTMLInputElement;
     return languageSelector.value;
+  }
+
+  getCodeHeaderStyle(): string {
+    const radioButton = document.getElementById(
+      'import-esm',
+    ) as HTMLInputElement;
+    return radioButton.checked ? 'import' : 'script';
   }
 }
