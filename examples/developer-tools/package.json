@@ -38,6 +38,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@material/web": "^1.4.0",
     "blockly": "^10.4.2"
   }
 }
