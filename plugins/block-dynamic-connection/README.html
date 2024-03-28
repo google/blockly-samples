@@ -24,7 +24,7 @@
       <div class="title">@blockly/block-dynamic-connection Demo</div>
       <div class="subtitle">A group of blocks that add connections dynamically.</div>
     </div>
-    0.6.0
+    0.6.1
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/block-dynamic-connection" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/block-dynamic-connection" class="button" target="_blank">View on npm</a>
@@ -63,7 +63,7 @@ const ws = Blockly.inject({
     // options...
     plugins: {
       connectionPreviewer:
-        BlockDynamicConnection.decoratePreviewerWithDynamicConnections(
+        BlockDynamicConnection.decoratePreviewer(
           // Replace with a custom connection previewer, or remove to decorate
           // the default one.
           Blockly.InsertionMarkerPreviewer,
