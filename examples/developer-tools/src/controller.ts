@@ -31,6 +31,7 @@ export class Controller {
   ) {
     // Add event listeners to update when output config elements are changed
     this.viewModel.outputConfigDiv.addEventListener('change', () => {
+      this.saveBlockFactorySettings();
       this.updateOutput();
     });
 
@@ -49,6 +50,27 @@ export class Controller {
     this.viewModel.loadButton.addEventListener('click', () => {
       this.handleLoadButton();
     });
+
+    // Load previously-saved settings once on page load
+    this.loadBlockFactorySettings();
+  }
+
+  private saveBlockFactorySettings() {
+    const settings = {
+      blockDefinitionFormat: this.viewModel.getBlockDefinitionFormat(),
+      codeGeneratorLanguage: this.viewModel.getCodeGeneratorLanguage(),
+      codeHeaderStyle: this.viewModel.getCodeHeaderStyle(),
+    };
+    storage.saveBlockFactorySettings(settings);
+  }
+
+  private loadBlockFactorySettings() {
+    const settings = storage.loadBlockFactorySettings();
+    if (settings) {
+      this.viewModel.setBlockDefinitionFormat(settings.blockDefinitionFormat);
+      this.viewModel.setCodeGeneratorLanguage(settings.codeGeneratorLanguage);
+      this.viewModel.setCodeHeaderStyle(settings.codeHeaderStyle);
+    }
   }
 
   /** Shows the JavaScript definition of the block factory block. */
