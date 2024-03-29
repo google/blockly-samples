@@ -6,62 +6,80 @@
     <title>Blockly Developer Tools</title>
   </head>
   <body>
-    <div id="block-factory-container">
-      <div id="main-workspace"></div>
-      <div id="output-pane">
-        <div id="block-preview"></div>
-        <div id="output-config">
-          <div>
-            Block definition format:
-            <input
-              type="radio"
-              id="definition-json"
-              name="block-definition-language"
-              value="json"
-              checked />
-            <label for="definition-json">JSON</label>
-            <input
-              type="radio"
-              id="definition-js"
-              name="block-definition-language"
-              value="js" />
-            <label for="definition-js">JavaScript</label>
+    <div class="page-container">
+      <div class="toolbar" aria-role="banner">
+        <a href=""
+          ><img
+            src="https://blocklycodelabs.dev/images/logo_knockout.png"
+            class="logo"
+            alt="Blockly logo"
+        /></a>
+        <button id="create-btn" class="btn">Create new block</button>
+        <span style="position: relative">
+          <button id="load-btn" class="btn">Load block</button>
+          <md-menu id="load-menu" anchor="load-btn"></md-menu>
+        </span>
+        <button id="delete-btn" class="btn">Delete</button>
+      </div>
+      <div id="block-factory-container">
+        <div id="main-workspace"></div>
+        <div id="output-pane" class="panel-container">
+          <div id="block-preview"></div>
+          <div id="output-config" class="fit-to-size">
+            <div>
+              Block definition format:
+              <input
+                type="radio"
+                id="definition-json"
+                name="block-definition-language"
+                value="json"
+                checked />
+              <label for="definition-json">JSON</label>
+              <input
+                type="radio"
+                id="definition-js"
+                name="block-definition-language"
+                value="js" />
+              <label for="definition-js">JavaScript</label>
+            </div>
+            <div>
+              Blockly import format:
+              <input
+                type="radio"
+                id="import-esm"
+                name="import-format"
+                value="import"
+                checked />
+              <label for="import-esm">Import (esm/cjs)</label>
+              <input
+                type="radio"
+                id="import-script"
+                name="import-format"
+                value="script" />
+              <label for="import-script">Script tags</label>
+            </div>
+            <div>
+              <label for="code-generator-language"
+                >Code generator language:</label
+              >
+              <select
+                name="code-generator-language"
+                id="code-generator-language">
+                <option value="Javascript">JavaScript</option>
+                <option value="Python">Python</option>
+                <option value="Dart">Dart</option>
+                <option value="Php">PHP</option>
+                <option value="Lua">Lua</option>
+              </select>
+            </div>
           </div>
-          <div>
-            Blockly import format:
-            <input
-              type="radio"
-              id="import-esm"
-              name="import-format"
-              value="import"
-              checked />
-            <label for="import-esm">Import (esm/cjs)</label>
-            <input
-              type="radio"
-              id="import-script"
-              name="import-format"
-              value="script" />
-            <label for="import-script">Script tags</label>
-          </div>
-          <div>
-            <label for="code-generator-language"
-              >Code generator language:</label
-            >
-            <select name="code-generator-language" id="code-generator-language">
-              <option value="Javascript">JavaScript</option>
-              <option value="Python">Python</option>
-              <option value="Dart">Dart</option>
-              <option value="Php">PHP</option>
-              <option value="Lua">Lua</option>
-            </select>
-          </div>
+          <pre id="code-headers"><code></code></pre>
+          <pre id="block-definition">
+                      JSON Definition
+                      <code></code>
+                  </pre>
+          <div id="generator-stub">generator</div>
         </div>
-        <pre id="code-headers"><code></code></pre>
-        <pre id="block-definition">
-                    JSON Definition
-                    <code></code>
-                </pre>
-        <div id="generator-stub">generator</div>
       </div>
     </div>
   </body>
