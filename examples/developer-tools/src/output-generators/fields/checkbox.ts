@@ -18,6 +18,10 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from '../code_header_generator';
+import {
+  GeneratorStubGenerator,
+  generatorStubGenerator,
+} from '../generator_stub_generator';
 
 jsonDefinitionGenerator.forBlock['field_checkbox'] = function (
   block: Blockly.Block,
@@ -52,4 +56,15 @@ scriptHeaderGenerator.forBlock['field_checkbox'] = function (
   generator: CodeHeaderGenerator,
 ): string {
   return '';
+};
+
+generatorStubGenerator.forBlock['field_checkbox'] = function (
+  block: Blockly.Block,
+  generator: GeneratorStubGenerator,
+): string {
+  const name = block.getFieldValue('FIELDNAME');
+  const fieldVar = generator.createVariableName('checkbox', name);
+  return `const ${fieldVar} = block.getFieldValue(${generator.quote_(
+    name,
+  )});\n`;
 };

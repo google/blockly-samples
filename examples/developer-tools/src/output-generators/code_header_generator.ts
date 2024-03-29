@@ -19,6 +19,7 @@ import * as Blockly from 'blockly';
  */
 export class CodeHeaderGenerator extends Blockly.CodeGenerator {
   private headerLines = new Set();
+  private language = 'javascript';
 
   /**
    * Resets the headers every time workspaceToCode is called.
@@ -36,6 +37,14 @@ export class CodeHeaderGenerator extends Blockly.CodeGenerator {
    */
   addHeaderLine(header: string) {
     this.headerLines.add(header);
+  }
+
+  setLanguage(language: string) {
+    this.language = language;
+  }
+
+  getLanguage(): string {
+    return this.language;
   }
 
   /**

@@ -18,6 +18,10 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from '../code_header_generator';
+import {
+  GeneratorStubGenerator,
+  generatorStubGenerator,
+} from '../generator_stub_generator';
 
 /**
  * Gets the array of human-readable and machine-readable dropdown options.
@@ -116,4 +120,15 @@ scriptHeaderGenerator.forBlock['field_dropdown'] = function (
   generator: CodeHeaderGenerator,
 ): string {
   return '';
+};
+
+generatorStubGenerator.forBlock['field_dropdown'] = function (
+  block: FieldDropdownBlock,
+  generator: GeneratorStubGenerator,
+): string {
+  const name = block.getFieldValue('FIELDNAME');
+  const fieldVar = generator.createVariableName('dropdown', name);
+  return `const ${fieldVar} = block.getFieldValue(${generator.quote_(
+    name,
+  )});\n`;
 };

@@ -12,7 +12,12 @@ import {JavascriptDefinitionGenerator} from './output-generators/javascript_defi
 import {JsonDefinitionGenerator} from './output-generators/json_definition_generator';
 import {CodeHeaderGenerator} from './output-generators/code_header_generator';
 import {Menu} from '@material/web/menu/menu';
+import {GeneratorStubGenerator} from './output-generators/generator_stub_generator';
 
+/**
+ * This class handles updating the UI output, including refreshing the block preview,
+ * updating the generator output, etc.
+ */
 export class Controller {
   constructor(
     private mainWorkspace: Blockly.WorkspaceSvg,
@@ -22,6 +27,7 @@ export class Controller {
     private jsonGenerator: JsonDefinitionGenerator,
     private importHeaderGenerator: CodeHeaderGenerator,
     private scriptHeaderGenerator: CodeHeaderGenerator,
+    private generatorStubGenerator: GeneratorStubGenerator,
   ) {
     // Add event listeners to update when output config elements are changed
     this.viewModel.outputConfigDiv.addEventListener('change', () => {
@@ -61,18 +67,43 @@ export class Controller {
     this.viewModel.definitionDiv.textContent = blockDefinitionString;
   }
 
+  /** Shows code headers for loading Blockly and other deps using imports. */
   showImportHeaders() {
+    this.importHeaderGenerator.setLanguage(
+      this.viewModel.getCodeGeneratorLanguage(),
+    );
     const headers = this.importHeaderGenerator.workspaceToCode(
       this.mainWorkspace,
     );
     this.viewModel.codeHeadersDiv.textContent = headers;
   }
 
+  /** Shows code headers for loading Blockly and other deps using script tags. */
   showScriptHeaders() {
+    this.scriptHeaderGenerator.setLanguage(
+      this.viewModel.getCodeGeneratorLanguage(),
+    );
     const headers = this.scriptHeaderGenerator.workspaceToCode(
       this.mainWorkspace,
     );
     this.viewModel.codeHeadersDiv.textContent = headers;
+  }
+
+  /**
+   * Shows the code generator stub for the currently selected programming
+   * language and import style.
+   */
+  updateGeneratorStub() {
+    const scriptMode = this.viewModel.getCodeHeaderStyle() === 'script';
+    this.generatorStubGenerator.setScriptMode(scriptMode);
+    this.generatorStubGenerator.setLanguage(
+      this.viewModel.getCodeGeneratorLanguage(),
+    );
+
+    const generatorStub = this.generatorStubGenerator.workspaceToCode(
+      this.mainWorkspace,
+    );
+    this.viewModel.generatorStubDiv.textContent = generatorStub;
   }
 
   /**
@@ -91,6 +122,8 @@ export class Controller {
     } else {
       this.showScriptHeaders();
     }
+
+    this.updateGeneratorStub();
 
     this.updateBlockPreview();
   }

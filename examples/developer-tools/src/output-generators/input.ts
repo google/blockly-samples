@@ -20,6 +20,10 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from './code_header_generator';
+import {
+  GeneratorStubGenerator,
+  generatorStubGenerator,
+} from './generator_stub_generator';
 
 /**
  * JSON definition for the "input" block.
@@ -137,4 +141,42 @@ scriptHeaderGenerator.forBlock['input'] = function (
   // Allow all the fields to add their headers, if they want to
   generator.statementToCode(block, 'FIELDS');
   return '';
+};
+
+generatorStubGenerator.forBlock['input'] = function (
+  block: Blockly.Block,
+  generator: GeneratorStubGenerator,
+): string {
+  const inputType = inputDropdownToJsName[block.getFieldValue('INPUTTYPE')];
+  const inputName = block.getFieldValue('INPUTNAME');
+  const inputVar = generator.createVariableName(inputType, inputName);
+  const fields = generator.statementToCode(block, 'FIELDS');
+  const orderPrefix = generator.getScriptMode()
+    ? generator.getLanguage() + '.'
+    : '';
+  const codeLines = [];
+
+  if (inputType === 'Value') {
+    codeLines.push(
+      '// TODO: change Order.ATOMIC to the correct operator precedence strength',
+    );
+    codeLines.push(
+      `const ${inputVar} = generator.valueToCode(block, ${generator.quote_(
+        inputName,
+      )}, ${orderPrefix}Order.ATOMIC);`,
+    );
+  } else if (inputType === 'Statement') {
+    codeLines.push(
+      `const ${inputVar} = generator.statementToCode(block, ${generator.quote_(
+        inputName,
+      )});`,
+    );
+  }
+
+  if (!fields && !codeLines.length) return '';
+
+  // Add 1 extra new line always, and 1 more if this isn't the last input in the stack
+  codeLines.push('');
+  if (block.getNextBlock()) codeLines.push('');
+  return generator.prefixLines(fields + codeLines.join('\n'), '  ');
 };
