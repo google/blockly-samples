@@ -31,12 +31,12 @@ if (!localStorage) {
  * @param name Name of the block.
  * @param block Stringified JSON representing the block's state.
  */
-export const updateBlock = function (name: string, block: string) {
+export function updateBlock(name: string, block: string) {
   allBlocks.add(name);
   localStorage.setItem(allBlocksKey, JSON.stringify(Array.from(allBlocks)));
   localStorage.setItem(name, block);
   localStorage.setItem(lastEditedBlockKey, name);
-};
+}
 
 /**
  * Gets the block data for the given block name from storage.
@@ -44,20 +44,20 @@ export const updateBlock = function (name: string, block: string) {
  * @param name Name of the block to get.
  * @returns Stringified JSON representing the block's state, or null if not found.
  */
-export const getBlock = function (name: string): string | null {
+export function getBlock(name: string): string | null {
   const block = localStorage.getItem(name);
   if (block) {
     localStorage.setItem(lastEditedBlockKey, name);
   }
   return block;
-};
+}
 
 /**
  * Removes block data for the given block name from storage.
  *
  * @param name Name of the block to remove.
  */
-export const removeBlock = function (name: string) {
+export function removeBlock(name: string) {
   allBlocks.delete(name);
   localStorage.setItem(allBlocksKey, JSON.stringify(Array.from(allBlocks)));
 
@@ -66,7 +66,7 @@ export const removeBlock = function (name: string) {
   if (localStorage.getItem(lastEditedBlockKey) === name) {
     localStorage.removeItem(lastEditedBlockKey);
   }
-};
+}
 
 /**
  * Gets the name of the last edited block.
@@ -74,9 +74,9 @@ export const removeBlock = function (name: string) {
  *
  * @returns Name of the last edited block.
  */
-export const getLastEditedBlockName = function (): string {
+export function getLastEditedBlockName(): string {
   return localStorage.getItem(lastEditedBlockKey);
-};
+}
 
 /**
  * Gets the block data for the last edited block.
@@ -86,7 +86,7 @@ export const getLastEditedBlockName = function (): string {
  * @returns Stringified JSON reperesenting the block's state,
  *    or null if there are no blocks.
  */
-export const getLastEditedBlock = function (): string {
+export function getLastEditedBlock(): string {
   const lastEditedName = localStorage.getItem(lastEditedBlockKey);
   if (lastEditedName) {
     const lastEditedBlock = getBlock(lastEditedName);
@@ -101,20 +101,20 @@ export const getLastEditedBlock = function (): string {
   }
 
   return null;
-};
+}
 
 /** Gets the names of all blocks saved in storage. */
-export const getAllSavedBlockNames = function (): Set<string> {
+export function getAllSavedBlockNames(): Set<string> {
   return allBlocks;
-};
+}
 
 /**
  * Gets prohibited names for the blocks.
  * This includes keys that are already used by this application.
  */
-export const getProhibitedBlockNames = function (): Set<string> {
+export function getProhibitedBlockNames(): Set<string> {
   return prohibitedBlockNames;
-};
+}
 
 export interface BlockFactorySettings {
   blockDefinitionFormat: string;
@@ -122,15 +122,18 @@ export interface BlockFactorySettings {
   codeGeneratorLanguage: string;
 }
 
-export const saveBlockFactorySettings = function (
-  settings: BlockFactorySettings,
-) {
+/**
+ * Saves block factory settings in local storage.
+ *
+ * @param settings Object with settings to save.
+ */
+export function saveBlockFactorySettings(settings: BlockFactorySettings) {
   localStorage.setItem(settingsKey, JSON.stringify(settings));
-};
+}
 
-export const loadBlockFactorySettings =
-  function (): BlockFactorySettings | null {
-    const settings = localStorage.getItem(settingsKey);
-    if (!settings) return null;
-    return JSON.parse(settings);
-  };
+/** Returns block factory settings that were saved in local storage, or null if none. */
+export function loadBlockFactorySettings(): BlockFactorySettings | null {
+  const settings = localStorage.getItem(settingsKey);
+  if (!settings) return null;
+  return JSON.parse(settings);
+}

@@ -13,7 +13,7 @@ import * as storage from './storage';
  * @param workspace Blockly workspace to save.
  * @param e Blockly event triggering the save.
  */
-export const saveOnChange = function (
+export function saveOnChange(
   workspace: Blockly.Workspace,
   e: Blockly.Events.Abstract,
 ) {
@@ -39,7 +39,7 @@ export const saveOnChange = function (
     .getBlocksByType('factory_base')[0]
     .getFieldValue('NAME');
   storage.updateBlock(blockName, JSON.stringify(data));
-};
+}
 
 /**
  * Loads saved state from storage into the given workspace.
@@ -48,10 +48,7 @@ export const saveOnChange = function (
  * @param workspace Blockly workspace to load into.
  * @param blockName Name of saved block to load. If unset, loads the last edited block instead.
  */
-export const loadBlock = function (
-  workspace: Blockly.Workspace,
-  blockName?: string,
-) {
+export function loadBlock(workspace: Blockly.Workspace, blockName?: string) {
   const block = blockName
     ? storage.getBlock(blockName)
     : storage.getLastEditedBlock();
@@ -60,14 +57,14 @@ export const loadBlock = function (
   } else {
     createNewBlock(workspace);
   }
-};
+}
 
 /**
  * Creates a new block from scratch.
  *
  * @param workspace Blockly workspace to load into.
  */
-export const createNewBlock = function (workspace: Blockly.Workspace) {
+export function createNewBlock(workspace: Blockly.Workspace) {
   // Disable events so we don't save while deleting blocks.
   Blockly.Events.disable();
   workspace.clear();
@@ -76,7 +73,7 @@ export const createNewBlock = function (workspace: Blockly.Workspace) {
   const blockName = getNewUnusedName();
   const startBlockJson = createStartBlock(blockName);
   Blockly.serialization.workspaces.load(startBlockJson, workspace);
-};
+}
 
 /**
  * Finds a name for a block that isn't being used yet.
@@ -84,7 +81,7 @@ export const createNewBlock = function (workspace: Blockly.Workspace) {
  * @param startName Initial name to propose, or 'my_block' if not set.
  * @returns An unused name based on the proposed name.
  */
-const getNewUnusedName = function (startName = 'my_block'): string {
+function getNewUnusedName(startName = 'my_block'): string {
   let name = startName;
   let number = 0;
   while (storage.getAllSavedBlockNames().has(name)) {
@@ -92,7 +89,7 @@ const getNewUnusedName = function (startName = 'my_block'): string {
     name = startName + number;
   }
   return name;
-};
+}
 
 /**
  * Creates the inital block factory block setup with the given name.
@@ -100,7 +97,7 @@ const getNewUnusedName = function (startName = 'my_block'): string {
  * @param name Initial name of the block.
  * @returns Block JSON representing the factory start blocks.
  */
-const createStartBlock = function (name: string): object {
+function createStartBlock(name: string): object {
   return {
     blocks: {
       languageVersion: 0,
@@ -141,7 +138,7 @@ const createStartBlock = function (name: string): object {
       ],
     },
   };
-};
+}
 
 /**
  * Checks if the event represents an in-progress change of a block's name.
@@ -151,7 +148,7 @@ const createStartBlock = function (name: string): object {
  * @returns true if the event is an intermediate field change
  *    that changes the block's name field, else false.
  */
-const isChangingBlockName = function (
+function isChangingBlockName(
   workspace: Blockly.Workspace,
   e: Blockly.Events.Abstract,
 ) {
@@ -165,7 +162,7 @@ const isChangingBlockName = function (
     }
   }
   return false;
-};
+}
 
 /**
  * Checks if the event represents a completed change of a block's name.
@@ -175,7 +172,7 @@ const isChangingBlockName = function (
  * @returns true ifthe event was a block change event that changes the
  *    block's name field, else false.
  */
-const isFinalBlockNameChange = function (
+function isFinalBlockNameChange(
   workspace: Blockly.Workspace,
   e: Blockly.Events.Abstract,
 ) {
@@ -189,4 +186,4 @@ const isFinalBlockNameChange = function (
     }
   }
   return false;
-};
+}
