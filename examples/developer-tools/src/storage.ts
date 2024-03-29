@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+const settingsKey = 'blockFactorySettings';
 const lastEditedBlockKey = 'blockFactoryLastEditedBlock';
 const allBlocksKey = 'blockFactoryAllBlocks';
 const allBlocks: Set<string> = new Set(
   JSON.parse(window.localStorage?.getItem(allBlocksKey)) || [],
 );
 const prohibitedBlockNames = new Set([
+  settingsKey,
   lastEditedBlockKey,
   allBlocksKey,
   'blockly_block_factory_preview_block',
@@ -113,3 +115,22 @@ export const getAllSavedBlockNames = function (): Set<string> {
 export const getProhibitedBlockNames = function (): Set<string> {
   return prohibitedBlockNames;
 };
+
+export interface BlockFactorySettings {
+  blockDefinitionFormat: string;
+  codeHeaderStyle: string;
+  codeGeneratorLanguage: string;
+}
+
+export const saveBlockFactorySettings = function (
+  settings: BlockFactorySettings,
+) {
+  localStorage.setItem(settingsKey, JSON.stringify(settings));
+};
+
+export const loadBlockFactorySettings =
+  function (): BlockFactorySettings | null {
+    const settings = localStorage.getItem(settingsKey);
+    if (!settings) return null;
+    return JSON.parse(settings);
+  };
