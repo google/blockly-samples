@@ -14,6 +14,10 @@ import {CodeHeaderGenerator} from './output-generators/code_header_generator';
 import {Menu} from '@material/web/menu/menu';
 import {GeneratorStubGenerator} from './output-generators/generator_stub_generator';
 
+/**
+ * This class handles updating the UI output, including refreshing the block preview,
+ * updating the generator output, etc.
+ */
 export class Controller {
   constructor(
     private mainWorkspace: Blockly.WorkspaceSvg,
@@ -63,6 +67,7 @@ export class Controller {
     this.viewModel.definitionDiv.textContent = blockDefinitionString;
   }
 
+  /** Shows code headers for loading Blockly and other deps using imports. */
   showImportHeaders() {
     this.importHeaderGenerator.setLanguage(
       this.viewModel.getCodeGeneratorLanguage(),
@@ -73,6 +78,7 @@ export class Controller {
     this.viewModel.codeHeadersDiv.textContent = headers;
   }
 
+  /** Shows code headers for loading Blockly and other deps using script tags. */
   showScriptHeaders() {
     this.scriptHeaderGenerator.setLanguage(
       this.viewModel.getCodeGeneratorLanguage(),
@@ -83,6 +89,10 @@ export class Controller {
     this.viewModel.codeHeadersDiv.textContent = headers;
   }
 
+  /**
+   * Shows the code generator stub for the currently selected programming
+   * language and import style.
+   */
   updateGeneratorStub() {
     const scriptMode = this.viewModel.getCodeHeaderStyle() === 'script';
     this.generatorStubGenerator.setScriptMode(scriptMode);
