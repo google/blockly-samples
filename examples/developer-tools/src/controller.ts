@@ -64,6 +64,9 @@ export class Controller {
   }
 
   showImportHeaders() {
+    this.importHeaderGenerator.setLanguage(
+      this.viewModel.getCodeGeneratorLanguage(),
+    );
     const headers = this.importHeaderGenerator.workspaceToCode(
       this.mainWorkspace,
     );
@@ -71,6 +74,9 @@ export class Controller {
   }
 
   showScriptHeaders() {
+    this.scriptHeaderGenerator.setLanguage(
+      this.viewModel.getCodeGeneratorLanguage(),
+    );
     const headers = this.scriptHeaderGenerator.workspaceToCode(
       this.mainWorkspace,
     );

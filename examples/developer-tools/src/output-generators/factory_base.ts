@@ -213,7 +213,11 @@ importHeaderGenerator.forBlock['factory_base'] = function (
   block: Blockly.Block,
   generator: CodeHeaderGenerator,
 ): string {
+  const language = generator.getLanguage();
   generator.addHeaderLine(`import * as Blockly from 'blockly/core';`);
+  generator.addHeaderLine(
+    `import {${language}Generator, Order} from 'blockly/${language}';`,
+  );
   generator.statementToCode(block, 'INPUTS');
   return '';
 };
@@ -222,8 +226,12 @@ scriptHeaderGenerator.forBlock['factory_base'] = function (
   block: Blockly.Block,
   generator: CodeHeaderGenerator,
 ): string {
+  const language = generator.getLanguage();
   generator.addHeaderLine(
     `<script src="https://unpkg.com/blockly/blockly_compressed.js"></script>`,
+  );
+  generator.addHeaderLine(
+    `<script src="https://unpkg.com/blockly/${language}_compressed.js"></script>`,
   );
   generator.statementToCode(block, 'INPUTS');
   return '';
