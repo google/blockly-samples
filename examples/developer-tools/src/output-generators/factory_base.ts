@@ -244,14 +244,15 @@ generatorStubGenerator.forBlock['factory_base'] = function (
   const lang = generator.getLanguage();
   const blockName = block.getFieldValue('NAME');
   const inputs = generator.statementToCode(block, 'INPUTS');
+  const scriptPrefix = generator.getScriptMode() ? lang + '.' : '';
   const hasOutput = !!block.getInput('OUTPUTCHECK');
   const returnIfOutput = `// TODO: Change Order.NONE to the correct operator precedence strength
-  return [code, ${generator.getScriptMode() ? lang + '.' : ''}Order.NONE];`;
+  return [code, ${scriptPrefix}Order.NONE];`;
   const returnIfNoOutput = `return code;`;
 
-  return `${
-    generator.getScriptMode() ? lang + '.' : ''
-  }${lang}Generator.forBlock[${generator.quote_(blockName)}] = function() {
+  return `${scriptPrefix}${lang}Generator.forBlock[${generator.quote_(
+    blockName,
+  )}] = function() {
 ${inputs}
   // TODO: Assemble ${lang} into the code variable.
   const code = '...';

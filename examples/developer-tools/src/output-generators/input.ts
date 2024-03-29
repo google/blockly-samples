@@ -151,6 +151,9 @@ generatorStubGenerator.forBlock['input'] = function (
   const inputName = block.getFieldValue('INPUTNAME');
   const inputVar = generator.createVariableName(inputType, inputName);
   const fields = generator.statementToCode(block, 'FIELDS');
+  const orderPrefix = generator.getScriptMode()
+    ? generator.getLanguage() + '.'
+    : '';
   const codeLines = [];
 
   if (inputType === 'Value') {
@@ -160,9 +163,7 @@ generatorStubGenerator.forBlock['input'] = function (
     codeLines.push(
       `const ${inputVar} = generator.valueToCode(block, ${generator.quote_(
         inputName,
-      )}, ${
-        generator.getScriptMode() ? generator.getLanguage() + '.' : ''
-      }Order.ATOMIC);`,
+      )}, ${orderPrefix}Order.ATOMIC);`,
     );
   } else if (inputType === 'Statement') {
     codeLines.push(
