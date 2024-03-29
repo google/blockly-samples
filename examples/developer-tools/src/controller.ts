@@ -12,6 +12,7 @@ import {JavascriptDefinitionGenerator} from './output-generators/javascript_defi
 import {JsonDefinitionGenerator} from './output-generators/json_definition_generator';
 import {CodeHeaderGenerator} from './output-generators/code_header_generator';
 import {Menu} from '@material/web/menu/menu';
+import {GeneratorStubGenerator} from './output-generators/generator_stub_generator';
 
 export class Controller {
   constructor(
@@ -22,6 +23,7 @@ export class Controller {
     private jsonGenerator: JsonDefinitionGenerator,
     private importHeaderGenerator: CodeHeaderGenerator,
     private scriptHeaderGenerator: CodeHeaderGenerator,
+    private generatorStubGenerator: GeneratorStubGenerator,
   ) {
     // Add event listeners to update when output config elements are changed
     this.viewModel.outputConfigDiv.addEventListener('change', () => {
@@ -75,6 +77,19 @@ export class Controller {
     this.viewModel.codeHeadersDiv.textContent = headers;
   }
 
+  updateGeneratorStub() {
+    const scriptMode = this.viewModel.getCodeHeaderStyle() === 'script';
+    this.generatorStubGenerator.setScriptMode(scriptMode);
+    this.generatorStubGenerator.setLanguage(
+      this.viewModel.getCodeGeneratorLanguage(),
+    );
+
+    const generatorStub = this.generatorStubGenerator.workspaceToCode(
+      this.mainWorkspace,
+    );
+    this.viewModel.generatorStubDiv.textContent = generatorStub;
+  }
+
   /**
    * Updates all of the output for the block factory,
    * including the preview, definition, generators, etc.
@@ -91,6 +106,8 @@ export class Controller {
     } else {
       this.showScriptHeaders();
     }
+
+    this.updateGeneratorStub();
 
     this.updateBlockPreview();
   }

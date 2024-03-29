@@ -13,7 +13,7 @@ export class ViewModel {
   definitionDiv = document.getElementById('block-definition').firstChild;
   outputConfigDiv = document.getElementById('output-config');
   codeHeadersDiv = document.getElementById('code-headers').firstChild;
-  generatorStubDiv = document.getElementById('generator-stub');
+  generatorStubDiv = document.getElementById('generator-stub').firstChild;
 
   createButton = document.getElementById('create-btn');
   deleteButton = document.getElementById('delete-btn');
@@ -37,7 +37,7 @@ export class ViewModel {
    * Gets the name of the code generator language the user selected.
    *
    * @returns The generator language name, in the same format as
-   *    used by Blockly, e.g. `Javascript` or `Php`.
+   *    used by Blockly, e.g. `javascript` or `php`.
    */
   getCodeGeneratorLanguage(): string {
     const languageSelector = document.getElementById(

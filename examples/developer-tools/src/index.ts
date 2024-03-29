@@ -20,6 +20,7 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from './output-generators/code_header_generator';
+import {generatorStubGenerator} from './output-generators/generator_stub_generator';
 
 // Put Blockly in the global scope for easy debugging.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,6 +45,7 @@ const controller = new Controller(
   jsonDefinitionGenerator,
   importHeaderGenerator,
   scriptHeaderGenerator,
+  generatorStubGenerator,
 );
 
 // Disable orphan blocks on the main workspace

@@ -18,6 +18,10 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from '../code_header_generator';
+import {
+  GeneratorStubGenerator,
+  generatorStubGenerator,
+} from '../generator_stub_generator';
 
 jsonDefinitionGenerator.forBlock['field_input'] = function (
   block: Blockly.Block,
@@ -54,4 +58,15 @@ scriptHeaderGenerator.forBlock['field_input'] = function (
   generator: CodeHeaderGenerator,
 ): string {
   return '';
+};
+
+generatorStubGenerator.forBlock['field_input'] = function (
+  block: Blockly.Block,
+  generator: GeneratorStubGenerator,
+): string {
+  const name = block.getFieldValue('FIELDNAME');
+  const fieldVar = generator.createVariableName('text', name);
+  return `const ${fieldVar} = block.getFieldValue(${generator.quote_(
+    name,
+  )});\n`;
 };

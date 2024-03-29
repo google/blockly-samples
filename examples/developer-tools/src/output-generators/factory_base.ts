@@ -20,6 +20,10 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from './code_header_generator';
+import {
+  GeneratorStubGenerator,
+  generatorStubGenerator,
+} from './generator_stub_generator';
 
 /**
  * Builds the 'message0' part of the JSON block definition.
@@ -223,4 +227,26 @@ scriptHeaderGenerator.forBlock['factory_base'] = function (
   );
   generator.statementToCode(block, 'INPUTS');
   return '';
+};
+
+generatorStubGenerator.forBlock['factory_base'] = function (
+  block: Blockly.Block,
+  generator: GeneratorStubGenerator,
+): string {
+  const lang = generator.getLanguage();
+  const blockName = block.getFieldValue('NAME');
+  const inputs = generator.statementToCode(block, 'INPUTS');
+  const hasOutput = !!block.getInput('OUTPUTCHECK');
+  const returnIfOutput = `// TODO: Change Order.NONE to the correct operator precedence strength
+  return [code, ${generator.getScriptMode() ? lang + '.' : ''}Order.NONE];`;
+  const returnIfNoOutput = `return code;`;
+
+  return `${
+    generator.getScriptMode() ? lang + '.' : ''
+  }${lang}Generator.forBlock[${generator.quote_(blockName)}] = function() {
+${inputs}
+  // TODO: Assemble ${lang} into the code variable.
+  const code = '...';
+  ${hasOutput ? returnIfOutput : returnIfNoOutput}
+}`;
 };
