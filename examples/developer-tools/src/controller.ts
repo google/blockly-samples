@@ -6,7 +6,7 @@
 
 import * as Blockly from 'blockly';
 import * as storage from './storage';
-import {createNewBlock, load} from './serialization';
+import {createNewBlock, loadBlock} from './serialization';
 import {ViewModel} from './view_model';
 import {JavascriptDefinitionGenerator} from './output-generators/javascript_definition_generator';
 import {JsonDefinitionGenerator} from './output-generators/json_definition_generator';
@@ -135,7 +135,7 @@ export class Controller {
         storage.removeBlock(blockName);
 
         // Loads a previously saved block or creates a new one, so the workspace is never empty
-        load(this.mainWorkspace);
+        loadBlock(this.mainWorkspace);
       },
     );
   }
@@ -155,7 +155,7 @@ export class Controller {
   private handleLoadSelect(e: Event) {
     if (e.target && e.target instanceof HTMLElement) {
       const blockName = e.target.getAttribute('data-id');
-      load(this.mainWorkspace, blockName);
+      loadBlock(this.mainWorkspace, blockName);
     }
   }
 

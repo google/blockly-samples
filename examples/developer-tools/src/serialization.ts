@@ -48,7 +48,7 @@ export const saveOnChange = function (
  * @param workspace Blockly workspace to load into.
  * @param blockName Name of saved block to load. If unset, loads the last edited block instead.
  */
-export const load = function (
+export const loadBlock = function (
   workspace: Blockly.Workspace,
   blockName?: string,
 ) {
