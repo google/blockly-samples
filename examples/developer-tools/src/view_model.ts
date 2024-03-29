@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import '@material/web/menu/menu';
+import '@material/web/menu/menu-item';
+
 export class ViewModel {
   mainWorkspaceDiv = document.getElementById('main-workspace');
   previewDiv = document.getElementById('block-preview');
@@ -11,6 +14,11 @@ export class ViewModel {
   outputConfigDiv = document.getElementById('output-config');
   codeHeadersDiv = document.getElementById('code-headers').firstChild;
   generatorStubDiv = document.getElementById('generator-stub');
+
+  createButton = document.getElementById('create-btn');
+  deleteButton = document.getElementById('delete-btn');
+  loadButton = document.getElementById('load-btn');
+  loadMenu = document.getElementById('load-menu');
 
   /**
    * Gets a string representing the format of the block
