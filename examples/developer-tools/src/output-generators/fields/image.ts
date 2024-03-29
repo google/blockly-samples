@@ -18,6 +18,10 @@ import {
   importHeaderGenerator,
   scriptHeaderGenerator,
 } from '../code_header_generator';
+import {
+  GeneratorStubGenerator,
+  generatorStubGenerator,
+} from '../generator_stub_generator';
 
 jsonDefinitionGenerator.forBlock['field_image'] = function (
   block: Blockly.Block,
@@ -59,5 +63,13 @@ scriptHeaderGenerator.forBlock['field_image'] = function (
   block: Blockly.Block,
   generator: CodeHeaderGenerator,
 ): string {
+  return '';
+};
+
+generatorStubGenerator.forBlock['field_image'] = function (
+  block: Blockly.Block,
+  generator: GeneratorStubGenerator,
+): string {
+  // Images don't have a value that would typically appear in a block-code generator
   return '';
 };

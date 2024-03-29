@@ -46,7 +46,7 @@ body {
   min-height: 200px;
 }
 
-#block-definition {
+pre {
   overflow: scroll;
 }
 
