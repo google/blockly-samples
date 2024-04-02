@@ -14,13 +14,13 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    type: 'test_mutator_colorChange',
-    message0: 'colour %1',
+    type: 'test_mutator_textChange',
+    message0: 'mutator text: %1',
     args0: [
       {
-        type: 'field_colour',
-        name: 'COLOUR',
-        colour: '#ff0000',
+        type: 'field_input',
+        name: 'MUTATOR_TEXT',
+        text: 'a label',
       },
     ],
     style: 'colour_blocks',
@@ -41,7 +41,7 @@ const COLOR_CHANGE_MUTATOR = {
    */
   mutationToDom: function () {
     const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('colour', this.getColour());
+    container.setAttribute('arbitrary', this.getFieldValue('LABEL'));
     return container;
   },
   /**
@@ -50,23 +50,23 @@ const COLOR_CHANGE_MUTATOR = {
    * @this {Blockly.Block}
    */
   domToMutation: function (xmlElement) {
-    this.setColour(xmlElement.getAttribute('colour'));
+    this.setFieldValue(xmlElement.getAttribute('arbitrary'), 'LABEL');
   },
   /**
    * Returns the state of this block as a json serializable object.
-   * @returns {{colour: string}} The state of this block.
+   * @returns {{arbitrary: string}} The state of this block.
    * @this {Blockly.Block}
    */
   saveExtraState: function () {
-    return {colour: this.getColour()};
+    return {arbitrary: this.getFieldValue('LABEL')};
   },
   /**
    * Applies the state to this block.
-   * @param {{color: string}} state The state to apply.
+   * @param {{arbitrary: string}} state The state to apply.
    * @this {Blockly.Block}
    */
   loadExtraState: function (state) {
-    this.setColour(state['colour']);
+    this.setFieldValue(state['arbitrary'], 'LABEL');
   },
   /**
    * Populate the mutator's dialog with this block's components.
@@ -76,10 +76,12 @@ const COLOR_CHANGE_MUTATOR = {
    */
   decompose: function (workspace) {
     const containerBlock = Blockly.serialization.blocks.append(
-      {type: 'test_mutator_colorChange'},
+      {type: 'test_mutator_textChange'},
       workspace,
     );
-    containerBlock.getField('COLOUR').setValue(this.getColour());
+    containerBlock
+      .getField('MUTATOR_TEXT')
+      .setValue(this.getFieldValue('LABEL'));
     return containerBlock;
   },
   /**
@@ -88,7 +90,7 @@ const COLOR_CHANGE_MUTATOR = {
    * @this {Blockly.Block}
    */
   compose: function (containerBlock) {
-    this.setColour(containerBlock.getFieldValue('COLOUR'));
+    this.setFieldValue(containerBlock.getFieldValue('MUTATOR_TEXT'), 'LABEL');
   },
 };
 
@@ -100,12 +102,12 @@ for (let i = 0; i < n; i++) {
 
 const defineBlocks = blocksIds.map((t) => ({
   type: t,
-  message0: 'colour %1',
+  message0: 'mutator text: %1',
   args0: [
     {
-      type: 'field_colour',
-      name: 'COLOUR',
-      colour: '#ff0000',
+      type: 'field_input',
+      name: 'MUTATOR_TEXT',
+      text: 'a label',
     },
   ],
   style: 'colour_blocks',
@@ -114,7 +116,14 @@ const defineBlocks = blocksIds.map((t) => ({
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_mutators_many',
-    message0: 'test many blocks mutator',
+    message0: 'test many blocks mutator %1',
+    args0: [
+      {
+        type: 'field_label',
+        name: 'LABEL',
+        text: 'changeable label',
+      },
+    ],
     mutator: 'test_many_blocks_mutator',
     colour: '#000000',
   },
@@ -132,7 +141,14 @@ Blockly.Extensions.registerMutator(
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_mutators_noflyout',
-    message0: 'noflyout mutator',
+    message0: 'noflyout mutator %1',
+    args0: [
+      {
+        type: 'field_label',
+        name: 'LABEL',
+        text: 'changeable label',
+      },
+    ],
     mutator: 'test_noflyout_mutator',
     colour: '#000000',
   },
@@ -149,7 +165,14 @@ Blockly.Extensions.registerMutator(
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_mutators_changeableFlyout',
-    message0: 'changeable flyout mutator',
+    message0: 'changeable flyout mutator %1',
+    args0: [
+      {
+        type: 'field_label',
+        name: 'LABEL',
+        text: 'changeable label',
+      },
+    ],
     mutator: 'test_changeableFlyout_mutator',
     colour: '#000000',
   },
