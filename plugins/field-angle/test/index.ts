@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly';
 import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
-import '../src/index';
+import {registerFieldAngle} from '../src/index';
 
 const toolbox = generateFieldTestBlocks('field_angle', [
   {
@@ -81,6 +81,7 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  registerFieldAngle();
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
   };
