@@ -47,10 +47,16 @@ const updateTypeInputs = function (
 ): undefined {
   if (inputsWithConnectionCheckInputs.has(value)) {
     if (!this.getInput('CHECK')) {
-      this.appendValueInput('CHECK')
+      const input = this.appendValueInput('CHECK')
         .setCheck(['ConnectionCheckArray', 'ConnectionCheck'])
         .setAlign(Blockly.inputs.Align.RIGHT)
         .appendField('connection check');
+      input.connection.setShadowState({
+        type: 'connection_check',
+        fields: {
+          CHECKDROPDOWN: 'null',
+        },
+      });
     }
   } else {
     this.removeInput('CHECK', true);
