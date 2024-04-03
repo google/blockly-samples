@@ -15,9 +15,12 @@
  * the saved data from the old tool can be loaded into this tool.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- no good types for json from block factory */
+
 import * as Blockly from 'blockly/core';
 
-const connectionCheckShadow = {
+/** Shadow state for a connection check block. */
+const CONNECTION_CHECK_SHADOW = {
   type: 'connection_check',
   fields: {
     CHECKDROPDOWN: 'null',
@@ -44,7 +47,7 @@ export function convertBaseBlock(oldBlock: any): object {
 
   if (oldBlock.inputs?.OUTPUTTYPE) {
     newBlock.inputs.OUTPUTCHECK = {};
-    newBlock.inputs.OUTPUTCHECK.shadow = connectionCheckShadow;
+    newBlock.inputs.OUTPUTCHECK.shadow = CONNECTION_CHECK_SHADOW;
     if (oldBlock.inputs.OUTPUTTYPE.block) {
       newBlock.inputs.OUTPUTCHECK.block = convertCheck(
         oldBlock.inputs.OUTPUTTYPE.block,
@@ -54,7 +57,7 @@ export function convertBaseBlock(oldBlock: any): object {
   }
   if (oldBlock.inputs?.TOPTYPE) {
     newBlock.inputs.TOPCHECK = {};
-    newBlock.inputs.TOPCHECK.shadow = connectionCheckShadow;
+    newBlock.inputs.TOPCHECK.shadow = CONNECTION_CHECK_SHADOW;
     if (oldBlock.inputs.TOPTYPE.block) {
       newBlock.inputs.TOPCHECK.block = convertCheck(
         oldBlock.inputs.TOPTYPE.block,
@@ -64,7 +67,7 @@ export function convertBaseBlock(oldBlock: any): object {
   }
   if (oldBlock.inputs?.BOTTOMTYPE) {
     newBlock.inputs.BOTTOMCHECK = {};
-    newBlock.inputs.BOTTOMCHECK.shadow = connectionCheckShadow;
+    newBlock.inputs.BOTTOMCHECK.shadow = CONNECTION_CHECK_SHADOW;
     if (oldBlock.inputs.BOTTOMTYPE.block) {
       newBlock.inputs.BOTTOMCHECK.block = convertCheck(
         oldBlock.inputs.BOTTOMTYPE.block,
@@ -106,7 +109,7 @@ function convertInput(oldBlock: any): object {
   if (oldBlock.inputs?.TYPE) {
     newBlock.inputs = {
       CHECK: {
-        shadow: connectionCheckShadow,
+        shadow: CONNECTION_CHECK_SHADOW,
       },
     };
     if (oldBlock.inputs.TYPE.block) {
