@@ -133,6 +133,14 @@ function createStartBlock(name: string): object {
                 },
               },
             },
+            COLOUR: {
+              block: {
+                type: 'colour_hue',
+                fields: {
+                  HUE: 230,
+                },
+              },
+            },
           },
         },
       ],
