@@ -15,8 +15,6 @@
  * the saved data from the old tool can be loaded into this tool.
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any -- no good types for json from block factory */
-
 import * as Blockly from 'blockly/core';
 
 /** Shadow state for a connection check block. */
@@ -36,7 +34,9 @@ const CONNECTION_CHECK_SHADOW = {
  * @param oldBlock The JSON for the factory_base as saved from old tool.
  * @returns JSON that should be loaded instead.
  */
-export function convertBaseBlock(oldBlock: any): object {
+export function convertBaseBlock(
+  oldBlock: Blockly.serialization.blocks.State,
+): Blockly.serialization.blocks.State {
   const newBlock = {...oldBlock};
   // extraState from the old tool isn't relevant.
   delete newBlock.extraState;
@@ -45,36 +45,38 @@ export function convertBaseBlock(oldBlock: any): object {
     newBlock.inputs.INPUTS.block = convertInput(oldBlock.inputs.INPUTS.block);
   }
 
-  if (oldBlock.inputs?.OUTPUTTYPE) {
-    newBlock.inputs.OUTPUTCHECK = {};
-    newBlock.inputs.OUTPUTCHECK.shadow = CONNECTION_CHECK_SHADOW;
-    if (oldBlock.inputs.OUTPUTTYPE.block) {
-      newBlock.inputs.OUTPUTCHECK.block = convertCheck(
-        oldBlock.inputs.OUTPUTTYPE.block,
-      );
+  /**
+   * Converts the top-level connection checks on the 'factory_base' block to the new level.
+   *
+   * @param connectionName Name of the input to create the connection check block for.
+   */
+  function convertFactoryBaseConnectionChecks(
+    connectionName: 'OUTPUT' | 'TOP' | 'BOTTOM',
+  ) {
+    // The names of the input on the old and new blocks
+    // e.g. 'OUTPUTTYPE' vs 'OUTPUTCHECK'
+    const oldInputName = connectionName + 'TYPE';
+    const newInputName = connectionName + 'CHECK';
+
+    // If this input didn't exist in the old block, it also doesn't
+    // exist on the new block. Nothing to do here.
+    if (!oldBlock.inputs || !oldBlock.inputs[oldInputName]) return;
+
+    const newCheckInput: Blockly.serialization.blocks.ConnectionState = {};
+    // Shadow block always exists.
+    newCheckInput.shadow = CONNECTION_CHECK_SHADOW;
+    if (oldBlock.inputs[oldInputName].block) {
+      // Real block only exists if it existed in the old block too.
+      newCheckInput.block = convertCheck(oldBlock.inputs[oldInputName].block);
     }
-    delete newBlock.inputs.OUTPUTTYPE;
+    newBlock.inputs[newInputName] = newCheckInput;
+    // New block doesn't need the input with the old name.
+    delete newBlock.inputs[oldInputName];
   }
-  if (oldBlock.inputs?.TOPTYPE) {
-    newBlock.inputs.TOPCHECK = {};
-    newBlock.inputs.TOPCHECK.shadow = CONNECTION_CHECK_SHADOW;
-    if (oldBlock.inputs.TOPTYPE.block) {
-      newBlock.inputs.TOPCHECK.block = convertCheck(
-        oldBlock.inputs.TOPTYPE.block,
-      );
-    }
-    delete newBlock.inputs.TOPTYPE;
-  }
-  if (oldBlock.inputs?.BOTTOMTYPE) {
-    newBlock.inputs.BOTTOMCHECK = {};
-    newBlock.inputs.BOTTOMCHECK.shadow = CONNECTION_CHECK_SHADOW;
-    if (oldBlock.inputs.BOTTOMTYPE.block) {
-      newBlock.inputs.BOTTOMCHECK.block = convertCheck(
-        oldBlock.inputs.BOTTOMTYPE.block,
-      );
-    }
-    delete newBlock.inputs.BOTTOMTYPE;
-  }
+
+  convertFactoryBaseConnectionChecks('OUTPUT');
+  convertFactoryBaseConnectionChecks('BOTTOM');
+  convertFactoryBaseConnectionChecks('TOP');
 
   return newBlock;
 }
@@ -88,13 +90,15 @@ export function convertBaseBlock(oldBlock: any): object {
  * @param oldBlock JSON for the "input_foo" block as saved from old tool.
  * @returns JSON that should be used for the replacement "input" block.
  */
-function convertInput(oldBlock: any): object {
-  if (!oldBlock) return {};
-  const newBlock: any = {
+function convertInput(
+  oldBlock: Blockly.serialization.blocks.State,
+): Blockly.serialization.blocks.State {
+  const newBlock: Blockly.serialization.blocks.State = {
     type: 'input',
     fields: {
       INPUTTYPE: oldBlock.type,
     },
+    inputs: {},
   };
 
   if (oldBlock.fields?.ALIGN) {
@@ -107,10 +111,8 @@ function convertInput(oldBlock: any): object {
   }
 
   if (oldBlock.inputs?.TYPE) {
-    newBlock.inputs = {
-      CHECK: {
-        shadow: CONNECTION_CHECK_SHADOW,
-      },
+    newBlock.inputs.CHECK = {
+      shadow: CONNECTION_CHECK_SHADOW,
     };
     if (oldBlock.inputs.TYPE.block) {
       newBlock.inputs.CHECK.block = convertCheck(oldBlock.inputs.TYPE.block);
@@ -118,7 +120,6 @@ function convertInput(oldBlock: any): object {
   }
 
   if (oldBlock.inputs?.FIELDS?.block) {
-    if (!newBlock.inputs) newBlock.inputs = {};
     newBlock.inputs.FIELDS = {
       block: convertField(oldBlock.inputs.FIELDS.block),
     };
@@ -142,7 +143,9 @@ function convertInput(oldBlock: any): object {
  * @param oldBlock JSON for the "field_foo" block as saved from old tool.
  * @returns JSON that should be used for the replacement field block.
  */
-function convertField(oldBlock: any): object {
+function convertField(
+  oldBlock: Blockly.serialization.blocks.State,
+): Blockly.serialization.blocks.State {
   const newBlock = {...oldBlock};
   if (oldBlock.type === 'field_static') {
     newBlock.type = 'field_label';
@@ -171,9 +174,10 @@ function convertField(oldBlock: any): object {
  * @param oldBlock JSON for the "type_foo" block as saved from old tool.
  * @returns JSON that should be used for the replacement "connection_check" block.
  */
-function convertCheck(oldBlock: any): object {
-  if (!oldBlock) return {};
-  const oldName = oldBlock.type as string; // The block type i.e. name of block definition
+function convertCheck(
+  oldBlock: Blockly.serialization.blocks.State,
+): Blockly.serialization.blocks.State {
+  const oldName = oldBlock.type; // The block type i.e. name of block definition
   if (!oldName.startsWith('type_')) {
     throw Error(
       `Found connection check block with unexpected block type ${oldName}`,
@@ -182,6 +186,7 @@ function convertCheck(oldBlock: any): object {
   let connectionCheck = oldName.substring(5);
   switch (connectionCheck) {
     case 'null':
+      // check value does not change if 'null'
       break;
     case 'boolean':
       connectionCheck = 'Boolean';
@@ -218,7 +223,9 @@ function convertCheck(oldBlock: any): object {
  * @param oldBlock JSON for the "type_other" block as saved from old tool.
  * @returns JSON that should be used for the replacement "connection_check" block.
  */
-function convertCustomCheck(oldBlock: any): object {
+function convertCustomCheck(
+  oldBlock: Blockly.serialization.blocks.State,
+): Blockly.serialization.blocks.State {
   const customCheck = oldBlock.fields.TYPE;
   return {
     type: 'connection_check',
@@ -240,15 +247,17 @@ function convertCustomCheck(oldBlock: any): object {
  * @param oldBlock JSON for the "type_group" block as saved from old tool.
  * @returns JSON that should be used for the replacement "connection_check" block.
  */
-function convertGroupCheck(oldBlock: any): object {
-  const inputs = {} as any;
+function convertGroupCheck(
+  oldBlock: Blockly.serialization.blocks.State,
+): Blockly.serialization.blocks.State {
+  const inputs: Record<string, object> = {};
   const checkCount = parseInt(
     Blockly.utils.xml.textToDom(oldBlock.extraState).getAttribute('types'),
   );
   for (let index = 0; index < checkCount; index++) {
-    if (oldBlock.inputs['TYPE' + index]) {
+    if (oldBlock.inputs['TYPE' + index]?.block) {
       inputs['CHECK' + index] = {
-        block: convertCheck(oldBlock.inputs['TYPE' + index]?.block),
+        block: convertCheck(oldBlock.inputs['TYPE' + index].block),
       };
     }
   }
