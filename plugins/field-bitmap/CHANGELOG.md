@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.13...@blockly/field-bitmap@4.0.14) (2024-03-28)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
+## [4.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.12...@blockly/field-bitmap@4.0.13) (2024-02-29)
+
+
+### Bug Fixes
+
+* Fix but preventing clearing/randomizing nonsquare bitmap fields. ([#2226](https://github.com/google/blockly-samples/issues/2226)) ([c32266b](https://github.com/google/blockly-samples/commit/c32266b2b7685c0d4d6646e5bcedb085c435e0b2))
+
+
+
+## [4.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.11...@blockly/field-bitmap@4.0.12) (2024-02-08)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
 ## [4.0.11](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.10...@blockly/field-bitmap@4.0.11) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/field-bitmap

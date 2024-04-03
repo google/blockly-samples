@@ -484,7 +484,7 @@ export class FieldAngle extends Blockly.FieldNumber {
       // normal block change events, and instead report them as special
       // intermediate changes that do not get recorded in undo history.
       const oldValue = this.value_;
-      this.setEditorValue_(angle, false);
+      this.setEditorValue_(validAngle, false);
       if (
         this.sourceBlock_ &&
         Blockly.Events.isEnabled() &&
@@ -658,12 +658,15 @@ export class FieldAngle extends Blockly.FieldNumber {
   }
 }
 
-// Unregister legacy field_angle that was in core.  Delete this once
-// core Blockly no longer defines field_angle.
-// If field_angle is not defined in core, this generates a console warning.
-Blockly.fieldRegistry.unregister('field_angle');
+/** Register the field and any dependencies. */
+export function registerFieldAngle() {
+  // Unregister legacy field_angle that was in core.
+  // TODO(#2194): Delete this once core Blockly no longer defines field_angle.
+  // If field_angle is not defined in core, this generates a console warning.
+  Blockly.fieldRegistry.unregister('field_angle');
 
-Blockly.fieldRegistry.register('field_angle', FieldAngle);
+  Blockly.fieldRegistry.register('field_angle', FieldAngle);
+}
 
 FieldAngle.prototype.DEFAULT_VALUE = 0;
 

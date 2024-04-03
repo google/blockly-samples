@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.6](https://github.com/google/blockly-samples/compare/@blockly/field-slider@6.1.5...@blockly/field-slider@6.1.6) (2024-03-28)
+
+**Note:** Version bump only for package @blockly/field-slider
+
+
+
+
+
+## [6.1.5](https://github.com/google/blockly-samples/compare/@blockly/field-slider@6.1.4...@blockly/field-slider@6.1.5) (2024-02-08)
+
+**Note:** Version bump only for package @blockly/field-slider
+
+
+
+
+
 ## [6.1.4](https://github.com/google/blockly-samples/compare/@blockly/field-slider@6.1.3...@blockly/field-slider@6.1.4) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/field-slider

@@ -14,6 +14,18 @@ npm install @blockly/block-dynamic-connection --save
 ```js
 import * as Blockly from 'blockly';
 import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';
+
+const ws = Blockly.inject({
+    // options...
+    plugins: {
+      connectionPreviewer:
+        BlockDynamicConnection.decoratePreviewer(
+          // Replace with a custom connection previewer, or remove to decorate
+          // the default one.
+          Blockly.InsertionMarkerPreviewer,
+        ),
+    },
+  };
 ```
 
 ## API

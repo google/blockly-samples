@@ -362,7 +362,10 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     }
     if (this.borderRect_) {
       totalHeight += constants.FIELD_BORDER_RECT_Y_PADDING * 2;
-      totalWidth += constants.FIELD_BORDER_RECT_X_PADDING * 2;
+      // NOTE: Adding 1 extra px to prevent wrapping. Based on browser zoom,
+      // the rounding of the calculated value can result in the line wrapping
+      // unintentionally.
+      totalWidth += constants.FIELD_BORDER_RECT_X_PADDING * 2 + 1;
       this.borderRect_.setAttribute('width', `${totalWidth}`);
       this.borderRect_.setAttribute('height', `${totalHeight}`);
     }
@@ -491,13 +494,19 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
   }
 }
 
-// Unregister legacy field_multilinetext that was in core.  Delete this once
-// core Blockly no longer defines field_multilinetext.
-// If field_multilinetext is not defined in core,
-// this generates a console warning.
-Blockly.fieldRegistry.unregister('field_multilinetext');
+/**
+ * Register the field and any dependencies.
+ */
+export function registerFieldMultilineInput() {
+  // Unregister legacy field_multilinetext that was in core.
+  // TODO(2194): Delete this once core Blockly no longer defines
+  // field_multilinetext.
+  // If field_multilinetext is not defined in core,
+  // this generates a console warning.
+  Blockly.fieldRegistry.unregister('field_multilinetext');
 
-Blockly.fieldRegistry.register('field_multilinetext', FieldMultilineInput);
+  Blockly.fieldRegistry.register('field_multilinetext', FieldMultilineInput);
+}
 
 /**
  * CSS for multiline field.

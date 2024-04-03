@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.6.0...@blockly/block-dynamic-connection@0.6.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* readme for the dynamic connection previewer ([#2272](https://github.com/google/blockly-samples/issues/2272)) ([dc1d05d](https://github.com/google/blockly-samples/commit/dc1d05d225c52bf3e3a6ccd73bfa710941ea15a2))
+
+
+
+## [0.6.0](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.5.7...@blockly/block-dynamic-connection@0.6.0) (2024-02-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* use new connection previewer in block-dynamic-connection (#2204)
+
+### Features
+
+* use new connection previewer in block-dynamic-connection ([#2204](https://github.com/google/blockly-samples/issues/2204)) ([fb17b94](https://github.com/google/blockly-samples/commit/fb17b943ad5ef8f9db58a9f87d7f7e0dd28bf3d5)), closes [#2190](https://github.com/google/blockly-samples/issues/2190)
+
+
+
+## [0.5.7](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.5.6...@blockly/block-dynamic-connection@0.5.7) (2024-02-08)
+
+**Note:** Version bump only for package @blockly/block-dynamic-connection
+
+
+
+
+
 ## [0.5.6](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.5.5...@blockly/block-dynamic-connection@0.5.6) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/block-dynamic-connection

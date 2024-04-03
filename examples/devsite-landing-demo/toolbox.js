@@ -280,10 +280,6 @@ let toolboxJson = {
         },
         {
           kind: 'BLOCK',
-          type: 'text_multiline',
-        },
-        {
-          kind: 'BLOCK',
           type: 'text_join',
           extraState: {itemCount: 2},
         },
@@ -642,71 +638,6 @@ let toolboxJson = {
                     type: 'List',
                   },
                 },
-              },
-            },
-          },
-        },
-      ],
-    },
-
-    {
-      // Colour Category
-      kind: 'CATEGORY',
-      colour: 354,
-      contents: [
-        {
-          kind: 'BLOCK',
-          type: 'colour_picker',
-          fields: {COLOUR: '#ff0000'},
-        },
-        {
-          kind: 'BLOCK',
-          type: 'colour_random',
-        },
-        {
-          kind: 'BLOCK',
-          type: 'colour_rgb',
-          inputs: {
-            RED: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 100},
-              },
-            },
-            GREEN: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 50},
-              },
-            },
-            BLUE: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 0},
-              },
-            },
-          },
-        },
-        {
-          kind: 'BLOCK',
-          type: 'colour_blend',
-          inputs: {
-            COLOUR1: {
-              shadow: {
-                type: 'colour_picker',
-                fields: {COLOUR: '#ff0000'},
-              },
-            },
-            COLOUR2: {
-              shadow: {
-                type: 'colour_picker',
-                fields: {COLOUR: '#3333ff'},
-              },
-            },
-            RATIO: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 0.5},
               },
             },
           },
