@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.6](https://github.com/google/blockly-samples/compare/@blockly/theme-tritanopia@5.0.5...@blockly/theme-tritanopia@5.0.6) (2024-04-04)
+
+**Note:** Version bump only for package @blockly/theme-tritanopia
+
+
+
+
+
 ## [5.0.5](https://github.com/google/blockly-samples/compare/@blockly/theme-tritanopia@5.0.4...@blockly/theme-tritanopia@5.0.5) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/theme-tritanopia
