@@ -80,10 +80,9 @@ function init() {
   toolboxJson['contents'][2].name = getMsg('Math');
   toolboxJson['contents'][3].name = getMsg('Text');
   toolboxJson['contents'][4].name = getMsg('Lists');
-  toolboxJson['contents'][5].name = getMsg('Colour');
   // Separator.
-  toolboxJson['contents'][7].name = getMsg('Variables');
-  toolboxJson['contents'][8].name = getMsg('Procedures');
+  toolboxJson['contents'][6].name = getMsg('Variables');
+  toolboxJson['contents'][7].name = getMsg('Procedures');
 
   // Inject default variable name.
   // https://github.com/google/blockly/issues/5238
