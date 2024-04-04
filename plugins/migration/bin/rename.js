@@ -192,8 +192,11 @@ class VersionRenamer {
       //   moduleA.exportA -> moduleC.exportB
       // And we performed the module rename first, we wouldn't be able to detect
       // the export rename.
-      this.renamings_.push({old: oldModulePath, new: newModulePath});
+      if (newModulePath !== oldModulePath) {
+        this.renamings_.push({old: oldModulePath, new: newModulePath});
+      }
     }
+    console.log(this.renamings_);
   }
 
   /**
