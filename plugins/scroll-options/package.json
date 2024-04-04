@@ -20,7 +20,7 @@
     "blockly-plugin",
     "scroll-options"
   ],
-  "homepage": "https://github.com:google/blockly-samples/tree/master/plugins/scroll-options#readme",
+  "homepage": "https://github.com/google/blockly-samples/tree/master/plugins/scroll-options#readme",
   "bugs": {
     "url": "https://github.com/google/blockly-samples/issues"
   },
