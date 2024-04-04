@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-multilineinput Demo</div>
       <div class="subtitle">A Blockly multilineinput field.</div>
     </div>
-    3.0.14
+    4.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-multilineinput" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-multilineinput" class="button" target="_blank">View on npm</a>
@@ -51,13 +51,14 @@
     <article class="article-container site-width">
       <div class="article">
       <h1 id="blocklyfield-multilineinput-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/field-multilineinput <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
-<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> multilineinput field.</p>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> multilineinput field and associated block.</p>
 <h2 id="installation">Installation</h2>
 <h3 id="yarn">Yarn</h3>
 <pre><code>yarn add @blockly/field-multilineinput</code></pre>
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-multilineinput --save</code></pre>
 <h2 id="usage">Usage</h2>
+<h3 id="field">Field</h3>
 <p>This field accepts up to 3 parameters:</p>
 <ul>
 <li>"text" to specify the default text. Defaults to <code>""</code>.</li>
@@ -67,10 +68,15 @@ functionality is enabled. Defaults to <code>Infinity</code>.</li>
 <code>true</code>.</li>
 </ul>
 <p>The multiline input field is a subclass of Blockly.FieldInput</p>
+<p>If you want to use only the field, you must register it with Blockly. You can
+do this by calling <code>registerFieldMultilineInput</code> before instantiating your
+blocks. If another field is registered under the same name, this field will
+overwrite it.</p>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import {FieldMultilineInput} from '@blockly/field-multilineinput';
+import {registerFieldMultilineInput} from '@blockly/field-multilineinput';
 
+registerFieldMultilineInput();
 Blockly.Blocks['test_field_multilineinput'] = {
   init: function () {
     this.appendDummyInput()
@@ -83,8 +89,9 @@ Blockly.Blocks['test_field_multilineinput'] = {
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import '@blockly/field-multilineinput';
+import {registerFieldMultilineInput} from '@blockly/field-multilineinput';
 
+registerFieldMultilineInput();
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "test_field_multilineinput",
@@ -96,6 +103,30 @@ Blockly.defineBlocksWithJsonArray([
                 "text": "some text \n with newlines"
             }
     }]);</code></pre>
+<h3 id="blocks">Blocks</h3>
+<p>This package also provides a simple block containing a multiline input
+field. It has generators in JavaScript, Python, PHP, Lua, and Dart.</p>
+<p>You can install the block by calling <code>textMultiline.installBlock()</code>.
+This will install the block and all of its dependencies, including the
+multiline input field. When calling <code>installBlock</code> you can supply one or
+more <code>CodeGenerator</code> instances (e.g. <code>javascriptGenerator</code>), and the install
+function will also install the correct generator function for the
+corresponding language(s).</p>
+<pre><code class="js language-js">import {javascriptGenerator} from 'blockly/javascript';
+import {dartGenerator} from 'blockly/dart';
+import {phpGenerator} from 'blockly/php';
+import {pythonGenerator} from 'blockly/python';
+import {luaGenerator} from 'blockly/lua';
+import {textMultiline} from '@blockly/field-multilineinput';
+
+// Installs the block, the field, and all of the language generators.
+textMultiline.installBlock({
+  javascript: javascriptGenerator,
+  dart: dartGenerator,
+  lua: luaGenerator,
+  python: pythonGenerator,
+  php: phpGenerator,
+});</code></pre>
 <h3 id="api-reference">API reference</h3>
 <ul>
 <li><code>setMaxLines</code>: Sets the maximum number of displayed lines before

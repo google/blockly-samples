@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-angle Demo</div>
       <div class="subtitle">A Blockly angle field.</div>
     </div>
-    3.0.13
+    4.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-angle" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-angle" class="button" target="_blank">View on npm</a>
@@ -58,6 +58,11 @@
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-angle --save</code></pre>
 <h2 id="usage">Usage</h2>
+<h3 id="installation-1">Installation</h3>
+<p>You must register this field with Blockly. You can do this by calling
+<code>registerFieldAngle</code> before instantiating your blocks. If another field is
+registered under the same name, this field will overwrite it.</p>
+<h3 id="parameters">Parameters</h3>
 <p>This field accepts up to 9 parameters, in addition to the 4 accepted by the
 <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/number#creation">number field</a>:</p>
 <ul>
@@ -98,7 +103,9 @@ Defaults to 45.</li>
 </ul>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import {FieldAngle} from '@blockly/field-angle';
+import {registerFieldAngle} from '@blockly/field-angle';
+
+registerFieldAngle();
 Blockly.Blocks['test_field_angle'] = {
   init: function () {
     this.appendDummyInput()
@@ -108,7 +115,9 @@ Blockly.Blocks['test_field_angle'] = {
 };</code></pre>
 <h3 id="json">JSON</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import '@blockly/field-angle';
+import {registerFieldAngle} from '@blockly/field-angle';
+
+registerFieldAngle();
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_field_angle',

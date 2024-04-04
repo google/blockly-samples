@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-colour Demo</div>
       <div class="subtitle">A Blockly colour field.</div>
     </div>
-    3.0.13
+    4.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour" class="button" target="_blank">View on npm</a>
@@ -51,14 +51,16 @@
     <article class="article-container site-width">
       <div class="article">
       <h1 id="blocklyfield-colour-built-on-blocklyhttpstinyurlcombuilt-on-blocklyhttpsgithubcomgoogleblockly">@blockly/field-colour <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" alt="Built on Blockly" /></a></h1>
-<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> colour field.</p>
+<p>A <a href="https://www.npmjs.com/package/blockly">Blockly</a> field and blocks for
+choosing and combining colours.</p>
 <h2 id="installation">Installation</h2>
 <h3 id="yarn">Yarn</h3>
 <pre><code>yarn add @blockly/field-colour</code></pre>
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-colour --save</code></pre>
 <h2 id="usage">Usage</h2>
-<p>This field accepts up to 4 parameters:</p>
+<h3 id="field">Field</h3>
+<p>The colour field accepts up to 4 parameters:</p>
 <ul>
 <li>"colour" to specify the default colour. Defaults to the first value in the
 "colourOptions" array. Should be a "#rrggbb" string.</li>
@@ -70,9 +72,14 @@ the "#rrggbb" values of the provided colour options.</li>
 <li>"columns" to specify the number of columns the colour dropdown should have.
 Defaults to 7.</li>
 </ul>
-<h3 id="javascript">JavaScript</h3>
+<p>If you want to use only the field, you must register it with Blockly. You can
+do this by calling <code>registerFieldColour</code> before instantiating your blocks. If
+another field is registered under the same name, this field will overwrite it.</p>
+<h4 id="javascript">JavaScript</h4>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import {FieldColour} from '@blockly/field-colour';
+import {registerFieldColour} from '@blockly/field-colour';
+
+registerFieldColour();
 Blockly.Blocks['test_field_colour'] = {
   init: function () {
     this.appendDummyInput()
@@ -80,9 +87,11 @@ Blockly.Blocks['test_field_colour'] = {
       .appendField(new FieldColour('#ffcccc'), 'FIELDNAME');
   },
 };</code></pre>
-<h3 id="json">JSON</h3>
+<h4 id="json">JSON</h4>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import '@blockly/field-colour';
+import {registerFieldColour} from '@blockly/field-colour';
+
+registerFieldColour();
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_field_colour',
@@ -96,6 +105,46 @@ Blockly.defineBlocksWithJsonArray([
     ],
   },
 ]);</code></pre>
+<h3 id="blocks">Blocks</h3>
+<p>This package also provides four blocks related to the colour field. Each block
+has generators in JavaScript, Python, PHP, Lua, and Dart.</p>
+<ul>
+<li>"colour_blend" takes in two colours and a ratio and outputs a single colour.</li>
+<li>"colour_picker" is a simple block with just the colour field and an output.</li>
+<li>"colour_random" generates a random colour.</li>
+<li>"colour_rgb" generates a colour based on red, green, and blue values.</li>
+</ul>
+<p>You can install all four blocks by calling <code>installAllBlocks</code>. This will
+install the blocks and all of their dependencies, including the colour field.
+When calling <code>installAllBlocks</code>—or any of the individual <code>installSomeBlock</code>
+functions—you can supply one or more <code>CodeGenerator</code> instances (e.g.
+<code>javascriptGenerator</code>), and the install function will also install the correct
+generator function for each block for the corresponding language(s).</p>
+<pre><code class="js language-js">import {javascriptGenerator} from 'blockly/javascript';
+import {dartGenerator} from 'blockly/dart';
+import {phpGenerator} from 'blockly/php';
+import {pythonGenerator} from 'blockly/python';
+import {luaGenerator} from 'blockly/lua';
+import {installAllBlocks as installColourBlocks} from '@blockly/field-colour';
+
+// Installs all four blocks, the colour field, and all of the language generators.
+installColourBlocks({
+  javascript: javascriptGenerator,
+  dart: dartGenerator,
+  lua: luaGenerator,
+  python: pythonGenerator,
+  php: phpGenerator,
+});</code></pre>
+<p>If you only want to install a single block, you can call that block's
+<code>installBlock</code> function. The <code>generators</code> parameter is the same.</p>
+<pre><code class="js language-js">import {javascriptGenerator} from 'blockly/javascript';
+import {colourBlend} from '@blockly/field-colour';
+
+// Installs the colour_blend block, the colour field,
+// and the generator for colour_blend in JavaScript.
+colourBlend.installBlock({
+  javascript: javascriptGenerator,
+});</code></pre>
 <h3 id="api-reference">API Reference</h3>
 <ul>
 <li><code>setColours</code>: Sets the colour options, and optionally the titles for the
