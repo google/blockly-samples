@@ -41,14 +41,14 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^3.1.1",
     "@blockly/dev-tools": "^7.1.6",
-    "blockly": "^11.0.0-beta.6",
+    "blockly": "^11.0.0-beta.7",
     "jsdom": "^19.0.0",
     "jsdom-global": "3.0.2",
     "mocha": "^10.1.0",
     "sinon": "7.5.0"
   },
   "peerDependencies": {
-    "blockly": "^11.0.0-beta.6"
+    "blockly": "^11.0.0-beta.7"
   },
   "dependencies": {
     "@blockly/plugin-modal": "^6.0.10"
