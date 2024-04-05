@@ -675,12 +675,12 @@ let toolboxJson = {
     },
 
     {
-      // Functions Category
+      // Procedures Category
       kind: 'CATEGORY',
       custom: 'PROCEDURE',
       colour: 16,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowFunctions",
+        row: "blocklyTreeRow blocklyTreeRowProcedures",
       },
     },
   ],
