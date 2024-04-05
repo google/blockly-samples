@@ -16,6 +16,7 @@ import * as Blockly from 'blockly/core';
 import {registerContextMenus} from './backpack_helpers';
 import {BackpackOptions, parseOptions} from './options';
 import {BackpackChange, BackpackOpen} from './ui_events';
+import {Backpackable, isBackpackable} from './backpackable';
 
 /**
  * Class for backpack that can be used save blocks from the workspace for
@@ -453,8 +454,8 @@ export class Backpack
    *   being dragged.
    */
   onDrop(dragElement: Blockly.IDraggable) {
-    if (dragElement instanceof Blockly.BlockSvg) {
-      this.addBlock(dragElement);
+    if (isBackpackable(dragElement)) {
+      this.addBackpackable(dragElement);
     }
   }
 
@@ -525,7 +526,7 @@ export class Backpack
    *     provided block.
    */
   containsBlock(block: Blockly.Block): boolean {
-    return this.contents_.indexOf(this.blockToJsonString(block)) !== -1;
+    return isBackpackable(block) && this.containsBackpackable(block);
   }
 
   /**
@@ -534,7 +535,7 @@ export class Backpack
    * @param block The block to be added to the backpack.
    */
   addBlock(block: Blockly.Block) {
-    this.addItem(this.blockToJsonString(block));
+    if (isBackpackable(block)) this.addBackpackable(block);
   }
 
   /**
@@ -544,7 +545,9 @@ export class Backpack
    *     backpack.
    */
   addBlocks(blocks: Blockly.Block[]) {
-    this.addItems(blocks.map(this.blockToJsonString));
+    for (const block of blocks) {
+      if (isBackpackable(block)) this.addBackpackable(block);
+    }
   }
 
   /**
@@ -553,7 +556,39 @@ export class Backpack
    * @param block The block to be removed from the backpack.
    */
   removeBlock(block: Blockly.Block) {
-    this.removeItem(this.blockToJsonString(block));
+    if (isBackpackable(block)) this.removeBackpackable(block);
+  }
+
+  /**
+   * Returns whether the backpack contains a duplicate of the provided
+   * backpackable.
+   */
+  containsBackpackable(backpackable: Backpackable) {
+    return backpackable
+      .toFlyoutData()
+      .every((info) => this.contents_.indexOf(JSON.stringify(info)) !== -1);
+  }
+
+  /** Adds the given backpackable to the backpack. */
+  addBackpackable(backpackable: Backpackable) {
+    this.addBackpackables([backpackable]);
+  }
+
+  /** Adds the given backpackables to the backpack. */
+  addBackpackables(backpackables: Backpackable[]) {
+    this.addItems(
+      backpackables
+        .map((b) => b.toFlyoutData())
+        .reduce((acc, curr) => [...acc, ...curr])
+        .map((info) => JSON.stringify(info)),
+    );
+  }
+
+  /** Removes the given backpackable from the backpack, if it exists. */
+  removeBackpackable(backpackable: Backpackable) {
+    for (const info of backpackable.toFlyoutData()) {
+      this.removeItem(JSON.stringify(info));
+    }
   }
 
   /**
