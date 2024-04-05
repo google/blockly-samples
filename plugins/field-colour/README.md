@@ -21,21 +21,29 @@ npm install @blockly/field-colour --save
 
 ### Field
 
-The colour field accepts up to 4 parameters:
+The colour field stores a string as its `value`, and a string as its `text`. Its
+`value` is a string with the format `#rrggbb`, while its `text` may be a string
+with the format `#rgb` if possible.
 
-- "colour" to specify the default colour. Defaults to the first value in the
-  "colourOptions" array. Should be a "#rrggbb" string.
-- "colourOptions" to specify the colour options in the dropdown. Defaults to
-  a set of 70 colors, including grays, reds, oranges, yellows, olives, greens,
-  turquoises, blues, purples, and violets. Should be "#rrggbb" strings.
-- "colourTitles" to specify the tooltips for the colour options. Defaults to
-  the "#rrggbb" values of the provided colour options.
-- "columns" to specify the number of columns the colour dropdown should have.
-  Defaults to 7.
+#### Colour field
+
+![](https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/on_block.png)
+
+#### Colour field with editor open
+
+![](https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/with_editor.png)
+
+#### Colour field on collapsed block
+
+![](https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/collapsed.png)
 
 If you want to use only the field, you must register it with Blockly. You can
 do this by calling `registerFieldColour` before instantiating your blocks. If
 another field is registered under the same name, this field will overwrite it.
+
+If you install the blocks in this package, the field will automatically be installed.
+
+### Creation
 
 #### JavaScript
 
@@ -74,6 +82,112 @@ Blockly.defineBlocksWithJsonArray([
   },
 ]);
 ```
+
+The colour constructor takes in the following:
+
+- an optional `value`
+- an optional [validator](#creating_a_colour_validator)
+- an optional map of options, including:
+  - `colourOptions`
+  - `colourTitles`
+  - `columns`
+
+The `value` should be a string in the format `#rrggbb`. If no `value` is given or the given `value` is invalid, the first entry in the default colours array will be used.
+
+The following options can also be set in JSON:
+
+- `colourOptions`
+- `colourTitles`
+- `columns`
+
+Or they can be set using [JavaScript hooks](#editor_options).
+
+## Customization
+
+### Editor options
+
+The setColours
+function can be used to set the colour options of a colour field. It takes in an
+array of colour strings, which must be defined in `#rrggbb` format, and an
+optional array of tooltips. If the tooltip array is not provided, the default
+tooltip array will be used.
+
+Tooltips and colours are matched based on array index, not based on value. If
+the colours array is longer than the tooltip array, the tooltips for the extra
+colours will be their `#rrggbb` value.
+
+The setColumns function sets the number of columns in the colour picker.
+
+#### JSON
+
+```js
+{
+  "type": "example_colour",
+  "message0": "colour: %1",
+  "args0": [
+    {
+      "type": "field_colour",
+      "name": "COLOUR",
+      "colour": "#ff4040"
+    }
+  ],
+  "extensions": ["set_colours_extension"]
+}
+```
+
+```js
+Blockly.Extensions.register('set_colours_extension', function () {
+  var field = this.getField('COLOUR');
+  field.setColours(
+    ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
+    ['dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue'],
+  );
+  field.setColumns(3);
+});
+```
+
+This is done using a JSON
+[extension](https://developers.google.com/blockly/guides/create-custom-blocks/extensions).
+
+#### JavaScript
+
+```js
+Blockly.Blocks['example_colour'] = {
+  init: function () {
+    var field = new Blockly.FieldColour('#ff4040');
+    field.setColours(
+      ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
+      ['dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue'],
+    );
+    field.setColumns(3);
+    this.appendDummyInput().appendField('colour:').appendField(field, 'COLOUR');
+  },
+};
+```
+
+![Customized colour field editor](https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/customized.png)
+
+#### Creating a colour validator
+
+Note: For information on validators in general see [Validators](https://developers.google.com/blockly/guides/create-custom-blocks/fields/validators).
+
+A colour field's value is a `#rrggbb` format string, so any validators must
+accept a `#rrggbb` format string, and return a `#rrggbb` format string, `null`,
+or `undefined`.
+
+Here is an example of a validator that changes the colour of the block to match
+the colour of the field.
+
+```
+function(newValue) {
+  this.getSourceBlock().setColour(newValue);
+  return newValue;
+}
+```
+
+#### Block changing colour based on its colour field
+
+![](https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/validator.gif)
 
 ### Blocks
 
