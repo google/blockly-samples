@@ -18,7 +18,7 @@ let toolboxJson = {
       name: 'Logic',
       colour: 262,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowLogic",
+        row: 'blocklyTreeRow blocklyTreeRowLogic',
       },
       contents: [
         {
@@ -54,7 +54,7 @@ let toolboxJson = {
       name: 'Loops',
       colour: 122,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowLoops",
+        row: 'blocklyTreeRow blocklyTreeRowLoops',
       },
       contents: [
         {
@@ -114,7 +114,7 @@ let toolboxJson = {
       name: 'Math',
       colour: 206,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowMath",
+        row: 'blocklyTreeRow blocklyTreeRowMath',
       },
       contents: [
         {
@@ -287,7 +287,7 @@ let toolboxJson = {
       name: 'Text',
       colour: 46,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowText",
+        row: 'blocklyTreeRow blocklyTreeRowText',
       },
       contents: [
         {
@@ -497,7 +497,7 @@ let toolboxJson = {
       name: 'Lists',
       colour: 172,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowLists",
+        row: 'blocklyTreeRow blocklyTreeRowLists',
       },
       contents: [
         {
@@ -676,7 +676,7 @@ let toolboxJson = {
       name: 'Variables',
       colour: 4,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowVariables",
+        row: 'blocklyTreeRow blocklyTreeRowVariables',
       },
     },
 
@@ -687,7 +687,7 @@ let toolboxJson = {
       name: 'Procedures',
       colour: 16,
       cssConfig: {
-        row: "blocklyTreeRow blocklyTreeRowProcedures",
+        row: 'blocklyTreeRow blocklyTreeRowProcedures',
       },
     },
   ],

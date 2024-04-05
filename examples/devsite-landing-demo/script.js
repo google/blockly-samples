@@ -75,7 +75,7 @@ function init() {
   }
 
   // Inject localized category names.
-  toolboxJson['contents'].forEach(function(part) {
+  toolboxJson['contents'].forEach(function (part) {
     part.name = getMsg(part.name);
   });
 
