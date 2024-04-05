@@ -75,14 +75,9 @@ function init() {
   }
 
   // Inject localized category names.
-  toolboxJson['contents'][0].name = getMsg('Logic');
-  toolboxJson['contents'][1].name = getMsg('Loops');
-  toolboxJson['contents'][2].name = getMsg('Math');
-  toolboxJson['contents'][3].name = getMsg('Text');
-  toolboxJson['contents'][4].name = getMsg('Lists');
-  // Separator.
-  toolboxJson['contents'][6].name = getMsg('Variables');
-  toolboxJson['contents'][7].name = getMsg('Procedures');
+  toolboxJson['contents'].forEach(function(part) {
+    part.name = getMsg(part.name);
+  });
 
   // Inject default variable name.
   // https://github.com/google/blockly/issues/5238
