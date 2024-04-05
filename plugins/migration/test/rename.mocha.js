@@ -18,6 +18,10 @@ suite('Rename', function () {
     const database = {
       '1.0.0': [
         {
+          oldName: 'Blockly',
+          exports: {}
+        },
+        {
           oldName: 'Blockly.moduleA',
           newName: 'Blockly.newModuleA',
           exports: {
