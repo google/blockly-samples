@@ -7,6 +7,7 @@
 import * as Blockly from 'blockly/core';
 import {ScrollMetricsManager} from './ScrollMetricsManager';
 import {getTranslation} from './utils';
+import {ScrollDragger} from './ScrollDragger';
 
 /**
  * AutoScroll is used to scroll/pan the workspace automatically. For example,
@@ -23,14 +24,18 @@ export class AutoScroll {
   /**
    * Creates an AutoScroll instance for a specified workspace.
    * @param {!Blockly.WorkspaceSvg} workspace Workspace to scroll.
+   * @param {!ScrollDragger} dragger The dragger that's currently dragging.
    * @constructor
    */
-  constructor(workspace) {
+  constructor(workspace, dragger) {
     /**
      * Workspace to scroll.
      * @protected {!Blockly.WorkspaceSvg}
      */
     this.workspace_ = workspace;
+
+    /** @private {!ScrollDragger} */
+    this.dragger = dragger;
 
     /**
      * Current active vector representing scroll velocity in pixels per
@@ -137,9 +142,7 @@ export class AutoScroll {
     // The dragger will update its values so that things like connection
     // markers will stay consistent.
     if (deltaX || deltaY) {
-      this.workspace_.currentGesture_
-        .getCurrentDragger()
-        .moveBlockWhileDragging(deltaX, deltaY);
+      this.dragger.moveBlockWhileDragging(deltaX, deltaY);
     }
   }
 

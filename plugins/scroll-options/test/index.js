@@ -11,11 +11,7 @@
 import {createPlayground, toolboxCategories} from '@blockly/dev-tools';
 import * as Blockly from 'blockly';
 
-import {
-  ScrollBlockDragger,
-  ScrollMetricsManager,
-  ScrollOptions,
-} from '../src/index';
+import {ScrollDragger, ScrollMetricsManager, ScrollOptions} from '../src/index';
 
 /**
  * Create a workspace.
@@ -39,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     toolbox: toolboxCategories,
     plugins: {
       // These are both required, even if you turn off edge scrolling.
-      blockDragger: ScrollBlockDragger,
+      dragger: ScrollDragger,
       metricsManager: ScrollMetricsManager,
     },
     move: {

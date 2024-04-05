@@ -40,7 +40,7 @@ parameters for edge scrolling.
 import * as Blockly from 'blockly';
 import {
   ScrollOptions,
-  ScrollBlockDragger,
+  ScrollDragger,
   ScrollMetricsManager,
 } from '@blockly/plugin-scroll-options';
 
@@ -49,7 +49,7 @@ const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
     // These are both required.
-    blockDragger: ScrollBlockDragger,
+    dragger: ScrollDragger,
     metricsManager: ScrollMetricsManager,
   },
   move: {
@@ -125,7 +125,7 @@ The edge scroll options are provided in an object with the following properties
   than `slowMouseStartDistance`.
 
 Each of these options is configured with the default value shown, which is
-specified in `ScrollBlockDragger.js`. When you call `updateEdgeScrollOptions`,
+specified in `ScrollDragger.js`. When you call `updateEdgeScrollOptions`,
 only the properties actually included in the `options` parameter will be set.
 Any unspecified options will use the previously set value (where the initial
 value is from the default options). Therefore, do not pass in any options with
@@ -143,7 +143,7 @@ updateEdgeScrollOptions({slowMouseSpeed: 2});
 Then the final options used will include both `fastMouseSpeed: 5` and
 `slowMouseSpeed: 2` with all other options being the default values.
 
-You can call `ScrollBlockDragger.resetOptions()` to restore all default options.
+You can call `ScrollDragger.resetOptions()` to restore all default options.
 
 ## License
 
