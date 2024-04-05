@@ -133,11 +133,6 @@ function init() {
           colourSecondary: '#B2DFDB',
           colorTertiary: '#009688',
         },
-        colour_blocks: {
-          colourPrimary: '#FFCDD2',
-          colourSecondary: '#FFEBEE',
-          colorTertiary: '#EF9A9A',
-        },
         variable_blocks: {
           colourPrimary: '#EF9A9A',
           colourSecondary: '#FFEBEE',
