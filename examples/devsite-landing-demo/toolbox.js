@@ -16,6 +16,9 @@ let toolboxJson = {
       // Logic Category
       kind: 'CATEGORY',
       colour: 262,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowLogic",
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -48,6 +51,9 @@ let toolboxJson = {
       // Loops Category
       kind: 'CATEGORY',
       colour: 122,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowLoops",
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -104,6 +110,9 @@ let toolboxJson = {
       // Math Category
       kind: 'CATEGORY',
       colour: 206,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowMath",
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -273,6 +282,9 @@ let toolboxJson = {
       // Text Category
       kind: 'CATEGORY',
       colour: 46,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowText",
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -479,6 +491,9 @@ let toolboxJson = {
       // Lists Category
       kind: 'CATEGORY',
       colour: 172,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowLists",
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -650,17 +665,23 @@ let toolboxJson = {
     },
 
     {
-      // Variable Category
+      // Variables Category
       kind: 'CATEGORY',
       custom: 'VARIABLE',
       colour: 4,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowVariables",
+      },
     },
 
     {
-      // Function Category
+      // Functions Category
       kind: 'CATEGORY',
       custom: 'PROCEDURE',
       colour: 16,
+      cssConfig: {
+        row: "blocklyTreeRow blocklyTreeRowFunctions",
+      },
     },
   ],
 };

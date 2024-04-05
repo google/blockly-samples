@@ -75,31 +75,31 @@ option {
   font-family: var(--font-family) !important;
 }
 
-#blockly-0 {
+.blocklyTreeRowLogic {
   border-left: 15px solid #d1c4e9 !important;
 }
 
-#blockly-1 {
+.blocklyTreeRowLoops {
   border-left: 15px solid #a5d6a7 !important;
 }
 
-#blockly-2 {
+.blocklyTreeRowMath {
   border-left: 15px solid #4285f4 !important;
 }
 
-#blockly-3 {
+.blocklyTreeRowText {
   border-left: 15px solid #ffca28 !important;
 }
 
-#blockly-4 {
+.blocklyTreeRowLists {
   border-left: 15px solid #4db6ac !important;
 }
 
-#blockly-6 {
+.blocklyTreeRowVariables {
   border-left: 15px solid #ef9a9a !important;
 }
 
-#blockly-7 {
+.blocklyTreeRowFunctions {
   border-left: 15px solid #d7ccc8 !important;
 }
 
