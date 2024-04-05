@@ -196,7 +196,6 @@ class VersionRenamer {
         this.renamings_.push({old: oldModulePath, new: newModulePath});
       }
     }
-    console.log(this.renamings_);
   }
 
   /**
