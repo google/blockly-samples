@@ -19,7 +19,7 @@ suite('Rename', function () {
       '1.0.0': [
         {
           oldName: 'Blockly',
-          exports: {}
+          exports: {},
         },
         {
           oldName: 'Blockly.moduleA',
