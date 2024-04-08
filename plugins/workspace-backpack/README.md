@@ -153,6 +153,11 @@ Blockly.Msg['EMPTY_BACKPACK'] = 'Opróżnij plecak'; // Polish
 - `addBlock`: Adds Block to backpack.
 - `addBlocks`: Adds Blocks to backpack.
 - `removeBlock`: Removes Block to backpack.
+- `containsBlock`: Returns whether the Block is in the backpack.
+- `addBackpackable`: Adds Backpackable to backpack.
+- `addBackpackables`: Adds Backpackable to backpack.
+- `removeBackpackable`: Removes Backpackable to backpack.
+- `containsBackpackable`: Returns whether the Backpackable is in the backpack.
 - `addItem`: Adds item to backpack.
 - `removeItem`: Removes item from the backpack.
 - `setContents`: Sets backpack contents.
@@ -201,6 +206,17 @@ The Backpack Flyout uses the registered Flyout for either
 for `Blockly.Trashcan`. If a custom class is registered for either of these
 types, then the Backpack Flyout may need to be tested for compatibility.
 
+### Draggables
+
+If you have a custom draggable object, you can make it possible to add it to
+the backpack by implementing the [`Backpackable`][backpackable] interface.
+
+This interface requires the draggable to have a method that converts it into
+[`FlyoutItemInfo`][flyout-info]. As of 2024-04-08 flyouts only support displaying blocks, buttons, and labels.
+
 ## License
 
 Apache 2.0
+
+[flyout-info]: https://developers.google.com/blockly/reference/js/blockly.utils_namespace.toolbox_namespace.flyoutiteminfo_typealias.md
+[backpackable]: https://github.com/google/blockly-samples/blob/master/plugins/workspace-backpack/src/backpack.ts
