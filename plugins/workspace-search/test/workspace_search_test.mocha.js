@@ -10,7 +10,7 @@
  */
 
 const assert = require('assert');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const sinon = require('sinon');
 
 const {WorkspaceSearch} = require('../src/index');

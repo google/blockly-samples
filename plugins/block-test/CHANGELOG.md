@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.0.4...@blockly/block-test@5.1.0) (2024-02-08)
+
+
+### Features
+
+* add chameleon test block ([#2193](https://github.com/google/blockly-samples/issues/2193)) ([435f282](https://github.com/google/blockly-samples/commit/435f28200f75362afce241922bb233f9fad9a36d))
+
+
+
 ## [5.0.4](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.0.3...@blockly/block-test@5.0.4) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/block-test

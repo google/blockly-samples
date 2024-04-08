@@ -270,4 +270,36 @@ export class ObservableProcedureModel
       if (Blockly.isObservable(param)) param.stopPublishing();
     }
   }
+
+  /**
+   * Serializes the state of the procedure to JSON.
+   *
+   * @returns JSON serializable state of the procedure.
+   */
+  saveState(): Blockly.serialization.procedures.State {
+    // Parameter state is serialized by core.
+    return {
+      id: this.getId(),
+      name: this.getName(),
+      returnTypes: this.getReturnTypes(),
+    };
+  }
+
+  /**
+   * Returns a new procedure model with the given state.
+   *
+   * @param state The state of the procedure to load.
+   * @param workspace The workspace to load the procedure into.
+   * @returns The loaded procedure model.
+   */
+  static loadState(
+    state: Blockly.serialization.procedures.State,
+    workspace: Blockly.Workspace,
+  ): ObservableProcedureModel {
+    return new ObservableProcedureModel(
+      workspace,
+      state.name,
+      state.id,
+    ).setReturnTypes(state.returnTypes);
+  }
 }

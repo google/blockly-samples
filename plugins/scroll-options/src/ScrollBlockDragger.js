@@ -116,8 +116,6 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // Make the block stay under the cursor.
     this.draggingBlock_.moveDuringDrag(newLoc);
-
-    this.dragIcons_(totalDelta);
   }
 
   /**

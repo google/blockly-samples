@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@5.0.11...@blockly/plugin-scroll-options@5.0.12) (2024-03-07)
+
+
+### Bug Fixes
+
+* Add missing import to scroll-options plugin ([#2225](https://github.com/google/blockly-samples/issues/2225)) ([498c36e](https://github.com/google/blockly-samples/commit/498c36e7f7596b1577a46c58db3ca1ed0002cc6a))
+
+
+
+## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@5.0.10...@blockly/plugin-scroll-options@5.0.11) (2024-02-08)
+
+**Note:** Version bump only for package @blockly/plugin-scroll-options
+
+
+
+
+
 ## [5.0.10](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@5.0.9...@blockly/plugin-scroll-options@5.0.10) (2024-02-01)
 
 

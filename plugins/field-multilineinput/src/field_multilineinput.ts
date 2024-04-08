@@ -362,7 +362,10 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     }
     if (this.borderRect_) {
       totalHeight += constants.FIELD_BORDER_RECT_Y_PADDING * 2;
-      totalWidth += constants.FIELD_BORDER_RECT_X_PADDING * 2;
+      // NOTE: Adding 1 extra px to prevent wrapping. Based on browser zoom,
+      // the rounding of the calculated value can result in the line wrapping
+      // unintentionally.
+      totalWidth += constants.FIELD_BORDER_RECT_X_PADDING * 2 + 1;
       this.borderRect_.setAttribute('width', `${totalWidth}`);
       this.borderRect_.setAttribute('height', `${totalHeight}`);
     }

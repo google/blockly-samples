@@ -7,7 +7,7 @@
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
 const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const {dartGenerator} = require('blockly/dart');
 const {javascriptGenerator} = require('blockly/javascript');
 const {luaGenerator} = require('blockly/lua');
@@ -172,7 +172,7 @@ suite('If block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   suite('JSON', function () {
@@ -222,7 +222,7 @@ suite('If block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   runPlusMinusTestSuite('controls_if', 1, 1, 'IF', assertIfBlockStructure);

@@ -215,7 +215,11 @@ const procedureDefGetDefMixin = function () {
      * disposed.
      */
     destroy: function () {
-      this.workspace.getProcedureMap().delete(this.getProcedureModel().getId());
+      if (!this.isInsertionMarker()) {
+        this.workspace
+          .getProcedureMap()
+          .delete(this.getProcedureModel().getId());
+      }
     },
   };
 
@@ -1185,7 +1189,7 @@ const procedureCallerUpdateShapeMixin = {
     for (const [i, p] of params.entries()) {
       this.appendValueInput(`ARG${i}`)
         .appendField(new Blockly.FieldLabel(p), `ARGNAME${i}`)
-        .setAlign(Blockly.Input.Align.RIGHT);
+        .setAlign(Blockly.inputs.Align.RIGHT);
     }
   },
 

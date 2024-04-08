@@ -15,6 +15,10 @@ import * as Blockly from 'blockly/core';
 import {category as alignCategory, onInit as initAlign} from './align';
 import {category as basicCategory, onInit as initBasic} from './basic';
 import {
+  category as chameleonCategory,
+  onInit as initChameleon,
+} from './chameleon';
+import {
   category as connectionsCategory,
   onInit as initConnections,
 } from './connections';
@@ -34,6 +38,7 @@ export const toolboxTestBlocks = {
   contents: [
     alignCategory,
     basicCategory,
+    chameleonCategory,
     connectionsCategory,
     dragCategory,
     fieldsCategory,
@@ -50,6 +55,7 @@ export const toolboxTestBlocks = {
 export function toolboxTestBlocksInit(workspace) {
   initAlign(workspace);
   initBasic(workspace);
+  initChameleon(workspace);
   initConnections(workspace);
   initDrag(workspace);
   initFields(workspace);

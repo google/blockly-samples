@@ -10,7 +10,12 @@
 
 import * as Blockly from 'blockly/core';
 
+/**
+ * The ConstantProvider holds rendering-related constants such as colour
+ * and size information.
+ */
 class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
+  /** @override */
   constructor() {
     // Set up all of the constants from the base provider.
     super();
@@ -81,7 +86,7 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
   }
 
   /**
-   * @returns Rectangular notch for use with previous and next connections.
+   * @returns {Object} Rectangular notch for use with previous and next connections.
    */
   makeRectangularPreviousConn() {
     const width = this.NOTCH_WIDTH;
@@ -90,8 +95,8 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
     /**
      * Since previous and next connections share the same shape you can define
      * a function to generate the path for both.
-     * @param dir Multiplier for the horizontal direction of the path (-1 or 1)
-     * @returns SVGPath line for use with previous and next connections.
+     * @param {number} dir Multiplier for the horizontal direction of the path (-1 or 1)
+     * @returns {Object} SVGPath line for use with previous and next connections.
      */
     function makeMainPath(dir) {
       return Blockly.utils.svgPaths.line([
@@ -112,7 +117,7 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
   }
 
   /**
-   * @returns Rectangular puzzle tab for use with input and output connections.
+   * @returns {Object} Rectangular puzzle tab for use with input and output connections.
    */
   makeRectangularInputConn() {
     const width = this.TAB_WIDTH;
@@ -121,8 +126,8 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
     /**
      * Since input and output connections share the same shape you can define
      * a function to generate the path for both.
-     * @param dir Multiplier for the vertical direction of the path (-1 or 1)
-     * @returns SVGPath line for use with input and output connections.
+     * @param {number} dir Multiplier for the vertical direction of the path (-1 or 1)
+     * @returns {Object} SVGPath line for use with input and output connections.
      */
     function makeMainPath(dir) {
       return Blockly.utils.svgPaths.line([
@@ -143,7 +148,9 @@ class CustomConstantProvider extends Blockly.blockRendering.ConstantProvider {
   }
 }
 
+/** The CustomRenderer class incorporates our custom ConstantProvider. */
 export class CustomRenderer extends Blockly.blockRendering.Renderer {
+  /** @override */
   constructor() {
     super();
   }

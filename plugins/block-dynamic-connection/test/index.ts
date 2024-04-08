@@ -23,7 +23,9 @@ function createWorkspace(
   blocklyDiv: HTMLElement,
   options: Blockly.BlocklyOptions,
 ): Blockly.WorkspaceSvg {
-  return Blockly.inject(blocklyDiv, options);
+  const ws = Blockly.inject(blocklyDiv, options);
+  ws.addChangeListener(BlockDynamicConnection.finalizeConnections);
+  return ws;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -85,6 +87,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const defaultOptions: Blockly.BlocklyOptions = {
     toolbox,
+    plugins: {
+      connectionPreviewer: BlockDynamicConnection.decoratePreviewer(
+        Blockly.InsertionMarkerPreviewer,
+      ),
+    },
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {

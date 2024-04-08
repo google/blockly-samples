@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
@@ -2228,7 +2228,7 @@ suite('Procedures', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(xmlTestCases, globalThis.clock);
+  testHelpers.runSerializationTestSuite(xmlTestCases, Blockly);
 
   const jsonTestCases = [
     {
@@ -2448,5 +2448,5 @@ suite('Procedures', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(jsonTestCases, globalThis.clock);
+  testHelpers.runSerializationTestSuite(jsonTestCases, Blockly);
 });

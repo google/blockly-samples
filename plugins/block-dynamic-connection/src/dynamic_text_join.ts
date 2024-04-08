@@ -46,12 +46,14 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @returns XML storage element.
    */
   mutationToDom(this: DynamicTextJoinBlock): Element {
-    // If we call finalizeConnections here without disabling events, we get into
-    // an event loop.
-    Blockly.Events.disable();
-    this.finalizeConnections();
-    if (this instanceof Blockly.BlockSvg) this.initSvg();
-    Blockly.Events.enable();
+    if (!this.isDeadOrDying()) {
+      // If we call finalizeConnections here without disabling events, we get into
+      // an event loop.
+      Blockly.Events.disable();
+      this.finalizeConnections();
+      if (this instanceof Blockly.BlockSvg) this.initSvg();
+      Blockly.Events.enable();
+    }
 
     const container = Blockly.utils.xml.createElement('mutation');
     container.setAttribute('items', `${this.itemCount}`);
@@ -108,12 +110,14 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
    * @returns The state of this block, ie the item count.
    */
   saveExtraState: function (this: DynamicTextJoinBlock): {itemCount: number} {
-    // If we call finalizeConnections here without disabling events, we get into
-    // an event loop.
-    Blockly.Events.disable();
-    this.finalizeConnections();
-    if (this instanceof Blockly.BlockSvg) this.initSvg();
-    Blockly.Events.enable();
+    if (!this.isDeadOrDying() && !this.isCorrectlyFormatted()) {
+      // If we call finalizeConnections here without disabling events, we get into
+      // an event loop.
+      Blockly.Events.disable();
+      this.finalizeConnections();
+      if (this instanceof Blockly.BlockSvg) this.initSvg();
+      Blockly.Events.enable();
+    }
 
     return {
       itemCount: this.itemCount,
@@ -152,8 +156,11 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     this: DynamicTextJoinBlock,
     connection: Blockly.Connection,
   ): number | null {
-    if (!connection.targetConnection) {
-      // this connection is available
+    if (
+      !connection.targetConnection ||
+      connection.targetBlock()?.isInsertionMarker()
+    ) {
+      // This connection is available.
       return null;
     }
 
@@ -165,7 +172,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     }
 
     if (connectionIndex == this.inputList.length - 1) {
-      // this connection is the last one and already has a block in it, so
+      // This connection is the last one and already has a block in it, so
       // we should add a new connection at the end.
       return this.inputList.length + 1;
     }
@@ -179,7 +186,7 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
       return connectionIndex + 1;
     }
 
-    // Don't add new connection
+    // Don't add new connection.
     return null;
   },
 
@@ -277,6 +284,17 @@ const DYNAMIC_TEXT_JOIN_MIXIN = {
     return this.appendValueInput('ADD0').appendField(
       Blockly.Msg['TEXT_JOIN_TITLE_CREATEWITH'],
     );
+  },
+
+  /**
+   * Returns true if all of the inputs on this block are in order.
+   * False otherwise.
+   */
+  isCorrectlyFormatted(this: DynamicTextJoinBlock): boolean {
+    for (let i = 0; i < this.inputList.length; i++) {
+      if (this.inputList[i].name !== `ADD${i}`) return false;
+    }
+    return true;
   },
 };
 

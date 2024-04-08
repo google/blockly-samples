@@ -14,6 +14,21 @@ npm install @blockly/block-dynamic-connection --save
 ```js
 import * as Blockly from 'blockly';
 import * as BlockDynamicConnection from '@blockly/block-dynamic-connection';
+
+const myWorkspace = Blockly.inject({
+    // options...
+    plugins: {
+      connectionPreviewer:
+        BlockDynamicConnection.decoratePreviewerWithDynamicConnections(
+          // Replace with a custom connection previewer, or remove to decorate
+          // the default one.
+          Blockly.InsertionMarkerPreviewer,
+        ),
+    },
+  };
+
+// Add the change listener so connections will be finalized on deletion.
+workspace.addChangeListener(BlockDynamicConnection.finalizeConnections);
 ```
 
 ## API
