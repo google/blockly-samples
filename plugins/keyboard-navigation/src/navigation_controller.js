@@ -504,17 +504,21 @@ export class NavigationController {
         );
       },
       callback: (workspace) => {
+        let flyoutCursor;
+        let curNode;
+        let nodeType;
+
         switch (this.navigation.getState(workspace)) {
           case Constants.STATE.WORKSPACE:
             this.navigation.handleEnterForWS(workspace);
             return true;
           case Constants.STATE.FLYOUT:
-            const flyoutCursor = this.navigation.getFlyoutCursor(workspace);
+            flyoutCursor = this.navigation.getFlyoutCursor(workspace);
             if (!flyoutCursor) {
               return false;
             }
-            const curNode = flyoutCursor.getCurNode();
-            const nodeType = curNode.getType();
+            curNode = flyoutCursor.getCurNode();
+            nodeType = curNode.getType();
 
             switch (nodeType) {
               case Blockly.ASTNode.types.STACK:

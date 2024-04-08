@@ -1260,7 +1260,7 @@ export class Navigation {
    * @package
    */
   triggerButtonCallback(workspace) {
-    const button = /** @type {!FlyoutButton} */ (
+    const button = /** @type {!Blockly.FlyoutButton} */ (
       this.getFlyoutCursor(workspace).getCurNode().getLocation()
     );
     const buttonCallback = workspace.flyoutButtonCallbacks.get(
