@@ -486,7 +486,7 @@ export class Navigation {
 
   /**
    * Sets the navigation state to flyout and moves the cursor to the first
-   * block in the flyout.
+   * block or button in the flyout.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace the flyout is on.
    * @package
    */
@@ -500,9 +500,14 @@ export class Navigation {
     }
 
     if (flyout && flyout.getWorkspace()) {
-      const topBlocks = flyout.getWorkspace().getTopBlocks(true);
-      if (topBlocks.length > 0) {
-        const astNode = Blockly.ASTNode.createStackNode(topBlocks[0]);
+      const flyoutContents = flyout.getContents();
+      const firstFlyoutItem = flyoutContents[0];
+      if (firstFlyoutItem instanceof Blockly.FlyoutButton) {
+        const astNode = Blockly.ASTNode.createButtonNode(firstFlyoutItem);
+        this.getFlyoutCursor(workspace).setCurNode(astNode);
+      }
+      if (firstFlyoutItem instanceof Blockly.BlockSvg) {
+        const astNode = Blockly.ASTNode.createStackNode(firstFlyoutItem);
         this.getFlyoutCursor(workspace).setCurNode(astNode);
       }
     }
@@ -1246,6 +1251,26 @@ export class Navigation {
       );
     }
     return isHandled;
+  }
+
+  /**
+   * Triggers a flyout button's callback.
+   * @param {!Blockly.WorkspaceSvg} workspace The main workspace. The workspace
+   *     containing a flyout with a button.
+   * @package
+   */
+  triggerButtonCallback(workspace) {
+    const button = /** @type {!Blockly.FlyoutButton} */ (
+      this.getFlyoutCursor(workspace).getCurNode().getLocation()
+    );
+    const buttonCallback = workspace.flyoutButtonCallbacks.get(
+      button.callbackKey,
+    );
+    if (typeof buttonCallback === 'function') {
+      buttonCallback(button);
+    } else {
+      throw new Error('No callback function found for flyout button.');
+    }
   }
 
   /**
