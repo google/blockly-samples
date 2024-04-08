@@ -526,7 +526,11 @@ export class Backpack
    *     provided block.
    */
   containsBlock(block: Blockly.Block): boolean {
-    return isBackpackable(block) && this.containsBackpackable(block);
+    if (isBackpackable(block)) {
+      return this.containsBackpackable(block);
+    } else {
+      return this.contents_.indexOf(this.blockToJsonString(block)) !== -1;
+    }
   }
 
   /**
@@ -535,7 +539,11 @@ export class Backpack
    * @param block The block to be added to the backpack.
    */
   addBlock(block: Blockly.Block) {
-    if (isBackpackable(block)) this.addBackpackable(block);
+    if (isBackpackable(block)) {
+      this.addBackpackable(block);
+    } else {
+      this.addItem(this.blockToJsonString(block));
+    }
   }
 
   /**
@@ -546,7 +554,11 @@ export class Backpack
    */
   addBlocks(blocks: Blockly.Block[]) {
     for (const block of blocks) {
-      if (isBackpackable(block)) this.addBackpackable(block);
+      if (isBackpackable(block)) {
+        this.addBackpackable(block);
+      } else {
+        this.addItem(this.blockToJsonString(block));
+      }
     }
   }
 
@@ -556,37 +568,45 @@ export class Backpack
    * @param block The block to be removed from the backpack.
    */
   removeBlock(block: Blockly.Block) {
-    if (isBackpackable(block)) this.removeBackpackable(block);
+    if (isBackpackable(block)) {
+      this.removeBackpackable(block);
+    } else {
+      this.removeItem(this.blockToJsonString(block));
+    }
   }
 
   /**
-   * Returns whether the backpack contains a duplicate of the provided
-   * backpackable.
+   * @param backpackable The backpackable we want to check for existance within
+   *     the backpack.
+   * @return whether the backpack contains a duplicate of the provided
+   *     backpackable.
    */
   containsBackpackable(backpackable: Backpackable) {
     return backpackable
-      .toFlyoutData()
+      .toFlyoutInfo()
       .every((info) => this.contents_.indexOf(JSON.stringify(info)) !== -1);
   }
 
-  /** Adds the given backpackable to the backpack. */
+  /**
+   * @param backpackable The backpackable to add to the backpack.
+   */
   addBackpackable(backpackable: Backpackable) {
     this.addBackpackables([backpackable]);
   }
 
-  /** Adds the given backpackables to the backpack. */
+  /** @param backpackables The backpackables to add to the backpack. */
   addBackpackables(backpackables: Backpackable[]) {
     this.addItems(
       backpackables
-        .map((b) => b.toFlyoutData())
+        .map((b) => b.toFlyoutInfo())
         .reduce((acc, curr) => [...acc, ...curr])
         .map((info) => JSON.stringify(info)),
     );
   }
 
-  /** Removes the given backpackable from the backpack, if it exists. */
+  /** @param backpackable The backpackable to remove from the backpack. */
   removeBackpackable(backpackable: Backpackable) {
-    for (const info of backpackable.toFlyoutData()) {
+    for (const info of backpackable.toFlyoutInfo()) {
       this.removeItem(JSON.stringify(info));
     }
   }
