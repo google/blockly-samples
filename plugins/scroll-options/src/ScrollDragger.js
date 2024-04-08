@@ -73,12 +73,6 @@ export class ScrollDragger extends Blockly.Dragger {
   constructor(draggable, workspace) {
     super(draggable, workspace);
 
-    // TODO: Make these protected in the base class.
-    /** @private */
-    this.draggable = draggable;
-    /** @private */
-    this.workspace = workspace;
-
     /**
      * How much the block has been moved due to scrolling.
      * @type {!Blockly.utils.Coordinate}
