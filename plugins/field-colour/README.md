@@ -41,7 +41,8 @@ If you want to use only the field, you must register it with Blockly. You can
 do this by calling `registerFieldColour` before instantiating your blocks. If
 another field is registered under the same name, this field will overwrite it.
 
-If you install the blocks in this package, the field will automatically be installed.
+If you install the blocks in this package, the field will automatically be
+installed.
 
 ### Creation
 
@@ -92,7 +93,9 @@ The colour constructor takes in the following:
   - `colourTitles`
   - `columns`
 
-The `value` should be a string in the format `#rrggbb`. If no `value` is given or the given `value` is invalid, the first entry in the default colours array will be used.
+The `value` should be a string in the format `#rrggbb`. If no `value`
+is given or the given `value` is invalid, the first entry in the
+default colours array will be used.
 
 The following options can also be set in JSON:
 
