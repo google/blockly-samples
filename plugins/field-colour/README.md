@@ -57,7 +57,16 @@ Blockly.Blocks['test_field_colour'] = {
   init: function () {
     this.appendDummyInput()
       .appendField('colour: ')
-      .appendField(new FieldColour('#ffcccc'), 'FIELDNAME');
+      .appendField(new FieldColour('#ff4040', null,
+          {
+              "colourOptions":
+                ['#ff4040', '#ff8080', '#ffc0c0',
+                  '#4040ff', '#8080ff', '#c0c0ff'],
+              "colourTitles":
+                ['dark pink', 'pink', 'light pink',
+                  'dark blue', 'blue', 'light blue'],
+              "columns": 3
+          }), 'FIELDNAME');
   },
 };
 ```
@@ -75,10 +84,17 @@ Blockly.defineBlocksWithJsonArray([
     message0: 'colour: %1',
     args0: [
       {
-        type: 'field_colour',
-        name: 'FIELDNAME',
-        colour: '#ffcccc',
-      },
+        "type": "field_colour",
+        "name": "FIELDNAME",
+        "colour": "#ff4040",
+        "colourOptions":
+          ['#ff4040', '#ff8080', '#ffc0c0',
+          '#4040ff', '#8080ff', '#c0c0ff'],
+        "colourTitles":
+          ['dark pink', 'pink', 'light pink',
+          'dark blue', 'blue', 'light blue'],
+        "columns": 3
+      }
     ],
   },
 ]);
