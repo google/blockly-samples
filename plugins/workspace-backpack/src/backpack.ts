@@ -576,12 +576,12 @@ export class Backpack
   }
 
   /**
-   * @param backpackable The backpackable we want to check for existance within
+   * @param backpackable The backpackable we want to check for existence within
    *     the backpack.
    * @return whether the backpack contains a duplicate of the provided
    *     backpackable.
    */
-  containsBackpackable(backpackable: Backpackable) {
+  containsBackpackable(backpackable: Backpackable): boolean {
     return backpackable
       .toFlyoutInfo()
       .every((info) => this.contents_.indexOf(JSON.stringify(info)) !== -1);
