@@ -212,7 +212,7 @@ If you have a custom draggable object, you can make it possible to add it to
 the backpack by implementing the [`Backpackable`][backpackable] interface.
 
 This interface requires the draggable to have a method that converts it into
-[`FlyoutItemInfo`][flyout-info]. As of 2024-04-08 flyouts only support displaying blocks, buttons, and labels.
+[`FlyoutItemInfo`][flyout-info]. As of Blockly core v11 flyouts only support displaying blocks, buttons, and labels.
 
 ## License
 
