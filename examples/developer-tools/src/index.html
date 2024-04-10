@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blockly Developer Tools</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD@48,400,0,0" />
   </head>
   <body>
     <div class="page-container">
@@ -22,6 +25,38 @@
         <button id="delete-btn" class="btn">Delete</button>
       </div>
       <div id="block-factory-container">
+        <md-dialog id="file-upload-modal">
+          <div slot="headline">Import from Block Factory</div>
+          <div slot="content">
+            <p>
+              You can upload a file from the legacy Block Factory to import that
+              block here.
+            </p>
+            <div id="file-upload-drop-zone">
+              <span class="google-symbols" aria-hidden="true">upload_file</span>
+              <input
+                type="file"
+                id="file-upload"
+                class="visually-hidden"
+                accept=".txt" />
+              <p>
+                <label for="file-upload" id="file-label" tabindex="1"
+                  >Choose a file</label
+                >
+                or drag it here
+              </p>
+              <p id="file-upload-warning" class="warning-message">
+                File could not be parsed. Make sure you're uploading the file
+                you downloaded from the legacy Block Factory.
+              </p>
+            </div>
+          </div>
+          <div slot="actions">
+            <md-text-button id="file-upload-close" form="form-id" value="cancel"
+              >Cancel</md-text-button
+            >
+          </div>
+        </md-dialog>
         <div id="main-workspace"></div>
         <div id="output-pane" class="panel-container">
           <div id="block-preview"></div>

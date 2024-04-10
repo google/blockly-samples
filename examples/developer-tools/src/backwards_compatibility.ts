@@ -37,6 +37,10 @@ const CONNECTION_CHECK_SHADOW = {
 export function convertBaseBlock(
   oldBlock: Blockly.serialization.blocks.State,
 ): Blockly.serialization.blocks.State {
+  if (oldBlock.type !== 'factory_base') {
+    throw Error('Malformed block data');
+  }
+
   const newBlock = {...oldBlock};
   // extraState from the old tool isn't relevant.
   delete newBlock.extraState;
