@@ -241,7 +241,7 @@ export class Controller {
     if (e.target && e.target instanceof HTMLElement) {
       const blockName = e.target.getAttribute('data-id');
       if (blockName === IMPORT_BLOCK_FACTORY_ID) {
-        this.handleLoadFromBlockFactory();
+        this.handleLoadFromFile();
         return;
       }
       loadBlock(this.mainWorkspace, blockName);
@@ -274,7 +274,7 @@ export class Controller {
   }
 
   /** Shows the file upload modal when the user selects that option from the load menu. */
-  private handleLoadFromBlockFactory() {
+  private handleLoadFromFile() {
     this.viewModel.toggleFileUploadModal(true);
   }
 

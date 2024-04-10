@@ -63,7 +63,8 @@ export function loadBlock(workspace: Blockly.Workspace, blockName?: string) {
  * Loads given block json into the given workspace.
  *
  * @param workspace Blockly workspace to load into.
- * @param blockJson Block json to load.
+ * @param blockJson Block json to load. This is state representing a single block,
+ *    not the entire workspace.
  */
 export function loadBlockFromData(
   workspace: Blockly.Workspace,
