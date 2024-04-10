@@ -34,7 +34,7 @@ export class AutoScroll {
      */
     this.workspace_ = workspace;
 
-    /** @private {!ScrollDragger} */
+    /** @private {!ScrollBlockDragger} */
     this.dragger = dragger;
 
     /**

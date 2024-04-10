@@ -473,6 +473,6 @@ ScrollBlockDragger.resetOptions = function () {
 
 Blockly.registry.register(
   Blockly.registry.Type.BLOCK_DRAGGER,
-  'ScrollDragger',
+  'ScrollBlockDragger',
   ScrollBlockDragger,
 );

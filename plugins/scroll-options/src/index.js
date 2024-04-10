@@ -115,7 +115,7 @@ export class ScrollOptions {
   }
 
   /**
-   * Updates edge scroll options. See ScrollDragger for specific settings.
+   * Updates edge scroll options. See ScrollBlockDragger for specific settings.
    * Any values left unspecified will not be overwritten and will retain their
    * previous values.
    * @param {!EdgeScrollOptions} options Edge scroll options.
