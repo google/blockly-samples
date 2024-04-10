@@ -19,6 +19,14 @@ npm install @blockly/field-colour --save
 
 ## Usage
 
+If you want to use this field in a block definition, you must install it by
+calling `registerFieldColour` before instantiating your blocks. If another
+field is registered under the same name (`field_colour`), this field will
+overwrite it.
+
+If you [install the blocks](#blocks) in this package, the field will
+automatically be installed.
+
 ### Field
 
 The colour field stores a string as its `value`, and a string as its `text`. Its
@@ -36,13 +44,6 @@ with the format `#rgb` if possible.
 #### Colour field on collapsed block
 
 ![](https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/collapsed.png)
-
-If you want to use only the field, you must register it with Blockly. You can
-do this by calling `registerFieldColour` before instantiating your blocks. If
-another field is registered under the same name, this field will overwrite it.
-
-If you install the blocks in this package, the field will automatically be
-installed.
 
 ### Creation
 
@@ -125,7 +126,7 @@ Blockly.defineBlocksWithJsonArray([
 The colour constructor takes in the following:
 
 - an optional `value`
-- an optional [validator](#creating_a_colour_validator)
+- an optional [validator](#creating-a-colour-validator)
 - an optional map of options, including:
   - `colourOptions`
   - `colourTitles`
@@ -141,13 +142,13 @@ The following options can also be set in JSON:
 - `colourTitles`
 - `columns`
 
-Or they can be set using [JavaScript hooks](#editor_options).
+Or they can be set using [JavaScript hooks](#editor-options).
 
 ## Customization
 
 ### Editor options
 
-The setColours
+The `setColours`
 function can be used to set the colour options of a colour field. It takes in an
 array of colour strings, which must be defined in `#rrggbb` format, and an
 optional array of tooltips. If the tooltip array is not provided, the default
@@ -255,7 +256,7 @@ import {pythonGenerator} from 'blockly/python';
 import {luaGenerator} from 'blockly/lua';
 import {installAllBlocks as installColourBlocks} from '@blockly/field-colour';
 
-// Installs all four blocks, the colour field, and all of the language generators.
+// Installs all four blocks, the colour field, and all language generators.
 installColourBlocks({
   javascript: javascriptGenerator,
   dart: dartGenerator,
@@ -282,7 +283,7 @@ colourBlend.installBlock({
 ### API Reference
 
 - `setColours`: Sets the colour options, and optionally the titles for the
-  options. The colourss should be an array of #rrggbb strings.
+  options. The colours should be an array of `#rrggbb` strings.
 - `setColumns`: Sets the number of columns the dropdown should have.
 
 ## License
