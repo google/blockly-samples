@@ -7,7 +7,7 @@
 import * as Blockly from 'blockly/core';
 import {ScrollMetricsManager} from './ScrollMetricsManager';
 import {getTranslation} from './utils';
-import {ScrollDragger} from './ScrollDragger';
+import {ScrollBlockDragger} from './ScrollBlockDragger';
 
 /**
  * AutoScroll is used to scroll/pan the workspace automatically. For example,
@@ -24,7 +24,7 @@ export class AutoScroll {
   /**
    * Creates an AutoScroll instance for a specified workspace.
    * @param {!Blockly.WorkspaceSvg} workspace Workspace to scroll.
-   * @param {!ScrollDragger} dragger The dragger that's currently dragging.
+   * @param {!ScrollBlockDragger} dragger The dragger that's currently dragging.
    * @constructor
    */
   constructor(workspace, dragger) {

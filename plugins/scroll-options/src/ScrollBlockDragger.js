@@ -68,7 +68,7 @@ const defaultOptions = {
  * A block dragger that adds the functionality for a block to be moved while
  * someone is dragging it.
  */
-export class ScrollDragger extends Blockly.Dragger {
+export class ScrollBlockDragger extends Blockly.Dragger {
   /** @override */
   constructor(draggable, workspace) {
     super(draggable, workspace);
@@ -131,8 +131,7 @@ export class ScrollDragger extends Blockly.Dragger {
     super.onDrag(e, totalDelta);
     this.dragDelta_ = dragDelta;
 
-    console.log('here', ScrollDragger.edgeScrollEnabled);
-    if (ScrollDragger.edgeScrollEnabled) {
+    if (ScrollBlockDragger.edgeScrollEnabled) {
       this.scrollWorkspaceWhileDragging_(e);
     }
   }
@@ -215,7 +214,6 @@ export class ScrollDragger extends Blockly.Dragger {
     // Update the autoscroll or start a new one.
     this.activeAutoScroll_ =
       this.activeAutoScroll_ || new AutoScroll(this.workspace, this);
-    console.log('autoscoll');
     this.activeAutoScroll_.updateProperties(overallScrollVector);
   }
 
@@ -276,11 +274,11 @@ export class ScrollDragger extends Blockly.Dragger {
     const blockOverflows = this.getBlockBoundsOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = blockOverflows[direction];
-      if (overflow > ScrollDragger.options.slowBlockStartDistance) {
+      if (overflow > ScrollBlockDragger.options.slowBlockStartDistance) {
         const speed =
-          overflow > ScrollDragger.options.fastBlockStartDistance
-            ? ScrollDragger.options.fastBlockSpeed
-            : ScrollDragger.options.slowBlockSpeed;
+          overflow > ScrollBlockDragger.options.fastBlockStartDistance
+            ? ScrollBlockDragger.options.fastBlockSpeed
+            : ScrollBlockDragger.options.slowBlockSpeed;
         const scrollVector = this.SCROLL_DIRECTION_VECTORS_[direction]
           .clone()
           .scale(speed);
@@ -307,11 +305,11 @@ export class ScrollDragger extends Blockly.Dragger {
     const mouseOverflows = this.getMouseOverflows_(viewMetrics, mouse);
     for (const direction of this.scrollDirections_) {
       const overflow = mouseOverflows[direction];
-      if (overflow > ScrollDragger.options.slowMouseStartDistance) {
+      if (overflow > ScrollBlockDragger.options.slowMouseStartDistance) {
         const speed =
-          overflow > ScrollDragger.options.fastMouseStartDistance
-            ? ScrollDragger.options.fastMouseSpeed
-            : ScrollDragger.options.slowMouseSpeed;
+          overflow > ScrollBlockDragger.options.fastMouseStartDistance
+            ? ScrollBlockDragger.options.fastMouseSpeed
+            : ScrollBlockDragger.options.slowMouseSpeed;
         const scrollVector = this.SCROLL_DIRECTION_VECTORS_[direction]
           .clone()
           .scale(speed);
@@ -349,15 +347,15 @@ export class ScrollDragger extends Blockly.Dragger {
     const blockHeight = blockBounds.bottom - blockBounds.top;
     if (
       blockHeight >
-      viewMetrics.height * ScrollDragger.options.oversizeBlockThreshold
+      viewMetrics.height * ScrollBlockDragger.options.oversizeBlockThreshold
     ) {
       blockBounds.top = Math.max(
         blockBounds.top,
-        mouse.y - ScrollDragger.options.oversizeBlockMargin,
+        mouse.y - ScrollBlockDragger.options.oversizeBlockMargin,
       );
       blockBounds.bottom = Math.min(
         blockBounds.bottom,
-        mouse.y + ScrollDragger.options.oversizeBlockMargin,
+        mouse.y + ScrollBlockDragger.options.oversizeBlockMargin,
       );
     }
 
@@ -365,15 +363,15 @@ export class ScrollDragger extends Blockly.Dragger {
     const blockWidth = blockBounds.right - blockBounds.left;
     if (
       blockWidth >
-      viewMetrics.width * ScrollDragger.options.oversizeBlockThreshold
+      viewMetrics.width * ScrollBlockDragger.options.oversizeBlockThreshold
     ) {
       blockBounds.left = Math.max(
         blockBounds.left,
-        mouse.x - ScrollDragger.options.oversizeBlockMargin,
+        mouse.x - ScrollBlockDragger.options.oversizeBlockMargin,
       );
       blockBounds.right = Math.min(
         blockBounds.right,
-        mouse.x + ScrollDragger.options.oversizeBlockMargin,
+        mouse.x + ScrollBlockDragger.options.oversizeBlockMargin,
       );
     }
 
@@ -433,13 +431,13 @@ export class ScrollDragger extends Blockly.Dragger {
  * the edge is enabled.
  * @type {boolean}
  */
-ScrollDragger.edgeScrollEnabled = true;
+ScrollBlockDragger.edgeScrollEnabled = true;
 
 /**
  * Configuration options for the scroll-options settings.
  * @type {!EdgeScrollOptions}
  */
-ScrollDragger.options = defaultOptions;
+ScrollBlockDragger.options = defaultOptions;
 
 /**
  * Update the scroll options. Only the properties actually included in the
@@ -462,19 +460,19 @@ ScrollDragger.options = defaultOptions;
  *     the available options. Any properties not present will use the existing
  *     value.
  */
-ScrollDragger.updateOptions = function (options) {
-  ScrollDragger.options = {...ScrollDragger.options, ...options};
+ScrollBlockDragger.updateOptions = function (options) {
+  ScrollBlockDragger.options = {...ScrollBlockDragger.options, ...options};
 };
 
 /**
  * Resets the options object to the default options.
  */
-ScrollDragger.resetOptions = function () {
-  ScrollDragger.options = defaultOptions;
+ScrollBlockDragger.resetOptions = function () {
+  ScrollBlockDragger.options = defaultOptions;
 };
 
 Blockly.registry.register(
-  Blockly.registry.Type.DRAGGER,
+  Blockly.registry.Type.BLOCK_DRAGGER,
   'ScrollDragger',
-  ScrollDragger,
+  ScrollBlockDragger,
 );

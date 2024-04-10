@@ -5,7 +5,7 @@
  */
 
 import Blockly from 'blockly/core';
-import {EdgeScrollOptions, ScrollDragger} from './ScrollDragger';
+import {EdgeScrollOptions, ScrollBlockDragger} from './ScrollBlockDragger';
 import {getTranslation} from './utils';
 
 /**
@@ -63,10 +63,10 @@ export class ScrollOptions {
       this.disableWheelScroll();
     }
 
-    ScrollDragger.edgeScrollEnabled = enableEdgeScroll;
+    ScrollBlockDragger.edgeScrollEnabled = enableEdgeScroll;
 
     if (edgeScrollOptions) {
-      ScrollDragger.updateOptions(edgeScrollOptions);
+      ScrollBlockDragger.updateOptions(edgeScrollOptions);
     }
   }
 
@@ -104,14 +104,14 @@ export class ScrollOptions {
    * Enables scrolling when block is dragged near edge.
    */
   enableEdgeScroll() {
-    ScrollDragger.edgeScrollEnabled = true;
+    ScrollBlockDragger.edgeScrollEnabled = true;
   }
 
   /**
    * Disables scrolling when block is dragged near edge.
    */
   disableEdgeScroll() {
-    ScrollDragger.edgeScrollEnabled = false;
+    ScrollBlockDragger.edgeScrollEnabled = false;
   }
 
   /**
@@ -121,7 +121,7 @@ export class ScrollOptions {
    * @param {!EdgeScrollOptions} options Edge scroll options.
    */
   updateEdgeScrollOptions(options) {
-    ScrollDragger.updateOptions(options);
+    ScrollBlockDragger.updateOptions(options);
   }
 
   /**
@@ -177,5 +177,5 @@ export class ScrollOptions {
   }
 }
 
-export * from './ScrollDragger';
+export * from './ScrollBlockDragger';
 export * from './ScrollMetricsManager';
