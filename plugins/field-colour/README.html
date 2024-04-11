@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-colour Demo</div>
       <div class="subtitle">A Blockly colour field.</div>
     </div>
-    4.0.0
+    4.0.1
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour" class="button" target="_blank">View on npm</a>
@@ -59,22 +59,23 @@ choosing and combining colours.</p>
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-colour --save</code></pre>
 <h2 id="usage">Usage</h2>
+<p>If you want to use this field in a block definition, you must install it by
+calling <code>registerFieldColour</code> before instantiating your blocks. If another
+field is registered under the same name (<code>field_colour</code>), this field will
+overwrite it.</p>
+<p>If you <a href="#blocks">install the blocks</a> in this package, the field will
+automatically be installed.</p>
 <h3 id="field">Field</h3>
-<p>The colour field accepts up to 4 parameters:</p>
-<ul>
-<li>"colour" to specify the default colour. Defaults to the first value in the
-"colourOptions" array. Should be a "#rrggbb" string.</li>
-<li>"colourOptions" to specify the colour options in the dropdown. Defaults to
-a set of 70 colors, including grays, reds, oranges, yellows, olives, greens,
-turquoises, blues, purples, and violets. Should be "#rrggbb" strings.</li>
-<li>"colourTitles" to specify the tooltips for the colour options. Defaults to
-the "#rrggbb" values of the provided colour options.</li>
-<li>"columns" to specify the number of columns the colour dropdown should have.
-Defaults to 7.</li>
-</ul>
-<p>If you want to use only the field, you must register it with Blockly. You can
-do this by calling <code>registerFieldColour</code> before instantiating your blocks. If
-another field is registered under the same name, this field will overwrite it.</p>
+<p>The colour field stores a string as its <code>value</code>, and a string as its <code>text</code>. Its
+<code>value</code> is a string with the format <code>#rrggbb</code>, while its <code>text</code> may be a string
+with the format <code>#rgb</code> if possible.</p>
+<h4 id="colour-field">Colour field</h4>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/on_block.png" alt="" /></p>
+<h4 id="colour-field-with-editor-open">Colour field with editor open</h4>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/with_editor.png" alt="" /></p>
+<h4 id="colour-field-on-collapsed-block">Colour field on collapsed block</h4>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/collapsed.png" alt="" /></p>
+<h3 id="creation">Creation</h3>
 <h4 id="javascript">JavaScript</h4>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
 import {registerFieldColour} from '@blockly/field-colour';
@@ -84,7 +85,28 @@ Blockly.Blocks['test_field_colour'] = {
   init: function () {
     this.appendDummyInput()
       .appendField('colour: ')
-      .appendField(new FieldColour('#ffcccc'), 'FIELDNAME');
+      .appendField(
+        new FieldColour('#ff4040', null, {
+          colourOptions: [
+            '#ff4040',
+            '#ff8080',
+            '#ffc0c0',
+            '#4040ff',
+            '#8080ff',
+            '#c0c0ff',
+          ],
+          colourTitles: [
+            'dark pink',
+            'pink',
+            'light pink',
+            'dark blue',
+            'blue',
+            'light blue',
+          ],
+          columns: 3,
+        }),
+        'FIELDNAME',
+      );
   },
 };</code></pre>
 <h4 id="json">JSON</h4>
@@ -100,11 +122,107 @@ Blockly.defineBlocksWithJsonArray([
       {
         type: 'field_colour',
         name: 'FIELDNAME',
-        colour: '#ffcccc',
+        colour: '#ff4040',
+        colourOptions: [
+          '#ff4040',
+          '#ff8080',
+          '#ffc0c0',
+          '#4040ff',
+          '#8080ff',
+          '#c0c0ff',
+        ],
+        colourTitles: [
+          'dark pink',
+          'pink',
+          'light pink',
+          'dark blue',
+          'blue',
+          'light blue',
+        ],
+        columns: 3,
       },
     ],
   },
 ]);</code></pre>
+<p>The colour constructor takes in the following:</p>
+<ul>
+<li>an optional <code>value</code></li>
+<li>an optional <a href="#creating-a-colour-validator">validator</a></li>
+<li>an optional map of options, including:<ul>
+<li><code>colourOptions</code></li>
+<li><code>colourTitles</code></li>
+<li><code>columns</code></li></ul></li>
+</ul>
+<p>The <code>value</code> should be a string in the format <code>#rrggbb</code>. If no <code>value</code>
+is given or the given <code>value</code> is invalid, the first entry in the
+default colours array will be used.</p>
+<p>The following options can also be set in JSON:</p>
+<ul>
+<li><code>colourOptions</code></li>
+<li><code>colourTitles</code></li>
+<li><code>columns</code></li>
+</ul>
+<p>Or they can be set using <a href="#editor-options">JavaScript hooks</a>.</p>
+<h2 id="customization">Customization</h2>
+<h3 id="editor-options">Editor options</h3>
+<p>The <code>setColours</code>
+function can be used to set the colour options of a colour field. It takes in an
+array of colour strings, which must be defined in <code>#rrggbb</code> format, and an
+optional array of tooltips. If the tooltip array is not provided, the default
+tooltip array will be used.</p>
+<p>Tooltips and colours are matched based on array index, not based on value. If
+the colours array is longer than the tooltip array, the tooltips for the extra
+colours will be their <code>#rrggbb</code> value.</p>
+<p>The setColumns function sets the number of columns in the colour picker.</p>
+<h4 id="json-1">JSON</h4>
+<pre><code class="js language-js">{
+  "type": "example_colour",
+  "message0": "colour: %1",
+  "args0": [
+    {
+      "type": "field_colour",
+      "name": "COLOUR",
+      "colour": "#ff4040"
+    }
+  ],
+  "extensions": ["set_colours_extension"]
+}</code></pre>
+<pre><code class="js language-js">Blockly.Extensions.register('set_colours_extension', function () {
+  var field = this.getField('COLOUR');
+  field.setColours(
+    ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
+    ['dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue'],
+  );
+  field.setColumns(3);
+});</code></pre>
+<p>This is done using a JSON
+<a href="https://developers.google.com/blockly/guides/create-custom-blocks/extensions">extension</a>.</p>
+<h4 id="javascript-1">JavaScript</h4>
+<pre><code class="js language-js">Blockly.Blocks['example_colour'] = {
+  init: function () {
+    var field = new Blockly.FieldColour('#ff4040');
+    field.setColours(
+      ['#ff4040', '#ff8080', '#ffc0c0', '#4040ff', '#8080ff', '#c0c0ff'],
+      ['dark pink', 'pink', 'light pink', 'dark blue', 'blue', 'light blue'],
+    );
+    field.setColumns(3);
+    this.appendDummyInput().appendField('colour:').appendField(field, 'COLOUR');
+  },
+};</code></pre>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/customized.png" alt="Customized colour field editor" /></p>
+<h4 id="creating-a-colour-validator">Creating a colour validator</h4>
+<p>Note: For information on validators in general see <a href="https://developers.google.com/blockly/guides/create-custom-blocks/fields/validators">Validators</a>.</p>
+<p>A colour field's value is a <code>#rrggbb</code> format string, so any validators must
+accept a <code>#rrggbb</code> format string, and return a <code>#rrggbb</code> format string, <code>null</code>,
+or <code>undefined</code>.</p>
+<p>Here is an example of a validator that changes the colour of the block to match
+the colour of the field.</p>
+<pre><code>function(newValue) {
+  this.getSourceBlock().setColour(newValue);
+  return newValue;
+}</code></pre>
+<h4 id="block-changing-colour-based-on-its-colour-field">Block changing colour based on its colour field</h4>
+<p><img src="https://github.com/google/blockly-samples/raw/master/plugins/field-colour/readme-media/validator.gif" alt="" /></p>
 <h3 id="blocks">Blocks</h3>
 <p>This package also provides four blocks related to the colour field. Each block
 has generators in JavaScript, Python, PHP, Lua, and Dart.</p>
@@ -127,7 +245,7 @@ import {pythonGenerator} from 'blockly/python';
 import {luaGenerator} from 'blockly/lua';
 import {installAllBlocks as installColourBlocks} from '@blockly/field-colour';
 
-// Installs all four blocks, the colour field, and all of the language generators.
+// Installs all four blocks, the colour field, and all language generators.
 installColourBlocks({
   javascript: javascriptGenerator,
   dart: dartGenerator,
@@ -148,7 +266,7 @@ colourBlend.installBlock({
 <h3 id="api-reference">API Reference</h3>
 <ul>
 <li><code>setColours</code>: Sets the colour options, and optionally the titles for the
-options. The colourss should be an array of #rrggbb strings.</li>
+options. The colours should be an array of <code>#rrggbb</code> strings.</li>
 <li><code>setColumns</code>: Sets the number of columns the dropdown should have.</li>
 </ul>
 <h2 id="license">License</h2>
