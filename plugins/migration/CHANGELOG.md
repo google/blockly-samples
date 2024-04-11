@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/google/blockly-samples/compare/@blockly/migrate@2.0.4...@blockly/migrate@2.0.5) (2024-04-11)
+
+
+### Bug Fixes
+
+* **migration:** Ignore non-renamed modules ([#2309](https://github.com/google/blockly-samples/issues/2309)) ([8c8b04d](https://github.com/google/blockly-samples/commit/8c8b04d21337cca48579d0f908ec08fab3cf9672))
+
+
+
 ## [2.0.4](https://github.com/google/blockly-samples/compare/@blockly/migrate@2.0.3...@blockly/migrate@2.0.4) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/migrate

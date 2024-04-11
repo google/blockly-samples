@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-multilineinput",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A Blockly multilineinput field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
