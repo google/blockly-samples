@@ -60,6 +60,30 @@ export function loadBlock(workspace: Blockly.Workspace, blockName?: string) {
 }
 
 /**
+ * Loads given block json into the given workspace.
+ *
+ * @param workspace Blockly workspace to load into.
+ * @param blockJson Block json to load. This is state representing a single block,
+ *    not the entire workspace.
+ */
+export function loadBlockFromData(
+  workspace: Blockly.Workspace,
+  blockJson: Blockly.serialization.blocks.State,
+) {
+  // Disable events so we don't save while deleting blocks.
+  Blockly.Events.disable();
+  workspace.clear();
+  Blockly.Events.enable();
+
+  // There might be conflicts when loading a block from a file.
+  // If so, find a similar unused name so we don't overwrite.
+  const blockName = getNewUnusedName(blockJson.fields.NAME);
+  blockJson.fields.NAME = blockName;
+
+  Blockly.serialization.blocks.append(blockJson, workspace);
+}
+
+/**
  * Creates a new block from scratch.
  *
  * @param workspace Blockly workspace to load into.

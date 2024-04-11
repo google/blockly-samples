@@ -6,6 +6,8 @@
 
 import '@material/web/menu/menu';
 import '@material/web/menu/menu-item';
+import '@material/web/dialog/dialog';
+import '@material/web/button/text-button';
 
 export class ViewModel {
   mainWorkspaceDiv = document.getElementById('main-workspace');
@@ -19,6 +21,13 @@ export class ViewModel {
   deleteButton = document.getElementById('delete-btn');
   loadButton = document.getElementById('load-btn');
   loadMenu = document.getElementById('load-menu');
+
+  fileModal = document.getElementById('file-upload-modal');
+  fileModalCloseButton = document.getElementById('file-upload-close');
+  fileDropZone = document.getElementById('file-upload-drop-zone');
+  fileUploadInput = document.getElementById('file-upload');
+  fileLabel = document.getElementById('file-label');
+  fileUploadWarning = document.getElementById('file-upload-warning');
 
   /**
    * Gets a string representing the format of the block
@@ -91,5 +100,41 @@ export class ViewModel {
     style === 'import'
       ? (importButton.checked = true)
       : (scriptButton.checked = true);
+  }
+
+  /**
+   * Shows or hides the file upload modal.
+   *
+   * @param show true to show, false to hide.
+   */
+  toggleFileUploadModal(show: boolean) {
+    if (show) {
+      this.fileModal.setAttribute('open', '');
+
+      // Set z-index of scrim so that it covers the Blockly toolbox
+      // https://github.com/material-components/material-web/issues/4948
+      if (this.fileModal.shadowRoot) {
+        const scrim =
+          this.fileModal.shadowRoot.querySelector<HTMLElement>('.scrim');
+        if (scrim) {
+          scrim.style.zIndex = '99';
+        }
+      }
+    } else {
+      this.fileModal.removeAttribute('open');
+    }
+  }
+
+  /**
+   * Shows or hides the file upload error message.
+   *
+   * @param show true to show, false to hide.
+   */
+  toggleFileUploadWarning(show: boolean) {
+    if (show) {
+      this.fileUploadWarning.style.visibility = 'visible';
+    } else {
+      this.fileUploadWarning.style.visibility = 'hidden';
+    }
   }
 }

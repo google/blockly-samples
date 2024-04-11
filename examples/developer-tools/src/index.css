@@ -1,3 +1,7 @@
+:root {
+  --md-dialog-container-color: white;
+}
+
 body {
   margin: 0;
 }
@@ -81,6 +85,54 @@ pre {
 
 md-menu {
   max-height: 430px;
+}
+
+#file-upload-drop-zone {
+  background-color: white;
+  outline: 2px dashed #2bb4ca;
+  outline-offset: -10px;
+  border-radius: 8px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#file-upload-drop-zone > * {
+  flex-grow: 0;
+  margin: 12px 24px;
+}
+#file-upload-drop-zone > span {
+  font-size: 48px;
+}
+
+#file-upload-drop-zone.isDragging {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#file-label {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.warning-message {
+  visibility: hidden;
+  color: #b00020;
+  text-align: center;
+}
+
+/* Hides an element visually but not from screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 @media screen and (max-width: 900px) {
