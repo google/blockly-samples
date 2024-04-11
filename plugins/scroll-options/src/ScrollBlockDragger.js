@@ -68,10 +68,10 @@ const defaultOptions = {
  * A block dragger that adds the functionality for a block to be moved while
  * someone is dragging it.
  */
-export class ScrollBlockDragger extends Blockly.BlockDragger {
+export class ScrollBlockDragger extends Blockly.Dragger {
   /** @override */
-  constructor(block, workspace) {
-    super(block, workspace);
+  constructor(draggable, workspace) {
+    super(draggable, workspace);
 
     /**
      * How much the block has been moved due to scrolling.
@@ -111,11 +111,11 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       this.dragDelta_,
     );
 
-    const delta = this.pixelsToWorkspaceUnits_(totalDelta);
-    const newLoc = Blockly.utils.Coordinate.sum(this.startXY_, delta);
+    const delta = this.pixelsToWorkspaceUnits(totalDelta);
+    const newLoc = Blockly.utils.Coordinate.sum(this.startLoc, delta);
 
     // Make the block stay under the cursor.
-    this.draggingBlock_.moveDuringDrag(newLoc);
+    this.draggable.moveDuringDrag(newLoc);
   }
 
   /**
@@ -123,27 +123,13 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * scrolling) since it was picked up.
    * @override
    */
-  startDrag(currentDragDeltaXY, healStack) {
+  onDrag(e, dragDelta) {
     const totalDelta = Blockly.utils.Coordinate.sum(
       this.scrollDelta_,
-      currentDragDeltaXY,
+      dragDelta,
     );
-    super.startDrag(totalDelta, healStack);
-    this.dragDelta_ = currentDragDeltaXY;
-  }
-
-  /**
-   * Passes the total amount the block has moved (both from dragging and from
-   * scrolling) since it was picked up.
-   * @override
-   */
-  drag(e, currentDragDeltaXY) {
-    const totalDelta = Blockly.utils.Coordinate.sum(
-      this.scrollDelta_,
-      currentDragDeltaXY,
-    );
-    super.drag(e, totalDelta);
-    this.dragDelta_ = currentDragDeltaXY;
+    super.onDrag(e, totalDelta);
+    this.dragDelta_ = dragDelta;
 
     if (ScrollBlockDragger.edgeScrollEnabled) {
       this.scrollWorkspaceWhileDragging_(e);
@@ -153,30 +139,9 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
   /**
    * @override
    */
-  endDrag(e, currentDragDeltaXY) {
-    super.endDrag(e, currentDragDeltaXY);
-
+  onDragEnd(e) {
+    super.onDragEnd(e);
     this.stopAutoScrolling();
-  }
-
-  /**
-   * Passes the total amount the block has moved (both from dragging and from
-   * scrolling) since it was picked up.
-   * @override
-   */
-  getNewLocationAfterDrag_(currentDragDeltaXY) {
-    const newValues = {};
-    const totalDelta = Blockly.utils.Coordinate.sum(
-      this.scrollDelta_,
-      currentDragDeltaXY,
-    );
-    newValues.delta = this.pixelsToWorkspaceUnits_(totalDelta);
-    newValues.newLocation = Blockly.utils.Coordinate.sum(
-      this.startXY_,
-      newValues.delta,
-    );
-
-    return newValues;
   }
 
   /**
@@ -186,7 +151,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * dragged. The workspace will not resize as the block is dragged. The
    * workspace should appear to move out from under the block, i.e., the block
    * should stay under the user's mouse.
-   * @param {!Event} e The mouse/touch event for the drag.
+   * @param {!PointerEvent} e The mouse/touch event for the drag.
    * @protected
    */
   scrollWorkspaceWhileDragging_(e) {
@@ -205,7 +170,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
       right: new Blockly.utils.Coordinate(-1, 0),
     };
     const mouse = Blockly.utils.svgMath.screenToWsCoordinates(
-      this.workspace_,
+      this.workspace,
       new Blockly.utils.Coordinate(e.clientX, e.clientY),
     );
 
@@ -224,9 +189,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
     };
 
     // Get ViewMetrics in workspace coordinates.
-    const viewMetrics = this.workspace_
-      .getMetricsManager()
-      .getViewMetrics(true);
+    const viewMetrics = this.workspace.getMetricsManager().getViewMetrics(true);
 
     // Get possible scroll velocities based on the location of both the block
     // and the mouse.
@@ -250,7 +213,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
 
     // Update the autoscroll or start a new one.
     this.activeAutoScroll_ =
-      this.activeAutoScroll_ || new AutoScroll(this.workspace_);
+      this.activeAutoScroll_ || new AutoScroll(this.workspace, this);
     this.activeAutoScroll_.updateProperties(overallScrollVector);
   }
 
@@ -377,7 +340,7 @@ export class ScrollBlockDragger extends Blockly.BlockDragger {
    * @protected
    */
   getBlockBoundsOverflows_(viewMetrics, mouse) {
-    const blockBounds = this.draggingBlock_.getBoundingRectangle();
+    const blockBounds = this.draggable.getBoundingRectangle();
 
     // Handle large blocks. If the block is nearly as tall as the viewport,
     // use a margin around the cursor rather than the height of the block.

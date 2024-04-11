@@ -49,6 +49,8 @@ const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
     // These are both required.
+    // Note that the ScrollBlockDragger drags things besides blocks.
+    // Block is included in the name for backwards compatibility.
     blockDragger: ScrollBlockDragger,
     metricsManager: ScrollMetricsManager,
   },

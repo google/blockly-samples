@@ -141,7 +141,7 @@ export class ScrollOptions {
     if (
       !canWheelMove ||
       !currentGesture ||
-      !(currentGesture.getCurrentDragger() instanceof Blockly.BlockDragger)
+      !(currentGesture.getCurrentDragger() instanceof Blockly.Dragger)
     ) {
       return;
     }
