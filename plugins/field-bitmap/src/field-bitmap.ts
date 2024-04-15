@@ -101,7 +101,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    * @param newValue The new value to be tested.
    * @returns The new value if it's valid, or null.
    */
-  protected override doClassValidation_(newValue: unknown = undefined) {
+  protected override doClassValidation_(newValue: unknown = undefined) { // eslint-disable-line
     if (!newValue) {
       return null;
     }
@@ -143,7 +143,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    *
    * @param newValue The value that's about to be set.
    */
-  protected override doValueUpdate_(newValue: number[][]) {
+  protected override doValueUpdate_(newValue: number[][]) { // eslint-disable-line
     super.doValueUpdate_(newValue);
     if (newValue) {
       this.imgHeight = newValue.length;
@@ -157,7 +157,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    * @param e Optional mouse event that triggered the field to open, or
    *    undefined if triggered programmatically.
    */
-  protected override showEditor_(e?: Event) {
+  protected override showEditor_(e?: Event) { // eslint-disable-line
     const editor = this.dropdownCreate();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);
     Blockly.DropDownDiv.showPositionedByField(
@@ -169,7 +169,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   /**
    * Updates the block display and editor dropdown when the field re-renders.
    */
-  protected override render_() {
+  protected override render_() { // eslint-disable-line
     super.render_();
 
     if (!this.getValue()) {
@@ -317,7 +317,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
             width: PIXEL_SIZE,
             height: PIXEL_SIZE,
             fill: EMPTY_PIXEL_COLOR,
-            fill_opacity: 1,
+            fill_opacity: 1, // eslint-disable-line
           },
           this.getSvgRoot(),
         );
@@ -330,7 +330,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   /**
    * Updates the size of the block based on the size of the underlying image.
    */
-  protected override updateSize_() {
+  protected override updateSize_() { // eslint-disable-line
     {
       const newWidth = PIXEL_SIZE * this.imgWidth;
       const newHeight = PIXEL_SIZE * this.imgHeight;
