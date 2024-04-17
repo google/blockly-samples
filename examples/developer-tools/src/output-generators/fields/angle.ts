@@ -62,6 +62,7 @@ scriptHeaderGenerator.forBlock['field_angle'] = function (
   generator.addHeaderLine(
     `<script src="https://unpkg.com/@blockly/field-angle"></script>`,
   );
+  generator.addHeaderLine(`registerFieldAngle();`);
   return '';
 };
 

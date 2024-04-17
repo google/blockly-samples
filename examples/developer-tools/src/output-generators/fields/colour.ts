@@ -62,6 +62,7 @@ scriptHeaderGenerator.forBlock['field_colour'] = function (
   generator.addHeaderLine(
     `<script src="https://unpkg.com/@blockly/field-colour"></script>`,
   );
+  generator.addHeaderLine(`registerFieldColour();`);
   return '';
 };
 
