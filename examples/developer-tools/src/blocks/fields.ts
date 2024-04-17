@@ -5,6 +5,8 @@
  */
 
 import * as Blockly from 'blockly/core';
+import {FieldAngle} from '@blockly/field-angle';
+import {FieldColour} from '@blockly/field-colour';
 
 /** The default source to use as prepopulated text in image fields. */
 const defaultImageSrc =
@@ -439,5 +441,43 @@ export const fieldDropdownOptionImage = {
     this.setTooltip('Add a new image option to the dropdown menu.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=386');
     this.contextMenu = false;
+  },
+};
+
+/** Angle field. */
+export const fieldAngle = {
+  init: function () {
+    this.setStyle('field');
+    this.appendDummyInput()
+      .appendField('angle')
+      .appendField(new FieldAngle('90'), 'ANGLE')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('A field for the user to enter an angle.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=372');
+  },
+  onchange: function () {
+    checkNameConflicts(this);
+  },
+};
+
+/** Colour field. */
+export const fieldColour = {
+  init: function () {
+    this.setStyle('field');
+    this.appendDummyInput()
+      .appendField('colour')
+      .appendField(new FieldColour('#ff0000'), 'COLOUR')
+      .appendField(',')
+      .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+    this.setPreviousStatement(true, 'Field');
+    this.setNextStatement(true, 'Field');
+    this.setTooltip('Colour field.');
+    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=495');
+  },
+  onchange: function () {
+    checkNameConflicts(this);
   },
 };
