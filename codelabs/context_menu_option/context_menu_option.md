@@ -132,7 +132,7 @@ Reload your web page and right-click on the workspace. You should see a new item
 
 ## Scope type
 
-Every context menu option is registered with a **scope type**, which is either `Blockly.ContextMenuRegistry.ScopeType.BLOCK` or `Blockly.ContextMenuRegistry.ScopeType.WORKSPACE`. The scope type determines:
+Every context menu option is registered with a **scope type**, which is either `Blockly.ContextMenuRegistry.ScopeType.BLOCK`, or `Blockly.ContextMenuRegistry.ScopeType.COMMENT`, or `Blockly.ContextMenuRegistry.ScopeType.WORKSPACE`. The scope type determines:
 
 - Where the option should be show.
 - What information is passed to the precondition and callback functions.
@@ -190,10 +190,11 @@ Reload your workspace, grab a stopwatch, and right-click to confirm the timing. 
 
 Disabling your context menu options half of the time is not useful, but you may want to show or hide an option based on what the user is doing in the workspace.
 
-To do that you'll need to use the `scope` argument to `preconditionFn`. `scope` is a `Blockly.ContextMenuRegistry.Scope` object. It contains two properties, `workspace` and `block`, but only one is set at any time:
+To do that you'll need to use the `scope` argument to `preconditionFn`. `scope` is a `Blockly.ContextMenuRegistry.Scope` object. It contains three properties, `workspace`, `block`, and `comment`, but only one is set at any time:
 
 - If your item is registered under the `WORKSPACE` scope type you can access the `workspace` property, which is an instance of `Blockly.WorkspaceSvg`.
 - If registered under the `BLOCK` scope type you can access the `block` property, which is an instance of `Blockly.BlockSvg`.
+- If registered under the `COMMENT` scope type you can access the `comment` property, which is an instance of `Blockly.RenderedWorkspaceComment`.
 
 ### Workspace scope
 
@@ -256,7 +257,9 @@ Don't forget to call `registerHelpOption` and `registerOutputOption` from your `
 
 ## Callback
 
-The callback function determines what happens when you click on the context menu option. Like the precondition, it can use the `scope` argument to access the workspace or block.
+The callback function determines what happens when you click on the context menu option. Like the precondition, it can use the `scope` argument to access the workspace, block, or comment.
+
+It is also passed a `PointerEvent` which is the original event that triggered opening the context menu (not the event that selected the current option). This lets you, for example, figure out where on the workspace the context menu was opened so you can create a new element there.
 
 As an example, update the help item's `callback` to add a block to the workspace when clicked:
 
