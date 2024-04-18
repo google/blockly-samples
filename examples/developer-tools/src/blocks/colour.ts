@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
+import {FieldAngle} from '@blockly/field-angle';
 
 /**
  * A hue-picker to set the colour of a block.
@@ -14,7 +14,7 @@ export const colourHue = {
   init: function () {
     this.appendDummyInput()
       .appendField('hue:')
-      .appendField(new Blockly.FieldAngle('0', this.updateBlockColour), 'HUE');
+      .appendField(new FieldAngle('0', this.updateBlockColour), 'HUE');
     this.setOutput(true, 'Colour');
     this.setTooltip('Paint the block with this colour.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=55');
