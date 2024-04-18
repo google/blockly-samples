@@ -4,6 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import {registerFieldAngle} from '@blockly/field-angle';
+import {registerFieldColour} from '@blockly/field-colour';
+
 import {factoryBase} from './factory_base';
 import * as Blockly from 'blockly/core';
 import {input} from './input';
@@ -14,7 +17,9 @@ import {
   connectionCheckItem,
 } from './connection_check';
 import {
+  fieldAngle,
   fieldCheckbox,
+  fieldColour,
   fieldDropdown,
   fieldDropdownContainer,
   fieldDropdownOptionImage,
@@ -40,12 +45,18 @@ import '../output-generators/fields/label_serializable';
 import '../output-generators/fields/checkbox';
 import '../output-generators/fields/image';
 import '../output-generators/fields/variable';
+import '../output-generators/fields/angle';
+import '../output-generators/fields/colour';
 import '../output-generators/colour';
 
 /* eslint-disable @typescript-eslint/naming-convention
  -- Blockly convention is to use snake_case for block names
 */
 export const registerAllBlocks = function () {
+  // Register the plugin fields before using them in blocks.
+  registerFieldAngle();
+  registerFieldColour();
+
   Blockly.common.defineBlocks({
     factory_base: factoryBase,
     input: input,
@@ -60,6 +71,8 @@ export const registerAllBlocks = function () {
     field_checkbox: fieldCheckbox,
     field_variable: fieldVariable,
     field_image: fieldImage,
+    field_angle: fieldAngle,
+    field_colour: fieldColour,
     connection_check_group: connectionCheckGroup,
     connection_check_group_container: connectionCheckContainer,
     connection_check_group_item: connectionCheckItem,

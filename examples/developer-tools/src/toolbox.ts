@@ -79,6 +79,14 @@ export const toolbox = {
           kind: 'block',
           type: 'field_image',
         },
+        {
+          kind: 'block',
+          type: 'field_angle',
+        },
+        {
+          kind: 'block',
+          type: 'field_colour',
+        },
       ],
     },
     {

@@ -38,6 +38,8 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@blockly/field-angle": "^4.0.1",
+    "@blockly/field-colour": "^4.0.1",
     "@material/web": "^1.4.0",
     "blockly": "^10.4.2"
   }
