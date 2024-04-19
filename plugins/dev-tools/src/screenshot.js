@@ -99,7 +99,7 @@ function workspaceToSvg_(workspace, callback, customCss) {
     })
     .join('\n');
   const style = document.createElement('style');
-  style.innerText = css + '\n' + customCss;
+  style.textContent = css + '\n' + customCss;
   svg.insertBefore(style, svg.firstChild);
 
   let svgAsXML = new XMLSerializer().serializeToString(svg);
