@@ -102,7 +102,7 @@ CustomDialog.show = function (title, message, options) {
   backdropDiv.style.display = 'block';
   dialogDiv.style.display = 'block';
 
-  dialogDiv.innerHTML =
+  dialogDiv.textContent =
     '<header class="customDialogTitle"></header>' +
     '<p class="customDialogMessage"></p>' +
     (options.showInput ? '<div><input id="customDialogInput"></div>' : '') +
