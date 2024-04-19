@@ -43,7 +43,7 @@ const runCode = () => {
   const code = javascriptGenerator.workspaceToCode(ws);
   codeDiv.innerText = code;
 
-  outputDiv.innerText = '';
+  outputDiv.textContent = '';
 
   eval(code);
 };
