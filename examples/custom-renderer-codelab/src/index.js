@@ -32,7 +32,6 @@ const ws = Blockly.inject(blocklyDiv, {
 const runCode = () => {
   const code = javascriptGenerator.workspaceToCode(ws);
   codeDiv.innerText = code;
-
   outputDiv.textContent = '';
 
   eval(code);
