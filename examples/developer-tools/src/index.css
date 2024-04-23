@@ -102,6 +102,7 @@ md-menu {
 #file-upload-drop-zone > * {
   flex-grow: 0;
   margin: 12px 24px;
+  text-align: center;
 }
 #file-upload-drop-zone > span {
   font-size: 48px;
@@ -117,9 +118,11 @@ md-menu {
 }
 
 .warning-message {
-  visibility: hidden;
   color: #b00020;
-  text-align: center;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 /* Hides an element visually but not from screen readers */

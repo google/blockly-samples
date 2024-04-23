@@ -60,30 +60,6 @@ export function loadBlock(workspace: Blockly.Workspace, blockName?: string) {
 }
 
 /**
- * Loads given block json into the given workspace.
- *
- * @param workspace Blockly workspace to load into.
- * @param blockJson Block json to load. This is state representing a single block,
- *    not the entire workspace.
- */
-export function loadBlockFromData(
-  workspace: Blockly.Workspace,
-  blockJson: Blockly.serialization.blocks.State,
-) {
-  // Disable events so we don't save while deleting blocks.
-  Blockly.Events.disable();
-  workspace.clear();
-  Blockly.Events.enable();
-
-  // There might be conflicts when loading a block from a file.
-  // If so, find a similar unused name so we don't overwrite.
-  const blockName = getNewUnusedName(blockJson.fields.NAME);
-  blockJson.fields.NAME = blockName;
-
-  Blockly.serialization.blocks.append(blockJson, workspace);
-}
-
-/**
  * Creates a new block from scratch.
  *
  * @param workspace Blockly workspace to load into.
@@ -94,25 +70,9 @@ export function createNewBlock(workspace: Blockly.Workspace) {
   workspace.clear();
   Blockly.Events.enable();
 
-  const blockName = getNewUnusedName();
+  const blockName = storage.getNewUnusedName();
   const startBlockJson = createStartBlock(blockName);
   Blockly.serialization.workspaces.load(startBlockJson, workspace);
-}
-
-/**
- * Finds a name for a block that isn't being used yet.
- *
- * @param startName Initial name to propose, or 'my_block' if not set.
- * @returns An unused name based on the proposed name.
- */
-function getNewUnusedName(startName = 'my_block'): string {
-  let name = startName;
-  let number = 0;
-  while (storage.getAllSavedBlockNames().has(name)) {
-    number += 1;
-    name = startName + number;
-  }
-  return name;
 }
 
 /**
