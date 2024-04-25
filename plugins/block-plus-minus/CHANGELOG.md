@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.5](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@7.0.4...@blockly/block-plus-minus@7.0.5) (2024-04-25)
+
+**Note:** Version bump only for package @blockly/block-plus-minus
+
+
+
+
+
 ## [7.0.4](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@7.0.3...@blockly/block-plus-minus@7.0.4) (2024-04-04)
 
 **Note:** Version bump only for package @blockly/block-plus-minus

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.9](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.8...@blockly/dev-tools@7.1.9) (2024-04-25)
+
+
+### Bug Fixes
+
+* update screenshot.js DOM text reinterpreted as HTML ([7a5dcea](https://github.com/google/blockly-samples/commit/7a5dcea446117e632be2a10eb88c81b84c9fdd66))
+* Update screenshot.js DOM text reinterpreted as HTML  ([#2328](https://github.com/google/blockly-samples/issues/2328)) ([5665493](https://github.com/google/blockly-samples/commit/5665493a10869a258d59ef561907a2fd7e9e2cca))
+
+
+
 ## [7.1.8](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.7...@blockly/dev-tools@7.1.8) (2024-04-04)
 
 **Note:** Version bump only for package @blockly/dev-tools
