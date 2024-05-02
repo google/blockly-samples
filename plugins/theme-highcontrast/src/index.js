@@ -10,7 +10,7 @@
  * Darker colours to contrast the white font.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
   colour_blocks: {

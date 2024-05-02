@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 export const DEFAULT_HEIGHT = 5;
 export const DEFAULT_WIDTH = 5;

@@ -8,7 +8,7 @@
  * @fileoverview Visualizer for debugging custom renderers in Blockly.
  * @author fenichel@google.com (Rachel Fenichel)
  */
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * A basic visualizer for debugging custom renderers.

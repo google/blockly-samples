@@ -8,7 +8,7 @@
  * @fileoverview Modern theme.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 export default Blockly.Theme.defineTheme('modern', {
   base: Blockly.Themes.Classic,
