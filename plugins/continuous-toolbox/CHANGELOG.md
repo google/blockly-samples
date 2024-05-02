@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.17](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.16...@blockly/continuous-toolbox@5.0.17) (2024-05-02)
+
+
+### Bug Fixes
+
+* only select the first category when the flyout is shown when there is no selection ([#2337](https://github.com/google/blockly-samples/issues/2337)) ([fe779cb](https://github.com/google/blockly-samples/commit/fe779cba6318ae95861f6d932b20666ec22cdccb))
+
+
+
 ## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.15...@blockly/continuous-toolbox@5.0.16) (2024-04-25)
 
 **Note:** Version bump only for package @blockly/continuous-toolbox
