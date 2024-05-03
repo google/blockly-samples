@@ -38,25 +38,34 @@
                 type="file"
                 id="file-upload"
                 class="visually-hidden"
-                accept=".txt" />
+                accept=".txt"
+                multiple="true" />
               <p>
                 <label for="file-upload" id="file-label" tabindex="1">
                   Choose a file
                 </label>
                 or drag it here
               </p>
-              <p id="file-upload-warning" class="warning-message">
+              <p id="file-upload-warning" class="warning-message hidden">
                 File could not be parsed. Make sure you're uploading the file
                 you downloaded from the legacy Block Factory.
               </p>
             </div>
           </div>
           <div slot="actions">
-            <md-text-button
-              id="file-upload-close"
-              form="form-id"
-              value="cancel">
+            <md-text-button id="file-upload-close" value="cancel">
               Cancel
+            </md-text-button>
+          </div>
+        </md-dialog>
+        <md-dialog id="upload-results-modal">
+          <div slot="headline">Import Results</div>
+          <div slot="content">
+            <p id="upload-results"></p>
+          </div>
+          <div slot="actions">
+            <md-text-button id="upload-results-close" value="ok">
+              OK
             </md-text-button>
           </div>
         </md-dialog>

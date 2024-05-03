@@ -6,7 +6,7 @@
 
 import * as Blockly from 'blockly';
 import * as storage from './storage';
-import {createNewBlock, loadBlock, loadBlockFromData} from './serialization';
+import {createNewBlock, loadBlock} from './serialization';
 import {ViewModel} from './view_model';
 import {JavascriptDefinitionGenerator} from './output-generators/javascript_definition_generator';
 import {JsonDefinitionGenerator} from './output-generators/json_definition_generator';
@@ -16,6 +16,15 @@ import {GeneratorStubGenerator} from './output-generators/generator_stub_generat
 import {convertBaseBlock} from './backwards_compatibility';
 
 const IMPORT_BLOCK_FACTORY_ID = 'Import from block factory...';
+
+/**
+ * A map where the keys are the names of a file that was uploaded,
+ * and the value is an object with two properties:
+ *     successes - an array of block names, which are represented by a
+ *        tuple as [newName, oldName] in case of block renames
+ *     fails - the number of blocks that failed to parse from that file
+ */
+type UploadResults = Map<string, {successes: string[][]; fails: number}>;
 
 /**
  * This class handles updating the UI output, including refreshing the block preview,
@@ -56,6 +65,10 @@ export class Controller {
 
     this.viewModel.fileModalCloseButton.addEventListener('click', () => {
       this.viewModel.toggleFileUploadModal(false);
+    });
+
+    this.viewModel.uploadResultsCloseButton.addEventListener('click', () => {
+      this.viewModel.toggleUploadResultsModal(false);
     });
 
     this.viewModel.fileDropZone.addEventListener('drop', (e) => {
@@ -266,7 +279,7 @@ export class Controller {
       if (name === storage.getLastEditedBlockName()) {
         el.setAttribute('selected', 'true');
       }
-      div.innerText = name;
+      div.textContent = name;
       el.appendChild(div);
       return el;
     });
@@ -275,13 +288,14 @@ export class Controller {
 
   /** Shows the file upload modal when the user selects that option from the load menu. */
   private handleLoadFromFile() {
+    this.viewModel.toggleFileUploadWarning(false);
     this.viewModel.toggleFileUploadModal(true);
   }
 
   /**
    * Handles the drag event that occurs when a user drops a file onto the file upload
-   * drag-n-drop zone. Gets the first file of the type we want and attempts to load it
-   * into the block factory editor.
+   * drag-n-drop zone. Loads all of the blocks that it can into storage, then shows
+   * the results of the file upload.
    *
    * @param e drop event
    */
@@ -295,50 +309,168 @@ export class Controller {
 
     if (!e.dataTransfer.items) return;
 
-    const firstItem = [...e.dataTransfer.items].find((item) => {
-      // Get the first plain text file, in case the user uploaded multiple
-      if (item.kind === 'file' && item.type === 'text/plain') {
-        return true;
-      }
-    });
+    const allResults: UploadResults = new Map();
+    const allPromises: Array<Promise<void>> = [];
 
-    if (!firstItem) {
-      this.viewModel.toggleFileUploadWarning(true);
-      return;
+    for (const item of e.dataTransfer.items) {
+      // Only consider plain text files
+      if (item.kind !== 'file' || item.type !== 'text/plain') {
+        continue;
+      }
+      const file = item.getAsFile();
+      allPromises.push(
+        this.loadFromFile(file).then((results) => {
+          allResults.set(file.name, results);
+        }),
+      );
     }
-    this.loadFromFile(firstItem.getAsFile());
+
+    // Wait for all the files to be processed, then display results
+    Promise.all(allPromises).then(() => {
+      this.displayLoadResults(allResults);
+    });
   }
 
   /**
-   * Handles the event that occurs when a user picks a file from the file input.
-   * Attempts to load the file into the block factory editor.
+   * Handles the event that occurs when a user picks file(s) from the file input.
+   * Attempts to load the file(s) into the block factory editor.
    */
   private handleFileUpload() {
     this.viewModel.toggleFileUploadWarning(false);
     const input = this.viewModel.fileUploadInput as HTMLInputElement;
-    const file = input.files[0];
-    if (!file) return;
-    this.loadFromFile(file);
+    const results: UploadResults = new Map();
+    for (const file of input.files) {
+      if (!file) continue;
+      this.loadFromFile(file).then((fileResults) => {
+        results.set(file.name, fileResults);
+        this.displayLoadResults(results);
+      });
+    }
+
+    // Reset the file input value
+    input.value = null;
+  }
+
+  /**
+   * Shows the results of a file upload/drop.
+   * If there are no succeses, we keep the file upload modal open so user can try again.
+   * If there are mixed successes and failures, we do our best to show what exactly happened.
+   * If there are no failures, we show a success message.
+   * If any block successfully loads, we show the first one in the block editor.
+   *
+   * @param results Map of filename to upload results.
+   */
+  private displayLoadResults(results: UploadResults) {
+    let firstSuccessfulBlock;
+    const messages = document.createElement('ul');
+
+    const formatSuccessMessage = function (successes: string[][]): string {
+      let message = '';
+      if (successes.length === 1) {
+        message = `Successfully loaded one block named `;
+      } else {
+        message = `Successfully loaded blocks named `;
+      }
+
+      message += successes
+        .map(([newName, oldName]) => {
+          if (newName === oldName) return newName;
+          return `${oldName} (renamed to ${newName})`;
+        })
+        .join(', ');
+
+      return message;
+    };
+
+    for (const file of results.keys()) {
+      const messageDiv = document.createElement('li');
+      const {successes, fails} = results.get(file);
+      if (successes.length === 0) {
+        // File couldn't be parsed at all.
+        messageDiv.textContent = `${file}: could not be parsed.`;
+        messageDiv.classList.add('warning-message');
+      } else if (fails === 0) {
+        // One or more blocks loaded and no failures. Load the first one,
+        // and display the names of other blocks successfully loaded
+        messageDiv.textContent = `${file}: ${formatSuccessMessage(successes)}`;
+        if (!firstSuccessfulBlock) firstSuccessfulBlock = successes[0];
+      } else {
+        // Some success and some failure. Load the first success,
+        // and display the names of blocks that succeeded and failed to load.
+        messageDiv.textContent = `${file}: ${formatSuccessMessage(
+          successes,
+        )}, but failed to parse ${fails} block${fails > 1 ? 's' : ''}.`;
+        messageDiv.classList.add('warning-message');
+        if (!firstSuccessfulBlock) firstSuccessfulBlock = successes[0];
+      }
+
+      messages.appendChild(messageDiv);
+    }
+    if (firstSuccessfulBlock) {
+      loadBlock(this.mainWorkspace, firstSuccessfulBlock[0]);
+    } else {
+      // No blocks were successfully parsed at all, so keep the file upload modal open
+      this.viewModel.toggleFileUploadWarning(true);
+      return;
+    }
+
+    this.viewModel.toggleFileUploadModal(false);
+    this.viewModel.toggleUploadResultsModal(true, messages);
   }
 
   /**
    * Given a file, tries to run it through our backwards-compatibility converter
-   * and load the block into block factory. If there's an error at any point,
-   * we show a warning and allow the user to try the upload again.
+   * and save the blocks in block factory.
    *
-   * @param file File containing the block json to load. This should be the file
-   *    downloaded directly from the old block factory tool.
+   * @param file File containing an array of block json to load. This should
+   * be the file downloaded directly from the old block factory tool.
+   * @returns a promise resolving to an object containing an array of successfully
+   * converted block names and the number of blocks that failed to load.
    */
-  private loadFromFile(file: File) {
-    file
-      .text()
-      .then((contents) => {
-        const fixedBlockData = convertBaseBlock(JSON.parse(contents));
-        loadBlockFromData(this.mainWorkspace, fixedBlockData);
-        this.viewModel.toggleFileUploadModal(false);
-      })
-      .catch((e) => {
-        this.viewModel.toggleFileUploadWarning(true);
-      });
+  private loadFromFile(
+    file: File,
+  ): Promise<{successes: string[][]; fails: number}> {
+    let blocksData;
+    return file.text().then((contents) => {
+      try {
+        blocksData = JSON.parse(contents);
+        if (!Array.isArray(blocksData) || blocksData.length === 0) {
+          throw new Error('File did not contain a JSON array or was empty.');
+        }
+      } catch (e) {
+        console.error(e);
+        return {successes: [], fails: 1};
+      }
+
+      const successes: string[][] = [];
+      let fails = 0;
+      try {
+        for (const block of blocksData) {
+          const fixedBlockData = convertBaseBlock(block);
+
+          // The name from the old factory might be used in this tool.
+          // Get a fresh name so we don't overwrite anything.
+          const oldName = fixedBlockData.fields.NAME;
+          const newName = storage.getNewUnusedName(oldName);
+          fixedBlockData.fields.NAME = newName;
+
+          // Convert the individual block to workspace data with one block
+          const data = {
+            blocks: {
+              languageVersion: 0,
+              blocks: [fixedBlockData],
+            },
+          };
+
+          // Save the new block
+          storage.updateBlock(newName, JSON.stringify(data));
+          successes.push([newName, oldName]);
+        }
+      } catch (e) {
+        fails++;
+      }
+
+      return {successes, fails};
+    });
   }
 }

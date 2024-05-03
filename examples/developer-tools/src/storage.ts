@@ -116,6 +116,22 @@ export function getProhibitedBlockNames(): Set<string> {
   return prohibitedBlockNames;
 }
 
+/**
+ * Finds a name for a block that isn't being used yet.
+ *
+ * @param startName Initial name to propose, or 'my_block' if not set.
+ * @returns An unused name based on the proposed name.
+ */
+export function getNewUnusedName(startName = 'my_block'): string {
+  let name = startName;
+  let number = 0;
+  while (getAllSavedBlockNames().has(name)) {
+    number += 1;
+    name = startName + number;
+  }
+  return name;
+}
+
 export interface BlockFactorySettings {
   blockDefinitionFormat: string;
   codeHeaderStyle: string;
