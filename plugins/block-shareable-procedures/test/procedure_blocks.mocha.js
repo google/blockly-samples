@@ -1320,6 +1320,36 @@ suite('Procedures', function () {
         );
       },
     );
+
+    test(
+      'when the procedure definition block is deleted, all of its ' +
+        'associated callers are deleted, but the other blocks remain',
+      function () {
+        const defBlock = createProcDefBlock(this.workspace);
+        const callBlock1 = createProcCallBlock(this.workspace);
+        const ifBlock1 = this.workspace.newBlock('controls_if');
+        const ifBlock2 = this.workspace.newBlock('controls_if');
+
+        ifBlock1.nextConnection.connect(callBlock1.previousConnection);
+        callBlock1.nextConnection.connect(ifBlock2.previousConnection);
+
+        defBlock.dispose(true);
+        globalThis.clock.runAll();
+
+        assert.isTrue(
+          callBlock1.disposed,
+          'Expected the first caller to be disposed',
+        );
+        assert.isFalse(
+          ifBlock1.disposed,
+          'Expected the first if block 1 to be not be disposed',
+        );
+        assert.isFalse(
+          ifBlock2.disposed,
+          'Expected the second if block 2 to be not be disposed',
+        );
+      },
+    );
   });
 
   suite('caller blocks creating new def blocks', function () {
