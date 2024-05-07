@@ -1330,8 +1330,8 @@ suite('Procedures', function () {
         const ifBlock1 = this.workspace.newBlock('controls_if');
         const ifBlock2 = this.workspace.newBlock('controls_if');
 
-        ifBlock1.nextConnection.outputConnection = callBlock1;
-        callBlock1.nextConnection.outputConnection = ifBlock2;
+        ifBlock1.nextConnection.connect(callBlock1.previousConnection);
+        callBlock1.nextConnection.connect(ifBlock2.previousConnection);
 
         defBlock.dispose(true);
         globalThis.clock.runAll();
