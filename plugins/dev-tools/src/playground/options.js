@@ -1080,29 +1080,4 @@ function addActions(gui, workspace) {
     false,
     'Toggle console logging of flyout events.',
   );
-
-  // Accessibility actions.
-  gui.addCheckboxAction(
-    'Keyboard Nav',
-    (_workspace, value) => {
-      if (value) {
-        Blockly.navigation.enableKeyboardAccessibility();
-      } else {
-        Blockly.navigation.disableKeyboardAccessibility();
-      }
-    },
-    'Accessibility',
-    workspace.keyboardAccessibilityMode,
-    'Toggle keyboard accessibility mode',
-  );
-  gui.addCheckboxAction(
-    'Navigate All',
-    (_workspace, value) => {
-      Blockly.ASTNode.NAVIGATE_ALL_FIELDS = value;
-    },
-    'Accessibility',
-    Blockly.ASTNode.NAVIGATE_ALL_FIELDS,
-    'Toggle navigating to all fields. False to only navigate to clickable' +
-      ' fields.',
-  );
 }
