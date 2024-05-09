@@ -98,68 +98,6 @@ Blockly.Blocks['test_validators_text_B'] = {
   },
 };
 
-Blockly.Blocks['test_validators_angle_null'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('always null')
-      .appendField(new Blockly.FieldAngle(90, this.validate), 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'All input validates to null (invalid). The field' +
-        ' will display the input while the field is being edited (this' +
-        ' includes the text and the graphic), but the value should be the' +
-        ' default value. The input should be red after the first' +
-        ' keystroke.',
-    );
-  },
-
-  validate: function (newValue) {
-    return null;
-  },
-};
-Blockly.Blocks['test_validators_angle_mult30_force'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('force mult of 30')
-      .appendField(new Blockly.FieldAngle(90, this.validate), 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'The input value will be rounded to the nearest' +
-        ' multiple of 30. The field will display the input while the field is' +
-        ' being edited (this includes the text and the graphic), but the' +
-        ' value will be the validated (rounded) value. Note: If you want to' +
-        ' do rounding this is not the proper way, use the ROUND property of' +
-        ' the field angle instead.',
-    );
-  },
-
-  validate: function (newValue) {
-    return Math.round(newValue / 30) * 30;
-  },
-};
-Blockly.Blocks['test_validators_angle_mult30_null'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('not mult of 30 -> null')
-      .appendField(new Blockly.FieldAngle(90, this.validate), 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'If the input value is not a multiple of 30, the' +
-        ' input will validated to null (invalid). The field will display the' +
-        ' input while the field is being edited (this includes the text and' +
-        ' the graphic), but if the input value is invalid the value should be' +
-        ' the default value.',
-    );
-  },
-
-  validate: function (newValue) {
-    if (newValue % 30 != 0) {
-      return null;
-    }
-    return newValue;
-  },
-};
-
 Blockly.Blocks['test_validators_checkbox_null'] = {
   init: function () {
     this.appendDummyInput()
@@ -457,34 +395,6 @@ export const category = {
     {
       kind: 'BLOCK',
       type: 'test_validators_dispose_block',
-    },
-    {
-      kind: 'LABEL',
-      text: 'Angles',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_angle_null',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_angle_mult30_force',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_angle_mult30_null',
     },
     {
       kind: 'LABEL',
