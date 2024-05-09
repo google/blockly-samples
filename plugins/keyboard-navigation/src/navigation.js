@@ -503,12 +503,12 @@ export class Navigation {
       const flyoutContents = flyout.getContents();
       const firstFlyoutItem = flyoutContents[0];
       if (!firstFlyoutItem) return;
-      if (firstFlyoutItem.type === 'button' && firstFlyoutItem.button) {
+      if (firstFlyoutItem.button) {
         const astNode = Blockly.ASTNode.createButtonNode(
           firstFlyoutItem.button,
         );
         this.getFlyoutCursor(workspace).setCurNode(astNode);
-      } else if (firstFlyoutItem.type === 'block' && firstFlyoutItem.block) {
+      } else if (firstFlyoutItem.block) {
         const astNode = Blockly.ASTNode.createStackNode(firstFlyoutItem.block);
         this.getFlyoutCursor(workspace).setCurNode(astNode);
       }
