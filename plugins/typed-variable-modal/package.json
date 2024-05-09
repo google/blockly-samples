@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-typed-variable-modal",
-  "version": "7.0.13",
+  "version": "7.0.14",
   "description": "A Blockly plugin to create a modal for creating typed variables.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^3.1.1",
-    "@blockly/dev-tools": "^7.1.9",
+    "@blockly/dev-tools": "^7.1.10",
     "blockly": "^10.0.0",
     "jsdom": "^19.0.0",
     "jsdom-global": "3.0.2",
@@ -51,7 +51,7 @@
     "blockly": "^10.0.0"
   },
   "dependencies": {
-    "@blockly/plugin-modal": "^6.0.13"
+    "@blockly/plugin-modal": "^6.0.14"
   },
   "publishConfig": {
     "access": "public",

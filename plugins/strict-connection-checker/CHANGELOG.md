@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.15](https://github.com/google/blockly-samples/compare/@blockly/plugin-strict-connection-checker@4.0.14...@blockly/plugin-strict-connection-checker@4.0.15) (2024-05-09)
+
+**Note:** Version bump only for package @blockly/plugin-strict-connection-checker
+
+
+
+
+
 ## [4.0.14](https://github.com/google/blockly-samples/compare/@blockly/plugin-strict-connection-checker@4.0.13...@blockly/plugin-strict-connection-checker@4.0.14) (2024-04-25)
 
 **Note:** Version bump only for package @blockly/plugin-strict-connection-checker
