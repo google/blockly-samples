@@ -426,14 +426,6 @@ export const category = {
     },
     {
       kind: 'LABEL',
-      text: 'Colours',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'LABEL',
       text: 'Dropdowns',
     },
     {
