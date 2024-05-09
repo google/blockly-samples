@@ -8,7 +8,7 @@
  * @fileoverview Helper for randomly populating a workspace.
  * @author fenichel@google.com (Rachel Fenichel)
  */
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * Populate the workspace with a random set of blocks, for testing.

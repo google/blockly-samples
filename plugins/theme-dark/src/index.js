@@ -8,7 +8,7 @@
  * @fileoverview Dark theme.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * Dark theme.

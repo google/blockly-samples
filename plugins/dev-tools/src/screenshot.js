@@ -8,7 +8,7 @@
  * @fileoverview Download screenshot.
  * @author samelh@google.com (Sam El-Husseini)
  */
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * Convert an SVG datauri into a PNG datauri.

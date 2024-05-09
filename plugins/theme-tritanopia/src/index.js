@@ -8,7 +8,7 @@
  * @fileoverview Tritanopia theme.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
   colour_blocks: {
