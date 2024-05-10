@@ -352,7 +352,7 @@ const dynamicDropdownOptions_ = [];
  * @package
  */
 const addDynamicDropdownOption = function () {
-  Blockly.prompt(
+  Blockly.dialog.prompt(
     'Add an option?',
     'option ' + dynamicDropdownOptions_.length,
     function (text) {
@@ -380,7 +380,7 @@ const removeDynamicDropdownOption = function () {
   const defaultText = dynamicDropdownOptions_[0]
     ? dynamicDropdownOptions_[0][0]
     : '';
-  Blockly.prompt('Remove an option?', defaultText, function (text) {
+  Blockly.dialog.prompt('Remove an option?', defaultText, function (text) {
     for (let i = 0, option; (option = dynamicDropdownOptions_[i]); i++) {
       // The option is an array containing human-readable text and a
       // language-neutral id, we'll compare against the human-readable text.

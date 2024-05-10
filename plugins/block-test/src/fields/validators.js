@@ -660,7 +660,7 @@ export function onInit(workspace) {
     workspace.createVariable('2c', '', '2C');
   };
   const setInput = function (button) {
-    Blockly.prompt('Input text to set.', 'ab', function (input) {
+    Blockly.dialog.prompt('Input text to set.', 'ab', function (input) {
       const blocks = button.getTargetWorkspace().getAllBlocks(false);
       for (let i = 0, block; (block = blocks[i]); i++) {
         if (block.getField('INPUT')) {
