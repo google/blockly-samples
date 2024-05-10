@@ -12,7 +12,6 @@
 
 import {category as fieldDefaults, onInit as initDefaults} from './defaults';
 import {category as fieldNumbers, onInit as initNumbers} from './numbers';
-import {category as fieldAngles, onInit as initAngles} from './angles';
 import {category as fieldDropdowns, onInit as initDropdowns} from './dropdowns';
 import {category as fieldImages, onInit as initImages} from './images';
 import {category as fieldEmoji, onInit as initEmoji} from './emojis';
@@ -31,7 +30,6 @@ export const category = {
   contents: [
     fieldDefaults,
     fieldNumbers,
-    fieldAngles,
     fieldDropdowns,
     fieldImages,
     fieldEmoji,
@@ -46,7 +44,6 @@ export const category = {
 export function onInit(workspace) {
   initDefaults(workspace);
   initNumbers(workspace);
-  initAngles(workspace);
   initDropdowns(workspace);
   initImages(workspace);
   initEmoji(workspace);
