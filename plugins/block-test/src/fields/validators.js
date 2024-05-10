@@ -98,68 +98,6 @@ Blockly.Blocks['test_validators_text_B'] = {
   },
 };
 
-Blockly.Blocks['test_validators_angle_null'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('always null')
-      .appendField(new Blockly.FieldAngle(90, this.validate), 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'All input validates to null (invalid). The field' +
-        ' will display the input while the field is being edited (this' +
-        ' includes the text and the graphic), but the value should be the' +
-        ' default value. The input should be red after the first' +
-        ' keystroke.',
-    );
-  },
-
-  validate: function (newValue) {
-    return null;
-  },
-};
-Blockly.Blocks['test_validators_angle_mult30_force'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('force mult of 30')
-      .appendField(new Blockly.FieldAngle(90, this.validate), 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'The input value will be rounded to the nearest' +
-        ' multiple of 30. The field will display the input while the field is' +
-        ' being edited (this includes the text and the graphic), but the' +
-        ' value will be the validated (rounded) value. Note: If you want to' +
-        ' do rounding this is not the proper way, use the ROUND property of' +
-        ' the field angle instead.',
-    );
-  },
-
-  validate: function (newValue) {
-    return Math.round(newValue / 30) * 30;
-  },
-};
-Blockly.Blocks['test_validators_angle_mult30_null'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('not mult of 30 -> null')
-      .appendField(new Blockly.FieldAngle(90, this.validate), 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'If the input value is not a multiple of 30, the' +
-        ' input will validated to null (invalid). The field will display the' +
-        ' input while the field is being edited (this includes the text and' +
-        ' the graphic), but if the input value is invalid the value should be' +
-        ' the default value.',
-    );
-  },
-
-  validate: function (newValue) {
-    if (newValue % 30 != 0) {
-      return null;
-    }
-    return newValue;
-  },
-};
-
 Blockly.Blocks['test_validators_checkbox_null'] = {
   init: function () {
     this.appendDummyInput()
@@ -211,111 +149,6 @@ Blockly.Blocks['test_validators_checkbox_not_match_null'] = {
 
   validate: function (newValue) {
     if (this.sourceBlock_.getFieldValue('MATCH') != newValue) {
-      return null;
-    }
-    return newValue;
-  },
-};
-
-Blockly.Blocks['test_validators_colour_null'] = {
-  init: function () {
-    const colourField = new Blockly.FieldColour('#ff0000', this.validate);
-    colourField.setColours([
-      '#ffffff',
-      '#ffdcdc',
-      '#ffb4b4',
-      '#ff8c8c',
-      '#ff6464',
-      '#ff3c3c',
-      '#ff1414',
-      '#00ffff',
-      '#00dcdc',
-      '#00b4b4',
-      '#008c8c',
-      '#006464',
-      '#003c3c',
-      '#001414',
-    ]);
-
-    this.appendDummyInput()
-      .appendField('always null')
-      .appendField(colourField, 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'All input validates to null (invalid). This means' +
-        ' the field value should not change.',
-    );
-  },
-
-  validate: function (newValue) {
-    return null;
-  },
-};
-Blockly.Blocks['test_validators_colour_force_red'] = {
-  init: function () {
-    const colourField = new Blockly.FieldColour('#ff0000', this.validate);
-    colourField.setColours([
-      '#ffffff',
-      '#ffdcdc',
-      '#ffb4b4',
-      '#ff8c8c',
-      '#ff6464',
-      '#ff3c3c',
-      '#ff1414',
-      '#00ffff',
-      '#00dcdc',
-      '#00b4b4',
-      '#008c8c',
-      '#006464',
-      '#003c3c',
-      '#001414',
-    ]);
-
-    this.appendDummyInput()
-      .appendField('force full red')
-      .appendField(colourField, 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'The input will have its red value replaced with' + ' full red.',
-    );
-  },
-
-  validate: function (newValue) {
-    return '#ff' + newValue.substr(3, 4);
-  },
-};
-Blockly.Blocks['test_validators_colour_red_null'] = {
-  init: function () {
-    const colourField = new Blockly.FieldColour('#ff0000', this.validate);
-    colourField.setColours([
-      '#ffffff',
-      '#ffdcdc',
-      '#ffb4b4',
-      '#ff8c8c',
-      '#ff6464',
-      '#ff3c3c',
-      '#ff1414',
-      '#00ffff',
-      '#00dcdc',
-      '#00b4b4',
-      '#008c8c',
-      '#006464',
-      '#003c3c',
-      '#001414',
-    ]);
-
-    this.appendDummyInput()
-      .appendField('not red -> null')
-      .appendField(colourField, 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'If the input does not have full red, the input will validate to' +
-        ' null (invalid). Otherwise it will return the input value',
-    );
-  },
-
-  validate: function (newValue) {
-    if (newValue.substr(1, 2) != 'ff') {
       return null;
     }
     return newValue;
@@ -565,34 +398,6 @@ export const category = {
     },
     {
       kind: 'LABEL',
-      text: 'Angles',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_angle_null',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_angle_mult30_force',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_angle_mult30_null',
-    },
-    {
-      kind: 'LABEL',
       text: 'Checkboxes',
     },
     {
@@ -618,34 +423,6 @@ export const category = {
     {
       kind: 'BLOCK',
       type: 'test_validators_checkbox_not_match_null',
-    },
-    {
-      kind: 'LABEL',
-      text: 'Colours',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_colour_null',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_colour_force_red',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_colour_red_null',
     },
     {
       kind: 'LABEL',
@@ -785,7 +562,7 @@ export function onInit(workspace) {
     workspace.createVariable('2c', '', '2C');
   };
   const setInput = function (button) {
-    Blockly.prompt('Input text to set.', 'ab', function (input) {
+    Blockly.dialog.prompt('Input text to set.', 'ab', function (input) {
       const blocks = button.getTargetWorkspace().getAllBlocks(false);
       for (let i = 0, block; (block = blocks[i]); i++) {
         if (block.getField('INPUT')) {

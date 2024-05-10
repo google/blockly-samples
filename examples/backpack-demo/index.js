@@ -136,10 +136,6 @@ const toolbox = {
           type: 'text',
         },
         {
-          kind: 'block',
-          type: 'text_multiline',
-        },
-        {
           'kind': 'label',
           'text': 'Input/Output:',
           'web-class': 'ioLabel',

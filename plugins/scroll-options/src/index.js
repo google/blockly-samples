@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 import {EdgeScrollOptions, ScrollBlockDragger} from './ScrollBlockDragger';
 import {getTranslation} from './utils';
 

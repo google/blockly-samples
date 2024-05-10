@@ -224,7 +224,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     super.show(flyoutDef);
     this.recordScrollPositions();
     this.workspace_.resizeContents();
-    this.selectCategoryByScrollPosition_(0);
+    if (!this.getParentToolbox_().getSelectedItem()) {
+      this.selectCategoryByScrollPosition_(0);
+    }
   }
 
   /**

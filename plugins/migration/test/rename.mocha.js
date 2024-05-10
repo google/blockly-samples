@@ -18,6 +18,10 @@ suite('Rename', function () {
     const database = {
       '1.0.0': [
         {
+          oldName: 'Blockly',
+          exports: {},
+        },
+        {
           oldName: 'Blockly.moduleA',
           newName: 'Blockly.newModuleA',
           exports: {
@@ -49,7 +53,7 @@ suite('Rename', function () {
       ],
     };
     const oldString = `
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 
 class SubClass extends Blockly.moduleC {
   constructor() {
@@ -77,7 +81,7 @@ class SubClass extends Blockly.moduleC {
     const newString = new Renamer(database, '0.0.0', '1.0.0').rename(oldString);
 
     const expectedString = `
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 
 class SubClass extends Blockly.moduleC.ClassC {
   constructor() {

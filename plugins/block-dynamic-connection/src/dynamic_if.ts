@@ -35,7 +35,6 @@ interface IfExtraState {
   hasElse?: boolean;
 }
 
-/* eslint-disable @typescript-eslint/naming-convention */
 const DYNAMIC_IF_MIXIN = {
   /**
    * Minimum number of inputs for this block.

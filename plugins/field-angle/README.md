@@ -18,6 +18,14 @@ npm install @blockly/field-angle --save
 
 ## Usage
 
+### Installation
+
+You must register this field with Blockly. You can do this by calling
+`registerFieldAngle` before instantiating your blocks. If another field is
+registered under the same name, this field will overwrite it.
+
+### Parameters
+
 This field accepts up to 9 parameters, in addition to the 4 accepted by the
 [number field][number-field]:
 
@@ -60,7 +68,9 @@ This field accepts up to 9 parameters, in addition to the 4 accepted by the
 
 ```js
 import * as Blockly from 'blockly';
-import {FieldAngle} from '@blockly/field-angle';
+import {registerFieldAngle} from '@blockly/field-angle';
+
+registerFieldAngle();
 Blockly.Blocks['test_field_angle'] = {
   init: function () {
     this.appendDummyInput()
@@ -74,7 +84,9 @@ Blockly.Blocks['test_field_angle'] = {
 
 ```js
 import * as Blockly from 'blockly';
-import '@blockly/field-angle';
+import {registerFieldAngle} from '@blockly/field-angle';
+
+registerFieldAngle();
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_field_angle',

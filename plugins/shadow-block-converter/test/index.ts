@@ -27,28 +27,6 @@ const toolbox: Blockly.utils.toolbox.ToolboxDefinition = {
     },
     {
       kind: 'block',
-      type: 'colour_blend',
-      inputs: {
-        COLOUR1: {
-          shadow: {type: 'colour_picker', fields: {COLOUR: '#ff0000'}},
-          block: undefined,
-        },
-        COLOUR2: {
-          shadow: {type: 'colour_picker', fields: {COLOUR: '#3333ff'}},
-          block: undefined,
-        },
-        RATIO: {
-          shadow: {type: 'math_number', fields: {NUM: 0.5}},
-          block: undefined,
-        },
-      },
-    },
-    {
-      kind: 'block',
-      type: 'colour_picker',
-    },
-    {
-      kind: 'block',
       type: 'text_print',
       inputs: {
         TEXT: {
