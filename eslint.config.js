@@ -44,6 +44,8 @@ module.exports = [
       // specific examples that are sometimes copied into plugins
       'plugins/dev-create/templates/sample-app',
       'plugins/dev-create/templates/sample-app-ts',
+      // Golden test files
+      'plugins/**/golden/*',
     ],
   },
   js.configs.recommended, // eslint-recommended
@@ -229,6 +231,11 @@ module.exports = [
             regex: '^I[A-Z]',
             match: false,
           },
+        },
+        {
+          selector: 'variable',
+          modifiers: ['const'],
+          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
         },
       ],
       '@typescript-eslint/consistent-type-assertions': 'error',

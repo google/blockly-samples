@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.8](https://github.com/google/blockly-samples/compare/@blockly/theme-deuteranopia@5.0.7...@blockly/theme-deuteranopia@5.0.8) (2024-05-09)
+
+
+### Bug Fixes
+
+* Fix incorrect Blockly imports ([#2339](https://github.com/google/blockly-samples/issues/2339)) ([9af40b9](https://github.com/google/blockly-samples/commit/9af40b9ca075275af2b48cedcc1750d458084eb3))
+
+
+
+## [5.0.7](https://github.com/google/blockly-samples/compare/@blockly/theme-deuteranopia@5.0.6...@blockly/theme-deuteranopia@5.0.7) (2024-04-04)
+
+**Note:** Version bump only for package @blockly/theme-deuteranopia
+
+
+
+
+
+## [5.0.6](https://github.com/google/blockly-samples/compare/@blockly/theme-deuteranopia@5.0.5...@blockly/theme-deuteranopia@5.0.6) (2024-03-28)
+
+
+### Bug Fixes
+
+* **doc:** correct image filename to make it can be displayed in the doc ([#2269](https://github.com/google/blockly-samples/issues/2269)) ([82c094a](https://github.com/google/blockly-samples/commit/82c094ad9809dd1ad9870c8bfd1230fe5c06f929))
+
+
+
 ## [5.0.5](https://github.com/google/blockly-samples/compare/@blockly/theme-deuteranopia@5.0.4...@blockly/theme-deuteranopia@5.0.5) (2023-12-14)
 
 **Note:** Version bump only for package @blockly/theme-deuteranopia

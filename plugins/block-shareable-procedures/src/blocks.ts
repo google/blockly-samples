@@ -1069,7 +1069,7 @@ const procedureCallerUpdateShapeMixin = {
     if (!this.getProcedureModel()) return;
     const id = this.getProcedureModel().getId();
     if (!this.getTargetWorkspace_().getProcedureMap().has(id)) {
-      this.dispose();
+      this.dispose(true);
       return;
     }
     this.updateName_();

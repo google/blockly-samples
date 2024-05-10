@@ -8,7 +8,7 @@
  * @fileoverview Download screenshot.
  * @author samelh@google.com (Sam El-Husseini)
  */
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * Convert an SVG datauri into a PNG datauri.
@@ -58,7 +58,7 @@ function workspaceToSvg_(workspace, callback, customCss) {
   // Go through all text areas and set their value.
   const textAreas = document.getElementsByTagName('textarea');
   for (let i = 0; i < textAreas.length; i++) {
-    textAreas[i].innerHTML = textAreas[i].value;
+    textAreas[i].innerText = textAreas[i].value;
   }
 
   const bBox = workspace.getBlocksBoundingBox();
@@ -98,7 +98,7 @@ function workspaceToSvg_(workspace, callback, customCss) {
     })
     .join('\n');
   const style = document.createElement('style');
-  style.innerHTML = css + '\n' + customCss;
+  style.textContent = css + '\n' + customCss;
 
   svg.appendChild(style);
   for (const defs of workspace.getSvgGroup().getElementsByTagName('defs')) {

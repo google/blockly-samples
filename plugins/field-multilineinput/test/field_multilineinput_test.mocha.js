@@ -5,7 +5,10 @@
  */
 
 const {testHelpers} = require('@blockly/dev-tools');
-const {FieldMultilineInput} = require('../src/index');
+const {
+  FieldMultilineInput,
+  registerFieldMultilineInput,
+} = require('../src/index');
 const {assert} = require('chai');
 
 const {
@@ -18,6 +21,9 @@ const {
 } = testHelpers;
 
 suite('FieldMultilineInput', function () {
+  setup(function () {
+    registerFieldMultilineInput();
+  });
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}

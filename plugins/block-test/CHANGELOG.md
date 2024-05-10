@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.1.1...@blockly/block-test@5.1.2) (2024-05-09)
+
+
+### Bug Fixes
+
+* Fix incorrect Blockly imports ([#2339](https://github.com/google/blockly-samples/issues/2339)) ([9af40b9](https://github.com/google/blockly-samples/commit/9af40b9ca075275af2b48cedcc1750d458084eb3))
+
+
+
+## [5.1.1](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.1.0...@blockly/block-test@5.1.1) (2024-04-04)
+
+**Note:** Version bump only for package @blockly/block-test
+
+
+
+
+
 ## [5.1.0](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.0.4...@blockly/block-test@5.1.0) (2024-02-08)
 
 

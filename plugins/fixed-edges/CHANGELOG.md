@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.15](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@4.0.14...@blockly/fixed-edges@4.0.15) (2024-05-09)
+
+
+### Bug Fixes
+
+* Fix incorrect Blockly imports ([#2339](https://github.com/google/blockly-samples/issues/2339)) ([9af40b9](https://github.com/google/blockly-samples/commit/9af40b9ca075275af2b48cedcc1750d458084eb3))
+
+
+
+## [4.0.14](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@4.0.13...@blockly/fixed-edges@4.0.14) (2024-04-25)
+
+**Note:** Version bump only for package @blockly/fixed-edges
+
+
+
+
+
+## [4.0.13](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@4.0.12...@blockly/fixed-edges@4.0.13) (2024-04-04)
+
+**Note:** Version bump only for package @blockly/fixed-edges
+
+
+
+
+
+## [4.0.12](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@4.0.11...@blockly/fixed-edges@4.0.12) (2024-03-28)
+
+**Note:** Version bump only for package @blockly/fixed-edges
+
+
+
+
+
 ## [4.0.11](https://github.com/google/blockly-samples/compare/@blockly/fixed-edges@4.0.10...@blockly/fixed-edges@4.0.11) (2024-02-08)
 
 **Note:** Version bump only for package @blockly/fixed-edges

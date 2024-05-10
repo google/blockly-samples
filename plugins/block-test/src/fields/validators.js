@@ -217,111 +217,6 @@ Blockly.Blocks['test_validators_checkbox_not_match_null'] = {
   },
 };
 
-Blockly.Blocks['test_validators_colour_null'] = {
-  init: function () {
-    const colourField = new Blockly.FieldColour('#ff0000', this.validate);
-    colourField.setColours([
-      '#ffffff',
-      '#ffdcdc',
-      '#ffb4b4',
-      '#ff8c8c',
-      '#ff6464',
-      '#ff3c3c',
-      '#ff1414',
-      '#00ffff',
-      '#00dcdc',
-      '#00b4b4',
-      '#008c8c',
-      '#006464',
-      '#003c3c',
-      '#001414',
-    ]);
-
-    this.appendDummyInput()
-      .appendField('always null')
-      .appendField(colourField, 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'All input validates to null (invalid). This means' +
-        ' the field value should not change.',
-    );
-  },
-
-  validate: function (newValue) {
-    return null;
-  },
-};
-Blockly.Blocks['test_validators_colour_force_red'] = {
-  init: function () {
-    const colourField = new Blockly.FieldColour('#ff0000', this.validate);
-    colourField.setColours([
-      '#ffffff',
-      '#ffdcdc',
-      '#ffb4b4',
-      '#ff8c8c',
-      '#ff6464',
-      '#ff3c3c',
-      '#ff1414',
-      '#00ffff',
-      '#00dcdc',
-      '#00b4b4',
-      '#008c8c',
-      '#006464',
-      '#003c3c',
-      '#001414',
-    ]);
-
-    this.appendDummyInput()
-      .appendField('force full red')
-      .appendField(colourField, 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'The input will have its red value replaced with' + ' full red.',
-    );
-  },
-
-  validate: function (newValue) {
-    return '#ff' + newValue.substr(3, 4);
-  },
-};
-Blockly.Blocks['test_validators_colour_red_null'] = {
-  init: function () {
-    const colourField = new Blockly.FieldColour('#ff0000', this.validate);
-    colourField.setColours([
-      '#ffffff',
-      '#ffdcdc',
-      '#ffb4b4',
-      '#ff8c8c',
-      '#ff6464',
-      '#ff3c3c',
-      '#ff1414',
-      '#00ffff',
-      '#00dcdc',
-      '#00b4b4',
-      '#008c8c',
-      '#006464',
-      '#003c3c',
-      '#001414',
-    ]);
-
-    this.appendDummyInput()
-      .appendField('not red -> null')
-      .appendField(colourField, 'INPUT');
-    this.setColour(230);
-    this.setCommentText(
-      'If the input does not have full red, the input will validate to' +
-        ' null (invalid). Otherwise it will return the input value',
-    );
-  },
-
-  validate: function (newValue) {
-    if (newValue.substr(1, 2) != 'ff') {
-      return null;
-    }
-    return newValue;
-  },
-};
-
 Blockly.Blocks['test_validators_dropdown_null'] = {
   init: function () {
     this.appendDummyInput()
@@ -628,26 +523,6 @@ export const category = {
       gap: '12',
     },
     {
-      kind: 'BLOCK',
-      type: 'test_validators_colour_null',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_colour_force_red',
-    },
-    {
-      kind: 'SEP',
-      gap: '12',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_validators_colour_red_null',
-    },
-    {
       kind: 'LABEL',
       text: 'Dropdowns',
     },
@@ -785,7 +660,7 @@ export function onInit(workspace) {
     workspace.createVariable('2c', '', '2C');
   };
   const setInput = function (button) {
-    Blockly.prompt('Input text to set.', 'ab', function (input) {
+    Blockly.dialog.prompt('Input text to set.', 'ab', function (input) {
       const blocks = button.getTargetWorkspace().getAllBlocks(false);
       for (let i = 0, block; (block = blocks[i]); i++) {
         if (block.getField('INPUT')) {

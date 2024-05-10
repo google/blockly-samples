@@ -6,7 +6,7 @@
 
 'use strict';
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 /**
  * Field that does not override any serialization hooks.
