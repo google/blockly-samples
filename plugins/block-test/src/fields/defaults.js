@@ -14,22 +14,6 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    type: 'test_fields_angle',
-    message0: 'angle: %1',
-    args0: [
-      {
-        type: 'field_angle',
-        name: 'FIELDNAME',
-        angle: '90',
-        alt: {
-          type: 'field_label',
-          text: 'NO ANGLE FIELD',
-        },
-      },
-    ],
-    style: 'math_blocks',
-  },
-  {
     type: 'test_fields_text_input',
     message0: 'text input %1',
     args0: [
@@ -164,10 +148,6 @@ export const category = {
       kind: 'BUTTON',
       text: 'toggle collapsed',
       callbackkey: 'toggleCollapsed',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_fields_angle',
     },
     {
       kind: 'BLOCK',
