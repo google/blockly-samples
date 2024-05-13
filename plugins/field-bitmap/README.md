@@ -20,7 +20,7 @@ npm install @blockly/field-bitmap --save
 
 ## Usage
 
-This field accepts up to 3 parameters:
+This field accepts up to 6 parameters:
 
 - `"value"` to specify an initial value. Must be a 2D rectangular array of 1s and 0s.
   If not provided, the default is an empty grid of the specified size.
@@ -28,6 +28,13 @@ This field accepts up to 3 parameters:
   If not provided, the default is a width of 5.
 - `"height"` to specify an initial height, if there is no initial value.
   If not provided, the default is a height of 5.
+- `fieldHeight"` to specify a static field height. If provided, the individual pixels
+  will be resized to fit inside the field. Good for larger images.
+- `"colors"` to override the default colors, Default values:  
+  `{filled: '#363d80', empty: '#fff'}`
+- `"buttons"` to provide translated string for buttons, or to hide buttons.
+  Default values:  
+  `{showRandomize: true, showClear: true, randomizeLabel: 'Randomize', clearLabel: 'Clear',}`
 
 ### JavaScript
 
