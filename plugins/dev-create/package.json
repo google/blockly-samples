@@ -43,6 +43,6 @@
     "node": ">=14.0.0"
   },
   "devDependencies": {
-    "blockly": "^11.0.0-beta.9"
+    "blockly": "^11.0.0-beta.12"
   }
 }
