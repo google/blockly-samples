@@ -9,7 +9,7 @@
  * @fileoverview Field overview.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 // TODO: Rename field and update description.
 /**

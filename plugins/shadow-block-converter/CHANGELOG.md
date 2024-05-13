@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.5](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@5.0.4...@blockly/shadow-block-converter@5.0.5) (2024-05-09)
+
+**Note:** Version bump only for package @blockly/shadow-block-converter
+
+
+
+
+
+## [5.0.4](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@5.0.3...@blockly/shadow-block-converter@5.0.4) (2024-04-25)
+
+**Note:** Version bump only for package @blockly/shadow-block-converter
+
+
+
+
+
+## [5.0.3](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@5.0.2...@blockly/shadow-block-converter@5.0.3) (2024-04-04)
+
+**Note:** Version bump only for package @blockly/shadow-block-converter
+
+
+
+
+
+## [5.0.2](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@5.0.1...@blockly/shadow-block-converter@5.0.2) (2024-03-28)
+
+**Note:** Version bump only for package @blockly/shadow-block-converter
+
+
+
+
+
 ## [5.0.1](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@5.0.0...@blockly/shadow-block-converter@5.0.1) (2024-02-08)
 
 **Note:** Version bump only for package @blockly/shadow-block-converter

@@ -14,22 +14,6 @@ import * as Blockly from 'blockly/core';
 
 Blockly.defineBlocksWithJsonArray([
   {
-    type: 'test_fields_angle',
-    message0: 'angle: %1',
-    args0: [
-      {
-        type: 'field_angle',
-        name: 'FIELDNAME',
-        angle: '90',
-        alt: {
-          type: 'field_label',
-          text: 'NO ANGLE FIELD',
-        },
-      },
-    ],
-    style: 'math_blocks',
-  },
-  {
     type: 'test_fields_text_input',
     message0: 'text input %1',
     args0: [
@@ -59,19 +43,6 @@ Blockly.defineBlocksWithJsonArray([
     output: 'String',
   },
   {
-    type: 'test_fields_multilinetext',
-    message0: 'code %1',
-    args0: [
-      {
-        type: 'field_multilinetext',
-        name: 'CODE',
-        text: 'default1\ndefault2',
-      },
-    ],
-    style: 'math_blocks',
-    tooltip: 'test tooltip',
-  },
-  {
     type: 'test_fields_checkbox',
     message0: 'checkbox %1',
     args0: [
@@ -84,50 +55,6 @@ Blockly.defineBlocksWithJsonArray([
     style: 'math_blocks',
     tooltip: '',
     helpUrl: '',
-  },
-  {
-    type: 'test_fields_colour',
-    message0: 'colour %1',
-    args0: [
-      {
-        type: 'field_colour',
-        name: 'COLOUR',
-        colour: '#ff0000',
-      },
-    ],
-    style: 'math_blocks',
-    tooltip: '',
-    helpUrl: '',
-  },
-  {
-    type: 'test_fields_colour_options',
-    message0: 'colour options %1',
-    args0: [
-      {
-        type: 'field_colour',
-        name: 'COLOUR',
-        colour: '#ff4040',
-        colourOptions: [
-          '#ff4040',
-          '#ff8080',
-          '#ffc0c0',
-          '#4040ff',
-          '#8080ff',
-          '#c0c0ff',
-        ],
-        colourTitles: [
-          'dark pink',
-          'pink',
-          'light pink',
-          'dark blue',
-          'blue',
-          'light blue',
-        ],
-        columns: 3,
-      },
-    ],
-    style: 'math_blocks',
-    tooltip: 'test tooltip',
   },
   {
     type: 'test_fields_variable',
@@ -224,19 +151,7 @@ export const category = {
     },
     {
       kind: 'BLOCK',
-      type: 'test_fields_angle',
-    },
-    {
-      kind: 'BLOCK',
       type: 'test_fields_checkbox',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_fields_colour',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_fields_colour_options',
     },
     {
       kind: 'BLOCK',
@@ -245,10 +160,6 @@ export const category = {
     {
       kind: 'BLOCK',
       type: 'test_fields_only_text_input',
-    },
-    {
-      kind: 'BLOCK',
-      type: 'test_fields_multilinetext',
     },
     {
       kind: 'BLOCK',

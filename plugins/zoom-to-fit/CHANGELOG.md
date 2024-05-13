@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.17](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.16...@blockly/zoom-to-fit@5.0.17) (2024-05-09)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.15...@blockly/zoom-to-fit@5.0.16) (2024-04-25)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.14...@blockly/zoom-to-fit@5.0.15) (2024-04-04)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.13...@blockly/zoom-to-fit@5.0.14) (2024-03-28)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
 ## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@5.0.12...@blockly/zoom-to-fit@5.0.13) (2024-03-14)
 
 

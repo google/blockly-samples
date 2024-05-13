@@ -9,7 +9,7 @@
  * @fileoverview Theme overview.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 // TODO: Edit theme name.
 export default Blockly.Theme.defineTheme('THEME_NAME', {

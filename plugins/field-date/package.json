@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-date",
-  "version": "8.0.12",
+  "version": "8.0.16",
   "description": "A Blockly date picker field that uses the browser's date picker.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -43,14 +43,14 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^3.1.1",
-    "@blockly/dev-tools": "^7.1.6",
-    "blockly": "^11.0.0-beta.7",
+    "@blockly/dev-tools": "^7.1.10",
+    "blockly": "^11.0.0-beta.9",
     "chai": "^4.2.0",
     "sinon": "^9.0.1",
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
-    "blockly": "^11.0.0-beta.7"
+    "blockly": "^11.0.0-beta.9"
   },
   "publishConfig": {
     "access": "public",

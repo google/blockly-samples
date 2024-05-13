@@ -9,7 +9,7 @@
  * @fileoverview Block overview.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 // TODO: Update block definition.
 Blockly.defineBlocksWithJsonArray([

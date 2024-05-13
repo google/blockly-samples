@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-angle@4.0.2...@blockly/field-angle@4.0.3) (2024-05-09)
+
+**Note:** Version bump only for package @blockly/field-angle
+
+
+
+
+
+## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-angle@4.0.1...@blockly/field-angle@4.0.2) (2024-04-25)
+
+**Note:** Version bump only for package @blockly/field-angle
+
+
+
+
+
+## [4.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-angle@4.0.0...@blockly/field-angle@4.0.1) (2024-04-11)
+
+**Note:** Version bump only for package @blockly/field-angle
+
+
+
+
+
+## [4.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.13...@blockly/field-angle@4.0.0) (2024-04-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* The multiline text input field no longer registers itself on load. The developer must either manually register the field or install blocks, which will install the field. This is part of a move to have no side effects in field and block definitions, so that tree-shaking can remove unwanted fields and blocks.
+* The angle field no longer registers itself on load. The developer must manually register the field. This is part of a move to have no side effects in field and block definitions, so that tree-shaking can remove unwanted fields and blocks.
+
+### Features
+
+* add block definitions to fields ([#2299](https://github.com/google/blockly-samples/issues/2299)) ([c197af6](https://github.com/google/blockly-samples/commit/c197af6c67bc989bbdb4e83a62abc08167bcbbfe)), closes [#2162](https://github.com/google/blockly-samples/issues/2162) [#2202](https://github.com/google/blockly-samples/issues/2202) [#2221](https://github.com/google/blockly-samples/issues/2221) [#2211](https://github.com/google/blockly-samples/issues/2211) [#2220](https://github.com/google/blockly-samples/issues/2220) [#2232](https://github.com/google/blockly-samples/issues/2232) [#2233](https://github.com/google/blockly-samples/issues/2233) [#2296](https://github.com/google/blockly-samples/issues/2296)
+
+
+
+## [3.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.12...@blockly/field-angle@3.0.13) (2024-03-28)
+
+**Note:** Version bump only for package @blockly/field-angle
+
+
+
+
+
 ## [3.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-angle@3.0.11...@blockly/field-angle@3.0.12) (2024-02-08)
 
 

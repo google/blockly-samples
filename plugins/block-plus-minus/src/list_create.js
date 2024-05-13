@@ -8,7 +8,7 @@
  * @fileoverview Changes the list_create block to use a +/- mutator UI.
  */
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 import {createPlusField} from './field_plus';
 import {createMinusField} from './field_minus';
 

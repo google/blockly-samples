@@ -1,6 +1,6 @@
 {
   "name": "@blockly/migrate",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "description": "A collection of tools that help with migrating apps using Blockly to new versions of BLockly.",
   "bin": "./bin/migrate.js",
   "author": "Blockly Team",
@@ -41,7 +41,7 @@
   "type": "module",
   "devDependencies": {
     "@types/mocha": "^9.1.0",
-    "blockly": "^11.0.0-beta.7",
+    "blockly": "^11.0.0-beta.9",
     "chai": "^4.3.6",
     "mocha": "^9.2.1",
     "sinon": "^13.0.1"

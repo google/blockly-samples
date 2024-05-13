@@ -9,7 +9,7 @@
  * blocks, for testing.
  * @author samelh@google.com (Sam El-Husseini)
  */
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 
 const spaghettiXml = [
   '  <block type="controls_if">',

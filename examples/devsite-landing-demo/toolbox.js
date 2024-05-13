@@ -15,7 +15,11 @@ let toolboxJson = {
     {
       // Logic Category
       kind: 'CATEGORY',
+      name: 'Logic',
       colour: 262,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowLogic',
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -47,7 +51,11 @@ let toolboxJson = {
     {
       // Loops Category
       kind: 'CATEGORY',
+      name: 'Loops',
       colour: 122,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowLoops',
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -103,7 +111,11 @@ let toolboxJson = {
     {
       // Math Category
       kind: 'CATEGORY',
+      name: 'Math',
       colour: 206,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowMath',
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -272,15 +284,15 @@ let toolboxJson = {
     {
       // Text Category
       kind: 'CATEGORY',
+      name: 'Text',
       colour: 46,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowText',
+      },
       contents: [
         {
           kind: 'BLOCK',
           type: 'text',
-        },
-        {
-          kind: 'BLOCK',
-          type: 'text_multiline',
         },
         {
           kind: 'BLOCK',
@@ -482,7 +494,11 @@ let toolboxJson = {
     {
       // Lists Category
       kind: 'CATEGORY',
+      name: 'Lists',
       colour: 172,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowLists',
+      },
       contents: [
         {
           kind: 'BLOCK',
@@ -650,86 +666,29 @@ let toolboxJson = {
     },
 
     {
-      // Colour Category
-      kind: 'CATEGORY',
-      colour: 354,
-      contents: [
-        {
-          kind: 'BLOCK',
-          type: 'colour_picker',
-          fields: {COLOUR: '#ff0000'},
-        },
-        {
-          kind: 'BLOCK',
-          type: 'colour_random',
-        },
-        {
-          kind: 'BLOCK',
-          type: 'colour_rgb',
-          inputs: {
-            RED: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 100},
-              },
-            },
-            GREEN: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 50},
-              },
-            },
-            BLUE: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 0},
-              },
-            },
-          },
-        },
-        {
-          kind: 'BLOCK',
-          type: 'colour_blend',
-          inputs: {
-            COLOUR1: {
-              shadow: {
-                type: 'colour_picker',
-                fields: {COLOUR: '#ff0000'},
-              },
-            },
-            COLOUR2: {
-              shadow: {
-                type: 'colour_picker',
-                fields: {COLOUR: '#3333ff'},
-              },
-            },
-            RATIO: {
-              shadow: {
-                type: 'math_number',
-                fields: {NUM: 0.5},
-              },
-            },
-          },
-        },
-      ],
-    },
-
-    {
       kind: 'SEP',
     },
 
     {
-      // Variable Category
+      // Variables Category
       kind: 'CATEGORY',
       custom: 'VARIABLE',
+      name: 'Variables',
       colour: 4,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowVariables',
+      },
     },
 
     {
-      // Function Category
+      // Procedures Category
       kind: 'CATEGORY',
       custom: 'PROCEDURE',
+      name: 'Procedures',
       colour: 16,
+      cssConfig: {
+        row: 'blocklyTreeRow blocklyTreeRowProcedures',
+      },
     },
   ],
 };

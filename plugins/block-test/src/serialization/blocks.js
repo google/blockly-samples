@@ -7,7 +7,7 @@
 
 'use strict';
 
-import Blockly from 'blockly/core';
+import * as Blockly from 'blockly/core';
 import './fields';
 
 Blockly.defineBlocksWithJsonArray([
