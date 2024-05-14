@@ -32,9 +32,9 @@ This field accepts up to 6 parameters:
   will be resized to fit inside the field. Good for larger images.
 - `"colors"` to override the default colors, Default values:  
   `{filled: '#363d80', empty: '#fff'}`
-- `"buttons"` to provide translated string for buttons, or to hide buttons.
+- `"buttons"` to hide the "Randomize" and/or "Clear" buttons.
   Default values:  
-  `{showRandomize: true, showClear: true, randomizeLabel: 'Randomize', clearLabel: 'Clear',}`
+  `{showRandomize: true, showClear: true}`
 
 ### JavaScript
 

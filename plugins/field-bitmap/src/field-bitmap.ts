@@ -6,6 +6,9 @@
 
 import * as Blockly from 'blockly/core';
 
+Blockly.Msg['BUTTON_LABEL_RANDOMIZE'] = 'Randomize';
+Blockly.Msg['BUTTON_LABEL_CLEAR'] = 'Clear';
+
 export const DEFAULT_HEIGHT = 5;
 export const DEFAULT_WIDTH = 5;
 const DEFAULT_PIXEL_SIZE = 15;
@@ -16,8 +19,6 @@ const DEFAULT_PIXEL_COLORS: PixelColors = {
 const DEFAULT_BUTTON_OPTIONS: ButtonOptions = {
   showRandomize: true,
   showClear: true,
-  randomizeLabel: 'Randomize',
-  clearLabel: 'Clear',
 };
 /**
  * Field for inputting a small bitmap image.
@@ -307,14 +308,14 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     if (this.buttonOptions.showRandomize) {
       this.addControlButton(
         dropdownEditor,
-        this.buttonOptions.randomizeLabel,
+        Blockly.Msg['BUTTON_LABEL_RANDOMIZE'],
         this.randomizePixels,
       );
     }
     if (this.buttonOptions.showClear) {
       this.addControlButton(
         dropdownEditor,
-        this.buttonOptions.clearLabel,
+        Blockly.Msg['BUTTON_LABEL_CLEAR'],
         this.clearPixels,
       );
     }
@@ -586,8 +587,6 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
 interface ButtonOptions {
   readonly showRandomize: boolean;
   readonly showClear: boolean;
-  readonly randomizeLabel: string;
-  readonly clearLabel: string;
 }
 interface PixelColors {
   readonly empty: string;
