@@ -63,10 +63,10 @@ const toolbox = generateFieldTestBlocks('field_bitmap', [
       ],
       fieldHeight: 50,
       buttons: {
-        showRandomize: false,
-        showClear: false,
+        randomize: false,
+        clear: false,
       },
-      colors: {
+      colours: {
         filled: '#4888f4',
         empty: '#cad2dc',
       },

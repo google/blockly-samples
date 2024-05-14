@@ -29,12 +29,15 @@ This field accepts up to 6 parameters:
 - `"height"` to specify an initial height, if there is no initial value.
   If not provided, the default is a height of 5.
 - `fieldHeight"` to specify a static field height. If provided, the individual pixels
-  will be resized to fit inside the field. Good for larger images.
-- `"colors"` to override the default colors, Default values:  
+  will be resized to fit inside the field. This only affects the field as it is
+  scene on a block and not the pop-up editor. Good for larger images. (_Note: If this
+  results in fractional pixel sizes, the overall field height may not exactly match
+  the specified value on all browsers._)
+- `"colours"` to override the default colours, Default values:  
   `{filled: '#363d80', empty: '#fff'}`
-- `"buttons"` to hide the "Randomize" and/or "Clear" buttons.
-  Default values:  
-  `{showRandomize: true, showClear: true}`
+- `"showButtons"` to show or hide the "Randomize" and/or "Clear" buttons. If either is
+  omitted, the button will be shown. Default values:  
+  `{randomize: true, clear: true}`
 
 ### JavaScript
 
