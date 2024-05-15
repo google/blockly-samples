@@ -6,15 +6,21 @@ scroll features.
 This plugin adds two features related to scrolling:
 
 - Users can scroll the workspace with the mousewheel while dragging a block
-  ("wheel scroll").
-- The workspace will automatically scroll when a block is dragged near the
-  edge of the workspace ("edge scroll").
+  or workspace comment ("wheel scroll").
+- The workspace will automatically scroll when a block or workspace comment
+  is dragged near the edge of the workspace ("edge scroll").
 
 Each of these options can be enabled or disabled independently, if you only want
 one of these behaviors. The edge scrolling behavior can also be configured with
 options such as fast and slow scroll speeds and the distance from the edge of
 the workspace that the block should be before autoscrolling is activated. See
 the Usage and API sections for more details on how to configure these behaviors.
+
+IMPORTANT: This plugin only works with blocks and workspace comments. If you use
+custom `IDraggable` objects, the plugin will likely crash. You will need to
+implement the `moveDuringDrag` and `getBoundingRectangle` methods on your
+draggable object in order to prevent crashing, though these methods are not part of
+the `IDraggable` interface.
 
 ## Installation
 

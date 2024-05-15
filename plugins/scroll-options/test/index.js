@@ -51,4 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
     createWorkspace,
     defaultOptions,
   );
+
+  // Add workspace comments to the test page so we can test that they
+  // auto-scroll too!
+  Blockly.ContextMenuItems.registerCommentOptions();
 });

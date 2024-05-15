@@ -68,7 +68,7 @@ const defaultOptions = {
  * A block dragger that adds the functionality for a block to be moved while
  * someone is dragging it.
  */
-export class ScrollBlockDragger extends Blockly.Dragger {
+export class ScrollBlockDragger extends Blockly.dragging.Dragger {
   /** @override */
   constructor(draggable, workspace) {
     super(draggable, workspace);
