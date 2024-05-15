@@ -10,39 +10,240 @@
  */
 
 import * as Blockly from 'blockly';
-import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
+import {createPlayground} from '@blockly/dev-tools';
 import '../src/index';
 
-const toolbox = generateFieldTestBlocks('field_slider', [
+/**
+ * An array of blocks that are defined only for the purposes of
+ * manually and visually testing the slider field.
+ */
+const testBlockDefinitions = [
   {
-    label: 'Basic',
-    args: {
-      value: 50,
-    },
+    type: 'test_standard_field_values',
+    message0: '%1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
   },
   {
-    label: 'Min',
-    args: {
-      value: 20,
-      min: 10,
-    },
+    type: 'test_custom_field_values',
+    message0: '%1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        value: 50,
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },  {
+    type: 'test_custom_field_values_max',
+    message0: 'max %1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        value: 70,
+        max: 80,
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },  {
+    type: 'test_custom_field_values_min',
+    message0: 'min %1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        value: 20,
+        min: 10,
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },  {
+    type: 'test_custom_field_values_max_and_min',
+    message0: 'max and min %1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        value: 60,
+        min: 10,
+        max: 80,
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
   },
   {
-    label: 'Max',
-    args: {
-      value: 70,
-      max: 80,
-    },
+    type: 'test_standard_field_values_and_label',
+    message0: 'block %1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
   },
   {
-    label: 'Min and Max',
-    args: {
-      value: 60,
-      min: 10,
-      max: 80,
-    },
+    type: 'test_custom_field_values_and_label',
+    message0: 'block %1',
+    args0: [
+      {
+        type: 'field_slider',
+        name: 'FIELDNAME',
+        value: 50,
+        alt: {
+          type: 'field_label',
+          text: `No field_slider`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
   },
-]);
+  {
+    type: 'test_parent_block',
+    message0: 'parent %1',
+    args0: [
+      {
+        type: 'input_value',
+        name: 'INPUT',
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    style: 'loop_blocks',
+  },
+];
+
+Blockly.defineBlocksWithJsonArray(testBlockDefinitions);
+
+/**
+ * A test toolbox containing the exported blocks and a variety of
+ * test blocks to exercise the slider field in different contexts
+ * (on a shadow block, as the only field on a block, etc).
+ * These are in a simple toolbox, rather than a category toolbox, so that
+ * they are all instantiated every time the test page is opened.
+ */
+const jsonToolbox = {
+  contents: [
+    {
+      kind: 'label',
+      text: 'Test blocks: default field values',
+    },
+    {
+      kind: 'block',
+      type: 'test_standard_field_values',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_standard_field_values',
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'test_standard_field_values_and_label',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_standard_field_values_and_label',
+          },
+        },
+      },
+    },
+    {
+      kind: 'label',
+      text: 'Test blocks: custom field values',
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values',
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values_max',
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values_min',
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values_max_and_min',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_custom_field_values',
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values_and_label',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_custom_field_values_and_label',
+          },
+        },
+      },
+    },
+  ],
+};
 
 /**
  * Create a workspace.
@@ -61,7 +262,7 @@ function createWorkspace(
 
 document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
-    toolbox,
+    toolbox: jsonToolbox,
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {
