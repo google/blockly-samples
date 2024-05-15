@@ -35,7 +35,7 @@ This field accepts up to 6 parameters:
   the specified value on all browsers._)
 - `"colours"` to override the default colours, Default values:  
   `{filled: '#363d80', empty: '#fff'}`
-- `"showButtons"` to show or hide the "Randomize" and/or "Clear" buttons. If either is
+- `"buttons"` to show or hide the "Randomize" and/or "Clear" buttons. If either is
   omitted, the button will be shown. Default values:  
   `{randomize: true, clear: true}`
 
