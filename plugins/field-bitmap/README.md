@@ -30,7 +30,7 @@ This field accepts up to 6 parameters:
   If not provided, the default is a height of 5.
 - `fieldHeight"` to specify a static field height. If provided, the individual pixels
   will be resized to fit inside the field. This only affects the field as it is
-  scene on a block and not the pop-up editor. Good for larger images. (_Note: If this
+  seen on a block and not the pop-up editor. Good for larger images. (_Note: If this
   results in fractional pixel sizes, the overall field height may not exactly match
   the specified value on all browsers._)
 - `"colours"` to override the default colours, Default values:  
