@@ -50,7 +50,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_max',
     message0: 'max %1',
     args0: [
@@ -67,7 +68,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_min',
     message0: 'min %1',
     args0: [
@@ -84,7 +86,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_max_and_min',
     message0: 'max and min %1',
     args0: [

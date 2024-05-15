@@ -49,7 +49,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_compass',
     message0: 'compass %1',
     args0: [
@@ -66,7 +67,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_protractor',
     message0: 'protractor %1',
     args0: [

@@ -24,9 +24,7 @@ const testBlockDefinitions = [
       {
         type: 'field_grid_dropdown',
         name: 'FIELDNAME',
-        options: [
-          ['A', 'A'],
-        ],
+        options: [['A', 'A']],
         alt: {
           type: 'field_label',
           text: `No field_grid_dropdown`,
@@ -63,7 +61,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_long_text_list',
     message0: 'Long text list %1',
     args0: [
@@ -106,7 +105,8 @@ const testBlockDefinitions = [
     ],
     output: null,
     style: 'math_blocks',
-  },  {
+  },
+  {
     type: 'test_custom_field_values_images',
     message0: 'Images %1',
     args0: [
@@ -303,9 +303,7 @@ const testBlockDefinitions = [
       {
         type: 'field_grid_dropdown',
         name: 'FIELDNAME',
-        options: [
-          ['A', 'A'],
-        ],
+        options: [['A', 'A']],
         alt: {
           type: 'field_label',
           text: `No field_grid_dropdown`,
@@ -322,9 +320,7 @@ const testBlockDefinitions = [
       {
         type: 'field_grid_dropdown',
         name: 'FIELDNAME',
-        options: [
-          ['A', 'A'],
-        ],
+        options: [['A', 'A']],
         alt: {
           type: 'field_label',
           text: `No field_grid_dropdown`,
