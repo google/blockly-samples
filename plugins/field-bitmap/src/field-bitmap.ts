@@ -6,12 +6,20 @@
 
 import * as Blockly from 'blockly/core';
 
+Blockly.Msg['BUTTON_LABEL_RANDOMIZE'] = 'Randomize';
+Blockly.Msg['BUTTON_LABEL_CLEAR'] = 'Clear';
+
 export const DEFAULT_HEIGHT = 5;
 export const DEFAULT_WIDTH = 5;
-const PIXEL_SIZE = 15;
-const FILLED_PIXEL_COLOR = '#363d80';
-const EMPTY_PIXEL_COLOR = '#fff';
-
+const DEFAULT_PIXEL_SIZE = 15;
+const DEFAULT_PIXEL_COLOURS: PixelColours = {
+  empty: '#fff',
+  filled: '#363d80',
+};
+const DEFAULT_BUTTONS: Buttons = {
+  randomize: true,
+  clear: true,
+};
 /**
  * Field for inputting a small bitmap image.
  * Includes a grid of clickable pixels that's exported as a bitmap.
@@ -31,6 +39,9 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   /** Stateful variables */
   private mouseIsDown = false;
   private valToPaintWith?: number;
+  buttonOptions: Buttons;
+  pixelSize: number;
+  pixelColours: {empty: string; filled: string};
 
   /**
    * Constructor for the bitmap field.
@@ -48,6 +59,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
+    this.buttonOptions = {...DEFAULT_BUTTONS, ...config?.buttons};
+    this.pixelColours = {...DEFAULT_PIXEL_COLOURS, ...config?.colours};
 
     // Configure value, height, and width
     const currentValue = this.getValue();
@@ -59,6 +72,11 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
       this.imgWidth = config?.width ?? DEFAULT_WIDTH;
       // Set a default empty value
       this.setValue(this.getEmptyArray());
+    }
+    if (config?.fieldHeight) {
+      this.pixelSize = config.fieldHeight / this.imgHeight;
+    } else {
+      this.pixelSize = DEFAULT_PIXEL_SIZE;
     }
   }
 
@@ -186,13 +204,13 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
 
         if (this.blockDisplayPixels) {
           this.blockDisplayPixels[r][c].style.fill = pixel
-            ? FILLED_PIXEL_COLOR
-            : EMPTY_PIXEL_COLOR;
+            ? this.pixelColours.filled
+            : this.pixelColours.empty;
         }
         if (this.editorPixels) {
           this.editorPixels[r][c].style.background = pixel
-            ? FILLED_PIXEL_COLOR
-            : EMPTY_PIXEL_COLOR;
+            ? this.pixelColours.filled
+            : this.pixelColours.empty;
         }
       });
     }
@@ -266,9 +284,11 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
         this.editorPixels[r].push(button);
         rowDiv.appendChild(button);
 
-        // Load the current pixel color
+        // Load the current pixel colour
         const isOn = this.getPixel(r, c);
-        button.style.background = isOn ? FILLED_PIXEL_COLOR : EMPTY_PIXEL_COLOR;
+        button.style.background = isOn
+          ? this.pixelColours.filled
+          : this.pixelColours.empty;
 
         // Handle clicking a pixel
         this.bindEvent(button, 'mousedown', () => {
@@ -285,16 +305,28 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     }
 
     // Add control buttons below the pixel grid
-    this.addControlButton(dropdownEditor, 'Randomize', this.randomizePixels);
-    this.addControlButton(dropdownEditor, 'Clear', this.clearPixels);
+    if (this.buttonOptions.randomize) {
+      this.addControlButton(
+        dropdownEditor,
+        Blockly.Msg['BUTTON_LABEL_RANDOMIZE'],
+        this.randomizePixels,
+      );
+    }
+    if (this.buttonOptions.clear) {
+      this.addControlButton(
+        dropdownEditor,
+        Blockly.Msg['BUTTON_LABEL_CLEAR'],
+        this.clearPixels,
+      );
+    }
 
     if (this.blockDisplayPixels) {
       this.forAllCells((r, c) => {
         const pixel = this.getPixel(r, c);
         if (this.editorPixels) {
           this.editorPixels[r][c].style.background = pixel
-            ? FILLED_PIXEL_COLOR
-            : EMPTY_PIXEL_COLOR;
+            ? this.pixelColours.filled
+            : this.pixelColours.empty;
         }
       });
     }
@@ -316,11 +348,11 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
         const square = Blockly.utils.dom.createSvgElement(
           'rect',
           {
-            x: c * PIXEL_SIZE,
-            y: r * PIXEL_SIZE,
-            width: PIXEL_SIZE,
-            height: PIXEL_SIZE,
-            fill: EMPTY_PIXEL_COLOR,
+            x: c * this.pixelSize,
+            y: r * this.pixelSize,
+            width: this.pixelSize,
+            height: this.pixelSize,
+            fill: this.pixelColours.empty,
             fill_opacity: 1, // eslint-disable-line
           },
           this.getSvgRoot(),
@@ -337,8 +369,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   // eslint-disable-next-line
   protected override updateSize_() {
     {
-      const newWidth = PIXEL_SIZE * this.imgWidth;
-      const newHeight = PIXEL_SIZE * this.imgHeight;
+      const newWidth = this.pixelSize * this.imgWidth;
+      const newHeight = this.pixelSize * this.imgHeight;
       if (this.borderRect_) {
         this.borderRect_.setAttribute('width', String(newWidth));
         this.borderRect_.setAttribute('height', String(newHeight));
@@ -552,10 +584,22 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   }
 }
 
+interface Buttons {
+  readonly randomize: boolean;
+  readonly clear: boolean;
+}
+interface PixelColours {
+  readonly empty: string;
+  readonly filled: string;
+}
+
 export interface FieldBitmapFromJsonConfig extends Blockly.FieldConfig {
   value?: number[][];
   width?: number;
   height?: number;
+  buttons?: Buttons;
+  fieldHeight?: number;
+  colours?: PixelColours;
 }
 
 Blockly.fieldRegistry.register('field_bitmap', FieldBitmap);
@@ -579,11 +623,11 @@ Blockly.Css.register(`
   flex-direction: row;
   padding: 0;
   margin: 0;
-  height: ${PIXEL_SIZE}
+  height: ${DEFAULT_PIXEL_SIZE}
 }
 .pixelButton {
-  width: ${PIXEL_SIZE}px;
-  height: ${PIXEL_SIZE}px;
+  width: ${DEFAULT_PIXEL_SIZE}px;
+  height: ${DEFAULT_PIXEL_SIZE}px;
   border: 1px solid #000;
 }
 .pixelDisplay {
