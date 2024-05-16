@@ -262,6 +262,9 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
       'div',
       'dropdownEditor',
     );
+    if (this.buttonOptions.randomize || this.buttonOptions.clear) {
+      dropdownEditor.classList.add('has-buttons');
+    }
     const pixelContainer = this.createElementWithClassname(
       'div',
       'pixelContainer',
@@ -613,6 +616,8 @@ Blockly.Css.register(`
   flex-direction: column;
   display: flex;
   justify-content: center;
+}
+.dropdownEditor.has-buttons {
   margin-bottom: 20px;
 }
 .pixelContainer {
@@ -635,5 +640,8 @@ Blockly.Css.register(`
 }
 .controlButton {
   margin: 5px 0;
+}
+.blocklyDropDownContent{
+  max-height: unset;
 }
 `);
