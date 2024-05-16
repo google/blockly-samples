@@ -93,9 +93,8 @@ export class ScrollOptions {
       return;
     }
 
-    // TODO(blockly/#7157): We should maybe add an accessor for the svgGroup_?
     this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
-      this.workspace_.svgGroup_,
+      this.workspace_.getSvgGroup(),
       'wheel',
       this,
       this.onMouseWheel_,
