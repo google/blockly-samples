@@ -26,6 +26,8 @@ export const overrideOldBlockDefinitions = function (): void {
 /**
  * Finalizes connections when certain events (such as block deletion) are
  * detected.
+ *
+ * @param e
  */
 export function finalizeConnections(e: Blockly.Events.Abstract) {
   if (e.type === Blockly.Events.BLOCK_DELETE) {

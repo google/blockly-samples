@@ -7,6 +7,9 @@
 import * as Blockly from 'blockly/core';
 import {EdgeScrollOptions, ScrollBlockDragger} from './ScrollBlockDragger';
 import {getTranslation} from './utils';
+import {isCacheable} from './ScrollMetricsManager';
+
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * A Blockly plugin that adds additional features related to scrolling and
@@ -17,17 +20,18 @@ import {getTranslation} from './utils';
  * All behavior is customizable. See the README for more information.
  */
 export class ScrollOptions {
+  protected workspace_: Blockly.WorkspaceSvg;
+
+  /** Bound event listener for the scroll wheel event. */
+  protected wheelEvent_: Blockly.browserEvents.Data | null = null;
+
   /**
    * Constructor for ScrollOptions plugin.
-   * @param {!Blockly.WorkspaceSvg} workspace The workspace that the plugin will
+   *
+   * @param workspace The workspace that the plugin will
    *     be added to.
    */
-  constructor(workspace) {
-    /**
-     * The workspace.
-     * @type {!Blockly.WorkspaceSvg}
-     * @protected
-     */
+  constructor(workspace: Blockly.WorkspaceSvg) {
     this.workspace_ = workspace;
   }
 
@@ -36,9 +40,13 @@ export class ScrollOptions {
    * plugin features are enabled with default settings. The plugin is configured
    * here as a convenience. See the README for more information on configuring
    * the plugin after initialization.
-   * @param {{enableWheelScroll: (boolean|undefined),
-   * enableEdgeScroll: (boolean|undefined),
-   * edgeScrollOptions: (!EdgeScrollOptions|undefined)}=} options The
+   *
+   * @param root0
+   * @param root0.enableWheelScroll
+   * @param root0.enableEdgeScroll
+   * @param root0.edgeScrollOptions
+   *
+   *  options The
    * configuration options for the plugin. `enableWheelScroll` and
    * `enableEdgeScroll` are both true by default and control whether the
    * behavior to scroll with the mouse wheel while dragging and scroll when a
@@ -50,11 +58,17 @@ export class ScrollOptions {
     {
       enableWheelScroll = true,
       enableEdgeScroll = true,
-      edgeScrollOptions = null,
-    } = {
+      edgeScrollOptions = undefined,
+    }:
+      | {
+          enableWheelScroll?: boolean;
+          enableEdgeScroll?: boolean;
+          edgeScrollOptions?: Partial<EdgeScrollOptions>;
+        }
+      | undefined = {
       enableWheelScroll: true,
       enableEdgeScroll: true,
-      edgeScrollOptions: null,
+      edgeScrollOptions: undefined,
     },
   ) {
     if (enableWheelScroll) {
@@ -79,9 +93,20 @@ export class ScrollOptions {
       return;
     }
 
-    // TODO(blockly/#7157): We should maybe add an accessor for the svgGroup_?
+    // We need to attach the event listener to the drag surface in order
+    // to hear the wheel event while a drag is in progress.
+    // TODO(google/blockly#8135): Use the layer manager if possible.
+    const dragLayer = this.workspace_
+      .getInjectionDiv()
+      .getElementsByClassName('blocklyBlockDragSurface')[0];
+    if (!dragLayer) {
+      throw new Error(
+        `Can't attach wheel listener to nonexistent drag surface`,
+      );
+    }
+
     this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
-      this.workspace_.svgGroup_,
+      dragLayer,
       'wheel',
       this,
       this.onMouseWheel_,
@@ -118,9 +143,10 @@ export class ScrollOptions {
    * Updates edge scroll options. See ScrollBlockDragger for specific settings.
    * Any values left unspecified will not be overwritten and will retain their
    * previous values.
-   * @param {!EdgeScrollOptions} options Edge scroll options.
+   *
+   * @param options Edge scroll options.
    */
-  updateEdgeScrollOptions(options) {
+  updateEdgeScrollOptions(options: Partial<EdgeScrollOptions>) {
     ScrollBlockDragger.updateOptions(options);
   }
 
@@ -128,20 +154,39 @@ export class ScrollOptions {
    * Scrolls the workspace with the mousewheel while a block is being dragged.
    * Translates the currently dragged block as the user scrolls the workspace,
    * so that the block does not appear to move.
-   * @param {!Event} e Mouse wheel event.
+   *
+   * @param e Mouse wheel event.
    */
-  onMouseWheel_(e) {
+  onMouseWheel_(e: WheelEvent) {
     const canWheelMove =
       this.workspace_.options.moveOptions &&
       this.workspace_.options.moveOptions.wheel;
-    const currentGesture = this.workspace_.getGesture(e);
+    // All we want to do is get the currentGesture from the workspace so
+    // that we can get the dragger from it.
+    // getGesture expects a PointerEvent, but we don't have one. As long
+    // as the event we give it isn't a 'pointerdown' event, we'll get the
+    // current gesture if there is one, or null if there isn't.
+    // TODO(google/blockly#8133): Remove the parameter when possible.
+    const currentGesture = this.workspace_.getGesture(
+      e as unknown as PointerEvent,
+    );
+
+    const metricsManager = this.workspace_.getMetricsManager();
+    if (!isCacheable(metricsManager)) {
+      console.warn(
+        'MetricsManager must be able to cache metrics in order to use AutoScroll',
+      );
+      return;
+    }
+
+    const dragger = currentGesture?.getCurrentDragger();
 
     // Do not try to scroll if we are not dragging a block, or the workspace
-    // does not allow moving by wheel.
+    // does not allow moving by wheel, or our dragger is not capable of this.
     if (
       !canWheelMove ||
       !currentGesture ||
-      !(currentGesture.getCurrentDragger() instanceof Blockly.Dragger)
+      !(dragger instanceof ScrollBlockDragger)
     ) {
       return;
     }
@@ -160,9 +205,9 @@ export class ScrollOptions {
     const oldLocation = getTranslation(this.workspace_);
 
     // Try to scroll to the desired location.
-    this.workspace_.getMetricsManager().useCachedContentMetrics = true;
+    metricsManager.useCachedContentMetrics = true;
     this.workspace_.scroll(x, y);
-    this.workspace_.getMetricsManager().useCachedContentMetrics = false;
+    metricsManager.useCachedContentMetrics = false;
 
     const newLocation = getTranslation(this.workspace_);
 
@@ -171,7 +216,7 @@ export class ScrollOptions {
     const deltaY = newLocation.y - oldLocation.y;
 
     if (deltaX || deltaY) {
-      currentGesture.getCurrentDragger().moveBlockWhileDragging(deltaX, deltaY);
+      dragger.moveBlockWhileDragging(deltaX, deltaY);
       e.preventDefault();
     }
   }
@@ -179,3 +224,4 @@ export class ScrollOptions {
 
 export * from './ScrollBlockDragger';
 export * from './ScrollMetricsManager';
+export * from './AutoScrollable';
