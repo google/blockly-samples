@@ -224,3 +224,4 @@ export class ScrollOptions {
 
 export * from './ScrollBlockDragger';
 export * from './ScrollMetricsManager';
+export * from './AutoScrollable';
