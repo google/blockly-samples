@@ -6,6 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 import {AutoScroll} from './AutoScroll';
+import {isAutoScrollable} from './AutoScrollable';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -128,6 +129,9 @@ export class ScrollBlockDragger extends Blockly.dragging.Dragger {
    * @param deltaY Vertical offset in pixel units.
    */
   moveBlockWhileDragging(deltaX: number, deltaY: number): void {
+    // If this object can't be autoscrolled, give up
+    if (!isAutoScrollable(this.draggable)) return;
+
     this.scrollDelta_.x -= deltaX;
     this.scrollDelta_.y -= deltaY;
 
@@ -141,8 +145,7 @@ export class ScrollBlockDragger extends Blockly.dragging.Dragger {
     const newLoc = Blockly.utils.Coordinate.sum(this.startLoc, delta);
 
     // Make the block stay under the cursor.
-    // TODO: Remove cast
-    (this.draggable as any).moveDuringDrag(newLoc);
+    this.draggable.moveDuringDrag(newLoc);
   }
 
   /**
@@ -183,6 +186,9 @@ export class ScrollBlockDragger extends Blockly.dragging.Dragger {
    * @param e The mouse/touch event for the drag.
    */
   protected scrollWorkspaceWhileDragging_(e: PointerEvent) {
+    // If this object can't be autoscrolled, give up
+    if (!isAutoScrollable(this.draggable)) return;
+
     const mouse = Blockly.utils.svgMath.screenToWsCoordinates(
       this.workspace,
       new Blockly.utils.Coordinate(e.clientX, e.clientY),
@@ -358,8 +364,17 @@ export class ScrollBlockDragger extends Blockly.dragging.Dragger {
     viewMetrics: Blockly.MetricsManager.ContainerRegion,
     mouse: Blockly.utils.Coordinate,
   ): {[key: string]: number} {
-    // TODO: Remove cast
-    const blockBounds = (this.draggable as any).getBoundingRectangle();
+    // This function shouldn't be called in the first place if the object
+    // isn't autoscrollable, but return some sane data anyway
+    if (!isAutoScrollable(this.draggable)) {
+      return {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      };
+    }
+    const blockBounds = this.draggable.getBoundingRectangle();
 
     // Handle large blocks. If the block is nearly as tall as the viewport,
     // use a margin around the cursor rather than the height of the block.
