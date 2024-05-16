@@ -11,7 +11,7 @@
  */
 
 import {onMounted, ref, shallowRef} from 'vue';
-import Blockly from 'blockly';
+import * as Blockly from 'blockly';
 
 const props = defineProps(['options']);
 const blocklyToolbox = ref();
