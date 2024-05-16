@@ -149,8 +149,13 @@ export class ScrollOptions {
     const canWheelMove =
       this.workspace_.options.moveOptions &&
       this.workspace_.options.moveOptions.wheel;
-    // TODO: Remove cast
-    const currentGesture = this.workspace_.getGesture(e as any);
+    // All we want to do is get the currentGesture from the workspace so
+    // that we can get the dragger from it.
+    // getGesture expects a PointerEvent, but we don't have one. As long
+    // as the event we give it isn't a 'pointerdown' event, we'll get the
+    // current gesture if there is one, or null if there isn't.
+    // TODO(google/blockly#8133): Remove the parameter when possible.
+    const currentGesture = this.workspace_.getGesture(e as unknown as PointerEvent);
 
     const metricsManager = this.workspace_.getMetricsManager();
     if (!isCacheable(metricsManager)) {
@@ -163,7 +168,7 @@ export class ScrollOptions {
     const dragger = currentGesture?.getCurrentDragger();
 
     // Do not try to scroll if we are not dragging a block, or the workspace
-    // does not allow moving by wheel.
+    // does not allow moving by wheel, or our dragger is not capable of this.
     if (
       !canWheelMove ||
       !currentGesture ||
