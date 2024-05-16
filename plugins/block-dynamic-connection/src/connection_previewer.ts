@@ -18,6 +18,8 @@ interface DynamicBlock extends Blockly.BlockSvg {
 /**
  * A type guard that checks if the given block fulfills the DynamicBlock
  * interface.
+ *
+ * @param block
  */
 export function blockIsDynamic(block: Blockly.BlockSvg): block is DynamicBlock {
   return (
