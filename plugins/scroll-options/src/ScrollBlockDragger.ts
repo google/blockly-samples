@@ -145,7 +145,7 @@ export class ScrollBlockDragger extends Blockly.dragging.Dragger {
     const newLoc = Blockly.utils.Coordinate.sum(this.startLoc, delta);
 
     // Make the block stay under the cursor.
-    this.draggable.moveDuringDrag(newLoc);
+    this.draggable.drag(newLoc);
   }
 
   /**

@@ -8,12 +8,10 @@ import * as Blockly from 'blockly/core';
 
 /** A Draggable that can be autoscrolled. */
 export interface AutoScrollable extends Blockly.IDraggable {
-  /** TODO: check if we can use drag instead */
-  moveDuringDrag: (coordinate: Blockly.utils.Coordinate) => void;
-
   /**
    * Returns the coordinates of a bounding box describing the dimensions of
-   * this draggable.
+   * this draggable. This is necessary to detect when edge scrolling
+   * should activate.
    */
   getBoundingRectangle: () => Blockly.utils.Rect;
 }
@@ -28,7 +26,6 @@ export function isAutoScrollable(
   draggable: Blockly.IDraggable,
 ): draggable is AutoScrollable {
   return (
-    typeof (draggable as AutoScrollable).moveDuringDrag === 'function' &&
     typeof (draggable as AutoScrollable).getBoundingRectangle === 'function'
   );
 }
