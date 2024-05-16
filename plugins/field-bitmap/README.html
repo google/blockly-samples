@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-bitmap Demo</div>
       <div class="subtitle">A field that lets users input a pixel grid with their mouse.</div>
     </div>
-    4.0.18
+    4.1.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-bitmap" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-bitmap" class="button" target="_blank">View on npm</a>
@@ -59,7 +59,7 @@
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/field-bitmap --save</code></pre>
 <h2 id="usage">Usage</h2>
-<p>This field accepts up to 3 parameters:</p>
+<p>This field accepts up to 6 parameters:</p>
 <ul>
 <li><code>"value"</code> to specify an initial value. Must be a 2D rectangular array of 1s and 0s.
 If not provided, the default is an empty grid of the specified size.</li>
@@ -67,6 +67,16 @@ If not provided, the default is an empty grid of the specified size.</li>
 If not provided, the default is a width of 5.</li>
 <li><code>"height"</code> to specify an initial height, if there is no initial value.
 If not provided, the default is a height of 5.</li>
+<li><code>fieldHeight"</code> to specify a static field height. If provided, the individual pixels
+will be resized to fit inside the field. This only affects the field as it is
+seen on a block and not the pop-up editor. Good for larger images. (<em>Note: If this
+results in fractional pixel sizes, the overall field height may not exactly match
+the specified value on all browsers.</em>)</li>
+<li><code>"colours"</code> to override the default colours, Default values:<br />
+<code>{filled: '#363d80', empty: '#fff'}</code></li>
+<li><code>"buttons"</code> to show or hide the "Randomize" and/or "Clear" buttons. If either is
+omitted, the button will be shown. Default values:<br />
+<code>{randomize: true, clear: true}</code></li>
 </ul>
 <h3 id="javascript">JavaScript</h3>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
