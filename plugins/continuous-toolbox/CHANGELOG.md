@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.19](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.18...@blockly/continuous-toolbox@5.0.19) (2024-05-16)
+
+**Note:** Version bump only for package @blockly/continuous-toolbox
+
+
+
+
+
 ## [5.0.18](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@5.0.17...@blockly/continuous-toolbox@5.0.18) (2024-05-09)
 
 **Note:** Version bump only for package @blockly/continuous-toolbox

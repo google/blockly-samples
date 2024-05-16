@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.16](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@4.0.15...@blockly/field-grid-dropdown@4.0.16) (2024-05-16)
+
+**Note:** Version bump only for package @blockly/field-grid-dropdown
+
+
+
+
+
 ## [4.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@4.0.14...@blockly/field-grid-dropdown@4.0.15) (2024-05-09)
 
 **Note:** Version bump only for package @blockly/field-grid-dropdown

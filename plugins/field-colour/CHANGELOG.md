@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/google/blockly-samples/compare/@blockly/field-colour@4.0.3...@blockly/field-colour@4.0.4) (2024-05-16)
+
+**Note:** Version bump only for package @blockly/field-colour
+
+
+
+
+
 ## [4.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-colour@4.0.2...@blockly/field-colour@4.0.3) (2024-05-09)
 
 **Note:** Version bump only for package @blockly/field-colour

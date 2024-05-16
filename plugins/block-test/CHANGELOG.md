@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.1.2...@blockly/block-test@5.1.3) (2024-05-16)
+
+
+### Bug Fixes
+
+* **block-test:** Fix incorrect references to Blockly.prompt ([#2344](https://github.com/google/blockly-samples/issues/2344)) ([3684d45](https://github.com/google/blockly-samples/commit/3684d452b8188d0ffaf7aefc7122a8ee4dec6305))
+* remove angle fields from block-test ([#2346](https://github.com/google/blockly-samples/issues/2346)) ([337ce75](https://github.com/google/blockly-samples/commit/337ce75ab72a74b6c9c2551f92442cbf848a5e90))
+
+
+
 ## [5.1.2](https://github.com/google/blockly-samples/compare/@blockly/block-test@5.1.1...@blockly/block-test@5.1.2) (2024-05-09)
 
 

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.0](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.18...@blockly/field-bitmap@4.1.0) (2024-05-16)
+
+
+### Features
+
+* Allow configuration of buttons, pixel colors, and fixed field height for Bitmap field ([#2351](https://github.com/google/blockly-samples/issues/2351)) ([432e277](https://github.com/google/blockly-samples/commit/432e277687bc0883806302164054f0a7b9ac3484))
+
+
+
 ## [4.0.18](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.17...@blockly/field-bitmap@4.0.18) (2024-05-09)
 
 

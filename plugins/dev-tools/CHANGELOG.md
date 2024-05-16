@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.11](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.10...@blockly/dev-tools@7.1.11) (2024-05-16)
+
+
+### Bug Fixes
+
+* remove keyboard nav option from dev-tools ([#2347](https://github.com/google/blockly-samples/issues/2347)) ([6215a7e](https://github.com/google/blockly-samples/commit/6215a7e92db5df0f7bca9d8e637eea179b052d54))
+
+
+
 ## [7.1.10](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.9...@blockly/dev-tools@7.1.10) (2024-05-09)
 
 

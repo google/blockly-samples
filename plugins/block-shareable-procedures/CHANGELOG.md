@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.6](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.1.5...@blockly/block-shareable-procedures@4.1.6) (2024-05-16)
+
+**Note:** Version bump only for package @blockly/block-shareable-procedures
+
+
+
+
+
 ## [4.1.5](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.1.4...@blockly/block-shareable-procedures@4.1.5) (2024-05-09)
 
 
