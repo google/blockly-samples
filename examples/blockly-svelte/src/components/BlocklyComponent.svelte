@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import Blockly from 'blockly';
+  import * as Blockly from 'blockly';
 
   onMount(() => {
     Blockly.inject(document.getElementById("blocklyDiv"), {
