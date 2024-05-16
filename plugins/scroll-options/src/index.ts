@@ -93,8 +93,20 @@ export class ScrollOptions {
       return;
     }
 
+    // We need to attach the event listener to the drag surface in order
+    // to hear the wheel event while a drag is in progress.
+    // TODO(google/blockly#8135): Use the layer manager if possible.
+    const dragLayer = this.workspace_
+      .getInjectionDiv()
+      .getElementsByClassName('blocklyBlockDragSurface')[0];
+    if (!dragLayer) {
+      throw new Error(
+        `Can't attach wheel listener to nonexistent drag surface`,
+      );
+    }
+
     this.wheelEvent_ = Blockly.browserEvents.conditionalBind(
-      this.workspace_.getSvgGroup(),
+      dragLayer,
       'wheel',
       this,
       this.onMouseWheel_,
@@ -155,7 +167,9 @@ export class ScrollOptions {
     // as the event we give it isn't a 'pointerdown' event, we'll get the
     // current gesture if there is one, or null if there isn't.
     // TODO(google/blockly#8133): Remove the parameter when possible.
-    const currentGesture = this.workspace_.getGesture(e as unknown as PointerEvent);
+    const currentGesture = this.workspace_.getGesture(
+      e as unknown as PointerEvent,
+    );
 
     const metricsManager = this.workspace_.getMetricsManager();
     if (!isCacheable(metricsManager)) {
