@@ -271,6 +271,9 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     );
     dropdownEditor.appendChild(pixelContainer);
 
+    // This prevents the normal max-height from adding a scroll bar for large images.
+    Blockly.DropDownDiv.getContentDiv().classList.add('contains-bitmap-editor');
+
     this.bindEvent(dropdownEditor, 'mouseup', this.onMouseUp);
     this.bindEvent(dropdownEditor, 'mouseleave', this.onMouseUp);
     this.bindEvent(dropdownEditor, 'dragstart', (e: Event) => {
@@ -429,6 +432,10 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     this.editorPixels = null;
     // Set this.initialValue back to null.
     this.initialValue = null;
+
+    Blockly.DropDownDiv.getContentDiv().classList.remove(
+      'contains-bitmap-editor',
+    );
   }
 
   /**
@@ -641,7 +648,7 @@ Blockly.Css.register(`
 .controlButton {
   margin: 5px 0;
 }
-.blocklyDropDownContent{
-  max-height: unset;
+.blocklyDropDownContent.contains-bitmap-editor {
+  max-height: none;
 }
 `);
