@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@blockly/dev-tools": "^7.0.2",
-    "blockly": "^11.0.0"
+    "blockly": "^10.0.0"
   },
   "blocklyDemoConfig": {
     "title": "Custom Tooltips",
