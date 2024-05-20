@@ -1,8 +1,11 @@
 <script>
   import { onMount } from 'svelte';
-  import Blockly from 'blockly';
+  import * as Blockly from 'blockly/core';
+  import * as En from 'blockly/msg/en';
+  import 'blockly/blocks';
 
   onMount(() => {
+    Blockly.setLocale(En);
     Blockly.inject(document.getElementById("blocklyDiv"), {
       toolbox: document.getElementById("toolbox")
     });

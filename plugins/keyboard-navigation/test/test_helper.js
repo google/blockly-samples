@@ -6,7 +6,7 @@
 
 const {Constants} = require('../src/index');
 const {Navigation} = require('../src/index');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly/core');
 
 /**
  * Creates a workspace for testing keyboard navigation.
@@ -27,15 +27,15 @@ export function createNavigationWorkspace(
           id="toolbox-categories" style="display: none">
         <category colour="#FFFFFF" name="First" css-container="something">
           <block type="basic_block">
-            <field name="COLOURFIELD">#ff0000</field>
+            <field name="TEXTFIELD">first</field>
           </block>
           <block type="basic_block">
-            <field name="COLOURFIELD">#00ff00</field>
+            <field name="TEXTFIELD">second</field>
           </block>
         </category>
         <category colour="#FFFFFF" name="Second">
           <block type="basic_block">
-            <field name="COLOURFIELD">#0000ff</field>
+            <field name="TEXTFIELD">third</field>
           </block>
         </category>
       </xml>

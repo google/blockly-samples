@@ -7,7 +7,7 @@
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
 const {runPlusMinusTestSuite} = require('./test_helpers.mocha');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly');
 const {dartGenerator} = require('blockly/dart');
 const {javascriptGenerator} = require('blockly/javascript');
 const {luaGenerator} = require('blockly/lua');
@@ -35,7 +35,7 @@ suite('Text join block', function () {
     if (!inputCount) {
       assert.equal(block.inputList.length, 1);
       const input = block.inputList[0];
-      assert.equal(input.type, Blockly.DUMMY_INPUT);
+      assert.equal(input.type, Blockly.inputs.inputTypes.DUMMY);
       assert.equal(input.name, 'EMPTY');
       assert.isNull(block.getField('MINUS'));
       // Easy way to test we're displaying quotes instead of normal text.
@@ -195,7 +195,7 @@ suite('Text join block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   suite('Json', function () {
@@ -275,7 +275,7 @@ suite('Text join block', function () {
         },
       },
     ];
-    runSerializationTestSuite(testCases);
+    runSerializationTestSuite(testCases, Blockly);
   });
 
   runPlusMinusTestSuite('text_join', 2, 0, 'ADD', assertTextJoinBlockStructure);

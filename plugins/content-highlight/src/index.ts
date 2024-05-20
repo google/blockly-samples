@@ -8,7 +8,7 @@
  * @fileoverview A plugin that highlights the content on the workspace.
  */
 
-import * as Blockly from 'blockly';
+import * as Blockly from 'blockly/core';
 
 /**
  * List of events that cause a change in content area size.
@@ -120,8 +120,8 @@ export class ContentHighlight {
       {
         x: 0,
         y: 0,
-        rx: Blockly.Bubble.BORDER_WIDTH,
-        ry: Blockly.Bubble.BORDER_WIDTH,
+        rx: Blockly.bubbles.Bubble.BORDER_WIDTH,
+        ry: Blockly.bubbles.Bubble.BORDER_WIDTH,
         fill: 'black',
       },
       mask,

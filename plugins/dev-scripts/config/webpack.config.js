@@ -15,6 +15,7 @@ const webpack = require('webpack');
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+const exists = (relativePath) => fs.existsSync(resolveApp(relativePath));
 
 const packageJson = require(resolveApp('package.json'));
 
@@ -23,26 +24,32 @@ module.exports = (env) => {
   const isDevelopment = mode === 'development';
   const isProduction = mode === 'production';
   const isTest = mode === 'test';
-  const isTypescript = fs.existsSync(resolveApp('tsconfig.json'));
+  const isTypescript = exists('tsconfig.json');
 
   let entry;
   let outputFile;
   let target = 'web';
+  const plugins = [
+    // Use DefinePlugin (https://webpack.js.org/plugins/define-plugin/)
+    // to pass the name of the package being built to the dev-tools
+    // playground (via plugins/dev-tools/src/playground/id.js).  The
+    // "process.env."  prefix is arbitrary: the stringified value
+    // gets substituted directly into the source code of that file
+    // at build time.
+    new webpack.DefinePlugin({
+      'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
+    }),
+  ];
+
   if (isProduction) {
     // Production.
-    ['js', 'ts']
-      .filter((ext) => fs.existsSync(resolveApp(`./src/index.${ext}`)))
-      .forEach((ext) => {
-        entry = `./src/index.${ext}`;
-      });
+    if (exists('./src/index.js')) entry = './src/index.js';
+    if (exists('./src/index.ts')) entry = './src/index.ts';
     outputFile = 'index.js';
   } else if (isDevelopment) {
     // Development.
-    ['js', 'ts']
-      .filter((ext) => fs.existsSync(resolveApp(`./test/index.${ext}`)))
-      .forEach((ext) => {
-        entry = `./test/index.${ext}`;
-      });
+    if (exists('./test/index.js')) entry = './test/index.js';
+    if (exists('./test/index.ts')) entry = './test/index.ts';
     outputFile = 'test_bundle.js';
   } else if (isTest) {
     // Test.
@@ -56,16 +63,20 @@ module.exports = (env) => {
       });
     outputFile = '[name].mocha.js';
     target = 'node';
-  }
-
-  // Add 'dist' to the end of the blockly module alias if we have acquired
-  // blockly from git instead of npm.
-  let blocklyAliasSuffix = '';
-  const blocklyDependency =
-    (packageJson.dependencies && packageJson.dependencies['blockly']) ||
-    (packageJson.devDependencies && packageJson.devDependencies['blockly']);
-  if (blocklyDependency && blocklyDependency.indexOf('git://') === 0) {
-    blocklyAliasSuffix = '/dist';
+    // Certain optional plugins wanted by dependencies of blockly
+    // (jsdom want canvas, jsdom depends on ws which wants
+    // bufferutils and utf-8-validate) are loaded via:
+    //
+    // try {/*...*/ = require('package')} catch (e) {/*...*/}
+    //
+    // Webpack tries to satisfy the require even though it's in a
+    // try/catch, and issues a warning if it can't be found.
+    // IgnorePlugin suppresses this.
+    plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^(canvas|bufferutil|utf-8-validate)$/,
+      }),
+    );
   }
 
   return {
@@ -84,12 +95,10 @@ module.exports = (env) => {
       clean: true,
     },
     resolve: {
-      alias: {
-        blockly: resolveApp(`node_modules/blockly${blocklyAliasSuffix}`),
-      },
-      extensions: ['.ts', '.js'].filter(
-        (ext) => isTypescript || !ext.includes('ts'),
-      ),
+      extensions: ['.ts', '.js', '.json', '.wasm'],
+      // Some deps may require node.js core modules.  Tell node.js what
+      // polyfills to use for them when building for non-node.js targets
+      // (Or to ignore them if the fallback is false.)
       fallback: {
         util: false,
       },
@@ -111,20 +120,15 @@ module.exports = (env) => {
     // Ignore spurious warnings from source-map-loader
     // It can't find source maps for some Closure modules and that is expected
     ignoreWarnings: [/Failed to parse source map/],
-    plugins: [
-      // Add package name.
-      new webpack.DefinePlugin({
-        'process.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
-      }),
-      // canvas should only be required by jsdom if the 'canvas' package is
-      // installed in package.json. Ignoring canvas require errors.
-      isTest &&
-        new webpack.IgnorePlugin({
-          resourceRegExp: /canvas$/,
-        }),
-    ].filter(Boolean),
+    plugins,
     externals: isProduction
       ? {
+          'blockly': {
+            root: 'Blockly',
+            commonjs: 'blockly',
+            commonjs2: 'blockly',
+            amd: 'blockly',
+          },
           'blockly/core': {
             root: 'Blockly',
             commonjs: 'blockly/core',

@@ -504,12 +504,31 @@ export class NavigationController {
         );
       },
       callback: (workspace) => {
+        let flyoutCursor;
+        let curNode;
+        let nodeType;
+
         switch (this.navigation.getState(workspace)) {
           case Constants.STATE.WORKSPACE:
             this.navigation.handleEnterForWS(workspace);
             return true;
           case Constants.STATE.FLYOUT:
-            this.navigation.insertFromFlyout(workspace);
+            flyoutCursor = this.navigation.getFlyoutCursor(workspace);
+            if (!flyoutCursor) {
+              return false;
+            }
+            curNode = flyoutCursor.getCurNode();
+            nodeType = curNode.getType();
+
+            switch (nodeType) {
+              case Blockly.ASTNode.types.STACK:
+                this.navigation.insertFromFlyout(workspace);
+                break;
+              case Blockly.ASTNode.types.BUTTON:
+                this.navigation.triggerButtonCallback(workspace);
+                break;
+            }
+
             return true;
           default:
             return false;

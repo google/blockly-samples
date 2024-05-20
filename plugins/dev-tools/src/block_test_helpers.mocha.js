@@ -158,8 +158,12 @@ export const runCodeGenerationTestSuites = (testSuites) => {
 /**
  * Runs serialization test suite.
  * @param {!Array<!SerializationTestCase>} testCases The test cases to run.
+ * @param {?Blockly} blockly The instance of Blockly to use for the
+ *     tests.  Optional, but must be supplied and must correspond to
+ *     the instance used to create this.workspace if that would not
+ *     otherwise be the case.
  */
-export const runSerializationTestSuite = (testCases) => {
+export const runSerializationTestSuite = (testCases, blockly = Blockly) => {
   /**
    * Creates test callback for xmlToBlock test.
    * @param {!SerializationTestCase} testCase The test case information.
@@ -169,14 +173,14 @@ export const runSerializationTestSuite = (testCases) => {
     return function () {
       let block;
       if (testCase.json) {
-        block = Blockly.serialization.blocks.append(
+        block = blockly.serialization.blocks.append(
           testCase.json,
           this.workspace,
           {recordUndo: true},
         );
       } else {
-        block = Blockly.Xml.domToBlock(
-          Blockly.utils.xml.textToDom(testCase.xml),
+        block = blockly.Xml.domToBlock(
+          blockly.utils.xml.textToDom(testCase.xml),
           this.workspace,
         );
       }
@@ -192,23 +196,23 @@ export const runSerializationTestSuite = (testCases) => {
   const createRoundTripTestCallback = (testCase) => {
     return function () {
       if (testCase.json) {
-        const block = Blockly.serialization.blocks.append(
+        const block = blockly.serialization.blocks.append(
           testCase.json,
           this.workspace,
           {recordUndo: true},
         );
         if (globalThis.clock) globalThis.clock.runAll();
-        const generatedJson = Blockly.serialization.blocks.save(block);
+        const generatedJson = blockly.serialization.blocks.save(block);
         const expectedJson = testCase.expectedJson || testCase.json;
         assert.deepEqual(generatedJson, expectedJson);
       } else {
-        const block = Blockly.Xml.domToBlock(
-          Blockly.utils.xml.textToDom(testCase.xml),
+        const block = blockly.Xml.domToBlock(
+          blockly.utils.xml.textToDom(testCase.xml),
           this.workspace,
         );
         if (globalThis.clock) globalThis.clock.runAll();
-        const generatedXml = Blockly.Xml.domToPrettyText(
-          Blockly.Xml.blockToDom(block),
+        const generatedXml = blockly.Xml.domToPrettyText(
+          blockly.Xml.blockToDom(block),
         );
         const expectedXml = testCase.expectedXml || testCase.xml;
         assert.equal(generatedXml, expectedXml);
@@ -221,7 +225,7 @@ export const runSerializationTestSuite = (testCases) => {
     });
     suite('serialization round-trip', function () {
       setup(function () {
-        sinon.stub(Blockly.utils.idGenerator.TEST_ONLY, 'genUid').returns('1');
+        sinon.stub(blockly.utils.idGenerator.TEST_ONLY, 'genUid').returns('1');
       });
 
       teardown(function () {

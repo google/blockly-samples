@@ -6,10 +6,14 @@
 
 const chai = require('chai');
 const {testHelpers} = require('@blockly/dev-tools');
-const Blockly = require('blockly/node');
+const Blockly = require('blockly/core');
+require('blockly/blocks');
+const En = require('blockly/msg/en');
 const {overrideOldBlockDefinitions} = require('../src/index');
 
 const assert = chai.assert;
+
+Blockly.setLocale(En);
 
 suite('If block', function () {
   /**
@@ -641,5 +645,5 @@ suite('If block', function () {
       },
     },
   ];
-  testHelpers.runSerializationTestSuite(testCases);
+  testHelpers.runSerializationTestSuite(testCases, Blockly);
 });

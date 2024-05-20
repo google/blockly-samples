@@ -19,11 +19,15 @@ import {
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @returns {!Blockly.WorkspaceSvg} The created workspace.
+ *
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
 
   const scrollOptionsPlugin = new ScrollOptions(workspace);
@@ -46,9 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
       wheel: true,
     },
   };
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+  const rootEl = document.getElementById('root');
+  if (!rootEl) throw new Error('No root element found!');
+  createPlayground(rootEl, createWorkspace, defaultOptions);
+
+  // Add workspace comments to the test page so we can test that they
+  // auto-scroll too!
+  Blockly.ContextMenuItems.registerCommentOptions();
 });
