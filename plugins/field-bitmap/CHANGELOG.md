@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.1.0...@blockly/field-bitmap@4.1.1) (2024-05-20)
+
+
+### Bug Fixes
+
+* improve bitmap field editor styles for large images and/or no buttons ([#2360](https://github.com/google/blockly-samples/issues/2360)) ([4cc25b3](https://github.com/google/blockly-samples/commit/4cc25b3a1374936fdc8eff56d14d3f9429c56504))
+
+
+
 ## [4.1.0](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.0.18...@blockly/field-bitmap@4.1.0) (2024-05-16)
 
 
