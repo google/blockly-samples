@@ -19,6 +19,6 @@
     ]
   },
   "dependencies": {
-    "blockly": "^10.0.0"
+    "blockly": "^11.0.0"
   }
 }
