@@ -183,7 +183,7 @@ To see the different information the debug renderer surfaces, you can modify
 the config from the browser console.
 
 ```js
-DebugRenderer.config = {
+DebugDrawer.config = {
   rows: true,
   rowSpacers: true,
   elems: true,
