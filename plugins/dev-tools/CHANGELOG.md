@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.11...@blockly/dev-tools@8.0.0) (2024-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to v11 of blockly
+* **dev-scripts:** This PR removes the support that was added
+
+### Features
+
+* update all plugins to v11 of blockly ([5fcd3e7](https://github.com/google/blockly-samples/commit/5fcd3e7d53eaadffe9bda9a378b404d34b2f8be2))
+
+
+### Bug Fixes
+
+* Call blocks handle both manual disabling and disabled defs ([#2334](https://github.com/google/blockly-samples/issues/2334)) ([5eade55](https://github.com/google/blockly-samples/commit/5eade55779c4022d14ad4472ff32c93c78199887))
+* **dev-scripts:** Fixes, refactoring and simplification of `webpack.config.js` and `'blockly'` imports  ([#2229](https://github.com/google/blockly-samples/issues/2229)) ([f5ffdb9](https://github.com/google/blockly-samples/commit/f5ffdb961e3b60ddb164087f4bddc4e6215906b7)), closes [#335](https://github.com/google/blockly-samples/issues/335) [#335](https://github.com/google/blockly-samples/issues/335) [#1630](https://github.com/google/blockly-samples/issues/1630) [#335](https://github.com/google/blockly-samples/issues/335) [#226](https://github.com/google/blockly-samples/issues/226) [google/blockly#7822](https://github.com/google/blockly/issues/7822) [google/blockly#7822](https://github.com/google/blockly/issues/7822) [/github.com/google/blockly-samples/pull/2229#issuecomment-1979123919](https://github.com/google//github.com/google/blockly-samples/pull/2229/issues/issuecomment-1979123919)
+* Fix the instructions for configuring the debug renderer. ([#2365](https://github.com/google/blockly-samples/issues/2365)) ([ec5405a](https://github.com/google/blockly-samples/commit/ec5405a604aee28c040ebeb55a032fe8e1aafdd3))
+* Include disabled block pattern in screenshot. ([#2189](https://github.com/google/blockly-samples/issues/2189)) ([b60f7be](https://github.com/google/blockly-samples/commit/b60f7beefda331371c53a2ec183cb4e062f223af))
+
+
+
 ## [7.1.11](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@7.1.10...@blockly/dev-tools@7.1.11) (2024-05-16)
 
 

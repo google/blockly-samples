@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@5.0.18...@blockly/plugin-scroll-options@6.0.0) (2024-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to v11 of blockly
+* update the scroll options to work with v11 dragging (#2316)
+
+### Features
+
+* update all plugins to v11 of blockly ([5fcd3e7](https://github.com/google/blockly-samples/commit/5fcd3e7d53eaadffe9bda9a378b404d34b2f8be2))
+* upgrade ts version, fix field validators ([b2d2191](https://github.com/google/blockly-samples/commit/b2d2191ff11b30347b33f95acf6e58f7ce54d004))
+
+
+### Bug Fixes
+
+* Call blocks handle both manual disabling and disabled defs ([#2334](https://github.com/google/blockly-samples/issues/2334)) ([5eade55](https://github.com/google/blockly-samples/commit/5eade55779c4022d14ad4472ff32c93c78199887))
+* make scroll options compatible with v11 ([#2179](https://github.com/google/blockly-samples/issues/2179)) ([d93a7d8](https://github.com/google/blockly-samples/commit/d93a7d8c5d6dc75db7f3cbf79cd6fb5dc6e9370e))
+* scroll-options fixes and compatibility with custom draggables ([#2358](https://github.com/google/blockly-samples/issues/2358)) ([2da6080](https://github.com/google/blockly-samples/commit/2da6080e1684edc5fc90cca0ba80c90982b5e4e2))
+* update the scroll options to work with v11 dragging ([#2316](https://github.com/google/blockly-samples/issues/2316)) ([f5aaa98](https://github.com/google/blockly-samples/commit/f5aaa981a3ee43f4d9ee8a7f2c1821980b15917d))
+
+
+
 ## [5.0.18](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@5.0.17...@blockly/plugin-scroll-options@5.0.18) (2024-05-16)
 
 **Note:** Version bump only for package @blockly/plugin-scroll-options

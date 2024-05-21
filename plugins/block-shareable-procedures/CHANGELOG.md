@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.1.6...@blockly/block-shareable-procedures@5.0.0) (2024-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to v11 of blockly
+* **dev-scripts:** This PR removes the support that was added
+
+### Features
+
+* update all plugins to v11 of blockly ([5fcd3e7](https://github.com/google/blockly-samples/commit/5fcd3e7d53eaadffe9bda9a378b404d34b2f8be2))
+* upgrade ts version, fix field validators ([b2d2191](https://github.com/google/blockly-samples/commit/b2d2191ff11b30347b33f95acf6e58f7ce54d004))
+
+
+### Bug Fixes
+
+* build for the v11 branch ([#2268](https://github.com/google/blockly-samples/issues/2268)) ([c7a4fc5](https://github.com/google/blockly-samples/commit/c7a4fc5e72c5e8d9e9bc926bbbbadd1eb31792fc))
+* Call blocks handle both manual disabling and disabled defs ([#2334](https://github.com/google/blockly-samples/issues/2334)) ([5eade55](https://github.com/google/blockly-samples/commit/5eade55779c4022d14ad4472ff32c93c78199887))
+* **dev-scripts:** Fixes, refactoring and simplification of `webpack.config.js` and `'blockly'` imports  ([#2229](https://github.com/google/blockly-samples/issues/2229)) ([f5ffdb9](https://github.com/google/blockly-samples/commit/f5ffdb961e3b60ddb164087f4bddc4e6215906b7)), closes [#335](https://github.com/google/blockly-samples/issues/335) [#335](https://github.com/google/blockly-samples/issues/335) [#1630](https://github.com/google/blockly-samples/issues/1630) [#335](https://github.com/google/blockly-samples/issues/335) [#226](https://github.com/google/blockly-samples/issues/226) [google/blockly#7822](https://github.com/google/blockly/issues/7822) [google/blockly#7822](https://github.com/google/blockly/issues/7822) [/github.com/google/blockly-samples/pull/2229#issuecomment-1979123919](https://github.com/google//github.com/google/blockly-samples/pull/2229/issues/issuecomment-1979123919)
+* insertion markers destroying procedure models v11 ([#2174](https://github.com/google/blockly-samples/issues/2174)) ([f14666f](https://github.com/google/blockly-samples/commit/f14666f8f7a94314bd76fc4fea2b5e88f8ba11b1))
+* shareable procedures v11 ([#2180](https://github.com/google/blockly-samples/issues/2180)) ([2d27dad](https://github.com/google/blockly-samples/commit/2d27dad7103b2039df9fca3acc706910eccf93fc))
+
+
+
 ## [4.1.6](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@4.1.5...@blockly/block-shareable-procedures@4.1.6) (2024-05-16)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures

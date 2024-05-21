@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.0](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.4.15...@blockly/disable-top-blocks@0.5.0) (2024-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to v11 of blockly
+
+### Features
+
+* update all plugins to v11 of blockly ([5fcd3e7](https://github.com/google/blockly-samples/commit/5fcd3e7d53eaadffe9bda9a378b404d34b2f8be2))
+
+
+### Bug Fixes
+
+* Call blocks handle both manual disabling and disabled defs ([#2334](https://github.com/google/blockly-samples/issues/2334)) ([5eade55](https://github.com/google/blockly-samples/commit/5eade55779c4022d14ad4472ff32c93c78199887))
+
+
+
 ## [0.4.15](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.4.14...@blockly/disable-top-blocks@0.4.15) (2024-05-16)
 
 **Note:** Version bump only for package @blockly/disable-top-blocks

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/google/blockly-samples/compare/@blockly/migrate@2.0.6...@blockly/migrate@3.0.0) (2024-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to v11 of blockly
+
+### Features
+
+* update all plugins to v11 of blockly ([5fcd3e7](https://github.com/google/blockly-samples/commit/5fcd3e7d53eaadffe9bda9a378b404d34b2f8be2))
+
+
+### Bug Fixes
+
+* Call blocks handle both manual disabling and disabled defs ([#2334](https://github.com/google/blockly-samples/issues/2334)) ([5eade55](https://github.com/google/blockly-samples/commit/5eade55779c4022d14ad4472ff32c93c78199887))
+
+
+
 ## [2.0.6](https://github.com/google/blockly-samples/compare/@blockly/migrate@2.0.5...@blockly/migrate@2.0.6) (2024-05-09)
 
 

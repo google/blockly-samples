@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@7.0.7...@blockly/block-plus-minus@8.0.0) (2024-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to v11 of blockly
+* **dev-scripts:** This PR removes the support that was added
+
+### Features
+
+* update all plugins to v11 of blockly ([5fcd3e7](https://github.com/google/blockly-samples/commit/5fcd3e7d53eaadffe9bda9a378b404d34b2f8be2))
+
+
+### Bug Fixes
+
+* block plus minus incompatibility with v11 ([#2169](https://github.com/google/blockly-samples/issues/2169)) ([2b857d4](https://github.com/google/blockly-samples/commit/2b857d4528402aebc0f536897fe3ea9447b4117b))
+* build for the v11 branch ([#2268](https://github.com/google/blockly-samples/issues/2268)) ([c7a4fc5](https://github.com/google/blockly-samples/commit/c7a4fc5e72c5e8d9e9bc926bbbbadd1eb31792fc))
+* Call blocks handle both manual disabling and disabled defs ([#2334](https://github.com/google/blockly-samples/issues/2334)) ([5eade55](https://github.com/google/blockly-samples/commit/5eade55779c4022d14ad4472ff32c93c78199887))
+* **dev-scripts:** Fixes, refactoring and simplification of `webpack.config.js` and `'blockly'` imports  ([#2229](https://github.com/google/blockly-samples/issues/2229)) ([f5ffdb9](https://github.com/google/blockly-samples/commit/f5ffdb961e3b60ddb164087f4bddc4e6215906b7)), closes [#335](https://github.com/google/blockly-samples/issues/335) [#335](https://github.com/google/blockly-samples/issues/335) [#1630](https://github.com/google/blockly-samples/issues/1630) [#335](https://github.com/google/blockly-samples/issues/335) [#226](https://github.com/google/blockly-samples/issues/226) [google/blockly#7822](https://github.com/google/blockly/issues/7822) [google/blockly#7822](https://github.com/google/blockly/issues/7822) [/github.com/google/blockly-samples/pull/2229#issuecomment-1979123919](https://github.com/google//github.com/google/blockly-samples/pull/2229/issues/issuecomment-1979123919)
+* use undeprecated align value ([3535d19](https://github.com/google/blockly-samples/commit/3535d19c54a049dd7592c117c479cab4017ddac9))
+
+
+
 ## [7.0.7](https://github.com/google/blockly-samples/compare/@blockly/block-plus-minus@7.0.6...@blockly/block-plus-minus@7.0.7) (2024-05-16)
 
 **Note:** Version bump only for package @blockly/block-plus-minus
