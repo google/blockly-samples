@@ -1,5 +1,5 @@
 {
-  "packages": ["blockly-**", "**-demo"],
+  "packages": ["blockly-**", "**-demo", "**-codelab", "sample-**"],
   "version": "independent",
   "npmClient": "npm",
   "useNx": false
