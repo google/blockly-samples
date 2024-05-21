@@ -585,7 +585,15 @@ export class FieldAngle extends Blockly.FieldNumber {
    * @returns A valid angle, or null if invalid.
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected override doClassValidation_(newValue?: unknown): number | null {
+  protected override doClassValidation_(
+    newValue: number,
+  ): number | null | undefined;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(newValue?: number): number | null;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(
+    newValue?: number,
+  ): number | null | undefined {
     // The obvious approach would be to call super.doClassValidation_ to handle
     // min/max limitations.  However angle pickers out of range need to clamp
     // to the closest min/max point, which may involve a wrap to the opposite

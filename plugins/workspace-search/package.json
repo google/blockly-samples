@@ -45,7 +45,7 @@
     "jsdom": "^19.0.0",
     "jsdom-global": "3.0.2",
     "sinon": "^9.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "blockly": "^11.0.0"

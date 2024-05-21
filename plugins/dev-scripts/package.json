@@ -56,6 +56,6 @@
   },
   "devDependencies": {
     "blockly": "^11.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.4.5"
   }
 }
