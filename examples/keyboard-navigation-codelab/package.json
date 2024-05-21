@@ -24,7 +24,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@blockly/keyboard-navigation": "^0.4.4",
-    "blockly": "^10.0.0"
+    "@blockly/keyboard-navigation": "^0.6.0",
+    "blockly": "^11.0.0"
   }
 }
