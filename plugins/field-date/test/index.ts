@@ -9,40 +9,198 @@
  */
 
 import * as Blockly from 'blockly';
-import {generateFieldTestBlocks, createPlayground} from '@blockly/dev-tools';
-import {FieldDateFromJsonConfig} from '../src/index';
+import {createPlayground} from '@blockly/dev-tools';
 import '../src/index';
 
-// NOTE: The args type should be updated to allow the JsonConfig types.
-interface Args {
-  [key: string]: unknown;
-}
+/**
+ * An array of blocks that are defined only for the purposes of
+ * manually and visually testing the date field.
+ */
+const testBlockDefinitions = [
+  {
+    type: 'test_standard_field_values',
+    message0: '%1',
+    args0: [
+      {
+        type: 'field_date',
+        name: 'FIELDNAME',
+        alt: {
+          type: 'field_label',
+          text: `No field_date`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },
+  {
+    type: 'test_custom_field_values',
+    message0: '%1',
+    args0: [
+      {
+        type: 'field_date',
+        name: 'FIELDNAME',
+        date: '2020-02-20',
+        alt: {
+          type: 'field_label',
+          text: `No field_date`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },
+  {
+    type: 'test_standard_field_values_and_label',
+    message0: 'block %1',
+    args0: [
+      {
+        type: 'field_date',
+        name: 'FIELDNAME',
+        alt: {
+          type: 'field_label',
+          text: `No field_date`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },
+  {
+    type: 'test_custom_field_values_and_label',
+    message0: 'block %1',
+    args0: [
+      {
+        type: 'field_date',
+        name: 'FIELDNAME',
+        date: '2020-02-20',
+        alt: {
+          type: 'field_label',
+          text: `No field_date`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },
+  {
+    type: 'test_parent_block',
+    message0: 'parent %1',
+    args0: [
+      {
+        type: 'input_value',
+        name: 'INPUT',
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    style: 'loop_blocks',
+  },
+  {
+    type: 'test_custom_field_values_and_tooltip',
+    message0: 'block %1',
+    args0: [
+      {
+        type: 'field_date',
+        name: 'FIELDNAME',
+        date: '2021-03-13',
+        tooltip: 'This date block has a tooltip!',
+        alt: {
+          type: 'field_label',
+          text: `No field_date`,
+        },
+      },
+    ],
+    output: null,
+    style: 'math_blocks',
+  },
+];
 
-const basicConfig: FieldDateFromJsonConfig = {
-  date: '2020-02-20',
+Blockly.defineBlocksWithJsonArray(testBlockDefinitions);
+
+/**
+ * A test toolbox containing the exported blocks and a variety of
+ * test blocks to exercise the date field in different contexts
+ * (on a shadow block, as the only field on a block, etc).
+ * These are in a simple toolbox, rather than a category toolbox, so that
+ * they are all instantiated every time the test page is opened.
+ */
+const jsonToolbox = {
+  contents: [
+    {
+      kind: 'label',
+      text: 'Test blocks: default field values',
+    },
+    {
+      kind: 'block',
+      type: 'test_standard_field_values',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_standard_field_values',
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'test_standard_field_values_and_label',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_standard_field_values_and_label',
+          },
+        },
+      },
+    },
+    {
+      kind: 'label',
+      text: 'Test blocks: custom field values',
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_custom_field_values',
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values_and_label',
+    },
+    {
+      kind: 'block',
+      type: 'test_parent_block',
+      inputs: {
+        INPUT: {
+          shadow: {
+            type: 'test_custom_field_values_and_label',
+          },
+        },
+      },
+    },
+    {
+      kind: 'block',
+      type: 'test_custom_field_values_and_tooltip',
+    },
+  ],
 };
-
-const tooltipConfig: FieldDateFromJsonConfig = {
-  date: '2021-03-13',
-  tooltip: 'This date block has a tooltip!',
-};
-
-const emptyConfig: FieldDateFromJsonConfig = {};
-
-const toolbox = generateFieldTestBlocks('field_date', [
-  {
-    label: 'Basic Date Input',
-    args: basicConfig as Args,
-  },
-  {
-    label: 'Tooltip Date Input',
-    args: tooltipConfig as Args,
-  },
-  {
-    label: 'Default Date Input',
-    args: emptyConfig as Args,
-  },
-]);
 
 /**
  * Create a workspace.
@@ -61,7 +219,7 @@ function createWorkspace(
 
 document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions: Blockly.BlocklyOptions = {
-    toolbox,
+    toolbox: jsonToolbox,
   };
   const rootElement = document.getElementById('root');
   if (rootElement) {

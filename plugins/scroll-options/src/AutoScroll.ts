@@ -5,8 +5,11 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {ScrollMetricsManager} from './ScrollMetricsManager';
+import {isCacheable} from './ScrollMetricsManager';
 import {getTranslation} from './utils';
+import {ScrollBlockDragger} from './ScrollBlockDragger';
+
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * AutoScroll is used to scroll/pan the workspace automatically. For example,
@@ -20,46 +23,34 @@ import {getTranslation} from './utils';
  * may get stuck in an infinite animation loop and crash the browser.
  */
 export class AutoScroll {
+  /** Workspace to scroll. */
+  protected workspace_: Blockly.WorkspaceSvg;
+  protected dragger: ScrollBlockDragger;
+  /**
+   * Current active vector representing scroll velocity in pixels per
+   * millisecond in each direction.
+   */
+  protected activeScrollVector_ = new Blockly.utils.Coordinate(0, 0);
+  /** ID of active requestAnimationFrame callback key. */
+  protected animationFrameId_ = 0;
+  /** Time in ms last animation frame was run. */
+  protected lastTime_: number = Date.now();
+  /**
+   * Whether the scroll animation should continue. If this is false, the next
+   * animation frame will not be requested.
+   */
+  protected shouldAnimate_ = false;
+
   /**
    * Creates an AutoScroll instance for a specified workspace.
-   * @param {!Blockly.WorkspaceSvg} workspace Workspace to scroll.
+   *
+   * @param workspace Workspace to scroll.
+   * @param dragger The dragger that's currently dragging.
    * @constructor
    */
-  constructor(workspace) {
-    /**
-     * Workspace to scroll.
-     * @protected {!Blockly.WorkspaceSvg}
-     */
+  constructor(workspace: Blockly.WorkspaceSvg, dragger: ScrollBlockDragger) {
     this.workspace_ = workspace;
-
-    /**
-     * Current active vector representing scroll velocity in pixels per
-     * millisecond in each direction.
-     * @protected {!Blockly.utils.Coordinate}
-     */
-    this.activeScrollVector_ = new Blockly.utils.Coordinate(0, 0);
-
-    /**
-     * ID of active requestAnimationFrame callback key.
-     * @type {number}
-     * @protected
-     */
-    this.animationFrameId_ = 0;
-
-    /**
-     * Time in ms last animation frame was run.
-     * @type {number}
-     * @protected
-     */
-    this.lastTime_ = Date.now();
-
-    /**
-     * Whether the scroll animation should continue. If this is false, the next
-     * animation frame will not be requested.
-     * @type {boolean}
-     * @protected
-     */
-    this.shouldAnimate_ = false;
+    this.dragger = dragger;
   }
 
   /**
@@ -75,11 +66,11 @@ export class AutoScroll {
   /**
    * Ticks scrolling behavior and triggers another
    * frame request.
-   * @param {number} now Current time in ms. This is usually passed
+   *
+   * @param now Current time in ms. This is usually passed
    *     automatically by `requestAnimationFrame`.
-   * @protected
    */
-  nextAnimationStep_(now) {
+  protected nextAnimationStep_(now: number) {
     if (this.shouldAnimate_) {
       const delta = now - this.lastTime_;
       this.lastTime_ = now;
@@ -97,10 +88,10 @@ export class AutoScroll {
 
   /**
    * Perform scroll given time passed.
-   * @param {number} msPassed Number of ms since last scroll tick.
-   * @protected
+   *
+   * @param msPassed Number of ms since last scroll tick.
    */
-  scrollTick_(msPassed) {
+  protected scrollTick_(msPassed: number) {
     const scrollDx = this.activeScrollVector_.x * msPassed;
     const scrollDy = this.activeScrollVector_.y * msPassed;
     this.scrollWorkspaceWithBlock(scrollDx, scrollDy);
@@ -109,18 +100,24 @@ export class AutoScroll {
   /**
    * Scrolls the workspace the given amount during a block drag.
    * Also updates the dragger based on the amount actually scrolled.
-   * @param {number} scrollDx Amount to scroll in horizontal direction.
-   * @param {number} scrollDy Amount to scroll in vertical direction.
+   *
+   * @param scrollDx Amount to scroll in horizontal direction.
+   * @param scrollDy Amount to scroll in vertical direction.
    */
-  scrollWorkspaceWithBlock(scrollDx, scrollDy) {
+  scrollWorkspaceWithBlock(scrollDx: number, scrollDy: number) {
     const oldLocation = getTranslation(this.workspace_);
 
     // As we scroll, we shouldn't expand past the content area that existed
     // before the block was picked up. Therefore, we use cached ContentMetrics
     // so that the content area does not change as we scroll.
-    const metricsManager = /** @type {ScrollMetricsManager} */ (
-      this.workspace_.getMetricsManager()
-    );
+    const metricsManager = this.workspace_.getMetricsManager();
+
+    if (!isCacheable(metricsManager)) {
+      console.warn(
+        'MetricsManager must be able to cache metrics in order to use AutoScroll',
+      );
+      return;
+    }
     metricsManager.useCachedContentMetrics = true;
     const newX = this.workspace_.scrollX + scrollDx;
     const newY = this.workspace_.scrollY + scrollDy;
@@ -137,19 +134,18 @@ export class AutoScroll {
     // The dragger will update its values so that things like connection
     // markers will stay consistent.
     if (deltaX || deltaY) {
-      this.workspace_.currentGesture_
-        .getCurrentDragger()
-        .moveBlockWhileDragging(deltaX, deltaY);
+      this.dragger.moveBlockWhileDragging(deltaX, deltaY);
     }
   }
 
   /**
    * Updates the scroll vector for the current autoscroll and begins the
    * animation if needed.
-   * @param {!Blockly.utils.Coordinate} scrollVector New scroll velocity vector
+   *
+   * @param scrollVector New scroll velocity vector
    *     in pixels per ms.
    */
-  updateProperties(scrollVector) {
+  updateProperties(scrollVector: Blockly.utils.Coordinate) {
     this.activeScrollVector_ = scrollVector;
     this.shouldAnimate_ = true;
 

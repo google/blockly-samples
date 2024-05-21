@@ -6,9 +6,9 @@ scroll features.
 This plugin adds two features related to scrolling:
 
 - Users can scroll the workspace with the mousewheel while dragging a block
-  ("wheel scroll").
-- The workspace will automatically scroll when a block is dragged near the
-  edge of the workspace ("edge scroll").
+  or workspace comment ("wheel scroll").
+- The workspace will automatically scroll when a block or workspace comment
+  is dragged near the edge of the workspace ("edge scroll").
 
 Each of these options can be enabled or disabled independently, if you only want
 one of these behaviors. The edge scrolling behavior can also be configured with
@@ -49,6 +49,8 @@ const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
     // These are both required.
+    // Note that the ScrollBlockDragger drags things besides blocks.
+    // Block is included in the name for backwards compatibility.
     blockDragger: ScrollBlockDragger,
     metricsManager: ScrollMetricsManager,
   },
@@ -144,6 +146,25 @@ Then the final options used will include both `fastMouseSpeed: 5` and
 `slowMouseSpeed: 2` with all other options being the default values.
 
 You can call `ScrollBlockDragger.resetOptions()` to restore all default options.
+
+## Usage with other plugins
+
+This plugin ships with its own `MetricsManager` implementation. Other plugins
+may ship with their own `MetricsManager` implementations as well. If you wish
+to use multiple of these plugins together, you will need to create your own
+implementation of `MetricsManager` that combines the necessary features of
+both. This plugin simply requires that content metrics be cacheable so that
+it can see content metrics from before a drag was started, even in the middle
+of a drag. Your implementation must satisfy the `isCacheable` type guard in
+`ScrollMetricsManager.ts`.
+
+## Usage with custom draggables
+
+Blockly supports adding custom objects that implement the `Blockly.IDraggable`
+interface. Custom draggables are compatible with this plugin, but they will
+not support the autoscrolling features by default. You can enable autoscrolling
+features on them by also implementing the `AutoScrollable` interface on your
+draggable objects.
 
 ## License
 

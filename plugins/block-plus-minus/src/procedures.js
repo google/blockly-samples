@@ -451,7 +451,7 @@ const procedureDefMutator = {
     nameField.preEditVarModel_ = null;
 
     this.appendDummyInput(argId)
-      .setAlign(Blockly.ALIGN_RIGHT)
+      .setAlign(Blockly.inputs.Align.RIGHT)
       .appendField(createMinusField(argId))
       .appendField(Blockly.Msg['PROCEDURE_VARIABLE']) // Untranslated!
       .appendField(nameField, argId); // The name of the field is the arg id.

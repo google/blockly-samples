@@ -9,12 +9,17 @@ import * as Blockly from 'blockly/core';
 /**
  * Gets the current location of the workspace considering
  * when there's no drag surface.
- * @param {!Blockly.WorkspaceSvg} ws The workspace to calculate.
- * @returns {!Blockly.utils.Coordinate} The current workspace coordinate.
+ *
+ * @param ws The workspace to calculate.
+ * @returns The current workspace coordinate.
  */
-export const getTranslation = (ws) => {
+export const getTranslation = (
+  ws: Blockly.WorkspaceSvg,
+): Blockly.utils.Coordinate => {
   // TODO(blockly/#7157): We should maybe make getBlockCanvas public?
   const translation = ws.svgBlockCanvas_.getAttribute('transform');
+  if (!translation)
+    throw new Error(`svgBlockCanvas has no attribute 'transform'`);
 
   // Translation has the format 'translate(x, y)'.
   const splitted = translation.split(',');

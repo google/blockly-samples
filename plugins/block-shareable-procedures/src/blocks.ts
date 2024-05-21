@@ -215,7 +215,11 @@ const procedureDefGetDefMixin = function () {
      * disposed.
      */
     destroy: function () {
-      this.workspace.getProcedureMap().delete(this.getProcedureModel().getId());
+      if (!this.isInsertionMarker()) {
+        this.workspace
+          .getProcedureMap()
+          .delete(this.getProcedureModel().getId());
+      }
     },
   };
 
@@ -741,7 +745,7 @@ const procedureDefOnChangeMixin = {
       e.blockId === this.id &&
       e.element === 'disabled'
     ) {
-      this.getProcedureModel().setEnabled(!e.newValue);
+      this.getProcedureModel().setEnabled(this.isEnabled());
     }
   },
 };
@@ -945,8 +949,6 @@ Blockly.Extensions.register(
 );
 
 const procedureCallerMutator = {
-  previousEnabledState_: true,
-
   paramsFromSerializedState_: [],
 
   /**
@@ -1049,6 +1051,8 @@ Blockly.Extensions.registerMutator(
   procedureCallerMutator,
 );
 
+const PROCEDURE_MODEL_DISABLED_REASON = 'PROCEDURE_MODEL_DISABLED';
+
 const procedureCallerUpdateShapeMixin = {
   /**
    * Renders the block for the first time based on the procedure model.
@@ -1090,12 +1094,10 @@ const procedureCallerUpdateShapeMixin = {
    *     model.
    */
   updateEnabled_: function () {
-    if (!this.getProcedureModel().getEnabled()) {
-      this.previousEnabledState_ = this.isEnabled();
-      this.setEnabled(false);
-    } else {
-      this.setEnabled(this.previousEnabledState_);
-    }
+    this.setDisabledReason(
+      !this.getProcedureModel().getEnabled(),
+      PROCEDURE_MODEL_DISABLED_REASON,
+    );
   },
 
   /**
@@ -1185,7 +1187,7 @@ const procedureCallerUpdateShapeMixin = {
     for (const [i, p] of params.entries()) {
       this.appendValueInput(`ARG${i}`)
         .appendField(new Blockly.FieldLabel(p), `ARGNAME${i}`)
-        .setAlign(Blockly.Input.Align.RIGHT);
+        .setAlign(Blockly.inputs.Align.RIGHT);
     }
   },
 

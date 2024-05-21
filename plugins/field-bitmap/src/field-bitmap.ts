@@ -119,8 +119,18 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    * @param newValue The new value to be tested.
    * @returns The new value if it's valid, or null.
    */
-  // eslint-disable-next-line
-  protected override doClassValidation_(newValue: unknown = undefined) {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(
+    newValue: number[][],
+  ): number[][] | null | undefined;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(
+    newValue?: number[][],
+  ): number[][] | null;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(
+    newValue?: number[][],
+  ): number[][] | null | undefined {
     if (!newValue) {
       return null;
     }

@@ -338,7 +338,15 @@ export class FieldColour extends Blockly.Field<string> {
    * @returns A valid colour, or null if invalid.
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected override doClassValidation_(newValue?: unknown): string | null {
+  protected override doClassValidation_(
+    newValue: string,
+  ): string | null | undefined;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(newValue?: string): string | null;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  protected override doClassValidation_(
+    newValue?: string,
+  ): string | null | undefined {
     if (typeof newValue !== 'string') {
       return null;
     }
