@@ -24,7 +24,7 @@
       <div class="title">@blockly/dev-tools Demo</div>
       <div class="subtitle">A library of common utilities for Blockly extension development.</div>
     </div>
-    7.1.11
+    8.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/dev-tools" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/dev-tools" class="button" target="_blank">View on npm</a>
@@ -186,7 +186,7 @@ Blockly.blockRendering.register('debugRenderer', DebugRenderer);
 Blockly.inject('blocklyDiv', {renderer: 'debugRenderer'});</code></pre>
 <p>To see the different information the debug renderer surfaces, you can modify
 the config from the browser console.</p>
-<pre><code class="js language-js">DebugRenderer.config = {
+<pre><code class="js language-js">DebugDrawer.config = {
   rows: true,
   rowSpacers: true,
   elems: true,

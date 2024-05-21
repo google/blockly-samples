@@ -24,7 +24,7 @@
       <div class="title">@blockly/workspace-backpack Demo</div>
       <div class="subtitle">A Blockly plugin that adds Backpack support.</div>
     </div>
-    5.3.9
+    6.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-backpack" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/workspace-backpack" class="button" target="_blank">View on npm</a>
@@ -163,6 +163,11 @@ open it will be closed.</p></li>
 <li><p><code>addBlock</code>: Adds Block to backpack.</p></li>
 <li><p><code>addBlocks</code>: Adds Blocks to backpack.</p></li>
 <li><p><code>removeBlock</code>: Removes Block to backpack.</p></li>
+<li><p><code>containsBlock</code>: Returns whether the Block is in the backpack.</p></li>
+<li><p><code>addBackpackable</code>: Adds Backpackable to backpack.</p></li>
+<li><p><code>addBackpackables</code>: Adds Backpackable to backpack.</p></li>
+<li><p><code>removeBackpackable</code>: Removes Backpackable to backpack.</p></li>
+<li><p><code>containsBackpackable</code>: Returns whether the Backpackable is in the backpack.</p></li>
 <li><p><code>addItem</code>: Adds item to backpack.</p></li>
 <li><p><code>removeItem</code>: Removes item from the backpack.</p></li>
 <li><p><code>setContents</code>: Sets backpack contents.</p></li>
@@ -198,6 +203,11 @@ workspace.configureContextMenu = (menuOptions, e) =&gt; {
 <code>Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX</code>, similar to the implementation
 for <code>Blockly.Trashcan</code>. If a custom class is registered for either of these
 types, then the Backpack Flyout may need to be tested for compatibility.</p>
+<h3 id="draggables">Draggables</h3>
+<p>If you have a custom draggable object, you can make it possible to add it to
+the backpack by implementing the <a href="https://github.com/google/blockly-samples/blob/master/plugins/workspace-backpack/src/backpack.ts"><code>Backpackable</code></a> interface.</p>
+<p>This interface requires the draggable to have a method that converts it into
+<a href="https://developers.google.com/blockly/reference/js/blockly.utils_namespace.toolbox_namespace.flyoutiteminfo_typealias.md"><code>FlyoutItemInfo</code></a>. As of Blockly core v11 flyouts only support displaying blocks, buttons, and labels.</p>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>

@@ -24,7 +24,7 @@
       <div class="title">@blockly/plugin-scroll-options Demo</div>
       <div class="subtitle">A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block.</div>
     </div>
-    5.0.18
+    6.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/scroll-options" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/plugin-scroll-options" class="button" target="_blank">View on npm</a>
@@ -56,9 +56,9 @@ scroll features.</p>
 <p>This plugin adds two features related to scrolling:</p>
 <ul>
 <li>Users can scroll the workspace with the mousewheel while dragging a block
-("wheel scroll").</li>
-<li>The workspace will automatically scroll when a block is dragged near the
-edge of the workspace ("edge scroll").</li>
+or workspace comment ("wheel scroll").</li>
+<li>The workspace will automatically scroll when a block or workspace comment
+is dragged near the edge of the workspace ("edge scroll").</li>
 </ul>
 <p>Each of these options can be enabled or disabled independently, if you only want
 one of these behaviors. The edge scrolling behavior can also be configured with
@@ -86,6 +86,8 @@ const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
   plugins: {
     // These are both required.
+    // Note that the ScrollBlockDragger drags things besides blocks.
+    // Block is included in the name for backwards compatibility.
     blockDragger: ScrollBlockDragger,
     metricsManager: ScrollMetricsManager,
   },
@@ -162,6 +164,21 @@ updateEdgeScrollOptions({slowMouseSpeed: 2});</code></pre>
 <p>Then the final options used will include both <code>fastMouseSpeed: 5</code> and
 <code>slowMouseSpeed: 2</code> with all other options being the default values.</p>
 <p>You can call <code>ScrollBlockDragger.resetOptions()</code> to restore all default options.</p>
+<h2 id="usage-with-other-plugins">Usage with other plugins</h2>
+<p>This plugin ships with its own <code>MetricsManager</code> implementation. Other plugins
+may ship with their own <code>MetricsManager</code> implementations as well. If you wish
+to use multiple of these plugins together, you will need to create your own
+implementation of <code>MetricsManager</code> that combines the necessary features of
+both. This plugin simply requires that content metrics be cacheable so that
+it can see content metrics from before a drag was started, even in the middle
+of a drag. Your implementation must satisfy the <code>isCacheable</code> type guard in
+<code>ScrollMetricsManager.ts</code>.</p>
+<h2 id="usage-with-custom-draggables">Usage with custom draggables</h2>
+<p>Blockly supports adding custom objects that implement the <code>Blockly.IDraggable</code>
+interface. Custom draggables are compatible with this plugin, but they will
+not support the autoscrolling features by default. You can enable autoscrolling
+features on them by also implementing the <code>AutoScrollable</code> interface on your
+draggable objects.</p>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>
