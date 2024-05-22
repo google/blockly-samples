@@ -12,17 +12,12 @@ import * as Blockly from 'blockly/core';
 // own custom blocks.
 const addText = {
   type: 'add_text',
-  message0: 'Add text %1 with color %2',
+  message0: 'Add text %1',
   args0: [
     {
       type: 'input_value',
       name: 'TEXT',
       check: 'String',
-    },
-    {
-      type: 'input_value',
-      name: 'COLOR',
-      check: 'Colour',
     },
   ],
   previousStatement: null,
