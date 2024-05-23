@@ -42,6 +42,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   buttonOptions: Buttons;
   pixelSize: number;
   pixelColours: {empty: string; filled: string};
+  fieldHeight?: number;
 
   /**
    * Constructor for the bitmap field.
@@ -73,8 +74,9 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
       // Set a default empty value
       this.setValue(this.getEmptyArray());
     }
-    if (config?.fieldHeight) {
-      this.pixelSize = config.fieldHeight / this.imgHeight;
+    this.fieldHeight = config?.fieldHeight;
+    if (this.fieldHeight) {
+      this.pixelSize = this.fieldHeight / this.imgHeight;
     } else {
       this.pixelSize = DEFAULT_PIXEL_SIZE;
     }
@@ -178,6 +180,12 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     if (newValue) {
       this.imgHeight = newValue.length;
       this.imgWidth = newValue[0] ? newValue[0].length : 0;
+      // If the field height is static, adjust the pixel size to fit.
+      if (this.fieldHeight) {
+        this.pixelSize = this.fieldHeight / this.imgHeight;
+      } else {
+        this.pixelSize = DEFAULT_PIXEL_SIZE;
+      }
     }
   }
 
