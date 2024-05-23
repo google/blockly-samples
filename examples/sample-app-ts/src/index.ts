@@ -20,7 +20,11 @@ Object.assign(javascriptGenerator.forBlock, forBlock);
 const codeDiv = document.getElementById('generatedCode')?.firstChild;
 const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
-const ws = blocklyDiv && Blockly.inject(blocklyDiv, {toolbox});
+
+if (!blocklyDiv) {
+  throw new Error(`div with id 'blocklyDiv' not found`);
+}
+const ws = Blockly.inject(blocklyDiv, {toolbox});
 
 // This function resets the code and output divs, shows the
 // generated code from the workspace, and evals the code.

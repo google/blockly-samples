@@ -17,22 +17,18 @@ forBlock['add_text'] = function (
   generator: Blockly.CodeGenerator,
 ) {
   const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
-  const color =
-    generator.valueToCode(block, 'COLOR', Order.ATOMIC) || "'#ffffff'";
-
   const addText = generator.provideFunction_(
     'addText',
-    `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text, color) {
+    `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(text) {
 
   // Add text to the output area.
   const outputDiv = document.getElementById('output');
   const textEl = document.createElement('p');
   textEl.innerText = text;
-  textEl.style.color = color;
   outputDiv.appendChild(textEl);
 }`,
   );
   // Generate the function call for this block.
-  const code = `${addText}(${text}, ${color});\n`;
+  const code = `${addText}(${text});\n`;
   return code;
 };
