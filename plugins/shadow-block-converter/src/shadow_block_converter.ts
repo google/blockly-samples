@@ -9,8 +9,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {Block} from 'blockly/core/block';
-import {Abstract} from 'blockly/core/events/events_abstract';
 
 export interface BlockShadowStateChangeJson
   extends Blockly.Events.BlockBaseJson {
@@ -52,7 +50,7 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
    * @param shadowState The intended shadow state of the connection.
    */
   constructor(
-    block: Block,
+    block: Blockly.Block,
     inputIndexInParent: number | null,
     shadowState: Blockly.serialization.blocks.State,
   ) {
@@ -178,7 +176,7 @@ Blockly.registry.register(
  * @returns The newly created regular block with a different id, if one could be
  *     created.
  */
-function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
+function reifyEditedShadowBlock(shadowBlock: Blockly.Block): Blockly.Block {
   // Determine how the shadow block is connected to the parent.
   let parentConnection: Blockly.Connection | null = null;
   let connectionIsThroughOutputConnection = false;
@@ -305,7 +303,9 @@ function reifyEditedShadowBlock(shadowBlock: Block): Blockly.Block {
  *
  * @param event An event broadcast by the workspace.
  */
-export function shadowBlockConversionChangeListener(event: Abstract) {
+export function shadowBlockConversionChangeListener(
+  event: Blockly.Events.Abstract,
+) {
   // Auto-converting shadow blocks to real blocks should happen in response to
   // new user action events (which get recorded as undo events) but not when
   // undoing or redoing events (which do not get recorded again).

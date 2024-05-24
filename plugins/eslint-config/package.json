@@ -38,8 +38,5 @@
   },
   "engines": {
     "node": ">=10.0.0"
-  },
-  "devDependencies": {
-    "blockly": "^11.0.0"
   }
 }
