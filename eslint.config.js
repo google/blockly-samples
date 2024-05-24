@@ -7,7 +7,6 @@
 const jsdoc = require('eslint-plugin-jsdoc');
 const js = require('@eslint/js');
 const {FlatCompat} = require('@eslint/eslintrc');
-const babelParser = require('@babel/eslint-parser');
 const globals = require('globals');
 const tsParser = require('@typescript-eslint/parser');
 const typescript = require('@typescript-eslint/eslint-plugin');
@@ -62,12 +61,6 @@ module.exports = [
         ...globals.es5,
         Blockly: true,
         goog: true,
-      },
-      parser: babelParser,
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-        requireConfigFile: false,
       },
     },
 
