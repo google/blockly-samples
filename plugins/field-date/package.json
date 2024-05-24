@@ -44,7 +44,6 @@
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.0",
     "@blockly/dev-tools": "^8.0.0",
-    "blockly": "^11.0.0",
     "chai": "^4.2.0",
     "sinon": "^9.0.1",
     "typescript": "^5.4.5"
