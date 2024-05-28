@@ -101,7 +101,7 @@ Open `starter-code/index.html` in a text editor and scroll to the end. You can s
 Add Blockly just before these two scripts. The order is important, because you will use Blockly objects later in `main.js`.  Your imports should now look like this:
 
 ```html
-<script src="https://unpkg.com/blockly"></script>
+<script src="https://unpkg.com/blockly/blockly.min.js"></script>
 <script src="scripts/music_maker.js"></script>
 <script src="scripts/main.js"></script>
 ```
