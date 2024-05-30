@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-date@9.0.0...@blockly/field-date@9.0.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* multiple blockly instances ([#2375](https://github.com/google/blockly-samples/issues/2375)) ([b231e59](https://github.com/google/blockly-samples/commit/b231e598f2f5f5b0abbfd01d981e35572ad50a26))
+
+
+
 ## [9.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-date@8.0.17...@blockly/field-date@9.0.0) (2024-05-21)
 
 

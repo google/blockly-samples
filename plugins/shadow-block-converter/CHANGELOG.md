@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@6.0.0...@blockly/shadow-block-converter@6.0.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* multiple blockly instances ([#2375](https://github.com/google/blockly-samples/issues/2375)) ([b231e59](https://github.com/google/blockly-samples/commit/b231e598f2f5f5b0abbfd01d981e35572ad50a26))
+
+
+
 ## [6.0.0](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@5.0.6...@blockly/shadow-block-converter@6.0.0) (2024-05-21)
 
 

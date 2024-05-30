@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.0...@blockly/field-bitmap@5.0.1) (2024-05-30)
+
+
+### Bug Fixes
+
+* multiple blockly instances ([#2375](https://github.com/google/blockly-samples/issues/2375)) ([b231e59](https://github.com/google/blockly-samples/commit/b231e598f2f5f5b0abbfd01d981e35572ad50a26))
+* update pixel with new values ([#2373](https://github.com/google/blockly-samples/issues/2373)) ([d387b9e](https://github.com/google/blockly-samples/commit/d387b9ebcd0b42275231815fa18f61f61eeb04e4))
+
+
+
 ## [5.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@4.1.1...@blockly/field-bitmap@5.0.0) (2024-05-21)
 
 
