@@ -17,6 +17,9 @@ const contentChangeEvents = [
   Blockly.Events.VIEWPORT_CHANGE,
   Blockly.Events.BLOCK_MOVE,
   Blockly.Events.BLOCK_DELETE,
+  Blockly.Events.COMMENT_MOVE,
+  Blockly.Events.COMMENT_CREATE,
+  Blockly.Events.COMMENT_DELETE,
 ];
 
 /**
