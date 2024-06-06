@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/google/blockly-samples/compare/@blockly/workspace-content-highlight@5.0.1...@blockly/workspace-content-highlight@5.0.2) (2024-06-06)
+
+
+### Bug Fixes
+
+* Update content highlight when workspace comment is moved. ([#2381](https://github.com/google/blockly-samples/issues/2381)) ([f769849](https://github.com/google/blockly-samples/commit/f769849a01799f38245134587311d244f731d1a1))
+
+
+
 ## [5.0.1](https://github.com/google/blockly-samples/compare/@blockly/workspace-content-highlight@5.0.0...@blockly/workspace-content-highlight@5.0.1) (2024-05-30)
 
 
