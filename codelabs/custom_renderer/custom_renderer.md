@@ -1,35 +1,28 @@
 author: Rachel Fenichel
-summary: Codelab showing how to create custom renderers.
+summary: Codelab showing how to a custom renderer for Blockly.
 id: custom-renderer
 categories: blockly,codelab,rendering,customization
 status: Published
 Feedback Link: https://github.com/google/blockly-samples/issues/new/choose
 
-# Build custom renderers
+# Build a Custom Renderer for Blockly
 
-## Codelab overview
+## Codelab Overview
 
-### What you'll learn
+### What You'll Learn
 
 - How to define and register a custom renderer.
 - How to override renderer constants.
 - How to change the shape of connection notches.
 - How to set a connection's shape based on its type checks.
 
-### What you'll build
+### What You'll Build
 
-This codelab builds and uses four renderers:
+In this codelab, you will build a custom renderer for Blockly. By the end of this codelab, you will have created a custom renderer that changes the appearance of Blockly's blocks with specific connection shapes.
 
-1. A minimal custom renderer that extends `Blockly.blockRendering.Renderer` but makes no modifications.
-![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
-1. A custom renderer which sets new values for the rendering-related constants `NOTCH_WIDTH`, `NOTCH_HEIGHT`,`CORNER_RADIUS`, and `TAB_HEIGHT` found in `Blockly.blockRendering.ConstantProvider`.
-![Screenshot of a custom renderer with notches, corners, and tabs that have similar shapes as the default but with different widths, heights, and radiuses.](./custom_constants.png)
-1. A custom renderer which overrides the functions `Blockly.blockRendering.ConstantProvider.init()` and `Blockly.blockRendering.ConstantProvider.shapeFor(connection)` to define and return custom [SVG paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path).
-![Screenshot of a custom renderer with notches, corners, and tabs with fundamentally different shapes than the defaults.](./custom_notches.png)
-1. A custom renderer which overrides the function `Blockly.blockRendering.ConstantProvider.shapeFor(connection)` to return different shapes for the input/output connections depending on whether the their type is a `Number`, `String`, or `Boolean`.
-![Screenshot of a custom renderer with rectangles for the Number input/outputs and a puzzle tab for the Boolean input/output attached to an "if" block](./typed_connection_shapes.png)
+![Screenshot of the final custom renderer](./final_custom_renderer.png)
 
-### What you'll need
+### What You'll Need
 
 - Basic understanding of renderers and toolboxes in Blockly.
 - NPM installed ([instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)).
@@ -39,24 +32,20 @@ This codelab builds and uses four renderers:
 
 This codelab will add code to the Blockly sample app to create and use a new custom renderer.
 
-### The application
+### The Application
 
-Use the (`npx @blockly/create-package app`)[https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
-  1. Run `npx @blockly/create-package app custom-renderer-codelab`.  This will create a blockly application in the folder `custom-renderer-codelab`.
-  1. `cd` into the new directory: `cd custom-renderer-codelab`.
-  1. Run `npm start` to start the server and run the sample application.
-  1. The sample app will automatically run in the browser window that opens.
+Use the [`npx @blockly/create-package`](https://www.npmjs.com/package/@blockly/create-package) command to create a standalone application that contains a sample setup of Blockly, including custom blocks and a display of the generated code and output.
 
-The initial application uses the default renderer and contains no code or definitions for a custom renderer.
-
-The complete code used in this codelab can be viewed in blockly-samples under [`examples/custom-renderer-codelab`](https://github.com/google/blockly-samples/tree/master/examples/custom-renderer-codelab).
+1. Run `npx @blockly/create-package app custom-renderer-codelab`. This will create a Blockly application in the folder `custom-renderer-codelab`.
+2. `cd` into the new directory: `cd custom-renderer-codelab`.
+3. Run `npm start` to start the server and run the sample application.
+4. The sample app will automatically run in the browser window that opens.
 
 Before setting up the rest of the application, change the storage key used for this codelab application. This will ensure that the workspace is saved in its own storage, separate from the regular sample app, so that it doesn't interfere with other demos. In `serialization.js`, change the value of `storageKey` to some unique string. `customRenderersWorkspace` will work:
 
 ```js
 // Use a unique storage key for this codelab
 const storageKey = 'customRenderersWorkspace';
-```
 
 ## Observe the built-in renderers
 
@@ -109,7 +98,7 @@ const ws = Blockly.inject(blocklyDiv, {
 
 ### The result
 
-If the server is already running, refresh the page to see the new changes. Otherwise, run `npm start` to start the server. Once the server is running, click on the `Loops` entry in the browser and drag out a repeat block. The resulting block will use the same values already defined in the base `Blockly.blockRendering.Renderer`.
+If the server is already running, refresh the page to see the new changes. Otherwise, run npm start to start the server. Once the server is running, click on the Loops entry in the browser and drag out a repeat block. The resulting block will use the same values already defined in the base Blockly.blockRendering.Renderer.
 
 ![Screenshot of a renderer with an appearance matching the base renderer.](./custom_renderer.png)
 
@@ -438,8 +427,10 @@ There should be an entry similar to the screenshot below, in which the `Number` 
 
 ## Summary
 
-Custom renderers are a powerful way to change the look and feel of Blockly.  In this codelab you learned:
-- How to declare and register a custom renderer by extending `Blockly.blockRendering.Renderer`.
-- How to override renderer constants such as `NOTCH_HEIGHT` in `Blockly.blockRendering.ConstantProvider`.
-- How to modify connection shapes by creating custom [SVG paths](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path), storing them in `init()`, and finally returning them in `shapeFor(connection)`.
-- How to update the mapping from connection to connection shape by adding logic in `shapeFor(connection)`.
+In this codelab, you learned how to create a custom renderer for Blockly, including:
+- Declaring and registering a custom renderer by extending Blockly.blockRendering.Renderer.
+- Overriding renderer constants such as NOTCH_HEIGHT in Blockly.blockRendering.ConstantProvider.
+- Modifying connection shapes by creating custom SVG paths, storing them in init(), and finally returning them in shapeFor(connection).
+- Updating the mapping from connection to connection shape by adding logic in shapeFor(connection).
+
+By following these steps, you have successfully built a custom renderer that changes the appearance of Blockly's blocks.
