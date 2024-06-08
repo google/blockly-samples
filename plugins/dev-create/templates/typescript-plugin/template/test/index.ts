@@ -36,8 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
   };
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    throw new Error(`div with id 'root' not found`);
+  }
   createPlayground(
-    document.getElementById('root'),
+    document.getElementById('root')!,
     createWorkspace,
     defaultOptions,
   );
