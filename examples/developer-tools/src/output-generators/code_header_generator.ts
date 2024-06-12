@@ -53,7 +53,7 @@ export class CodeHeaderGenerator extends Blockly.CodeGenerator {
    * @override
    */
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected scrub_(
+  scrub_(
     block: Blockly.Block,
     code: string,
     thisOnly?: boolean,

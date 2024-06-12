@@ -4,6 +4,13 @@
 
 body {
   margin: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 8px;
 }
 
 .page-container {
@@ -20,25 +27,26 @@ body {
 }
 
 #main-workspace {
-  flex-basis: 0;
+  flex-basis: 60%;
   flex-grow: 1;
-  flex-shrink: 0;
+  flex-shrink: 1;
   margin: 8px;
   min-width: 500px;
 }
 
 .panel-container {
   display: flex;
-  flex-basis: 0;
+  flex-basis: 40%;
   flex-direction: column;
   flex-grow: 1;
-  overflow-y: scroll;
+  flex-shrink: 2;
+  min-width: 0;
 }
 
 .panel-container > * {
-  flex-basis: 20%;
   margin: 8px;
-  min-height: 100px;
+  display: flex;
+  flex-direction: column;
 }
 
 .fit-to-size {
@@ -46,8 +54,23 @@ body {
   min-height: auto;
 }
 
-#block-preview {
+.code-container {
+  min-height: 0;
+  flex-grow: 1;
+}
+
+.code-container > div {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+#block-preview-container {
   min-height: 200px;
+}
+
+#block-preview {
+  height: 100%;
 }
 
 pre {
@@ -77,6 +100,7 @@ pre {
   border: 2px solid transparent;
   border-radius: 3px;
   color: #3c4043;
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
   padding: 8px 16px;
@@ -104,8 +128,8 @@ md-menu {
   margin: 12px 24px;
   text-align: center;
 }
-#file-upload-drop-zone > span {
-  font-size: 48px;
+#file-upload-drop-zone > md-icon {
+  --md-icon-size: 48px;
 }
 
 #file-upload-drop-zone.isDragging {
@@ -123,6 +147,12 @@ md-menu {
 
 .hidden {
   visibility: hidden;
+}
+
+.copy-button {
+  --md-icon-button-icon-size: 18px;
+  --md-icon-button-state-layer-height: 24px;
+  --md-icon-button-state-layer-width: 24px;
 }
 
 /* Hides an element visually but not from screen readers */
@@ -146,10 +176,16 @@ md-menu {
 
   #main-workspace {
     flex-grow: 2;
-    min-height: 400px;
+    min-height: 40vh;
   }
 
   #outputDiv {
     height: fit-content;
+  }
+
+  .panel-container > * {
+    min-height: auto;
+    /* max-height: 300px; */
+    flex-basis: auto;
   }
 }
