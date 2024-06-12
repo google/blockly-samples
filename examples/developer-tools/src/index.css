@@ -62,7 +62,7 @@ h2 {
 .code-container > div {
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  min-height: 85px;
 }
 
 #block-preview-container {
