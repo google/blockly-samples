@@ -228,7 +228,9 @@ export class Controller {
     const ownerElement = document.getElementById(ownerId);
 
     if (!ownerElement) {
-      throw new Error(`No matching element found for copy button owner id ${ownerId}`);
+      throw new Error(
+        `No matching element found for copy button owner id ${ownerId}`,
+      );
     }
 
     const text = ownerElement.textContent;

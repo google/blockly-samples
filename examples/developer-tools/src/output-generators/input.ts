@@ -52,11 +52,9 @@ jsonDefinitionGenerator.forBlock['input'] = function (
     code.align = align;
   }
 
-  const connectionCheckValue = !!block.getInput('CHECK') ? generator.valueToCode(
-    block,
-    'CHECK',
-    JsonOrder.ATOMIC,
-  ) : '';
+  const connectionCheckValue = block.getInput('CHECK')
+    ? generator.valueToCode(block, 'CHECK', JsonOrder.ATOMIC)
+    : '';
   if (connectionCheckValue && connectionCheckValue !== 'null') {
     // If the connectionCheckValue is null, it doesn't get included in the input def.
     code.check = JSON.parse(connectionCheckValue);
@@ -106,11 +104,9 @@ javascriptDefinitionGenerator.forBlock['input'] = function (
       ? ''
       : `\n.setAlign(${alignDropdownToJsName[alignValue]})`;
 
-  const connectionCheckValue = !!block.getInput('CHECK') ? generator.valueToCode(
-    block,
-    'CHECK',
-    JsOrder.FUNCTION_CALL,
-  ) : '';
+  const connectionCheckValue = block.getInput('CHECK')
+    ? generator.valueToCode(block, 'CHECK', JsOrder.FUNCTION_CALL)
+    : '';
   const checkCode =
     !connectionCheckValue || connectionCheckValue === 'null'
       ? ''
