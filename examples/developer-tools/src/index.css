@@ -185,7 +185,10 @@ md-menu {
 
   .panel-container > * {
     min-height: auto;
-    /* max-height: 300px; */
     flex-basis: auto;
+  }
+
+  .code-container > div {
+    max-height: 300px;
   }
 }
