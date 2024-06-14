@@ -8,6 +8,8 @@ import '@material/web/menu/menu';
 import '@material/web/menu/menu-item';
 import '@material/web/dialog/dialog';
 import '@material/web/button/text-button';
+import '@material/web/icon/icon.js';
+import '@material/web/iconbutton/icon-button.js';
 
 export class ViewModel {
   // Main container divs for block factory
@@ -19,6 +21,8 @@ export class ViewModel {
   generatorStubDiv = document.getElementById('generator-stub').firstChild;
 
   // Toolbar menu/buttons
+  copyButtons = document.getElementsByClassName('copy-button');
+
   createButton = document.getElementById('create-btn');
   deleteButton = document.getElementById('delete-btn');
   loadButton = document.getElementById('load-btn');

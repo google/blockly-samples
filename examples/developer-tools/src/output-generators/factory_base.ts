@@ -170,7 +170,7 @@ javascriptDefinitionGenerator.forBlock['factory_base'] = function (
     }
     return '';
   };
-  const connectionsList = [];
+  const connectionsList: string[] = [];
   connectionsList.push(createConnectionChecks('OUTPUTCHECK', 'Output'));
   connectionsList.push(createConnectionChecks('TOPCHECK', 'PreviousStatement'));
   connectionsList.push(createConnectionChecks('BOTTOMCHECK', 'NextStatement'));

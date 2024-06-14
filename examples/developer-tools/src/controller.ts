@@ -47,6 +47,12 @@ export class Controller {
       this.updateOutput();
     });
 
+    for (const button of this.viewModel.copyButtons) {
+      button.addEventListener('click', (e) => {
+        this.handleCopyButton(e);
+      });
+    }
+
     this.viewModel.createButton.addEventListener('click', () => {
       this.handleCreateButton();
     });
@@ -214,6 +220,21 @@ export class Controller {
     const block = this.previewWorkspace.newBlock(blockName);
     block.initSvg();
     block.render();
+  }
+
+  private handleCopyButton(e: Event) {
+    const button = e.target as HTMLElement;
+    const ownerId = button.getAttribute('data-owner-id');
+    const ownerElement = document.getElementById(ownerId);
+
+    if (!ownerElement) {
+      throw new Error(
+        `No matching element found for copy button owner id ${ownerId}`,
+      );
+    }
+
+    const text = ownerElement.textContent;
+    navigator.clipboard.writeText(text);
   }
 
   /** Handles a click on the "Create new block" button. */

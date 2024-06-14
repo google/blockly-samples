@@ -4,9 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blockly Developer Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD@48,400,0,0" />
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..600&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1"
+      rel="stylesheet" />
   </head>
   <body>
     <div class="page-container">
@@ -33,7 +38,7 @@
               block here.
             </p>
             <div id="file-upload-drop-zone">
-              <span class="google-symbols" aria-hidden="true">upload_file</span>
+              <md-icon aria-hidden="true">upload_file</md-icon>
               <input
                 type="file"
                 id="file-upload"
@@ -71,61 +76,101 @@
         </md-dialog>
         <div id="main-workspace"></div>
         <div id="output-pane" class="panel-container">
-          <div id="block-preview"></div>
-          <div id="output-config" class="fit-to-size">
-            <div>
-              Block definition format:
-              <input
-                type="radio"
-                id="definition-json"
-                name="block-definition-language"
-                value="json"
-                checked />
-              <label for="definition-json">JSON</label>
-              <input
-                type="radio"
-                id="definition-js"
-                name="block-definition-language"
-                value="js" />
-              <label for="definition-js">JavaScript</label>
-            </div>
-            <div>
-              Blockly import format:
-              <input
-                type="radio"
-                id="import-esm"
-                name="import-format"
-                value="import"
-                checked />
-              <label for="import-esm">Import (esm/cjs)</label>
-              <input
-                type="radio"
-                id="import-script"
-                name="import-format"
-                value="script" />
-              <label for="import-script">Script tags</label>
-            </div>
-            <div>
-              <label for="code-generator-language"
-                >Code generator language:</label
-              >
-              <select
-                name="code-generator-language"
-                id="code-generator-language">
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-                <option value="dart">Dart</option>
-                <option value="php">PHP</option>
-                <option value="lua">Lua</option>
-              </select>
+          <div id="block-preview-container">
+            <h2>Preview</h2>
+            <div id="block-preview"></div>
+          </div>
+          <div class="fit-to-size">
+            <h2>Output Configuration</h2>
+            <div id="output-config">
+              <div>
+                Block definition format:
+                <input
+                  type="radio"
+                  id="definition-json"
+                  name="block-definition-language"
+                  value="json"
+                  checked />
+                <label for="definition-json">JSON</label>
+                <input
+                  type="radio"
+                  id="definition-js"
+                  name="block-definition-language"
+                  value="js" />
+                <label for="definition-js">JavaScript</label>
+              </div>
+              <div>
+                Blockly import format:
+                <input
+                  type="radio"
+                  id="import-esm"
+                  name="import-format"
+                  value="import"
+                  checked />
+                <label for="import-esm">Import (esm/cjs)</label>
+                <input
+                  type="radio"
+                  id="import-script"
+                  name="import-format"
+                  value="script" />
+                <label for="import-script">Script tags</label>
+              </div>
+              <div>
+                <label for="code-generator-language"
+                  >Code generator language:</label
+                >
+                <select
+                  name="code-generator-language"
+                  id="code-generator-language">
+                  <option value="javascript">JavaScript</option>
+                  <option value="python">Python</option>
+                  <option value="dart">Dart</option>
+                  <option value="php">PHP</option>
+                  <option value="lua">Lua</option>
+                </select>
+              </div>
             </div>
           </div>
-          <pre id="code-headers"><code></code></pre>
-          <pre id="block-definition">
-                      JSON Definition
-                      <code></code>
-                  </pre>
-          <pre id="generator-stub"><code></code></pre>
+          <div class="code-container">
+            <div>
+              <h2>
+                Code Headers
+                <md-icon-button
+                  class="copy-button"
+                  data-owner-id="code-headers"
+                  aria-label="Copy code">
+                  <md-icon>content_copy</md-icon>
+                </md-icon-button>
+              </h2>
+              <pre id="code-headers"><code></code></pre>
+            </div>
+            <div>
+              <h2>
+                Block Definition
+                <md-icon-button
+                  class="copy-button"
+                  data-owner-id="block-definition"
+                  aria-label="Copy code">
+                  <md-icon>content_copy</md-icon>
+                </md-icon-button>
+              </h2>
+              <pre id="block-definition">
+                        <code></code>
+                    </pre>
+            </div>
+            <div>
+              <h2>
+                Generator Stub
+                <md-icon-button
+                  class="copy-button"
+                  data-owner-id="generator-stub"
+                  aria-label="Copy code">
+                  <md-icon>content_copy</md-icon>
+                </md-icon-button>
+              </h2>
+              <pre id="generator-stub"><code></code></pre>
+            </div>
+          </div>
         </div>
       </div>
     </div>
