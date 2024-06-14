@@ -234,8 +234,6 @@ export class Controller {
     }
 
     const text = ownerElement.textContent;
-    console.log(text);
-
     navigator.clipboard.writeText(text);
   }
 
