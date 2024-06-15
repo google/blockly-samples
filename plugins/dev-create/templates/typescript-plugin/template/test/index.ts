@@ -40,9 +40,5 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!rootElement) {
     throw new Error(`div with id 'root' not found`);
   }
-  createPlayground(
-    rootElement,
-    createWorkspace,
-    defaultOptions,
-  );
+  createPlayground(rootElement, createWorkspace, defaultOptions);
 });
