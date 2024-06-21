@@ -26,6 +26,16 @@ import {
 } from './generator_stub_generator';
 
 /**
+ * Gets a JavaScript-legal name for the block.
+ *
+ * @param name user-entered name.
+ * @returns legal name with underscores replacing spaces.
+ */
+const getLegalBlockName = function (name: string): string {
+  return encodeURI(name.toLowerCase().replace(/ /g, '_').replace(/[^\w]/g, ''));
+};
+
+/**
  * Builds the 'message0' part of the JSON block definition.
  * The message should have label fields' text inlined into the message.
  * Doing so makes the message more translatable as fields can be moved around.
@@ -62,8 +72,7 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function (
   block: Blockly.Block,
   generator: JsonDefinitionGenerator,
 ): string {
-  // TODO: Get a JSON-legal name for the block
-  const blockName = block.getFieldValue('NAME');
+  const blockName = getLegalBlockName(block.getFieldValue('NAME'));
   // Tooltip and Helpurl string blocks can't be removed, so we don't care what happens if the block doesn't exist
   const tooltip = JSON.parse(
     generator.valueToCode(block, 'TOOLTIP', JsonOrder.ATOMIC),
@@ -141,8 +150,7 @@ javascriptDefinitionGenerator.forBlock['factory_base'] = function (
   block: Blockly.Block,
   generator: JavascriptDefinitionGenerator,
 ) {
-  // TODO: Get a JavaScript-legal name for the block
-  const blockName = block.getFieldValue('NAME');
+  const blockName = getLegalBlockName(block.getFieldValue('NAME'));
   const inputsValue = generator.statementToCode(block, 'INPUTS');
   const inputs = inputsValue
     ? generator.prefixLines(inputsValue, generator.INDENT) + '\n'
@@ -242,7 +250,7 @@ generatorStubGenerator.forBlock['factory_base'] = function (
   generator: GeneratorStubGenerator,
 ): string {
   const lang = generator.getLanguage();
-  const blockName = block.getFieldValue('NAME');
+  const blockName = getLegalBlockName(block.getFieldValue('NAME'));
   const inputs = generator.statementToCode(block, 'INPUTS');
   const scriptPrefix = generator.getScriptMode() ? lang + '.' : '';
   const hasOutput = !!block.getInput('OUTPUTCHECK');
