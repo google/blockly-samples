@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-multilineinput Demo</div>
       <div class="subtitle">A Blockly multilineinput field.</div>
     </div>
-    5.0.2
+    5.0.3
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-multilineinput" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-multilineinput" class="button" target="_blank">View on npm</a>
@@ -94,11 +94,11 @@ import {registerFieldMultilineInput} from '@blockly/field-multilineinput';
 registerFieldMultilineInput();
 Blockly.defineBlocksWithJsonArray([
     {
-        "type": "test_field_multilineinput",
+        "type": "test_field_multilinetext",
         "message0": "multilineinput: %1",
         "args0": [
             {
-                "type": "field_multilineinput",
+                "type": "field_multilinetext",
                 "name": "FIELDNAME",
                 "text": "some text \n with newlines"
             }
