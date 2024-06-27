@@ -63,11 +63,11 @@ import {registerFieldMultilineInput} from '@blockly/field-multilineinput';
 registerFieldMultilineInput();
 Blockly.defineBlocksWithJsonArray([
     {
-        "type": "test_field_multilineinput",
+        "type": "test_field_multilinetext",
         "message0": "multilineinput: %1",
         "args0": [
             {
-                "type": "field_multilineinput",
+                "type": "field_multilinetext",
                 "name": "FIELDNAME",
                 "text": "some text \n with newlines"
             }
