@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.3](https://github.com/google/blockly-samples/compare/@blockly/field-multilineinput@5.0.2...@blockly/field-multilineinput@5.0.3) (2024-06-27)
+
+
+### Bug Fixes
+
+* **docs:** Update README for multiline field ([#2394](https://github.com/google/blockly-samples/issues/2394)) ([377d38c](https://github.com/google/blockly-samples/commit/377d38c919723861aa979bdcf210bedd474c3481))
+
+
+
 ## [5.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-multilineinput@5.0.1...@blockly/field-multilineinput@5.0.2) (2024-06-06)
 
 **Note:** Version bump only for package @blockly/field-multilineinput
