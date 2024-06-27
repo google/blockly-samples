@@ -26,13 +26,21 @@ import {
 } from './generator_stub_generator';
 
 /**
- * Gets a JavaScript-legal name for the block.
+ * Gets a name for the block that is likely to be JavaScript-legal.
+ * Replaces any character that isn't a digit, ascii letter, underscore,
+ * or dollar sign with an underscore. Prepends names that start with
+ * digits with an underscore.
+ *
+ * This does not check for reserved words in JavaScript, so the name isn't
+ * guaranteed to be a legal identifier.
+ * This also disallows what would be legal identifiers that use unicode
+ * letters.
  *
  * @param name user-entered name.
- * @returns legal name with underscores replacing spaces.
+ * @returns legal-ish name.
  */
 const getLegalBlockName = function (name: string): string {
-  return encodeURI(name.toLowerCase().replace(/ /g, '_').replace(/[^\w]/g, ''));
+  return name.replace(/[^\da-zA-Z_$]/g, '_').replace(/^(\d)/, '_$1');
 };
 
 /**
