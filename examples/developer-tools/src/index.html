@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://google.github.io/blockly-samples/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blockly Developer Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..600&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <div class="page-container">
+      <div class="toolbar" aria-role="banner">
+        <a href=""
+          ><img
+            src="https://blocklycodelabs.dev/images/logo_knockout.png"
+            class="logo"
+            alt="Blockly logo"
+        /></a>
+        <button id="create-btn" class="btn">Create new block</button>
+        <span style="position: relative">
+          <button id="load-btn" class="btn">Load block</button>
+          <md-menu id="load-menu" anchor="load-btn"></md-menu>
+        </span>
+        <button id="delete-btn" class="btn">Delete</button>
+      </div>
+      <div id="block-factory-container">
+        <md-dialog id="file-upload-modal">
+          <div slot="headline">Import from Block Factory</div>
+          <div slot="content">
+            <p>
+              You can upload a file from the legacy Block Factory to import that
+              block here.
+            </p>
+            <div id="file-upload-drop-zone">
+              <md-icon aria-hidden="true">upload_file</md-icon>
+              <input
+                type="file"
+                id="file-upload"
+                class="visually-hidden"
+                accept=".txt"
+                multiple="true" />
+              <p>
+                <label for="file-upload" id="file-label" tabindex="1">
+                  Choose a file
+                </label>
+                or drag it here
+              </p>
+              <p id="file-upload-warning" class="warning-message hidden">
+                File could not be parsed. Make sure you're uploading the file
+                you downloaded from the legacy Block Factory.
+              </p>
+            </div>
+          </div>
+          <div slot="actions">
+            <md-text-button id="file-upload-close" value="cancel">
+              Cancel
+            </md-text-button>
+          </div>
+        </md-dialog>
+        <md-dialog id="upload-results-modal">
+          <div slot="headline">Import Results</div>
+          <div slot="content">
+            <p id="upload-results"></p>
+          </div>
+          <div slot="actions">
+            <md-text-button id="upload-results-close" value="ok">
+              OK
+            </md-text-button>
+          </div>
+        </md-dialog>
+        <div id="main-workspace"></div>
+        <div id="output-pane" class="panel-container">
+          <div id="block-preview-container">
+            <h2>Preview</h2>
+            <div id="block-preview"></div>
+          </div>
+          <div class="fit-to-size">
+            <h2>
+              Output Configuration
+              <md-icon-button
+                href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools#output_configuration"
+                target="blank"
+                class="action-button"
+                aria-label="Help">
+                <md-icon>help</md-icon>
+              </md-icon-button>
+            </h2>
+            <div id="output-config">
+              <div>
+                Block definition format:
+                <input
+                  type="radio"
+                  id="definition-json"
+                  name="block-definition-language"
+                  value="json"
+                  checked />
+                <label for="definition-json">JSON</label>
+                <input
+                  type="radio"
+                  id="definition-js"
+                  name="block-definition-language"
+                  value="js" />
+                <label for="definition-js">JavaScript</label>
+              </div>
+              <div>
+                Blockly import format:
+                <input
+                  type="radio"
+                  id="import-esm"
+                  name="import-format"
+                  value="import"
+                  checked />
+                <label for="import-esm">Import (esm/cjs)</label>
+                <input
+                  type="radio"
+                  id="import-script"
+                  name="import-format"
+                  value="script" />
+                <label for="import-script">Script tags</label>
+              </div>
+              <div>
+                <label for="code-generator-language"
+                  >Code generator language:</label
+                >
+                <select
+                  name="code-generator-language"
+                  id="code-generator-language">
+                  <option value="javascript">JavaScript</option>
+                  <option value="python">Python</option>
+                  <option value="dart">Dart</option>
+                  <option value="php">PHP</option>
+                  <option value="lua">Lua</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="code-container">
+            <div>
+              <h2>
+                Code Headers
+                <md-icon-button
+                  class="action-button"
+                  data-owner-id="code-headers"
+                  aria-label="Copy code">
+                  <md-icon>content_copy</md-icon>
+                </md-icon-button>
+              </h2>
+              <pre id="code-headers"><code></code></pre>
+            </div>
+            <div>
+              <h2>
+                Block Definition
+                <md-icon-button
+                  class="action-button"
+                  data-owner-id="block-definition"
+                  aria-label="Copy code">
+                  <md-icon>content_copy</md-icon>
+                </md-icon-button>
+              </h2>
+              <pre id="block-definition">
+                        <code></code>
+                    </pre>
+            </div>
+            <div>
+              <h2>
+                Generator Stub
+                <md-icon-button
+                  class="action-button"
+                  data-owner-id="generator-stub"
+                  aria-label="Copy code">
+                  <md-icon>content_copy</md-icon>
+                </md-icon-button>
+              </h2>
+              <pre id="generator-stub"><code></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
