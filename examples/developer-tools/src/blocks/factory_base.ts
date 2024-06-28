@@ -112,6 +112,9 @@ export const factoryBase = {
     this.moveInputBefore(name, 'COLOUR');
   },
   validateName: function (name: string): string | null {
+    // Name cannot be an empty string.
+    if (name === '') return null;
+
     // If the name is prohibited then it's never valid
     if (storage.getProhibitedBlockNames().has(name)) return null;
 

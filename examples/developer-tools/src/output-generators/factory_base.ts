@@ -26,6 +26,24 @@ import {
 } from './generator_stub_generator';
 
 /**
+ * Gets a name for the block that is likely to be JavaScript-legal.
+ * Replaces any character that isn't a digit, ascii letter, underscore,
+ * or dollar sign with an underscore. Prepends names that start with
+ * digits with an underscore.
+ *
+ * This does not check for reserved words in JavaScript, so the name isn't
+ * guaranteed to be a legal identifier.
+ * This also disallows what would be legal identifiers that use unicode
+ * letters.
+ *
+ * @param name user-entered name.
+ * @returns legal-ish name.
+ */
+const getLegalBlockName = function (name: string): string {
+  return name.replace(/[^\da-zA-Z_$]/g, '_').replace(/^(\d)/, '_$1');
+};
+
+/**
  * Builds the 'message0' part of the JSON block definition.
  * The message should have label fields' text inlined into the message.
  * Doing so makes the message more translatable as fields can be moved around.
@@ -62,8 +80,7 @@ jsonDefinitionGenerator.forBlock['factory_base'] = function (
   block: Blockly.Block,
   generator: JsonDefinitionGenerator,
 ): string {
-  // TODO: Get a JSON-legal name for the block
-  const blockName = block.getFieldValue('NAME');
+  const blockName = getLegalBlockName(block.getFieldValue('NAME'));
   // Tooltip and Helpurl string blocks can't be removed, so we don't care what happens if the block doesn't exist
   const tooltip = JSON.parse(
     generator.valueToCode(block, 'TOOLTIP', JsonOrder.ATOMIC),
@@ -141,8 +158,7 @@ javascriptDefinitionGenerator.forBlock['factory_base'] = function (
   block: Blockly.Block,
   generator: JavascriptDefinitionGenerator,
 ) {
-  // TODO: Get a JavaScript-legal name for the block
-  const blockName = block.getFieldValue('NAME');
+  const blockName = getLegalBlockName(block.getFieldValue('NAME'));
   const inputsValue = generator.statementToCode(block, 'INPUTS');
   const inputs = inputsValue
     ? generator.prefixLines(inputsValue, generator.INDENT) + '\n'
@@ -242,7 +258,7 @@ generatorStubGenerator.forBlock['factory_base'] = function (
   generator: GeneratorStubGenerator,
 ): string {
   const lang = generator.getLanguage();
-  const blockName = block.getFieldValue('NAME');
+  const blockName = getLegalBlockName(block.getFieldValue('NAME'));
   const inputs = generator.statementToCode(block, 'INPUTS');
   const scriptPrefix = generator.getScriptMode() ? lang + '.' : '';
   const hasOutput = !!block.getInput('OUTPUTCHECK');
