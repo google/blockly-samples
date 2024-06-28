@@ -149,7 +149,7 @@ md-menu {
   visibility: hidden;
 }
 
-.copy-button {
+.action-button {
   --md-icon-button-icon-size: 18px;
   --md-icon-button-state-layer-height: 24px;
   --md-icon-button-state-layer-width: 24px;
