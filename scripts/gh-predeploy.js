@@ -69,7 +69,7 @@ function injectFooter(initialContents) {
         <ul>
           <li><a target="_blank" href="https://developers.google.com/blockly/guides/overview/">Developer Docs</a></li>
           <li><a target="_blank" href="https://blocklycodelabs.dev/">Codelabs</a></li>
-          <li><a target="_blank" href="https://blockly-demo.appspot.com/static/demos/blockfactory/index.html">Developer
+          <li><a target="_blank" href="https://google.github.io/blockly-samples/developer-tools/index.html">Developer
               Tools</a></li>
         </ul>
       </div>
@@ -510,6 +510,30 @@ function getExampleFolders() {
     );
   });
 }
+
+/**
+ * Copies the files from the developer-tools dist directory into
+ * the gh-pages directory.
+ *
+ * This is treated separately from other examples because it doesn't
+ * get the same page chrome added to it.
+ *
+ * @returns {Function | undefined} Gulp task.
+ */
+function prepareDeveloperTools() {
+  const baseDir = 'examples';
+  const devToolsDir = 'developer-tools';
+  console.log(`Preparing developer-tools for deployment.`);
+
+  // Create target folder, if it doesn't exist.
+  fs.mkdirSync(path.join('gh-pages', baseDir, devToolsDir), {recursive: true});
+
+  // Copy all files from `dist/` subdirectory into the corresponding gh-pages directory
+  return gulp
+    .src('./examples/developer-tools/dist/*')
+    .pipe(gulp.dest('./gh-pages/examples/developer-tools'));
+}
+
 /**
  * Prepare examples/demos for deployment to gh-pages.
  *
@@ -526,6 +550,7 @@ function prepareToDeployExamples(done) {
         return prepareExample(folder, false, done);
       };
     }),
+    prepareDeveloperTools,
   )(done);
 }
 
@@ -542,6 +567,7 @@ function prepareLocalExamples(done) {
         return prepareExample(folder, true, done);
       };
     }),
+    prepareDeveloperTools,
   )(done);
 }
 

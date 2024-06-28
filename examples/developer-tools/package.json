@@ -10,7 +10,8 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "predeploy": "npm run build:prod"
   },
   "repository": {
     "type": "git",
