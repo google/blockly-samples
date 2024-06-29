@@ -18,6 +18,7 @@ const contentChangeEvents = [
   Blockly.Events.BLOCK_MOVE,
   Blockly.Events.BLOCK_DELETE,
   Blockly.Events.COMMENT_MOVE,
+  Blockly.Events.COMMENT_RESIZE,
   Blockly.Events.COMMENT_CREATE,
   Blockly.Events.COMMENT_DELETE,
 ];
@@ -196,7 +197,9 @@ export class ContentHighlight {
         this.position(this.cachedContentMetrics, absoluteMetrics);
       }
     } else if (event.type === Blockly.Events.BLOCK_DRAG) {
-      this.handleBlockDrag(event as Blockly.Events.BlockDrag);
+      this.handleDragEvent(event as Blockly.Events.BlockDrag);
+    } else if (event.type === Blockly.Events.COMMENT_DRAG) {
+      this.handleDragEvent(event as Blockly.Events.CommentDrag);
     } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
       // Resizes the content highlight when it is a block change event
       const metricsManager = this.workspace.getMetricsManager();
@@ -211,7 +214,9 @@ export class ContentHighlight {
    *
    * @param event The BlockDrag event.
    */
-  private handleBlockDrag(event: Blockly.Events.BlockDrag) {
+  private handleDragEvent(
+    event: Blockly.Events.BlockDrag | Blockly.Events.CommentDrag,
+  ) {
     const opacity = event.isStart ? '0' : '1';
     this.svgGroup?.setAttribute('opacity', opacity);
   }
