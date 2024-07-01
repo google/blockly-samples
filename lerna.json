@@ -11,5 +11,6 @@
     "name": "conventionalcommits"
   },
   "ignoreChanges": ["plugins/**/package-lock.json"],
-  "useNx": false
+  "useNx": false,
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

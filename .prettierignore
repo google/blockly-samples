@@ -23,3 +23,5 @@ plugins/dev-create/templates/sample-app-ts/*
 
 # Golden test files
 plugins/**/golden/*
+
+/.nx/workspace-data
