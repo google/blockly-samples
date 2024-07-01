@@ -29,7 +29,6 @@ import * as Blockly from 'blockly/core';
 // Since we're using json to initialize the field, we'll need to import it.
 import '../fields/BlocklyReactField';
 
-
 const testReactField = {
   type: 'test_react_field',
   message0: 'custom field %1',
