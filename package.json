@@ -42,7 +42,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jsdoc": "^46.8.2",
-    "gh-pages": "^6.1.1",
+    "gh-pages": "^5.0.0",
     "globals": "^13.22.0",
     "gulp": "^5.0.0",
     "gulp-header": "^2.0.9",
