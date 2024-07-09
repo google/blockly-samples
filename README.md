@@ -1,3 +1,5 @@
+Some irrelevant change.
+
 <h1 align="center">
 Blockly Samples <br /> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly" /> </a>
 </h1>
