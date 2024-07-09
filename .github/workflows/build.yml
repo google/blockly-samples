@@ -22,8 +22,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Npm Install
-        run: npm install
+      - name: Npm CI
+        run: npm ci
 
       - name: Build
         run: npm run build
@@ -42,8 +42,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Npm Install
-        run: npm install
+      - name: Npm CI
+        run: npm ci
 
       - name: Lint
         run: npm run lint
@@ -59,8 +59,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Npm Install
-        run: npm install
+      - name: Npm CI
+        run: npm ci
 
       - name: Check Format
         run: npm run format:check
