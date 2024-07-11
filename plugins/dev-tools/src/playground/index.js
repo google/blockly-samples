@@ -175,6 +175,12 @@ export function createPlayground(
               wordWrap: true,
             });
           }
+          if (
+            generateModel.getValue() === text &&
+            editor.getModel() === generateModel
+          ) {
+            return;
+          }
           generateModel.pushEditOperations(
             [],
             [{range: generateModel.getFullModelRange(), text}],
