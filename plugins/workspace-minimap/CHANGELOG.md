@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.2.3...@blockly/workspace-minimap@0.2.4) (2024-07-11)
+
+**Note:** Version bump only for package @blockly/workspace-minimap
+
+
+
+
+
 ## [0.2.3](https://github.com/google/blockly-samples/compare/@blockly/workspace-minimap@0.2.2...@blockly/workspace-minimap@0.2.3) (2024-07-04)
 
 **Note:** Version bump only for package @blockly/workspace-minimap

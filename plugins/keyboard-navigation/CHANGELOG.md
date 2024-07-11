@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.4](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.3...@blockly/keyboard-navigation@0.6.4) (2024-07-11)
+
+
+### Reverts
+
+* Revert "chore(deps): Bump the npm_and_yarn group across 54 directories with 19 updates (#2403)" (#2410) ([bad8ffb](https://github.com/google/blockly-samples/commit/bad8ffbf85caa4e5b68d2f010cd0deaa9e3dd98f)), closes [#2403](https://github.com/google/blockly-samples/issues/2403) [#2410](https://github.com/google/blockly-samples/issues/2410)
+* Revert "chore(deps): Bump the npm_and_yarn group across 6 directories with 11…" (#2408) ([95b13c7](https://github.com/google/blockly-samples/commit/95b13c7de3b6b3892b5c04bdc02a798ff04061b4)), closes [#2408](https://github.com/google/blockly-samples/issues/2408)
+
+
+
 ## [0.6.3](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.2...@blockly/keyboard-navigation@0.6.3) (2024-07-04)
 
 **Note:** Version bump only for package @blockly/keyboard-navigation
