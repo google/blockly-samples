@@ -831,7 +831,7 @@ export class Backpack
    *   being dragged.
    */
   onDragEnter(dragElement: Blockly.IDraggable) {
-    if (dragElement instanceof Blockly.BlockSvg) {
+    if (isBackpackable(dragElement)) {
       this.updateHoverStying(true);
     }
   }
