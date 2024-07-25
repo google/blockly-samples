@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@6.0.4...@blockly/plugin-scroll-options@6.0.5) (2024-07-25)
+
+**Note:** Version bump only for package @blockly/plugin-scroll-options
+
+
+
+
+
 ## [6.0.4](https://github.com/google/blockly-samples/compare/@blockly/plugin-scroll-options@6.0.3...@blockly/plugin-scroll-options@6.0.4) (2024-07-11)
 
 **Note:** Version bump only for package @blockly/plugin-scroll-options

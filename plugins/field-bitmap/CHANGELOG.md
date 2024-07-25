@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.5](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.4...@blockly/field-bitmap@5.0.5) (2024-07-25)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
 ## [5.0.4](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.3...@blockly/field-bitmap@5.0.4) (2024-07-11)
 
 

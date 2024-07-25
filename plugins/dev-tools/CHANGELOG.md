@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.5](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.4...@blockly/dev-tools@8.0.5) (2024-07-25)
+
+
+### Bug Fixes
+
+* dev-tools only set monaco model and text when changing ([#2417](https://github.com/google/blockly-samples/issues/2417)) ([20be3a3](https://github.com/google/blockly-samples/commit/20be3a3b43af41987f631b931d65121d761f6377)), closes [/github.com/mit-cml/workspace-multiselect/pull/62#issuecomment-2196819235](https://github.com/google//github.com/mit-cml/workspace-multiselect/pull/62/issues/issuecomment-2196819235) [/github.com/mit-cml/workspace-multiselect/pull/62#issuecomment-2212561339](https://github.com/google//github.com/mit-cml/workspace-multiselect/pull/62/issues/issuecomment-2212561339) [/github.com/mit-cml/workspace-multiselect/pull/62#issuecomment-2214203536](https://github.com/google//github.com/mit-cml/workspace-multiselect/pull/62/issues/issuecomment-2214203536)
+
+
+
 ## [8.0.4](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.3...@blockly/dev-tools@8.0.4) (2024-07-11)
 
 **Note:** Version bump only for package @blockly/dev-tools

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@6.0.4...@blockly/workspace-backpack@6.0.5) (2024-07-25)
+
+
+### Bug Fixes
+
+* updated onDragEnter for backpack plugin to check for backpackable instead of block ([#2421](https://github.com/google/blockly-samples/issues/2421)) ([70794ab](https://github.com/google/blockly-samples/commit/70794abe8dea497c8dbd9dbf84bb6bb8046d8a3d))
+
+
+
 ## [6.0.4](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@6.0.3...@blockly/workspace-backpack@6.0.4) (2024-07-11)
 
 **Note:** Version bump only for package @blockly/workspace-backpack

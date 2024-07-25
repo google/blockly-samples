@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-multilineinput",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "A Blockly multilineinput field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.3",
-    "@blockly/dev-tools": "^8.0.4",
+    "@blockly/dev-tools": "^8.0.5",
     "chai": "^4.2.0",
     "sinon": "^9.0.1",
     "typescript": "^5.4.5"
