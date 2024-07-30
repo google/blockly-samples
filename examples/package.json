@@ -9,6 +9,6 @@
     "update": "lerna run update"
   },
   "devDependencies": {
-    "lerna": "^6.4.1"
+    "lerna": "^8.1.7"
   }
 }
