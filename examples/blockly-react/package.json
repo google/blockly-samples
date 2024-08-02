@@ -41,5 +41,8 @@
       "build/index.html",
       "build/**/*"
     ]
+  },
+  "devDependencies": {
+    "acorn": "^8.12.1"
   }
 }
