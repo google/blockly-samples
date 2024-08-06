@@ -362,7 +362,11 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       this.close();
     } else if (e.key === 'Enter') {
       if (this.searchOnInput) {
-        this.next();
+        if (e.shiftKey) {
+          this.previous();
+        } else {
+          this.next();
+        }
       } else {
         if (!this.inputElement) return;
         const inputValue = this.inputElement.value.trim();
@@ -440,6 +444,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   open() {
     this.setVisible(true);
     this.inputElement?.focus();
+    this.inputElement?.select();
     if (this.searchText) {
       this.searchAndHighlight(this.searchText);
     }
