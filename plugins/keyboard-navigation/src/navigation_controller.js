@@ -58,10 +58,6 @@ export class NavigationController {
    * @protected
    */
   addShortcutHandlers() {
-    if (Blockly.FieldColour) {
-      Blockly.FieldColour.prototype.onShortcut = this.fieldColourHandler;
-    }
-
     if (Blockly.FieldDropdown) {
       Blockly.FieldDropdown.prototype.onShortcut = this.fieldDropdownHandler;
     }
@@ -77,10 +73,6 @@ export class NavigationController {
    * @protected
    */
   removeShortcutHandlers() {
-    if (Blockly.FieldColour) {
-      Blockly.FieldColour.prototype.onShortcut = null;
-    }
-
     if (Blockly.FieldDropdown) {
       Blockly.FieldDropdown.prototype.onShortcut = null;
     }
@@ -88,40 +80,6 @@ export class NavigationController {
     if (Blockly.Toolbox) {
       Blockly.Toolbox.prototype.onShortcut = null;
     }
-  }
-
-  /**
-   * Handles the given keyboard shortcut.
-   * This is only triggered when keyboard accessibility mode is enabled.
-   * @param {!Blockly.ShortcutRegistry.KeyboardShortcut} shortcut The shortcut
-   *     to be handled.
-   * @returns {boolean} True if the field handled the shortcut,
-   *     false otherwise.
-   * @this {Blockly.FieldColour}
-   * @protected
-   */
-  fieldColourHandler(shortcut) {
-    if (this.picker_) {
-      switch (shortcut.name) {
-        case Constants.SHORTCUT_NAMES.PREVIOUS:
-          this.moveHighlightBy_(0, -1);
-          return true;
-        case Constants.SHORTCUT_NAMES.NEXT:
-          this.moveHighlightBy_(0, 1);
-          return true;
-        case Constants.SHORTCUT_NAMES.OUT:
-          this.moveHighlightBy_(-1, 0);
-          return true;
-        case Constants.SHORTCUT_NAMES.IN:
-          this.moveHighlightBy_(1, 0);
-          return true;
-        default:
-          return false;
-      }
-    }
-    // If we haven't already handled the shortcut, let the default Field
-    // handler try.
-    return Blockly.Field.prototype.onShortcut.call(this, shortcut);
   }
 
   /**
