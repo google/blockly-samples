@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/google/blockly-samples/compare/@blockly/theme-highcontrast@6.0.4...@blockly/theme-highcontrast@6.0.5) (2024-08-08)
+
+**Note:** Version bump only for package @blockly/theme-highcontrast
+
+
+
+
+
 ## [6.0.4](https://github.com/google/blockly-samples/compare/@blockly/theme-highcontrast@6.0.3...@blockly/theme-highcontrast@6.0.4) (2024-08-01)
 
 **Note:** Version bump only for package @blockly/theme-highcontrast

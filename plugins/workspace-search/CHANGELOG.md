@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.0.6...@blockly/plugin-workspace-search@9.1.0) (2024-08-08)
+
+
+### Features
+
+* highlight text in workspace search on open and add backwards nav ([#2440](https://github.com/google/blockly-samples/issues/2440)) ([0eb13cd](https://github.com/google/blockly-samples/commit/0eb13cd73cafdb0931dbc54064839838ebbb3fab))
+
+
+
 ## [9.0.6](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.0.5...@blockly/plugin-workspace-search@9.0.6) (2024-08-01)
 
 **Note:** Version bump only for package @blockly/plugin-workspace-search

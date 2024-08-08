@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/migrate@3.0.1...@blockly/migrate@3.0.2) (2024-08-08)
+
+
+### Reverts
+
+* Revert "chore(deps): Bump the npm_and_yarn group across 54 directories with 19 updates (#2403)" (#2410) ([bad8ffb](https://github.com/google/blockly-samples/commit/bad8ffbf85caa4e5b68d2f010cd0deaa9e3dd98f)), closes [#2403](https://github.com/google/blockly-samples/issues/2403) [#2410](https://github.com/google/blockly-samples/issues/2410)
+
+
+
 ## [3.0.1](https://github.com/google/blockly-samples/compare/@blockly/migrate@3.0.0...@blockly/migrate@3.0.1) (2024-05-30)
 
 

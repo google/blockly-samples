@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.7](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.6...@blockly/keyboard-navigation@0.6.7) (2024-08-08)
+
+
+### Bug Fixes
+
+* **keyboard-navigation:** remove references to blockly.fieldcolour ([#2441](https://github.com/google/blockly-samples/issues/2441)) ([81787b7](https://github.com/google/blockly-samples/commit/81787b7008b2e255da74487ee32eafeff2477177))
+
+
+
 ## [0.6.6](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.5...@blockly/keyboard-navigation@0.6.6) (2024-08-01)
 
 **Note:** Version bump only for package @blockly/keyboard-navigation
