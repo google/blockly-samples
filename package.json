@@ -50,7 +50,8 @@
     "js-green-licenses": "^4.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^3.0.2",
-    "showdown": "^2.1.0"
+    "showdown": "^2.1.0",
+    "typescript": "^5.5.4"
   },
   "publishConfig": {
     "access": "public",
