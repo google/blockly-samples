@@ -1,5 +1,5 @@
 {
-  "packages": ["plugins/**/**/**"],
+  "packages": ["**"],
   "version": "independent",
   "npmClient": "npm",
   "command": {
@@ -10,6 +10,6 @@
   "changelogPreset": {
     "name": "conventionalcommits"
   },
-  "ignoreChanges": ["plugins/**/package-lock.json"],
+  "ignoreChanges": ["**/package-lock.json"],
   "useNx": false
 }

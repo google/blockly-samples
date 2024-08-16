@@ -1,0 +1,12 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@lerna/legacy-package-management": "^8.1.7",
+    "lerna": "^8.1.8"
+  }
+}

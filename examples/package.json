@@ -9,6 +9,7 @@
     "update": "lerna run update"
   },
   "devDependencies": {
+    "@lerna/legacy-package-management": "^8.1.7",
     "lerna": "^8.1.7"
   }
 }
