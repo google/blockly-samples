@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "audit:fix": "cd plugins && lerna run audit:fix && lerna bootstrap",
-    "boot": "cd plugins && lerna bootstrap",
+    "boot": "cd plugins && npm ci",
     "build": "cd plugins && lerna run build",
     "clean": "cd plugins && lerna run clean",
     "clean:node": "cd plugins && lerna clean --yes",
