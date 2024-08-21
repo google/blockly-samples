@@ -116,7 +116,7 @@ function exitIfNoReleaseDir(releaseDir, done) {
  */
 function publish(force) {
   return (done) => {
-    const releaseDir = 'dist';
+    const releaseDir = 'dist/plugins';
     exitIfNoReleaseDir(releaseDir, done);
 
     // Run lerna publish. Uses conventional commits for versioning
@@ -163,7 +163,7 @@ function forcePublish(done) {
  * @param {Function} done Completed callback.
  */
 function publishFromPackage(done) {
-  const releaseDir = 'dist';
+  const releaseDir = 'dist/plugins';
   exitIfNoReleaseDir(releaseDir, done);
 
   // Run lerna publish. Will not update versions.
@@ -185,7 +185,7 @@ function publishFromPackage(done) {
  * @param {Function} done Completed callback.
  */
 function checkVersions(done) {
-  const releaseDir = 'dist';
+  const releaseDir = 'dist/plugins';
   exitIfNoReleaseDir(releaseDir, done);
 
   // Check version numbers that would be created.
@@ -234,8 +234,10 @@ function deployToGhPages(repo) {
  */
 function preparePluginsForLocal(isBeta) {
   return (done) => {
+    const pluginsDirectory = 'plugins';
     if (isBeta) {
       execSync(`npx lerna exec -- npm install blockly@beta --force `, {
+        cwd: pluginsDirectory,
         stdio: 'inherit',
       });
     }
