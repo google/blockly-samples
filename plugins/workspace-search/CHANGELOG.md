@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.1](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.0...@blockly/plugin-workspace-search@9.1.1) (2024-08-22)
+
+
+### Bug Fixes
+
+* lerna v8 breaking our whole shebangle ([#2446](https://github.com/google/blockly-samples/issues/2446)) ([b8b4c21](https://github.com/google/blockly-samples/commit/b8b4c21d4eaf81f527336ae46f6679ff99ac23c3))
+
+
+
+
+
 ## [9.1.0](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.0.6...@blockly/plugin-workspace-search@9.1.0) (2024-08-08)
 
 
