@@ -1,5 +1,5 @@
 {
-  "packages": ["*/"],
+  "packages": ["*"],
   "version": "independent",
   "npmClient": "npm",
   "useNx": false
