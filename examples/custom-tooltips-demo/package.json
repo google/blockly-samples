@@ -3,12 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@blockly/dev-tools": "^8.0.0",
     "blockly": "^11.0.0"
   },
   "blocklyDemoConfig": {
     "title": "Custom Tooltips",
-    "description": "Example of using a custom tooltip renderer. Make sure you select the 'default' toolbox.",
+    "description": "Example of using a custom tooltip renderer.",
     "files": [
       "index.html",
       "index.js",
@@ -16,8 +15,7 @@
       "./node_modules/blockly/blockly_compressed.js",
       "./node_modules/blockly/blockly_compressed.js.map",
       "./node_modules/blockly/blocks_compressed.js",
-      "./node_modules/blockly/msg/en.js",
-      "./node_modules/@blockly/dev-tools/dist/index.js"
+      "./node_modules/blockly/msg/en.js"
     ]
   }
 }
