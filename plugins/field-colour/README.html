@@ -24,7 +24,7 @@
       <div class="title">@blockly/field-colour Demo</div>
       <div class="subtitle">A Blockly colour field.</div>
     </div>
-    5.0.8
+    5.0.9
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/field-colour" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/field-colour" class="button" target="_blank">View on npm</a>
@@ -263,6 +263,22 @@ import {colourBlend} from '@blockly/field-colour';
 colourBlend.installBlock({
   javascript: javascriptGenerator,
 });</code></pre>
+<h4 id="message-files-and-locales">Message files and locales</h4>
+<p>The blocks in this package contain text that can be
+<a href="https://developers.google.com/blockly/guides/create-custom-blocks/localize-blocks">localized</a>
+into multiple languages. As of August 2024, the relevant messages are
+included in the core Blockly language files.</p>
+<p>If your blocks show <code>%{BKY_COLOUR_BLEND_TITLE}</code> or similar text instead
+of the expected text, make sure that you either:</p>
+<ul>
+<li>Import the <a href="https://developers.google.com/blockly/guides/configure/web/translations#import_blockly_default_modules">default Blockly modules</a>,
+which includes the English langfiles, or</li>
+<li>Explicitly <a href="https://developers.google.com/blockly/guides/configure/web/translations#import_blockly_languages">import a language</a>
+and call <code>setLocale</code> before using these blocks.</li>
+</ul>
+<p>For more information on Blockly's approach to localization, see the
+<a href="https://developers.google.com/blockly/guides/create-custom-blocks/localize-blocks">Localize Blocks</a>
+developer guide.</p>
 <h3 id="api-reference">API Reference</h3>
 <ul>
 <li><code>setColours</code>: Sets the colour options, and optionally the titles for the

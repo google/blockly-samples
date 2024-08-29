@@ -43,20 +43,6 @@ function initTooltips() {
   Blockly.Tooltip.setCustomTooltip(customTooltip);
 }
 
-/**
- * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @returns {!Blockly.WorkspaceSvg} The created workspace.
- */
-function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
-
-  initTooltips();
-
-  return workspace;
-}
-
 document.addEventListener('DOMContentLoaded', function () {
   Blockly.Blocks['custom_tooltip_1'] = {
     init: function () {
@@ -76,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
       this.setHelpUrl('');
     },
   };
-  const defaultOptions = {
+  const options = {
     toolbox: {
       kind: 'flyoutToolbox',
       contents: [
@@ -86,11 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
     },
   };
 
-  // createPlayground is from @blockly/dev-tools.
-  // eslint-disable-next-line no-undef
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+  Blockly.inject(document.getElementById('root'), options);
+  initTooltips();
 });
