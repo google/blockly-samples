@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-dark",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "description": "A Blockly dark theme.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",

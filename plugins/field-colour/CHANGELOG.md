@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.8...@blockly/field-colour@5.0.9) (2024-08-29)
+
+
+### Bug Fixes
+
+* add documentation about locales for colour blocks ([#2452](https://github.com/google/blockly-samples/issues/2452)) ([e06f13d](https://github.com/google/blockly-samples/commit/e06f13de06cb1bea9358ad46306051f4eb1bd05a))
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
 ## [5.0.8](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.7...@blockly/field-colour@5.0.8) (2024-08-22)
 
 

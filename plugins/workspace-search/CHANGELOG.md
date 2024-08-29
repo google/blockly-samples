@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.2](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.1...@blockly/plugin-workspace-search@9.1.2) (2024-08-29)
+
+
+### Bug Fixes
+
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
 ## [9.1.1](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.0...@blockly/plugin-workspace-search@9.1.1) (2024-08-22)
 
 

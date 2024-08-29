@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-scroll-options",
-  "version": "6.0.8",
+  "version": "6.0.9",
   "description": "A Blockly plugin that adds advanced scroll options such as scroll-on-drag and scroll while holding a block.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.5",
-    "@blockly/dev-tools": "^8.0.8",
+    "@blockly/dev-tools": "^8.0.9",
     "typescript": "^5.4.5"
   },
   "peerDependencies": {

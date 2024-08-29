@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/google/blockly-samples/compare/@blockly/theme-highcontrast@6.0.6...@blockly/theme-highcontrast@6.0.7) (2024-08-29)
+
+
+### Bug Fixes
+
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
 ## [6.0.6](https://github.com/google/blockly-samples/compare/@blockly/theme-highcontrast@6.0.5...@blockly/theme-highcontrast@6.0.6) (2024-08-22)
 
 

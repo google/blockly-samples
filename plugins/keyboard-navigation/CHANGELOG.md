@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.9](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.8...@blockly/keyboard-navigation@0.6.9) (2024-08-29)
+
+
+### Bug Fixes
+
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
 ## [0.6.8](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.7...@blockly/keyboard-navigation@0.6.8) (2024-08-22)
 
 
