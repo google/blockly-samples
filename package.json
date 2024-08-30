@@ -5,7 +5,7 @@
   "author": "Blockly Team",
   "license": "Apache-2.0",
   "scripts": {
-    "audit:fix": "cd plugins && npm run audit:fix && npm run bootstrap",
+    "audit:fix": "cd plugins && npm run audit:fix && npm run boot",
     "boot": "cd plugins && npm ci",
     "build": "cd plugins && npm run build",
     "clean": "cd plugins && npm run clean",
