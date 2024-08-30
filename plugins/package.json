@@ -3,8 +3,14 @@
   "private": true,
   "scripts": {
     "audit": "lerna run audit",
+    "audit:fix": "lerna run audit:fix",
     "boot": "lerna bootstrap",
-    "postinstall": "npm run boot"
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "clean:node": "lerna run clean --yes",
+    "postinstall": "npm run boot",
+    "predeploy": "lerna run predeploy",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@lerna/legacy-package-management": "^8.1.7",
