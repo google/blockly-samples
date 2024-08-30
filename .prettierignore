@@ -13,6 +13,7 @@ gh-pages/*
 examples/blockly-svelte/public/bundle.js
 examples/blockly-angular/.angular
 **/node_modules/*
+**/package-lock.json
 **/CHANGELOG.md
 CHANGELOG.md
 PULL_REQUEST_TEMPLATE.md
