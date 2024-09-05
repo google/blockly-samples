@@ -42,6 +42,8 @@
     "@blockly/dev-scripts": "^4.0.5",
     "@blockly/dev-tools": "^8.0.9",
     "chai": "^4.2.0",
+    "jsdom": "^19.0.0",
+    "jsdom-global": "^3.0.2",
     "sinon": "^9.0.1",
     "typescript": "^5.4.5"
   },
