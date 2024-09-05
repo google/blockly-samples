@@ -277,6 +277,9 @@ function reifyEditedShadowBlock(shadowBlock: Blockly.Block): Blockly.Block {
     parentConnection.connect(childConnection);
   }
 
+  const wasSelected =
+    Blockly.common.getSelected() === (shadowBlock as Blockly.BlockSvg);
+
   // The process of connecting a block overwrites the connection's shadow state,
   // so revert it.
   parentConnection.setShadowState(originalShadowState);
@@ -287,6 +290,10 @@ function reifyEditedShadowBlock(shadowBlock: Blockly.Block): Blockly.Block {
       originalShadowState,
     ),
   );
+
+  if (wasSelected) {
+    Blockly.common.setSelected(regularBlock as Blockly.BlockSvg);
+  }
 
   return regularBlock;
 }
