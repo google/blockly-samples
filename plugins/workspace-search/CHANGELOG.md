@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.3](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.2...@blockly/plugin-workspace-search@9.1.3) (2024-09-12)
+
+
+### Bug Fixes
+
+* explicitly set the padding on workspace search buttons ([#2459](https://github.com/google/blockly-samples/issues/2459)) ([dbeec92](https://github.com/google/blockly-samples/commit/dbeec925d86d075abbc37fb4b16afc3f81bd2a5e))
+
+
+
+
+
 ## [9.1.2](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.1...@blockly/plugin-workspace-search@9.1.2) (2024-08-29)
 
 
