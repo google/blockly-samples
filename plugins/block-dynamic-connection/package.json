@@ -1,6 +1,6 @@
 {
   "name": "@blockly/block-dynamic-connection",
-  "version": "0.7.9",
+  "version": "0.7.10",
   "description": "A group of blocks that add connections dynamically.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.5",
-    "@blockly/dev-tools": "^8.0.9",
+    "@blockly/dev-tools": "^8.0.10",
     "chai": "^4.2.0",
     "mocha": "^10.2.0",
     "typescript": "^5.4.5"

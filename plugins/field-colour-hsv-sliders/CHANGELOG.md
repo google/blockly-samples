@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.10](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.9...@blockly/field-colour-hsv-sliders@5.0.10) (2024-09-26)
+
+
+### Bug Fixes
+
+* **field-*:** Remove unneeded `fieldRegistry.unregister` calls ([#2454](https://github.com/google/blockly-samples/issues/2454)) ([b3ba30e](https://github.com/google/blockly-samples/commit/b3ba30e23dddf0bd98c266659aa229ba6ba685b0)), closes [#2453](https://github.com/google/blockly-samples/issues/2453)
+
+
+
+
+
 ## [5.0.9](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.8...@blockly/field-colour-hsv-sliders@5.0.9) (2024-08-29)
 
 

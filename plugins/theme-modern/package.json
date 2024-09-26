@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-modern",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "description": "A Blockly modern theme with darker block borders.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",

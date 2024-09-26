@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.4](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.3...@blockly/plugin-workspace-search@9.1.4) (2024-09-26)
+
+
+### Bug Fixes
+
+* **field-*:** Remove unneeded `fieldRegistry.unregister` calls ([#2454](https://github.com/google/blockly-samples/issues/2454)) ([b3ba30e](https://github.com/google/blockly-samples/commit/b3ba30e23dddf0bd98c266659aa229ba6ba685b0)), closes [#2453](https://github.com/google/blockly-samples/issues/2453)
+
+
+
+
+
 ## [9.1.3](https://github.com/google/blockly-samples/compare/@blockly/plugin-workspace-search@9.1.2...@blockly/plugin-workspace-search@9.1.3) (2024-09-12)
 
 
