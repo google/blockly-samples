@@ -170,32 +170,6 @@ const blockJson = {
 };
 
 /**
- * Uninstall old blocks and generators, since they come pre-installed
- * with Blockly.
- * TODO(#2194): Delete this function and calls to it.
- */
-function uninstallBlocks() {
-  delete Blockly.Blocks['colour_blend'];
-  delete Blockly.Blocks['colour_rgb'];
-  delete Blockly.Blocks['colour_random'];
-  delete Blockly.Blocks['colour_picker'];
-
-  const blockNames = [
-    'colour_blend',
-    'colour_rgb',
-    'colour_random',
-    'colour_picker',
-  ];
-  blockNames.forEach((name) => {
-    delete javascriptGenerator.forBlock[name];
-    delete dartGenerator.forBlock[name];
-    delete luaGenerator.forBlock[name];
-    delete pythonGenerator.forBlock[name];
-    delete phpGenerator.forBlock[name];
-  });
-}
-
-/**
  * Assert that the generated code matches the golden code for the specified
  * language.
  * @param {string} suffix The suffix of the golden file.
@@ -212,7 +186,6 @@ function checkResult(suffix, generated) {
 
 suite('Colour Block Generators', function () {
   suiteSetup(function () {
-    uninstallBlocks();
     installAllBlocks({
       javascript: javascriptGenerator,
       dart: dartGenerator,
@@ -247,8 +220,5 @@ suite('Colour Block Generators', function () {
   });
   teardown(function () {
     this.workspace.dispose();
-  });
-  suiteTeardown(function () {
-    uninstallBlocks();
   });
 });

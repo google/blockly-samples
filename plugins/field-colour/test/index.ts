@@ -241,31 +241,6 @@ const jsonToolbox = {
 };
 
 /**
- * Uninstall the base colour blocks and their associated generators.
- * TODO(#2194): remove this when those blocks are removed from the core library.
- */
-function uninstallBlocks() {
-  delete Blockly.Blocks['colour_blend'];
-  delete Blockly.Blocks['colour_rgb'];
-  delete Blockly.Blocks['colour_random'];
-  delete Blockly.Blocks['colour_picker'];
-
-  const blockNames = [
-    'colour_blend',
-    'colour_rgb',
-    'colour_random',
-    'colour_picker',
-  ];
-  blockNames.forEach((name) => {
-    delete javascriptGenerator.forBlock[name];
-    delete dartGenerator.forBlock[name];
-    delete luaGenerator.forBlock[name];
-    delete pythonGenerator.forBlock[name];
-    delete phpGenerator.forBlock[name];
-  });
-}
-
-/**
  * Create a workspace.
  *
  * @param blocklyDiv The blockly container div.
@@ -281,7 +256,6 @@ function createWorkspace(
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  uninstallBlocks();
   installColourBlocks({
     javascript: javascriptGenerator,
     dart: dartGenerator,
