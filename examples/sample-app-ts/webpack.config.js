@@ -54,14 +54,14 @@ module.exports = (env, argv) => {
 
     // Include the source maps for Blockly for easier debugging Blockly code.
     config.module.rules.push({
-      test: /(blockly\/.*\.js)$/,
+      test: /(blockly[/\\].*\.js)$/,
       use: [require.resolve('source-map-loader')],
       enforce: 'pre',
     });
 
     // Ignore spurious warnings from source-map-loader
     // It can't find source maps for some Closure modules and that is expected
-    config.ignoreWarnings = [/Failed to parse source map/];
+    config.ignoreWarnings = [/Failed to parse source map.*blockly/];
   }
   return config;
 };

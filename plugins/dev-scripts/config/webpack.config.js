@@ -107,7 +107,7 @@ module.exports = (env) => {
       rules: [
         // Load Blockly source maps.
         {
-          test: /(blockly\/.*\.js)$/,
+          test: /(blockly[/\\].*\.js)$/,
           use: [require.resolve('source-map-loader')],
           enforce: 'pre',
         },
@@ -119,7 +119,7 @@ module.exports = (env) => {
     },
     // Ignore spurious warnings from source-map-loader
     // It can't find source maps for some Closure modules and that is expected
-    ignoreWarnings: [/Failed to parse source map/],
+    ignoreWarnings: [/Failed to parse source map.*blockly/],
     plugins,
     externals: isProduction
       ? {
