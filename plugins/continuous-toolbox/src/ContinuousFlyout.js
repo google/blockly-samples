@@ -11,6 +11,7 @@
 import * as Blockly from 'blockly/core';
 import {ContinuousToolbox} from './ContinuousToolbox';
 import {ContinuousFlyoutMetrics} from './ContinuousMetricsFlyout';
+import {RecyclableBlockFlyoutInflater} from './recyclable_block_flyout_inflater';
 
 /**
  * Class for continuous flyout.
@@ -39,14 +40,6 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
      * @type {number}
      */
     this.scrollAnimationFraction = 0.3;
-
-    /**
-     * Whether to recycle blocks when refreshing the flyout. When false, do not
-     * allow anything to be recycled. The default is to recycle.
-     * @type {boolean}
-     * @private
-     */
-    this.recyclingEnabled_ = true;
 
     this.workspace_.setMetricsManager(
       new ContinuousFlyoutMetrics(this.workspace_, this),
@@ -80,24 +73,23 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   recordScrollPositions() {
     this.scrollPositions = [];
-    const categoryLabels = this.buttons_.filter(
-      (button) =>
-        button.isLabel() &&
-        this.getParentToolbox_().getCategoryByName(button.getButtonText()),
-    );
-    for (const [index, button] of categoryLabels.entries()) {
-      if (button.isLabel()) {
-        const position = button.getPosition();
-        const adjustedPosition = new Blockly.utils.Coordinate(
-          position.x,
-          position.y - this.labelGaps[index],
-        );
-        this.scrollPositions.push({
-          name: button.getButtonText(),
-          position: adjustedPosition,
-        });
-      }
+    const categoryLabels = this.getContents()
+      .filter(this.toolboxItemIsLabel.bind(this))
+      .map((item) => item.element);
+    for (const [index, label] of categoryLabels.entries()) {
+      this.scrollPositions.push({
+        name: label.getButtonText(),
+        position: label.getPosition(),
+      });
     }
+  }
+
+  toolboxItemIsLabel(item) {
+    return (
+      item.type === 'label' &&
+      item.element.isLabel() &&
+      this.getParentToolbox_().getCategoryByName(item.element.getButtonText())
+    );
   }
 
   /**
@@ -227,52 +219,10 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     if (!this.getParentToolbox_().getSelectedItem()) {
       this.selectCategoryByScrollPosition_(0);
     }
-  }
-
-  /**
-   * Determine if this block can be recycled in the flyout.  Blocks that have no
-   * variables and are not dynamic shadows can be recycled.
-   * @param {!Blockly.BlockSvg} block The block to attempt to recycle.
-   * @returns {boolean} True if the block can be recycled.
-   * @protected
-   */
-  blockIsRecyclable_(block) {
-    if (!this.recyclingEnabled_) {
-      return false;
+    const inflater = this.getInflaterForType('block');
+    if (inflater instanceof RecyclableBlockFlyoutInflater) {
+      inflater.emptyRecycledBlocks();
     }
-
-    // If the block needs to parse mutations, never recycle.
-    if (block.mutationToDom && block.domToMutation) {
-      return false;
-    }
-
-    if (!block.isEnabled()) {
-      return false;
-    }
-
-    for (const input of block.inputList) {
-      for (const field of input.fieldRow) {
-        // No variables.
-        if (field.referencesVariables()) {
-          return false;
-        }
-        if (field instanceof Blockly.FieldDropdown) {
-          if (field.isOptionListDynamic()) {
-            return false;
-          }
-        }
-      }
-      // Check children.
-      if (input.connection) {
-        const targetBlock =
-          /** @type {Blockly.BlockSvg} */
-          (input.connection.targetBlock());
-        if (targetBlock && !this.blockIsRecyclable_(targetBlock)) {
-          return false;
-        }
-      }
-    }
-    return true;
   }
 
   /**
@@ -292,21 +242,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @public
    */
   setRecyclingEnabled(isEnabled) {
-    this.recyclingEnabled_ = isEnabled;
-  }
-
-  /**
-   * Lay out the blocks in the flyout.
-   * @param {Array<Blockly.Flyout.FlyoutItem>} contents The blocks and buttons to lay out.
-   * @param {Array<number>} gaps The visible gaps between blocks.
-   */
-  layout_(contents, gaps) {
-    super.layout_(contents, gaps);
-    this.labelGaps = [];
-    for (const [index, item] of contents.entries()) {
-      if (item.type === 'button' && item.button.isLabel()) {
-        this.labelGaps.push(gaps[index - 1] ?? this.MARGIN);
-      }
+    const inflater = this.getInflaterForType('block');
+    if (inflater instanceof RecyclableBlockFlyoutInflater) {
+      inflater.setRecyclingEnabled(isEnabled);
     }
   }
 }
