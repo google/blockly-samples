@@ -11,7 +11,7 @@
 import * as Blockly from 'blockly/core';
 import {ContinuousToolbox} from './ContinuousToolbox';
 import {ContinuousFlyoutMetrics} from './ContinuousMetricsFlyout';
-import {RecyclableBlockFlyoutInflater} from './recyclable_block_flyout_inflater';
+import {RecyclableBlockFlyoutInflater} from './RecyclableBlockFlyoutInflater';
 
 /**
  * Class for continuous flyout.
