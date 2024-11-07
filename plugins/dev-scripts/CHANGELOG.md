@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.5...@blockly/dev-scripts@4.0.6) (2024-11-07)
+
+
+### Bug Fixes
+
+* Modify Webpack sourcemap parameters to account for Windows path separators ([#2465](https://github.com/google/blockly-samples/issues/2465)) ([58be365](https://github.com/google/blockly-samples/commit/58be365e6e0f859f0255df1d9380a0a58e3f233e))
+
+
+
+
+
 ## [4.0.5](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.4...@blockly/dev-scripts@4.0.5) (2024-08-08)
 
 **Note:** Version bump only for package @blockly/dev-scripts

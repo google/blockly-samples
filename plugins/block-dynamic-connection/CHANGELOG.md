@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.11](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.7.10...@blockly/block-dynamic-connection@0.7.11) (2024-11-07)
+
+**Note:** Version bump only for package @blockly/block-dynamic-connection
+
+
+
+
+
 ## [0.7.10](https://github.com/google/blockly-samples/compare/@blockly/block-dynamic-connection@0.7.9...@blockly/block-dynamic-connection@0.7.10) (2024-09-26)
 
 

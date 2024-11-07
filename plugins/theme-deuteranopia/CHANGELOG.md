@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.9](https://github.com/google/blockly-samples/compare/@blockly/theme-deuteranopia@6.0.8...@blockly/theme-deuteranopia@6.0.9) (2024-11-07)
+
+**Note:** Version bump only for package @blockly/theme-deuteranopia
+
+
+
+
+
 ## [6.0.8](https://github.com/google/blockly-samples/compare/@blockly/theme-deuteranopia@6.0.7...@blockly/theme-deuteranopia@6.0.8) (2024-09-26)
 
 

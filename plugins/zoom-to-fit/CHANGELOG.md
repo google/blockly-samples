@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.11](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.10...@blockly/zoom-to-fit@6.0.11) (2024-11-07)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
 ## [6.0.10](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.9...@blockly/zoom-to-fit@6.0.10) (2024-09-26)
 
 
