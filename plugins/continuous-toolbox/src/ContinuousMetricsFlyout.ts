@@ -5,22 +5,18 @@
  */
 
 import * as Blockly from 'blockly/core';
+import type {ContinuousFlyout} from './ContinuousFlyout';
 
 /** Adds additional padding to the bottom of the flyout if needed. */
 export class ContinuousFlyoutMetrics extends Blockly.FlyoutMetricsManager {
-  /** @override */
-  constructor(workspace, flyout) {
-    super(workspace, flyout);
-  }
   /**
    * Adds additional padding to the bottom of the flyout if needed,
    * in order to make it possible to scroll to the top of the last category.
-   * @override
    */
-  getScrollMetrics(
-    getWorkspaceCoordinates = undefined,
-    cachedViewMetrics = undefined,
-    cachedContentMetrics = undefined,
+  override getScrollMetrics(
+    getWorkspaceCoordinates?: boolean,
+    cachedViewMetrics?: Blockly.MetricsManager.ContainerRegion,
+    cachedContentMetrics?: Blockly.MetricsManager.ContainerRegion,
   ) {
     const scrollMetrics = super.getScrollMetrics(
       getWorkspaceCoordinates,
@@ -33,10 +29,9 @@ export class ContinuousFlyoutMetrics extends Blockly.FlyoutMetricsManager {
       cachedViewMetrics || this.getViewMetrics(getWorkspaceCoordinates);
 
     if (scrollMetrics) {
-      scrollMetrics.height += this.flyout_.calculateBottomPadding(
-        contentMetrics,
-        viewMetrics,
-      );
+      scrollMetrics.height += (
+        this.flyout_ as ContinuousFlyout
+      ).calculateBottomPadding(contentMetrics, viewMetrics);
     }
     return scrollMetrics;
   }

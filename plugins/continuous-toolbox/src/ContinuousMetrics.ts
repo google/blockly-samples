@@ -12,16 +12,13 @@ import * as Blockly from 'blockly/core';
 
 /** Computes metrics for a toolbox with an always open flyout. */
 export class ContinuousMetrics extends Blockly.MetricsManager {
-  /** @override */
-  constructor(workspace) {
-    super(workspace);
-  }
   /**
    * Computes the viewport size to not include the toolbox and the flyout.
    * The default viewport includes the flyout.
-   * @override
    */
-  getViewMetrics(getWorkspaceCoordinates = undefined) {
+  override getViewMetrics(
+    getWorkspaceCoordinates?: boolean,
+  ): Blockly.MetricsManager.ContainerRegion {
     const scale = getWorkspaceCoordinates ? this.workspace_.scale : 1;
     const svgMetrics = this.getSvgMetrics();
     const toolboxMetrics = this.getToolboxMetrics();
@@ -54,9 +51,8 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
   /**
    * Moves the absoluteLeft and absoluteTop so they no longer include the
    * flyout.
-   * @override
    */
-  getAbsoluteMetrics() {
+  override getAbsoluteMetrics(): Blockly.MetricsManager.AbsoluteMetrics {
     const toolboxMetrics = this.getToolboxMetrics();
     const flyoutMetrics = this.getFlyoutMetrics(false);
     const toolboxPosition = toolboxMetrics.position;

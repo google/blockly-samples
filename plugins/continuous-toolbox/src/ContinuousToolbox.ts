@@ -15,21 +15,14 @@ import {ContinuousFlyout} from './ContinuousFlyout';
  * Class for continuous toolbox.
  */
 export class ContinuousToolbox extends Blockly.Toolbox {
-  /** @override */
-  constructor(workspace) {
-    super(workspace);
-  }
-
-  /** @override */
-  init() {
+  override init() {
     super.init();
 
     // Populate the flyout with all blocks and show it immediately.
     const flyout = this.getFlyout();
     flyout.show(this.getInitialFlyoutContents_());
-    flyout.recordScrollPositions();
 
-    this.workspace_.addChangeListener((e) => {
+    this.getWorkspace().addChangeListener((e: Blockly.Events.Abstract) => {
       if (
         e.type === Blockly.Events.BLOCK_CREATE ||
         e.type === Blockly.Events.BLOCK_DELETE
@@ -39,37 +32,31 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     });
   }
 
-  /** @override */
-  getFlyout() {
-    return /** @type {ContinuousFlyout} */ (super.getFlyout());
+  override getFlyout(): ContinuousFlyout {
+    return super.getFlyout() as ContinuousFlyout;
   }
 
   /**
    * Gets the contents that should be shown in the flyout immediately.
    * This includes all blocks and labels for each category of block.
-   * @returns {!Blockly.utils.toolbox.FlyoutItemInfoArray} Flyout contents.
-   * @private
+   * @returns Flyout contents.
    */
-  getInitialFlyoutContents_() {
-    /** @type {!Blockly.utils.toolbox.FlyoutItemInfoArray} */
-    let contents = [];
-    for (const toolboxItem of this.contents_) {
+  private getInitialFlyoutContents_(): Blockly.utils.toolbox.FlyoutItemInfoArray {
+    let contents: Blockly.utils.toolbox.FlyoutItemInfoArray = [];
+    for (const toolboxItem of this.getToolboxItems()) {
       if (toolboxItem instanceof Blockly.ToolboxCategory) {
         // Create a label node to go at the top of the category
         contents.push({kind: 'LABEL', text: toolboxItem.getName()});
-        /**
-         * @type {string|Blockly.utils.toolbox.FlyoutItemInfoArray|
-         *    Blockly.utils.toolbox.FlyoutItemInfo}
-         */
         let itemContents = toolboxItem.getContents();
 
         // Handle custom categories (e.g. variables and functions)
         if (typeof itemContents === 'string') {
-          itemContents =
-            /** @type {!Blockly.utils.toolbox.DynamicCategoryInfo} */ ({
+          itemContents = [
+            {
               custom: itemContents,
               kind: 'CATEGORY',
-            });
+            },
+          ];
         }
         contents = contents.concat(itemContents);
       }
@@ -77,43 +64,42 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     return contents;
   }
 
-  /** @override */
-  refreshSelection() {
+  override refreshSelection() {
     this.getFlyout().show(this.getInitialFlyoutContents_());
   }
 
-  /** @override */
-  updateFlyout_(_oldItem, newItem) {
+  override updateFlyout_(
+    _oldItem: Blockly.ISelectableToolboxItem | null,
+    newItem: Blockly.ISelectableToolboxItem | null,
+  ) {
     if (newItem) {
-      const target = this.getFlyout().getCategoryScrollPosition(
-        newItem.name_,
-      ).y;
-      this.getFlyout().scrollTo(target);
+      this.getFlyout().scrollToCategory(newItem);
     }
   }
 
-  /** @override */
-  shouldDeselectItem_(oldItem, newItem) {
+  override shouldDeselectItem_(
+    oldItem: Blockly.ISelectableToolboxItem | null,
+    newItem: Blockly.ISelectableToolboxItem | null,
+  ): boolean {
     // Should not deselect if the same category is clicked again.
-    return oldItem && oldItem !== newItem;
+    return !!(oldItem && oldItem !== newItem);
   }
 
   /**
    * Gets a category by name.
-   * @param {string} name Name of category to get.
-   * @returns {?Blockly.ToolboxCategory} Category, or null if not
-   *    found.
+   * @param name Name of category to get.
+   * @returns Category, or null if not found.
    * @package
    */
-  getCategoryByName(name) {
-    const category = this.contents_.find(
+  getCategoryByName(name: string): Blockly.ISelectableToolboxItem | null {
+    const category = this.getToolboxItems().find(
       (item) =>
         item instanceof Blockly.ToolboxCategory &&
         item.isSelectable() &&
         name === item.getName(),
     );
     if (category) {
-      return /** @type {!Blockly.ToolboxCategory} */ (category);
+      return category as Blockly.ISelectableToolboxItem;
     }
     return null;
   }
@@ -122,17 +108,17 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * Selects the category with the given name.
    * Similar to setSelectedItem, but importantly, does not call updateFlyout
    * because this is called while the flyout is being scrolled.
-   * @param {string} name Name of category to select.
+   * @param name Name of category to select.
    * @package
    */
-  selectCategoryByName(name) {
+  selectCategoryByName(name: string) {
     const newItem = this.getCategoryByName(name);
     if (!newItem) {
       return;
     }
     const oldItem = this.selectedItem_;
 
-    if (this.shouldDeselectItem_(oldItem, newItem)) {
+    if (oldItem && this.shouldDeselectItem_(oldItem, newItem)) {
       this.deselectItem_(oldItem);
     }
 
@@ -141,8 +127,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     }
   }
 
-  /** @override */
-  getClientRect() {
+  override getClientRect(): Blockly.utils.Rect | null {
     // If the flyout never closes, it should be the deletable area.
     const flyout = this.getFlyout();
     if (flyout && !flyout.autoClose) {
@@ -160,7 +145,7 @@ Blockly.Css.register(`
   width: 1.25rem;
   height: 1.25rem;
 }
-.blocklyTreeRow {
+.blocklyToolboxCategory {
   height: initial;
   padding: 3px 0;
 }
