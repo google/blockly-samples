@@ -15,6 +15,11 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
   /**
    * Computes the viewport size to not include the toolbox and the flyout.
    * The default viewport includes the flyout.
+   *
+   * @param getWorkspaceCoordinates True to get the view metrics in workspace
+   *     coordinates, false to get them in pixel coordinates.
+   * @returns The width, height, top and left of the viewport in either
+   *     workspace coordinates or pixel coordinates.
    */
   override getViewMetrics(
     getWorkspaceCoordinates?: boolean,
@@ -49,8 +54,11 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
   }
 
   /**
-   * Moves the absoluteLeft and absoluteTop so they no longer include the
-   * flyout.
+   * Gets the absolute left and absolute top in pixel coordinates.
+   * This is where the visible workspace starts in relation to the SVG
+   * container, shifted to not include the area behind the flyout.
+   *
+   * @returns The absolute metrics for the workspace.
    */
   override getAbsoluteMetrics(): Blockly.MetricsManager.AbsoluteMetrics {
     const toolboxMetrics = this.getToolboxMetrics();

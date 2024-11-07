@@ -12,6 +12,12 @@ import * as Blockly from 'blockly/core';
 
 /** Toolbox category for continuous toolbox. */
 export class ContinuousCategory extends Blockly.ToolboxCategory {
+  /**
+   * Creates a DOM element to display the category's label.
+   *
+   * @param name The name of this category.
+   * @returns The newly created category label DOM element.
+   */
   override createLabelDom_(name: string): Element {
     const label = document.createElement('div');
     label.setAttribute('id', this.getId() + '.label');
@@ -20,6 +26,12 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
     return label;
   }
 
+  /**
+   * Creates a DOM element to display the category's icon. This category uses
+   * color swatches instead of graphical icons.
+   *
+   * @returns The newly created category icon DOM element.
+   */
   override createIconDom_(): Element {
     const icon = document.createElement('div');
     icon.classList.add('categoryBubble');
@@ -27,10 +39,18 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
     return icon;
   }
 
+  /**
+   * Adds a color indicator to the toolbox category. Intentionally a no-op.
+   */
   override addColourBorder_() {
     // No-op
   }
 
+  /**
+   * Sets whether or not this category is selected in the toolbox.
+   *
+   * @param isSelected True if this category is selected, otherwise false.
+   */
   override setSelected(isSelected: boolean) {
     if (!this.rowDiv_ || !this.htmlDiv_) return;
     if (isSelected) {

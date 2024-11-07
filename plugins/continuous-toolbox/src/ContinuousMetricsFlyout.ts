@@ -10,8 +10,17 @@ import type {ContinuousFlyout} from './ContinuousFlyout';
 /** Adds additional padding to the bottom of the flyout if needed. */
 export class ContinuousFlyoutMetrics extends Blockly.FlyoutMetricsManager {
   /**
-   * Adds additional padding to the bottom of the flyout if needed,
-   * in order to make it possible to scroll to the top of the last category.
+   * Returns the metrics for the scroll area of the continuous flyout's
+   * workspace. Adds additional padding to the bottom of the flyout if needed in
+   * order to make it possible  to scroll to the top of the last category.
+   *
+   * @param getWorkspaceCoordinates True to get the scroll metrics in
+   *     workspace coordinates, false to get them in pixel coordinates.
+   * @param viewMetrics The view metrics if they have been previously
+   *     computed.
+   * @param contentMetrics The content metrics if they have been previously
+   *     computed.
+   * @returns The metrics for the scroll container.
    */
   override getScrollMetrics(
     getWorkspaceCoordinates?: boolean,

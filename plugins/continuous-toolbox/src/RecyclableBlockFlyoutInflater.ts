@@ -20,6 +20,9 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    */
   private recycledBlocks = new Map<string, Blockly.BlockSvg>();
 
+  /**
+   * Custom function to use for checking whether or not blocks can be recycled.
+   */
   private recycleEligibilityChecker?: (block: Blockly.Block) => boolean;
 
   /**

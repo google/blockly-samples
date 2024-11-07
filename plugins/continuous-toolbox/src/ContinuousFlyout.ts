@@ -34,8 +34,16 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   protected scrollAnimationFraction = 0.3;
 
+  /**
+   * Prevents the flyout from closing automatically when a block is dragged out.
+   */
   override autoClose = false;
 
+  /**
+   * Creates a new ContinuousFlyout.
+   *
+   * @param workspaceOptions The injection options for the flyout's workspace.
+   */
   constructor(workspaceOptions: Blockly.Options) {
     super(workspaceOptions);
 
@@ -53,6 +61,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   /**
    * Gets parent toolbox.
    * Since we registered the ContinuousToolbox, we know that's its type.
+   *
    * @returns Toolbox that owns this flyout.
    */
   private getParentToolbox(): ContinuousToolbox {
@@ -74,6 +83,13 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     }
   }
 
+  /**
+   * Validates and typechecks that the given toolbox item represents a label.
+   *
+   * @param item The toolbox item to check.
+   * @returns True if the item represents a label in the flyout, and is a
+   *     Blockly.FlyoutButton.
+   */
   protected toolboxItemIsLabel(
     item: Blockly.FlyoutItem,
   ): item is {type: string; element: Blockly.FlyoutButton} {
@@ -87,6 +103,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /**
    * Selects an item in the toolbox based on the scroll position of the flyout.
+   *
    * @param position Current scroll position of the workspace.
    */
   private selectCategoryByScrollPosition(position: number) {
@@ -109,7 +126,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   }
 
   /**
-   * Scrolls flyout to given position.
+   * Scrolls the flyout to given position.
+   *
    * @param position The Y coordinate to scroll to.
    */
   scrollTo(position: number) {
@@ -124,6 +142,11 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     this.stepScrollAnimation();
   }
 
+  /**
+   * Scrolls the flyout to display the given category at the top.
+   *
+   * @param category The toolbox category to scroll to in the flyout.
+   */
   scrollToCategory(category: Blockly.ISelectableToolboxItem) {
     const position = this.scrollPositions.get(category.getName());
     if (!position) {
@@ -155,11 +178,12 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   }
 
   /**
-   * Add additional padding to the bottom of the flyout if needed,
-   * in order to make it possible to scroll to the top of the last category.
+   * Calculates the additional padding needed at the bottom of the flyout in
+   * order to make it possible to scroll to the top of the last category.
+   *
    * @param contentMetrics Content metrics for the flyout.
    * @param viewMetrics View metrics for the flyout.
-   * @returns Additional bottom padding.
+   * @returns The additional bottom padding needed.
    */
   calculateBottomPadding(
     contentMetrics: Blockly.MetricsManager.ContainerRegion,
@@ -177,6 +201,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     return 0;
   }
 
+  /**
+   * Returns the X coordinate for the flyout's position.
+   */
   override getX(): number {
     if (
       this.isVisible() &&
@@ -191,7 +218,11 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     return super.getX();
   }
 
+  /**
+   * Displays the given contents in the flyout.
+   */
   override show(flyoutDef: Blockly.utils.toolbox.FlyoutDefinition | string) {
+    console.trace();
     super.show(flyoutDef);
     this.recordScrollPositions();
     this.getWorkspace().resizeContents();
@@ -206,6 +237,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /**
    * Sets the function used to determine whether a block is recyclable.
+   *
    * @param func The function used to determine if a block is recyclable.
    */
   setBlockIsRecyclable(func: (block: Blockly.Block) => boolean) {
@@ -217,6 +249,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /**
    * Set whether the flyout can recycle blocks.
+   *
    * @param isEnabled True to allow blocks to be recycled, false otherwise.
    */
   setRecyclingEnabled(isEnabled: boolean) {

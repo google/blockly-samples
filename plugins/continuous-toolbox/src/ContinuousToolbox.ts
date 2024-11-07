@@ -15,6 +15,9 @@ import {ContinuousFlyout} from './ContinuousFlyout';
  * Class for continuous toolbox.
  */
 export class ContinuousToolbox extends Blockly.Toolbox {
+  /**
+   * Initializes the continuous toolbox.
+   */
   override init() {
     super.init();
 
@@ -32,6 +35,11 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     });
   }
 
+  /**
+   * Returns the continuous toolbox's flyout.
+   *
+   * @returns The toolbox's flyout.
+   */
   override getFlyout(): ContinuousFlyout {
     return super.getFlyout() as ContinuousFlyout;
   }
@@ -39,6 +47,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   /**
    * Gets the contents that should be shown in the flyout immediately.
    * This includes all blocks and labels for each category of block.
+   *
    * @returns Flyout contents.
    */
   private getInitialFlyoutContents_(): Blockly.utils.toolbox.FlyoutItemInfoArray {
@@ -64,10 +73,19 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     return contents;
   }
 
+  /**
+   * Updates the flyout's contents if it is visible.
+   */
   override refreshSelection() {
     this.getFlyout().show(this.getInitialFlyoutContents_());
   }
 
+  /**
+   * Scrolls the flyout to display the newly selected category's contents.
+   *
+   * @param _oldItem The previously selected toolbox category.
+   * @param newItem The newly selected toolbox category.
+   */
   override updateFlyout_(
     _oldItem: Blockly.ISelectableToolboxItem | null,
     newItem: Blockly.ISelectableToolboxItem | null,
@@ -77,6 +95,12 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     }
   }
 
+  /**
+   * Returns whether or not the toolbox should deselect the old category.
+   *
+   * @param oldItem The previously selected toolbox category.
+   * @param newItem The newly selected toolbox category.
+   */
   override shouldDeselectItem_(
     oldItem: Blockly.ISelectableToolboxItem | null,
     newItem: Blockly.ISelectableToolboxItem | null,
@@ -87,9 +111,10 @@ export class ContinuousToolbox extends Blockly.Toolbox {
 
   /**
    * Gets a category by name.
+   *
    * @param name Name of category to get.
    * @returns Category, or null if not found.
-   * @package
+   * @internal
    */
   getCategoryByName(name: string): Blockly.ISelectableToolboxItem | null {
     const category = this.getToolboxItems().find(
@@ -108,8 +133,9 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * Selects the category with the given name.
    * Similar to setSelectedItem, but importantly, does not call updateFlyout
    * because this is called while the flyout is being scrolled.
+   *
    * @param name Name of category to select.
-   * @package
+   * @internal
    */
   selectCategoryByName(name: string) {
     const newItem = this.getCategoryByName(name);
@@ -127,6 +153,13 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     }
   }
 
+  /**
+   * Returns the bounding rectangle of the drag target/deletion area in pixels
+   * relative to the viewport.
+   *
+   * @returns The toolbox's bounding box. Null if drag target area should be
+   *     ignored.
+   */
   override getClientRect(): Blockly.utils.Rect | null {
     // If the flyout never closes, it should be the deletable area.
     const flyout = this.getFlyout();
