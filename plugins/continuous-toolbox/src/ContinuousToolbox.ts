@@ -77,7 +77,9 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * Updates the flyout's contents if it is visible.
    */
   override refreshSelection() {
-    this.getFlyout().show(this.getInitialFlyoutContents_());
+    if (this.getFlyout().isVisible()) {
+      this.getFlyout().show(this.getInitialFlyoutContents_());
+    }
   }
 
   /**
@@ -92,6 +94,11 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   ) {
     if (newItem) {
       this.getFlyout().scrollToCategory(newItem);
+      if (!this.getFlyout().isVisible()) {
+        this.getFlyout().show(this.getInitialFlyoutContents_());
+      }
+    } else if (this.getFlyout().autoClose) {
+      this.getFlyout().hide();
     }
   }
 
