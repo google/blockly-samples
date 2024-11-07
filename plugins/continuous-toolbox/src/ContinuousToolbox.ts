@@ -136,24 +136,3 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     return super.getClientRect();
   }
 }
-
-Blockly.Css.register(`
-.categoryBubble {
-  margin: 0 auto 0.125rem;
-  border-radius: 100%;
-  border: 1px solid;
-  width: 1.25rem;
-  height: 1.25rem;
-}
-.blocklyToolboxCategory {
-  height: initial;
-  padding: 3px 0;
-}
-.blocklyTreeRowContentContainer {
-  display: flex;
-  flex-direction: column;
-}
-.blocklyTreeLabel {
-  margin: auto;
-}
-`);

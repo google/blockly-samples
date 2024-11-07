@@ -77,9 +77,3 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
     };
   }
 }
-
-Blockly.registry.register(
-  Blockly.registry.Type.METRICS_MANAGER,
-  'CustomMetricsManager',
-  ContinuousMetrics,
-);

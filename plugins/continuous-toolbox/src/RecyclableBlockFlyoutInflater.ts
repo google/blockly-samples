@@ -180,16 +180,3 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
     this.recycledBlocks.clear();
   }
 }
-
-/**
- * Registers the recyclable block flyout inflater, replacing the standard
- * block flyout inflater.
- */
-export function registerRecyclableBlockFlyoutInflater() {
-  Blockly.registry.unregister(Blockly.registry.Type.FLYOUT_INFLATER, 'block');
-  Blockly.registry.register(
-    Blockly.registry.Type.FLYOUT_INFLATER,
-    'block',
-    RecyclableBlockFlyoutInflater,
-  );
-}

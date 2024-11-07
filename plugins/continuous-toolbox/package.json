@@ -43,7 +43,7 @@
     "@blockly/dev-tools": "^8.0.10"
   },
   "peerDependencies": {
-    "blockly": "^11.0.0"
+    "blockly": "^12.0.0"
   },
   "publishConfig": {
     "access": "public",
