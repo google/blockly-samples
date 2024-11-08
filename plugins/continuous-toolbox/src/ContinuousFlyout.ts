@@ -79,7 +79,10 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       .filter(this.toolboxItemIsLabel.bind(this))
       .map((item) => item.element)
       .forEach((label) => {
-        this.scrollPositions.set(label.getButtonText(), label.getPosition().y);
+        this.scrollPositions.set(
+          label.getButtonText(),
+          label.getPosition().y - label.height,
+        );
       });
   }
 
