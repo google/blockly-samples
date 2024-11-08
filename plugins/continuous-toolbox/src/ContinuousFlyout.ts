@@ -10,7 +10,7 @@
 
 import * as Blockly from 'blockly/core';
 import {ContinuousToolbox} from './ContinuousToolbox';
-import {ContinuousFlyoutMetrics} from './ContinuousMetricsFlyout';
+import {ContinuousFlyoutMetrics} from './ContinuousFlyoutMetrics';
 import {RecyclableBlockFlyoutInflater} from './RecyclableBlockFlyoutInflater';
 
 /**
