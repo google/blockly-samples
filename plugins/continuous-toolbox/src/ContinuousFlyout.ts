@@ -220,6 +220,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
 
   /**
    * Displays the given contents in the flyout.
+   *
+   * @param flyoutDef A string or JSON object specifying the contents of the
+   *     flyout.
    */
   override show(flyoutDef: Blockly.utils.toolbox.FlyoutDefinition | string) {
     super.show(flyoutDef);
