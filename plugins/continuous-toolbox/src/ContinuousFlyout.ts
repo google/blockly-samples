@@ -222,7 +222,6 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * Displays the given contents in the flyout.
    */
   override show(flyoutDef: Blockly.utils.toolbox.FlyoutDefinition | string) {
-    console.trace();
     super.show(flyoutDef);
     this.recordScrollPositions();
     this.getWorkspace().resizeContents();
