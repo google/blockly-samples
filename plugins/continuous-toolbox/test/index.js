@@ -19,19 +19,10 @@ import {registerContinuousToolbox} from '../src/index';
  * @returns {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
-  registerContinuousToolbox();
-  const workspace = Blockly.inject(blocklyDiv, options);
-
-  return workspace;
+  return Blockly.inject(blocklyDiv, options);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const defaultOptions = {
-    toolbox: toolboxCategories,
-  };
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+  registerContinuousToolbox();
+  createPlayground(document.getElementById('root'), createWorkspace);
 });
