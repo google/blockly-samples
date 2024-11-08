@@ -24,6 +24,10 @@ export {
   RecyclableBlockFlyoutInflater,
 };
 
+/**
+ * Registers the components of the continuous toolbox, replacing Blockly's
+ * built-in defaults.
+ */
 export function registerContinuousToolbox() {
   Blockly.registry.register(
     Blockly.registry.Type.TOOLBOX_ITEM,
