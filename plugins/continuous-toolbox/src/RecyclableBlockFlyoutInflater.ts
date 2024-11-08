@@ -129,6 +129,10 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
       return false;
     }
 
+    if (this.recycleEligibilityChecker) {
+      return this.recycleEligibilityChecker(block);
+    }
+
     // If the block needs to parse mutations, never recycle.
     if (block.mutationToDom && block.domToMutation) {
       return false;
