@@ -68,7 +68,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    * @param blockDefinition The block definition to parse.
    * @returns The block type.
    */
-  getTypeFromDefinition(
+  private getTypeFromDefinition(
     blockDefinition: Blockly.utils.toolbox.BlockInfo,
   ): string {
     let type: string | null | undefined;
@@ -99,7 +99,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    *
    * @param block The block to recycle.
    */
-  recycleBlock(block: Blockly.BlockSvg) {
+  private recycleBlock(block: Blockly.BlockSvg) {
     const xy = block.getRelativeToSurfaceXY();
     block.moveBy(-xy.x, -xy.y);
     this.recycledBlocks.set(block.type, block);
@@ -112,7 +112,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    * @param blockType The type of the block to try to recycle.
    * @returns The recycled block, or undefined if one could not be recycled.
    */
-  getRecycledBlock(blockType: string): Blockly.BlockSvg | undefined {
+  private getRecycledBlock(blockType: string): Blockly.BlockSvg | undefined {
     const block = this.recycledBlocks.get(blockType);
     this.recycledBlocks.delete(blockType);
     return block;
@@ -124,7 +124,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    * @param block The block to check for recyclability.
    * @returns True if the block can be recycled. False otherwise.
    */
-  blockIsRecyclable(block: Blockly.Block): boolean {
+  protected blockIsRecyclable(block: Blockly.Block): boolean {
     if (!this.recyclingEnabled) {
       return false;
     }
