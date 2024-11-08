@@ -29,7 +29,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
 
     // Populate the flyout with all blocks and show it immediately.
     const flyout = this.getFlyout();
-    flyout.show(this.getInitialFlyoutContents_());
+    flyout.show(this.getInitialFlyoutContents());
 
     this.getWorkspace().addChangeListener((e: Blockly.Events.Abstract) => {
       if (
@@ -56,7 +56,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    *
    * @returns Flyout contents.
    */
-  private getInitialFlyoutContents_(): Blockly.utils.toolbox.FlyoutItemInfoArray {
+  private getInitialFlyoutContents(): Blockly.utils.toolbox.FlyoutItemInfoArray {
     return this.getToolboxItems().flatMap(this.convertToolboxItemToFlyoutItems);
   }
 
@@ -99,7 +99,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
         clearTimeout(this.refreshDebouncer);
       }
       this.refreshDebouncer = setTimeout(() => {
-        this.getFlyout().show(this.getInitialFlyoutContents_());
+        this.getFlyout().show(this.getInitialFlyoutContents());
       }, 100);
     }
   }
@@ -107,17 +107,17 @@ export class ContinuousToolbox extends Blockly.Toolbox {
   /**
    * Scrolls the flyout to display the newly selected category's contents.
    *
-   * @param _oldItem The previously selected toolbox category.
+   * @param oldItem The previously selected toolbox category.
    * @param newItem The newly selected toolbox category.
    */
   override updateFlyout_(
-    _oldItem: Blockly.ISelectableToolboxItem | null,
+    oldItem: Blockly.ISelectableToolboxItem | null,
     newItem: Blockly.ISelectableToolboxItem | null,
   ) {
     if (newItem) {
       this.getFlyout().scrollToCategory(newItem);
       if (!this.getFlyout().isVisible()) {
-        this.getFlyout().show(this.getInitialFlyoutContents_());
+        this.getFlyout().show(this.getInitialFlyoutContents());
       }
     } else if (this.getFlyout().autoClose) {
       this.getFlyout().hide();
