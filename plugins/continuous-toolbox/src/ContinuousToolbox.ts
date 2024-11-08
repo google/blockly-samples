@@ -51,24 +51,35 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    * @returns Flyout contents.
    */
   private getInitialFlyoutContents_(): Blockly.utils.toolbox.FlyoutItemInfoArray {
-    let contents: Blockly.utils.toolbox.FlyoutItemInfoArray = [];
-    for (const toolboxItem of this.getToolboxItems()) {
-      if (toolboxItem instanceof Blockly.ToolboxCategory) {
-        // Create a label node to go at the top of the category
-        contents.push({kind: 'LABEL', text: toolboxItem.getName()});
-        let itemContents = toolboxItem.getContents();
+    return this.getToolboxItems().flatMap(this.convertToolboxItemToFlyoutItems);
+  }
 
-        // Handle custom categories (e.g. variables and functions)
-        if (typeof itemContents === 'string') {
-          itemContents = [
-            {
-              custom: itemContents,
-              kind: 'CATEGORY',
-            },
-          ];
-        }
-        contents = contents.concat(itemContents);
+  /**
+   * Converts a given toolbox item to an array of flyout items, generally a
+   * label followed by the category's blocks.
+   *
+   * @param toolboxItem The toolbox item/category to convert.
+   * @returns An array of flyout items contained in the given toolbox item.
+   */
+  protected convertToolboxItemToFlyoutItems(
+    toolboxItem: Blockly.IToolboxItem,
+  ): Blockly.utils.toolbox.FlyoutItemInfoArray {
+    let contents: Blockly.utils.toolbox.FlyoutItemInfoArray = [];
+    if (toolboxItem instanceof Blockly.ToolboxCategory) {
+      // Create a label node to go at the top of the category
+      contents.push({kind: 'LABEL', text: toolboxItem.getName()});
+      let itemContents = toolboxItem.getContents();
+
+      // Handle custom categories (e.g. variables and functions)
+      if (typeof itemContents === 'string') {
+        itemContents = [
+          {
+            custom: itemContents,
+            kind: 'CATEGORY',
+          },
+        ];
       }
+      contents = contents.concat(itemContents);
     }
     return contents;
   }
