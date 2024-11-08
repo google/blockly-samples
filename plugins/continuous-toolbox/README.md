@@ -36,6 +36,11 @@ import {registerContinuousToolbox} from '@blockly/continuous-toolbox';
 registerContinuousToolbox();
 const workspace = Blockly.inject('blocklyDiv', {
   toolbox: toolboxCategories,
+  plugins: {
+    flyoutsVerticalToolbox: 'ContinuousFlyout',
+    metricsManager: 'ContinuousMetrics',
+    toolbox: 'ContinuousToolbox',
+  },
   // ... your other options here ...
 });
 ```

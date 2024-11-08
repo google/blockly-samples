@@ -38,21 +38,21 @@ export function registerContinuousToolbox() {
 
   Blockly.registry.register(
     Blockly.registry.Type.METRICS_MANAGER,
-    'CustomMetricsManager',
+    'ContinuousMetrics',
     ContinuousMetrics,
     true,
   );
 
   Blockly.registry.register(
     Blockly.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
-    Blockly.registry.DEFAULT,
+    'ContinuousFlyout',
     ContinuousFlyout,
     true,
   );
 
   Blockly.registry.register(
     Blockly.registry.Type.TOOLBOX,
-    Blockly.registry.DEFAULT,
+    'ContinuousToolbox',
     ContinuousToolbox,
     true,
   );

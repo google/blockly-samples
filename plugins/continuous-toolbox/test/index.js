@@ -24,5 +24,11 @@ function createWorkspace(blocklyDiv, options) {
 
 document.addEventListener('DOMContentLoaded', function () {
   registerContinuousToolbox();
-  createPlayground(document.getElementById('root'), createWorkspace);
+  createPlayground(document.getElementById('root'), createWorkspace, {
+    plugins: {
+      flyoutsVerticalToolbox: 'ContinuousFlyout',
+      metricsManager: 'ContinuousMetrics',
+      toolbox: 'ContinuousToolbox',
+    },
+  });
 });
