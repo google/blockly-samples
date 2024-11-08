@@ -16,6 +16,12 @@ import {ContinuousFlyout} from './ContinuousFlyout';
  */
 export class ContinuousToolbox extends Blockly.Toolbox {
   /**
+   * Timeout ID used to prevent refreshing the flyout during extensive block
+   * changes.
+   */
+  private refreshDebouncer?: ReturnType<typeof setTimeout>;
+
+  /**
    * Initializes the continuous toolbox.
    */
   override init() {
@@ -89,7 +95,12 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    */
   override refreshSelection() {
     if (this.getFlyout().isVisible()) {
-      this.getFlyout().show(this.getInitialFlyoutContents_());
+      if (this.refreshDebouncer) {
+        clearTimeout(this.refreshDebouncer);
+      }
+      this.refreshDebouncer = setTimeout(() => {
+        this.getFlyout().show(this.getInitialFlyoutContents_());
+      }, 100);
     }
   }
 
