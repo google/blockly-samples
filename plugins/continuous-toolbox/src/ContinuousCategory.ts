@@ -18,6 +18,7 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
    * @param name The name of this category.
    * @returns The newly created category label DOM element.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   override createLabelDom_(name: string): Element {
     const label = document.createElement('div');
     label.setAttribute('id', this.getId() + '.label');
@@ -32,6 +33,7 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
    *
    * @returns The newly created category icon DOM element.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   override createIconDom_(): Element {
     const icon = document.createElement('div');
     icon.classList.add('categoryBubble');
@@ -42,6 +44,7 @@ export class ContinuousCategory extends Blockly.ToolboxCategory {
   /**
    * Adds a color indicator to the toolbox category. Intentionally a no-op.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   override addColourBorder_() {
     // No-op
   }
