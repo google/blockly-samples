@@ -34,7 +34,8 @@ export class ContinuousToolbox extends Blockly.Toolbox {
     this.getWorkspace().addChangeListener((e: Blockly.Events.Abstract) => {
       if (
         e.type === Blockly.Events.BLOCK_CREATE ||
-        e.type === Blockly.Events.BLOCK_DELETE
+        e.type === Blockly.Events.BLOCK_DELETE ||
+        e.type === Blockly.Events.BLOCK_CHANGE
       ) {
         this.refreshSelection();
       }
