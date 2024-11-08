@@ -13,7 +13,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Whether or not block recycling is enabled.
    */
-  private recyclingEnabled = true;
+  private recyclingEnabled = false;
 
   /**
    * Map from block type to block instance.

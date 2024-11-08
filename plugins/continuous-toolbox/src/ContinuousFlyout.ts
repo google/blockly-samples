@@ -56,6 +56,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
         this.selectCategoryByScrollPosition(-this.getWorkspace().scrollY);
       }
     });
+
+    this.setRecyclingEnabled(true);
   }
 
   /**
@@ -234,10 +236,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     if (!this.getParentToolbox().getSelectedItem()) {
       this.selectCategoryByScrollPosition(0);
     }
-    const inflater = this.getInflaterForType('block');
-    if (inflater instanceof RecyclableBlockFlyoutInflater) {
-      inflater.emptyRecycledBlocks();
-    }
+    this.getRecyclableInflater().emptyRecycledBlocks();
   }
 
   /**
@@ -246,10 +245,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @param func The function used to determine if a block is recyclable.
    */
   setBlockIsRecyclable(func: (block: Blockly.Block) => boolean) {
-    const inflater = this.getInflaterForType('block');
-    if (inflater instanceof RecyclableBlockFlyoutInflater) {
-      inflater.setRecyclingEligibilityChecker(func);
-    }
+    this.getRecyclableInflater().setRecyclingEligibilityChecker(func);
   }
 
   /**
@@ -258,9 +254,20 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @param isEnabled True to allow blocks to be recycled, false otherwise.
    */
   setRecyclingEnabled(isEnabled: boolean) {
+    this.getRecyclableInflater().setRecyclingEnabled(isEnabled);
+  }
+
+  /**
+   * Returns the recyclable block flyout inflater.
+   *
+   * @returns The recyclable inflater.
+   */
+  protected getRecyclableInflater(): RecyclableBlockFlyoutInflater {
     const inflater = this.getInflaterForType('block');
-    if (inflater instanceof RecyclableBlockFlyoutInflater) {
-      inflater.setRecyclingEnabled(isEnabled);
+    if (!(inflater instanceof RecyclableBlockFlyoutInflater)) {
+      throw new Error('The RecyclableBlockFlyoutInflater is not registered.');
     }
+
+    return inflater;
   }
 }
