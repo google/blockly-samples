@@ -75,12 +75,12 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   private recordScrollPositions() {
     this.scrollPositions.clear();
-    const categoryLabels = this.getContents()
+    this.getContents()
       .filter(this.toolboxItemIsLabel.bind(this))
-      .map((item) => item.element);
-    for (const [index, label] of categoryLabels.entries()) {
-      this.scrollPositions.set(label.getButtonText(), label.getPosition().y);
-    }
+      .map((item) => item.element)
+      .forEach((label) => {
+        this.scrollPositions.set(label.getButtonText(), label.getPosition().y);
+      });
   }
 
   /**
