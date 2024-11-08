@@ -31,7 +31,7 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
     const toolboxPosition = toolboxMetrics.position;
 
     if (this.workspace_.getToolbox()) {
-      // Note: Not actually supported at this time due to ContinunousToolbox
+      // Note: Not actually supported at this time due to ContinuousToolbox
       // only supporting a vertical flyout. But included for completeness.
       if (
         toolboxPosition == Blockly.TOOLBOX_AT_TOP ||
