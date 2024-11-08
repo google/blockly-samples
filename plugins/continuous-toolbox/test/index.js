@@ -9,7 +9,7 @@
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
+import {createPlayground} from '@blockly/dev-tools';
 import {registerContinuousToolbox} from '../src/index';
 
 /**
