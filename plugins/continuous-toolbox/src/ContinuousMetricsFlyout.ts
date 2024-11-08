@@ -16,10 +16,10 @@ export class ContinuousFlyoutMetrics extends Blockly.FlyoutMetricsManager {
    *
    * @param getWorkspaceCoordinates True to get the scroll metrics in
    *     workspace coordinates, false to get them in pixel coordinates.
-   * @param viewMetrics The view metrics if they have been previously
+   * @param cachedViewMetrics The view metrics if they have been previously
    *     computed.
-   * @param contentMetrics The content metrics if they have been previously
-   *     computed.
+   * @param cachedContentMetrics The content metrics if they have been
+   *     previously computed.
    * @returns The metrics for the scroll container.
    */
   override getScrollMetrics(
