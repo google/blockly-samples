@@ -1,6 +1,7 @@
 {
   "name": "@blockly/eslint-config",
   "version": "4.0.1",
+  "private": true,
   "description": "ESlint configuration used by Blockly plugins.",
   "files": [
     "index.js"
