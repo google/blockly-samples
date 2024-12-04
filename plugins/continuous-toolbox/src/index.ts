@@ -83,5 +83,8 @@ export function registerContinuousToolbox() {
   .blocklyTreeLabel {
     margin: auto;
   }
+  .blocklyToolboxCategoryLabel {
+    text-align: center;
+  }
   `);
 }
