@@ -183,6 +183,19 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   }
 
   /**
+   * Handles mouse wheel events.
+   *
+   * @param e The mouse wheel event to handle.
+   */
+  protected override wheel_(e: WheelEvent) {
+    // Don't scroll in response to mouse wheel events if we're currently
+    // animating scrolling to a category.
+    if (!this.scrollTarget) {
+      super.wheel_(e);
+    }
+  }
+
+  /**
    * Calculates the additional padding needed at the bottom of the flyout in
    * order to make it possible to scroll to the top of the last category.
    *
