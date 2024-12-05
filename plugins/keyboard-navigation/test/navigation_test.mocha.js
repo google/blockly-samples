@@ -83,22 +83,22 @@ suite('Navigation', function () {
       [
         'Calls toolbox selectNext',
         createKeyDownEvent(Blockly.utils.KeyCodes.S, 'NotAField'),
-        'selectNext_',
+        'selectNext',
       ],
       [
         'Calls toolbox selectPrevious',
         createKeyDownEvent(Blockly.utils.KeyCodes.W, 'NotAField'),
-        'selectPrevious_',
+        'selectPrevious',
       ],
       [
         'Calls toolbox selectParent',
         createKeyDownEvent(Blockly.utils.KeyCodes.D, 'NotAField'),
-        'selectChild_',
+        'selectChild',
       ],
       [
         'Calls toolbox selectChild',
         createKeyDownEvent(Blockly.utils.KeyCodes.A, 'NotAField'),
-        'selectParent_',
+        'selectParent',
       ],
     ];
 
@@ -109,7 +109,7 @@ suite('Navigation', function () {
       test(testCaseName, function () {
         const toolbox = this.workspace.getToolbox();
         const selectStub = sinon.stub(toolbox, stubName);
-        toolbox.selectedItem_ = toolbox.contents_[0];
+        toolbox.selectedItem_ = toolbox.contents.values().next().value;
         Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, mockEvent);
         sinon.assert.called(selectStub);
       });
@@ -554,7 +554,10 @@ suite('Navigation', function () {
 
       Blockly.ShortcutRegistry.registry.onKeyDown(this.workspace, tEvent);
 
-      const firstCategory = this.workspace.getToolbox().contents_[0];
+      const firstCategory = this.workspace
+        .getToolbox()
+        .contents.values()
+        .next().value;
       chai.assert.isTrue(keyDownSpy.returned(true));
       chai.assert.equal(
         this.workspace.getToolbox().getSelectedItem(),
