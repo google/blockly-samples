@@ -12,7 +12,7 @@
 
 import * as Blockly from 'blockly/core';
 
-const blockEvents = new Set([
+const blockEvents = new Set<string>([
   Blockly.Events.VIEWPORT_CHANGE,
   Blockly.Events.BLOCK_CHANGE,
   Blockly.Events.BLOCK_CREATE,

@@ -21,11 +21,6 @@ export class FieldDate extends Blockly.FieldTextInput {
   SERIALIZABLE = true;
 
   /**
-   * Mouse cursor style when over the hotspot that initiates the editor.
-   */
-  CURSOR = 'text';
-
-  /**
    * Class for a date input field. Derived from the Closure library date
    * picker.
    *

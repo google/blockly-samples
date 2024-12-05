@@ -33,9 +33,6 @@ export class FieldColour extends Blockly.Field<string> {
    */
   override SERIALIZABLE = true;
 
-  /** Mouse cursor style when over the hotspot that initiates the editor. */
-  override CURSOR = 'default';
-
   /**
    * Used to tell if the field needs to be rendered the next time the block is
    * rendered.  Colour fields are statically sized, and only need to be
