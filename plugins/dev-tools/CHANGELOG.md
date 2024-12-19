@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.13](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.12...@blockly/dev-tools@8.0.13) (2024-12-19)
+
+
+### Bug Fixes
+
+* Update screenshot plugin for compatibility with CSS vars. ([#2472](https://github.com/google/blockly-samples/issues/2472)) ([eecfccd](https://github.com/google/blockly-samples/commit/eecfccda56027a613d76f9ace70e62d9143f1c2e))
+
+
+
+
+
 ## [8.0.12](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.11...@blockly/dev-tools@8.0.12) (2024-12-03)
 
 **Note:** Version bump only for package @blockly/dev-tools
