@@ -95,10 +95,11 @@ const categoryStyles = {
  * inability to perceive red light).
  */
 export default Blockly.Theme.defineTheme('deuteranopia', {
+  name: 'deuteranopia',
   base: Blockly.Themes.Classic,
   blockStyles: defaultBlockStyles,
   categoryStyles: categoryStyles,
   componentStyles: {},
   fontStyle: {},
-  startHats: null,
+  startHats: undefined,
 });
