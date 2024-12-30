@@ -11,6 +11,7 @@
 import * as Blockly from 'blockly/core';
 
 export default Blockly.Theme.defineTheme('modern', {
+  name: 'modern',
   base: Blockly.Themes.Classic,
   blockStyles: {
     colour_blocks: {
@@ -96,5 +97,5 @@ export default Blockly.Theme.defineTheme('modern', {
   },
   componentStyles: {},
   fontStyle: {},
-  startHats: null,
+  startHats: undefined,
 });
