@@ -94,9 +94,10 @@ const categoryStyles = {
  * blue light).
  */
 export default Blockly.Theme.defineTheme('tritanopia', {
+  name: 'tritanopia',
   blockStyles: defaultBlockStyles,
   categoryStyles: categoryStyles,
   componentStyles: {},
   fontStyle: {},
-  startHats: null,
+  startHats: undefined,
 });
