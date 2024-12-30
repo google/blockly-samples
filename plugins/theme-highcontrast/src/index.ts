@@ -82,17 +82,18 @@ const categoryStyles = {
  * High contrast theme.
  */
 export default Blockly.Theme.defineTheme('highcontrast', {
+  name: 'highcontrast',
   blockStyles: defaultBlockStyles,
   categoryStyles: categoryStyles,
   componentStyles: {
     selectedGlowColour: '#000000',
-    selectedGlowSize: 1,
+    // selectedGlowSize: 1,
     replacementGlowColour: '#000000',
   },
   fontStyle: {
-    family: null, // Use default font-family.
-    weight: null, // Use default font-weight.
+    family: undefined, // Use default font-family.
+    weight: undefined, // Use default font-weight.
     size: 16,
   },
-  startHats: null,
+  startHats: undefined,
 });
