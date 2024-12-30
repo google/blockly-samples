@@ -14,10 +14,11 @@ import * as Blockly from 'blockly/core';
  * Dark theme.
  */
 export default Blockly.Theme.defineTheme('dark', {
+  name: 'dark',
   base: Blockly.Themes.Classic,
   componentStyles: {
     workspaceBackgroundColour: '#1e1e1e',
-    toolboxBackgroundColour: 'blackBackground',
+    toolboxBackgroundColour: '#333',
     toolboxForegroundColour: '#fff',
     flyoutBackgroundColour: '#252526',
     flyoutForegroundColour: '#ccc',
@@ -26,7 +27,6 @@ export default Blockly.Theme.defineTheme('dark', {
     insertionMarkerColour: '#fff',
     insertionMarkerOpacity: 0.3,
     scrollbarOpacity: 0.4,
-    cursorColour: '#d0d0d0',
-    blackBackground: '#333',
-  },
+    cursorColour: '#d0d0d0'
+  }
 });
