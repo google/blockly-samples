@@ -13,6 +13,10 @@ import {ContinuousToolbox} from './ContinuousToolbox';
 import {ContinuousFlyoutMetrics} from './ContinuousFlyoutMetrics';
 import {RecyclableBlockFlyoutInflater} from './RecyclableBlockFlyoutInflater';
 
+interface LabelFlyoutItem extends Blockly.FlyoutItem {
+  getElement(): Blockly.FlyoutButton;
+}
+
 /**
  * Class for continuous flyout.
  */
@@ -79,7 +83,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     this.scrollPositions.clear();
     this.getContents()
       .filter(this.toolboxItemIsLabel.bind(this))
-      .map((item) => item.element)
+      .map((item) => item.getElement())
       .forEach((label) => {
         this.scrollPositions.set(
           label.getButtonText(),
@@ -97,12 +101,13 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   protected toolboxItemIsLabel(
     item: Blockly.FlyoutItem,
-  ): item is {type: string; element: Blockly.FlyoutButton} {
+  ): item is LabelFlyoutItem {
+    const element = item.getElement();
     return !!(
-      item.type === 'label' &&
-      item.element instanceof Blockly.FlyoutButton &&
-      item.element.isLabel() &&
-      this.getParentToolbox().getCategoryByName(item.element.getButtonText())
+      item.getType() === 'label' &&
+      element instanceof Blockly.FlyoutButton &&
+      element.isLabel() &&
+      this.getParentToolbox().getCategoryByName(element.getButtonText())
     );
   }
 
@@ -187,6 +192,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    *
    * @param e The mouse wheel event to handle.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override wheel_(e: WheelEvent) {
     // Don't scroll in response to mouse wheel events if we're currently
     // animating scrolling to a category.

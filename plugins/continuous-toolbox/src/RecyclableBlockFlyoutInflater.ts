@@ -168,14 +168,18 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Disposes of the provided block.
    *
-   * @param element The block to dispose of.
+   * @param item The block to dispose of.
    */
-  override disposeElement(element: Blockly.BlockSvg) {
-    if (this.blockIsRecyclable(element)) {
+  override disposeItem(item: Blockly.FlyoutItem) {
+    const element = item.getElement();
+    if (
+      element instanceof Blockly.BlockSvg &&
+      this.blockIsRecyclable(element)
+    ) {
       this.removeListeners(element.id);
       this.recycleBlock(element);
     } else {
-      super.disposeElement(element);
+      super.disposeItem(item);
     }
   }
 
