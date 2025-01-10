@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-colour",
-  "version": "5.0.2",
+  "version": "5.0.13",
   "description": "A Blockly colour field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,8 +40,8 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^4.0.1",
-    "@blockly/dev-tools": "^8.0.2",
+    "@blockly/dev-scripts": "^4.0.7",
+    "@blockly/dev-tools": "^8.0.13",
     "@typescript-eslint/parser": "^5.59.5",
     "chai": "^4.2.0",
     "sinon": "^9.0.1",

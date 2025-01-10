@@ -207,4 +207,55 @@ suite('shadowBlockConversionChangeListener', function () {
       rootConnection.targetBlock().nextConnection.targetBlock().isShadow(),
     );
   });
+
+  suite('Selection', function () {
+    setup(function () {
+      this.jsdomCleanup = require('jsdom-global')(
+        '<!DOCTYPE html><div id="blocklyDiv"></div>',
+        {pretendToBeVisual: true},
+      );
+
+      this.workspace = Blockly.inject('blocklyDiv');
+      this.workspace.addChangeListener(shadowBlockConversionChangeListener);
+
+      // Prevent rendering, which does not work correctly in a headless jsdom
+      // environment.
+      sinon
+        .stub(Blockly.BlockSvg.prototype, 'renderEfficiently')
+        .callsFake(() => {});
+
+      this.clock = sinon.useFakeTimers();
+    });
+
+    teardown(function () {
+      this.jsdomCleanup();
+    });
+
+    test('Transfers selection to new block', function () {
+      const connection =
+        this.workspace.newBlock('text_reverse').inputList[0].connection;
+      const shadowBlock = attachShadowBlock(connection, {type: 'text'});
+
+      // Select the shadow block.
+      Blockly.common.setSelected(shadowBlock);
+      assert.isTrue(
+        Blockly.common.getSelected() === shadowBlock,
+        'Expected original shadow block to be selected',
+      );
+
+      // Modify the shadow block, triggering its replacement.
+      shadowBlock.getField('TEXT').setValue('new value');
+      this.clock.runAll();
+      assert.isFalse(
+        connection.targetBlock().isShadow(),
+        'Expected modifed block to no longer be a shadow',
+      );
+
+      // The replacement block should now be selected.
+      assert.isTrue(
+        Blockly.common.getSelected() === connection.targetBlock(),
+        'Expected replacement block to be selected',
+      );
+    });
+  });
 });

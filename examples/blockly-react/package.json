@@ -3,10 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@blockly/field-date": "^9.0.0",
     "blockly": "^11.0.0",
     "react": "^17.0.1",
-    "react-datepicker": "^3.3.0",
     "react-dom": "^17.0.1",
     "react-scripts": "^5.0.1"
   },
@@ -43,5 +41,9 @@
       "build/index.html",
       "build/**/*"
     ]
+  },
+  "devDependencies": {
+    "acorn": "^8.12.1",
+    "typescript": "^4.9.5"
   }
 }

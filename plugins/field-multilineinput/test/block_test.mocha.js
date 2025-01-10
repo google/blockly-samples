@@ -15,7 +15,6 @@ import {phpGenerator} from 'blockly/php';
 import {pythonGenerator} from 'blockly/python';
 import {luaGenerator} from 'blockly/lua';
 import {installAllBlocks} from '../src/index';
-import {BLOCK_NAME} from '../src/blocks/textMultiline';
 import {assert} from 'chai';
 
 const blockJson = {
@@ -40,21 +39,6 @@ const blockJson = {
 };
 
 /**
- * Uninstall old blocks and generators, since they come pre-installed
- * with Blockly.
- * TODO(#2194): Delete this function and calls to it.
- */
-function uninstallBlocks() {
-  delete Blockly.Blocks[BLOCK_NAME];
-
-  delete javascriptGenerator.forBlock[BLOCK_NAME];
-  delete dartGenerator.forBlock[BLOCK_NAME];
-  delete luaGenerator.forBlock[BLOCK_NAME];
-  delete pythonGenerator.forBlock[BLOCK_NAME];
-  delete phpGenerator.forBlock[BLOCK_NAME];
-}
-
-/**
  * Assert that the generated code matches the golden code for the specified
  * language.
  * @param {string} suffix The suffix of the golden file.
@@ -72,7 +56,6 @@ function checkResult(suffix, generated) {
 suite('Multiline Text Block Generators', function () {
   suiteSetup(function () {
     Blockly.setLocale(en);
-    uninstallBlocks();
     installAllBlocks({
       javascript: javascriptGenerator,
       dart: dartGenerator,
@@ -107,8 +90,5 @@ suite('Multiline Text Block Generators', function () {
   });
   teardown(function () {
     this.workspace.dispose();
-  });
-  suiteTeardown(function () {
-    uninstallBlocks();
   });
 });

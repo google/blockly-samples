@@ -192,19 +192,6 @@ const jsonToolbox = {
 };
 
 /**
- * Uninstall the base multiline text block and its associated generators.
- * TODO(#2194): remove this when those blocks are removed from the core library.
- */
-function uninstallBlock() {
-  delete Blockly.Blocks['text_multiline'];
-  delete javascriptGenerator.forBlock['text_multiline'];
-  delete dartGenerator.forBlock['text_multiline'];
-  delete luaGenerator.forBlock['text_multiline'];
-  delete pythonGenerator.forBlock['text_multiline'];
-  delete phpGenerator.forBlock['text_multiline'];
-}
-
-/**
  * Create a workspace.
  *
  * @param blocklyDiv The blockly container div.
@@ -215,7 +202,6 @@ function createWorkspace(
   blocklyDiv: HTMLElement,
   options: Blockly.BlocklyOptions,
 ): Blockly.WorkspaceSvg {
-  uninstallBlock();
   textMultiline.installBlock({
     javascript: javascriptGenerator,
     dart: dartGenerator,

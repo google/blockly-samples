@@ -70,6 +70,8 @@ const cssContent = `path.blocklyPath.blockly-ws-search-highlight {
   }
   .blockly-ws-search button {
     border: none;
+    padding-left: 6px;
+    padding-right: 6px;
   }
   .blockly-ws-search-actions {
     display: flex;

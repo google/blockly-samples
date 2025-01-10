@@ -3,6 +3,100 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.13](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.12...@blockly/zoom-to-fit@6.0.13) (2024-12-19)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.12](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.11...@blockly/zoom-to-fit@6.0.12) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.11](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.10...@blockly/zoom-to-fit@6.0.11) (2024-11-07)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.10](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.9...@blockly/zoom-to-fit@6.0.10) (2024-09-26)
+
+
+### Bug Fixes
+
+* **field-*:** Remove unneeded `fieldRegistry.unregister` calls ([#2454](https://github.com/google/blockly-samples/issues/2454)) ([b3ba30e](https://github.com/google/blockly-samples/commit/b3ba30e23dddf0bd98c266659aa229ba6ba685b0)), closes [#2453](https://github.com/google/blockly-samples/issues/2453)
+
+
+
+
+
+## [6.0.9](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.8...@blockly/zoom-to-fit@6.0.9) (2024-08-29)
+
+
+### Bug Fixes
+
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
+## [6.0.8](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.7...@blockly/zoom-to-fit@6.0.8) (2024-08-22)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.7](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.6...@blockly/zoom-to-fit@6.0.7) (2024-08-08)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.6](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.5...@blockly/zoom-to-fit@6.0.6) (2024-08-01)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.5](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.4...@blockly/zoom-to-fit@6.0.5) (2024-07-25)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.4](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.3...@blockly/zoom-to-fit@6.0.4) (2024-07-11)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
+## [6.0.3](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.2...@blockly/zoom-to-fit@6.0.3) (2024-07-04)
+
+**Note:** Version bump only for package @blockly/zoom-to-fit
+
+
+
+
+
 ## [6.0.2](https://github.com/google/blockly-samples/compare/@blockly/zoom-to-fit@6.0.1...@blockly/zoom-to-fit@6.0.2) (2024-06-06)
 
 **Note:** Version bump only for package @blockly/zoom-to-fit

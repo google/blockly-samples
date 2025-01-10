@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.7](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.6...@blockly/dev-scripts@4.0.7) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/dev-scripts
+
+
+
+
+
+## [4.0.6](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.5...@blockly/dev-scripts@4.0.6) (2024-11-07)
+
+
+### Bug Fixes
+
+* Modify Webpack sourcemap parameters to account for Windows path separators ([#2465](https://github.com/google/blockly-samples/issues/2465)) ([58be365](https://github.com/google/blockly-samples/commit/58be365e6e0f859f0255df1d9380a0a58e3f233e))
+
+
+
+
+
+## [4.0.5](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.4...@blockly/dev-scripts@4.0.5) (2024-08-08)
+
+**Note:** Version bump only for package @blockly/dev-scripts
+
+
+
+
+
+## [4.0.4](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.3...@blockly/dev-scripts@4.0.4) (2024-08-01)
+
+**Note:** Version bump only for package @blockly/dev-scripts
+
+
+
+
+
+## [4.0.3](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.2...@blockly/dev-scripts@4.0.3) (2024-07-11)
+
+
+### Reverts
+
+* Revert "chore(deps): Bump the npm_and_yarn group across 54 directories with 19 updates (#2403)" (#2410) ([bad8ffb](https://github.com/google/blockly-samples/commit/bad8ffbf85caa4e5b68d2f010cd0deaa9e3dd98f)), closes [#2403](https://github.com/google/blockly-samples/issues/2403) [#2410](https://github.com/google/blockly-samples/issues/2410)
+* Revert "chore(deps): Bump the npm_and_yarn group across 12 directories with 8…" (#2407) ([c008407](https://github.com/google/blockly-samples/commit/c008407107a22376baa637546eb6224a9a1cc48e)), closes [#2407](https://github.com/google/blockly-samples/issues/2407)
+
+
+
+## [4.0.2](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.1...@blockly/dev-scripts@4.0.2) (2024-07-04)
+
+**Note:** Version bump only for package @blockly/dev-scripts
+
+
+
+
+
 ## [4.0.1](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.0...@blockly/dev-scripts@4.0.1) (2024-05-30)
 
 

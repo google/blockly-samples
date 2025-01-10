@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.10](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.9...@blockly/theme-modern@6.0.10) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
+## [6.0.9](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.8...@blockly/theme-modern@6.0.9) (2024-11-07)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
+## [6.0.8](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.7...@blockly/theme-modern@6.0.8) (2024-09-26)
+
+
+### Bug Fixes
+
+* **field-*:** Remove unneeded `fieldRegistry.unregister` calls ([#2454](https://github.com/google/blockly-samples/issues/2454)) ([b3ba30e](https://github.com/google/blockly-samples/commit/b3ba30e23dddf0bd98c266659aa229ba6ba685b0)), closes [#2453](https://github.com/google/blockly-samples/issues/2453)
+
+
+
+
+
+## [6.0.7](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.6...@blockly/theme-modern@6.0.7) (2024-08-29)
+
+
+### Bug Fixes
+
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
+## [6.0.6](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.5...@blockly/theme-modern@6.0.6) (2024-08-22)
+
+
+### Bug Fixes
+
+* lerna v8 breaking our whole shebangle ([#2446](https://github.com/google/blockly-samples/issues/2446)) ([b8b4c21](https://github.com/google/blockly-samples/commit/b8b4c21d4eaf81f527336ae46f6679ff99ac23c3))
+
+
+
+
+
+## [6.0.5](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.4...@blockly/theme-modern@6.0.5) (2024-08-08)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
+## [6.0.4](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.3...@blockly/theme-modern@6.0.4) (2024-08-01)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
+## [6.0.3](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.2...@blockly/theme-modern@6.0.3) (2024-07-11)
+
+
+### Reverts
+
+* Revert "chore(deps): Bump the npm_and_yarn group across 54 directories with 19 updates (#2403)" (#2410) ([bad8ffb](https://github.com/google/blockly-samples/commit/bad8ffbf85caa4e5b68d2f010cd0deaa9e3dd98f)), closes [#2403](https://github.com/google/blockly-samples/issues/2403) [#2410](https://github.com/google/blockly-samples/issues/2410)
+
+
+
+## [6.0.2](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.1...@blockly/theme-modern@6.0.2) (2024-07-04)
+
+**Note:** Version bump only for package @blockly/theme-modern
+
+
+
+
+
 ## [6.0.1](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.0...@blockly/theme-modern@6.0.1) (2024-05-30)
 
 

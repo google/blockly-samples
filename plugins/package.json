@@ -1,15 +1,19 @@
 {
-  "name": "blockly-examples",
+  "name": "root",
   "private": true,
   "scripts": {
     "audit": "lerna run audit",
+    "audit:fix": "lerna run audit:fix",
     "boot": "lerna bootstrap",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "clean:node": "lerna run clean --yes",
     "postinstall": "npm run boot",
     "predeploy": "lerna run predeploy",
-    "update": "lerna run update"
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@lerna/legacy-package-management": "^8.1.7",
-    "lerna": "^8.1.7"
+    "lerna": "^8.1.8"
   }
 }

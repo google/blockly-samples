@@ -3,6 +3,104 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.13](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.12...@blockly/dev-tools@8.0.13) (2024-12-19)
+
+
+### Bug Fixes
+
+* Update screenshot plugin for compatibility with CSS vars. ([#2472](https://github.com/google/blockly-samples/issues/2472)) ([eecfccd](https://github.com/google/blockly-samples/commit/eecfccda56027a613d76f9ace70e62d9143f1c2e))
+
+
+
+
+
+## [8.0.12](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.11...@blockly/dev-tools@8.0.12) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [8.0.11](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.10...@blockly/dev-tools@8.0.11) (2024-11-07)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [8.0.10](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.9...@blockly/dev-tools@8.0.10) (2024-09-26)
+
+
+### Bug Fixes
+
+* **field-*:** Remove unneeded `fieldRegistry.unregister` calls ([#2454](https://github.com/google/blockly-samples/issues/2454)) ([b3ba30e](https://github.com/google/blockly-samples/commit/b3ba30e23dddf0bd98c266659aa229ba6ba685b0)), closes [#2453](https://github.com/google/blockly-samples/issues/2453)
+
+
+
+
+
+## [8.0.9](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.8...@blockly/dev-tools@8.0.9) (2024-08-29)
+
+
+### Bug Fixes
+
+* predeploy plugins ([#2449](https://github.com/google/blockly-samples/issues/2449)) ([6b36d8b](https://github.com/google/blockly-samples/commit/6b36d8b344a969f79d89bbc7dcee29ae554759f9))
+
+
+
+
+
+## [8.0.8](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.7...@blockly/dev-tools@8.0.8) (2024-08-22)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [8.0.7](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.6...@blockly/dev-tools@8.0.7) (2024-08-08)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [8.0.6](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.5...@blockly/dev-tools@8.0.6) (2024-08-01)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [8.0.5](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.4...@blockly/dev-tools@8.0.5) (2024-07-25)
+
+
+### Bug Fixes
+
+* dev-tools only set monaco model and text when changing ([#2417](https://github.com/google/blockly-samples/issues/2417)) ([20be3a3](https://github.com/google/blockly-samples/commit/20be3a3b43af41987f631b931d65121d761f6377)), closes [/github.com/mit-cml/workspace-multiselect/pull/62#issuecomment-2196819235](https://github.com/google//github.com/mit-cml/workspace-multiselect/pull/62/issues/issuecomment-2196819235) [/github.com/mit-cml/workspace-multiselect/pull/62#issuecomment-2212561339](https://github.com/google//github.com/mit-cml/workspace-multiselect/pull/62/issues/issuecomment-2212561339) [/github.com/mit-cml/workspace-multiselect/pull/62#issuecomment-2214203536](https://github.com/google//github.com/mit-cml/workspace-multiselect/pull/62/issues/issuecomment-2214203536)
+
+
+
+## [8.0.4](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.3...@blockly/dev-tools@8.0.4) (2024-07-11)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
+## [8.0.3](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.2...@blockly/dev-tools@8.0.3) (2024-07-04)
+
+**Note:** Version bump only for package @blockly/dev-tools
+
+
+
+
+
 ## [8.0.2](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.1...@blockly/dev-tools@8.0.2) (2024-06-06)
 
 **Note:** Version bump only for package @blockly/dev-tools
