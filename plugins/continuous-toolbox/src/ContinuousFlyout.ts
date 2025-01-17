@@ -267,7 +267,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @param func The function used to determine if a block is recyclable.
    */
   setBlockIsRecyclable(func: (block: Blockly.Block) => boolean) {
-    this.getRecyclableInflater().setRecyclingEligibilityChecker(func);
+    this.getRecyclableInflater().recycleEligibilityChecker = func;
   }
 
   /**
@@ -276,7 +276,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * @param isEnabled True to allow blocks to be recycled, false otherwise.
    */
   setRecyclingEnabled(isEnabled: boolean) {
-    this.getRecyclableInflater().setRecyclingEnabled(isEnabled);
+    this.getRecyclableInflater().recyclingEnabled = isEnabled;
   }
 
   /**

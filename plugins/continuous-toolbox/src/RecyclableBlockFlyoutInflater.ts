@@ -13,7 +13,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Whether or not block recycling is enabled.
    */
-  private recyclingEnabled = false;
+  public recyclingEnabled = false;
 
   /**
    * Map from block type to block instance.
@@ -23,26 +23,7 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
   /**
    * Custom function to use for checking whether or not blocks can be recycled.
    */
-  private recycleEligibilityChecker?: (block: Blockly.Block) => boolean;
-
-  /**
-   * Toggles whether or not recycling is enabled.
-   *
-   * @param enabled True if recycling should be enabled.
-   */
-  setRecyclingEnabled(enabled: boolean) {
-    this.recyclingEnabled = enabled;
-  }
-
-  /**
-   * Sets a function to use to determine a block's ability to be recycled.
-   *
-   * @param checker The eligibility check function to use, or undefined to
-   *     revert to the built-in default.
-   */
-  setRecyclingEligibilityChecker(checker?: (block: Blockly.Block) => boolean) {
-    this.recycleEligibilityChecker = checker;
-  }
+  public recycleEligibilityChecker?: (block: Blockly.Block) => boolean;
 
   /**
    * Creates a new block from the given block definition.
