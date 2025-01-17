@@ -121,9 +121,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   private selectCategoryByScrollPosition(position: number) {
     // If we are currently auto-scrolling, due to selecting a category by
     // clicking on it, do not update the category selection.
-    if (this.scrollTarget) {
-      return;
-    }
+    if (this.scrollTarget) return;
+
     const scaledPosition = Math.round(position / this.getWorkspace().scale);
     // Traverse the array of scroll positions in reverse, so we can select the
     // furthest category that the scroll position is beyond.
@@ -198,9 +197,9 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   protected override wheel_(e: WheelEvent) {
     // Don't scroll in response to mouse wheel events if we're currently
     // animating scrolling to a category.
-    if (!this.scrollTarget) {
-      super.wheel_(e);
-    }
+    if (this.scrollTarget) return;
+
+    super.wheel_(e);
   }
 
   /**
@@ -215,16 +214,15 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     contentMetrics: Blockly.MetricsManager.ContainerRegion,
     viewMetrics: Blockly.MetricsManager.ContainerRegion,
   ): number {
-    if (this.scrollPositions.size > 0) {
-      const lastPosition =
-        ([...this.scrollPositions.values()].pop() ?? 0) *
-        this.getWorkspace().scale;
-      const lastCategoryHeight = contentMetrics.height - lastPosition;
-      if (lastCategoryHeight < viewMetrics.height) {
-        return viewMetrics.height - lastCategoryHeight;
-      }
+    if (this.scrollPositions.size === 0) return 0;
+
+    const lastPosition =
+      ([...this.scrollPositions.values()].pop() ?? 0) *
+      this.getWorkspace().scale;
+    const lastCategoryHeight = contentMetrics.height - lastPosition;
+    if (lastCategoryHeight < viewMetrics.height) {
+      return viewMetrics.height - lastCategoryHeight;
     }
-    return 0;
   }
 
   /**

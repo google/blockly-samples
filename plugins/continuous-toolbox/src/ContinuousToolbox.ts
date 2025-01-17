@@ -155,10 +155,8 @@ export class ContinuousToolbox extends Blockly.Toolbox {
         item.isSelectable() &&
         name === item.getName(),
     );
-    if (category) {
-      return category as Blockly.ISelectableToolboxItem;
-    }
-    return null;
+    if (!category) return null;
+    return category as Blockly.ISelectableToolboxItem;
   }
 
   /**
@@ -171,9 +169,8 @@ export class ContinuousToolbox extends Blockly.Toolbox {
    */
   selectCategoryByName(name: string) {
     const newItem = this.getCategoryByName(name);
-    if (!newItem) {
-      return;
-    }
+    if (!newItem) return;
+
     const oldItem = this.selectedItem_;
 
     if (oldItem && this.shouldDeselectItem_(oldItem, newItem)) {

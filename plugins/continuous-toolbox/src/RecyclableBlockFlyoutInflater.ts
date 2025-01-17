@@ -125,33 +125,24 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
    * @returns True if the block can be recycled. False otherwise.
    */
   protected blockIsRecyclable(block: Blockly.Block): boolean {
-    if (!this.recyclingEnabled) {
-      return false;
-    }
+    if (!this.recyclingEnabled) return false;
 
     if (this.recycleEligibilityChecker) {
       return this.recycleEligibilityChecker(block);
     }
 
     // If the block needs to parse mutations, never recycle.
-    if (block.mutationToDom && block.domToMutation) {
-      return false;
-    }
+    if (block.mutationToDom && block.domToMutation) return false;
 
-    if (!block.isEnabled()) {
-      return false;
-    }
+    if (!block.isEnabled()) return false;
 
     for (const input of block.inputList) {
       for (const field of input.fieldRow) {
         // No variables.
-        if (field.referencesVariables()) {
-          return false;
-        }
+        if (field.referencesVariables()) return false;
+
         if (field instanceof Blockly.FieldDropdown) {
-          if (field.isOptionListDynamic()) {
-            return false;
-          }
+          if (field.isOptionListDynamic()) return false;
         }
       }
       // Check children.
