@@ -107,6 +107,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     const element = item.getElement();
     return !!(
       item.getType() === 'label' &&
+      // Note that `FlyoutButton` represents both buttons and labels.
       element instanceof Blockly.FlyoutButton &&
       element.isLabel() &&
       this.getParentToolbox().getCategoryByName(element.getButtonText())
