@@ -79,12 +79,7 @@ export class ContinuousToolbox extends Blockly.Toolbox {
 
       // Handle custom categories (e.g. variables and functions)
       if (typeof itemContents === 'string') {
-        itemContents = [
-          {
-            custom: itemContents,
-            kind: 'CATEGORY',
-          },
-        ];
+        itemContents = [{custom: itemContents, kind: 'CATEGORY'}];
       }
       contents = contents.concat(itemContents);
     }
