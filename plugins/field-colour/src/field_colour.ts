@@ -475,7 +475,7 @@ export class FieldColour extends Blockly.Field<string> {
    * @param dy Change of y.
    */
   private moveHighlightBy(dx: number, dy: number) {
-    if (!this.highlightedIndex) {
+    if (this.highlightedIndex === null) {
       return;
     }
 
@@ -564,7 +564,7 @@ export class FieldColour extends Blockly.Field<string> {
    * @returns Highlighted item (null if none).
    */
   private getHighlighted(): HTMLElement | null {
-    if (!this.highlightedIndex) {
+    if (this.highlightedIndex === null) {
       return null;
     }
 
