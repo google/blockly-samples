@@ -14,6 +14,8 @@ import {ContinuousFlyoutMetrics} from './ContinuousFlyoutMetrics';
 import {RecyclableBlockFlyoutInflater} from './RecyclableBlockFlyoutInflater';
 
 interface LabelFlyoutItem extends Blockly.FlyoutItem {
+  // Blockly.FlyoutButton represents both buttons and labels; a label is just
+  // a borderless, non-clickable button.
   getElement(): Blockly.FlyoutButton;
 }
 

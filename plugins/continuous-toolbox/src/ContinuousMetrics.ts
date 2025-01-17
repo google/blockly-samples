@@ -56,7 +56,7 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
   /**
    * Gets the absolute left and absolute top in pixel coordinates.
    * This is where the visible workspace starts in relation to the SVG
-   * container, shifted to not include the area behind the flyout.
+   * container, adjusted to not include the area behind the flyout.
    *
    * @returns The absolute metrics for the workspace.
    */
