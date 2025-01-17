@@ -22,7 +22,7 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
    *     workspace coordinates or pixel coordinates.
    */
   override getViewMetrics(
-    getWorkspaceCoordinates?: boolean,
+    getWorkspaceCoordinates = false,
   ): Blockly.MetricsManager.ContainerRegion {
     const scale = getWorkspaceCoordinates ? this.workspace_.scale : 1;
     const svgMetrics = this.getSvgMetrics();
