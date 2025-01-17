@@ -234,6 +234,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
   override getX(): number {
     if (
       this.isVisible() &&
+      // Make sure that this flyout is associated with a toolbox and not e.g.
+      // a simple flyout or the trashcan flyout.
       this.targetWorkspace.toolboxPosition === this.toolboxPosition_ &&
       this.targetWorkspace.getToolbox() &&
       this.toolboxPosition_ !== Blockly.utils.toolbox.Position.LEFT
