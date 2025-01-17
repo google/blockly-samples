@@ -223,6 +223,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
     if (lastCategoryHeight < viewMetrics.height) {
       return viewMetrics.height - lastCategoryHeight;
     }
+
+    return 0;
   }
 
   /**
