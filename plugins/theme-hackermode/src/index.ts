@@ -12,47 +12,47 @@
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colour_blocks: {
+  colourBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  list_blocks: {
+  listBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  logic_blocks: {
+  logicBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  loop_blocks: {
+  loopBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  math_blocks: {
+  mathBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  procedure_blocks: {
+  procedureBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  text_blocks: {
+  textBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  variable_blocks: {
+  variableBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  variable_dynamic_blocks: {
+  variableDynamicBlocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
@@ -60,31 +60,31 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colour_category: {
+  colourCategory: {
     colour: '#0c0d0d',
   },
-  list_category: {
+  listCategory: {
     colour: '#0c0d0d',
   },
-  logic_category: {
+  logicCategory: {
     colour: '#0c0d0d',
   },
-  loop_category: {
+  loopCategory: {
     colour: '#0c0d0d',
   },
-  math_category: {
+  mathCategory: {
     colour: '#0c0d0d',
   },
-  procedure_category: {
+  procedureCategory: {
     colour: '#0c0d0d',
   },
-  text_category: {
+  textCategory: {
     colour: '#0c0d0d',
   },
-  variable_category: {
+  variableCategory: {
     colour: '#0c0d0d',
   },
-  variable_dynamic_category: {
+  variableDynamicCategory: {
     colour: '#0c0d0d',
   },
 };
@@ -96,7 +96,7 @@ export default Blockly.Theme.defineTheme('hackermode', {
   categoryStyles: categoryStyles,
   componentStyles: {
     workspaceBackgroundColour: '#1e1e1e',
-    toolboxBackgroundColour: '#33',
+    toolboxBackgroundColour: '#333',
     toolboxForegroundColour: '#73ed58',
     flyoutBackgroundColour: '#252526',
     flyoutForegroundColour: '#73ed58',

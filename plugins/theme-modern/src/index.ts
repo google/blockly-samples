@@ -14,52 +14,52 @@ export default Blockly.Theme.defineTheme('modern', {
   name: 'modern',
   base: Blockly.Themes.Classic,
   blockStyles: {
-    colour_blocks: {
+    colourBlocks: {
       colourPrimary: '#a5745b',
       colourSecondary: '#dbc7bd',
       colourTertiary: '#845d49',
     },
-    list_blocks: {
+    listBlocks: {
       colourPrimary: '#745ba5',
       colourSecondary: '#c7bddb',
       colourTertiary: '#5d4984',
     },
-    logic_blocks: {
+    logicBlocks: {
       colourPrimary: '#5b80a5',
       colourSecondary: '#bdccdb',
       colourTertiary: '#496684',
     },
-    loop_blocks: {
+    loopBlocks: {
       colourPrimary: '#5ba55b',
       colourSecondary: '#bddbbd',
       colourTertiary: '#498449',
     },
-    math_blocks: {
+    mathBlocks: {
       colourPrimary: '#5b67a5',
       colourSecondary: '#bdc2db',
       colourTertiary: '#495284',
     },
-    procedure_blocks: {
+    procedureBlocks: {
       colourPrimary: '#995ba5',
       colourSecondary: '#d6bddb',
       colourTertiary: '#7a4984',
     },
-    text_blocks: {
+    textBlocks: {
       colourPrimary: '#5ba58c',
       colourSecondary: '#bddbd1',
       colourTertiary: '#498470',
     },
-    variable_blocks: {
+    variableBlocks: {
       colourPrimary: '#a55b99',
       colourSecondary: '#dbbdd6',
       colourTertiary: '#84497a',
     },
-    variable_dynamic_blocks: {
+    variableDynamicBlocks: {
       colourPrimary: '#a55b99',
       colourSecondary: '#dbbdd6',
       colourTertiary: '#84497a',
     },
-    hat_blocks: {
+    hatBlocks: {
       colourPrimary: '#a55b99',
       colourSecondary: '#dbbdd6',
       colourTertiary: '#84497a',
@@ -67,31 +67,31 @@ export default Blockly.Theme.defineTheme('modern', {
     },
   },
   categoryStyles: {
-    colour_category: {
+    colourCategory: {
       colour: '#a5745b',
     },
-    list_category: {
+    listCategory: {
       colour: '#745ba5',
     },
-    logic_category: {
+    logicCategory: {
       colour: '#5b80a5',
     },
-    loop_category: {
+    loopCategory: {
       colour: '#5ba55b',
     },
-    math_category: {
+    mathCategory: {
       colour: '#5b67a5',
     },
-    procedure_category: {
+    procedureCategory: {
       colour: '#995ba5',
     },
-    text_category: {
+    textCategory: {
       colour: '#5ba58c',
     },
-    variable_category: {
+    variableCategory: {
       colour: '#a55b99',
     },
-    variable_dynamic_category: {
+    variableDynamicCategory: {
       colour: '#a55b99',
     },
   },

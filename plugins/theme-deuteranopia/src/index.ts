@@ -11,47 +11,47 @@
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colour_blocks: {
+  colourBlocks: {
     colourPrimary: '#f2a72c',
     colourSecondary: '#f1c172',
     colourTertiary: '#da921c',
   },
-  list_blocks: {
+  listBlocks: {
     colourPrimary: '#7d65ab',
     colourSecondary: '#a88be0',
     colourTertiary: '#66518e',
   },
-  logic_blocks: {
+  logicBlocks: {
     colourPrimary: '#9fd2f1',
     colourSecondary: '#c0e0f4',
     colourTertiary: '#74bae5',
   },
-  loop_blocks: {
+  loopBlocks: {
     colourPrimary: '#795a07',
     colourSecondary: '#ac8726',
     colourTertiary: '#c4a03f',
   },
-  math_blocks: {
+  mathBlocks: {
     colourPrimary: '#e6da39',
     colourSecondary: '#f3ec8e',
     colourTertiary: '#f2eeb7',
   },
-  procedure_blocks: {
+  procedureBlocks: {
     colourPrimary: '#590721',
     colourSecondary: '#8c475d',
     colourTertiary: '#885464',
   },
-  text_blocks: {
+  textBlocks: {
     colourPrimary: '#058863',
     colourSecondary: '#5ecfaf',
     colourTertiary: '#04684c',
   },
-  variable_blocks: {
+  variableBlocks: {
     colourPrimary: '#47025a',
     colourSecondary: '#820fa1',
     colourTertiary: '#8e579d',
   },
-  variable_dynamic_blocks: {
+  variableDynamicBlocks: {
     colourPrimary: '#47025a',
     colourSecondary: '#820fa1',
     colourTertiary: '#8e579d',
@@ -59,31 +59,31 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colour_category: {
+  colourCategory: {
     colour: '#f2a72c',
   },
-  list_category: {
+  listCategory: {
     colour: '#7d65ab',
   },
-  logic_category: {
+  logicCategory: {
     colour: '#9fd2f1',
   },
-  loop_category: {
+  loopCategory: {
     colour: '#795a07',
   },
-  math_category: {
+  mathCategory: {
     colour: '#e6da39',
   },
-  procedure_category: {
+  procedureCategory: {
     colour: '#590721',
   },
-  text_category: {
+  textCategory: {
     colour: '#058863',
   },
-  variable_category: {
+  variableCategory: {
     colour: '#47025a',
   },
-  variable_dynamic_category: {
+  variableDynamicCategory: {
     colour: '#47025a',
   },
 };

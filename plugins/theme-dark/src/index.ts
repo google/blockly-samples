@@ -27,6 +27,6 @@ export default Blockly.Theme.defineTheme('dark', {
     insertionMarkerColour: '#fff',
     insertionMarkerOpacity: 0.3,
     scrollbarOpacity: 0.4,
-    cursorColour: '#d0d0d0'
-  }
+    cursorColour: '#d0d0d0',
+  },
 });

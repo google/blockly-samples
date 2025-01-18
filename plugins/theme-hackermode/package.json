@@ -53,5 +53,8 @@
   },
   "eslintConfig": {
     "extends": "@blockly/eslint-config"
+  },
+  "dependencies": {
+    "@blockly/theme-hackermode": "file:"
   }
 }
