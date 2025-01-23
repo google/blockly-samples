@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-colour",
-  "version": "5.0.13",
+  "version": "5.0.14",
   "description": "A Blockly colour field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.13...@blockly/field-colour@5.0.14) (2025-01-23)
+
+
+### Bug Fixes
+
+* Fix bug that prevented keyboard navigation of color swatches. ([#2479](https://github.com/google/blockly-samples/issues/2479)) ([5945e7c](https://github.com/google/blockly-samples/commit/5945e7c0412faedc08c422f9f538ef22193cc659))
+
+
+
+
+
 ## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.12...@blockly/field-colour@5.0.13) (2024-12-19)
 
 **Note:** Version bump only for package @blockly/field-colour
