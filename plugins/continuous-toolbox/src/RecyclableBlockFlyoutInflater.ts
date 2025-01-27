@@ -114,8 +114,10 @@ export class RecyclableBlockFlyoutInflater extends Blockly.BlockFlyoutInflater {
 
     // If the block needs to parse mutations, never recycle.
     if (
-      (block.mutationToDom && block.domToMutation) ||
-      (block.saveExtraState && block.loadExtraState)
+      block.mutationToDom ||
+      block.domToMutation ||
+      block.saveExtraState ||
+      block.loadExtraState
     ) {
       return false;
     }
