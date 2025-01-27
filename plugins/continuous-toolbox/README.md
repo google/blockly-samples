@@ -45,6 +45,21 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 ```
 
+## Block Recycling
+
+As a performance optimization, by default the continuous toolbox "recycles"
+blocks to avoid having to create DOM elements for potentially hundreds of blocks
+every time the flyout is shown. This entails moving the blocks offscreen when
+the flyout is hidden, and then simply repositioning them when the flyout is
+shown. Not all block types are amenable to this; in particular, blocks with
+dynamic behavior (e.g. those that reference variables, support mutations, or
+have dynamic dropdown fields) are excluded by default.
+
+This feature can be toggled by calling `setRecyclingEnabled()` on an instance of
+`ContinuousFlyout`, and the default ruleset for determing which blocks are safe
+for recycling can be replaced with a custom callback by passing that function to
+`setBlockIsRecyclable()`.
+
 ## License
 
 Apache 2.0
