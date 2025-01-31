@@ -185,7 +185,7 @@ export class ContentHighlight {
   private onChange(event: Blockly.Events.Abstract) {
     if (event.type === Blockly.Events.THEME_CHANGE) {
       this.applyColor();
-    } else if (contentChangeEvents.indexOf(event.type) !== -1) {
+    } else if ((contentChangeEvents as string[]).indexOf(event.type) !== -1) {
       const metricsManager = this.workspace.getMetricsManager();
       if (event.type !== Blockly.Events.VIEWPORT_CHANGE) {
         // The content metrics change when it's not a viewport change event.
