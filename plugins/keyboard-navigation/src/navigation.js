@@ -503,13 +503,15 @@ export class Navigation {
       const flyoutContents = flyout.getContents();
       const firstFlyoutItem = flyoutContents[0];
       if (!firstFlyoutItem) return;
-      if (firstFlyoutItem.button) {
+      if (firstFlyoutItem.element instanceof Blockly.FlyoutButton) {
         const astNode = Blockly.ASTNode.createButtonNode(
-          firstFlyoutItem.button,
+          firstFlyoutItem.element,
         );
         this.getFlyoutCursor(workspace).setCurNode(astNode);
-      } else if (firstFlyoutItem.block) {
-        const astNode = Blockly.ASTNode.createStackNode(firstFlyoutItem.block);
+      } else if (firstFlyoutItem.element instanceof Blockly.BlockSvg) {
+        const astNode = Blockly.ASTNode.createStackNode(
+          firstFlyoutItem.element,
+        );
         this.getFlyoutCursor(workspace).setCurNode(astNode);
       }
     }
