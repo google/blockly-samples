@@ -109,7 +109,6 @@ export function renderPlayground(container) {
   const tabButtons = document.createElement('div');
   tabButtons.style.position = 'absolute';
   tabButtons.style.height = '30px';
-  tabButtons.style.width = '50px';
   tabButtons.style.top = '0';
   tabButtons.style.right = '0';
   tabButtons.style.display = 'flex';
@@ -165,4 +164,16 @@ export function renderCheckbox(id, label) {
   checkboxLabel.textContent = label;
   checkboxLabel.setAttribute('for', id);
   return [checkbox, checkboxLabel];
+}
+
+/**
+ * Render a button.
+ * @param {string} label The text content of the button.
+ * @returns {HTMLButtonElement} The button element.
+ */
+export function renderButton(label) {
+  const button = document.createElement('button');
+  button.setAttribute('type', 'button');
+  button.textContent = label;
+  return button;
 }
