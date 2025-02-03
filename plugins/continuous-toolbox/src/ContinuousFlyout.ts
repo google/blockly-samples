@@ -89,7 +89,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       .forEach((label) => {
         this.scrollPositions.set(
           label.getButtonText(),
-          label.getPosition().y - label.height,
+          Math.max(0, label.getPosition().y - this.GAP_Y / 2),
         );
       });
   }
@@ -112,6 +112,21 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
       element.isLabel() &&
       this.getParentToolbox().getCategoryByName(element.getButtonText())
     );
+  }
+
+  /**
+   * Returns the scroll position for the given category name.
+   *
+   * @param name Category name.
+   * @returns Scroll position for given category in workspace units, or null if
+   *     not found.
+   */
+  getCategoryScrollPosition(name: string): number | null {
+    const position = this.scrollPositions.get(name);
+    if (position === undefined) {
+      console.warn(`Scroll position not recorded for category ${name}`);
+    }
+    return position ?? null;
   }
 
   /**
@@ -161,7 +176,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    */
   scrollToCategory(category: Blockly.ISelectableToolboxItem) {
     const position = this.scrollPositions.get(category.getName());
-    if (!position) {
+    if (position === undefined) {
       console.warn(`Scroll position not recorded for category ${name}`);
       return;
     }
@@ -173,8 +188,7 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * a scroll target, and request the next frame if necessary.
    */
   private stepScrollAnimation() {
-    if (!this.scrollTarget) return;
-
+    if (this.scrollTarget === undefined) return;
     const currentScrollPos = -this.getWorkspace().scrollY;
     const diff = this.scrollTarget - currentScrollPos;
     if (Math.abs(diff) < 1) {
