@@ -118,7 +118,8 @@ export class ContinuousFlyout extends Blockly.VerticalFlyout {
    * Returns the scroll position for the given category name.
    *
    * @param name Category name.
-   * @returns Scroll position for given category, or null if not found.
+   * @returns Scroll position for given category in workspace units, or null if
+   *     not found.
    */
   getCategoryScrollPosition(name: string): number | null {
     const position = this.scrollPositions.get(name);
