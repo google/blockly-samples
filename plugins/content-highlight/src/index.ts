@@ -15,6 +15,7 @@ import * as Blockly from 'blockly/core';
  */
 const contentChangeEvents = [
   Blockly.Events.VIEWPORT_CHANGE,
+  Blockly.Events.BLOCK_CREATE,
   Blockly.Events.BLOCK_MOVE,
   Blockly.Events.BLOCK_DELETE,
   Blockly.Events.COMMENT_MOVE,
