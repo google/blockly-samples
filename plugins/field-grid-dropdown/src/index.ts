@@ -142,7 +142,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
       Blockly.DropDownDiv.getContentDiv(),
       this.getOptions(false),
       this.columns,
-      !!this.getSourceBlock()?.workspace.RTL,
+      rtl,
       (selectedItem: GridItem) => {
         Blockly.DropDownDiv.hideIfOwner(this);
         this.setValue(selectedItem.getValue());

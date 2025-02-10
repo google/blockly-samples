@@ -5,7 +5,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-import type {Grid} from './grid';
 
 /**
  * Class representing an item in a grid.
@@ -27,9 +26,9 @@ export class GridItem {
    * Creates a new GridItem.
    *
    * @param container The parent element of this grid item in the DOM.
-   * @param content: The content to display in this grid item.
-   * @param value: The programmatic value of this grid item.
-   * @param selectionCallback: Function to call when this item is selected.
+   * @param content The content to display in this grid item.
+   * @param value The programmatic value of this grid item.
+   * @param selectionCallback Function to call when this item is selected.
    */
   constructor(
     container: HTMLElement,
@@ -178,11 +177,11 @@ export class GridItem {
     ] as HTMLElement[];
     if (!items.length) return 0;
 
-    let previousTop = items[0].offsetTop;
-    let previousHeight = items[0].offsetHeight;
+    const initialTop = items[0].offsetTop;
+    const initialHeight = items[0].offsetHeight;
     for (const item of items) {
-      if (item.offsetTop !== previousTop) {
-        return item.offsetTop - previousHeight - previousTop;
+      if (item.offsetTop !== initialTop) {
+        return item.offsetTop - initialHeight - initialTop;
       }
     }
 

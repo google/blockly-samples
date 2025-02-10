@@ -246,6 +246,7 @@ export class Grid {
   /**
    * Returns the index of the given item within the grid.
    *
+   * @param item The item to return the index of.
    * @returns The index of the given item within the grid.
    */
   private indexOfItem(item: GridItem): number {
@@ -255,6 +256,7 @@ export class Grid {
   /**
    * Returns the GridItem object at the given index in the grid.
    *
+   * @param index The index to retrieve the grid item at.
    * @returns The GridItem at the given index.
    */
   private itemAtIndex(index: number): GridItem | undefined {
