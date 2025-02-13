@@ -55,6 +55,37 @@ export class Grid {
     utils.aria.setRole(this.root, utils.aria.Role.GRID);
     container.appendChild(this.root);
 
+    this.populateItems(options);
+
+    this.keyDownHandler = browserEvents.conditionalBind(
+      this.root,
+      'keydown',
+      this,
+      this.onKeyDown,
+    );
+
+    this.pointerMoveHandler = browserEvents.conditionalBind(
+      this.root,
+      'pointermove',
+      this,
+      this.onPointerMove,
+      true,
+    );
+
+    if (columns >= 1) {
+      this.columns = columns;
+      this.root.style.setProperty('--grid-columns', `${this.columns}`);
+    } else {
+      throw new Error(`Number of columns must be >= 1; got ${columns}`);
+    }
+  }
+
+  /**
+   * Creates grid items in the DOM given a list of model objects.
+   *
+   * @param options A list of grid item model objects.
+   */
+  private populateItems(options: MenuOption[]) {
     let row = document.createElement('div');
     for (const [index, item] of options.entries()) {
       if (index % this.columns === 0) {
@@ -87,28 +118,6 @@ export class Grid {
       );
       this.itemIndices.set(gridItem.getId(), this.itemIndices.size);
       this.items.push(gridItem);
-    }
-
-    this.keyDownHandler = browserEvents.conditionalBind(
-      this.root,
-      'keydown',
-      this,
-      this.onKeyDown,
-    );
-
-    this.pointerMoveHandler = browserEvents.conditionalBind(
-      this.root,
-      'pointermove',
-      this,
-      this.onPointerMove,
-      true,
-    );
-
-    if (columns >= 1) {
-      this.columns = columns;
-      this.root.style.setProperty('--grid-columns', `${this.columns}`);
-    } else {
-      throw new Error(`Number of columns must be >= 1; got ${columns}`);
     }
   }
 
