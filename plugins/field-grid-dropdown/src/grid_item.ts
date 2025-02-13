@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
+import {browserEvents, utils} from 'blockly/core';
 
 /**
  * Class representing an item in a grid.
@@ -14,7 +14,7 @@ export class GridItem {
   private element: HTMLButtonElement;
 
   /** Identifier for a click handler to unregister during dispose(). */
-  private clickHandler: Blockly.browserEvents.Data | null;
+  private clickHandler: browserEvents.Data | null;
 
   /** Callback to invoke when this item is selected. */
   private selectionCallback?: (selectedItem: GridItem) => void;
@@ -39,9 +39,9 @@ export class GridItem {
     this.selectionCallback = selectionCallback;
 
     this.element = document.createElement('button');
-    this.element.id = Blockly.utils.idGenerator.getNextUniqueId();
+    this.element.id = utils.idGenerator.getNextUniqueId();
     this.element.className = 'blocklyGridItem';
-    this.clickHandler = Blockly.browserEvents.conditionalBind(
+    this.clickHandler = browserEvents.conditionalBind(
       this.element,
       'click',
       this,
@@ -54,7 +54,7 @@ export class GridItem {
       typeof content === 'string' ? document.createTextNode(content) : content;
     this.element.appendChild(contentDom);
 
-    Blockly.utils.aria.setRole(this.element, Blockly.utils.aria.Role.GRIDCELL);
+    utils.aria.setRole(this.element, utils.aria.Role.GRIDCELL);
   }
 
   /**
@@ -64,7 +64,7 @@ export class GridItem {
     this.selectionCallback = undefined;
     this.element.remove();
     if (this.clickHandler) {
-      Blockly.browserEvents.unbind(this.clickHandler);
+      browserEvents.unbind(this.clickHandler);
       this.clickHandler = null;
     }
   }
@@ -103,9 +103,9 @@ export class GridItem {
    */
   setSelected(selected: boolean) {
     this.selected = selected;
-    Blockly.utils.aria.setState(
+    utils.aria.setState(
       this.element,
-      Blockly.utils.aria.State.SELECTED,
+      utils.aria.State.SELECTED,
       this.selected,
     );
     this.element.classList.toggle('blocklyGridItemSelected', this.selected);

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as Blockly from 'blockly/core';
+import {utils, browserEvents, MenuOption} from 'blockly/core';
 import {GridItem} from './grid_item';
 
 /**
@@ -21,10 +21,10 @@ export class Grid {
   private root: HTMLDivElement;
 
   /** Identifier for keydown handler to be unregistered in dispose(). */
-  private keyDownHandler: Blockly.browserEvents.Data | null = null;
+  private keyDownHandler: browserEvents.Data | null = null;
 
   /** Identifier for pointermove handler to be unregistered in dispose(). */
-  private pointerMoveHandler: Blockly.browserEvents.Data | null = null;
+  private pointerMoveHandler: browserEvents.Data | null = null;
 
   /** Function to be called when an item in this grid is selected. */
   private selectionCallback?: (selectedItem: GridItem) => void;
@@ -42,7 +42,7 @@ export class Grid {
    */
   constructor(
     container: HTMLElement,
-    options: Blockly.MenuOption[],
+    options: MenuOption[],
     private readonly columns: number,
     private readonly rtl: boolean,
     selectionCallback: (selectedItem: GridItem) => void,
@@ -52,7 +52,7 @@ export class Grid {
     this.root = document.createElement('div');
     this.root.className = 'blocklyGrid';
     this.root.tabIndex = 0;
-    Blockly.utils.aria.setRole(this.root, Blockly.utils.aria.Role.GRID);
+    utils.aria.setRole(this.root, utils.aria.Role.GRID);
     container.appendChild(this.root);
 
     let row = document.createElement('div');
@@ -60,7 +60,7 @@ export class Grid {
       if (index % this.columns === 0) {
         row = document.createElement('div');
         row.className = 'blocklyGridRow';
-        Blockly.utils.aria.setRole(row, Blockly.utils.aria.Role.ROW);
+        utils.aria.setRole(row, utils.aria.Role.ROW);
         this.root.appendChild(row);
       }
 
@@ -89,14 +89,14 @@ export class Grid {
       this.items.push(gridItem);
     }
 
-    this.keyDownHandler = Blockly.browserEvents.conditionalBind(
+    this.keyDownHandler = browserEvents.conditionalBind(
       this.root,
       'keydown',
       this,
       this.onKeyDown,
     );
 
-    this.pointerMoveHandler = Blockly.browserEvents.conditionalBind(
+    this.pointerMoveHandler = browserEvents.conditionalBind(
       this.root,
       'pointermove',
       this,
@@ -123,12 +123,12 @@ export class Grid {
     this.itemIndices.clear();
     this.items.length = 0;
     if (this.keyDownHandler) {
-      Blockly.browserEvents.unbind(this.keyDownHandler);
+      browserEvents.unbind(this.keyDownHandler);
       this.keyDownHandler = null;
     }
 
     if (this.pointerMoveHandler) {
-      Blockly.browserEvents.unbind(this.pointerMoveHandler);
+      browserEvents.unbind(this.pointerMoveHandler);
       this.pointerMoveHandler = null;
     }
     this.root.remove();
@@ -236,9 +236,9 @@ export class Grid {
     if (!targetItem) return;
 
     targetItem.focus();
-    Blockly.utils.aria.setState(
+    utils.aria.setState(
       this.root,
-      Blockly.utils.aria.State.ACTIVEDESCENDANT,
+      utils.aria.State.ACTIVEDESCENDANT,
       targetItem.getId(),
     );
   }
