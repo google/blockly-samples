@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.13...@blockly/dev-tools@8.1.0) (2025-02-13)
+
+
+### Features
+
+* Added button to Advanced Playground to import state. ([#2483](https://github.com/google/blockly-samples/issues/2483)) ([fed7ee0](https://github.com/google/blockly-samples/commit/fed7ee0e82cd0a2f3d2f00cec69abd5932feb42f))
+
+
+
+
+
 ## [8.0.13](https://github.com/google/blockly-samples/compare/@blockly/dev-tools@8.0.12...@blockly/dev-tools@8.0.13) (2024-12-19)
 
 
