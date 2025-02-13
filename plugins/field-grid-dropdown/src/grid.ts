@@ -50,7 +50,7 @@ export class Grid {
     this.selectionCallback = selectionCallback;
 
     this.root = document.createElement('div');
-    this.root.className = 'blocklyGrid';
+    this.root.className = 'blocklyFieldGrid';
     this.root.tabIndex = 0;
     utils.aria.setRole(this.root, utils.aria.Role.GRID);
     container.appendChild(this.root);
@@ -59,7 +59,7 @@ export class Grid {
     for (const [index, item] of options.entries()) {
       if (index % this.columns === 0) {
         row = document.createElement('div');
-        row.className = 'blocklyGridRow';
+        row.className = 'blocklyFieldGridRow';
         utils.aria.setRole(row, utils.aria.Role.ROW);
         this.root.appendChild(row);
       }
@@ -192,7 +192,7 @@ export class Grid {
     // TS needs to be reassured of that.
     if (!(e.movementX || e.movementY) || !(e.target instanceof Element)) return;
 
-    const gridItem = e.target.closest('.blocklyGridItem');
+    const gridItem = e.target.closest('.blocklyFieldGridItem');
     if (!gridItem) return;
 
     const targetId = gridItem.id;
@@ -271,8 +271,8 @@ export class Grid {
    */
   private getFocusedItem(): GridItem | undefined {
     const element =
-      this.root.querySelector('.blocklyGridItem:focus') ??
-      this.root.querySelector('.blocklyGridItem');
+      this.root.querySelector('.blocklyFieldGridItem:focus') ??
+      this.root.querySelector('.blocklyFieldGridItem');
     if (!element || !element.id) return undefined;
 
     const index = this.itemIndices.get(element.id);

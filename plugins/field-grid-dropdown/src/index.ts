@@ -149,7 +149,9 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
       },
     );
 
-    Blockly.DropDownDiv.getContentDiv().classList.add('blocklyGridContainer');
+    Blockly.DropDownDiv.getContentDiv().classList.add(
+      'blocklyFieldGridContainer',
+    );
 
     const colours = this.getColours();
     if (colours && colours.border) {
@@ -212,17 +214,17 @@ Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
  * CSS for grid field.
  */
 Blockly.Css.register(`
-   .blocklyGridContainer {
+   .blocklyFieldGridContainer {
      padding: 7px;
    }
    
-  .blocklyGrid {
+  .blocklyFieldGrid {
     display: grid;
     grid-gap: 7px;
     grid-template-columns: repeat(var(--grid-columns), min-content);
   }
 
- .blocklyGrid .blocklyGridItem {
+ .blocklyFieldGrid .blocklyFieldGridItem {
    border: 1px solid rgba(1, 1, 1, 0.5);
    border-radius: 4px;
    color: white;
@@ -233,15 +235,15 @@ Blockly.Css.register(`
    padding: 6px 15px;
  }
  
- .blocklyGrid .blocklyGridRow {
+ .blocklyFieldGrid .blocklyFieldGridRow {
    display: contents;
  }
  
- .blocklyGrid .blocklyGridItem.blocklyGridItemSelected {
+ .blocklyFieldGrid .blocklyFieldGridItem.blocklyFieldGridItemSelected {
    background-color: rgba(1, 1, 1, 0.25);
  }
 
- .blocklyGrid .blocklyGridItem:focus {
+ .blocklyFieldGrid .blocklyFieldGridItem:focus {
    box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
    outline: none;
  }

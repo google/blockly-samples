@@ -40,7 +40,7 @@ export class GridItem {
 
     this.element = document.createElement('button');
     this.element.id = utils.idGenerator.getNextUniqueId();
-    this.element.className = 'blocklyGridItem';
+    this.element.className = 'blocklyFieldGridItem';
     this.clickHandler = browserEvents.conditionalBind(
       this.element,
       'click',
@@ -108,7 +108,7 @@ export class GridItem {
       utils.aria.State.SELECTED,
       this.selected,
     );
-    this.element.classList.toggle('blocklyGridItemSelected', this.selected);
+    this.element.classList.toggle('blocklyFieldGridItemSelected', this.selected);
     if (this.isSelected()) {
       this.focus();
     }
@@ -169,11 +169,11 @@ export class GridItem {
    * @returns The vertical distance between items in this grid.
    */
   private getInterItemSpacing() {
-    const grid = this.element.closest('.blocklyGrid');
+    const grid = this.element.closest('.blocklyFieldGrid');
     if (!grid) return 0;
 
     const items = [
-      ...grid.querySelectorAll('.blocklyGridItem'),
+      ...grid.querySelectorAll('.blocklyFieldGridItem'),
     ] as HTMLElement[];
     if (!items.length) return 0;
 
