@@ -17,7 +17,7 @@ export class GridItem {
   private clickHandler: browserEvents.Data | null;
 
   /** Callback to invoke when this item is selected. */
-  private selectionCallback?: (selectedItem: GridItem) => void;
+  private selectionCallback: ((selectedItem: GridItem) => void) | null;
 
   /** Whether or not this item is currently selected. */
   private selected = false;
@@ -61,7 +61,7 @@ export class GridItem {
    * Disposes of this grid item.
    */
   dispose() {
-    this.selectionCallback = undefined;
+    this.selectionCallback = null;
     this.element.remove();
     if (this.clickHandler) {
       browserEvents.unbind(this.clickHandler);
@@ -103,12 +103,11 @@ export class GridItem {
    */
   setSelected(selected: boolean) {
     this.selected = selected;
-    utils.aria.setState(
-      this.element,
-      utils.aria.State.SELECTED,
+    utils.aria.setState(this.element, utils.aria.State.SELECTED, this.selected);
+    this.element.classList.toggle(
+      'blocklyFieldGridItemSelected',
       this.selected,
     );
-    this.element.classList.toggle('blocklyFieldGridItemSelected', this.selected);
     if (this.isSelected()) {
       this.focus();
     }
