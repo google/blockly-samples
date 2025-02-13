@@ -11,7 +11,7 @@ import {GridItem} from './grid_item';
  * Class for managing a group of items displayed in a grid.
  */
 export class Grid {
-  /** Mapping from grid item ID to grid item. */
+  /** Mapping from grid item ID to index in the items list. */
   private itemIndices = new Map<string, number>();
 
   /** List of items displayed in this grid. */
@@ -257,7 +257,8 @@ export class Grid {
    * Returns the GridItem object at the given index in the grid.
    *
    * @param index The index to retrieve the grid item at.
-   * @returns The GridItem at the given index.
+   * @returns The GridItem at the given index, or undefined if the index is
+   *     invalid.
    */
   private itemAtIndex(index: number): GridItem | undefined {
     return this.items[index];

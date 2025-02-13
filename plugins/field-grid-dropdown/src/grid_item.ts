@@ -70,7 +70,7 @@ export class GridItem {
   }
 
   /**
-   * Gets the unique ID for this grid item.
+   * Gets the unique (within the grid) ID for this grid item.
    *
    * @returns This item's unique ID.
    */
