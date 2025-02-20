@@ -41,7 +41,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   private valToPaintWith?: number;
   buttonOptions: Buttons;
   pixelSize: number;
-  pixelColours: {empty: string; filled: string};
+  pixelColours: { empty: string; filled: string };
   fieldHeight?: number;
 
   /**
@@ -60,8 +60,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
-    this.buttonOptions = {...DEFAULT_BUTTONS, ...config?.buttons};
-    this.pixelColours = {...DEFAULT_PIXEL_COLOURS, ...config?.colours};
+    this.buttonOptions = { ...DEFAULT_BUTTONS, ...config?.buttons };
+    this.pixelColours = { ...DEFAULT_PIXEL_COLOURS, ...config?.colours };
 
     // Configure value, height, and width
     const currentValue = this.getValue();
@@ -292,11 +292,15 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     // This prevents the normal max-height from adding a scroll bar for large images.
     Blockly.DropDownDiv.getContentDiv().classList.add('contains-bitmap-editor');
 
-    this.bindEvent(dropdownEditor, 'mouseup', this.onMouseUp);
-    this.bindEvent(dropdownEditor, 'mouseleave', this.onMouseUp);
-    this.bindEvent(dropdownEditor, 'dragstart', (e: Event) => {
-      e.preventDefault();
-    });
+    this.bindEvent(dropdownEditor, 'pointermove', this.onPointerMove);
+    this.bindEvent(dropdownEditor, 'pointerup', this.onPointerUp);
+    this.bindEvent(dropdownEditor, 'pointerleave', this.onPointerUp);
+    this.bindEvent(dropdownEditor, 'pointerdown', this.onPointerDown);
+    this.bindEvent(dropdownEditor, 'pointercancel', this.onPointerUp);
+    // Stop the browser from intercepting touch events and cancelling the event
+    this.bindEvent(dropdownEditor, 'touchmove', (e: Event) => {
+        e.preventDefault();
+      });
 
     this.editorPixels = [];
     for (let r = 0; r < this.imgHeight; r++) {
@@ -314,16 +318,23 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
           ? this.pixelColours.filled
           : this.pixelColours.empty;
 
-        // Handle clicking a pixel
-        this.bindEvent(button, 'mousedown', () => {
-          this.onMouseDownInPixel(r, c);
-          return true;
-        });
+        // Set the custom data attributes for row and column indices
+        button.setAttribute('data-row', r.toString());
+        button.setAttribute('data-col', c.toString());
 
-        // Handle dragging into a pixel when mouse is down
-        this.bindEvent(button, 'mouseenter', () => {
-          this.onMouseEnterPixel(r, c);
-        });
+        // // Handle clicking a pixel
+        // this.bindEvent(button, 'mousedown', () => {
+        //   console.log("handling pointer down")
+        //   this.onMouseDownInPixel(r, c);
+        //   return true;
+        // });
+
+        // // Handle dragging into a pixel when mouse is down
+        // this.bindEvent(button, 'mouseenter', () => {
+        //   console.log("handling pointer enter");
+        //   this.onMouseEnterPixel(r, c);
+        // });
+
       }
       pixelContainer.appendChild(rowDiv);
     }
@@ -473,6 +484,35 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   }
 
   /**
+   * 
+   * @param e 
+   */
+  private onPointerDown(e: PointerEvent) {
+    const currentElement = document.elementFromPoint(e.clientX, e.clientY);
+    const rowIndex = currentElement?.getAttribute('data-row');
+    const colIndex = currentElement?.getAttribute('data-col');
+    console.log("pointer down on " + rowIndex + ", " + colIndex + " element " + currentElement);
+    if (rowIndex && colIndex) {
+      this.onMouseDownInPixel(parseInt(rowIndex), parseInt(colIndex));
+    }
+  }
+
+  /**
+   * 
+   * @param e 
+   */
+  private onPointerMove(e: PointerEvent) {
+    const currentElement = document.elementFromPoint(e.clientX, e.clientY);
+    const rowIndex = currentElement?.getAttribute('data-row');
+    const colIndex = currentElement?.getAttribute('data-col');
+    console.log("pointer moving on " + rowIndex + ", " + colIndex);
+    if (rowIndex && colIndex) {
+      this.onMouseEnterPixel(parseInt(rowIndex), parseInt(colIndex));
+    }
+    e.preventDefault();
+  }
+
+  /**
    * Called when a mousedown event occurs within the bounds of a pixel.
    *
    * @param r Row number of grid.
@@ -508,7 +548,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    * Resets mouse state (e.g. After either a mouseup event or if the mouse
    * leaves the editor area).
    */
-  private onMouseUp() {
+  private onPointerUp(e: PointerEvent) {
+    console.log("onMouseUp " + e.pointerType);
     this.mouseIsDown = false;
     this.valToPaintWith = undefined;
   }
@@ -594,10 +635,10 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   private bindEvent(
     element: HTMLElement,
     eventName: string,
-    callback: (e: Event) => void,
+    callback: (e: PointerEvent) => void,
   ) {
     this.boundEvents.push(
-      Blockly.browserEvents.conditionalBind(element, eventName, this, callback),
+      Blockly.browserEvents.bind(element, eventName, this, callback),
     );
   }
 
