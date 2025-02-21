@@ -471,8 +471,10 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   }
 
   /**
+   * Checks if a down event is on a pixel in this editor and if it is starts an
+   * edit gesture.
    * 
-   * @param e 
+   * @param e The down event.
    */
   private onPointerStart(e: PointerEvent) {
     const currentElement = document.elementFromPoint(e.clientX, e.clientY);
@@ -486,8 +488,10 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   }
 
   /**
+   * Updates the editor if we're in an edit gesture and the pointer is over a
+   * pixel.
    * 
-   * @param e 
+   * @param e The move event.
    */
   private onPointerMove(e: PointerEvent) {
     if (!this.pointerIsDown) {
@@ -536,7 +540,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
    * Resets pointer state (e.g. After either a pointerup event or if the
    * gesture is canceled).
    */
-  private onPointerEnd(e: PointerEvent) {
+  private onPointerEnd() {
     this.pointerIsDown = false;
     this.valToPaintWith = undefined;
   }
