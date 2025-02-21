@@ -41,7 +41,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   private valToPaintWith?: number;
   buttonOptions: Buttons;
   pixelSize: number;
-  pixelColours: { empty: string; filled: string };
+  pixelColours: {empty: string; filled: string};
   fieldHeight?: number;
 
   /**
@@ -60,8 +60,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
 
     this.SERIALIZABLE = true;
     this.CURSOR = 'default';
-    this.buttonOptions = { ...DEFAULT_BUTTONS, ...config?.buttons };
-    this.pixelColours = { ...DEFAULT_PIXEL_COLOURS, ...config?.colours };
+    this.buttonOptions = {...DEFAULT_BUTTONS, ...config?.buttons};
+    this.pixelColours = {...DEFAULT_PIXEL_COLOURS, ...config?.colours};
 
     // Configure value, height, and width
     const currentValue = this.getValue();
@@ -299,9 +299,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     this.bindEvent(dropdownEditor, 'pointercancel', this.onPointerEnd);
     // Stop the browser from handling touch events and cancelling the event.
     this.bindEvent(dropdownEditor, 'touchmove', (e: Event) => {
-        e.preventDefault();
+      e.preventDefault();
     });
-
 
     this.editorPixels = [];
     for (let r = 0; r < this.imgHeight; r++) {
@@ -473,7 +472,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   /**
    * Checks if a down event is on a pixel in this editor and if it is starts an
    * edit gesture.
-   * 
+   *
    * @param e The down event.
    */
   private onPointerStart(e: PointerEvent) {
@@ -490,7 +489,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   /**
    * Updates the editor if we're in an edit gesture and the pointer is over a
    * pixel.
-   * 
+   *
    * @param e The move event.
    */
   private onPointerMove(e: PointerEvent) {
