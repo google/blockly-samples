@@ -1,0 +1,135 @@
+<binary>
+  <block type="trade_definition" id="trade_definition" x="200" y="100">
+    <field name="MARKET_LIST">volidx</field>
+    <field name="SYMBOL">R_100</field>
+    <field name="TRADETYPECAT">digits</field>
+    <field name="TRADETYPE">digitdiffers</field>
+    <field name="TYPE_LIST">DIGITDIFFER</field>
+    <field name="PREDICTION">0</field>
+    <field name="DURATION">1</field>
+    <field name="DURATIONTYPE">t</field>
+    <field name="AMOUNT">1</field>
+    <field name="CURRENCY">USD</field>
+    <next>
+      <block type="variables_set" id="variables_set">
+        <field name="VAR">last_prediction</field>
+        <value name="VALUE">
+          <block type="math_number" id="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <next>
+          <block type="controls_whileUntil" id="controls_whileUntil">
+            <field name="MODE">WHILE</field>
+            <field name="BOOL">TRUE</field>
+            <statement name="DO">
+              <block type="market" id="market">
+                <field name="MARKET_LIST">volidx</field>
+                <field name="SYMBOL">R_100</field>
+                <field name="SUBMARKET">default</field>
+                <field name="INFO">last_digit</field>
+                <next>
+                  <block type="controls_if" id="controls_if">
+                    <value name="IF0">
+                      <block type="logic_compare" id="logic_compare">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="variables_get" id="variables_get">
+                            <field name="VAR">last_prediction</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number" id="math_number">
+                            <field name="NUM">0</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="controls_if" id="controls_if">
+                        <value name="IF0">
+                          <block type="logic_compare" id="logic_compare">
+                            <field name="OP">EQ</field>
+                            <value name="A">
+                              <block type="market" id="market">
+                                <field name="MARKET_LIST">volidx</field>
+                                <field name="SYMBOL">R_100</field>
+                                <field name="SUBMARKET">default</field>
+                                <field name="INFO">last_digit</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="math_number" id="math_number">
+                                <field name="NUM">0</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="text_print" id="text_print">
+                            <value name="TEXT">
+                              <block type="text" id="text">
+                                <field name="TEXT">Skipping trade: Next digit is 0</field>
+                              </block>
+                            </value>
+                          </block>
+                        </statement>
+                        <statement name="ELSE">
+                          <block type="trade_definition" id="trade_definition">
+                            <field name="MARKET_LIST">volidx</field>
+                            <field name="SYMBOL">R_100</field>
+                            <field name="TRADETYPECAT">digits</field>
+                            <field name="TRADETYPE">digitdiffers</field>
+                            <field name="TYPE_LIST">DIGITDIFFER</field>
+                            <field name="PREDICTION">1</field>
+                            <field name="DURATION">1</field>
+                            <field name="DURATIONTYPE">t</field>
+                            <field name="AMOUNT">1</field>
+                            <field name="CURRENCY">USD</field>
+                          </block>
+                        </statement>
+                      </block>
+                    </statement>
+                    <statement name="ELSE">
+                      <block type="trade_definition" id="trade_definition">
+                        <field name="MARKET_LIST">volidx</field>
+                        <field name="SYMBOL">R_100</field>
+                        <field name="TRADETYPECAT">digits</field>
+                        <field name="TRADETYPE">digitdiffers</field>
+                        <field name="TYPE_LIST">DIGITDIFFER</field>
+                        <field name="PREDICTION">0</field>
+                        <field name="DURATION">1</field>
+                        <field name="DURATIONTYPE">t</field>
+                        <field name="AMOUNT">1</field>
+                        <field name="CURRENCY">USD</field>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </statement>
+            <next>
+              <block type="variables_set" id="variables_set">
+                <field name="VAR">last_prediction</field>
+                <value name="VALUE">
+                  <block type="market" id="market">
+                    <field name="MARKET_LIST">volidx</field>
+                    <field name="SYMBOL">R_100</field>
+                    <field name="SUBMARKET">default</field>
+                    <field name="INFO">last_digit</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="time_sleep" id="time_sleep">
+                    <field name="SLEEPTIME">1</field>
+                    <field name="SLEEPTIMETYPE">ticks</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</binary>
