@@ -1,4 +1,3 @@
-/* eslint no-use-before-define: 0 */
 // Manual test data for the renamings migration.
 // Run using:
 //   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/import.js
