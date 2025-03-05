@@ -99,6 +99,13 @@ const database = [
     newImport: `import * as libraryBlocks from 'blockly/blocks';`,
     newRequire: `const libraryBlocks = require('blockly/blocks');`,
   },
+  {
+    import: 'blockly',
+    oldIdentifier: 'Blockly',
+    newIdentifier: 'Blockly', // no-op
+    newImport: `import * as Blockly from 'blockly';`,
+    newRequire: `const Blockly = require('blockly');`, // no-op
+  },
 ];
 
 /**
@@ -125,9 +132,17 @@ function migrateContents(contents) {
  */
 function fixImport(contents, migrationData) {
   const identifier = getIdentifier(contents, migrationData);
+  // Don't need to run if there are no references.
   if (!identifier) return contents;
-  const newContents = replaceReferences(contents, migrationData, identifier);
-  if (newContents !== contents) return addImport(newContents, migrationData);
+  // If the identifier changed, update all references to it and the import
+  if (migrationData.oldIdentifier !== migrationData.newIdentifier) {
+    const newContents = replaceReferences(contents, migrationData, identifier);
+    if (newContents !== contents) {
+      return addImport(newContents, migrationData);
+    }
+  } else { // Just the import changed
+    return addImport(contents, migrationData);
+  }
   return contents;
 }
 
