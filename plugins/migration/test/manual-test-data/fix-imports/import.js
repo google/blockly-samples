@@ -1,6 +1,6 @@
 // Manual test data for the renamings migration.
 // Run using:
-//   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/import.txt
+//   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/import.js
 
 import Blockly from 'blockly';
 import * as BlocklyDart from "blockly/dart";
@@ -31,3 +31,5 @@ Some.Other.identifer;
 Blockly.libraryBlocks.something;
 const something = Blockly.libraryBlocks.something;
 Some.Other.identifer;
+
+Blockly.zelos;
