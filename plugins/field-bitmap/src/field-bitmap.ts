@@ -37,7 +37,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   private editorPixels: HTMLElement[][] | null = null;
   private blockDisplayPixels: SVGElement[][] | null = null;
   /** Stateful variables */
-  private mouseIsDown = false;
+  private pointerIsDown = false;
   private valToPaintWith?: number;
   buttonOptions: Buttons;
   pixelSize: number;
@@ -292,9 +292,13 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     // This prevents the normal max-height from adding a scroll bar for large images.
     Blockly.DropDownDiv.getContentDiv().classList.add('contains-bitmap-editor');
 
-    this.bindEvent(dropdownEditor, 'mouseup', this.onMouseUp);
-    this.bindEvent(dropdownEditor, 'mouseleave', this.onMouseUp);
-    this.bindEvent(dropdownEditor, 'dragstart', (e: Event) => {
+    this.bindEvent(dropdownEditor, 'pointermove', this.onPointerMove);
+    this.bindEvent(dropdownEditor, 'pointerup', this.onPointerEnd);
+    this.bindEvent(dropdownEditor, 'pointerleave', this.onPointerEnd);
+    this.bindEvent(dropdownEditor, 'pointerdown', this.onPointerStart);
+    this.bindEvent(dropdownEditor, 'pointercancel', this.onPointerEnd);
+    // Stop the browser from handling touch events and cancelling the event.
+    this.bindEvent(dropdownEditor, 'touchmove', (e: Event) => {
       e.preventDefault();
     });
 
@@ -314,16 +318,9 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
           ? this.pixelColours.filled
           : this.pixelColours.empty;
 
-        // Handle clicking a pixel
-        this.bindEvent(button, 'mousedown', () => {
-          this.onMouseDownInPixel(r, c);
-          return true;
-        });
-
-        // Handle dragging into a pixel when mouse is down
-        this.bindEvent(button, 'mouseenter', () => {
-          this.onMouseEnterPixel(r, c);
-        });
+        // Set the custom data attributes for row and column indices
+        button.setAttribute('data-row', r.toString());
+        button.setAttribute('data-col', c.toString());
       }
       pixelContainer.appendChild(rowDiv);
     }
@@ -473,29 +470,63 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   }
 
   /**
-   * Called when a mousedown event occurs within the bounds of a pixel.
+   * Checks if a down event is on a pixel in this editor and if it is starts an
+   * edit gesture.
+   *
+   * @param e The down event.
+   */
+  private onPointerStart(e: PointerEvent) {
+    const currentElement = document.elementFromPoint(e.clientX, e.clientY);
+    const rowIndex = currentElement?.getAttribute('data-row');
+    const colIndex = currentElement?.getAttribute('data-col');
+    if (rowIndex && colIndex) {
+      this.onPointerDownInPixel(parseInt(rowIndex), parseInt(colIndex));
+      this.pointerIsDown = true;
+      e.preventDefault();
+    }
+  }
+
+  /**
+   * Updates the editor if we're in an edit gesture and the pointer is over a
+   * pixel.
+   *
+   * @param e The move event.
+   */
+  private onPointerMove(e: PointerEvent) {
+    if (!this.pointerIsDown) {
+      return;
+    }
+    const currentElement = document.elementFromPoint(e.clientX, e.clientY);
+    const rowIndex = currentElement?.getAttribute('data-row');
+    const colIndex = currentElement?.getAttribute('data-col');
+    if (rowIndex && colIndex) {
+      this.updatePixelValue(parseInt(rowIndex), parseInt(colIndex));
+    }
+    e.preventDefault();
+  }
+
+  /**
+   * Starts an interaction with the bitmap dropdown when there's a pointerdown
+   * within one of the pixels in the editor.
    *
    * @param r Row number of grid.
    * @param c Column number of grid.
    */
-  private onMouseDownInPixel(r: number, c: number) {
+  private onPointerDownInPixel(r: number, c: number) {
     // Toggle that pixel to the opposite of its value
     const newPixelValue = 1 - this.getPixel(r, c);
     this.setPixel(r, c, newPixelValue);
-    this.mouseIsDown = true;
+    this.pointerIsDown = true;
     this.valToPaintWith = newPixelValue;
   }
 
   /**
-   * Called when the mouse drags over a pixel in the editor.
+   * Sets the specified pixel in the editor to the current value being painted.
    *
    * @param r Row number of grid.
    * @param c Column number of grid.
    */
-  private onMouseEnterPixel(r: number, c: number) {
-    if (!this.mouseIsDown) {
-      return;
-    }
+  private updatePixelValue(r: number, c: number) {
     if (
       this.valToPaintWith !== undefined &&
       this.getPixel(r, c) !== this.valToPaintWith
@@ -505,11 +536,11 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   }
 
   /**
-   * Resets mouse state (e.g. After either a mouseup event or if the mouse
-   * leaves the editor area).
+   * Resets pointer state (e.g. After either a pointerup event or if the
+   * gesture is canceled).
    */
-  private onMouseUp() {
-    this.mouseIsDown = false;
+  private onPointerEnd() {
+    this.pointerIsDown = false;
     this.valToPaintWith = undefined;
   }
 
@@ -594,10 +625,10 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
   private bindEvent(
     element: HTMLElement,
     eventName: string,
-    callback: (e: Event) => void,
+    callback: (e: PointerEvent) => void,
   ) {
     this.boundEvents.push(
-      Blockly.browserEvents.conditionalBind(element, eventName, this, callback),
+      Blockly.browserEvents.bind(element, eventName, this, callback),
     );
   }
 
