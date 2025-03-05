@@ -25,4 +25,4 @@ class SubClass extends Blockly.moduleC {
     const thingA = /** @type {Blockly.moduleD} */ (new Blockly.moduleE());
     return thingA.someMethod(paramA, paramB);
   }
-};
+}

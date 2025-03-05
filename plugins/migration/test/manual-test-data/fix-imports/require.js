@@ -3,9 +3,9 @@
 //   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/require.txt
 
 const Blockly = require('blockly');
-const BlocklyDart = require("blockly/dart");
+const BlocklyDart = require('blockly/dart');
 const BlocklyLua = require('blockly/lua');
-let BlocklyPhp = require("blockly/php");
+let BlocklyPhp = require('blockly/php');
 var BlocklyPython = require('blockly/python');
 
 Blockly.JavaScript.something;

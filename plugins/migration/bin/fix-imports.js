@@ -140,7 +140,8 @@ function fixImport(contents, migrationData) {
     if (newContents !== contents) {
       return addImport(newContents, migrationData);
     }
-  } else { // Just the import changed
+  } else {
+    // Just the import changed
     return addImport(contents, migrationData);
   }
   return contents;
