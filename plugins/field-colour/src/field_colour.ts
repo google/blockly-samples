@@ -547,11 +547,10 @@ export class FieldColour extends Blockly.Field<string> {
   }
 
   /**
-   * Handle a mouse leave event.  Blur the picker and unhighlight
-   * the currently highlighted colour.
+   * Handle a mouse leave event by unnhighlighting the currently highlighted
+   * colour.
    */
   private onMouseLeave() {
-    this.picker?.blur();
     const highlighted = this.getHighlighted();
     if (highlighted) {
       Blockly.utils.dom.removeClass(highlighted, 'blocklyColourHighlighted');
