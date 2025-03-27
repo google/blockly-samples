@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.15...@blockly/field-colour@5.0.16) (2025-03-27)
+
+
+### Bug Fixes
+
+* Don't call blur() when mouse leaves the colour picker. ([#2499](https://github.com/google/blockly-samples/issues/2499)) ([e8d4a87](https://github.com/google/blockly-samples/commit/e8d4a874c44cdb0e1ad05b08122251b9e758655c))
+
+
+
+
+
 ## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.14...@blockly/field-colour@5.0.15) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/field-colour

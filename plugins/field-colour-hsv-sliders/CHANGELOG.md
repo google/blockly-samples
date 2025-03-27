@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.15...@blockly/field-colour-hsv-sliders@5.0.16) (2025-03-27)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
 ## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.14...@blockly/field-colour-hsv-sliders@5.0.15) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/field-colour-hsv-sliders
