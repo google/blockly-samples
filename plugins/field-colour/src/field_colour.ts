@@ -209,7 +209,7 @@ export class FieldColour extends Blockly.Field<string> {
    *
    * @returns True if this field should take up the full block. False otherwise.
    */
-  protected isFullBlockField(): boolean {
+  override isFullBlockField(): boolean {
     const block = this.getSourceBlock();
     if (!block) throw new Blockly.UnattachedFieldError();
 
