@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {utils, browserEvents, MenuOption} from 'blockly/core';
+import {utils, browserEvents, MenuOption, FieldDropdown} from 'blockly/core';
 import {GridItem} from './grid_item';
 
 /**
@@ -88,6 +88,9 @@ export class Grid {
   private populateItems(options: MenuOption[]) {
     let row = document.createElement('div');
     for (const [index, item] of options.entries()) {
+      // TODO(#2507): Don't just ignore separators.
+      if (item === FieldDropdown.SEPARATOR) continue;
+
       if (index % this.columns === 0) {
         row = document.createElement('div');
         row.className = 'blocklyFieldGridRow';
