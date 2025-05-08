@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.17](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.16...@blockly/field-colour-hsv-sliders@5.0.17) (2025-05-08)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.15...@blockly/field-colour-hsv-sliders@5.0.16) (2025-03-27)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
+## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.14...@blockly/field-colour-hsv-sliders@5.0.15) (2025-02-13)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
+## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.13...@blockly/field-colour-hsv-sliders@5.0.14) (2025-01-23)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
+## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.12...@blockly/field-colour-hsv-sliders@5.0.13) (2024-12-19)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.11...@blockly/field-colour-hsv-sliders@5.0.12) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/field-colour-hsv-sliders
+
+
+
+
+
 ## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/field-colour-hsv-sliders@5.0.10...@blockly/field-colour-hsv-sliders@5.0.11) (2024-11-07)
 
 **Note:** Version bump only for package @blockly/field-colour-hsv-sliders

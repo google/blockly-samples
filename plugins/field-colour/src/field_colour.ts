@@ -472,7 +472,7 @@ export class FieldColour extends Blockly.Field<string> {
    * @param dy Change of y.
    */
   private moveHighlightBy(dx: number, dy: number) {
-    if (!this.highlightedIndex) {
+    if (this.highlightedIndex === null) {
       return;
     }
 
@@ -544,11 +544,10 @@ export class FieldColour extends Blockly.Field<string> {
   }
 
   /**
-   * Handle a mouse leave event.  Blur the picker and unhighlight
-   * the currently highlighted colour.
+   * Handle a mouse leave event by unnhighlighting the currently highlighted
+   * colour.
    */
   private onMouseLeave() {
-    this.picker?.blur();
     const highlighted = this.getHighlighted();
     if (highlighted) {
       Blockly.utils.dom.removeClass(highlighted, 'blocklyColourHighlighted');
@@ -561,7 +560,7 @@ export class FieldColour extends Blockly.Field<string> {
    * @returns Highlighted item (null if none).
    */
   private getHighlighted(): HTMLElement | null {
-    if (!this.highlightedIndex) {
+    if (this.highlightedIndex === null) {
       return null;
     }
 
@@ -728,6 +727,15 @@ export class FieldColour extends Blockly.Field<string> {
     // `this` might be a subclass of FieldColour if that class doesn't override
     // the static fromJson method.
     return new this(options.colour, undefined, options);
+  }
+
+  /**
+   * Returns the class of this field.
+   *
+   * @returns FieldColour.
+   */
+  getClass() {
+    return FieldColour;
   }
 }
 

@@ -1,12 +1,12 @@
 // Manual test data for the renamings migration.
 // Run using:
-//   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/import.txt
+//   node ./bin/migrate fix-imports --from <version> ./test/manual-test-data/fix-imports/require.txt
 
-import Blockly from 'blockly';
-import * as BlocklyDart from "blockly/dart";
-import * as BlocklyLua from 'blockly/lua';
-import * as BlocklyPhp from "blockly/php";
-import * as BlocklyPython from 'blockly/python';
+const Blockly = require('blockly');
+const BlocklyDart = require('blockly/dart');
+const BlocklyLua = require('blockly/lua');
+let BlocklyPhp = require('blockly/php');
+var BlocklyPython = require('blockly/python');
 
 Blockly.JavaScript.something;
 const something = Blockly.JavaScript.something;
@@ -31,3 +31,5 @@ Some.Other.identifer;
 Blockly.libraryBlocks.something;
 const something = Blockly.libraryBlocks.something;
 Some.Other.identifer;
+
+Blockly.zelos;

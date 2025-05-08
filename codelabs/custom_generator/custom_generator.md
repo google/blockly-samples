@@ -203,7 +203,7 @@ A custom language generator is simply an instance of `Blockly.Generator`. Create
 ```js
 import * as Blockly from 'blockly';
 
-export const jsonGenerator = new Blockly.Generator('JSON');
+export const jsonGenerator = new Blockly.CodeGenerator('JSON');
 ```
 
 ### Generate code

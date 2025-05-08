@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.14](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@8.0.13...@blockly/plugin-typed-variable-modal@8.0.14) (2025-02-13)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
+## [8.0.13](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@8.0.12...@blockly/plugin-typed-variable-modal@8.0.13) (2024-12-19)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
+## [8.0.12](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@8.0.11...@blockly/plugin-typed-variable-modal@8.0.12) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/plugin-typed-variable-modal
+
+
+
+
+
 ## [8.0.11](https://github.com/google/blockly-samples/compare/@blockly/plugin-typed-variable-modal@8.0.10...@blockly/plugin-typed-variable-modal@8.0.11) (2024-11-07)
 
 **Note:** Version bump only for package @blockly/plugin-typed-variable-modal

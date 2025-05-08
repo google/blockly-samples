@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.17](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.16...@blockly/field-colour@5.0.17) (2025-05-08)
+
+
+### Bug Fixes
+
+* Add `getClass()` to `FieldColour`. ([#2506](https://github.com/google/blockly-samples/issues/2506)) ([f5a577b](https://github.com/google/blockly-samples/commit/f5a577b8fe25b6fbf1502ca85902c22777fd8270))
+
+
+
+
+
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.15...@blockly/field-colour@5.0.16) (2025-03-27)
+
+
+### Bug Fixes
+
+* Don't call blur() when mouse leaves the colour picker. ([#2499](https://github.com/google/blockly-samples/issues/2499)) ([e8d4a87](https://github.com/google/blockly-samples/commit/e8d4a874c44cdb0e1ad05b08122251b9e758655c))
+
+
+
+
+
+## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.14...@blockly/field-colour@5.0.15) (2025-02-13)
+
+**Note:** Version bump only for package @blockly/field-colour
+
+
+
+
+
+## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.13...@blockly/field-colour@5.0.14) (2025-01-23)
+
+
+### Bug Fixes
+
+* Fix bug that prevented keyboard navigation of color swatches. ([#2479](https://github.com/google/blockly-samples/issues/2479)) ([5945e7c](https://github.com/google/blockly-samples/commit/5945e7c0412faedc08c422f9f538ef22193cc659))
+
+
+
+
+
+## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.12...@blockly/field-colour@5.0.13) (2024-12-19)
+
+**Note:** Version bump only for package @blockly/field-colour
+
+
+
+
+
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.11...@blockly/field-colour@5.0.12) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/field-colour
+
+
+
+
+
 ## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.10...@blockly/field-colour@5.0.11) (2024-11-07)
 
 **Note:** Version bump only for package @blockly/field-colour
