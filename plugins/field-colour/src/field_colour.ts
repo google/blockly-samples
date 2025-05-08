@@ -209,7 +209,7 @@ export class FieldColour extends Blockly.Field<string> {
    *
    * @returns True if this field should take up the full block. False otherwise.
    */
-  protected isFullBlockField(): boolean {
+  override isFullBlockField(): boolean {
     const block = this.getSourceBlock();
     if (!block) throw new Blockly.UnattachedFieldError();
 
@@ -728,6 +728,18 @@ export class FieldColour extends Blockly.Field<string> {
     // `this` might be a subclass of FieldColour if that class doesn't override
     // the static fromJson method.
     return new this(options.colour, undefined, options);
+  }
+
+  /**
+   * Returns this field's class.
+   *
+   * Used by keyboard navigation to look up the rules for navigating from this
+   * field.
+   *
+   * @returns This field's class.
+   */
+  getClass() {
+    return FieldColour;
   }
 }
 
