@@ -14,7 +14,7 @@ export default Blockly.Theme.defineTheme('modern', {
   name: 'modern',
   base: Blockly.Themes.Classic,
   blockStyles: {
-    colourBlocks: {
+    colour_blocks: { // eslint-disable-line camelcase
       colourPrimary: '#a5745b',
       colourSecondary: '#dbc7bd',
       colourTertiary: '#845d49',

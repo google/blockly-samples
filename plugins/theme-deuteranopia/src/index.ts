@@ -11,7 +11,7 @@
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colourBlocks: {
+  colour_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#f2a72c',
     colourSecondary: '#f1c172',
     colourTertiary: '#da921c',
