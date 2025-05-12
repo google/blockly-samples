@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.14...@blockly/field-bitmap@5.0.15) (2025-02-27)
+
+
+### Bug Fixes
+
+* [#2463](https://github.com/google/blockly-samples/issues/2463) update event handling for field-bitmap to support touch ([c105002](https://github.com/google/blockly-samples/commit/c1050025e41dd456c822301555b1b3a20577d03e))
+
+
+
+
+
+## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.13...@blockly/field-bitmap@5.0.14) (2025-02-13)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
+## [5.0.13](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.12...@blockly/field-bitmap@5.0.13) (2024-12-19)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
+## [5.0.12](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.11...@blockly/field-bitmap@5.0.12) (2024-12-03)
+
+**Note:** Version bump only for package @blockly/field-bitmap
+
+
+
+
+
 ## [5.0.11](https://github.com/google/blockly-samples/compare/@blockly/field-bitmap@5.0.10...@blockly/field-bitmap@5.0.11) (2024-11-07)
 
 **Note:** Version bump only for package @blockly/field-bitmap

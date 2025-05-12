@@ -24,7 +24,12 @@ import {id} from './id';
 import {addCodeEditor} from './monaco';
 import {addGUIControls} from './options';
 import {LocalStorageState} from './state';
-import {renderCheckbox, renderCodeTab, renderPlayground} from './ui';
+import {
+  renderButton,
+  renderCheckbox,
+  renderCodeTab,
+  renderPlayground,
+} from './ui';
 
 // Declare external types to make eslint happy.
 /* global dat, monaco */
@@ -222,6 +227,7 @@ export function createPlayground(
         // Update editor state.
         editorXmlContextKey.set(isXml);
         editorJsonContextKey.set(isJson);
+        updateImportButtonDisplay();
         playgroundState.set('activeTab', tab.state.name);
         playgroundState.save();
       };
@@ -340,6 +346,26 @@ export function createPlayground(
         playgroundState.set('workspaceJson', jsonModel.getValue());
         playgroundState.save();
       });
+
+      // Create a button to import state from the editor tab to the workspace.
+      const importButton = renderButton('Import');
+      tabButtons.appendChild(importButton);
+      importButton.addEventListener('click', (e) => {
+        if (editorXmlContextKey.get()) {
+          editor.getAction('import-xml').run();
+        }
+        if (editorJsonContextKey.get()) {
+          editor.getAction('import-json').run();
+        }
+      });
+      const updateImportButtonDisplay = function () {
+        // The import button is only relevant for the XML and JSON tabs.
+        if (editorXmlContextKey.get() || editorJsonContextKey.get()) {
+          importButton.style.display = '';
+        } else {
+          importButton.style.display = 'none';
+        }
+      };
 
       // Set the initial tab as active.
       const activeTab = playgroundState.get('activeTab');
@@ -552,7 +578,10 @@ function registerEditorCommands(editor, playground) {
     const xml = editor.getModel().getValue();
     const workspace = playground.getWorkspace();
     try {
-      Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(xml), workspace);
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(
+        Blockly.utils.xml.textToDom(xml),
+        workspace,
+      );
     } catch (e) {
       // If this fails that's fine.
       return false;

@@ -1068,7 +1068,10 @@ const procedureCallerUpdateShapeMixin = {
   doProcedureUpdate: function () {
     if (!this.getProcedureModel()) return;
     const id = this.getProcedureModel().getId();
-    if (!this.getTargetWorkspace_().getProcedureMap().has(id)) {
+    if (
+      !this.getTargetWorkspace_().getProcedureMap().has(id) &&
+      !this.isInFlyout
+    ) {
       this.dispose(true);
       return;
     }
