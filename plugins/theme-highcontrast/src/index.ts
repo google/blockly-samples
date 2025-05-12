@@ -18,47 +18,47 @@ const defaultBlockStyles = {
     colourSecondary: '#FB9B8C',
     colourTertiary: '#FBE1DD',
   },
-  listBlocks: {
+  list_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#4a148c',
     colourSecondary: '#AD7BE9',
     colourTertiary: '#CDB6E9',
   },
-  logicBlocks: {
+  logic_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#01579b',
     colourSecondary: '#64C7FF',
     colourTertiary: '#C5EAFF',
   },
-  loopBlocks: {
+  loop_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#33691e',
     colourSecondary: '#9AFF78',
     colourTertiary: '#E1FFD7',
   },
-  mathBlocks: {
+  math_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#1a237e',
     colourSecondary: '#8A9EFF',
     colourTertiary: '#DCE2FF',
   },
-  procedureBlocks: {
+  procedure_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#006064',
     colourSecondary: '#77E6EE',
     colourTertiary: '#CFECEE',
   },
-  textBlocks: {
+  text_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#004d40',
     colourSecondary: '#5ae27c',
     colourTertiary: '#D2FFDD',
   },
-  variableBlocks: {
+  variable_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#880e4f',
     colourSecondary: '#FF73BE',
     colourTertiary: '#FFD4EB',
   },
-  variableDynamicBlocks: {
+  variableDynamic_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#880e4f',
     colourSecondary: '#FF73BE',
     colourTertiary: '#FFD4EB',
   },
-  hatBlocks: {
+  hat_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#880e4f',
     colourSecondary: '#FF73BE',
     colourTertiary: '#FFD4EB',
@@ -67,15 +67,15 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colourCategory: {colour: '#a52714'},
-  listCategory: {colour: '#4a148c'},
-  logicCategory: {colour: '#01579b'},
-  loopCategory: {colour: '#33691e'},
-  mathCategory: {colour: '#1a237e'},
-  procedureCategory: {colour: '#006064'},
-  textCategory: {colour: '#004d40'},
-  variableCategory: {colour: '#880e4f'},
-  variableDynamicCategory: {colour: '#880e4f'},
+  colour_category: {colour: '#a52714'}, // eslint-disable-line camelcase
+  list_category: {colour: '#4a148c'}, // eslint-disable-line camelcase
+  logic_category: {colour: '#01579b'}, // eslint-disable-line camelcase
+  loop_category: {colour: '#33691e'}, // eslint-disable-line camelcase
+  math_category: {colour: '#1a237e'}, // eslint-disable-line camelcase
+  procedure_category: {colour: '#006064'}, // eslint-disable-line camelcase
+  text_category: {colour: '#004d40'}, // eslint-disable-line camelcase
+  variable_category: {colour: '#880e4f'}, // eslint-disable-line camelcase
+  variable_dynamic_category: {colour: '#880e4f'}, // eslint-disable-line camelcase
 };
 
 /**

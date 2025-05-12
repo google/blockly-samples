@@ -16,42 +16,42 @@ const defaultBlockStyles = {
     colourSecondary: '#2974c0',
     colourTertiary: '#2d74bb',
   },
-  listBlocks: {
+  list_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#b69ce8',
     colourSecondary: '#ccbaef',
     colourTertiary: '#9176c5',
   },
-  logicBlocks: {
+  logic_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#9fd2f1',
     colourSecondary: '#c0e0f4',
     colourTertiary: '#74bae5',
   },
-  loopBlocks: {
+  loop_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#aa1846',
     colourSecondary: '#d36185',
     colourTertiary: '#7c1636',
   },
-  mathBlocks: {
+  math_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#e6da39',
     colourSecondary: '#f3ec8e',
     colourTertiary: '#f2eeb7',
   },
-  procedureBlocks: {
+  procedure_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#590721',
     colourSecondary: '#8c475d',
     colourTertiary: '#885464',
   },
-  textBlocks: {
+  text_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#058863',
     colourSecondary: '#5ecfaf',
     colourTertiary: '#04684c',
   },
-  variableBlocks: {
+  variable_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#4b2d84',
     colourSecondary: '#816ea7',
     colourTertiary: '#83759e',
   },
-  variableDynamicBlocks: {
+  variableDynamic_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#4b2d84',
     colourSecondary: '#816ea7',
     colourTertiary: '#83759e',
@@ -59,31 +59,31 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colourCategory: {
+  colour_category: { // eslint-disable-line camelcase
     colour: '#05427f',
   },
-  listCategory: {
+  list_category: { // eslint-disable-line camelcase
     colour: '#b69ce8',
   },
-  logicCategory: {
+  logic_category: { // eslint-disable-line camelcase
     colour: '#9fd2f1',
   },
-  loopCategory: {
+  loop_category: { // eslint-disable-line camelcase
     colour: '#aa1846',
   },
-  mathCategory: {
+  math_category: { // eslint-disable-line camelcase
     colour: '#e6da39',
   },
-  procedureCategory: {
+  procedure_category: { // eslint-disable-line camelcase
     colour: '#590721',
   },
-  textCategory: {
+  text_category: { // eslint-disable-line camelcase
     colour: '#058863',
   },
-  variableCategory: {
+  variable_category: { // eslint-disable-line camelcase
     colour: '#4b2d84',
   },
-  variableDynamicCategory: {
+  variable_dynamic_category: { // eslint-disable-line camelcase
     colour: '#4b2d84',
   },
 };
