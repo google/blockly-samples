@@ -11,7 +11,7 @@ const {shadowBlockConversionChangeListener} = require('../src/index');
 
 const assert = chai.assert;
 
-suite.skip('shadowBlockConversionChangeListener', function () {
+suite('shadowBlockConversionChangeListener', function () {
   /**
    * Create a parent block with an unconnected value connection.
    * @param {Blockly.Workspace} workspace The workspace to use.
