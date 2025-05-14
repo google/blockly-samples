@@ -728,6 +728,15 @@ export class FieldColour extends Blockly.Field<string> {
     // the static fromJson method.
     return new this(options.colour, undefined, options);
   }
+
+  /**
+   * Returns the class of this field.
+   *
+   * @returns FieldColour.
+   */
+  getClass() {
+    return FieldColour;
+  }
 }
 
 /** The default value for this field. */
