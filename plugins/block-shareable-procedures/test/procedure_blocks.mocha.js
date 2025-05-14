@@ -107,7 +107,7 @@ suite('Procedures', function () {
     test('disabling a procedure def block updates the procedure model', function () {
       const defBlock = createProcDefBlock(this.workspace);
 
-      defBlock.setEnabled(false);
+      defBlock.setDisabledReason(true);
       globalThis.clock.runAll();
 
       assert.isFalse(
@@ -1204,7 +1204,7 @@ suite('Procedures', function () {
         const defBlock = createProcDefBlock(this.workspace);
         const callBlock = createProcCallBlock(this.workspace);
 
-        defBlock.setEnabled(false);
+        defBlock.setDisabledReason(true);
         globalThis.clock.runAll();
 
         assert.isFalse(
@@ -1220,10 +1220,10 @@ suite('Procedures', function () {
       function () {
         const defBlock = createProcDefBlock(this.workspace);
         const callBlock = createProcCallBlock(this.workspace);
-        defBlock.setEnabled(false);
+        defBlock.setDisabledReason(true);
         globalThis.clock.runAll();
 
-        defBlock.setEnabled(true);
+        defBlock.setDisabledReason(false);
         globalThis.clock.runAll();
 
         assert.isTrue(
@@ -1241,12 +1241,12 @@ suite('Procedures', function () {
         const defBlock = createProcDefBlock(this.workspace);
         const callBlock = createProcCallBlock(this.workspace);
         globalThis.clock.runAll();
-        callBlock.setEnabled(false);
+        callBlock.setDisabledReason(true);
         globalThis.clock.runAll();
-        defBlock.setEnabled(false);
+        defBlock.setDisabledReason(true);
         globalThis.clock.runAll();
 
-        defBlock.setEnabled(true);
+        defBlock.setDisabledReason(false);
         globalThis.clock.runAll();
 
         assert.isFalse(
