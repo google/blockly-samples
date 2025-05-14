@@ -4,7 +4,7 @@
 # failed after a package had its version updated on github but before
 # that version was published to npm.
 
-name: publish
+name: publish unpublished plugins
 
 on:
   workflow_dispatch: # Manually trigger. Colon is required.
