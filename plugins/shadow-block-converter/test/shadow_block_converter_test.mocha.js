@@ -11,7 +11,7 @@ const {shadowBlockConversionChangeListener} = require('../src/index');
 
 const assert = chai.assert;
 
-suite.skip('shadowBlockConversionChangeListener', function () {
+suite('shadowBlockConversionChangeListener', function () {
   /**
    * Create a parent block with an unconnected value connection.
    * @param {Blockly.Workspace} workspace The workspace to use.
@@ -38,6 +38,8 @@ suite.skip('shadowBlockConversionChangeListener', function () {
       '<!DOCTYPE html><div id="blocklyDiv"></div>',
       {pretendToBeVisual: true},
     );
+    // See https://github.com/google/blockly-samples/issues/2528 for context.
+    global.SVGElement = window.SVGElement;
 
     this.workspace = Blockly.inject('blocklyDiv');
     this.workspace.addChangeListener(shadowBlockConversionChangeListener);
