@@ -4,7 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {utils, browserEvents, MenuOption, FieldDropdown} from 'blockly/core';
+import {
+  browserEvents,
+  FieldDropdown,
+  ImageProperties,
+  MenuOption,
+  utils,
+} from 'blockly/core';
 import {GridItem} from './grid_item';
 
 /**
@@ -100,11 +106,11 @@ export class Grid {
 
       const [label, value] = item;
       const content = (() => {
-        if (typeof label === 'object') {
+        if (isImageProperties(label)) {
           // Convert ImageProperties to an HTMLImageElement.
-          const image = new Image(label['width'], label['height']);
-          image.src = label['src'];
-          image.alt = label['alt'] || '';
+          const image = new Image(label.width, label.height);
+          image.src = label.src;
+          image.alt = label.alt || '';
           return image;
         }
         return label;
@@ -292,4 +298,26 @@ export class Grid {
 
     return this.itemAtIndex(index);
   }
+}
+
+/**
+ * Returns whether or not an object conforms to the ImageProperties
+ * interface.
+ *
+ * @param obj The object to test.
+ * @returns True iff the object conforms to ImageProperties.
+ */
+function isImageProperties(obj: any): obj is ImageProperties {
+  return (
+    obj &&
+    typeof obj === 'object' &&
+    'src' in obj &&
+    typeof obj.src === 'string' &&
+    'alt' in obj &&
+    typeof obj.alt === 'string' &&
+    'width' in obj &&
+    typeof obj.width === 'number' &&
+    'height' in obj &&
+    typeof obj.height === 'number'
+  );
 }
