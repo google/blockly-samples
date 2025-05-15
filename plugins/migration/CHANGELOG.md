@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/google/blockly-samples/compare/@blockly/migrate@3.0.3...@blockly/migrate@3.0.4) (2025-05-15)
+
+**Note:** Version bump only for package @blockly/migrate
+
+
+
+
+
 ## [3.0.3](https://github.com/google/blockly-samples/compare/@blockly/migrate@3.0.2...@blockly/migrate@3.0.3) (2025-03-13)
 
 **Note:** Version bump only for package @blockly/migrate

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@5.0.15...@blockly/block-shareable-procedures@5.0.16) (2025-05-15)
+
+
+### Bug Fixes
+
+* Remove use of deleted `Block.setEnabled()`. ([bf44961](https://github.com/google/blockly-samples/commit/bf449611e35e063a5ccd59e25d6a5e3eca3c7f56))
+
+
+
+
+
 ## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@5.0.14...@blockly/block-shareable-procedures@5.0.15) (2025-02-27)
 
 

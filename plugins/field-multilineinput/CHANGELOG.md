@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.16](https://github.com/google/blockly-samples/compare/@blockly/field-multilineinput@5.0.15...@blockly/field-multilineinput@5.0.16) (2025-05-15)
+
+
+### Bug Fixes
+
+* Fix multi-line text color by using the correct class ([91a8473](https://github.com/google/blockly-samples/commit/91a8473736b5c0cc3e04c809f4a888469bc96f77))
+
+
+### Reverts
+
+* "fix(FieldMultilineInput): Use string literal instead of Field.NBSP" ([539ae4f](https://github.com/google/blockly-samples/commit/539ae4fe4499fca3d781c29f462836ac64d45ce6))
+
+
+
+
+
 ## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-multilineinput@5.0.14...@blockly/field-multilineinput@5.0.15) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/field-multilineinput

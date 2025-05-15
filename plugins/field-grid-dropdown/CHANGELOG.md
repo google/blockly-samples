@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@5.0.14...@blockly/field-grid-dropdown@5.0.15) (2025-05-15)
+
+
+### Bug Fixes
+
+* **FieldGridDropdown:** Handle presence of HTMLElement in MenuOptions ([43bdfab](https://github.com/google/blockly-samples/commit/43bdfabeb658331d3991430ec92589ba415dac75))
+* Fix the field-grid-dropdown tests. ([452051e](https://github.com/google/blockly-samples/commit/452051e02520803e7cf85e63e0bfb8191a838a98))
+
+
+
+
+
 ## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@5.0.13...@blockly/field-grid-dropdown@5.0.14) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/field-grid-dropdown

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.16](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@6.0.15...@blockly/shadow-block-converter@6.0.16) (2025-05-15)
+
+
+### Bug Fixes
+
+* Fix shadow-block-converter tests. ([6bd3916](https://github.com/google/blockly-samples/commit/6bd39168b25b989056b642861a2983938db93187))
+* Re-enable shadow block converter test ([#2529](https://github.com/google/blockly-samples/issues/2529)) ([1f5d169](https://github.com/google/blockly-samples/commit/1f5d16944bb1b6a40e28af7297625ba11fa7aaad)), closes [#2525](https://github.com/google/blockly-samples/issues/2525) [#2524](https://github.com/google/blockly-samples/issues/2524) [#2528](https://github.com/google/blockly-samples/issues/2528) [#2528](https://github.com/google/blockly-samples/issues/2528)
+
+
+
+
+
 ## [6.0.15](https://github.com/google/blockly-samples/compare/@blockly/shadow-block-converter@6.0.14...@blockly/shadow-block-converter@6.0.15) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/shadow-block-converter

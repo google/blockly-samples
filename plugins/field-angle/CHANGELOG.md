@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-angle@5.0.14...@blockly/field-angle@5.0.15) (2025-05-15)
+
+
+### Bug Fixes
+
+* Fix ephemeral focus being taken twice ([#2521](https://github.com/google/blockly-samples/issues/2521)) ([29b5a0d](https://github.com/google/blockly-samples/commit/29b5a0d896e7e6f7eb83867bd5b2577bf808e839)), closes [#2514](https://github.com/google/blockly-samples/issues/2514) [#2515](https://github.com/google/blockly-samples/issues/2515) [#2514](https://github.com/google/blockly-samples/issues/2514) [#2515](https://github.com/google/blockly-samples/issues/2515) [#2527](https://github.com/google/blockly-samples/issues/2527)
+
+
+
+
+
 ## [5.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-angle@5.0.13...@blockly/field-angle@5.0.14) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/field-angle

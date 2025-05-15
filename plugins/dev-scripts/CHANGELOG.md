@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.8](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.7...@blockly/dev-scripts@4.0.8) (2025-05-15)
+
+**Note:** Version bump only for package @blockly/dev-scripts
+
+
+
+
+
 ## [4.0.7](https://github.com/google/blockly-samples/compare/@blockly/dev-scripts@4.0.6...@blockly/dev-scripts@4.0.7) (2024-12-03)
 
 **Note:** Version bump only for package @blockly/dev-scripts

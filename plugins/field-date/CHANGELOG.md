@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.15](https://github.com/google/blockly-samples/compare/@blockly/field-date@9.0.14...@blockly/field-date@9.0.15) (2025-05-15)
+
+
+### Bug Fixes
+
+* Wait for an animation frame before showing the date picker ([e3b1054](https://github.com/google/blockly-samples/commit/e3b1054eb0b511aa4ab270725c989369270ee8d6))
+
+
+
+
+
 ## [9.0.14](https://github.com/google/blockly-samples/compare/@blockly/field-date@9.0.13...@blockly/field-date@9.0.14) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/field-date
