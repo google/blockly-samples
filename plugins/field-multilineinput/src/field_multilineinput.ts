@@ -163,11 +163,9 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
       );
     }
     let textLines = this.getText();
-    // TODO(google/blockly#8738): Use minimum-width setting mechanism
-    // to be introduced in PR #9011.
     if (!textLines) {
       // Prevent the field from disappearing if empty.
-      return '\u00A0'; // Non-breaking space.
+      return Blockly.Field.NBSP;
     }
     const lines = textLines.split('\n');
     textLines = '';
@@ -184,8 +182,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
       }
       // Replace whitespace with non-breaking spaces so the text doesn't
       // collapse.
-      // TODO(google/blockly#8738): Use Blockly.Field.NBSP.
-      text = text.replace(/\s/g, '\u00A0'); // Non-breaking space.
+      text = text.replace(/\s/g, Blockly.Field.NBSP);
 
       textLines += text;
       if (i !== displayLinesNumber - 1) {

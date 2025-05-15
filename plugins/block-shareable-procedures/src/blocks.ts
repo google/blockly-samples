@@ -299,7 +299,7 @@ const procedureDefUpdateShapeMixin = {
    */
   doProcedureUpdate: function () {
     this.setFieldValue(this.getProcedureModel().getName(), 'NAME');
-    this.setEnabled(this.getProcedureModel().getEnabled());
+    this.setDisabledReason(!this.getProcedureModel().getEnabled());
     this.updateParameters_();
     this.updateMutator_();
   },

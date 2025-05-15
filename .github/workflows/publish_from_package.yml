@@ -1,0 +1,71 @@
+# This workflow can be manually triggered to publish all of the plugins
+# that have a version in their package.json that is newer than what
+# is available in the npm registry. This is useful if lerna publishing
+# failed after a package had its version updated on github but before
+# that version was published to npm.
+
+name: publish unpublished plugins
+
+on:
+  workflow_dispatch: # Manually trigger. Colon is required.
+
+permissions:
+  contents: write # For checkout and tag.
+  packages: write # For publish.
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Don't try to publish from a fork of google/blockly-samples.
+    if: ${{ github.repository_owner == 'google' }}
+
+    # Environment specific to releasing so we can isolate the npm token.
+    environment: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        # fetch all tags and commits so that lerna can version appropriately
+        with:
+          fetch-depth: 0
+          ref: 'master'
+
+      # This uses a reverse-engineered email for the github actions bot. See
+      # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+      - name: Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '<41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Configure npm
+        run: npm config set //wombat-dressing-room.appspot.com/:_authToken=$NODE_AUTH_TOKEN
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.RELEASE_BACKED_NPM_TOKEN }}
+
+      - name: NPM install
+        # Use CI so that we don't update dependencies in this step.
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test
+
+      - name: Publish from-package
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd plugins && npx lerna publish from-package --yes
+
+  update-gh-pages:
+    name: Update GitHub Pages
+    # Call the Update gh-pages workflow only if publishing succeeds
+    needs: [publish]
+    # Don't try to auto-update if on a fork of google/blockly-samples.
+    if: ${{ github.repository_owner == 'google' }}
+    uses: ./.github/workflows/update_gh_pages.yml
