@@ -3,17 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [5.0.18](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.17...@blockly/field-colour@5.0.18) (2025-05-15)
-
-
-### Reverts
-
-* Revert "fix: Add `getClass()` to `FieldColour`. (#2506)" ([144b6d0](https://github.com/google/blockly-samples/commit/144b6d0c4b939e1f329986220e30ebdfcf93453c)), closes [#2506](https://github.com/google/blockly-samples/issues/2506)
-
-
-
-
-
 ## [5.0.17](https://github.com/google/blockly-samples/compare/@blockly/field-colour@5.0.16...@blockly/field-colour@5.0.17) (2025-05-08)
 
 

@@ -3,18 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [6.0.15](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@6.0.14...@blockly/continuous-toolbox@6.0.15) (2025-05-15)
-
-
-### Bug Fixes
-
-* Don't pin continuous-toolbox to Blockly v12.0.0-beta.0. ([#2532](https://github.com/google/blockly-samples/issues/2532)) ([9f49e28](https://github.com/google/blockly-samples/commit/9f49e2811a8c078a6377c4b38025c2cf5d04e744))
-* Fix scrolling and API issues with the continuous toolbox plugin. ([#2485](https://github.com/google/blockly-samples/issues/2485)) ([7476290](https://github.com/google/blockly-samples/commit/7476290ff118105c2b6fa39c747b0871cf5ea411))
-
-
-
-
-
 ## [6.0.14](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@6.0.13...@blockly/continuous-toolbox@6.0.14) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/continuous-toolbox

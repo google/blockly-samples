@@ -1,6 +1,6 @@
 {
   "name": "@blockly/theme-highcontrast",
-  "version": "6.0.11",
+  "version": "6.0.10",
   "description": "A Blockly high contrast theme.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -40,7 +40,7 @@
     "src"
   ],
   "devDependencies": {
-    "@blockly/dev-scripts": "^4.0.8"
+    "@blockly/dev-scripts": "^4.0.7"
   },
   "peerDependencies": {
     "blockly": "^12.0.0"
