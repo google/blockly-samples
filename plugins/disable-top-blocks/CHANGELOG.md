@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.0](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.5.16...@blockly/disable-top-blocks@0.6.0) (2025-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all plugins to blockly v12 (#2538)
+
+### Features
+
+* update all plugins to blockly v12 ([#2538](https://github.com/google/blockly-samples/issues/2538)) ([420ba31](https://github.com/google/blockly-samples/commit/420ba3124b260b2c06e8e1d61be44e870780d95f))
+
+
+
 ## [0.5.16](https://github.com/google/blockly-samples/compare/@blockly/disable-top-blocks@0.5.15...@blockly/disable-top-blocks@0.5.16) (2025-05-16)
 
 **Note:** Version bump only for package @blockly/disable-top-blocks
