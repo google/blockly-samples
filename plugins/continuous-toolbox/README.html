@@ -24,7 +24,7 @@
       <div class="title">@blockly/continuous-toolbox Demo</div>
       <div class="subtitle">A Blockly plugin that adds a continous-scrolling style toolbox and flyout</div>
     </div>
-    6.0.16
+    7.0.0
 
     <a href="https://github.com/google/blockly-samples/blob/master/plugins/continuous-toolbox" class="button" target="_blank">View code</a>
     <a href="https://www.npmjs.com/package/@blockly/continuous-toolbox" class="button" target="_blank">View on npm</a>
@@ -60,25 +60,41 @@ The continuous toolbox is shown here with the 'Zelos' theme, and the style can b
 <h3 id="npm">npm</h3>
 <pre><code>npm install @blockly/continuous-toolbox --save</code></pre>
 <h2 id="usage">Usage</h2>
-<p>Include the toolbox, flyout, and metrics manager classes from the plugin in the options struct used when injecting Blockly. This style of flyout works best with a toolbox definition that does not use collapsible categories.</p>
-<p>Note that this plugin uses APIs introduced in the <code>3.20200924.3</code> release of Blockly, so you will need to use at least this version or higher.</p>
+<p>Import and call the <code>registerContinuousToolbox()</code> function before injecting
+Blockly. This style of flyout works best with a toolbox definition that does
+not use collapsible categories.</p>
+<p>Note that this plugin uses APIs introduced in the <code>v12</code> release of Blockly, so
+you will need to use at least this version or higher.</p>
 <pre><code class="js language-js">import * as Blockly from 'blockly';
-import {
-  ContinuousToolbox,
-  ContinuousFlyout,
-  ContinuousMetrics,
-} from '@blockly/continuous-toolbox';
+import {registerContinuousToolbox} from '@blockly/continuous-toolbox';
 
 // Inject Blockly.
+registerContinuousToolbox();
 const workspace = Blockly.inject('blocklyDiv', {
-  plugins: {
-    toolbox: ContinuousToolbox,
-    flyoutsVerticalToolbox: ContinuousFlyout,
-    metricsManager: ContinuousMetrics,
-  },
   toolbox: toolboxCategories,
+  plugins: {
+    flyoutsVerticalToolbox: 'ContinuousFlyout',
+    metricsManager: 'ContinuousMetrics',
+    toolbox: 'ContinuousToolbox',
+  },
   // ... your other options here ...
 });</code></pre>
+<h2 id="block-recycling">Block Recycling</h2>
+<p>As a performance optimization, by default the continuous toolbox "recycles"
+blocks to avoid having to create DOM elements for potentially hundreds of blocks
+every time the flyout is shown. With the default set of blocks, this drops the
+time to show the flyout from roughly 35ms to 25ms; the effect is naturally
+larger with larger block sets.</p>
+<p>Recycling is unrelated to Blockly's Trash feature; instead, it entails moving
+the blocks offscreen when the flyout is hidden, and then simply repositioning
+them when the flyout is shown again. Not all block types are amenable to this;
+in particular, blocks with dynamic behavior (e.g. those that reference
+variables, support mutations, or have dynamic dropdown fields) are excluded by
+default.</p>
+<p>This feature can be toggled by calling <code>setRecyclingEnabled()</code> on an instance of
+<code>ContinuousFlyout</code>, and the default ruleset for determining which blocks are
+safe for recycling can be replaced with a custom callback by passing that
+function to <code>setBlockIsRecyclable()</code>.</p>
 <h2 id="license">License</h2>
 <p>Apache 2.0</p>
       </div>
