@@ -12,47 +12,47 @@
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colour_blocks: {
+  colour_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  list_blocks: {
+  list_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  logic_blocks: {
+  logic_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  loop_blocks: {
+  loop_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  math_blocks: {
+  math_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  procedure_blocks: {
+  procedure_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  text_blocks: {
+  text_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  variable_blocks: {
+  variable_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  variable_dynamic_blocks: {
+  variable_dynamic_blocks: {  // eslint-disable-line camelcase
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
@@ -60,42 +60,43 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colour_category: {
+  colour_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  list_category: {
+  list_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  logic_category: {
+  logic_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  loop_category: {
+  loop_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  math_category: {
+  math_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  procedure_category: {
+  procedure_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  text_category: {
+  text_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  variable_category: {
+  variable_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
-  variable_dynamic_category: {
+  variable_dynamic_category: {  // eslint-disable-line camelcase
     colour: '#0c0d0d',
   },
 };
 
 export default Blockly.Theme.defineTheme('hackermode', {
+  name: 'hackermode',
   base: Blockly.Themes.Classic,
   blockStyles: defaultBlockStyles,
   categoryStyles: categoryStyles,
   componentStyles: {
     workspaceBackgroundColour: '#1e1e1e',
-    toolboxBackgroundColour: 'blackBackground',
+    toolboxBackgroundColour: '#333',
     toolboxForegroundColour: '#73ed58',
     flyoutBackgroundColour: '#252526',
     flyoutForegroundColour: '#73ed58',
@@ -105,12 +106,11 @@ export default Blockly.Theme.defineTheme('hackermode', {
     insertionMarkerOpacity: 0.3,
     scrollbarOpacity: 0.4,
     cursorColour: '#d0d0d0',
-    blackBackground: '#333',
   },
   fontStyle: {
     family: 'monospace',
-    weight: null,
-    size: null,
+    weight: undefined,
+    size: undefined,
   },
-  startHats: null,
+  startHats: undefined,
 });
