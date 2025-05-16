@@ -141,7 +141,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     this.textGroup = Blockly.utils.dom.createSvgElement(
       Blockly.utils.Svg.G,
       {
-        class: 'blocklyEditableField',
+        class: 'blocklyEditableText',
       },
       this.fieldGroup_,
     );

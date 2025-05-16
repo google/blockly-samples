@@ -13,7 +13,7 @@ export class ObservableParameterModel
   implements Blockly.procedures.IParameterModel
 {
   private id: string;
-  private variable: Blockly.IVariableModel<Blockly.IVariableState>;
+  private variable: Blockly.VariableModel;
   private shouldFireEvents = false;
   private procedureModel: Blockly.procedures.IProcedureModel | null = null;
 
@@ -44,8 +44,8 @@ export class ObservableParameterModel
    * @returns This parameter model.
    */
   setName(name: string, id?: string): this {
-    if (name === this.variable.getName()) return this;
-    const oldName = this.variable.getName();
+    if (name === this.variable.name) return this;
+    const oldName = this.variable.name;
     this.variable =
       this.workspace.getVariable(name) ??
       this.workspace.createVariable(name, '', id);
@@ -73,7 +73,7 @@ export class ObservableParameterModel
   protected createBackingVariable(
     name: string,
     varId?: string,
-  ): Blockly.IVariableModel<Blockly.IVariableState> {
+  ): Blockly.VariableModel {
     this.variable =
       this.workspace.getVariable(name) ??
       this.workspace.createVariable(name, '', varId);
@@ -100,7 +100,7 @@ export class ObservableParameterModel
    * @returns the name of this parameter.
    */
   getName(): string {
-    return this.variable.getName();
+    return this.variable.name;
   }
 
   /**
@@ -123,7 +123,7 @@ export class ObservableParameterModel
   /**
    * @returns the variable model associated with the parameter model.
    */
-  getVariableModel(): Blockly.IVariableModel<Blockly.IVariableState> {
+  getVariableModel(): Blockly.VariableModel {
     return this.variable;
   }
 

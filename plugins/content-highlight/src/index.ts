@@ -13,7 +13,7 @@ import * as Blockly from 'blockly/core';
 /**
  * List of events that cause a change in content area size.
  */
-const contentChangeEvents: string[] = [
+const contentChangeEvents = [
   Blockly.Events.VIEWPORT_CHANGE,
   Blockly.Events.BLOCK_CREATE,
   Blockly.Events.BLOCK_MOVE,

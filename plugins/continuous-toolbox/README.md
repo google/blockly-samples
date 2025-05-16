@@ -21,49 +21,29 @@ npm install @blockly/continuous-toolbox --save
 
 ## Usage
 
-Import and call the `registerContinuousToolbox()` function before injecting
-Blockly. This style of flyout works best with a toolbox definition that does
-not use collapsible categories.
+Include the toolbox, flyout, and metrics manager classes from the plugin in the options struct used when injecting Blockly. This style of flyout works best with a toolbox definition that does not use collapsible categories.
 
-Note that this plugin uses APIs introduced in the `v12` release of Blockly, so
-you will need to use at least this version or higher.
+Note that this plugin uses APIs introduced in the `3.20200924.3` release of Blockly, so you will need to use at least this version or higher.
 
 ```js
 import * as Blockly from 'blockly';
-import {registerContinuousToolbox} from '@blockly/continuous-toolbox';
+import {
+  ContinuousToolbox,
+  ContinuousFlyout,
+  ContinuousMetrics,
+} from '@blockly/continuous-toolbox';
 
 // Inject Blockly.
-registerContinuousToolbox();
 const workspace = Blockly.inject('blocklyDiv', {
-  toolbox: toolboxCategories,
   plugins: {
-    flyoutsVerticalToolbox: 'ContinuousFlyout',
-    metricsManager: 'ContinuousMetrics',
-    toolbox: 'ContinuousToolbox',
+    toolbox: ContinuousToolbox,
+    flyoutsVerticalToolbox: ContinuousFlyout,
+    metricsManager: ContinuousMetrics,
   },
+  toolbox: toolboxCategories,
   // ... your other options here ...
 });
 ```
-
-## Block Recycling
-
-As a performance optimization, by default the continuous toolbox "recycles"
-blocks to avoid having to create DOM elements for potentially hundreds of blocks
-every time the flyout is shown. With the default set of blocks, this drops the
-time to show the flyout from roughly 35ms to 25ms; the effect is naturally
-larger with larger block sets.
-
-Recycling is unrelated to Blockly's Trash feature; instead, it entails moving
-the blocks offscreen when the flyout is hidden, and then simply repositioning
-them when the flyout is shown again. Not all block types are amenable to this;
-in particular, blocks with dynamic behavior (e.g. those that reference
-variables, support mutations, or have dynamic dropdown fields) are excluded by
-default.
-
-This feature can be toggled by calling `setRecyclingEnabled()` on an instance of
-`ContinuousFlyout`, and the default ruleset for determining which blocks are
-safe for recycling can be replaced with a custom callback by passing that
-function to `setBlockIsRecyclable()`.
 
 ## License
 

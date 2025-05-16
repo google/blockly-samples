@@ -59,6 +59,7 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     super(value, validator, config);
 
     this.SERIALIZABLE = true;
+    this.CURSOR = 'default';
     this.buttonOptions = {...DEFAULT_BUTTONS, ...config?.buttons};
     this.pixelColours = {...DEFAULT_PIXEL_COLOURS, ...config?.colours};
 
@@ -245,8 +246,8 @@ export class FieldBitmap extends Blockly.Field<number[][]> {
     // lines.
     const svgRoot = this.getSvgRoot();
     if (svgRoot) {
-      Blockly.utils.dom.removeClass(svgRoot, 'blocklyNonEditableField');
-      Blockly.utils.dom.removeClass(svgRoot, 'blocklyEditableField');
+      Blockly.utils.dom.removeClass(svgRoot, 'blocklyNonEditableText');
+      Blockly.utils.dom.removeClass(svgRoot, 'blocklyEditableText');
     }
     return editable;
   }

@@ -15,7 +15,7 @@ import * as Blockly from 'blockly/core';
 import {FocusRegion} from './focus_region';
 
 // Events that should be send over to the minimap from the primary workspace
-const blockEvents = new Set<string>([
+const blockEvents = new Set([
   Blockly.Events.BLOCK_CHANGE,
   Blockly.Events.BLOCK_CREATE,
   Blockly.Events.BLOCK_DELETE,
