@@ -7,7 +7,7 @@
     "boot": "lerna bootstrap",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "clean:node": "lerna run clean --yes",
+    "clean:node": "lerna clean --yes",
     "postinstall": "npm run boot",
     "predeploy": "lerna run predeploy",
     "test": "lerna run test"
