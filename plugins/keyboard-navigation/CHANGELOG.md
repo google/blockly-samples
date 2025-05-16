@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.14...@blockly/keyboard-navigation@0.7.0) (2025-05-16)
+
+
+* fix!: Delete old keyboard-navigation plugin (#2508) ([b79274d](https://github.com/google/blockly-samples/commit/b79274db6b1ce54c0e540b4d9791f9c2184a1470)), closes [#2508](https://github.com/google/blockly-samples/issues/2508)
+
+
+### BREAKING CHANGES
+
+* Removes the keyboard-experimentation plugin, obviously.
+
+
+
+
+
 ## [0.6.14](https://github.com/google/blockly-samples/compare/@blockly/keyboard-navigation@0.6.13...@blockly/keyboard-navigation@0.6.14) (2025-02-13)
 
 **Note:** Version bump only for package @blockly/keyboard-navigation

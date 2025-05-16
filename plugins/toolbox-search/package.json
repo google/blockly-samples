@@ -1,6 +1,6 @@
 {
   "name": "@blockly/toolbox-search",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "description": "A Blockly plugin that adds a toolbox category that allows searching for blocks.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -41,7 +41,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.8",
-    "@blockly/dev-tools": "^8.1.1",
+    "@blockly/dev-tools": "^8.1.2",
     "chai": "^4.3.7",
     "typescript": "^5.4.5"
   },

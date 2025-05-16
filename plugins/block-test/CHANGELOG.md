@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.13](https://github.com/google/blockly-samples/compare/@blockly/block-test@6.0.12...@blockly/block-test@6.0.13) (2025-05-16)
+
+**Note:** Version bump only for package @blockly/block-test
+
+
+
+
+
 ## [6.0.12](https://github.com/google/blockly-samples/compare/@blockly/block-test@6.0.11...@blockly/block-test@6.0.12) (2025-05-15)
 
 **Note:** Version bump only for package @blockly/block-test
