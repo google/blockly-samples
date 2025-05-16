@@ -34,8 +34,22 @@ suite('shadowBlockConversionChangeListener', function () {
   }
 
   setup(function () {
-    this.workspace = new Blockly.Workspace();
+    this.jsdomCleanup = require('jsdom-global')(
+      '<!DOCTYPE html><div id="blocklyDiv"></div>',
+      {pretendToBeVisual: true},
+    );
+    // See https://github.com/google/blockly-samples/issues/2528 for context.
+    global.SVGElement = window.SVGElement;
+
+    this.workspace = Blockly.inject('blocklyDiv');
     this.workspace.addChangeListener(shadowBlockConversionChangeListener);
+
+    // Prevent rendering, which does not work correctly in a headless jsdom
+    // environment.
+    this.renderEfficientlyStub = sinon
+      .stub(Blockly.BlockSvg.prototype, 'renderEfficiently')
+      .callsFake(() => {});
+
     this.clock = sinon.useFakeTimers();
   });
 
@@ -44,6 +58,8 @@ suite('shadowBlockConversionChangeListener', function () {
     // Finish any remaining queued events then dispose the sinon environment.
     this.clock.runAll();
     this.clock.restore();
+    this.renderEfficientlyStub.restore();
+    this.jsdomCleanup();
   });
 
   test('responds to field change', function () {
@@ -209,28 +225,6 @@ suite('shadowBlockConversionChangeListener', function () {
   });
 
   suite('Selection', function () {
-    setup(function () {
-      this.jsdomCleanup = require('jsdom-global')(
-        '<!DOCTYPE html><div id="blocklyDiv"></div>',
-        {pretendToBeVisual: true},
-      );
-
-      this.workspace = Blockly.inject('blocklyDiv');
-      this.workspace.addChangeListener(shadowBlockConversionChangeListener);
-
-      // Prevent rendering, which does not work correctly in a headless jsdom
-      // environment.
-      sinon
-        .stub(Blockly.BlockSvg.prototype, 'renderEfficiently')
-        .callsFake(() => {});
-
-      this.clock = sinon.useFakeTimers();
-    });
-
-    teardown(function () {
-      this.jsdomCleanup();
-    });
-
     test('Transfers selection to new block', function () {
       const connection =
         this.workspace.newBlock('text_reverse').inputList[0].connection;

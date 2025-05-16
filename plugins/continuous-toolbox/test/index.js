@@ -9,12 +9,8 @@
  */
 
 import * as Blockly from 'blockly';
-import {toolboxCategories, createPlayground} from '@blockly/dev-tools';
-import {
-  ContinuousToolbox,
-  ContinuousFlyout,
-  ContinuousMetrics,
-} from '../src/index';
+import {createPlayground} from '@blockly/dev-tools';
+import {registerContinuousToolbox} from '../src/index';
 
 /**
  * Create a workspace.
@@ -23,23 +19,16 @@ import {
  * @returns {!Blockly.WorkspaceSvg} The created workspace.
  */
 function createWorkspace(blocklyDiv, options) {
-  const workspace = Blockly.inject(blocklyDiv, options);
-
-  return workspace;
+  return Blockly.inject(blocklyDiv, options);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const defaultOptions = {
-    toolbox: toolboxCategories,
+  registerContinuousToolbox();
+  createPlayground(document.getElementById('root'), createWorkspace, {
     plugins: {
-      toolbox: ContinuousToolbox,
-      flyoutsVerticalToolbox: ContinuousFlyout,
-      metricsManager: ContinuousMetrics,
+      flyoutsVerticalToolbox: 'ContinuousFlyout',
+      metricsManager: 'ContinuousMetrics',
+      toolbox: 'ContinuousToolbox',
     },
-  };
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+  });
 });

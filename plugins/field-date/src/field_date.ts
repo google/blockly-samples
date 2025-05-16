@@ -21,11 +21,6 @@ export class FieldDate extends Blockly.FieldTextInput {
   SERIALIZABLE = true;
 
   /**
-   * Mouse cursor style when over the hotspot that initiates the editor.
-   */
-  CURSOR = 'text';
-
-  /**
    * Class for a date input field. Derived from the Closure library date
    * picker.
    *
@@ -147,14 +142,17 @@ export class FieldDate extends Blockly.FieldTextInput {
     if (!this.htmlInput_) return;
     Blockly.utils.dom.addClass(this.htmlInput_, 'blocklyDateInput');
 
-    // NOTE: HTMLInputElement.showPicker() is not available in earlier
-    // TypeScript versions (like 4.7.4), so casting to `any` to be compatible
-    // with dev scripts. Additionally, it's not available for date inputs for
-    // Safari. For browser compatibility of showPicker, see:
-    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/showPicker
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    (this.htmlInput_ as any).showPicker();
-    /* eslint-enable @typescript-eslint/no-explicit-any */
+    // Delay showing the picker until the editor has a chance to position
+    window.requestAnimationFrame(() => {
+      // NOTE: HTMLInputElement.showPicker() is not available in earlier
+      // TypeScript versions (like 4.7.4), so casting to `any` to be compatible
+      // with dev scripts. Additionally, it's not available for date inputs for
+      // Safari. For browser compatibility of showPicker, see:
+      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/showPicker
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      (this.htmlInput_ as any).showPicker();
+      /* eslint-enable @typescript-eslint/no-explicit-any */
+    });
   }
 
   /**
