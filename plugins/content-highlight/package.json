@@ -48,7 +48,7 @@
     "typescript": "^5.4.5"
   },
   "peerDependencies": {
-    "blockly": "^11.0.0"
+    "blockly": "^11.2.0"
   },
   "publishConfig": {
     "access": "public",
