@@ -12,18 +12,16 @@ import * as Blockly from 'blockly/core';
 
 /** Computes metrics for a toolbox with an always open flyout. */
 export class ContinuousMetrics extends Blockly.MetricsManager {
+  /** @override */
+  constructor(workspace) {
+    super(workspace);
+  }
   /**
    * Computes the viewport size to not include the toolbox and the flyout.
    * The default viewport includes the flyout.
-   *
-   * @param getWorkspaceCoordinates True to get the view metrics in workspace
-   *     coordinates, false to get them in pixel coordinates.
-   * @returns The width, height, top and left of the viewport in either
-   *     workspace coordinates or pixel coordinates.
+   * @override
    */
-  override getViewMetrics(
-    getWorkspaceCoordinates = false,
-  ): Blockly.MetricsManager.ContainerRegion {
+  getViewMetrics(getWorkspaceCoordinates = undefined) {
     const scale = getWorkspaceCoordinates ? this.workspace_.scale : 1;
     const svgMetrics = this.getSvgMetrics();
     const toolboxMetrics = this.getToolboxMetrics();
@@ -31,7 +29,7 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
     const toolboxPosition = toolboxMetrics.position;
 
     if (this.workspace_.getToolbox()) {
-      // Note: Not actually supported at this time due to ContinuousToolbox
+      // Note: Not actually supported at this time due to ContinunousToolbox
       // only supporting a vertical flyout. But included for completeness.
       if (
         toolboxPosition == Blockly.TOOLBOX_AT_TOP ||
@@ -54,13 +52,11 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
   }
 
   /**
-   * Gets the absolute left and absolute top in pixel coordinates.
-   * This is where the visible workspace starts in relation to the SVG
-   * container, adjusted to not include the area behind the flyout.
-   *
-   * @returns The absolute metrics for the workspace.
+   * Moves the absoluteLeft and absoluteTop so they no longer include the
+   * flyout.
+   * @override
    */
-  override getAbsoluteMetrics(): Blockly.MetricsManager.AbsoluteMetrics {
+  getAbsoluteMetrics() {
     const toolboxMetrics = this.getToolboxMetrics();
     const flyoutMetrics = this.getFlyoutMetrics(false);
     const toolboxPosition = toolboxMetrics.position;
@@ -85,3 +81,9 @@ export class ContinuousMetrics extends Blockly.MetricsManager {
     };
   }
 }
+
+Blockly.registry.register(
+  Blockly.registry.Type.METRICS_MANAGER,
+  'CustomMetricsManager',
+  ContinuousMetrics,
+);

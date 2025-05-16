@@ -70,9 +70,9 @@ suite('FieldGridDropdown', function () {
       expectedText: 'a',
       args: [
         [
-          [{src: 'scrA', alt: 'a', width: 0, height: 0}, 'A'],
-          [{src: 'scrB', alt: 'b', width: 0, height: 0}, 'B'],
-          [{src: 'scrC', alt: 'c', width: 0, height: 0}, 'C'],
+          [{src: 'scrA', alt: 'a'}, 'A'],
+          [{src: 'scrB', alt: 'b'}, 'B'],
+          [{src: 'scrC', alt: 'c'}, 'C'],
         ],
       ],
     },
@@ -99,9 +99,9 @@ suite('FieldGridDropdown', function () {
       args: [
         () => {
           return [
-            [{src: 'scrA', alt: 'a', width: 0, height: 0}, 'A'],
-            [{src: 'scrB', alt: 'b', width: 0, height: 0}, 'B'],
-            [{src: 'scrC', alt: 'c', width: 0, height: 0}, 'C'],
+            [{src: 'scrA', alt: 'a'}, 'A'],
+            [{src: 'scrB', alt: 'b'}, 'B'],
+            [{src: 'scrC', alt: 'c'}, 'C'],
           ];
         },
       ],

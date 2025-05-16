@@ -10,8 +10,6 @@
  */
 
 import * as Blockly from 'blockly/core';
-import {Grid} from './grid';
-import type {GridItem} from './grid_item';
 
 /**
  * A config object for defining a field grid dropdown.
@@ -46,9 +44,6 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 
   private borderColour?: string;
 
-  /** Object representing the grid of choices show in the dropdown. */
-  private grid?: Grid;
-
   /**
    * Class for an grid dropdown field.
    *
@@ -74,7 +69,7 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
     super(menuGenerator, validator, config);
 
     if (config?.columns) {
-      this.setColumns(parseInt(`${config.columns}`));
+      this.setColumnsInternal(config.columns);
     }
 
     if (config && config.primaryColour) {
@@ -115,16 +110,20 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    *    values are ignored.
    */
   setColumns(columns: number) {
-    if (!isNaN(columns) && columns >= 1) {
-      this.columns = columns;
-      // If the field is currently being shown, reload the grid.
-      if (
-        Blockly.DropDownDiv.getOwner() === this &&
-        Blockly.DropDownDiv.isVisible()
-      ) {
-        this.grid?.dispose();
-        this.showEditor_();
-      }
+    this.setColumnsInternal(columns);
+    this.updateColumnsStyling_();
+  }
+
+  /**
+   * Sets the number of columns on the grid.
+   *
+   * @param columns The number of columns. Is rounded to an integer value and
+   *  must be greater than 0. Invalid values are ignored.
+   */
+  private setColumnsInternal(columns: string | number) {
+    const cols = typeof columns === 'string' ? parseInt(columns) : columns;
+    if (!isNaN(cols) && cols >= 1) {
+      this.columns = cols;
     }
   }
 
@@ -136,47 +135,33 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
    *  undefined if triggered programmatically.
    */
   protected showEditor_(e?: MouseEvent) {
-    Blockly.DropDownDiv.clearContent();
-    const rtl = !!this.getSourceBlock()?.workspace.RTL;
-    this.grid = new Grid(
-      Blockly.DropDownDiv.getContentDiv(),
-      this.getOptions(false),
-      this.columns,
-      rtl,
-      (selectedItem: GridItem) => {
-        Blockly.DropDownDiv.hideIfOwner(this);
-        this.setValue(selectedItem.getValue());
-      },
-    );
-
-    Blockly.DropDownDiv.getContentDiv().classList.add(
-      'blocklyFieldGridContainer',
-    );
+    super.showEditor_(e);
 
     const colours = this.getColours();
     if (colours && colours.border) {
       Blockly.DropDownDiv.setColour(colours.primary, colours.border);
     }
 
+    const menuElement = this.menu_?.getElement() ?? null;
+    if (menuElement) {
+      Blockly.utils.dom.addClass(menuElement, 'fieldGridDropDownContainer');
+    }
+    this.updateColumnsStyling_();
+
     Blockly.DropDownDiv.showPositionedByField(
       this,
       this.dropdownDispose_.bind(this),
     );
-
-    const selectedValue = this.getValue();
-    if (selectedValue) {
-      this.grid.setSelectedValue(selectedValue);
-    }
   }
 
   /**
-   * Updates the field's value to the given value.
-   *
-   * @param newValue The new value for this field.
+   * Updates the styling for number of columns on the dropdown.
    */
-  protected override doValueUpdate_(newValue: string) {
-    super.doValueUpdate_(newValue);
-    this.grid?.setSelectedValue(newValue);
+  private updateColumnsStyling_() {
+    const menuElement = this.menu_ ? this.menu_.getElement() : null;
+    if (menuElement) {
+      menuElement.style.gridTemplateColumns = `repeat(${this.columns}, min-content)`;
+    }
   }
 
   /**
@@ -211,40 +196,38 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
 Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
 
 /**
- * CSS for grid field.
+ * CSS for slider field.
  */
 Blockly.Css.register(`
-   .blocklyFieldGridContainer {
-     padding: 7px;
+ /** Setup grid layout of DropDown */
+ .fieldGridDropDownContainer.blocklyMenu {
+   display: grid;
+   grid-gap: 7px;
    }
-   
-  .blocklyFieldGrid {
-    display: grid;
-    grid-gap: 7px;
-    grid-template-columns: repeat(var(--grid-columns), min-content);
-  }
-
- .blocklyFieldGrid .blocklyFieldGridItem {
+ /* Change look of cells (add border, sizing, padding, and text color) */
+ .fieldGridDropDownContainer.blocklyMenu .blocklyMenuItem {
    border: 1px solid rgba(1, 1, 1, 0.5);
    border-radius: 4px;
    color: white;
    min-width: auto;
-   background: none;
-   white-space: nowrap;
-   cursor: pointer;
-   padding: 6px 15px;
+   padding-left: 15px; /* override padding-left now that checkmark is hidden */
  }
- 
- .blocklyFieldGrid .blocklyFieldGridRow {
-   display: contents;
+ /* Change look of selected cell */
+ .fieldGridDropDownContainer .blocklyMenuItem .blocklyMenuItemCheckbox {
+   display: none; /* Hide checkmark */
  }
- 
- .blocklyFieldGrid .blocklyFieldGridItem.blocklyFieldGridItemSelected {
+ .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemSelected {
    background-color: rgba(1, 1, 1, 0.25);
  }
-
- .blocklyFieldGrid .blocklyFieldGridItem:focus {
+ /* Change look of focus/highlighted cell */
+ .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
    box-shadow: 0 0 0 4px hsla(0, 0%, 100%, .2);
-   outline: none;
+ }
+ .fieldGridDropDownContainer .blocklyMenuItemHighlight {
+   /* Uses less selectors so as to not affect blocklyMenuItemSelected */
+   background-color: inherit;
+ }
+ .fieldGridDropDownContainer {
+   margin: 7px; /* needed for highlight */
  }
  `);

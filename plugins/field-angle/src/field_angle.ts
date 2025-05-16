@@ -206,13 +206,11 @@ export class FieldAngle extends Blockly.FieldNumber {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override showEditor_(e?: Event) {
     // Mobile browsers have issues with in-line textareas (focus & keyboards).
-    // Also, don't let the parent take ephemeral focus since the drop-down div
-    // below will handle it, instead.
     const noFocus =
       Blockly.utils.userAgent.MOBILE ||
       Blockly.utils.userAgent.ANDROID ||
       Blockly.utils.userAgent.IPAD;
-    super.showEditor_(e, noFocus, false);
+    super.showEditor_(e, noFocus);
 
     const editor = this.dropdownCreate();
     Blockly.DropDownDiv.getContentDiv().appendChild(editor);

@@ -33,6 +33,9 @@ export class FieldColour extends Blockly.Field<string> {
    */
   override SERIALIZABLE = true;
 
+  /** Mouse cursor style when over the hotspot that initiates the editor. */
+  override CURSOR = 'default';
+
   /**
    * Used to tell if the field needs to be rendered the next time the block is
    * rendered.  Colour fields are statically sized, and only need to be
@@ -209,7 +212,7 @@ export class FieldColour extends Blockly.Field<string> {
    *
    * @returns True if this field should take up the full block. False otherwise.
    */
-  override isFullBlockField(): boolean {
+  protected isFullBlockField(): boolean {
     const block = this.getSourceBlock();
     if (!block) throw new Blockly.UnattachedFieldError();
 
@@ -727,6 +730,15 @@ export class FieldColour extends Blockly.Field<string> {
     // `this` might be a subclass of FieldColour if that class doesn't override
     // the static fromJson method.
     return new this(options.colour, undefined, options);
+  }
+
+  /**
+   * Returns the class of this field.
+   *
+   * @returns FieldColour.
+   */
+  getClass() {
+    return FieldColour;
   }
 }
 
