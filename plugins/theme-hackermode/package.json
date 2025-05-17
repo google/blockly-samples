@@ -42,7 +42,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.0",
-    "@blockly/dev-tools": "^8.0.0"
+    "@blockly/dev-tools": "^9.0.0"
   },
   "peerDependencies": {
     "blockly": "^12.0.0"
