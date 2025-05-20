@@ -42,6 +42,13 @@ Make sure a ${chalk.red('src/index.(js|ts)')} file is included in your package.
 
 // Create and run the webpack compiler.
 webpack(config, (err, stats) => {
+  if (err) {
+    console.error(err.stack || err);
+    if (err.details) {
+      console.error(err.details);
+    }
+    process.exit(1);
+  }
   const statsData = stats.toJson({
     all: false,
     warnings: true,
