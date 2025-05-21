@@ -11,47 +11,47 @@
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colour_blocks: {
+  colour_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#f2a72c',
     colourSecondary: '#f1c172',
     colourTertiary: '#da921c',
   },
-  list_blocks: {
+  list_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#7d65ab',
     colourSecondary: '#a88be0',
     colourTertiary: '#66518e',
   },
-  logic_blocks: {
+  logic_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#9fd2f1',
     colourSecondary: '#c0e0f4',
     colourTertiary: '#74bae5',
   },
-  loop_blocks: {
+  loop_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#795a07',
     colourSecondary: '#ac8726',
     colourTertiary: '#c4a03f',
   },
-  math_blocks: {
+  math_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#e6da39',
     colourSecondary: '#f3ec8e',
     colourTertiary: '#f2eeb7',
   },
-  procedure_blocks: {
+  procedure_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#590721',
     colourSecondary: '#8c475d',
     colourTertiary: '#885464',
   },
-  text_blocks: {
+  text_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#058863',
     colourSecondary: '#5ecfaf',
     colourTertiary: '#04684c',
   },
-  variable_blocks: {
+  variable_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#47025a',
     colourSecondary: '#820fa1',
     colourTertiary: '#8e579d',
   },
-  variable_dynamic_blocks: {
+  variable_dynamic_blocks: { // eslint-disable-line camelcase
     colourPrimary: '#47025a',
     colourSecondary: '#820fa1',
     colourTertiary: '#8e579d',
@@ -59,31 +59,31 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colour_category: {
+  colour_category: { // eslint-disable-line camelcase
     colour: '#f2a72c',
   },
-  list_category: {
+  list_category: { // eslint-disable-line camelcase
     colour: '#7d65ab',
   },
-  logic_category: {
+  logic_category: { // eslint-disable-line camelcase
     colour: '#9fd2f1',
   },
-  loop_category: {
+  loop_category: { // eslint-disable-line camelcase
     colour: '#795a07',
   },
-  math_category: {
+  math_category: { // eslint-disable-line camelcase
     colour: '#e6da39',
   },
-  procedure_category: {
+  procedure_category: { // eslint-disable-line camelcase
     colour: '#590721',
   },
-  text_category: {
+  text_category: { // eslint-disable-line camelcase
     colour: '#058863',
   },
-  variable_category: {
+  variable_category: { // eslint-disable-line camelcase
     colour: '#47025a',
   },
-  variable_dynamic_category: {
+  variable_dynamic_category: { // eslint-disable-line camelcase
     colour: '#47025a',
   },
 };
@@ -95,10 +95,11 @@ const categoryStyles = {
  * inability to perceive red light).
  */
 export default Blockly.Theme.defineTheme('deuteranopia', {
+  name: 'deuteranopia',
   base: Blockly.Themes.Classic,
   blockStyles: defaultBlockStyles,
   categoryStyles: categoryStyles,
   componentStyles: {},
   fontStyle: {},
-  startHats: null,
+  startHats: undefined,
 });
