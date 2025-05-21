@@ -8,50 +8,52 @@
  * @fileoverview Tritanopia theme.
  */
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colour_blocks: { // eslint-disable-line camelcase
+  colour_blocks: {
     colourPrimary: '#05427f',
     colourSecondary: '#2974c0',
     colourTertiary: '#2d74bb',
   },
-  list_blocks: { // eslint-disable-line camelcase
+  list_blocks: {
     colourPrimary: '#b69ce8',
     colourSecondary: '#ccbaef',
     colourTertiary: '#9176c5',
   },
-  logic_blocks: { // eslint-disable-line camelcase
+  logic_blocks: {
     colourPrimary: '#9fd2f1',
     colourSecondary: '#c0e0f4',
     colourTertiary: '#74bae5',
   },
-  loop_blocks: { // eslint-disable-line camelcase
+  loop_blocks: {
     colourPrimary: '#aa1846',
     colourSecondary: '#d36185',
     colourTertiary: '#7c1636',
   },
-  math_blocks: { // eslint-disable-line camelcase
+  math_blocks: {
     colourPrimary: '#e6da39',
     colourSecondary: '#f3ec8e',
     colourTertiary: '#f2eeb7',
   },
-  procedure_blocks: { // eslint-disable-line camelcase
+  procedure_blocks: {
     colourPrimary: '#590721',
     colourSecondary: '#8c475d',
     colourTertiary: '#885464',
   },
-  text_blocks: { // eslint-disable-line camelcase
+  text_blocks: {
     colourPrimary: '#058863',
     colourSecondary: '#5ecfaf',
     colourTertiary: '#04684c',
   },
-  variable_blocks: { // eslint-disable-line camelcase
+  variable_blocks: {
     colourPrimary: '#4b2d84',
     colourSecondary: '#816ea7',
     colourTertiary: '#83759e',
   },
-  variableDynamic_blocks: { // eslint-disable-line camelcase
+  variableDynamic_blocks: {
     colourPrimary: '#4b2d84',
     colourSecondary: '#816ea7',
     colourTertiary: '#83759e',
@@ -59,31 +61,31 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colour_category: { // eslint-disable-line camelcase
+  colour_category: {
     colour: '#05427f',
   },
-  list_category: { // eslint-disable-line camelcase
+  list_category: {
     colour: '#b69ce8',
   },
-  logic_category: { // eslint-disable-line camelcase
+  logic_category: {
     colour: '#9fd2f1',
   },
-  loop_category: { // eslint-disable-line camelcase
+  loop_category: {
     colour: '#aa1846',
   },
-  math_category: { // eslint-disable-line camelcase
+  math_category: {
     colour: '#e6da39',
   },
-  procedure_category: { // eslint-disable-line camelcase
+  procedure_category: {
     colour: '#590721',
   },
-  text_category: { // eslint-disable-line camelcase
+  text_category: {
     colour: '#058863',
   },
-  variable_category: { // eslint-disable-line camelcase
+  variable_category: {
     colour: '#4b2d84',
   },
-  variable_dynamic_category: { // eslint-disable-line camelcase
+  variable_dynamic_category: {
     colour: '#4b2d84',
   },
 };

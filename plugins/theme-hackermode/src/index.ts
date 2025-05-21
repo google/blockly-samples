@@ -9,50 +9,52 @@
  * Black background and blocks with lime green text to simulate a hacker screen.
  */
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import * as Blockly from 'blockly/core';
 
 const defaultBlockStyles = {
-  colour_blocks: { // eslint-disable-line camelcase
+  colour_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  list_blocks: {  // eslint-disable-line camelcase
+  list_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  logic_blocks: {  // eslint-disable-line camelcase
+  logic_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  loop_blocks: {  // eslint-disable-line camelcase
+  loop_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  math_blocks: {  // eslint-disable-line camelcase
+  math_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  procedure_blocks: {  // eslint-disable-line camelcase
+  procedure_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  text_blocks: {  // eslint-disable-line camelcase
+  text_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  variable_blocks: {  // eslint-disable-line camelcase
+  variable_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
   },
-  variable_dynamic_blocks: {  // eslint-disable-line camelcase
+  variable_dynamic_blocks: {
     colourPrimary: '#0c0d0d',
     colourSecondary: '#0c0d0d',
     colourTertiary: '#edf2f2',
@@ -60,31 +62,31 @@ const defaultBlockStyles = {
 };
 
 const categoryStyles = {
-  colour_category: {  // eslint-disable-line camelcase
+  colour_category: {
     colour: '#0c0d0d',
   },
-  list_category: {  // eslint-disable-line camelcase
+  list_category: {
     colour: '#0c0d0d',
   },
-  logic_category: {  // eslint-disable-line camelcase
+  logic_category: {
     colour: '#0c0d0d',
   },
-  loop_category: {  // eslint-disable-line camelcase
+  loop_category: {
     colour: '#0c0d0d',
   },
-  math_category: {  // eslint-disable-line camelcase
+  math_category: {
     colour: '#0c0d0d',
   },
-  procedure_category: {  // eslint-disable-line camelcase
+  procedure_category: {
     colour: '#0c0d0d',
   },
-  text_category: {  // eslint-disable-line camelcase
+  text_category: {
     colour: '#0c0d0d',
   },
-  variable_category: {  // eslint-disable-line camelcase
+  variable_category: {
     colour: '#0c0d0d',
   },
-  variable_dynamic_category: {  // eslint-disable-line camelcase
+  variable_dynamic_category: {
     colour: '#0c0d0d',
   },
 };
