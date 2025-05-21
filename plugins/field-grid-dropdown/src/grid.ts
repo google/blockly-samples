@@ -307,6 +307,7 @@ export class Grid {
  * @param obj The object to test.
  * @returns True iff the object conforms to ImageProperties.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isImageProperties(obj: any): obj is ImageProperties {
   return (
     obj &&

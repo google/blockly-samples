@@ -517,7 +517,6 @@ function getExampleFolders() {
  *
  * This is treated separately from other examples because it doesn't
  * get the same page chrome added to it.
- *
  * @returns {Function | undefined} Gulp task.
  */
 function prepareDeveloperTools() {
