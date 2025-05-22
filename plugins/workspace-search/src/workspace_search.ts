@@ -273,6 +273,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     // Create the button
     const btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
+    btn.type = "button";
     btn.setAttribute('aria-label', text);
     return btn;
   }
@@ -306,7 +307,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * Returns the bounding rectangle of the UI element in pixel units relative to
    * the Blockly injection div.
    *
-   * @returns The component’s bounding box. Null in this
+   * @returns The component's bounding box. Null in this
    *     case since we don't need other elements to avoid the workspace search
    *     field.
    */

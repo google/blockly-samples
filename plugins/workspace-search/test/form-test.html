@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Workspace Search Form Test</title>
+  <script src="../../node_modules/blockly/blockly_compressed.js"></script>
+  <script src="../../node_modules/blockly/blocks_compressed.js"></script>
+  <script src="../../node_modules/blockly/javascript_compressed.js"></script>
+  <script src="../build/test_bundle.js"></script>
+  <style>
+    #blocklyDiv {
+      height: 480px;
+      width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <form id="testForm" onsubmit="alert('Form submitted!'); return false;">
+    <div id="blocklyDiv"></div>
+    <button type="submit">Submit Form</button>
+  </form>
+
+  <script>
+    // Create workspace
+    const workspace = Blockly.inject('blocklyDiv', {
+      toolbox: {
+        kind: 'categoryToolbox',
+        contents: [
+          {
+            kind: 'category',
+            name: 'Logic',
+            colour: 210,
+            contents: [
+              {kind: 'block', type: 'controls_if'},
+              {kind: 'block', type: 'logic_compare'}
+            ]
+          }
+        ]
+      }
+    });
+
+    // Initialize workspace search
+    const workspaceSearch = new WorkspaceSearch(workspace);
+    workspaceSearch.init();
+
+    // Add some test blocks
+    const block1 = workspace.newBlock('controls_if');
+    block1.initSvg();
+    block1.render();
+    block1.moveBy(50, 50);
+
+    const block2 = workspace.newBlock('logic_compare');
+    block2.initSvg();
+    block2.render();
+    block2.moveBy(50, 150);
+
+    // Open the search bar
+    workspaceSearch.open();
+  </script>
+</body>
+</html> 
