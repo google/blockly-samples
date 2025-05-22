@@ -216,6 +216,7 @@ Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
 Blockly.Css.register(`
    .blocklyFieldGridContainer {
      padding: 7px;
+     overflow: auto;
    }
    
   .blocklyFieldGrid {
