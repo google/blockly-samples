@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@6.0.0...@blockly/field-grid-dropdown@6.0.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* **field-grid-dropdown:** add overflow:auto to enable scroll in grid dropdown container ([#2543](https://github.com/google/blockly-samples/issues/2543)) ([f38078d](https://github.com/google/blockly-samples/commit/f38078d6449e40903a4725b14d57aabf414e5bf5))
+
+
+
 ## [6.0.0](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@5.0.16...@blockly/field-grid-dropdown@6.0.0) (2025-05-16)
 
 

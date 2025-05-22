@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.1](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@7.0.0...@blockly/theme-modern@7.0.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* Migrating every theme to TypeScript. ([#2474](https://github.com/google/blockly-samples/issues/2474)) ([78ab1fc](https://github.com/google/blockly-samples/commit/78ab1fcaec49f2eae045b008d94cd79bbebc9a2c))
+
+
+
 ## [7.0.0](https://github.com/google/blockly-samples/compare/@blockly/theme-modern@6.0.12...@blockly/theme-modern@7.0.0) (2025-05-16)
 
 
