@@ -35,7 +35,9 @@ class CustomCategory extends Blockly.ToolboxCategory {
    */
   setSelected(isSelected) {
     // We do not store the label span on the category, so use getElementsByClassName.
-    const labelDom = this.rowDiv_.getElementsByClassName('blocklyTreeLabel')[0];
+    const labelDom = this.rowDiv_.getElementsByClassName(
+      'blocklyToolboxCategoryLabel',
+    )[0];
     if (isSelected) {
       // Change the background color of the div to white.
       this.rowDiv_.style.backgroundColor = 'white';

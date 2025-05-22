@@ -54,8 +54,8 @@ class FieldPitch extends Blockly.FieldTextInput {
    * Show the inline free-text editor on top of the text and the pitch picker.
    * @protected
    */
-  showEditor_() {
-    super.showEditor_();
+  showEditor_(e, quietInput = false) {
+    super.showEditor_(e, quietInput, false);
 
     const div = Blockly.WidgetDiv.getDiv();
     if (!div.firstChild) {
