@@ -170,7 +170,7 @@ and include it in `index.html`:
 Copy and paste the following CSS into your `toolbox_style.css` file.
 ```css
 /* Makes our label white. */
-.blocklyTreeLabel {
+.blocklyToolboxCategoryLabel {
   color: white;
 }
 /* Adds padding around the group of categories and separators. */
@@ -178,7 +178,7 @@ Copy and paste the following CSS into your `toolbox_style.css` file.
   padding: 0.5em;
 }
 /* Adds space between the categories, rounds the corners and adds space around the label. */
-.blocklyTreeRow {
+.blocklyToolboxCategory {
   padding: 3px;
   margin-bottom: 0.5em;
   border-radius: 4px;
@@ -209,7 +209,7 @@ Add the following code to `custom_category.js`:
 /** @override */
 setSelected(isSelected){
    // We do not store the label span on the category, so use getElementsByClassName.
-   var labelDom = this.rowDiv_.getElementsByClassName('blocklyTreeLabel')[0];
+   var labelDom = this.rowDiv_.getElementsByClassName('blocklyToolboxCategoryLabel')[0];
    if (isSelected) {
      // Change the background color of the div to white.
      this.rowDiv_.style.backgroundColor = 'white';
@@ -274,7 +274,7 @@ In your `toolbox_style.css` file add:
   flex-direction: column;
   align-items: center;
 }
-.blocklyTreeRow {
+.blocklyToolboxCategory {
   height: initial;
 }
 ```
@@ -303,7 +303,7 @@ Your `setSelected` method should look similar to below:
   /** @override */
   setSelected(isSelected){
      // We do not store the label span on the category, so use getElementsByClassName.
-     var labelDom = this.rowDiv_.getElementsByClassName('blocklyTreeLabel')[0];
+     var labelDom = this.rowDiv_.getElementsByClassName('blocklyToolboxCategoryLabel')[0];
      if (isSelected) {
        // Change the background color of the div to white.
        this.rowDiv_.style.backgroundColor = 'white';
