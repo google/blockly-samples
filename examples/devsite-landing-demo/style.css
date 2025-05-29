@@ -52,58 +52,58 @@ body {
   width: 100%;
 }
 
-.blocklyToolboxDiv {
+.blocklyToolbox {
   background-color: var(--bg);
 }
 
-.blocklyTreeRow {
+.blocklyToolboxCategory {
   height: 15px;
   line-height: 15px;
 }
 
-.blocklyTreeRowContentContainer {
+.blocklyToolboxCategoryContentContainer {
   border-left: 20px;
 }
 
-.blocklyTreeIcon {
+.blocklyToolboxCategoryIcon {
   width: 8px;
 }
 
-.blocklyTreeLabel,
+.blocklyToolboxCategoryLabel,
 select,
 option {
   font-family: var(--font-family) !important;
 }
 
-.blocklyTreeRowLogic {
+.blocklyToolboxCategoryLogic {
   border-left: 15px solid #d1c4e9 !important;
 }
 
-.blocklyTreeRowLoops {
+.blocklyToolboxCategoryLoops {
   border-left: 15px solid #a5d6a7 !important;
 }
 
-.blocklyTreeRowMath {
+.blocklyToolboxCategoryMath {
   border-left: 15px solid #4285f4 !important;
 }
 
-.blocklyTreeRowText {
+.blocklyToolboxCategoryText {
   border-left: 15px solid #ffca28 !important;
 }
 
-.blocklyTreeRowLists {
+.blocklyToolboxCategoryLists {
   border-left: 15px solid #4db6ac !important;
 }
 
-.blocklyTreeRowVariables {
+.blocklyToolboxCategoryVariables {
   border-left: 15px solid #ef9a9a !important;
 }
 
-.blocklyTreeRowProcedures {
+.blocklyToolboxCategoryProcedures {
   border-left: 15px solid #d7ccc8 !important;
 }
 
-.blocklyTreeSeparator {
+.blocklyToolboxSeparator {
   border-bottom: unset;
 }
 
