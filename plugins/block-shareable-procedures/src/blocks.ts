@@ -1070,7 +1070,8 @@ const procedureCallerUpdateShapeMixin = {
     const id = this.getProcedureModel().getId();
     if (
       !this.getTargetWorkspace_().getProcedureMap().has(id) &&
-      !this.isInFlyout
+      !this.isInFlyout &&
+      !this.getField('NAME')
     ) {
       this.dispose(true);
       return;
