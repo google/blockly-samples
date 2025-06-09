@@ -20,6 +20,17 @@ const {
 } = testHelpers;
 
 suite('FieldColourHsvSliders', function () {
+  setup(function () {
+    this.jsdomCleanup = require('jsdom-global')(
+      '<!DOCTYPE html><div id="blocklyDiv"></div>',
+    );
+    this.field = new FieldColourHsvSliders();
+  });
+
+  teardown(function () {
+    this.jsdomCleanup();
+  });
+
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -112,9 +123,6 @@ suite('FieldColourHsvSliders', function () {
 
   suite('setValue', function () {
     suite('Empty -> New Value', function () {
-      setup(function () {
-        this.field = new FieldColourHsvSliders();
-      });
       runSetValueTests(
         validValueTestCases,
         invalidValueTestCases,
@@ -123,9 +131,6 @@ suite('FieldColourHsvSliders', function () {
       );
     });
     suite('Value -> New Value', function () {
-      setup(function () {
-        this.field = new FieldColourHsvSliders(1);
-      });
       runSetValueTests(
         validValueTestCases,
         invalidValueTestCases,
