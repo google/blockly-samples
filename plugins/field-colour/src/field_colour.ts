@@ -190,6 +190,7 @@ export class FieldColour extends FieldGridDropdown {
    *
    * @param e The event that triggered display of the colour picker dropdown.
    */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   protected override showEditor_(e?: MouseEvent) {
     super.showEditor_(e);
     Blockly.DropDownDiv.getContentDiv().classList.add('blocklyFieldColour');
