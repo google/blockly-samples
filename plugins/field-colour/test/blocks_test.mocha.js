@@ -195,6 +195,9 @@ suite('Colour Block Generators', function () {
     });
   });
   setup(function () {
+    this.jsdomCleanup = require('jsdom-global')(
+      '<!DOCTYPE html><div id="blocklyDiv"></div>',
+    );
     this.workspace = new Blockly.Workspace();
     Blockly.serialization.workspaces.load(blockJson, this.workspace);
   });
@@ -219,6 +222,7 @@ suite('Colour Block Generators', function () {
     checkResult('php', generated);
   });
   teardown(function () {
+    this.jsdomCleanup();
     this.workspace.dispose();
   });
 });
