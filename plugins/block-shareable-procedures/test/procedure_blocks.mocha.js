@@ -1302,6 +1302,93 @@ suite('Procedures', function () {
     );
 
     test(
+      'when a procedure definition block is deleted, deleting its callers ' +
+        'with arguments that call another procedure does not cause a crash',
+      function () {
+        // This test exercises the scenario reported in
+        // https://github.com/google/blockly-samples/issues/2557
+        Blockly.serialization.workspaces.load(
+          {
+            blocks: {
+              languageVersion: 0,
+              blocks: [
+                {
+                  type: 'procedures_defnoreturn',
+                  id: 'dosomething',
+                  extraState: {
+                    procedureId: 'dosomething_procmodel',
+                  },
+                  fields: {
+                    NAME: 'do something',
+                  },
+                },
+                {
+                  type: 'procedures_defreturn',
+                  id: 'dosomething2',
+                  extraState: {
+                    procedureId: 'dosomething2_procmodel',
+                  },
+                  fields: {
+                    NAME: 'do something2',
+                  },
+                },
+                {
+                  type: 'procedures_callnoreturn',
+                  id: 'call_dosomething',
+                  extraState: {
+                    name: 'do something',
+                    params: ['x'],
+                  },
+                  inputs: {
+                    ARG0: {
+                      block: {
+                        type: 'procedures_callreturn',
+                        id: 'call_dosomething2',
+                        extraState: {
+                          name: 'do something2',
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+            variables: [
+              {
+                name: 'x',
+                id: 'x_var',
+              },
+            ],
+            procedures: [
+              {
+                id: 'dosomething_procmodel',
+                name: 'do something',
+                returnTypes: null,
+                parameters: [
+                  {
+                    id: 'x_param',
+                    name: 'x',
+                  },
+                ],
+              },
+              {
+                id: 'dosomething2_procmodel',
+                name: 'do something2',
+                returnTypes: [],
+              },
+            ],
+          },
+          this.workspace,
+        );
+
+        const defBlock = this.workspace.getBlockById('dosomething');
+        // Should not cause an exception to be thrown.
+        defBlock.dispose();
+        globalThis.clock.runAll();
+      },
+    );
+
+    test(
       'when a procedure definition block is deleted, a delete event for ' +
         'its data model is fired',
       function () {

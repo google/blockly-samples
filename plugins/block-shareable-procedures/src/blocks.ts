@@ -1066,7 +1066,7 @@ const procedureCallerUpdateShapeMixin = {
    * Updates the shape of this block to reflect the state of the data model.
    */
   doProcedureUpdate: function () {
-    if (!this.getProcedureModel()) return;
+    if (!this.getProcedureModel() || this.isDeadOrDying()) return;
     const id = this.getProcedureModel().getId();
     if (
       !this.getTargetWorkspace_().getProcedureMap().has(id) &&
