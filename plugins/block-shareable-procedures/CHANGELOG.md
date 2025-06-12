@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@6.0.1...@blockly/block-shareable-procedures@6.0.2) (2025-06-12)
+
+
+### Bug Fixes
+
+* Fix a bug that could cause a crash when deleting a shared procedure definition. ([#2560](https://github.com/google/blockly-samples/issues/2560)) ([506067b](https://github.com/google/blockly-samples/commit/506067b5999c54849cc205c66afffa5b49d3eec8))
+
+
+
 ## [6.0.1](https://github.com/google/blockly-samples/compare/@blockly/block-shareable-procedures@6.0.0...@blockly/block-shareable-procedures@6.0.1) (2025-05-22)
 
 **Note:** Version bump only for package @blockly/block-shareable-procedures
