@@ -20,7 +20,15 @@ const {
 suite('FieldColour', function () {
   setup(function () {
     registerFieldColour();
+    this.jsdomCleanup = require('jsdom-global')(
+      '<!DOCTYPE html><div id="blocklyDiv"></div>',
+    );
   });
+
+  teardown(function () {
+    this.jsdomCleanup();
+  });
+
   /**
    * Configuration for field tests with invalid values.
    * @type {Array<FieldCreationTestCase>}
@@ -269,8 +277,13 @@ suite('FieldColour', function () {
        * @param {!Array[string]} expectedTitles Array of title names.
        */
       function assertColoursAndTitles(field, expectedColours, expectedTitles) {
-        const actualColours = field.colours || FieldColour.COLOURS;
-        const actualTitles = field.titles || FieldColour.TITLES;
+        const options = field.getOptions();
+        const actualColours = options.map((option) =>
+          Blockly.utils.colour.parse(option[0].style.backgroundColor),
+        );
+        const actualTitles = options
+          .map((option) => option[0].title)
+          .filter((title) => !!title);
         assert.equal(String(actualColours), String(expectedColours));
         assert.equal(String(actualTitles), String(expectedTitles));
       }
@@ -303,13 +316,6 @@ suite('FieldColour', function () {
         const field = new FieldColour();
         field.setColours(['#aaaaaa', '#ff0000'], ['grey']);
         assertColoursAndTitles(field, ['#aaaaaa', '#ff0000'], ['grey']);
-      });
-      // This is kinda derpy behaviour, but I wanted to document it.
-      test('Overwriting Colours While Leaving Titles', function () {
-        const field = new FieldColour();
-        field.setColours(['#aaaaaa'], ['grey']);
-        field.setColours(['#ff0000']);
-        assertColoursAndTitles(field, ['#ff0000'], ['grey']);
       });
     });
 

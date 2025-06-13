@@ -618,6 +618,8 @@ Blockly.fieldRegistry.register(
 Blockly.Css.register(`
 .fieldColourSliderContainer {
   padding: 4px;
+  font-family: Roboto, Arial, sans-serif;
+  color: #5c5c5c;
 }
 .fieldColourSliderContainer hr {
   border: none;
