@@ -14,11 +14,15 @@ import {CrossTabCopyPaste} from '../src/index';
 
 /**
  * Create a workspace.
- * @param {HTMLElement} blocklyDiv The blockly container div.
- * @param {!Blockly.BlocklyOptions} options The Blockly options.
- * @returns {!Blockly.WorkspaceSvg} The created workspace.
+ *
+ * @param blocklyDiv The blockly container div.
+ * @param options The Blockly options.
+ * @returns The created workspace.
  */
-function createWorkspace(blocklyDiv, options) {
+function createWorkspace(
+  blocklyDiv: HTMLElement,
+  options: Blockly.BlocklyOptions,
+): Blockly.WorkspaceSvg {
   const workspace = Blockly.inject(blocklyDiv, options);
   return workspace;
 }
@@ -27,11 +31,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const defaultOptions = {
     toolbox: toolboxCategories,
   };
-  createPlayground(
-    document.getElementById('root'),
-    createWorkspace,
-    defaultOptions,
-  );
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    return;
+  }
+  createPlayground(rootElement, createWorkspace, defaultOptions);
   const copyPastePlugin = new CrossTabCopyPaste();
   copyPastePlugin.init();
 });

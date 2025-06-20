@@ -6,6 +6,14 @@
 
 import * as Blockly from 'blockly/core';
 
+type TypeErrorCallback = () => void;
+
+const getCopyData = function (): Blockly.ICopyData | undefined {
+  const stored = localStorage.getItem('blocklyStash');
+  if (!stored) return undefined;
+  return JSON.parse(stored);
+};
+
 /**
  * A Blockly plugin that adds context menu items and keyboard shortcuts
  * to allow users to copy and paste a block between tabs.
@@ -14,19 +22,18 @@ export class CrossTabCopyPaste {
   /**
    * Initializes the cross tab copy paste plugin. If no options are selected
    * then both context menu items and keyboard shortcuts are added.
-   * @param {{contextMenu: boolean, shortcut: boolean}} options
-   * `contextMenu` Register copy and paste in the context menu.
-   * `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
+   * @param options
+   * - `contextMenu` Register copy and paste in the context menu.
+   * - `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
    * in the shortcut.
-   * @param {Function=} typeErrorCallback
-   * callback function to handle type errors
+   * @param typeErrorCallback callback function to handle type errors
    */
   init(
     {contextMenu = true, shortcut = true} = {
       contextMenu: true,
       shortcut: true,
     },
-    typeErrorCallback,
+    typeErrorCallback?: TypeErrorCallback,
   ) {
     if (contextMenu) {
       // Register the menus
@@ -56,17 +63,14 @@ export class CrossTabCopyPaste {
    * Adds a copy command to the block context menu.
    */
   blockCopyToStorageContextMenu() {
-    /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
-    const copyToStorageOption = {
+    const copyToStorageOption: Blockly.ContextMenuRegistry.RegistryItem = {
       displayText: function () {
         if (Blockly.Msg['CROSS_TAB_COPY']) {
           return Blockly.Msg['CROSS_TAB_COPY'];
         }
         return 'Copy';
       },
-      preconditionFn: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
-      ) {
+      preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
         if (
           Blockly.getSelected().isDeletable() &&
           Blockly.getSelected().isMovable()
@@ -75,9 +79,7 @@ export class CrossTabCopyPaste {
         }
         return 'disabled';
       },
-      callback: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
-      ) {
+      callback: function (scope: Blockly.ContextMenuRegistry.Scope) {
         localStorage.setItem(
           'blocklyStash',
           JSON.stringify(scope.block.toCopyData()),
@@ -92,22 +94,18 @@ export class CrossTabCopyPaste {
 
   /**
    * Adds a paste command to the block context menu.
-   * @param {Function=} typeErrorCallback
-   * callback function to handle type errors
+   * @param typeErrorCallback callback function to handle type errors
    */
-  blockPasteFromStorageContextMenu(typeErrorCallback) {
-    /** @type {!Blockly.ContextMenuRegistry.RegistryItem} */
-    const pasteFromStorageOption = {
+  blockPasteFromStorageContextMenu(typeErrorCallback?: TypeErrorCallback) {
+    const pasteFromStorageOption: Blockly.ContextMenuRegistry.RegistryItem = {
       displayText: function () {
         if (Blockly.Msg['CROSS_TAB_PASTE']) {
           return Blockly.Msg['CROSS_TAB_PASTE'];
         }
         return 'Paste';
       },
-      preconditionFn: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
-      ) {
-        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
+      preconditionFn: function (scope) {
+        const copyData = getCopyData();
         if (
           copyData &&
           scope.workspace.isCapacityAvailable(copyData.typeCounts)
@@ -116,10 +114,9 @@ export class CrossTabCopyPaste {
         }
         return 'disabled';
       },
-      callback: function (
-        /** @type {!Blockly.ContextMenuRegistry.Scope} */ scope,
-      ) {
-        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
+      callback: function (scope) {
+        const copyData = getCopyData();
+        if (!copyData) return false;
         try {
           Blockly.clipboard.paste(copyData, scope.workspace);
         } catch (e) {
@@ -142,8 +139,7 @@ export class CrossTabCopyPaste {
    * in localStorage.
    */
   blockCopyToStorageShortcut() {
-    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
-    const copyShortcut = {
+    const copyShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
       name: 'copy',
       preconditionFn: function (workspace) {
         return (
@@ -196,8 +192,7 @@ export class CrossTabCopyPaste {
    * in local storage and delete the block.
    */
   blockCutToStorageShortcut() {
-    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
-    const cutShortcut = {
+    const cutShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
       name: 'cut',
       preconditionFn: function (workspace) {
         return (
@@ -214,7 +209,7 @@ export class CrossTabCopyPaste {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const block = /** @type {Blockly.BlockSvg} */ (Blockly.getSelected());
+        const block = /** @type {Blockly.BlockSvg} */ Blockly.getSelected();
         if (!block || !Blockly.isCopyable(block)) return false;
         localStorage.setItem(
           'blocklyStash',
@@ -249,18 +244,17 @@ export class CrossTabCopyPaste {
 
   /**
    * Adds a keyboard shortcut that will paste the block stored in localStorage.
-   * @param {Function=} typeErrorCallback
+   * @param typeErrorCallback
    * callback function to handle type errors
    */
-  blockPasteFromStorageShortcut(typeErrorCallback) {
-    /** @type {!Blockly.ShortcutRegistry.KeyboardShortcut} */
-    const pasteShortcut = {
+  blockPasteFromStorageShortcut(typeErrorCallback?: TypeErrorCallback) {
+    const pasteShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
       name: 'paste',
       preconditionFn: function (workspace) {
         if (workspace.options.readOnly || Blockly.Gesture.inProgress()) {
           return false;
         }
-        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
+        const copyData = getCopyData();
         if (!copyData || !workspace.isCapacityAvailable(copyData.typeCounts)) {
           return false;
         }
@@ -271,7 +265,8 @@ export class CrossTabCopyPaste {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const copyData = JSON.parse(localStorage.getItem('blocklyStash'));
+        const copyData = getCopyData();
+        if (!copyData) return false;
         try {
           Blockly.clipboard.paste(copyData, workspace);
         } catch (e) {
