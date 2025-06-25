@@ -329,7 +329,7 @@ export class CrossTabCopyPaste {
       [Blockly.utils.KeyCodes.META],
     );
     const copyShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
-      name: 'copy',
+      name: Blockly.ShortcutItems.names.COPY,
       keyCodes: [ctrlC, metaC],
       preconditionFn: (workspace, scope) => {
         const status = this.copyPrecondition(scope, workspace);
@@ -361,7 +361,7 @@ export class CrossTabCopyPaste {
     );
 
     const cutShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
-      name: 'cut',
+      name: Blockly.ShortcutItems.names.CUT,
       keyCodes: [ctrlX, metaX],
       preconditionFn: (workspace, scope) => {
         const focused = scope.focusedNode;
@@ -421,7 +421,7 @@ export class CrossTabCopyPaste {
     );
 
     const pasteShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
-      name: 'paste',
+      name: Blockly.ShortcutItems.names.PASTE,
       keyCodes: [ctrlV, metaV],
       preconditionFn: (workspace) => {
         const targetWorkspace = workspace.isFlyout
