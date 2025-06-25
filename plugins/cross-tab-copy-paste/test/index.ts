@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
   createPlayground(rootElement, createWorkspace, defaultOptions);
+  // Add workspace comments so we can test copying them
+  Blockly.ContextMenuItems.registerCommentOptions();
   const copyPastePlugin = new CrossTabCopyPaste();
   copyPastePlugin.init();
 });
