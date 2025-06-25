@@ -9,17 +9,6 @@ import * as Blockly from 'blockly/core';
 type TypeErrorCallback = () => void;
 
 /**
- * Parses copy data from JSON in local storage, if it exists.
- *
- * @returns copy data parsed from local storage, or undefined
- */
-function getCopyData(): Blockly.ICopyData | undefined {
-  const stored = localStorage.getItem('blocklyStash');
-  if (!stored) return undefined;
-  return JSON.parse(stored);
-}
-
-/**
  * Checks if the copy data represents that for a block.
  *
  * @param obj any ICopyData.
@@ -93,114 +82,23 @@ enum ContextMenuState {
 }
 
 /**
- * Copy precondition called by both keyboard shortcut and context menu item.
- * Allows copying out of the flyout, as long as they could be pasted
- * into the main workspace.
- *
- * @param scope
- * @param workspace explicit workspace for keyboard shortcuts,
- * undefined to get the workspace from the focused node.
- * @returns whether the option should be shown/hidden/disabled.
- */
-function copyPrecondition(
-  scope: Blockly.ContextMenuRegistry.Scope,
-  workspace?: Blockly.Workspace,
-): ContextMenuState {
-  const focused = scope.focusedNode;
-  if (!focused) return ContextMenuState.HIDDEN;
-  if (!Blockly.isCopyable(focused)) return ContextMenuState.HIDDEN;
-
-  if (!workspace) workspace = focused.workspace;
-  if (!(workspace instanceof Blockly.WorkspaceSvg))
-    return ContextMenuState.HIDDEN;
-  const targetWorkspace = workspace.isFlyout
-    ? workspace.targetWorkspace
-    : workspace;
-  if (
-    !!focused &&
-    !!targetWorkspace &&
-    !targetWorkspace.isDragging() &&
-    !Blockly.getFocusManager().ephemeralFocusTaken() &&
-    isCopyable(focused)
-  )
-    return ContextMenuState.ENABLED;
-  return ContextMenuState.DISABLED;
-}
-
-/**
- * Copy callback called by both keyboard shortcut and context menu item.
- * Copies the copy data to local storage.
- *
- * @param scope
- * @param workspace
- * @returns true if copy happened, false otherwise.
- */
-function copyCallback(
-  scope: Blockly.ContextMenuRegistry.Scope,
-  workspace: Blockly.Workspace,
-): boolean {
-  const focused = scope.focusedNode;
-  if (!focused || !Blockly.isCopyable(focused) || !isCopyable(focused))
-    return false;
-
-  if (!(workspace instanceof Blockly.WorkspaceSvg)) return false;
-
-  const targetWorkspace = workspace.isFlyout
-    ? workspace.targetWorkspace
-    : workspace;
-  if (!targetWorkspace) return false;
-
-  if (!focused.workspace.isFlyout) {
-    targetWorkspace.hideChaff();
-  }
-  const copyData = focused.toCopyData();
-  if (!copyData) return false;
-  localStorage.setItem('blocklyStash', JSON.stringify(copyData));
-  return true;
-}
-
-/**
- * Paste precondition called by both keyboard shortcut and context menu item.
- *
- * @param workspace workspace to paste in. should not be a flyout workspace.
- * @returns true if paste happened, false otherwise.
- */
-function pastePrecondition(workspace: Blockly.WorkspaceSvg): ContextMenuState {
-  const copyData = getCopyData();
-  if (!copyData) return ContextMenuState.DISABLED;
-  // If this is a block, make sure there's room for that type of block
-  if (
-    isBlockCopyData(copyData) &&
-    !workspace?.isCapacityAvailable(copyData.typeCounts)
-  )
-    return ContextMenuState.DISABLED;
-
-  if (
-    !!workspace &&
-    !workspace.isReadOnly() &&
-    !workspace.isDragging() &&
-    !Blockly.getFocusManager().ephemeralFocusTaken()
-  )
-    return ContextMenuState.ENABLED;
-  return ContextMenuState.DISABLED;
-}
-
-/**
  * A Blockly plugin that adds context menu items and keyboard shortcuts
  * to allow users to copy and paste copyable objects between tabs.
  */
 export class CrossTabCopyPaste {
+  /** Key in which store copy data in the browser's local storage. */
+  localStorageKey = 'blocklyStash';
+
   /**
    * Initializes the cross tab copy paste plugin. If no options are selected
    * then both context menu items and keyboard shortcuts are added.
    *
    * @param options
-   * - `contextMenu` Register copy and paste in the context menu.
-   * - `shortcut` Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
+   * @param options.shortcut Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
    * in the shortcut.
-   * @param options.shortcut
-   * @param options.contextMenu
+   * @param options.contextMenu Register copy and paste in the context menu.
    * @param typeErrorCallback callback function to handle type errors
+   * @param localStorageKey custom key for local storage
    */
   init(
     {contextMenu = true, shortcut = true} = {
@@ -208,7 +106,9 @@ export class CrossTabCopyPaste {
       shortcut: true,
     },
     typeErrorCallback?: TypeErrorCallback,
+    localStorageKey?: string,
   ) {
+    if (localStorageKey) this.localStorageKey = localStorageKey;
     if (contextMenu) {
       // Register the menus
       this.blockCopyToStorageContextMenu();
@@ -234,6 +134,110 @@ export class CrossTabCopyPaste {
   }
 
   /**
+   * Parses copy data from JSON in local storage, if it exists.
+   *
+   * @returns copy data parsed from local storage, or undefined
+   */
+  getCopyData(): Blockly.ICopyData | undefined {
+    const stored = localStorage.getItem(this.localStorageKey);
+    if (!stored) return undefined;
+    return JSON.parse(stored);
+  }
+
+  /**
+   * Copy precondition called by both keyboard shortcut and context menu item.
+   * Allows copying out of the flyout, as long as they could be pasted
+   * into the main workspace.
+   *
+   * @param scope
+   * @param workspace explicit workspace for keyboard shortcuts,
+   * undefined to get the workspace from the focused node.
+   * @returns whether the option should be shown/hidden/disabled.
+   */
+  copyPrecondition(
+    scope: Blockly.ContextMenuRegistry.Scope,
+    workspace?: Blockly.Workspace,
+  ): ContextMenuState {
+    const focused = scope.focusedNode;
+    if (!focused) return ContextMenuState.HIDDEN;
+    if (!Blockly.isCopyable(focused)) return ContextMenuState.HIDDEN;
+
+    if (!workspace) workspace = focused.workspace;
+    if (!(workspace instanceof Blockly.WorkspaceSvg))
+      return ContextMenuState.HIDDEN;
+    const targetWorkspace = workspace.isFlyout
+      ? workspace.targetWorkspace
+      : workspace;
+    if (
+      !!focused &&
+      !!targetWorkspace &&
+      !targetWorkspace.isDragging() &&
+      !Blockly.getFocusManager().ephemeralFocusTaken() &&
+      isCopyable(focused)
+    )
+      return ContextMenuState.ENABLED;
+    return ContextMenuState.DISABLED;
+  }
+
+  /**
+   * Copy callback called by both keyboard shortcut and context menu item.
+   * Copies the copy data to local storage.
+   *
+   * @param scope
+   * @param workspace
+   * @returns true if copy happened, false otherwise.
+   */
+  copyCallback(
+    scope: Blockly.ContextMenuRegistry.Scope,
+    workspace: Blockly.Workspace,
+  ): boolean {
+    const focused = scope.focusedNode;
+    if (!focused || !Blockly.isCopyable(focused) || !isCopyable(focused))
+      return false;
+
+    if (!(workspace instanceof Blockly.WorkspaceSvg)) return false;
+
+    const targetWorkspace = workspace.isFlyout
+      ? workspace.targetWorkspace
+      : workspace;
+    if (!targetWorkspace) return false;
+
+    if (!focused.workspace.isFlyout) {
+      targetWorkspace.hideChaff();
+    }
+    const copyData = focused.toCopyData();
+    if (!copyData) return false;
+    localStorage.setItem(this.localStorageKey, JSON.stringify(copyData));
+    return true;
+  }
+
+  /**
+   * Paste precondition called by both keyboard shortcut and context menu item.
+   *
+   * @param workspace workspace to paste in. should not be a flyout workspace.
+   * @returns true if paste happened, false otherwise.
+   */
+  pastePrecondition(workspace: Blockly.WorkspaceSvg): ContextMenuState {
+    const copyData = this.getCopyData();
+    if (!copyData) return ContextMenuState.DISABLED;
+    // If this is a block, make sure there's room for that type of block
+    if (
+      isBlockCopyData(copyData) &&
+      !workspace?.isCapacityAvailable(copyData.typeCounts)
+    )
+      return ContextMenuState.DISABLED;
+
+    if (
+      !!workspace &&
+      !workspace.isReadOnly() &&
+      !workspace.isDragging() &&
+      !Blockly.getFocusManager().ephemeralFocusTaken()
+    )
+      return ContextMenuState.ENABLED;
+    return ContextMenuState.DISABLED;
+  }
+
+  /**
    * Adds a copy command to the context menu for copyable items.
    */
   blockCopyToStorageContextMenu() {
@@ -244,16 +248,16 @@ export class CrossTabCopyPaste {
         }
         return 'Copy';
       },
-      preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
-        return copyPrecondition(scope);
+      preconditionFn: (scope: Blockly.ContextMenuRegistry.Scope) => {
+        return this.copyPrecondition(scope);
       },
-      callback: function (scope: Blockly.ContextMenuRegistry.Scope) {
+      callback: (scope: Blockly.ContextMenuRegistry.Scope) => {
         const focused = scope.focusedNode;
         // Check Blockly.isCopyable to make sure focused.workspace exists
         if (!focused || !Blockly.isCopyable(focused)) return false;
 
         const workspace = focused.workspace;
-        return copyCallback(scope, workspace);
+        return this.copyCallback(scope, workspace);
       },
       id: 'blockCopyToStorage',
       weight: 0,
@@ -274,7 +278,7 @@ export class CrossTabCopyPaste {
         }
         return 'Paste';
       },
-      preconditionFn: function (scope) {
+      preconditionFn: (scope) => {
         // Only show paste option if menu was opened on a non-flyout workspace
         if (
           !(scope.focusedNode instanceof Blockly.WorkspaceSvg) ||
@@ -282,10 +286,10 @@ export class CrossTabCopyPaste {
         )
           return ContextMenuState.HIDDEN;
         const workspace = scope.focusedNode;
-        return pastePrecondition(workspace);
+        return this.pastePrecondition(workspace);
       },
-      callback: function (scope, menuOpenEvent, menuSelectEvent, location) {
-        const copyData = getCopyData();
+      callback: (scope, menuOpenEvent, menuSelectEvent, location) => {
+        const copyData = this.getCopyData();
         if (!copyData) return false;
         const workspace = scope.focusedNode;
         // Paste option only available if menu was opened on a workspace
@@ -318,16 +322,16 @@ export class CrossTabCopyPaste {
   blockCopyToStorageShortcut() {
     const copyShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
       name: 'copy',
-      preconditionFn: function (workspace, scope) {
-        const status = copyPrecondition(scope, workspace);
+      preconditionFn: (workspace, scope) => {
+        const status = this.copyPrecondition(scope, workspace);
         return status === ContextMenuState.ENABLED;
       },
-      callback: function (workspace, e, shortcut, scope) {
+      callback: (workspace, e, shortcut, scope) => {
         // Prevent the default copy behavior,
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        return copyCallback(scope, workspace);
+        return this.copyCallback(scope, workspace);
       },
     };
     Blockly.ShortcutRegistry.registry.register(copyShortcut);
@@ -358,7 +362,7 @@ export class CrossTabCopyPaste {
   blockCutToStorageShortcut() {
     const cutShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
       name: 'cut',
-      preconditionFn(workspace, scope) {
+      preconditionFn: (workspace, scope) => {
         const focused = scope.focusedNode;
         return (
           !!focused &&
@@ -368,7 +372,7 @@ export class CrossTabCopyPaste {
           isCuttable(focused)
         );
       },
-      callback: function (workspace, e, shortcut, scope) {
+      callback: (workspace, e, shortcut, scope) => {
         // Prevent the default cut behavior,
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
@@ -392,7 +396,7 @@ export class CrossTabCopyPaste {
           Blockly.Events.setGroup(oldGroup);
         }
 
-        localStorage.setItem('blocklyStash', JSON.stringify(copyData));
+        localStorage.setItem(this.localStorageKey, JSON.stringify(copyData));
         return true;
       },
     };
@@ -426,21 +430,21 @@ export class CrossTabCopyPaste {
   blockPasteFromStorageShortcut(typeErrorCallback?: TypeErrorCallback) {
     const pasteShortcut: Blockly.ShortcutRegistry.KeyboardShortcut = {
       name: 'paste',
-      preconditionFn: function (workspace) {
+      preconditionFn: (workspace) => {
         const targetWorkspace = workspace.isFlyout
           ? workspace.targetWorkspace
           : workspace;
 
         if (!targetWorkspace) return false;
-        const status = pastePrecondition(targetWorkspace);
+        const status = this.pastePrecondition(targetWorkspace);
         return status === ContextMenuState.ENABLED;
       },
-      callback: function (workspace, e) {
+      callback: (workspace, e) => {
         // Prevent the default copy behavior,
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const copyData = getCopyData();
+        const copyData = this.getCopyData();
         if (!copyData) return false;
 
         // If paste shortcut is called while flyout is open, paste in the
