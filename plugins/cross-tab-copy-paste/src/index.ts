@@ -238,15 +238,32 @@ export class CrossTabCopyPaste {
   }
 
   /**
+   * v12.0.0 of Blockly included the keyboard shortcut in Msg string, but
+   * it was removed in v12.2.0. This function can be removed when this plugin's
+   * minimum version of Blockly is >=12.2.0.
+   *
+   * @param labelText Blockly.Msg for the shortcut
+   * @returns trimmed label for the context menu item.
+   */
+  getContextMenuText(labelText: string): string {
+    // TODO: Once core is updated to remove the shortcut placeholders from the
+    // keyboard shortcut messages, remove this.
+    if (labelText.indexOf(')') === labelText.length - 1) {
+      labelText = labelText.split(' (')[0];
+    }
+    return labelText;
+  }
+
+  /**
    * Adds a copy command to the context menu for copyable items.
    */
   blockCopyToStorageContextMenu() {
     const copyToStorageOption: Blockly.ContextMenuRegistry.RegistryItem = {
-      displayText: function () {
+      displayText: () => {
         if (Blockly.Msg['CROSS_TAB_COPY']) {
           return Blockly.Msg['CROSS_TAB_COPY'];
         }
-        return Blockly.Msg['COPY_SHORTCUT'];
+        return this.getContextMenuText(Blockly.Msg['COPY_SHORTCUT']);
       },
       preconditionFn: (scope: Blockly.ContextMenuRegistry.Scope) => {
         return this.copyPrecondition(scope);
@@ -272,11 +289,11 @@ export class CrossTabCopyPaste {
    */
   blockPasteFromStorageContextMenu(typeErrorCallback?: TypeErrorCallback) {
     const pasteFromStorageOption: Blockly.ContextMenuRegistry.RegistryItem = {
-      displayText: function () {
+      displayText: () => {
         if (Blockly.Msg['CROSS_TAB_PASTE']) {
           return Blockly.Msg['CROSS_TAB_PASTE'];
         }
-        return Blockly.Msg['PASTE_SHORTCUT'];
+        return this.getContextMenuText(Blockly.Msg['PASTE_SHORTCUT']);
       },
       preconditionFn: (scope) => {
         // Only show paste option if menu was opened on a non-flyout workspace
