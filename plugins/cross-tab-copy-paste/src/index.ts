@@ -246,7 +246,7 @@ export class CrossTabCopyPaste {
         if (Blockly.Msg['CROSS_TAB_COPY']) {
           return Blockly.Msg['CROSS_TAB_COPY'];
         }
-        return 'Copy';
+        return Blockly.Msg['COPY_SHORTCUT'];
       },
       preconditionFn: (scope: Blockly.ContextMenuRegistry.Scope) => {
         return this.copyPrecondition(scope);
@@ -276,7 +276,7 @@ export class CrossTabCopyPaste {
         if (Blockly.Msg['CROSS_TAB_PASTE']) {
           return Blockly.Msg['CROSS_TAB_PASTE'];
         }
-        return 'Paste';
+        return Blockly.Msg['PASTE_SHORTCUT'];
       },
       preconditionFn: (scope) => {
         // Only show paste option if menu was opened on a non-flyout workspace
