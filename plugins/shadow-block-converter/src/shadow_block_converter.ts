@@ -150,6 +150,10 @@ export class BlockShadowStateChange extends Blockly.Events.BlockBase {
       connection.setShadowState(this.shadowState || null);
     }
 
+    // Make sure the modified block is focused, otherwise
+    // the document root gets focus when the block is deleted.
+    Blockly.getFocusManager().focusNode(block as Blockly.BlockSvg);
+
     // Nothing to be done when run backward, because removing a child block
     // doesn't overwrite the connection's shadowState and thus doesn't need to
     // be reverted.
@@ -173,10 +177,14 @@ Blockly.registry.register(
  * the connection's shadow state.
  *
  * @param shadowBlock
+ * @param selectNewBlock true to select the newly reified block.
  * @returns The newly created regular block with a different id, if one could be
  *     created.
  */
-function reifyEditedShadowBlock(shadowBlock: Blockly.Block): Blockly.Block {
+function reifyEditedShadowBlock(
+  shadowBlock: Blockly.Block,
+  selectNewBlock = false,
+): Blockly.Block {
   // Determine how the shadow block is connected to the parent.
   let parentConnection: Blockly.Connection | null = null;
   let connectionIsThroughOutputConnection = false;
@@ -277,9 +285,6 @@ function reifyEditedShadowBlock(shadowBlock: Blockly.Block): Blockly.Block {
     parentConnection.connect(childConnection);
   }
 
-  const wasSelected =
-    Blockly.common.getSelected() === (shadowBlock as Blockly.BlockSvg);
-
   // The process of connecting a block overwrites the connection's shadow state,
   // so revert it.
   parentConnection.setShadowState(originalShadowState);
@@ -291,8 +296,8 @@ function reifyEditedShadowBlock(shadowBlock: Blockly.Block): Blockly.Block {
     ),
   );
 
-  if (wasSelected) {
-    Blockly.common.setSelected(regularBlock as Blockly.BlockSvg);
+  if (selectNewBlock) {
+    Blockly.getFocusManager().focusNode(regularBlock as Blockly.BlockSvg);
   }
 
   return regularBlock;
@@ -358,7 +363,7 @@ export function shadowBlockConversionChangeListener(
     Blockly.Events.setGroup(true);
   }
 
-  reifyEditedShadowBlock(block);
+  reifyEditedShadowBlock(block, true);
 
   // Revert to the current event group, if any.
   Blockly.Events.setGroup(currentGroup);
