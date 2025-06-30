@@ -189,6 +189,12 @@ export class Grid {
       case 'End':
         this.moveFocus(this.items.length - 1, false);
         break;
+      case 'Enter':
+      case 'Space':
+        // Handled via GridItem click handler, so we want its default but it
+        // must not propagate.
+        e.stopPropagation();
+        return;
       default:
         // Not a key the grid is interested in.
         return;
