@@ -17,8 +17,7 @@ type TypeErrorCallback = () => void;
 function isBlockCopyData(
   obj: Blockly.ICopyData,
 ): obj is Blockly.clipboard.BlockCopyData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return !!(obj as any).typeCounts;
+  return 'typeCounts' in obj;
 }
 
 /**
@@ -149,7 +148,7 @@ export class CrossTabCopyPaste {
    * Allows copying out of the flyout, as long as they could be pasted
    * into the main workspace.
    *
-   * @param scope
+   * @param scope scope for copy action.
    * @param workspace explicit workspace for keyboard shortcuts,
    * undefined to get the workspace from the focused node.
    * @returns whether the option should be shown/hidden/disabled.
@@ -183,8 +182,8 @@ export class CrossTabCopyPaste {
    * Copy callback called by both keyboard shortcut and context menu item.
    * Copies the copy data to local storage.
    *
-   * @param scope
-   * @param workspace
+   * @param scope scope for copy action.
+   * @param workspace workspace where shortcut or context menu was activated.
    * @returns true if copy happened, false otherwise.
    */
   copyCallback(
