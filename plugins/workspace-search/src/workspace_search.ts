@@ -43,6 +43,15 @@ export class WorkspaceSearch implements Blockly.IPositionable {
   protected blocks: Blockly.BlockSvg[] = [];
 
   /**
+   * The last highlighted block, which we focus on close.
+   *
+   * This block is focused on close even if the most recent search found nothing
+   * because we've centered on it and it's helpful for focus to be in sync with
+   * the scroll position.
+   */
+  private lastHighlighted: Blockly.BlockSvg | null = null;
+
+  /**
    * Index of the currently "selected" block in the blocks array.
    */
   protected currentBlockIndex = -1;
@@ -436,6 +445,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
 
     this.highlightCurrentSelection(currentBlock);
     this.workspace.centerOnBlock(currentBlock.id, false);
+    this.lastHighlighted = currentBlock;
   }
 
   /**
@@ -455,8 +465,14 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   close() {
     this.setVisible(false);
-    this.workspace.markFocused();
+    const focusManager = Blockly.FocusManager.getFocusManager();
+    if (this.lastHighlighted && !this.lastHighlighted.isDisposed()) {
+      focusManager.focusNode(this.lastHighlighted);
+    } else {
+      focusManager.focusTree(this.workspace);
+    }
     this.clearBlocks();
+    this.lastHighlighted = null;
   }
 
   /**

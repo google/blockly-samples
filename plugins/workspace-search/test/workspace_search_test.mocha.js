@@ -69,6 +69,8 @@ suite('WorkspaceSearch', function () {
     );
     this.workspace = Blockly.inject('blocklyDiv');
     this.workspaceSearch = new WorkspaceSearch(this.workspace);
+    // See https://github.com/google/blockly-samples/issues/2528 for context.
+    global.SVGElement = window.SVGElement;
   });
 
   teardown(function () {
@@ -434,6 +436,66 @@ suite('WorkspaceSearch', function () {
       currentIndex = this.workspaceSearch.currentBlockIndex;
       assert.equal(currentIndex, 1);
       assertNoExtraCurrentStyling(this.blocks, this.blocks[1]);
+    });
+  });
+
+  suite('focus', function () {
+    suiteSetup(function () {
+      Blockly.defineBlocksWithJsonArray([
+        {
+          type: 'alpha_block',
+          message0: 'alpha',
+        },
+        {
+          type: 'beta_block',
+          message0: 'beta',
+        },
+      ]);
+    });
+
+    setup(function () {
+      this.alphaBlock = this.workspace.newBlock('alpha_block');
+      this.betaBlock = this.workspace.newBlock('beta_block');
+      this.workspaceSearch.init();
+      // Check starting position
+      this.focusManager = Blockly.FocusManager.getFocusManager();
+      this.focusManager.focusTree(this.workspace);
+      const originalBlock = /** @type {Blockly.BlockSvg} */ (
+        this.focusManager.getFocusedNode()
+      );
+      assert.equal('alpha_block', originalBlock.type);
+    });
+
+    /**
+     * @param {string} expected The expected block type.
+     */
+    function assertFocusedNodeType(expected) {
+      const block = /** @type {Blockly.BlockSvg} */ (
+        Blockly.FocusManager.getFocusManager().getFocusedNode()
+      );
+      assert.equal(expected, block.type);
+    }
+
+    test('close with match focuses found block', function () {
+      this.workspaceSearch.searchAndHighlight('beta', false);
+      this.workspaceSearch.close();
+
+      assertFocusedNodeType('beta_block');
+    });
+
+    test('close with no match restores focus', function () {
+      this.workspaceSearch.searchAndHighlight('nothingMatchesThis', false);
+      this.workspaceSearch.close();
+
+      assertFocusedNodeType('alpha_block');
+    });
+
+    test('close with match followed by non-match still focuses last found block', function () {
+      this.workspaceSearch.searchAndHighlight('beta', false);
+      this.workspaceSearch.searchAndHighlight('nothingMatchesThis', false);
+      this.workspaceSearch.close();
+
+      assertFocusedNodeType('beta_block');
     });
   });
 });
