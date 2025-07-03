@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@6.0.1...@blockly/field-grid-dropdown@6.0.2) (2025-07-03)
+
+
+### Bug Fixes
+
+* prevent Enter/Space from propagating from Grid ([#2570](https://github.com/google/blockly-samples/issues/2570)) ([25ee5a9](https://github.com/google/blockly-samples/commit/25ee5a9a750d819c9dbf00d6513f3b9c6fd302fe))
+
+
+
 ## [6.0.1](https://github.com/google/blockly-samples/compare/@blockly/field-grid-dropdown@6.0.0...@blockly/field-grid-dropdown@6.0.1) (2025-05-22)
 
 

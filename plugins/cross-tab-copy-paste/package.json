@@ -1,6 +1,6 @@
 {
   "name": "@blockly/plugin-cross-tab-copy-paste",
-  "version": "7.0.1",
+  "version": "8.0.0",
   "description": "Allows copying blocks between multiple tabs with Blockly editors.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
