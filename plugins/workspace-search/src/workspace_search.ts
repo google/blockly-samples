@@ -283,6 +283,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     const btn = document.createElement('button');
     Blockly.utils.dom.addClass(btn, className);
     btn.setAttribute('aria-label', text);
+    btn.type = "button";
     return btn;
   }
 
