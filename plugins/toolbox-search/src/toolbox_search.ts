@@ -138,7 +138,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   }
 
   /** See IFocusableNode.getFocusableElement. */
-  getFocusableElement(): HTMLElement | SVGElement {
+  override getFocusableElement(): HTMLElement | SVGElement {
     if (!this.searchField) {
       throw Error('This field currently has no representative DOM element.');
     }
@@ -146,12 +146,12 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   }
 
   /** See IFocusableNode.onNodeFocus. */
-  onNodeFocus(): void {
+  override onNodeFocus(): void {
     this.matchBlocks();
   }
 
   /** See IFocusableNode.onNodeBlur. */
-  onNodeBlur(): void {
+  override onNodeBlur(): void {
     if (!this.searchField) return;
     this.searchField.value = '';
   }
