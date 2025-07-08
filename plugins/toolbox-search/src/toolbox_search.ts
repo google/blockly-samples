@@ -97,7 +97,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       callback: () => {
         const position = this.getPosition();
         if (position < 0) return false;
-        this.parentToolbox_.selectItemByPosition(position);
+        Blockly.getFocusManager().focusNode(this);
         return true;
       },
       keyCodes: [shortcut],
