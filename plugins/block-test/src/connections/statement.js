@@ -15,7 +15,7 @@ import * as Blockly from 'blockly/core';
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_connections_statement_blue',
-    message0: '%1',
+    message0: 'Blue %1',
     args0: [
       {
         type: 'input_statement',
@@ -35,7 +35,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: 'test_connections_statement_yellow',
-    message0: '%1',
+    message0: 'Yellow %1',
     args0: [
       {
         type: 'input_statement',
@@ -59,7 +59,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: 'test_connections_statement_red',
-    message0: '%1',
+    message0: 'Red %1',
     args0: [
       {
         type: 'input_statement',
@@ -79,7 +79,7 @@ Blockly.defineBlocksWithJsonArray([
   },
   {
     type: 'test_connections_statement_nonext',
-    message0: '%1',
+    message0: 'None %1',
     args0: [
       {
         type: 'input_statement',
