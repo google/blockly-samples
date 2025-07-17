@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.2](https://github.com/google/blockly-samples/compare/@blockly/block-test@7.0.1...@blockly/block-test@7.0.2) (2025-07-17)
+
+
+### Bug Fixes
+
+* Add labels to empty statement blocks for drag tests ([285b11e](https://github.com/google/blockly-samples/commit/285b11ebed3b3414904a7661f503989b35491ca9))
+
+
+
 ## [7.0.1](https://github.com/google/blockly-samples/compare/@blockly/block-test@7.0.0...@blockly/block-test@7.0.1) (2025-05-22)
 
 **Note:** Version bump only for package @blockly/block-test

@@ -1,6 +1,6 @@
 {
   "name": "@blockly/block-shareable-procedures",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "A plugin that adds procedure blocks which are backed by explicit data models.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -42,7 +42,7 @@
   ],
   "devDependencies": {
     "@blockly/dev-scripts": "^4.0.9",
-    "@blockly/dev-tools": "^9.0.1",
+    "@blockly/dev-tools": "^9.0.2",
     "chai": "^4.3.7",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",

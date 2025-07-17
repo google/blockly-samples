@@ -1,6 +1,6 @@
 {
   "name": "@blockly/dev-tools",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "description": "A library of common utilities for Blockly extension development.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
@@ -38,7 +38,7 @@
     "src"
   ],
   "dependencies": {
-    "@blockly/block-test": "^7.0.1",
+    "@blockly/block-test": "^7.0.2",
     "@blockly/theme-dark": "^8.0.1",
     "@blockly/theme-deuteranopia": "^7.0.1",
     "@blockly/theme-highcontrast": "^7.0.1",
