@@ -503,6 +503,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
       this.searchText,
       this.caseSensitive,
     );
+    this.workspace.getSvgGroup().classList.add('blockly-ws-search-active');
     this.highlightSearchGroup(this.blocks);
     let currentIdx = 0;
     if (preserveCurrent) {
@@ -597,6 +598,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
     }
     this.currentBlockIndex = -1;
     this.blocks = [];
+    this.workspace.getSvgGroup().classList.remove('blockly-ws-search-active');
   }
 
   /**
@@ -606,7 +608,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param currentBlock The block to highlight.
    */
   protected highlightCurrentSelection(currentBlock: Blockly.BlockSvg) {
-    const path = currentBlock.pathObject.svgPath;
+    const path = currentBlock.getSvgRoot();
     Blockly.utils.dom.addClass(path, 'blockly-ws-search-current');
   }
 
@@ -616,7 +618,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    * @param currentBlock The block to unhighlight.
    */
   protected unhighlightCurrentSelection(currentBlock: Blockly.BlockSvg) {
-    const path = currentBlock.pathObject.svgPath;
+    const path = currentBlock.getSvgRoot();
     Blockly.utils.dom.removeClass(path, 'blockly-ws-search-current');
   }
 
@@ -627,7 +629,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   protected highlightSearchGroup(blocks: Blockly.BlockSvg[]) {
     blocks.forEach((block) => {
-      const blockPath = block.pathObject.svgPath;
+      const blockPath = block.getSvgRoot();
       Blockly.utils.dom.addClass(blockPath, 'blockly-ws-search-highlight');
     });
   }
@@ -639,7 +641,7 @@ export class WorkspaceSearch implements Blockly.IPositionable {
    */
   protected unhighlightSearchGroup(blocks: Blockly.BlockSvg[]) {
     blocks.forEach((block) => {
-      const blockPath = block.pathObject.svgPath;
+      const blockPath = block.getSvgRoot();
       Blockly.utils.dom.removeClass(blockPath, 'blockly-ws-search-highlight');
     });
   }
