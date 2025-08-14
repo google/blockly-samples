@@ -1,0 +1,82 @@
+{
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "clean": {
+      "dependsOn": []
+    },
+    "deploy:prepare": {
+      "cache": true,
+      "dependsOn": [],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "deploy:prepare:examples": {
+      "cache": true,
+      "dependsOn": [],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "deploy:prepare:plugins": {
+      "cache": true,
+      "dependsOn": ["^deploy:prepare:plugins"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "deploy": {
+      "dependsOn": []
+    },
+    "deploy:upstream": {
+      "dependsOn": []
+    },
+    "format": {
+      "cache": true,
+      "dependsOn": []
+    },
+    "format:check": {
+      "cache": true,
+      "dependsOn": []
+    },
+    "license": {
+      "dependsOn": []
+    },
+    "lint": {
+      "cache": true,
+      "dependsOn": []
+    },
+    "lint:fix": {
+      "cache": true,
+      "dependsOn": []
+    },
+    "postinstall": {
+      "dependsOn": []
+    },
+    "test": {
+      "cache": true,
+      "dependsOn": ["^test"],
+      "outputs": ["{projectRoot}/build"]
+    },
+    "publish:prepare": {
+      "dependsOn": ["^publish:prepare"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "publish:manual": {
+      "dependsOn": []
+    },
+    "publish:force": {
+      "dependsOn": []
+    },
+    "publish:unpublishedOnly": {
+      "dependsOn": []
+    },
+    "publish:checkVersions": {
+      "dependsOn": []
+    },
+    "test:ghpages:beta": {
+      "dependsOn": []
+    },
+    "test:ghpages": {
+      "dependsOn": []
+    }
+  }
+}

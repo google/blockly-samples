@@ -4,17 +4,6 @@
 
 In this directory, you can run:
 
-### `npm run audit:fix`
-
-This script runs `npm audit fix` on each of the Blockly plugins in this repo.
-
-### `npm run boot`
-
-This script runs `lerna bootstrap` which will run `npm install` in each plugin
-and ensure local plugins are symlinked, ready for development.
-When developing a plugin, always run `npm run boot` instead of `npm install`
-directly, as this ensures local plugins (eg: dev-tools) are locally linked.
-
 ### `npm run build`
 
 This script builds all of the Blockly plugins in this repo.
@@ -23,11 +12,6 @@ This script builds all of the Blockly plugins in this repo.
 
 This script runs `npm run clean` on each of the Blockly plugins.
 In general, clean deletes the `/build` and `/dist` folders in these plugins.
-
-### `npm run clean:node`
-
-This script deletes `node_modules/` from each plugin in this repo.
-This may be useful if you feel your node modules have wound up in a bad state.
 
 ### `npm run deploy`
 
@@ -124,13 +108,6 @@ what versions. Note to get accurate results with `lerna version` you must have t
 latest tags pulled. This is taken care of by the `publish:prepare` script.
 
 ## Other Scripts
-
-### `npm run postinstall`
-
-This script runs `npm run boot` after install. This makes sure that `boot` is
-called after `npm install` is run.
-
-There shouldn't be a need for you to run this script directly.
 
 ### `npm run deploy:prepare`
 

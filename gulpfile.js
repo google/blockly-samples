@@ -234,14 +234,11 @@ function deployToGhPages(repo) {
  */
 function preparePluginsForLocal(isBeta) {
   return (done) => {
-    const pluginsDirectory = 'plugins';
     if (isBeta) {
-      execSync(`npx lerna exec -- npm install blockly@beta --force `, {
-        cwd: pluginsDirectory,
+      execSync(`npm install blockly@beta --force `, {
         stdio: 'inherit',
       });
     }
-    execSync(`npm run boot`, {stdio: 'inherit'});
     // Bundles all the plugins.
     execSync(`npm run deploy:prepare:plugins`, {stdio: 'inherit'});
     done();

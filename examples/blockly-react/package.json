@@ -11,7 +11,7 @@
   "scripts": {
     "audit": "npm audit fix",
     "update": "npm update",
-    "postinstall": "cp -r node_modules/blockly/media public/media",
+    "postinstall": "node postinstall.js",
     "predeploy": "npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",

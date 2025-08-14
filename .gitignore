@@ -27,3 +27,7 @@ gh-pages/examples
 .idea
 *.sublime-workspace
 .vscode/*
+
+# Nx
+.nx/cache
+.nx/workspace-data
