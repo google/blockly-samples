@@ -31,7 +31,7 @@ export class BlockSuggestor {
      */
     this.defaultJsonForBlockLookup = {};
     /**
-     * List of reently used block types
+     * List of recently used block types in order, starting from the most recent
      */
     this.recentlyUsedBlocks = [];
     /**
@@ -51,7 +51,7 @@ export class BlockSuggestor {
   }
 
   /**
-   * Generates a list of the 10 most frequently used blocks, in order.
+   * Generates a list of the most frequently used blocks, in order.
    * Includes a secondary sort by most recent blocks.
    * @returns {!Array<!Blockly.utils.toolbox.BlockInfo>}A list of block JSON
    */
@@ -83,23 +83,20 @@ export class BlockSuggestor {
   };
 
   /**
-   * Generates a list of the 10 most recently used blocks.
+   * Generates a list of the most recently used blocks, in order, starting from
+   * the most recent.
    * @returns {Array <object>} A list of block JSON objects
    */
   getRecentlyUsed = function () {
+    // recentlyUsedBlocks sorted from most recent and spec requires sets
+    // preserve insertion order
     const uniqueRecentBlocks = [...new Set(this.recentlyUsedBlocks)];
-    const recencyMap = new Map();
-    for (const [index, key] of this.recentlyUsedBlocks.entries()) {
-      if (!recencyMap.has(key)) {
-        recencyMap.set(key, index + 1);
-      }
-    }
-    uniqueRecentBlocks.sort((a, b) => recencyMap[a] - recencyMap[b]);
     return this.generateBlockData(uniqueRecentBlocks);
   };
 
   /**
-   * Converts a list of block types to a full-fledge list of block data.
+   * Converts a list of block types to a full-fledge list of block data, limited
+   * to the specified size of the category
    * @param {Array<string>} blockTypeList the list of block types
    * @returns {Array<JSON>} the block data list
    */
