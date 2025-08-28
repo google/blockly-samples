@@ -97,7 +97,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       callback: () => {
         const position = this.getPosition();
         if (position < 0) return false;
-        this.parentToolbox_.selectItemByPosition(position);
+        Blockly.getFocusManager().focusNode(this);
         return true;
       },
       keyCodes: [shortcut],
@@ -137,33 +137,23 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.blockSearcher.indexBlocks([...availableBlocks]);
   }
 
-  /**
-   * Handles a click on this toolbox category.
-   *
-   * @param e The click event.
-   */
-  override onClick(e: Event) {
-    super.onClick(e);
-    e.preventDefault();
-    e.stopPropagation();
-    this.setSelected(this.parentToolbox_.getSelectedItem() === this);
+  /** See IFocusableNode.getFocusableElement. */
+  override getFocusableElement(): HTMLElement | SVGElement {
+    if (!this.searchField) {
+      throw Error('This field currently has no representative DOM element.');
+    }
+    return this.searchField;
   }
 
-  /**
-   * Handles changes in the selection state of this category.
-   *
-   * @param isSelected Whether or not the category is now selected.
-   */
-  override setSelected(isSelected: boolean) {
-    super.setSelected(isSelected);
+  /** See IFocusableNode.onNodeFocus. */
+  override onNodeFocus(): void {
+    this.matchBlocks();
+  }
+
+  /** See IFocusableNode.onNodeBlur. */
+  override onNodeBlur(): void {
     if (!this.searchField) return;
-    if (isSelected) {
-      this.searchField.focus();
-      this.matchBlocks();
-    } else {
-      this.searchField.value = '';
-      this.searchField.blur();
-    }
+    this.searchField.value = '';
   }
 
   /**
