@@ -10,7 +10,10 @@ import * as Blockly from 'blockly/core';
  * A class that provides methods for indexing and searching blocks.
  */
 export class BlockSearcher {
-  private trigramsToBlocks = new Map<string, Set<Blockly.utils.toolbox.BlockInfo>>();
+  private trigramsToBlocks = new Map<
+    string,
+    Set<Blockly.utils.toolbox.BlockInfo>
+  >();
 
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
@@ -44,7 +47,10 @@ export class BlockSearcher {
    * @param field We need to check the type of field
    * @param block The block to associate the trigrams with.
    */
-  private indexDropdownOption(field: Blockly.Field, block: Blockly.utils.toolbox.BlockInfo) {
+  private indexDropdownOption(
+    field: Blockly.Field,
+    block: Blockly.utils.toolbox.BlockInfo,
+  ) {
     if (field instanceof Blockly.FieldDropdown) {
       field.getOptions(true).forEach((option) => {
         if (typeof option[0] === 'string') {
@@ -66,7 +72,10 @@ export class BlockSearcher {
     return [
       ...this.generateTrigrams(query)
         .map((trigram) => {
-          return this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.utils.toolbox.BlockInfo>();
+          return (
+            this.trigramsToBlocks.get(trigram) ??
+            new Set<Blockly.utils.toolbox.BlockInfo>()
+          );
         })
         .reduce((matches, current) => {
           return this.getIntersection(matches, current);
@@ -84,7 +93,9 @@ export class BlockSearcher {
    */
   private indexBlockText(text: string, block: Blockly.utils.toolbox.BlockInfo) {
     this.generateTrigrams(text).forEach((trigram) => {
-      const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.utils.toolbox.BlockInfo>();
+      const blockSet =
+        this.trigramsToBlocks.get(trigram) ??
+        new Set<Blockly.utils.toolbox.BlockInfo>();
       blockSet.add(block);
       this.trigramsToBlocks.set(trigram, blockSet);
     });
@@ -116,7 +127,10 @@ export class BlockSearcher {
    * @param b The second set.
    * @returns The intersection of the two sets.
    */
-  private getIntersection(a: Set<Blockly.utils.toolbox.BlockInfo>, b: Set<Blockly.utils.toolbox.BlockInfo>): Set<Blockly.utils.toolbox.BlockInfo> {
+  private getIntersection(
+    a: Set<Blockly.utils.toolbox.BlockInfo>,
+    b: Set<Blockly.utils.toolbox.BlockInfo>,
+  ): Set<Blockly.utils.toolbox.BlockInfo> {
     return new Set([...a].filter((value) => b.has(value)));
   }
 }
