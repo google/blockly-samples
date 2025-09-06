@@ -36,7 +36,11 @@ in Blockly core. The config object bag passed into this field accepts additional
 
 ```js
 import * as Blockly from 'blockly';
-import {FieldGridDropdown} from '@blockly/field-grid-dropdown';
+import {
+  FieldGridDropdown,
+  registerFieldGridDropdown,
+} from '@blockly/field-grid-dropdown';
+registerFieldGridDropdown();
 Blockly.Blocks['test_field_grid_dropdown'] = {
   init: function () {
     this.appendDummyInput()
@@ -62,7 +66,8 @@ Blockly.Blocks['test_field_grid_dropdown'] = {
 
 ```js
 import * as Blockly from 'blockly';
-import '@blockly/field-grid-dropdown';
+import {registerFieldGridDropdown} from '@blockly/field-grid-dropdown';
+registerFieldGridDropdown();
 Blockly.defineBlocksWithJsonArray([
   {
     type: 'test_field_grid_dropdown',
