@@ -10,8 +10,7 @@ import * as Blockly from 'blockly/core';
  * A class that provides methods for indexing and searching blocks.
  */
 export class BlockSearcher {
-  private blockCreationWorkspace = new Blockly.Workspace();
-  private trigramsToBlocks = new Map<string, Set<string>>();
+  private trigramsToBlocks = new Map<string, Set<Blockly.utils.toolbox.BlockInfo>>();
 
   /**
    * Populates the cached map of trigrams to the blocks they correspond to.
@@ -21,17 +20,19 @@ export class BlockSearcher {
    * indexes their types and human-readable text, and cleans up after
    * itself.
    *
-   * @param blockTypes A list of block types to index.
+   * @param blockInfos A list of blocks to index.
    */
-  indexBlocks(blockTypes: string[]) {
+  indexBlocks(blockInfos: Blockly.utils.toolbox.BlockInfo[]) {
     const blockCreationWorkspace = new Blockly.Workspace();
-    blockTypes.forEach((blockType) => {
-      const block = blockCreationWorkspace.newBlock(blockType);
-      this.indexBlockText(blockType.replaceAll('_', ' '), blockType);
+    blockInfos.forEach((blockInfo) => {
+      const type = blockInfo.type;
+      if (!type || type === '') return;
+      const block = blockCreationWorkspace.newBlock(type);
+      this.indexBlockText(type.replaceAll('_', ' '), blockInfo);
       block.inputList.forEach((input) => {
         input.fieldRow.forEach((field) => {
-          this.indexDropdownOption(field, blockType);
-          this.indexBlockText(field.getText(), blockType);
+          this.indexDropdownOption(field, blockInfo);
+          this.indexBlockText(field.getText(), blockInfo);
         });
       });
     });
@@ -41,15 +42,15 @@ export class BlockSearcher {
    * Check if the field is a dropdown, and index every text in the option
    *
    * @param field We need to check the type of field
-   * @param blockType The block type to associate the trigrams with.
+   * @param block The block to associate the trigrams with.
    */
-  private indexDropdownOption(field: Blockly.Field, blockType: string) {
+  private indexDropdownOption(field: Blockly.Field, block: Blockly.utils.toolbox.BlockInfo) {
     if (field instanceof Blockly.FieldDropdown) {
       field.getOptions(true).forEach((option) => {
         if (typeof option[0] === 'string') {
-          this.indexBlockText(option[0], blockType);
+          this.indexBlockText(option[0], block);
         } else if ('alt' in option[0]) {
-          this.indexBlockText(option[0].alt, blockType);
+          this.indexBlockText(option[0].alt, block);
         }
       });
     }
@@ -59,13 +60,13 @@ export class BlockSearcher {
    * Filters the available blocks based on the current query string.
    *
    * @param query The text to use to match blocks against.
-   * @returns A list of block types matching the query.
+   * @returns A list of blocks matching the query.
    */
-  blockTypesMatching(query: string): string[] {
+  blockTypesMatching(query: string): Blockly.utils.toolbox.BlockInfo[] {
     return [
       ...this.generateTrigrams(query)
         .map((trigram) => {
-          return this.trigramsToBlocks.get(trigram) ?? new Set<string>();
+          return this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.utils.toolbox.BlockInfo>();
         })
         .reduce((matches, current) => {
           return this.getIntersection(matches, current);
@@ -76,15 +77,15 @@ export class BlockSearcher {
 
   /**
    * Generates trigrams for the given text and associates them with the given
-   * block type.
+   * block.
    *
    * @param text The text to generate trigrams of.
-   * @param blockType The block type to associate the trigrams with.
+   * @param block The block to associate the trigrams with.
    */
-  private indexBlockText(text: string, blockType: string) {
+  private indexBlockText(text: string, block: Blockly.utils.toolbox.BlockInfo) {
     this.generateTrigrams(text).forEach((trigram) => {
-      const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<string>();
-      blockSet.add(blockType);
+      const blockSet = this.trigramsToBlocks.get(trigram) ?? new Set<Blockly.utils.toolbox.BlockInfo>();
+      blockSet.add(block);
       this.trigramsToBlocks.set(trigram, blockSet);
     });
   }
@@ -115,7 +116,7 @@ export class BlockSearcher {
    * @param b The second set.
    * @returns The intersection of the two sets.
    */
-  private getIntersection(a: Set<string>, b: Set<string>): Set<string> {
+  private getIntersection(a: Set<Blockly.utils.toolbox.BlockInfo>, b: Set<Blockly.utils.toolbox.BlockInfo>): Set<Blockly.utils.toolbox.BlockInfo> {
     return new Set([...a].filter((value) => b.has(value)));
   }
 }

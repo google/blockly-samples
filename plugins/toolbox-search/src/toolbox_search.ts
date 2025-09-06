@@ -113,7 +113,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    */
   private getAvailableBlocks(
     schema: Blockly.utils.toolbox.ToolboxItemInfo,
-    allBlocks: Set<string>,
+    allBlocks: Set<Blockly.utils.toolbox.BlockInfo>,
   ) {
     if ('contents' in schema) {
       schema.contents.forEach((contents) => {
@@ -121,7 +121,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
       });
     } else if (schema.kind.toLowerCase() === 'block') {
       if ('type' in schema && schema.type) {
-        allBlocks.add(schema.type);
+        allBlocks.add(schema);
       }
     }
   }
@@ -130,7 +130,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
    * Builds the BlockSearcher index based on the available blocks.
    */
   private initBlockSearcher() {
-    const availableBlocks = new Set<string>();
+    const availableBlocks = new Set<Blockly.utils.toolbox.BlockInfo>();
     this.workspace_.options.languageTree?.contents?.forEach((item) =>
       this.getAvailableBlocks(item, availableBlocks),
     );
@@ -173,12 +173,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     const query = this.searchField?.value || '';
 
     this.flyoutItems_ = query
-      ? this.blockSearcher.blockTypesMatching(query).map((blockType) => {
-          return {
-            kind: 'block',
-            type: blockType,
-          };
-        })
+      ? this.blockSearcher.blockTypesMatching(query)
       : [];
 
     if (!this.flyoutItems_.length) {
