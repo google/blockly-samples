@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@3.0.2...@blockly/toolbox-search@3.1.0) (2025-09-11)
+
+
+### Features
+
+* Toolbox-Search add support for preset blocks ([#2594](https://github.com/google/blockly-samples/issues/2594)) ([bf7bfc9](https://github.com/google/blockly-samples/commit/bf7bfc908c5fe95b4daeeb9036a64818f7423d0c))
+
+
+### Bug Fixes
+
+* toolbox-search cannot focus in Blockly v12 ([#2578](https://github.com/google/blockly-samples/issues/2578)) ([a30bb65](https://github.com/google/blockly-samples/commit/a30bb65a10852ba940a9fadc23c1c8042fec22da))
+
+
+
 ## [3.0.2](https://github.com/google/blockly-samples/compare/@blockly/toolbox-search@3.0.1...@blockly/toolbox-search@3.0.2) (2025-07-17)
 
 **Note:** Version bump only for package @blockly/toolbox-search
