@@ -594,8 +594,8 @@ function registerEditorCommands(editor, playground) {
     try {
       Blockly.serialization.workspaces.load(JSON.parse(json), workspace);
     } catch (e) {
-      // If this fails that's fine.
-      return false;
+      // If this fails fall back to trying to load XML instead.
+      return loadXml();
     }
     return true;
   };
@@ -660,15 +660,5 @@ function registerEditorCommands(editor, playground) {
     contextMenuGroupId: 'playground',
     contextMenuOrder: 1,
     run: save,
-  });
-  document.addEventListener('keydown', (e) => {
-    const ctrlCmd = e.metaKey || e.ctrlKey;
-    if (ctrlCmd && e.key === 's') {
-      save();
-      e.preventDefault();
-    } else if (ctrlCmd && e.key === 'Enter') {
-      if (!loadJson()) loadXml();
-      e.preventDefault();
-    }
   });
 }
