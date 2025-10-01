@@ -11,8 +11,8 @@
 import * as Blockly from 'blockly/core';
 
 import {ContinuousCategory} from './ContinuousCategory';
-import { ContinuousFlyout } from './ContinuousFlyout';
-import type { LabelFlyoutItem } from './ContinuousFlyout';
+import {ContinuousFlyout} from './ContinuousFlyout';
+import type {LabelFlyoutItem} from './ContinuousFlyout';
 import {ContinuousMetrics} from './ContinuousMetrics';
 import {ContinuousToolbox} from './ContinuousToolbox';
 import {RecyclableBlockFlyoutInflater} from './RecyclableBlockFlyoutInflater';
