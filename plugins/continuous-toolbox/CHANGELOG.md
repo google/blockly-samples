@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.3](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@7.0.2...@blockly/continuous-toolbox@7.0.3) (2025-10-02)
+
+
+### Bug Fixes
+
+* use type-only export for LabelFlyoutItem to fix build error ([#2607](https://github.com/google/blockly-samples/issues/2607)) ([cd10c49](https://github.com/google/blockly-samples/commit/cd10c4957363e39363297acb8d3a0ee595a78e29))
+
+
+
 ## [7.0.2](https://github.com/google/blockly-samples/compare/@blockly/continuous-toolbox@7.0.1...@blockly/continuous-toolbox@7.0.2) (2025-07-17)
 
 **Note:** Version bump only for package @blockly/continuous-toolbox
