@@ -34,14 +34,6 @@ The [Blockly Codelabs](https://blocklycodelabs.dev/) refer to this example code.
 - [`theme-extension-codelab`](theme-extension-codelab/): Starter code and completed code for the [codelab](https://blocklycodelabs.dev/codelabs/theme-extension-identifier/index.html) on applying themes.
 - [`validation-and-warnings-codelab`](validation-and-warnings-codelab/): Starter code and completed code for the [codelab](https://blocklycodelabs.dev/codelabs/validation-and-warnings/index.html) on validating blocks and displaying warnings.
 
-### Integrating Blockly
-
-- [`blockly-angular-sample`](blockly-angular/): Blockly in an Angular project, defines an Angular Blockly Component.
-- [`blockly-react-sample`](blockly-react/): Blockly in a React project, defines a React Blockly Component.
-- [`blockly-svelte-sample`](blockly-svelte/): Blockly in a Svelte project, defines a Svelte Blockly Component.
-- [`blockly-vue3-sample`](blockly-vue3/): Blockly in a Vue3 project, defines a Vue Blockly Component.
-- [`blockly-parcel`](blockly-parcel/): Using Blockly with Parcel.
-
 ### Real-time Collaboration
 
 - [`blockly-rtc`](blockly-rtc/): Real-time collaboration environment on top of the Blockly framework.
