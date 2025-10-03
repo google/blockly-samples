@@ -20,6 +20,7 @@ import {BlockSearcher} from './block_searcher';
 export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   private static readonly START_SEARCH_SHORTCUT = 'startSearch';
   static readonly SEARCH_CATEGORY_KIND = 'search';
+  private readonly SEARCH_INPUT_ID = 'toolbox-search-input';
   private searchField?: HTMLInputElement;
   private blockSearcher = new BlockSearcher();
 
@@ -50,6 +51,7 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
   protected override createDom_(): HTMLDivElement {
     const dom = super.createDom_();
     this.searchField = document.createElement('input');
+    this.searchField.id = this.SEARCH_INPUT_ID;
     this.searchField.type = 'search';
     this.searchField.placeholder = 'Search';
     this.workspace_.RTL
@@ -58,13 +60,18 @@ export class ToolboxSearchCategory extends Blockly.ToolboxCategory {
     this.searchField.addEventListener('keyup', (event) => {
       if (event.key === 'Escape') {
         this.parentToolbox_.clearSelection();
-        return true;
+        return;
       }
 
       this.matchBlocks();
     });
     this.rowContents_?.replaceChildren(this.searchField);
     return dom;
+  }
+
+  /** The ID of the toolbox item must match the ID of the focusable node. */
+  override getId(): string {
+    return this.SEARCH_INPUT_ID;
   }
 
   /**
