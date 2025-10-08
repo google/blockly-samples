@@ -108,11 +108,7 @@ function registerCopyToBackpack(disablePreconditionContainsCheck: boolean) {
       if (!scope.block) {
         return '';
       }
-      const backpack = scope.block.workspace
-        .getComponentManager()
-        .getComponent('backpack') as Backpack;
-      const backpackCount = backpack.getCount();
-      return `${Blockly.Msg['COPY_TO_BACKPACK']} (${backpackCount})`;
+      return Blockly.Msg['COPY_TO_BACKPACK'];
     },
     preconditionFn: function (scope: Blockly.ContextMenuRegistry.Scope) {
       if (!scope.block) return 'hidden';
