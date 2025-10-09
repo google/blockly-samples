@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.4](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@7.0.3...@blockly/workspace-backpack@7.0.4) (2025-10-09)
+
+
+### Bug Fixes
+
+* remove backpack count from copy to message ([#2597](https://github.com/google/blockly-samples/issues/2597)) ([dc6f9c5](https://github.com/google/blockly-samples/commit/dc6f9c5c42d527b121e6e738351cb0d207e8b865))
+
+
+
 ## [7.0.3](https://github.com/google/blockly-samples/compare/@blockly/workspace-backpack@7.0.2...@blockly/workspace-backpack@7.0.3) (2025-10-02)
 
 **Note:** Version bump only for package @blockly/workspace-backpack
