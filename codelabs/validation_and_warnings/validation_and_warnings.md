@@ -239,7 +239,7 @@ Depending on the severity of the issue, this might be sufficient for your custom
 
 ![A Blockly workspace with disabled break and continue blocks.](disabled_break.png)
 
-You can disable a block using `this.setEnabled(false)`, although there are some caveats: disabled blocks can't be dragged out of the toolbox flyout, and the act of disabling a block usually adds an event to Blockly's undo history. That's probably not the behavior you want when validating a block, so you can avoid both of these effects with the following code, which you should put inside the change listener function after setting the warning text:
+You can disable a block using `this.setDisabledReason(true, 'reason')`, although there are some caveats: disabled blocks can't be dragged out of the toolbox flyout, and the act of disabling a block usually adds an event to Blockly's undo history. That's probably not the behavior you want when validating a block, so you can avoid both of these effects with the following code, which you should put inside the change listener function after setting the warning text:
 
 ```js
     // Disable invalid blocks (unless it's in a toolbox flyout,
@@ -248,7 +248,7 @@ You can disable a block using `this.setEnabled(false)`, although there are some 
       const initialGroup = Blockly.Events.getGroup();
       // Make it so the move and the disable event get undone together.
       Blockly.Events.setGroup(event.group);
-      this.setEnabled(valid);
+      this.setDisabledReason(!valid, 'Invalid range');
       Blockly.Events.setGroup(initialGroup);
     }
 ```
