@@ -50,7 +50,7 @@ Blockly.Extensions.register('list_range_validation', function () {
       const initialGroup = Blockly.Events.getGroup();
       // Make it so the move and the disable event get undone together.
       Blockly.Events.setGroup(event.group);
-      this.setEnabled(valid);
+      this.setDisabledReason(!valid, 'Invalid range');
       Blockly.Events.setGroup(initialGroup);
     }
   });
