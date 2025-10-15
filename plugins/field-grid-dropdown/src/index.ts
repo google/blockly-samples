@@ -208,7 +208,10 @@ export class FieldGridDropdown extends Blockly.FieldDropdown {
   }
 }
 
-Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
+/** Register the field and any dependencies. */
+export function registerFieldGridDropdown() {
+  Blockly.fieldRegistry.register('field_grid_dropdown', FieldGridDropdown);
+}
 
 /**
  * CSS for grid field.

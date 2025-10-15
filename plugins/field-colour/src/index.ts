@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import {registerFieldGridDropdown} from '@blockly/field-grid-dropdown';
+registerFieldGridDropdown();
 export * from './field_colour';
 
 import * as colourPicker from './blocks/colourPicker';
