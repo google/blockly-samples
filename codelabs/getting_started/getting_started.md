@@ -139,7 +139,7 @@ The toolbox may be organized into categories, and may contain both single blocks
 
 A toolbox is defined as a JavaScript object and passed into the workspace constructor through an options struct.
 
-For more information on this JSON format and toolbox configuration, including category creation, please see our <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">toolbox documentation</a>.
+For more information on this JSON format and toolbox configuration, including category creation, please see our <a href="https://developers.google.com/blockly/guides/configure/web/toolboxes/toolbox">toolbox documentation</a>.
 
 
 ### Define the toolbox
@@ -204,7 +204,7 @@ Let's look at the options we used to initialize your blockly editor:
 - `horizontalLayout`: Whether to display the toolbox horizontally or vertically in the workspace.
 - `toolboxPosition`: Whether to show the toolbox at the top or bottom of the workspace.
 
-The `options` struct gives you significant control over your Blockly instance. You can pass options to set Blockly's theme, modify scrolling behaviour, set the renderer, and more. For more information, head over to Blockly's developer site and check out the [configuration](https://developers.google.com/blockly/guides/get-started/web#configuration) section.
+The `options` struct gives you significant control over your Blockly instance. You can pass options to set Blockly's theme, modify scrolling behaviour, set the renderer, and more. For more information, head over to Blockly's developer site and check out the [configuration](https://developers.google.com/blockly/guides/configure/web/configuration_struct#the_options_dictionary) section.
 
 ### Check your work
 
@@ -222,7 +222,7 @@ Since this is a music maker app, we want a block that plays sounds. We could cre
 
 In Blockly, a *block definition* describes how a block looks and behaves. This includes its text, colour, and shape. It may also include which other blocks it can connect to.
 
-Blocks can be defined in either JavaScript or JSON. The developer site has a full article on [how to define a block](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks).
+Blocks can be defined in either JavaScript or JSON. The developer site has a full article on [how to define a block](https://developers.google.com/blockly/guides/create-custom-blocks/define/block-definitions#how_to_create_block_definitions).
 
 In this codelab we will simply provide the block definition for you to copy and use.
 
@@ -395,7 +395,7 @@ translates into the JavaScript code:
 MusicMaker.queueSound('Sounds/c4.m4a');
 ```
 
-For more information on generators, read the [generating code](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code) page on the developer site.
+For more information on block generators, read the [generating code](https://developers.google.com/blockly/guides/create-custom-blocks/code-generation/overview#block-code_generators) page on the developer site.
 
 ## Run generated code
 
@@ -458,6 +458,6 @@ Save and exit the edit mode. Now if you tap this button, you should hear the D4 
 
 And with that, you're done with the Blockly codelab! If you'd like to continue playing with the app, we suggest adding or changing the available blocks. There are sample sound files in the `sounds` folder - try hooking them up to a new block!
 
-For more documentation, visit the [Blockly developer site](https://developers.google.com/blockly/).
+For more documentation, visit the [Blockly developer site](https://developers.google.com/blockly/guides/get-started/what-is-blockly).
 
 Additionally, Blockly has an active [developer forum](https://groups.google.com/forum/#!forum/blockly). Please drop by and say hello. We're happy to answer any questions or give advice on best practices for building an app with Blockly. Feel free to show us your prototypes early; collectively we have a lot of experience and can offer hints which will save you time.

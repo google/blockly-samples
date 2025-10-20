@@ -33,9 +33,9 @@ The code samples are written in ES6 syntax. You can find the code for the [compl
 - A browser.
 - A text editor.
 - Basic knowledge of HTML, CSS, and JavaScript.
-- Basic understanding of the [Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolbox).
+- Basic understanding of the [Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolboxes/toolbox).
 
-Throughout various parts of this codelab we will be talking about [toolbox definitions](https://developers.google.com/blockly/guides/configure/web/toolbox#xml).
+Throughout various parts of this codelab we will be talking about [toolbox definitions](https://developers.google.com/blockly/guides/configure/web/toolboxes/category#xml).
 The toolbox definition can be written in XML or JSON. We will be using an XML
 toolbox definition that can be found in the provided code.
 
@@ -149,7 +149,7 @@ The logic_category style looks like:
     "colour": "210"
   }
 ```
-For more information on Blockly styles please visit the [themes documentation](https://developers.google.com/blockly/guides/configure/web/themes#category_style).
+For more information on Blockly styles please visit the [themes documentation](https://developers.google.com/blockly/guides/configure/web/appearance/themes#category_style).
 
 ### Add some CSS
 
@@ -254,7 +254,7 @@ to be:
 <category css-icon="customIcon fa fa-cog" name="Logic" categorystyle="logic_category">
 ```
 All the classes used to create a category can be set similar to how we set the
-icon class above. See the [Blockly toolbox documentation](https://developers.google.com/blockly/guides/configure/web/toolbox#category_css) for more information.
+icon class above. See the [Blockly toolbox documentation](https://developers.google.com/blockly/guides/configure/web/toolboxes/appearance#category_css) for more information.
 
 ### Add some CSS
 If you open `index.html` you will notice that the gear icon is positioned

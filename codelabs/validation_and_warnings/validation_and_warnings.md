@@ -25,8 +25,8 @@ You can find the code for the [completed custom block](https://github.com/google
 - A browser.
 - A text editor.
 - Basic knowledge of JavaScript.
-- Basic understanding of the [Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolbox).
-- Basic understanding of [using JSON to define custom blocks](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks).
+- Basic understanding of the [Blockly toolbox](https://developers.google.com/blockly/guides/configure/web/toolboxes/toolbox).
+- Basic understanding of [using JSON to define custom blocks](https://developers.google.com/blockly/guides/create-custom-blocks/define/structure-json).
 
 ## Setup
 
@@ -270,10 +270,10 @@ You can find the code for the [completed custom block](https://github.com/google
 
 ### Resources
 For more information related topics, check out the documentation:
-* [Defining the toolbox](https://developers.google.com/blockly/guides/configure/web/toolbox)
-* [Defining custom blocks](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks)
-* [Generating code from blocks](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
-* [Creating extensions](https://developers.google.com/blockly/guides/create-custom-blocks/extensions)
+* [Defining the toolbox](https://developers.google.com/blockly/guides/configure/web/toolboxes/toolbox)
+* [Defining custom blocks](https://developers.google.com/blockly/guides/create-custom-blocks/overview)
+* [Generating code from blocks](https://developers.googlehttps.com/blockly/guides/create-custom-blocks/code-generation/overview)
+* [Creating extensions](https://developers.google.com/blockly/guides/create-custom-blocks/define/extensions#extensions)
 * [Listening for change events](https://developers.google.com/blockly/guides/configure/web/events)
 * [Custom validators](https://developers.google.com/blockly/guides/create-custom-blocks/fields/validators)
-* [Custom block style guide](https://developers.google.com/blockly/guides/create-custom-blocks/style-guide)
+* [Custom block style guide](https://developers.google.com/blockly/guides/design/blocks)
