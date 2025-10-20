@@ -174,7 +174,7 @@ Copy and paste the following CSS into your `toolbox_style.css` file.
   color: white;
 }
 /* Adds padding around the group of categories and separators. */
-.blocklyToolboxContents {
+.blocklyToolboxCategoryGroup {
   padding: 0.5em;
 }
 /* Adds space between the categories, rounds the corners and adds space around the label. */
