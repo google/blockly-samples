@@ -357,4 +357,4 @@ In this codelab you have learned how to create and modify context menu options. 
 
 - [Context menu documentation](https://developers.google.com/blockly/guides/configure/web/context-menus)
 
-- You can also define [block context menus](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks#context_menus) directly on a block definition, which is equivalent to adding a precondition based on the type of the block.
+- You can also define [block context menus](https://developers.google.com/blockly/guides/configure/web/context-menus#customize_per_block) directly on a block definition, which is equivalent to adding a precondition based on the type of the block.

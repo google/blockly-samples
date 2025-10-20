@@ -285,7 +285,7 @@ sampleGenerator.forBlock['left_turn_block'] = function(block, generator) {
 
 Value blocks represent code that returns a value.
 
-A value block's generator returns an array containing a string and a [precedence value](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence). The built-in generators have predefined operator precedence values exported as an `Order` enum.
+A value block's generator returns an array containing a string and a [precedence value](https://developers.google.com/blockly/guides/create-custom-blocks/code-generation/operator-precedence). The built-in generators have predefined operator precedence values exported as an `Order` enum.
 
 This code defines a block generator that always returns `1 + 1`:
 
@@ -301,7 +301,7 @@ Operator precedence rules determine how the correct order of operations is maint
 
 --> Read more about [operator precedence in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence).
 
---> Read more about [operator precedence in Blockly](https://developers.google.com/blockly/guides/create-custom-blocks/operator-precedence).
+--> Read more about [operator precedence in Blockly](https://developers.google.com/blockly/guides/create-custom-blocks/code-generation/operator-precedence).
 
 Since JSON does not allow values that are expressions, the code does not need to consider operator precedence for the generator being built in this codelab. The same value can be used everywhere a precedence value is required. Since parentheses never need to be added to the JSON, call this value `ATOMIC`.
 
