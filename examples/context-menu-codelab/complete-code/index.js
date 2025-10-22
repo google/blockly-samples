@@ -108,4 +108,4 @@ function registerSeparators() {
     separator: true,
   }
   Blockly.ContextMenuRegistry.registry.register(blockSeparator);
-};
+}
