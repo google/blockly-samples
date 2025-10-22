@@ -81,16 +81,16 @@ Add a function to `index.js` named `registerHelloWorldItem`. Create a new regist
 
 ```js
 function registerHelloWorldItem() {
-    const helloWorldItem = {
-      displayText: 'Hello World',
-      preconditionFn: function(scope) {
-        return 'enabled';
-      },
-      callback: function(scope) {
-      },
-      id: 'hello_world',
-      weight: 100,
-    };
+  const helloWorldItem = {
+    displayText: 'Hello World',
+    preconditionFn: function(scope) {
+      return 'enabled';
+    },
+    callback: function(scope) {
+    },
+    id: 'hello_world',
+    weight: 100,
+  };
 }
 ```
 
@@ -232,14 +232,14 @@ It is also passed a `PointerEvent` which is the original event that triggered op
 As an example, update the help item's `callback` to add a block to the workspace when clicked:
 
 ```js
-callback: function(scope) {
-  Blockly.serialization.blocks.append({
-    'type': 'text',
-    'fields': {
-      'TEXT': 'Now there is a block'
-    }
-  }, scope.focusedNode);
-}
+    callback: function(scope) {
+      Blockly.serialization.blocks.append({
+        'type': 'text',
+        'fields': {
+          'TEXT': 'Now there is a block'
+        }
+      }, scope.focusedNode);
+    },
 ```
 
 ### Test it
@@ -309,7 +309,7 @@ Every registry item has an `id` that can be used to unregister it. You can use t
 For instance, you can remove the item that deletes all blocks on the workspace:
 
 ```js
-Blockly.ContextMenuRegistry.registry.unregister('workspaceDelete');
+  Blockly.ContextMenuRegistry.registry.unregister('workspaceDelete');
 ```
 
 ### Default items
@@ -343,7 +343,7 @@ function registerSeparators() {
     separator: true,
   }
   Blockly.ContextMenuRegistry.registry.register(blockSeparator);
-};
+}
 ```
 
 As usual, remember to call `registerSeparators()` from your `start` function.
