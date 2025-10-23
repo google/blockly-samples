@@ -22,7 +22,7 @@ suite('WorkspaceSearch', function () {
    * @returns {boolean} True if the block is currently highlighted.
    */
   function isBlockHighlighted(block) {
-    const path = block.pathObject.svgPath;
+    const path = block.getSvgRoot();
     const classes = path.getAttribute('class');
     return (
       (' ' + classes + ' ').indexOf(' blockly-ws-search-highlight ') !== -1
@@ -34,7 +34,7 @@ suite('WorkspaceSearch', function () {
    * @returns {boolean} True if the block is currently styled.
    */
   function isBlockCurrentStyled(block) {
-    const path = block.pathObject.svgPath;
+    const path = block.getSvgRoot();
     const classes = path.getAttribute('class');
     return (' ' + classes + ' ').indexOf(' blockly-ws-search-current ') !== -1;
   }
