@@ -174,8 +174,10 @@ Use of the `preconditionFn` is not limited to checking the type of the Blockly c
 
 ```js
     preconditionFn: function (scope) {
-      if (scope.focusedNode instanceof Blockly.WorkspaceSvg ||
-          scope.focusedNode instanceof Blockly.BlockSvg) {
+      if (
+        scope.focusedNode instanceof Blockly.WorkspaceSvg ||
+        scope.focusedNode instanceof Blockly.BlockSvg
+      ) {
         const now = new Date(Date.now());
         if (now.getSeconds() < 30) {
           return 'enabled';
@@ -272,7 +274,9 @@ function registerDisplayItem() {
       }
     },
     preconditionFn: function(scope) {
-      return scope.focusedNode instanceof Blockly.BlockSvg ? 'enabled' : 'hidden';
+      return scope.focusedNode instanceof Blockly.BlockSvg
+        ? 'enabled'
+        : 'hidden';
     },
     callback: function(scope) {
     },
