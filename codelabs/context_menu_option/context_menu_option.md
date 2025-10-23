@@ -152,8 +152,10 @@ You can now test `scope.focusedNode` to display the "Hello World" option in work
   const helloWorldItem = {
     ...
     preconditionFn: function (scope) {
-      if (scope.focusedNode instanceof Blockly.WorkspaceSvg ||
-          scope.focusedNode instanceof Blockly.BlockSvg) {
+      if (
+        scope.focusedNode instanceof Blockly.WorkspaceSvg ||
+        scope.focusedNode instanceof Blockly.BlockSvg
+      ) {
         return 'enabled';
       }
       return 'hidden';
