@@ -21,8 +21,10 @@ function registerHelloWorldItem() {
     displayText: 'Hello World',
     preconditionFn: function (scope) {
       // Only display this option for workspaces and blocks.
-      if (scope.focusedNode instanceof Blockly.WorkspaceSvg ||
-          scope.focusedNode instanceof Blockly.BlockSvg) {
+      if (
+        scope.focusedNode instanceof Blockly.WorkspaceSvg ||
+        scope.focusedNode instanceof Blockly.BlockSvg
+      ) {
         // Enable for the first 30 seconds of every minute; disable for the next 30 seconds.
         const now = new Date(Date.now());
         if (now.getSeconds() < 30) {
@@ -43,7 +45,7 @@ function registerHelloWorldItem() {
 function registerHelpItem() {
   const helpItem = {
     displayText: 'Help! There are no blocks',
-    preconditionFn: function(scope) {
+    preconditionFn: function (scope) {
       // Only display this option on workspace context menus.
       if (!(scope.focusedNode instanceof Blockly.WorkspaceSvg)) return 'hidden';
       // Use the focused node, which is a WorkspaceSvg, to check for blocks on the workspace.
@@ -73,7 +75,7 @@ function registerHelpItem() {
 function registerDisplayItem() {
   const displayItem = {
     // Use the focused node (a BlockSvg) to set display text dynamically based on the type of the block.
-    displayText: function(scope) {
+    displayText: function (scope) {
       if (scope.focusedNode.type.startsWith('text')) {
         return 'Text block';
       } else if (scope.focusedNode.type.startsWith('controls')) {
@@ -82,8 +84,10 @@ function registerDisplayItem() {
         return 'Some other block';
       }
     },
-    preconditionFn: function(scope) {
-      return scope.focusedNode instanceof Blockly.BlockSvg ? 'enabled' : 'hidden';
+    preconditionFn: function (scope) {
+      return scope.focusedNode instanceof Blockly.BlockSvg
+        ? 'enabled'
+        : 'hidden';
     },
     callback: function (scope) {},
     id: 'display_text_example',
@@ -98,7 +102,7 @@ function registerSeparators() {
     scopeType: Blockly.ContextMenuRegistry.ScopeType.WORKSPACE,
     weight: 99,
     separator: true,
-  }
+  };
   Blockly.ContextMenuRegistry.registry.register(workspaceSeparator);
 
   const blockSeparator = {
@@ -106,6 +110,6 @@ function registerSeparators() {
     scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
     weight: 99,
     separator: true,
-  }
+  };
   Blockly.ContextMenuRegistry.registry.register(blockSeparator);
 }
