@@ -15,7 +15,7 @@ In this codelab you will learn how to:
 - Add a context menu option to the workspace.
 - Add a context menu option to all blocks.
 - Use precondition functions to hide or disable context menu options.
-- Take an action when a menu option is clicked.
+- Take an action when a menu option is selected.
 - Customize ordering and display text for context menu options.
 
 ### What you'll build
@@ -58,17 +58,17 @@ To run the code, simple open `starter-code/index.html` in a browser. You should 
 
 ## Add a context menu item
 
-In this section you will create a very basic `Blockly.ContextMenuRegistry.RegistryItem`, then register it to display when you right-click on the workspace, a block, or a comment.
+In this section you will create a very basic `Blockly.ContextMenuRegistry.RegistryItem`, then register it to display when you open a context menu on the workspace, a block, or a comment.
 
 ### The RegistryItem
 
-A context menu consists of one or more menu options that a user can click. Blockly stores information about menu option as items in a registry. You can think of the _registry items_ as templates for constructing _menu options_. When the user right-clicks, Blockly retrieves all of the registry items that apply to the current context and uses them to construct a list of menu options.
+A context menu consists of one or more menu options that a user can select. Blockly stores information about menu option as items in a registry. You can think of the _registry items_ as templates for constructing _menu options_. When the user opens a context menu, Blockly retrieves all of the registry items that apply to the current context and uses them to construct a list of menu options.
 
 Each item in the registry has several properties:
 
 - `displayText`: The text to show in the menu. Either a string, or HTML, or a function that returns either of the former.
 - `preconditionFn`: Function that returns one of `'enabled'`, `'disabled'`, or `'hidden'` to determine whether and how the menu option should be rendered.
-- `callback`: A function called when the menu option is clicked.
+- `callback`: A function called when the menu option is selected.
 - `id`: A unique string id for the item.
 - `weight`: A number that determines the sort order of the option. Options with higher weights appear later in the context menu.
 
@@ -126,11 +126,11 @@ Note: you will never need to make a new `ContextMenuRegistry`. Always use the si
 
 ### Test it
 
-Reload your web page and right-click on the workspace. You should see a new option labeled "Hello World" at the bottom of the context menu.
+Reload your web page and open a context menu on the workspace (right-click with a mouse, or press `Ctrl+Enter` (Windows) or `Command+Enter` (Mac) if you are navigating Blockly with the keyboard). You should see a new option labeled "Hello World" at the bottom of the context menu.
 
 ![A context menu. The last option says "Hello World".](hello_world.png)
 
-Next, drag a block onto the workspace and right-click on the block. You'll see "Hello World" at the bottom of the block's context menu. Finally, right-click on the workspace and create a comment, then right-click on the comment's header. "Hello World" should be at the bottom of the context menu. 
+Next, drag a block onto the workspace and open a context menu on the block. You'll see "Hello World" at the bottom of the block's context menu. Finally, open a context menu on the workspace and create a comment, then open a context menu on the comment's header. "Hello World" should be at the bottom of the context menu. 
 
 ## Precondition: Node type
 
@@ -138,11 +138,11 @@ Each registry item has a `preconditionFn`. It is called by Blockly to decide whe
 
 ### The scope argument
 
-The `scope` argument is an object that is passed to `preconditionFn`. You'll use the `scope.focusedNode` property to determine which object the context menu was invoked on. Why a focused node? Because all Blockly components that support context menus implement the `IFocusableNode` interface, so it's a handy way to pass objects (like workspaces, blocks, and comments) that otherwise have nothing in common.
+The `scope` argument is an object that is passed to `preconditionFn`. You'll use the `scope.focusedNode` property to determine which object the context menu was invoked on. Why a focused node? Why a focused node? Because all Blockly components that support context menus implement the `IFocusableNode` interface, so it's a handy way to pass objects (like workspaces, blocks, and comments) that otherwise have nothing in common.
 
 ### Return value
 
-The return value of `preconditionFn` is `'enabled'`, `'disabled'`, or `'hidden'`. An **enabled** option is shown with black text and is clickable. A **disabled** option is shown with grey text and is not clickable. A **hidden** option is not included in the context menu at all.
+The return value of `preconditionFn` is `'enabled'`, `'disabled'`, or `'hidden'`. An **enabled** option is shown with black text and is selectable. A **disabled** option is shown with grey text and is not selectable. A **hidden** option is not included in the context menu at all.
 
 ### Write the function 
 
@@ -166,7 +166,7 @@ You can now test `scope.focusedNode` to display the "Hello World" option in work
 
 ### Test it
 
-Right-click the workspace, a block, and a comment. You should see a "Hello World" option on the workspace and block context menus, but not on the comment context menu.
+Open a context menu on the workspace, a block, and a comment. You should see a "Hello World" option on the workspace and block context menus, but not on the comment context menu.
 
 ![An if block with a context menu with five options. The last option says "Hello World".](hello_world_block.png)
 
@@ -192,7 +192,7 @@ Use of the `preconditionFn` is not limited to checking the type of the Blockly c
 
 ### Test it
 
-Reload your workspace, check your watch, and right-click on the workspace to confirm the timing. The option will always be in the menu, but will sometimes be greyed out.
+Reload your workspace, check your watch, and open a context menu on the workspace to confirm the timing. The option will always be in the menu, but will sometimes be greyed out.
 
 ![A context menu. The last option says "Hello World" but the text is grey, indicating that it cannot be selected.](hello_world_grey.png)
 
@@ -224,16 +224,16 @@ Don't forget to call `registerHelpItem` from your `start` function.
 
 ### Test it
 
-- Reload your page and right-click on the workspace. You should see an option labeled "Help! There are no blocks".
-- Add a block to the workspace and right-click on the workspace again. The **Help** option should be gone.
+- Reload your page and open a context menu on the workspace. You should see an option labeled "Help! There are no blocks".
+- Add a block to the workspace and open a context menu on the workspace again. The **Help** option should be gone.
 
 ## Callback
 
-The callback function determines what happens when you click on the context menu option. Like the precondition, it can use the `scope` argument to access the Blockly component on which the context menu was invoked.
+The callback function determines what happens when you select the context menu option. Like the precondition, it can use the `scope` argument to access the Blockly component on which the context menu was invoked.
 
 It is also passed a `PointerEvent` which is the original event that triggered opening the context menu (not the event that selected the current option). This lets you, for example, figure out where on the workspace the context menu was opened so you can create a new element there.
 
-As an example, update the help item's `callback` to add a block to the workspace when clicked:
+As an example, update the help item's `callback` to add a block to the workspace when selected:
 
 ```js
     callback: function(scope) {
@@ -248,8 +248,8 @@ As an example, update the help item's `callback` to add a block to the workspace
 
 ### Test it
 
-- Reload the page and right-click on the workspace.
-- Click the **Help** option.
+- Reload the page and open a context menu on the workspace.
+- Select the **Help** option.
 - A text block should appear in the top left of the workspace.
 
 
@@ -293,7 +293,7 @@ As usual, remember to call `registerDisplayItem()` from your `start` function.
 
 ### Test it
 
-- Reload the workspace and right-click on various blocks.
+- Reload the workspace and open context menus on various blocks.
 - The last context menu option's text should vary based on the block type.
 
 ## Weight and id
@@ -356,7 +356,7 @@ As usual, remember to call `registerSeparators()` from your `start` function.
 
 ### Test it
 
-Right-click the workspace and a block and check that the separator line is there.
+Open a context menu on the workspace and a block and check that the separator line is there.
 
 ## Summary
 
