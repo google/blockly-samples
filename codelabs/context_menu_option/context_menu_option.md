@@ -138,7 +138,7 @@ Each registry item has a `preconditionFn`. It is called by Blockly to decide whe
 
 ### The scope argument
 
-The `scope` argument is an object that is passed to `preconditionFn`. You'll use the `scope.focusedNode` property to determine which object the context menu was invoked on. Why a focused node? Why a focused node? Because all Blockly components that support context menus implement the `IFocusableNode` interface, so it's a handy way to pass objects (like workspaces, blocks, and comments) that otherwise have nothing in common.
+The `scope` argument is an object that is passed to `preconditionFn`. You'll use the `scope.focusedNode` property to determine which object the context menu was invoked on. Why a focused node? Because Blockly keeps track of where the user is -- that is, what node (component) the user is focused on -- and opens the context menu on that node.
 
 ### Return value
 
