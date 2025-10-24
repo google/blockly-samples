@@ -164,7 +164,7 @@ You can now test `scope.focusedNode` to display the "Hello World" option in work
   };
 ```
 
-Notice that the code tests for where context menus are allowed, rather than where they are not allowed. This is because custom code (such as a plugin) can add context menus to any Blockly component that can be focused. Thus, testing for what something isn't may result in allowing context menus on more components than you anticipated.
+Notice that the code tests for where context menus are allowed, rather than where they are not allowed. This is because custom code (such as a plugin) can add context menus to any Blockly component that can be focused. Thus, testing for specific types rather than allowing all (or all but certain types) ensures that context menus are not shown on more components than you anticipated.
 
 ### Test it
 
