@@ -189,7 +189,7 @@ Blockly.Extensions.register('set_colours_extension', function () {
 ```
 
 This is done using a JSON
-[extension](https://developers.google.com/blockly/guides/create-custom-blocks/extensions).
+[extension](https://developers.google.com/blockly/guides/create-custom-blocks/define/extensions).
 
 #### JavaScript
 
@@ -282,22 +282,20 @@ colourBlend.installBlock({
 
 #### Message files and locales
 
-The blocks in this package contain text that can be
-[localized](https://developers.google.com/blockly/guides/create-custom-blocks/localize-blocks)
-into multiple languages. As of August 2024, the relevant messages are
-included in the core Blockly language files.
+The blocks in this package contain text that can be localized into multiple
+languages. As of August 2024, the relevant messages are included in the core
+Blockly language files. For information on Blockly's approach to localization,
+see [Localization](https://developers.google.com/blockly/guides/configure/web/translations)
+in the developer's guide.
 
 If your blocks show `%{BKY_COLOUR_BLEND_TITLE}` or similar text instead
 of the expected text, make sure that you either:
 
-- Import the [default Blockly modules](https://developers.google.com/blockly/guides/configure/web/translations#import_blockly_default_modules),
-  which includes the English langfiles, or
-- Explicitly [import a language](https://developers.google.com/blockly/guides/configure/web/translations#import_blockly_languages)
-  and call `setLocale` before using these blocks.
+- Import the default Blockly modules, which includes the English langfiles, or
+- Explicitly import a language and call `setLocale` before using these blocks.
 
-For more information on Blockly's approach to localization, see the
-[Localize Blocks](https://developers.google.com/blockly/guides/create-custom-blocks/localize-blocks)
-developer guide.
+For more information, see [Load a Blockly localization
+table](https://developers.google.com/blockly/guides/configure/web/translations#load-blockly).
 
 ### API Reference
 
