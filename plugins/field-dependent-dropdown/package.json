@@ -1,6 +1,6 @@
 {
   "name": "@blockly/field-dependent-dropdown",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "A Blockly dropdown field that automatically updates its available options depending on the value of another field.",
   "scripts": {
     "audit:fix": "blockly-scripts auditFix",
