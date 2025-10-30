@@ -272,7 +272,7 @@ You can find the code for the [completed custom block](https://github.com/google
 For more information related topics, check out the documentation:
 * [Defining the toolbox](https://developers.google.com/blockly/guides/configure/web/toolboxes/toolbox)
 * [Defining custom blocks](https://developers.google.com/blockly/guides/create-custom-blocks/overview)
-* [Generating code from blocks](https://developers.googlehttps.com/blockly/guides/create-custom-blocks/code-generation/overview)
+* [Generating code from blocks](https://developers.google.com/blockly/guides/create-custom-blocks/code-generation/overview)
 * [Creating extensions](https://developers.google.com/blockly/guides/create-custom-blocks/define/extensions#extensions)
 * [Listening for change events](https://developers.google.com/blockly/guides/configure/web/events)
 * [Custom validators](https://developers.google.com/blockly/guides/create-custom-blocks/fields/validators)
