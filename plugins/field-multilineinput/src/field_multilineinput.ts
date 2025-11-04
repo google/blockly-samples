@@ -312,12 +312,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
     let totalHeight = 0;
     for (let i = 0; i < nodes.length; i++) {
       const tspan = nodes[i] as SVGTextElement;
-      const textWidth = Blockly.utils.dom.getFastTextWidth(
-        tspan,
-        fontSize,
-        fontWeight,
-        fontFamily,
-      );
+      const textWidth = Blockly.utils.dom.getTextWidth(tspan);
       if (textWidth > totalWidth) {
         totalWidth = textWidth;
       }
@@ -345,12 +340,7 @@ export class FieldMultilineInput extends Blockly.FieldTextInput {
           );
         }
         dummyTextElement.textContent = actualEditorLines[i];
-        const lineWidth = Blockly.utils.dom.getFastTextWidth(
-          dummyTextElement,
-          fontSize,
-          fontWeight,
-          fontFamily,
-        );
+        const lineWidth = Blockly.utils.dom.getTextWidth(dummyTextElement);
         if (lineWidth > totalWidth) {
           totalWidth = lineWidth;
         }
