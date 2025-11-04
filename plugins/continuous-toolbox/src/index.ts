@@ -82,7 +82,7 @@ export function registerContinuousToolbox() {
     display: flex;
     flex-direction: column;
   }
-  .blocklyTreeLabel {
+  .blocklyToolboxCategoryLabel {
     margin: auto;
   }
   .blocklyToolboxCategoryLabel {
