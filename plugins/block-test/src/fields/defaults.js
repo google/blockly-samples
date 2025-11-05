@@ -234,7 +234,7 @@ export function onInit(workspace) {
       .getWorkspace()
       .getAllBlocks(false);
     for (let i = 0, block; (block = blocks[i]); i++) {
-      block.setEnabled(!block.isEnabled());
+      block.setDisabledReason(block.isEnabled(), 'Toggle block enabled');
     }
   };
   const toggleShadow = function (button) {
