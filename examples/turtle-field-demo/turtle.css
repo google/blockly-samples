@@ -6,6 +6,9 @@
 
 .customFieldsTurtleWidget {
   width: 150px;
+  user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
 }
 
 .customFieldsTurtleWidget button {
@@ -42,7 +45,15 @@
   width: 100%;
 }
 
-.blocklySvg .blocklyNonEditableText text,
-.blocklySvg .blocklyEditableText text {
+.turtleField.blocklyEditableField {
+  cursor: pointer;
+}
+
+.turtleField.blocklyNonEditableField {
+  cursor: not-allowed;
+}
+
+.blocklySvg .blocklyNonEditableField .blocklyFieldText,
+.blocklySvg .blocklyEditableField .blocklyFieldText {
   fill: #000;
 }
