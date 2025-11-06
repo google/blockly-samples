@@ -116,7 +116,7 @@
       function toggleEnabled() {
         var blocks = workspace.getAllBlocks(false);
         for (var i = 0, block; (block = blocks[i]); i++) {
-          block.setEnabled(!block.isEnabled());
+          block.setDisabledReason(block.isEnabled(), 'Toggle block enabled');
         }
       }
 

@@ -15,12 +15,6 @@ class FieldTurtle extends Blockly.Field {
   // (for backwards compatibility reasons serializable is false by default).
   SERIALIZABLE = true;
 
-  // The cursor property defines what the mouse will look like when the user
-  // hovers over the field. By default the cursor will be whatever
-  // .blocklyDraggable's cursor is defined as (vis. grab). Most fields define
-  // this property as 'default'.
-  CURSOR = 'pointer';
-
   // How far to move the text to keep it to the right of the turtle.
   // May change if the turtle gets fancy enough.
   TEXT_OFFSET_X = 80;
@@ -90,31 +84,14 @@ class FieldTurtle extends Blockly.Field {
     // textElement_ (text) we can call the super-function. If we only wanted
     // one or the other, we could call their individual createX functions.
     super.initView();
+    if (this.fieldGroup_) {
+      Blockly.utils.dom.addClass(this.fieldGroup_, 'turtleField');
+    }
 
     // Note that the field group is created by the abstract field's init_
     // function. This means that *all elements* should be children of the
     // fieldGroup_.
     this.createView_();
-  }
-
-  // Updates how the field looks depending on if it is editable or not.
-  updateEditable() {
-    if (!this.fieldGroup_) {
-      // Not initialized yet.
-      return;
-    }
-    // The default functionality just makes it so the borderRect_ does not
-    // highlight when hovered.
-    super.updateEditable();
-    // Things like this are best applied to the clickTarget_. By default the
-    // click target is the same as getSvgRoot, which by default is the
-    // fieldGroup_.
-    const group = this.getClickTarget_();
-    if (!this.isCurrentlyEditable()) {
-      group.style.cursor = 'not-allowed';
-    } else {
-      group.style.cursor = this.CURSOR;
-    }
   }
 
   // Gets the text to display when the block is collapsed
@@ -403,7 +380,7 @@ class FieldTurtle extends Blockly.Field {
     };
 
     const widget = document.createElement('div');
-    widget.className = 'customFieldsTurtleWidget blocklyNonSelectable';
+    widget.className = 'customFieldsTurtleWidget';
 
     const table = document.createElement('div');
     table.className = 'table';
