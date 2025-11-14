@@ -21,9 +21,9 @@
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.2",
-    "webpack": "^5.93.0",
+    "webpack": "^5.102.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
     "blockly": "^12.0.0"

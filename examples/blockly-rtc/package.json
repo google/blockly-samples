@@ -20,8 +20,8 @@
   "dependencies": {
     "@vscode/sqlite3": "^5.0.8",
     "blockly": "^12.0.0",
-    "socket.io": "^4.7.5",
-    "socket.io-client": "^2.3.0"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
@@ -31,8 +31,8 @@
     "rimraf": "^3.0.2",
     "sinon": "^7.5.0",
     "tslib": "^2.6.3",
-    "webpack": "^5.93.0",
+    "webpack": "^5.102.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.2.1"
   }
 }
