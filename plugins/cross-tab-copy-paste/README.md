@@ -51,6 +51,7 @@ Blockly.ContextMenuRegistry.registry.getItem('blockPasteFromStorage').weight =
 
 - `contextMenu` `{boolean}`: Register copy, cut, and paste commands in the Blockly context menu.
 - `shortcut` `{boolean}`: Register cut (ctr + x), copy (ctr + c) and paste (ctr + v) in the keybord shortcut.
+- `useSystemClipboard` `{boolean}`: Also copy to and paste from the system clipboard, so blocks can be copied between sites on different origins. Defaults to `false`. Requires a [secure context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts) and the browser may prompt the user for clipboard read permission when pasting; local storage is still used as a fallback.
 
 ## Error Callback
 

@@ -89,6 +89,12 @@ export class CrossTabCopyPaste {
   localStorageKey = 'blocklyStash';
 
   /**
+   * Whether to also store copy data in the system clipboard, enabling
+   * copy and paste across different origins.
+   */
+  useSystemClipboard = false;
+
+  /**
    * Initializes the cross tab copy paste plugin. If no options are selected
    * then both context menu items and keyboard shortcuts are added.
    *
@@ -96,18 +102,27 @@ export class CrossTabCopyPaste {
    * @param options.shortcut Register cut (ctr + x), copy (ctr + c) and paste (ctr + v)
    * in the shortcut.
    * @param options.contextMenu Register copy and paste in the context menu.
+   * @param options.useSystemClipboard Also copy to and paste from the system
+   * clipboard, enabling copy and paste across different origins. Requires a
+   * secure context and the browser may prompt for clipboard permission.
    * @param typeErrorCallback callback function to handle type errors
    * @param localStorageKey custom key for local storage
    */
   init(
-    {contextMenu = true, shortcut = true} = {
-      contextMenu: true,
-      shortcut: true,
-    },
+    {
+      contextMenu = true,
+      shortcut = true,
+      useSystemClipboard = false,
+    }: {
+      contextMenu?: boolean;
+      shortcut?: boolean;
+      useSystemClipboard?: boolean;
+    } = {},
     typeErrorCallback?: TypeErrorCallback,
     localStorageKey?: string,
   ) {
     if (localStorageKey) this.localStorageKey = localStorageKey;
+    this.useSystemClipboard = useSystemClipboard;
     if (contextMenu) {
       // Register the menus
       this.blockCopyToStorageContextMenu();
@@ -141,6 +156,75 @@ export class CrossTabCopyPaste {
     const stored = localStorage.getItem(this.localStorageKey);
     if (!stored) return undefined;
     return JSON.parse(stored);
+  }
+
+  /**
+   * Whether the system clipboard should be used, based on the option
+   * selected at init time and the availability of the clipboard API.
+   *
+   * @returns true if the system clipboard should be used.
+   */
+  systemClipboardAvailable(): boolean {
+    return this.useSystemClipboard && !!navigator.clipboard;
+  }
+
+  /**
+   * Stores copy data as JSON in local storage and, if enabled, the system
+   * clipboard.
+   *
+   * @param copyData copy data to store.
+   */
+  storeCopyData(copyData: Blockly.ICopyData) {
+    const json = JSON.stringify(copyData);
+    localStorage.setItem(this.localStorageKey, json);
+    if (this.systemClipboardAvailable()) {
+      navigator.clipboard.writeText(json).catch(() => {});
+    }
+  }
+
+  /**
+   * Parses copy data from the system clipboard if enabled, falling back to
+   * local storage when the clipboard is unreadable or does not contain
+   * copy data.
+   *
+   * @returns copy data to paste, or undefined
+   */
+  async retrieveCopyData(): Promise<Blockly.ICopyData | undefined> {
+    if (this.systemClipboardAvailable()) {
+      try {
+        const data = JSON.parse(await navigator.clipboard.readText());
+        if (data && typeof data.paster === 'string') return data;
+      } catch {
+        // Clipboard was unreadable or held something other than copy data.
+      }
+    }
+    return this.getCopyData();
+  }
+
+  /**
+   * Pastes the stored copy data into the workspace.
+   *
+   * @param workspace workspace to paste in.
+   * @param location workspace coordinates to paste at, or undefined to let
+   * the paster determine the position.
+   * @param typeErrorCallback callback function to handle type errors
+   */
+  async pasteFromStorage(
+    workspace: Blockly.WorkspaceSvg,
+    location?: Blockly.utils.Coordinate,
+    typeErrorCallback?: TypeErrorCallback,
+  ) {
+    const copyData = await this.retrieveCopyData();
+    if (!copyData) return;
+    try {
+      Blockly.clipboard.paste(copyData, workspace, location);
+    } catch (e) {
+      if (e instanceof TypeError && typeErrorCallback) {
+        typeErrorCallback();
+      } else {
+        throw e;
+      }
+    }
   }
 
   /**
@@ -206,7 +290,7 @@ export class CrossTabCopyPaste {
     }
     const copyData = focused.toCopyData();
     if (!copyData) return false;
-    localStorage.setItem(this.localStorageKey, JSON.stringify(copyData));
+    this.storeCopyData(copyData);
     return true;
   }
 
@@ -218,9 +302,11 @@ export class CrossTabCopyPaste {
    */
   pastePrecondition(workspace: Blockly.WorkspaceSvg): ContextMenuState {
     const copyData = this.getCopyData();
-    if (!copyData) return ContextMenuState.DISABLED;
+    if (!copyData && !this.systemClipboardAvailable())
+      return ContextMenuState.DISABLED;
     // If this is a block, make sure there's room for that type of block
     if (
+      copyData &&
       isBlockCopyData(copyData) &&
       !workspace?.isCapacityAvailable(copyData.typeCounts)
     )
@@ -305,8 +391,6 @@ export class CrossTabCopyPaste {
         return this.pastePrecondition(workspace);
       },
       callback: (scope, menuOpenEvent, menuSelectEvent, location) => {
-        const copyData = this.getCopyData();
-        if (!copyData) return false;
         const workspace = scope.focusedNode;
         // Paste option only available if menu was opened on a workspace
         if (!(workspace instanceof Blockly.WorkspaceSvg)) return false;
@@ -315,15 +399,8 @@ export class CrossTabCopyPaste {
           workspace,
           location,
         );
-        try {
-          return !!Blockly.clipboard.paste(copyData, workspace, pasteLocation);
-        } catch (e) {
-          if (e instanceof TypeError && typeErrorCallback) {
-            typeErrorCallback();
-          } else {
-            throw e;
-          }
-        }
+        this.pasteFromStorage(workspace, pasteLocation, typeErrorCallback);
+        return true;
       },
       id: 'blockPasteFromStorage',
       weight: 0,
@@ -413,7 +490,7 @@ export class CrossTabCopyPaste {
           Blockly.Events.setGroup(oldGroup);
         }
 
-        localStorage.setItem(this.localStorageKey, JSON.stringify(copyData));
+        this.storeCopyData(copyData);
         return true;
       },
     };
@@ -453,8 +530,6 @@ export class CrossTabCopyPaste {
         // which may beep or otherwise indicate
         // an error due to the lack of a selection.
         e.preventDefault();
-        const copyData = this.getCopyData();
-        if (!copyData) return false;
 
         // If paste shortcut is called while flyout is open, paste in the
         // main workspace instead.
@@ -462,33 +537,25 @@ export class CrossTabCopyPaste {
           ? workspace.targetWorkspace
           : workspace;
         if (!targetWorkspace) return false;
-        try {
-          if (e instanceof PointerEvent) {
-            // The event that triggers a shortcut would conventionally be a KeyboardEvent.
-            // However, it may be a PointerEvent if a context menu item was used as a
-            // wrapper for this callback, in which case the new block(s) should be pasted
-            // at the mouse coordinates where the menu was opened, and this PointerEvent
-            // is where the menu was opened.
-            const mouseCoords = Blockly.utils.svgMath.screenToWsCoordinates(
-              targetWorkspace,
-              new Blockly.utils.Coordinate(e.clientX, e.clientY),
-            );
-            return !!Blockly.clipboard.paste(
-              copyData,
-              targetWorkspace,
-              mouseCoords,
-            );
-          }
-          // If we don't have location data about the original copyable, let the
-          // paster determine position.
-          return !!Blockly.clipboard.paste(copyData, targetWorkspace);
-        } catch (e) {
-          if (e instanceof TypeError && typeErrorCallback) {
-            typeErrorCallback();
-          } else {
-            throw e;
-          }
+
+        let pasteLocation;
+        if (e instanceof PointerEvent) {
+          // The event that triggers a shortcut would conventionally be a KeyboardEvent.
+          // However, it may be a PointerEvent if a context menu item was used as a
+          // wrapper for this callback, in which case the new block(s) should be pasted
+          // at the mouse coordinates where the menu was opened, and this PointerEvent
+          // is where the menu was opened. Otherwise, leave the location undefined
+          // and let the paster determine the position.
+          pasteLocation = Blockly.utils.svgMath.screenToWsCoordinates(
+            targetWorkspace,
+            new Blockly.utils.Coordinate(e.clientX, e.clientY),
+          );
         }
+        this.pasteFromStorage(
+          targetWorkspace,
+          pasteLocation,
+          typeErrorCallback,
+        );
         return true;
       },
     };
