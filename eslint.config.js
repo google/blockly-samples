@@ -35,12 +35,6 @@ module.exports = [
       '**/dist/',
       '**/build/',
       'examples/blockly-svelte/public/bundle.js',
-      'plugins/migration/test/manual-test-data/',
-      // specific examples that are sometimes copied into plugins
-      'plugins/dev-create/templates/sample-app',
-      'plugins/dev-create/templates/sample-app-ts',
-      // Golden test files
-      'plugins/**/golden/*',
     ],
   },
   js.configs.recommended, // eslint-recommended

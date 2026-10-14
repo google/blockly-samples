@@ -4,45 +4,26 @@
 
 In this directory, you can run:
 
-### `npm run build`
-
-This script builds all of the Blockly plugins in this repo.
-
-### `npm run clean`
-
-This script runs `npm run clean` on each of the Blockly plugins.
-In general, clean deletes the `/build` and `/dist` folders in these plugins.
-
 ### `npm run deploy`
 
-This script packages each of the plugins's test playgrounds and deploys them to
+This script packages each of the examples and plugins from the core repository and deploys them to
 gh-pages. You can browse these plugin playgrounds at:
 https://YOURUSERNAME.github.io/blockly-samples/.
 
 ### `npm run deploy:upstream`
 
-This script is similar to `npm run deploy` but it deploys the plugins to
-`blockly-samples` upstream. You can browse these plugin playgrounds at:
+This script is similar to `npm run deploy` but it deploys the examples and plugins from the core repository to
+`blockly-samples` upstream. You can browse these playgrounds at:
 https://raspberrypifoundation.github.io/blockly-samples/.
-
-### `npm run license`
-
-This script runs the `js-green-licenses` checker on all of the Blockly plugins.
-Run this script before release to make sure none of our plugin dependencies
-use packages with non-green licenses.
 
 ### `npm run lint`
 
-This script runs `npm run lint` on each of the Blockly plugins in this repo.
+This script runs `npm run lint` on each of the Blockly examples in this repo.
 
 ### `npm run lint:fix`
 
-This script runs lint with the `--fix` option on each of the Blockly plugins in
+This script runs lint with the `--fix` option on each of the Blockly examples in
 this repo.
-
-### `npm run test`
-
-This script runs `npm run test` on each of the Blockly plugins in this repo.
 
 ### `npm run test:ghpages`
 
@@ -52,78 +33,11 @@ This script builds all files needed to deploy plugins and examples to GitHub Pag
 
 This script installs a beta version of Blockly, builds all files needed to deploy plugins and examples to GitHub Pages, then starts a local server with that content.
 
-## Publishing scripts
-
-Note that publishing via the command line is not preferred. You should
-use the GitHub Action workflow whenever possible, which can handle
-publishing all plugins as well as recovering from the partially-published
-state (publishing unpublished plugins only).
-
-Note that none of these scripts will handle npm authentication. You need to
-configure an npm authentication token before you can use these scripts.
-
-Full publishing documentation can be found in the internal team documentation.
-
-### `npm run publish:prepare`
-
-This script will clone a copy of blockly-samples to a directory called `dist`,
-run `npm ci`, then build and test all plugins.
-
-If any plugin fails to build or some tests fail, this script should fail. Since
-nothing has been pushed to npm or github, you can simply correct the error and
-try again.
-
-This script will be run automatically before any of the other publish scripts,
-so you do not need to run it manually first.
-
-### `npm run publish:manual`
-
-This script will first run `npm run publish:prepare`. It will
-publish all of the changed plugins since the last release, using the `dist`
-directory. It runs the lerna command that uses conventional commits to determine
-a new version number for each plugin, and publishes the new versions to npm and
-to a github release and tag.
-
-If there is some error with npm while running this command, you may end up in a
-state where some plugins have been published to npm and not others, after lerna
-has already tagged the new releases. You can recover from this state by fixing
-the error, and then running either
-`npm run publish:unpublishedOnly` or `npm run publish:force`.
-
-### `npm run publish:unpublishedOnly`
-
-This script will first run `npm run publish:prepare`. It uses the `dist`
-directory created in that script. It uses lerna to check each plugin to see if the version
-in `package.json` matches the version on npm. If a version is not yet on npm, it will publish
-that plugin without updating its version number. Thus, this script should only be used
-after `lerna version` has been run in some form (most commonly, during a run of
-`npm run publish:manual` that subsequently failed).
-
-If this script fails, correct the error and re-run
-`npm run publish:unpublishedOnly`.
-
-### `npm run publish:force`
-
-This script will first run `npm run publish:prepare`. It will use lerna
-to force publish all packages, even those that have not changed. You can use this
-if you run into publishing problems to recover from error states, but you should prefer
-to use `npm run publish:unpublishedOnly` if possible.
-
-### `npm run publish:checkVersions`
-
-This script will first run `npm run publish:prepare`. It will run `lerna
-version` to generate the new version numbers using conventional commits that would be
-created during a full publish action, but it will not actually push the changes nor
-create any tags. This can be used to check which plugins would be published and under
-what versions. Note to get accurate results with `lerna version` you must have the
-latest tags pulled. This is taken care of by the `publish:prepare` script.
-
 ## Other Scripts
 
 ### `npm run deploy:prepare`
 
-This script prepares each of the plugins for deployment. In general, the script
-cleans and builds the src and test directories of each plugin.
+This script prepares each of the examples for deployment.
 
 You shouldn't need to run this script directly, instead it is run by
 `npm run deploy` and `npm run deploy:upstream`.

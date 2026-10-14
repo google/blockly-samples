@@ -21,11 +21,9 @@ To test locally with a beta version of Blockly, go to the root of blockly-sample
 
 Run the [Update GitHub Pages Action](https://github.com/RaspberryPiFoundation/blockly-samples/actions/workflows/update_gh_pages.yml) from either the `RaspberryPiFoundation/blockly-samples` repo or your fork to deploy to that location automatically. Click the "Run workflow" button to start it. After this workflow finishes, GitHub's built-in "build and deploy" action will automatically start. When that finishes, the updated site will be live.
 
-Note: Updating GitHub Pages is done automatically when publishing plugins through the Publish action.
-
 ### Manual
 
-1. Make sure everything is installed (plugins and examples). From root, run:
+1. Make sure examples are installed. From root, run:
 
     ```
     npm install

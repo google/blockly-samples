@@ -1,4 +1,4 @@
-# This workflow will lint, build and test Blockly samples.
+# This workflow will lint and format Blockly samples.
 
 name: Build and Test
 
@@ -8,29 +8,6 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x, 24.x]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Npm CI
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Test
-        run: npm run test
-
   lint:
     timeout-minutes: 5
     runs-on: ubuntu-latest

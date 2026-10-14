@@ -2,14 +2,10 @@
 Blockly Samples <br /> <a href="https://github.com/RaspberryPiFoundation/blockly"><img src="https://tinyurl.com/built-on-blockly" /> </a>
 </h1>
 
-Plugins and examples related to the [Blockly](https://github.com/RaspberryPiFoundation/blockly) library.
+Examples related to the [Blockly](https://github.com/RaspberryPiFoundation/blockly) library.
 
-This repository has two sections:
-
-- [Plugins](plugins/): self-contained pieces of code that add functionality to Blockly.
-- [Examples](examples/): self-contained sample projects demonstrating techniques to include and extend the Blockly library.
-
-Please see our [GitHub Pages site](https://raspberrypifoundation.github.io/blockly-samples/index.html) for interactive demos of most plugins.
+This repository contains a variety of [self-contained sample projects](examples/) demonstrating techniques to include and extend the Blockly library.
+Please see our [GitHub Pages site](https://raspberrypifoundation.github.io/blockly-samples/index.html) for interactive demos of most examples, as well as plugins, which live in the [core Blockly repository](https://github.com/RaspberryPiFoundation/blockly).
 
 ## Support
 
