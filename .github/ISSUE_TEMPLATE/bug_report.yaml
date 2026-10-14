@@ -20,7 +20,7 @@ body:
     attributes:
       label: Component
       description: Which component has a bug?
-      placeholder: e.g. workspace search plugin, RTL demo
+      placeholder: e.g. RTL demo
   - type: textarea
     id: description
     attributes:

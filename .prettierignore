@@ -18,12 +18,5 @@ examples/lib/*
 CHANGELOG.md
 PULL_REQUEST_TEMPLATE.md
 
-# Specific examples that are sometimes copied into plugins
-plugins/dev-create/templates/sample-app/*
-plugins/dev-create/templates/sample-app-ts/*
-
-# Golden test files
-plugins/**/golden/*
-
 /.nx/cache
 /.nx/workspace-data
